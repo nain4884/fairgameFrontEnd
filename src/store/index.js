@@ -9,7 +9,7 @@ import betplace from './betPlace'
 // import changePasswordModal from '../admin/store/changePasswordModal'
 // import dailogModal from '../admin/store/dailogModal'
 // import currentSelected from '../admin/store/current_selected'
-// import activeAdmin from '../admin/store/admin'
+import activeAdmin from './admin'
 // import activeUser from '../expert/store/activeUser'
 import { rootReducer } from './reducers/rootReducer';
 
@@ -33,7 +33,7 @@ const store = configureStore({
         // changePasswordModal,
         // dailogModal,
         // currentSelected,
-        // activeAdmin,
+        activeAdmin,
         // activeUser,
         rootReducer
     },

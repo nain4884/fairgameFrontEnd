@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16.5" height="11.5" viewBox="0 0 16.5 11.5">
+  <g id="arrow-left" transform="translate(0.25 0.25)">
+    <path id="Path_15466" data-name="Path 15466" d="M4.722,10.354a.806.806,0,0,0,0,1.112l4.014,4.157L4.721,19.781a.807.807,0,0,0,0,1.112.741.741,0,0,0,1.074,0l4.55-4.713a.806.806,0,0,0,0-1.112l-4.55-4.713a.74.74,0,0,0-1.074,0Z" transform="translate(5.433 -10.123)" fill="#262626" stroke="#262626" stroke-width="0.5" fill-rule="evenodd"/>
+    <path id="Path_15467" data-name="Path 15467" d="M20.866,17.633a.715.715,0,0,0-.663-.758H6.288a.765.765,0,0,0,0,1.517H20.2A.715.715,0,0,0,20.866,17.633Z" transform="translate(-5.625 -12.133)" fill="#262626" stroke="#262626" stroke-width="0.5" fill-rule="evenodd"/>
+  </g>
+</svg>
