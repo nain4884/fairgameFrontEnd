@@ -1,9 +1,22 @@
-import React from 'react'
+import React from "react";
+import Messages from "./Messages";
+import MessageInput from "./MessageInput";
 
-function demo() {
+function demo({ socket }) {
+  console.log(socket.connected);
   return (
-    <div>demo</div>
-  )
+    <div className="App">
+      <header className="app-header">React Socket Demo</header>
+      {socket.connected ? (
+        <div className="chat-container">
+          <Messages socket={socket} />
+          <MessageInput socket={socket} />
+        </div>
+      ) : (
+        <div>Not Connected</div>
+      )}
+    </div>
+  );
 }
 
-export default demo
+export default demo;

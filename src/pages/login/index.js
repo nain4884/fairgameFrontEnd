@@ -133,7 +133,6 @@ export default function Login() {
     }
 
     const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"))
-    console.log(window.location.pathname);
 
     const NewPassword = () => {
         return(<>

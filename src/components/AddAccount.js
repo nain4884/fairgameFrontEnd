@@ -70,7 +70,15 @@ const AddAccount = () => {
     ]
 
     const setRole = () => {
-        setLoginRole(localStorage.getItem("role"))
+        let role = "role4"
+        let pattern1 = /super_master|super_admin|master|admin/
+        let pattern2 = /fairgame_wallet|fairgame_admin/
+        let pattern3 = /expert/
+        if(pattern1.test(window.location.pathname)) role = "role1"
+        if(pattern2.test(window.location.pathname)) role = "role2"
+        if(pattern3.test(window.location.pathname)) role = "role3"
+        console.log("role",role,localStorage.getItem(role))
+        setLoginRole(localStorage.getItem(role))
     }
 
     const setTypeForAccountType = () => {
@@ -223,6 +231,7 @@ const AddAccount = () => {
     useEffect(() => {
         getAllRoles()
         setRole()
+        console.log(roles)
         setTypeForAccountType()
     }, [loginRole, Detail])
 

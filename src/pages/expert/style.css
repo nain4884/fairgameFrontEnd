@@ -1,0 +1,8 @@
+@import "rsuite/dist/rsuite.css";
+.beFairMatch .MuiButtonBase-root{
+    background-color: #004A25;
+        -webkit-text-decoration: none;
+    text-decoration: none;
+    background-color: rgb(0, 51, 25);
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}

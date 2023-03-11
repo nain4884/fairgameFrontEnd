@@ -1,11 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { CustomHeader, Input, MatchOdds, SideBar } from "../../components";
+import { CustomHeader, MatchOdds, SideBar } from "../../components";
 import EventListing from "../../components/EventListing";
 import MatchesComponent from "../../components/Matches";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { eye, HourGlass } from "../../assets";
+import { HourGlass } from "../../assets";
 import Lottie from "lottie-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActive } from "../../store/betPlace";
@@ -14,9 +14,10 @@ import SessionBetSeperate from "../../components/sessionBetSeperate";
 import AllRateSeperate from "../../components/AllRateSeperate";
 import LiveMatchHome from "../../components/LiveMatchHome";
 import MatchComponent from "../../components/MathComponent";
-import AccountStatementList from "../../components/AccountStatement";
+import AccountStatementList from "../../components/AccountStatementList";
 import YellowHeader from "../../components/yellowheader";
 import ProfitLossComponent from "../../components/ProfitLossComponent";
+import { ChangePassword } from "./ChangePassword";
 export default function Matches() {
   const [drawer, setDrawer] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -28,112 +29,6 @@ export default function Matches() {
   const dispatch = useDispatch();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const activeTab = useSelector((state) => state.betplace)?.activeTab;
-  const ChangePassword = () => {
-    return (
-      <>
-        <CustomHeader showSideBar={true} />
-        <Box
-          flex={1}
-          sx={[
-            { flex: 1, display: "flex" },
-            (theme) => ({
-              backgroundImage: `${theme.palette.primary.homeBodyGradient}`,
-            }),
-          ]}
-        >
-          <Box
-            sx={{
-              width: { mobile: "96vw", laptop: "22vw", tablet: "22vw" },
-              minWidth: { laptop: "350px", tablet: "350px", mobile: "0px" },
-              marginTop: "10px",
-              marginX: { mobile: "2vw", laptop: "5vw" },
-            }}
-          >
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: { laptop: "18px", mobile: "20px" },
-                fontWeight: "700",
-              }}
-            >
-              Change Password
-            </Typography>
-            <Box
-              sx={{
-                width: "100%",
-                minHeight: "200px",
-                background: "#F8C851",
-                borderRadius: "5px",
-                padding: "20px",
-                marginTop: "10px",
-              }}
-            >
-              <Input
-                placeholder={"Enter Old Password"}
-                inputProps={{ type: "password" }}
-                title={"Old Password"}
-                titleStyle={{
-                  color: "#222222",
-                  marginLeft: "0px",
-                  fontWeight: "600",
-                }}
-                inputContainerStyle={{ borderRadius: "5px" }}
-                containerStyle={{}}
-                img={eye}
-              />
-              <Input
-                placeholder={"Enter New Password"}
-                inputProps={{ type: "password" }}
-                title={"New Password"}
-                titleStyle={{
-                  color: "#222222",
-                  marginLeft: "0px",
-                  fontWeight: "600",
-                }}
-                inputContainerStyle={{ borderRadius: "5px" }}
-                containerStyle={{ marginTop: "30px" }}
-                img={eye}
-              />
-              <Input
-                placeholder={"Enter Confirm Password"}
-                inputProps={{ type: "password" }}
-                title={"Confirm New Password"}
-                titleStyle={{
-                  color: "#222222",
-                  marginLeft: "0px",
-                  fontWeight: "600",
-                }}
-                inputContainerStyle={{ borderRadius: "5px" }}
-                containerStyle={{ marginTop: "30px" }}
-                img={eye}
-              />
-              <Box
-                sx={{
-                  height: "50px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  mx: "auto",
-                  marginTop: "60px",
-                  marginBottom: "40px",
-                  width: "80%",
-                  background: "#0B4F26",
-                  borderRadius: "5px",
-                }}
-              >
-                <Typography
-                  sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
-                  color={"white"}
-                >
-                  Update
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </>
-    );
-  };
 
   const Matches = () => {
     return (
