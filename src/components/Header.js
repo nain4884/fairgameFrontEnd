@@ -187,7 +187,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const logoutProcess = () => {
-        dispatch(stateActions.logout("role1"));
+        dispatch(stateActions.logout("role4"));
         navigate("/")
         handleClose()
     }

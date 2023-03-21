@@ -2,10 +2,10 @@ export let stateActions = {
     logout: (val) => {
 		return { type: 'LOGOUT', role:val }
 	},
-    setUser: (role, jwt) => {
+    setUser: (role, jwt, isTransPasswordCreated) => {
 		return {
 			type: 'SET_USER',
-			payload: { role, jwt }
+			payload: { role, jwt, isTransPasswordCreated }
 		}
 	},
 }

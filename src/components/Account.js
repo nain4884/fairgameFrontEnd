@@ -19,7 +19,7 @@ const Account = () => {
       </Typography>
       <Box
         onClick={() => {
-          navigate("/admin/add_account");
+          navigate(`/${window.location.pathname.split("/")[1].trim()}/add_account`);
         }}
         sx={{
           background: "#F8C851",

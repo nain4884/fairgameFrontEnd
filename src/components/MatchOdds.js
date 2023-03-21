@@ -168,9 +168,23 @@ const Divider = () => {
         <Box sx={{ width: '100%', background: 'rgba(211,211,211)', height: '1px' }} ></Box>
     )
 }
-const BoxComponent = ({ name, color, align, time }) => {
+const BoxComponent = ({ name, color, align, time, data, team }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
+    console.log("data123", data)
+    let backValue, layValue
+    if (team == 'teamA') {
+        backValue = data?.bettings[0].teamA_Back
+        layValue = data?.bettings[0].teamA_Lay
+    }
+    if (team == 'teamB') {
+        backValue = data?.bettings[0].teamB_Back
+        layValue = data?.bettings[0].teamB_Lay
+    }
+    if (team == 'draw') {
+        backValue = data?.bettings[0].teamC_Back
+        layValue = data?.bettings[0].teamC_Lay
+    }
     return (
         <Box sx={{ display: 'flex', background: 'white', height: '40px', width: '100%', alignItems: 'center', justifyContent: 'space-between' }} >
             <Box sx={{ display: 'flex', background: 'white', position: 'relative', height: '40px', width: '40%', alignItems: 'center', }} >
@@ -186,17 +200,17 @@ const BoxComponent = ({ name, color, align, time }) => {
                 <MoneyBox color={color} />
             </Box>
             <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'center' }, alignItems: 'center' }} >
-                {!matchesMobile && <SeperateBox po={1} time={time} align={align} value={"1.71"} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />}
+                {!matchesMobile && <SeperateBox po={1} time={time} align={align} value={`${backValue ? backValue - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />}
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                {!matchesMobile && <SeperateBox po={2} time={time} align={align} value={"1.71"} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} />}
+                {!matchesMobile && <SeperateBox po={2} time={time} align={align} value={`${backValue ? backValue - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} />}
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={3} time={time} align={align} value={"1.71"} value2={" 1cr+"} color={matchesMobile ? "white" : "#A7DCFF"} />
+                <SeperateBox po={3} time={time} align={align} value={`${backValue ? backValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#A7DCFF"} />
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={4} time={time} align={align} value={"1.72"} value2={" 1cr+"} color={matchesMobile ? "white" : "#FFB5B5"} />
+                <SeperateBox po={4} time={time} align={align} value={`${layValue ? layValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#FFB5B5"} />
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={5} time={time} back={true} align={align} value={"1.72"} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#F2CBCB"} />
+                <SeperateBox po={5} time={time} back={true} align={align} value={`${layValue ? layValue + 1 : 50 + 1}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#F2CBCB"} />
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={6} time={time} align={align} value={"1.72"} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#ECD6D6"} />
+                <SeperateBox po={6} time={time} align={align} value={`${layValue ? layValue + 2 : 50 + 2}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#ECD6D6"} />
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
             </Box>
         </Box>
@@ -239,7 +253,7 @@ const Time = () => {
         </Box>
     )
 }
-const Odds = ({ }) => {
+const Odds = ({ data }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     return (
@@ -292,11 +306,11 @@ const Odds = ({ }) => {
                     </Box>
                 </Box>
             }
-            <BoxComponent time={true} color={'#46e080'} name={'INDIA'} />
+            <BoxComponent time={true} color={'#46e080'} name={`${data.teamA.toUpperCase()}`} data={data} team={'teamA'} />
             <Divider />
-            <BoxComponent time={true} color={'#FF4D4D'} name={'PAKISTAN'} />
+            <BoxComponent time={true} color={'#FF4D4D'} name={`${data.teamB.toUpperCase()}`} data={data} team={'teamB'} />
             <Divider />
-            <BoxComponent time={true} color={'#F8C851'} name={"DRAW"} />
+            {data?.teamC && <BoxComponent time={true} color={'#F8C851'} name={"DRAW"} data={data} team={'draw'} />}
 
         </Box >
 
@@ -623,12 +637,13 @@ const BookMarketer = ({ }) => {
 
     )
 }
-const MatchOdds = ({ }) => {
+const MatchOdds = ({ data }) => {
+    console.log("data", data)
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Odds />
-            <BookMarketer />
-            <SessionMarket />
+            {!data.apiMatchActive && <Odds data={data} />}  {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
+            {!data.apiBookMakerActive && <BookMarketer />}
+            {!data.apiSessionActive && <SessionMarket />}
         </Box>
     )
 }

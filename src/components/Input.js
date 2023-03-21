@@ -23,7 +23,6 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                     }}
                     sx={{ borderColor: "white", display: "flex", flex: 1, fontSize: { laptop: "1px", mobile: "5px" } }}
                     onChange={(e) => {
-                        console.log(autoMaticFillValue)
                         String(title).toLowerCase().includes("password") ? setDetail({
                             ...Detail, [place]: {
                                 ...Detail[place],
@@ -65,10 +64,13 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                         }) : setDetail({
                             ...Detail, [place]: {
                                 ...Detail[place],
-                                val: type === "Number" ? parseInt(e.target.value) : e.target.value
+                                val: type === "Number" ? (title === "Upline Partnership" || title === "My Partnership") ? parseInt(e.target.value)<100 && parseInt(e.target.value) : parseInt(e.target.value) : e.target.value
                             }
                         });
-                        console.log(Detail)
+                        console.log("Detail", Detail, title === "Upline Partnership" || title === "My Partnership")
+                        if (title === "Upline Partnership" || title === "My Partnership") {
+                            console.log(title)
+                        }
                         setError({
                             ...error, [place]: {
                                 ...Detail[place],
