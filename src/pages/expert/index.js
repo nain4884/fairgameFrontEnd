@@ -13,7 +13,7 @@ const ExportRoutes = () => {
             <Route path="/home1" element={<Home1 />} />
             <Route path="/live" element={<Live />} />
             <Route path="/match" element={<BetFairOdds />} />
-            <Route path="/add_match" element={<Live />} />
+            <Route path="/add_match" element={<Home1 />} />
             <Route path="/betodds" element={<MatchScreen />} />
             <Route path="/market" element={<BookMakerMarket />} />
             <Route path="/login/:id" element={<Login />} />

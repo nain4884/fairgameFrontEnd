@@ -48,7 +48,7 @@ export default function Home1() {
         3: { field: "Betfair_Match_Max_Bet", val: false },
         4: { field: "Bookmaker_Manual_Max_Bet", val: false },
         5: { field: "Match_Name", val: false },
-        6: { field: "Image", val: false },
+        6: { field: "matchImage", val: false },
         7: { field: "Betfair_Session_Min_Bet", val: false },
         8: { field: "Bookmaker_Manual_Min_Bet", val: false },
         9: { field: "Team_A", val: false },
@@ -65,53 +65,16 @@ export default function Home1() {
     })
 
     const createMatch = async () => {
-        let payload = {
-            Game: "",
-            Start_Time: "",
-            Betfair_Match_Max_Bet: "",
-            Bookmaker_Manual_Max_Bet: "",
-            Match_Name: "",
-            Image: 0,
-            Betfair_Session_Min_Bet: "",
-            Bookmaker_Manual_Min_Bet: 0,
-            Team_A: 0,
-            Team_A_Image: 0,
-            Betfair_Session_Max_Bet_A: "",
-            Manaual_Session_Min_Bet_A: "",
-            Team_B: 0,
-            Team_B_Image: 0,
-            Betfair_Session_Max_Bet_B: "",
-            Manaual_Session_Min_Bet_B: "",
-            Team_C: 0,
-            Betfair_Bookmaker_Max_Bet_C: 0,
-            Manaual_Session_Max_Bet_C: ""
-        }
         try {
-            payload = {
-                ...payload,
-                Game: Detail[1].val,
-                Start_Time: Detail[2].val,
-                Betfair_Match_Max_Bet: Detail[3].val,
-                Bookmaker_Manual_Max_Bet: Detail[4].val,
-                Match_Name: Detail[5].val,
-                Image: Detail[6].val,
-                Betfair_Session_Min_Bet: Detail[7].val,
-                Bookmaker_Manual_Min_Bet: Detail[8].val,
-                Team_A: Detail[9].val,
-                Team_A_Image: Detail[10].val,
-                Betfair_Session_Max_Bet_A: Detail[11].val,
-                Manaual_Session_Min_Bet_A: Detail[12].val,
-                Team_B: Detail[13].val,
-                Team_B_Image: Detail[14].val,
-                Betfair_Session_Max_Bet_B: Detail[15].val,
-                Manaual_Session_Min_Bet_B: Detail[16].val,
-                Team_C: Detail[17].val,
-                Betfair_Bookmaker_Max_Bet_C: Detail[18].val,
-                Manaual_Session_Max_Bet_C: Detail[19].val
+            let request = new FormData()
+            let i
+            for (i = 0; i < 19; i++) {
+                console.log(Detail[i + 1])
+                if (!Detail[i + 1].val || Detail[i + 1].val !== 0) request.append(`${Detail[i + 1].field}`, Detail[i + 1].val)
             }
-            const { data } = await axios.post(`/fair-game-wallet/adduser`, payload);
+            const { data } = await axios.post(`/game-match/addmatch`, request);
         } catch (e) {
-            console(e)
+            console.log(e)
         }
     }
 
@@ -199,6 +162,25 @@ const LabelValueComponent = ({ title, value, icon, containerStyle, valueStyle, v
     )
 }
 
+const fileUpload = async (e, position, DetailError) => {
+    let file = e.target.files[0]
+    console.log(file)
+    // let data = new FormData()
+    // data.append(`${DetailError.Detail[position].field}`, file)
+    DetailError.setDetail({
+        ...DetailError.Detail, [position]: {
+            ...DetailError.Detail[position],
+            val: file
+        }
+    });
+    DetailError.setError({
+        ...DetailError.error, [position]: {
+            ...DetailError.Detail[position],
+            val: file === undefined ? false : true
+        }
+    })
+}
+
 const ShowComponent = ({ InputValType, value, valueContainerStyle, valueStyle, icon, place, DetailError, type }) => {
     switch (InputValType) {
         case "InputVal":
@@ -225,7 +207,9 @@ const ShowComponent = ({ InputValType, value, valueContainerStyle, valueStyle, i
             return (
                 <Button variant="contained" component="label" sx={[{ height: "35px", borderRadius: "5px", px: "10px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "white" }, valueContainerStyle]}>
                     Upload
-                    <input hidden accept="image/*" multiple type="file" />
+                    <input hidden accept="image/*" multiple type="file" onChange={(e) => {
+                        fileUpload(e, place, DetailError)
+                    }} />
                     {icon && <StyledImage src={icon} sx={{ height: "12px", width: "12px" }} />}
                 </Button>
             )

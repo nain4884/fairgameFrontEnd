@@ -64,7 +64,7 @@ export const TransPassComp = () => {
       transPassword:"",
       confirmtransPassword:""
     }
-    console.log(!error[1].val , !error[2].val , passwordDetail[1].val !== "" , passwordDetail[2].val !== "")
+    console.log(!error[1].val , !error[2].val , passwordDetail[1].val !== "" , passwordDetail[2].val !== "", error[1].val , error[2].val , passwordDetail[1].val , passwordDetail[2].val)
     if (!error[1].val && !error[2].val && passwordDetail[1].val !== "" && passwordDetail[2].val !== "") {
       try {
         let response
@@ -111,7 +111,8 @@ export const TransPassComp = () => {
       </Typography>
       <Box
         sx={{
-          width: "100%",
+          width: "400px",
+          height: "400px",
           minHeight: "200px",
           background: "#F8C851",
           borderRadius: "5px",
@@ -133,7 +134,7 @@ export const TransPassComp = () => {
           img={eye}
           setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={1}
         />
-        {error[1].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+        {error[1].val && <p style={{ color: "#fa1e1e" }}>{error[1].val}</p>}
         <Input
           placeholder={"Enter Confirm Password"}
           inputProps={{ type: "password" }}
@@ -148,7 +149,7 @@ export const TransPassComp = () => {
           img={eye}
           setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={2}
         />
-        {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+        {passwordDetail[1].val !== passwordDetail[2].val && <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>}
         <Box
           sx={{
             height: "50px",

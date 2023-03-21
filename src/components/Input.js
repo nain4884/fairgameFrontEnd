@@ -1,11 +1,16 @@
 import { TextField, Typography, useTheme, useMediaQuery, createStyles, withStyles } from "@mui/material"
 import { Box } from "@mui/system"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { onChangeKeyCheck } from "./PassKeyCheck";
 
 const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, titleStyle, inputStyle, inputContainerStyle, img, inputProps, setDetail, Detail, setError, error, place, type, typeOfRead, autoMaticFillValue }) => {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('tablet'));
     const [showPass, setShowPass] = useState(true)
+
+    useEffect(()=>{
+        
+    },[error])
 
     return (
         <Box sx={[{}, containerStyle]}>
@@ -34,7 +39,6 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                                 val: type === "Number" ? parseInt(autoMaticFillValue) : autoMaticFillValue
                             }
                         });
-                        console.log(autoMaticFillValue)
                         setError({
                             ...error, [place]: {
                                 ...Detail[place],
@@ -67,11 +71,15 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                                 val: type === "Number" ? (title === "Upline Partnership" || title === "My Partnership") ? parseInt(e.target.value)<100 && parseInt(e.target.value) : parseInt(e.target.value) : e.target.value
                             }
                         });
-                        console.log("Detail", Detail, title === "Upline Partnership" || title === "My Partnership")
                         if (title === "Upline Partnership" || title === "My Partnership") {
                             console.log(title)
                         }
-                        setError({
+                        String(title).toLowerCase().includes("password") ? setError({
+                            ...error, [place]: {
+                                ...Detail[place],
+                                val: onChangeKeyCheck(Detail[place].val)
+                            }
+                        }) : setError({
                             ...error, [place]: {
                                 ...Detail[place],
                                 val: type === "Number" ? Detail[place].val === 0 : Detail[place].val === ""

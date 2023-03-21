@@ -41,6 +41,23 @@ const AddAccount = () => {
         14: { field: "adminTransPassword", val: "" },
         15: { field: "myPartnership", val: 0 }
     })
+    let defaultError = {
+        1: { field: "userName", val: true },
+        2: { field: "password", val: true },
+        3: { field: "confirmPassword", val: true },
+        4: { field: "fullName", val: true },
+        5: { field: "city", val: true },
+        6: { field: "phoneNumber", val: true },
+        7: { field: "accountType", val: true },
+        8: { field: "creditReference", val: true },
+        9: { field: "roleId", val: true },
+        10: { field: "sa_partnership", val: true },
+        11: { field: "m_partnership", val: true },
+        12: { field: "a_partnership", val: true },
+        13: { field: "remark", val: true },
+        14: { field: "adminTransPassword", val: true },
+        15: { field: "myPartnership", val: true }
+    }
     const [error, setError] = useState({
         1: { field: "userName", val: false },
         2: { field: "password", val: false },
@@ -80,7 +97,6 @@ const AddAccount = () => {
 
     const setRoleOnly = () => {
         let { role } = setRole()
-        console.log("role",role)
         setRoleOfUser(role)
         setLoginRole(localStorage.getItem(role))
     }
@@ -101,7 +117,6 @@ const AddAccount = () => {
                 }
             }
         });
-        console.log("typo",typo,loginRole === "fairGameWallet")
         setTypeToShow(typo)
     }
 
@@ -138,7 +153,6 @@ const AddAccount = () => {
             function checkRoleId(age) {
                 return age.role.split(" ").join("").toLowerCase() === Detail[9].val.split(" ").join("").toLowerCase();
             }
-            console.log((Detail[2].val === 0 || Detail[2].val === "" || Detail[3].val === 0 || Detail[3].val === "" || Detail[9].val === 0 || Detail[9].val === "" || Detail[14].val === 0 || Detail[14].val === ""))
             if (!(Detail[2].val === 0 || Detail[2].val === "" || Detail[3].val === 0 || Detail[3].val === "" || Detail[9].val === 0 || Detail[9].val === "" || Detail[14].val === 0 || Detail[14].val === "")) {
                 payload = {
                     ...payload,
@@ -196,6 +210,7 @@ const AddAccount = () => {
         getAllRoles()
         setRoleOnly()
         setTypeForAccountType()
+        console.log("error[9].val",error[9].val)
     }, [loginRole, Detail, error])
 
     useEffect(() => {
@@ -211,9 +226,9 @@ const AddAccount = () => {
                     <Input placeholder="John Doe" titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Username"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={1} />
                     {error[1].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
                     <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={2} />
-                    {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+                    {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
                     <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Confirm User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={3} />
-                    {error[3].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+                    {error[3].val && <p style={{ color: "#fa1e1e" }}>{error[3].val}</p>}
                     <Input placeholder="John Doe" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Fullname"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={4} />
                     <Input placeholder="Delhi" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={5} />
                     <Input placeholder="+0 123 456 7890" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Mobile Number"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={6} type={"Number"} />
@@ -235,9 +250,9 @@ const AddAccount = () => {
                         placeholder="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
                         titleStyle={titleStyles} inputStyle={imputStyle} inputProps={{ multiline: true, rows: 10 }} inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "205px", mobile: "205px" }, width: '50%' }} title={"Remark"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={13} />
                     <Input placeholder="Donottel" containerStyle={{ ...containerStyles, width: "50%" }} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={{ ...inputContainerStyle }} title={"Admin Transaction Password"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={14} />
-                    {error[14].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+                    {error[14].val && <div style={{ width: "50%" }}> <p style={{ color: "#fa1e1e" }}>{error[14].val}</p> </div>}
                     <Button className="cursor-pointer" sx={{ background: "#0B4F26", width: "50%", display: "flex", justifyContent: "center", border: "2px solid black", alignItems: "center", borderRadius: "5px", height: "45px", marginTop: "35px", color: "white", fontSize: "18px" }} onClick={(e) => { addAccount() }}>Create</Button>
-                    {errorShow && <p style={{ color: "#fa1e1e" }}>{errorShow}</p>}
+                    {errorShow && !successShow && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
                     {successShow && <p style={{ color: "#0B4F26" }}>{successShow}</p>}
                     {errorShow === "User need to first create the transaction password." && <Button className="cursor-pointer" sx={{ background: "#0B4F26", width: "50%", display: "flex", justifyContent: "center", border: "2px solid black", alignItems: "center", borderRadius: "5px", height: "45px", marginTop: "35px", color: "white", fontSize: "18px" }} onClick={(e) => {
                         console.log(window.location.pathname.split("/")[1])
