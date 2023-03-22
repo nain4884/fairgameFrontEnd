@@ -1263,7 +1263,6 @@ const ChangePasswordComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(changePasswordObj);
-              console.log(getListOfUser);
               getListOfUser();
               dispatch(
                 setDailogData({
@@ -1538,9 +1537,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 const UpdateAvailableBalance = async (body) => {
   try {
-    console.log("body", body);
     const { data } = await adminAxios.post(`/fair-game-wallet/updateBalance`, body);
-    console.log(data);
   } catch (e) {
     console.log(e);
   }

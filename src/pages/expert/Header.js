@@ -235,7 +235,7 @@ const BoxProfile = ({ image, value, containerStyle, value1 }) => {
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setAnchorEl(0);
@@ -266,7 +266,7 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setAnchorEl(0);

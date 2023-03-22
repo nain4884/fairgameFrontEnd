@@ -33,7 +33,6 @@ const SearchInput = ({ handleChange, title, data, containerStyle, inputContainer
                     placeholder={"Search"}
                     value={search}
                     onChange={(e) => {
-                        console.log(e, 'ss')
                         setSearch(e.target?.value)
                         setOpen(true)
                     }}

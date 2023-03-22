@@ -171,7 +171,6 @@ const AddAccount = () => {
                     myPartnership: Detail[15].val
                 }
                 let response
-                console.log(payload, loginRole, roleOfUser)
                 switch (roleOfUser) {
                     case 'role1':
                         response = await masterAxios.post(`/fair-game-wallet/adduser`, payload);
@@ -192,7 +191,6 @@ const AddAccount = () => {
         } catch (e) {
             console.log(e)
             setErrorShow(e.response.data.message)
-            console.log(e.response.data.message)
         }
     }
 
@@ -210,12 +208,11 @@ const AddAccount = () => {
         getAllRoles()
         setRoleOnly()
         setTypeForAccountType()
-        console.log("error[9].val",error[9].val)
     }, [loginRole, Detail, error])
 
     useEffect(() => {
         setDownParterShipVal(Detail[10].val, Detail[11].val)
-        console.log(Detail[12].val)
+        // console.log(Detail[12].val)
     }, [Detail[10].val, Detail[11].val])
 
     return (
@@ -228,7 +225,7 @@ const AddAccount = () => {
                     <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={2} />
                     {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
                     <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Confirm User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={3} />
-                    {error[3].val && <p style={{ color: "#fa1e1e" }}>{error[3].val}</p>}
+                    {Detail[2].val !== Detail[3].val && <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>}
                     <Input placeholder="John Doe" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Fullname"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={4} />
                     <Input placeholder="Delhi" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={5} />
                     <Input placeholder="+0 123 456 7890" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Mobile Number"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={6} type={"Number"} />
@@ -255,7 +252,6 @@ const AddAccount = () => {
                     {errorShow && !successShow && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
                     {successShow && <p style={{ color: "#0B4F26" }}>{successShow}</p>}
                     {errorShow === "User need to first create the transaction password." && <Button className="cursor-pointer" sx={{ background: "#0B4F26", width: "50%", display: "flex", justifyContent: "center", border: "2px solid black", alignItems: "center", borderRadius: "5px", height: "45px", marginTop: "35px", color: "white", fontSize: "18px" }} onClick={(e) => {
-                        console.log(window.location.pathname.split("/")[1])
                         navigate(`/${window.location.pathname.split("/")[1]}/createTransPassword`);
                     }}>Create Trans Password</Button>}
                 </Box>

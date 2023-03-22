@@ -109,7 +109,7 @@ const NewBoxData = ({ title, value, showDropDown, containerStyle, valueStyle, ti
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setAnchorEl(0);
@@ -162,7 +162,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setAnchorEl(0);

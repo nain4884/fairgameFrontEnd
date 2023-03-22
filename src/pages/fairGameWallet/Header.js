@@ -118,7 +118,6 @@ const CustomHeader = ({ }) => {
                 </Box>
                 {<MobileSideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
                 {isTransPasswordExist === "false" && !/createTransPassword/.test(window.location.pathname) && <ThisUseModal message="You don't have transaction password" buttonMessage="Create Transaction Password" navigateTo='createTransPassword' />}
-                {console.log("isTransPasswordExist",!isTransPasswordExist,/createTransPassword/.test(window.location.pathname))}
             </AppBar>
             <DropdownMenu1 open={Boolean(anchor)} anchorEl={anchor} handleClose={() => setAnchor(null)} />
             <DropdownMenu2 open={Boolean(anchor1)} anchorEl={anchor1} handleClose={() => setAnchor1(null)} />
@@ -277,7 +276,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setOpen(false)
@@ -325,7 +324,6 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         handleClose()
     })
     const logoutProcess = () => {
-        console.log("logout start")
         dispatch(stateActions.logout("role2"));
         navigate("/")
         handleClose()

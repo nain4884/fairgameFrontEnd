@@ -39,7 +39,6 @@ export default function Login() {
                 val: loginDetail[2].val === ""
             }
         })
-        console.log(error, loginDetail)
     }
 
     const ForgotPassword = () => {

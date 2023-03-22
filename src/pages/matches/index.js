@@ -39,7 +39,7 @@ export default function Matches() {
       setId(k)
     }
     useEffect(() => {
-      console.log(id)
+      // console.log(id)
     }, [id])
     const doNavigateWithState = (e) => {
       navigate("/home", { state: e });
@@ -143,7 +143,6 @@ export default function Matches() {
   const Home = () => {
     const location = useLocation();
     const id = location.state
-    console.log(id)
     const [matchDetail, setMatchDetail] = useState()
     const [gotMatchDetail, setGotMatchDetail] = useState(false)
     const sampleData = {

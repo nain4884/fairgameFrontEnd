@@ -71,9 +71,6 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                                 val: type === "Number" ? (title === "Upline Partnership" || title === "My Partnership") ? parseInt(e.target.value)<100 && parseInt(e.target.value) : parseInt(e.target.value) : e.target.value
                             }
                         });
-                        if (title === "Upline Partnership" || title === "My Partnership") {
-                            console.log(title)
-                        }
                         String(title).toLowerCase().includes("password") ? setError({
                             ...error, [place]: {
                                 ...Detail[place],
@@ -85,7 +82,7 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                                 val: type === "Number" ? Detail[place].val === 0 : Detail[place].val === ""
                             }
                         })
-                        console.log(error)
+                        // console.log(error)
                     }}
                 />}
                 {img && <img src={img} onClick={() => {

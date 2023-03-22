@@ -15,13 +15,11 @@ export default function Login() {
     const location = useLocation();
     const dispatch = useDispatch()
     const activeUser = useSelector(state => {
-        console.log("state", state)
         return state?.activeUser?.activeUser
     })
     useEffect(() => {
         let arr = location?.pathname?.split('/')
         dispatch(setActiveUser(arr[arr?.length - 1]))
-        console.log("this page hit")
     }, [location])
     return (
         <Box style={{ position: "relative" }}>

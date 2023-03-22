@@ -18,7 +18,7 @@ const Main = () => {
   const [loginRole, setLoginRole] = useState("")
   const [loginJWT, setLoginJWT] = useState(null)
   useEffect(() => {
-    console.log(loginRole,loginJWT)
+    // console.log(loginRole,loginJWT)
     const newSocket = io(`${anupamBasePath}`, {
       extraHeaders: {
         Authorization: 'Bearer ' + loginJWT

@@ -11,56 +11,54 @@ import StyledImage from "./StyledImage"
 import { setAnchor } from "../store/betPlace"
 import { Popover } from 'react-tiny-popover'
 import BetPlaced from "./BetPlaced"
+import userAxios from "../axios/userAxios"
 
-const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, time }) => {
+const PlaceBetType = {
+    BackLay: "BackLay",
+    YesNo: "YesNo"
+}
+
+const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, time, type, name, data, typeOfBet }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     const dispatch = useDispatch()
     // const anchor=useSelector(state=>state.betplace)?.anchor
     const [anchor, setAnchor] = React.useState(null)
+    const [isBack, setIsBack] = React.useState(false)
+    const [isSessionYes, setIsSessionYes] = React.useState(false)
+    const [placeBetType, setPlaceBetType] = React.useState(PlaceBetType.BackLay)
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
     const [visible, setVisible] = React.useState(false)
     const [canceled, setCanceled] = React.useState(false)
     const innerRef = useOuterClick(ev => {
-        // setIsPopoverOpen(false)
-        // alert('hi')
         if (isPopoverOpen) {
-            // alert('hi')
             setIsPopoverOpen(false)
         }
-
     });
     const getMargin = () => {
         if (po == 1 && session) {
             return { right: { mobile: 0, laptop: '-80%' }, left: { mobile: 0, laptop: '50%' } }
-
         }
         if (po == 2 && session) {
             return { right: { mobile: 0, laptop: '-124.3%' }, left: { mobile: 0, laptop: '50%' } }
-
         }
         if (po == 1) {
             return { right: { mobile: 0, laptop: 0 }, left: { mobile: 0, laptop: '78%' } }
         }
         if (po == 2) {
             return { right: { mobile: 0, laptop: 0 }, left: { mobile: 0, laptop: '46.7%' } }
-
         }
         if (po == 3) {
             return { right: { mobile: 0, laptop: 0 }, left: { mobile: 0, laptop: '15.8395%' } }
-
         }
         if (po == 4) {
             return { right: { mobile: 0, laptop: '380%' }, left: { mobile: 0, laptop: '-280%' } }
-
         }
         if (po == 5) {
             return { right: { laptop: '427%', mobile: 0 }, left: { laptop: '-344%', mobile: 0 } }
-
         }
         if (po == 6) {
             return { right: { laptop: '427.55%', mobile: 0 }, left: { laptop: '-375%', mobile: 0 } }
-
         }
         return { right: 0 }
     }
@@ -92,6 +90,7 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
                 if (lock || color == "white") {
                     return null
                 }
+                type?.type === "BL" ? setIsBack(type?.color === "#A7DCFF") : setIsSessionYes(type?.color === "#A7DCFF")
                 setIsPopoverOpen(true)
                 dispatch(setColorValue(color))
             }}
@@ -106,59 +105,47 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
                         src={Lock}
                         style={{ width: '10px', height: '15px' }}
                     />
-
                 }
-
             </Box>
-            {isPopoverOpen && <Box sx={{ zIndex: 110, position: 'absolute', ...getMargin(), transform: { laptop: 'translate( -230%)' }, top: '40px' }}>
-                <PlaceBet
-                    // refs={innerRef}
-                    onSubmit={() => {
-
-                        setIsPopoverOpen(false)
-                        setVisible(true)
-                        setCanceled(false)
-
-                    }}
-                    onCancel={() => {
-                        setVisible(true)
-                        setCanceled(true)
-                        setIsPopoverOpen(false)
-
-                    }}
-
-                    handleClose={() => {
-                        console.log('i')
-                        setIsPopoverOpen(false)
-
-                    }}
-                    season={session}
-                    back={back}
-                /></Box>}
+            {isPopoverOpen &&
+                <>
+                    <Box sx={{ zIndex: 110, position: 'absolute', ...getMargin(), transform: { laptop: 'translate( -230%)' }, top: '40px' }}>
+                        <PlaceBet
+                            name={name}
+                            // refs={innerRef}
+                            onSubmit={async (payload) => {
+                                console.log(payload)
+                                let response = await userAxios.post(`/betting/placeBet`, payload);
+                                console.log(response)
+                                setIsPopoverOpen(false)
+                                setVisible(true)
+                                setCanceled(false)
+                            }}
+                            onCancel={() => {
+                                setVisible(true)
+                                setCanceled(true)
+                                setIsPopoverOpen(false)
+                            }}
+                            handleClose={() => {
+                                setIsPopoverOpen(false)
+                            }}
+                            season={session}
+                            back={back}
+                            isBack={isBack}
+                            isSessionYes={isSessionYes}
+                            type={type}
+                            data={data}
+                            typeOfBet={typeOfBet}
+                        />
+                    </Box>
+                </>
+            }
             {
                 <BetPlaced time={time} not={canceled} visible={visible} setVisible={(i) => {
                     setIsPopoverOpen(false)
                     setVisible(i)
                 }} />
             }
-
-            {/* {isPopoverOpen && <Box sx={{ zIndex: 999, position: 'absolute' }}>
-                <PlaceBet onSubmit={() => {
-                    setVisible(true)
-                    setCanceled(false)
-                }}
-                    onCancel={() => {
-                        setVisible(true)
-                        setCanceled(true)
-                    }}
-
-                    handleClose={() => {
-                        setIsPopoverOpen(false)
-                    }}
-                    season={session}
-                    back={back}
-                /></Box>} */}
-            {/* </Popover> */}
         </Box >
     )
 }
@@ -168,10 +155,10 @@ const Divider = () => {
         <Box sx={{ width: '100%', background: 'rgba(211,211,211)', height: '1px' }} ></Box>
     )
 }
-const BoxComponent = ({ name, color, align, time, data, team }) => {
+const BoxComponent = ({ name, color, data, team, typeOfBet }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-    console.log("data123", data)
+    // console.log("data123", data)
     let backValue, layValue
     if (team == 'teamA') {
         backValue = data?.bettings[0].teamA_Back
@@ -200,18 +187,18 @@ const BoxComponent = ({ name, color, align, time, data, team }) => {
                 <MoneyBox color={color} />
             </Box>
             <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'center' }, alignItems: 'center' }} >
-                {!matchesMobile && <SeperateBox po={1} time={time} align={align} value={`${backValue ? backValue - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />}
-                <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                {!matchesMobile && <SeperateBox po={2} time={time} align={align} value={`${backValue ? backValue - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} />}
-                <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={3} time={time} align={align} value={`${backValue ? backValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#A7DCFF"} />
-                <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={4} time={time} align={align} value={`${layValue ? layValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#FFB5B5"} />
-                <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={5} time={time} back={true} align={align} value={`${layValue ? layValue + 1 : 50 + 1}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#F2CBCB"} />
-                <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={6} time={time} align={align} value={`${layValue ? layValue + 2 : 50 + 2}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#ECD6D6"} />
-                <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
+                {!matchesMobile && <SeperateBox value={`${backValue ? backValue - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>}
+                <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
+                {!matchesMobile && <SeperateBox value={`${backValue ? backValue - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>}
+                <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
+                <SeperateBox value={`${backValue ? backValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>
+                <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
+                <SeperateBox value={`${layValue ? layValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>
+                <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
+                {!matchesMobile && <SeperateBox value={`${layValue ? layValue + 1 : 50 + 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#F2CBCB"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>}
+                <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
+                {!matchesMobile && <SeperateBox value={`${layValue ? layValue + 2 : 50 + 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#ECD6D6"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>}
+                <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
             </Box>
         </Box>
     )
@@ -258,23 +245,16 @@ const Odds = ({ data }) => {
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     return (
         <Box key="odds" sx={{ display: 'flex', backgroundColor: 'white', padding: .2, flexDirection: 'column', marginY: { mobile: '.2vh', laptop: '.5vh' }, width: { mobile: "98%", laptop: '97%' }, marginX: '1vw', alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start', } }}>
-
-
-
-
-
             <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '99.7%', alignSelf: 'center' }}>
                 <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                     <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Match Odds</Typography>
                     <Time />
                 </Box>
-
                 <Box sx={{
                     flex: .1, background: '#262626'
                     // '#262626' 
                 }}>
                     <div class="slanted"></div>
-
                 </Box>
                 <Box sx={{
                     flex: 1, background: '#262626',
@@ -306,17 +286,15 @@ const Odds = ({ data }) => {
                     </Box>
                 </Box>
             }
-            <BoxComponent time={true} color={'#46e080'} name={`${data.teamA.toUpperCase()}`} data={data} team={'teamA'} />
+            <BoxComponent time={true} color={'#46e080'} name={`${data.teamA.toUpperCase()}`} data={data} team={'teamA'} typeOfBet={"Match"}/>
             <Divider />
-            <BoxComponent time={true} color={'#FF4D4D'} name={`${data.teamB.toUpperCase()}`} data={data} team={'teamB'} />
+            <BoxComponent time={true} color={'#FF4D4D'} name={`${data.teamB.toUpperCase()}`} data={data} team={'teamB'} typeOfBet={"Match"}/>
             <Divider />
             {data?.teamC && <BoxComponent time={true} color={'#F8C851'} name={"DRAW"} data={data} team={'draw'} />}
-
         </Box >
-
     )
 }
-const SeasonMarketBox = ({ index }) => {
+const SeasonMarketBox = ({ index, typeOfBet, data }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     return (
@@ -335,11 +313,9 @@ const SeasonMarketBox = ({ index }) => {
                     <SeperateBox po={3} color={"white"} /></>}
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
                 <SeperateBox po={6} color={"white"} />
-                <SeperateBox po={1} session={true} back={true} value={"37"} value2={"100"} lock={index == 2} color={"#F6D0CB"} />
-
+                <SeperateBox po={1} session={true} back={true} value={"37"} value2={"100"} lock={index == 2} color={"#F6D0CB"} type={{ color: "#A7DCFF", type: "YN" }} typeOfBet={typeOfBet} data={data}/>
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={2} session={true} value={"39"} value2={"100"} lock={index == 2} color={"#B3E0FF"} />
-
+                <SeperateBox po={2} session={true} value={"39"} value2={"100"} lock={index == 2} color={"#B3E0FF"} type={{ color: "#FFB5B5", type: "YN" }} typeOfBet={typeOfBet} data={data}/>
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
                 {!matchesMobile && <>
                     <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
@@ -511,7 +487,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
 }
 
 
-const SessionMarket = ({ }) => {
+const SessionMarket = ({ data }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     return (
@@ -545,7 +521,6 @@ const SessionMarket = ({ }) => {
                         <Typography sx={{ color: 'white', fontSize: { laptop: '11px', mobile: "9px" }, marginLeft: '7px' }} >MIN: 4000 MAX:4500</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', background: '#319E5B', height: '25px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { laptop: 'center', mobile: 'flex-end' } }} >
-
                         <Box sx={{ background: "#FF9292", width: { laptop: '16.5%', mobile: "25%" }, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
                             <Typography sx={{ fontSize: '12px', color: 'black', fontWeight: '600' }} >NO</Typography>
                         </Box>
@@ -553,27 +528,22 @@ const SessionMarket = ({ }) => {
                         <Box sx={{ background: "#00C0F9", width: { laptop: '16.5%', mobile: "25%" }, height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
                             <Typography sx={{ fontSize: '12px', color: 'black', fontWeight: '600' }} >YES</Typography>
                         </Box>
-
-                        {/* <Box sx={{background:'#FF9292',width:{laptop:"16.5%",mobile:"25%"},height:'100%',display:'flex',justifyContent:"center",alignItems:"center"}}>
-                            </Box> */}
-
                     </Box>
                 </Box>}
 
-                <SeasonMarketBox index={1} />
+                <SeasonMarketBox index={1} typeOfBet={"Session"} data={data}/>
                 <Divider />
-
-                <SeasonMarketBox />
+                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
                 <Divider />
-                <SeasonMarketBox />
+                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
                 <Divider />
-                <SeasonMarketBox index={2} />
+                <SeasonMarketBox index={2} typeOfBet={"Session"} data={data}/>
                 <Divider />
-                <SeasonMarketBox />
+                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
                 <Divider />
-                <SeasonMarketBox />
+                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
                 <Divider />
-                <SeasonMarketBox />
+                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
                 <Divider />
             </Box >
         </Box >
@@ -638,12 +608,13 @@ const BookMarketer = ({ }) => {
     )
 }
 const MatchOdds = ({ data }) => {
-    console.log("data", data)
+    // console.log("data", data)
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            {!data.apiMatchActive && <Odds data={data} />}  {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
+            {!data.apiMatchActive && <Odds data={data} />}
+            {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
             {!data.apiBookMakerActive && <BookMarketer />}
-            {!data.apiSessionActive && <SessionMarket />}
+            {!data.apiSessionActive && <SessionMarket data={data} />}
         </Box>
     )
 }

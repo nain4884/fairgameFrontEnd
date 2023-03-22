@@ -34,7 +34,7 @@ export const onChangeKeyCheck = (textValue) => {
     } else {
         if (errorPush.length === 2) {
             errorText += errorPush[0] + "& " + errorPush[1]
-            console.log(errorText)
+            // console.log(errorText)
         } else {
             errorPush.forEach((err, i) => {
                 if (i + 2 === errorPush.length) {

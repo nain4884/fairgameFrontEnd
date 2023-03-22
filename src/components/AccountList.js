@@ -151,7 +151,7 @@ const AccountList = () => {
       //     console.log(values)
       // });
       // setData(data.data)
-      console.log("page refreshed")
+      // console.log("page refreshed")
     } catch (e) {
       console.log(e);
     }
