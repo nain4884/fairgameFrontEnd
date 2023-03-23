@@ -7,9 +7,15 @@ import {
 } from "../../components";
 
 export default function Home() {
+  function CondiionCheck(path) {
+    let success = true
+    success *= (path.split("/")[1] === "fairgame_wallet" || path.split("/")[1] === "super_master" || path.split("/")[1] === "fairgame_admin" || path.split("/")[1] === "super_admin" || path.split("/")[1] === "super_master" || path.split("/")[1] === "master" || path.split("/")[1] === "admin")
+    success *= path.split("/")[2] === "list_of_clients"
+    return success
+  }
   return (
     <Background>
-      {window.location.pathname === "/fairgame_wallet/list_of_clients" ? (
+      {CondiionCheck(window.location.pathname) ? (
         <>
           {/* <Header /> */}
           <HomeSlide />

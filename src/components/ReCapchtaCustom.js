@@ -8,8 +8,6 @@ export default function ReCAPTCHACustom({containerStyle}){
     const [checked,setChecked]=React.useState(false)
     const onSubmitWithReCAPTCHA = async () => {
         const token = await recaptchaRef.current.execute();
-        console.log(token)
-     
         // apply to form data
       }
     return(
@@ -22,7 +20,6 @@ export default function ReCAPTCHACustom({containerStyle}){
         onChange={(token)=>{console.log(token)}}
       />
       <Checkbox checked={checked} onChange={(e)=>{
-        console.log(e.target.checked)
         setChecked(e.target?.checked)
         onSubmitWithReCAPTCHA()
       }} />

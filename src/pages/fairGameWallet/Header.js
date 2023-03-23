@@ -10,12 +10,16 @@ import { stateActions } from "../../store/stateActions";
 import { Down } from "../../fairGameWallet/assets";
 import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "../../components/SideBarAdmin";
+import {ThisUseModal} from "../../components/Modal";
+import Modal2 from "../../components/Modal2";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
+    const [isTransPasswordExist, setIsTransPasswordExist] = useState(false)
+    localStorage.getItem('')
     // const [currentSelected, setCurrentSelected] = useState(0)
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchor, setAnchor] = React.useState(null)
@@ -35,8 +39,15 @@ const CustomHeader = ({ }) => {
         }
     }, [location])
     useEffect(() => {
-        console.log(currentSelected, 'admin')
-    }, [currentSelected])
+        let role = "isTransPasswordCreated4"
+        let pattern1 = /super_master|super_admin|master|admin/
+        let pattern2 = /fairgame_wallet|fairgame_admin/
+        let pattern3 = /expert/
+        if (pattern1.test(window.location.pathname)) role = "isTransPasswordCreated1"
+        if (pattern2.test(window.location.pathname)) role = "isTransPasswordCreated2"
+        if (pattern3.test(window.location.pathname)) role = "isTransPasswordCreated3"
+        setIsTransPasswordExist(localStorage.getItem(role))
+    }, [window.location.pathname])
     useEffect(() => {
         if (!matchesMobile) {
             setMobileOpen(false)
@@ -106,6 +117,7 @@ const CustomHeader = ({ }) => {
                     </Box>
                 </Box>
                 {<MobileSideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
+                {isTransPasswordExist === "false" && !/createTransPassword/.test(window.location.pathname) && <ThisUseModal message="You don't have transaction password" buttonMessage="Create Transaction Password" navigateTo='createTransPassword' />}
             </AppBar>
             <DropdownMenu1 open={Boolean(anchor)} anchorEl={anchor} handleClose={() => setAnchor(null)} />
             <DropdownMenu2 open={Boolean(anchor1)} anchorEl={anchor1} handleClose={() => setAnchor1(null)} />
@@ -264,7 +276,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setOpen(false)
@@ -312,7 +324,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         handleClose()
     })
     const logoutProcess = () => {
-        dispatch(stateActions.logout());
+        dispatch(stateActions.logout("role2"));
         navigate("/")
         handleClose()
     }

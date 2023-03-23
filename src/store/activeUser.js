@@ -15,7 +15,6 @@ const activeUser = createSlice({
         setSelected:(state,action)=>{
             state.selected=action.payload
         }
-
     }
 })
 

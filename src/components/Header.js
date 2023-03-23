@@ -109,7 +109,7 @@ const NewBoxData = ({ title, value, showDropDown, containerStyle, valueStyle, ti
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setAnchorEl(0);
@@ -162,7 +162,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setAnchorEl(0);
@@ -187,7 +187,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const logoutProcess = () => {
-        dispatch(stateActions.logout("role1"));
+        dispatch(stateActions.logout("role4"));
         navigate("/")
         handleClose()
     }

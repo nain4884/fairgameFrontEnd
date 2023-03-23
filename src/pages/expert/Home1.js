@@ -17,25 +17,26 @@ const imputStyle = { fontSize: { mobile: "14px", laptop: "14px", fontWeight: "60
 const inputContainerStyle = { borderRadius: "5px", border: "1px solid #DEDEDE" }
 
 const stateDetail = {
-    1: { field: "Game", val: "" },
-    2: { field: "Start_Time", val: "" },
-    3: { field: "Betfair_Match_Max_Bet", val: "" },
-    4: { field: "Bookmaker_Manual_Max_Bet", val: "" },
-    5: { field: "Match_Name", val: "" },
-    6: { field: "Image", val: 0 },
-    7: { field: "Betfair_Session_Min_Bet", val: "" },
-    8: { field: "Bookmaker_Manual_Min_Bet", val: 0 },
-    9: { field: "Team_A", val: "" },
-    10: { field: "Team_A_Image", val: 0 },
-    11: { field: "Betfair_Session_Max_Bet_A", val: 0 },
-    12: { field: "Manaual_Session_Min_Bet_A", val: 0 },
-    13: { field: "Team_B", val: "" },
-    14: { field: "Team_B_Image", val: "" },
-    15: { field: "Betfair_Bookmaker_Max_Bet_B", val: 0 },
-    16: { field: "Manaual_Session_Max_Bet_B", val: 0 },
-    17: { field: "Team_C", val: "" },
-    18: { field: "Betfair_Bookmaker_Max_Bet_C", val: 0 },
-    19: { field: "Manaual_Session_Max_Bet_C", val: 0 }
+    1: { field: "gameType", val: "" },
+    2: { field: "startAt", val: "" },
+    3: { field: "betfair_match_max_bet", val: "" },
+    4: { field: "bookmaker_manual_max_bet", val: "" },
+    5: { field: "title", val: "" },
+    6: { field: "matchImage", val: 0 },
+    7: { field: "betfair_session_min_bet", val: "" },
+    8: { field: "bookmaker_manual_min_bet", val: 0 },
+    9: { field: "teamA", val: "" },
+    10: { field: "teamA_Image", val: 0 },
+    11: { field: "betfair_session_max_bet", val: 0 },
+    12: { field: "betfair_bookmaker_min_bet", val: 0 },
+    13: { field: "teamB", val: "" },
+    14: { field: "teamB_Image", val: "" },
+    15: { field: "betfair_bookmaker_max_bet", val: 0 },
+    16: { field: "manaual_session_min_bet", val: 0 },
+    17: { field: "teamC", val: "" },
+    18: { field: "betfair_match_min_bet", val: 0 },
+    19: { field: "manaual_session_max_bet", val: 0 },
+    20: { field: "marketId", val: "" }
 }
 
 export default function Home1() {
@@ -43,80 +44,43 @@ export default function Home1() {
     const [Detail, setDetail] = useState(stateDetail)
 
     const [Error, setError] = useState({
-        1: { field: "Game", val: false },
-        2: { field: "Start_Time", val: false },
-        3: { field: "Betfair_Match_Max_Bet", val: false },
-        4: { field: "Bookmaker_Manual_Max_Bet", val: false },
-        5: { field: "Match_Name", val: false },
-        6: { field: "Image", val: false },
-        7: { field: "Betfair_Session_Min_Bet", val: false },
-        8: { field: "Bookmaker_Manual_Min_Bet", val: false },
-        9: { field: "Team_A", val: false },
-        10: { field: "Team_A_Image", val: false },
-        11: { field: "Betfair_Session_Max_Bet_A", val: false },
-        12: { field: "Manaual_Session_Min_Bet_A", val: false },
-        13: { field: "Team_B", val: false },
-        14: { field: "Team_B_Image", val: false },
-        15: { field: "Betfair_Bookmaker_Max_Bet_B", val: false },
-        16: { field: "Manaual_Session_Max_Bet_B", val: false },
-        17: { field: "Team_C", val: false },
-        18: { field: "Betfair_Bookmaker_Max_Bet_C", val: false },
-        19: { field: "Manaual_Session_Max_Bet_C", val: false }
+        1: { field: "gameType", val: false },
+        2: { field: "startAt", val: false },
+        3: { field: "betfair_match_max_bet", val: false },
+        4: { field: "bookmaker_manual_max_bet", val: false },
+        5: { field: "title", val: false },
+        6: { field: "matchImage", val: false },
+        7: { field: "betfair_session_min_bet", val: false },
+        8: { field: "bookmaker_manual_min_bet", val: false },
+        9: { field: "teamA", val: false },
+        10: { field: "teamA_Image", val: false },
+        11: { field: "betfair_session_max_bet", val: false },
+        12: { field: "betfair_bookmaker_min_bet", val: false },
+        13: { field: "teamB", val: false },
+        14: { field: "teamB_Image", val: false },
+        15: { field: "betfair_bookmaker_max_bet", val: false },
+        16: { field: "manaual_session_min_bet", val: false },
+        17: { field: "teamC", val: false },
+        18: { field: "betfair_match_min_bet", val: false },
+        19: { field: "manaual_session_max_bet", val: false },
+        20: { field: "marketId", val: false }
     })
 
     const createMatch = async () => {
-        let payload = {
-            Game: "",
-            Start_Time: "",
-            Betfair_Match_Max_Bet: "",
-            Bookmaker_Manual_Max_Bet: "",
-            Match_Name: "",
-            Image: 0,
-            Betfair_Session_Min_Bet: "",
-            Bookmaker_Manual_Min_Bet: 0,
-            Team_A: 0,
-            Team_A_Image: 0,
-            Betfair_Session_Max_Bet_A: "",
-            Manaual_Session_Min_Bet_A: "",
-            Team_B: 0,
-            Team_B_Image: 0,
-            Betfair_Session_Max_Bet_B: "",
-            Manaual_Session_Min_Bet_B: "",
-            Team_C: 0,
-            Betfair_Bookmaker_Max_Bet_C: 0,
-            Manaual_Session_Max_Bet_C: ""
-        }
         try {
-            payload = {
-                ...payload,
-                Game: Detail[1].val,
-                Start_Time: Detail[2].val,
-                Betfair_Match_Max_Bet: Detail[3].val,
-                Bookmaker_Manual_Max_Bet: Detail[4].val,
-                Match_Name: Detail[5].val,
-                Image: Detail[6].val,
-                Betfair_Session_Min_Bet: Detail[7].val,
-                Bookmaker_Manual_Min_Bet: Detail[8].val,
-                Team_A: Detail[9].val,
-                Team_A_Image: Detail[10].val,
-                Betfair_Session_Max_Bet_A: Detail[11].val,
-                Manaual_Session_Min_Bet_A: Detail[12].val,
-                Team_B: Detail[13].val,
-                Team_B_Image: Detail[14].val,
-                Betfair_Session_Max_Bet_B: Detail[15].val,
-                Manaual_Session_Min_Bet_B: Detail[16].val,
-                Team_C: Detail[17].val,
-                Betfair_Bookmaker_Max_Bet_C: Detail[18].val,
-                Manaual_Session_Max_Bet_C: Detail[19].val
+            let request = new FormData()
+            let i
+            for (i = 0; i < 20; i++) {
+                if (!Detail[i + 1].val || Detail[i + 1].val !== 0) request.append(`${Detail[i + 1].field}`, Detail[i + 1].val)
             }
-            const { data } = await axios.post(`/fair-game-wallet/adduser`, payload);
+            const { data } = await axios.post(`/game-match/addmatch`, request);
         } catch (e) {
-            console(e)
+            console.log(e)
         }
     }
 
     useEffect(() => {
-        console.log(Detail)
+        // console.log(Detail)
     }, [Detail])
 
     const [showMatch, setShowMatch] = useState(false)
@@ -158,7 +122,7 @@ export default function Home1() {
                         <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Session Min Bet"} type={"Number"} value="Betfair Session Min Bet..." InputValType={"InputVal"} place={7} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
                         <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Session Max Bet"} type={"Number"} value="Betfair Session Max Bet..." InputValType={"InputVal"} place={11} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
                         <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Bookmaker Max Bet"} type={"Number"} value="Enter  Bookmaker Max Bet..." InputValType={"InputVal"} place={15} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Bookmaker Min Bet"} type={"Number"} value="Enter Bookmaker Min Bet..." InputValType={"InputVal"} place={16} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Bookmaker Min Bet"} type={"Number"} value="Enter Bookmaker Min Bet..." InputValType={"InputVal"} place={12} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
                     </Box>
                     <Box sx={{ display: "flex", marginTop: "20px" }}>
                         <LabelValueComponent valueStyle={{}} containerStyle={{ flex: 1 }} title={"Bookmaker Manual Max Bet"} type={"Number"} value="Enter Bookmaker Manaul Max Bet..." InputValType={"InputVal"} place={4} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
@@ -177,7 +141,6 @@ export default function Home1() {
                         <Typography sx={{ color: "white" }}>Create</Typography>
                     </Box>
                     <Box onClick={() => {
-                        console.log("stateDetail, Detail", stateDetail, Detail)
                         setShowMatch(false)
                         setDetail(stateDetail)
                     }} sx={{ background: "#E32A2A", height: "40px", marginLeft: "20px", display: "flex", width: "15%", justifyContent: "center", alignItems: "center", borderRadius: "5px", border: "2px solid black" }}>
@@ -197,6 +160,22 @@ const LabelValueComponent = ({ title, value, icon, containerStyle, valueStyle, v
             <ShowComponent InputValType={InputValType} value={value} valueContainerStyle={valueContainerStyle} valueStyle={valueStyle} icon={icon} place={place} DetailError={DetailError} type={type} />
         </Box>
     )
+}
+
+const fileUpload = async (e, position, DetailError) => {
+    let file = e.target.files[0]
+    DetailError.setDetail({
+        ...DetailError.Detail, [position]: {
+            ...DetailError.Detail[position],
+            val: file
+        }
+    });
+    DetailError.setError({
+        ...DetailError.error, [position]: {
+            ...DetailError.Detail[position],
+            val: file === undefined ? false : true
+        }
+    })
 }
 
 const ShowComponent = ({ InputValType, value, valueContainerStyle, valueStyle, icon, place, DetailError, type }) => {
@@ -225,7 +204,9 @@ const ShowComponent = ({ InputValType, value, valueContainerStyle, valueStyle, i
             return (
                 <Button variant="contained" component="label" sx={[{ height: "35px", borderRadius: "5px", px: "10px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "white" }, valueContainerStyle]}>
                     Upload
-                    <input hidden accept="image/*" multiple type="file" />
+                    <input hidden accept="image/*" multiple type="file" onChange={(e) => {
+                        fileUpload(e, place, DetailError)
+                    }} />
                     {icon && <StyledImage src={icon} sx={{ height: "12px", width: "12px" }} />}
                 </Button>
             )

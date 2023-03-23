@@ -16,7 +16,6 @@ function SessionTimeOut() {
     let logoutTimeout;
 
     const warn = () => {
-        console.log("Warning");
         Swal.fire(
             "You were Idle for too long, Please do some action or you will be logged out in next 1 hour"
         );
@@ -24,7 +23,6 @@ function SessionTimeOut() {
 
     const logout = () => {
         dispatch(stateActions.logout());
-        console.log("You have been logged out");
         navigate("/");
         Swal.fire("Your Session is timed out, You are logged out");
     };

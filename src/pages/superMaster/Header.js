@@ -35,7 +35,7 @@ const CustomHeader = ({ }) => {
         }
     }, [location])
     useEffect(() => {
-        console.log(currentSelected, 'admin')
+        // console.log(currentSelected, 'admin')
     }, [currentSelected])
     useEffect(() => {
         if (!matchesMobile) {
@@ -75,11 +75,11 @@ const CustomHeader = ({ }) => {
                         </Box>
                         <ButtonHead onClick={() => {
                             dispatch(setActiveAdmin(0))
-                            navigate('/fairgame_wallet/list_of_clients')
+                            navigate(`/${window.location.pathname.split("/")[1]}/list_of_clients`)
                         }} title={"LIST OF CLIENTS"} boxStyle={{ backgroundColor: currentSelected == 0 ? "white" : "transparent", justifyContent: "center", borderRadius: "3px", marginLeft: "2%" }} titleStyle={{ color: currentSelected == 0 ? "green" : "white" }} />
                         <LiveMarket onClick={() => {
                             dispatch(setActiveAdmin(1))
-                            navigate('/fairgame_wallet/live_market')
+                            navigate(`/${window.location.pathname.split("/")[1]}/live_market`)
                         }} title={"LIVE MARKET"} boxStyle={{ backgroundColor: currentSelected == 1 ? "white" : "transparent", borderRadius: "3px", justifyContent: "center", alignItems: "center", marginLeft: "2%" }} />
                         <ButtonHead selected={currentSelected == 2} report={true} onClick={(e) => {
                             // setCurrentSelected(2)
@@ -89,7 +89,7 @@ const CustomHeader = ({ }) => {
                         }} title={"REPORTS"} boxStyle={{ backgroundColor: currentSelected == 2 ? "white" : "transparent", borderRadius: "3px", marginLeft: "2%", justifyContent: "center" }} titleStyle={{ color: currentSelected == 2 ? "green" : "white" }} />
                         <ButtonHead onClick={() => {
                             dispatch(setActiveAdmin(3))
-                            navigate('/fairgame_wallet/market_analysis')
+                            navigate(`/${window.location.pathname.split("/")[1]}/market_analysis`)
                         }} title={"MARKET ANALYSIS"}
                             boxStyle={{ backgroundColor: currentSelected == 3 ? "white" : "transparent", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "center" }} titleStyle={{ color: currentSelected == 3 ? "green" : "white" }} />
                         <ButtonHead onClick={(e) => {
@@ -264,7 +264,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setOpen(false)
@@ -312,7 +312,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         handleClose()
     })
     const logoutProcess = () => {
-        dispatch(stateActions.logout());
+        dispatch(stateActions.logout("role1"));
         navigate("/")
         handleClose()
     }

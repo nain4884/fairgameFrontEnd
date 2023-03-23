@@ -38,6 +38,7 @@ const FairGameWalletRoutes = () => {
                 <Route exact path="/deposit" element={<DepositWallet />} />
                 <Route exact path="/withdraw" element={<DepositWallet />} />
                 <Route exact path="/delete_bet" element={<DeleteBet />} />
+                <Route exact path="/createTransPassword" element={<ChangePassword />} />
             </Routes>
         </>
     )

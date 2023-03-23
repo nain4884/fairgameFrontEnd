@@ -90,7 +90,7 @@ const MarketAnalysis = () => {
         }
     }
     useEffect(() => {
-        console.log(selected, 'selcted')
+        // console.log(selected, 'selcted')
     }, [selected])
     const navigate = useNavigate()
     return (

@@ -35,7 +35,7 @@ const CustomHeader = ({ }) => {
         }
     }, [location])
     useEffect(() => {
-        console.log(currentSelected, 'admin')
+        // console.log(currentSelected, 'admin')
     }, [currentSelected])
     useEffect(() => {
         if (!matchesMobile) {
@@ -264,7 +264,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
         setAnchorEl(event.currentTarget);
     };
     useEffect(() => {
-        console.log(anchorEl)
+        // console.log(anchorEl)
     }, [anchorEl])
     const handleClose = () => {
         setOpen(false)
@@ -312,7 +312,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         handleClose()
     })
     const logoutProcess = () => {
-        dispatch(stateActions.logout());
+        dispatch(stateActions.logout("role2"));
         navigate("/")
         handleClose()
     }

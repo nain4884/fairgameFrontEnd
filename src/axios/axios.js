@@ -2,8 +2,12 @@ import axios from "axios"
 import { anupamBasePath } from "../components/constants";
 // get token from the http only cookie in production
 // Token will change each time login happen in production
-const token ="Bearer " + window.localStorage.getItem("JWT");
+const token = "Bearer " + window.localStorage.getItem("JWT");
 export default axios.create({
-    headers: {Authorization: token },
-    baseURL : anupamBasePath,
+    headers: {
+        Authorization: token,
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin': '*'
+    },
+    baseURL: anupamBasePath,
 })

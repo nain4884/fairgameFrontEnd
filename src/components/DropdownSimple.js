@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
 import StyledImage from "./StyledImage";
 
-const DropDownSimple = ({ valued, title, data, containerStyle, titleStyle, valueContainerStyle, valueStyle, dropStyle, dropDownStyle, dropDownTextStyle }) => {
+const DropDownSimple = ({ valued, title, data, containerStyle, titleStyle, valueContainerStyle, valueStyle, dropStyle, dropDownStyle, dropDownTextStyle, Detail, setDetail, place }) => {
     const [value, setValue] = useState(valued ?? data[0])
     const [open, setOpen] = useState(false)
     const Divider = () => {
@@ -16,17 +16,21 @@ const DropDownSimple = ({ valued, title, data, containerStyle, titleStyle, value
             <>
                 <Typography onClick={() => {
                     setValue(item)
+                    setDetail({
+                        ...Detail, [place]: {
+                            ...Detail[place],
+                            val: item
+                        }
+                    })
                     setOpen(false)
                 }} sx={[{ paddingY: '4px', paddingLeft: '7px', fontSize: '10px', fontWeight: '500', color: 'black' }, dropDownTextStyle]}>{item}</Typography>
             </>
         )
     }
     const Block = ({ i }) => {
-
         return (
             <Item item={i} />
         )
-
     }
     return (
         <Box sx={[{ width: '19%' }, containerStyle]} >

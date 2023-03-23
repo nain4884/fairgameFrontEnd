@@ -3,7 +3,7 @@ module.exports = {
 	'apiBasePath': 'http://localhost:4000', // server url
 	'imageBasePath': 'http://localhost:4000/public/images/', /// server image base path
 
-	anupamBasePath: "https://fa30-117-197-24-47.in.ngrok.io",
+	anupamBasePath: "http://localhost:3100",
 
 	//   'apiBasePath': 'http://18.169.59.243:4000', // server url
 	//   'imageBasePath': 'http://18.169.59.243:4000/public/images/' , /// server image base path

@@ -79,23 +79,22 @@ export default function Login() {
 
     async function loginToAccount() {
         changeErrors()
-        console.log("error", !error[1].val, !error[2].val, loginDetail[1].val !== "", loginDetail[2].val !== "")
         if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") {
             try {
-                // const { data } = await axios.post(`/auth/login`, loginDetail);
-                const data = {
-                    "message": "User login successfully.",
-                    "data": {
-                        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZhaXJHYW1lV2FsbGV0Iiwic3ViIjoiMmJhOTFmYjEtNDEzNS00ZDhiLThlZTMtOTY4MjdkMDcxNmQzIiwicm9sZSI6ImZhaXJHYW1lV2FsbGV0IiwiaWF0IjoxNjc4MDgyODQyLCJleHAiOjE2NzgxNjkyNDJ9.J8_CUaI7sTAIenwomWYkWQTfpJlWR_OBfmd_ysbR9SQ",
-                        "username": "fairGameWallet",
-                        "id": "2ba91fb1-4135-4d8b-8ee3-96827d0716d3",
-                        "roleId": "885e61f9-5c0a-4bac-861c-5ce30ee066b2",
-                        "role": "superAdmin"
-                    }
+                let { data } = await axios.post(`/auth/login`, {
+                    "username": loginDetail[1].val,
+                    "password": loginDetail[2].val
+                });
+                let foundRoles = await axios.get(`/role`);
+                let roles = foundRoles.data
+                let roleDetail = roles.find(findThisRole)
+                function findThisRole(role) {
+                    return role.id === data.data.roleId
                 }
+                if (roleDetail) data.data.role = roleDetail
                 if (data.message === "User login successfully.") {
-                    dispatch(stateActions.setUser(data.data.role, data.data.access_token));
-                    switch (data.data.role) {
+                    dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+                    switch (data.data.role.roleName) {
                         case "master":
                             navigate('/master/live_market')
                             break;
@@ -127,7 +126,8 @@ export default function Login() {
                 }
             } catch (e) {
                 console.log(e)
-                setLoginError(LoginServerError)
+                if (!e?.response) return setLoginError(LoginServerError)
+                setLoginError(e.response.data.message)
             }
         }
     }
@@ -135,7 +135,7 @@ export default function Login() {
     const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"))
 
     const NewPassword = () => {
-        return(<>
+        return (<>
             <Typography variant="header" sx={{ fontSize: { laptop: "20px", mobile: "22px" }, marginTop: matchesMobile ? "100px" : "1vh" }}>New Password</Typography>
             <Typography variant="subHeader" sx={{ fontSize: { laptop: "11px", mobile: "13px" }, lineHeight: "18px", marginTop: "1vh", textAlign: "center", fontFamily: '200' }}>Please enter new password.</Typography>
             <Box sx={{ width: { laptop: "55%", mobile: "75%", marginTop: "20px" }, opacity: 1 }}>
@@ -149,7 +149,7 @@ export default function Login() {
             </Box>
         </>)
     }
-    
+
     return (
         <Box style={{ position: "relative" }}>
             <AuthBackground />
@@ -181,7 +181,7 @@ export default function Login() {
                         window.location.pathname === "/verification" ?
                             <Verification /> :
                             window.location.pathname === "/new_password" ?
-                                <NewPassword/> :
+                                <NewPassword /> :
                                 <></>
                     }
                 </Card>

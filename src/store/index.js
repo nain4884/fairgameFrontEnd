@@ -10,7 +10,7 @@ import betplace from './betPlace'
 // import dailogModal from '../admin/store/dailogModal'
 // import currentSelected from '../admin/store/current_selected'
 import activeAdmin from './admin'
-// import activeUser from '../expert/store/activeUser'
+import activeUser from './activeUser'
 import { rootReducer } from './reducers/rootReducer';
 
 const logger = (store) => (next) => (action) => {
@@ -34,7 +34,7 @@ const store = configureStore({
         // dailogModal,
         // currentSelected,
         activeAdmin,
-        // activeUser,
+        activeUser,
         rootReducer
     },
     middleware: [logger],
