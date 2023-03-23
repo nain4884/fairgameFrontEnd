@@ -9,6 +9,8 @@ import Background from './Background'
 import "./style.css"
 import axios from "../../axios/expertAxios";
 import DropDownSimple from "../../components/DropdownSimple";
+import { defaultMarketId, matchType } from "../../components/constants";
+import expertAxios from "../../axios/expertAxios";
 const containerStyles = {
     marginTop: "10px"
 }
@@ -71,9 +73,12 @@ export default function Home1() {
             let request = new FormData()
             let i
             for (i = 0; i < 20; i++) {
-                if (!Detail[i + 1].val || Detail[i + 1].val !== 0) request.append(`${Detail[i + 1].field}`, Detail[i + 1].val)
+                if ((!Detail[i + 1].val || Detail[i + 1].val !== 0) && i !== 19) request.append(`${Detail[i + 1].field}`, Detail[i + 1].val)
+                if (i === 19) request.append(`${Detail[i + 1].field}`, defaultMarketId)
             }
             const { data } = await axios.post(`/game-match/addmatch`, request);
+            console.log(data)
+            if (data.message === "Match added successfully.") navigate('/expert/match')
         } catch (e) {
             console.log(e)
         }
@@ -97,7 +102,7 @@ export default function Home1() {
                     <Box sx={{ display: "flex" }}>
                         {/* <LabelValueComponent icon={ArrowDownBlack} valueStyle={{}} containerStyle={{ flex: 1 }} title={"Game"} value="Select Game" /> */}
                         <Box sx={{ flex: 1, position: "relative" }}>
-                            <DropDownSimple valued="Select Account Type..." dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Game'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px" }} data={["Cricket", "Football", "Tennis", "Football", "Ice", "Hockey", "Volleyball", "Politics", "Basketball", "Table Tennis", "Darts"]} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={1} />
+                            <DropDownSimple valued="Select Account Type..." dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Game'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px" }} data={matchType} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={1} />
                             {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Game'} data={["Cricket", "Football", "Tennis", "Football", "Ice", "Hockey", "Volleyball", "Politics", "Basketball", "Table Tennis", "Darts"]} place={1} /> */}
                         </Box>
                         <Box sx={{ flex: 1, position: "relative", marginLeft: "1%" }}>
@@ -135,8 +140,6 @@ export default function Home1() {
                 <Box sx={{ display: "flex", justifyContent: "center", marginY: "30px" }}>
                     <Box onClick={() => {
                         createMatch()
-                        // setShowMatch(true)
-                        navigate('/expert/match')
                     }} sx={{ background: "#10DC61", height: "40px", width: "15%", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px", border: "2px solid black" }}>
                         <Typography sx={{ color: "white" }}>Create</Typography>
                     </Box>
@@ -233,15 +236,27 @@ const ShowComponent = ({ InputValType, value, valueContainerStyle, valueStyle, i
 }
 
 const MatchListComp = () => {
+    const [allMatch, setAllMatch] = useState([])
+    async function getAllMatch() {
+        try {
+            let response = await expertAxios.get(`/game-match/getAllMatch`);
+            setAllMatch(response.data)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    useEffect(() => {
+        getAllMatch()
+    }, [])
     return (
         <Box sx={[{ marginX: "10px", marginTop: '10px', minHeight: "200px", borderRadius: "10px", border: "2px solid white" }, (theme) => ({
             backgroundImage: `${theme.palette.primary.headerGradient}`
         })]}>
             <ListH />
             <ListHeaderT />
-            <Row index={1} />
-            <Row index={2} containerStyle={{ background: "#ECECEC" }} />
-            <Row index={3} />
+            {allMatch.map((element, i) => {
+                return (<Row index={i + 1} containerStyle={{ background: (i + 1) % 2 === 0 ? "#ECECEC" : "" }} data={element} />)
+            })}
         </Box>
     )
 }
@@ -280,7 +295,41 @@ const ListHeaderT = () => {
     )
 }
 
-const Row = ({ index, containerStyle }) => {
+const Row = ({ index, containerStyle, data }) => {
+    const [updateMatchStatus, setUpdateMatchStatus] = useState({
+        1: { field: "apiMatchActive", val: data?.apiMatchActive || false },
+        2: { field: "apiBookMakerActive", val: data?.apiBookMakerActive || false },
+        3: { field: "apiSessionActive", val: data?.apiSessionActive || false },
+        5: { field: "manualSessionActive", val: data?.manualSessionActive || false },
+        4: { field: "manualBookMakerActive", val: data?.manualBookMakerActive || false },
+    })
+    async function submitMatchUpdation() {
+        let defaultMatchStatus = {
+            apiMatchActive: false,
+            apiBookMakerActive: false,
+            apiSessionActive: false,
+            manualBookMakerActive: false,
+            manualSessionActive: false
+        }
+        let i
+        for (i = 0; i < 5; i++) {
+            if (updateMatchStatus[i + 1].field === "apiMatchActive") defaultMatchStatus.apiMatchActive = updateMatchStatus[i + 1].val
+            if (updateMatchStatus[i + 1].field === "apiBookMakerActive") defaultMatchStatus.apiBookMakerActive = updateMatchStatus[i + 1].val
+            if (updateMatchStatus[i + 1].field === "apiSessionActive") defaultMatchStatus.apiSessionActive = updateMatchStatus[i + 1].val
+            if (updateMatchStatus[i + 1].field === "manualBookMakerActive") defaultMatchStatus.manualBookMakerActive = updateMatchStatus[i + 1].val
+            if (updateMatchStatus[i + 1].field === "manualSessionActive") defaultMatchStatus.manualSessionActive = updateMatchStatus[i + 1].val
+        }
+        let payload = {
+            matchId: data.id,
+            ...defaultMatchStatus
+        }
+        try {
+            let response = await expertAxios.post(`/game-match/updateMatchActiveStatus`, payload);
+            if (response.data.message === "Match update successfully.") navigate('/expert/betodds')
+        } catch (e) {
+            console.log(e)
+        }
+    }
     const navigate = useNavigate()
     return (
         <Box sx={[{ display: "flex", height: "45px", background: "#FFE094", alignItems: "center", borderBottom: "2px solid white" }, containerStyle]}>
@@ -289,34 +338,41 @@ const Row = ({ index, containerStyle }) => {
             </Box>
             <Box sx={{ flex: 1, display: "flex", paddingX: "10px", alignItems: "center", height: "45px" }}>
                 <Box sx={{ display: "flex", flex: 1, alignItems: "center" }}>
-                    <ButtonWithSwitch title="India vs Pakistan" containerStyle={{ width: "30%" }} />
-                    <ButtonWithSwitch title="Bookmaker" containerStyle={{}} />
-                    <ButtonWithSwitch title="Session" containerStyle={{}} />
-                    <ButtonWithSwitch title={`Manual\nSession`} containerStyle={{ width: "13%" }} />
-                    <ButtonWithSwitch title={`Manual\nBookmaker`} containerStyle={{}} />
+                    <ButtonWithSwitch title={data.title} containerStyle={{ width: "30%" }} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={1} />
+                    <ButtonWithSwitch title="Bookmaker" containerStyle={{}} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={2} />
+                    <ButtonWithSwitch title="Session" containerStyle={{}} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={3} />
+                    <ButtonWithSwitch title={`Manual\nSession`} containerStyle={{ width: "13%" }} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={4} />
+                    <ButtonWithSwitch title={`Manual\nBookmaker`} containerStyle={{}} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={5} />
                 </Box>
                 <CusButton onClick={() => {
-                    navigate('/expert/betodds')
+                    submitMatchUpdation()
                 }} title={"Submit"} />
             </Box>
         </Box>
     )
 }
 
-const ButtonWithSwitch = ({ title, containerStyle, titleStyle }) => {
+const ButtonWithSwitch = ({ title, containerStyle, titleStyle, updateMatchStatus, setUpdateMatchStatus, place }) => {
     const [background, setBackground] = useState("#0B4F26")
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(updateMatchStatus[place].val)
     useEffect(() => {
         if (checked) {
             setBackground("#0B4F26")
         } else {
             setBackground("#FF4D4D")
         }
+        console.log(updateMatchStatus)
     }, [checked])
     return (<Box sx={[{ height: "35px", minWidth: "100px", width: "14%", marginLeft: "10px", borderRadius: "5px", background: background, display: "flex", justifyContent: "space-between", alignItems: "center" }, containerStyle]}>
         <Typography sx={[{ color: "white", fontWeight: '500', fontSize: '13px', marginLeft: "1vw", lineHeight: "14px" }, titleStyle]}>{title}</Typography>
         <MaterialUISwitch checked={checked} onChange={(e) => {
             setChecked(!checked)
+            setUpdateMatchStatus({
+                ...updateMatchStatus, [place]: {
+                    ...updateMatchStatus[place],
+                    val: !checked
+                }
+            })
         }} />
     </Box>)
 }

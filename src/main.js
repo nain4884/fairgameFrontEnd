@@ -18,7 +18,6 @@ const Main = () => {
   const [loginRole, setLoginRole] = useState("")
   const [loginJWT, setLoginJWT] = useState(null)
   useEffect(() => {
-    // console.log(loginRole,loginJWT)
     const newSocket = io(`${anupamBasePath}`, {
       extraHeaders: {
         Authorization: 'Bearer ' + loginJWT
@@ -37,20 +36,20 @@ const Main = () => {
   }
   return (
     <Routes>
-      <Route path="/demo" element={<Demo socket={socket} />} />
-      <Route path="/" element={<Login socket={socket} />} />
-      <Route path="/forget_password" element={<Login socket={socket} />} />
-      <Route path="/verification" element={<Login socket={socket} />} />
-      <Route path="/new_password" element={<Login socket={socket} />} />
-      <Route path="/matches" element={<Matches socket={socket} />} />
-      <Route path="/home" element={<Matches socket={socket} />} />
-      <Route path="/change_button_value" element={<Matches socket={socket} />} />
-      <Route path="/change_password" element={<Matches socket={socket} />} />
-      <Route path="/account_statement" element={<Matches socket={socket} />} />
-      <Route path="/bet_history" element={<Matches socket={socket} />} />
-      <Route path="/profit_loss" element={<Matches socket={socket} />} />
-      <Route path="/rules" element={<Matches socket={socket} />} />
-      <Route path="/admin/*" element={<Admin socket={socket} />} />
+      <Route path="/demo" element={<Demo />} />
+      <Route path="/" element={<Login />} />
+      <Route path="/forget_password" element={<Login />} />
+      <Route path="/verification" element={<Login />} />
+      <Route path="/new_password" element={<Login />} />
+      <Route path="/matches" element={<Matches />} />
+      <Route path="/home" element={<Matches />} />
+      <Route path="/change_button_value" element={<Matches />} />
+      <Route path="/change_password" element={<Matches />} />
+      <Route path="/account_statement" element={<Matches />} />
+      <Route path="/bet_history" element={<Matches />} />
+      <Route path="/profit_loss" element={<Matches />} />
+      <Route path="/rules" element={<Matches />} />
+      <Route path="/admin/*" element={<Admin />} />
       <Route path="/fairgame_wallet/*" element={<FairGameWalletRoutes />} />
       <Route path="/fairgame_admin/*" element={<FairGameAdminRoutes />} />
       <Route path="/master/*" element={<MasterRoutes />} />

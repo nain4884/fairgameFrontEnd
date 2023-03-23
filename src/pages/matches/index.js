@@ -19,17 +19,14 @@ import YellowHeader from "../../components/yellowheader";
 import ProfitLossComponent from "../../components/ProfitLossComponent";
 import { ChangePassword } from "./ChangePassword";
 import ManualBookMakerMarket from "../../components/ManualBookMakerMarket";
-import axios from "../../axios/axios";
-import adminAxios from "../../axios/adminAxios";
+import userAxios from "../../axios/userAxios";
 export default function Matches() {
-  const [drawer, setDrawer] = useState(false);
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
   const [open, handleClose] = useState(false);
   const [flag, setFlag] = useState(false);
   const theme = useTheme();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const activeTab = useSelector((state) => state.betplace)?.activeTab;
 
@@ -144,110 +141,27 @@ export default function Matches() {
     const location = useLocation();
     const id = location.state
     const [matchDetail, setMatchDetail] = useState()
-    const [gotMatchDetail, setGotMatchDetail] = useState(false)
-    const sampleData = {
-      "id": "aa56cbb1-5f29-4514-92bb-087c976447a2",
-      "isActive": true,
-      "createAt": "2023-03-10T05:47:41.698Z",
-      "updateAt": "2023-03-10T05:47:41.698Z",
-      "createdBy": "dd432377-9f9d-4248-917d-85b16dfeb7e7",
-      "deletedAt": null,
-      "gameType": "cricket",
-      "title": "ind vs aus",
-      "marketId": "3",
-      "teamA": "india",
-      "teamB": "aus",
-      "teamC": null,
-      "startAt": "2023-05-05T10:26:36.070Z",
-      "stopAt": null,
-      "matchImage": null,
-      "teamA_Image": null,
-      "teamB_Image": null,
-      "match_max_bet": null,
-      "betfair_match_min_bet": 20,
-      "betfair_match_max_bet": 80,
-      "betfair_session_min_bet": 0,
-      "betfair_session_max_bet": 0,
-      "betfair_bookmaker_min_bet": 0,
-      "betfair_bookmaker_max_bet": 0,
-      "bookmaker_manual_min_bet": 0,
-      "bookmaker_manual_max_bet": 0,
-      "manaual_session_min_bet": 0,
-      "manaual_session_max_bet": 0,
-      "apiMatchActive": null,
-      "apiBookMakerActive": null,
-      "apiSessionActive": null,
-      "manualBookMakerActive": null,
-      "manualSessionActive": null,
-      "bettings": [
-        {
-          "id": "a681e36d-0856-409b-9891-c88e4a4f80e8",
-          "isActive": true,
-          "createAt": "2023-03-10T05:50:26.045Z",
-          "updateAt": "2023-03-10T05:50:26.045Z",
-          "createdBy": "dd432377-9f9d-4248-917d-85b16dfeb7e7",
-          "deletedAt": null,
-          "match_id": "aa56cbb1-5f29-4514-92bb-087c976447a2",
-          "matchType": "cricket",
-          "bet_condition": null,
-          "teamA_Back": 49,
-          "teamB_Back": 23,
-          "drawRate": null,
-          "no_rate": null,
-          "yes_rate": null,
-          "rate_percent": null,
-          "suspended": "suspended",
-          "teamA_suspend": null,
-          "teamB_suspend": null,
-          "teamA_lay": 50,
-          "teamB_lay": 24,
-          "selectionId": null,
-          "sessionBet": false,
-          "betStatus": 0
-        },
-        {
-          "id": "2254b223-99d2-4a8b-928e-246977d76266",
-          "isActive": true,
-          "createAt": "2023-03-10T05:53:06.854Z",
-          "updateAt": "2023-03-10T05:53:06.854Z",
-          "createdBy": "dd432377-9f9d-4248-917d-85b16dfeb7e7",
-          "deletedAt": null,
-          "match_id": "aa56cbb1-5f29-4514-92bb-087c976447a2",
-          "matchType": "cricket",
-          "bet_condition": "10 Over run",
-          "teamA_Back": null,
-          "teamB_Back": null,
-          "drawRate": null,
-          "no_rate": 20,
-          "yes_rate": 21,
-          "rate_percent": "100-100",
-          "suspended": "suspended",
-          "teamA_suspend": null,
-          "teamB_suspend": null,
-          "teamA_lay": null,
-          "teamB_lay": null,
-          "selectionId": null,
-          "sessionBet": true,
-          "betStatus": 0
-        }
-      ]
-    }
+    const [matchOddsData, setMatchOddsData] = useState([])
+    const [matchSessionData, setMatchSessionData] = useState([])
     async function getThisMatch(id) {
       //localhost:3100/game-match/matchDetail/aa56cbb1-5f29-4514-92bb-087c976447a2
       try {
-        const response = await adminAxios.get(`/game-match/matchDetail/${id}`);
-        setMatchDetail(response.data.data)
-        setGotMatchDetail(true)
+        const response = await userAxios.get(`/game-match/matchDetail/${id}`);
+        response.data?.bettings?.forEach(element => {
+          if (element.sessionBet === false || element.sessionBet === 0) {
+            matchOddsData.push(element)
+          } else {
+            matchSessionData.push(element)
+          }
+        });
+        setMatchDetail(response.data)
       } catch (e) {
-        console.log(e)
-        setMatchDetail(sampleData)
         console.log("response", e.response.data)
-        setGotMatchDetail(true)
       }
     }
     useEffect(() => {
       getThisMatch(id)
-    }, [gotMatchDetail])
+    }, [])
     return (
       <Box
         sx={{
@@ -273,7 +187,7 @@ export default function Matches() {
             }}
           >
             <div style={{ width: "100%" }}>
-              <MatchOdds onClick={() => handleClose(true)} data={sampleData} />
+              <MatchOdds onClick={() => handleClose(true)} data={{ ...matchDetail, matchOddsData, matchSessionData }} />
             </div>
             <Box
               sx={{
@@ -309,7 +223,7 @@ export default function Matches() {
                   width: "70%",
                 }}
               >
-                <MatchOdds onClick={() => handleClose(true)} data={sampleData} />
+                <MatchOdds onClick={() => handleClose(true)} data={{ ...matchDetail, matchOddsData, matchSessionData }} />
               </Box>
               <Box sx={{ width: "30%", paddingRight: "1%" }}>
                 <MatchComponent />

@@ -32,7 +32,7 @@ module.exports = {
 	'Save': 1,
 	'Launch': 2,
 	'Close': 3,
-	
+
 	// --------------------------------------Session Bets Type -------------------------------------------------//
 
 	'Manual': 1,
@@ -47,7 +47,14 @@ module.exports = {
 
 
 	// -------React Captcha--------//
+
+	REACT_APP_SECRET_KEY: "6Lc7BsAiAAAAAA6gDOpiBsb8fybpUYfS8_qLY9NS",
+	REACT_APP_SITE_KEY: "6Lc7BsAiAAAAAEymVuF8kjJeoqPFSSgkxI3Euhve",
+
+
+	// ----------- Matches ---------- //
+
+	matchType: ['cricket','tennis','football','ice','hockey','volleyball','politics','basketball','table_tennis','darts'],
+	defaultMarketId: 4312
 	
-	REACT_APP_SECRET_KEY :"6Lc7BsAiAAAAAA6gDOpiBsb8fybpUYfS8_qLY9NS",
-	REACT_APP_SITE_KEY :"6Lc7BsAiAAAAAEymVuF8kjJeoqPFSSgkxI3Euhve"
 }

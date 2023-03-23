@@ -64,28 +64,6 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
     }
     return (
         < Box ref={innerRef} sx={{ width: { mobile: '30%', laptop: '20%' }, height: '94%', position: 'relative' }}>
-            {/* <Popover
-
-                isOpen={isPopoverOpen}
-                align={matchesMobile ? "end" : "center"}
-                positions={['bottom']} // preferred positions by priority
-                onClickOutside={() => setIsPopoverOpen(false)}
-                content={() => <PlaceBet onSubmit={() => {
-                    setVisible(true)
-                    setCanceled(false)
-                }}
-                    onCancel={() => {
-                        setVisible(true)
-                        setCanceled(true)
-                    }}
-
-                    handleClose={() => {
-                        setIsPopoverOpen(false)
-                    }}
-                    season={session}
-                    back={back}
-                />}
-            > */}
             <Box onClick={e => {
                 if (lock || color == "white") {
                     return null
@@ -161,16 +139,16 @@ const BoxComponent = ({ name, color, data, team, typeOfBet }) => {
     // console.log("data123", data)
     let backValue, layValue
     if (team == 'teamA') {
-        backValue = data?.bettings[0].teamA_Back
-        layValue = data?.bettings[0].teamA_Lay
+        backValue = data?.matchOddsData?.[0]?.teamA_Back
+        layValue = data?.matchOddsData?.[0]?.teamA_Lay
     }
     if (team == 'teamB') {
-        backValue = data?.bettings[0].teamB_Back
-        layValue = data?.bettings[0].teamB_Lay
+        backValue = data?.matchOddsData?.[0]?.teamB_Back
+        layValue = data?.matchOddsData?.[0]?.teamB_Lay
     }
     if (team == 'draw') {
-        backValue = data?.bettings[0].teamC_Back
-        layValue = data?.bettings[0].teamC_Lay
+        backValue = data?.matchOddsData?.[0]?.teamC_Back
+        layValue = data?.matchOddsData?.[0]?.teamC_Lay
     }
     return (
         <Box sx={{ display: 'flex', background: 'white', height: '40px', width: '100%', alignItems: 'center', justifyContent: 'space-between' }} >
@@ -187,17 +165,17 @@ const BoxComponent = ({ name, color, data, team, typeOfBet }) => {
                 <MoneyBox color={color} />
             </Box>
             <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'center' }, alignItems: 'center' }} >
-                {!matchesMobile && <SeperateBox value={`${backValue ? backValue - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>}
+                {!matchesMobile && <SeperateBox value={`${backValue ? backValue - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet} />}
                 <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                {!matchesMobile && <SeperateBox value={`${backValue ? backValue - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>}
+                {!matchesMobile && <SeperateBox value={`${backValue ? backValue - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet} />}
                 <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox value={`${backValue ? backValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>
+                <SeperateBox value={`${backValue ? backValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} type={{ color: "#A7DCFF", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet} />
                 <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox value={`${layValue ? layValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>
+                <SeperateBox value={`${layValue ? layValue : 50}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet} />
                 <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                {!matchesMobile && <SeperateBox value={`${layValue ? layValue + 1 : 50 + 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#F2CBCB"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>}
+                {!matchesMobile && <SeperateBox value={`${layValue ? layValue + 1 : 50 + 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#F2CBCB"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet} />}
                 <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                {!matchesMobile && <SeperateBox value={`${layValue ? layValue + 2 : 50 + 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#ECD6D6"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet}/>}
+                {!matchesMobile && <SeperateBox value={`${layValue ? layValue + 2 : 50 + 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#ECD6D6"} type={{ color: "#FFB5B5", type: "BL" }} name={name} data={data} typeOfBet={typeOfBet} />}
                 <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
             </Box>
         </Box>
@@ -285,10 +263,10 @@ const Odds = ({ data }) => {
 
                     </Box>
                 </Box>
-            }
-            <BoxComponent time={true} color={'#46e080'} name={`${data.teamA.toUpperCase()}`} data={data} team={'teamA'} typeOfBet={"Match"}/>
+            }{console.log("data", data)}
+            <BoxComponent time={true} color={'#46e080'} name={`${data?.teamA?.toUpperCase()}`} data={data} team={'teamA'} typeOfBet={"Match"} />
             <Divider />
-            <BoxComponent time={true} color={'#FF4D4D'} name={`${data.teamB.toUpperCase()}`} data={data} team={'teamB'} typeOfBet={"Match"}/>
+            <BoxComponent time={true} color={'#FF4D4D'} name={`${data?.teamB?.toUpperCase()}`} data={data} team={'teamB'} typeOfBet={"Match"} />
             <Divider />
             {data?.teamC && <BoxComponent time={true} color={'#F8C851'} name={"DRAW"} data={data} team={'draw'} />}
         </Box >
@@ -300,7 +278,7 @@ const SeasonMarketBox = ({ index, typeOfBet, data }) => {
     return (
         <Box sx={{ display: 'flex', background: 'white', height: '38px', width: '100%' }} >
             <Box sx={{ display: 'flex', background: 'white', height: '38px', width: '40%', alignItems: 'center' }} >
-                <Typography sx={{ color: 'black', fontSize: { laptop: '11px', tablet: '10px', mobile: "8px" }, marginLeft: '7px', fontWeight: '600' }} >6 Over runs INDIA W (INDIA vs PAKISTAN) Adv 0</Typography>
+                <Typography sx={{ color: 'black', fontSize: { laptop: '11px', tablet: '10px', mobile: "8px" }, marginLeft: '7px', fontWeight: '600' }} >{data.bet_condition}</Typography>{console.log(data)}
             </Box>
             <Box sx={{ display: 'flex', position: 'relative', background: 'white', height: '38px', width: { laptop: '60%', mobile: '80%' }, justifyContent: 'center', alignItems: 'center' }} >
                 <SeperateBox po={1} color={"white"} />
@@ -313,9 +291,9 @@ const SeasonMarketBox = ({ index, typeOfBet, data }) => {
                     <SeperateBox po={3} color={"white"} /></>}
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
                 <SeperateBox po={6} color={"white"} />
-                <SeperateBox po={1} session={true} back={true} value={"37"} value2={"100"} lock={index == 2} color={"#F6D0CB"} type={{ color: "#A7DCFF", type: "YN" }} typeOfBet={typeOfBet} data={data}/>
+                <SeperateBox po={1} session={true} back={true} value={data.yes_rate} value2={data.rate_percent} lock={index == 2} color={"#F6D0CB"} type={{ color: "#A7DCFF", type: "YN" }} typeOfBet={typeOfBet} data={data} />
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={2} session={true} value={"39"} value2={"100"} lock={index == 2} color={"#B3E0FF"} type={{ color: "#FFB5B5", type: "YN" }} typeOfBet={typeOfBet} data={data}/>
+                <SeperateBox po={2} session={true} value={data.no_rate} value2={data.rate_percent} lock={index == 2} color={"#B3E0FF"} type={{ color: "#FFB5B5", type: "YN" }} typeOfBet={typeOfBet} data={data} />
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
                 {!matchesMobile && <>
                     <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
@@ -530,21 +508,28 @@ const SessionMarket = ({ data }) => {
                         </Box>
                     </Box>
                 </Box>}
-
-                <SeasonMarketBox index={1} typeOfBet={"Session"} data={data}/>
+                {data.matchSessionData.map(element => {
+                    return (
+                        <>
+                            <SeasonMarketBox typeOfBet={"Session"} data={element} />
+                            <Divider />
+                        </>
+                    )
+                })}
+                {/* <SeasonMarketBox index={1} typeOfBet={"Session"} data={data} />
                 <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
+                <SeasonMarketBox typeOfBet={"Session"} data={data} />
                 <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
+                <SeasonMarketBox typeOfBet={"Session"} data={data} />
                 <Divider />
-                <SeasonMarketBox index={2} typeOfBet={"Session"} data={data}/>
+                <SeasonMarketBox index={2} typeOfBet={"Session"} data={data} />
                 <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
+                <SeasonMarketBox typeOfBet={"Session"} data={data} />
                 <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
+                <SeasonMarketBox typeOfBet={"Session"} data={data} />
                 <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data}/>
-                <Divider />
+                <SeasonMarketBox typeOfBet={"Session"} data={data} />
+                <Divider /> */}
             </Box >
         </Box >
 
@@ -608,13 +593,13 @@ const BookMarketer = ({ }) => {
     )
 }
 const MatchOdds = ({ data }) => {
-    // console.log("data", data)
+    console.log("data", data)
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            {!data.apiMatchActive && <Odds data={data} />}
+            {!data?.apiMatchActive && <Odds data={data} />}
             {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
-            {!data.apiBookMakerActive && <BookMarketer />}
-            {!data.apiSessionActive && <SessionMarket data={data} />}
+            {!data?.apiBookMakerActive && <BookMarketer />}
+            {!data?.apiSessionActive && <SessionMarket data={data} />}
         </Box>
     )
 }
