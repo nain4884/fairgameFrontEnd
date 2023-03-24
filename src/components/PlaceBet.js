@@ -118,11 +118,12 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
     }
 
     function SubmitPayloadForPlaceBet(betOn = "teamA_back", marketType = "BOOKMAKER") {
+        console.log(data?.betting?.[0]?.id, data)
         let payload = {
             "id": data?.id,
             "matchType": data.gameType,
-            "betId": data?.betting?.[0]?.id,
-            "bet_type": isBack ? "Back" : "Lay",
+            "betId": data?.matchOddsData?.[0]?.id,
+            "bet_type": isBack ? "back" : "lay",
             "odds": document.getElementsByClassName("OddValue")?.[0]?.textContent,
             "betOn": betOn,
             "stack": defaultValue,
@@ -132,11 +133,15 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             "stake": defaultValue,
             "teamA_name": data.teamA,
             "teamB_name": data.teamB,
-            "marketType": marketType
+            "marketType": marketType==="Match"?"MATCH ODDS":"BOOKMAKER"
         }
         if (marketType === "Session") {
+            delete payload.betOn
+            delete payload.odds
             payload.bet_condition = data?.betting?.[0]?.bet_condition
             payload.rate_percent = data?.betting?.[0]?.rate_percent
+            payload.marketType = data?.betting?.[0]?.bet_condition
+            console.log(payload)
         }
         return payload
     }
@@ -190,62 +195,6 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
                     }} title={'Reset'} color={'#FF4949'} />
                     <CustomButton onClick={() => {
                         handleClose(); onSubmit(SubmitPayloadForPlaceBet("asd", typeOfBet));
-                        {/**{
-                            data = {
-                                match_id: data.id,
-                                matchType: data.gameType,
-                                sessionBet: data.apiSessionActive,
-                                teamA_lay: data.bettings[0].teamA_lay,
-                                teamB_lay: data.bettings[0].teamB_lay,
-                                teamA_Back: data.bettings[0].teamA_Back,
-                                teamB_Back: data.bettings[0].teamB_Back,
-                                drawRate: data.bettnfs[0].drawRate
-                            }
-    "match_id": "ea46118c-501f-4e48-8ccf-d9dd9023bc2b",
-    "matchType": "cricket",
-    "sessionBet": false,
-    "teamA_lay": 18,
-    "teamB_lay": 15,
-    "teamA_Back": 10,
-    "teamB_Back": 4,
-    "drawRate": 10
-}
-
-{
-    "id": "60ffa666-1f6d-427c-943d-9f114442be43",
-    "matchType": "cricket",
-    "betId": "1e8cd1d2-dbe5-40b9-be0c-d9458a0f6db2",
-    "bet_type": "back",
-    "odds": 7,
-    "betOn": "teamA_back",
-    "stack": 7,
-    "team_bet": "aus",
-    "country": "india",
-    "ip_address": "192.168,12,01",
-    "stake": 20,
-    "teamA_name": "india",
-    "teamB_name": "aus",
-    "marketType": "BOOKMAKER"
-}
-
-payload = {
-    "id": data.id,
-    "matchType": data.gameType,
-    "betId": data.betting[0].id,
-    "bet_type": isBack?"Back":"Lay",
-    "odds": oddValue,
-    "betOn": "teamA_back",
-    "stack": defaultValue,
-    "team_bet": name.toLowercase(),
-    "country": ip.country_name,
-    "ip_address": ip.IPv4,
-    "stake": e.target.value,
-    "teamA_name": data.teamA,
-    "teamB_name": data.teamB,
-    "marketType": "BOOKMAKER"
-}
-
-*/}
                     }} title={'Submit'} color={'#262626'} />
                 </Box>
             </Box>

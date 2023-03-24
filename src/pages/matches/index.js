@@ -143,6 +143,7 @@ export default function Matches() {
     const [matchDetail, setMatchDetail] = useState()
     const [matchOddsData, setMatchOddsData] = useState([])
     const [matchSessionData, setMatchSessionData] = useState([])
+    const [allBetsData, setAllBetsData] = useState([])
     async function getThisMatch(id) {
       //localhost:3100/game-match/matchDetail/aa56cbb1-5f29-4514-92bb-087c976447a2
       try {
@@ -159,8 +160,18 @@ export default function Matches() {
         console.log("response", e.response.data)
       }
     }
+    async function getAllBetsData() {
+      try {
+        let response = await userAxios.get(`/game-match/getAllMatch?bets=1&field=id,marketId`);
+        // let response = await userAxios.get(`/betting/getPlacedBets`);
+        setAllBetsData(response.data)
+      } catch (e) {
+        console.log(e)
+      }
+    }
     useEffect(() => {
       getThisMatch(id)
+      getAllBetsData()
     }, [])
     return (
       <Box
@@ -205,9 +216,8 @@ export default function Matches() {
                   width: "98%",
                 }}
               >
-                <ManualBookMakerMarket mark />
-                {matchDetail?.apiSessionActive || matchDetail?.manualSessionActive && <SessionBetSeperate mark />}
-                <AllRateSeperate mark />
+                {matchDetail?.apiSessionActive || matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
+                <AllRateSeperate allBetsData={allBetsData} mark />
               </Box>
               <LiveMatchHome />
             </Box>
@@ -228,12 +238,12 @@ export default function Matches() {
               <Box sx={{ width: "30%", paddingRight: "1%" }}>
                 <MatchComponent />
                 <LiveMatchHome />
-                <ManualBookMakerMarket mark />
-                <AllRateSeperate mark />
-                {matchDetail?.apiSessionActive && <SessionBetSeperate mark />}
+                <AllRateSeperate allBetsData={allBetsData} mark />
+                {matchDetail?.apiSessionActive || matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
               </Box>
             </Box>
-          )}
+          )
+        }
         {activeTab != "CRICKET" && activeTab != "INPLAY" && (
           <Box
             style={{

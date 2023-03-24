@@ -9,6 +9,7 @@ import {
   Pdf,
   UnLockIcon,
 } from "../admin/assets";
+import adminAxios from "../axios/adminAxios";
 import SearchInput from "./SearchInput";
 import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
@@ -133,25 +134,21 @@ const SampleData = {
 
 const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
-  const [data1, setData] = useState({});
+  const [data1, setData] = useState([]);
 
   async function getListOfUser() {
     try {
-      // let headers = {
-      //     "Content-Type": "application/json",
-      //     Authorization: `Bearer ${localStorage.getItem("JWT")}`
-      // };
-      // const { data } = await axios.get(`/fair-game-wallet/getAllUser`, { headers });
-      // await Promise.all(
-      //     data.data.map(async (element) => {
-      //         const { data } = await axios.get(`/role/roleById/${element.roleId}`);
-      //         element.role = data.roleName
-      //     })
-      // ).then((values) => {
-      //     console.log(values)
-      // });
-      // setData(data.data)
-      // console.log("page refreshed")
+      const { data } = await adminAxios.get(`/fair-game-wallet/getAllUser`);
+      await Promise.all(
+          data.data.map(async (element) => {
+              const { data } = await adminAxios.get(`/role/roleById/${element.roleId}`);
+              element.role = data.roleName
+          })
+      ).then((values) => {
+          console.log(values)
+      });
+      setData(data.data)
+      console.log("page refreshed", data,SampleData)
     } catch (e) {
       console.log(e);
     }
@@ -184,7 +181,7 @@ const AccountList = () => {
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
             <ListSubHeaderT />
-            {SampleData.data.map((element, i) => {
+            {data1.map((element, i) => {
               if (i % 2 === 0) {
                 return (
                   <Row

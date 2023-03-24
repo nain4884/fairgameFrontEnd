@@ -64,6 +64,7 @@ export const TransPassComp = () => {
       transPassword:"",
       confirmtransPassword:""
     }
+    console.log(!error[1].val , !error[2].val , passwordDetail[1].val !== "" , passwordDetail[2].val !== "")
     if (!error[1].val && !error[2].val && passwordDetail[1].val !== "" && passwordDetail[2].val !== "") {
       try {
         let response
@@ -167,7 +168,7 @@ export const TransPassComp = () => {
             sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
             color={"white"}
             onClick={() => {
-              generateTrandPassword()
+              generateTrandPassword();
             }}
           >
             Generate Password
