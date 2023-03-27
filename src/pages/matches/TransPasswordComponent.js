@@ -42,7 +42,7 @@ export const TransPasswordComponent = () => {
     </Box>)
 }
 
-export const TransPassComp = () => {
+export const TransPassComp = ({ onCancel }) => {
   const [passwordDetail, setPasswordDetail] = useState({
     1: { field: "transPassword", val: "" },
     2: { field: "confirmtransPassword", val: "" }
@@ -54,24 +54,24 @@ export const TransPassComp = () => {
   const [responseError, setResponseError] = useState()
   const [roleOfUser, setRoleOfUser] = useState("")
   const [transPassoword, setTransPassword] = useState("")
-  useEffect(()=>{
-    let {role, transPass} = setRole()
+  useEffect(() => {
+    let { role, transPass } = setRole()
     setRoleOfUser(role)
     setTransPassword(transPass)
-  },[])
+  }, [])
   const generateTrandPassword = async () => {
     let payload = {
-      transPassword:"",
-      confirmtransPassword:""
+      transPassword: "",
+      confirmtransPassword: ""
     }
-    console.log(!error[1].val , !error[2].val , passwordDetail[1].val !== "" , passwordDetail[2].val !== "")
+    console.log(!error[1].val, !error[2].val, passwordDetail[1].val !== "", passwordDetail[2].val !== "")
     if (!error[1].val && !error[2].val && passwordDetail[1].val !== "" && passwordDetail[2].val !== "") {
       try {
         let response
         payload = {
           ...payload,
-          transPassword:passwordDetail[1].val,
-          confirmtransPassword:passwordDetail[2].val
+          transPassword: passwordDetail[1].val,
+          confirmtransPassword: passwordDetail[2].val
         }
         switch (roleOfUser) {
           case 'role1':
@@ -88,7 +88,7 @@ export const TransPassComp = () => {
             break;
         }
         const { data } = response
-        if(data.message == "Transaction password update successfully.") {
+        if (data.message == "Transaction password update successfully.") {
           localStorage.setItem(transPassoword, true)
           window.location.reload()
         }
@@ -98,9 +98,9 @@ export const TransPassComp = () => {
       }
     }
   }
-  return(
+  return (
     <>
-    <Typography
+      <Typography
         sx={{
           color: "white",
           fontSize: { laptop: "18px", mobile: "20px" },
@@ -112,7 +112,7 @@ export const TransPassComp = () => {
       <Box
         sx={{
           width: "400px",
-          height: "400px",
+          height: "460px",
           minHeight: "200px",
           background: "#F8C851",
           borderRadius: "5px",
@@ -158,7 +158,7 @@ export const TransPassComp = () => {
             alignItems: "center",
             mx: "auto",
             marginTop: "60px",
-            marginBottom: "40px",
+            marginBottom: "30px",
             width: "80%",
             background: "#0B4F26",
             borderRadius: "5px",
@@ -174,7 +174,31 @@ export const TransPassComp = () => {
             Generate Password
           </Typography>
         </Box>
-          {responseError && <p style={{ color: "#fa1e1e" }}>{responseError}</p>}
+        <Box
+          sx={{
+            height: "50px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            mx: "auto",
+            marginTop: "10px",
+            marginBottom: "40px",
+            width: "80%",
+            background: "#0B4F26",
+            borderRadius: "5px",
+          }}
+        >
+          <Typography
+            sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
+            color={"white"}
+            onClick={() => {
+              onCancel();
+            }}
+          >
+            Cancel
+          </Typography>
+        </Box>
+        {responseError && <p style={{ color: "#fa1e1e" }}>{responseError}</p>}
       </Box>
     </>
   )

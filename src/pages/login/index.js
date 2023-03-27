@@ -9,6 +9,7 @@ import { stateActions } from '../../store/stateActions';
 import axios from '../../axios/axios';
 import { apiBasePath, LoginServerError } from '../../components/constants';
 import OTPInput, { ResendOTP } from "otp-input-react";
+import { setActiveRole } from '../../store/activeRole';
 
 export default function Login() {
     const theme = useTheme()
@@ -94,19 +95,20 @@ export default function Login() {
                 }
                 if (roleDetail) data.data.role = roleDetail
                 if (data.message === "User login successfully.") {
+                    dispatch(setActiveRole(foundRoles.data));
                     dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
                     switch (data.data.role.roleName) {
                         case "master":
-                            navigate('/master/live_market')
+                            navigate('/master/list_of_clients')
                             break;
                         case "superMaster":
-                            navigate('/super_master/live_market')
+                            navigate('/super_master/list_of_clients')
                             break;
                         case "admin":
-                            navigate('/admin/live_market')
+                            navigate('/admin/list_of_clients')
                             break;
                         case "superAdmin":
-                            navigate('/super_admin/live_market')
+                            navigate('/super_admin/list_of_clients')
                             break;
                         case "expert":
                             navigate('/expert/live')
@@ -115,10 +117,10 @@ export default function Login() {
                             navigate('/matches')
                             break;
                         case "fairGameWallet":
-                            navigate('/fairgame_wallet/live_market')
+                            navigate('/fairgame_wallet/list_of_clients')
                             break;
                         case "fairGameAdmin":
-                            navigate('/fairgame_admin/live_market')
+                            navigate('/fairgame_admin/list_of_clients')
                             break;
                         default:
                             navigate('/matches')

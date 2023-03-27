@@ -24,7 +24,7 @@ const Main = () => {
       }
     });
     setSocket(newSocket);
-    return () => newSocket.close();
+    return () => newSocket.off();
   }, [setSocket, loginJWT]);
   useEffect(() => {
     setRoleAndJWT()

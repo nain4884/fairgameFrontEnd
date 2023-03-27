@@ -122,15 +122,10 @@ const AddAccount = () => {
 
     const getAllRoles = async () => {
         let roles = []
-        try {
-            const { data } = await axios.get(`/role`, Detail);
-            data.map(element => {
-                roles.push({ role: element.roleName, roleId: element.id })
-            });
-            setRoles(roles)
-        } catch (e) {
-            console.log(e)
-        }
+        JSON.parse(localStorage.getItem('allRoles')).map(element => {
+            roles.push({ role: element.roleName, roleId: element.id })
+        });
+        setRoles(roles)
     }
 
     const addAccount = async () => {

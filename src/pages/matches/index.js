@@ -20,6 +20,8 @@ import ProfitLossComponent from "../../components/ProfitLossComponent";
 import { ChangePassword } from "./ChangePassword";
 import ManualBookMakerMarket from "../../components/ManualBookMakerMarket";
 import userAxios from "../../axios/userAxios";
+import io from 'socket.io-client';
+import { microServiceApiPath } from "../../components/constants";
 export default function Matches() {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
@@ -32,11 +34,18 @@ export default function Matches() {
 
   const Matches = () => {
     const [id, setId] = useState('')
+    const [socket, setSocket] = useState(null);
     const doSetId = (k) => {
       setId(k)
     }
     useEffect(() => {
-      console.log("id",id)
+      const socket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
+      socket.emit("init", { id })
+      console.log("socket", socket)
+      socket.on("marketRate", (data) => {
+        console.log("marketRate Response", data);
+      })
+      return () => socket.off();
     }, [id])
     const doNavigateWithState = (e) => {
       navigate("/matchDetail", { state: e });
@@ -61,7 +70,6 @@ export default function Matches() {
               <MatchesComponent
                 // onClick={() => {
                 //   dispatch(setActive("CRICKET"));
-                //   console.log("id",id)
                 //   navigate("/home",{state:id});
                 // }}
                 // matches={matches}
@@ -98,10 +106,8 @@ export default function Matches() {
         ) : (
           <Box sx={{ overflowX: "hidden", minHeight: "100vh" }}>
             <EventListing selected={activeTab} setSelected={setSelected} />
-            {/* <div style={{ height: "1vh" }} /> */}
             {(activeTab == "CRICKET" || activeTab == "INPLAY") && (
               <MatchesComponent
-                // onClick={() => { console.log("id",id);navigate("/home",{state:id});}}
                 doNavigateWithState={doNavigateWithState}
                 setMatchId={doSetId}
                 macthId={id} />
@@ -144,6 +150,8 @@ export default function Matches() {
     const [matchOddsData, setMatchOddsData] = useState([])
     const [matchSessionData, setMatchSessionData] = useState([])
     const [allBetsData, setAllBetsData] = useState([])
+    const [socket, setSocket] = useState(null);
+    const [marketId, setMarketId] = useState('');
     async function getThisMatch(id) {
       //localhost:3100/game-match/matchDetail/aa56cbb1-5f29-4514-92bb-087c976447a2
       try {
@@ -155,6 +163,7 @@ export default function Matches() {
             matchSessionData.push(element)
           }
         });
+        setMarketId(response.data.marketId)
         setMatchDetail(response.data)
       } catch (e) {
         console.log("response", e.response.data)
@@ -163,7 +172,6 @@ export default function Matches() {
     async function getAllBetsData() {
       try {
         let response = await userAxios.get(`/game-match/getAllMatch?bets=1&field=id,marketId`);
-        // let response = await userAxios.get(`/betting/getPlacedBets`);
         setAllBetsData(response.data[0])
       } catch (e) {
         console.log(e)
@@ -172,7 +180,16 @@ export default function Matches() {
     useEffect(() => {
       getThisMatch(id)
       getAllBetsData()
-    }, [])
+    }, [marketId])
+    useEffect(() => {
+      const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
+      setSocket(newSocket)
+      newSocket.emit("init", { id: marketId })
+      newSocket.on("marketRate", (data) => {
+        console.log("marketRate Response", data);
+      })
+      return () => newSocket.off();
+    }, [marketId])
     return (
       <Box
         sx={{
