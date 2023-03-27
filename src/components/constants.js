@@ -1,9 +1,8 @@
 module.exports = {
 
-	'apiBasePath': 'http://localhost:4000', // server url
+	apiBasePath: 'http://localhost:3100', // server url
+	microServiceApiPath: 'http://localhost:3200',
 	'imageBasePath': 'http://localhost:4000/public/images/', /// server image base path
-
-	anupamBasePath: "http://localhost:3100",
 
 	//   'apiBasePath': 'http://18.169.59.243:4000', // server url
 	//   'imageBasePath': 'http://18.169.59.243:4000/public/images/' , /// server image base path

@@ -1,5 +1,7 @@
 import { Box, Typography } from "@mui/material"
+import { useEffect, useState } from "react"
 import { DELETE, MyBet } from "../assets"
+import userAxios from "../axios/userAxios"
 import { ARROWDOWN, ARROWUP } from "../expert/assets"
 import StyledImage from './StyledImage'
 const data = [
@@ -19,10 +21,43 @@ const data = [
         stake: "1000.00",
         country: 'INDIA'
     },
-
 ]
 const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
     // console.log(allBetsData)
+    const [Bets, setBets] = useState([])
+    const [allSessionBets, setAllSessionBets] = useState([])
+    function doBets() {
+        allBetsData.forEach(element => {
+            element.bettings.forEach(element2 => {
+                Bets.push({ ...element2, marketId: element.marketId })
+            });
+        });
+    }
+    function doEmptyGetAllBets() {
+        setAllSessionBets([])
+    }
+    useEffect(() => {
+        doBets()
+        doEmptyGetAllBets()
+        getAllBetsData()
+    }, [Bets, allBetsData])
+    async function getAllBetsData() {
+        Promise.all(
+            Bets.forEach(async element => {
+                let payload = {
+                    "match_id": element.match_id
+                }
+                try{
+                    let {data} = await userAxios.post(`/betting/getPlacedBets`, payload);
+                    setAllSessionBets([...allSessionBets, ...data.data])
+                }catch(e){
+                    console.log(e)
+                }
+            })
+        ).then((values) => {
+            console.log("allRateBets,values",allSessionBets,values);
+        });
+    }
     return (
         <Box sx={{ width: { mobile: "100%", laptop: '100%' }, marginY: { mobile: '.2vh', laptop: '1vh' }, padding: .2, background: 'white', height: '414px' }}>
             <Box sx={[{ width: '100%', height: "42px", justifyContent: 'space-between', alignItems: 'center', paddingLeft: '10px', paddingRight: '4px', marginBottom: '.1vh', display: 'flex', }, (theme) => ({

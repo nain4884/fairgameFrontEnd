@@ -36,10 +36,10 @@ export default function Matches() {
       setId(k)
     }
     useEffect(() => {
-      // console.log(id)
+      console.log("id",id)
     }, [id])
     const doNavigateWithState = (e) => {
-      navigate("/home", { state: e });
+      navigate("/matchDetail", { state: e });
     }
     return (
       <>
@@ -164,7 +164,7 @@ export default function Matches() {
       try {
         let response = await userAxios.get(`/game-match/getAllMatch?bets=1&field=id,marketId`);
         // let response = await userAxios.get(`/betting/getPlacedBets`);
-        setAllBetsData(response.data)
+        setAllBetsData(response.data[0])
       } catch (e) {
         console.log(e)
       }
@@ -677,7 +677,7 @@ export default function Matches() {
           >
             <SideBar />
             {window.location.pathname === "/matches" && <Matches />}
-            {window.location.pathname === "/home" && <Home />}
+            {window.location.pathname === "/matchDetail" && <Home />}
           </Box>
         </>
       )}

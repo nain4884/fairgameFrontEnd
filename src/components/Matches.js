@@ -153,47 +153,39 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
 const MatchesComponent = ({ doNavigateWithState }) => {
 
     const [matchData, setMatchData] = useState([])
-    const [tempMatchData, setTempMatchData] = useState([])
-    const [tempMatchDataInUse, setTempMatchDataInUse] = useState([])
     const [pageCount, setPageCount] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
     const [pageLimit, setPageLimit] = useState(5)
 
     useEffect(() => {
-        tempDataSet()
-        paginate()
-    }, [matchData,currentPage])
-
-    useEffect(() => {
         getAllMatch()
-    }, [pageCount])
+    }, [currentPage, pageCount])
 
+    // useEffect(() => {
+    //     console.log("matchData",matchData)
+    // }, [matchData,pageCount])
+    console.log("pageCount", pageCount, matchData)
     async function getAllMatch() {
         try {
-            let response = await userAxios.get(`/game-match/getAllMatch?bets=1`);
-            setMatchData(response.data)
+            let { data } = await userAxios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
+            if(data.length > 0) {
+                console.log("data", data,matchData)
+
+                setMatchData(data[0])
+                setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
+            }
         } catch (e) {
             console.log(e)
         }
     }
 
-    function tempDataSet() {
-        setTempMatchData([...matchData, ...matchData, ...matchData, ...matchData, ...matchData, ...matchData, ...matchData])
-    }
-
-    function paginate() {
-        setPageCount(Math.ceil(parseInt(tempMatchData.length) / pageLimit))
-        setTempMatchDataInUse(tempMatchData.splice(((currentPage - 1) * pageLimit), pageLimit))
-    }
-
     function callPage(e) {
         setCurrentPage(parseInt(e.target.outerText))
-        setTempMatchDataInUse(tempMatchData.splice(((parseInt(e.target.outerText) - 1) * pageLimit), pageLimit))
     }
 
     return (
         <>
-            {tempMatchDataInUse?.map(match => {
+            {matchData?.map(match => {
                 return (
                     <Odds onClick={() => { doNavigateWithState(match.id) }} top={true} blur={false} match={match} />
                 )

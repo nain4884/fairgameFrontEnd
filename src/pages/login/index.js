@@ -7,7 +7,7 @@ import { Input, CustomButton, AuthLogo, AuthBackground, ReCAPTCHACustom } from '
 import { useDispatch } from 'react-redux';
 import { stateActions } from '../../store/stateActions';
 import axios from '../../axios/axios';
-import { LoginServerError } from '../../components/constants';
+import { apiBasePath, LoginServerError } from '../../components/constants';
 import OTPInput, { ResendOTP } from "otp-input-react";
 
 export default function Login() {
@@ -80,6 +80,7 @@ export default function Login() {
     async function loginToAccount() {
         changeErrors()
         if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") {
+            console.log(apiBasePath)
             try {
                 let { data } = await axios.post(`/auth/login`, {
                     "username": loginDetail[1].val,
