@@ -1,9 +1,8 @@
 module.exports = {
 
-	'apiBasePath': 'http://localhost:4000', // server url
+	apiBasePath: 'http://localhost:3100', // server url
+	microServiceApiPath: 'http://localhost:3200',
 	'imageBasePath': 'http://localhost:4000/public/images/', /// server image base path
-
-	anupamBasePath: "http://localhost:3100",
 
 	//   'apiBasePath': 'http://18.169.59.243:4000', // server url
 	//   'imageBasePath': 'http://18.169.59.243:4000/public/images/' , /// server image base path
@@ -32,7 +31,7 @@ module.exports = {
 	'Save': 1,
 	'Launch': 2,
 	'Close': 3,
-	
+
 	// --------------------------------------Session Bets Type -------------------------------------------------//
 
 	'Manual': 1,
@@ -47,7 +46,14 @@ module.exports = {
 
 
 	// -------React Captcha--------//
+
+	REACT_APP_SECRET_KEY: "6Lc7BsAiAAAAAA6gDOpiBsb8fybpUYfS8_qLY9NS",
+	REACT_APP_SITE_KEY: "6Lc7BsAiAAAAAEymVuF8kjJeoqPFSSgkxI3Euhve",
+
+
+	// ----------- Matches ---------- //
+
+	matchType: ['cricket','tennis','football','ice','hockey','volleyball','politics','basketball','table_tennis','darts'],
+	defaultMarketId: 4312
 	
-	REACT_APP_SECRET_KEY :"6Lc7BsAiAAAAAA6gDOpiBsb8fybpUYfS8_qLY9NS",
-	REACT_APP_SITE_KEY :"6Lc7BsAiAAAAAEymVuF8kjJeoqPFSSgkxI3Euhve"
 }

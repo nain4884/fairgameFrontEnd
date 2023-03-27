@@ -1,8 +1,9 @@
 import { useTheme } from "@emotion/react"
-import { Box, Typography, useMediaQuery } from "@mui/material"
+import { Box, Pagination, Typography, useMediaQuery } from "@mui/material"
 import { display, width } from "@mui/system"
 import { useEffect, useState } from "react"
 import { Header, Info, Lock, TEAMLOGO, TEAMLOGO1 } from "../assets"
+import userAxios from "../axios/userAxios"
 import './index.css'
 const SeperateBox = ({ color, empty, value, value2, lock }) => {
     const theme = useTheme()
@@ -150,271 +151,52 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
     )
 }
 const MatchesComponent = ({ doNavigateWithState }) => {
+
     const [matchData, setMatchData] = useState([])
-    const getAllMatches = async () => {
-        try {
-            const { data } = {
-                data: [
-                    {
-                        "id": "ea46118c-501f-4e48-8ccf-d9dd9023bc2b",
-                        "isActive": true,
-                        "createAt": "2023-03-02T11:16:44.169Z",
-                        "updateAt": "2023-03-02T11:16:44.169Z",
-                        "createdBy": "8152710e-e1e8-427e-bf89-426fff6f7028",
-                        "deletedAt": null,
-                        "gameType": "cricket",
-                        "title": "ind vs pak",
-                        "marketId": "2",
-                        "teamA": "india",
-                        "teamB": "pak",
-                        "teamC": null,
-                        "startAt": "2023-05-05T10:26:36.070Z",
-                        "stopAt": null,
-                        "matchImage": null,
-                        "teamA_Image": null,
-                        "teamB_Image": null,
-                        "match_max_bet": null,
-                        "betfair_match_min_bet": 20,
-                        "betfair_match_max_bet": 80,
-                        "betfair_session_min_bet": 0,
-                        "betfair_session_max_bet": 0,
-                        "betfair_bookmaker_min_bet": 0,
-                        "betfair_bookmaker_max_bet": 0,
-                        "bookmaker_manual_min_bet": 0,
-                        "bookmaker_manual_max_bet": 0,
-                        "manaual_session_min_bet": 0,
-                        "manaual_session_max_bet": 0,
-                        "apiMatchActive": null,
-                        "apiBookMakerActive": null,
-                        "apiSessionActive": null,
-                        "manualBookMakerActive": null,
-                        "manualSessionActive": null,
-                        "bettings": [
-                            {
-                                "id": "dff6963b-5208-411e-bbfd-357b29b4d9fb",
-                                "isActive": true,
-                                "createAt": "2023-03-02T11:17:28.077Z",
-                                "updateAt": "2023-03-02T11:17:28.077Z",
-                                "createdBy": "8152710e-e1e8-427e-bf89-426fff6f7028",
-                                "deletedAt": null,
-                                "match_id": "ea46118c-501f-4e48-8ccf-d9dd9023bc2b",
-                                "matchType": "cricket",
-                                "bet_condition": null,
-                                "teamA_Back": null,
-                                "teamB_Back": null,
-                                "drawRate": null,
-                                "no_rate": null,
-                                "yes_rate": null,
-                                "rate_percent": null,
-                                "suspended": "suspended",
-                                "teamA_suspend": null,
-                                "teamB_suspend": null,
-                                "teamA_lay": 50,
-                                "teamB_lay": 75,
-                                "selectionId": null,
-                                "sessionBet": false,
-                                "betStatus": 1
-                            }
-                        ]
-                    },
-                    {
-                        "id": "60ffa666-1f6d-427c-943d-9f114442be43",
-                        "isActive": true,
-                        "createAt": "2023-03-06T06:27:39.965Z",
-                        "updateAt": "2023-03-06T06:27:39.965Z",
-                        "createdBy": "3feb1b8d-a55a-4df2-b3c9-9f9aeb6ef0f0",
-                        "deletedAt": null,
-                        "gameType": "cricket",
-                        "title": "ind vs aus",
-                        "marketId": "3",
-                        "teamA": "india",
-                        "teamB": "aus",
-                        "teamC": null,
-                        "startAt": "2023-05-05T10:26:36.070Z",
-                        "stopAt": null,
-                        "matchImage": null,
-                        "teamA_Image": null,
-                        "teamB_Image": null,
-                        "match_max_bet": null,
-                        "betfair_match_min_bet": 20,
-                        "betfair_match_max_bet": 80,
-                        "betfair_session_min_bet": 0,
-                        "betfair_session_max_bet": 0,
-                        "betfair_bookmaker_min_bet": 0,
-                        "betfair_bookmaker_max_bet": 0,
-                        "bookmaker_manual_min_bet": 0,
-                        "bookmaker_manual_max_bet": 0,
-                        "manaual_session_min_bet": 0,
-                        "manaual_session_max_bet": 0,
-                        "apiMatchActive": null,
-                        "apiBookMakerActive": null,
-                        "apiSessionActive": null,
-                        "manualBookMakerActive": null,
-                        "manualSessionActive": null,
-                        "bettings": [
-                            {
-                                "id": "7d93f2c4-6134-49c5-bba7-420d291c7e14",
-                                "isActive": true,
-                                "createAt": "2023-03-06T06:29:12.587Z",
-                                "updateAt": "2023-03-06T06:29:12.587Z",
-                                "createdBy": "3feb1b8d-a55a-4df2-b3c9-9f9aeb6ef0f0",
-                                "deletedAt": null,
-                                "match_id": "60ffa666-1f6d-427c-943d-9f114442be43",
-                                "matchType": "cricket",
-                                "bet_condition": null,
-                                "teamA_Back": null,
-                                "teamB_Back": null,
-                                "drawRate": null,
-                                "no_rate": null,
-                                "yes_rate": null,
-                                "rate_percent": null,
-                                "suspended": "suspended",
-                                "teamA_suspend": null,
-                                "teamB_suspend": null,
-                                "teamA_lay": 90,
-                                "teamB_lay": 55,
-                                "selectionId": null,
-                                "sessionBet": false,
-                                "betStatus": 1
-                            },
-                            {
-                                "id": "1e8cd1d2-dbe5-40b9-be0c-d9458a0f6db2",
-                                "isActive": true,
-                                "createAt": "2023-03-06T06:32:41.041Z",
-                                "updateAt": "2023-03-18T06:26:04.305Z",
-                                "createdBy": "3feb1b8d-a55a-4df2-b3c9-9f9aeb6ef0f0",
-                                "deletedAt": null,
-                                "match_id": "60ffa666-1f6d-427c-943d-9f114442be43",
-                                "matchType": "cricket",
-                                "bet_condition": null,
-                                "teamA_Back": 22,
-                                "teamB_Back": null,
-                                "drawRate": null,
-                                "no_rate": null,
-                                "yes_rate": null,
-                                "rate_percent": null,
-                                "suspended": "suspended",
-                                "teamA_suspend": null,
-                                "teamB_suspend": null,
-                                "teamA_lay": 50,
-                                "teamB_lay": 50,
-                                "selectionId": null,
-                                "sessionBet": false,
-                                "betStatus": 1
-                            }
-                        ]
-                    },
-                    {
-                        "id": "aa56cbb1-5f29-4514-92bb-087c976447a2",
-                        "isActive": true,
-                        "createAt": "2023-03-10T05:47:41.698Z",
-                        "updateAt": "2023-03-10T05:47:41.698Z",
-                        "createdBy": "dd432377-9f9d-4248-917d-85b16dfeb7e7",
-                        "deletedAt": null,
-                        "gameType": "cricket",
-                        "title": "ind vs aus",
-                        "marketId": "3",
-                        "teamA": "india",
-                        "teamB": "aus",
-                        "teamC": null,
-                        "startAt": "2023-05-05T10:26:36.070Z",
-                        "stopAt": null,
-                        "matchImage": null,
-                        "teamA_Image": null,
-                        "teamB_Image": null,
-                        "match_max_bet": null,
-                        "betfair_match_min_bet": 20,
-                        "betfair_match_max_bet": 80,
-                        "betfair_session_min_bet": 0,
-                        "betfair_session_max_bet": 0,
-                        "betfair_bookmaker_min_bet": 0,
-                        "betfair_bookmaker_max_bet": 0,
-                        "bookmaker_manual_min_bet": 0,
-                        "bookmaker_manual_max_bet": 0,
-                        "manaual_session_min_bet": 0,
-                        "manaual_session_max_bet": 0,
-                        "apiMatchActive": null,
-                        "apiBookMakerActive": null,
-                        "apiSessionActive": null,
-                        "manualBookMakerActive": null,
-                        "manualSessionActive": null,
-                        "bettings": [
-                            {
-                                "id": "a681e36d-0856-409b-9891-c88e4a4f80e8",
-                                "isActive": true,
-                                "createAt": "2023-03-10T05:50:26.045Z",
-                                "updateAt": "2023-03-10T05:50:26.045Z",
-                                "createdBy": "dd432377-9f9d-4248-917d-85b16dfeb7e7",
-                                "deletedAt": null,
-                                "match_id": "aa56cbb1-5f29-4514-92bb-087c976447a2",
-                                "matchType": "cricket",
-                                "bet_condition": null,
-                                "teamA_Back": 49,
-                                "teamB_Back": 23,
-                                "drawRate": null,
-                                "no_rate": null,
-                                "yes_rate": null,
-                                "rate_percent": null,
-                                "suspended": "suspended",
-                                "teamA_suspend": null,
-                                "teamB_suspend": null,
-                                "teamA_lay": 50,
-                                "teamB_lay": 24,
-                                "selectionId": null,
-                                "sessionBet": false,
-                                "betStatus": 0
-                            },
-                            {
-                                "id": "2254b223-99d2-4a8b-928e-246977d76266",
-                                "isActive": true,
-                                "createAt": "2023-03-10T05:53:06.854Z",
-                                "updateAt": "2023-03-10T05:53:06.854Z",
-                                "createdBy": "dd432377-9f9d-4248-917d-85b16dfeb7e7",
-                                "deletedAt": null,
-                                "match_id": "aa56cbb1-5f29-4514-92bb-087c976447a2",
-                                "matchType": "cricket",
-                                "bet_condition": "10 Over run",
-                                "teamA_Back": null,
-                                "teamB_Back": null,
-                                "drawRate": null,
-                                "no_rate": 20,
-                                "yes_rate": 21,
-                                "rate_percent": "100-100",
-                                "suspended": "suspended",
-                                "teamA_suspend": null,
-                                "teamB_suspend": null,
-                                "teamA_lay": null,
-                                "teamB_lay": null,
-                                "selectionId": null,
-                                "sessionBet": true,
-                                "betStatus": 0
-                            }
-                        ]
-                    }
-                ],
-            };
-            // console.log(data,macthId);
-            setMatchData(data)
-        } catch (e) {
-            console.log(e);
-        }
-    };
+    const [pageCount, setPageCount] = useState(10)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [pageLimit, setPageLimit] = useState(5)
+
     useEffect(() => {
-        getAllMatches()
-    }, [])
+        getAllMatch()
+    }, [currentPage, pageCount])
+
+    // useEffect(() => {
+    //     console.log("matchData",matchData)
+    // }, [matchData,pageCount])
+    console.log("pageCount", pageCount, matchData)
+    async function getAllMatch() {
+        try {
+            let { data } = await userAxios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
+            if(data.length > 0) {
+                console.log("data", data,matchData)
+
+                setMatchData(data[0])
+                setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    function callPage(e) {
+        setCurrentPage(parseInt(e.target.outerText))
+    }
+
     return (
         <>
-            {/* <Odds onClick={onClick} top={false} /> */}
             {matchData?.map(match => {
                 return (
-                    <Odds onClick={()=>{doNavigateWithState(match.id)}} top={true} match={match} />
+                    <Odds onClick={() => { doNavigateWithState(match.id) }} top={true} blur={false} match={match} />
                 )
             })}
+            <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} />
             {/* <Odds onClick={onClick} top={false} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} /> */}
         </>
     )
+
 }
 
 export default MatchesComponent;

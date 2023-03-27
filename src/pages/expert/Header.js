@@ -61,7 +61,7 @@ const CustomHeader = ({ }) => {
                                 setMobileOpen(!mobileOpen)
                             }} src={Draw} sx={{ height: { laptop: "24px", mobile: "20px" }, width: "auto" }} />
                             <StyledImage src={logo} sx={{ height: { laptop: "45px", mobile: "40px" }, width: "auto", marginLeft: { laptop: "20px", mobile: "10px" } }} />
-                        </Box>{console.log("activeUser",activeUser)}
+                        </Box>
                         {activeUser != 1 && activeUser != '2' && <ButtonHead onClick={(e) => {
                             dispatch(setSelected(0))
                             navigate("/expert/home1")
