@@ -15,7 +15,16 @@ import MatchSubmit1 from "../fairGameWallet/MatchSubmit1";
 import CustomHeader from "./Header";
 import Home from "../fairGameWallet/List_Of_Client";
 import DepositWallet from "../fairGameWallet/DepositWallet";
+import { useContext } from "react";
+import { AuthContext } from "../../Authprovider";
 const FairGameWalletRoutes = () => {
+
+  const { tokenAdmin } = useContext(AuthContext);
+
+  if (!tokenAdmin) {
+    window.location.reload()
+  }
+
   return (
     <>
       <CustomHeader />

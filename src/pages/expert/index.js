@@ -6,8 +6,16 @@ import MatchScreen from "./MatchScreen"
 import BookMakerMarket from "./BookMakerMarket"
 import AddBookMakerMarket from "./AddBookMakerMarket"
 import Login from "./Login"
+import { useContext } from "react";
+import { AuthContext } from "../../Authprovider";
 
 const ExportRoutes = () => {
+    
+  const { tokenExpert } = useContext(AuthContext);
+
+  if (!tokenExpert) {
+    window.location.reload()
+  }
     return (
         <Routes>
             <Route path="/home1" element={<Home1 />} />

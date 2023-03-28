@@ -10,6 +10,7 @@ import userAxios from '../axios/userAxios'
 import masterAxios from '../axios/masterAxios'
 import { useNavigate } from "react-router-dom"
 import { setRole } from "./SetRole"
+import { onChangeKeyCheck } from "./PassKeyCheck"
 
 const containerStyles = {
     marginTop: "10px"
@@ -75,6 +76,7 @@ const AddAccount = () => {
         14: { field: "adminTransPassword", val: false },
         15: { field: "myPartnership", val: false }
     })
+    
     const [userAlreadyExist, setUserAlredyExist] = useState('')
     const [roles, setRoles] = useState([])
 
@@ -143,7 +145,8 @@ const AddAccount = () => {
             a_partnership: 0,
             remark: "",
             adminTransPassword: "",
-            myPartnership: 0
+            myPartnership: 0,
+            credit_refer: 0
         }
         try {
             function checkRoleId(age) {
@@ -164,7 +167,8 @@ const AddAccount = () => {
                     a_partnership: Detail[12].val,
                     remark: Detail[13].val,
                     adminTransPassword: Detail[14].val,
-                    myPartnership: Detail[15].val
+                    myPartnership: Detail[15].val,
+                    credit_refer: Detail[8].val
                 }
                 let response
                 switch (roleOfUser) {
@@ -186,6 +190,7 @@ const AddAccount = () => {
             }
         } catch (e) {
             console.log(e)
+            setSuccessShow("")
             setErrorShow(e.response.data.message)
         }
     }
@@ -205,11 +210,7 @@ const AddAccount = () => {
         setRoleOnly()
         setTypeForAccountType()
     }, [loginRole, Detail, error])
-
-    useEffect(()=>{
-        checkUserName(Detail[1].val)
-    },[Detail[1].val])
-
+    
     async function checkUserName(val) {
         try{
             let body = {
@@ -229,19 +230,41 @@ const AddAccount = () => {
         }
     }
 
+    async function doSendErrorForPassword(val) {
+        try{
+            setError({
+                ...error, [2]: {
+                    ...Detail[2],
+                    val: onChangeKeyCheck(val)
+                }
+            })
+            // console.log(error)
+            // if(data.data.exist === true) {
+            //     setError({...error,[1]:{
+            //         ...error[1],
+            //         val: true
+            //     }})
+            //     setUserAlredyExist('User Already Exist With This Name')
+            // }
+        }catch(e){
+            console.log(e)
+        }
+    }
+
     useEffect(() => {
         setDownParterShipVal(Detail[10].val, Detail[11].val)
-        // console.log(Detail[12].val)
     }, [Detail[10].val, Detail[11].val])
+
+    console.log(error[14],Detail[14])
 
     return (
         <Box sx={{ paddingY: "20px", paddingTop: "10px", marginX: "1%" }}>
             <Typography sx={{ color: "white", fontSize: "18px", fontWeight: "600" }}>Add Account</Typography>
             <Box sx={{ background: "#F8C851", minHeight: "60vh", borderRadius: "5px", padding: "20px", paddingTop: "10px", marginTop: "10px", display: "flex" }}>
                 <Box sx={{ flex: 1 }}>
-                    <Input placeholder="Username" titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Username"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={1} />
+                    <Input placeholder="Username" titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Username"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={1} onFocusOut={checkUserName} toFoucs={true} />
                     {error[1].val && <p style={{ color: "#fa1e1e" }}>{userAlreadyExist?userAlreadyExist:'Field Required'}</p>}
-                    <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={2} />
+                    <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={2} onFocusOut={doSendErrorForPassword} toFoucs={true} /> {/** handleError={handleError} checkMesasge={true} */}
                     {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
                     <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Confirm User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={3} />
                     {Detail[2].val !== Detail[3].val && <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>}
@@ -266,9 +289,9 @@ const AddAccount = () => {
                         placeholder="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
                         titleStyle={titleStyles} inputStyle={imputStyle} inputProps={{ multiline: true, rows: 10 }} inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "205px", mobile: "205px" }, width: '50%' }} title={"Remark"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={13} />
                     <Input placeholder="Donottel" containerStyle={{ ...containerStyles, width: "50%" }} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={{ ...inputContainerStyle }} title={"Admin Transaction Password"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={14} />
-                    {error[14].val && <div style={{ width: "50%" }}> <p style={{ color: "#fa1e1e" }}>{error[14].val}</p> </div>}
+                    {!Detail[14].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
                     <Button className="cursor-pointer" sx={{ background: "#0B4F26", width: "50%", display: "flex", justifyContent: "center", border: "2px solid black", alignItems: "center", borderRadius: "5px", height: "45px", marginTop: "35px", color: "white", fontSize: "18px" }} onClick={(e) => { addAccount() }}>Create</Button>
-                    {errorShow && !successShow && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+                    {errorShow && !successShow && <p style={{ color: "#fa1e1e" }}>{errorShow}</p>}
                     {successShow && <p style={{ color: "#0B4F26" }}>{successShow}</p>}
                     {errorShow === "User need to first create the transaction password." && <Button className="cursor-pointer" sx={{ background: "#0B4F26", width: "50%", display: "flex", justifyContent: "center", border: "2px solid black", alignItems: "center", borderRadius: "5px", height: "45px", marginTop: "35px", color: "white", fontSize: "18px" }} onClick={(e) => {
                         navigate(`/${window.location.pathname.split("/")[1]}/createTransPassword`);

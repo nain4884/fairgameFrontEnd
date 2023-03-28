@@ -78,6 +78,33 @@ export default function Login() {
         )
     }
 
+    const handleNavigate = (path, type) => {
+        // Set a timeout for 2 seconds before navigating
+        let token = ''
+        console.log("inside handleNavigate tokenAdmin")
+        setTimeout(() => {
+            switch (type) {
+                case 'master':
+                    token = localStorage.getItem('JWTmaster')
+                    break;
+                case 'expert':
+                    token = localStorage.getItem('JWTexpert')
+                    break;
+                case 'user':
+                    token = localStorage.getItem('JWTuser')
+                    break;
+                case 'admin':
+                    token = localStorage.getItem('JWTadmin')
+                    break;
+            }
+            if (token != '') {
+                console.log("tokenAdmin 3000")
+                navigate(path);
+            }
+        }, 0);
+    };
+
+
     async function loginToAccount() {
         changeErrors()
         if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") {
@@ -99,31 +126,31 @@ export default function Login() {
                     dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
                     switch (data.data.role.roleName) {
                         case "master":
-                            navigate('/master/list_of_clients')
+                            handleNavigate('/master/list_of_clients', 'master')
                             break;
                         case "superMaster":
-                            navigate('/super_master/list_of_clients')
+                            handleNavigate('/super_master/list_of_clients', 'master')
                             break;
                         case "admin":
-                            navigate('/admin/list_of_clients')
+                            handleNavigate('/admin/list_of_clients', 'master')
                             break;
                         case "superAdmin":
-                            navigate('/super_admin/list_of_clients')
+                            handleNavigate('/super_admin/list_of_clients', 'master')
                             break;
                         case "expert":
-                            navigate('/expert/live')
+                            handleNavigate('/expert/live', 'expert')
                             break;
                         case "user":
-                            navigate('/matches')
+                            handleNavigate('/matches', 'user')
                             break;
                         case "fairGameWallet":
-                            navigate('/fairgame_wallet/list_of_clients')
+                            handleNavigate('/fairgame_wallet/list_of_clients', 'admin')
                             break;
                         case "fairGameAdmin":
-                            navigate('/fairgame_admin/list_of_clients')
+                            handleNavigate('/fairgame_admin/list_of_clients', 'admin')
                             break;
                         default:
-                            navigate('/matches')
+                            handleNavigate('/matches', 'user')
                             break;
                     }
                 }

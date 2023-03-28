@@ -3,13 +3,10 @@ import { Box } from "@mui/system"
 import { useEffect, useState } from "react";
 import { onChangeKeyCheck } from "./PassKeyCheck";
 
-const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, titleStyle, inputStyle, inputContainerStyle, img, inputProps, setDetail, Detail, setError, error, place, type, typeOfRead, autoMaticFillValue }) => {
+const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, titleStyle, inputStyle, inputContainerStyle, img, inputProps, setDetail, Detail, setError, error, place, type, typeOfRead, autoMaticFillValue, onFocusOut, toFoucs, handleError, checkMesasge }) => {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('tablet'));
     const [showPass, setShowPass] = useState(true)
-
-    useEffect(() => {
-    }, [error])
 
     return (
         <Box sx={[{}, containerStyle]}>
@@ -44,7 +41,6 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                                 val: type === "Number" ? Detail[place].val === 0 : Detail[place].val === ""
                             }
                         })
-                        console.log(error)
                     }}
                     disabled
                 /> : <TextField variant="standard"
@@ -81,7 +77,9 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                                 val: type === "Number" ? Detail[place].val === 0 : Detail[place].val === ""
                             }
                         })
+                        // checkMesasge && errorHandle(Detail[place].val)
                     }}
+                    onBlur={() => { toFoucs && onFocusOut(Detail[place].val) }}
                 />}
                 {img && <img src={img} onClick={() => {
                     setShowPass(!showPass)

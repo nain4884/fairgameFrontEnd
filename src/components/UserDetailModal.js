@@ -159,7 +159,7 @@ export default function UserDetailModal({
             onClick={() => {
               setSelected(2);
             }}
-            title={"Set Credit Limit"}
+            title={"set credit reference"}
             isSelected={selected == 2}
             labelStyle={{}}
             containerStyle={{ marginLeft: "10px", flex: 1 }}
