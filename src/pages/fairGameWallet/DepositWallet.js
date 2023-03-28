@@ -16,6 +16,8 @@ export default function DepositWallet() {
         3: { field: "Transaction_Password", val: "" },
         4: { field: "Remark", val: "" }
     })
+    const [userId, setUserId] = useState('')
+    const [balance, setBalance] = useState('')
     let defaultError = {
         1: { field: "Previous_Balance", val: true },
         2: { field: "amount", val: true },
@@ -28,19 +30,18 @@ export default function DepositWallet() {
         3: { field: "Transaction_Password", val: false },
         4: { field: "Remark", val: false }
     })
-    async function getUserDetail () {
-        try{
-            const response = await adminAxios.post('users/profile');
-            console.log(response)
+    async function getUserDetail() {
+        try {
+            const { data } = await adminAxios.get('users/profile');
+            setUserId(data.data.id)
+            setBalance(data.data.current_balance)
         } catch (e) {
             console.log(e)
         }
     }
-    useEffect(()=>{
+    useEffect(() => {
         getUserDetail()
-        // console.log(window.location.pathname.split("/")[2]==='withdraw', Detail[2].val !== 0 || isNaN(Detail[2].val))
-        console.log(isNaN(Detail[2].val) || Detail[2].val === 0)
-    },[Detail])
+    }, [])
     async function submit() {
         let trans_type
         if (window.location.pathname.split("/")[2] === 'deposit') {
@@ -49,7 +50,7 @@ export default function DepositWallet() {
             trans_type = window.location.pathname.split("/")[2]
         }
         const defaultDepositObj = {
-            userId: "", //userId is not there
+            userId,
             amount: Detail[2].val,
             trans_type,
             adminTransPassword: Detail[3].val,
@@ -57,6 +58,8 @@ export default function DepositWallet() {
         };
         try {
             const { data } = await adminAxios.post(`/fair-game-wallet/updateBalance`, defaultDepositObj);
+            console.log("data", data)
+            // window.location.reload()
         } catch (e) {
             console.log(e);
         }
@@ -82,7 +85,7 @@ export default function DepositWallet() {
                             </Box>
                             <Box sx={{ flex: 1, background: "#0B4F26", marginTop: "2px", display: "flex", paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D" }}>
                                 <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Previous Balance</Typography>
-                                <Typography sx={{ color: "white", fontWeight: '600' }}>0</Typography>
+                                <Typography sx={{ color: "white", fontWeight: '600' }}>{balance}</Typography>
                             </Box>
                         </Box>
                         <Box sx={{ marginLeft: "2px", flex: 1 }}>
@@ -91,7 +94,7 @@ export default function DepositWallet() {
                             </Box>
                             <Box sx={{ flex: 1, background: "#0B4F26", marginTop: "2px", display: "flex", paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D" }}>
                                 <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>New Balance</Typography>
-                                <Typography sx={{ color: "#10DC61", fontWeight: '600' }}>{(window.location.pathname.split("/")[2]==='withdraw' && (Detail[2].val !== 0 || isNaN(Detail[2].val))) && '-'}{isNaN(Detail[2].val) ? 0 : Detail[2].val}</Typography>
+                                <Typography sx={{ color: "#10DC61", fontWeight: '600' }}>{(window.location.pathname.split("/")[2] === 'withdraw' && (Detail[2].val !== 0 || isNaN(Detail[2].val))) && '-'}{isNaN(Detail[2].val) ? 0 : Detail[2].val}</Typography>
                             </Box>
                         </Box>
                     </Box>

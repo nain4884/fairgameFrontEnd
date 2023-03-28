@@ -12,6 +12,7 @@ import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "../../components/SideBarAdmin";
 import {ThisUseModal} from "../../components/Modal";
 import Modal2 from "../../components/Modal2";
+import adminAxios from "../../axios/adminAxios";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
@@ -37,8 +38,6 @@ const CustomHeader = ({ }) => {
         } else if (location.pathname.includes("reports") || location.pathname.includes("account_statement") || location.pathname.includes("current_bet") || location.pathname.includes("general_report") || location.pathname.includes("game_report") || location.pathname.includes("profit_loss")) {
             dispatch(setActiveAdmin(2))
         }
-    }, [location])
-    useEffect(() => {
         let role = "isTransPasswordCreated4"
         let pattern1 = /super_master|super_admin|master|admin/
         let pattern2 = /fairgame_wallet|fairgame_admin/
@@ -47,7 +46,17 @@ const CustomHeader = ({ }) => {
         if (pattern2.test(window.location.pathname)) role = "isTransPasswordCreated2"
         if (pattern3.test(window.location.pathname)) role = "isTransPasswordCreated3"
         setIsTransPasswordExist(localStorage.getItem(role))
-    }, [window.location.pathname])
+        getUserDetail()
+    }, [location,window.location.pathname])
+    const [balance, setBalance] = useState('')
+    async function getUserDetail() {
+        try {
+            const { data } = await adminAxios.get('users/profile');
+            setBalance(data.data.current_balance)
+        } catch (e) {
+            console.log(e)
+        }
+    }
     useEffect(() => {
         if (!matchesMobile) {
             setMobileOpen(false)
@@ -113,7 +122,7 @@ const CustomHeader = ({ }) => {
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" }}>
                         <SearchInput placeholder={"All Clients..."} header={true} inputContainerStyle={{ height: "30px", minWidth: { laptop: "100px", mobile: "1.5vw" }, width: "140px" }} />
-                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={"Fairgame Wallet"} />
+                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={"Fairgame Wallet"} amount={balance} />
                     </Box>
                 </Box>
                 {<MobileSideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
@@ -266,7 +275,7 @@ const LiveMarket = ({ title, boxStyle, titleStyle, onClick }) => {
     )
 }
 
-const BoxProfile = ({ image, value, containerStyle }) => {
+const BoxProfile = ({ image, value, containerStyle, amount }) => {
     const theme = useTheme()
     const [open, setOpen] = useState(false)
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
@@ -289,7 +298,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
             }} sx={[{ backgroundColor: "primary.main", minWidth: { laptop: "150px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "45px", mobile: "35px" }, overflow: "hidden", paddingX: "10px", borderRadius: "5px" }, containerStyle]}>
                 <Box style={{}}>
                     <Typography sx={{ fontSize: { laptop: '11px', mobile: "8px" }, color: "text.white", fontWeight: "600" }}>{value}</Typography>
-                    <Typography sx={{ fontSize: { laptop: '13px', mobile: "8px" }, color: "text.white", fontWeight: " 700" }}>1,00,000,000</Typography>
+                    <Typography sx={{ fontSize: { laptop: '13px', mobile: "8px" }, color: "text.white", fontWeight: " 700" }}>{amount}</Typography>
                 </Box>
                 <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
             </Box>
@@ -300,8 +309,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
 function useOuterClick(callback) {
     const callbackRef = useRef(); // initialize mutable ref, which stores callback
     const innerRef = useRef(); // returned to client, who marks "border" element
-
-    // update cb on each render, so second useEffect has access to current value 
+    // update cb on each render, so second useEffect has access to current value
     useEffect(() => { callbackRef.current = callback; });
 
     useEffect(() => {
