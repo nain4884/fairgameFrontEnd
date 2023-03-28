@@ -75,6 +75,7 @@ const AddAccount = () => {
         14: { field: "adminTransPassword", val: false },
         15: { field: "myPartnership", val: false }
     })
+    const [userAlreadyExist, setUserAlredyExist] = useState('')
     const [roles, setRoles] = useState([])
 
     const [typeToShow, setTypeToShow] = useState([
@@ -205,6 +206,29 @@ const AddAccount = () => {
         setTypeForAccountType()
     }, [loginRole, Detail, error])
 
+    useEffect(()=>{
+        checkUserName(Detail[1].val)
+    },[Detail[1].val])
+
+    async function checkUserName(val) {
+        try{
+            let body = {
+                userName: val
+            }
+            const {data} = await adminAxios.post(`fair-game-wallet/checkUserExist`, body)
+            console.log(data.data.exist)
+            if(data.data.exist === true) {
+                setError({...error,[1]:{
+                    ...error[1],
+                    val: true
+                }})
+                setUserAlredyExist('User Already Exist With This Name')
+            }
+        }catch(e){
+            console.log(e)
+        }
+    }
+
     useEffect(() => {
         setDownParterShipVal(Detail[10].val, Detail[11].val)
         // console.log(Detail[12].val)
@@ -215,8 +239,8 @@ const AddAccount = () => {
             <Typography sx={{ color: "white", fontSize: "18px", fontWeight: "600" }}>Add Account</Typography>
             <Box sx={{ background: "#F8C851", minHeight: "60vh", borderRadius: "5px", padding: "20px", paddingTop: "10px", marginTop: "10px", display: "flex" }}>
                 <Box sx={{ flex: 1 }}>
-                    <Input placeholder="John Doe" titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Username"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={1} />
-                    {error[1].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+                    <Input placeholder="Username" titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Username"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={1} />
+                    {error[1].val && <p style={{ color: "#fa1e1e" }}>{userAlreadyExist?userAlreadyExist:'Field Required'}</p>}
                     <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={2} />
                     {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
                     <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Confirm User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={3} />
