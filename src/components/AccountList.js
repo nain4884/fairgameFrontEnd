@@ -132,29 +132,34 @@ const SampleData = {
   ],
 };
 
+
 const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
+  const [roles, setRoles] = useState([])
   const [data1, setData] = useState([]);
 
   async function getListOfUser() {
     try {
       const { data } = await adminAxios.get(`/fair-game-wallet/getAllUser`);
-      await Promise.all(
-          data.data.map(async (element) => {
-              const { data } = await adminAxios.get(`/role/roleById/${element.roleId}`);
-              element.role = data.roleName
-          })
-      ).then((values) => {
-          console.log(values)
-      });
+      data.data.map((element) => {
+        let roleDetail = roles.find(findThisRole)
+        function findThisRole(role) {
+          return role.id === element.roleId
+        }
+        element.role = roleDetail?.roleName
+      })
       setData(data.data)
-      console.log("page refreshed", data,SampleData)
     } catch (e) {
       console.log(e);
     }
   }
 
+  async function getRoles() {
+    setRoles(JSON.parse(localStorage.getItem('allRoles')))
+  }
+
   useEffect(() => {
+    getRoles();
     getListOfUser();
   }, []);
 

@@ -469,44 +469,31 @@ const SessionMarket = ({ data }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
 
-
     const [matchData, setMatchData] = useState([])
-    const [tempMatchData, setTempMatchData] = useState([])
-    const [tempMatchDataInUse, setTempMatchDataInUse] = useState([])
     const [pageCount, setPageCount] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
     const [pageLimit, setPageLimit] = useState(5)
 
     useEffect(() => {
-        tempPage()
-        paginate()
-    }, [matchData,currentPage])
-
-    useEffect(() => {
         getAllMatch()
-    }, [pageCount])
+    }, [currentPage, pageCount])
+
+    console.log("matchData",data)
 
     async function getAllMatch() {
         try {
-            let response = await userAxios.get(`/game-match/getAllMatch?bets=1`);
-            setMatchData(response.data)
+            // let { data } = await userAxios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
+            if(data.length > 0) {
+                setMatchData(data)
+                setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
+            }
         } catch (e) {
             console.log(e)
         }
     }
 
-    function tempPage() {
-        setTempMatchData([...data.matchSessionData, ...data.matchSessionData, ...data.matchSessionData, ...data.matchSessionData, ...data.matchSessionData, ...data.matchSessionData, ...data.matchSessionData, ...data.matchSessionData])
-    }
-
-    function paginate() {
-        setPageCount(Math.ceil(parseInt(tempMatchData.length) / pageLimit))
-        setTempMatchDataInUse(tempMatchData.splice(((currentPage - 1) * pageLimit), pageLimit))
-    }
-
     function callPage(e) {
         setCurrentPage(parseInt(e.target.outerText))
-        setTempMatchDataInUse(tempMatchData.splice(((parseInt(e.target.outerText) - 1) * pageLimit), pageLimit))
     }
 
     return (
@@ -550,7 +537,7 @@ const SessionMarket = ({ data }) => {
                             </Box>
                         </Box>
                     </Box>}
-                    {tempMatchDataInUse.map(element => {
+                    {data.matchSessionData.map(element => {
                         return (
                             <>
                                 <SeasonMarketBox typeOfBet={"Session"} data={element} />
@@ -574,10 +561,11 @@ const SessionMarket = ({ data }) => {
                 <Divider /> */}
                 </Box >
             </Box >
-            <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} />
+            {/* <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} /> */}
         </>
     )
 }
+
 const BookMarketer = ({ manual, data }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
