@@ -18,6 +18,7 @@ const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   const [roles, setRoles] = useState([])
   const [data1, setData] = useState([]);
+  const [pageLoaded, setPageLoaded] = useState(false)
 
   async function getListOfUser() {
     try {
@@ -30,6 +31,7 @@ const AccountList = () => {
         element.role = roleDetail?.roleName
       })
       setData(data.data)
+      setPageLoaded(true)
     } catch (e) {
       console.log(e);
     }
@@ -42,7 +44,8 @@ const AccountList = () => {
   useEffect(() => {
     getRoles();
     getListOfUser();
-  }, []);
+    console.log('Page Refresh Account List', pageLoaded, data1)
+  }, [pageLoaded]);
 
   return (
     <>
@@ -95,7 +98,6 @@ const AccountList = () => {
           </Box>
         </Box>
       </Box>
-
       <Footer />
     </>
   );

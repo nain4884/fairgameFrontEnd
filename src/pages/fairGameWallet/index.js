@@ -15,7 +15,15 @@ import CustomHeader from "./Header"
 import Home from "./List_Of_Client"
 import DepositWallet from "./DepositWallet"
 import DeleteBet from "../admin/DeleteBet"
+import { useEffect, useState, useContext } from "react"
+import { AuthContext } from "../../Authprovider"
 const FairGameWalletRoutes = () => {
+    const { tokenAdmin } = useContext(AuthContext);
+
+    if(!tokenAdmin){
+        window.location.reload()
+    }
+
     return (
         <>
             <CustomHeader />

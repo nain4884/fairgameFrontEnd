@@ -64,7 +64,7 @@ export const TransPassComp = ({ onCancel }) => {
       transPassword: "",
       confirmtransPassword: ""
     }
-    console.log(!error[1].val, !error[2].val, passwordDetail[1].val !== "", passwordDetail[2].val !== "")
+    console.log(!error[1].val, !error[2].val, passwordDetail[1].val !== "", passwordDetail[2].val !== "", error)
     if (!error[1].val && !error[2].val && passwordDetail[1].val !== "" && passwordDetail[2].val !== "") {
       try {
         let response

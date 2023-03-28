@@ -85,7 +85,7 @@ export default function DepositWallet() {
                             </Box>
                             <Box sx={{ flex: 1, background: "#0B4F26", marginTop: "2px", display: "flex", paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D" }}>
                                 <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Previous Balance</Typography>
-                                <Typography sx={{ color: "white", fontWeight: '600' }}>{balance}</Typography>
+                                <Typography sx={{ color: "white", fontWeight: '600' }}>{isNaN(Detail[2].val)?balance: balance + Detail[2].val}</Typography>
                             </Box>
                         </Box>
                         <Box sx={{ marginLeft: "2px", flex: 1 }}>
