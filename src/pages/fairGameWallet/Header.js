@@ -54,6 +54,7 @@ const CustomHeader = ({ }) => {
         try {
             const { data } = await adminAxios.get('users/profile');
             setBalance(data.data.current_balance)
+            // dispatch(stateActions.setBalance(amount, role))
             setFullName(data.data.fullName)
         } catch (e) {
             console.log(e)

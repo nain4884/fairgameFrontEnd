@@ -35,25 +35,27 @@ export function Modal({ message, buttonMessage, navigateTo, setShowSuccessModal,
       </Box> */}
       <>
         <Box p={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, left: 0, backgroundColor: '#00000069', borderRadius: '15px', height: '100vh', width: '100vw' }}>
-          <Box p={2} sx={{ width: "300px", display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #707070', backgroundColor: '#000', borderRadius: '15px', position: 'relative' }}>
+          <Box p={2} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #707070', backgroundColor: '#000', borderRadius: '15px', position: 'relative' }}>
             <Box
               sx={{
-                width: { mobile: "96vw", laptop: "22vw", tablet: "22vw" },
+                display: 'flex', justifyContent: 'center', alignItems: 'center',
+                maxWidth: { mobile: "150px", laptop: "300px", tablet: "300px" },
                 minWidth: { laptop: "250px", tablet: "200px", mobile: "0px" },
-                marginTop: "10px",
-                marginX: { mobile: "2vw", laptop: "5vw" },
               }}
             >
               <Box
                 sx={{
-                  width: "250px",
-                  height: "100px",
+                  maxHeight:'300px',
+                  maxWidth:'500px',
+                  // width: "250px",
+                  // height: "100px",
                   minHeight: "100px",
                   minwidth: "150px",
                   background: "#F8C851",
                   borderRadius: "5px",
                   padding: "20px",
-                  marginTop: "10px",
+                  display: 'flex',
+                  flexDirection: 'column'
                 }}
               >
                 <Typography mb={2} color={'#000'}>{message}</Typography>
