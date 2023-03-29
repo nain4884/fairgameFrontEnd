@@ -13,6 +13,7 @@ import SideBarAdmin from "../../components/SideBarAdmin";
 import {ThisUseModal} from "../../components/Modal";
 import Modal2 from "../../components/Modal2";
 import adminAxios from "../../axios/adminAxios";
+import { setRole } from "../../components/SetRole";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
@@ -38,14 +39,8 @@ const CustomHeader = ({ }) => {
         } else if (location.pathname.includes("reports") || location.pathname.includes("account_statement") || location.pathname.includes("current_bet") || location.pathname.includes("general_report") || location.pathname.includes("game_report") || location.pathname.includes("profit_loss")) {
             dispatch(setActiveAdmin(2))
         }
-        let role = "isTransPasswordCreated4"
-        let pattern1 = /super_master|super_admin|master|admin/
-        let pattern2 = /fairgame_wallet|fairgame_admin/
-        let pattern3 = /expert/
-        if (pattern1.test(window.location.pathname)) role = "isTransPasswordCreated1"
-        if (pattern2.test(window.location.pathname)) role = "isTransPasswordCreated2"
-        if (pattern3.test(window.location.pathname)) role = "isTransPasswordCreated3"
-        setIsTransPasswordExist(localStorage.getItem(role))
+        let { transPass } = setRole()
+        setIsTransPasswordExist(transPass)
         getUserDetail()
     }, [location,window.location.pathname])
     const [balance, setBalance] = useState('')

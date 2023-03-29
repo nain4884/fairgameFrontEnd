@@ -10,6 +10,8 @@ import { setSelected } from "../../store/activeUser";
 import { stateActions } from "../../store/stateActions";
 import SessionTimeOut from "../../components/SessionTimeOut";
 import AddNotificationModal from "../../components/AddNotificationModal";
+import { setRole } from "../../components/SetRole";
+import { ThisUseModal } from "../../components/Modal";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
@@ -19,6 +21,7 @@ const CustomHeader = ({ }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [visible, setVisible] = useState(false)
     const [anchor, setAnchor] = React.useState(null)
+    const [isTransPasswordExist, setIsTransPasswordExist] = useState(false)
     const activeUser = useSelector(state => state?.activeUser?.activeUser)
     const currentSelected = useSelector(state => state?.activeUser?.selected)
     const dispatch = useDispatch()
@@ -37,6 +40,8 @@ const CustomHeader = ({ }) => {
         } else if (location.pathname.includes("betodds")) {
             dispatch(setSelected(2))
         }
+        let { transPass } = setRole()
+        setIsTransPasswordExist(window.localStorage.getItem(transPass))
     }, [location])
     return (
         <>
@@ -78,8 +83,15 @@ const CustomHeader = ({ }) => {
                             {activeUser != "3" && <ButtonHead
                                 onClick={(e) => {
                                     dispatch(setSelected(5))
-                                    // setAnchor(e.currentTarget)
                                 }} title={"ALL BET"} boxStyle={{ backgroundColor: currentSelected == 5 ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: currentSelected == 5 ? "green" : "white" }} />}
+                            {<ButtonHead
+                                onClick={(e) => {
+                                    dispatch(setSelected(4))
+                                    if (activeUser == "3") {
+                                        navigate("/expert/match")
+                                        return
+                                    }
+                                }} title={"MATCH LIST"} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} />}
                         </>
                         }
 
@@ -111,6 +123,7 @@ const CustomHeader = ({ }) => {
                     </Box>
                 </Box>
             </AppBar>
+            {isTransPasswordExist === "false" && !/createTransPassword/.test(window.location.pathname) && <ThisUseModal message="You don't have transaction password" buttonMessage="Create Transaction Password" navigateTo='createTransPassword' />}
             <Box sx={{ minHeight: { laptop: 90, mobile: 60 + 32 + 42 } }} />
             <DropdownMenu1 anchorEl={anchor} open={Boolean(anchor)} handleClose={() => {
                 setAnchor(null)
