@@ -740,7 +740,7 @@ const NewCreditComponent = ({
   const defaultNewCreditObj = {
     userId: "",
     amount: 0,
-    trans_type: "credit_limit",
+    trans_type: "credit_refer",
     adminTransPassword: "",
     remark: "",
   };
@@ -894,7 +894,7 @@ const NewCreditComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdatePassword(newCreditObj).then(({ bool, message }) => {
+              UpdateAvailableBalance(newCreditObj).then(({ bool, message }) => {
                 setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
