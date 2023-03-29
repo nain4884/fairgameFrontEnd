@@ -118,7 +118,6 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
     }
 
     function SubmitPayloadForPlaceBet(betOn = "teamA_back", marketType = "BOOKMAKER") {
-        console.log(data?.betting?.[0]?.id, data)
         let payload = {
             "id": data?.id,
             "matchType": data.gameType,
@@ -141,7 +140,6 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             payload.bet_condition = data?.betting?.[0]?.bet_condition
             payload.rate_percent = data?.betting?.[0]?.rate_percent
             payload.marketType = data?.betting?.[0]?.bet_condition
-            console.log(payload)
         }
         return payload
     }

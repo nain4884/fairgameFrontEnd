@@ -77,7 +77,6 @@ export default function Home1() {
                 if (i === 19) request.append(`${Detail[i + 1].field}`, defaultMarketId)
             }
             const { data } = await axios.post(`/game-match/addmatch`, request);
-            console.log(data)
             if (data.message === "Match added successfully.") navigate('/expert/match')
         } catch (e) {
             console.log(e)
@@ -361,7 +360,6 @@ const ButtonWithSwitch = ({ title, containerStyle, titleStyle, updateMatchStatus
         } else {
             setBackground("#FF4D4D")
         }
-        console.log(updateMatchStatus)
     }, [checked])
     return (<Box sx={[{ height: "35px", minWidth: "100px", width: "14%", marginLeft: "10px", borderRadius: "5px", background: background, display: "flex", justifyContent: "space-between", alignItems: "center" }, containerStyle]}>
         <Typography sx={[{ color: "white", fontWeight: '500', fontSize: '13px', marginLeft: "1vw", lineHeight: "14px" }, titleStyle]}>{title}</Typography>

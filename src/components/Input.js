@@ -79,7 +79,7 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                         })
                         // checkMesasge && errorHandle(Detail[place].val)
                     }}
-                    onBlur={() => { toFoucs && onFocusOut(Detail[place].val) }}
+                    onBlur={() => { toFoucs && onFocusOut({place, val:Detail[place].val, setError, Detail, error, }) }}
                 />}
                 {img && <img src={img} onClick={() => {
                     setShowPass(!showPass)
