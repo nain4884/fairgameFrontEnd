@@ -10,6 +10,8 @@ import { stateActions } from "../../store/stateActions";
 import { Down } from "../../fairGameWallet/assets";
 import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "../../components/SideBarAdmin";
+import { setRole } from "../../components/SetRole";
+import { ThisUseModal } from "../../components/Modal";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
@@ -20,7 +22,7 @@ const CustomHeader = ({ }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchor, setAnchor] = React.useState(null)
     const [anchor1, setAnchor1] = React.useState(null)
-
+    const [isTransPasswordExist, setIsTransPasswordExist] = useState(false)
     const currentSelected = useSelector(state => state?.activeAdmin?.activeTabAdmin)
     const location = useLocation();
     React.useEffect(() => {
@@ -33,6 +35,8 @@ const CustomHeader = ({ }) => {
         } else if (location.pathname.includes("reports") || location.pathname.includes("account_statement") || location.pathname.includes("current_bet") || location.pathname.includes("general_report") || location.pathname.includes("game_report") || location.pathname.includes("profit_loss")) {
             dispatch(setActiveAdmin(2))
         }
+        let { transPass } = setRole()
+        setIsTransPasswordExist(window.localStorage.getItem(transPass))
     }, [location])
     useEffect(() => {
         // console.log(currentSelected, 'admin')
@@ -107,6 +111,7 @@ const CustomHeader = ({ }) => {
                 </Box>
                 {<MobileSideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
             </AppBar>
+            {isTransPasswordExist === "false" && !/createTransPassword/.test(window.location.pathname) && <ThisUseModal message="You don't have transaction password" buttonMessage="Create Transaction Password" navigateTo='createTransPassword' />}
             <DropdownMenu1 open={Boolean(anchor)} anchorEl={anchor} handleClose={() => setAnchor(null)} />
             <DropdownMenu2 open={Boolean(anchor1)} anchorEl={anchor1} handleClose={() => setAnchor1(null)} />
             <Box sx={{ minHeight: { laptop: 60, mobile: 60 + 32 + 42 } }} />
