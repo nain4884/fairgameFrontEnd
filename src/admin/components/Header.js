@@ -54,7 +54,6 @@ const CustomHeader = ({}) => {
   }, [location]);
 
   useEffect(() => {
-    // console.log(currentSelected, "admin");
   }, [currentSelected]);
   useEffect(() => {
     if (!matchesMobile) {
@@ -524,7 +523,6 @@ const BoxProfile = ({ image, value, containerStyle }) => {
     setAnchorEl(event.currentTarget);
   };
   useEffect(() => {
-    // console.log(anchorEl);
   }, [anchorEl]);
   const handleClose = () => {
     setOpen(false);

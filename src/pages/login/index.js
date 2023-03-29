@@ -81,7 +81,6 @@ export default function Login() {
     const handleNavigate = (path, type) => {
         // Set a timeout for 2 seconds before navigating
         let token = ''
-        console.log("inside handleNavigate tokenAdmin")
         setTimeout(() => {
             switch (type) {
                 case 'master':
@@ -98,7 +97,6 @@ export default function Login() {
                     break;
             }
             if (token != '') {
-                console.log("tokenAdmin 3000")
                 navigate(path);
             }
         }, 0);
@@ -108,7 +106,6 @@ export default function Login() {
     async function loginToAccount() {
         changeErrors()
         if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") {
-            console.log(apiBasePath)
             try {
                 let { data } = await axios.post(`/auth/login`, {
                     "username": loginDetail[1].val,

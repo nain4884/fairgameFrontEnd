@@ -18,6 +18,7 @@ import {
 } from "../admin/assets";
 import adminAxios from "../axios/adminAxios";
 import axios from "../axios/axios";
+import { onChangeKeyCheck } from "./PassKeyCheck";
 
 const style = {
   position: "absolute",
@@ -36,7 +37,8 @@ export default function UserDetailModal({
   setShowUserModal,
   backgroundColor,
   userModal,
-  getListOfUser,
+  setShowSuccessModal,
+  setShowModalMessage
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
   const dispatch = useDispatch();
@@ -55,7 +57,7 @@ export default function UserDetailModal({
       }}
     >
       <Box
-        onClick={() => {}}
+        onClick={() => { }}
         sx={[
           {
             width: "11.5vw",
@@ -73,7 +75,8 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
-              getListOfUser={getListOfUser}
+              setShowSuccessModal={setShowSuccessModal}
+              setShowModalMessage={setShowModalMessage}
             />
           )}
           {selected == 1 && (
@@ -81,7 +84,8 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
-              getListOfUser={getListOfUser}
+              setShowSuccessModal={setShowSuccessModal}
+              setShowModalMessage={setShowModalMessage}
             />
           )}
           {selected == 2 && (
@@ -89,7 +93,8 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
-              getListOfUser={getListOfUser}
+              setShowSuccessModal={setShowSuccessModal}
+              setShowModalMessage={setShowModalMessage}
             />
           )}
           {selected == 5 && (
@@ -97,7 +102,8 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
-              getListOfUser={getListOfUser}
+              setShowSuccessModal={setShowSuccessModal}
+              setShowModalMessage={setShowModalMessage}
             />
           )}
           {selected == 3 && (
@@ -105,7 +111,8 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
-              getListOfUser={getListOfUser}
+              setShowSuccessModal={setShowSuccessModal}
+              setShowModalMessage={setShowModalMessage}
             />
           )}
           {selected == 4 && (
@@ -113,7 +120,8 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
-              getListOfUser={getListOfUser}
+              setShowSuccessModal={setShowSuccessModal}
+              setShowModalMessage={setShowModalMessage}
             />
           )}
         </Box>
@@ -176,16 +184,25 @@ export default function UserDetailModal({
           <BoxButton
             deleteBtn={true}
             onClick={(e) => {
-              dispatch(setModalOpen(false));
-              setTimeout(() => {
-                dispatch(
-                  setDailogData({
-                    isModalOpen: true,
-                    showRight: false,
-                    bodyText: "First Settle Account to Delete The User",
-                  })
-                );
-              }, 500);
+              // dispatch(setModalOpen(false));
+              // setTimeout(() => {
+              //   dispatch(
+              //     setDailogData({
+              //       isModalOpen: true,
+              //       showRight: false,
+              //       bodyText: "First Settle Account to Delete The User",
+              //     })
+              //   );
+              // }, 500);
+              UserDelete(userModal.id).then(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              }).catch(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              })
             }}
             title={"Delete User"}
             icon={
@@ -286,13 +303,13 @@ const BoxButtonWithSwitch = ({
         onChange={(e) => {
           title === "User"
             ? setLockUnlockObj({
-                ...lockUnlockObj,
-                all_blocked: !val === true ? 1 : 0,
-              })
+              ...lockUnlockObj,
+              all_blocked: !val === true ? 1 : 0,
+            })
             : setLockUnlockObj({
-                ...lockUnlockObj,
-                bet_blocked: !val === true ? 1 : 0,
-              });
+              ...lockUnlockObj,
+              bet_blocked: !val === true ? 1 : 0,
+            });
           setChecked(!checked);
         }}
       />
@@ -319,7 +336,8 @@ const DepositComponent = ({
   setShowUserModal,
   backgroundColor,
   userModal,
-  getListOfUser,
+  setShowSuccessModal,
+  setShowModalMessage
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -478,16 +496,15 @@ const DepositComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(depositObj);
-              getListOfUser();
-              dispatch(
-                setDailogData({
-                  isModalOpen: true,
-                  showRight: true,
-                  bodyText: "Deposited Successfully",
-                })
-              );
-              setShowUserModal(false);
+              UpdateAvailableBalance(depositObj).then(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              }).catch(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              })
             }}
             title={"Submit"}
           />
@@ -518,7 +535,8 @@ const WithDrawComponent = ({
   setShowUserModal,
   backgroundColor,
   userModal,
-  getListOfUser,
+  setShowSuccessModal,
+  setShowModalMessage
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -675,16 +693,15 @@ const WithDrawComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(withDrawObj);
-              getListOfUser();
-              dispatch(
-                setDailogData({
-                  isModalOpen: true,
-                  showRight: true,
-                  bodyText: "Withdraw Successfully",
-                })
-              );
-              setShowUserModal(false);
+              UpdateAvailableBalance(withDrawObj).then(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              }).catch(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              })
             }}
             title={"Submit"}
           />
@@ -715,7 +732,8 @@ const NewCreditComponent = ({
   setShowUserModal,
   backgroundColor,
   userModal,
-  getListOfUser,
+  setShowSuccessModal,
+  setShowModalMessage
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -876,16 +894,15 @@ const NewCreditComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(newCreditObj);
-              getListOfUser();
-              dispatch(
-                setDailogData({
-                  isModalOpen: true,
-                  showRight: true,
-                  bodyText: "New Credit Limit Done",
-                })
-              );
-              setShowUserModal(false);
+              UpdatePassword(newCreditObj).then(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              }).catch(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              })
             }}
             title={"Submit"}
           />
@@ -916,7 +933,8 @@ const SetExposureComponent = ({
   setShowUserModal,
   backgroundColor,
   userModal,
-  getListOfUser,
+  setShowSuccessModal,
+  setShowModalMessage
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -1063,7 +1081,6 @@ const SetExposureComponent = ({
           />
         </Box>
       </Box>
-
       <Box
         sx={{
           display: "flex",
@@ -1077,16 +1094,15 @@ const SetExposureComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(exposureObj);
-              getListOfUser();
-              dispatch(
-                setDailogData({
-                  isModalOpen: true,
-                  showRight: true,
-                  bodyText: "New Exposure Limit Done",
-                })
-              );
-              setShowUserModal(false);
+              UpdateAvailableBalance(exposureObj).then(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              }).catch(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              })
             }}
             title={"Submit"}
           />
@@ -1115,9 +1131,9 @@ const SetExposureComponent = ({
 
 const ChangePasswordComponent = ({
   setShowUserModal,
-  backgroundColor,
   userModal,
-  getListOfUser,
+  setShowSuccessModal,
+  setShowModalMessage
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [showPass1, setShowPass1] = useState(false);
@@ -1172,7 +1188,7 @@ const ChangePasswordComponent = ({
               InputProps={{
                 placeholder: "Donotopen|",
                 disableUnderline: true,
-                type: !showPass ? "password" : "text",
+                type: !showPass1 ? "password" : "text",
                 style: {
                   fontSize: "13px",
                   height: "45px",
@@ -1193,6 +1209,7 @@ const ChangePasswordComponent = ({
             </Box>
           </Box>
         </Box>
+        <p style={{ color: "#fa1e1e" }}>{changePasswordObj.password && onChangeKeyCheck(changePasswordObj.password) !== false && onChangeKeyCheck(changePasswordObj.password)}</p>
         <Box
           sx={{
             display: "flex",
@@ -1262,16 +1279,15 @@ const ChangePasswordComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(changePasswordObj);
-              getListOfUser();
-              dispatch(
-                setDailogData({
-                  isModalOpen: true,
-                  showRight: true,
-                  bodyText: "Password Changed Successfully",
-                })
-              );
-              setShowUserModal(false);
+              UpdateAvailableBalance(changePasswordObj).then(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              }).catch(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              })
             }}
             title={"Submit"}
           />
@@ -1301,7 +1317,8 @@ const ChangePasswordComponent = ({
 const LockUnlockComponent = ({
   setShowUserModal,
   userModal,
-  getListOfUser,
+  setShowModalMessage,
+  setShowSuccessModal,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -1413,16 +1430,15 @@ const LockUnlockComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(lockUnlockObj);
-              getListOfUser();
-              dispatch(
-                setDailogData({
-                  isModalOpen: true,
-                  showRight: true,
-                  bodyText: "Task Done Successfully",
-                })
-              );
-              setShowUserModal(false);
+              UpdateLockUnlock(lockUnlockObj).then(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              }).catch(({ bool, message }) => {
+                setShowSuccessModal(true)
+                setShowModalMessage(message)
+                setShowUserModal(false);
+              })
             }}
             title={"Submit"}
           />
@@ -1536,9 +1552,49 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const UpdateAvailableBalance = async (body) => {
-  try {
-    const { data } = await adminAxios.post(`/fair-game-wallet/updateBalance`, body);
-  } catch (e) {
-    console.log(e);
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data, status } = await adminAxios.post(`/fair-game-wallet/updateBalance`, body);
+      resolve({ bool: data.message === 'Balance update successfully.' || status == 200, message: data.message })
+    } catch (e) {
+      console.log(e)
+      reject({ bool: false, message: e.response.data.message });
+    }
+  });
+};
+
+const UpdateLockUnlock = (body) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data, status } = await adminAxios.post(`/fair-game-wallet/lockUnclockUser`, body);
+      resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
+    } catch (e) {
+      console.log(e)
+      reject({ bool: false, message: e.response.data.message });
+    }
+  });
+};
+
+const UserDelete = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data, status } = await adminAxios.delete(`/users/deleteUser/${id}`);
+      resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
+    } catch (e) {
+      console.log(e)
+      reject({ bool: false, message: e.response.data.message });
+    }
+  });
+};
+
+const UpdatePassword = (body) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const { data, status } = await adminAxios.post(`/fair-game-wallet/updatePassword`, body);
+      resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
+    } catch (e) {
+      console.log(e)
+      reject({ bool: false, message: e.response.data.message });
+    }
+  });
 };

@@ -3,7 +3,6 @@ import Messages from "./Messages";
 import MessageInput from "./MessageInput";
 
 function demo({ socket }) {
-  // console.log(socket)
   return (
     <div className="App">
       <header className="app-header">React Socket Demo</header>

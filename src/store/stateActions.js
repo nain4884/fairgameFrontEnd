@@ -8,4 +8,10 @@ export let stateActions = {
 			payload: { role, jwt, isTransPasswordCreated }
 		}
 	},
+	setBalance: (amount, role) => {
+		return {
+			type: 'SET_BAL',
+			payload: { amount, role }
+		}
+	}
 }

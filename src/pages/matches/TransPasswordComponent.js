@@ -8,6 +8,7 @@ import adminAxios from "../../axios/adminAxios";
 import expertAxios from "../../axios/expertAxios";
 import userAxios from "../../axios/userAxios";
 import { setRole } from "../../components/SetRole";
+import { doSendErrorForPassword } from "../../components/doCheckErrorForPassword";
 
 export const TransPassword = () => {
   return (
@@ -64,7 +65,6 @@ export const TransPassComp = ({ onCancel }) => {
       transPassword: "",
       confirmtransPassword: ""
     }
-    console.log(!error[1].val, !error[2].val, passwordDetail[1].val !== "", passwordDetail[2].val !== "", error)
     if (!error[1].val && !error[2].val && passwordDetail[1].val !== "" && passwordDetail[2].val !== "") {
       try {
         let response
@@ -132,7 +132,7 @@ export const TransPassComp = ({ onCancel }) => {
           inputContainerStyle={{ borderRadius: "5px" }}
           containerStyle={{}}
           img={eye}
-          setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={1}
+          setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={1} onFocusOut={doSendErrorForPassword} toFoucs={true}
         />
         {error[1].val && <p style={{ color: "#fa1e1e" }}>{error[1].val}</p>}
         <Input

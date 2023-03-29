@@ -69,6 +69,26 @@ export let userReducer = (state = initialState, action) => {
             }
             return { role: null, jwt: null, JWTadmin: null, JWTuser: null, JWTexpert: null, JWTmaster: null, role1: null, role2: null, role3: null, role4: null };
         }
+        case 'SET_BAL': {
+            switch (action.role.trim()) {
+                case "role1":
+                    localStorage.setItem('Balance1', action.payload.amount) //JWTmaster
+                    break;
+                case "role3":
+                    localStorage.setItem('Balance3', action.payload.amount) //JWTexpert
+                    break;
+                case "role4":
+                    localStorage.setItem('Balance4', action.payload.amount) //JWTuser
+                    break;
+                case "role2":
+                    localStorage.setItem('Balance2', action.payload.amount) //JWTadmin
+                    break;
+                default:
+                    localStorage.setItem('Balance', action.payload.amount)
+                    break;
+            }
+            return action.payload;
+        }
         default: {
             return state;
         }

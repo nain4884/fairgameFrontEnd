@@ -41,7 +41,6 @@ export default function Matches() {
     useEffect(() => {
       const socket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
       socket.emit("init", { id })
-      console.log("socket", socket)
       socket.on("marketRate", (data) => {
         console.log("marketRate Response", data);
       })

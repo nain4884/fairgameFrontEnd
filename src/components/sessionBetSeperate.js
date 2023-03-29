@@ -23,7 +23,6 @@ const data = [
     },
 ]
 const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
-    // console.log(allBetsData)
     const [Bets, setBets] = useState([])
     const [allSessionBets, setAllSessionBets] = useState([])
     function doBets() {

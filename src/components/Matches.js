@@ -160,17 +160,11 @@ const MatchesComponent = ({ doNavigateWithState }) => {
     useEffect(() => {
         getAllMatch()
     }, [currentPage, pageCount])
-
-    // useEffect(() => {
-    //     console.log("matchData",matchData)
-    // }, [matchData,pageCount])
-    console.log("pageCount", pageCount, matchData)
+    
     async function getAllMatch() {
         try {
             let { data } = await userAxios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
             if(data.length > 0) {
-                console.log("data", data,matchData)
-
                 setMatchData(data[0])
                 setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
             }

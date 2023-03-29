@@ -92,7 +92,6 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
                             name={name}
                             // refs={innerRef}
                             onSubmit={async (payload) => {
-                                console.log(payload)
                                 let response = await userAxios.post(`/betting/placeBet`, payload);
                                 console.log(response)
                                 setIsPopoverOpen(false)
@@ -140,17 +139,14 @@ const BoxComponent = ({ name, color, data, team, typeOfBet }) => {
     if (team == 'teamA') {
         backValue = data?.matchOddsData?.[0]?.teamA_Back
         layValue = data?.matchOddsData?.[0]?.teamA_lay
-        console.log("backValue, layValue A", backValue, layValue)
     }
     if (team == 'teamB') {
         backValue = data?.matchOddsData?.[0]?.teamB_Back
         layValue = data?.matchOddsData?.[0]?.teamB_lay
-        console.log("backValue, layValue B", backValue, layValue)
     }
     if (team == 'draw') {
         backValue = data?.matchOddsData?.[0]?.teamC_Back
         layValue = data?.matchOddsData?.[0]?.teamC_lay
-        console.log("backValue, layValue C", backValue, layValue)
     }
     return (
         <Box sx={{ display: 'flex', background: 'white', height: '40px', width: '100%', alignItems: 'center', justifyContent: 'space-between' }} >
@@ -278,7 +274,7 @@ const SeasonMarketBox = ({ index, typeOfBet, data }) => {
     return (
         <Box sx={{ display: 'flex', background: 'white', height: '38px', width: '100%' }} >
             <Box sx={{ display: 'flex', background: 'white', height: '38px', width: '40%', alignItems: 'center' }} >
-                <Typography sx={{ color: 'black', fontSize: { laptop: '11px', tablet: '10px', mobile: "8px" }, marginLeft: '7px', fontWeight: '600' }} >{data.bet_condition}</Typography>{console.log(data)}
+                <Typography sx={{ color: 'black', fontSize: { laptop: '11px', tablet: '10px', mobile: "8px" }, marginLeft: '7px', fontWeight: '600' }} >{data.bet_condition}</Typography>
             </Box>
             <Box sx={{ display: 'flex', position: 'relative', background: 'white', height: '38px', width: { laptop: '60%', mobile: '80%' }, justifyContent: 'center', alignItems: 'center' }} >
                 <SeperateBox po={1} color={"white"} />
@@ -477,8 +473,6 @@ const SessionMarket = ({ data }) => {
     useEffect(() => {
         getAllMatch()
     }, [currentPage, pageCount])
-
-    console.log("matchData",data)
 
     async function getAllMatch() {
         try {

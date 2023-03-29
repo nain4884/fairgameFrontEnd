@@ -49,10 +49,12 @@ const CustomHeader = ({ }) => {
         getUserDetail()
     }, [location,window.location.pathname])
     const [balance, setBalance] = useState('')
+    const [fullName, setFullName] = useState('')
     async function getUserDetail() {
         try {
             const { data } = await adminAxios.get('users/profile');
             setBalance(data.data.current_balance)
+            setFullName(data.data.fullName)
         } catch (e) {
             console.log(e)
         }
@@ -122,7 +124,7 @@ const CustomHeader = ({ }) => {
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" }}>
                         <SearchInput placeholder={"All Clients..."} header={true} inputContainerStyle={{ height: "30px", minWidth: { laptop: "100px", mobile: "1.5vw" }, width: "140px" }} />
-                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={"Fairgame Wallet"} amount={balance} />
+                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={fullName} amount={balance} />
                     </Box>
                 </Box>
                 {<MobileSideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
