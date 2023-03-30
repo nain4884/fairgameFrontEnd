@@ -19,6 +19,7 @@ import {
 import adminAxios from "../axios/adminAxios";
 import axios from "../axios/axios";
 import { onChangeKeyCheck } from "./PassKeyCheck";
+import { setRole } from "./SetRole";
 
 const style = {
   position: "absolute",
@@ -43,6 +44,11 @@ export default function UserDetailModal({
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(null);
+
+  // function setUpdateAmountOfActiveUser(updatedAmount) {
+  //   let { role } = setRole()
+  //   dispatch(stateActions.setBalance(updatedAmount, role))
+  // }
 
   return (
     <Box

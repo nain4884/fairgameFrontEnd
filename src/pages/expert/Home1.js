@@ -239,7 +239,7 @@ const MatchListComp = () => {
     async function getAllMatch() {
         try {
             let response = await expertAxios.get(`/game-match/getAllMatch`);
-            setAllMatch(response.data)
+            setAllMatch(response.data[0])
         } catch (e) {
             console.log(e)
         }

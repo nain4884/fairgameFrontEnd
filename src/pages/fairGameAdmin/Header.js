@@ -12,6 +12,7 @@ import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "../../components/SideBarAdmin";
 import { setRole } from "../../components/SetRole";
 import { ThisUseModal } from "../../components/Modal";
+import adminAxios from "../../axios/adminAxios";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
@@ -25,6 +26,17 @@ const CustomHeader = ({ }) => {
     const [isTransPasswordExist, setIsTransPasswordExist] = useState(false)
     const currentSelected = useSelector(state => state?.activeAdmin?.activeTabAdmin)
     const location = useLocation();
+    const [balance, setBalance] = useState(0)
+    const [fullName, setFullName] = useState('')
+    async function getUserDetail() {
+        try {
+            const { data } = await adminAxios.get('users/profile');
+            setBalance(data.data.current_balance)
+            setFullName(data.data.fullName)
+        } catch (e) {
+            console.log(e)
+        }
+    }
     React.useEffect(() => {
         if (location.pathname.includes("market_analysis")) {
             dispatch(setActiveAdmin(3))
@@ -37,10 +49,8 @@ const CustomHeader = ({ }) => {
         }
         let { transPass } = setRole()
         setIsTransPasswordExist(window.localStorage.getItem(transPass))
+        getUserDetail()
     }, [window.location.pathname])
-    useEffect(() => {
-        // console.log(currentSelected, 'admin')
-    }, [currentSelected])
     useEffect(() => {
         if (!matchesMobile) {
             setMobileOpen(false)
@@ -106,7 +116,7 @@ const CustomHeader = ({ }) => {
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" }}>
                         <SearchInput placeholder={"All Clients..."} header={true} inputContainerStyle={{ height: "30px", minWidth: { laptop: "100px", mobile: "1.5vw" }, width: "140px" }} />
-                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={"Fairgame Admin"} />
+                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={fullName} balance={balance}/>
                     </Box>
                 </Box>
                 {console.log(isTransPasswordExist)}
@@ -260,7 +270,7 @@ const LiveMarket = ({ title, boxStyle, titleStyle, onClick }) => {
     )
 }
 
-const BoxProfile = ({ image, value, containerStyle }) => {
+const BoxProfile = ({ image, value, containerStyle, balance }) => {
     const theme = useTheme()
     const [open, setOpen] = useState(false)
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
@@ -283,7 +293,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
             }} sx={[{ backgroundColor: "primary.main", minWidth: { laptop: "150px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "45px", mobile: "35px" }, overflow: "hidden", paddingX: "10px", borderRadius: "5px" }, containerStyle]}>
                 <Box style={{}}>
                     <Typography sx={{ fontSize: { laptop: '11px', mobile: "8px" }, color: "text.white", fontWeight: "600" }}>{value}</Typography>
-                    <Typography sx={{ fontSize: { laptop: '13px', mobile: "8px" }, color: "text.white", fontWeight: " 700" }}>1,00,000,000</Typography>
+                    <Typography sx={{ fontSize: { laptop: '13px', mobile: "8px" }, color: "text.white", fontWeight: " 700" }}>{balance}</Typography>
                 </Box>
                 <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
             </Box>

@@ -22,20 +22,21 @@ const AccountList = () => {
   const [pageLoaded, setPageLoaded] = useState(false)
 
   async function getListOfUser() {
-    try {
-      const { data } = await adminAxios.get(`/fair-game-wallet/getAllUser`);
-      data.data.map((element) => {
-        let roleDetail = roles.find(findThisRole)
-        function findThisRole(role) {
-          return role.id === element.roleId
-        }
-        element.role = roleDetail?.roleName
-      })
-      setData(data.data)
-      setPageLoaded(true)
-    } catch (e) {
-      console.log(e);
-    }
+    if (data1.length === 0)
+      try {
+        const { data } = await adminAxios.get(`/fair-game-wallet/getAllUser`);
+        data.data.map((element) => {
+          let roleDetail = roles.find(findThisRole)
+          function findThisRole(role) {
+            return role.id === element.roleId
+          }
+          element.role = roleDetail?.roleName
+        })
+        setData(data.data)
+        setPageLoaded(true)
+      } catch (e) {
+        console.log(e);
+      }
   }
 
   async function getRoles() {
@@ -75,7 +76,7 @@ const AccountList = () => {
                 return (
                   <Row
                     containerStyle={{ background: "#FFE094" }}
-                    profit={true}
+                    profit={element.profit_loss >= 0}
                     fContainerStyle={{ background: "#0B4F26" }}
                     fTextStyle={{ color: "white" }}
                     element={element}
@@ -86,7 +87,7 @@ const AccountList = () => {
                 return (
                   <Row
                     containerStyle={{ background: "#ECECEC" }}
-                    profit={false}
+                    profit={element.profit_loss >= 0}
                     fContainerStyle={{ background: "#F8C851" }}
                     fTextStyle={{ color: "#0B4F26" }}
                     element={element}
@@ -426,10 +427,10 @@ const ListSubHeaderT = ({ data }) => {
     let Casino_Total = 0
     data.map(element => {
       Credit_Referance += isNaN(parseInt(element.credit_refer)) ? 0 : parseInt(element.credit_refer)
-      Balance += (isNaN(parseInt(element.current_balance)) ? 0 : parseInt(element.current_balance)) + (isNaN(parseInt(element.profit_loss)) ? 0 : parseInt(element.profit_loss))
+      Balance += isNaN(parseInt(element.balance)) ? 0 : parseInt(element.balance)
       Profit_Loss += isNaN(parseInt(element.profit_loss)) ? 0 : parseInt(element.profit_loss)
       Exposure += isNaN(parseInt(element.exposure)) ? 0 : parseInt(element.exposure)
-      Available_Balance += (isNaN(parseInt(element.current_balance)) ? 0 : parseInt(element.current_balance)) + (isNaN(parseInt(element.profit_loss)) ? 0 : parseInt(element.profit_loss)) - (isNaN(parseInt(element.exposure)) ? 0 : parseInt(element.exposure))
+      Available_Balance += isNaN(parseInt(element.available_balance)) ? 0 : parseInt(element.available_balance)
       Exposure_Limit += isNaN(parseInt(element.exposure_limit)) ? 0 : parseInt(element.exposure_limit)
     });
     setSumVal({ ...sumVal, Credit_Referance, Balance, Profit_Loss, Exposure, Available_Balance, Exposure_Limit })
@@ -493,12 +494,12 @@ const ListSubHeaderT = ({ data }) => {
           width: "11.5vw",
           display: "flex",
           paddingLeft: "10px",
-          background: "#27AC1E",
+          background: `${sumVal.Profit_Loss >= 0 ? '#27AC1E' : '#E32A2A'}`,
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
         }}
-      >
+      > {/* element.profit_loss >= 0 ? '#27AC1E' : '#E32A2A'*/}
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
@@ -698,7 +699,7 @@ const Row = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {element.current_balance + element.profit_loss}
+            {element.balance}
           </Typography>
         </Box>
         <Box
@@ -756,7 +757,7 @@ const Row = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {element.current_balance + element.profit_loss - element.exposure}
+            {element.available_balance}
           </Typography>
         </Box>
         <Box
@@ -841,7 +842,7 @@ const Row = ({
           setShowModalMessage={setShowModalMessage}
         />
       )}
-      {showSuccessModal && <Modal message={showModalMessage} setShowSuccessModal={handleChangeShowModalSuccess} showSuccessModal={showSuccessModal} buttonMessage={'OK'} navigateTo={''} />}
+      {showSuccessModal && <Modal message={showModalMessage} setShowSuccessModal={handleChangeShowModalSuccess} showSuccessModal={showSuccessModal} buttonMessage={'OK'} navigateTo={'list_of_clients'} />}
     </>
   );
 };

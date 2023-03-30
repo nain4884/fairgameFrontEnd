@@ -43,13 +43,12 @@ const CustomHeader = ({ }) => {
         setIsTransPasswordExist(transPass)
         getUserDetail()
     }, [location,window.location.pathname])
-    const [balance, setBalance] = useState('')
+    const [balance, setBalance] = useState(0)
     const [fullName, setFullName] = useState('')
     async function getUserDetail() {
         try {
             const { data } = await adminAxios.get('users/profile');
             setBalance(data.data.current_balance)
-            // dispatch(stateActions.setBalance(amount, role))
             setFullName(data.data.fullName)
         } catch (e) {
             console.log(e)

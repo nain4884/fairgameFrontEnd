@@ -17,7 +17,6 @@ const CustomHeader = ({ }) => {
     const theme = useTheme()
     const navigate = useNavigate()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-    // const [currentSelected, setCurrentSelected] = useState(0)
     const [mobileOpen, setMobileOpen] = useState(false);
     const [visible, setVisible] = useState(false)
     const [anchor, setAnchor] = React.useState(null)
