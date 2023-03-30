@@ -12,6 +12,7 @@ import { setAnchor } from "../store/betPlace"
 import { Popover } from 'react-tiny-popover'
 import BetPlaced from "./BetPlaced"
 import userAxios from "../axios/userAxios"
+import Modal from "./Modal"
 
 const PlaceBetType = {
     BackLay: "BackLay",
@@ -30,6 +31,11 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
     const [visible, setVisible] = React.useState(false)
     const [canceled, setCanceled] = React.useState(false)
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [showModalMessage, setShowModalMessage] = useState('')
+    const handleChangeShowModalSuccess = (val) => {
+        setShowSuccessModal(val)
+    }
     const innerRef = useOuterClick(ev => {
         if (isPopoverOpen) {
             setIsPopoverOpen(false)
@@ -63,67 +69,76 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
         return { right: 0 }
     }
     return (
-        < Box ref={innerRef} sx={{ width: { mobile: '30%', laptop: '20%' }, height: '94%', position: 'relative' }}>
-            <Box onClick={e => {
-                if (lock || color == "white") {
-                    return null
-                }
-                type?.type === "BL" ? setIsBack(type?.color === "#A7DCFF") : setIsSessionYes(type?.color === "#A7DCFF")
-                setIsPopoverOpen(true)
-                dispatch(setColorValue(color))
-            }}
-                style={{ position: 'relative' }}
-                sx={{ background: lock ? "#FDF21A" : color, border: color != 'white' ? '1px solid #2626264D' : '0px solid white', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} >
-                {!empty && !lock && <Box sx={{ alignItems: 'center', justifyContent: 'space-around' }} >
-                    <Typography sx={{ fontSize: '13px', color: color == 'white' ? 'white' : 'black', fontWeight: '700', textAlign: 'center' }} >{value}</Typography>
-                    <Typography sx={{ fontSize: '12px', marginTop: -.4, color: color == 'white' ? 'white' : 'black', textAlign: 'center' }} >{value2}</Typography>
-                </Box>}
-                {lock &&
-                    <img
-                        src={Lock}
-                        style={{ width: '10px', height: '15px' }}
-                    />
-                }
-            </Box>
-            {isPopoverOpen &&
-                <>
-                    <Box sx={{ zIndex: 110, position: 'absolute', ...getMargin(), transform: { laptop: 'translate( -230%)' }, top: '40px' }}>
-                        <PlaceBet
-                            name={name}
-                            // refs={innerRef}
-                            onSubmit={async (payload) => {
-                                let response = await userAxios.post(`/betting/placeBet`, payload);
-                                console.log(response)
-                                setIsPopoverOpen(false)
-                                setVisible(true)
-                                setCanceled(false)
-                            }}
-                            onCancel={() => {
-                                setVisible(true)
-                                setCanceled(true)
-                                setIsPopoverOpen(false)
-                            }}
-                            handleClose={() => {
-                                setIsPopoverOpen(false)
-                            }}
-                            season={session}
-                            back={back}
-                            isBack={isBack}
-                            isSessionYes={isSessionYes}
-                            type={type}
-                            data={data}
-                            typeOfBet={typeOfBet}
+        <>
+            < Box ref={innerRef} sx={{ width: { mobile: '30%', laptop: '20%' }, height: '94%', position: 'relative' }}>
+                <Box onClick={e => {
+                    if (lock || color == "white") {
+                        return null
+                    }
+                    type?.type === "BL" ? setIsBack(type?.color === "#A7DCFF") : setIsSessionYes(type?.color === "#A7DCFF")
+                    setIsPopoverOpen(true)
+                    dispatch(setColorValue(color))
+                }}
+                    style={{ position: 'relative' }}
+                    sx={{ background: lock ? "#FDF21A" : color, border: color != 'white' ? '1px solid #2626264D' : '0px solid white', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} >
+                    {!empty && !lock && <Box sx={{ alignItems: 'center', justifyContent: 'space-around' }} >
+                        <Typography sx={{ fontSize: '13px', color: color == 'white' ? 'white' : 'black', fontWeight: '700', textAlign: 'center' }} >{value}</Typography>
+                        <Typography sx={{ fontSize: '12px', marginTop: -.4, color: color == 'white' ? 'white' : 'black', textAlign: 'center' }} >{value2}</Typography>
+                    </Box>}
+                    {lock &&
+                        <img
+                            src={Lock}
+                            style={{ width: '10px', height: '15px' }}
                         />
-                    </Box>
-                </>
-            }
-            {
-                <BetPlaced time={time} not={canceled} visible={visible} setVisible={(i) => {
-                    setIsPopoverOpen(false)
-                    setVisible(i)
-                }} />
-            }
-        </Box >
+                    }
+                </Box>
+                {isPopoverOpen &&
+                    <>
+                        <Box sx={{ zIndex: 110, position: 'absolute', ...getMargin(), transform: { laptop: 'translate( -230%)' }, top: '40px' }}>
+                            <PlaceBet
+                                name={name}
+                                // refs={innerRef}
+                                onSubmit={async (payload) => {
+                                    try {
+                                        let response = await userAxios.post(`/betting/placeBet`, payload);
+                                        setShowModalMessage(response.data.message)
+                                        setIsPopoverOpen(false)
+                                        setVisible(true)
+                                        setCanceled(false)
+                                    } catch (e) {
+                                        console.log(e.response.data.message)
+                                        setShowModalMessage(e.response.data.message)
+                                        setShowSuccessModal(true)
+                                    }
+                                }}
+                                onCancel={() => {
+                                    setVisible(true)
+                                    setCanceled(true)
+                                    setIsPopoverOpen(false)
+                                }}
+                                handleClose={() => {
+                                    setIsPopoverOpen(false)
+                                }}
+                                season={session}
+                                back={back}
+                                isBack={isBack}
+                                isSessionYes={isSessionYes}
+                                type={type}
+                                data={data}
+                                typeOfBet={typeOfBet}
+                            />
+                        </Box>
+                    </>
+                }
+                {
+                    <BetPlaced time={time} not={canceled} visible={visible} setVisible={(i) => {
+                        setIsPopoverOpen(false)
+                        setVisible(i)
+                    }} />
+                }
+            </Box >
+            {showSuccessModal && <Modal message={showModalMessage} setShowSuccessModal={handleChangeShowModalSuccess} showSuccessModal={showSuccessModal} buttonMessage={'OK'} navigateTo={'matchDetail'} userPG={true} />}
+        </>
     )
 }
 
@@ -287,9 +302,9 @@ const SeasonMarketBox = ({ index, typeOfBet, data }) => {
                     <SeperateBox po={3} color={"white"} /></>}
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
                 <SeperateBox po={6} color={"white"} />
-                <SeperateBox po={1} session={true} back={true} value={data.yes_rate} value2={data.rate_percent} lock={index == 2} color={"#F6D0CB"} type={{ color: "#A7DCFF", type: "YN" }} typeOfBet={typeOfBet} data={data} />
+                <SeperateBox po={2} session={true} value={data.no_rate} value2={data.rate_percent} lock={index == 2} color={"#F6D0CB"} type={{ color: "#FFB5B5", type: "YN" }} typeOfBet={typeOfBet} data={data} />
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
-                <SeperateBox po={2} session={true} value={data.no_rate} value2={data.rate_percent} lock={index == 2} color={"#B3E0FF"} type={{ color: "#FFB5B5", type: "YN" }} typeOfBet={typeOfBet} data={data} />
+                <SeperateBox po={1} session={true} back={true} value={data.yes_rate} value2={data.rate_percent} lock={index == 2} color={"#B3E0FF"} type={{ color: "#A7DCFF", type: "YN" }} typeOfBet={typeOfBet} data={data} />
                 <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
                 {!matchesMobile && <>
                     <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
@@ -465,30 +480,30 @@ const SessionMarket = ({ data }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
 
-    const [matchData, setMatchData] = useState([])
-    const [pageCount, setPageCount] = useState(10)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [pageLimit, setPageLimit] = useState(5)
+    // const [matchData, setMatchData] = useState([])
+    // const [pageCount, setPageCount] = useState(10)
+    // const [currentPage, setCurrentPage] = useState(1)
+    // const [pageLimit, setPageLimit] = useState(5)
 
-    useEffect(() => {
-        getAllMatch()
-    }, [currentPage, pageCount])
+    // useEffect(() => {
+    //     getAllMatch()
+    // }, [currentPage, pageCount])
 
-    async function getAllMatch() {
-        try {
-            // let { data } = await userAxios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
-            if(data.length > 0) {
-                setMatchData(data)
-                setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }
+    // async function getAllMatch() {
+    //     try {
+    //         // let { data } = await userAxios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
+    //         if(data.length > 0) {
+    //             setMatchData(data)
+    //             setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
+    //         }
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
 
-    function callPage(e) {
-        setCurrentPage(parseInt(e.target.outerText))
-    }
+    // function callPage(e) {
+    //     setCurrentPage(parseInt(e.target.outerText))
+    // }
 
     return (
         <>
@@ -615,13 +630,14 @@ const BookMarketer = ({ manual, data }) => {
     )
 }
 const MatchOdds = ({ data }) => {
+    console.log("data.apiSessionActive, data.matchSessionData.length",data.apiSessionActive, data.matchSessionData.length)
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {data?.apiMatchActive && <Odds data={data} />}
             {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
             {!data?.apiBookMakerActive && <BookMarketer data={data} />}
             {!data?.apiBookMakerActive && <BookMarketer manual={true} data={data} />}
-            {!data?.apiSessionActive && data.matchSessionData.length > 0 && <SessionMarket data={data} />}
+            {data?.apiSessionActive && data.matchSessionData.length > 0 && <SessionMarket data={data} />}
         </Box>
     )
 }

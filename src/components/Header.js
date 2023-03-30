@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, DownArrow, Draw, logo, Logout, Money, MoneyBag, DownIcon } from "../assets";
+import userAxios from "../axios/userAxios";
 import { stateActions } from "../store/stateActions";
 import SearchInput from "./SearchInput";
 import SessionTimeOut from "./SessionTimeOut";
@@ -17,6 +18,17 @@ const CustomHeader = ({ }) => {
 
     const [showSideBarMobile, setShowSideBarMobile] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [balance, setBalance] = useState(0)
+    const [fullName, setFullName] = useState('')
+    async function getUserDetail() {
+        try {
+            const { data } = await userAxios.get('users/profile');
+            setBalance(data.data.current_balance)
+            setFullName(data.data.fullName)
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     useEffect(() => {
         if (!matchesMobile) {
@@ -31,6 +43,7 @@ const CustomHeader = ({ }) => {
         } else {
             setShowSideBarMobile(false)
         }
+        getUserDetail()
     }, [location])
 
     return (
@@ -65,7 +78,7 @@ const CustomHeader = ({ }) => {
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: { mobile: "column-reverse", laptop: "row" }, alignItems: 'center' }}>
                             <NewBoxData containerStyle={{ marginTop: matchesMobile ? "5px" : "0px" }} valueStyle={{}} title={"Exposure"} value="100,000,000" />
-                            <NewBoxData showDropDown={true} title={"John Doe"} valueStyle={{ color: "white" }} titleStyle={{ color: "white" }} value="100,000,000" containerStyle={{ background: "#0B4F26" }} />
+                            <NewBoxData showDropDown={true} title={fullName} valueStyle={{ color: "white" }} titleStyle={{ color: "white" }} value={balance} containerStyle={{ background: "#0B4F26" }} />
                         </Box>
                     </Box>
                 </Box>

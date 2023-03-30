@@ -74,7 +74,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
                     <Typography sx={{ color: "white", fontSize: "11px", fontWeight: "600" }}>{title}</Typography>
                 </Box>
                 {!input && <Box sx={[{ background: "white", border: "0px solid #C7B6B6", display: "flex", justifyContent: "center", alignItems: "center", height: "32px", marginTop: "1px" }, valueContainerStyle]}>
-                    <Typography sx={[{ color: "#262626", fontSize: (title == "Back/Lay" || title == "Yes/No") ? "16px" : '13px', fontWeight: (title === "Back/Lay" || title === "Yes/No") ? "800" : "600" }, valueTextStyle]}>{title === "Back/Lay" ? isBack ? "Back" : "Lay" : title === "Team" ? name : isSessionYes ? "No" : "Yes"}</Typography>
+                    <Typography sx={[{ color: "#262626", fontSize: (title == "Back/Lay" || title == "Yes/No") ? "16px" : '13px', fontWeight: (title === "Back/Lay" || title === "Yes/No") ? "800" : "600" }, valueTextStyle]}>{title === "Back/Lay" ? isBack ? "Back" : "Lay" : title === "Team" ? name : isSessionYes ? "Yes" : "No"}</Typography>
                 </Box>}
                 {
                     input &&

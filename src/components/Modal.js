@@ -22,7 +22,7 @@ export function ThisUseModal() {
   )
 }
 
-export function Modal({ message, buttonMessage, navigateTo, setShowSuccessModal, showSuccessModal }) {
+export function Modal({ message, buttonMessage, navigateTo, setShowSuccessModal, showSuccessModal, userPG }) {
   const navigate = useNavigate()
   return (
     <>
@@ -62,6 +62,7 @@ export function Modal({ message, buttonMessage, navigateTo, setShowSuccessModal,
                 <Button sx={{ backgroundColor: '#fff', ':hover': { backgroundColor: '#43ff5f' }, display: 'flex', justifyContent: 'center' }} onClick={() => {
                   setShowSuccessModal(!showSuccessModal)
                   navigateTo && navigate(`/${window.location.pathname.split("/")[1]}/${navigateTo}`)
+                  userPG && navigate(`/${navigateTo}`)
                 }}>{buttonMessage}</Button>
               </Box>
             </Box>

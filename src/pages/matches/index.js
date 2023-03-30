@@ -154,14 +154,18 @@ export default function Matches() {
     async function getThisMatch(id) {
       //localhost:3100/game-match/matchDetail/aa56cbb1-5f29-4514-92bb-087c976447a2
       try {
+        let matchOddsDataTemp = []
+        let matchSessionDataTemp = []
         const response = await userAxios.get(`/game-match/matchDetail/${id}`);
         response.data?.bettings?.forEach(element => {
           if (element.sessionBet === false || element.sessionBet === 0) {
-            matchOddsData.push(element)
+            matchOddsDataTemp.push(element)
           } else {
-            matchSessionData.push(element)
+            matchSessionDataTemp.push(element)
           }
         });
+        setMatchOddsData(matchOddsDataTemp)
+        setMatchSessionData(matchSessionDataTemp)
         setMarketId(response.data.marketId)
         setMatchDetail(response.data)
       } catch (e) {
@@ -233,7 +237,7 @@ export default function Matches() {
                 }}
               >
                 {matchDetail?.apiSessionActive || matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
-                <AllRateSeperate allBetsData={allBetsData} mark />
+                {allBetsData.length > 0 && <AllRateSeperate allBetsData={allBetsData} mark />}
               </Box>
               <LiveMatchHome />
             </Box>
