@@ -89,6 +89,7 @@ export default function Home1() {
 
     const [showMatch, setShowMatch] = useState(false)
     const navigate = useNavigate()
+    
     return (
         <Background>
             <Header />

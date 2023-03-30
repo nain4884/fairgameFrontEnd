@@ -19,24 +19,30 @@ const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   const [roles, setRoles] = useState([])
   const [data1, setData] = useState([]);
-  const [pageLoaded, setPageLoaded] = useState(false)
 
   async function getListOfUser() {
-    if (data1.length === 0)
-      try {
-        const { data } = await adminAxios.get(`/fair-game-wallet/getAllUser`);
-        data.data.map((element) => {
-          let roleDetail = roles.find(findThisRole)
-          function findThisRole(role) {
-            return role.id === element.roleId
-          }
-          element.role = roleDetail?.roleName
-        })
-        setData(data.data)
-        setPageLoaded(true)
-      } catch (e) {
-        console.log(e);
-      }
+    try {
+      const { data } = await adminAxios.get(`/fair-game-wallet/getAllUser?&page=${currentPage}&limit=${pageLimit}`);
+      data.data.map((element) => {
+        let roleDetail = roles.find(findThisRole)
+        function findThisRole(role) {
+          return role.id === element.roleId
+        }
+        element.role = roleDetail?.roleName
+      })
+      setData(data.data)
+      setPageCount(Math.ceil(parseInt(data?.totalCount ? data.totalCount : 1) / pageLimit));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const [pageCount, setPageCount] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageLimit, setPageLimit] = useState(5)
+
+  function callPage(val) {
+    setCurrentPage(parseInt(val))
   }
 
   async function getRoles() {
@@ -46,7 +52,7 @@ const AccountList = () => {
   useEffect(() => {
     getRoles();
     getListOfUser();
-  }, [pageLoaded]);
+  }, [currentPage, pageCount]);
 
   return (
     <>
@@ -99,12 +105,12 @@ const AccountList = () => {
           </Box>
         </Box>
       </Box>
-      <Footer />
+      <Footer currentPage={currentPage} pages={pageCount} callPage={callPage} />
     </>
   );
 };
 
-const Footer = () => {
+const Footer = ({ currentPage, pages, callPage }) => {
   return (
     <Box
       sx={{
@@ -121,7 +127,7 @@ const Footer = () => {
       <Typography
         sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}
       >
-        Showing 1 to 50
+        Showing 1 to {pages}
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Box
@@ -133,6 +139,9 @@ const Footer = () => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: "5px",
+          }}
+          onClick={() => {
+            callPage(parseInt(currentPage) - 1 === 0 ? 1 : parseInt(currentPage) - 1)
           }}
         >
           <Typography
@@ -162,7 +171,7 @@ const Footer = () => {
               fontSize: { laptop: "14px", mobile: "12px" },
             }}
           >
-            1
+            {currentPage}
           </Typography>
         </Box>
         <Box
@@ -174,6 +183,9 @@ const Footer = () => {
             borderRadius: "5px",
             justifyContent: "center",
             alignItems: "center",
+          }}
+          onClick={() => {
+            callPage(parseInt(currentPage) === pages ? pages : parseInt(currentPage) + 1)
           }}
         >
           <Typography
