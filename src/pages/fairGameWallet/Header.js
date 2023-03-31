@@ -39,16 +39,17 @@ const CustomHeader = ({ }) => {
         } else if (location.pathname.includes("reports") || location.pathname.includes("account_statement") || location.pathname.includes("current_bet") || location.pathname.includes("general_report") || location.pathname.includes("game_report") || location.pathname.includes("profit_loss")) {
             dispatch(setActiveAdmin(2))
         }
-        let { transPass } = setRole()
+        let { transPass,axios,role } = setRole()
         setIsTransPasswordExist(transPass)
-        getUserDetail()
+        getUserDetail(axios,role)
     }, [location,window.location.pathname])
     const [balance, setBalance] = useState(0)
     const [fullName, setFullName] = useState('')
-    async function getUserDetail() {
+    async function getUserDetail(axios,role) {
         try {
-            const { data } = await adminAxios.get('users/profile');
+            const { data } = await axios.get('users/profile');
             setBalance(data.data.current_balance)
+            dispatch(stateActions.setBalance(data.data.current_balance,role))
             setFullName(data.data.fullName)
         } catch (e) {
             console.log(e)

@@ -1,6 +1,6 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import {
   DownGIcon,
   DownIcon,
@@ -19,27 +19,27 @@ const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   const [roles, setRoles] = useState([])
   const [data1, setData] = useState([]);
-  const [pageCount, setPageCount] = useState(10)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageLimit, setPageLimit] = useState(5)
-
   async function getListOfUser() {
     try {
       let { axios } = setRole()
       const { data } = await axios.get(`/fair-game-wallet/getAllUser?&page=${currentPage}&limit=${pageLimit}`);
-      data.data?.data.map((element) => {
+      data?.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole)
         function findThisRole(role) {
           return role.id === element.roleId
         }
         element.role = roleDetail?.roleName
       })
-      setData(data.data?.data)
-      setPageCount(Math.ceil(parseInt(data?.data?.totalCount ? data.data.totalCount : 1) / pageLimit));
+      setData(data?.data?.data)
+      setPageCount(Math.ceil(parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) / pageLimit));
     } catch (e) {
       console.log(e);
     }
   }
+
+  const [pageCount, setPageCount] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageLimit, setPageLimit] = useState(5)
 
   function callPage(val) {
     setCurrentPage(parseInt(val))
@@ -630,9 +630,8 @@ const Row = ({
   fTextStyle,
   profit,
   element,
-  getListOfUser
+  getListOfUser,
 }) => {
-  const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
   const [showUserModal, setShowUserModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState('')
@@ -682,7 +681,7 @@ const Row = ({
             {element.userName}
           </Typography>
           <StyledImage
-            src={profit ? DownIcon : DownGIcon}
+            src={DownIcon}
             style={{ height: "10px", width: "15px" }}
           />
         </Box>
@@ -852,6 +851,7 @@ const Row = ({
           userModal={userModal}
           setShowSuccessModal={handleChangeShowModalSuccess}
           setShowModalMessage={setShowModalMessage}
+          profitLoss={element.profit_loss}
         />
       )}
       {showSuccessModal && <Modal message={showModalMessage} setShowSuccessModal={handleChangeShowModalSuccess} showSuccessModal={showSuccessModal} buttonMessage={'OK'} navigateTo={'list_of_clients'} />}

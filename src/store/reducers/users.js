@@ -70,7 +70,7 @@ export let userReducer = (state = initialState, action) => {
             return { role: null, jwt: null, JWTadmin: null, JWTuser: null, JWTexpert: null, JWTmaster: null, role1: null, role2: null, role3: null, role4: null };
         }
         case 'SET_BAL': {
-            switch (action.role.trim()) {
+            switch (action.payload.role.trim()) {
                 case "role1":
                     localStorage.setItem('Balance1', action.payload.amount) //JWTmaster
                     break;
