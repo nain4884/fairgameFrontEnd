@@ -27,8 +27,8 @@ export default function Login() {
 
     const [loginError, setLoginError] = useState()
 
-    useEffect(() => {
-    }, [error, loginDetail])
+    // useEffect(() => {
+    // }, [error, loginDetail])
 
     function changeErrors() {
         setError({
@@ -104,8 +104,8 @@ export default function Login() {
 
 
     async function loginToAccount() {
-        changeErrors()
-        if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") {
+        // changeErrors()
+        // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") {
             try {
                 let { data } = await axios.post(`/auth/login`, {
                     "username": loginDetail[1].val,
@@ -156,7 +156,7 @@ export default function Login() {
                 if (!e?.response) return setLoginError(LoginServerError)
                 setLoginError(e.response.data.message)
             }
-        }
+        // }
     }
 
     const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"))

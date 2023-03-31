@@ -159,7 +159,7 @@ const AddAccount = () => {
             function checkRoleId(age) {
                 return age.role.split(" ").join("").toLowerCase() === Detail[9].val.split(" ").join("").toLowerCase();
             }
-            if (!(Detail[2].val === 0 || Detail[2].val === "" || Detail[3].val === 0 || Detail[3].val === "" || Detail[9].val === 0 || Detail[9].val === "" || Detail[14].val === 0 || Detail[14].val === "")) {
+            if (!(Detail[9].val === 0 || Detail[9].val === "" || Detail[14].val === 0 || Detail[14].val === "")) { //Detail[2].val === 0 || Detail[2].val === "" || Detail[3].val === 0 || Detail[3].val === "" || 
                 payload = {
                     ...payload,
                     userName: Detail[1].val,
@@ -251,11 +251,11 @@ const AddAccount = () => {
                 <Box sx={{ background: "#F8C851", minHeight: "60vh", borderRadius: "5px", padding: "20px", paddingTop: "10px", marginTop: "10px", display: "flex" }}>
                     <Box sx={{ flex: 1 }}>
                         <Input titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Username"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={1} onFocusOut={checkUserName} toFoucs={true} />
-                        {error[1].val && <p style={{ color: "#fa1e1e" }}>{userAlreadyExist ? userAlreadyExist : 'Field Required'}</p>}
+                        {/* {error[1].val && <p style={{ color: "#fa1e1e" }}>{userAlreadyExist ? userAlreadyExist : 'Field Required'}</p>} */}
                         <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={2} onFocusOut={doSendErrorForPassword} toFoucs={true} /> {/** handleError={handleError} checkMesasge={true} */}
-                        {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
+                        {/* {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>} */}
                         <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Confirm User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={3} />
-                        {Detail[2].val !== Detail[3].val && <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>}
+                        {/* {Detail[2].val !== Detail[3].val && <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>} */}
                         <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Fullname"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={4} />
                         <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={5} />
                         <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Mobile Number"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={6} type={"Number"} />
