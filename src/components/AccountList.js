@@ -23,14 +23,14 @@ const AccountList = () => {
   async function getListOfUser() {
     try {
       const { data } = await adminAxios.get(`/fair-game-wallet/getAllUser?&page=${currentPage}&limit=${pageLimit}`);
-      data.data.data.map((element) => {
+      data.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole)
         function findThisRole(role) {
           return role.id === element.roleId
         }
         element.role = roleDetail?.roleName
       })
-      setData(data.data.data)
+      setData(data.data?.data)
       setPageCount(Math.ceil(parseInt(data?.data?.totalCount ? data.data.totalCount : 1) / pageLimit));
     } catch (e) {
       console.log(e);
