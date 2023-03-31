@@ -24,15 +24,15 @@ const AccountList = () => {
     try {
       let { axios } = setRole()
       const { data } = await axios.get(`/fair-game-wallet/getAllUser?&page=${currentPage}&limit=${pageLimit}`);
-      data.data.map((element) => {
+      data.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole)
         function findThisRole(role) {
           return role.id === element.roleId
         }
         element.role = roleDetail?.roleName
       })
-      setData(data.data)
-      setPageCount(Math.ceil(parseInt(data?.totalCount ? data.totalCount : 1) / pageLimit));
+      setData(data.data?.data)
+      setPageCount(Math.ceil(parseInt(data?.data?.totalCount ? data.data.totalCount : 1) / pageLimit));
     } catch (e) {
       console.log(e);
     }
