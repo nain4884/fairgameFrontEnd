@@ -1,6 +1,5 @@
 import { Box, Button, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
-import axios from "../axios/axios"
 import Input from "./Input"
 import { EyeIcon } from "../admin/assets"
 import DropDownSimple from "./DropdownSimple"
@@ -10,7 +9,6 @@ import userAxios from '../axios/userAxios'
 import masterAxios from '../axios/masterAxios'
 import { useNavigate } from "react-router-dom"
 import { setRole } from "./SetRole"
-import { onChangeKeyCheck } from "./PassKeyCheck"
 import { doSendErrorForPassword } from "./doCheckErrorForPassword"
 import Modal from "./Modal"
 
@@ -44,23 +42,6 @@ const AddAccount = () => {
         14: { field: "adminTransPassword", val: "" },
         15: { field: "myPartnership", val: 0 }
     })
-    let defaultError = {
-        1: { field: "userName", val: true },
-        2: { field: "password", val: true },
-        3: { field: "confirmPassword", val: true },
-        4: { field: "fullName", val: true },
-        5: { field: "city", val: true },
-        6: { field: "phoneNumber", val: true },
-        7: { field: "accountType", val: true },
-        8: { field: "creditReference", val: true },
-        9: { field: "roleId", val: true },
-        10: { field: "sa_partnership", val: true },
-        11: { field: "m_partnership", val: true },
-        12: { field: "a_partnership", val: true },
-        13: { field: "remark", val: true },
-        14: { field: "adminTransPassword", val: true },
-        15: { field: "myPartnership", val: true }
-    }
     const [error, setError] = useState({
         1: { field: "userName", val: false },
         2: { field: "password", val: false },

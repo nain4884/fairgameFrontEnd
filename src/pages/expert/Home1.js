@@ -1,4 +1,4 @@
-import { Box, Button, Input, styled, Switch, TextField, Typography } from "@mui/material";
+import { Box, Button, Input, Pagination, styled, Switch, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SearchInput, StyledImage } from "../../components";
@@ -11,6 +11,7 @@ import axios from "../../axios/expertAxios";
 import DropDownSimple from "../../components/DropdownSimple";
 import { defaultMarketId, matchType } from "../../components/constants";
 import expertAxios from "../../axios/expertAxios";
+import microServiceAxios from "../../axios/microServiceAxios";
 const containerStyles = {
     marginTop: "10px"
 }
@@ -68,13 +69,16 @@ export default function Home1() {
         20: { field: "marketId", val: false }
     })
 
+    const [matches, setMatches] = useState([{ EventName: 'No Matches Available', MarketId: defaultMarketId }])
+    const [marketId, setMarketId] = useState(defaultMarketId)
+
     const createMatch = async () => {
         try {
             let request = new FormData()
             let i
             for (i = 0; i < 20; i++) {
                 if ((!Detail[i + 1].val || Detail[i + 1].val !== 0) && i !== 19) request.append(`${Detail[i + 1].field}`, Detail[i + 1].val)
-                if (i === 19) request.append(`${Detail[i + 1].field}`, defaultMarketId)
+                if (i === 19) request.append(`${Detail[i + 1].field}`, marketId)
             }
             const { data } = await axios.post(`/game-match/addmatch`, request);
             if (data.message === "Match added successfully.") navigate('/expert/match')
@@ -83,21 +87,35 @@ export default function Home1() {
         }
     }
 
+    const getAllLiveMatches = async () => {
+        try {
+            const { data } = await microServiceAxios.get(`/matchList?sports=${Detail[1].val}`);
+            let matchesList = []
+            data.forEach(match => {
+                matchesList.push({ EventName: match.EventName, MarketId: match.MarketId })
+            });
+            setMatches(matchesList)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     useEffect(() => {
-        // console.log(Detail)
-    }, [Detail])
+        getAllLiveMatches()
+    }, [Detail[1].val])
 
     const [showMatch, setShowMatch] = useState(false)
     const navigate = useNavigate()
-    
+
     return (
         <Background>
             <Header />
             <Box sx={{ background: "white", borderRadius: "5px", m: "10px", p: "10px" }}>
-                <Box sx={{ display: "flex" }}>
+                {/* <Box sx={{ display: "flex" }}>
                     <LabelValueComponent icon={ArrowDownWhite} valueStyle={{ color: "white" }} valueContainerStyle={{ background: "#0B4F26" }} containerStyle={{ flex: 1 }} title={"BetFair Match List"} value="India vs Pakistan" />
                     <LabelValueComponent icon={ArrowDownWhite} valueStyle={{ color: "white" }} valueContainerStyle={{ background: "#0B4F26" }} containerStyle={{ flex: 1, marginLeft: "20px" }} title={"BetFair Maximum Amount"} value="$ 1,00,000,000,000,000" />
-                </Box>
+                </Box> */}
+                <LabelValueComponent title={'Add Match'} notShowSub={true} titleSize={'20px'} />
                 <Box sx={{ background: "#F8C851", marginTop: "20px", borderRadius: "5px", p: "10px", py: "20px" }}>
                     <Box sx={{ display: "flex" }}>
                         {/* <LabelValueComponent icon={ArrowDownBlack} valueStyle={{}} containerStyle={{ flex: 1 }} title={"Game"} value="Select Game" /> */}
@@ -106,7 +124,7 @@ export default function Home1() {
                             {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Game'} data={["Cricket", "Football", "Tennis", "Football", "Ice", "Hockey", "Volleyball", "Politics", "Basketball", "Table Tennis", "Darts"]} place={1} /> */}
                         </Box>
                         <Box sx={{ flex: 1, position: "relative", marginLeft: "1%" }}>
-                            <DropDownSimple valued="Select Account Type..." dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Match Name'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px" }} data={["India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England"]} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={5} />
+                            <DropDownSimple valued="Select Account Type..." dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Match Name'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px" }} data={matches} setMarketId={setMarketId} matchesSelect={true} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={5} />
                             {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Match Name'} data={["India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England"]} place={2} /> */}
                         </Box>
                         {/* <LabelValueComponent icon={ArrowDownBlack} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Match Name"} value="Enter Name of the Match..." /> */}
@@ -156,11 +174,11 @@ export default function Home1() {
     )
 }
 
-const LabelValueComponent = ({ title, value, icon, containerStyle, valueStyle, valueContainerStyle, InputValType, place, DetailError, type }) => {
+const LabelValueComponent = ({ title, value, icon, containerStyle, valueStyle, valueContainerStyle, InputValType, place, DetailError, type, notShowSub, titleSize }) => {
     return (
         <Box className="beFairMatch" sx={[containerStyle]}>
-            <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{title}</Typography>
-            <ShowComponent InputValType={InputValType} value={value} valueContainerStyle={valueContainerStyle} valueStyle={valueStyle} icon={icon} place={place} DetailError={DetailError} type={type} />
+            <Typography sx={{ fontSize: titleSize ? titleSize : "12px", fontWeight: "600" }}>{title}</Typography>
+            {!notShowSub && <ShowComponent InputValType={InputValType} value={value} valueContainerStyle={valueContainerStyle} valueStyle={valueStyle} icon={icon} place={place} DetailError={DetailError} type={type} />}
         </Box>
     )
 }
@@ -237,17 +255,24 @@ const ShowComponent = ({ InputValType, value, valueContainerStyle, valueStyle, i
 
 const MatchListComp = () => {
     const [allMatch, setAllMatch] = useState([])
-    async function getAllMatch() {
+    const [pageCount, setPageCount] = useState(10)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [pageLimit, setPageLimit] = useState(5)
+    const getAllMatch = async () => {
         try {
-            let response = await expertAxios.get(`/game-match/getAllMatch`);
+            let response = await expertAxios.get(`/game-match/getAllMatch?&page=${currentPage}&limit=${pageLimit}`);
             setAllMatch(response.data[0])
+            setPageCount(Math.ceil(parseInt(response?.data[1] ? response.data[1] : 1) / pageLimit));
         } catch (e) {
             console.log(e)
         }
     }
+    const callPage =(e) => {
+        setCurrentPage(parseInt(e.target.outerText))
+    }
     useEffect(() => {
         getAllMatch()
-    }, [])
+    }, [currentPage, pageCount])
     return (
         <Box sx={[{ marginX: "10px", marginTop: '10px', minHeight: "200px", borderRadius: "10px", border: "2px solid white" }, (theme) => ({
             backgroundImage: `${theme.palette.primary.headerGradient}`
@@ -257,6 +282,7 @@ const MatchListComp = () => {
             {allMatch.map((element, i) => {
                 return (<Row index={i + 1} containerStyle={{ background: (i + 1) % 2 === 0 ? "#ECECEC" : "" }} data={element} />)
             })}
+            <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} />
         </Box>
     )
 }

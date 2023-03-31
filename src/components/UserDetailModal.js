@@ -39,16 +39,13 @@ export default function UserDetailModal({
   backgroundColor,
   userModal,
   setShowSuccessModal,
-  setShowModalMessage
+  setShowModalMessage,
+  activeWalletAmount,
+  profitLoss
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(null);
-
-  // function setUpdateAmountOfActiveUser(updatedAmount) {
-  //   let { role } = setRole()
-  //   dispatch(stateActions.setBalance(updatedAmount, role))
-  // }
 
   return (
     <Box
@@ -83,6 +80,8 @@ export default function UserDetailModal({
               userModal={userModal}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
+              activeWalletAmount={activeWalletAmount}
+              profitLoss={profitLoss}
             />
           )}
           {selected == 1 && (
@@ -92,6 +91,8 @@ export default function UserDetailModal({
               userModal={userModal}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
+              activeWalletAmount={activeWalletAmount}
+              profitLoss={profitLoss}
             />
           )}
           {selected == 2 && (
@@ -343,7 +344,8 @@ const DepositComponent = ({
   backgroundColor,
   userModal,
   setShowSuccessModal,
-  setShowModalMessage
+  setShowModalMessage,
+  profitLoss
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -355,6 +357,7 @@ const DepositComponent = ({
     remark: "",
   };
   const [depositObj, setDepositObj] = useState(defaultDepositObj);
+  const activeWalletAmount = useSelector(state => state?.rootReducer?.user?.amount)
   return (
     <Box sx={{ display: "flex", borderRadius: "5px" }}>
       <Box sx={{ width: "31.65vw" }}>
@@ -380,10 +383,11 @@ const DepositComponent = ({
             }}
           >
             <TextField
+              value={depositObj.amount}
               onChange={(e) => {
                 setDepositObj({
                   ...depositObj,
-                  amount: parseInt(e.target.value),
+                  amount: e.target.value<0?0:parseInt(e.target.value),
                   userId: userModal.id,
                 });
               }}
@@ -400,6 +404,10 @@ const DepositComponent = ({
               }}
               type={"Number"}
             />
+          </Box>
+          <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
+            <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Predicted Wallet</Typography>
+            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount- parseInt(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
           </Box>
         </Box>
         <Box
@@ -454,6 +462,10 @@ const DepositComponent = ({
                 sx={{ height: "14px", width: "20px" }}
               />
             </Box>
+          </Box>
+          <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
+            <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Profit/Loss</Typography>
+            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss + parseInt(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
           </Box>
         </Box>
       </Box>
@@ -542,10 +554,11 @@ const WithDrawComponent = ({
   backgroundColor,
   userModal,
   setShowSuccessModal,
-  setShowModalMessage
+  setShowModalMessage,
+  profitLoss
 }) => {
   const [showPass, setShowPass] = useState(false);
-  const dispatch = useDispatch();
+  const activeWalletAmount = useSelector(state => state?.rootReducer?.user?.amount)
   const defaultWithDrawObj = {
     userId: "",
     amount: 0,
@@ -577,10 +590,11 @@ const WithDrawComponent = ({
             }}
           >
             <TextField
+            value={withDrawObj.amount}
               onChange={(e) => {
                 setWithDrawObj({
                   ...withDrawObj,
-                  amount: parseInt(e.target.value),
+                  amount: e.target.value<0?0:parseInt(e.target.value),
                   userId: userModal.id,
                 });
               }}
@@ -597,6 +611,10 @@ const WithDrawComponent = ({
               }}
               type={"Number"}
             />
+          </Box>
+          <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
+            <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Predicted Wallet</Typography>
+            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount+ parseInt(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
           </Box>
         </Box>
         <Box
@@ -650,6 +668,10 @@ const WithDrawComponent = ({
                 sx={{ height: "14px", width: "20px" }}
               />
             </Box>
+          </Box>
+          <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
+            <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Profit/Loss</Typography>
+            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss - parseInt(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
           </Box>
         </Box>
       </Box>
@@ -776,10 +798,11 @@ const NewCreditComponent = ({
             }}
           >
             <TextField
+              value={newCreditObj.amount}
               onChange={(e) => {
                 setNewCreditObj({
                   ...newCreditObj,
-                  amount: parseInt(e.target.value),
+                  amount: e.target.value<0?0:parseInt(e.target.value),
                   userId: userModal.id,
                 });
               }}
