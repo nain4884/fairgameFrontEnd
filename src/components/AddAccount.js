@@ -159,7 +159,7 @@ const AddAccount = () => {
             function checkRoleId(age) {
                 return age.role.split(" ").join("").toLowerCase() === Detail[9].val.split(" ").join("").toLowerCase();
             }
-            if (!(Detail[9].val === 0 || Detail[9].val === "" || Detail[14].val === 0 || Detail[14].val === "")) { //Detail[2].val === 0 || Detail[2].val === "" || Detail[3].val === 0 || Detail[3].val === "" || 
+            if (!(Detail[3].val === 0 || Detail[3].val === "" || Detail[9].val === 0 || Detail[9].val === "" || Detail[14].val === 0 || Detail[14].val === "")) { //Detail[2].val === 0 || Detail[2].val === "" ||
                 payload = {
                     ...payload,
                     userName: Detail[1].val,
