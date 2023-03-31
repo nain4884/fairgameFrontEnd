@@ -19,6 +19,9 @@ const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   const [roles, setRoles] = useState([])
   const [data1, setData] = useState([]);
+  const [pageCount, setPageCount] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageLimit, setPageLimit] = useState(5)
 
   async function getListOfUser() {
     try {
@@ -37,10 +40,6 @@ const AccountList = () => {
       console.log(e);
     }
   }
-
-  const [pageCount, setPageCount] = useState(10)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageLimit, setPageLimit] = useState(5)
 
   function callPage(val) {
     setCurrentPage(parseInt(val))
