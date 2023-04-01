@@ -11,7 +11,6 @@ export default function BetFairOdds() {
                 <Typography sx={{ fontSize: "3vw", color: "#0B4F26", fontWeight: "bold" }}>No Match Added</Typography>
             </Box> */}
             <MatchListComp />
-
         </Background>
     )
 }
