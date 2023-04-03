@@ -255,7 +255,7 @@ const Odds = ({ data }) => {
                     justifyContent: 'flex-end'
                 }}>
                     <SmallBox />
-                    <Typography sx={{ color: 'white', width: '60px', fontSize: { laptop: '9px', mobile: "7px" }, fontWeight: '500', flexWrap: "wrap" }} >Maximum Bet 100000</Typography>
+                    <Typography sx={{ color: 'white', width: '60px', fontSize: { laptop: '9px', mobile: "7px" }, fontWeight: '500', flexWrap: "wrap" }} >Maximum Bet {data?.betfair_match_max_bet}</Typography>
                     <img src={Info} style={{ width: '15px', height: '15px', marginRight: '5px', marginLeft: '5px' }} />
                 </Box>
             </Box >
@@ -275,10 +275,12 @@ const Odds = ({ data }) => {
                     </Box>
                 </Box>
             }
-            <BoxComponent time={true} color={'#46e080'} name={`${data?.teamA?.toUpperCase()}`} data={data} team={'teamA'} typeOfBet={"Match"} />
-            <Divider />
-            <BoxComponent time={true} color={'#FF4D4D'} name={`${data?.teamB?.toUpperCase()}`} data={data} team={'teamB'} typeOfBet={"Match"} />
-            <Divider />
+            {data?.matchOddsData && <>
+                <BoxComponent time={true} color={'#46e080'} name={`${data?.teamA?.toUpperCase()}`} data={data} team={'teamA'} typeOfBet={"Match"} />
+                <Divider />
+                <BoxComponent time={true} color={'#FF4D4D'} name={`${data?.teamB?.toUpperCase()}`} data={data} team={'teamB'} typeOfBet={"Match"} />
+                <Divider />
+            </>}
             {data?.teamC && <BoxComponent time={true} color={'#F8C851'} name={"DRAW"} data={data} team={'draw'} />}
         </Box >
     )
@@ -527,7 +529,7 @@ const SessionMarket = ({ data }) => {
                         justifyContent: 'flex-end'
                     }}>
                         <SmallBoxSeason />
-                        <Typography sx={{ color: 'white', width: '60px', fontSize: { laptop: '9px', tablet: '9px', mobile: "7px" }, fontWeight: '500', flexWrap: "wrap" }} >Maximum Bet 100000</Typography>
+                        <Typography sx={{ color: 'white', width: '60px', fontSize: { laptop: '9px', tablet: '9px', mobile: "7px" }, fontWeight: '500', flexWrap: "wrap" }} >Maximum Bet {data?.betfair_session_max_bet}</Typography>
                         <img src={Info} style={{ width: '15px', height: '15px', marginRight: '5px', marginLeft: '5px' }} />
                     </Box>
                 </Box >
@@ -546,7 +548,7 @@ const SessionMarket = ({ data }) => {
                             </Box>
                         </Box>
                     </Box>}
-                    {data.matchSessionData.map(element => {
+                    {data.matchSessionData.length>0 && data.matchSessionData.map(element => {
                         return (
                             <>
                                 <SeasonMarketBox typeOfBet={"Session"} data={element} />
@@ -598,7 +600,7 @@ const BookMarketer = ({ manual, data }) => {
                     justifyContent: 'flex-end'
                 }}>
                     <SmallBox color={"#FF4D4D"} />
-                    <Typography sx={{ color: 'white', width: '60px', fontSize: { laptop: '9px', tablet: '9px', mobile: "7px" }, fontWeight: '500', flexWrap: "wrap" }} >Maximum Bet 100000</Typography>
+                    <Typography sx={{ color: 'white', width: '60px', fontSize: { laptop: '9px', tablet: '9px', mobile: "7px" }, fontWeight: '500', flexWrap: "wrap" }} >Maximum Bet {manual ? data?.bookmaker_manual_max_bet : data?.betfair_bookmaker_max_bet}</Typography>
                     <img src={Info} style={{ width: '15px', height: '15px', marginRight: '5px', marginLeft: '5px' }} />
                 </Box>
             </Box >
@@ -630,13 +632,13 @@ const BookMarketer = ({ manual, data }) => {
     )
 }
 const MatchOdds = ({ data }) => {
-    console.log("data.apiSessionActive, data.matchSessionData.length",data.apiSessionActive, data.matchSessionData.length)
+    console.log("data.apiSessionActive, data.matchSessionData.length", data.apiSessionActive, data.matchSessionData.length)
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             {data?.apiMatchActive && <Odds data={data} />}
             {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
-            {!data?.apiBookMakerActive && <BookMarketer data={data} />}
-            {!data?.apiBookMakerActive && <BookMarketer manual={true} data={data} />}
+            {data?.apiBookMakerActive && <BookMarketer data={data} />}
+            {data?.manualBookMakerActive && <BookMarketer manual={true} data={data} />}
             {data?.apiSessionActive && data.matchSessionData.length > 0 && <SessionMarket data={data} />}
         </Box>
     )

@@ -353,11 +353,17 @@ const Row = ({ index, containerStyle, data }) => {
         }
         try {
             let response = await expertAxios.post(`/game-match/updateMatchActiveStatus`, payload);
-            if (response.data.message === "Match update successfully.") navigate('/expert/betodds')
+            // if (response.data.message === "Match update successfully.") navigate('/expert/betodds')
         } catch (e) {
             console.log(e)
         }
     }
+
+    const navigateToAddBet = () => {
+        console.log('hiii',data.id)
+        navigate('/expert/addBet', {state:{id:data.id, marketId:data.marketId, gameType:data.gameType}})
+    }
+
     const navigate = useNavigate()
     return (
         <Box sx={[{ display: "flex", height: "45px", background: "#FFE094", alignItems: "center", borderBottom: "2px solid white" }, containerStyle]}>
@@ -372,6 +378,9 @@ const Row = ({ index, containerStyle, data }) => {
                     <ButtonWithSwitch title={`Manual\nSession`} containerStyle={{ width: "13%" }} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={4} />
                     <ButtonWithSwitch title={`Manual\nBookmaker`} containerStyle={{}} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={5} />
                 </Box>
+                <CusButton onClick={() => {
+                    navigateToAddBet()
+                }} title={"Add Bet"} />
                 <CusButton onClick={() => {
                     submitMatchUpdation()
                 }} title={"Submit"} />

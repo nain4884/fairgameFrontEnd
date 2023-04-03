@@ -26,39 +26,38 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
     const [Bets, setBets] = useState([])
     const [allSessionBets, setAllSessionBets] = useState([])
     function doBets() {
+        let bets = []
         allBetsData.forEach(element => {
             element.bettings.forEach(element2 => {
-                Bets.push({ ...element2, marketId: element.marketId })
+                bets.push({ ...element2, marketId: element.marketId })
             });
         });
-    }
-    function doEmptyGetAllBets() {
-        setAllSessionBets([])
+        setBets(bets)
     }
     useEffect(() => {
         doBets()
-        doEmptyGetAllBets()
         getAllBetsData()
-    }, [Bets, allBetsData])
+    }, [])
     async function getAllBetsData() {
+        let allSessionBet = []
         Promise.all(
-            Bets.forEach(async element => {
-                let payload = {
-                    "match_id": element.match_id
-                }
-                try{
-                    let {data} = await userAxios.post(`/betting/getPlacedBets`, payload);
-                    setAllSessionBets([...allSessionBets, ...data.data])
-                }catch(e){
+            Bets.map(async element => {
+                try {
+                    let payload = {
+                        "match_id": element.match_id
+                    }
+                    let { data } = await userAxios.post(`/betting/getPlacedBets`, payload);
+                    allSessionBet.push(...data.data[0])
+                } catch (e) {
                     console.log(e)
                 }
             })
-        ).then((values) => {
-            console.log("allRateBets,values",allSessionBets,values);
-        });
+        ).then(()=>{
+            setAllSessionBets(allSessionBet)
+        })
     }
     return (
-        <Box sx={{ width: { mobile: "100%", laptop: '100%' }, marginY: { mobile: '.2vh', laptop: '1vh' }, padding: .2, background: 'white', height: '414px' }}>
+        <Box sx={{ width: { mobile: "100%", laptop: '100%' }, marginY: { mobile: '.2vh', laptop: '1vh' }, padding: .2, background: 'white', height: 'auto' }}>
             <Box sx={[{ width: '100%', height: "42px", justifyContent: 'space-between', alignItems: 'center', paddingLeft: '10px', paddingRight: '4px', marginBottom: '.1vh', display: 'flex', }, (theme) => ({
                 backgroundImage: `${theme.palette.primary.headerGradient}`
             })]} >
@@ -82,7 +81,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                 }
             </Box>
             {
-                [...data, ...data, ...data, ...data].map((i, k) => {
+                allSessionBets.map((i, k) => {
                     return (
                         <Box sx={{ display: 'flex', flexDirection: 'row', position: 'relative' }} >
                             <Box sx={{ height: '40px', margin: { mobile: '1px', laptop: '0.4px' }, width: '30px', display: 'flex', background: 'black', justifyContent: 'center', alignItems: 'center' }} >
@@ -135,7 +134,7 @@ const RowComponent = ({ header, data }) => {
     return (
         <Box sx={{ width: '100%', height: header ? '30px' : '42px', background: 'white', justifyContent: 'space-between', alignItems: 'center', display: 'flex' }}>
             {!header && <>
-                <SingleBox color={getColor} data={data.title} first={true} header={header} />
+                <SingleBox color={getColor} data={data.title} first={true} header={header} time={data?.time} />
                 <SingleBox color={getColor()} data={data?.odds} header={header} />
                 <SingleBox color={getColor()} data={data?.type} header={header} />
                 <SingleBox color={getColor()} data={data?.stake} header={header} /></>}
@@ -144,16 +143,14 @@ const RowComponent = ({ header, data }) => {
                 <SingleBox color={getColor()} data={data[1]} header={header} />
                 <SingleBox color={getColor()} data={data[2]} header={header} />
                 <SingleBox color={getColor()} data={data[3]} header={header} /></>}
-
-
         </Box>
     )
 }
-const SingleBox = ({ data, header, color, up, first }) => {
+const SingleBox = ({ data, header, color, up, first, time }) => {
 
     return !header ? first ? (
         <Box sx={{ width: '140%', height: '40px', flexDirection: 'column', background: "#F8C851", marginX: { mobile: '1px', laptop: '0.4px' }, display: 'flex', justifyContent: 'center' }}>
-            <Typography sx={{ fontWeight: '600', fontSize: { mobile: '6px', laptop: '8px' }, color: 'black', textAlign: 'end', marginRight: '3px' }} >{'10:10 AM'}</Typography>
+            <Typography sx={{ fontWeight: '600', fontSize: { mobile: '6px', laptop: '8px' }, color: 'black', textAlign: 'end', marginRight: '3px' }} >{time}</Typography>
             <Box sx={{ height: '.4vh' }} ></Box>
             <Typography sx={{ fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{"6 OVER RUNS PAKISTAN"}</Typography>
 

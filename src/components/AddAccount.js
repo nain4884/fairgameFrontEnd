@@ -65,6 +65,7 @@ const AddAccount = () => {
     const [showSuccessModal, setShowSuccessModal] = useState(false)
 
     const [typeToShow, setTypeToShow] = useState([
+        'Select your account type',
         "Fairgame Admin",
         "Super Admin",
         "Admin",
