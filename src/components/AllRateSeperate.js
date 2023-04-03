@@ -44,26 +44,24 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
     async function getAllBetsData() {
         let allRateBetsTemp = []
         Promise.all(
-            Bets.forEach(async element => {
+            Bets.map(async element => {
                 let payload = {
                     "match_id": element.match_id
                 }
                 try {
                     let { data } = await userAxios.post(`/betting/getPlacedBets`, payload);
                     allRateBetsTemp.push(...data.data[0])
-                    // setAllRateBets([...allRateBets, ...data.data])
                 } catch (e) {
                     console.log(e)
                 }
             })
-        ).then((values) => {
-            console.log("allRateBets,values", allRateBets, values);
+        ).then(() => {
+            setAllRateBets(allRateBetsTemp)
         });
-        setAllRateBets(allRateBetsTemp)
     }
     return (
         <>
-            {allRateBets.length > 0 && <Box sx={{ width: { mobile: "100%", laptop: '100%' }, marginY: { mobile: '.2vh', laptop: '1vh' }, padding: .2, background: 'white' }}>
+            {<Box sx={{ width: { mobile: "100%", laptop: '100%' }, marginY: { mobile: '.2vh', laptop: '1vh' }, padding: .2, background: 'white' }}>
                 <Box sx={[{ width: '100%', height: "42px", justifyContent: 'space-between', alignItems: 'center', paddingLeft: '10px', paddingRight: '4px', marginBottom: '.1vh', display: 'flex', }, (theme) => ({
                     backgroundImage: `${theme.palette.primary.headerGradient}`
                 })]} >

@@ -236,7 +236,7 @@ export default function Matches() {
                   width: "98%",
                 }}
               >
-                {matchDetail?.apiSessionActive || matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
+                {matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
                 {allBetsData.length > 0 && <AllRateSeperate allBetsData={allBetsData} mark />}
               </Box>
               <LiveMatchHome />
@@ -256,10 +256,10 @@ export default function Matches() {
                 <MatchOdds onClick={() => handleClose(true)} data={{ ...matchDetail, matchOddsData, matchSessionData }} />
               </Box>
               <Box sx={{ width: "30%", paddingRight: "1%" }}>
-                <MatchComponent />
-                <LiveMatchHome />
+                <MatchComponent /> {/** Live scoreBoard */}
+                <LiveMatchHome /> {/* Poster */}
                 <AllRateSeperate allBetsData={allBetsData} mark />
-                {matchDetail?.apiSessionActive || matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
+                {matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
               </Box>
             </Box>
           )
