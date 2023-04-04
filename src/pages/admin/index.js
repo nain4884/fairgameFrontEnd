@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom"
-import CustomHeader from "../../admin/components/Header.js"
 import ChangePassword from "./ChangePassword.js"
 import AccountStatement from "./AccountStatement.js"
 import AddAccount from "./AddAccount"
@@ -16,6 +15,7 @@ import TotalBets from "./TotalBets.js"
 import MatchSubmit1 from "./MatchSubmit1.js"
 import { useContext } from "react";
 import { AuthContext } from "../../Authprovider";
+import CustomHeader from "../fairGameAdmin/Header.js"
 const AdminRoutes = () => {
         
       const { tokenMaster } = useContext(AuthContext);

@@ -25,6 +25,7 @@ const AddAccount = () => {
     const [roleOfUser, setRoleOfUser] = useState("")
     const [errorShow, setErrorShow] = useState("")
     const [successShow, setSuccessShow] = useState("")
+    const [locationPath, setLocationPath] = useState('')
     const [Detail, setDetail] = useState({
         1: { field: "userName", val: "" },
         2: { field: "password", val: "" },
@@ -35,9 +36,9 @@ const AddAccount = () => {
         7: { field: "accountType", val: "" },
         8: { field: "creditReference", val: 0 },
         9: { field: "roleId", val: "" },
-        10: { field: "sa_partnership", val: 0 },
-        11: { field: "m_partnership", val: 0 },
-        12: { field: "a_partnership", val: 0 },
+        10: { field: "uplinePertnerShip", val: 0 },
+        11: { field: "myPertnerShip", val: 0 },
+        12: { field: "downLinePertnerShip", val: 0 },
         13: { field: "remark", val: "" },
         14: { field: "adminTransPassword", val: "" },
         15: { field: "myPartnership", val: 0 }
@@ -52,9 +53,9 @@ const AddAccount = () => {
         7: { field: "accountType", val: false },
         8: { field: "creditReference", val: false },
         9: { field: "roleId", val: false },
-        10: { field: "sa_partnership", val: false },
-        11: { field: "m_partnership", val: false },
-        12: { field: "a_partnership", val: false },
+        10: { field: "uplinePertnerShip", val: false },
+        11: { field: "myPertnerShip", val: false },
+        12: { field: "downLinePertnerShip", val: false },
         13: { field: "remark", val: false },
         14: { field: "adminTransPassword", val: false },
         15: { field: "myPartnership", val: false }
@@ -73,6 +74,11 @@ const AddAccount = () => {
         "Master",
         "User"])
 
+    const [profile, setProfile] = useState({})
+    const [uplineP, setUplineP] = useState(0)
+
+    const [axiosRolesToUse, setAxiosRolesToUse] = useState()
+
     const types = [
         { role: "fairGameAdmin", val: "Fairgame Admin", level: 1 },
         { role: "superAdmin", val: "Super Admin", level: 2 },
@@ -84,9 +90,9 @@ const AddAccount = () => {
     ]
 
     const setRoleOnly = () => {
-        let { role } = setRole()
-        setRoleOfUser(role)
-        setLoginRole(localStorage.getItem(role))
+        setRoleOfUser(axiosRolesToUse?.role)
+        setLocationPath(axiosRolesToUse?.locPath)
+        setLoginRole(localStorage.getItem(axiosRolesToUse?.role))
     }
 
     const handleChangeShowModalSuccess = (val) => {
@@ -129,13 +135,40 @@ const AddAccount = () => {
             city: "",
             phoneNumber: 0,
             roleId: "",
-            m_partnership: 0,
-            sa_partnership: 0,
-            a_partnership: 0,
             remark: "",
             adminTransPassword: "",
             myPartnership: 0,
             credit_refer: 0
+        }
+        switch (locationPath) {
+            case 'super_master':
+                // payload.a_partnership=Detail[10].val
+                payload.sm_partnership = Detail[11].val
+                payload.m_partnership = Detail[12].val
+                break;
+            case 'super_admin':
+                // payload.fa_partnership=Detail[10].val
+                payload.sa_partnership = Detail[11].val
+                payload.a_partnership = Detail[12].val
+                break;
+            case 'master':
+                // payload.sm_partnership=Detail[10].val
+                payload.m_partnership = Detail[11].val
+                break;
+            case 'admin':
+                // payload.sa_partnership=Detail[10].val
+                payload.a_partnership = Detail[11].val
+                payload.sm_partnership = Detail[12].val
+                break;
+            case 'fairgame_wallet':
+                payload.fw_partnership = Detail[11].val
+                payload.fa_partnership = Detail[12].val
+                break;
+            case 'fairgame_admin':
+                // payload.fw_partnership=Detail[10].val
+                payload.fa_partnership = Detail[11].val
+                payload.sa_partnership = Detail[12].val
+                break;
         }
         try {
             function checkRoleId(age) {
@@ -151,29 +184,13 @@ const AddAccount = () => {
                     city: Detail[5].val,
                     phoneNumber: Detail[6].val,
                     roleId: roles.filter(checkRoleId)[0].roleId,
-                    sa_partnership: Detail[10].val,
-                    m_partnership: Detail[11].val,
-                    a_partnership: Detail[12].val,
                     remark: Detail[13].val,
                     adminTransPassword: Detail[14].val,
                     myPartnership: Detail[15].val,
                     credit_refer: Detail[8].val
                 }
                 let response
-                switch (roleOfUser) {
-                    case 'role1':
-                        response = await masterAxios.post(`/fair-game-wallet/adduser`, payload);
-                        break;
-                    case 'role2':
-                        response = await adminAxios.post(`/fair-game-wallet/adduser`, payload);
-                        break;
-                    case 'role3':
-                        response = await expertAxios.post(`/fair-game-wallet/adduser`, payload);
-                        break;
-                    default:
-                        response = await userAxios.post(`/fair-game-wallet/adduser`, payload);
-                        break;
-                }
+                response = await axiosRolesToUse?.axios.post(`/fair-game-wallet/adduser`, payload);
                 if (response.status == 200) {
                     setSuccessShow(response.data.message)
                     handleChangeShowModalSuccess(true)
@@ -196,18 +213,74 @@ const AddAccount = () => {
         })
     }
 
+    async function getUserDetail() {
+        try {
+            const { data } = await axiosRolesToUse?.axios.get('users/profile');
+            setProfile(data.data)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    function handleUpline() {
+        let thisUplinePertnerShip = 0
+        switch (locationPath) {
+            case 'super_master':
+                thisUplinePertnerShip = profile.a_partnership + profile.sa_partnership + profile.fa_partnership + profile.fw_partnership
+                break;
+            case 'super_admin':
+                thisUplinePertnerShip = profile.fa_partnership + profile.fw_partnership
+                break;
+            case 'master':
+                thisUplinePertnerShip = profile.sm_partnership + profile.a_partnership + profile.sa_partnership + profile.fa_partnership + profile.fw_partnership
+                break;
+            case 'admin':
+                thisUplinePertnerShip = profile.sa_partnership + profile.fa_partnership + profile.fw_partnership
+                break;
+            case 'fairgame_wallet':
+                break;
+            case 'fairgame_admin':
+                thisUplinePertnerShip = profile.fw_partnership
+                break;
+        }
+        setDetail({
+            ...Detail, [10]: {
+                ...Detail[10],
+                val: thisUplinePertnerShip
+            }
+        })
+        setError({
+            ...error, [10]: {
+                ...error[10],
+                val: false
+            }
+        })
+        setUplineP(thisUplinePertnerShip)
+    }
+
+    useEffect(() => {
+        handleAxios()
+        getUserDetail()
+        handleUpline()
+    }, [])
+
     useEffect(() => {
         getAllRoles()
         setRoleOnly()
         setTypeForAccountType()
     }, [loginRole, Detail, error, showSuccessModal])
 
+    function handleAxios() {
+        let { role, locPath, axios } = setRole()
+        setAxiosRolesToUse({ role, locPath, axios })
+    }
+
     async function checkUserName({ val }) {
         try {
             let body = {
                 userName: val
             }
-            const { data } = await adminAxios.post(`fair-game-wallet/checkUserExist`, body)
+            const { data } = await axiosRolesToUse?.axios.post(`fair-game-wallet/checkUserExist`, body)
             if (data.data.exist === true) {
                 setError({
                     ...error, [1]: {
@@ -222,6 +295,16 @@ const AddAccount = () => {
         }
     }
 
+    function CheckThisPosition({ place, val, setError, error }) {
+        console.log('val.toString().length>0', val.toString().length > 0)
+        setError({
+            ...error, [place]: {
+                ...error[place],
+                val: !val.toString().length > 0
+            }
+        })
+    }
+
     useEffect(() => {
         setDownParterShipVal(Detail[10].val, Detail[11].val)
     }, [Detail[10].val, Detail[11].val])
@@ -232,31 +315,31 @@ const AddAccount = () => {
                 <Typography sx={{ color: "white", fontSize: "18px", fontWeight: "600" }}>Add Account</Typography>
                 <Box sx={{ background: "#F8C851", minHeight: "60vh", borderRadius: "5px", padding: "20px", paddingTop: "10px", marginTop: "10px", display: "flex" }}>
                     <Box sx={{ flex: 1 }}>
-                        <Input titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Username"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={1} onFocusOut={checkUserName} toFoucs={true} />
+                        <Input titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} placeholder={'Username (Required)'} title={"Username"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={1} onFocusOut={checkUserName} toFoucs={true} />
                         {error[1].val && <p style={{ color: "#fa1e1e" }}>{userAlreadyExist ? userAlreadyExist : 'Field Required'}</p>}
                         <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={2} onFocusOut={doSendErrorForPassword} toFoucs={true} /> {/** handleError={handleError} checkMesasge={true} */}
                         {/* {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>} */}
                         <Input containerStyle={containerStyles} img={EyeIcon} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Confirm User Password*"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={3} />
                         {Detail[2].val !== Detail[3].val && <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>}
-                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Fullname"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={4} />
-                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={5} />
-                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Mobile Number"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={6} type={"Number"} />
+                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} placeholder={'Fullname (Optional)'} inputContainerStyle={inputContainerStyle} title={"Fullname"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={4} />
+                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} placeholder={'City (Optional)'} inputContainerStyle={inputContainerStyle} title={"City"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={5} />
+                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} placeholder={'Mobile (Optional)'} inputContainerStyle={inputContainerStyle} title={"Mobile Number"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={6} type={"Number"} />
                     </Box>
                     <Box sx={{ flex: 1, marginX: "20px" }}>
                         <DropDownSimple dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Account Type'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px" }} data={typeToShow} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={9} />
-                        {error[9].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+                        {error[9].val || Detail[9].val === "" && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
                         <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Credit Reference"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={8} type={"Number"} />
                         {error[9].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={{ ...inputContainerStyle, backgroundColor: "#DEDEDE" }} title={"Upline Partnership"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={10} type={"Number"} />
+                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={{ ...inputContainerStyle, backgroundColor: "#DEDEDE" }} title={"Upline Partnership"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={10} autoMaticFillValue={`${Detail[10].val}`} />
                         {error[10].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"My Partnership"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={11} type={"Number"} />
+                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"My Partnership"} setDetail={setDetail} onFocusOut={CheckThisPosition} toFoucs={true} Detail={Detail} setError={setError} error={error} place={11} type={"Number"} />
                         {error[11].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={{ backgroundColor: "#DEDEDE", ...inputContainerStyle }} title={"Downline partnership"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={12} type={"Number"} typeOfRead={false} autoMaticFillValue={Detail[12].val} />
+                        <Input containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={{ backgroundColor: "#DEDEDE", ...inputContainerStyle }} title={"Downline partnership"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={12} type={"Number"} autoMaticFillValue={Detail[12].val} />
                         {error[12].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
                     </Box>
                     <Box sx={{ flex: 1.5 }}>
                         <Input
-                            titleStyle={titleStyles} inputStyle={imputStyle} inputProps={{ multiline: true, rows: 10 }} inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "205px", mobile: "205px" }, width: '50%' }} title={"Remark"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={13} />
+                            titleStyle={titleStyles} inputStyle={imputStyle} inputProps={{ multiline: true, rows: 10 }} placeholder={'Remark (Optional)'} inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "205px", mobile: "205px" }, width: '50%' }} title={"Remark"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={13} />
                         <Input containerStyle={{ ...containerStyles, width: "50%" }} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={{ ...inputContainerStyle }} title={"Admin Transaction Password"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={14} />
                         {!error[14].val || Detail[14].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
                         <Button className="cursor-pointer" sx={{ background: "#0B4F26", width: "50%", display: "flex", justifyContent: "center", border: "2px solid black", alignItems: "center", borderRadius: "5px", height: "45px", marginTop: "35px", color: "white", fontSize: "18px" }} onClick={(e) => { addAccount() }}>Create</Button>

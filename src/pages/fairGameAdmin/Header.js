@@ -12,14 +12,12 @@ import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "../../components/SideBarAdmin";
 import { setRole } from "../../components/SetRole";
 import { ThisUseModal } from "../../components/Modal";
-import adminAxios from "../../axios/adminAxios";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-    // const [currentSelected, setCurrentSelected] = useState(0)
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchor, setAnchor] = React.useState(null)
     const [anchor1, setAnchor1] = React.useState(null)
@@ -30,7 +28,8 @@ const CustomHeader = ({ }) => {
     const [fullName, setFullName] = useState('')
     async function getUserDetail() {
         try {
-            const { data } = await adminAxios.get('users/profile');
+            let { axios } = setRole()
+            const { data } = await axios.get('users/profile');
             setBalance(data.data.current_balance)
             setFullName(data.data.fullName)
         } catch (e) {
@@ -106,20 +105,18 @@ const CustomHeader = ({ }) => {
                             navigate('/fairgame_wallet/market_analysis')
                         }} title={"MARKET ANALYSIS"}
                             boxStyle={{ backgroundColor: currentSelected == 3 ? "white" : "transparent", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "center" }} titleStyle={{ color: currentSelected == 3 ? "green" : "white" }} />
-                        <ButtonHead onClick={(e) => {
+                        {/* <ButtonHead onClick={(e) => {
                             dispatch(setActiveAdmin(4))
                             // navigate('/fairgame_wallet/wallet')
                             setAnchor1(e.currentTarget)
                         }} title={"WALLET"}
-                            report={true} selected={currentSelected == 4} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", width: "90px", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "space-around" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} />
-
+                            report={true} selected={currentSelected == 4} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", width: "90px", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "space-around" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} /> */}
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" }}>
                         <SearchInput placeholder={"All Clients..."} header={true} inputContainerStyle={{ height: "30px", minWidth: { laptop: "100px", mobile: "1.5vw" }, width: "140px" }} />
-                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={fullName} balance={balance}/>
+                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={fullName} balance={balance} />
                     </Box>
                 </Box>
-                {console.log(isTransPasswordExist)}
                 {<MobileSideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
                 {isTransPasswordExist === "false" && !/createTransPassword/.test(window.location.pathname) && <ThisUseModal message="You don't have transaction password" buttonMessage="Create Transaction Password" navigateTo='createTransPassword' />}
             </AppBar>
@@ -274,7 +271,6 @@ const BoxProfile = ({ image, value, containerStyle, balance }) => {
     const theme = useTheme()
     const [open, setOpen] = useState(false)
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);

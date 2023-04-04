@@ -12,6 +12,7 @@ import SessionTimeOut from "../../components/SessionTimeOut";
 import AddNotificationModal from "../../components/AddNotificationModal";
 import { setRole } from "../../components/SetRole";
 import { ThisUseModal } from "../../components/Modal";
+import expertAxios from "../../axios/expertAxios";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
@@ -26,6 +27,7 @@ const CustomHeader = ({ }) => {
     const dispatch = useDispatch()
     const location = useLocation();
     const [active, setActiveAdmin] = useState(0)
+    const [allMatch, setAllMatch] = useState([])
     useEffect(() => {
         if (!matchesMobile) {
             setMobileOpen(false)
@@ -41,7 +43,16 @@ const CustomHeader = ({ }) => {
         }
         let { transPass } = setRole()
         setIsTransPasswordExist(window.localStorage.getItem(transPass))
+        getAllMatch()
     }, [location])
+    const getAllMatch = async () => {
+        try {
+            let response = await expertAxios.get(`/game-match/getAllMatch`);
+            setAllMatch(response.data[0])
+        } catch (e) {
+            console.log(e)
+        }
+    }
     return (
         <>
             <SessionTimeOut />
@@ -73,8 +84,8 @@ const CustomHeader = ({ }) => {
                         {(activeUser == 1 || activeUser == '2' || activeUser == "3") && <>
                             <ButtonHead onClick={(e) => {
                                 dispatch(setSelected(1))
+                                console.log('activeUser', activeUser, currentSelected)
                                 if (activeUser == "3") {
-                                    navigate("/expert/match")
                                     return
                                 }
                                 setAnchor(e.currentTarget)
@@ -82,15 +93,19 @@ const CustomHeader = ({ }) => {
                             {activeUser != "3" && <ButtonHead
                                 onClick={(e) => {
                                     dispatch(setSelected(5))
+                                    if (window.location.pathname.split('/')[2] == 'live') {
+                                        return
+                                    }
+                                    navigate("/expert/live")
                                 }} title={"ALL BET"} boxStyle={{ backgroundColor: currentSelected == 5 ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: currentSelected == 5 ? "green" : "white" }} />}
                             {<ButtonHead
                                 onClick={(e) => {
                                     dispatch(setSelected(4))
-                                    if (activeUser == "3") {
-                                        navigate("/expert/match")
+                                    if (window.location.pathname.split('/')[2] == 'match') {
                                         return
                                     }
-                                }} title={"MATCH LIST"} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} />}
+                                    navigate("/expert/match")
+                                }} title={"MATCH LIST"} boxStyle={{ backgroundColor: window.location.pathname.split('/')[2] == 'match' ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: window.location.pathname.split('/')[2] == 'match' ? "green" : "white" }} />}
                         </>
                         }
 
@@ -124,7 +139,7 @@ const CustomHeader = ({ }) => {
             </AppBar>
             {isTransPasswordExist === "false" && !/createTransPassword/.test(window.location.pathname) && <ThisUseModal message="You don't have transaction password" buttonMessage="Create Transaction Password" navigateTo='createTransPassword' />}
             <Box sx={{ minHeight: { laptop: 90, mobile: 60 + 32 + 42 } }} />
-            <DropdownMenu1 anchorEl={anchor} open={Boolean(anchor)} handleClose={() => {
+            <DropdownMenu1 anchorEl={anchor} open={Boolean(anchor)} allMatch={allMatch} handleClose={() => {
                 setAnchor(null)
             }} />
         </>
@@ -142,10 +157,10 @@ const ButtonHead = ({ title, boxStyle, titleStyle, onClick, report, selected }) 
     )
 }
 const menutItems1 = [{ title: "India vs Pakistan" }, { title: "Australia vs England" }, , { title: "Srilanka vs England" }]
-const DropdownMenu1 = ({ anchorEl, open, handleClose }) => {
+const DropdownMenu1 = ({ anchorEl, open, handleClose, allMatch }) => {
     const navigate = useNavigate()
     const [selected, setSelected] = useState(0)
-
+    console.log('allMatch', allMatch)
     return (
         <Menu
             id="basic-menu"
@@ -165,7 +180,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose }) => {
                 }
             }}
         >
-            {menutItems1.map((x, i) => <MenutItemsComponent handleClose={handleClose} setSelected={setSelected} index={i} selected={selected} x={x} />)}
+            {allMatch.map((x, i) => <MenutItemsComponent handleClose={handleClose} setSelected={setSelected} index={i} selected={selected} x={x} />)}
         </Menu>
     )
 }
@@ -203,9 +218,7 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) =
                 }
                 else {
                     setSelected(index)
-
                 }
-                // setShow(!show)
             }}>{x.title}</MenuItem>
         {selected == index && <Box sx={{ background: "#F8C851", width: "80%", marginLeft: "20%", borderRadius: "5px", paddingX: "5px", paddingY: "5px" }}>
             <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Current Live Session" : "Current Live Bookmaker"}</Typography>

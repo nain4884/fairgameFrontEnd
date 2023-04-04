@@ -111,12 +111,12 @@ function AddBetComp() {
     }
 
     const getMatchDetail = async (idToFetch) => {
-        try{
+        try {
             const { data } = await expertAxios.get(`/game-match/matchDetail/${idToFetch}`);
-            if(data) {
+            if (data) {
                 setThisMatchDetail(data)
             }
-        }catch(e){
+        } catch (e) {
             console.log(e)
             if (e.response.data.message) {
                 setShowSuccessModal(true)
@@ -131,7 +131,7 @@ function AddBetComp() {
         passIdMarId(id, gameType)
         if (id) {
             getMatchDetail(id)
-        }else {
+        } else {
             getAllActiveMatches()
         }
     }, [valueParsed])
@@ -140,7 +140,7 @@ function AddBetComp() {
         let payload = {
             match_id: id ? id : Detail[1].val,
             matchType: Detail[2].val,
-            sessionBet: Detail[3].val,
+            sessionBet: Detail[3].val == 'Session Odds',
             teamA_lay: Detail[4].val,
             teamB_lay: Detail[5].val,
             teamA_Back: Detail[6].val,
@@ -150,7 +150,7 @@ function AddBetComp() {
         let payload2 = {
             match_id: id ? id : Detail[1].val,
             matchType: Detail[2].val,
-            sessionBet: Detail[3].val,
+            sessionBet: Detail[3].val == 'Session Odds',
             bet_condition: Detail[9].val,
             no_rate: Detail[10].val,
             yes_rate: Detail[11].val,
@@ -254,8 +254,8 @@ const LabelValueComponent = ({ title, containerStyle, titleSize, headColor, Inpu
                         val: DetailError?.type === "Number" ? DetailError.Detail[place].val === 0 : DetailError.Detail[place].val === ""
                     }
                 })
-            }} />: <Typography>
-                </Typography>}
+            }} /> : <Typography>
+            </Typography>}
         </Box>
     )
 }
