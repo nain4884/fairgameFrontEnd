@@ -40,7 +40,7 @@ const CustomHeader = ({ }) => {
             dispatch(setActiveAdmin(2))
         }
         let { transPass,axios,role } = setRole()
-        setIsTransPasswordExist(transPass)
+        setIsTransPasswordExist(window.localStorage.getItem(transPass))
         getUserDetail(axios,role)
     }, [location,window.location.pathname])
     const [balance, setBalance] = useState(0)
@@ -116,7 +116,6 @@ const CustomHeader = ({ }) => {
                             setAnchor1(e.currentTarget)
                         }} title={"WALLET"}
                             report={true} selected={currentSelected == 4} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", width: "90px", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "space-around" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} />
-
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" }}>
                         <SearchInput placeholder={"All Clients..."} header={true} inputContainerStyle={{ height: "30px", minWidth: { laptop: "100px", mobile: "1.5vw" }, width: "140px" }} />

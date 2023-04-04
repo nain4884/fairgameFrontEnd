@@ -3,11 +3,10 @@ import { Box } from "@mui/system"
 import { useEffect, useState } from "react";
 import { onChangeKeyCheck } from "./PassKeyCheck";
 
-const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, titleStyle, inputStyle, inputContainerStyle, img, inputProps, setDetail, Detail, setError, error, place, type, typeOfRead, autoMaticFillValue, onFocusOut, toFoucs, handleError, checkMesasge }) => {
+const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, titleStyle, inputStyle, inputContainerStyle, img, inputProps, setDetail, Detail, setError, error, place, type, autoMaticFillValue, onFocusOut, toFoucs, handleError, checkMesasge }) => {
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('tablet'));
     const [showPass, setShowPass] = useState(true)
-
     return (
         <Box sx={[{}, containerStyle]}>
             <Typography variant="inputHeader" sx={[{ marginLeft: "10px", fontSize: { laptop: "10px", mobile: "12px" }, fontWeight: '500' }, titleStyle]}>{title}</Typography>

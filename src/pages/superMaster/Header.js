@@ -92,12 +92,12 @@ const CustomHeader = ({ }) => {
                             navigate(`/${window.location.pathname.split("/")[1]}/market_analysis`)
                         }} title={"MARKET ANALYSIS"}
                             boxStyle={{ backgroundColor: currentSelected == 3 ? "white" : "transparent", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "center" }} titleStyle={{ color: currentSelected == 3 ? "green" : "white" }} />
-                        <ButtonHead onClick={(e) => {
+                        {/* <ButtonHead onClick={(e) => {
                             dispatch(setActiveAdmin(4))
                             // navigate('/fairgame_wallet/wallet')
                             setAnchor1(e.currentTarget)
                         }} title={"WALLET"}
-                            report={true} selected={currentSelected == 4} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", width: "90px", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "space-around" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} />
+                            report={true} selected={currentSelected == 4} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", width: "90px", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "space-around" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} /> */}
 
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" }}>

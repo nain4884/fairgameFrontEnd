@@ -24,7 +24,7 @@ const DropDownSimple = ({ valued, title, data, containerStyle, titleStyle, value
                     })
                     matchesSelect && setMarketId(mId)
                     setOpen(false)
-                }} sx={[{ paddingY: '4px', paddingLeft: '7px', fontSize: '10px', fontWeight: '500', color: 'black' }, dropDownTextStyle]}>{item}</Typography>
+                }} sx={[{ paddingY: '4px', paddingLeft: '7px', fontSize: '10px', fontWeight: '500', color: 'black', background: item == Detail[place].val && '#DEDEDE' }, dropDownTextStyle]}>{item}</Typography>
             </>
         )
     }

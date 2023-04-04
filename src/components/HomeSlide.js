@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import StyledImage from "./StyledImage";
 import { DropDown } from "../admin/assets";
 import adminAxios from "../axios/adminAxios";
+import { setRole } from "./SetRole";
 export default function HomeSlide() {
     const [show, setShow] = useState(false)
     const theme = useTheme()
@@ -25,8 +26,9 @@ export default function HomeSlide() {
     }, [])
 
     const getHeaderDetail = async () => {
+        let {axios} = setRole()
         try {
-            const reponse = await adminAxios.get(`fair-game-wallet/getUserBalanceDetails`)
+            const reponse = await axios.get(`fair-game-wallet/getUserBalanceDetails`)
             setUserBalanceDetails(reponse.data.data)
         } catch (e) {
             console.log(e)
