@@ -33,6 +33,7 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
     const [canceled, setCanceled] = React.useState(false)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [showModalMessage, setShowModalMessage] = useState('')
+    const [selectedValue,setSelectedValue]=useState('')
     const handleChangeShowModalSuccess = (val) => {
         setShowSuccessModal(val)
     }
@@ -75,6 +76,8 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
                     if (lock || color == "white") {
                         return null
                     }
+                    setSelectedValue(value)
+                    console.log("TEAM A",value)
                     type?.type === "BL" ? setIsBack(type?.color === "#A7DCFF") : setIsSessionYes(type?.color === "#A7DCFF")
                     setIsPopoverOpen(true)
                     dispatch(setColorValue(color))
@@ -122,6 +125,7 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
                                 season={session}
                                 back={back}
                                 isBack={isBack}
+                                selectedValue={selectedValue}
                                 isSessionYes={isSessionYes}
                                 type={type}
                                 data={data}

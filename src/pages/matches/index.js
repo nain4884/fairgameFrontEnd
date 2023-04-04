@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CustomHeader, MatchOdds, SideBar } from "../../components";
 import EventListing from "../../components/EventListing";
 import MatchesComponent from "../../components/Matches";
@@ -20,8 +20,8 @@ import ProfitLossComponent from "../../components/ProfitLossComponent";
 import { ChangePassword } from "./ChangePassword";
 import ManualBookMakerMarket from "../../components/ManualBookMakerMarket";
 import userAxios from "../../axios/userAxios";
-import io from 'socket.io-client';
 import { microServiceApiPath } from "../../components/constants";
+import { SocketContext } from "../../context/socketContext";
 export default function Matches() {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
@@ -33,22 +33,16 @@ export default function Matches() {
   const activeTab = useSelector((state) => state.betplace)?.activeTab;
 
   const Matches = () => {
-    const [id, setId] = useState('')
-    const [socket, setSocket] = useState(null);
+    const [id, setId] = useState("");
+    // const [socket, setSocket] = useState(null);
     const doSetId = (k) => {
-      setId(k)
-    }
-    useEffect(() => {
-      const socket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
-      socket.emit("init", { id })
-      socket.on("marketRate", (data) => {
-        console.log("marketRate Response", data);
-      })
-      return () => socket.off();
-    }, [id])
+      setId(k);
+    };
+
     const doNavigateWithState = (e) => {
       navigate("/matchDetail", { state: e });
-    }
+    };
+
     return (
       <>
         {!matchesMobile ? (
@@ -109,7 +103,8 @@ export default function Matches() {
               <MatchesComponent
                 doNavigateWithState={doNavigateWithState}
                 setMatchId={doSetId}
-                macthId={id} />
+                macthId={id}
+              />
             )}
             {activeTab != "CRICKET" && activeTab != "INPLAY" && (
               <Box
@@ -144,55 +139,100 @@ export default function Matches() {
 
   const Home = () => {
     const location = useLocation();
-    const id = location.state
-    const [matchDetail, setMatchDetail] = useState()
-    const [matchOddsData, setMatchOddsData] = useState([])
-    const [matchSessionData, setMatchSessionData] = useState([])
-    const [allBetsData, setAllBetsData] = useState([])
-    const [socket, setSocket] = useState(null);
-    const [marketId, setMarketId] = useState('');
+    const [allBetRates, setAllBetRates] = useState([]);
+    const [sessionbets, setSessionBets] = useState([]);
+    const id = location.state;
+    const [matchDetail, setMatchDetail] = useState();
+    const [matchOddsData, setMatchOddsData] = useState([]);
+    const [matchSessionData, setMatchSessionData] = useState([]);
+    const [allBetsData, setAllBetsData] = useState([]);
+    const [marketId, setMarketId] = useState("");
+    const socket = useContext(SocketContext);
+
+    useEffect(() => {
+      if (socket && socket.connected) {
+        console.log("Connected", socket);
+        socket.on("newMessage", (value) => {
+          console.log(value);
+        });
+        socket.on("session_bet", (data) => {
+          console.log("session Response", data);
+          setSessionBets((prev) => [...prev, data]);
+        });
+        socket.on("match_bet", (data) => {
+          getAllBetsData()
+          console.log("match Response", data);
+          setAllBetRates((prev) => [...prev, data]);
+        });
+      }
+    }, [socket]);
+
     async function getThisMatch(id) {
       //localhost:3100/game-match/matchDetail/aa56cbb1-5f29-4514-92bb-087c976447a2
       try {
-        let matchOddsDataTemp = []
-        let matchSessionDataTemp = []
+        let matchOddsDataTemp = [];
+        let matchSessionDataTemp = [];
         const response = await userAxios.get(`/game-match/matchDetail/${id}`);
-        response.data?.bettings?.forEach(element => {
+        response.data?.bettings?.forEach((element) => {
           if (element.sessionBet === false || element.sessionBet === 0) {
-            matchOddsDataTemp.push(element)
+            matchOddsDataTemp.push(element);
           } else {
-            matchSessionDataTemp.push(element)
+            matchSessionDataTemp.push(element);
           }
         });
-        setMatchOddsData(matchOddsDataTemp)
-        setMatchSessionData(matchSessionDataTemp)
-        setMarketId(response.data.marketId)
-        setMatchDetail(response.data)
+        setMatchOddsData(matchOddsDataTemp);
+        setMatchSessionData(matchSessionDataTemp);
+        setMarketId(response.data.marketId);
+        setMatchDetail(response.data);
+
+        response.data.bettings?.forEach((element) => {
+          if (element.sessionBet) {
+            setSessionBets((prev) => {
+              if (!prev.some((bet) => bet.id === element.id)) {
+                return [...prev, element];
+              }
+              return prev;
+            });
+          } else {
+            setAllBetRates((prev) => {
+              if (!prev.some((bet) => bet.id === element.id)) {
+                return [...prev, element];
+              }
+              return prev;
+            });
+          }
+        });
+        console.log(response.data, "sda");
       } catch (e) {
-        console.log("response", e.response.data)
+        console.log("response", e.response.data);
       }
     }
+    
     async function getAllBetsData() {
       try {
-        let response = await userAxios.get(`/game-match/getAllMatch?bets=1&field=id,marketId`);
-        setAllBetsData(response.data[0])
+        let response = await userAxios.get(
+          `/game-match/getAllMatch?bets=1&field=id,marketId`
+        );
+        setAllBetsData(response.data[0]);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     }
     useEffect(() => {
-      getThisMatch(id)
-      getAllBetsData()
-    }, [marketId])
-    useEffect(() => {
-      const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
-      setSocket(newSocket)
-      newSocket.emit("init", { id: marketId })
-      newSocket.on("marketRate", (data) => {
-        console.log("marketRate Response", data);
-      })
-      return () => newSocket.off();
-    }, [marketId])
+      getThisMatch(id);
+      getAllBetsData();
+    }, [marketId]);
+    // useEffect(() => {
+    //   const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
+    //   setSocket(newSocket)
+    //   newSocket.emit("init", { id: marketId })
+    //   newSocket.on("marketRate", (data) => {
+    //     console.log("marketRate Response", data);
+    //   })
+    //   return () => newSocket.off();
+    // }, [marketId])
+
+    console.log(sessionbets, allBetRates, "TTTT");
     return (
       <Box
         sx={{
@@ -218,7 +258,10 @@ export default function Matches() {
             }}
           >
             <div style={{ width: "100%" }}>
-              <MatchOdds onClick={() => handleClose(true)} data={{ ...matchDetail, matchOddsData, matchSessionData }} />
+              <MatchOdds
+                onClick={() => handleClose(true)}
+                data={{ ...matchDetail, matchOddsData, matchSessionData }}
+              />
             </div>
             <Box
               sx={{
@@ -236,8 +279,12 @@ export default function Matches() {
                   width: "98%",
                 }}
               >
-                {matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
-                {allBetsData.length > 0 && <AllRateSeperate allBetsData={allBetsData} mark />}
+                {matchDetail?.manualSessionActive && (
+                  <SessionBetSeperate allBetsData={allBetsData} mark />
+                )}
+                {allBetsData.length > 0 && (
+                  <AllRateSeperate allBetsData={allBetsData} mark />
+                )}
               </Box>
               <LiveMatchHome />
             </Box>
@@ -253,17 +300,21 @@ export default function Matches() {
                   width: "70%",
                 }}
               >
-                <MatchOdds onClick={() => handleClose(true)} data={{ ...matchDetail, matchOddsData, matchSessionData }} />
+                <MatchOdds
+                  onClick={() => handleClose(true)}
+                  data={{ ...matchDetail, matchOddsData, matchSessionData }}
+                />
               </Box>
               <Box sx={{ width: "30%", paddingRight: "1%" }}>
                 <MatchComponent /> {/** Live scoreBoard */}
                 <LiveMatchHome /> {/* Poster */}
                 <AllRateSeperate allBetsData={allBetsData} mark />
-                {matchDetail?.manualSessionActive && <SessionBetSeperate allBetsData={allBetsData} mark />}
+                {matchDetail?.manualSessionActive && (
+                  <SessionBetSeperate allBetsData={allBetsData} mark />
+                )}
               </Box>
             </Box>
-          )
-        }
+          )}
         {activeTab != "CRICKET" && activeTab != "INPLAY" && (
           <Box
             style={{

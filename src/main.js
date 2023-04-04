@@ -1,46 +1,47 @@
-import { Routes, Route } from "react-router-dom"
-import Matches from "./pages/matches"
-import Admin from "./pages/admin"
-import FairGameWalletRoutes from "./pages/fairGameWallet"
-import FairGameAdminRoutes from "./pages/fairGameAdmin"
-import MasterRoutes from "./pages/master"
-import SuperAdminRoutes from "./pages/superAdmin"
-import SuperMasterRoutes from "./pages/superMaster"
-import ExpertRoutes from "./pages/expert"
-import Demo from "./demo"
-import Login from "./pages/login"
-import { useEffect, useState } from 'react';
-import io from 'socket.io-client';
-import { apiBasePath } from "./components/constants"
-import { setRole } from "./components/SetRole"
-import { AuthProvider } from "./Authprovider"
+import { Routes, Route } from "react-router-dom";
+import Matches from "./pages/matches";
+import Admin from "./pages/admin";
+import FairGameWalletRoutes from "./pages/fairGameWallet";
+import FairGameAdminRoutes from "./pages/fairGameAdmin";
+import MasterRoutes from "./pages/master";
+import SuperAdminRoutes from "./pages/superAdmin";
+import SuperMasterRoutes from "./pages/superMaster";
+import ExpertRoutes from "./pages/expert";
+import Demo from "./demo";
+import Login from "./pages/login";
+import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import { apiBasePath, microServiceApiPath } from "./components/constants";
+import { setRole } from "./components/SetRole";
+import { AuthProvider } from "./Authprovider";
 
 const Main = () => {
-  const [socket, setSocket] = useState(null);
-  const [loginRole, setLoginRole] = useState("")
-  const [loginJWT, setLoginJWT] = useState(null)
+  const [loginRole, setLoginRole] = useState("");
+  const [loginJWT, setLoginJWT] = useState(null);
+  const [socketInit,setSocketInit]=useState(null)
+  // useEffect(() => {
+  //   const newSocket = io);
+  //   setSocket(newSocket);
+  //   return () => newSocket.off();
+  // }, [loginJWT]);
+
   useEffect(() => {
-    const newSocket = io(`${apiBasePath}`, {
-      extraHeaders: {
-        Authorization: 'Bearer ' + loginJWT
-      }
-    });
-    setSocket(newSocket);
-    return () => newSocket.off();
-  }, [setSocket, loginJWT]);
-  useEffect(() => {
-    setRoleAndJWT()
-  }, [window.location.pathname])
+    setRoleAndJWT();
+  }, [window.location.pathname]);
+
   const setRoleAndJWT = () => {
-    let { role, JWT } = setRole()
-    setLoginRole(role)
-    setLoginJWT(JWT)
-  }
+    let { role, JWT } = setRole();
+    setLoginRole(role);
+    setLoginJWT(JWT);
+  };
+
+
+
   return (
     <AuthProvider>
       <Routes>
         <Route path="/demo" element={<Demo />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login/>} />
         <Route path="/forget_password" element={<Login />} />
         <Route path="/verification" element={<Login />} />
         <Route path="/new_password" element={<Login />} />
@@ -61,7 +62,7 @@ const Main = () => {
         <Route path="/expert/*" element={<ExpertRoutes />} />
       </Routes>
     </AuthProvider>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

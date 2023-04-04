@@ -5,9 +5,9 @@ import { ArrowDown, CANCEL, CancelDark } from "../assets";
 import '../components/index.css'
 import StyledImage from "./StyledImage";
 import { useSelector } from 'react-redux'
-const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, isSessionYes, isBack, type, name, data, typeOfBet }) => {
+const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, isSessionYes, isBack, type, name, data, typeOfBet ,selectedValue}) => {
 
-    const [odd, setOdd] = useState("18")
+    const [odd, setOdd] = useState(selectedValue || "0")
 
     const [defaultValue, setDefaultValue] = useState("")
     const theme = useTheme()
@@ -66,8 +66,9 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
     }
 
     const TeamsOdssData = ({ input, title, value, containerStyle, valueContainerStyle, valueTextStyle }) => {
-        const [oddValue, setOddValue] = useState("18")
+        const [oddValue, setOddValue] = useState(selectedValue || "0")
         const selectedColorBox = useSelector(state => state.selectedColorBox)?.value
+        console.log(selectedColorBox,"selectedColorBox")
         return (
             <Box sx={[{ display: "flex", flexDirection: "column", }, containerStyle]}>
                 <Box sx={{ background: "#262626", border: "2px solid #C7B6B6", display: "flex", justifyContent: "center", alignItems: "center", height: "25px" }}>
