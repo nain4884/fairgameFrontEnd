@@ -8,7 +8,6 @@ import SessionResultModal from "./SessionResultModal";
 export default function IndiaPakLive({ createSession, match }) {
     const [visible, setVisible] = useState(false)
     const [visible1, setVisible1] = useState(false)
-    console.log('match', match)
     return (
         <Box sx={{ flex: 1, background: "#F8C851", borderRadius: "5px", minHeight: "300px", py: "30px", px: "20px" }}>
             <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>{match?.title ? match.title : 'India vs Pakistan'}</Typography>
