@@ -1,7 +1,7 @@
-import adminAxios from "../axios/adminAxios";
-import expertAxios from "../axios/expertAxios";
-import masterAxios from "../axios/masterAxios";
-import userAxios from "../axios/userAxios";
+import adminAxios from "../../axios/adminAxios";
+import expertAxios from "../../axios/expertAxios";
+import masterAxios from "../../axios/masterAxios";
+import userAxios from "../../axios/userAxios";
 
 export const setRole = () => {
     let role = "role4"

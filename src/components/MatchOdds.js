@@ -24,7 +24,6 @@ const SeperateBox = ({ color, po, empty, value, value2, lock, session, back, tim
     console.log(value,"value","SDDDDDDDD")
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     const dispatch = useDispatch()
-    // const anchor=useSelector(state=>state.betplace)?.anchor
     const [anchor, setAnchor] = React.useState(null)
     const [isBack, setIsBack] = React.useState(false)
     const [isSessionYes, setIsSessionYes] = React.useState(false)

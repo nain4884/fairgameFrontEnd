@@ -1,19 +1,18 @@
-import { Routes, Route } from "react-router-dom";
-import Matches from "./pages/matches";
-import Admin from "./pages/admin";
-import FairGameWalletRoutes from "./pages/fairGameWallet";
-import FairGameAdminRoutes from "./pages/fairGameAdmin";
-import MasterRoutes from "./pages/master";
-import SuperAdminRoutes from "./pages/superAdmin";
-import SuperMasterRoutes from "./pages/superMaster";
-import ExpertRoutes from "./pages/expert";
-import Demo from "./demo";
-import Login from "./pages/login";
-import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import { apiBasePath, microServiceApiPath } from "./components/constants";
-import { setRole } from "./components/SetRole";
-import { AuthProvider } from "./Authprovider";
+import { Routes, Route } from "react-router-dom"
+import Matches from "./pages/matches"
+import Admin from "./pages/admin"
+import FairGameWalletRoutes from "./pages/fairGameWallet"
+import FairGameAdminRoutes from "./pages/fairGameAdmin"
+import MasterRoutes from "./pages/master"
+import SuperAdminRoutes from "./pages/superAdmin"
+import SuperMasterRoutes from "./pages/superMaster"
+import ExpertRoutes from "./pages/expert"
+import Login from "./pages/login"
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+import { apiBasePath } from "./components/helper/constants"
+import { setRole } from "./components/helper/SetRole"
+import { AuthProvider } from "./Authprovider
 
 const Main = () => {
   const [loginRole, setLoginRole] = useState("");
@@ -40,8 +39,7 @@ const Main = () => {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/demo" element={<Demo />} />
-        <Route path="/" element={<Login/>} />
+        <Route path="/" element={<Login />} />
         <Route path="/forget_password" element={<Login />} />
         <Route path="/verification" element={<Login />} />
         <Route path="/new_password" element={<Login />} />

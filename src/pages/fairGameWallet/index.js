@@ -7,21 +7,23 @@ import GeneralReport from "../admin/GeneralReport"
 import MarketAnaylsisContainer from "../admin/MarketAnaylsisContainer"
 import NewMatchScreen, { MatchScreen } from "../admin/MatchScreen"
 import MatchSubmit from "../admin/MatchSubmit"
-import MatchSubmit1 from "./MatchSubmit1"
+import MatchSubmit1 from "../../components/MatchSubmit1"
 import ProfitLoss from "../admin/ProfitLoss"
 import Reports from "../admin/Reports"
 import TotalBets from "../admin/TotalBets"
 import CustomHeader from "./Header"
-import Home from "./List_Of_Client"
-import DepositWallet from "./DepositWallet"
+import Home from "../../components/List_Of_Client"
+import DepositWallet from "../../components/DepositWallet"
 import DeleteBet from "../admin/DeleteBet"
 import { useEffect, useState, useContext } from "react"
 import { AuthContext } from "../../Authprovider"
 const FairGameWalletRoutes = () => {
     const { tokenAdmin } = useContext(AuthContext);
-    if (tokenAdmin != window.localStorage.getItem('JWTadmin')) {
-        window.location.reload()
-    }
+    useEffect(() => {
+        if(tokenAdmin != localStorage.getItem('JWTadmin')){
+            window.location.reload()
+        }
+      }, [])
     return (
         <>
             <CustomHeader />

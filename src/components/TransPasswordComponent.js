@@ -1,14 +1,14 @@
-import { CustomHeader, Input } from "../../components";
+import { CustomHeader, Input } from ".";
 import { Box, Typography } from "@mui/material";
-import { eye } from "../../assets";
+import { eye } from "../assets";
 import { useEffect, useState } from "react";
-import axios from "../../axios/axios";
-import masterAxios from "../../axios/masterAxios";
-import adminAxios from "../../axios/adminAxios";
-import expertAxios from "../../axios/expertAxios";
-import userAxios from "../../axios/userAxios";
-import { setRole } from "../../components/SetRole";
-import { doSendErrorForPassword } from "../../components/doCheckErrorForPassword";
+import axios from "../axios/axios";
+import masterAxios from "../axios/masterAxios";
+import adminAxios from "../axios/adminAxios";
+import expertAxios from "../axios/expertAxios";
+import userAxios from "../axios/userAxios";
+import { setRole } from "./helper/SetRole";
+import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 
 export const TransPassword = () => {
   return (

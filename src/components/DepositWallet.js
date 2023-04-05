@@ -1,13 +1,13 @@
 import { Box, Typography } from "@mui/material";
-import { Input } from "../../components";
-import { EyeIcon } from "../../admin/assets";
-import { Background, DailogModal } from "../../components";
-import { setDailogData } from "../../store/dailogModal";
+import { Input } from ".";
+import { EyeIcon } from "../admin/assets";
+import { Background, DailogModal } from ".";
+import { setDailogData } from "../store/dailogModal";
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import adminAxios from "../../axios/adminAxios";
-import Modal from "../../components/Modal";
+import adminAxios from "../axios/adminAxios";
+import Modal from "./Modal";
 
 export default function DepositWallet() {
     const navigate = useNavigate()

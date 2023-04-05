@@ -17,7 +17,7 @@ import MatchComponent from "../../components/MathComponent";
 import AccountStatementList from "../../components/AccountStatementList";
 import YellowHeader from "../../components/yellowheader";
 import ProfitLossComponent from "../../components/ProfitLossComponent";
-import { ChangePassword } from "./ChangePassword";
+import { ChangePassword } from "../../components/ChangePassword";
 import ManualBookMakerMarket from "../../components/ManualBookMakerMarket";
 import userAxios from "../../axios/userAxios";
 import { microServiceApiPath } from "../../components/constants";
@@ -31,7 +31,6 @@ export default function Matches() {
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const activeTab = useSelector((state) => state.betplace)?.activeTab;
-
   const Matches = () => {
     const [id, setId] = useState("");
     // const [socket, setSocket] = useState(null);
@@ -219,18 +218,16 @@ export default function Matches() {
       }
     }
     useEffect(() => {
-      getThisMatch(id);
-      getAllBetsData();
-    }, [marketId]);
-    // useEffect(() => {
-    //   const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
-    //   setSocket(newSocket)
-    //   newSocket.emit("init", { id: marketId })
-    //   newSocket.on("marketRate", (data) => {
-    //     console.log("marketRate Response", data);
-    //   })
-    //   return () => newSocket.off();
-    // }, [marketId])
+      getThisMatch(id)
+      getAllBetsData()
+      const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
+      setSocket(newSocket)
+      newSocket.emit("init", { id: marketId })
+      newSocket.on("marketRate", (data) => {
+        console.log("marketRate Response", data);
+      })
+      return () => newSocket.off();
+    }, [marketId])
 
     console.log(sessionbets, allBetRates, "TTTT");
     return (

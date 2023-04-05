@@ -11,7 +11,7 @@ import {
 } from "../admin/assets";
 import Modal from "./Modal";
 import SearchInput from "./SearchInput";
-import { setRole } from "./SetRole";
+import { setRole } from "./helper/SetRole";
 import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
 

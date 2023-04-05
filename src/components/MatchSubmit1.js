@@ -1,18 +1,18 @@
 import React from "react"
 import { useTheme } from "@emotion/react"
 import { Typography, useMediaQuery, Box, Menu, MenuItem } from "@mui/material"
-import { BallStart, INDIA, Lock, PAKISTAN, TIME, UD } from "../../assets/index"
-import "../../components/index.css"
+import { BallStart, INDIA, Lock, PAKISTAN, TIME, UD } from "../assets/index"
+import "./index.css"
 import { useDispatch, useSelector } from 'react-redux'
-import { setColorValue } from "../../store/selectedColorBox"
+import { setColorValue } from "../store/selectedColorBox"
 import { useState } from "react"
-import { StyledImage } from "../../components"
+import { StyledImage } from "."
 import { Popover } from 'react-tiny-popover'
-import { LockSolid } from "../../admin/assets"
-import { Background } from '../../components/index'
-import AllBets from "../../components/AllBets"
+import { LockSolid } from "../admin/assets"
+import { Background } from './index'
+import AllBets from "./AllBets"
 import { useLocation } from "react-router-dom"
-import { MatchScreen } from "../admin/MatchScreen"
+import { MatchScreen } from "../pages/admin/MatchScreen"
 
 const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
     const theme = useTheme()

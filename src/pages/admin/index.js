@@ -12,17 +12,17 @@ import MatchSubmit from "./MatchSubmit.js"
 import ProfitLoss from "./ProfitLoss.js"
 import Reports from "./Reports.js"
 import TotalBets from "./TotalBets.js"
-import MatchSubmit1 from "./MatchSubmit1.js"
-import { useContext } from "react";
+import MatchSubmit1 from "../../components/MatchSubmit1.js"
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
-import CustomHeader from "../fairGameAdmin/Header.js"
+import CustomHeader from "../../components/CommonMasterAdminLayout/Header.js"
 const AdminRoutes = () => {
-        
-      const { tokenMaster } = useContext(AuthContext);
-    
-      if (!tokenMaster) {
-        window.location.reload()
-      }
+    const { tokenMaster } = useContext(AuthContext);
+    useEffect(() => {
+        if (tokenMaster != localStorage.getItem('JWTadmin')) {
+            window.location.reload()
+        }
+    }, [])
     return (
         <>
             <CustomHeader />

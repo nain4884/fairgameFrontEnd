@@ -14,6 +14,7 @@ import { Background, CustomHeader as CHeader } from '../../components/index'
 import ResultComponent from "../../components/ResultComponent"
 import SessionResultModal from "../../components/SessionResultModal"
 import AddNotificationModal from "../../components/AddNotificationModal"
+import CustomHeader from "./Header"
 const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
@@ -668,7 +669,8 @@ const MatchScreen = ({ }) => {
     }
     return (
         <Background>
-            <CHeader />
+            {/* <CHeader /> */}
+            <CustomHeader />
             <Box sx={{ display: 'flex', alignSelf: 'center', borderRadius: '10px', flexDirection: 'row', width: '99%', marginX: '.5%', height: '100%', marginTop: "5px", background: 'white', padding: 1 }}>
                 <Box sx={{ width: '50%', flexDirection: 'column', display: 'flex' }}>
                     <SessionMarket />

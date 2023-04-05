@@ -4,16 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout } from "../../assets";
 import SearchInput from "../../components/SearchInput";
-import SessionTimeOut from "../../components/SessionTimeOut";
+import SessionTimeOut from "../../components/helper/SessionTimeOut";
 import StyledImage from "../../components/StyledImage";
 import { stateActions } from "../../store/stateActions";
 import { Down } from "../../fairGameWallet/assets";
 import { setActiveAdmin } from "../../store/admin";
-import SideBarAdmin from "../../components/SideBarAdmin";
+import SideBarAdmin from "../../components/sideBar/SideBarAdmin";
 import {ThisUseModal} from "../../components/Modal";
 import Modal2 from "../../components/Modal2";
 import adminAxios from "../../axios/adminAxios";
-import { setRole } from "../../components/SetRole";
+import { setRole } from "../../components/helper/SetRole";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()

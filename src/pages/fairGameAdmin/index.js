@@ -11,20 +11,19 @@ import ProfitLoss from "../admin/ProfitLoss";
 import Reports from "../admin/Reports";
 import TotalBets from "../admin/TotalBets";
 import DeleteBet from "../admin/DeleteBet";
-import MatchSubmit1 from "../fairGameWallet/MatchSubmit1";
-import CustomHeader from "./Header";
-import Home from "../fairGameWallet/List_Of_Client";
-import DepositWallet from "../fairGameWallet/DepositWallet";
-import { useContext } from "react";
+import MatchSubmit1 from "../../components/MatchSubmit1";
+import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
+import Home from "../../components/List_Of_Client";
+import DepositWallet from "../../components/DepositWallet";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Authprovider";
 const FairGameWalletRoutes = () => {
-
   const { tokenAdmin } = useContext(AuthContext);
-
-  if (tokenAdmin != window.localStorage.getItem('JWTadmin')) {
-    window.location.reload()
-  }
-
+    useEffect(() => {
+      if(tokenAdmin != localStorage.getItem('JWTadmin')){
+        window.location.reload()
+      }
+    }, [])
   return (
     <>
       <CustomHeader />

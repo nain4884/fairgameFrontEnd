@@ -4,7 +4,7 @@ import {
   Account,
   AccountList,
   DailogModal,
-} from "../../components";
+} from ".";
 
 export default function Home() {
   function CondiionCheck(path) {

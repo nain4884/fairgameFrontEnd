@@ -8,9 +8,9 @@ import { NotiBadge, Down, Users, ArrowLeft } from "../../expert/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelected } from "../../store/activeUser";
 import { stateActions } from "../../store/stateActions";
-import SessionTimeOut from "../../components/SessionTimeOut";
+import SessionTimeOut from "../../components/helper/SessionTimeOut";
 import AddNotificationModal from "../../components/AddNotificationModal";
-import { setRole } from "../../components/SetRole";
+import { setRole } from "../../components/helper/SetRole";
 import { ThisUseModal } from "../../components/Modal";
 import expertAxios from "../../axios/expertAxios";
 
@@ -223,20 +223,23 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) =
         {selected == index && <Box sx={{ background: "#F8C851", width: "80%", marginLeft: "20%", borderRadius: "5px", paddingX: "5px", paddingY: "5px" }}>
             <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Current Live Session" : "Current Live Bookmaker"}</Typography>
             <Box onClick={(e) => {
+                console.log('x,activeUser',x,activeUser)
                 if (activeUser == '1') {
-                    navigate("/expert/live", { state: { createSession: false } })
+                    navigate("/expert/live", { state: { createSession: true, match:x } })
                 }
                 else if (activeUser == '2') {
                     navigate("/expert/market")
                 }
                 handleClose()
             }} sx={{ marginLeft: "10px", marginTop: "3px" }}>
-                <Typography sx={{ fontSize: "12px", }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 1"}</Typography>
-                <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography>
+                <input />
+                <input />
+                {/* <Typography sx={{ fontSize: "12px", }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 1"}</Typography>
+                <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography> */}
             </Box>
             <Box onClick={e => {
                 if (activeUser == '1') {
-                    navigate("/expert/live", { state: { createSession: true } })
+                    navigate("/expert/live", { state: { createSession: true, match:x } })
                 }
                 else if (activeUser == '2') {
                     navigate("/expert/add_book_maker")
@@ -252,32 +255,37 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) =
 }
 const BoxProfile = ({ image, value, containerStyle, value1 }) => {
     const theme = useTheme()
-
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
 
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(false);
     const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
+        setAnchorEl(!anchorEl);
     };
     useEffect(() => {
-        // console.log(anchorEl)
+        console.log(anchorEl)
     }, [anchorEl])
-    const handleClose = () => {
+    const handleClose = (val) => {
         setAnchorEl(0);
+        typeof val == 'string' && navigate(`/${window.location.pathname.split('/')[1]}/${val}`)
+        // dispatch(stateActions.logout("role3"));
+        // navigate(`/`);
     };
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', minWidth: { laptop: "120px", } }}>
-            <Box onClick={(event) => { }} sx={[{ backgroundColor: "primary.main", minWidth: { laptop: "120px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "40px", mobile: "35px" }, overflow: "hidden", paddingX: "2px", borderRadius: "35px" }, containerStyle]}>
-                <StyledImage src={image} sx={{ height: { laptop: "33px", mobile: '27px' }, width: { laptop: "33px", mobile: '27px' }, borderRadius: "150px" }} />
-                <Box style={{ flex: 1, marginLeft: "5px" }}>
-                    <Typography sx={{ fontSize: "10px", color: "text.white", fontWeight: "600" }}>{value}</Typography>
-                    <Typography sx={{ fontSize: "10px", color: "text.white", fontWeight: "600" }}>{value1}</Typography>
+        <>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', minWidth: { laptop: "120px", } }}>
+                <Box onClick={handleClick} sx={[{ backgroundColor: "primary.main", minWidth: { laptop: "120px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "40px", mobile: "35px" }, overflow: "hidden", paddingX: "2px", borderRadius: "35px" }, containerStyle]}>
+                    <StyledImage src={image} sx={{ height: { laptop: "33px", mobile: '27px' }, width: { laptop: "33px", mobile: '27px' }, borderRadius: "150px" }} />
+                    <Box style={{ flex: 1, marginLeft: "5px" }}>
+                        <Typography sx={{ fontSize: "10px", color: "text.white", fontWeight: "600" }}>{value}</Typography>
+                        <Typography sx={{ fontSize: "10px", color: "text.white", fontWeight: "600" }}>{value1}</Typography>
+                    </Box>
+                    <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
                 </Box>
-                <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
             </Box>
             <DropdownMenu open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} />
-
-        </Box>
+        </>
     )
 }
 
@@ -297,23 +305,24 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
         setAnchorEl(0);
     };
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', minWidth: { laptop: "120px", } }}>
-            <Box onClick={(event) => { }} sx={[{ backgroundColor: "white", minWidth: { laptop: "120px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "40px", mobile: "35px" }, overflow: "hidden", paddingX: "2px", borderRadius: "35px" }, containerStyle]}>
-                <Box sx={{ height: "35px", width: "35px", borderRadius: "35px", display: "flex", justifyContent: "center", alignItems: "center", background: "#175731" }}>
-                    <StyledImage src={image} sx={{ height: "20px", width: "20px" }} />
+        <>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', minWidth: { laptop: "120px", } }}>
+                <Box onClick={(event) => { }} sx={[{ backgroundColor: "white", minWidth: { laptop: "120px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "40px", mobile: "35px" }, overflow: "hidden", paddingX: "2px", borderRadius: "35px" }, containerStyle]}>
+                    <Box sx={{ height: "35px", width: "35px", borderRadius: "35px", display: "flex", justifyContent: "center", alignItems: "center", background: "#175731" }}>
+                        <StyledImage src={image} sx={{ height: "20px", width: "20px" }} />
+                    </Box>
+                    <Box style={{ flex: 1, marginLeft: "5px" }}>
+                        <Typography sx={{ fontSize: "8px", color: "text.primary", fontWeight: "500" }}>Active Users</Typography>
+                        <Typography sx={{ fontSize: '14px', color: "#27AC1E", fontWeight: "700" }}>{value}</Typography>
+                    </Box>
+                    <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
                 </Box>
-                <Box style={{ flex: 1, marginLeft: "5px" }}>
-                    <Typography sx={{ fontSize: "8px", color: "text.primary", fontWeight: "500" }}>Active Users</Typography>
-                    <Typography sx={{ fontSize: '14px', color: "#27AC1E", fontWeight: "700" }}>{value}</Typography>
-                </Box>
-                <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
             </Box>
             <DropdownMenu open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} />
-
-        </Box>
+        </>
     )
 }
-const menutItems = [{ title: "Account Statement" }, { title: "Profile Loss Report" }, { title: "Bet History" }, { title: "Unsetteled Bet" }, { title: "Casino Report History" }, { title: "Set Button Values" }, { title: "Security Auth Verfication" }, { title: "Change Password" }]
+const menutItems = [{ title: "Bet Odds", navigateTo: 'betodds' }, { title: "Market", navigateTo: 'market' }, { title: "Add Book Maker", navigateTo: 'add_book_maker' }, { title: "Add Match", navigateTo: 'add_match' }, { title: "Change Password" }]
 const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -334,7 +343,6 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
             PaperProps={{ marginRight: "-15px" }}
         >
             {menutItems.map(x => <MenuItem dense={true} sx={{
-
                 fontSize: { laptop: "12px", mobile: "10px" },
                 fontWeight: "500",
                 marginX: "5px",
@@ -350,7 +358,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
                     borderRadius: "5px",
                     transform: "scale(1.02)"
                 }
-            }} onClick={handleClose}>{x.title}</MenuItem>)}
+            }} onClick={() => handleClose(x.navigateTo)}>{x.title}</MenuItem>)}
             <Box onClick={() => {
                 logoutProcess()
             }} sx={{ borderRadius: "5px", height: { laptop: "38px", mobile: "34px" }, width: "200px", marginLeft: "5px", marginTop: "10px", backgroundColor: "#F1C550", display: "flex", justifyContent: "center", alignItems: "center" }}>

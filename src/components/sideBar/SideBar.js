@@ -2,7 +2,7 @@ import { TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { ArrowDown, drawerBackground } from "../assets";
+import { ArrowDown, drawerBackground } from "../../assets";
 
 const SideBar = ({ mobileShow }) => {
     const [showSideBarMobile, setShowSideBarMobile] = useState(false)

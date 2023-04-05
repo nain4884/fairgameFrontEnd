@@ -1,7 +1,7 @@
 import { TextField, Typography, useTheme, useMediaQuery, createStyles, withStyles } from "@mui/material"
 import { Box } from "@mui/system"
 import { useEffect, useState } from "react";
-import { onChangeKeyCheck } from "./PassKeyCheck";
+import { onChangeKeyCheck } from "./helper/PassKeyCheck";
 
 const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, titleStyle, inputStyle, inputContainerStyle, img, inputProps, setDetail, Detail, setError, error, place, type, autoMaticFillValue, onFocusOut, toFoucs, handleError, checkMesasge }) => {
     const theme = useTheme();

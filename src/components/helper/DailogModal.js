@@ -1,7 +1,7 @@
 import { Box, Modal, Typography } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux";
-import { BETPLACED, NOT } from "../assets";
-import { setDailogData } from "../store/dailogModal";
+import { BETPLACED, NOT } from "../../assets";
+import { setDailogData } from "../../store/dailogModal";
 
 const DailogModal = ({ }) => {
     const dailogModal = useSelector(state => state?.dailogModal)

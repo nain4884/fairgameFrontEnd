@@ -18,8 +18,8 @@ import {
 } from "../admin/assets";
 import adminAxios from "../axios/adminAxios";
 import axios from "../axios/axios";
-import { onChangeKeyCheck } from "./PassKeyCheck";
-import { setRole } from "./SetRole";
+import { onChangeKeyCheck } from "./helper/PassKeyCheck";
+import { setRole } from "./helper/SetRole";
 import { useNavigate } from "react-router-dom";
 
 const style = {
@@ -88,6 +88,7 @@ export default function UserDetailModal({
               navigate={navigate}
               elementToUDM={elementToUDM}
               setElementToUDM={setElementToUDM}
+              dispatch={dispatch}
             />
           )}
           {selected == 1 && (
@@ -102,6 +103,7 @@ export default function UserDetailModal({
               navigate={navigate}
               elementToUDM={elementToUDM}
               setElementToUDM={setElementToUDM}
+              dispatch={dispatch}
             />
           )}
           {selected == 2 && (
@@ -114,6 +116,7 @@ export default function UserDetailModal({
               prevElement={prevElement}
               navigate={navigate}
               elementToUDM={elementToUDM}
+              dispatch={dispatch}
               setElementToUDM={setElementToUDM}
             />
           )}
@@ -127,6 +130,7 @@ export default function UserDetailModal({
               navigate={navigate}
               prevElement={prevElement}
               elementToUDM={elementToUDM}
+              dispatch={dispatch}
               setElementToUDM={setElementToUDM}
             />
           )}
@@ -137,6 +141,7 @@ export default function UserDetailModal({
               userModal={userModal}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
+              dispatch={dispatch}
               navigate={navigate}
             />
           )}
@@ -147,6 +152,7 @@ export default function UserDetailModal({
               userModal={userModal}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
+              dispatch={dispatch}
               navigate={navigate}
             />
           )}
@@ -212,17 +218,21 @@ export default function UserDetailModal({
             onClick={(e) => {
               if (prevElement.credit_refer == 0 && prevElement.profit_loss == 0 && prevElement.available_balance == 0) {
                 UserDelete(userModal.id).then(({ bool, message }) => {
-                  setShowSuccessModal(true)
+                  dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: message }))
+                  // setShowSuccessModal(true)
                   setShowModalMessage(message)
                   setShowUserModal(false);
                 }).catch(({ bool, message }) => {
-                  setShowSuccessModal(true)
+                  // setShowSuccessModal(true)
+                  dispatch(setDailogData({ isModalOpen: true, showRight: false, bodyText: message }))
                   setShowModalMessage(message)
                   setShowUserModal(false);
                 })
               } else {
-                setShowSuccessModal(true)
-                setShowModalMessage("Empty User Balance To Delete This Account")
+                // setShowSuccessModal(true)
+                let message = "First Settle Account to Delete The User"
+                dispatch(setDailogData({ isModalOpen: true, showRight: false, bodyText: message }))
+                setShowModalMessage(message)
                 setShowUserModal(false);
               }
             }}
@@ -363,10 +373,10 @@ const DepositComponent = ({
   prevElement,
   navigate,
   elementToUDM,
-  setElementToUDM
+  setElementToUDM,
+  dispatch
 }) => {
   const [showPass, setShowPass] = useState(false);
-  const dispatch = useDispatch();
   const defaultDepositObj = {
     userId: "",
     amount: 0,
@@ -534,11 +544,13 @@ const DepositComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(depositObj).then(({ bool, message }) => {
-                setShowSuccessModal(true)
+                // setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: message }))
                 setShowModalMessage(message)
                 setShowUserModal(false);
               }).catch(({ bool, message }) => {
-                setShowSuccessModal(true)
+                // setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: false, bodyText: message }))
                 setShowModalMessage(message)
                 setShowUserModal(false);
               })
@@ -557,7 +569,6 @@ const DepositComponent = ({
             isSelected={true}
             onClick={(e) => {
               setDepositObj(defaultDepositObj);
-              console.log('prevElement.available_balances', prevElement.available_balances, elementToUDM.available_balances)
               setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss, balance: prevElement.balance, available_balance: prevElement.available_balances })
               setShowUserModal(false);
             }}
@@ -577,7 +588,8 @@ const WithDrawComponent = ({
   setShowModalMessage,
   prevElement,
   elementToUDM,
-  setElementToUDM
+  setElementToUDM,
+  dispatch
 }) => {
   const [showPass, setShowPass] = useState(false);
   const activeWalletAmount = useSelector(state => state?.rootReducer?.user?.amount)
@@ -745,12 +757,14 @@ const WithDrawComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(withDrawObj).then(({ bool, message }) => {
-                setShowSuccessModal(true)
+                // setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: message }))
                 setShowModalMessage(message)
                 setShowUserModal(false);
               }).catch(({ bool, message }) => {
-                setShowSuccessModal(true)
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
+                dispatch(setDailogData({ isModalOpen: true, showRight: false, bodyText: message }))
                 setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss, balance: prevElement.balance, available_balance: prevElement.available_balance })
                 setShowUserModal(false);
               })
@@ -788,10 +802,10 @@ const NewCreditComponent = ({
   setShowModalMessage,
   elementToUDM,
   setElementToUDM,
-  prevElement
+  prevElement,
+  dispatch
 }) => {
   const [showPass, setShowPass] = useState(false);
-  const dispatch = useDispatch();
   const defaultNewCreditObj = {
     userId: "",
     amount: 0,
@@ -952,11 +966,13 @@ const NewCreditComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(newCreditObj).then(({ bool, message }) => {
-                setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: message }))
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
               }).catch(({ bool, message }) => {
-                setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: false, bodyText: message }))
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
               })
@@ -995,7 +1011,8 @@ const SetExposureComponent = ({
   navigate,
   prevElement,
   elementToUDM,
-  setElementToUDM
+  setElementToUDM,
+  dispatch
 }) => {
   const [showPass, setShowPass] = useState(false);
   const defaultExposureObj = {
@@ -1156,11 +1173,13 @@ const SetExposureComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(exposureObj).then(({ bool, message }) => {
-                setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: message }))
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
               }).catch(({ bool, message }) => {
-                setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: false, bodyText: message }))
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
               })
@@ -1195,7 +1214,8 @@ const ChangePasswordComponent = ({
   userModal,
   setShowSuccessModal,
   setShowModalMessage,
-  navigate
+  navigate,
+  dispatch
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [showPass1, setShowPass1] = useState(false);
@@ -1207,7 +1227,6 @@ const ChangePasswordComponent = ({
   const [changePasswordObj, setChangePasswordObj] = useState(
     defaultChangePasswordObj
   );
-  const dispatch = useDispatch();
   return (
     <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px" }}>
       <Box sx={{ width: "31.65vw" }}>
@@ -1342,11 +1361,13 @@ const ChangePasswordComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdatePassword(changePasswordObj).then(({ bool, message }) => {
-                setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: message }))
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
               }).catch(({ bool, message }) => {
-                setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: false, bodyText: message }))
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
               })
@@ -1380,10 +1401,10 @@ const LockUnlockComponent = ({
   userModal,
   setShowModalMessage,
   setShowSuccessModal,
-  navigate
+  navigate,
+  dispatch
 }) => {
   const [showPass, setShowPass] = useState(false);
-  const dispatch = useDispatch();
   const defaultLockUnlockObj = {
     userId: "",
     all_blocked: userModal.all_blocked,
@@ -1493,11 +1514,13 @@ const LockUnlockComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateLockUnlock(lockUnlockObj).then(({ bool, message }) => {
-                setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: message }))
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
               }).catch(({ bool, message }) => {
-                setShowSuccessModal(true)
+                dispatch(setDailogData({ isModalOpen: true, showRight: false, bodyText: message }))
+                // setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
               })
