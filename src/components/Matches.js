@@ -3,8 +3,8 @@ import { Box, Pagination, Typography, useMediaQuery } from "@mui/material"
 import { display, width } from "@mui/system"
 import { useEffect, useState } from "react"
 import { Header, Info, Lock, TEAMLOGO, TEAMLOGO1 } from "../assets"
-import userAxios from "../axios/userAxios"
 import './index.css'
+import { setRole } from "./helper/SetRole"
 const SeperateBox = ({ color, empty, value, value2, lock }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
@@ -157,14 +157,15 @@ const MatchesComponent = ({ doNavigateWithState }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [pageLimit, setPageLimit] = useState(5)
 
-
+    const {axios} =setRole()
     useEffect(() => {
         getAllMatch()
     }, [currentPage, pageCount])
     
     async function getAllMatch() {
         try {
-            let { data } = await userAxios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
+            
+            let { data } = await axios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
             if(data.length > 0) {
                 setMatchData(data[0])
                 setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));

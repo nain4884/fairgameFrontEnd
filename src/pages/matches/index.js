@@ -19,10 +19,11 @@ import YellowHeader from "../../components/yellowheader";
 import ProfitLossComponent from "../../components/ProfitLossComponent";
 import { ChangePassword } from "../../components/ChangePassword";
 import ManualBookMakerMarket from "../../components/ManualBookMakerMarket";
-import userAxios from "../../axios/userAxios";
+import axios from "../../axios/axios";
 import { microServiceApiPath } from "../../components/helper/constants";
 import { AuthContext } from "../../Authprovider";
 import { SocketContext } from "../../context/socketContext";
+import { setRole } from "../../components/helper/SetRole";
 export default function Matches() {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
@@ -159,7 +160,7 @@ export default function Matches() {
     const [allBetsData, setAllBetsData] = useState([]);
     const [marketId, setMarketId] = useState("");
     const socket = useContext(SocketContext);
-
+    const {axios} = setRole()
     useEffect(() => {
       if (socket && socket.connected) {
         console.log("Connected", socket);
@@ -182,7 +183,7 @@ export default function Matches() {
       try {
         let matchOddsDataTemp = [];
         let matchSessionDataTemp = [];
-        const response = await userAxios.get(`/game-match/matchDetail/${id}`);
+        const response = await axios.get(`/game-match/matchDetail/${id}`);
         response.data?.bettings?.forEach((element) => {
           if (element.sessionBet === false || element.sessionBet === 0) {
             matchOddsDataTemp.push(element);
@@ -220,7 +221,7 @@ export default function Matches() {
 
     async function getAllBetsData() {
       try {
-        let response = await userAxios.get(
+        let response = await axios.get(
           `/game-match/getAllMatch?bets=1&field=id,marketId`
         );
         setAllBetsData(response.data[0]);
@@ -228,17 +229,17 @@ export default function Matches() {
         console.log(e);
       }
     }
-    // useEffect(() => {
-    //   getThisMatch(id)
-    //   getAllBetsData()
-    //   const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
-    //   setSocket(newSocket)
-    //   newSocket.emit("init", { id: marketId })
-    //   newSocket.on("marketRate", (data) => {
-    //     console.log("marketRate Response", data);
-    //   })
-    //   return () => newSocket.off();
-    // }, [marketId])
+    useEffect(() => {
+      getThisMatch(id)
+      getAllBetsData()
+      // const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
+      // setSocket(newSocket)
+      // newSocket.emit("init", { id: marketId })
+      // newSocket.on("marketRate", (data) => {
+      //   console.log("marketRate Response", data);
+      // })
+      // return () => newSocket.off();
+    }, [marketId])
 
     console.log(sessionbets, allBetRates, "TTTT");
     return (
