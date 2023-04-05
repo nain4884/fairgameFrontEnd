@@ -223,20 +223,23 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) =
         {selected == index && <Box sx={{ background: "#F8C851", width: "80%", marginLeft: "20%", borderRadius: "5px", paddingX: "5px", paddingY: "5px" }}>
             <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Current Live Session" : "Current Live Bookmaker"}</Typography>
             <Box onClick={(e) => {
+                console.log('x,activeUser',x,activeUser)
                 if (activeUser == '1') {
-                    navigate("/expert/live", { state: { createSession: false } })
+                    navigate("/expert/live", { state: { createSession: true, match:x } })
                 }
                 else if (activeUser == '2') {
                     navigate("/expert/market")
                 }
                 handleClose()
             }} sx={{ marginLeft: "10px", marginTop: "3px" }}>
-                <Typography sx={{ fontSize: "12px", }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 1"}</Typography>
-                <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography>
+                <input />
+                <input />
+                {/* <Typography sx={{ fontSize: "12px", }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 1"}</Typography>
+                <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography> */}
             </Box>
             <Box onClick={e => {
                 if (activeUser == '1') {
-                    navigate("/expert/live", { state: { createSession: true } })
+                    navigate("/expert/live", { state: { createSession: true, match:x } })
                 }
                 else if (activeUser == '2') {
                     navigate("/expert/add_book_maker")

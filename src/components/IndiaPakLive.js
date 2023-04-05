@@ -5,13 +5,13 @@ import StyledImage from "./StyledImage";
 import { LiveOff, LiveOn } from "../expert/assets";
 import SessionResultModal from "./SessionResultModal";
 
-export default function IndiaPakLive({createSession}) {
+export default function IndiaPakLive({ createSession, match }) {
     const [visible, setVisible] = useState(false)
     const [visible1, setVisible1] = useState(false)
-
+    console.log('match', match)
     return (
         <Box sx={{ flex: 1, background: "#F8C851", borderRadius: "5px", minHeight: "300px", py: "30px", px: "20px" }}>
-            <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>India vs Pakistan</Typography>
+            <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>{match?.title ? match.title : 'India vs Pakistan'}</Typography>
             <Box sx={{ display: "flex", marginTop: "20px" }}>
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
                     <AddSession createSession={createSession} />
@@ -51,14 +51,14 @@ export default function IndiaPakLive({createSession}) {
                     </Box>
                 </Box>
                 <Box sx={{ marginLeft: "15px" }}>
-                    {createSession?<Box sx={{width:"162px",minHeight:"182px"}}/>: <RunsAmountBox />}
+                    {createSession ? <Box sx={{ width: "162px", minHeight: "182px" }} /> : <RunsAmountBox />}
                 </Box>
             </Box>
         </Box>
     )
 }
 
-const AddSession = ({createSession}) => {
+const AddSession = ({ createSession }) => {
     return (
         <Box sx={{ border: "2px solid #FFFFFF", position: "relative" }}>
             <Box sx={{ display: "flex" }}>
@@ -74,41 +74,40 @@ const AddSession = ({createSession}) => {
             </Box>
             <Box sx={{ display: "flex" }}>
                 <Box sx={{ background: "#FFFFFF", width: "60%" }}>
-                    {createSession?
-                     <TextField onChange={e => {
-
-                    }} variant="standard" InputProps={{
-                        placeholder: "Type Here...",
-                        
-                        disableUnderline: true,
-                        style: { fontSize: "15px",marginLeft:"5px", height: "45px", fontWeight: "600", color: "black" }
-                    }} />:<Typography sx={{ fontWeight: "600", fontSize: "14px", px: "5px" }}>6 Over runs INDIA...</Typography>}
+                    {createSession ?
+                        <TextField 
+                            onChange={(e) => {}}
+                            variant="standard" InputProps={{
+                            placeholder: "Type Here...",
+                            disableUnderline: true,
+                            style: { fontSize: "15px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                        }} /> : <Typography sx={{ fontWeight: "600", fontSize: "14px", px: "5px" }}>6 Over runs INDIA...</Typography>}
                 </Box>
                 <Box sx={{ borderLeft: "2px solid white", width: "40%" }}>
                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                         <Box sx={{ background: "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession?"00":39}</Typography>
+                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession ? "00" : 39}</Typography>
                         </Box>
                         <Box sx={{ background: "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession?"00":45}</Typography>
+                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession ? "00" : 45}</Typography>
                         </Box>
                     </Box>
                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                         <Box sx={{ background: "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession?"00":39}</Typography>
+                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession ? "00" : 39}</Typography>
                         </Box>
                         <Box sx={{ background: "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession?"00": 45}</Typography>
+                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession ? "00" : 45}</Typography>
                         </Box>
                     </Box>
                 </Box>
             </Box>
-            {!createSession&&<Box sx={{
+            {!createSession && <Box sx={{
                 position: "absolute", width: "100%", top: "0px", display: "flex", justifyContent: "center", alignItems: "center", height: "100%", opacity: 1,
                 backdropFilter: " blur(1px)",
                 "-webkit-backdrop-filter": "blur(1px)"
             }}>
-                <StyledImage src={LiveOff} sx={{height:"4vw",width:"4vw"}} />
+                <StyledImage src={LiveOff} sx={{ height: "4vw", width: "4vw" }} />
             </Box>}
         </Box>
     )
