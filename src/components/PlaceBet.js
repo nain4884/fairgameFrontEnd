@@ -127,7 +127,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             "odds": document.getElementsByClassName("OddValue")?.[0]?.textContent,
             "betOn": betOn,
             "stack": defaultValue,
-            "team_bet": name?.toLowerCase(),
+            "team_bet": name,
             "country": ip?.country_name,
             "ip_address": ip?.IPv4,
             "stake": defaultValue,
@@ -138,6 +138,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
         if (marketType === "Session") {
             delete payload.betOn
             delete payload.odds
+            console.log(payload,data,"SDDSDDD")
             payload.bet_condition = data?.betting?.[0]?.bet_condition
             payload.rate_percent = data?.betting?.[0]?.rate_percent
             payload.marketType = data?.betting?.[0]?.bet_condition
