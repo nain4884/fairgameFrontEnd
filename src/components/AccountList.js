@@ -645,9 +645,7 @@ const Row = ({
   fContainerStyle,
   fTextStyle,
   profit,
-  element,
-  getListOfUser,
-  currentPage
+  element
 }) => {
   const [userModal, setUserModal] = useState({});
   const [showUserModal, setShowUserModal] = useState(false);
@@ -660,7 +658,9 @@ const Row = ({
     exposure: element.exposure,
     available_balance: element.available_balance,
     exposure_limit: element.exposure_limit,
-    userName: element.userName
+    userName: element.userName,
+    bet_blocked: element.bet_blocked,
+    all_blocked: element.all_blocked
   }
   const [elementToUDM, setElementToUDM] = useState(prevElement)
   function handleSetUDM(val) {
@@ -821,7 +821,7 @@ const Row = ({
           }}
         >
           <StyledImage
-            src={element.bet_blocked == 0 ? UnLockIcon : LockIcon}
+            src={elementToUDM.bet_blocked == 0 ? UnLockIcon : LockIcon}
             sx={{ height: "20px", width: "20px", fill: "#27AC1E" }}
           />
         </Box>
@@ -836,7 +836,7 @@ const Row = ({
           }}
         >
           <StyledImage
-            src={element.all_blocked == 0 ? UnLockIcon : LockIcon}
+            src={elementToUDM.all_blocked == 0 ? UnLockIcon : LockIcon}
             sx={{ height: "20px", width: "20px", fill: "#27AC1E" }}
           />
         </Box>

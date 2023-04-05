@@ -60,35 +60,43 @@ const CustomHeader = ({ }) => {
             setMobileOpen(false)
         }
     }, [matchesMobile])
+    const classes = {
+        AppBarVal:{ zIndex: (theme) => theme.zIndex.drawer + 1 },
+        BoxCont1:[{
+            width: "100%", minHeight: { laptop: 60, tablet: 60, mobile: 60 },
+            display: "flex",
+            flexDirection: matchesMobile ? "column" : "row",
+            alignItems: !matchesMobile ? "center" : "flex-start",
+            justifyContent: "space-between",
+            paddingX: { laptop: "0.5%", mobile: "1%" },
+            paddingY: matchesMobile ? "15px" : "0px",
+            paddingBottom: matchesMobile ? "10px" : "0px"
+        }, (theme) => ({
+            backgroundImage: `${theme.palette.primary.headerGradient}`
+        })],
+        BoxCont1sub1:{ display: "flex", alignItems: "center", width: "100%", flex: 1 },
+        BoxCont1sub1sub1:{ display: "flex", alignItems: "center", marginRight: "12px" },
+        BoxCont1sub1sub1StyleImg:{ height: { laptop: "24px", mobile: "20px" }, width: "auto" },
+        RenderLogoCompStyleImg:{ height: { laptop: "45px", mobile: "40px" }, width: "auto", marginLeft: { laptop: "20px", mobile: "10px" } }
+    }
     const RenderLogo = useCallback(() => {
         return (
             <StyledImage onClick={(e) => {
                 e.stopPropagation()
                 navigate('/fairgame_wallet/list_of_clients')
-            }} src={logo} sx={{ height: { laptop: "45px", mobile: "40px" }, width: "auto", marginLeft: { laptop: "20px", mobile: "10px" } }} />
+            }} src={logo} sx={classes.RenderLogoCompStyleImg} />
         )
     }, [])
     return (
         <>
             <SessionTimeOut />
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Box sx={[{
-                    width: "100%", minHeight: { laptop: 60, tablet: 60, mobile: 60 },
-                    display: "flex",
-                    flexDirection: matchesMobile ? "column" : "row",
-                    alignItems: !matchesMobile ? "center" : "flex-start",
-                    justifyContent: "space-between",
-                    paddingX: { laptop: "0.5%", mobile: "1%" },
-                    paddingY: matchesMobile ? "15px" : "0px",
-                    paddingBottom: matchesMobile ? "10px" : "0px"
-                }, (theme) => ({
-                    backgroundImage: `${theme.palette.primary.headerGradient}`
-                })]}>
-                    <Box sx={{ display: "flex", alignItems: "center", width: "100%", flex: 1, }}>
-                        <Box sx={{ display: "flex", alignItems: "center", marginRight: "12px" }}>
+            <AppBar position="fixed" sx={classes.AppBarVal}>
+                <Box sx={classes.BoxCont1}>
+                    <Box sx={classes.BoxCont1sub1}>
+                        <Box sx={classes.BoxCont1sub1sub1}>
                             <StyledImage onClick={() => {
                                 setMobileOpen(!mobileOpen)
-                            }} src={Draw} sx={{ height: { laptop: "24px", mobile: "20px" }, width: "auto" }} />
+                            }} src={Draw} sx={classes.BoxCont1sub1sub1StyleImg} />
                             <RenderLogo />
                         </Box>
                         <ButtonHead onClick={() => {
