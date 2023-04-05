@@ -4,6 +4,7 @@ import activeAdmin from './admin'
 import activeUser from './activeUser'
 import activeRole from './activeRole';
 import { rootReducer } from './reducers/rootReducer';
+import dailogModal from './dailogModal'
 
 const logger = (store) => (next) => (action) => {
     let result = next(action);
@@ -16,7 +17,8 @@ const store = configureStore({
         activeAdmin,
         activeUser,
         rootReducer,
-        activeRole
+        activeRole,
+        dailogModal
     },
     middleware: [logger],
 })
