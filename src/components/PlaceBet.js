@@ -5,9 +5,9 @@ import { ArrowDown, CANCEL, CancelDark } from "../assets";
 import '../components/index.css'
 import StyledImage from "./StyledImage";
 import { useSelector } from 'react-redux'
-const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, isSessionYes, isBack, type, name, data, typeOfBet }) => {
+const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, isSessionYes, isBack, type, name, data, typeOfBet ,selectedValue}) => {
 
-    const [odd, setOdd] = useState("18")
+    const [odd, setOdd] = useState(selectedValue || "0")
 
     const [defaultValue, setDefaultValue] = useState("")
     const theme = useTheme()
@@ -66,8 +66,9 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
     }
 
     const TeamsOdssData = ({ input, title, value, containerStyle, valueContainerStyle, valueTextStyle }) => {
-        const [oddValue, setOddValue] = useState("18")
+        const [oddValue, setOddValue] = useState(selectedValue || "0")
         const selectedColorBox = useSelector(state => state.selectedColorBox)?.value
+        console.log(selectedColorBox,"selectedColorBox")
         return (
             <Box sx={[{ display: "flex", flexDirection: "column", }, containerStyle]}>
                 <Box sx={{ background: "#262626", border: "2px solid #C7B6B6", display: "flex", justifyContent: "center", alignItems: "center", height: "25px" }}>
@@ -126,7 +127,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             "odds": document.getElementsByClassName("OddValue")?.[0]?.textContent,
             "betOn": betOn,
             "stack": defaultValue,
-            "team_bet": name?.toLowerCase(),
+            "team_bet": name,
             "country": ip?.country_name,
             "ip_address": ip?.IPv4,
             "stake": defaultValue,
@@ -137,6 +138,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
         if (marketType === "Session") {
             delete payload.betOn
             delete payload.odds
+            console.log(payload,data,"SDDSDDD")
             payload.bet_condition = data?.betting?.[0]?.bet_condition
             payload.rate_percent = data?.betting?.[0]?.rate_percent
             payload.marketType = data?.betting?.[0]?.bet_condition

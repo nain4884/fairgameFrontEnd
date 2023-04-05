@@ -27,8 +27,8 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
     const [allSessionBets, setAllSessionBets] = useState([])
     function doBets() {
         let bets = []
-        allBetsData.forEach(element => {
-            element.bettings.forEach(element2 => {
+        allBetsData?.forEach(element => {
+            element?.bettings?.forEach(element2 => {
                 bets.push({ ...element2, marketId: element.marketId })
             });
         });
@@ -47,6 +47,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                         "match_id": element.match_id
                     }
                     let { data } = await userAxios.post(`/betting/getPlacedBets`, payload);
+                    console.log(data,"SD")
                     allSessionBet.push(...data.data[0])
                 } catch (e) {
                     console.log(e)

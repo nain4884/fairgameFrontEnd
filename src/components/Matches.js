@@ -157,6 +157,7 @@ const MatchesComponent = ({ doNavigateWithState }) => {
     const [currentPage, setCurrentPage] = useState(1)
     const [pageLimit, setPageLimit] = useState(5)
 
+
     useEffect(() => {
         getAllMatch()
     }, [currentPage, pageCount])
@@ -181,7 +182,9 @@ const MatchesComponent = ({ doNavigateWithState }) => {
         <>
             {matchData?.map(match => {
                 return (
-                    <Odds onClick={() => { doNavigateWithState(match.id) }} top={true} blur={false} match={match} />
+                    <Odds onClick={() => { doNavigateWithState(match.id)
+                   
+                     }} top={true} blur={false} match={match} />
                 )
             })}
             <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} />

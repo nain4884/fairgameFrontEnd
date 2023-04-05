@@ -12,29 +12,30 @@ import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { apiBasePath } from "./components/helper/constants"
 import { setRole } from "./components/helper/SetRole"
-import { AuthProvider } from "./Authprovider"
+import { AuthProvider } from "./Authprovider
 
 const Main = () => {
-  const [socket, setSocket] = useState(null);
-  const [loginRole, setLoginRole] = useState("")
-  const [loginJWT, setLoginJWT] = useState(null)
+  const [loginRole, setLoginRole] = useState("");
+  const [loginJWT, setLoginJWT] = useState(null);
+  const [socketInit,setSocketInit]=useState(null)
+  // useEffect(() => {
+  //   const newSocket = io);
+  //   setSocket(newSocket);
+  //   return () => newSocket.off();
+  // }, [loginJWT]);
+
   useEffect(() => {
-    const newSocket = io(`${apiBasePath}`, {
-      extraHeaders: {
-        Authorization: 'Bearer ' + loginJWT
-      }
-    });
-    setSocket(newSocket);
-    return () => newSocket.off();
-  }, [setSocket, loginJWT]);
-  useEffect(() => {
-    setRoleAndJWT()
-  }, [window.location.pathname])
+    setRoleAndJWT();
+  }, [window.location.pathname]);
+
   const setRoleAndJWT = () => {
-    let { role, JWT } = setRole()
-    setLoginRole(role)
-    setLoginJWT(JWT)
-  }
+    let { role, JWT } = setRole();
+    setLoginRole(role);
+    setLoginJWT(JWT);
+  };
+
+
+
   return (
     <AuthProvider>
       <Routes>
@@ -59,7 +60,7 @@ const Main = () => {
         <Route path="/expert/*" element={<ExpertRoutes />} />
       </Routes>
     </AuthProvider>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

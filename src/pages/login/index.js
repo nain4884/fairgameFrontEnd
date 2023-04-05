@@ -1,6 +1,6 @@
 
 import { Card, Typography, Box, useTheme, useMediaQuery } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { eye, logo, mail } from '../../assets';
 import { Input, CustomButton, AuthLogo, AuthBackground, ReCAPTCHACustom } from '../../components';
@@ -10,8 +10,11 @@ import axios from '../../axios/axios';
 import { apiBasePath, LoginServerError } from '../../components/helper/constants';
 import OTPInput, { ResendOTP } from "otp-input-react";
 import { setActiveRole } from '../../store/activeRole';
+import { SocketContext } from '../../context/socketContext';
 
 export default function Login() {
+
+    const socket = useContext(SocketContext);
     const theme = useTheme()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -102,11 +105,11 @@ export default function Login() {
         }, 0);
     };
 
-
     async function loginToAccount() {
         // changeErrors()
-        // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") {
+        // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") 
             try {
+       
                 let { data } = await axios.post(`/auth/login`, {
                     "username": loginDetail[1].val,
                     "password": loginDetail[2].val
