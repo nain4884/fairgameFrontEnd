@@ -18,6 +18,12 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
 import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
 const FairGameWalletRoutes = () => {
+  const { tokenMaster } = useContext(AuthContext);
+  useEffect(() => {
+    if (tokenMaster != localStorage.getItem('JWTadmin')) {
+      window.location.reload()
+    }
+  }, [])
   return (
     <>
       <CustomHeader />

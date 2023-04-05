@@ -18,6 +18,12 @@ import DeleteBet from "../admin/DeleteBet"
 import { useEffect, useState, useContext } from "react"
 import { AuthContext } from "../../Authprovider"
 const FairGameWalletRoutes = () => {
+    const { tokenAdmin } = useContext(AuthContext);
+    useEffect(() => {
+        if(tokenAdmin != localStorage.getItem('JWTadmin')){
+            window.location.reload()
+        }
+      }, [])
     return (
         <>
             <CustomHeader />

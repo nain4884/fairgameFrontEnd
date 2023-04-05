@@ -11,10 +11,6 @@ import { AuthContext } from "../../Authprovider";
 import AddBet from "./AddBet"
 
 const ExportRoutes = () => {
-  const { tokenExpert } = useContext(AuthContext);
-  if (!tokenExpert) {
-    window.location.reload()
-  }
     return (
         <Routes>
             <Route path="/home1" element={<Home1 />} />

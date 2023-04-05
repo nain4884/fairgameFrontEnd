@@ -24,7 +24,6 @@ const useTokenUpdate = () => {
                 setTokenUpdated(true);
             }
         }, 2000);
-
         return () => clearInterval(interval);
     }, [tokenAdmin, tokenMaster, tokenExpert, tokenUser]);
 

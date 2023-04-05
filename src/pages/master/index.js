@@ -14,10 +14,16 @@ import DeleteBet from "../admin/DeleteBet";
 import MatchSubmit1 from "../../components/MatchSubmit1";
 import Home from "../../components/List_Of_Client";
 import DepositWallet from "../../components/DepositWallet";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
 import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
 const MasterRoutes = () => {
+  const { tokenMaster } = useContext(AuthContext);
+  useEffect(() => {
+    if (tokenMaster != localStorage.getItem('JWTadmin')) {
+      window.location.reload()
+    }
+  }, [])
   return (
     <>
       <CustomHeader />

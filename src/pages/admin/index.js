@@ -13,10 +13,16 @@ import ProfitLoss from "./ProfitLoss.js"
 import Reports from "./Reports.js"
 import TotalBets from "./TotalBets.js"
 import MatchSubmit1 from "../../components/MatchSubmit1.js"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
 import CustomHeader from "../../components/CommonMasterAdminLayout/Header.js"
 const AdminRoutes = () => {
+    const { tokenMaster } = useContext(AuthContext);
+    useEffect(() => {
+        if (tokenMaster != localStorage.getItem('JWTadmin')) {
+            window.location.reload()
+        }
+    }, [])
     return (
         <>
             <CustomHeader />

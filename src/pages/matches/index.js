@@ -22,6 +22,7 @@ import ManualBookMakerMarket from "../../components/ManualBookMakerMarket";
 import userAxios from "../../axios/userAxios";
 import io from 'socket.io-client';
 import { microServiceApiPath } from "../../components/helper/constants";
+
 export default function Matches() {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
@@ -182,8 +183,6 @@ export default function Matches() {
     useEffect(() => {
       getThisMatch(id)
       getAllBetsData()
-    }, [marketId])
-    useEffect(() => {
       const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
       setSocket(newSocket)
       newSocket.emit("init", { id: marketId })

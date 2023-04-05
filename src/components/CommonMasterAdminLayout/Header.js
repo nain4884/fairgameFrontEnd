@@ -324,7 +324,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         handleClose()
     })
     const logoutProcess = () => {
-        dispatch(stateActions.logout("role2"));
+        let { role } = setRole()
+        dispatch(stateActions.logout(role));
         navigate("/")
         handleClose()
     }

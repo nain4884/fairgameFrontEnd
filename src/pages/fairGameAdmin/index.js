@@ -15,9 +15,15 @@ import MatchSubmit1 from "../../components/MatchSubmit1";
 import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
 import Home from "../../components/List_Of_Client";
 import DepositWallet from "../../components/DepositWallet";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Authprovider";
 const FairGameWalletRoutes = () => {
+  const { tokenAdmin } = useContext(AuthContext);
+    useEffect(() => {
+      if(tokenAdmin != localStorage.getItem('JWTadmin')){
+        window.location.reload()
+      }
+    }, [])
   return (
     <>
       <CustomHeader />
