@@ -19,7 +19,7 @@ import CustomHeader from "../../components/CommonMasterAdminLayout/Header.js"
 const AdminRoutes = () => {
     const { tokenMaster } = useContext(AuthContext);
     useEffect(() => {
-        if (tokenMaster != localStorage.getItem('JWTadmin')) {
+        if (tokenMaster != localStorage.getItem('JWTmaster')) {
             window.location.reload()
         }
     }, [])

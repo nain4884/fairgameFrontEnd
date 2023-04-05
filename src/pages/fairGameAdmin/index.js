@@ -19,11 +19,11 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Authprovider";
 const FairGameWalletRoutes = () => {
   const { tokenAdmin } = useContext(AuthContext);
-    useEffect(() => {
-      if(tokenAdmin != localStorage.getItem('JWTadmin')){
-        window.location.reload()
-      }
-    }, [])
+  useEffect(() => {
+    if (tokenAdmin != localStorage.getItem('JWTadmin')) {
+      window.location.reload()
+    }
+  }, [])
   return (
     <>
       <CustomHeader />

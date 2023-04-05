@@ -84,7 +84,6 @@ const CustomHeader = ({ }) => {
                         {(activeUser == 1 || activeUser == '2' || activeUser == "3") && <>
                             <ButtonHead onClick={(e) => {
                                 dispatch(setSelected(1))
-                                console.log('activeUser', activeUser, currentSelected)
                                 if (activeUser == "3") {
                                     return
                                 }
@@ -158,9 +157,7 @@ const ButtonHead = ({ title, boxStyle, titleStyle, onClick, report, selected }) 
 }
 const menutItems1 = [{ title: "India vs Pakistan" }, { title: "Australia vs England" }, , { title: "Srilanka vs England" }]
 const DropdownMenu1 = ({ anchorEl, open, handleClose, allMatch }) => {
-    const navigate = useNavigate()
     const [selected, setSelected] = useState(0)
-    console.log('allMatch', allMatch)
     return (
         <Menu
             id="basic-menu"
@@ -186,7 +183,6 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose, allMatch }) => {
 }
 const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) => {
     const activeUser = useSelector(state => state?.activeUser?.activeUser)
-    const [show, setShow] = useState(false)
     const navigate = useNavigate()
     return (<>
         <MenuItem dense={true}
@@ -223,9 +219,8 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) =
         {selected == index && <Box sx={{ background: "#F8C851", width: "80%", marginLeft: "20%", borderRadius: "5px", paddingX: "5px", paddingY: "5px" }}>
             <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Current Live Session" : "Current Live Bookmaker"}</Typography>
             <Box onClick={(e) => {
-                console.log('x,activeUser',x,activeUser)
                 if (activeUser == '1') {
-                    navigate("/expert/live", { state: { createSession: true, match:x } })
+                    navigate("/expert/live", { state: { createSession: true, match: x } })
                 }
                 else if (activeUser == '2') {
                     navigate("/expert/market")
@@ -238,15 +233,19 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) =
                 <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography> */}
             </Box>
             <Box onClick={e => {
-                if (activeUser == '1') {
-                    navigate("/expert/live", { state: { createSession: true, match:x } })
-                }
-                else if (activeUser == '2') {
-                    navigate("/expert/add_book_maker")
-                }
+                navigate("/expert/live", { state: { createSession: true, match: x } })
                 handleClose()
             }} sx={{ marginTop: "5px", display: "flex", alignItems: "center" }}>
-                <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Create Session" : "Add Bookmaker"}</Typography>
+                {/* <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Create Session" : "Add Bookmaker"}</Typography> */}
+                <Typography sx={{ fontSize: "12px", fontWeight: "600" }} >Create Session</Typography>
+                <StyledImage src={ArrowLeft} sx={{ width: "15px", height: "10px", marginLeft: "10px" }} />
+            </Box>
+            <Box onClick={e => {
+                navigate("/expert/add_book_maker", { state: { createSession: true, match: x } })
+                handleClose()
+            }} sx={{ marginTop: "5px", display: "flex", alignItems: "center" }}>
+                {/* <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Create Session" : "Add Bookmaker"}</Typography> */}
+                <Typography sx={{ fontSize: "12px", fontWeight: "600" }} >Add Bookmaker</Typography>
                 <StyledImage src={ArrowLeft} sx={{ width: "15px", height: "10px", marginLeft: "10px" }} />
             </Box>
         </Box>}

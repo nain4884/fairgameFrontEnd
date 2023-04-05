@@ -4,14 +4,14 @@ import StyledImage from "./StyledImage";
 import ResultComponent from "./ResultComponent";
 import './index.css'
 import { BALLSTART, BroadCast } from "../expert/assets";
-export default function IndiaPakLiveBookMaker({ add }) {
+export default function IndiaPakLiveBookMaker({ add, match }) {
     const [visible, setVisible] = useState(false)
     const [visible1, setVisible1] = useState(false)
-
+    console.log('match', match)
+    
     const AddSession = () => {
         const [value1, setValue1] = useState(add ? "" : '10,000,00')
         const [value2, setValue2] = useState(add ? "" : '10,000,00')
-
         return (
             <Box sx={{ border: "2px solid #FFFFFF" }}>
                 <Box sx={{ display: "flex" }}>
@@ -31,7 +31,7 @@ export default function IndiaPakLiveBookMaker({ add }) {
                             <img src={BALLSTART} style={{ width: '80%', height: '30%', position: 'absolute', zIndex: 3 }} />
                         </Box>}
                         <Box sx={{ borderWidth: 0, justifyContent: 'space-between', height: '50%', paddingX: '10px', alignItems: 'center', display: 'flex', width: '100%' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '600', }}>INDIA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Typography>
+                            <Typography sx={{ fontSize: '14px', fontWeight: '600', }}>{match.teamA}</Typography>
                             <TextField
                                 onChange={(i) => setValue1(i.target.value)}
                                 variant="standard"
@@ -54,7 +54,7 @@ export default function IndiaPakLiveBookMaker({ add }) {
                             />
                         </Box>
                         <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingX: '10px', borderLeftWidth: 0, width: '100%', height: '50%', justifyContent: 'space-between' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '600', }}>PAKISTAN</Typography>
+                            <Typography sx={{ fontSize: '14px', fontWeight: '600', }}>{match.teamB}</Typography>
                             <TextField
                                 variant="standard"
                                 value={value2}
@@ -109,7 +109,7 @@ export default function IndiaPakLiveBookMaker({ add }) {
     return (
         <Box sx={{ flex: 1, background: "#0B4F26", borderRadius: "5px", position: 'relative', minHeight: "300px", py: "20px", px: "10px" }}>
             {!add && <Box sx={{ width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', position: 'absolute', left: '0px', top: 0, zIndex: 1 }} ></Box>}
-            <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600", zIndex: 2, position: 'relative' }}>India vs Pakistan</Typography>
+            <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600", zIndex: 2, position: 'relative' }}>{match.title}</Typography>
             <Box sx={{ display: "flex", marginTop: "20px", flexDirection: 'column' }}>
                 <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '100%', alignSelf: 'center', paddingX: .2, paddingTop: .2, background: 'white' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>

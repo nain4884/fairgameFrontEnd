@@ -20,7 +20,7 @@ import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
 const FairGameWalletRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   useEffect(() => {
-    if (tokenMaster != localStorage.getItem('JWTadmin')) {
+    if (tokenMaster != localStorage.getItem('JWTmaster')) {
       window.location.reload()
     }
   }, [])
