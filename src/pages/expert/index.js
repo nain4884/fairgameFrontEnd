@@ -6,11 +6,17 @@ import MatchScreen from "./MatchScreen"
 import BookMakerMarket from "./BookMakerMarket"
 import AddBookMakerMarket from "./AddBookMakerMarket"
 import Login from "./Login"
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
 import AddBet from "./AddBet"
 
 const ExportRoutes = () => {
+  const { tokenExpert } = useContext(AuthContext);
+    useEffect(() => {
+        if (tokenExpert != localStorage.getItem('JWTexpert')) {
+            window.location.reload()
+        }
+    }, [])
     return (
         <Routes>
             <Route path="/home1" element={<Home1 />} />

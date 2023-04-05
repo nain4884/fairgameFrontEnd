@@ -21,6 +21,7 @@ import { ChangePassword } from "../../components/ChangePassword";
 import ManualBookMakerMarket from "../../components/ManualBookMakerMarket";
 import userAxios from "../../axios/userAxios";
 import { microServiceApiPath } from "../../components/helper/constants";
+import { AuthContext } from "../../Authprovider";
 import { SocketContext } from "../../context/socketContext";
 export default function Matches() {
   const [visible, setVisible] = useState(false);
@@ -31,9 +32,22 @@ export default function Matches() {
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const activeTab = useSelector((state) => state.betplace)?.activeTab;
+  const { tokenUser } = useContext(AuthContext);
+  useEffect(() => {
+    if (tokenUser != localStorage.getItem('JWTuser')) {
+      window.location.reload()
+    }
+  }, [])
+  useEffect(() => {
+    if (flag) {
+      navigate("/matches");
+    } else {
+      setFlag(true);
+    }
+  }, [activeTab]);
+
   const Matches = () => {
     const [id, setId] = useState("");
-    // const [socket, setSocket] = useState(null);
     const doSetId = (k) => {
       setId(k);
     };
@@ -165,7 +179,6 @@ export default function Matches() {
     }, [socket]);
 
     async function getThisMatch(id) {
-      //localhost:3100/game-match/matchDetail/aa56cbb1-5f29-4514-92bb-087c976447a2
       try {
         let matchOddsDataTemp = [];
         let matchSessionDataTemp = [];
@@ -204,7 +217,7 @@ export default function Matches() {
         console.log("response", e.response.data);
       }
     }
-    
+
     async function getAllBetsData() {
       try {
         let response = await userAxios.get(
@@ -706,14 +719,6 @@ export default function Matches() {
       </>
     );
   };
-
-  useEffect(() => {
-    if (flag) {
-      navigate("/matches");
-    } else {
-      setFlag(true);
-    }
-  }, [activeTab]);
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
