@@ -6,8 +6,8 @@ import { ArrowDown, DownArrow, Draw, logo, Logout, Money, MoneyBag, DownIcon } f
 import userAxios from "../axios/userAxios";
 import { stateActions } from "../store/stateActions";
 import SearchInput from "./SearchInput";
-import SessionTimeOut from "./SessionTimeOut";
-import SideBar from "./SideBar";
+import SessionTimeOut from "./helper/SessionTimeOut";
+import SideBar from "./sideBar/SideBar";
 import StyledImage from "./StyledImage";
 
 const CustomHeader = ({ }) => {

@@ -8,8 +8,8 @@ import expertAxios from "../axios/expertAxios"
 import userAxios from '../axios/userAxios'
 import masterAxios from '../axios/masterAxios'
 import { useNavigate } from "react-router-dom"
-import { setRole } from "./SetRole"
-import { doSendErrorForPassword } from "./doCheckErrorForPassword"
+import { setRole } from "./helper/SetRole"
+import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword"
 import Modal from "./Modal"
 
 const containerStyles = {

@@ -18,8 +18,8 @@ import {
 } from "../admin/assets";
 import adminAxios from "../axios/adminAxios";
 import axios from "../axios/axios";
-import { onChangeKeyCheck } from "./PassKeyCheck";
-import { setRole } from "./SetRole";
+import { onChangeKeyCheck } from "./helper/PassKeyCheck";
+import { setRole } from "./helper/SetRole";
 import { useNavigate } from "react-router-dom";
 
 const style = {

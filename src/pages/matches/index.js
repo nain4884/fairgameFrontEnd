@@ -17,11 +17,11 @@ import MatchComponent from "../../components/MathComponent";
 import AccountStatementList from "../../components/AccountStatementList";
 import YellowHeader from "../../components/yellowheader";
 import ProfitLossComponent from "../../components/ProfitLossComponent";
-import { ChangePassword } from "./ChangePassword";
+import { ChangePassword } from "../../components/ChangePassword";
 import ManualBookMakerMarket from "../../components/ManualBookMakerMarket";
 import userAxios from "../../axios/userAxios";
 import io from 'socket.io-client';
-import { microServiceApiPath } from "../../components/constants";
+import { microServiceApiPath } from "../../components/helper/constants";
 export default function Matches() {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
@@ -31,7 +31,6 @@ export default function Matches() {
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const activeTab = useSelector((state) => state.betplace)?.activeTab;
-
   const Matches = () => {
     const [id, setId] = useState('')
     const [socket, setSocket] = useState(null);

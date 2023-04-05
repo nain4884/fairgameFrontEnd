@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import StyledImage from "./StyledImage";
 import { DropDown } from "../admin/assets";
 import adminAxios from "../axios/adminAxios";
-import { setRole } from "./SetRole";
+import { setRole } from "./helper/SetRole";
 export default function HomeSlide() {
     const [show, setShow] = useState(false)
     const theme = useTheme()

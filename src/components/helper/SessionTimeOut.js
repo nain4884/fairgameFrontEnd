@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
-import { stateActions } from '../store/stateActions';
+import { stateActions } from '../../store/stateActions';
 import { SessionTimerLOGOUT, SessionTimerWARN } from './constants';
 
 function SessionTimeOut() {

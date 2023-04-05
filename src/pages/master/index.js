@@ -11,17 +11,13 @@ import ProfitLoss from "../admin/ProfitLoss";
 import Reports from "../admin/Reports";
 import TotalBets from "../admin/TotalBets";
 import DeleteBet from "../admin/DeleteBet";
-import MatchSubmit1 from "../fairGameWallet/MatchSubmit1";
-import Home from "../fairGameWallet/List_Of_Client";
-import DepositWallet from "../fairGameWallet/DepositWallet";
+import MatchSubmit1 from "../../components/MatchSubmit1";
+import Home from "../../components/List_Of_Client";
+import DepositWallet from "../../components/DepositWallet";
 import { useContext } from "react";
 import { AuthContext } from "../../Authprovider";
-import CustomHeader from "../fairGameAdmin/Header";
+import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
 const MasterRoutes = () => {
-  const { tokenMaster } = useContext(AuthContext);
-  if (!tokenMaster) {
-    window.location.reload()
-  }
   return (
     <>
       <CustomHeader />

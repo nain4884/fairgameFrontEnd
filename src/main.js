@@ -7,12 +7,11 @@ import MasterRoutes from "./pages/master"
 import SuperAdminRoutes from "./pages/superAdmin"
 import SuperMasterRoutes from "./pages/superMaster"
 import ExpertRoutes from "./pages/expert"
-import Demo from "./demo"
 import Login from "./pages/login"
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import { apiBasePath } from "./components/constants"
-import { setRole } from "./components/SetRole"
+import { apiBasePath } from "./components/helper/constants"
+import { setRole } from "./components/helper/SetRole"
 import { AuthProvider } from "./Authprovider"
 
 const Main = () => {
@@ -39,7 +38,6 @@ const Main = () => {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/demo" element={<Demo />} />
         <Route path="/" element={<Login />} />
         <Route path="/forget_password" element={<Login />} />
         <Route path="/verification" element={<Login />} />

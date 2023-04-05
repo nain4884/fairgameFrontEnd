@@ -1,6 +1,8 @@
-import { CustomHeader, Input } from "../../components";
+import { CustomHeader, Input } from ".";
 import { Box, Typography } from "@mui/material";
-import { eye } from "../../assets";
+import { eye } from "../assets";
+import { useState } from "react";
+import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 
 export const ChangePassword = () => {
   return (
@@ -22,6 +24,16 @@ export const ChangePassword = () => {
 };
 
 export const ChangePasswordComponent = () => {
+  const [passwordDetail, setPasswordDetail] = useState({
+    1: { field: "oldPassword", val: "" },
+    2: { field: "newPassword", val: "" },
+    3: { field: "confirmPassword", val: "" }
+  })
+  const [error, setError] = useState({
+    1: { field: "oldPassword", val: false },
+    2: { field: "newPassword", val: false },
+    3: { field: "confirmPassword", val: false }
+  })
     return(
     <Box
           sx={{
@@ -62,6 +74,7 @@ export const ChangePasswordComponent = () => {
               inputContainerStyle={{ borderRadius: "5px" }}
               containerStyle={{}}
               img={eye}
+              setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={1} onFocusOut={doSendErrorForPassword} toFoucs={true}
             />
             <Input
               placeholder={"Enter New Password"}
@@ -75,6 +88,7 @@ export const ChangePasswordComponent = () => {
               inputContainerStyle={{ borderRadius: "5px" }}
               containerStyle={{ marginTop: "30px" }}
               img={eye}
+              setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={2} onFocusOut={doSendErrorForPassword} toFoucs={true}
             />
             <Input
               placeholder={"Enter Confirm Password"}
@@ -88,6 +102,7 @@ export const ChangePasswordComponent = () => {
               inputContainerStyle={{ borderRadius: "5px" }}
               containerStyle={{ marginTop: "30px" }}
               img={eye}
+              setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={3} onFocusOut={doSendErrorForPassword} toFoucs={true}
             />
             <Box
               sx={{

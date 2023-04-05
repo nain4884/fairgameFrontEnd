@@ -2,8 +2,8 @@ import { Box } from "@mui/system";
 import { useState } from "react";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { Background } from "../../components";
-import { ChangePasswordComponent } from "../matches/ChangePassword";
-import { TransPasswordComponent } from "../matches/TransPasswordComponent";
+import { ChangePasswordComponent } from "../../components/ChangePassword";
+import { TransPasswordComponent } from "../../components/TransPasswordComponent";
 
 export default function ChangePassword() {
   const theme = useTheme();

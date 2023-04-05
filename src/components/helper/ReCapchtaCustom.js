@@ -1,7 +1,7 @@
 import React from 'react'
 import {Box, Checkbox, Typography} from '@mui/material'
 import ReCAPTCHA from "react-google-recaptcha"
-import {Re} from '../assets'
+import {Re} from '../../assets'
 import { REACT_APP_SITE_KEY } from './constants'
 export default function ReCAPTCHACustom({containerStyle}){
     const recaptchaRef=React.useRef(null)

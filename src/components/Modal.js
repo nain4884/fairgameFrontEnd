@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 // import Modal from '@mui/material/Modal';
 import { useNavigate } from 'react-router-dom';
-import { TransPassComp } from '../pages/matches/TransPasswordComponent';
+import { TransPassComp } from './TransPasswordComponent';
 import { Button, Typography } from '@mui/material';
 
 export function ThisUseModal() {

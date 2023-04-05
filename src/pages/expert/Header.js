@@ -8,9 +8,9 @@ import { NotiBadge, Down, Users, ArrowLeft } from "../../expert/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelected } from "../../store/activeUser";
 import { stateActions } from "../../store/stateActions";
-import SessionTimeOut from "../../components/SessionTimeOut";
+import SessionTimeOut from "../../components/helper/SessionTimeOut";
 import AddNotificationModal from "../../components/AddNotificationModal";
-import { setRole } from "../../components/SetRole";
+import { setRole } from "../../components/helper/SetRole";
 import { ThisUseModal } from "../../components/Modal";
 import expertAxios from "../../axios/expertAxios";
 

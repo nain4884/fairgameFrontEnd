@@ -7,7 +7,7 @@ import { Input, CustomButton, AuthLogo, AuthBackground, ReCAPTCHACustom } from '
 import { useDispatch } from 'react-redux';
 import { stateActions } from '../../store/stateActions';
 import axios from '../../axios/axios';
-import { apiBasePath, LoginServerError } from '../../components/constants';
+import { apiBasePath, LoginServerError } from '../../components/helper/constants';
 import OTPInput, { ResendOTP } from "otp-input-react";
 import { setActiveRole } from '../../store/activeRole';
 

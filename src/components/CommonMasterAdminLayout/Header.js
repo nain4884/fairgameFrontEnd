@@ -3,29 +3,39 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout } from "../../assets";
-import SearchInput from "../../components/SearchInput";
-import SessionTimeOut from "../../components/SessionTimeOut";
-import StyledImage from "../../components/StyledImage";
+import SearchInput from "../SearchInput";
+import SessionTimeOut from "../helper/SessionTimeOut";
+import StyledImage from "../StyledImage";
 import { stateActions } from "../../store/stateActions";
 import { Down } from "../../fairGameWallet/assets";
 import { setActiveAdmin } from "../../store/admin";
-import SideBarAdmin from "../../components/SideBarAdmin";
-import masterAxios from "../../axios/masterAxios";
+import SideBarAdmin from "../sideBar/SideBarAdmin";
+import { setRole } from "../helper/SetRole";
+import { ThisUseModal } from "../Modal";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-    // const [currentSelected, setCurrentSelected] = useState(0)
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchor, setAnchor] = React.useState(null)
     const [anchor1, setAnchor1] = React.useState(null)
-    const [balance, setBalance] = useState(0)
-    const [fullName, setFullName] = useState('')
-
+    const [isTransPasswordExist, setIsTransPasswordExist] = useState(false)
     const currentSelected = useSelector(state => state?.activeAdmin?.activeTabAdmin)
     const location = useLocation();
+    const [balance, setBalance] = useState(0)
+    const [fullName, setFullName] = useState('')
+    async function getUserDetail() {
+        try {
+            let { axios } = setRole()
+            const { data } = await axios.get('users/profile');
+            setBalance(data.data.current_balance)
+            setFullName(data.data.fullName)
+        } catch (e) {
+            console.log(e)
+        }
+    }
     React.useEffect(() => {
         if (location.pathname.includes("market_analysis")) {
             dispatch(setActiveAdmin(3))
@@ -36,8 +46,8 @@ const CustomHeader = ({ }) => {
         } else if (location.pathname.includes("reports") || location.pathname.includes("account_statement") || location.pathname.includes("current_bet") || location.pathname.includes("general_report") || location.pathname.includes("game_report") || location.pathname.includes("profit_loss")) {
             dispatch(setActiveAdmin(2))
         }
-    }, [location])
-    useEffect(() => {
+        let { transPass } = setRole()
+        setIsTransPasswordExist(window.localStorage.getItem(transPass))
         getUserDetail()
     }, [window.location.pathname])
     useEffect(() => {
@@ -45,15 +55,6 @@ const CustomHeader = ({ }) => {
             setMobileOpen(false)
         }
     }, [matchesMobile])
-    async function getUserDetail() {
-        try {
-            const { data } = await masterAxios.get('users/profile');
-            setBalance(data.data.current_balance)
-            setFullName(data.data.fullName)
-        } catch (e) {
-            console.log(e)
-        }
-    }
     const RenderLogo = useCallback(() => {
         return (
             <StyledImage onClick={(e) => {
@@ -110,14 +111,14 @@ const CustomHeader = ({ }) => {
                             setAnchor1(e.currentTarget)
                         }} title={"WALLET"}
                             report={true} selected={currentSelected == 4} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", width: "90px", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "space-around" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} /> */}
-
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" }}>
                         <SearchInput placeholder={"All Clients..."} header={true} inputContainerStyle={{ height: "30px", minWidth: { laptop: "100px", mobile: "1.5vw" }, width: "140px" }} />
-                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={fullName} amount={balance} />
+                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={fullName} balance={balance} />
                     </Box>
                 </Box>
                 {<MobileSideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
+                {isTransPasswordExist === "false" && !/createTransPassword/.test(window.location.pathname) && <ThisUseModal message="You don't have transaction password" buttonMessage="Create Transaction Password" navigateTo='createTransPassword' />}
             </AppBar>
             <DropdownMenu1 open={Boolean(anchor)} anchorEl={anchor} handleClose={() => setAnchor(null)} />
             <DropdownMenu2 open={Boolean(anchor1)} anchorEl={anchor1} handleClose={() => setAnchor1(null)} />
@@ -266,11 +267,10 @@ const LiveMarket = ({ title, boxStyle, titleStyle, onClick }) => {
     )
 }
 
-const BoxProfile = ({ image, value, containerStyle, amount }) => {
+const BoxProfile = ({ image, value, containerStyle, balance }) => {
     const theme = useTheme()
     const [open, setOpen] = useState(false)
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -289,7 +289,7 @@ const BoxProfile = ({ image, value, containerStyle, amount }) => {
             }} sx={[{ backgroundColor: "primary.main", minWidth: { laptop: "150px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "45px", mobile: "35px" }, overflow: "hidden", paddingX: "10px", borderRadius: "5px" }, containerStyle]}>
                 <Box style={{}}>
                     <Typography sx={{ fontSize: { laptop: '11px', mobile: "8px" }, color: "text.white", fontWeight: "600" }}>{value}</Typography>
-                    <Typography sx={{ fontSize: { laptop: '13px', mobile: "8px" }, color: "text.white", fontWeight: " 700" }}>{amount}</Typography>
+                    <Typography sx={{ fontSize: { laptop: '13px', mobile: "8px" }, color: "text.white", fontWeight: " 700" }}>{balance}</Typography>
                 </Box>
                 <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
             </Box>
@@ -324,7 +324,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         handleClose()
     })
     const logoutProcess = () => {
-        dispatch(stateActions.logout("role1"));
+        dispatch(stateActions.logout("role2"));
         navigate("/")
         handleClose()
     }
