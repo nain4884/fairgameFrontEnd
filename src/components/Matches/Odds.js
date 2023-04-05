@@ -1,36 +1,17 @@
-import { useTheme } from "@emotion/react"
-import { Box, Pagination, Typography, useMediaQuery } from "@mui/material"
-import { display, width } from "@mui/system"
-import { useEffect, useState } from "react"
-import { Header, Info, Lock, TEAMLOGO, TEAMLOGO1 } from "../assets"
-import './index.css'
-import { setRole } from "./helper/SetRole"
-const SeperateBox = ({ color, empty, value, value2, lock }) => {
-    const theme = useTheme()
-    const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-    return (
-        <Box sx={{ background: color, border: color != 'white' ? '1px solid #2626264D' : '0px solid white', width: { mobile: '24.5%', laptop: '20%' }, height: '94%', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }} >
-            {!empty && !lock && <Box sx={{ alignItems: 'center', justifyContent: 'space-around' }} >
-                <Typography sx={{ fontSize: '13px', color: color == 'white' ? 'white' : 'black', fontWeight: '700', textAlign: 'center' }} >{value}</Typography>
-                <Typography sx={{ fontSize: '12px', marginTop: -.4, color: color == 'white' ? 'white' : 'black', textAlign: 'center' }} >{value2}</Typography>
-            </Box>}
-            {lock &&
-                <img
-                    src={Lock}
-                    style={{ width: '10px', height: '15px' }}
-                />
-            }
-        </Box>
-    )
-}
-const Divider = () => {
-    return (
-        <Box sx={{ width: '99%', background: 'rgba(211,211,211)', height: '1px' }} ></Box>
-    )
-}
+import { useTheme } from '@emotion/react'
+import { Box, Typography, useMediaQuery } from '@mui/material'
+import React from 'react'
+import SeparateBox from './SeparateBox'
+import { TEAMLOGO, TEAMLOGO1 } from '../../assets'
+import Divider from '../helper/Divider'
+
 const Odds = ({ upcoming, onClick, top, blur, match }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
+
+    
+
+
     return (
         <Box sx={{ position: 'relative', width: '100%', marginY: { mobile: '.8vh', laptop: '1vh' }, marginTop: { mobile: top ? '1vh' : '1.2vh', laptop: top ? "2vh" : '1vh' }, width: { mobile: "98%", laptop: '97.8%' }, marginX: '1vw', padding: .1, background: 'white' }}>
             {upcoming && <Box sx={{ position: 'absolute', zIndex: 2, background: 'rgba(0,0,0,0.5)', width: '100%', right: 0, height: '144px' }} ></Box>}
@@ -111,17 +92,17 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
                         <Typography sx={{ color: 'black', fontSize: { laptop: '11px', tablet: '10px', mobile: "10px" }, marginLeft: '7px', fontWeight: '600' }} >{match.teamA}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'center' }, alignItems: 'center' }} >
-                        {!matchesMobile && <SeperateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeperateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        <SeperateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back : 50}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} />
+                        <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back : 50}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} />
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        <SeperateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay : 51}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} />
+                        <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay : 51}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} />
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeperateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay + 1 : 51 + 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#F2CBCB"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay + 1 : 51 + 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#F2CBCB"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeperateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay + 2 : 51 + 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#ECD6D6"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay + 2 : 51 + 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#ECD6D6"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
                     </Box>
                 </Box>
@@ -132,17 +113,17 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
                         <Typography sx={{ color: 'black', fontSize: { laptop: '12px', mobile: "11px" }, marginLeft: '7px', fontWeight: '600' }} >{match.teamB}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'center' }, alignItems: 'center' }} >
-                        {!matchesMobile && <SeperateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back - 2 : 50 - 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#CEEBFF"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeperateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back - 1 : 50 - 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#C2E6FF"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        <SeperateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back : 50}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} />
+                        <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back : 50}`} value2={" 1cr+"} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} />
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        <SeperateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay : 51}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} />
+                        <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay : 51}`} value2={" 1cr+"} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} />
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeperateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay + 1 : 50 + 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#F2CBCB"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay + 1 : 50 + 1}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#F2CBCB"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeperateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay + 2 : 50 + 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#ECD6D6"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay + 2 : 50 + 2}`} value2={" 1cr+"} color={matchesMobile ? "white" : "#ECD6D6"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
                     </Box>
                 </Box>
@@ -150,51 +131,5 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
         </Box>
     )
 }
-const MatchesComponent = ({ doNavigateWithState }) => {
 
-    const [matchData, setMatchData] = useState([])
-    const [pageCount, setPageCount] = useState(10)
-    const [currentPage, setCurrentPage] = useState(1)
-    const [pageLimit, setPageLimit] = useState(5)
-
-    const {axios} =setRole()
-    useEffect(() => {
-        getAllMatch()
-    }, [currentPage, pageCount])
-    
-    async function getAllMatch() {
-        try {
-            
-            let { data } = await axios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
-            if(data.length > 0) {
-                setMatchData(data[0])
-                setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    function callPage(e) {
-        setCurrentPage(parseInt(e.target.outerText))
-    }
-
-    return (
-        <>
-            {matchData?.map(match => {
-                return (
-                    <Odds onClick={() => { doNavigateWithState(match.id)
-                   
-                     }} top={true} blur={false} match={match} />
-                )
-            })}
-            <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} />
-            {/* <Odds onClick={onClick} top={false} />
-            <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
-            <Odds onClick={onClick} top={false} blur={true} upcoming={true} /> */}
-        </>
-    )
-
-}
-
-export default MatchesComponent;
+export default Odds

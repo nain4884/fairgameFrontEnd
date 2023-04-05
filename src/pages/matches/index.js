@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { CustomHeader, MatchOdds, SideBar } from "../../components";
 import EventListing from "../../components/EventListing";
-import MatchesComponent from "../../components/Matches";
+import MatchesComponent from "../../components/Matches/Matches";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HourGlass } from "../../assets";
