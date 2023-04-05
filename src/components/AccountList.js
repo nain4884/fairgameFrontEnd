@@ -19,9 +19,16 @@ const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   const [roles, setRoles] = useState([])
   const [data1, setData] = useState([]);
+  const [sumValue, setSumVal] = useState({
+    creditsum: 0.00,
+    profitsum: 0.00,
+    balancesum: 0.00,
+    exposuresum: 0.00,
+    availablebalancesum: 0.00
+  })
   async function getListOfUser() {
+    let { axios } = setRole()
     try {
-      let { axios } = setRole()
       const { data } = await axios.get(`/fair-game-wallet/getAllUser?&page=${currentPage}&limit=${pageLimit}`);
       data?.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole)
@@ -32,6 +39,13 @@ const AccountList = () => {
       })
       setData(data?.data?.data)
       setPageCount(Math.ceil(parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) / pageLimit));
+    } catch (e) {
+      console.log(e);
+    }
+    // /fair-game-wallet/getLogUserAggregateData
+    try {
+      const { data } = await axios.get(`/fair-game-wallet/getLogUserAggregateData`);
+      setSumVal({...data?.data, availablebalancesum:data?.data?.balancesum-data?.data?.exposuresum})
     } catch (e) {
       console.log(e);
     }
@@ -76,7 +90,7 @@ const AccountList = () => {
         <Box sx={{ overflowX: "auto" }}>
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
-            <ListSubHeaderT data={data1} />
+            <ListSubHeaderT data={sumValue} />
             {data1.map((element, i) => {
               if (i % 2 === 0) {
                 return (
@@ -87,6 +101,7 @@ const AccountList = () => {
                     fTextStyle={{ color: "white" }}
                     element={element}
                     getListOfUser={getListOfUser}
+                    currentPage={currentPage}
                   />
                 );
               } else {
@@ -98,6 +113,7 @@ const AccountList = () => {
                     fTextStyle={{ color: "#0B4F26" }}
                     element={element}
                     getListOfUser={getListOfUser}
+                    currentPage={currentPage}
                   />
                 );
               }
@@ -412,41 +428,41 @@ const ListHeaderT = () => {
 };
 
 const ListSubHeaderT = ({ data }) => {
-  const defaultSumVal = {
-    Credit_Referance: 0,
-    Balance: 0,
-    Profit_Loss: 0,
-    Exposure: 0,
-    Available_Balance: 0,
-    Exposure_Limit: 0,
-    Casino_Total: 0
-  }
-  const [sumVal, setSumVal] = useState({})
-  useEffect(() => {
-    handleDefaultSumVal()
-    updateDataValue()
-  }, [data])
-  function handleDefaultSumVal() {
-    setSumVal(defaultSumVal)
-  }
-  function updateDataValue() {
-    let Credit_Referance = 0
-    let Balance = 0
-    let Profit_Loss = 0
-    let Exposure = 0
-    let Available_Balance = 0
-    let Exposure_Limit = 0
-    let Casino_Total = 0
-    data.map(element => {
-      Credit_Referance += isNaN(parseInt(element.credit_refer)) ? 0 : parseInt(element.credit_refer)
-      Balance += isNaN(parseInt(element.balance)) ? 0 : parseInt(element.balance)
-      Profit_Loss += isNaN(parseInt(element.profit_loss)) ? 0 : parseInt(element.profit_loss)
-      Exposure += isNaN(parseInt(element.exposure)) ? 0 : parseInt(element.exposure)
-      Available_Balance += isNaN(parseInt(element.available_balance)) ? 0 : parseInt(element.available_balance)
-      Exposure_Limit += isNaN(parseInt(element.exposure_limit)) ? 0 : parseInt(element.exposure_limit)
-    });
-    setSumVal({ ...sumVal, Credit_Referance, Balance, Profit_Loss, Exposure, Available_Balance, Exposure_Limit })
-  }
+  // const defaultSumVal = {
+  //   Credit_Referance: 0,
+  //   Balance: 0,
+  //   Profit_Loss: 0,
+  //   Exposure: 0,
+  //   Available_Balance: 0,
+  //   Exposure_Limit: 0,
+  //   Casino_Total: 0
+  // }
+  // const [sumVal, setSumVal] = useState({})
+  // useEffect(() => {
+  //   handleDefaultSumVal()
+  //   updateDataValue()
+  // }, [data])
+  // function handleDefaultSumVal() {
+  //   setSumVal(defaultSumVal)
+  // }
+  // function updateDataValue() {
+  //   let Credit_Referance = 0
+  //   let Balance = 0
+  //   let Profit_Loss = 0
+  //   let Exposure = 0
+  //   let Available_Balance = 0
+  //   let Exposure_Limit = 0
+  //   let Casino_Total = 0
+  //   data.map(element => {
+  //     Credit_Referance += isNaN(parseInt(element.credit_refer)) ? 0 : parseInt(element.credit_refer)
+  //     Balance += isNaN(parseInt(element.balance)) ? 0 : parseInt(element.balance)
+  //     Profit_Loss += isNaN(parseInt(element.profit_loss)) ? 0 : parseInt(element.profit_loss)
+  //     Exposure += isNaN(parseInt(element.exposure)) ? 0 : parseInt(element.exposure)
+  //     Available_Balance += isNaN(parseInt(element.available_balance)) ? 0 : parseInt(element.available_balance)
+  //     Exposure_Limit += isNaN(parseInt(element.exposure_limit)) ? 0 : parseInt(element.exposure_limit)
+  //   });
+  //   setSumVal({ ...sumVal, Credit_Referance, Balance, Profit_Loss, Exposure, Available_Balance, Exposure_Limit })
+  // }
   return (
     <Box
       sx={{
@@ -482,7 +498,7 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {sumVal.Credit_Referance}
+          {data?.creditsum}
         </Typography>
       </Box>
       <Box
@@ -498,7 +514,7 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {sumVal.Balance}
+          {data?.balancesum}
         </Typography>
       </Box>
       <Box
@@ -506,7 +522,7 @@ const ListSubHeaderT = ({ data }) => {
           width: "11.5vw",
           display: "flex",
           paddingLeft: "10px",
-          background: `${sumVal.Profit_Loss >= 0 ? '#27AC1E' : '#E32A2A'}`,
+          background: `${data?.profitsum >= 0 ? '#27AC1E' : '#E32A2A'}`,
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
@@ -515,7 +531,7 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {sumVal.Profit_Loss}
+          {data?.profitsum}
         </Typography>
         <StyledImage
           src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
@@ -540,7 +556,7 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {sumVal.Exposure}
+          {data?.exposuresum}
         </Typography>
       </Box>
       <Box
@@ -556,7 +572,7 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {sumVal.Available_Balance}
+          {data?.availablebalancesum}
         </Typography>
       </Box>
       <Box
@@ -592,7 +608,7 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {sumVal.Exposure_Limit}
+          {data?.exposuresum}
         </Typography>
       </Box>
       <Box
@@ -617,7 +633,7 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {sumVal.Casino_Total}
+          0
         </Typography>
       </Box>
     </Box>
@@ -631,17 +647,35 @@ const Row = ({
   profit,
   element,
   getListOfUser,
+  currentPage
 }) => {
   const [userModal, setUserModal] = useState({});
   const [showUserModal, setShowUserModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState('')
   const [showSuccessModal, setShowSuccessModal] = useState(false)
-  useEffect(() => {
-    getListOfUser()
-  }, [showSuccessModal])
+  const prevElement = {
+    credit_refer: element.credit_refer,
+    balance: element.balance,
+    profit_loss: element.profit_loss,
+    exposure: element.exposure,
+    available_balance: element.available_balance,
+    exposure_limit: element.exposure_limit,
+    userName: element.userName
+  }
+  const [elementToUDM, setElementToUDM] = useState(prevElement)
+  function handleSetUDM(val) {
+    setElementToUDM(val)
+  }
+  function checkIfElementUpdated(val) {
+    setElementToUDM(val)
+  }
+  useEffect(()=>{
+    checkIfElementUpdated(prevElement)
+  },[element.userName])
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val)
   }
+  // checkIfElementUpdated()
   return (
     <>
       <Box
@@ -659,7 +693,12 @@ const Row = ({
       >
         <Box
           onClick={() => {
-            !showUserModal ? setUserModal(element) : setUserModal();
+            if (!showUserModal) {
+              setUserModal(element)
+            } else {
+              setUserModal();
+              handleSetUDM(prevElement);
+            }
             setShowUserModal(!showUserModal);
           }}
           sx={[
@@ -681,7 +720,7 @@ const Row = ({
             {element.userName}
           </Typography>
           <StyledImage
-            src={DownIcon}
+            src={fContainerStyle.background == "#F8C851" ? DownGIcon : DownIcon}
             style={{ height: "10px", width: "15px" }}
           />
         </Box>
@@ -696,7 +735,7 @@ const Row = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {element.credit_refer}
+            {elementToUDM.credit_refer}
           </Typography>
         </Box>
         <Box
@@ -710,7 +749,7 @@ const Row = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {element.balance}
+            {elementToUDM.balance}
           </Typography>
         </Box>
         <Box
@@ -718,7 +757,7 @@ const Row = ({
             width: "11.5vw",
             display: "flex",
             paddingLeft: "10px",
-            background: profit ? "#27AC1E" : "#E32A2A",
+            background: elementToUDM.profit_loss >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -727,7 +766,7 @@ const Row = ({
           <Typography
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
-            {element.profit_loss}
+            {elementToUDM.profit_loss}
           </Typography>
           <StyledImage
             src={
@@ -754,7 +793,7 @@ const Row = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {element.exposure}
+            {elementToUDM.exposure}
           </Typography>
         </Box>
         <Box
@@ -768,7 +807,7 @@ const Row = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {element.available_balance}
+            {elementToUDM.available_balance}
           </Typography>
         </Box>
         <Box
@@ -812,7 +851,7 @@ const Row = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {element.exposure_limit}
+            {elementToUDM.exposure_limit}
           </Typography>
         </Box>
         <Box
@@ -851,7 +890,9 @@ const Row = ({
           userModal={userModal}
           setShowSuccessModal={handleChangeShowModalSuccess}
           setShowModalMessage={setShowModalMessage}
-          profitLoss={element.profit_loss}
+          elementToUDM={elementToUDM}
+          setElementToUDM={handleSetUDM}
+          prevElement={prevElement}
         />
       )}
       {showSuccessModal && <Modal message={showModalMessage} setShowSuccessModal={handleChangeShowModalSuccess} showSuccessModal={showSuccessModal} buttonMessage={'OK'} navigateTo={'list_of_clients'} />}

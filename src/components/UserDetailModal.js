@@ -20,6 +20,7 @@ import adminAxios from "../axios/adminAxios";
 import axios from "../axios/axios";
 import { onChangeKeyCheck } from "./PassKeyCheck";
 import { setRole } from "./SetRole";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -41,12 +42,14 @@ export default function UserDetailModal({
   setShowSuccessModal,
   setShowModalMessage,
   activeWalletAmount,
-  profitLoss
+  elementToUDM,
+  setElementToUDM,
+  prevElement
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(null);
-
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
@@ -81,7 +84,10 @@ export default function UserDetailModal({
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
               activeWalletAmount={activeWalletAmount}
-              profitLoss={profitLoss}
+              prevElement={prevElement}
+              navigate={navigate}
+              elementToUDM={elementToUDM}
+              setElementToUDM={setElementToUDM}
             />
           )}
           {selected == 1 && (
@@ -92,7 +98,10 @@ export default function UserDetailModal({
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
               activeWalletAmount={activeWalletAmount}
-              profitLoss={profitLoss}
+              prevElement={prevElement}
+              navigate={navigate}
+              elementToUDM={elementToUDM}
+              setElementToUDM={setElementToUDM}
             />
           )}
           {selected == 2 && (
@@ -102,6 +111,10 @@ export default function UserDetailModal({
               userModal={userModal}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
+              prevElement={prevElement}
+              navigate={navigate}
+              elementToUDM={elementToUDM}
+              setElementToUDM={setElementToUDM}
             />
           )}
           {selected == 5 && (
@@ -111,6 +124,10 @@ export default function UserDetailModal({
               userModal={userModal}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
+              navigate={navigate}
+              prevElement={prevElement}
+              elementToUDM={elementToUDM}
+              setElementToUDM={setElementToUDM}
             />
           )}
           {selected == 3 && (
@@ -120,6 +137,7 @@ export default function UserDetailModal({
               userModal={userModal}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
+              navigate={navigate}
             />
           )}
           {selected == 4 && (
@@ -129,6 +147,7 @@ export default function UserDetailModal({
               userModal={userModal}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
+              navigate={navigate}
             />
           )}
         </Box>
@@ -191,25 +210,21 @@ export default function UserDetailModal({
           <BoxButton
             deleteBtn={true}
             onClick={(e) => {
-              // dispatch(setModalOpen(false));
-              // setTimeout(() => {
-              //   dispatch(
-              //     setDailogData({
-              //       isModalOpen: true,
-              //       showRight: false,
-              //       bodyText: "First Settle Account to Delete The User",
-              //     })
-              //   );
-              // }, 500);
-              UserDelete(userModal.id).then(({ bool, message }) => {
+              if (prevElement.credit_refer == 0 && prevElement.profit_loss == 0 && prevElement.available_balance == 0) {
+                UserDelete(userModal.id).then(({ bool, message }) => {
+                  setShowSuccessModal(true)
+                  setShowModalMessage(message)
+                  setShowUserModal(false);
+                }).catch(({ bool, message }) => {
+                  setShowSuccessModal(true)
+                  setShowModalMessage(message)
+                  setShowUserModal(false);
+                })
+              } else {
                 setShowSuccessModal(true)
-                setShowModalMessage(message)
+                setShowModalMessage("Empty User Balance To Delete This Account")
                 setShowUserModal(false);
-              }).catch(({ bool, message }) => {
-                setShowSuccessModal(true)
-                setShowModalMessage(message)
-                setShowUserModal(false);
-              })
+              }
             }}
             title={"Delete User"}
             icon={
@@ -345,7 +360,10 @@ const DepositComponent = ({
   userModal,
   setShowSuccessModal,
   setShowModalMessage,
-  profitLoss
+  prevElement,
+  navigate,
+  elementToUDM,
+  setElementToUDM
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -387,9 +405,10 @@ const DepositComponent = ({
               onChange={(e) => {
                 setDepositObj({
                   ...depositObj,
-                  amount: e.target.value<0?0:parseInt(e.target.value),
+                  amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
                   userId: userModal.id,
                 });
+                setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss + parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value), balance: prevElement.balance + parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value), available_balance: prevElement.available_balance + parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value) })
               }}
               variant="standard"
               InputProps={{
@@ -405,10 +424,10 @@ const DepositComponent = ({
               type={"Number"}
             />
           </Box>
-          <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
+          {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
             <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Predicted Wallet</Typography>
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount- parseInt(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
-          </Box>
+          </Box> */}
         </Box>
         <Box
           sx={{
@@ -463,10 +482,10 @@ const DepositComponent = ({
               />
             </Box>
           </Box>
-          <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
+          {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
             <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Profit/Loss</Typography>
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss + parseInt(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       <Box sx={{ display: "flex", overflow: "hidden", width: "19.1vw" }}>
@@ -538,7 +557,8 @@ const DepositComponent = ({
             isSelected={true}
             onClick={(e) => {
               setDepositObj(defaultDepositObj);
-              // dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: "Deposited Successfully" }))
+              console.log('prevElement.available_balances', prevElement.available_balances, elementToUDM.available_balances)
+              setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss, balance: prevElement.balance, available_balance: prevElement.available_balances })
               setShowUserModal(false);
             }}
             title={"Cancel"}
@@ -555,7 +575,9 @@ const WithDrawComponent = ({
   userModal,
   setShowSuccessModal,
   setShowModalMessage,
-  profitLoss
+  prevElement,
+  elementToUDM,
+  setElementToUDM
 }) => {
   const [showPass, setShowPass] = useState(false);
   const activeWalletAmount = useSelector(state => state?.rootReducer?.user?.amount)
@@ -590,13 +612,14 @@ const WithDrawComponent = ({
             }}
           >
             <TextField
-            value={withDrawObj.amount}
+              value={withDrawObj.amount}
               onChange={(e) => {
                 setWithDrawObj({
                   ...withDrawObj,
-                  amount: e.target.value<0?0:parseInt(e.target.value),
+                  amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
                   userId: userModal.id,
                 });
+                setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss - parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value), balance: prevElement.balance - parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value), available_balance: prevElement.available_balance - parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value) })
               }}
               variant="standard"
               InputProps={{
@@ -612,10 +635,10 @@ const WithDrawComponent = ({
               type={"Number"}
             />
           </Box>
-          <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
+          {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
             <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Predicted Wallet</Typography>
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount+ parseInt(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
-          </Box>
+          </Box> */}
         </Box>
         <Box
           sx={{
@@ -669,10 +692,10 @@ const WithDrawComponent = ({
               />
             </Box>
           </Box>
-          <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
+          {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
             <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Profit/Loss</Typography>
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss - parseInt(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       <Box sx={{ display: "flex", overflow: "hidden", width: "19.1vw" }}>
@@ -728,6 +751,7 @@ const WithDrawComponent = ({
               }).catch(({ bool, message }) => {
                 setShowSuccessModal(true)
                 setShowModalMessage(message)
+                setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss, balance: prevElement.balance, available_balance: prevElement.available_balance })
                 setShowUserModal(false);
               })
             }}
@@ -745,7 +769,7 @@ const WithDrawComponent = ({
             isSelected={true}
             onClick={(e) => {
               setWithDrawObj(defaultWithDrawObj);
-              // dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: "Deposited Successfully" }))
+              setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss, balance: prevElement.balance, available_balance: prevElement.available_balance })
               setShowUserModal(false);
             }}
             title={"Cancel"}
@@ -761,7 +785,10 @@ const NewCreditComponent = ({
   backgroundColor,
   userModal,
   setShowSuccessModal,
-  setShowModalMessage
+  setShowModalMessage,
+  elementToUDM,
+  setElementToUDM,
+  prevElement
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -802,9 +829,10 @@ const NewCreditComponent = ({
               onChange={(e) => {
                 setNewCreditObj({
                   ...newCreditObj,
-                  amount: e.target.value<0?0:parseInt(e.target.value),
+                  amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
                   userId: userModal.id,
                 });
+                setElementToUDM({ ...elementToUDM, credit_refer: isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value), profit_loss: prevElement.profit_loss + prevElement.credit_refer - parseInt(isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value)) })
               }}
               variant="standard"
               InputProps={{
@@ -947,7 +975,7 @@ const NewCreditComponent = ({
             isSelected={true}
             onClick={(e) => {
               setNewCreditObj(defaultNewCreditObj);
-              // dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: "Deposited Successfully" }))
+              setElementToUDM({ ...elementToUDM, credit_refer: prevElement.credit_refer, profit_loss: prevElement.profit_loss })
               setShowUserModal(false);
             }}
             title={"Cancel"}
@@ -963,10 +991,13 @@ const SetExposureComponent = ({
   backgroundColor,
   userModal,
   setShowSuccessModal,
-  setShowModalMessage
+  setShowModalMessage,
+  navigate,
+  prevElement,
+  elementToUDM,
+  setElementToUDM
 }) => {
   const [showPass, setShowPass] = useState(false);
-  const dispatch = useDispatch();
   const defaultExposureObj = {
     userId: "",
     amount: 0,
@@ -1006,6 +1037,7 @@ const SetExposureComponent = ({
                   amount: parseInt(e.target.value),
                   userId: userModal.id,
                 });
+                setElementToUDM({ ...elementToUDM, exposure_limit: parseInt(isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value)) })
               }}
               variant="standard"
               InputProps={{
@@ -1147,8 +1179,8 @@ const SetExposureComponent = ({
             isSelected={true}
             onClick={(e) => {
               setExposureObj(defaultExposureObj);
-              // dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: "Deposited Successfully" }))
               setShowUserModal(false);
+              setElementToUDM({ ...elementToUDM, exposure_limit: elementToUDM.exposure_limit })
             }}
             title={"Cancel"}
           />
@@ -1162,7 +1194,8 @@ const ChangePasswordComponent = ({
   setShowUserModal,
   userModal,
   setShowSuccessModal,
-  setShowModalMessage
+  setShowModalMessage,
+  navigate
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [showPass1, setShowPass1] = useState(false);
@@ -1308,7 +1341,7 @@ const ChangePasswordComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(changePasswordObj).then(({ bool, message }) => {
+              UpdatePassword(changePasswordObj).then(({ bool, message }) => {
                 setShowSuccessModal(true)
                 setShowModalMessage(message)
                 setShowUserModal(false);
@@ -1332,7 +1365,6 @@ const ChangePasswordComponent = ({
             isSelected={true}
             onClick={(e) => {
               setChangePasswordObj(defaultChangePasswordObj);
-              // dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: "Deposited Successfully" }))
               setShowUserModal(false);
             }}
             title={"Cancel"}
@@ -1348,6 +1380,7 @@ const LockUnlockComponent = ({
   userModal,
   setShowModalMessage,
   setShowSuccessModal,
+  navigate
 }) => {
   const [showPass, setShowPass] = useState(false);
   const dispatch = useDispatch();
@@ -1482,7 +1515,6 @@ const LockUnlockComponent = ({
             }}
             isSelected={true}
             onClick={(e) => {
-              // dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: "Deposited Successfully" }))
               setShowUserModal(false);
             }}
             title={"Cancel"}

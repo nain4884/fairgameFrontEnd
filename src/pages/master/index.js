@@ -12,11 +12,11 @@ import Reports from "../admin/Reports";
 import TotalBets from "../admin/TotalBets";
 import DeleteBet from "../admin/DeleteBet";
 import MatchSubmit1 from "../fairGameWallet/MatchSubmit1";
-import CustomHeader from "./Header";
 import Home from "../fairGameWallet/List_Of_Client";
 import DepositWallet from "../fairGameWallet/DepositWallet";
 import { useContext } from "react";
 import { AuthContext } from "../../Authprovider";
+import CustomHeader from "../fairGameAdmin/Header";
 const MasterRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   if (!tokenMaster) {
@@ -48,6 +48,7 @@ const MasterRoutes = () => {
         <Route exact path="/deposit" element={<DepositWallet />} />
         <Route exact path="/withdraw" element={<DepositWallet />} />
         <Route exact path="/delete_bet" element={<DeleteBet />} />
+        <Route exact path="/createTransPassword" element={<ChangePassword />} />
       </Routes>
     </>
   );

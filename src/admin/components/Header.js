@@ -21,8 +21,9 @@ import { stateActions } from "../../store/stateActions";
 import { ARROWDROPDOWN, Down, DropDown } from "../assets";
 import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "./SideBarAdmin";
+import masterAxios from "../../axios/masterAxios";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,6 +31,17 @@ const CustomHeader = ({}) => {
   // const [currentSelected, setCurrentSelected] = useState(0)
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchor, setAnchor] = React.useState(null);
+  const [balance, setBalance] = useState(0)
+  const [fullName, setFullName] = useState('')
+  async function getUserDetail() {
+    try {
+      const { data } = await masterAxios.get('users/profile');
+      setBalance(data.data.current_balance)
+      setFullName(data.data.fullName)
+    } catch (e) {
+      console.log(e)
+    }
+  }
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
@@ -51,6 +63,7 @@ const CustomHeader = ({}) => {
     ) {
       dispatch(setActiveAdmin(2));
     }
+    getUserDetail()
   }, [location]);
 
   useEffect(() => {
@@ -218,7 +231,8 @@ const CustomHeader = ({}) => {
                 <BoxProfile
                   containerStyle={{}}
                   image={"https://picsum.photos/200/300"}
-                  value={"Admin"}
+                  value={fullName}
+                  balance={balance}
                 />
               </Box>
             )}
@@ -243,7 +257,8 @@ const CustomHeader = ({}) => {
               <BoxProfile
                 containerStyle={matchesMobile ? { width: "52%" } : {}}
                 image={"https://picsum.photos/200/300"}
-                value={"Admin"}
+                value={fullName}
+                balance={balance}
               />
             </Box>
           )}
@@ -513,7 +528,7 @@ const LiveMarket = ({ title, boxStyle, titleStyle, onClick }) => {
     </Box>
   );
 };
-const BoxProfile = ({ image, value, containerStyle }) => {
+const BoxProfile = ({ image, value, containerStyle, balance }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -575,7 +590,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
               fontWeight: " 700",
             }}
           >
-            1,00,000,000
+            {balance}
           </Typography>
         </Box>
         <StyledImage

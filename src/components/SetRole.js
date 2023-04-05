@@ -29,5 +29,5 @@ export const setRole = () => {
         transPass = "isTransPasswordCreated3"
         axios = expertAxios
     }
-    return { role,JWT,transPass,axios }
+    return { role,JWT,transPass,axios,locPath:window.location.pathname.split('/')[1].trim() }
 }

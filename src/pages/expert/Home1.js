@@ -111,65 +111,65 @@ export default function Home1() {
         <Background>
             <Header />
             <Box sx={{ background: "white", borderRadius: "5px", m: "10px", p: "10px" }}>
-            {/* <Box sx={{ display: "flex" }}>
+                {/* <Box sx={{ display: "flex" }}>
                     <LabelValueComponent icon={ArrowDownWhite} valueStyle={{ color: "white" }} valueContainerStyle={{ background: "#0B4F26" }} containerStyle={{ flex: 1 }} title={"BetFair Match List"} value="India vs Pakistan" />
                     <LabelValueComponent icon={ArrowDownWhite} valueStyle={{ color: "white" }} valueContainerStyle={{ background: "#0B4F26" }} containerStyle={{ flex: 1, marginLeft: "20px" }} title={"BetFair Maximum Amount"} value="$ 1,00,000,000,000,000" />
                 </Box> */}
-            <Box sx={{ margin: '15px' }}>
-                <LabelValueComponent title={'Add Match'} notShowSub={true} titleSize={'20px'} headColor={'#000000'} />
-            </Box>
-            <Box sx={{ background: "#F8C851", marginTop: "20px", borderRadius: "5px", p: "10px", py: "20px" }}>
-                <Box sx={{ display: "flex" }}>
-                    {/* <LabelValueComponent icon={ArrowDownBlack} valueStyle={{}} containerStyle={{ flex: 1 }} title={"Game"} value="Select Game" /> */}
-                    <Box sx={{ flex: 1, position: "relative" }}>
-                        <DropDownSimple valued="Select Account Type..." dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Game'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px", color:'#575757' }} data={matchType} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={1} />
-                        {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Game'} data={["Cricket", "Football", "Tennis", "Football", "Ice", "Hockey", "Volleyball", "Politics", "Basketball", "Table Tennis", "Darts"]} place={1} /> */}
+                <Box sx={{ margin: '15px' }}>
+                    <LabelValueComponent title={'Add Match'} notShowSub={true} titleSize={'20px'} headColor={'#000000'} />
+                </Box>
+                <Box sx={{ background: "#F8C851", marginTop: "20px", borderRadius: "5px", p: "10px", py: "20px" }}>
+                    <Box sx={{ display: "flex" }}>
+                        {/* <LabelValueComponent icon={ArrowDownBlack} valueStyle={{}} containerStyle={{ flex: 1 }} title={"Game"} value="Select Game" /> */}
+                        <Box sx={{ flex: 1, position: "relative" }}>
+                            <DropDownSimple valued="Select Account Type..." dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Game'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px", color: '#575757' }} data={matchType} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={1} />
+                            {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Game'} data={["Cricket", "Football", "Tennis", "Football", "Ice", "Hockey", "Volleyball", "Politics", "Basketball", "Table Tennis", "Darts"]} place={1} /> */}
+                        </Box>
+                        <Box sx={{ flex: 1, position: "relative", marginLeft: "1%" }}>
+                            <DropDownSimple valued="Select Account Type..." dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Match Name'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px", color: '#575757' }} data={matches} setMarketId={setMarketId} matchesSelect={true} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={5} />
+                            {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Match Name'} data={["India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England"]} place={2} /> */}
+                        </Box>
+                        {/* <LabelValueComponent icon={ArrowDownBlack} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Match Name"} value="Enter Name of the Match..." /> */}
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team A"} type={"text"} value="Enter Name of Team A..." InputValType={"InputVal"} place={9} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team B"} type={"text"} value="Enter Name of Team B..." InputValType={"InputVal"} place={13} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team C"} type={"text"} value="Enter Name of Team C..." InputValType={"InputVal"} place={17} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
                     </Box>
-                    <Box sx={{ flex: 1, position: "relative", marginLeft: "1%" }}>
-                        <DropDownSimple valued="Select Account Type..." dropStyle={{ filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);" }} valueStyle={{ ...imputStyle, color: "white" }} title={'Match Name'} valueContainerStyle={{ height: "45px", marginX: "0px", background: "#0B4F26", border: "1px solid #DEDEDE", borderRadius: "5px" }} containerStyle={{ width: "100%", position: 'relative', marginTop: "5px" }} titleStyle={{ marginLeft: "0px", color:'#575757' }} data={matches} setMarketId={setMarketId} matchesSelect={true} dropDownStyle={{ width: '100%', marginLeft: "0px", marginTop: "0px", position: 'absolute' }} dropDownTextStyle={imputStyle} Detail={Detail} setDetail={setDetail} place={5} />
-                        {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Match Name'} data={["India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England"]} place={2} /> */}
+                    <Box sx={{ display: "flex", marginTop: "20px" }}>
+                        <LabelValueComponent icon={ArrowDownBlack} valueStyle={{}} containerStyle={{ flex: 1 }} title={"Start Time"} value="Select Start Time..." InputValType={"DatePickerVal"} place={2} DetailError={{ Error, setDetail, Detail, setError }} />
+                        <LabelValueComponent icon={Upload} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Image (Optional)"} value="No File Selected..." InputValType={"FileSelectVal"} place={6} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent icon={Upload} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team A Image (Optional)"} value="No File Selected..." InputValType={"FileSelectVal"} place={10} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent icon={Upload} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team B Image (Optional)"} value="No File Selected..." InputValType={"FileSelectVal"} place={14} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Match Min Bet"} type={"Number"} value="Enter your Match Min Bet..." InputValType={"InputVal"} place={18} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        {/* <Input placeholder="Delhi" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={5} /> */}
                     </Box>
-                    {/* <LabelValueComponent icon={ArrowDownBlack} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Match Name"} value="Enter Name of the Match..." /> */}
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team A"} type={"text"} value="Enter Name of Team A..." InputValType={"InputVal"} place={9} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team B"} type={"text"} value="Enter Name of Team B..." InputValType={"InputVal"} place={13} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team C"} type={"text"} value="Enter Name of Team C..." InputValType={"InputVal"} place={17} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                    <Box sx={{ display: "flex", marginTop: "20px" }}>
+                        <LabelValueComponent valueStyle={{}} containerStyle={{ flex: 1 }} title={"Betfair Match Max Bet"} type={"Number"} value="Enter your Match Max Bet..." InputValType={"InputVal"} place={3} DetailError={{ Error, setDetail, Detail, setError, type: "Number" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Session Min Bet"} type={"Number"} value="Betfair Session Min Bet..." InputValType={"InputVal"} place={7} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Session Max Bet"} type={"Number"} value="Betfair Session Max Bet..." InputValType={"InputVal"} place={11} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Bookmaker Max Bet"} type={"Number"} value="Enter  Bookmaker Max Bet..." InputValType={"InputVal"} place={15} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Bookmaker Min Bet"} type={"Number"} value="Enter Bookmaker Min Bet..." InputValType={"InputVal"} place={12} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                    </Box>
+                    <Box sx={{ display: "flex", marginTop: "20px" }}>
+                        <LabelValueComponent valueStyle={{}} containerStyle={{ flex: 1 }} title={"Bookmaker Manual Max Bet"} type={"Number"} value="Enter Bookmaker Manaul Max Bet..." InputValType={"InputVal"} place={4} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Bookmaker Manual Min Bet"} type={"Number"} value="Enter Bookmaker Manaul Max Bet..." InputValType={"InputVal"} place={8} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Manaual Session Min Bet"} type={"Number"} value="Enter Session Min Bet..." InputValType={"InputVal"} place={16} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Manaual Session Max Bet"} type={"Number"} value="Enter Session Max Bet..." InputValType={"InputVal"} place={19} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
+                        <Box sx={{ flex: 1, marginLeft: "1%" }} />
+                    </Box>
                 </Box>
-                <Box sx={{ display: "flex", marginTop: "20px" }}>
-                    <LabelValueComponent icon={ArrowDownBlack} valueStyle={{}} containerStyle={{ flex: 1 }} title={"Start Time"} value="Select Start Time..." InputValType={"DatePickerVal"} place={2} DetailError={{ Error, setDetail, Detail, setError }} />
-                    <LabelValueComponent icon={Upload} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Image (Optional)"} value="No File Selected..." InputValType={"FileSelectVal"} place={6} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent icon={Upload} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team A Image (Optional)"} value="No File Selected..." InputValType={"FileSelectVal"} place={10} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent icon={Upload} containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team B Image (Optional)"} value="No File Selected..." InputValType={"FileSelectVal"} place={14} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Match Min Bet"} type={"Number"} value="Enter your Match Min Bet..." InputValType={"InputVal"} place={18} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    {/* <Input placeholder="Delhi" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={5} /> */}
+                <Box sx={{ display: "flex", justifyContent: "center", marginY: "30px" }}>
+                    <Box onClick={() => {
+                        createMatch()
+                    }} sx={{ background: "#10DC61", height: "40px", width: "15%", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px", border: "2px solid black" }}>
+                        <Typography sx={{ color: "white" }}>Create</Typography>
+                    </Box>
+                    <Box onClick={() => {
+                        setShowMatch(false)
+                        setDetail(stateDetail)
+                    }} sx={{ background: "#E32A2A", height: "40px", marginLeft: "20px", display: "flex", width: "15%", justifyContent: "center", alignItems: "center", borderRadius: "5px", border: "2px solid black" }}>
+                        <Typography sx={{ color: "white" }}>Cancel</Typography>
+                    </Box>
                 </Box>
-                <Box sx={{ display: "flex", marginTop: "20px" }}>
-                    <LabelValueComponent valueStyle={{}} containerStyle={{ flex: 1 }} title={"Betfair Match Max Bet"} type={"Number"} value="Enter your Match Max Bet..." InputValType={"InputVal"} place={3} DetailError={{ Error, setDetail, Detail, setError, type: "Number" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Session Min Bet"} type={"Number"} value="Betfair Session Min Bet..." InputValType={"InputVal"} place={7} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Session Max Bet"} type={"Number"} value="Betfair Session Max Bet..." InputValType={"InputVal"} place={11} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Bookmaker Max Bet"} type={"Number"} value="Enter  Bookmaker Max Bet..." InputValType={"InputVal"} place={15} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Betfair Bookmaker Min Bet"} type={"Number"} value="Enter Bookmaker Min Bet..." InputValType={"InputVal"} place={12} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                </Box>
-                <Box sx={{ display: "flex", marginTop: "20px" }}>
-                    <LabelValueComponent valueStyle={{}} containerStyle={{ flex: 1 }} title={"Bookmaker Manual Max Bet"} type={"Number"} value="Enter Bookmaker Manaul Max Bet..." InputValType={"InputVal"} place={4} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Bookmaker Manual Min Bet"} type={"Number"} value="Enter Bookmaker Manaul Max Bet..." InputValType={"InputVal"} place={8} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Manaual Session Min Bet"} type={"Number"} value="Enter Session Min Bet..." InputValType={"InputVal"} place={16} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Manaual Session Max Bet"} type={"Number"} value="Enter Session Max Bet..." InputValType={"InputVal"} place={19} DetailError={{ Error, setDetail, Detail, setError, type: "String" }} />
-                    <Box sx={{ flex: 1, marginLeft: "1%" }} />
-                </Box>
-            </Box>
-            <Box sx={{ display: "flex", justifyContent: "center", marginY: "30px" }}>
-                <Box onClick={() => {
-                    createMatch()
-                }} sx={{ background: "#10DC61", height: "40px", width: "15%", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px", border: "2px solid black" }}>
-                    <Typography sx={{ color: "white" }}>Create</Typography>
-                </Box>
-                <Box onClick={() => {
-                    setShowMatch(false)
-                    setDetail(stateDetail)
-                }} sx={{ background: "#E32A2A", height: "40px", marginLeft: "20px", display: "flex", width: "15%", justifyContent: "center", alignItems: "center", borderRadius: "5px", border: "2px solid black" }}>
-                    <Typography sx={{ color: "white" }}>Cancel</Typography>
-                </Box>
-            </Box>
             </Box>
             {/* {showMatch && <MatchListComp />} */}
         </Background>
@@ -360,8 +360,7 @@ const Row = ({ index, containerStyle, data }) => {
     }
 
     const navigateToAddBet = () => {
-        console.log('hiii',data.id)
-        navigate('/expert/addBet', {state:{id:data.id, marketId:data.marketId, gameType:data.gameType}})
+        navigate('/expert/addBet', { state: { id: data.id, marketId: data.marketId, gameType: data.gameType } })
     }
 
     const navigate = useNavigate()
@@ -378,9 +377,9 @@ const Row = ({ index, containerStyle, data }) => {
                     <ButtonWithSwitch title={`Manual\nSession`} containerStyle={{ width: "13%" }} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={4} />
                     <ButtonWithSwitch title={`Manual\nBookmaker`} containerStyle={{}} updateMatchStatus={updateMatchStatus} setUpdateMatchStatus={setUpdateMatchStatus} place={5} />
                 </Box>
-                <CusButton onClick={() => {
+                {/* <CusButton onClick={() => {
                     navigateToAddBet()
-                }} title={"Add Bet"} />
+                }} title={"Add Bet"} /> */}
                 <CusButton onClick={() => {
                     submitMatchUpdation()
                 }} title={"Submit"} />
