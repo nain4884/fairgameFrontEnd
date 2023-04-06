@@ -135,13 +135,13 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             "teamB_name": data.teamB,
             "marketType": marketType==="Match"?"MATCH ODDS":"BOOKMAKER"
         }
-        if (marketType === "Session") {
+        if (marketType == "Session") {
             delete payload.betOn
             delete payload.odds
             console.log(payload,data,"SDDSDDD")
-            payload.bet_condition = data?.betting?.[0]?.bet_condition
-            payload.rate_percent = data?.betting?.[0]?.rate_percent
-            payload.marketType = data?.betting?.[0]?.bet_condition
+            payload.bet_condition = data?.betting[0]?.bet_condition
+            payload.rate_percent = data?.betting[0]?.rate_percent
+            payload.marketType = data?.betting[0]?.bet_condition
         }
         return payload
     }

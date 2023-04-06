@@ -1,6 +1,7 @@
 const initialState = {
     role: null,
     jwt: null
+
 }
 
 export let userReducer = (state = initialState, action) => {
@@ -35,6 +36,7 @@ export let userReducer = (state = initialState, action) => {
                     default:
                         localStorage.setItem('JWT', action.payload.jwt)
                         localStorage.setItem('role', action.payload.role)
+                        
                         break;
                 }
             }
@@ -100,6 +102,19 @@ export let userReducer = (state = initialState, action) => {
                 default:
                     localStorage.setItem('Balance', action.payload.amount)
                     localStorage.setItem('exposure', action.payload.exposure)
+                    break;
+            }
+            return action.payload;
+        }
+
+        case 'SET_MANUAL_BOOKMAKER': {
+            switch (action.payload.role.trim()) {
+             
+                case "role4":                   
+                    localStorage.setItem('manual_bookmaker', action.payload)
+                    break;      
+                default:
+                    localStorage.setItem('manual_bookmaker', action.payload)
                     break;
             }
             return action.payload;

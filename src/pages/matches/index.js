@@ -24,6 +24,7 @@ import { microServiceApiPath } from "../../components/helper/constants";
 import { AuthContext } from "../../Authprovider";
 import { SocketContext } from "../../context/socketContext";
 import { setRole } from "../../components/helper/SetRole";
+import { stateActions } from "../../store/stateActions";
 export default function Matches() {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
@@ -35,10 +36,10 @@ export default function Matches() {
   const activeTab = useSelector((state) => state.betplace)?.activeTab;
   const { tokenUser } = useContext(AuthContext);
   useEffect(() => {
-    if (tokenUser != localStorage.getItem('JWTuser')) {
-      window.location.reload()
+    if (tokenUser != localStorage.getItem("JWTuser")) {
+      window.location.reload();
     }
-  }, [])
+  }, []);
   useEffect(() => {
     if (flag) {
       navigate("/matches");
@@ -151,6 +152,7 @@ export default function Matches() {
 
   const Home = () => {
     const location = useLocation();
+    const dispatch = useDispatch();
     const [allBetRates, setAllBetRates] = useState([]);
     const [sessionbets, setSessionBets] = useState([]);
     const id = location.state;
@@ -159,8 +161,22 @@ export default function Matches() {
     const [matchSessionData, setMatchSessionData] = useState([]);
     const [allBetsData, setAllBetsData] = useState([]);
     const [marketId, setMarketId] = useState("");
+    const [matchOddsRates, setMatchOddsRates] = useState({
+      matchOddsRates: {
+        teamA: "1000000",
+        teamB: "-1000000",
+      },
+      bookmakerMarket: {
+        teamA: "1000000",
+        teamB: "-1000000",
+      },
+      manualBookmaker: {
+        teamA: "1000000",
+        teamB: "-1000000",
+      },
+    });
     const socket = useContext(SocketContext);
-    const {axios} = setRole()
+    const { axios, role } = setRole();
     useEffect(() => {
       if (socket && socket.connected) {
         console.log("Connected", socket);
@@ -172,9 +188,24 @@ export default function Matches() {
           setSessionBets((prev) => [...prev, data]);
         });
         socket.on("match_bet", (data) => {
-          getAllBetsData()
+          getAllBetsData();
           console.log("match Response", data);
-          setAllBetRates((prev) => [...prev, data]);
+          const manualBookmaker = {
+            teamA: data.teamA_rate,
+            teamB: data.teamB_rate,
+          };
+
+          setMatchOddsRates((prev) => ({
+            ...prev,
+            manualBookmaker,
+          }));
+          dispatch(
+            stateActions.setMatchDetails(manualBookmaker)
+          );
+          dispatch(
+            stateActions.setBalance(data.newBalance, role, data.exposure)
+          );
+          // setAllBetRates((prev) => [...prev, data]);
         });
       }
     }, [socket]);
@@ -230,8 +261,13 @@ export default function Matches() {
       }
     }
     useEffect(() => {
-      getThisMatch(id)
-      getAllBetsData()
+      const matchDetails = window.localStorage.getItem("manual_bookmaker")
+      if(matchDetails!=null){
+        console.log(matchDetails);
+        // setMatchOddsRates(matchDetails)
+      }
+      getThisMatch(id);
+      getAllBetsData();   
       // const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
       // setSocket(newSocket)
       // newSocket.emit("init", { id: marketId })
@@ -239,7 +275,7 @@ export default function Matches() {
       //   console.log("marketRate Response", data);
       // })
       // return () => newSocket.off();
-    }, [marketId])
+    }, [marketId]);
 
     console.log(sessionbets, allBetRates, "TTTT");
     return (
@@ -268,6 +304,7 @@ export default function Matches() {
           >
             <div style={{ width: "100%" }}>
               <MatchOdds
+                matchOddsRates={matchOddsRates}
                 onClick={() => handleClose(true)}
                 data={{ ...matchDetail, matchOddsData, matchSessionData }}
               />
@@ -310,6 +347,7 @@ export default function Matches() {
                 }}
               >
                 <MatchOdds
+                  matchOddsRates={matchOddsRates}
                   onClick={() => handleClose(true)}
                   data={{ ...matchDetail, matchOddsData, matchSessionData }}
                 />
