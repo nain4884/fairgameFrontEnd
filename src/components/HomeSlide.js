@@ -35,7 +35,11 @@ export default function HomeSlide() {
         }
     }
 
-    return (<Box sx={{ position: "relative" }}>
+    const classes = {
+        mainBoxsx: { position: "relative" }
+    }
+
+    return (<Box sx={classes.mainBoxsx}>
         <Box sx={{ background: "#FFE094", padding: matchesMobile ? "10px" : "20px", paddingY: "12px", borderBottomLeftRadius: "5px", width: "99%", marginX: "0.5%", borderBottomRightRadius: "5px" }}>
             {show && <><Box sx={{ display: "flex", flexDirection: { laptop: "row", mobile: "column" }, justifyContent: "space-between" }}>
                 <DataShow title={"Upper Level Credit Referance"} value={userBalanceDetails?.ul_credit_refer} containerStyle={{ flex: 1 }} valueContainerStyle={{ background: `${parseInt(userBalanceDetails?.ul_credit_refer) >= 0 ? "#0B4F26" : "#FF4848"}` }} />

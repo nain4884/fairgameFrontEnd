@@ -3,39 +3,31 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout } from "../../assets";
-import SearchInput from "../SearchInput";
-import SessionTimeOut from "../helper/SessionTimeOut";
-import StyledImage from "../StyledImage";
+import SearchInput from "../../components/SearchInput";
+import SessionTimeOut from "../../components/helper/SessionTimeOut";
+import StyledImage from "../../components/StyledImage";
 import { stateActions } from "../../store/stateActions";
-import { Down } from "../../fairGameWallet/assets";
 import { setActiveAdmin } from "../../store/admin";
-import SideBarAdmin from "../sideBar/SideBarAdmin";
-import { setRole } from "../helper/SetRole";
-import { ThisUseModal } from "../Modal";
+import SideBarAdmin from "../../components/sideBar/SideBarAdmin";
+import { ThisUseModal } from "../../components/Modal";
+import { setRole } from "../../components/helper/SetRole";
+import LiveMarket from "./LiveMarket";
+import ButtonHead from "./ButtonHead";
+import DropdownMenu2 from "./WithrawDepositMenu";
+import DropdownMenu1 from "./MenuBar";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
+    const [isTransPasswordExist, setIsTransPasswordExist] = useState(false)
+    localStorage.getItem('')
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchor, setAnchor] = React.useState(null)
     const [anchor1, setAnchor1] = React.useState(null)
-    const [isTransPasswordExist, setIsTransPasswordExist] = useState(false)
     const currentSelected = useSelector(state => state?.activeAdmin?.activeTabAdmin)
     const location = useLocation();
-    const [balance, setBalance] = useState(0)
-    const [fullName, setFullName] = useState('')
-    async function getUserDetail() {
-        try {
-            let { axios } = setRole()
-            const { data } = await axios.get('users/profile');
-            setBalance(data.data.current_balance)
-            setFullName(data.data.fullName)
-        } catch (e) {
-            console.log(e)
-        }
-    }
     React.useEffect(() => {
         if (location.pathname.includes("market_analysis")) {
             dispatch(setActiveAdmin(3))
@@ -46,75 +38,112 @@ const CustomHeader = ({ }) => {
         } else if (location.pathname.includes("reports") || location.pathname.includes("account_statement") || location.pathname.includes("current_bet") || location.pathname.includes("general_report") || location.pathname.includes("game_report") || location.pathname.includes("profit_loss")) {
             dispatch(setActiveAdmin(2))
         }
-        let { transPass } = setRole()
+        let { transPass, axios, role } = setRole()
         setIsTransPasswordExist(window.localStorage.getItem(transPass))
-        getUserDetail()
-    }, [window.location.pathname])
+        getUserDetail(axios, role)
+    }, [location, window.location.pathname])
+    const [balance, setBalance] = useState(0)
+    const [fullName, setFullName] = useState('')
+    async function getUserDetail(axios, role) {
+        try {
+            const { data } = await axios.get('users/profile');
+            setBalance(data.data.current_balance)
+            dispatch(stateActions.setBalance(data.data.current_balance, role))
+            setFullName(data.data.fullName)
+        } catch (e) {
+            console.log(e)
+        }
+    }
     useEffect(() => {
         if (!matchesMobile) {
             setMobileOpen(false)
         }
     }, [matchesMobile])
+    const classes = {
+        AppBarVal: { zIndex: (theme) => theme.zIndex.drawer + 1 },
+        BoxCont1: [{
+            width: "100%", minHeight: { laptop: 60, tablet: 60, mobile: 60 },
+            display: "flex",
+            flexDirection: matchesMobile ? "column" : "row",
+            alignItems: !matchesMobile ? "center" : "flex-start",
+            justifyContent: "space-between",
+            paddingX: { laptop: "0.5%", mobile: "1%" },
+            paddingY: matchesMobile ? "15px" : "0px",
+            paddingBottom: matchesMobile ? "10px" : "0px"
+        }, (theme) => ({
+            backgroundImage: `${theme.palette.primary.headerGradient}`
+        })],
+        BoxCont1sub1: { display: "flex", alignItems: "center", width: "100%", flex: 1 },
+        BoxCont1sub1sub1: { display: "flex", alignItems: "center", marginRight: "12px" },
+        BoxCont1sub1sub1StyleImg: { height: { laptop: "24px", mobile: "20px" }, width: "auto" },
+        RenderLogoCompStyleImg: { height: { laptop: "45px", mobile: "40px" }, width: "auto", marginLeft: { laptop: "20px", mobile: "10px" } },
+        BoxCont1sub1ButtonHead1boxStyle: { backgroundColor: currentSelected == 0 ? "white" : "transparent", justifyContent: "center", borderRadius: "3px", marginLeft: "2%" },
+        BoxCont1sub1LiveMarketboxStyle: { backgroundColor: currentSelected == 1 ? "white" : "transparent", borderRadius: "3px", justifyContent: "center", alignItems: "center", marginLeft: "2%" },
+        BoxCont1sub1ButtonHead2boxStyle: { backgroundColor: currentSelected == 2 ? "white" : "transparent", borderRadius: "3px", marginLeft: "2%", justifyContent: "center" },
+        BoxCont1sub1ButtonHeadtitleStylefn: (currentSelected, num) => { return ({ color: currentSelected == num ? "green" : "white" }) },
+        BoxCont1sub1ButtonHead3boxStyle: { backgroundColor: currentSelected == 3 ? "white" : "transparent", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "center" },
+        BoxCont1sub1ButtonHead4boxStyle: { backgroundColor: currentSelected == 4 ? "white" : "transparent", width: "90px", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "space-around" },
+        BoxCont1sub2: { display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" },
+        BoxCont1sub2SearchInputContStyle: { height: "30px", minWidth: { laptop: "100px", mobile: "1.5vw" }, width: "140px" },
+        BoxCont1sub2BoxProfileContStyle: matchesMobile ? { width: "52%" } : {},
+        BoxEnd: { minHeight: { laptop: 60, mobile: 60 + 32 + 42 } }
+    }
     const RenderLogo = useCallback(() => {
         return (
             <StyledImage onClick={(e) => {
                 e.stopPropagation()
                 navigate('/fairgame_wallet/list_of_clients')
-            }} src={logo} sx={{ height: { laptop: "45px", mobile: "40px" }, width: "auto", marginLeft: { laptop: "20px", mobile: "10px" } }} />
+            }} src={logo} sx={classes.RenderLogoCompStyleImg} />
         )
     }, [])
     return (
         <>
             <SessionTimeOut />
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <Box sx={[{
-                    width: "100%", minHeight: { laptop: 60, tablet: 60, mobile: 60 },
-                    display: "flex",
-                    flexDirection: matchesMobile ? "column" : "row",
-                    alignItems: !matchesMobile ? "center" : "flex-start",
-                    justifyContent: "space-between",
-                    paddingX: { laptop: "0.5%", mobile: "1%" },
-                    paddingY: matchesMobile ? "15px" : "0px",
-                    paddingBottom: matchesMobile ? "10px" : "0px"
-                }, (theme) => ({
-                    backgroundImage: `${theme.palette.primary.headerGradient}`
-                })]}>
-                    <Box sx={{ display: "flex", alignItems: "center", width: "100%", flex: 1, }}>
-                        <Box sx={{ display: "flex", alignItems: "center", marginRight: "12px" }}>
+            <AppBar position="fixed" sx={classes.AppBarVal}>
+                <Box sx={classes.BoxCont1}>
+                    <Box sx={classes.BoxCont1sub1}>
+                        <Box sx={classes.BoxCont1sub1sub1}>
                             <StyledImage onClick={() => {
                                 setMobileOpen(!mobileOpen)
-                            }} src={Draw} sx={{ height: { laptop: "24px", mobile: "20px" }, width: "auto" }} />
+                            }} src={Draw} sx={classes.BoxCont1sub1sub1StyleImg} />
                             <RenderLogo />
                         </Box>
                         <ButtonHead onClick={() => {
                             dispatch(setActiveAdmin(0))
                             navigate('/fairgame_wallet/list_of_clients')
-                        }} title={"LIST OF CLIENTS"} boxStyle={{ backgroundColor: currentSelected == 0 ? "white" : "transparent", justifyContent: "center", borderRadius: "3px", marginLeft: "2%" }} titleStyle={{ color: currentSelected == 0 ? "green" : "white" }} />
+                        }} title={"LIST OF CLIENTS"}
+                            boxStyle={classes.BoxCont1sub1ButtonHead1boxStyle}
+                            titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(currentSelected, 0)}
+                        />
                         <LiveMarket onClick={() => {
                             dispatch(setActiveAdmin(1))
                             navigate('/fairgame_wallet/live_market')
-                        }} title={"LIVE MARKET"} boxStyle={{ backgroundColor: currentSelected == 1 ? "white" : "transparent", borderRadius: "3px", justifyContent: "center", alignItems: "center", marginLeft: "2%" }} />
+                        }} title={"LIVE MARKET"} boxStyle={classes.BoxCont1sub1LiveMarketboxStyle} />
                         <ButtonHead selected={currentSelected == 2} report={true} onClick={(e) => {
-                            // setCurrentSelected(2)
                             dispatch(setActiveAdmin(2))
-                            // navigate('/admin/reports')
                             setAnchor(e.currentTarget)
-                        }} title={"REPORTS"} boxStyle={{ backgroundColor: currentSelected == 2 ? "white" : "transparent", borderRadius: "3px", marginLeft: "2%", justifyContent: "center" }} titleStyle={{ color: currentSelected == 2 ? "green" : "white" }} />
+                        }} title={"REPORTS"}
+                            boxStyle={classes.BoxCont1sub1ButtonHead2boxStyle}
+                            titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(currentSelected, 2)}
+                        />
                         <ButtonHead onClick={() => {
                             dispatch(setActiveAdmin(3))
                             navigate('/fairgame_wallet/market_analysis')
                         }} title={"MARKET ANALYSIS"}
-                            boxStyle={{ backgroundColor: currentSelected == 3 ? "white" : "transparent", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "center" }} titleStyle={{ color: currentSelected == 3 ? "green" : "white" }} />
-                        {/* <ButtonHead onClick={(e) => {
+                            boxStyle={classes.BoxCont1sub1ButtonHead3boxStyle}
+                            titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(currentSelected, 3)} />
+                        {window.location.pathname.split('/')[1] == 'fairgame_wallet' && <ButtonHead onClick={(e) => {
                             dispatch(setActiveAdmin(4))
                             // navigate('/fairgame_wallet/wallet')
                             setAnchor1(e.currentTarget)
                         }} title={"WALLET"}
-                            report={true} selected={currentSelected == 4} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", width: "90px", borderRadius: "3px", marginLeft: '1.5%', justifyContent: "space-around" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} /> */}
+                            report={true} selected={currentSelected == 4}
+                            boxStyle={classes.BoxCont1sub1ButtonHead4boxStyle}
+                            titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(currentSelected, 4)} />}
                     </Box>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", minWidth: matchesMobile ? "100%" : "0px", alignItems: "center", marginTop: matchesMobile ? "15px" : "0px" }}>
-                        <SearchInput placeholder={"All Clients..."} header={true} inputContainerStyle={{ height: "30px", minWidth: { laptop: "100px", mobile: "1.5vw" }, width: "140px" }} />
-                        <BoxProfile containerStyle={matchesMobile ? { width: "52%" } : {}} image={"https://picsum.photos/200/300"} value={fullName} balance={balance} />
+                    <Box sx={classes.BoxCont1sub2}>
+                        <SearchInput placeholder={"All Clients..."} header={true} inputContainerStyle={classes.BoxCont1sub2SearchInputContStyle} />
+                        <BoxProfile containerStyle={classes.BoxCont1sub2BoxProfileContStyle} image={"https://picsum.photos/200/300"} value={fullName} amount={balance} />
                     </Box>
                 </Box>
                 {<MobileSideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />}
@@ -122,152 +151,12 @@ const CustomHeader = ({ }) => {
             </AppBar>
             <DropdownMenu1 open={Boolean(anchor)} anchorEl={anchor} handleClose={() => setAnchor(null)} />
             <DropdownMenu2 open={Boolean(anchor1)} anchorEl={anchor1} handleClose={() => setAnchor1(null)} />
-            <Box sx={{ minHeight: { laptop: 60, mobile: 60 + 32 + 42 } }} />
+            <Box sx={classes.BoxEnd} />
         </>
     )
 }
-const ButtonHead = ({ title, boxStyle, titleStyle, onClick, report, selected }) => {
-    return (
-        <Box onClick={(e) => onClick(e)} sx={[{ justifyContent: 'space-between', paddingX: "0.5%", height: "28px", alignItems: 'center', display: 'flex', flexDirection: 'row' }, boxStyle]}>
-            <Typography sx={[{ fontSize: "10px", fontWeight: "bold", fontFamily: "Montserrat" }, titleStyle]}>{title}</Typography>
-            {
-                report && <img src={Down} style={{ width: selected ? '10px' : '0px', height: '6px', marginLeft: '4px', opacity: selected ? 1 : 0 }} />
-            }
-        </Box>
-    )
-}
-const menutItems1 = [{ title: "Account Statement", link: "/fairgame_wallet/account_statement" }, { title: "Current Bet", link: "/fairgame_wallet/current_bet" }, { title: "General Report", link: "/fairgame_wallet/general_report" },
-// { title: "Game Report", link: "/admin/game_report" }, 
-{ title: "Profit/Loss", link: "/fairgame_wallet/profit_loss" }]
-const DropdownMenu1 = ({ anchorEl, open, handleClose }) => {
-    const navigate = useNavigate()
-    return (
-        <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            sx={{ marginTop: '2px', paddingY: "0px", padding: "0px" }}
-            MenuListProps={{
-                'aria-labelledby': 'basic-button',
-            }}
-            PaperProps={{
-                sx: {
-                    paddingY: "0px",
-                    padding: "0px"
-                }
-            }}
-        >
-            {menutItems1.map(x => <MenuItem
 
-                dense={true} sx={{
-                    fontSize: { laptop: "11px", mobile: "10px" },
-                    fontWeight: "600",
-                    marginX: "0px",
-                    width: { laptop: "140px", mobile: "170px" },
-                    borderBottomWidth: 0,
-                    borderColor: "#EAEFEC",
-                    paddingY: "-10px",
-                    marginTop: "0px",
-                    borderStyle: "solid",
-                    marginLeft: '-10px',
-                    minHeight: '14px',
-                    lineHeight: '14px',
-
-                    "&:hover": {
-                        backgroundColor: "primary.main",
-                        color: "white",
-                        borderColor: "white",
-                        borderRadius: "5px",
-                        transform: "scale(1.02)"
-                    }
-                }} onClick={() => {
-                    navigate(x.link)
-                    handleClose()
-                }}>{x.title}</MenuItem>)}
-        </Menu>
-    )
-}
-
-
-const menutItems2 = [{ title: "Deposit", link: "/fairgame_wallet/deposit" }, { title: "Withdraw", link: "/fairgame_wallet/withdraw" }]
-
-const DropdownMenu2 = ({ anchorEl, open, handleClose }) => {
-    const navigate = useNavigate()
-    return (
-        <Menu
-            id="basic-menu"
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            sx={{ marginTop: '2px', paddingY: "0px", padding: "0px" }}
-            MenuListProps={{
-                'aria-labelledby': 'basic-button',
-            }}
-            PaperProps={{
-                sx: {
-                    paddingY: "0px",
-                    padding: "0px"
-                }
-            }}
-        >
-            {menutItems2.map(x => <MenuItem
-
-                dense={true} sx={{
-                    fontSize: { laptop: "11px", mobile: "10px" },
-                    fontWeight: "600",
-                    marginX: "0px",
-                    width: { laptop: "100px", mobile: "170px" },
-                    borderBottomWidth: 0,
-                    borderColor: "#EAEFEC",
-                    paddingY: "-10px",
-                    marginTop: "0px",
-                    borderStyle: "solid",
-                    marginLeft: '-10px',
-                    minHeight: '14px',
-                    lineHeight: '14px',
-
-                    "&:hover": {
-                        backgroundColor: "primary.main",
-                        color: "white",
-                        borderColor: "white",
-                        borderRadius: "5px",
-                        transform: "scale(1.02)"
-                    }
-                }} onClick={() => {
-                    navigate(x.link)
-                    handleClose()
-                }}>{x.title}</MenuItem>)}
-        </Menu>
-    )
-}
-const LiveMarket = ({ title, boxStyle, titleStyle, onClick }) => {
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const colors = ["#ff0000", "#ffa500", "#ffff00", "orange", "#0000ff", "#4b0082", "#ee82ee"]
-    useEffect(() => {
-        let i = setInterval(() => {
-            setCurrentIndex(state => {
-                if (state < 6) {
-                    return state + 1
-                } else {
-                    return 0
-                }
-            })
-        }, 1000)
-        return () => {
-            clearInterval(i)
-        }
-    }, [])
-    return (
-        <Box onClick={e => {
-            onClick()
-        }} sx={[{ paddingX: "0.5%", display: "flex", height: "28px", alignItems: "center", background: "red", justifyContent: "center" }, boxStyle]}>
-            <Typography sx={[{ fontSize: "11px", lineHeight: "12px", fontWeight: "bold", color: colors[currentIndex], fontFamily: "Montserrat" }, titleStyle]}>{title}</Typography>
-        </Box>
-    )
-}
-
-const BoxProfile = ({ image, value, containerStyle, balance }) => {
+const BoxProfile = ({ image, value, containerStyle, amount }) => {
     const theme = useTheme()
     const [open, setOpen] = useState(false)
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
@@ -281,17 +170,24 @@ const BoxProfile = ({ image, value, containerStyle, balance }) => {
     const handleClose = () => {
         setOpen(false)
     };
+    const classes = {
+        mainBox: { display: 'flex', position: 'relative', justifyContent: 'space-between', minWidth: { laptop: "150px", } },
+        mainBoxSubsx: [{ backgroundColor: "primary.main", minWidth: { laptop: "150px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "45px", mobile: "35px" }, overflow: "hidden", paddingX: "10px", borderRadius: "5px" }, containerStyle],
+        mainBoxSubSubTypography1sx: { fontSize: { laptop: '11px', mobile: "8px" }, color: "text.white", fontWeight: "600" },
+        mainBoxSubSubTypography2sx: { fontSize: { laptop: '13px', mobile: "8px" }, color: "text.white", fontWeight: " 700" },
+        mainBoxSubStyledImagesx: { height: "6px", width: "10px", marginRight: '5px' }
+    }
     return (
-        <Box sx={{ display: 'flex', position: 'relative', justifyContent: 'space-between', minWidth: { laptop: "150px", } }}>
+        <Box sx={classes.mainBox}>
             <Box onClick={(event) => {
                 setOpen(!open)
                 event?.stopPropagation()
-            }} sx={[{ backgroundColor: "primary.main", minWidth: { laptop: "150px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "45px", mobile: "35px" }, overflow: "hidden", paddingX: "10px", borderRadius: "5px" }, containerStyle]}>
+            }} sx={classes.mainBoxSubsx}>
                 <Box style={{}}>
-                    <Typography sx={{ fontSize: { laptop: '11px', mobile: "8px" }, color: "text.white", fontWeight: "600" }}>{value}</Typography>
-                    <Typography sx={{ fontSize: { laptop: '13px', mobile: "8px" }, color: "text.white", fontWeight: " 700" }}>{balance}</Typography>
+                    <Typography sx={classes.mainBoxSubSubTypography1sx}>{value}</Typography>
+                    <Typography sx={classes.mainBoxSubSubTypography2sx}>{amount}</Typography>
                 </Box>
-                <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
+                <StyledImage src={ArrowDown} sx={classes.mainBoxSubStyledImagesx} />
             </Box>
             {open && <DropdownMenu open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} />}
         </Box>
@@ -300,10 +196,8 @@ const BoxProfile = ({ image, value, containerStyle, balance }) => {
 function useOuterClick(callback) {
     const callbackRef = useRef(); // initialize mutable ref, which stores callback
     const innerRef = useRef(); // returned to client, who marks "border" element
-
-    // update cb on each render, so second useEffect has access to current value 
+    // update cb on each render, so second useEffect has access to current value
     useEffect(() => { callbackRef.current = callback; });
-
     useEffect(() => {
         document.addEventListener("click", handleClick);
         return () => document.removeEventListener("click", handleClick);
@@ -313,7 +207,6 @@ function useOuterClick(callback) {
             ) callbackRef.current(e);
         }
     }, []); // no dependencies -> stable click listener
-
     return innerRef; // convenience for client (doesn't need to init ref himself) 
 }
 const menutItems = [{ title: "Secure Auth Verification" }, { title: "Change Password", link: "/fairgame_wallet/change_password" }]
@@ -324,35 +217,38 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         handleClose()
     })
     const logoutProcess = () => {
-        let { role } = setRole()
-        dispatch(stateActions.logout(role));
+        dispatch(stateActions.logout("role2"));
         navigate("/")
         handleClose()
     }
+    const classes = {
+        mainBoxsx: { position: 'absolute', background: 'white', top: '45px', right: 0, paddingY: '10px', paddingX: '2px', borderRadius: '5px', marginTop: '2px' },
+        mainBoxMenuItem: {
+            fontSize: { laptop: "12px", mobile: "10px" },
+            fontWeight: "500",
+            marginX: "5px",
+            width: { laptop: "200px", mobile: "200px" },
+            borderBottomWidth: 1,
+            color: 'black',
+            borderColor: "#EAEFEC",
+            paddingY: "2px",
+            borderStyle: "solid",
+            "&:hover": {
+                backgroundColor: "primary.main",
+                color: "white",
+                borderColor: "white",
+                borderRadius: "5px",
+                transform: "scale(1.02)"
+            }
+        },
+        mainBoxSubsx: { borderRadius: "5px", height: { laptop: "38px", mobile: "34px" }, width: "200px", marginLeft: "5px", marginTop: "10px", backgroundColor: "#F1C550", display: "flex", justifyContent: "center", alignItems: "center" },
+        mainBoxSubStyleImagesx: { width: "35%", height: "auto" }
+    }
     return (
-
         <Box
             ref={innerRef}
-            sx={{ position: 'absolute', background: 'white', top: '45px', right: 0, paddingY: '10px', paddingX: '2px', borderRadius: '5px', marginTop: '2px' }} >
-            {menutItems.map(x => <MenuItem dense={true} sx={{
-
-                fontSize: { laptop: "12px", mobile: "10px" },
-                fontWeight: "500",
-                marginX: "5px",
-                width: { laptop: "200px", mobile: "200px" },
-                borderBottomWidth: 1,
-                color: 'black',
-                borderColor: "#EAEFEC",
-                paddingY: "2px",
-                borderStyle: "solid",
-                "&:hover": {
-                    backgroundColor: "primary.main",
-                    color: "white",
-                    borderColor: "white",
-                    borderRadius: "5px",
-                    transform: "scale(1.02)"
-                }
-            }} onClick={() => {
+            sx={classes.mainBoxsx} >
+            {menutItems.map(x => <MenuItem dense={true} sx={classes.mainBoxMenuItem} onClick={() => {
                 handleClose()
                 if (x.link) {
                     navigate(x.link)
@@ -360,19 +256,22 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
             }}>{x.title}</MenuItem>)}
             <Box onClick={() => {
                 logoutProcess()
-            }} sx={{ borderRadius: "5px", height: { laptop: "38px", mobile: "34px" }, width: "200px", marginLeft: "5px", marginTop: "10px", backgroundColor: "#F1C550", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <StyledImage src={Logout} sx={{ width: "35%", height: "auto" }} />
+            }} sx={classes.mainBoxSubsx}>
+                <StyledImage src={Logout} sx={classes.mainBoxSubStyleImagesx} />
             </Box>
         </Box>
     )
 }
 const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
-
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
     const container = window !== undefined ? () => window.document.body : undefined;
-
+    const classes = {
+        Drawersx: { display: { xs: 'block', sm: 'none' }, '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px" } },
+        DrawerBox1sx: { minHeight: { laptop: 60, mobile: 60 + 32 } },
+        DrawerBox2sx: { height: "100vh" },
+    }
     return (
         <Drawer
             container={container}
@@ -382,15 +281,10 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
             ModalProps={{
                 keepMounted: true, // Better open performance on mobile.
             }}
-
-            sx={{
-                display: { xs: 'block', sm: 'none' },
-                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: "300px" },
-
-            }}
+            sx={classes.Drawersx}
         >
-            <Box sx={{ minHeight: { laptop: 60, mobile: 60 + 32 } }} />
-            <Box sx={{ height: "100vh" }}>
+            <Box sx={classes.DrawerBox1sx} />
+            <Box sx={classes.DrawerBox2sx}>
                 <SideBarAdmin handleDrawerToggle={handleDrawerToggle} mobileShow={true} />
             </Box>
         </Drawer>

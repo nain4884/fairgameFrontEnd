@@ -54,33 +54,48 @@ export default function UserDetailModal({
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }))
     setTimeout(() => {
       dispatch(setDailogData({ isModalOpen: false }))
+      navigate(`/${window.location.pathname.split('/')[1]}/list_of_clients`)
     }, [2000])
     setShowModalMessage(message)
     setShowUserModal(false);
   }
+
+  const classes = {
+    mainBox: {
+      background: backgroundColor ?? "#F8C851",
+      display: "flex",
+      width: "100%",
+      overflow: "hidden",
+      paddingY: "15px",
+      paddingTop: "5px",
+      borderBottom: "2px solid white",
+    },
+    mainBoxSubsx: [
+      {
+        width: "11.5vw",
+        display: "flex",
+        height: "45px",
+        paddingLeft: "10px",
+        borderRight: "2px solid #0000",
+      },
+    ],
+    BoxButtonStyledImage: { height: "18px", width: "17px", marginLeft: "5px" },
+    BoxButtonContStyle: {
+      background: "#E32A2A",
+      flex: 1,
+      marginLeft: "10px",
+      marginRight: "10px",
+      alignSelf: "center",
+    }
+  }
+
   return (
     <Box
-      sx={{
-        background: backgroundColor ?? "#F8C851",
-        display: "flex",
-        width: "100%",
-        overflow: "hidden",
-        paddingY: "15px",
-        paddingTop: "5px",
-        borderBottom: "2px solid white",
-      }}
+      sx={classes.mainBox}
     >
       <Box
         onClick={() => { }}
-        sx={[
-          {
-            width: "11.5vw",
-            display: "flex",
-            height: "45px",
-            paddingLeft: "10px",
-            borderRight: "2px solid #0000",
-          },
-        ]}
+        sx={classes.mainBoxSubsx}
       ></Box>
       {selected != null && (
         <Box sx={{ width: "88.5vw" }}>
@@ -248,16 +263,10 @@ export default function UserDetailModal({
             icon={
               <StyledImage
                 src={DeleteIcon}
-                sx={{ height: "18px", width: "17px", marginLeft: "5px" }}
+                sx={classes.BoxButtonStyledImage}
               />
             }
-            containerStyle={{
-              background: "#E32A2A",
-              flex: 1,
-              marginLeft: "10px",
-              marginRight: "10px",
-              alignSelf: "center",
-            }}
+            containerStyle={classes.BoxButtonContStyle}
           />
         </Box>
       )}
@@ -274,33 +283,37 @@ const BoxButton = ({
   deleteBtn,
   titleStyle,
 }) => {
+  const classes = {
+    mainBox: [
+      {
+        background: isSelected ? "#0B4F26" : "#0B4F26",
+        border:
+          isSelected || deleteBtn ? "2px solid #0B4F26" : "2px solid #303030",
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        height: "45px",
+        alignItems: "center",
+        borderRadius: "5px",
+      },
+      containerStyle,
+    ],
+    mainBoxTypography: [
+      {
+        fontSize: "0.9vw",
+        fontWeight: "600",
+        color: isSelected || deleteBtn ? "white" : "white",
+      },
+      titleStyle,
+    ]
+  }
   return (
     <Box
       onClick={onClick}
-      sx={[
-        {
-          background: isSelected ? "#0B4F26" : "#0B4F26",
-          border:
-            isSelected || deleteBtn ? "2px solid #0B4F26" : "2px solid #303030",
-          display: "flex",
-          flex: 1,
-          justifyContent: "center",
-          height: "45px",
-          alignItems: "center",
-          borderRadius: "5px",
-        },
-        containerStyle,
-      ]}
+      sx={classes.mainBox}
     >
       <Typography
-        sx={[
-          {
-            fontSize: "0.9vw",
-            fontWeight: "600",
-            color: isSelected || deleteBtn ? "white" : "white",
-          },
-          titleStyle,
-        ]}
+        sx={classes.mainBoxTypography}
       >
         {title}
         {icon}
@@ -324,21 +337,35 @@ const BoxButtonWithSwitch = ({
   setElementToUDM
 }) => {
   const [checked, setChecked] = useState(false);
+  const classes = {
+    mainBox: [
+      {
+        background: !val ? "#0B4F26" : "#E32A2A",
+        display: "flex",
+        flex: 1,
+        justifyContent: "center",
+        height: "45px",
+        alignItems: "center",
+        borderRadius: "5px",
+      },
+      containerStyle,
+    ],
+    mainBoxTypography: [
+      {
+        fontSize: "0.9vw",
+        fontWeight: "600",
+        textAlign: "right",
+        color: "white",
+        marginRight: "10px",
+        minWidth: "80px",
+      },
+      titleStyle,
+    ]
+  }
   return (
     <Box
       onClick={onClick}
-      sx={[
-        {
-          background: !val ? "#0B4F26" : "#E32A2A",
-          display: "flex",
-          flex: 1,
-          justifyContent: "center",
-          height: "45px",
-          alignItems: "center",
-          borderRadius: "5px",
-        },
-        containerStyle,
-      ]}
+      sx={classes.mainBox}
     >
       <MaterialUISwitch
         checked={!val}
@@ -360,17 +387,7 @@ const BoxButtonWithSwitch = ({
         }}
       />
       <Typography
-        sx={[
-          {
-            fontSize: "0.9vw",
-            fontWeight: "600",
-            textAlign: "right",
-            color: "white",
-            marginRight: "10px",
-            minWidth: "80px",
-          },
-          titleStyle,
-        ]}
+        sx={classes.mainBoxTypography}
       >
         {title} {!val ? "Unlocked" : "Locked"}
       </Typography>
@@ -1525,7 +1542,7 @@ const LockUnlockComponent = ({
             isSelected={true}
             onClick={(e) => {
               setShowUserModal(false);
-              console.log('elementToUDM.bet_blocked, elementToUDM.all_blocked',elementToUDM.bet_blocked, elementToUDM.all_blocked)
+              console.log('elementToUDM.bet_blocked, elementToUDM.all_blocked', elementToUDM.bet_blocked, elementToUDM.all_blocked)
               setElementToUDM({ ...elementToUDM, bet_blocked: prevElement.bet_blocked, all_blocked: prevElement.all_blocked })
             }}
             title={"Cancel"}
