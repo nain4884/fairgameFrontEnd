@@ -11,7 +11,7 @@ import MatchSubmit1 from "../../components/MatchSubmit1"
 import ProfitLoss from "../admin/ProfitLoss"
 import Reports from "../admin/Reports"
 import TotalBets from "../admin/TotalBets"
-import CustomHeader from "./Header"
+import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
 import Home from "../../components/List_Of_Client"
 import DepositWallet from "../../components/DepositWallet"
 import DeleteBet from "../admin/DeleteBet"
