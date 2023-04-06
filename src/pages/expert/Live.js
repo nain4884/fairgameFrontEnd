@@ -14,7 +14,7 @@ export default function Live() {
                     <SessionResult createSession={location?.state?.createSession} />
                 </Box>
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
-                    <BetLive createSession={location?.state?.createSession} />
+                    {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} />}
                 </Box>
             </Box>
         </Background>

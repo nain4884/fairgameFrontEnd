@@ -5,10 +5,7 @@ import { ArrowDown, CANCEL, CancelDark } from "../assets";
 import '../components/index.css'
 import StyledImage from "./StyledImage";
 import { useSelector } from 'react-redux'
-const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, isSessionYes, isBack, type, name, data, typeOfBet ,selectedValue}) => {
-
-    const [odd, setOdd] = useState(selectedValue || "0")
-
+const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, isSessionYes, isBack, type, name, data, typeOfBet ,selectedValue, mainData}) => {
     const [defaultValue, setDefaultValue] = useState("")
     const theme = useTheme()
     const selectedColorBox = useSelector(state => state.selectedColorBox)?.value
@@ -20,9 +17,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             </Box>
         )
     }
-
     const [ip, setIP] = useState('');
-
     useEffect(() => {
         FetchIpAddress()
     }, [])
@@ -135,17 +130,25 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             "teamB_name": data.teamB,
             "marketType": marketType==="Match"?"MATCH ODDS":"BOOKMAKER"
         }
+        console.log('payload',data)
         if (marketType == "Session") {
             delete payload.betOn
             delete payload.odds
-            console.log(payload,data,"SDDSDDD")
-            payload.bet_condition = data?.betting[0]?.bet_condition
-            payload.rate_percent = data?.betting[0]?.rate_percent
-            payload.marketType = data?.betting[0]?.bet_condition
+            payload.matchType = data?.matchType
+            payload.teamA_name = mainData?.teamA
+            payload.teamB_name = mainData?.teamB
+            payload.id = mainData?.id
+            payload.betId = data?.id
+            payload.bet_type = isSessionYes ? "yes" : "no"
+            payload.bet_condition = data?.bet_condition
+            payload.rate_percent = data?.rate_percent
+            payload.marketType = data?.bet_condition
+            payload.odds = selectedValue
+            payload.team_bet = 'aus' //team is not sent / selected from the user
         }
         return payload
     }
-
+    console.log('season ? ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "No" : "Yes") : ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "Lay" : "Back"))',season, ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "No" : "Yes"), ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "Lay" : "Back"))
     return (
         <Box ref={refs} sx={[{ display: 'flex', flexDirection: 'column', border: "1px solid white", borderRadius: "5px", marginLeft: season ? "40px" : 0, overflow: "hidden", width: { mobile: "90vw", laptop: '30vw' } }, matchesMobile ? { position: "absolute", right: back ? "-16.5vw" : "0vw" } : { position: "absolute", right: back ? "-16.5vw" : "0vw" }]} >
             <Box sx={{ background: "white", width: "100%", 'overflow': "hidden" }} >
@@ -200,7 +203,6 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             </Box>
         </Box>
     )
-
 }
 
 const NumberData = ({ value, containerStyle, setDefaultValue }) => {

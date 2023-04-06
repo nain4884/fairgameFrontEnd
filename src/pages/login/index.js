@@ -10,11 +10,8 @@ import axios from '../../axios/axios';
 import { apiBasePath, LoginServerError } from '../../components/helper/constants';
 import OTPInput, { ResendOTP } from "otp-input-react";
 import { setActiveRole } from '../../store/activeRole';
-import { SocketContext } from '../../context/socketContext';
 
 export default function Login() {
-
-    const socket = useContext(SocketContext);
     const theme = useTheme()
     const dispatch = useDispatch()
     const navigate = useNavigate()

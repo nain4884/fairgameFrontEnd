@@ -28,6 +28,7 @@ const CustomHeader = ({ }) => {
     const location = useLocation();
     const [active, setActiveAdmin] = useState(0)
     const [allMatch, setAllMatch] = useState([])
+    const [allLiveEventSession, setAllLiveEventSession] = useState([])
     const [balance, setBalance] = useState(0)
     const [fullName, setFullName] = useState('')
     async function getUserDetail(axios, role) {
@@ -55,13 +56,22 @@ const CustomHeader = ({ }) => {
         }
         let { transPass, axios, role } = setRole()
         setIsTransPasswordExist(window.localStorage.getItem(transPass))
-        getAllMatch()
+        getAllMatch(axios)
+        getMatchLiveSession(axios)
         getUserDetail(axios, role)
     }, [location])
-    const getAllMatch = async () => {
+    const getAllMatch = async (axios) => {
         try {
-            let response = await expertAxios.get(`/game-match/getAllMatch`);
+            let response = await axios.get(`/game-match/getAllMatch`);
             setAllMatch(response.data[0])
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    const getMatchLiveSession = async (axios) => {
+        try {
+            let response = await axios.get(`/game-match/getLiveMatchSession`);
+            setAllLiveEventSession(response.data.data[0])
         } catch (e) {
             console.log(e)
         }
@@ -123,7 +133,6 @@ const CustomHeader = ({ }) => {
 
                         {activeUser != 1 && activeUser !== '2' && <><ButtonHead selected={currentSelected == 2} onClick={(e) => {
                             dispatch(setSelected(2))
-
                             navigate("/expert/betodds")
                         }} title={"BETFAIR ODDS"} boxStyle={{ backgroundColor: currentSelected == 2 ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: currentSelected == 2 ? "green" : "white" }} />
                             <ButtonHead onClick={() => {
@@ -142,7 +151,8 @@ const CustomHeader = ({ }) => {
                             setVisible(true)
                         }} sx={{ height: "50px", width: "50px", borderRadius: "35px", display: "flex", justifyContent: "center", alignItems: "center", background: "white" }}>
                             <StyledImage src={NotiBadge} sx={{ height: "25px", width: "25px" }} />
-                        </Box> <Box>
+                        </Box>
+                        <Box>
                             <ActiveUsers containerStyle={{}} image={Users} value={"73,689"} />
                             <BoxProfile containerStyle={{ marginTop: "5px" }} image={"https://picsum.photos/200/300"} value={activeUser == 1 ? "Session" : (activeUser == 2 ? "Bookmaker" : "Betfair")} value1={fullName} />
                         </Box>
@@ -153,7 +163,7 @@ const CustomHeader = ({ }) => {
             <Box sx={{ minHeight: { laptop: 90, mobile: 60 + 32 + 42 } }} />
             <DropdownMenu1 anchorEl={anchor} open={Boolean(anchor)} allMatch={allMatch} handleClose={() => {
                 setAnchor(null)
-            }} />
+            }} allLiveEventSession={allLiveEventSession} />
         </>
     )
 }
@@ -168,8 +178,7 @@ const ButtonHead = ({ title, boxStyle, titleStyle, onClick, report, selected }) 
         </Box>
     )
 }
-const menutItems1 = [{ title: "India vs Pakistan" }, { title: "Australia vs England" }, , { title: "Srilanka vs England" }]
-const DropdownMenu1 = ({ anchorEl, open, handleClose, allMatch }) => {
+const DropdownMenu1 = ({ anchorEl, open, handleClose, allMatch, allLiveEventSession }) => {
     const [selected, setSelected] = useState(0)
     return (
         <Menu
@@ -190,11 +199,11 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose, allMatch }) => {
                 }
             }}
         >
-            {allMatch.map((x, i) => <MenutItemsComponent handleClose={handleClose} setSelected={setSelected} index={i} selected={selected} x={x} />)}
+            {allMatch.map((x, i) => <MenutItemsComponent allLiveEventSession={allLiveEventSession} handleClose={handleClose} setSelected={setSelected} index={i} selected={selected} x={x} />)}
         </Menu>
     )
 }
-const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) => {
+const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose, allLiveEventSession }) => {
     const activeUser = useSelector(state => state?.activeUser?.activeUser)
     const navigate = useNavigate()
     return (<>
@@ -230,21 +239,31 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose }) =
                 }
             }}>{x.title}</MenuItem>
         {selected == index && <Box sx={{ background: "#F8C851", width: "80%", marginLeft: "20%", borderRadius: "5px", paddingX: "5px", paddingY: "5px" }}>
-            <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Current Live Session" : "Current Live Bookmaker"}</Typography>
-            <Box onClick={(e) => {
-                if (activeUser == '1') {
-                    navigate("/expert/live", { state: { createSession: true, match: x } })
-                }
-                else if (activeUser == '2') {
-                    navigate("/expert/market")
-                }
-                handleClose()
-            }} sx={{ marginLeft: "10px", marginTop: "3px" }}>
-                <input />
-                <input />
-                {/* <Typography sx={{ fontSize: "12px", }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 1"}</Typography>
+            {allLiveEventSession.map((event) => {
+                if (event.id == x.id)
+                    return (
+                        <>
+                            <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Current Live Session" : "Current Live Bookmaker"}</Typography>
+                            {event.bettings.map(element => {
+                                return (
+                                    <Box onClick={(e) => {
+                                        if (activeUser == '1') {
+                                            navigate("/expert/live", { state: { createSession: true, match: x, sessionEvent: element } })
+                                        }
+                                        else if (activeUser == '2') {
+                                            navigate("/expert/market")
+                                        }
+                                        handleClose()
+                                    }} sx={{ marginLeft: "10px", marginTop: "3px" }}>
+                                        <Typography sx={{ fontSize: "12px", marginTop: "3px", cursor: "pointer" }}>{element.bet_condition}</Typography>
+                                    </Box>
+                                )
+                            })}
+                        </>
+                    )
+            })}
+            {/* <Typography sx={{ fontSize: "12px", }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 1"}</Typography>
                 <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography> */}
-            </Box>
             <Box onClick={e => {
                 navigate("/expert/live", { state: { createSession: true, match: x } })
                 handleClose()
@@ -270,7 +289,6 @@ const BoxProfile = ({ image, value, containerStyle, value1 }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-
     const [anchorEl, setAnchorEl] = useState(false);
     const handleClick = (event) => {
         setAnchorEl(!anchorEl);
@@ -287,7 +305,21 @@ const BoxProfile = ({ image, value, containerStyle, value1 }) => {
     return (
         <>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', minWidth: { laptop: "120px", } }}>
-                <Box onClick={handleClick} sx={[{ backgroundColor: "primary.main", minWidth: { laptop: "120px", mobile: "90px" }, marginLeft: "1vw", display: "flex", alignItems: "center", boxShadow: "0px 3px 10px #B7B7B726", justifyContent: "space-between", height: { laptop: "40px", mobile: "35px" }, overflow: "hidden", paddingX: "2px", borderRadius: "35px" }, containerStyle]}>
+                <Box onClick={handleClick}
+                    sx={[{
+                        backgroundColor: "primary.main",
+                        minWidth: { laptop: "120px", mobile: "90px" },
+                        marginLeft: "1vw",
+                        display: "flex",
+                        alignItems: "center",
+                        boxShadow: "0px 3px 10px #B7B7B726",
+                        justifyContent: "space-between",
+                        height: { laptop: "40px", mobile: "35px" },
+                        overflow: "hidden",
+                        paddingX: "2px",
+                        borderRadius: "35px"
+                    },
+                        containerStyle]}>
                     <StyledImage src={image} sx={{ height: { laptop: "33px", mobile: '27px' }, width: { laptop: "33px", mobile: '27px' }, borderRadius: "150px" }} />
                     <Box style={{ flex: 1, marginLeft: "5px" }}>
                         <Typography sx={{ fontSize: "10px", color: "text.white", fontWeight: "600" }}>{value}</Typography>
