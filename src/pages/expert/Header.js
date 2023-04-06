@@ -28,6 +28,18 @@ const CustomHeader = ({ }) => {
     const location = useLocation();
     const [active, setActiveAdmin] = useState(0)
     const [allMatch, setAllMatch] = useState([])
+    const [balance, setBalance] = useState(0)
+    const [fullName, setFullName] = useState('')
+    async function getUserDetail(axios, role) {
+        try {
+            const { data } = await axios.get('users/profile');
+            setBalance(data.data.current_balance)
+            dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
+            setFullName(data.data.fullName)
+        } catch (e) {
+            console.log(e)
+        }
+    }
     useEffect(() => {
         if (!matchesMobile) {
             setMobileOpen(false)
@@ -41,9 +53,10 @@ const CustomHeader = ({ }) => {
         } else if (location.pathname.includes("betodds")) {
             dispatch(setSelected(2))
         }
-        let { transPass } = setRole()
+        let { transPass, axios, role } = setRole()
         setIsTransPasswordExist(window.localStorage.getItem(transPass))
         getAllMatch()
+        getUserDetail(axios, role)
     }, [location])
     const getAllMatch = async () => {
         try {
@@ -131,7 +144,7 @@ const CustomHeader = ({ }) => {
                             <StyledImage src={NotiBadge} sx={{ height: "25px", width: "25px" }} />
                         </Box> <Box>
                             <ActiveUsers containerStyle={{}} image={Users} value={"73,689"} />
-                            <BoxProfile containerStyle={{ marginTop: "5px" }} image={"https://picsum.photos/200/300"} value={activeUser == 1 ? "Session" : (activeUser == 2 ? "Bookmaker" : "Betfair")} value1={"Expert"} />
+                            <BoxProfile containerStyle={{ marginTop: "5px" }} image={"https://picsum.photos/200/300"} value={activeUser == 1 ? "Session" : (activeUser == 2 ? "Bookmaker" : "Betfair")} value1={fullName} />
                         </Box>
                     </Box>
                 </Box>
@@ -290,9 +303,7 @@ const BoxProfile = ({ image, value, containerStyle, value1 }) => {
 
 const ActiveUsers = ({ image, value, containerStyle }) => {
     const theme = useTheme()
-
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
-
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
