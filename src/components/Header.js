@@ -9,21 +9,23 @@ import SearchInput from "./SearchInput";
 import SessionTimeOut from "./helper/SessionTimeOut";
 import SideBar from "./sideBar/SideBar";
 import StyledImage from "./StyledImage";
+import { setRole } from "./helper/SetRole";
 
 const CustomHeader = ({ }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     const location = useLocation()
     const navigate = useNavigate()
-
+    const dispatch = useDispatch()
     const [showSideBarMobile, setShowSideBarMobile] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false);
     const [balance, setBalance] = useState(0)
     const [fullName, setFullName] = useState('')
-    async function getUserDetail() {
+    async function getUserDetail(axios, role) {
         try {
-            const { data } = await userAxios.get('users/profile');
+            const { data } = await axios.get('users/profile');
             setBalance(data.data.current_balance)
+            dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
             setFullName(data.data.fullName)
         } catch (e) {
             console.log(e)
@@ -43,7 +45,8 @@ const CustomHeader = ({ }) => {
         } else {
             setShowSideBarMobile(false)
         }
-        getUserDetail()
+        let { axios, role } = setRole()
+        getUserDetail(axios, role)
     }, [location])
 
     return (

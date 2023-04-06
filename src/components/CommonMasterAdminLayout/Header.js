@@ -48,7 +48,7 @@ const CustomHeader = ({ }) => {
         try {
             const { data } = await axios.get('users/profile');
             setBalance(data.data.current_balance)
-            dispatch(stateActions.setBalance(data.data.current_balance, role))
+            dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
             setFullName(data.data.fullName)
         } catch (e) {
             console.log(e)
