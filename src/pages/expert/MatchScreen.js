@@ -87,10 +87,6 @@ const MatchScreen = ({ }) => {
         if (socket && socket.connected) {
             console.log("Connected", socket);
             socket.emit("bookMakerRateLive", { id: "009317b2-eb7c-4b6f-b74b-a1ea5a4f4b97" })
-            // socket.emit('init',{id:"1.211640420"})
-            // socket.on('matchOdds', (val)=>{
-            //     console.log('val',val)
-            // })
         }
         if(socketMicro && socketMicro.connected) {
             socketMicro.emit('init',{id:state?.marketId})
