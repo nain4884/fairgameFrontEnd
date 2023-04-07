@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import Header from './Header'
 import Background from './Background'
 import { MatchListComp } from "./Home1";
+import { DailogModal } from "../../components";
 
 export default function BetFairOdds() {
     return (
@@ -11,6 +12,7 @@ export default function BetFairOdds() {
                 <Typography sx={{ fontSize: "3vw", color: "#0B4F26", fontWeight: "bold" }}>No Match Added</Typography>
             </Box> */}
             <MatchListComp />
+            <DailogModal />
         </Background>
     )
 }

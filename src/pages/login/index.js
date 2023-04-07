@@ -135,7 +135,7 @@ export default function Login() {
                             handleNavigate('/super_admin/list_of_clients', 'master')
                             break;
                         case "expert":
-                            handleNavigate('/expert/live', 'expert')
+                            handleNavigate('/expert/match', 'expert')
                             break;
                         case "user":
                             handleNavigate('/matches', 'user')
