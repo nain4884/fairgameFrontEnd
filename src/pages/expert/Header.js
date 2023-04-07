@@ -13,6 +13,8 @@ import AddNotificationModal from "../../components/AddNotificationModal";
 import { setRole } from "../../components/helper/SetRole";
 import { ThisUseModal } from "../../components/Modal";
 import expertAxios from "../../axios/expertAxios";
+import { logout } from "../../newStore/reducers/auth";
+import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme()
@@ -396,7 +398,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const logoutProcess = () => {
-    dispatch(stateActions.logout("role3"));
+    dispatch(logout({roleType:"role3"}));
+    removeCurrentUser()
     navigate("/")
     handleClose()
   }

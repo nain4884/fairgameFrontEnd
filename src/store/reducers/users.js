@@ -84,8 +84,8 @@ export let userReducer = (state = initialState, action) => {
         case 'SET_BAL': {
             switch (action.payload.role.trim()) {
                 case "role1":
-                    localStorage.setItem('Balance1', action.payload.amount) //JWTmaster
-                    localStorage.setItem('exposure1', action.payload.exposure) //JWTmaster
+                    localStorage.setItem('user1', action.payload.amount) //JWTmaster
+                
                     break;
                 case "role3":
                     localStorage.setItem('Balance3', action.payload.amount) //JWTexpert

@@ -18,7 +18,7 @@ const ExportRoutes = () => {
         }
     }, [])
     return (
-        <Routes>
+        <Routes forceRefresh={true}>
             <Route path="/home1" element={<Home1 />} />
             <Route path="/live" element={<Live />} />
             <Route path="/addBet" element={<AddBet />} /> {/* Remove when addBet page found */}

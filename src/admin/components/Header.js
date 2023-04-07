@@ -22,6 +22,8 @@ import { ARROWDROPDOWN, Down, DropDown } from "../assets";
 import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "./SideBarAdmin";
 import masterAxios from "../../axios/masterAxios";
+import { logout } from "../../newStore/reducers/auth";
+import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -647,7 +649,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   });
   const dispatch = useDispatch();
   const logoutProcess = () => {
-    dispatch(stateActions.logout("role1"));
+    dispatch(logout({roleType:"role1"}));
+    removeCurrentUser()
     navigate("/");
     handleClose();
   };

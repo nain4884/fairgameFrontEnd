@@ -26,8 +26,8 @@ const AdminRoutes = () => {
     return (
         <>
             <CustomHeader />
-            <Routes>
-                <Route path="/list_of_clients" element={<Home />} />
+            <Routes forceRefresh={true}>
+                <Route path="/list_of_clients" element={<Home/>} />
                 <Route exact path="/market_analysis" element={<MarketAnaylsisContainer />} />
                 <Route exact path="/live_market" element={<Home />} />
                 <Route exact path="/add_account" element={<AddAccount />} />

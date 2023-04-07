@@ -14,59 +14,75 @@ import SearchInput from "./SearchInput";
 import { setRole } from "./helper/SetRole";
 import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
+import { useSelector } from "react-redux";
 
 const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
-  const [roles, setRoles] = useState([])
+  // const {currentUser} = useSelector((state) => state?.currentUser);
+  const { userAdmin } = useSelector((state) => state?.auth);
+  console.log(userAdmin, "userAdmin");
+  const [roles, setRoles] = useState([]);
   const [data1, setData] = useState([]);
   const [sumValue, setSumVal] = useState({
-    creditsum: 0.00,
-    profitsum: 0.00,
-    balancesum: 0.00,
-    exposuresum: 0.00,
-    availablebalancesum: 0.00
-  })
+    creditsum: 0.0,
+    profitsum: 0.0,
+    balancesum: 0.0,
+    exposuresum: 0.0,
+    availablebalancesum: 0.0,
+  });
   async function getListOfUser() {
-    let { axios } = setRole()
+    let { axios } = setRole();
     try {
-      const { data } = await axios.get(`/fair-game-wallet/getAllUser?&page=${currentPage}&limit=${pageLimit}`);
+      const { data } = await axios.get(
+        `/fair-game-wallet/getAllUser?&page=${currentPage}&limit=${pageLimit}`
+      );
       data?.data?.data.map((element) => {
-        let roleDetail = roles.find(findThisRole)
+        let roleDetail = roles.find(findThisRole);
         function findThisRole(role) {
-          return role.id === element.roleId
+          return role.id === element.roleId;
         }
-        element.role = roleDetail?.roleName
-      })
-      setData(data?.data?.data)
-      setPageCount(Math.ceil(parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) / pageLimit));
+        element.role = roleDetail?.roleName;
+      });
+      setData(data?.data?.data);
+      setPageCount(
+        Math.ceil(
+          parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
+            pageLimit
+        )
+      );
     } catch (e) {
       console.log(e);
     }
     // /fair-game-wallet/getLogUserAggregateData
     try {
-      const { data } = await axios.get(`/fair-game-wallet/getLogUserAggregateData`);
-      setSumVal({...data?.data, availablebalancesum:data?.data?.balancesum-data?.data?.exposuresum})
+      const { data } = await axios.get(
+        `/fair-game-wallet/getLogUserAggregateData`
+      );
+      setSumVal({
+        ...data?.data,
+        availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
-  const [pageCount, setPageCount] = useState(10)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageLimit, setPageLimit] = useState(5)
+  const [pageCount, setPageCount] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(5);
 
   function callPage(val) {
-    setCurrentPage(parseInt(val))
+    setCurrentPage(parseInt(val));
   }
 
   async function getRoles() {
-    setRoles(JSON.parse(localStorage.getItem('allRoles')))
+    setRoles(JSON.parse(localStorage.getItem("allRoles")));
   }
 
   useEffect(() => {
     getRoles();
     getListOfUser();
-  }, [currentPage, pageCount]);
+  }, [currentPage, pageCount, userAdmin?.access_token]);
 
   return (
     <>
@@ -157,7 +173,9 @@ const Footer = ({ currentPage, pages, callPage }) => {
             borderRadius: "5px",
           }}
           onClick={() => {
-            callPage(parseInt(currentPage) - 1 === 0 ? 1 : parseInt(currentPage) - 1)
+            callPage(
+              parseInt(currentPage) - 1 === 0 ? 1 : parseInt(currentPage) - 1
+            );
           }}
         >
           <Typography
@@ -201,7 +219,11 @@ const Footer = ({ currentPage, pages, callPage }) => {
             alignItems: "center",
           }}
           onClick={() => {
-            callPage(parseInt(currentPage) === pages ? pages : parseInt(currentPage) + 1)
+            callPage(
+              parseInt(currentPage) === pages
+                ? pages
+                : parseInt(currentPage) + 1
+            );
           }}
         >
           <Typography
@@ -522,12 +544,14 @@ const ListSubHeaderT = ({ data }) => {
           width: "11.5vw",
           display: "flex",
           paddingLeft: "10px",
-          background: `${data?.profitsum >= 0 ? '#27AC1E' : '#E32A2A'}`,
+          background: `${data?.profitsum >= 0 ? "#27AC1E" : "#E32A2A"}`,
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
         }}
-      > {/* element.profit_loss >= 0 ? '#27AC1E' : '#E32A2A'*/}
+      >
+        {" "}
+        {/* element.profit_loss >= 0 ? '#27AC1E' : '#E32A2A'*/}
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
@@ -645,12 +669,12 @@ const Row = ({
   fContainerStyle,
   fTextStyle,
   profit,
-  element
+  element,
 }) => {
   const [userModal, setUserModal] = useState({});
   const [showUserModal, setShowUserModal] = useState(false);
-  const [showModalMessage, setShowModalMessage] = useState('')
-  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showModalMessage, setShowModalMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const prevElement = {
     credit_refer: element.credit_refer,
     balance: element.balance,
@@ -660,21 +684,21 @@ const Row = ({
     exposure_limit: element.exposure_limit,
     userName: element.userName,
     bet_blocked: element.bet_blocked,
-    all_blocked: element.all_blocked
-  }
-  const [elementToUDM, setElementToUDM] = useState(prevElement)
+    all_blocked: element.all_blocked,
+  };
+  const [elementToUDM, setElementToUDM] = useState(prevElement);
   function handleSetUDM(val) {
-    setElementToUDM(val)
+    setElementToUDM(val);
   }
   function checkIfElementUpdated(val) {
-    setElementToUDM(val)
+    setElementToUDM(val);
   }
-  useEffect(()=>{
-    checkIfElementUpdated(prevElement)
-  },[element.userName])
+  useEffect(() => {
+    checkIfElementUpdated(prevElement);
+  }, [element.userName]);
   const handleChangeShowModalSuccess = (val) => {
-    setShowSuccessModal(val)
-  }
+    setShowSuccessModal(val);
+  };
   // checkIfElementUpdated()
   return (
     <>
@@ -694,7 +718,7 @@ const Row = ({
         <Box
           onClick={() => {
             if (!showUserModal) {
-              setUserModal(element)
+              setUserModal(element);
             } else {
               setUserModal();
               handleSetUDM(prevElement);
@@ -895,7 +919,15 @@ const Row = ({
           prevElement={prevElement}
         />
       )}
-      {showSuccessModal && <Modal message={showModalMessage} setShowSuccessModal={handleChangeShowModalSuccess} showSuccessModal={showSuccessModal} buttonMessage={'OK'} navigateTo={'list_of_clients'} />}
+      {showSuccessModal && (
+        <Modal
+          message={showModalMessage}
+          setShowSuccessModal={handleChangeShowModalSuccess}
+          showSuccessModal={showSuccessModal}
+          buttonMessage={"OK"}
+          navigateTo={"list_of_clients"}
+        />
+      )}
     </>
   );
 };

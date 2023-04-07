@@ -33,7 +33,7 @@ export default function Matches() {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const activeTab = useSelector((state) => state.betplace)?.activeTab;
+  const {activeTab} = useSelector((state) => state.betPlace);
   const { tokenUser } = useContext(AuthContext);
   useEffect(() => {
     if (tokenUser != localStorage.getItem("JWTuser")) {
@@ -47,6 +47,7 @@ export default function Matches() {
       setFlag(true);
     }
   }, [activeTab]);
+  console.log(activeTab,"activeTab")
 
   const Matches = () => {
     const [id, setId] = useState("");
@@ -276,6 +277,8 @@ export default function Matches() {
       // })
       // return () => newSocket.off();
     }, [marketId])
+
+   console.log(allBetsData,"allBetsData")
     return (
       <Box
         sx={{
@@ -289,7 +292,7 @@ export default function Matches() {
         }}
       >
         <EventListing setSelected={setSelected} selected={activeTab} />
-        <BetPlaced visible={visible} setVisible={setVisible} />
+        <BetPlaced visible={visible} setVisible={setVisible} />       
         {matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
           <div
             style={{

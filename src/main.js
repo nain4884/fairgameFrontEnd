@@ -11,8 +11,8 @@ import Login from "./pages/login"
 import { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { apiBasePath } from "./components/helper/constants"
-import { setRole } from "./components/helper/SetRole"
 import { AuthProvider } from "./Authprovider"
+import { setRole } from "./components/helper/SetRole"
 
 const Main = () => {
   const [loginRole, setLoginRole] = useState("");

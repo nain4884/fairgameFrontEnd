@@ -27,7 +27,7 @@ const FairGameWalletRoutes = () => {
   return (
     <>
       <CustomHeader />
-      <Routes>
+      <Routes forceRefresh={true}>
         <Route path="/list_of_clients" element={<Home />} />
         <Route
           exact

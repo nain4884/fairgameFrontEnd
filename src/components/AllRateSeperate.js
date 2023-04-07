@@ -4,6 +4,7 @@ import { ArrowDown, DELETE, MyBet } from "../assets";
 import userAxios from "../axios/userAxios";
 import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import StyledImage from "./StyledImage";
+import { useSelector } from "react-redux";
 const data = [
   {
     title: "Bookmaker",
@@ -23,6 +24,8 @@ const data = [
   },
 ];
 const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
+  const user = useSelector((state) => state?.rootReducer?.user);
+  console.log(user,"user")
   const [allRateBets, setAllRateBets] = useState([]);
 
   function doEmptyGetAllBets() {
@@ -31,7 +34,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
   useEffect(() => {
     doEmptyGetAllBets();
     getAllBetsData();
-  }, [allBetsData]);
+  }, [allBetsData,]);
 
   async function getAllBetsData() {
     let allRateBetsTemp = [];
@@ -45,6 +48,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
       Bets.map(async (element) => {
         let payload = {
           match_id: element.match_id,
+          user_id:user?.id
         };
         try {
           let { data } = await userAxios.post(
@@ -297,7 +301,7 @@ const RowComponent = ({ header, data }) => {
         <>
           <SingleBox
             color={getColor}
-            data={data.title}
+            data={data?.marketType}
             first={true}
             header={header}
           />
@@ -353,11 +357,8 @@ const SingleBox = ({ data, header, color, up, first }) => {
               textAlign: "center",
             }}
           >
-            {"MATCH"}
-            <span style={{ fontSize: "8px" }}>
-              <br />
-              odds
-            </span>
+         
+             {data}
           </Typography>
         )}
       </Box>

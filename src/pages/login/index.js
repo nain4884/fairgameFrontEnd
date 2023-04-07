@@ -10,6 +10,8 @@ import axios from '../../axios/axios';
 import { apiBasePath, LoginServerError } from '../../components/helper/constants';
 import OTPInput, { ResendOTP } from "otp-input-react";
 import { setActiveRole } from '../../store/activeRole';
+import { userActions } from '../../newStore/Actions/userActions';
+import { signIn } from '../../newStore/reducers/auth';
 
 export default function Login() {
     const theme = useTheme()
@@ -78,28 +80,37 @@ export default function Login() {
         )
     }
 
-    const handleNavigate = (path, type) => {
+
+    async function getToken(val) {
+        try {
+          const token = await localStorage.getItem(val);
+          return token;
+        } catch (error) {
+          console.log('Error fetching token from local storage:', error);
+        }
+      }
+    const handleNavigate =async (path, type) => {
         // Set a timeout for 2 seconds before navigating
+        
         let token = ''
-        setTimeout(() => {
             switch (type) {
-                case 'master':
-                    token = localStorage.getItem('JWTmaster')
+                case 'master':                    
+                    token =  getToken("JWTmaster")
                     break;
                 case 'expert':
-                    token = localStorage.getItem('JWTexpert')
+                    token =  getToken('JWTexpert')
                     break;
                 case 'user':
-                    token = localStorage.getItem('JWTuser')
-                    break;
+                    token =  getToken('JWTuser')
+                    break
                 case 'admin':
-                    token = localStorage.getItem('JWTadmin')
+                    token =  getToken('JWTadmin')
                     break;
             }
-            if (token != '') {
+            if(token !== '') {
                 navigate(path);
             }
-        }, 0);
+      
     };
 
     async function loginToAccount() {
@@ -120,7 +131,8 @@ export default function Login() {
                 if (roleDetail) data.data.role = roleDetail
                 if (data.message === "User login successfully.") {
                     dispatch(setActiveRole(foundRoles.data));
-                    dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+                    // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+                    dispatch(signIn(data.data));
                     switch (data.data.role.roleName) {
                         case "master":
                             handleNavigate('/master/list_of_clients', 'master')

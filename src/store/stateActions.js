@@ -8,10 +8,10 @@ export let stateActions = {
 			payload: { role, jwt, isTransPasswordCreated }
 		}
 	},
-	setBalance: (amount, role, exposure ) => {
+	setBalance: (payload ) => {
 		return {
 			type: 'SET_BAL',
-			payload: { amount, role, exposure: exposure ? exposure : 0 }
+			payload: payload
 		}
 	},
 	setMatchDetails: (payload ) => {

@@ -206,7 +206,7 @@ const AddAccount = () => {
     const setDownParterShipVal = (val1, val2) => {
         let val3 = 100 - val1 - val2
         setDetail({
-            ...Detail, [12]: {
+            ...Detail, 12: {
                 ...Detail[12],
                 val: parseInt(val3)
             }
@@ -244,13 +244,13 @@ const AddAccount = () => {
                 break;
         }
         setDetail({
-            ...Detail, [10]: {
+            ...Detail, 10: {
                 ...Detail[10],
                 val: thisUplinePertnerShip
             }
         })
         setError({
-            ...error, [10]: {
+            ...error, 10: {
                 ...error[10],
                 val: false
             }
@@ -283,7 +283,7 @@ const AddAccount = () => {
             const { data } = await axiosRolesToUse?.axios.post(`fair-game-wallet/checkUserExist`, body)
             if (data.data.exist === true) {
                 setError({
-                    ...error, [1]: {
+                    ...error, 1: {
                         ...error[1],
                         val: true
                     }
