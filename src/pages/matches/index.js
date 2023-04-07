@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { CustomHeader, MatchOdds, SideBar } from "../../components";
+import { CustomHeader, DailogModal, MatchOdds, SideBar } from "../../components";
 import EventListing from "../../components/EventListing";
 import MatchesComponent from "../../components/Matches/Matches";
 import { useMediaQuery, useTheme } from "@mui/material";
@@ -787,6 +787,7 @@ export default function Matches() {
           </Box>
         </>
       )}
+      {/* <DailogModal /> */}
     </div>
   );
 }
