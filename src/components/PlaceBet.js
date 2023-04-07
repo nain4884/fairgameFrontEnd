@@ -144,7 +144,6 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             payload.rate_percent = data?.rate_percent
             payload.marketType = data?.bet_condition
             payload.odds = selectedValue
-            payload.team_bet = 'aus' //team is not sent / selected from the user
         }
         return payload
     }

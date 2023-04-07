@@ -11,26 +11,57 @@ const DropDownSimple = ({ valued, title, data, containerStyle, titleStyle, value
             <Box sx={{ width: '100%', height: '1px', background: '#DEDEDE' }} ></Box>
         )
     }
-    const Item = ({ item, mId, matchesSelect }) => {
+    const Item = ({ item, mId, matchesSelect, eventDetail }) => {
         return (
             <>
                 <Typography onClick={() => {
                     setValue(item)
-                    setDetail({
-                        ...Detail, [place]: {
-                            ...Detail[place],
-                            val: item
-                        }
-                    })
+                    function setDetailWithRunners() {
+                        let allrunners = []
+                        eventDetail.Runners.map((runner)=>{
+                            allrunners.push(runner.RunnerName)
+                        })
+                        console.log('eventDetail.eventDate',eventDetail.EventDate)
+                        setDetail({
+                            ...Detail, [place]: {
+                                ...Detail[place],
+                                val: item
+                            },
+                            [2]: {
+                                ...Detail[2],
+                                val: new Date(eventDetail.EventDate)
+                            },
+                            [9]: {
+                                ...Detail[9],
+                                val: allrunners[0]
+                            },
+                            [13]: {
+                                ...Detail[13],
+                                val: allrunners[1]
+                            },
+                            [17]: {
+                                ...Detail[17],
+                                val: allrunners[2] ? allrunners[2] : ""
+                            }
+                        })
+                    }
+                    {
+                        eventDetail ? setDetailWithRunners() : setDetail({
+                            ...Detail, [place]: {
+                                ...Detail[place],
+                                val: item
+                            }
+                        })
+                    }
                     matchesSelect && setMarketId(mId)
                     setOpen(false)
                 }} sx={[{ paddingY: '4px', paddingLeft: '7px', fontSize: '10px', fontWeight: '500', color: 'black', background: item == Detail[place].val && '#DEDEDE' }, dropDownTextStyle]}>{item}</Typography>
             </>
         )
     }
-    const Block = ({ i, mId, matchesSelect }) => {
+    const Block = ({ i, mId, matchesSelect, eventDetail }) => {
         return (
-            <Item item={i} mId={mId} matchesSelect={matchesSelect} />
+            <Item item={i} mId={mId} matchesSelect={matchesSelect} eventDetail={eventDetail} />
         )
     }
     return (
@@ -45,7 +76,7 @@ const DropDownSimple = ({ valued, title, data, containerStyle, titleStyle, value
             {open && <Box sx={[{ display: 'flex', flexDirection: 'column', background: 'white', width: '18.7%', alignSelf: 'center', borderRadius: '2px', marginTop: '2px', position: 'absolute', borderRadius: '3px', border: '2px solid #DEDEDE', zIndex: 9999 }, dropDownStyle]} >
                 {matchesSelect ? data.map((i) => {
                     return (
-                        <Block i={i.EventName} mId={i.MarketId} matchesSelect={matchesSelect} />
+                        <Block i={i.EventName} mId={i.MarketId} matchesSelect={matchesSelect} eventDetail={i.EventDetail} />
                     )
                 }) : data.map((i) => {
                     return (
