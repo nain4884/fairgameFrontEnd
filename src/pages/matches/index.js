@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { CustomHeader, MatchOdds, SideBar } from "../../components";
+import { CustomHeader, DailogModal, MatchOdds, SideBar } from "../../components";
 import EventListing from "../../components/EventListing";
 import MatchesComponent from "../../components/Matches/Matches";
 import { useMediaQuery, useTheme } from "@mui/material";
@@ -175,7 +175,7 @@ export default function Matches() {
         teamB: "-1000000",
       },
     });
-    const socket = useContext(SocketContext);
+    const {socket} = useContext(SocketContext);
     const { axios, role } = setRole();
     useEffect(() => {
       if (socket && socket.connected) {
@@ -194,7 +194,6 @@ export default function Matches() {
             teamA: data.teamA_rate,
             teamB: data.teamB_rate,
           };
-
           setMatchOddsRates((prev) => ({
             ...prev,
             manualBookmaker,
@@ -205,7 +204,6 @@ export default function Matches() {
           dispatch(
             stateActions.setBalance(data.newBalance, role, data.exposure)
           );
-          // setAllBetRates((prev) => [...prev, data]);
         });
       }
     }, [socket]);
@@ -789,6 +787,7 @@ export default function Matches() {
           </Box>
         </>
       )}
+      {/* <DailogModal /> */}
     </div>
   );
 }
