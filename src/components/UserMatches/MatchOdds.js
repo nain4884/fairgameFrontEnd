@@ -69,7 +69,7 @@ const SmallBoxSeason = ({ color }) => {
   );
 };
 
-const SeasonMarketBox = ({ index, typeOfBet, data }) => {
+const SeasonMarketBox = ({ index, typeOfBet, data, mainData }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
@@ -141,6 +141,7 @@ const SeasonMarketBox = ({ index, typeOfBet, data }) => {
           type={{ color: "#FFB5B5", type: "YN" }}
           typeOfBet={typeOfBet}
           data={data}
+          mainData={mainData}
         />
         <Box sx={{ width: ".45%", display: "flex", background: "pink" }}></Box>
         <SeprateBox
@@ -154,6 +155,7 @@ const SeasonMarketBox = ({ index, typeOfBet, data }) => {
           type={{ color: "#A7DCFF", type: "YN" }}
           typeOfBet={typeOfBet}
           data={data}
+          mainData={mainData}
         />
         <Box sx={{ width: ".45%", display: "flex", background: "pink" }}></Box>
         {!matchesMobile && (
@@ -874,7 +876,7 @@ const SessionMarket = ({ data }) => {
             data.matchSessionData.map((element) => {
               return (
                 <>
-                  <SeasonMarketBox typeOfBet={"Session"} data={element} />
+                  <SeasonMarketBox typeOfBet={"Session"} data={element} mainData={data} />
                   <Divider />
                 </>
               );

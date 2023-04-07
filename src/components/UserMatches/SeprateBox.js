@@ -32,6 +32,7 @@ const SeprateBox = ({
     name,
     data,
     typeOfBet,
+    mainData
   }) => {
     const theme = useTheme();
     const { axios } = setRole();
@@ -195,8 +196,6 @@ const SeprateBox = ({
               >
                 <PlaceBet
                   name={name}
-
-                  // refs={innerRef}
                   onSubmit={async (payload) => {
                     try {
                       console.log(payload, "payload");
@@ -231,6 +230,7 @@ const SeprateBox = ({
                   type={type}
                   data={data}
                   typeOfBet={typeOfBet}
+                  mainData={mainData}
                 />
               </Box>
             </>

@@ -2,7 +2,6 @@ import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import { Lock } from "../../assets";
-import { makeStyles } from "@mui/styles";
 
 const SeparateBox = ({ color, empty, value, value2, lock }) => {
   const theme = useTheme();

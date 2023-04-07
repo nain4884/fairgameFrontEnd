@@ -275,9 +275,7 @@ export default function Matches() {
       //   console.log("marketRate Response", data);
       // })
       // return () => newSocket.off();
-    }, [marketId]);
-
-    console.log(sessionbets, allBetRates, "TTTT");
+    }, [marketId])
     return (
       <Box
         sx={{

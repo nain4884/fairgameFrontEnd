@@ -21,16 +21,8 @@ export const SocketProvider = ({ children }) => {
     });
 
     newSocket.on("connect", () => {
-      // console.log("newSocket: " ,newSocket)
       setSocket(newSocket);
     });
-    // setTimeout(() => {
-    //   console.log("newSocket  ", newSocket);
-    //   newSocket.emit("newMessage", "ping");
-    //   newSocket.on("newMessage", (value) => {
-    //     console.log("value", value);
-    //   });
-    // }, 3000);
   }, [token]);
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
