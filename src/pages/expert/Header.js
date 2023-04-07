@@ -50,7 +50,7 @@ const CustomHeader = ({ }) => {
     if (location.pathname.includes("home1")) {
       dispatch(setSelected(0))
     } else if (location.pathname.includes("match")) {
-      dispatch(setSelected(1))
+      dispatch(setSelected(null))
     } else if (location.pathname.includes("betodds")) {
       dispatch(setSelected(2))
     }
@@ -130,18 +130,15 @@ const CustomHeader = ({ }) => {
                 }} title={"MATCH LIST"} boxStyle={{ backgroundColor: window.location.pathname.split('/')[2] == 'match' ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: window.location.pathname.split('/')[2] == 'match' ? "green" : "white" }} />}
             </>
             }
-
             {activeUser != 1 && activeUser !== '2' && <><ButtonHead selected={currentSelected == 2} onClick={(e) => {
               dispatch(setSelected(2))
               navigate("/expert/betodds")
             }} title={"BETFAIR ODDS"} boxStyle={{ backgroundColor: currentSelected == 2 ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: currentSelected == 2 ? "green" : "white" }} />
               <ButtonHead onClick={() => {
                 dispatch(setSelected(3))
-
               }} title={"MANUAL BOOKMAKER"} boxStyle={{ backgroundColor: currentSelected == 3 ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: currentSelected == 3 ? "green" : "white" }} />
               <ButtonHead onClick={() => {
                 dispatch(setSelected(4))
-
               }} title={"MANUAL SESSION"} boxStyle={{ backgroundColor: currentSelected == 4 ? "white" : "transparent", py: "5px", borderRadius: "5px", marginLeft: "15px" }} titleStyle={{ color: currentSelected == 4 ? "green" : "white" }} />
             </>
             }
@@ -287,9 +284,7 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose, all
 const BoxProfile = ({ image, value, containerStyle, value1 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -301,8 +296,6 @@ const BoxProfile = ({ image, value, containerStyle, value1 }) => {
     setAnchorEl(0);
     typeof val == "string" &&
       navigate(`/${window.location.pathname.split("/")[1]}/${val}`);
-    // dispatch(stateActions.logout("role3"));
-    // navigate(`/`);
   };
   return (
     <>
