@@ -16,6 +16,7 @@ import SessionResultModal from "../../components/SessionResultModal"
 import AddNotificationModal from "../../components/AddNotificationModal"
 import CustomHeader from "./Header"
 import { SocketContext } from "../../context/socketContext"
+import { useLocation } from "react-router-dom"
 const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
@@ -74,7 +75,9 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
 
 const MatchScreen = ({ }) => {
     const [data, setData] = useState([])
-    const socket = useContext(SocketContext);
+    const {socket, socketMicro} = useContext(SocketContext);
+    const {state} = useLocation()
+    console.log('state',state,socketMicro)
     const Divider = () => {
         return (
             <Box sx={{ width: '100%', background: 'rgba(211,211,211)', height: '.5px' }} ></Box>
@@ -85,7 +88,13 @@ const MatchScreen = ({ }) => {
             console.log("Connected", socket);
             socket.emit("bookMakerRateLive", { id: "009317b2-eb7c-4b6f-b74b-a1ea5a4f4b97" })
         }
-    }, [socket]); 
+        if(socketMicro && socketMicro.connected) {
+            socketMicro.emit('init',{id:state?.marketId})
+            socketMicro.on('matchOdds', (val)=>{
+                console.log('val',val)
+            })
+        }
+    }, [socket, socketMicro]); 
     const BoxComponent = ({ name, color, align, lock }) => {
         const theme = useTheme()
         const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))

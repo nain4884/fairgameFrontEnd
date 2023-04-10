@@ -242,12 +242,12 @@ const MenutItemsComponent = ({ x, selected, index, setSelected, handleClose, all
         if (event.id == x.id)
           return (
             <>
-              <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Current Live Session" : "Current Live Bookmaker"}</Typography>
+              {event.bettings.length>0 && <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Current Live Session" : "Current Live Bookmaker"}</Typography>}
               {event.bettings.map(element => {
                 return (
                   <Box onClick={(e) => {
                     if (activeUser == '1') {
-                      navigate("/expert/live", { state: { createSession: true, match: x, sessionEvent: element } })
+                      navigate("/expert/live", { state: { createSession: false, match: x, sessionEvent: element } })
                     }
                     else if (activeUser == '2') {
                       navigate("/expert/market")

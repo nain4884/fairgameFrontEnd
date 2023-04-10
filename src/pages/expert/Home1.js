@@ -12,6 +12,8 @@ import DropDownSimple from "../../components/DropdownSimple";
 import { defaultMarketId, matchType } from "../../components/helper/constants";
 import expertAxios from "../../axios/expertAxios";
 import microServiceAxios from "../../axios/microServiceAxios";
+import { setDailogData } from "../../store/dailogModal";
+import { useDispatch } from "react-redux";
 const containerStyles = {
     marginTop: "10px"
 }
@@ -25,20 +27,20 @@ const stateDetail = {
     3: { field: "betfair_match_max_bet", val: "" },
     4: { field: "bookmaker_manual_max_bet", val: "" },
     5: { field: "title", val: "" },
-    6: { field: "matchImage", val: 0 },
+    6: { field: "matchImage", val: "" },
     7: { field: "betfair_session_min_bet", val: "" },
-    8: { field: "bookmaker_manual_min_bet", val: 0 },
+    8: { field: "bookmaker_manual_min_bet", val: "" },
     9: { field: "teamA", val: "" },
-    10: { field: "teamA_Image", val: 0 },
-    11: { field: "betfair_session_max_bet", val: 0 },
-    12: { field: "betfair_bookmaker_min_bet", val: 0 },
+    10: { field: "teamA_Image", val: "" },
+    11: { field: "betfair_session_max_bet", val: "" },
+    12: { field: "betfair_bookmaker_min_bet", val: "" },
     13: { field: "teamB", val: "" },
     14: { field: "teamB_Image", val: "" },
-    15: { field: "betfair_bookmaker_max_bet", val: 0 },
-    16: { field: "manaual_session_min_bet", val: 0 },
+    15: { field: "betfair_bookmaker_max_bet", val: "" },
+    16: { field: "manaual_session_min_bet", val: "" },
     17: { field: "teamC", val: "" },
-    18: { field: "betfair_match_min_bet", val: 0 },
-    19: { field: "manaual_session_max_bet", val: 0 },
+    18: { field: "betfair_match_min_bet", val: "" },
+    19: { field: "manaual_session_max_bet", val: "" },
     20: { field: "marketId", val: "" }
 }
 
@@ -92,7 +94,7 @@ export default function Home1() {
             const { data } = await microServiceAxios.get(`/matchList?sports=${Detail[1].val}`);
             let matchesList = []
             data.forEach(match => {
-                matchesList.push({ EventName: match.EventName, MarketId: match.MarketId })
+                matchesList.push({ EventName: match.EventName, MarketId: match.MarketId, EventDetail: { EventDate: match.EventDate, Runners: match.Runners, Runnercount: match.Runnercount } })
             });
             setMatches(matchesList)
         } catch (e) {
@@ -102,6 +104,7 @@ export default function Home1() {
 
     useEffect(() => {
         getAllLiveMatches()
+        console.log('Detail[2].val', Detail[2].val)
     }, [Detail[1].val])
 
     const [showMatch, setShowMatch] = useState(false)
@@ -207,7 +210,7 @@ const ShowComponent = ({ InputValType, value, valueContainerStyle, valueStyle, i
             return (
                 <Box sx={[{ height: "35px", borderRadius: "5px", px: "10px", display: "flex", alignItems: "center", justifyContent: "space-between", background: "white" }, valueContainerStyle]}>
                     {/* <Input containerStyle={containerStyles} placeholder="1,000,000,000" titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Credit Reference"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={8} type={"Number"} /> */}
-                    <Input placeholder={`${value}`} containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} type={type} onChange={(e) => {
+                    <Input placeholder={`${value}`} value={DetailError.Detail[place].val} containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} type={type} onChange={(e) => {
                         DetailError.setDetail({
                             ...DetailError.Detail, [place]: {
                                 ...DetailError.Detail[place],
@@ -235,15 +238,18 @@ const ShowComponent = ({ InputValType, value, valueContainerStyle, valueStyle, i
             )
         case "DatePickerVal":
             return (
-                <DatePicker format="yyyy-MM-dd HH:mm" onChange={(e) => {
-                    console.log(e);
-                    DetailError.setDetail({
-                        ...DetailError.Detail, [place]: {
-                            ...DetailError.Detail[place],
-                            val: e.toString()
-                        }
-                    });
-                }} />
+                <DatePicker format="yyyy-MM-dd HH:mm"
+                    defaultValue={() => DetailError?.Detail[2]?.val ? new Date(DetailError?.Detail[2]?.val) : new Date} //(DetailError?.Detail[2]?.val)
+                    onChange={(e) => {
+                        console.log('e?.toString()', e?.toString())
+                        DetailError.setDetail({
+                            ...DetailError.Detail, [place]: {
+                                ...DetailError.Detail[place],
+                                val: e?.toString()
+                            }
+                        });
+                    }}
+                />
             )
         default:
             return (
@@ -323,7 +329,12 @@ const ListHeaderT = () => {
     )
 }
 
+
 const Row = ({ index, containerStyle, data }) => {
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const [updateMatchStatus, setUpdateMatchStatus] = useState({
         1: { field: "apiMatchActive", val: data?.apiMatchActive || false },
         2: { field: "apiBookMakerActive", val: data?.apiBookMakerActive || false },
@@ -331,6 +342,15 @@ const Row = ({ index, containerStyle, data }) => {
         5: { field: "manualSessionActive", val: data?.manualSessionActive || false },
         4: { field: "manualBookMakerActive", val: data?.manualBookMakerActive || false },
     })
+
+    function showDialogModal(isModalOpen, showRight, message, navigateTo, state) {
+        dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }))
+        setTimeout(() => {
+            dispatch(setDailogData({ isModalOpen: false }))
+            navigate(`/${window.location.pathname.split('/')[1]}/${navigateTo}`, state)
+        }, [2000])
+    }
+
     async function submitMatchUpdation() {
         let defaultMatchStatus = {
             apiMatchActive: false,
@@ -353,17 +373,18 @@ const Row = ({ index, containerStyle, data }) => {
         }
         try {
             let response = await expertAxios.post(`/game-match/updateMatchActiveStatus`, payload);
-            // if (response.data.message === "Match update successfully.") navigate('/expert/betodds')
+            if (response.data.message === "Match update successfully.") {
+                showDialogModal(true, true, response.data.message, 'betodds', { state: { id: data.id, marketId: data.marketId } })
+            }
         } catch (e) {
             console.log(e)
+            showDialogModal(true, false, e.response.data.message)
         }
     }
 
     const navigateToAddBet = () => {
         navigate('/expert/addBet', { state: { id: data.id, marketId: data.marketId, gameType: data.gameType } })
     }
-
-    const navigate = useNavigate()
     return (
         <Box sx={[{ display: "flex", height: "45px", background: "#FFE094", alignItems: "center", borderBottom: "2px solid white" }, containerStyle]}>
             <Box sx={{ display: "flex", width: "60px", paddingLeft: "10px", alignItems: "center", height: "45px", borderRight: "2px solid white" }}>
