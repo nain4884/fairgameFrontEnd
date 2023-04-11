@@ -12,6 +12,7 @@ import OTPInput, { ResendOTP } from "otp-input-react";
 import { setActiveRole } from '../../store/activeRole';
 import { userActions } from '../../newStore/Actions/userActions';
 import { signIn } from '../../newStore/reducers/auth';
+import { setCurrentUser } from '../../newStore/reducers/currentUser';
 
 export default function Login() {
     const theme = useTheme()
@@ -113,6 +114,25 @@ export default function Login() {
       
     };
 
+    async function getUserDetail() {
+        try {
+          const { data } = await axios.get("users/profile");
+    
+          // dispatch(
+          //   stateActions.setBalance(
+          //     data.data.current_balance || 0,
+          //     role,
+          //     data.data.exposure || 0,
+          //     data.data.id
+          //   )
+          // );
+          dispatch(setCurrentUser(data.data));
+          // setFullName(data.data.fullName);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
     async function loginToAccount() {
         // changeErrors()
         // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "") 
@@ -130,6 +150,7 @@ export default function Login() {
                 }
                 if (roleDetail) data.data.role = roleDetail
                 if (data.message === "User login successfully.") {
+                    getUserDetail()
                     dispatch(setActiveRole(foundRoles.data));
                     // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
                     dispatch(signIn(data.data));

@@ -6,7 +6,7 @@ import SeprateBox from "./SeprateBox";
 import { INDIA, PAKISTAN } from "../../assets";
 import Divider from "../helper/Divider";
 
-const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
+const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   let backValue,
@@ -109,8 +109,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
         >
           {!matchesMobile && (
             <SeprateBox
+              rates={allRates}
               value={`${backValue - 2}`}
-              value2={" 1cr+"}
+              value2={"  "}
               color={matchesMobile ? "white" : "#CEEBFF"}
               type={{ color: "#A7DCFF", type: "BL" }}
               name={name}
@@ -123,8 +124,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
           ></Box>
           {!matchesMobile && (
             <SeprateBox
+              rates={allRates}
               value={`${backValue - 1}`}
-              value2={" 1cr+"}
+              value2={"  "}
               color={matchesMobile ? "white" : "#C2E6FF"}
               type={{ color: "#A7DCFF", type: "BL" }}
               name={name}
@@ -137,8 +139,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
           ></Box>
           {backValue && (
             <SeprateBox
+              rates={allRates}
               value={`${backValue}`}
-              value2={" 1cr+"}
+              value2={"  "}
               color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
               type={{ color: "#A7DCFF", type: "BL" }}
               name={name}
@@ -151,8 +154,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
           ></Box>
           {layValue && (
             <SeprateBox
+              rates={allRates}
               value={`${layValue}`}
-              value2={" 1cr+"}
+              value2={"  "}
               color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
               type={{ color: "#FFB5B5", type: "BL" }}
               name={name}
@@ -165,8 +169,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
           ></Box>
           {!matchesMobile && (
             <SeprateBox
+              rates={allRates}
               value={`${layValue + 1}`}
-              value2={" 1cr+"}
+              value2={"  "}
               color={matchesMobile ? "white" : "#F2CBCB"}
               type={{ color: "#FFB5B5", type: "BL" }}
               name={name}
@@ -179,8 +184,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
           ></Box>
           {!matchesMobile && (
             <SeprateBox
+              rates={allRates}
               value={`${layValue + 2}`}
-              value2={" 1cr+"}
+              value2={"  "}
               color={matchesMobile ? "white" : "#ECD6D6"}
               type={{ color: "#FFB5B5", type: "BL" }}
               name={name}
@@ -221,8 +227,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
             >
               {!matchesMobile && (
                 <SeprateBox
+                  rates={allRates}
                   value={0}
-                  value2={" 1cr+"}
+                  value2={"  "}
                   color={matchesMobile ? "white" : "#CEEBFF"}
                   type={{ color: "#A7DCFF", type: "BL" }}
                   name={name}
@@ -235,8 +242,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
               ></Box>
               {!matchesMobile && (
                 <SeprateBox
+                  rates={allRates}
                   value={0}
-                  value2={" 1cr+"}
+                  value2={"  "}
                   color={matchesMobile ? "white" : "#C2E6FF"}
                   type={{ color: "#A7DCFF", type: "BL" }}
                   name={name}
@@ -248,8 +256,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
                 sx={{ width: ".25%", display: "flex", background: "pink" }}
               ></Box>
               <SeprateBox
+                rates={allRates}
                 value={0}
-                value2={" 1cr+"}
+                value2={"  "}
                 color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
                 type={{ color: "#A7DCFF", type: "BL" }}
                 name={name}
@@ -260,8 +269,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
                 sx={{ width: ".25%", display: "flex", background: "pink" }}
               ></Box>
               <SeprateBox
+                rates={allRates}
                 value={0}
-                value2={" 1cr+"}
+                value2={"  "}
                 color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
                 type={{ color: "#FFB5B5", type: "BL" }}
                 name={name}
@@ -273,8 +283,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
               ></Box>
               {!matchesMobile && (
                 <SeprateBox
+                  rates={allRates}
                   value={0}
-                  value2={" 1cr+"}
+                  value2={"  "}
                   color={matchesMobile ? "white" : "#F2CBCB"}
                   type={{ color: "#FFB5B5", type: "BL" }}
                   name={name}
@@ -287,8 +298,9 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate }) => {
               ></Box>
               {!matchesMobile && (
                 <SeprateBox
+                  rates={allRates}
                   value={0}
-                  value2={" 1cr+"}
+                  value2={"  "}
                   color={matchesMobile ? "white" : "#ECD6D6"}
                   type={{ color: "#FFB5B5", type: "BL" }}
                   name={name}

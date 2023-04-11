@@ -1,50 +1,82 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  manualBookMarker: {},
+  manualBookMarkerRates: {
+    teamA: "1000000",
+    teamB: "-1000000",
+  },
+  sessionRates: {
+    totalBets: 250,
+  },
   matchOdds: {},
   sessionOdds: {},
   allBetRates: [],
+  allSessionBets: [],
 };
 
 const matchDetails = createSlice({
   name: "matchDetails",
   initialState,
   reducers: {
-    setManualBookMarker: (state, action) => {
-        state.manualBookMarker = action.payload;
+    setManualBookMarkerRates: (state, action) => {
+      state.manualBookMarkerRates = action.payload;
     },
-    removeManualBookMarker: (state, action) => {
-      state.manualBookMarker = {};
+    removeManualBookMarkerRates: (state, action) => {
+      state.manualBookMarkerRates = {};
     },
     setMatchOdds: (state, action) => {
-        state.matchOdds = action.payload;
+      state.matchOdds = action.payload;
     },
     removeMatchOdds: (state, action) => {
-      state.matchOdds = {};
+      state.matchOdds = [];
     },
     setSessionOdds: (state, action) => {
-        state.sessionOdds = action.payload;
+      state.sessionOdds = action.payload;
     },
     removeSessionOdds: (state, action) => {
-      state.sessionOdds = {};
+      state.sessionOdds = [];
     },
-    setAllBetRates: (state, action) => {
-        state.allBetRates = action.payload;
+    setAllBetRate: (state, action) => {
+      state.allBetRates = action.payload;
+    },
+    setAddBetRates: (state, action) => {
+      // const body= [...state.items,action.payload];
+      // console.log(body,"BODY")
+      // state.allBetRates =body
+      return {
+        ...state,
+        data: [...state.allBetRates, action.payload],
+      };
     },
     removeAllBetRates: (state, action) => {
-      state.allBetRates = {};
+      state.allBetRates = [];
+    },
+    setAllSessionBets: (state, action) => {
+      state.allSessionBets = action.payload;
+    },
+    removeAllSessionBets: (state, action) => {
+      state.allSessionBets = [];
+    },
+
+    setSessionRates: (state, action) => {
+      state.sessionRates = action.payload;
     },
   },
 });
 
-export const { setManualBookMarker,
-    removeManualBookMarker,
-    setMatchOdds,
-    removeMatchOdds,
-    setSessionOdds,
-    removeSessionOdds,
-    setAllBetRates,
-    removeAllBetRates} = matchDetails.actions;
+export const {
+  setManualBookMarkerRates,
+  removeManualBookMarkerRates,
+  setMatchOdds,
+  removeMatchOdds,
+  setSessionOdds,
+  removeSessionOdds,
+  setAllBetRate,
+  removeAllBetRates,
+  setAddBetRates,
+  setAllSessionBets,
+  removeAllSessionBets,
+  setSessionRates,
+} = matchDetails.actions;
 
 export default matchDetails.reducer;

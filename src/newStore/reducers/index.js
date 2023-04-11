@@ -5,6 +5,7 @@ import activeUser from "./activeUser";
 import betPlace from "./betPlace";
 import matchDetails from "./matchDetails";
 import currentUser from "./currentUser";
+import expertMatchDetails from "./expertMatchDetails";
 
 export default combineReducers({
   auth: auth,
@@ -12,5 +13,6 @@ export default combineReducers({
   activeUser: activeUser,
   betPlace: betPlace,
   matchDetails: matchDetails,
-  currentUser: currentUser
+  currentUser: currentUser,
+  expertMatchDetails: expertMatchDetails
 });

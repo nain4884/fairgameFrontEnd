@@ -39,6 +39,12 @@ import Divider from "../helper/Divider";
 import Odds from "./Odds";
 const { axios } = setRole();
 
+const ITEM_HEIGHT = 36;
+const MOBILE_ITEM_HEIGHT = 48;
+
+const ITEM_PADDING_TOP = 8;
+const MENU_ITEMS = 3;
+
 const SmallBoxSeason = ({ color }) => {
   return (
     <Box
@@ -69,7 +75,7 @@ const SmallBoxSeason = ({ color }) => {
   );
 };
 
-const SeasonMarketBox = ({ index, typeOfBet, data, mainData }) => {
+const SeasonMarketBox = ({ index, typeOfBet, data, mainData, allRates }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
@@ -119,20 +125,21 @@ const SeasonMarketBox = ({ index, typeOfBet, data, mainData }) => {
             <Box
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
-            <SeprateBox po={2} color={"white"} />
+            <SeprateBox po={2} color={"white"} rates={allRates} />
             <Box
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
             <Box
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
-            <SeprateBox po={3} color={"white"} />
+            <SeprateBox po={3} color={"white"} rates={allRates} />
           </>
         )}
         <Box sx={{ width: ".45%", display: "flex", background: "pink" }}></Box>
         <SeprateBox po={6} color={"white"} />
         <SeprateBox
           po={2}
+          rates={allRates}
           session={true}
           value={data.no_rate}
           value2={data.rate_percent}
@@ -146,6 +153,7 @@ const SeasonMarketBox = ({ index, typeOfBet, data, mainData }) => {
         <Box sx={{ width: ".45%", display: "flex", background: "pink" }}></Box>
         <SeprateBox
           po={1}
+          rates={allRates}
           session={true}
           back={true}
           value={data.yes_rate}
@@ -163,11 +171,11 @@ const SeasonMarketBox = ({ index, typeOfBet, data, mainData }) => {
             <Box
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
-            <SeprateBox color={"white"} />
+            <SeprateBox color={"white"} rates={allRates} />
             <Box
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
-            <SeprateBox color={"white"} />
+            <SeprateBox color={"white"} rates={allRates} />
           </>
         )}
         {!matchesMobile && <PlaceBetComponentWeb amount={index == 2} />}
@@ -176,6 +184,7 @@ const SeasonMarketBox = ({ index, typeOfBet, data, mainData }) => {
   );
 };
 const PlaceBetComponent = ({ amount }) => {
+  const { sessionRates } = useSelector((state) => state?.matchDetails);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -187,6 +196,7 @@ const PlaceBetComponent = ({ amount }) => {
   const innerRef = useOuterClick((ev) => {
     setShow(false);
   });
+
 
   return (
     <Box sx={{ marginTop: "-8.4vw" }}>
@@ -229,7 +239,8 @@ const PlaceBetComponent = ({ amount }) => {
               color: "#FF4D4D",
             }}
           >
-            Total Bet : <span style={{ color: "#0B4F26" }}>250</span>
+            Total Bet :{" "}
+            <span style={{ color: "#0B4F26" }}>{sessionRates?.total_bet || 0}</span>
           </Typography>
         </Box>
         <Box sx={{ zIndex: 100 }}>
@@ -244,9 +255,10 @@ const PlaceBetComponent = ({ amount }) => {
           </Typography>
         </Box>
       </Box>
-      {show && (
+      {show  && (
         <DropdownMenu
           style={{ zIbnex: 10 }}
+          list={sessionRates?.betData}
           open={Boolean(anchorEl)}
           anchorEl={anchorEl}
           handleClose={handleClose}
@@ -256,6 +268,7 @@ const PlaceBetComponent = ({ amount }) => {
   );
 };
 const PlaceBetComponentWeb = ({ amount }) => {
+  const { sessionRates } = useSelector((state) => state?.matchDetails);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -267,6 +280,7 @@ const PlaceBetComponentWeb = ({ amount }) => {
   const innerRef = useOuterClick((ev) => {
     setShow(false);
   });
+  console.log(sessionRates, "sessionRatess");
   return (
     <>
       <Box
@@ -313,7 +327,7 @@ const PlaceBetComponentWeb = ({ amount }) => {
               color: "#0B4F26",
             }}
           >
-            250
+            {sessionRates?.total_bet || 0}
           </Typography>
         </Box>
         <Box
@@ -342,6 +356,7 @@ const PlaceBetComponentWeb = ({ amount }) => {
           <DropdownMenu
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}
+            list={sessionRates?.betData}
             handleClose={handleClose}
           />
         )}
@@ -360,7 +375,7 @@ const menutItems = [
   { title: "Security Auth Verfication" },
   { title: "Change Password" },
 ];
-const DropdownMenu = ({ anchorEl, open, handleClose }) => {
+const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -415,7 +430,86 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
             </Typography>
           </Box>
         </Box>
-        <Box
+   <Box sx={{maxHeight:"200px",overflowY:"scroll"}}>
+   {list?.length>0 ? list?.map((v) => {
+          const getColor = (value) => {
+            if (value > 1) {
+              return "#306A47";
+            } else if (value === v?.profit_loss && value > 1) {
+              return "#F8C851";
+            } else {
+              return "#DC3545";
+            }
+          };
+          const getSVG = (value) => {
+            if (value > 1) {
+              return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+            } else if (value === v?.profit_loss && value > 1) {
+              return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+            } else {
+              return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+            }
+          };
+          return (
+            <Box
+              key={v?.odds}
+              sx={{
+                display: "flex",
+                height: "25px",
+                borderTop: "1px solid #306A47",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "60px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#306A47",
+                    fontWeight: "bold",
+                    fontSize: "12px",
+                  }}
+                >
+                  {v?.odds}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  width: "90px",
+                  display: "flex",
+                  borderLeft: `1px solid #306A47`,
+                  background: getColor(v?.profit_loss),
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: "500",
+                    fontSize: "12px",
+                    color: "white",
+                  }}
+                >
+                  {v?.profit_loss}
+                </Typography>
+                <StyledImage
+                  src={getSVG(v?.profit_loss)}
+                  sx={{
+                    height: "15px",
+                    marginLeft: "5px",
+                    filter:
+                      "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                    width: "15px",
+                  }}
+                />
+              </Box>
+            </Box>
+          );
+        }) :  <> <Box
           sx={{
             display: "flex",
             height: "25px",
@@ -610,7 +704,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
                 color: "white",
               }}
             >
-              4,02,350
+              4,02,350f
             </Typography>
             <StyledImage
               src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
@@ -674,13 +768,15 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
               }}
             />
           </Box>
-        </Box>
+        </Box> </>}
+   </Box>
+ 
       </Box>
     </Box>
   );
 };
 
-const SessionMarket = ({ data }) => {
+const SessionMarket = ({ data, teamARates, teamBRates }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -876,7 +972,12 @@ const SessionMarket = ({ data }) => {
             data.matchSessionData.map((element) => {
               return (
                 <>
-                  <SeasonMarketBox typeOfBet={"Session"} data={element} mainData={data} />
+                  <SeasonMarketBox
+                    typeOfBet={"Session"}
+                    data={element}
+                    mainData={data}
+                    allRates={{ teamA: teamARates, teamB: teamBRates }}
+                  />
                   <Divider />
                 </>
               );
@@ -1092,6 +1193,8 @@ const SessionMarket = ({ data }) => {
 // };
 const MatchOdds = ({ data, matchOddsRates }) => {
   console.log("data.apiSessionActive", matchOddsRates?.matchOddsRates);
+  const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {data?.apiBookMakerActive && <BookMarketer data={data} />}
@@ -1131,8 +1234,8 @@ const MatchOdds = ({ data, matchOddsRates }) => {
           showDely={false}
           suspended={false}
           data={data}
-          teamARates={matchOddsRates?.manualBookmaker?.teamA}
-          teamBRates={matchOddsRates?.manualBookmaker?.teamB}
+          teamARates={manualBookMarkerRates?.teamA}
+          teamBRates={manualBookMarkerRates?.teamB}
           min={data?.bookmaker_manual_min_bet || 0}
           max={data?.bookmaker_manual_max_bet || 0}
           title={"Manual Bookmaker"}
@@ -1142,7 +1245,11 @@ const MatchOdds = ({ data, matchOddsRates }) => {
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
       {data?.apiSessionActive && data.matchSessionData.length > 0 && (
-        <SessionMarket data={data} />
+        <SessionMarket
+          data={data}
+          teamARates={manualBookMarkerRates?.teamA}
+          teamBRates={manualBookMarkerRates?.teamB}
+        />
       )}
     </Box>
   );

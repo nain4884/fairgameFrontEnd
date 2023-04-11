@@ -5,7 +5,7 @@ import { ArrowDown, CANCEL, CancelDark } from "../assets";
 import '../components/index.css'
 import StyledImage from "./StyledImage";
 import { useSelector } from 'react-redux'
-const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, isSessionYes, isBack, type, name, data, typeOfBet ,selectedValue, mainData}) => {
+const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, isSessionYes, isBack, type, name, data, typeOfBet ,selectedValue, mainData,rates}) => {
     const [defaultValue, setDefaultValue] = useState("")
     const theme = useTheme()
     const selectedColorBox = useSelector(state => state.selectedColorBox)?.value
@@ -33,7 +33,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             .catch(err => console.log(err))
     }
 
-    const BoxInput = ({ title, value, containerStyle, valueContainerStyle, valueTextStyle, trendingUp, trendingDown, setDefaultValue }) => {
+    const BoxInput = ({ title, containerStyle, valueContainerStyle, valueTextStyle, trendingUp, trendingDown, }) => {
         return (
             <Box sx={[{ display: "flex", flexDirection: "column", }, containerStyle]}>
                 <Box sx={{ background: "#262626", border: "1px solid #C7B6B6", display: "flex", justifyContent: "center", alignItems: "center", height: "25px" }}>
@@ -41,7 +41,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
                 </Box>
                 <Box sx={[{ background: "#0B4F26", display: "flex", justifyContent: "center", alignItems: "center", height: "37px", marginTop: "1px" }, valueContainerStyle]}>
                     <TextField
-                        value={value}
+                        value={defaultValue}
                         variant="standard"
                         InputProps={{
                             sx: {
@@ -52,7 +52,8 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
                             disableUnderline: true,
                             style: { fontSize: "16px", fontWeight: "600", color: "white" }
                         }}
-                        onChange={(e) => { setDefaultValue(e.target.value) }}
+                        onChange={(e) => { 
+                            setDefaultValue(e.target.value) }}
                         sx={{ textAlign: 'center', alignItems: 'center' }}
                     />
                 </Box>
@@ -98,10 +99,10 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
         )
     }
 
-    const MoneyBox = ({ color, trendingDown, trendingUp }) => {
+    const MoneyBox = ({ color, trendingDown,rate, trendingUp }) => {
         return (
             <Box sx={{ width: '100px', height: '25px', alignItems: 'center', justifyContent: 'center', background: color, borderRadius: '4px', display: 'flex' }} >
-                <Typography sx={{ fontSize: { mobile: '12px', laptop: "13px" }, fontWeight: '700', color: 'white' }} >10,00,000</Typography>
+                <Typography sx={{ fontSize: { mobile: '12px', laptop: "13px" }, fontWeight: '700', color: 'white' }} >{rate}</Typography>
                 {trendingUp && <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "20px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "20px" }} />}
                 {trendingDown && <StyledImage src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg" sx={{ height: "20px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "20px" }} />}
             </Box>
@@ -147,7 +148,6 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
         }
         return payload
     }
-    console.log('season ? ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "No" : "Yes") : ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "Lay" : "Back"))',season, ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "No" : "Yes"), ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "Lay" : "Back"))
     return (
         <Box ref={refs} sx={[{ display: 'flex', flexDirection: 'column', border: "1px solid white", borderRadius: "5px", marginLeft: season ? "40px" : 0, overflow: "hidden", width: { mobile: "90vw", laptop: '30vw' } }, matchesMobile ? { position: "absolute", right: back ? "-16.5vw" : "0vw" } : { position: "absolute", right: back ? "-16.5vw" : "0vw" }]} >
             <Box sx={{ background: "white", width: "100%", 'overflow': "hidden" }} >
@@ -156,9 +156,9 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
                 })]}>
                     <Typography sx={{ fontWeight: "bold", fontSize: "14px", color: "text.white" }}>Place Bet</Typography>
                     <Box sx={{ display: 'flex', marginRight: -'10px', alignItems: 'center' }}>
-                        <MoneyBox trendingUp={true} color={'#10DC61'} />
+                        <MoneyBox trendingUp={true} rate={rates?.teamA} color={'#10DC61'} />
                         <Box sx={{ width: '5px' }} ></Box>
-                        <MoneyBox trendingDown={true} color={'#FF4D4D'} />
+                        <MoneyBox trendingDown={true} rate={rates?.teamB} color={'#FF4D4D'} />
                         <Box sx={{ width: '5px' }} ></Box>
                         <StyledImage onClick={handleClose} src={CancelDark} sx={{ marginLeft: '5px', height: "25px", width: "25px" }} />
                     </Box>
@@ -168,7 +168,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
                     <TeamsOdssData input={true} title={"Odds"} value={"60.00"} containerStyle={{ marginLeft: "2px", flex: 1 }} />
                     <TeamsOdssData title={season ? "Yes/No" : "Back/Lay"} value={season ? ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "No" : "Yes") : ((selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB") ? "Lay" : "Back")} valueContainerStyle={{ background: type?.color }} containerStyle={{ marginLeft: "2px", flex: 1 }} />
                     {!matchesMobile && <Box sx={{ width: '20px' }} ></Box>}
-                    <BoxInput containerStyle={{ marginLeft: "2px", flex: 1.3 }} title={"Stake"} value={defaultValue} setDefaultValue={setDefaultValue} />
+                    <BoxInput containerStyle={{ marginLeft: "2px", flex: 1.3 }} title={"Stake"}  />
                 </Box>
                 {matchesMobile && <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }} />}
                 {

@@ -14,7 +14,8 @@ import { setRole } from "../../components/helper/SetRole";
 import { ThisUseModal } from "../../components/Modal";
 import expertAxios from "../../axios/expertAxios";
 import { logout } from "../../newStore/reducers/auth";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { removeCurrentUser, setCurrentUser } from "../../newStore/reducers/currentUser";
+import { setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme()
@@ -33,12 +34,14 @@ const CustomHeader = ({ }) => {
   const [allLiveEventSession, setAllLiveEventSession] = useState([])
   const [balance, setBalance] = useState(0)
   const [fullName, setFullName] = useState('')
+  const {currentUser} = useSelector((state) => state?.currentUser);
   async function getUserDetail(axios, role) {
     try {
       const { data } = await axios.get('users/profile');
-      setBalance(data.data.current_balance)
-      dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
-      setFullName(data.data.fullName)
+      dispatch(setCurrentUser(data.data));
+      // setBalance(data.data.current_balance)
+      // dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
+      // setFullName(data.data.fullName)
     } catch (e) {
       console.log(e)
     }
@@ -66,6 +69,7 @@ const CustomHeader = ({ }) => {
     try {
       let response = await axios.get(`/game-match/getAllMatch`);
       setAllMatch(response.data[0])
+      dispatch(setAllMatchs(response.data[0]))
     } catch (e) {
       console.log(e)
     }
@@ -153,7 +157,7 @@ const CustomHeader = ({ }) => {
             </Box>
             <Box>
               <ActiveUsers containerStyle={{}} image={Users} value={"73,689"} />
-              <BoxProfile containerStyle={{ marginTop: "5px" }} image={"https://picsum.photos/200/300"} value={activeUser == 1 ? "Session" : (activeUser == 2 ? "Bookmaker" : "Betfair")} value1={fullName} />
+              <BoxProfile containerStyle={{ marginTop: "5px" }} image={"https://picsum.photos/200/300"} value={activeUser == 1 ? "Session" : (activeUser == 2 ? "Bookmaker" : "Betfair")} value1={currentUser?.fullName || ""} />
             </Box>
           </Box>
         </Box>
@@ -299,6 +303,8 @@ const BoxProfile = ({ image, value, containerStyle, value1 }) => {
     typeof val == "string" &&
       navigate(`/${window.location.pathname.split("/")[1]}/${val}`);
   };
+
+  const {axios}=setRole()
   return (
     <>
       <Box
@@ -357,6 +363,7 @@ const BoxProfile = ({ image, value, containerStyle, value1 }) => {
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         handleClose={handleClose}
+        axios={axios}
       />
     </>
   );
@@ -375,6 +382,8 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
   const handleClose = () => {
     setAnchorEl(0);
   };
+
+  const {axios}=setRole()
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', minWidth: { laptop: "120px", } }}>
@@ -389,16 +398,17 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
           <StyledImage src={ArrowDown} sx={{ height: "6px", width: "10px", marginRight: '5px' }} />
         </Box>
       </Box>
-      <DropdownMenu open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} />
+      <DropdownMenu open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} axios={axios}/>
     </>
   )
 }
 const menutItems = [{ title: "Bet Odds", navigateTo: 'betodds' }, { title: "Market", navigateTo: 'market' }, { title: "Add Book Maker", navigateTo: 'add_book_maker' }, { title: "Add Match", navigateTo: 'add_match' }, { title: "Change Password" }]
-const DropdownMenu = ({ anchorEl, open, handleClose }) => {
+const DropdownMenu = ({ anchorEl, open, handleClose ,axios }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const logoutProcess = () => {
+  const logoutProcess = async () => {
     dispatch(logout({roleType:"role3"}));
+     await axios.get('auth/logout');
     removeCurrentUser()
     navigate("/")
     handleClose()

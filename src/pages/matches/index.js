@@ -1,6 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { CustomHeader, DailogModal, MatchOdds, SideBar } from "../../components";
+import {
+  CustomHeader,
+  DailogModal,
+  MatchOdds,
+  SideBar,
+} from "../../components";
 import EventListing from "../../components/EventListing";
 import MatchesComponent from "../../components/Matches/Matches";
 import { useMediaQuery, useTheme } from "@mui/material";
@@ -25,6 +30,19 @@ import { AuthContext } from "../../Authprovider";
 import { SocketContext } from "../../context/socketContext";
 import { setRole } from "../../components/helper/SetRole";
 import { stateActions } from "../../store/stateActions";
+import {
+  setAddBetRates,
+  setManualBookMarkerRates,
+  setAllSessionBets,
+  setAllBetRate,
+  setSessionRates,
+} from "../../newStore/reducers/matchDetails";
+import userAxios from "../../axios/userAxios";
+import { setCurrentUser } from "../../newStore/reducers/currentUser";
+
+let session = [];
+let bets = [];
+
 export default function Matches() {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
@@ -33,7 +51,7 @@ export default function Matches() {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const {activeTab} = useSelector((state) => state.betPlace);
+  const { activeTab } = useSelector((state) => state.betPlace);
   const { tokenUser } = useContext(AuthContext);
   useEffect(() => {
     if (tokenUser != localStorage.getItem("JWTuser")) {
@@ -47,7 +65,7 @@ export default function Matches() {
       setFlag(true);
     }
   }, [activeTab]);
-  console.log(activeTab,"activeTab")
+  console.log(activeTab, "activeTab");
 
   const Matches = () => {
     const [id, setId] = useState("");
@@ -154,14 +172,20 @@ export default function Matches() {
   const Home = () => {
     const location = useLocation();
     const dispatch = useDispatch();
-    const [allBetRates, setAllBetRates] = useState([]);
     const [sessionbets, setSessionBets] = useState([]);
+    const { allBetRates, allSessionBets } = useSelector(
+      (state) => state?.matchDetails
+    );
+    const [IObets, setIObtes] = useState(allBetRates);
+    // const [allBetRates, setAllBetRates] = useState([]);
     const id = location.state;
     const [matchDetail, setMatchDetail] = useState();
     const [matchOddsData, setMatchOddsData] = useState([]);
     const [matchSessionData, setMatchSessionData] = useState([]);
     const [allBetsData, setAllBetsData] = useState([]);
     const [marketId, setMarketId] = useState("");
+    const { currentUser } = useSelector((state) => state?.currentUser);
+
     const [matchOddsRates, setMatchOddsRates] = useState({
       matchOddsRates: {
         teamA: "1000000",
@@ -176,8 +200,10 @@ export default function Matches() {
         teamB: "-1000000",
       },
     });
-    const {socket} = useContext(SocketContext);
+    const { socket } = useContext(SocketContext);
+
     const { axios, role } = setRole();
+    
     useEffect(() => {
       if (socket && socket.connected) {
         console.log("Connected", socket);
@@ -185,26 +211,82 @@ export default function Matches() {
           console.log(value);
         });
         socket.on("session_bet", (data) => {
-          console.log("session Response", data);
-          setSessionBets((prev) => [...prev, data]);
+          console.log("SESSION Response", data);
+          const user = {
+            ...currentUser,
+            current_balance: data.newBalance,
+            exposure: data.exposure,
+          };
+
+          session = [...allSessionBets];
+          session.unshift(data?.betPlaceData);
+          //  console.log(session,"SDsdsdasdsa")
+          dispatch(setCurrentUser(user));
+          dispatch(setAllSessionBets(session));
+          dispatch(setSessionRates(data?.profitLoss));
         });
         socket.on("match_bet", (data) => {
-          getAllBetsData();
-          console.log("match Response", data);
-          const manualBookmaker = {
-            teamA: data.teamA_rate,
-            teamB: data.teamB_rate,
-          };
-          setMatchOddsRates((prev) => ({
-            ...prev,
-            manualBookmaker,
-          }));
-          dispatch(
-            stateActions.setMatchDetails(manualBookmaker)
-          );
-          dispatch(
-            stateActions.setBalance(data.newBalance, role, data.exposure)
-          );
+          try {
+            // getAllBets();
+            console.log(data, "MATCHH_BET",data?.betPlaceData?.match_id ,id);
+            if (data) {
+              const user = {
+                ...currentUser,
+                current_balance: data.newBalance,
+                exposure: data.exposure,
+              };
+              const manualBookmaker = {
+                teamA: data.teamA_rate,
+                teamB: data.teamB_rate,
+              };
+              const body = {
+                id: data?.betPlaceData?.id,
+                isActive: true,
+                createAt: data?.betPlaceData?.createdAt,
+                updateAt: data?.betPlaceData?.createdAt,
+                createdBy: null,
+                deletedAt: null,
+                user_id: null,
+                match_id: data?.betPlaceData?.match_id,
+                bet_id: data?.betPlaceData?.bet_id,
+                result: "pending",
+                team_bet: data?.betPlaceData?.team_bet,
+                odds: data?.betPlaceData?.odds,
+                win_amount: null,
+                loss_amount: null,
+                bet_type: data?.betPlaceData?.bet_type,
+                country: null,
+                ip_address: null,
+                rate: null,
+                marketType: data?.betPlaceData?.marketType,
+                amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+              };
+
+              if (data?.betPlaceData?.match_id === id) {
+                setIObtes((prev) => [body, ...prev]);
+              }
+
+              dispatch(setCurrentUser(user));
+              dispatch(setManualBookMarkerRates(manualBookmaker));
+            }
+          } catch (e) {
+            console.log("error", e?.message);
+          }
+          // // dispatch(setAllBetRates(allBetRates.push(body)));
+          // const manualBookmaker = {
+          //   teamA: data.teamA_rate,
+          //   teamB: data.teamB_rate,
+          // };
+          // setMatchOddsRates((prev) => ({
+          //   ...prev,
+          //   manualBookmaker,
+          // }));
+          // // dispatch(
+          // //   stateActions.setMatchDetails(manualBookmaker)
+          // // );
+          // dispatch(
+          //   stateActions.setBalance(data.newBalance, role, data.exposure)
+          // );
         });
       }
     }, [socket]);
@@ -235,15 +317,15 @@ export default function Matches() {
               return prev;
             });
           } else {
-            setAllBetRates((prev) => {
-              if (!prev.some((bet) => bet.id === element.id)) {
-                return [...prev, element];
-              }
-              return prev;
-            });
+            // setAllBetRates((prev) => {
+            //   if (!prev.some((bet) => bet.id === element.id)) {
+            //     return [...prev, element];
+            //   }
+            //   return prev;
+            // });
           }
         });
-        console.log(response.data, "sda");
+        // console.log(response.data, "sda");
       } catch (e) {
         console.log("response", e.response.data);
       }
@@ -260,13 +342,13 @@ export default function Matches() {
       }
     }
     useEffect(() => {
-      const matchDetails = window.localStorage.getItem("manual_bookmaker")
-      if(matchDetails!=null){
+      const matchDetails = window.localStorage.getItem("manual_bookmaker");
+      if (matchDetails != null) {
         console.log(matchDetails);
         // setMatchOddsRates(matchDetails)
       }
       getThisMatch(id);
-      getAllBetsData();   
+      getAllBetsData();
       // const newSocket = io.connect(`${microServiceApiPath}`, { trasports: ['websocket'] });
       // setSocket(newSocket)
       // newSocket.emit("init", { id: marketId })
@@ -274,9 +356,8 @@ export default function Matches() {
       //   console.log("marketRate Response", data);
       // })
       // return () => newSocket.off();
-    }, [marketId])
+    }, [marketId]);
 
-   console.log(allBetsData,"allBetsData")
     return (
       <Box
         sx={{
@@ -290,7 +371,7 @@ export default function Matches() {
         }}
       >
         <EventListing setSelected={setSelected} selected={activeTab} />
-        <BetPlaced visible={visible} setVisible={setVisible} />       
+        <BetPlaced visible={visible} setVisible={setVisible} />
         {matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
           <div
             style={{
@@ -325,10 +406,15 @@ export default function Matches() {
                 }}
               >
                 {matchDetail?.manualSessionActive && (
-                  <SessionBetSeperate allBetsData={allBetsData} mark />
+                  <SessionBetSeperate allBetsData={allSessionBets} mark />
                 )}
                 {allBetsData.length > 0 && (
-                  <AllRateSeperate allBetsData={allBetsData} mark />
+                  <AllRateSeperate
+                    allBetsData={IObets?.filter((v) =>
+                      ["MATCH ODDS"].includes(v.marketType)
+                    )}
+                    mark
+                  />
                 )}
               </Box>
               <LiveMatchHome />
@@ -354,9 +440,14 @@ export default function Matches() {
               <Box sx={{ width: "30%", paddingRight: "1%" }}>
                 <MatchComponent /> {/** Live scoreBoard */}
                 <LiveMatchHome /> {/* Poster */}
-                <AllRateSeperate allBetsData={allBetsData} mark />
+                <AllRateSeperate
+                  allBetsData={IObets?.filter((v) =>
+                    ["MATCH ODDS"]?.includes(v.marketType)
+                  )}
+                  mark
+                />
                 {matchDetail?.manualSessionActive && (
-                  <SessionBetSeperate allBetsData={allBetsData} mark />
+                  <SessionBetSeperate allBetsData={allSessionBets} mark />
                 )}
               </Box>
             </Box>
