@@ -5,7 +5,7 @@ import BoxComponent from "./BoxComponent";
 import Divider from "../helper/Divider";
 import { BallStart, Info, TIME } from "../../assets";
 
-const SmallBox = ({ color }) => {
+const SmallBox = ({ color ,value}) => {
   return (
     <Box
       sx={{
@@ -24,10 +24,10 @@ const SmallBox = ({ color }) => {
         sx={{
           fontSize: { laptop: "12px", mobile: "10px" },
           fontWeight: "bold",
-          color: color ? color : "#46e080",
+          color: value > 1  ? `#46e080` : `#FF9292`,
         }}
       >
-        +Book.60
+        {value > 1  ? `+Book ${value}` : `-Book ${value * -1}`}
       </Typography>
     </Box>
   );
@@ -63,6 +63,8 @@ const Odds = ({
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+  const bookRatio=Math.round(teamARates/teamBRates * 100) / 100 || 0;
   
   return (
     <Box
@@ -126,7 +128,7 @@ const Odds = ({
             justifyContent: "flex-end",
           }}
         >
-          <SmallBox />
+          <SmallBox  value={bookRatio}  />
           <Typography
             sx={{
               color: "white",
@@ -228,7 +230,8 @@ const Odds = ({
           <BoxComponent
             time={true}
             color={"#46e080"}
-            rate={teamARates}
+            allRates={{teamA:teamARates,teamB:teamBRates}}
+            rate={teamARates}        
             name={`${data?.teamA}`}
             data={data}
             team={"teamA"}
@@ -241,6 +244,7 @@ const Odds = ({
             name={`${data?.teamB}`}
             data={data}
             rate={teamBRates}
+            allRates={{teamA:teamARates,teamB:teamBRates}}
             team={"teamB"}
             typeOfBet={"Match"}
           />

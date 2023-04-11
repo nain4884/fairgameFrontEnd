@@ -12,11 +12,11 @@ import AddBet from "./AddBet"
 
 const ExportRoutes = () => {
   const { tokenExpert } = useContext(AuthContext);
-    useEffect(() => {
-        if (tokenExpert != localStorage.getItem('JWTexpert')) {
-            window.location.reload()
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (tokenExpert != localStorage.getItem('JWTexpert')) {
+    //         window.location.reload()
+    //     }
+    // }, [])
     return (
         <Routes forceRefresh={true}>
             <Route path="/home1" element={<Home1 />} />

@@ -12,6 +12,7 @@ import { Modal } from 'react-bootstrap';
 import { Lock } from '../../assets';
 import { useState } from 'react';
 import { setRole } from '../helper/SetRole';
+import { setAllBetRate } from '../../newStore/reducers/matchDetails';
 const PlaceBetType = {
     BackLay: "BackLay",
     YesNo: "YesNo",
@@ -32,7 +33,8 @@ const SeprateBox = ({
     name,
     data,
     typeOfBet,
-    mainData
+    mainData,
+    rates
   }) => {
     const theme = useTheme();
     const { axios } = setRole();
@@ -55,7 +57,7 @@ const SeprateBox = ({
       dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }))
       setTimeout(() => {
         dispatch(setDailogData({ isModalOpen: false }))
-        navigate(`/${window.location.pathname.split('/')[1]}`,{state:data.id})
+        // navigate(`/${window.location.pathname.split('/')[1]}`,{state:data.id})
       }, [2000])
       setShowModalMessage(message)
       
@@ -196,6 +198,7 @@ const SeprateBox = ({
               >
                 <PlaceBet
                   name={name}
+                  rates={rates}
                   onSubmit={async (payload) => {
                     try {
                       console.log(payload, "payload");
@@ -203,6 +206,8 @@ const SeprateBox = ({
                         `/betting/placeBet`,
                         payload
                       );
+                      // setAllRateBets(response?.data?.data[0])
+                      // dispatch(setAllBetRate(response?.data?.data[0]))
                       showDialogModal(isPopoverOpen,true,response.data.message)
                       
                       setVisible(true);

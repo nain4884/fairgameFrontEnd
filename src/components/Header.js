@@ -32,6 +32,7 @@ import { setRole } from "./helper/SetRole";
 import { userActions } from "../newStore/Actions/userActions";
 import { signIn,logout } from "../newStore/reducers/auth";
 import { removeCurrentUser, setCurrentUser } from "../newStore/reducers/currentUser";
+import axios from "../axios/axios";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -268,6 +269,8 @@ const NewBoxData = ({
   const handleClose = () => {
     setAnchorEl(0);
   };
+
+  const {axios} = setRole()
   return (
     <Box>
       <Box
@@ -341,6 +344,7 @@ const NewBoxData = ({
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         handleClose={handleClose}
+                axios={axios}
       />
     </Box>
   );
@@ -483,6 +487,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         handleClose={handleClose}
+        axios={axios}
       />
     </Box>
   );
@@ -498,13 +503,14 @@ const menutItems = [
   { title: "Change Password", link: "/change_password" },
   { title: "Rules", link: "/rules" },
 ];
-const DropdownMenu = ({ anchorEl, open, handleClose }) => {
+const DropdownMenu = ({ anchorEl, open, handleClose ,axios }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const logoutProcess = () => {
+  const logoutProcess = async () => {
     // dispatch(stateActions.logout("role4"));
     dispatch(logout({roleType:"role4"}));
+    await axios.get("auth/logout")
     removeCurrentUser()
     navigate("/");
     handleClose();

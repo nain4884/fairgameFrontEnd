@@ -4,6 +4,7 @@ import { DELETE, MyBet } from "../assets"
 import userAxios from "../axios/userAxios"
 import { ARROWDOWN, ARROWUP } from "../expert/assets"
 import StyledImage from './StyledImage'
+import { useSelector } from "react-redux"
 const data = [
     {
         title: "BOOKMAKER",
@@ -23,40 +24,7 @@ const data = [
     },
 ]
 const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
-    const [Bets, setBets] = useState([])
-    const [allSessionBets, setAllSessionBets] = useState([])
-    function doBets() {
-        let bets = []
-        allBetsData?.forEach(element => {
-            element?.bettings?.forEach(element2 => {
-                bets.push({ ...element2, marketId: element.marketId })
-            });
-        });
-        setBets(bets)
-    }
-    useEffect(() => {
-        doBets()
-        getAllBetsData()
-    }, [])
-    async function getAllBetsData() {
-        let allSessionBet = []
-        Promise.all(
-            Bets.map(async element => {
-                try {
-                    let payload = {
-                        "match_id": element.match_id
-                    }
-                    let { data } = await userAxios.post(`/betting/getPlacedBets`, payload);
-                    console.log(data,"SD")
-                    allSessionBet.push(...data.data[0])
-                } catch (e) {
-                    console.log(e)
-                }
-            })
-        ).then(()=>{
-            setAllSessionBets(allSessionBet)
-        })
-    }
+ 
     return (
         <Box sx={{ width: { mobile: "100%", laptop: '100%' }, marginY: { mobile: '.2vh', laptop: '1vh' }, padding: .2, background: 'white', height: 'auto' }}>
             <Box sx={[{ width: '100%', height: "42px", justifyContent: 'space-between', alignItems: 'center', paddingLeft: '10px', paddingRight: '4px', marginBottom: '.1vh', display: 'flex', }, (theme) => ({
@@ -66,7 +34,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
 
                 <Box sx={{ width: '100px', height: '90%', background: 'white', justifyContent: 'center', borderRadius: '3px', alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
                     <Typography sx={{ fontSize: '12px', fontWeight: '700', color: '#FF1111' }} >All Bet</Typography>
-                    <Typography sx={{ fontSize: '12px', fontWeight: '700', color: "#0B4F26" }} >999</Typography>
+                    <Typography sx={{ fontSize: '12px', fontWeight: '700', color: "#0B4F26" }} >{allBetsData?.length || 0}</Typography>
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row' }} >
@@ -81,15 +49,16 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                     </Box>
                 }
             </Box>
+            <Box sx={{ maxHeight:  { mobile: "200px", laptop:  "420px" }, overflowY: "auto" }}>
             {
-                allSessionBets.map((i, k) => {
+                allBetsData?.map((i, k) => {                   
                     return (
                         <Box sx={{ display: 'flex', flexDirection: 'row', position: 'relative' }} >
                             <Box sx={{ height: '40px', margin: { mobile: '1px', laptop: '0.4px' }, width: '30px', display: 'flex', background: 'black', justifyContent: 'center', alignItems: 'center' }} >
                                 <Typography sx={{ color: 'white', fontSize: '10px', fontWeight: '500' }} >{"0" + (k + 1)}</Typography>
                             </Box>
                             <RowComponent header={false} data={i} />
-                            {
+                            {/* {
                                 k == 2 && <Box sx={{ width: { mobile: profit ? '100%' : '100%', alignItems: 'flex-end', justifyContent: 'center', display: 'flex', laptop: profit ? '100 % ' : '100% ' }, background: 'rgba(0, 0, 0, 0.5)', height: '42px', position: 'absolute' }}>
                                     <Box sx={{ width: mark2 ? '35%' : '35%' }} >
                                     </Box>
@@ -97,7 +66,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                                         {mark && <Typography sx={{ fontSize: '10px', fontWeight: '700', color: 'white', textTransform: "uppercase" }}>Bet <span style={{ color: '#e41b23' }} >deleted</span> due to no ball</Typography>}
                                     </Box>
                                 </Box>
-                            }
+                            } */}
                             {
                                 profit && k !== 2 && <Box sx={{ height: '40px', width: '30%', margin: { mobile: '1px', laptop: '0.4px' }, display: 'flex', background: k % 2 == 0 ? '#E32A2A' : "#10DC61", justifyContent: 'center', alignItems: 'center' }} >
                                     <Typography sx={{ fontSize: { mobile: '11px', laptop: '14px' }, color: 'white', fontWeight: '700' }}>{"100,000,00"}</Typography>
@@ -114,6 +83,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                     )
                 })
             }
+            </Box>
         </Box >
     )
 }
@@ -132,13 +102,15 @@ const RowComponent = ({ header, data }) => {
         }
 
     }
+
+    console.log(data,"DTACOM")
     return (
         <Box sx={{ width: '100%', height: header ? '30px' : '42px', background: 'white', justifyContent: 'space-between', alignItems: 'center', display: 'flex' }}>
             {!header && <>
-                <SingleBox color={getColor} data={data.title} first={true} header={header} time={data?.time} />
+                <SingleBox color={getColor} data={data?.marketType} first={true} header={header} time={data?.time} />
                 <SingleBox color={getColor()} data={data?.odds} header={header} />
-                <SingleBox color={getColor()} data={data?.type} header={header} />
-                <SingleBox color={getColor()} data={data?.stake} header={header} /></>}
+                <SingleBox color={getColor()} data={data?.bet_type} header={header} />
+                <SingleBox color={getColor()} data={data?.stack} header={header} /></>}
             {header && <>
                 <SingleBox color={getColor} data={data[0]} first={true} header={header} />
                 <SingleBox color={getColor()} data={data[1]} header={header} />

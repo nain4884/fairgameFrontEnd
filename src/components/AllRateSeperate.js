@@ -4,7 +4,9 @@ import { ArrowDown, DELETE, MyBet } from "../assets";
 import userAxios from "../axios/userAxios";
 import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import StyledImage from "./StyledImage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { setAllBetRate, setAllBetRates } from "../newStore/reducers/matchDetails";
 const data = [
   {
     title: "Bookmaker",
@@ -24,47 +26,77 @@ const data = [
   },
 ];
 const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
-  const user = useSelector((state) => state?.rootReducer?.user);
-  console.log(user,"user")
-  const [allRateBets, setAllRateBets] = useState([]);
+  // const user = useSelector((state) => state?.rootReducer?.user);
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const match_id = location.state;
 
-  function doEmptyGetAllBets() {
-    setAllRateBets([]);
-  }
-  useEffect(() => {
-    doEmptyGetAllBets();
-    getAllBetsData();
-  }, [allBetsData,]);
+  // const [allRateBets, setAllRateBets] = useState([]);
+
+  // function doEmptyGetAllBets() {
+  //   setAllRateBets([]);
+  // }
+
+  // async function getAllBetsData() {
+  //   let allRateBetsTemp = [];
+  //   let Bets = [];
+  //   allBetsData?.forEach((element) => {
+  //     element?.bettings?.forEach((element2) => {
+  //       Bets.push({ ...element2, marketId: element.marketId });
+  //     });
+  //   });
+  //   Promise.all(
+  //     Bets.map(async (element) => {
+  //       let payload = {
+  //         match_id: element.match_id,
+  //         user_id:currentUser?.id
+  //       };
+  //       try {
+  //         let { data } = await userAxios.post(
+  //           `/betting/getPlacedBets`,
+  //           payload
+  //         );
+
+  //         allRateBetsTemp.push(...data.data[0]);
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     })
+  //   ).then(() => {
+  //     setAllRateBets(allRateBetsTemp);
+
+  //   });
+  // }
 
   async function getAllBetsData() {
-    let allRateBetsTemp = [];
-    let Bets = [];
-    allBetsData?.forEach((element) => {
-      element?.bettings?.forEach((element2) => {
-        Bets.push({ ...element2, marketId: element.marketId });
-      });
-    });
-    Promise.all(
-      Bets.map(async (element) => {
+        
         let payload = {
-          match_id: element.match_id,
-          user_id:user?.id
+          match_id: match_id,
+          user_id:currentUser?.id
         };
         try {
           let { data } = await userAxios.post(
             `/betting/getPlacedBets`,
             payload
           );
-
-          allRateBetsTemp.push(...data.data[0]);
+          // console.log(data,"Before");
+          // const rates=data?.data[0]?.sort((a, b) => b.id - a.id)
+          // console.log(rates,"Rates");
+          dispatch(setAllBetRate(data?.data[0]))
+          // console.log(data,"after");
+       
         } catch (e) {
           console.log(e);
         }
-      })
-    ).then(() => {
-      setAllRateBets(allRateBetsTemp);
-    });
+      
   }
+
+  useEffect(() => {
+    // doEmptyGetAllBets();
+     getAllBetsData();
+  }, [currentUser?.id])
+
   return (
     <>
       {
@@ -118,7 +150,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
               <Typography
                 sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
               >
-                {allRateBets.length || 0}
+                {allBetsData?.length || 0}
               </Typography>
             </Box>
           </Box>
@@ -164,7 +196,8 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
               </Box>
             )}
           </Box>
-          {allRateBets.map((i, k) => {
+          <Box sx={{ maxHeight:  { mobile: "200px", laptop:  "420px" }, overflowY: "scroll" }}>
+         {allBetsData?.map((i, k) => {
             const num = k + 1;
              
             return (
@@ -270,7 +303,9 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
               </Box>
             );
           })}
-        </Box>
+          </Box>
+          </Box>
+     
       }
     </>
   );
@@ -393,9 +428,10 @@ const SingleBox = ({ data, header, color, up, first }) => {
             color: "black",
             textAlign: "start",
             marginLeft: "3px",
+            textTransform:"uppercase"
           }}
         >
-          {data.country}
+          {data.team_bet}
         </Typography>
       </Box>
     ) : (
