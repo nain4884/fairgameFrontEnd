@@ -12,6 +12,9 @@ const initialState = {
   sessionOdds: {},
   allBetRates: [],
   allSessionBets: [],
+  matchOddsLive:[],
+  bookmakerLive:[],
+  sessionOddsLive: [],
 };
 
 const matchDetails = createSlice({
@@ -27,11 +30,20 @@ const matchDetails = createSlice({
     setMatchOdds: (state, action) => {
       state.matchOdds = action.payload;
     },
+    setMatchOddsLive: (state, action) => {
+      state.matchOddsLive =  state.matchOddsLive.concat(action.payload);
+    },
+    setBookMakerLive: (state, action) => {
+      state.bookmakerLive = state.bookmakerLive.concat(action.payload);
+    },
     removeMatchOdds: (state, action) => {
       state.matchOdds = [];
     },
     setSessionOdds: (state, action) => {
       state.sessionOdds = action.payload;
+    },
+    setSessionOddsLive: (state, action) => {
+      state.sessionOddsLive = state.sessionOddsLive.concat(action.payload);
     },
     removeSessionOdds: (state, action) => {
       state.sessionOdds = [];
@@ -77,6 +89,10 @@ export const {
   setAllSessionBets,
   removeAllSessionBets,
   setSessionRates,
+  setMatchOddsLive,
+  setBookMakerLive,
+  setSessionOddsLive,
+  
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

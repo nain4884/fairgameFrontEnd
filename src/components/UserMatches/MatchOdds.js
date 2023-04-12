@@ -1192,8 +1192,8 @@ const SessionMarket = ({ data, teamARates, teamBRates }) => {
 //   );
 // };
 const MatchOdds = ({ data, matchOddsRates }) => {
-  console.log("data.apiSessionActive", matchOddsRates?.matchOddsRates);
-  const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
+  console.log("data.apiSessionActive", matchOddsRates?.matchOddsRates ,data);
+  const { manualBookMarkerRates , matchOddsLive, bookmakerLive } = useSelector((state) => state?.matchDetails);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -1206,7 +1206,8 @@ const MatchOdds = ({ data, matchOddsRates }) => {
         <Odds
           showDely={true}
           data={data}
-          suspended={true}
+          lock={matchOddsLive?.length===0 ? true : false}
+          suspended={false}
           teamARates={matchOddsRates?.manualBookmaker?.teamA}
           teamBRates={matchOddsRates?.manualBookmaker?.teamB}
           min={data?.betfair_match_min_bet || 0}
@@ -1218,8 +1219,9 @@ const MatchOdds = ({ data, matchOddsRates }) => {
       {data?.apiBookMakerActive && (
         <Odds
           showDely={true}
+          lock={bookmakerLive?.length===0 ? true : false}
           data={data}
-          suspended={true}
+          suspended={false}
           teamARates={matchOddsRates?.manualBookmaker?.teamA}
           teamBRates={matchOddsRates?.manualBookmaker?.teamB}
           min={data?.betfair_bookmaker_min_bet || 0}
@@ -1231,6 +1233,7 @@ const MatchOdds = ({ data, matchOddsRates }) => {
       {/* Manual Bookmaker */}
       {data?.manualBookMakerActive && (
         <Odds
+          lock={false}
           showDely={false}
           suspended={false}
           data={data}
@@ -1244,7 +1247,7 @@ const MatchOdds = ({ data, matchOddsRates }) => {
 
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
-      {data?.apiSessionActive && data.matchSessionData.length > 0 && (
+      {(data?.apiSessionActive || data.manualSessionActive )&& (
         <SessionMarket
           data={data}
           teamARates={manualBookMarkerRates?.teamA}

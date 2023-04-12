@@ -58,6 +58,7 @@ const Odds = ({
   title,
   min,
   max,
+  lock,
   showDely,
   suspended,
 }) => {
@@ -229,6 +230,7 @@ const Odds = ({
         <>
           <BoxComponent
             time={true}
+            lock={lock}
             color={"#46e080"}
             allRates={{teamA:teamARates,teamB:teamBRates}}
             rate={teamARates}        
@@ -240,6 +242,7 @@ const Odds = ({
           <Divider />
           <BoxComponent
             time={true}
+            lock={lock}
             color={"#FF4D4D"}
             name={`${data?.teamB}`}
             data={data}

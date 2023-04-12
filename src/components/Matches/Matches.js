@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import "../index.css";
 import { setRole } from "../helper/SetRole";
 import Odds from "./Odds";
+import { useDispatch } from "react-redux";
+import { setAllBetRate } from "../../newStore/reducers/matchDetails";
 
 const MatchesComponent = ({ doNavigateWithState }) => {
   // const classes=useStyle()
@@ -10,7 +12,7 @@ const MatchesComponent = ({ doNavigateWithState }) => {
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(5);
-
+const dispatch=useDispatch()
   const { axios } = setRole();
 
   useEffect(() => {
@@ -41,6 +43,7 @@ const MatchesComponent = ({ doNavigateWithState }) => {
         return (
           <Odds
             onClick={() => {
+              dispatch(setAllBetRate([]))
               doNavigateWithState(match.id);
             }}
             top={true}

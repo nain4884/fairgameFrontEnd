@@ -92,17 +92,17 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
                         <Typography sx={{ color: 'black', fontSize: { laptop: '11px', tablet: '10px', mobile: "10px" }, marginLeft: '7px', fontWeight: '600' }} >{match.teamA}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'center' }, alignItems: 'center' }} >
-                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`} value2={"   "} color={matchesMobile ? "white" : "#CEEBFF"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 0}`} value2={"   "} color={matchesMobile ? "white" : "#CEEBFF"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 1 : 50 - 1}`} value2={"   "} color={matchesMobile ? "white" : "#C2E6FF"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 1 : 0}`} value2={"   "} color={matchesMobile ? "white" : "#C2E6FF"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back : 50}`} value2={"   "} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} />
+                        <SeparateBox value={`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back : 0}`} value2={"   "} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} />
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay : 51}`} value2={"   "} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} />
+                        <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay : 0}`} value2={"   "} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} />
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay + 1 : 51 + 1}`} value2={"   "} color={matchesMobile ? "white" : "#F2CBCB"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay + 1 : 0}`} value2={"   "} color={matchesMobile ? "white" : "#F2CBCB"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay + 2 : 51 + 2}`} value2={"   "} color={matchesMobile ? "white" : "#ECD6D6"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamA_lay ? match.bettings[0].teamA_lay + 2 : 0}`} value2={"   "} color={matchesMobile ? "white" : "#ECD6D6"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
                     </Box>
                 </Box>
@@ -113,17 +113,17 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
                         <Typography sx={{ color: 'black', fontSize: { laptop: '12px', mobile: "11px" }, marginLeft: '7px', fontWeight: '600' }} >{match.teamB}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'center' }, alignItems: 'center' }} >
-                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back - 2 : 50 - 2}`} value2={"   "} color={matchesMobile ? "white" : "#CEEBFF"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back - 2 : 0}`} value2={"   "} color={matchesMobile ? "white" : "#CEEBFF"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back - 1 : 50 - 1}`} value2={"   "} color={matchesMobile ? "white" : "#C2E6FF"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back - 1 : 0}`} value2={"   "} color={matchesMobile ? "white" : "#C2E6FF"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back : 50}`} value2={"   "} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} />
+                        <SeparateBox value={`${match.bettings[0].teamB_Back ? match.bettings[0].teamB_Back : 0}`} value2={"   "} color={matchesMobile ? "#A7DCFF" : "#A7DCFF"} />
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay : 51}`} value2={"   "} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} />
+                        <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay :0}`} value2={"   "} color={matchesMobile ? "#FFB5B5" : "#FFB5B5"} />
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay + 1 : 50 + 1}`} value2={"   "} color={matchesMobile ? "white" : "#F2CBCB"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay + 1 : 0}`} value2={"   "} color={matchesMobile ? "white" : "#F2CBCB"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
-                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay + 2 : 50 + 2}`} value2={"   "} color={matchesMobile ? "white" : "#ECD6D6"} />}
+                        {!matchesMobile && <SeparateBox value={`${match.bettings[0].teamB_lay ? match.bettings[0].teamB_lay + 2 : 0}`} value2={"   "} color={matchesMobile ? "white" : "#ECD6D6"} />}
                         <Box sx={{ width: '.25%', display: 'flex', background: 'pink' }} ></Box>
                     </Box>
                 </Box>
