@@ -7,6 +7,10 @@ import store from "./newStore";
 import { SocketProvider } from "./context/socketContext";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 let persistor = persistStore(store);
 function App() {
   return (
@@ -14,6 +18,7 @@ function App() {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <SocketProvider>
+            <ToastContainer />
             <div className="App">
               <Main />
             </div>

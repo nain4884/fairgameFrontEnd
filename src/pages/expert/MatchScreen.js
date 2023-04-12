@@ -40,9 +40,18 @@ import { useLocation } from "react-router-dom";
 import { setRole } from "../../components/helper/SetRole";
 import {
   setAllBetRate,
+  setBookMakerLive,
   setManualBookMarkerRates,
+  setMatchOdds,
+  setMatchOddsLive,
+  setSessionOddsLive,
 } from "../../newStore/reducers/matchDetails";
 import { setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
+import { microServiceApiPath } from "../../components/helper/constants";
+import Axios from "axios";
+
+let matchOddsCount = 0;
+
 const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -133,11 +142,13 @@ const MatchScreen = ({}) => {
 
   const { axios } = setRole();
   const dispatch = useDispatch();
-  const { allBetRates } = useSelector((state) => state?.matchDetails);
+  const { allBetRates, matchOddsLive, bookmakerLive, sessionOddsLive } =
+    useSelector((state) => state?.matchDetails);
   const { allMatch, selectedMatch } = useSelector(
     (state) => state?.expertMatchDetails
   );
-  console.log("allMatch", allMatch, selectedMatch);
+  const [currentMatch, setCurrentMatch] = useState(selectedMatch);
+  console.log("allMatch", allMatch, currentMatch);
   const [IObets, setIObtes] = useState(allBetRates);
 
   const getSingleMatch = async (val) => {
@@ -197,7 +208,7 @@ const MatchScreen = ({}) => {
               amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
             };
 
-            if (selectedMatch?.id === data?.betPlaceData?.match_id) {
+            if (currentMatch?.id === data?.betPlaceData?.match_id) {
               setIObtes((prev) => [body, ...prev]);
             }
 
@@ -223,8 +234,59 @@ const MatchScreen = ({}) => {
         //   stateActions.setBalance(data.newBalance, role, data.exposure)
         // );
       });
+
+      socket.on("bookMakerRateLive", (e) => {
+        console.log("BookMaker", e);
+        if (e?.matchId === currentMatch?.id) {
+          const body = { ...currentMatch, bookMakerRateLive: e?.bookMakerLive };
+          setCurrentMatch(body);
+        }
+      });
+      // socket.emit("init", { id: currentMatch?.marketId });
     }
   }, [socket]);
+
+  const activateLiveMatchMarket = async () => {
+    try {
+      await Axios.get(
+        `${microServiceApiPath}/market/${currentMatch?.marketId}`
+      );
+    } catch (e) {
+      console.log("error", e?.message);
+    }
+  };
+
+  useEffect(() => {
+    if (socketMicro && socketMicro.connected) {
+      socketMicro.emit("init", { id: currentMatch?.marketId });
+      activateLiveMatchMarket();
+      // socketMicro.on("bookMakerRateLive", (e) => {
+      //   console.log("BookMaker", e);
+      // });
+      socketMicro.on(`session${currentMatch?.marketId}`, (val) => {
+        // console.log("val", val);
+        dispatch(setSessionOddsLive(val));
+      });
+      socketMicro.on(`matchOdds${currentMatch?.marketId}`, (val) => {
+        console.log("matchOdds", val);
+        if (val.length === 0) {
+          matchOddsCount += 1;
+          if (matchOddsCount >= 3) {
+            socketMicro.emit("disconnect_market", {
+              id: currentMatch?.marketId,
+            });
+            socketMicro.disconnect();
+          }
+        } else {
+          dispatch(setMatchOddsLive(val));
+        }
+      });
+      socketMicro.on(`bookmaker${currentMatch?.marketId}`, (val) => {
+        console.log("bookmaker", val);
+        dispatch(setBookMakerLive(val));
+      });
+    }
+  }, [socketMicro, currentMatch]);
 
   async function getAllBetsData(val) {
     let payload = {
@@ -252,26 +314,7 @@ const MatchScreen = ({}) => {
       ></Box>
     );
   };
-  useEffect(() => {
-    if (socket && socket.connected) {
-      console.log("Connected", socket);
-      socket.emit("bookMakerRateLive", {
-        id: "009317b2-eb7c-4b6f-b74b-a1ea5a4f4b97",
-      });
-    }
-    if (socketMicro && socketMicro.connected) {
-      socketMicro.emit("init", { id: state?.marketId });
-      socketMicro.on("session", (val) => {
-        console.log("val", val);
-      });
-      socketMicro.on("matchOdds", (val) => {
-        console.log("matchOdds", val);
-      });
-      socketMicro.on("bookmaker", (val) => {
-        console.log("bookmaker", val);
-      });
-    }
-  }, [socket, socketMicro]);
+
   const BoxComponent = ({ name, color, align, lock }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -577,11 +620,24 @@ const MatchScreen = ({}) => {
     );
   };
 
-  const Odds = ({ selectedMatch }) => {
+  const Odds = ({ currentMatch, matchOddsLive }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     const [visible, setVisible] = useState(false);
     const [live, setLive] = useState(true);
+
+    const activateMatchOdds = async (val, id) => {
+      try {
+        const data = await axios.post("/betting/addBetting", {
+          match_id: currentMatch?.id,
+          betStatus: val,
+          matchType: currentMatch?.gameType,
+          id: id,
+        });
+      } catch (err) {
+        console.log(err?.response?.data?.message, "err");
+      }
+    };
 
     return (
       <Box
@@ -629,7 +685,12 @@ const MatchScreen = ({}) => {
             >
               Match Odds
             </Typography>
-            <Stop onClick={() => setLive(true)} />
+            <Stop
+              onClick={() => {
+                setLive(true);
+                activateMatchOdds(0, currentMatch?.bettings[0]?.id);
+              }}
+            />
           </Box>
 
           <Box
@@ -660,7 +721,8 @@ const MatchScreen = ({}) => {
             {live && (
               <SmallBox
                 onClick={() => {
-                  setLive(!live);
+                  setLive(false);
+                  activateMatchOdds(1, "");
                 }}
                 title={"Go Live"}
                 color={"#FF4D4D"}
@@ -669,7 +731,8 @@ const MatchScreen = ({}) => {
             {!live && (
               <SmallBox
                 onClick={() => {
-                  setLive(!live);
+                  setLive(true);
+                  activateMatchOdds(0, currentMatch?.bettings[0]?.id);
                 }}
                 title={"Live"}
               />
@@ -718,8 +781,8 @@ const MatchScreen = ({}) => {
                   marginLeft: "7px",
                 }}
               >
-                MIN: {selectedMatch?.betfair_match_min_bet} MAX:
-                {selectedMatch?.betfair_match_max_bet}
+                MIN: {currentMatch?.betfair_match_min_bet} MAX:
+                {currentMatch?.betfair_match_max_bet}
               </Typography>
             </Box>
             <Box
@@ -768,9 +831,17 @@ const MatchScreen = ({}) => {
             </Box>
           </Box>
         }
-        <BoxComponent color={"#46e080"} name={selectedMatch?.teamA} />
+        <BoxComponent
+          lock={matchOddsLive?.length === 0 ? true : false}
+          color={"#46e080"}
+          name={currentMatch?.teamA}
+        />
         <Divider />
-        <BoxComponent color={"#FF4D4D"} name={selectedMatch?.teamB} />
+        <BoxComponent
+          lock={matchOddsLive?.length === 0 ? true : false}
+          color={"#FF4D4D"}
+          name={currentMatch?.teamB}
+        />
         {/* <Divider />
         <BoxComponent color={"#FF4D4D"} name={"DRAW"} /> */}
         {live && (
@@ -778,7 +849,7 @@ const MatchScreen = ({}) => {
             sx={{
               width: "100%",
               position: "absolute",
-              height: "65%",
+              height: "57%",
               bottom: 0,
               background: "rgba(0,0,0,0.5)",
             }}
@@ -791,30 +862,41 @@ const MatchScreen = ({}) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     const [visible, setVisible] = useState(false);
-    const [live, setLive] = useState(liveUser && newData.betStatus ? true :false);
-   
-   const handleLive=async (value)=>{
-    try{
- 
-    const body ={
-    "match_id": selectedMatch?.id,
-    "matchType":selectedMatch?.gameType,
-    "sessionBet": value,
-    // "teamA_lay": 18,
-    // "teamB_lay": 15,
-    // "teamA_Back": 10,
-    // "teamB_Back": 4,
-    // "drawRate": 10
-}
-     await axios.post("betting/addBetting",body)
-    }
-    catch(err){
-      console.log(err?.message);
-    }
-   }
+    const [live, setLive] = useState(true);
+    useEffect(() => { 
+        if(!live){
+          setLive(true)
+        }
+        else {
+          setLive(true)
+        }
+
+    },[liveUser])
+
+    const handleLive = async (status) => {
+      try {
+        const body = {
+          match_id: currentMatch?.id,
+          matchType: currentMatch?.gameType,
+          id: newData?.id,
+          betStatus: status,
+          // "teamA_lay": 18,
+          // "teamB_lay": 15,
+          // "teamA_Back": 10,
+          // "teamB_Back": 4,
+          // "drawRate": 10
+        };
+        await axios.post("betting/addBetting", body);
+      } catch (err) {
+        console.log(err?.message);
+      }
+    };
+
+
+    console.log("value012",live)
     return (
       <div style={{ position: "relative" }}>
-        {!live && (
+        {live && (
           <Box
             sx={{
               width: "100%",
@@ -869,12 +951,12 @@ const MatchScreen = ({}) => {
                 zIndex: 100,
               }}
             >
-              {!live && (
+              {live && (
                 <SmallBox
                   onClick={(e) => {
                     e.preventDefault();
                     setLive(!live);
-                    handleLive(true)
+                    handleLive(1);
                   }}
                   textSize={"8px"}
                   width={"80px"}
@@ -882,12 +964,12 @@ const MatchScreen = ({}) => {
                   color={"#FF4D4D"}
                 />
               )}
-              {live && (
+              {!live && (
                 <SmallBox
                   onClick={(e) => {
                     e.preventDefault();
                     setLive(!live);
-                    handleLive(false)
+                    handleLive(0);
                   }}
                   textSize={"8px"}
                   width={"80px"}
@@ -1470,14 +1552,29 @@ const MatchScreen = ({}) => {
       </Menu>
     );
   };
-  const SessionMarket = ({ selectedMatch }) => {
+  const SessionMarket = ({ currentMatch }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     const [live, setLive] = useState(true);
 
-    var sessionMatch = selectedMatch?.bettings?.filter(
+    var sessionMatch = currentMatch?.bettings?.filter(
       (v) => v?.sessionBet === true
     );
+
+    const activateSessionLive = async (val, id) => {
+      try {
+        const data = await axios.post("/betting/addBetting", {
+          match_id: currentMatch?.id,
+          sessionBet: val,
+          matchType: currentMatch?.gameType,
+          id: id,
+        });
+      } catch (err) {
+        console.log(err?.response?.data?.message, "err");
+      }
+    };
+
+    console.log("STOP",live)
 
     return (
       <Box
@@ -1582,8 +1679,8 @@ const MatchScreen = ({}) => {
                     marginLeft: "7px",
                   }}
                 >
-                  MIN: {selectedMatch?.betfair_session_min_bet} MAX:
-                  {selectedMatch?.betfair_session_max_bet}
+                  MIN: {currentMatch?.betfair_session_min_bet} MAX:
+                  {currentMatch?.betfair_session_max_bet}
                 </Typography>
               </Box>
               <Box
@@ -1641,7 +1738,7 @@ const MatchScreen = ({}) => {
           >
             {sessionMatch?.map((match, index) => (
               <>
-                <SeasonMarketBox newData={match} liveUser={live} index={1} />
+                <SeasonMarketBox newData={match} liveUser={live} index={index} />
                 <Divider />
               </>
             ))}
@@ -1667,10 +1764,12 @@ const MatchScreen = ({}) => {
       </Box>
     );
   };
-  const BookMarketer = ({ selectedMatch }) => {
+  const BookMarketer = ({ currentMatch, bookmakerLive }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-    const [live, setLive] = useState(true);
+    const [live, setLive] = useState(currentMatch?.bookMakerRateLive);
+    console.log(bookmakerLive, "SDDDDDDDDD");
+
     return (
       <Box
         sx={{
@@ -1718,7 +1817,11 @@ const MatchScreen = ({}) => {
             {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} /> */}
             <Stop
               onClick={() => {
-                setLive(true);
+                setLive(false);
+                socket.emit("bookMakerRateLive", {
+                  matchId: currentMatch?.id,
+                  bookMakerLive: false,
+                });
               }}
             />
           </Box>
@@ -1742,20 +1845,27 @@ const MatchScreen = ({}) => {
             }}
           >
             {/* { <SmallBox title={'Live'} />} */}
-            {live && (
+            {!live ? (
               <SmallBox
                 onClick={() => {
-                  setLive(!live);
+                  setLive(true);
+                  socket.emit("bookMakerRateLive", {
+                    matchId: currentMatch?.id,
+                    bookMakerLive: true,
+                  });
                 }}
                 width={"80px"}
                 title={"Go Live"}
                 color={"#FF4D4D"}
               />
-            )}
-            {!live && (
+            ) : (
               <SmallBox
                 onClick={() => {
-                  setLive(!live);
+                  setLive(false);
+                  socket.emit("bookMakerRateLive", {
+                    matchId: currentMatch?.id,
+                    bookMakerLive: false,
+                  });
                 }}
                 width={"80px"}
                 title={"Live"}
@@ -1790,8 +1900,8 @@ const MatchScreen = ({}) => {
                   marginLeft: "7px",
                 }}
               >
-                MIN: {selectedMatch?.betfair_bookmaker_min_bet} MAX:{" "}
-                {selectedMatch?.betfair_bookmaker_max_bet}
+                MIN: {currentMatch?.betfair_bookmaker_min_bet} MAX:{" "}
+                {currentMatch?.betfair_bookmaker_max_bet}
               </Typography>
             </Box>
             <Box
@@ -1840,15 +1950,19 @@ const MatchScreen = ({}) => {
           </Box>
         }
         <Box sx={{ position: "relative" }}>
-          <BoxComponent color={"#46e080"} name={selectedMatch?.teamA} />
+          <BoxComponent
+            lock={bookmakerLive?.length === 0 ? true : false}
+            color={"#46e080"}
+            name={currentMatch?.teamA}
+          />
           <Divider />
           <BoxComponent
             color={"#FF4D4D"}
-            lock={true}
-            name={selectedMatch?.teamB}
+            lock={bookmakerLive?.length === 0 ? true : false}
+            name={currentMatch?.teamB}
             align="end"
           />
-          {live && (
+          {!live && (
             <Box
               sx={{
                 width: "100%",
@@ -2205,25 +2319,29 @@ const MatchScreen = ({}) => {
           padding: 1,
         }}
       >
-        <Box sx={{ width: "50%", flexDirection: "column", display: "flex" }}>
-          {(selectedMatch?.manualSessionActive ||
-            selectedMatch?.apiSessionActive) && (
-            <SessionMarket selectedMatch={selectedMatch} />
-          )}
-          <Box
-            sx={{ display: "flex", flexDirection: "row", marginTop: ".25vw" }}
-          >
-            {data.map(() => {
-              return <RunsBox />;
-            })}
+        {(currentMatch?.manualSessionActive ||
+          currentMatch?.apiSessionActive) && (
+          <Box sx={{ width: "50%", flexDirection: "column", display: "flex" }}>
+            <SessionMarket currentMatch={currentMatch} />
+
+            <Box
+              sx={{ display: "flex", flexDirection: "row", marginTop: ".25vw" }}
+            >
+              {data.map(() => {
+                return <RunsBox />;
+              })}
+            </Box>
           </Box>
-        </Box>
+        )}
         <Box sx={{ width: "50%", flexDirection: "column", display: "flex" }}>
-          {selectedMatch?.apiMatchActive && (
-            <Odds selectedMatch={selectedMatch} />
+          {currentMatch?.apiMatchActive && (
+            <Odds currentMatch={currentMatch} matchOddsLive={matchOddsLive} />
           )}
-          {selectedMatch?.apiBookMakerActive && (
-            <BookMarketer selectedMatch={selectedMatch} />
+          {currentMatch?.apiBookMakerActive && (
+            <BookMarketer
+              currentMatch={currentMatch}
+              bookmakerLive={bookmakerLive}
+            />
           )}
           <AllBets allBetRates={IObets} />
         </Box>

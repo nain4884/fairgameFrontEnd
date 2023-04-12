@@ -69,33 +69,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
   //   });
   // }
 
-  async function getAllBetsData() {
-        
-        let payload = {
-          match_id: match_id,
-          user_id:currentUser?.id
-        };
-        try {
-          let { data } = await userAxios.post(
-            `/betting/getPlacedBets`,
-            payload
-          );
-          // console.log(data,"Before");
-          // const rates=data?.data[0]?.sort((a, b) => b.id - a.id)
-          // console.log(rates,"Rates");
-          dispatch(setAllBetRate(data?.data[0]))
-          // console.log(data,"after");
-       
-        } catch (e) {
-          console.log(e);
-        }
-      
-  }
 
-  useEffect(() => {
-    // doEmptyGetAllBets();
-     getAllBetsData();
-  }, [currentUser?.id])
 
   return (
     <>

@@ -6,7 +6,7 @@ import SeprateBox from "./SeprateBox";
 import { INDIA, PAKISTAN } from "../../assets";
 import Divider from "../helper/Divider";
 
-const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => {
+const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates ,lock}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   let backValue,
@@ -109,6 +109,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
         >
           {!matchesMobile && (
             <SeprateBox
+               lock={lock}
               rates={allRates}
               value={`${backValue - 2}`}
               value2={"  "}
@@ -124,6 +125,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
           ></Box>
           {!matchesMobile && (
             <SeprateBox
+            lock={lock}
               rates={allRates}
               value={`${backValue - 1}`}
               value2={"  "}
@@ -139,6 +141,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
           ></Box>
           {backValue && (
             <SeprateBox
+            lock={lock}
               rates={allRates}
               value={`${backValue}`}
               value2={"  "}
@@ -154,6 +157,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
           ></Box>
           {layValue && (
             <SeprateBox
+            lock={lock}
               rates={allRates}
               value={`${layValue}`}
               value2={"  "}
@@ -170,6 +174,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
           {!matchesMobile && (
             <SeprateBox
               rates={allRates}
+              lock={lock}
               value={`${layValue + 1}`}
               value2={"  "}
               color={matchesMobile ? "white" : "#F2CBCB"}
@@ -185,6 +190,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
           {!matchesMobile && (
             <SeprateBox
               rates={allRates}
+              lock={lock}
               value={`${layValue + 2}`}
               value2={"  "}
               color={matchesMobile ? "white" : "#ECD6D6"}
@@ -200,7 +206,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
         </Box>
       ) : (
         <>
-          {suspended !== null ? (
+          {suspended !== null && !lock ? (
             <Box
               sx={{
                 background: "rgba(0,0,0,1)",
@@ -229,6 +235,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
                 <SeprateBox
                   rates={allRates}
                   value={0}
+                  lock={lock}
                   value2={"  "}
                   color={matchesMobile ? "white" : "#CEEBFF"}
                   type={{ color: "#A7DCFF", type: "BL" }}
@@ -244,6 +251,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
                 <SeprateBox
                   rates={allRates}
                   value={0}
+                  lock={lock}
                   value2={"  "}
                   color={matchesMobile ? "white" : "#C2E6FF"}
                   type={{ color: "#A7DCFF", type: "BL" }}
@@ -257,6 +265,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
               ></Box>
               <SeprateBox
                 rates={allRates}
+                lock={lock}
                 value={0}
                 value2={"  "}
                 color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
@@ -270,6 +279,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
               ></Box>
               <SeprateBox
                 rates={allRates}
+                lock={lock}
                 value={0}
                 value2={"  "}
                 color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
@@ -285,6 +295,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
                 <SeprateBox
                   rates={allRates}
                   value={0}
+                  lock={lock}
                   value2={"  "}
                   color={matchesMobile ? "white" : "#F2CBCB"}
                   type={{ color: "#FFB5B5", type: "BL" }}
@@ -300,6 +311,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates }) => 
                 <SeprateBox
                   rates={allRates}
                   value={0}
+                  lock={lock}
                   value2={"  "}
                   color={matchesMobile ? "white" : "#ECD6D6"}
                   type={{ color: "#FFB5B5", type: "BL" }}
