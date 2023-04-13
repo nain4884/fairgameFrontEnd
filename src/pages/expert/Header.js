@@ -66,6 +66,8 @@ const CustomHeader = ({}) => {
       setMobileOpen(false);
     }
   }, [matchesMobile]);
+
+  const { userExpert } = useSelector((state) => state.auth);
   useEffect(() => {
     if (location.pathname.includes("home1")) {
       dispatch(setSelected(0));
@@ -74,11 +76,11 @@ const CustomHeader = ({}) => {
     } else if (location.pathname.includes("betodds")) {
       dispatch(setSelected(2));
     }
-    setIsTransPasswordExist(window.localStorage.getItem(transPass));
+    setIsTransPasswordExist(userExpert?.isTransPasswordCreated);
     getAllMatch();
     getMatchLiveSession();
     getUserDetail();
-  }, [location]);
+  }, [location, userExpert]);
   const getAllMatch = async () => {
     try {
       let response = await axios.get(`/game-match/getAllMatch`);

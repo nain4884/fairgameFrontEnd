@@ -45,7 +45,10 @@ import {
   setMatchOddsLive,
   setSessionOddsLive,
 } from "../../newStore/reducers/matchDetails";
-import { removeSelectedMatch, setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
+import {
+  removeSelectedMatch,
+  setSelectedMatch,
+} from "../../newStore/reducers/expertMatchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
 import { toast } from "react-toastify";
@@ -149,14 +152,14 @@ const MatchScreen = ({}) => {
     (state) => state?.expertMatchDetails
   );
   const [currentMatch, setCurrentMatch] = useState(selectedMatch);
-  console.log("allMatch", allMatch, currentMatch);
+  console.log("allMatch", currentMatch);
   const [IObets, setIObtes] = useState(allBetRates);
 
   const getSingleMatch = async (val) => {
-    try { 
-      dispatch(removeSelectedMatch())
+    try {
+      dispatch(removeSelectedMatch());
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
-      setCurrentMatch(data)
+      setCurrentMatch(data);
       dispatch(setSelectedMatch(data));
     } catch (e) {
       console.log(e?.message, "message");
@@ -260,7 +263,7 @@ const MatchScreen = ({}) => {
   };
 
   useEffect(() => {
-    if (socketMicro && socketMicro.connected) {
+    if (socketMicro && socketMicro.connected && currentMatch?.marketId) {
       socketMicro.emit("init", { id: currentMatch?.marketId });
       activateLiveMatchMarket();
       // socketMicro.on("bookMakerRateLive", (e) => {
@@ -268,10 +271,9 @@ const MatchScreen = ({}) => {
       // });
       socketMicro.on(`session${currentMatch?.marketId}`, (val) => {
         // console.log("val", val);
-        dispatch(setSessionOddsLive(val));
+        dispatch(setSessionOddsLive(val[0]));
       });
       socketMicro.on(`matchOdds${currentMatch?.marketId}`, (val) => {
-        console.log("matchOdds", val);
         if (val.length === 0) {
           matchOddsCount += 1;
           if (matchOddsCount >= 3) {
@@ -281,12 +283,11 @@ const MatchScreen = ({}) => {
             socketMicro.disconnect();
           }
         } else {
-          dispatch(setMatchOddsLive(val));
+          dispatch(setMatchOddsLive(val[0]));
         }
       });
       socketMicro.on(`bookmaker${currentMatch?.marketId}`, (val) => {
-        console.log("bookmaker", val);
-        dispatch(setBookMakerLive(val));
+        dispatch(setBookMakerLive(val[0]));
       });
     }
   }, [socketMicro, currentMatch]);
@@ -318,7 +319,7 @@ const MatchScreen = ({}) => {
     );
   };
 
-  const BoxComponent = ({ name, color, align, lock }) => {
+  const BoxComponent = ({ name, data, color, align, lock }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     return (
@@ -392,8 +393,16 @@ const MatchScreen = ({}) => {
             <SeperateBox
               align={align}
               lock={lock}
-              value={"1.71"}
-              value2={" $23000"}
+              value={
+                data?.availableToBack?.length > 0
+                  ? data?.availableToBack[0]?.price
+                  : 0
+              }
+              value2={
+                data?.availableToBack?.length > 0
+                  ? data?.availableToBack[0]?.size
+                  : 0
+              }
               color={matchesMobile ? "white" : "#CEEBFF"}
             />
           )}
@@ -404,8 +413,16 @@ const MatchScreen = ({}) => {
             <SeperateBox
               align={align}
               lock={lock}
-              value={"1.71"}
-              value2={" $23000"}
+              value={
+                data?.availableToBack?.length > 0
+                  ? data?.availableToBack[1]?.price
+                  : 0
+              }
+              value2={
+                data?.availableToBack?.length > 0
+                  ? data?.availableToBack[1]?.size
+                  : 0
+              }
               color={matchesMobile ? "white" : "#C2E6FF"}
             />
           )}
@@ -414,9 +431,17 @@ const MatchScreen = ({}) => {
           ></Box>
           <SeperateBox
             align={align}
-            value={"1.71"}
+            value={
+              data?.availableToBack?.length > 0
+                ? data?.availableToBack[2]?.price
+                : 0
+            }
             lock={lock}
-            value2={" $23000"}
+            value2={
+              data?.availableToBack?.length > 0
+                ? data?.availableToBack[2]?.size
+                : 0
+            }
             color={matchesMobile ? "white" : "#A7DCFF"}
           />
           <Box
@@ -424,9 +449,17 @@ const MatchScreen = ({}) => {
           ></Box>
           <SeperateBox
             align={align}
-            value={"1.72"}
+            value={
+              data?.availableToLay?.length > 0
+                ? data?.availableToLay[0]?.price
+                : 0
+            }
             lock={lock}
-            value2={" $23000"}
+            value2={
+              data?.availableToLay?.length > 0
+                ? data?.availableToLay[0]?.size
+                : 0
+            }
             color={matchesMobile ? "white" : "#FFB5B5"}
           />
           <Box
@@ -436,8 +469,16 @@ const MatchScreen = ({}) => {
             back={true}
             align={align}
             lock={lock}
-            value={"1.72"}
-            value2={" $23000"}
+            value={
+              data?.availableToLay?.length > 0
+                ? data?.availableToLay[1]?.price
+                : 0
+            }
+            value2={
+              data?.availableToLay?.length > 0
+                ? data?.availableToLay[1]?.size
+                : 0
+            }
             color={"#F2CBCB"}
           />
           <Box
@@ -445,9 +486,17 @@ const MatchScreen = ({}) => {
           ></Box>
           <SeperateBox
             align={align}
-            value={"1.72"}
+            value={
+              data?.availableToLay?.length > 0
+                ? data?.availableToLay[2]?.price
+                : 0
+            }
             lock={lock}
-            value2={" $23000"}
+            value2={
+              data?.availableToLay?.length > 0
+                ? data?.availableToLay[2]?.size
+                : 0
+            }
             color={"#ECD6D6"}
           />
           <Box
@@ -623,22 +672,33 @@ const MatchScreen = ({}) => {
     );
   };
 
-  const Odds = ({ currentMatch, matchOddsLive }) => {
+  const Odds = ({ currentMatch, setCurrentMatch, matchOddsLive }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     const [visible, setVisible] = useState(false);
-    const [live, setLive] = useState(true);
-
+    const [ stlive, setLive] = useState( currentMatch?.bettings[0]?.betStatus === 0 ? true : false);
+    
     const activateMatchOdds = async (val, id) => {
       try {
-        const data = await axios.post("/betting/addBetting", {
+        if(val){
+          setLive(true)
+        }
+        else {
+          setLive(false)
+        }
+        const { data } = await axios.post("/betting/addBetting", {
           match_id: currentMatch?.id,
           betStatus: val,
           matchType: currentMatch?.gameType,
           id: id,
         });
+
+        // setCurrentMatch((prev) => ({
+        //   .,
+        //   betStatus: data?.data?.betStatus,
+        // }));
       } catch (err) {
-        toast.error(err.response.data.message)
+        toast.error(err.response.data.message);
         console.log(err?.response?.data?.message, "err");
       }
     };
@@ -722,17 +782,21 @@ const MatchScreen = ({}) => {
               }}
               invert={true}
             />
-            {live && (
+            {stlive && (
               <SmallBox
                 onClick={() => {
                   setLive(false);
-                  activateMatchOdds(1, "");
+                  if (currentMatch?.bettings.length > 0) {
+                    activateMatchOdds(1, currentMatch?.bettings[0]?.id);
+                  } else {
+                    activateMatchOdds(1, "");
+                  }
                 }}
                 title={"Go Live"}
                 color={"#FF4D4D"}
               />
             )}
-            {!live && (
+            {!stlive && (
               <SmallBox
                 onClick={() => {
                   setLive(true);
@@ -836,19 +900,29 @@ const MatchScreen = ({}) => {
           </Box>
         }
         <BoxComponent
-          lock={matchOddsLive?.length === 0 ? true : false}
+          data={
+            matchOddsLive?.runners?.length > 0
+              ? matchOddsLive?.runners[0]?.ex
+              : []
+          }
+          lock={currentMatch?.bettings[0]?.betStatus === 0 ? true : false}
           color={"#46e080"}
           name={currentMatch?.teamA}
         />
         <Divider />
         <BoxComponent
-          lock={matchOddsLive?.length === 0 ? true : false}
+          lock={currentMatch?.bettings[0]?.betStatus === 0 ? true : false}
           color={"#FF4D4D"}
+          data={
+            matchOddsLive?.runners?.length > 0
+              ? matchOddsLive?.runners[1]?.ex
+              : []
+          }
           name={currentMatch?.teamB}
         />
         {/* <Divider />
         <BoxComponent color={"#FF4D4D"} name={"DRAW"} /> */}
-        {live && (
+        {stlive && (
           <Box
             sx={{
               width: "100%",
@@ -890,12 +964,11 @@ const MatchScreen = ({}) => {
         };
         await axios.post("betting/addBetting", body);
       } catch (err) {
-        toast.error(err.response.data.message)
+        toast.error(err.response.data.message);
         console.log(err?.message);
       }
     };
 
-    console.log("value012", live);
     return (
       <div style={{ position: "relative" }}>
         {live && (
@@ -1572,13 +1645,11 @@ const MatchScreen = ({}) => {
           id: id,
         });
       } catch (err) {
-        toast.error(err.response.data.message)
+        toast.error(err.response.data.message);
 
         console.log(err?.response?.data?.message, "err");
       }
     };
-
-    console.log("STOP", live);
 
     return (
       <Box
@@ -1859,7 +1930,7 @@ const MatchScreen = ({}) => {
             }}
           >
             {/* { <SmallBox title={'Live'} />} */}
-            {!live ? (
+            {!currentMatch?.bookMakerRateLive ? (
               <SmallBox
                 onClick={() => {
                   setLive(true);
@@ -1965,18 +2036,28 @@ const MatchScreen = ({}) => {
         }
         <Box sx={{ position: "relative" }}>
           <BoxComponent
-            lock={bookmakerLive?.length === 0 ? true : false}
+            data={
+              bookmakerLive?.runners?.length > 0
+                ? bookmakerLive?.runners[0]?.ex
+                : []
+            }
+            lock={!currentMatch?.bookMakerRateLive}
             color={"#46e080"}
             name={currentMatch?.teamA}
           />
           <Divider />
           <BoxComponent
             color={"#FF4D4D"}
-            lock={bookmakerLive?.length === 0 ? true : false}
+            lock={!currentMatch?.bookMakerRateLive}
             name={currentMatch?.teamB}
+            data={
+              bookmakerLive?.runners?.length > 0
+                ? bookmakerLive?.runners[1]?.ex
+                : []
+            }
             align="end"
           />
-          {!live && (
+          {!currentMatch?.bookMakerRateLive && (
             <Box
               sx={{
                 width: "100%",
@@ -2349,7 +2430,11 @@ const MatchScreen = ({}) => {
         )}
         <Box sx={{ width: "50%", flexDirection: "column", display: "flex" }}>
           {currentMatch?.apiMatchActive && (
-            <Odds currentMatch={currentMatch} matchOddsLive={matchOddsLive} />
+            <Odds
+              currentMatch={currentMatch}
+              setCurrentMatch={setCurrentMatch}
+              matchOddsLive={matchOddsLive}
+            />
           )}
           {currentMatch?.apiBookMakerActive && (
             <BookMarketer

@@ -40,64 +40,57 @@ export const TransPasswordComponent = () => {
       }}
     >
       <TransPassComp />
-    </Box>)
-}
+    </Box>
+  );
+};
 
 export const TransPassComp = ({ onCancel }) => {
   const [passwordDetail, setPasswordDetail] = useState({
     1: { field: "transPassword", val: "" },
-    2: { field: "confirmtransPassword", val: "" }
-  })
+    2: { field: "confirmtransPassword", val: "" },
+  });
   const [error, setError] = useState({
     1: { field: "transPassword", val: false },
-    2: { field: "confirmtransPassword", val: false }
-  })
-  const [responseError, setResponseError] = useState()
-  const [roleOfUser, setRoleOfUser] = useState("")
-  const [transPassoword, setTransPassword] = useState("")
+    2: { field: "confirmtransPassword", val: false },
+  });
+  const [responseError, setResponseError] = useState();
+  const [roleOfUser, setRoleOfUser] = useState("");
+  const [transPassoword, setTransPassword] = useState("");
+  let { role, transPass } = setRole();
   useEffect(() => {
-    let { role, transPass } = setRole()
-    setRoleOfUser(role)
-    setTransPassword(transPass)
-  }, [])
+    setRoleOfUser(role);
+    setTransPassword(transPass);
+  }, [role, transPass]);
   const generateTrandPassword = async () => {
     let payload = {
       transPassword: "",
-      confirmtransPassword: ""
-    }
-    if (!error[1].val && !error[2].val && passwordDetail[1].val !== "" && passwordDetail[2].val !== "") {
+      confirmtransPassword: "",
+    };
+    if (
+      !error[1].val &&
+      !error[2].val &&
+      passwordDetail[1].val !== "" &&
+      passwordDetail[2].val !== ""
+    ) {
       try {
-        let response
+        let response;
         payload = {
           ...payload,
           transPassword: passwordDetail[1].val,
-          confirmtransPassword: passwordDetail[2].val
-        }
-        switch (roleOfUser) {
-          case 'role1':
-            response = await masterAxios.post(`/fair-game-wallet/savetransPassword`, payload);
-            break;
-          case 'role2':
-            response = await adminAxios.post(`/fair-game-wallet/savetransPassword`, payload);
-            break;
-          case 'role3':
-            response = await expertAxios.post(`/fair-game-wallet/savetransPassword`, payload);
-            break;
-          default:
-            response = await userAxios.post(`/fair-game-wallet/savetransPassword`, payload);
-            break;
-        }
-        const { data } = response
+          confirmtransPassword: passwordDetail[2].val,
+        };
+        await axios.post(`/fair-game-wallet/savetransPassword`, payload);
+        const { data } = response;
         if (data.message == "Transaction password update successfully.") {
-          localStorage.setItem(transPassoword, true)
-          window.location.reload()
+          localStorage.setItem(transPassoword, true);
+          window.location.reload();
         }
       } catch (e) {
-        console.log(e)
-        setResponseError(e.response.data.message)
+        console.log(e);
+        setResponseError(e.response.data.message);
       }
     }
-  }
+  };
   return (
     <>
       <Typography
@@ -132,7 +125,13 @@ export const TransPassComp = ({ onCancel }) => {
           inputContainerStyle={{ borderRadius: "5px" }}
           containerStyle={{}}
           img={eye}
-          setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={1} onFocusOut={doSendErrorForPassword} toFoucs={true}
+          setDetail={setPasswordDetail}
+          Detail={passwordDetail}
+          setError={setError}
+          error={error}
+          place={1}
+          onFocusOut={doSendErrorForPassword}
+          toFoucs={true}
         />
         {error[1].val && <p style={{ color: "#fa1e1e" }}>{error[1].val}</p>}
         <Input
@@ -147,9 +146,15 @@ export const TransPassComp = ({ onCancel }) => {
           inputContainerStyle={{ borderRadius: "5px" }}
           containerStyle={{ marginTop: "30px" }}
           img={eye}
-          setDetail={setPasswordDetail} Detail={passwordDetail} setError={setError} error={error} place={2}
+          setDetail={setPasswordDetail}
+          Detail={passwordDetail}
+          setError={setError}
+          error={error}
+          place={2}
         />
-        {passwordDetail[1].val !== passwordDetail[2].val && <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>}
+        {passwordDetail[1].val !== passwordDetail[2].val && (
+          <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>
+        )}
         <Box
           sx={{
             height: "50px",
@@ -201,5 +206,5 @@ export const TransPassComp = ({ onCancel }) => {
         {responseError && <p style={{ color: "#fa1e1e" }}>{responseError}</p>}
       </Box>
     </>
-  )
-}
+  );
+};
