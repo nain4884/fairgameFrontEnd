@@ -11,7 +11,6 @@ import {
 } from "../../components";
 import { useDispatch } from "react-redux";
 import { stateActions } from "../../store/stateActions";
-import axios from "../../axios/axios";
 import {
   apiBasePath,
   LoginServerError,
@@ -22,8 +21,11 @@ import { userActions } from "../../newStore/Actions/userActions";
 import { signIn } from "../../newStore/reducers/auth";
 import { setCurrentUser } from "../../newStore/reducers/currentUser";
 import UseTokenUpdate from "../../useTokenUpdate";
+import { setRole } from "../../newStore";
 
 export default function Login() {
+  let { transPass, axios, role } = setRole()
+
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,6 +40,7 @@ export default function Login() {
   const [OTP, setOTP] = useState("");
 
   const [loginError, setLoginError] = useState();
+
 
   // useEffect(() => {
   // }, [error, loginDetail])
@@ -227,6 +230,7 @@ export default function Login() {
 
   async function getUserDetail() {
     try {
+
       const { data } = await axios.get("users/profile");
 
       // dispatch(
@@ -261,10 +265,10 @@ export default function Login() {
       if (roleDetail) data.data.role = roleDetail;
       if (data.message === "User login successfully.") {
         getUserDetail();
-        dispatch(setActiveRole(foundRoles.data));
+        // dispatch(setActiveRole(foundRoles.data));
         // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
         dispatch(signIn(data.data));
-
+        setRole(data.data.access_token);
         switch (data.data.role.roleName) {
           case "master":
             handleNavigate("/master/list_of_clients", "master");

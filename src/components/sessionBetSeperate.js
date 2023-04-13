@@ -110,7 +110,7 @@ const RowComponent = ({ header, data }) => {
                 <SingleBox color={getColor} data={data?.marketType} first={true} header={header} time={data?.time} />
                 <SingleBox color={getColor()} data={data?.odds} header={header} />
                 <SingleBox color={getColor()} data={data?.bet_type} header={header} />
-                <SingleBox color={getColor()} data={data?.stack} header={header} /></>}
+                <SingleBox color={getColor()} data={data?.stack || data?.stake} header={header} /></>}
             {header && <>
                 <SingleBox color={getColor} data={data[0]} first={true} header={header} />
                 <SingleBox color={getColor()} data={data[1]} header={header} />

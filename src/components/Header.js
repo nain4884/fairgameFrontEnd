@@ -28,11 +28,11 @@ import SearchInput from "./SearchInput";
 import SessionTimeOut from "./helper/SessionTimeOut";
 import SideBar from "./sideBar/SideBar";
 import StyledImage from "./StyledImage";
-import { setRole } from "./helper/SetRole";
 import { userActions } from "../newStore/Actions/userActions";
 import { signIn,logout } from "../newStore/reducers/auth";
 import { removeCurrentUser, setCurrentUser } from "../newStore/reducers/currentUser";
 import axios from "../axios/axios";
+import { setRole } from "../newStore";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();

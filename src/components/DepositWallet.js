@@ -6,11 +6,12 @@ import { setDailogData } from "../store/dailogModal";
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import adminAxios from "../axios/adminAxios";
 import Modal from "./Modal";
+import { setRole } from "../newStore";
 
 export default function DepositWallet() {
     const navigate = useNavigate()
+    const {axios}=setRole()
     const [Detail, setDetail] = useState({
         1: { field: "Previous_Balance", val: "" },
         2: { field: "amount", val: 0 },
@@ -38,7 +39,7 @@ export default function DepositWallet() {
     }
     async function getUserDetail() {
         try {
-            const { data } = await adminAxios.get('users/profile');
+            const { data } = await axios.get('users/profile');
             setUserId(data.data.id)
             setBalance(data.data.current_balance)
         } catch (e) {
@@ -63,7 +64,7 @@ export default function DepositWallet() {
             remark: Detail[4].val,
         };
         try {
-            const { data } = await adminAxios.post(`/fair-game-wallet/updateBalance`, defaultDepositObj);
+            const { data } = await axios.post(`/fair-game-wallet/updateBalance`, defaultDepositObj);
             if (data.message === "Balance update successfully.") {
                 setShowModalMessage(data.message)
                 handleChangeShowModalSuccess(true)

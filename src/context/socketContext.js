@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import io from "socket.io-client";
 import { apiBasePath, apiMicroBasePath, microServiceApiPath } from "../components/helper/constants";
-import { setRole } from "../components/helper/SetRole";
+import { setRole } from "../newStore";
 
 export const SocketContext = createContext();
 

@@ -3,14 +3,11 @@ import { useEffect, useState } from "react"
 import Input from "./Input"
 import { EyeIcon } from "../admin/assets"
 import DropDownSimple from "./DropdownSimple"
-import adminAxios from "../axios/adminAxios"
-import expertAxios from "../axios/expertAxios"
-import userAxios from '../axios/userAxios'
-import masterAxios from '../axios/masterAxios'
 import { useNavigate } from "react-router-dom"
-import { setRole } from "./helper/SetRole"
+
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword"
 import Modal from "./Modal"
+import { setRole } from "../newStore"
 
 const containerStyles = {
     marginTop: "10px"
@@ -20,6 +17,7 @@ const titleStyles = { color: "#202020", fontSize: { mobile: "12px", laptop: "12p
 const imputStyle = { fontSize: { mobile: "14px", laptop: "14px", fontWeight: "600" } }
 const inputContainerStyle = { borderRadius: "5px", border: "1px solid #DEDEDE" }
 const AddAccount = () => {
+    const {axios}=setRole()
     const navigate = useNavigate();
     const [loginRole, setLoginRole] = useState("")
     const [roleOfUser, setRoleOfUser] = useState("")
@@ -215,7 +213,7 @@ const AddAccount = () => {
 
     async function getUserDetail() {
         try {
-            const { data } = await axiosRolesToUse?.axios.get('users/profile');
+            const { data } = await axios.get('users/profile');
             setProfile(data.data)
         } catch (e) {
             console.log(e)

@@ -28,7 +28,6 @@ import axios from "../../axios/axios";
 import { microServiceApiPath } from "../../components/helper/constants";
 import { AuthContext } from "../../Authprovider";
 import { SocketContext } from "../../context/socketContext";
-import { setRole } from "../../components/helper/SetRole";
 import { stateActions } from "../../store/stateActions";
 import {
   setAddBetRates,
@@ -42,6 +41,7 @@ import {
 } from "../../newStore/reducers/matchDetails";
 import Axios from "axios";
 import { setCurrentUser } from "../../newStore/reducers/currentUser";
+import { setRole } from "../../newStore";
 
 let session = [];
 let matchOddsCount = 0;
@@ -361,7 +361,7 @@ export default function Matches() {
         let matchSessionDataTemp = [];
         const response = await axios.get(`/game-match/matchDetail/${id}`);
         response.data?.bettings?.forEach((element) => {
-          if (element.sessionBet === false || element.sessionBet === 0) {
+          if (element.sessionBet === false || element.sessionBet === 0 ) {
             matchOddsDataTemp.push(element);
           } else {
             matchSessionDataTemp.push(element);
@@ -369,6 +369,7 @@ export default function Matches() {
         });
         setMatchOddsData(matchOddsDataTemp);
         setMatchSessionData(matchSessionDataTemp);
+        // dispatch(
         setMarketId(response.data.marketId);
         setMatchDetail(response.data);
 

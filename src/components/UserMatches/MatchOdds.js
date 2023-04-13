@@ -29,7 +29,6 @@ import { setAnchor } from "../../store/betPlace";
 import { Popover } from "react-tiny-popover";
 import BetPlaced from "../BetPlaced";
 import Modal from "../Modal";
-import { setRole } from "../helper/SetRole";
 import { setDailogData } from "../../store/dailogModal";
 import { useNavigate } from "react-router-dom";
 import useOuterClick from "../helper/userOuterClick";
@@ -37,6 +36,7 @@ import SeprateBox from "./SeprateBox";
 import MoneyBox from "./MoneyBox";
 import Divider from "../helper/Divider";
 import Odds from "./Odds";
+import { setRole } from "../../newStore";
 const { axios } = setRole();
 
 const ITEM_HEIGHT = 36;
@@ -119,7 +119,12 @@ const SeasonMarketBox = ({ index, typeOfBet, data, mainData, allRates }) => {
         }}
       >
         <SeprateBox po={1} color={"white"} />
-        {matchesMobile && <PlaceBetComponent amount={index == 2} />}
+        {matchesMobile && (
+          <PlaceBetComponent
+            amount={index == 2}
+            profitLoss={data?.profitLoss}
+          />
+        )}
         {false && (
           <>
             <Box
@@ -178,13 +183,14 @@ const SeasonMarketBox = ({ index, typeOfBet, data, mainData, allRates }) => {
             <SeprateBox color={"white"} rates={allRates} />
           </>
         )}
-        {!matchesMobile && <PlaceBetComponentWeb amount={index == 2} />}
+        {!matchesMobile && <PlaceBetComponentWeb amount={index == 2} profitLoss={data?.profitLoss}/>}
       </Box>
     </Box>
   );
 };
-const PlaceBetComponent = ({ amount }) => {
+const PlaceBetComponent = ({ amount, profitLoss }) => {
   const { sessionRates } = useSelector((state) => state?.matchDetails);
+  const [proLoss, setProfitLoss] = useState(profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -197,6 +203,13 @@ const PlaceBetComponent = ({ amount }) => {
     setShow(false);
   });
 
+  useEffect(() => {
+    if (sessionRates) {
+      setProfitLoss(sessionRates);
+    }
+  }, [sessionRates]);
+
+  console.log(profitLoss,sessionRates,"profitLoss>>>")
 
   return (
     <Box sx={{ marginTop: "-8.4vw" }}>
@@ -240,7 +253,9 @@ const PlaceBetComponent = ({ amount }) => {
             }}
           >
             Total Bet :{" "}
-            <span style={{ color: "#0B4F26" }}>{sessionRates?.total_bet || 0}</span>
+            <span style={{ color: "#0B4F26" }}>
+              {proLoss?.total_bet || 0}
+            </span>
           </Typography>
         </Box>
         <Box sx={{ zIndex: 100 }}>
@@ -255,10 +270,10 @@ const PlaceBetComponent = ({ amount }) => {
           </Typography>
         </Box>
       </Box>
-      {show  && (
+      {show && (
         <DropdownMenu
           style={{ zIbnex: 10 }}
-          list={sessionRates?.betData}
+          list={proLoss?.betData}
           open={Boolean(anchorEl)}
           anchorEl={anchorEl}
           handleClose={handleClose}
@@ -267,8 +282,9 @@ const PlaceBetComponent = ({ amount }) => {
     </Box>
   );
 };
-const PlaceBetComponentWeb = ({ amount }) => {
+const PlaceBetComponentWeb = ({ amount ,profitLoss}) => {
   const { sessionRates } = useSelector((state) => state?.matchDetails);
+  const [proLoss, setProfitLoss] = useState(profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -280,6 +296,12 @@ const PlaceBetComponentWeb = ({ amount }) => {
   const innerRef = useOuterClick((ev) => {
     setShow(false);
   });
+
+  useEffect(() => {
+    if (sessionRates) {
+      setProfitLoss(sessionRates);
+    }
+  }, [sessionRates]);
   console.log(sessionRates, "sessionRatess");
   return (
     <>
@@ -327,7 +349,7 @@ const PlaceBetComponentWeb = ({ amount }) => {
               color: "#0B4F26",
             }}
           >
-            {sessionRates?.total_bet || 0}
+            {proLoss?.total_bet || 0}
           </Typography>
         </Box>
         <Box
@@ -356,7 +378,7 @@ const PlaceBetComponentWeb = ({ amount }) => {
           <DropdownMenu
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}
-            list={sessionRates?.betData}
+            list={proLoss?.betData}
             handleClose={handleClose}
           />
         )}
@@ -430,347 +452,378 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
             </Typography>
           </Box>
         </Box>
-   <Box sx={{maxHeight:"200px",overflowY:"scroll"}}>
-   {list?.length>0 ? list?.map((v) => {
-          const getColor = (value) => {
-            if (value > 1) {
-              return "#306A47";
-            } else if (value === v?.profit_loss && value > 1) {
-              return "#F8C851";
-            } else {
-              return "#DC3545";
-            }
-          };
-          const getSVG = (value) => {
-            if (value > 1) {
-              return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-            } else if (value === v?.profit_loss && value > 1) {
-              return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-            } else {
-              return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
-            }
-          };
-          return (
-            <Box
-              key={v?.odds}
-              sx={{
-                display: "flex",
-                height: "25px",
-                borderTop: "1px solid #306A47",
-              }}
-            >
-              <Box
-                sx={{
-                  width: "60px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
+        <Box sx={{ maxHeight: "200px", overflowY: "scroll" }}>
+          {list?.length > 0 ? (
+            list?.map((v) => {
+              const getColor = (value) => {
+                if (value > 1) {
+                  return "#306A47";
+                } else if (value === v?.profit_loss && value > 1) {
+                  return "#F8C851";
+                } else {
+                  return "#DC3545";
+                }
+              };
+              const getSVG = (value) => {
+                if (value > 1) {
+                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                } else if (value === v?.profit_loss && value > 1) {
+                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                } else {
+                  return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+                }
+              };
+              return (
+                <Box
+                  key={v?.odds}
                   sx={{
-                    color: "#306A47",
-                    fontWeight: "bold",
-                    fontSize: "12px",
+                    display: "flex",
+                    height: "25px",
+                    borderTop: "1px solid #306A47",
                   }}
                 >
-                  {v?.odds}
-                </Typography>
+                  <Box
+                    sx={{
+                      width: "60px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "#306A47",
+                        fontWeight: "bold",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {v?.odds}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: "90px",
+                      display: "flex",
+                      borderLeft: `1px solid #306A47`,
+                      background: getColor(v?.profit_loss),
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "12px",
+                        color: "white",
+                      }}
+                    >
+                      {v?.profit_loss}
+                    </Typography>
+                    <StyledImage
+                      src={getSVG(v?.profit_loss)}
+                      sx={{
+                        height: "15px",
+                        marginLeft: "5px",
+                        filter:
+                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                        width: "15px",
+                      }}
+                    />
+                  </Box>
+                </Box>
+              );
+            })
+          ) : (
+            <>
+              {" "}
+              <Box
+                sx={{
+                  display: "flex",
+                  height: "25px",
+                  borderTop: "1px solid #306A47",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "60px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                    }}
+                  >
+                    40
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: "90px",
+                    display: "flex",
+                    borderLeft: "1px solid #306A47",
+                    background: "#10DC61",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "500",
+                      fontSize: "12px",
+                      color: "white",
+                    }}
+                  >
+                    4,02,350
+                  </Typography>
+                  <StyledImage
+                    src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
+                    sx={{
+                      height: "15px",
+                      marginLeft: "5px",
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      width: "15px",
+                    }}
+                  />
+                </Box>
               </Box>
               <Box
                 sx={{
-                  width: "90px",
                   display: "flex",
-                  borderLeft: `1px solid #306A47`,
-                  background: getColor(v?.profit_loss),
-                  justifyContent: "center",
-                  alignItems: "center",
+                  height: "25px",
+                  borderTop: "1px solid #306A47",
                 }}
               >
-                <Typography
+                <Box
                   sx={{
-                    fontWeight: "500",
-                    fontSize: "12px",
-                    color: "white",
+                    width: "60px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
-                  {v?.profit_loss}
-                </Typography>
-                <StyledImage
-                  src={getSVG(v?.profit_loss)}
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                    }}
+                  >
+                    41
+                  </Typography>
+                </Box>
+                <Box
                   sx={{
-                    height: "15px",
-                    marginLeft: "5px",
-                    filter:
-                      "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                    width: "15px",
+                    width: "90px",
+                    display: "flex",
+                    borderLeft: "1px solid #306A47",
+                    background: "#10DC61",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
-                />
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "500",
+                      fontSize: "12px",
+                      color: "white",
+                    }}
+                  >
+                    4,02,350
+                  </Typography>
+                  <StyledImage
+                    src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
+                    sx={{
+                      height: "15px",
+                      marginLeft: "5px",
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      width: "15px",
+                    }}
+                  />
+                </Box>
               </Box>
-            </Box>
-          );
-        }) :  <> <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "60px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              40
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "90px",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#10DC61",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  height: "25px",
+                  borderTop: "1px solid #306A47",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "60px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                    }}
+                  >
+                    42
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: "90px",
+                    display: "flex",
+                    borderLeft: "1px solid #306A47",
+                    background: "#F8C851",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "500",
+                      fontSize: "12px",
+                      color: "white",
+                    }}
+                  >
+                    4,02,350
+                  </Typography>
+                  <StyledImage
+                    src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
+                    sx={{
+                      height: "15px",
+                      marginLeft: "5px",
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      width: "15px",
+                    }}
+                  />
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  height: "25px",
+                  borderTop: "1px solid #306A47",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "60px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                    }}
+                  >
+                    43
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: "90px",
+                    display: "flex",
+                    borderLeft: "1px solid #306A47",
+                    background: "#F8C851",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "500",
+                      fontSize: "12px",
+                      color: "white",
+                    }}
+                  >
+                    4,02,350f
+                  </Typography>
+                  <StyledImage
+                    src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
+                    sx={{
+                      height: "15px",
+                      marginLeft: "5px",
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      width: "15px",
+                    }}
+                  />
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  height: "25px",
+                  borderTop: "1px solid #306A47",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "60px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                    }}
+                  >
+                    44
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: "90px",
+                    display: "flex",
+                    borderLeft: "1px solid #306A47",
+                    background: "#DC3545",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "500",
+                      fontSize: "12px",
+                      color: "white",
+                    }}
+                  >
+                    4,02,350
+                  </Typography>
+                  <StyledImage
+                    src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
+                    sx={{
+                      height: "15px",
+                      marginLeft: "5px",
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      width: "15px",
+                    }}
+                  />
+                </Box>
+              </Box>{" "}
+            </>
+          )}
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "60px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              41
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "90px",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#10DC61",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "60px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              42
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "90px",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#F8C851",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "60px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              43
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "90px",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#F8C851",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350f
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "60px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              44
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "90px",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#DC3545",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
-        </Box> </>}
-   </Box>
- 
       </Box>
     </Box>
   );
@@ -920,7 +973,8 @@ const SessionMarket = ({ data, teamARates, teamBRates }) => {
                     marginLeft: "7px",
                   }}
                 >
-                  MIN: {data?.manaual_session_max_bet} MAX:4500
+                  MIN:{data?.manaual_session_min_bet} MAX:
+                  {data?.manaual_session_max_bet}
                 </Typography>
               </Box>
               <Box
@@ -1192,8 +1246,10 @@ const SessionMarket = ({ data, teamARates, teamBRates }) => {
 //   );
 // };
 const MatchOdds = ({ data, matchOddsRates }) => {
-  console.log("data.apiSessionActive", matchOddsRates?.matchOddsRates ,data);
-  const { manualBookMarkerRates , matchOddsLive, bookmakerLive } = useSelector((state) => state?.matchDetails);
+  console.log("data.apiSessionActive", matchOddsRates?.matchOddsRates, data);
+  const { manualBookMarkerRates, matchOddsLive, bookmakerLive } = useSelector(
+    (state) => state?.matchDetails
+  );
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -1206,7 +1262,7 @@ const MatchOdds = ({ data, matchOddsRates }) => {
         <Odds
           showDely={true}
           data={data}
-          lock={matchOddsLive?.length===0 ? true : false}
+          lock={matchOddsLive?.length === 0 ? true : false}
           suspended={false}
           teamARates={matchOddsRates?.manualBookmaker?.teamA}
           teamBRates={matchOddsRates?.manualBookmaker?.teamB}
@@ -1219,7 +1275,7 @@ const MatchOdds = ({ data, matchOddsRates }) => {
       {data?.apiBookMakerActive && (
         <Odds
           showDely={true}
-          lock={bookmakerLive?.length===0 ? true : false}
+          lock={bookmakerLive?.length === 0 ? true : false}
           data={data}
           suspended={false}
           teamARates={matchOddsRates?.manualBookmaker?.teamA}
@@ -1247,7 +1303,7 @@ const MatchOdds = ({ data, matchOddsRates }) => {
 
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
-      {(data?.apiSessionActive || data.manualSessionActive )&& (
+      {(data?.apiSessionActive || data.manualSessionActive) && (
         <SessionMarket
           data={data}
           teamARates={manualBookMarkerRates?.teamA}

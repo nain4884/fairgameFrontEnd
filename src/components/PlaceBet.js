@@ -142,7 +142,7 @@ const PlaceBet = ({ open, refs, handleClose, season, onSubmit, onCancel, back, i
             payload.betId = data?.id
             payload.bet_type = isSessionYes ? "yes" : "no"
             payload.bet_condition = data?.bet_condition
-            payload.rate_percent = data?.rate_percent
+            payload.rate_percent =data?.no_rate ? `${data?.no_rate}-${data?.yes_rate}` : `${data?.rate_percent}-${data?.rate_percent}`
             payload.marketType = data?.bet_condition
             payload.odds = selectedValue
         }

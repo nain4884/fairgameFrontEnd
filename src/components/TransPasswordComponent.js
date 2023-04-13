@@ -7,8 +7,8 @@ import masterAxios from "../axios/masterAxios";
 import adminAxios from "../axios/adminAxios";
 import expertAxios from "../axios/expertAxios";
 import userAxios from "../axios/userAxios";
-import { setRole } from "./helper/SetRole";
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
+import { setRole } from "../newStore";
 
 export const TransPassword = () => {
   return (

@@ -5,9 +5,7 @@ const initialState = {
     teamA: "1000000",
     teamB: "-1000000",
   },
-  sessionRates: {
-    totalBets: 250,
-  },
+  sessionRates: null,
   matchOdds: {},
   sessionOdds: {},
   allBetRates: [],

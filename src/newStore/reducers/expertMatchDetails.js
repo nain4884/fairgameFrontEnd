@@ -15,9 +15,12 @@ const expertMatchDetails = createSlice({
     setSelectedMatch: (state, action) => {
       state.selectedMatch = action.payload;
     },
+    removeSelectedMatch: (state, action)=>{
+      state.selectedMatch ={}
+    }
   },
 });
 
-export const { setAllMatchs, setSelectedMatch } = expertMatchDetails.actions;
+export const { setAllMatchs, setSelectedMatch ,removeSelectedMatch} = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

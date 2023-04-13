@@ -1,10 +1,10 @@
 import { Pagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import "../index.css";
-import { setRole } from "../helper/SetRole";
 import Odds from "./Odds";
 import { useDispatch } from "react-redux";
 import { setAllBetRate } from "../../newStore/reducers/matchDetails";
+import { setRole } from "../../newStore";
 
 const MatchesComponent = ({ doNavigateWithState }) => {
   // const classes=useStyle()
