@@ -5,8 +5,9 @@ import { matchType } from '../../components/helper/constants'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import microServiceAxios from '../../axios/microServiceAxios'
-import expertAxios from '../../axios/expertAxios'
+import axios from '../../axios/axios'
 import Modal from '../../components/Modal'
+import { setRole } from '../../newStore'
 
 const stateDetail = {
     1: { field: "match_id", val: '' },
@@ -37,7 +38,7 @@ function AddBetComp() {
     const [matches, setMatches] = useState([{ EventName: 'No Matches Available', MarketId: '' }])
 
     const [thisMatchDetail, setThisMatchDetail] = useState()
-
+    const {axios}= setRole()
     const [Error, setError] = useState({
         1: { field: "match_id", val: false },
         2: { field: "matchType", val: false },
@@ -99,7 +100,7 @@ function AddBetComp() {
 
     const getAllActiveMatches = async () => {
         try {
-            const { data } = await expertAxios.get(`/game-match/getAllMatch`);
+            const { data } = await axios.get(`/game-match/getAllMatch`);
             let matchesList = []
             data[0]?.forEach(match => {
                 matchesList.push({ EventName: match.title, MarketId: match.id })
@@ -112,7 +113,7 @@ function AddBetComp() {
 
     const getMatchDetail = async (idToFetch) => {
         try {
-            const { data } = await expertAxios.get(`/game-match/matchDetail/${idToFetch}`);
+            const { data } = await axios.get(`/game-match/matchDetail/${idToFetch}`);
             if (data) {
                 setThisMatchDetail(data)
             }
@@ -158,7 +159,7 @@ function AddBetComp() {
         }
         try {
             if (Detail[3].val == 'Session Odds') payload = payload2
-            const { data } = await expertAxios.post(`/betting/addBetting`, payload);
+            const { data } = await axios.post(`/betting/addBetting`, payload);
             if (data.message) {
                 setShowSuccessModal(true)
                 setShowModalMessage(data.message)

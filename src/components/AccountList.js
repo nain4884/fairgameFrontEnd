@@ -11,10 +11,11 @@ import {
 } from "../admin/assets";
 import Modal from "./Modal";
 import SearchInput from "./SearchInput";
-import { setRole } from "./helper/SetRole";
+
 import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
 import { useSelector } from "react-redux";
+import { setRole } from "../newStore";
 
 const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");

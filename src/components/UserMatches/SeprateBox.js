@@ -11,8 +11,9 @@ import BetPlaced from '../BetPlaced';
 import { Modal } from 'react-bootstrap';
 import { Lock } from '../../assets';
 import { useState } from 'react';
-import { setRole } from '../helper/SetRole';
 import { setAllBetRate } from '../../newStore/reducers/matchDetails';
+import { toast } from 'react-toastify';
+import { setRole } from '../../newStore';
 const PlaceBetType = {
     BackLay: "BackLay",
     YesNo: "YesNo",
@@ -209,11 +210,11 @@ const SeprateBox = ({
                       // setAllRateBets(response?.data?.data[0])
                       // dispatch(setAllBetRate(response?.data?.data[0]))
                       showDialogModal(isPopoverOpen,true,response.data.message)
-                      
                       setVisible(true);
                       setCanceled(false);
                     } catch (e) {
                       console.log(e.response.data.message);
+                      toast.error(e.response.data.message)
                       showDialogModal(isPopoverOpen,false,e.response.data.message)
                       setShowModalMessage(e.response.data.message);
                       setShowSuccessModal(true);

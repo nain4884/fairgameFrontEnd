@@ -20,14 +20,13 @@ import { DatePicker } from "rsuite";
 import Header from "./Header";
 import Background from "./Background";
 import "./style.css";
-import axios from "../../axios/expertAxios";
 import DropDownSimple from "../../components/DropdownSimple";
 import { defaultMarketId, matchType } from "../../components/helper/constants";
-import expertAxios from "../../axios/expertAxios";
 import microServiceAxios from "../../axios/microServiceAxios";
 import { setDailogData } from "../../store/dailogModal";
 import { useDispatch } from "react-redux";
 import { setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
+import { setRole } from "../../newStore";
 const containerStyles = {
   marginTop: "10px",
 };
@@ -70,7 +69,7 @@ const stateDetail = {
 
 export default function Home1() {
   const [Detail, setDetail] = useState(stateDetail);
-
+const {axios}=setRole()
   const [Error, setError] = useState({
     1: { field: "gameType", val: false },
     2: { field: "startAt", val: false },
@@ -765,9 +764,10 @@ const MatchListComp = () => {
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(5);
+  const {axios}=setRole()
   const getAllMatch = async () => {
     try {
-      let response = await expertAxios.get(
+      let response = await axios.get(
         `/game-match/getAllMatch?&page=${currentPage}&limit=${pageLimit}`
       );
       setAllMatch(response.data[0]);
@@ -910,7 +910,7 @@ const ListHeaderT = () => {
 const Row = ({ index, containerStyle, data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+const {axios}=setRole()
   const [updateMatchStatus, setUpdateMatchStatus] = useState({
     1: { field: "apiMatchActive", val: data?.apiMatchActive || false },
     2: { field: "apiBookMakerActive", val: data?.apiBookMakerActive || false },
@@ -962,7 +962,7 @@ const Row = ({ index, containerStyle, data }) => {
       ...defaultMatchStatus,
     };
     try {
-      let response = await expertAxios.post(
+      let response = await axios.post(
         `/game-match/updateMatchActiveStatus`,
         payload
       );

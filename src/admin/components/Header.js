@@ -21,9 +21,9 @@ import { stateActions } from "../../store/stateActions";
 import { ARROWDROPDOWN, Down, DropDown } from "../assets";
 import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "./SideBarAdmin";
-import masterAxios from "../../axios/masterAxios";
 import { logout } from "../../newStore/reducers/auth";
 import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { setRole } from "../../newStore";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -35,9 +35,10 @@ const CustomHeader = ({ }) => {
   const [anchor, setAnchor] = React.useState(null);
   const [balance, setBalance] = useState(0)
   const [fullName, setFullName] = useState('')
+  const {axios} = setRole()
   async function getUserDetail() {
     try {
-      const { data } = await masterAxios.get('users/profile');
+      const { data } = await axios.get('users/profile');
       setBalance(data.data.current_balance)
       setFullName(data.data.fullName)
     } catch (e) {

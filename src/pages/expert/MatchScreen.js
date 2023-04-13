@@ -37,7 +37,6 @@ import AddNotificationModal from "../../components/AddNotificationModal";
 import CustomHeader from "./Header";
 import { SocketContext } from "../../context/socketContext";
 import { useLocation } from "react-router-dom";
-import { setRole } from "../../components/helper/SetRole";
 import {
   setAllBetRate,
   setBookMakerLive,
@@ -46,9 +45,11 @@ import {
   setMatchOddsLive,
   setSessionOddsLive,
 } from "../../newStore/reducers/matchDetails";
-import { setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
+import { removeSelectedMatch, setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
+import { toast } from "react-toastify";
+import { setRole } from "../../newStore";
 
 let matchOddsCount = 0;
 
@@ -152,8 +153,10 @@ const MatchScreen = ({}) => {
   const [IObets, setIObtes] = useState(allBetRates);
 
   const getSingleMatch = async (val) => {
-    try {
+    try { 
+      dispatch(removeSelectedMatch())
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
+      setCurrentMatch(data)
       dispatch(setSelectedMatch(data));
     } catch (e) {
       console.log(e?.message, "message");
@@ -635,6 +638,7 @@ const MatchScreen = ({}) => {
           id: id,
         });
       } catch (err) {
+        toast.error(err.response.data.message)
         console.log(err?.response?.data?.message, "err");
       }
     };
@@ -863,15 +867,13 @@ const MatchScreen = ({}) => {
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     const [visible, setVisible] = useState(false);
     const [live, setLive] = useState(true);
-    useEffect(() => { 
-        if(!live){
-          setLive(true)
-        }
-        else {
-          setLive(true)
-        }
-
-    },[liveUser])
+    useEffect(() => {
+      if (!live) {
+        setLive(true);
+      } else {
+        setLive(true);
+      }
+    }, [liveUser]);
 
     const handleLive = async (status) => {
       try {
@@ -888,12 +890,12 @@ const MatchScreen = ({}) => {
         };
         await axios.post("betting/addBetting", body);
       } catch (err) {
+        toast.error(err.response.data.message)
         console.log(err?.message);
       }
     };
 
-
-    console.log("value012",live)
+    console.log("value012", live);
     return (
       <div style={{ position: "relative" }}>
         {live && (
@@ -1570,11 +1572,13 @@ const MatchScreen = ({}) => {
           id: id,
         });
       } catch (err) {
+        toast.error(err.response.data.message)
+
         console.log(err?.response?.data?.message, "err");
       }
     };
 
-    console.log("STOP",live)
+    console.log("STOP", live);
 
     return (
       <Box
@@ -1738,7 +1742,11 @@ const MatchScreen = ({}) => {
           >
             {sessionMatch?.map((match, index) => (
               <>
-                <SeasonMarketBox newData={match} liveUser={live} index={index} />
+                <SeasonMarketBox
+                  newData={match}
+                  liveUser={live}
+                  index={index}
+                />
                 <Divider />
               </>
             ))}
@@ -1767,9 +1775,15 @@ const MatchScreen = ({}) => {
   const BookMarketer = ({ currentMatch, bookmakerLive }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-    const [live, setLive] = useState(currentMatch?.bookMakerRateLive);
-    console.log(bookmakerLive, "SDDDDDDDDD");
+    const [live, setLive] = useState(false);
 
+    useEffect(() => {
+      if (currentMatch?.bookMakerRateLive) {
+        setLive(true);
+      } else {
+        setLive(false);
+      }
+    }, [currentMatch?.bookMakerRateLive]);
     return (
       <Box
         sx={{

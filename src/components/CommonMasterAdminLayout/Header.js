@@ -20,13 +20,13 @@ import { stateActions } from "../../store/stateActions";
 import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "../../components/sideBar/SideBarAdmin";
 import { ThisUseModal } from "../../components/Modal";
-import { setRole } from "../../components/helper/SetRole";
 import LiveMarket from "./LiveMarket";
 import ButtonHead from "./ButtonHead";
 import DropdownMenu2 from "./WithrawDepositMenu";
 import DropdownMenu1 from "./MenuBar";
 import currentUser, { removeCurrentUser, setCurrentUser } from "../../newStore/reducers/currentUser";
 import { logout } from "../../newStore/reducers/auth";
+import { setRole } from "../../newStore";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
