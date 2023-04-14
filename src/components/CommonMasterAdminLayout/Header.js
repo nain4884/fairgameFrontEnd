@@ -41,6 +41,8 @@ const CustomHeader = ({}) => {
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
+  
+  const { userAdmin } = useSelector((state) => state.auth);
   const location = useLocation();
   React.useEffect(() => {
     if (location.pathname.includes("market_analysis")) {
@@ -60,9 +62,12 @@ const CustomHeader = ({}) => {
       dispatch(setActiveAdmin(2));
     }
     let { transPass, axios, role } = setRole();
-    setIsTransPasswordExist(window.localStorage.getItem(transPass));
+    setIsTransPasswordExist(userAdmin?.isTransPasswordCreated);
     getUserDetail(axios, role);
-  }, [location, window.location.pathname]);
+  }, [location, window.location.pathname ,userAdmin]);
+
+
+
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);

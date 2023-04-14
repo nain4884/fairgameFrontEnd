@@ -39,7 +39,6 @@ const SeprateBox = ({
   }) => {
     const theme = useTheme();
     const { axios } = setRole();
-    console.log(value, "value", "SDDDDDDDD");
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     const dispatch = useDispatch();
     const navigate=useNavigate()

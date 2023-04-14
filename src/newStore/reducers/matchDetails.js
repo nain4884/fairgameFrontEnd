@@ -10,9 +10,10 @@ const initialState = {
   sessionOdds: {},
   allBetRates: [],
   allSessionBets: [],
-  matchOddsLive:[],
-  bookmakerLive:[],
+  matchOddsLive: null,
+  bookmakerLive: null,
   sessionOddsLive: [],
+  selectedMatch: {},
 };
 
 const matchDetails = createSlice({
@@ -29,10 +30,17 @@ const matchDetails = createSlice({
       state.matchOdds = action.payload;
     },
     setMatchOddsLive: (state, action) => {
-      state.matchOddsLive =  state.matchOddsLive.concat(action.payload);
+      state.matchOddsLive = action.payload;
+    },
+    removeMatchOddsLive: (state, action) => {
+      state.matchOddsLive = null;
     },
     setBookMakerLive: (state, action) => {
-      state.bookmakerLive = state.bookmakerLive.concat(action.payload);
+      state.bookmakerLive = action.payload;
+    },
+
+    removeBookMakerLive: (state, action) => {
+      state.bookmakerLive = null;
     },
     removeMatchOdds: (state, action) => {
       state.matchOdds = [];
@@ -41,7 +49,10 @@ const matchDetails = createSlice({
       state.sessionOdds = action.payload;
     },
     setSessionOddsLive: (state, action) => {
-      state.sessionOddsLive = state.sessionOddsLive.concat(action.payload);
+      state.sessionOddsLive = action.payload;
+    },
+    removeSessionOddsLive: (state, action) => {
+      state.sessionOddsLive = [];
     },
     removeSessionOdds: (state, action) => {
       state.sessionOdds = [];
@@ -71,11 +82,19 @@ const matchDetails = createSlice({
     setSessionRates: (state, action) => {
       state.sessionRates = action.payload;
     },
+    setSelectedMatch: (state, action) => {
+      state.selectedMatch = action.payload;
+    },
+    removeSelectedMatch: (state, action)=>{
+      state.selectedMatch ={}
+    }
   },
 });
 
 export const {
   setManualBookMarkerRates,
+  setSelectedMatch,
+  removeSelectedMatch,
   removeManualBookMarkerRates,
   setMatchOdds,
   removeMatchOdds,
@@ -84,13 +103,13 @@ export const {
   setAllBetRate,
   removeAllBetRates,
   setAddBetRates,
+  removeSessionOddsLive,
   setAllSessionBets,
   removeAllSessionBets,
   setSessionRates,
   setMatchOddsLive,
   setBookMakerLive,
   setSessionOddsLive,
-  
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

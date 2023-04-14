@@ -6,38 +6,45 @@ import SeprateBox from "./SeprateBox";
 import { INDIA, PAKISTAN } from "../../assets";
 import Divider from "../helper/Divider";
 
-const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates ,lock}) => {
+const BoxComponent = ({
+  name,
+  color,
+  data,
+  team,
+  typeOfBet,
+  rate,
+  allRates,
+  lock,
+  newData
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   let backValue,
     layValue,
     suspended = null;
 
+
   // console.log(data?.matchOddsData?.[0],"SDDDDDDDDDD")
   if (team === "teamA") {
-    backValue = data?.matchOddsData?.[0]?.teamA_Back;
-    layValue = data?.matchOddsData?.[0]?.teamA_lay;
-    suspended =
-      data?.matchOddsData?.[0]?.teamA_suspend !== null
-        ? data?.matchOddsData?.[0]?.teamA_suspend
-        : data?.matchOddsData?.[0]?.teamA_suspend;
+    backValue = data?.availableToBack;
+    layValue = data?.availableToLay;
+    suspended =false
+
   }
   if (team === "teamB") {
-    backValue = data?.matchOddsData?.[0]?.teamB_Back;
-    layValue = data?.matchOddsData?.[0]?.teamB_lay;
-    suspended =
-      data?.matchOddsData?.[0]?.teamA_suspend !== null
-        ? data?.matchOddsData?.[0]?.teamB_suspend
-        : data?.matchOddsData?.[0]?.teamB_suspend;
+    backValue = data?.availableToBack;
+    layValue = data?.availableToLay;
+    suspended =false
+     
   }
-  if (team === "draw") {
-    backValue = data?.matchOddsData?.[0]?.teamC_Back;
-    layValue = data?.matchOddsData?.[0]?.teamC_lay;
-    suspended =
-      data?.matchOddsData?.[0]?.teamA_suspend !== null
-        ? data?.matchOddsData?.[0]?.teamC_suspend
-        : data?.matchOddsData?.[0]?.teamC_suspend;
-  }
+  // if (team === "draw") {
+  //   backValue = data?.matchOddsData?.[0]?.teamC_Back;
+  //   layValue = data?.matchOddsData?.[0]?.teamC_lay;
+  //   suspended =
+  //     data?.matchOddsData?.[0]?.teamA_suspend !== null
+  //       ? data?.matchOddsData?.[0]?.teamC_suspend
+  //       : data?.matchOddsData?.[0]?.teamC_suspend;
+  // }
   return (
     <Box
       sx={{
@@ -96,7 +103,7 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates ,lock}
         </Box>
         <MoneyBox color={color} rates={rate} />
       </Box>
-      {backValue && layValue && suspended === null ? (
+      {backValue?.length > 0 && layValue?.length > 0  ? (
         <Box
           sx={{
             display: "flex",
@@ -109,10 +116,10 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates ,lock}
         >
           {!matchesMobile && (
             <SeprateBox
-               lock={lock}
+              lock={lock}
               rates={allRates}
-              value={`${backValue - 2}`}
-              value2={"  "}
+              value={backValue[2]?.price}
+              value2={backValue[0]?.size}
               color={matchesMobile ? "white" : "#CEEBFF"}
               type={{ color: "#A7DCFF", type: "BL" }}
               name={name}
@@ -125,10 +132,10 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates ,lock}
           ></Box>
           {!matchesMobile && (
             <SeprateBox
-            lock={lock}
+              lock={lock}
               rates={allRates}
-              value={`${backValue - 1}`}
-              value2={"  "}
+              value={backValue[1]?.price}
+              value2={backValue[0]?.size}
               color={matchesMobile ? "white" : "#C2E6FF"}
               type={{ color: "#A7DCFF", type: "BL" }}
               name={name}
@@ -139,35 +146,34 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates ,lock}
           <Box
             sx={{ width: ".25%", display: "flex", background: "pink" }}
           ></Box>
-          {backValue && (
-            <SeprateBox
+
+          <SeprateBox
             lock={lock}
-              rates={allRates}
-              value={`${backValue}`}
-              value2={"  "}
-              color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
-              type={{ color: "#A7DCFF", type: "BL" }}
-              name={name}
-              data={data}
-              typeOfBet={typeOfBet}
-            />
-          )}
+            rates={allRates}
+            value={backValue[0]?.price}
+            value2={backValue[0]?.size}
+            color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
+            type={{ color: "#A7DCFF", type: "BL" }}
+            name={name}
+            data={data}
+            typeOfBet={typeOfBet}
+          />
+
           <Box
             sx={{ width: ".25%", display: "flex", background: "pink" }}
           ></Box>
-          {layValue && (
-            <SeprateBox
+
+          <SeprateBox
             lock={lock}
-              rates={allRates}
-              value={`${layValue}`}
-              value2={"  "}
-              color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
-              type={{ color: "#FFB5B5", type: "BL" }}
-              name={name}
-              data={data}
-              typeOfBet={typeOfBet}
-            />
-          )}
+            rates={allRates}
+            value={layValue[0]?.price}
+            value2={layValue[0]?.size}
+            color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
+            type={{ color: "#FFB5B5", type: "BL" }}
+            name={name}
+            data={data}
+            typeOfBet={typeOfBet}
+          />
           <Box
             sx={{ width: ".25%", display: "flex", background: "pink" }}
           ></Box>
@@ -175,8 +181,8 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates ,lock}
             <SeprateBox
               rates={allRates}
               lock={lock}
-              value={`${layValue + 1}`}
-              value2={"  "}
+              value={layValue[1]?.price}
+              value2={layValue[1]?.size}
               color={matchesMobile ? "white" : "#F2CBCB"}
               type={{ color: "#FFB5B5", type: "BL" }}
               name={name}
@@ -191,8 +197,8 @@ const BoxComponent = ({ name, color, data, team, typeOfBet, rate,allRates ,lock}
             <SeprateBox
               rates={allRates}
               lock={lock}
-              value={`${layValue + 2}`}
-              value2={"  "}
+              value={layValue[2]?.price}
+              value2={layValue[1]?.size}
               color={matchesMobile ? "white" : "#ECD6D6"}
               type={{ color: "#FFB5B5", type: "BL" }}
               name={name}

@@ -15,6 +15,7 @@ import AllBets from "../../components/AllBets"
 import { Background, Header as CHeader } from '../../components/index'
 import UnlockComponent from "../../components/UnlockComponent"
 import { useLocation } from "react-router-dom"
+import { memo } from "react"
 const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
     const theme = useTheme()
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
@@ -713,4 +714,4 @@ const NewMatchScreen=()=>{
     )
 }
 
-export default NewMatchScreen
+export default memo(NewMatchScreen)

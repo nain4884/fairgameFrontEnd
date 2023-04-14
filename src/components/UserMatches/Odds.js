@@ -61,12 +61,12 @@ const Odds = ({
   lock,
   showDely,
   suspended,
+  newData
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const bookRatio=Math.round(teamARates/teamBRates * 100) / 100 || 0;
-  
   return (
     <Box
       key="odds"
@@ -226,35 +226,35 @@ const Odds = ({
           </Box>
         </Box>
       }
-      {data?.matchOddsData && !suspended && (
-        <>
+    
           <BoxComponent
             time={true}
+            newData={newData}
             lock={lock}
             color={"#46e080"}
             allRates={{teamA:teamARates,teamB:teamBRates}}
             rate={teamARates}        
-            name={`${data?.teamA}`}
-            data={data}
+            name={newData?.teamA}
+            data={data[0]?.ex}
             team={"teamA"}
             typeOfBet={"Match"}
           />
           <Divider />
           <BoxComponent
             time={true}
+            newData={newData}
             lock={lock}
             color={"#FF4D4D"}
-            name={`${data?.teamB}`}
-            data={data}
+            name={newData?.teamB}
+            data={data[1]?.ex}
             rate={teamBRates}
             allRates={{teamA:teamARates,teamB:teamBRates}}
             team={"teamB"}
             typeOfBet={"Match"}
           />
           <Divider />
-        </>
-      )}
-      {data?.teamC && !suspended && (
+  
+      {/* {data?.teamC && !suspended && (
         <BoxComponent
           time={true}
           color={"#F8C851"}
@@ -262,9 +262,9 @@ const Odds = ({
           data={data}
           team={"draw"}
         />
-      )}
+      )} */}
 
-      {suspended && (
+      {/* {suspended && (
         <Box sx={{ position: "relative" }}>
           <BoxComponent
            rate={teamARates}
@@ -295,7 +295,7 @@ const Odds = ({
             <img src={BallStart} style={{ width: "113px", height: "32px" }} />
           </Box>
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };

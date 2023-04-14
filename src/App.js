@@ -14,12 +14,7 @@ import { useEffect } from "react";
 
 let persistor = persistStore(store);
 function App() {
-useEffect(() => {
-  const intervalTime = 0;
-  setInterval(() => {
-    setRole();
-  }, intervalTime);
-},[])
+
 
   return (
     <ThemeProvider theme={theme}>

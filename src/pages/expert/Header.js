@@ -21,7 +21,6 @@ import { stateActions } from "../../store/stateActions";
 import SessionTimeOut from "../../components/helper/SessionTimeOut";
 import AddNotificationModal from "../../components/AddNotificationModal";
 import { ThisUseModal } from "../../components/Modal";
-import expertAxios from "../../axios/expertAxios";
 import { logout } from "../../newStore/reducers/auth";
 import {
   removeCurrentUser,
@@ -66,6 +65,8 @@ const CustomHeader = ({}) => {
       setMobileOpen(false);
     }
   }, [matchesMobile]);
+
+  const { userExpert } = useSelector((state) => state.auth);
   useEffect(() => {
     if (location.pathname.includes("home1")) {
       dispatch(setSelected(0));
@@ -74,11 +75,11 @@ const CustomHeader = ({}) => {
     } else if (location.pathname.includes("betodds")) {
       dispatch(setSelected(2));
     }
-    setIsTransPasswordExist(window.localStorage.getItem(transPass));
+    setIsTransPasswordExist(userExpert?.isTransPasswordCreated);
     getAllMatch();
     getMatchLiveSession();
     getUserDetail();
-  }, [location]);
+  }, [location, userExpert]);
   const getAllMatch = async () => {
     try {
       let response = await axios.get(`/game-match/getAllMatch`);

@@ -38,6 +38,7 @@ import {
   setSessionOddsLive,
   setMatchOddsLive,
   setBookMakerLive,
+  setSelectedMatch,
 } from "../../newStore/reducers/matchDetails";
 import Axios from "axios";
 import { setCurrentUser } from "../../newStore/reducers/currentUser";
@@ -188,21 +189,10 @@ export default function Matches() {
     const [allBetsData, setAllBetsData] = useState([]);
     const [marketId, setMarketId] = useState("");
     const { currentUser } = useSelector((state) => state?.currentUser);
+    const { selectedMatch } = useSelector((state) => state?.matchDetails);
+    const [currentMatch, setCurrentMatch] = useState(selectedMatch);
+    const [bookMakerRateLive,setBookMakerLive]=useState(currentMatch?.bookMakerRateLive)
 
-    const [matchOddsRates, setMatchOddsRates] = useState({
-      matchOddsRates: {
-        teamA: "1000000",
-        teamB: "-1000000",
-      },
-      bookmakerMarket: {
-        teamA: "1000000",
-        teamB: "-1000000",
-      },
-      manualBookmaker: {
-        teamA: "1000000",
-        teamB: "-1000000",
-      },
-    });
     const { socket, socketMicro } = useContext(SocketContext);
 
     const { axios, role } = setRole();
@@ -291,8 +281,31 @@ export default function Matches() {
           //   stateActions.setBalance(data.newBalance, role, data.exposure)
           // );
         });
+
+        socket.on("newBetAdded", (value) => {
+          console.log(value, "newBetAdded");
+          const updatedBettings = matchOddsData?.map((betting) => {
+            if (betting?.id === value?.id) {
+              return {
+                ...value,
+              };
+            }
+            return betting;
+          });
+          setMatchOddsData(updatedBettings);
+        });
+        socket.on("bookMakerRateLive", (value) => {
+          if (value?.matchId === currentMatch?.id) {
+            const body={...currentMatch,
+              bookMakerRateLive: value?.bookMakerLive
+            }
+           
+            setCurrentMatch(body);
+          }
+        });
       }
-    }, [socket]);
+    }, [socket,currentMatch]);
+
 
     async function getAllBetsData1() {
       let payload = {
@@ -304,7 +317,7 @@ export default function Matches() {
         // console.log(data,"Before");
         // const rates=data?.data[0]?.sort((a, b) => b.id - a.id)
         // console.log(rates,"Rates");
-        setIObtes(data?.data[0])
+        setIObtes(data?.data[0]);
         dispatch(setAllBetRate(data?.data[0]));
         // console.log(data,"after");
       } catch (e) {
@@ -312,9 +325,6 @@ export default function Matches() {
       }
     }
 
- 
-
-    console.log(marketId, "marketId");
     const activateLiveMatchMarket = async () => {
       try {
         await Axios.get(`${microServiceApiPath}/market/${marketId}`);
@@ -330,12 +340,15 @@ export default function Matches() {
         // socketMicro.on("bookMakerRateLive", (e) => {
         //   console.log("BookMaker", e);
         // });
+
+        socketMicro.on("newBetAdded", (value) => {
+          console.log(value, "socketMicro");
+        });
         socketMicro.on(`session${marketId}`, (val) => {
           // console.log("val", val);
-          dispatch(setSessionOddsLive(val));
+          dispatch(setSessionOddsLive(val[0]));
         });
         socketMicro.on(`matchOdds${marketId}`, (val) => {
-          console.log("matchOdds", val);
           if (val.length === 0) {
             matchOddsCount += 1;
             if (matchOddsCount >= 3) {
@@ -345,12 +358,11 @@ export default function Matches() {
               socketMicro.disconnect();
             }
           } else {
-            dispatch(setMatchOddsLive(val));
+            dispatch(setMatchOddsLive(val[0]));
           }
         });
         socketMicro.on(`bookmaker${marketId}`, (val) => {
-          console.log("bookmaker", val);
-          dispatch(setBookMakerLive(val));
+          dispatch(setBookMakerLive(val[0]));
         });
       }
     }, [socketMicro, marketId]);
@@ -361,12 +373,14 @@ export default function Matches() {
         let matchSessionDataTemp = [];
         const response = await axios.get(`/game-match/matchDetail/${id}`);
         response.data?.bettings?.forEach((element) => {
-          if (element.sessionBet === false || element.sessionBet === 0 ) {
+          if (element.sessionBet === false || element.sessionBet === 0) {
             matchOddsDataTemp.push(element);
           } else {
             matchSessionDataTemp.push(element);
           }
         });
+        setCurrentMatch(response.data);
+        dispatch(setSelectedMatch(response.data));
         setMatchOddsData(matchOddsDataTemp);
         setMatchSessionData(matchSessionDataTemp);
         // dispatch(
@@ -395,7 +409,6 @@ export default function Matches() {
         console.log("response", e.response.data);
       }
     }
-
     async function getAllBetsData() {
       try {
         let response = await axios.get(
@@ -451,9 +464,9 @@ export default function Matches() {
           >
             <div style={{ width: "100%" }}>
               <MatchOdds
-                matchOddsRates={matchOddsRates}
                 onClick={() => handleClose(true)}
-                data={{ ...matchDetail, matchOddsData, matchSessionData }}
+                bookMakerRateLive={bookMakerRateLive}
+                data={{ ...currentMatch, matchOddsData,matchSessionData }}
               />
             </div>
             <Box
@@ -498,10 +511,9 @@ export default function Matches() {
                   width: "70%",
                 }}
               >
-                <MatchOdds
-                  matchOddsRates={matchOddsRates}
+                <MatchOdds 
                   onClick={() => handleClose(true)}
-                  data={{ ...matchDetail, matchOddsData, matchSessionData }}
+                  data={{ ...currentMatch, matchOddsData, matchSessionData }}
                 />
               </Box>
               <Box sx={{ width: "30%", paddingRight: "1%" }}>

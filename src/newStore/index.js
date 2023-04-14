@@ -72,6 +72,7 @@ export const setRole = (token) => {
 
   if (pattern1.test(window.location.pathname)) {
     role = "role1";
+
     JWT = userMaster?.access_token;
     transPass = "isTransPasswordCreated1";
     userAxios = masterInstance
@@ -92,7 +93,6 @@ export const setRole = (token) => {
     expertInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`
   }
 
-  console.log(JWT, "JWT");
   return {
     role,
     JWT,

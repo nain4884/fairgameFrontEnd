@@ -183,7 +183,12 @@ const SeasonMarketBox = ({ index, typeOfBet, data, mainData, allRates }) => {
             <SeprateBox color={"white"} rates={allRates} />
           </>
         )}
-        {!matchesMobile && <PlaceBetComponentWeb amount={index == 2} profitLoss={data?.profitLoss}/>}
+        {!matchesMobile && (
+          <PlaceBetComponentWeb
+            amount={index == 2}
+            profitLoss={data?.profitLoss}
+          />
+        )}
       </Box>
     </Box>
   );
@@ -209,7 +214,7 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
     }
   }, [sessionRates]);
 
-  console.log(profitLoss,sessionRates,"profitLoss>>>")
+  console.log(profitLoss, sessionRates, "profitLoss>>>");
 
   return (
     <Box sx={{ marginTop: "-8.4vw" }}>
@@ -253,9 +258,7 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
             }}
           >
             Total Bet :{" "}
-            <span style={{ color: "#0B4F26" }}>
-              {proLoss?.total_bet || 0}
-            </span>
+            <span style={{ color: "#0B4F26" }}>{proLoss?.total_bet || 0}</span>
           </Typography>
         </Box>
         <Box sx={{ zIndex: 100 }}>
@@ -282,7 +285,7 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
     </Box>
   );
 };
-const PlaceBetComponentWeb = ({ amount ,profitLoss}) => {
+const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
   const { sessionRates } = useSelector((state) => state?.matchDetails);
   const [proLoss, setProfitLoss] = useState(profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -1245,11 +1248,11 @@ const SessionMarket = ({ data, teamARates, teamBRates }) => {
 //     </Box>
 //   );
 // };
-const MatchOdds = ({ data, matchOddsRates }) => {
-  console.log("data.apiSessionActive", matchOddsRates?.matchOddsRates, data);
+const MatchOdds = ({ data }) => {
   const { manualBookMarkerRates, matchOddsLive, bookmakerLive } = useSelector(
     (state) => state?.matchDetails
   );
+
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -1261,11 +1264,17 @@ const MatchOdds = ({ data, matchOddsRates }) => {
       {data?.apiMatchActive && (
         <Odds
           showDely={true}
-          data={data}
-          lock={matchOddsLive?.length === 0 ? true : false}
+          newData={data}
+          data={matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []}
+          lock={
+            data?.matchOddsData?.length > 0 &&
+            data?.matchOddsData[0]?.betStatus === 1
+              ? false
+              : true
+          }
           suspended={false}
-          teamARates={matchOddsRates?.manualBookmaker?.teamA}
-          teamBRates={matchOddsRates?.manualBookmaker?.teamB}
+          teamARates={manualBookMarkerRates?.teamA}
+          teamBRates={manualBookMarkerRates?.teamB}
           min={data?.betfair_match_min_bet || 0}
           max={data?.betfair_match_max_bet || 0}
           title={"Match Odds"}
@@ -1274,12 +1283,13 @@ const MatchOdds = ({ data, matchOddsRates }) => {
 
       {data?.apiBookMakerActive && (
         <Odds
+          newData={data}
           showDely={true}
-          lock={bookmakerLive?.length === 0 ? true : false}
-          data={data}
+          lock={!data?.bookMakerRateLive}
+          data={bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []}
           suspended={false}
-          teamARates={matchOddsRates?.manualBookmaker?.teamA}
-          teamBRates={matchOddsRates?.manualBookmaker?.teamB}
+          teamARates={manualBookMarkerRates?.teamA}
+          teamBRates={manualBookMarkerRates?.teamB}
           min={data?.betfair_bookmaker_min_bet || 0}
           max={data?.betfair_bookmaker_max_bet || 0}
           title={"Bookmaker Market "}
@@ -1288,7 +1298,8 @@ const MatchOdds = ({ data, matchOddsRates }) => {
 
       {/* Manual Bookmaker */}
       {data?.manualBookMakerActive && (
-        <Odds
+        <Odds 
+          newData={data}
           lock={false}
           showDely={false}
           suspended={false}

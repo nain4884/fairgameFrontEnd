@@ -18,7 +18,7 @@ import {
 import OTPInput, { ResendOTP } from "otp-input-react";
 import { setActiveRole } from "../../store/activeRole";
 import { userActions } from "../../newStore/Actions/userActions";
-import { signIn } from "../../newStore/reducers/auth";
+import { setAllRoles, signIn } from "../../newStore/reducers/auth";
 import { setCurrentUser } from "../../newStore/reducers/currentUser";
 import UseTokenUpdate from "../../useTokenUpdate";
 import { setRole } from "../../newStore";
@@ -258,6 +258,7 @@ export default function Login() {
       });
       let foundRoles = await axios.get(`/role`);
       let roles = foundRoles.data;
+      dispatch(setAllRoles(roles))
       let roleDetail = roles.find(findThisRole);
       function findThisRole(role) {
         return role.id === data.data.roleId;
