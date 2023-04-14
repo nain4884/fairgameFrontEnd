@@ -9,16 +9,11 @@ import Login from "./Login"
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
 import AddBet from "./AddBet"
+import { memo } from "react"
 
 const ExportRoutes = () => {
-  const { tokenExpert } = useContext(AuthContext);
-    // useEffect(() => {
-    //     if (tokenExpert != localStorage.getItem('JWTexpert')) {
-    //         window.location.reload()
-    //     }
-    // }, [])
     return (
-        <Routes forceRefresh={true}>
+        <Routes >
             <Route path="/home1" element={<Home1 />} />
             <Route path="/live" element={<Live />} />
             <Route path="/addBet" element={<AddBet />} /> {/* Remove when addBet page found */}
@@ -31,4 +26,4 @@ const ExportRoutes = () => {
         </Routes>
     )
 }
-export default ExportRoutes
+export default memo(ExportRoutes)

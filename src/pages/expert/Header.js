@@ -21,7 +21,6 @@ import { stateActions } from "../../store/stateActions";
 import SessionTimeOut from "../../components/helper/SessionTimeOut";
 import AddNotificationModal from "../../components/AddNotificationModal";
 import { ThisUseModal } from "../../components/Modal";
-import expertAxios from "../../axios/expertAxios";
 import { logout } from "../../newStore/reducers/auth";
 import {
   removeCurrentUser,

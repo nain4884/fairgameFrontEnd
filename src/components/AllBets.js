@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import moment from "moment/moment";
+import { memo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const data = [
@@ -711,4 +712,4 @@ const Row = ({ values, index }) => {
     </Box>
   );
 };
-export default AllBets;
+export default memo(AllBets);
