@@ -212,7 +212,7 @@ const BoxComponent = ({
         </Box>
       ) : (
         <>
-          {suspended !== null && !lock ? (
+          {suspended ? (
             <Box
               sx={{
                 background: "rgba(0,0,0,1)",

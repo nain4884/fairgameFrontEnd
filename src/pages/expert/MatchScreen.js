@@ -1,46 +1,19 @@
 import React, { memo, useContext, useEffect } from "react";
 import { useTheme } from "@emotion/react";
-import { Typography, useMediaQuery, Box, Menu, MenuItem } from "@mui/material";
-import {
-  BallStart,
-  Header,
-  INDIA,
-  Info,
-  Lock,
-  Logout,
-  PAKISTAN,
-  TIME,
-  UD,
-} from "../../assets/index";
+import { Typography, Box } from "@mui/material";
+
 import "../../components/index.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setColorValue } from "../../store/selectedColorBox";
 import { useState } from "react";
-import { StyledImage } from "../../components";
-import { Popover } from "react-tiny-popover";
-import {
-  ARROWDOWN,
-  ArrowDownRed,
-  ArrowUpGreen,
-  BACKIMAGE,
-  BroadCast,
-  BroadCast_,
-  DropDown,
-  LOCKED,
-  LOCKOPEN,
-} from "../../expert/assets";
+
 import AllBets from "../../components/AllBets";
 import { Background, CustomHeader as CHeader } from "../../components/index";
-import SessionResultModal from "../../components/SessionResultModal";
-import AddNotificationModal from "../../components/AddNotificationModal";
 import CustomHeader from "./Header";
 import { SocketContext } from "../../context/socketContext";
 import { useLocation } from "react-router-dom";
 import {
   setAllBetRate,
   setBookMakerLive,
-  setManualBookMarkerRates,
-  setMatchOdds,
   setMatchOddsLive,
   setSessionOddsLive,
 } from "../../newStore/reducers/matchDetails";
@@ -90,9 +63,18 @@ const MatchScreen = () => {
 
   useEffect(() => {
     if (socket && socket.connected) {
-      console.log("Connected", socket);
       socket.on("newBetAdded", (value) => {
         console.log(value, "newBetAdded");
+
+        const updatedBettings = currentMatch?.bettings?.map(
+          (betting, index) => {
+            if (betting?.id === value?.id) {
+              return (betting[index] = value);
+            }
+            return betting;
+          }
+        );
+        setCurrentMatch({ ...currentMatch, bettings: updatedBettings });
       });
       socket.on("session_bet", (data) => {
         console.log("SESSION Response", data);
@@ -183,25 +165,40 @@ const MatchScreen = () => {
     if (socketMicro && socketMicro.connected && currentMatch?.marketId) {
       socketMicro.emit("init", { id: currentMatch?.marketId });
       activateLiveMatchMarket();
-      // socketMicro.on("bookMakerRateLive", (e) => {
-      //   console.log("BookMaker", e);
-      // });
+
       socketMicro.on(`session${currentMatch?.marketId}`, (val) => {
         // console.log("val", val);
 
-        const body = val?.map((e) => ({
-          bet_condition: e?.RunnerName,
-          betStatus: 0,
-          no_rate: e?.LayPrice1,
-          yes_rate: e?.BackPrice1,
-          rate_percent: e?.LaySize1,
-          suspended: e?.GameStatus,
-          selectionId: e?.selectionId,
-        }));
+        // const body = val?.map((e) => ({
+        //   bet_condition: e?.RunnerName,
+        //   betStatus: 0,
+        //   no_rate: e?.LayPrice1,
+        //   yes_rate: e?.BackPrice1,
+        //   rate_percent: e?.LaySize1,
+        //   suspended: e?.GameStatus,
+        //   selectionId: e?.SelectionId,
+        // }));
 
-        dispatch(setSessionOddsLive(body));
+        const updatedBettings1 = currentMatch?.map((betting) => {
+          const selectedData = val.find(
+            (data) => data?.SelectionId === betting?.selectionId
+          );
+          if (selectedData) {
+            return {
+              ...betting,
+              bet_condition: selectedData?.RunnerName,
+              betStatus: 0,
+              no_rate: selectedData?.LayPrice1,
+              yes_rate: selectedData?.BackPrice1,
+              rate_percent: selectedData?.LaySize1,
+              suspended: selectedData?.GameStatus,
+              selectionId: selectedData?.SelectionId,
+            };
+          }
+          return { ...betting, ...val };
+        });
 
-        // console.log(body,"body")
+        dispatch(setSessionOddsLive(updatedBettings1));
       });
       socketMicro.on(`matchOdds${currentMatch?.marketId}`, (val) => {
         if (val.length === 0) {
@@ -221,9 +218,6 @@ const MatchScreen = () => {
       });
     }
   }, [socketMicro, currentMatch?.marketId]);
-
-  console.log("currentMatch", currentMatch);
-
   async function getAllBetsData(val) {
     let payload = {
       match_id: val,

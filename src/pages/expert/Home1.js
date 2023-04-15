@@ -27,6 +27,7 @@ import { setDailogData } from "../../store/dailogModal";
 import { useDispatch } from "react-redux";
 import { setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
+import moment from "moment";
 const containerStyles = {
   marginTop: "10px",
 };
@@ -46,7 +47,7 @@ const inputContainerStyle = {
 
 const stateDetail = {
   1: { field: "gameType", val: "" },
-  2: { field: "startAt", val: "" },
+  2: { field: "startAt", val:new Date() },
   3: { field: "betfair_match_max_bet", val: "" },
   4: { field: "bookmaker_manual_max_bet", val: "" },
   5: { field: "title", val: "" },
@@ -715,11 +716,7 @@ const ShowComponent = ({
       return (
         <DatePicker
           format="yyyy-MM-dd HH:mm"
-          defaultValue={() =>
-            DetailError?.Detail[2]?.val
-              ? new Date(DetailError?.Detail[2]?.val)
-              : new Date()
-          } //(DetailError?.Detail[2]?.val)
+          value={DetailError?.Detail[2]?.val} //(DetailError?.Detail[2]?.val)
           onChange={(e) => {
             console.log("e?.toString()", e?.toString());
             DetailError.setDetail({
@@ -763,7 +760,7 @@ const MatchListComp = () => {
   const [allMatch, setAllMatch] = useState([]);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(5);
+  const [pageLimit, setPageLimit] = useState(10);
   const {axios}=setRole()
   const getAllMatch = async () => {
     try {

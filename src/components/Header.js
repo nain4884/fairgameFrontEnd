@@ -46,7 +46,6 @@ const CustomHeader = ({}) => {
   const [exposure, setExposure] = useState(0);
   const {currentUser} = useSelector((state) => state?.currentUser);
   // const auth = useSelector(state => state?.auth?.user);
-  console.log(currentUser, "user");
   async function getUserDetail(axios, role) {
     try {
       const { data } = await axios.get("users/profile");

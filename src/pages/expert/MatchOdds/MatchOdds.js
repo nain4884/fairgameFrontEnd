@@ -19,15 +19,18 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [visible, setVisible] = useState(false);
+  const matchOdds = currentMatch?.bettings?.filter(
+    (v) => v?.sessionBet === false
+  )[0];
   const [stlive, setLive] = useState(
-    currentMatch?.bettings?.length > 0 &&
-      currentMatch?.bettings[0]?.betStatus === 1
+    currentMatch?.bettings?.length === 0 ||
+      matchOdds === undefined || matchOdds?.betStatus === 0
       ? false
       : true
   );
   const activateMatchOdds = async (val, id) => {
     try {
-      if (val === 1) {
+      if (val === 0) {
         setLive(false);
       } else {
         setLive(true);
@@ -38,7 +41,8 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
         matchType: currentMatch?.gameType,
         id: id,
       });
-      if (data?.data?.id) {
+
+      if (data?.data?.id && id !== "") {
         const updatedBettings = currentMatch?.bettings?.map((betting) => {
           if (betting?.id === data?.data?.id) {
             // If the betting's ID matches the given `id`, update the `betStatus` value
@@ -54,13 +58,23 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
           ...prevState,
           bettings: updatedBettings,
         }));
+      } else {
+        const updatedBettings = currentMatch?.bettings?.map((betting) => {
+          return {
+            ...betting,
+            betStatus: val,
+          };
+        });
+        setCurrentMatch((prevState) => ({
+          ...prevState,
+          bettings: updatedBettings,
+        }));
       }
     } catch (err) {
       toast.error(err?.message);
       console.log(err?.response?.data?.message, "err");
     }
   };
-
   return (
     <Box
       key="odds"
@@ -109,8 +123,8 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
           </Typography>
           <Stop
             onClick={() => {
-              setLive(true);
-              activateMatchOdds(0, currentMatch?.bettings[0]?.id);
+              setLive(false);
+              activateMatchOdds(0, matchOdds?.id);
             }}
           />
         </Box>
@@ -140,12 +154,11 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
             }}
             invert={true}
           />
-          {stlive && (
+          {!stlive && (
             <SmallBox
               onClick={() => {
-                setLive(false);
                 if (currentMatch?.bettings.length > 0) {
-                  activateMatchOdds(1, currentMatch?.bettings[0]?.id);
+                  activateMatchOdds(1, matchOdds?.id);
                 } else {
                   activateMatchOdds(1, "");
                 }
@@ -154,11 +167,10 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
               color={"#FF4D4D"}
             />
           )}
-          {!stlive && (
+          {stlive && (
             <SmallBox
               onClick={() => {
-                setLive(true);
-                activateMatchOdds(0, currentMatch?.bettings[0]?.id);
+                activateMatchOdds(0, matchOdds?.id);
               }}
               title={"Live"}
             />
@@ -263,23 +275,13 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
             ? matchOddsLive?.runners[0]?.ex
             : []
         }
-        lock={
-          currentMatch?.bettings?.length > 0 &&
-          currentMatch?.bettings[0]?.betStatus === 1
-            ? false
-            : true
-        }
+        lock={!stlive}
         color={"#46e080"}
         name={currentMatch?.teamA}
       />
       <Divider />
       <BoxComponent
-        lock={
-          currentMatch?.bettings?.length > 0 &&
-          currentMatch?.bettings[0]?.betStatus === 1
-            ? false
-            : true
-        }
+        lock={!stlive}
         color={"#FF4D4D"}
         data={
           matchOddsLive?.runners?.length > 0
@@ -290,7 +292,7 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
       />
       {/* <Divider />
         <BoxComponent color={"#FF4D4D"} name={"DRAW"} /> */}
-      {stlive && (
+      {!stlive && (
         <Box
           sx={{
             width: "100%",

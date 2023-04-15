@@ -194,7 +194,7 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
             overflowY: "auto",
           }}
         >
-          {sessionOddsLive?.length >0 && sessionOddsLive?.map((match, index) => (
+          {currentMatch?.bettings?.length >0 && currentMatch?.bettings?.filter(v=>v?.sessionBet===true)?.map((match, index) => (
             <Box key={index}>
               <SessionMarketBox
                 currentMatch={currentMatch}

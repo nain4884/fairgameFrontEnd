@@ -4,6 +4,7 @@ import React from "react";
 import BoxComponent from "./BoxComponent";
 import Divider from "../helper/Divider";
 import { BallStart, Info, TIME } from "../../assets";
+import { memo } from "react";
 
 const SmallBox = ({ color ,value}) => {
   return (
@@ -299,4 +300,4 @@ const Odds = ({
     </Box>
   );
 };
-export default Odds;
+export default memo(Odds);

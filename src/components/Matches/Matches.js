@@ -11,7 +11,7 @@ const MatchesComponent = ({ doNavigateWithState }) => {
   const [matchData, setMatchData] = useState([]);
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(5);
+  const [pageLimit, setPageLimit] = useState(10);
   const dispatch = useDispatch();
   const { axios } = setRole();
 
