@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "../index.css";
 import Odds from "./Odds";
 import { useDispatch } from "react-redux";
-import { setAllBetRate } from "../../newStore/reducers/matchDetails";
+import { setAllBetRate, setMatchOddsLive, setSelectedMatch, setSessionOddsLive } from "../../newStore/reducers/matchDetails";
 import { setRole } from "../../newStore";
 
 const MatchesComponent = ({ doNavigateWithState }) => {
@@ -43,6 +43,9 @@ const MatchesComponent = ({ doNavigateWithState }) => {
         return (
           <Odds
             onClick={() => {
+              dispatch(setSelectedMatch({}))
+              dispatch(setMatchOddsLive([]))
+              dispatch(setSessionOddsLive([]))
               dispatch(setAllBetRate([]));
               doNavigateWithState(match.id);
             }}

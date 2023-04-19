@@ -199,12 +199,10 @@ import { memo } from "react";
 //     </Box>
 //   );
 // };
-const MatchOdds = ({ data }) => {
+const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive }) => {
   const {
     manualBookMarkerRates,
-    matchOddsLive,
-    bookmakerLive,
-    sessionOddsLive,
+
     selectedMatch,
   } = useSelector((state) => state?.matchDetails);
 

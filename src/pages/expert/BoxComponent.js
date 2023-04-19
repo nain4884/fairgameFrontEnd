@@ -1,194 +1,209 @@
-import { Box, Typography, useMediaQuery } from '@mui/material';
-import React from 'react'
-import SeperateBox from './SeperateBox';
-import MoneyBox from './MoneyBox';
-import { INDIA, PAKISTAN } from '../../assets';
-import { useTheme } from '@emotion/react';
+import { Box, Typography, useMediaQuery } from "@mui/material";
+import React from "react";
+import SeperateBox from "./SeperateBox";
+import MoneyBox from "./MoneyBox";
+import { INDIA, PAKISTAN } from "../../assets";
+import { useTheme } from "@emotion/react";
+import { formatNumber } from "../../components/helper/helper";
 const BoxComponent = ({ name, data, color, align, lock }) => {
-    const theme = useTheme();
-    const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-    return (
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const { ex, status } = data;
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        background: "white",
+        height: "40px",
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
           background: "white",
+          position: "relative",
           height: "40px",
-          width: "100%",
+          width: "35%",
           alignItems: "center",
-          justifyContent: "space-between",
         }}
       >
         <Box
           sx={{
+            flexDirection: "row",
             display: "flex",
-            background: "white",
-            position: "relative",
-            height: "40px",
-            width: "35%",
+            width: "100%",
             alignItems: "center",
           }}
         >
-          <Box
+          {name != "DRAW" ? (
+            <img
+              src={name == "INDIA" ? INDIA : PAKISTAN}
+              style={{
+                width: "22px",
+                height: "25px",
+                marginLeft: "10px",
+                backgroundSize: "contains",
+              }}
+            />
+          ) : (
+            <Box
+              sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
+            ></Box>
+          )}
+          <Typography
             sx={{
-              flexDirection: "row",
-              display: "flex",
-              width: "100%",
-              alignItems: "center",
+              color: "black",
+              fontSize: { laptop: "12px", mobile: "13px" },
+              fontWeight: "600",
+              marginLeft: "10px",
             }}
           >
-            {name != "DRAW" ? (
-              <img
-                src={name == "INDIA" ? INDIA : PAKISTAN}
-                style={{
-                  width: "22px",
-                  height: "25px",
-                  marginLeft: "10px",
-                  backgroundSize: "contains",
-                }}
-              />
-            ) : (
-              <Box
-                sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
-              ></Box>
-            )}
-            <Typography
-              sx={{
-                color: "black",
-                fontSize: { laptop: "12px", mobile: "13px" },
-                fontWeight: "600",
-                marginLeft: "10px",
-              }}
-            >
-              {name}
-            </Typography>
-          </Box>
-          {name != "DRAW" && <MoneyBox color={color} />}
+            {name}
+          </Typography>
         </Box>
+        {name != "DRAW" && <MoneyBox color={color} />}
+      </Box>
+
+      {!["ACTIVE","",undefined].includes(status) ? (
         <Box
           sx={{
-            display: "flex",
-            background: "white",
+            background: "rgba(0,0,0,1)",
             height: "40px",
             width: { laptop: "65%", mobile: "80%" },
             justifyContent: { mobile: "flex-end", laptop: "center" },
             alignItems: "center",
+            display: "flex",
           }}
         >
-          {!matchesMobile && (
-            <SeperateBox
-              align={align}
-              lock={lock}
-              value={
-                data?.availableToBack?.length > 0
-                  ? data?.availableToBack[0]?.price
-                  : 0
-              }
-              value2={
-                data?.availableToBack?.length > 0
-                  ? data?.availableToBack[0]?.size
-                  : 0
-              }
-              color={matchesMobile ? "white" : "#CEEBFF"}
-            />
-          )}
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          {!matchesMobile && (
-            <SeperateBox
-              align={align}
-              lock={lock}
-              value={
-                data?.availableToBack?.length > 0
-                  ? data?.availableToBack[1]?.price
-                  : 0
-              }
-              value2={
-                data?.availableToBack?.length > 0
-                  ? data?.availableToBack[1]?.size
-                  : 0
-              }
-              color={matchesMobile ? "white" : "#C2E6FF"}
-            />
-          )}
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox
-            align={align}
-            value={
-              data?.availableToBack?.length > 0
-                ? data?.availableToBack[2]?.price
-                : 0
-            }
-            lock={lock}
-            value2={
-              data?.availableToBack?.length > 0
-                ? data?.availableToBack[2]?.size
-                : 0
-            }
-            color={matchesMobile ? "white" : "#A7DCFF"}
-          />
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox
-            align={align}
-            value={
-              data?.availableToLay?.length > 0
-                ? data?.availableToLay[0]?.price
-                : 0
-            }
-            lock={lock}
-            value2={
-              data?.availableToLay?.length > 0
-                ? data?.availableToLay[0]?.size
-                : 0
-            }
-            color={matchesMobile ? "white" : "#FFB5B5"}
-          />
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox
-            back={true}
-            align={align}
-            lock={lock}
-            value={
-              data?.availableToLay?.length > 0
-                ? data?.availableToLay[1]?.price
-                : 0
-            }
-            value2={
-              data?.availableToLay?.length > 0
-                ? data?.availableToLay[1]?.size
-                : 0
-            }
-            color={"#F2CBCB"}
-          />
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox
-            align={align}
-            value={
-              data?.availableToLay?.length > 0
-                ? data?.availableToLay[2]?.price
-                : 0
-            }
-            lock={lock}
-            value2={
-              data?.availableToLay?.length > 0
-                ? data?.availableToLay[2]?.size
-                : 0
-            }
-            color={"#ECD6D6"}
-          />
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
+          {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
+          <h2>{status}</h2>
         </Box>
-      </Box>
-    );
-  };
-export default BoxComponent
+      ) : (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              background: "white",
+              height: "40px",
+              width: { laptop: "65%", mobile: "80%" },
+              justifyContent: { mobile: "flex-end", laptop: "center" },
+              alignItems: "center",
+            }}
+          >
+            {!matchesMobile && (
+              <SeperateBox
+                align={align}
+                lock={lock}
+                value={
+                  ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[2]?.price
+                    : 0
+                }
+                value2={formatNumber(
+                  ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[2]?.size
+                    : 0
+                )}
+                color={matchesMobile ? "white" : "#CEEBFF"}
+              />
+            )}
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            {!matchesMobile && (
+              <SeperateBox
+                align={align}
+                lock={lock}
+                value={
+                  ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[1]?.price
+                    : 0
+                }
+                value2={formatNumber(
+                  ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[1]?.size
+                    : 0
+                )}
+                color={matchesMobile ? "white" : "#C2E6FF"}
+              />
+            )}
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              align={align}
+              value={
+                ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.price
+                  : 0
+              }
+              lock={lock}
+              value2={formatNumber(
+                ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.size
+                  : 0
+              )}
+              color={matchesMobile ? "white" : "#A7DCFF"}
+            />
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              align={align}
+              value={
+                ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[0]?.price
+                  : 0
+              }
+              lock={lock}
+              value2={formatNumber(
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0
+              )}
+              color={matchesMobile ? "white" : "#FFB5B5"}
+            />
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              back={true}
+              align={align}
+              lock={lock}
+              value={
+                ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[1]?.price
+                  : 0
+              }
+              value2={formatNumber(
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[1]?.size : 0
+              )}
+              color={"#F2CBCB"}
+            />
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              align={align}
+              value={
+                ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[2]?.price
+                  : 0
+              }
+              lock={lock}
+              value2={formatNumber(
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[2]?.size : 0
+              )}
+              color={"#ECD6D6"}
+            />
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+          </Box>
+        </>
+      )}
+    </Box>
+  );
+};
+export default BoxComponent;

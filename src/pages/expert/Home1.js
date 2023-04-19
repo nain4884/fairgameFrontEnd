@@ -28,6 +28,7 @@ import { useDispatch } from "react-redux";
 import { setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import moment from "moment";
+import { setMatchOddsLive } from "../../newStore/reducers/matchDetails";
 const containerStyles = {
   marginTop: "10px",
 };
@@ -47,7 +48,7 @@ const inputContainerStyle = {
 
 const stateDetail = {
   1: { field: "gameType", val: "" },
-  2: { field: "startAt", val:new Date() },
+  2: { field: "startAt", val: new Date() },
   3: { field: "betfair_match_max_bet", val: "" },
   4: { field: "bookmaker_manual_max_bet", val: "" },
   5: { field: "title", val: "" },
@@ -70,7 +71,7 @@ const stateDetail = {
 
 export default function Home1() {
   const [Detail, setDetail] = useState(stateDetail);
-const {axios}=setRole()
+  const { axios } = setRole();
   const [Error, setError] = useState({
     1: { field: "gameType", val: false },
     2: { field: "startAt", val: false },
@@ -761,7 +762,7 @@ const MatchListComp = () => {
   const [pageCount, setPageCount] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(10);
-  const {axios}=setRole()
+  const { axios } = setRole();
   const getAllMatch = async () => {
     try {
       let response = await axios.get(
@@ -847,7 +848,7 @@ const CusButton = ({ title, onClick }) => {
     <Box
       onClick={onClick}
       sx={{
-        cursor:"pointer",
+        cursor: "pointer",
         height: "35px",
         minWidth: "100px",
         marginLeft: "10px",
@@ -907,7 +908,7 @@ const ListHeaderT = () => {
 const Row = ({ index, containerStyle, data }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-const {axios}=setRole()
+  const { axios } = setRole();
   const [updateMatchStatus, setUpdateMatchStatus] = useState({
     1: { field: "apiMatchActive", val: data?.apiMatchActive || false },
     2: { field: "apiBookMakerActive", val: data?.apiBookMakerActive || false },
@@ -934,6 +935,7 @@ const {axios}=setRole()
   }
 
   async function submitMatchUpdation() {
+
     let defaultMatchStatus = {
       apiMatchActive: false,
       apiBookMakerActive: false,
@@ -963,7 +965,7 @@ const {axios}=setRole()
         `/game-match/updateMatchActiveStatus`,
         payload
       );
-      if (response.data.message === "Match update successfully.") {     
+      if (response.data.message === "Match update successfully.") {
         showDialogModal(true, true, response.data.message, "betodds", {
           state: { id: data.id, marketId: data.marketId },
         });
@@ -1036,7 +1038,7 @@ const {axios}=setRole()
             place={3}
           />
           <ButtonWithSwitch
-            title={`Manual\nBookmaker`}           
+            title={`Manual\nBookmaker`}
             containerStyle={{ width: "13%" }}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
@@ -1054,7 +1056,6 @@ const {axios}=setRole()
                     navigateToAddBet()
                 }} title={"Add Bet"} /> */}
         <CusButton
-          
           onClick={() => {
             submitMatchUpdation();
           }}

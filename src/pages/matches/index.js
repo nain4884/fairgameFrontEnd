@@ -29,12 +29,7 @@ export default function Matches() {
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { activeTab } = useSelector((state) => state.betPlace);
   const { tokenUser } = useContext(AuthContext);
-  useEffect(() => {
-    if (tokenUser != localStorage.getItem("JWTuser")) {
-      window.location.reload();
-    }
-  }, []);
-
+ 
   useEffect(() => {
     if (flag) {
       navigate("/matches");

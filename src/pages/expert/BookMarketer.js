@@ -10,8 +10,8 @@ import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-const BookMarketer = ({ currentMatch, socket }) => {
-  const { bookmakerLive } = useSelector((state) => state?.matchDetails);
+const BookMarketer = ({ currentMatch, socket,liveData }) => {
+  // const { bookmakerLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [live, setLive] = useState(currentMatch?.bookMakerRateLive);
@@ -197,22 +197,22 @@ const BookMarketer = ({ currentMatch, socket }) => {
       <Box sx={{ position: "relative" }}>
         <BoxComponent
           data={
-            bookmakerLive?.runners?.length > 0
-              ? bookmakerLive?.runners[0]?.ex
+            liveData?.runners?.length > 0
+              ? liveData?.runners[0]
               : []
           }
-          lock={!currentMatch?.bookMakerRateLive}
+          lock={liveData?.runners?.length > 0 ? false : true}
           color={"#46e080"}
           name={currentMatch?.teamA}
         />
         <Divider />
         <BoxComponent
           color={"#FF4D4D"}
-          lock={!currentMatch?.bookMakerRateLive}
+          lock={liveData?.runners?.length > 0 ? false : true}
           name={currentMatch?.teamB}
           data={
-            bookmakerLive?.runners?.length > 0
-              ? bookmakerLive?.runners[1]?.ex
+            liveData?.runners?.length > 0
+              ? liveData?.runners[1]
               : []
           }
           align="end"

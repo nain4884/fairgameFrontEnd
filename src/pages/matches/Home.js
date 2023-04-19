@@ -13,7 +13,6 @@ import {
   setAllBetRate,
   setAllSessionBets,
   setManualBookMarkerRates,
-  setMatchOddsLive,
   setSelectedMatch,
   setSessionRates,
 } from "../../newStore/reducers/matchDetails";
@@ -57,6 +56,9 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   );
 
   const { socket, socketMicro } = useContext(SocketContext);
+
+  const [matchOddsLive, setMacthOddsLive] = useState([]);
+  const [bookmakerLive, setBookmakerLive] = useState([]);
 
   const { axios, role } = setRole();
 
@@ -185,7 +187,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
     }
 
-    
     if (socketMicro && socketMicro.connected && marketId) {
       socketMicro.emit("init", { id: marketId });
       activateLiveMatchMarket();
@@ -196,44 +197,54 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       socketMicro.on(`session${marketId}`, (val) => {
         // console.log("val", val);
 
-        const updatedBettings1 = matchSessionData?.map((betting) => {
-          const selectedData = val.find(
-            (data) => data?.SelectionId === betting?.selectionId
-          );
-          if (selectedData) {
-            return {
-              ...betting,
-              bet_condition: selectedData?.RunnerName,
-              betStatus: 0,
-              no_rate: selectedData?.LayPrice1,
-              yes_rate: selectedData?.BackPrice1,
-              rate_percent: selectedData?.LaySize1,
-              suspended: selectedData?.GameStatus,
-              selectionId: selectedData?.SelectionId,
-            };
-          }
-          return betting;
-        });
+        if (val !== null) {
+          const updatedBettings1 = matchSessionData?.map((betting) => {
+            const selectedData = val.find(
+              (data) => data?.SelectionId === betting?.selectionId
+            );
+            if (selectedData) {
+              return {
+                ...betting,
+                bet_condition: selectedData?.RunnerName,
+                no_rate: selectedData?.LayPrice1,
+                yes_rate: selectedData?.BackPrice1,
+                rate_percent: `${selectedData?.LaySize1}-${selectedData?.BackSize1}`,
+                suspended: selectedData?.GameStatus,
+                selectionId: selectedData?.SelectionId,
+              };
+            }
+            return betting;
+          });
 
-        setMatchSessionData(updatedBettings1);
+          setMatchSessionData(updatedBettings1);
+        }
 
         // dispatch(setSessionOddsLive(body));
       });
       socketMicro.on(`matchOdds${marketId}`, (val) => {
-        if (val.length === 0) {
-          matchOddsCount += 1;
-          if (matchOddsCount >= 3) {
-            socketMicro.emit("disconnect_market", {
-              id: marketId,
-            });
-            socketMicro.disconnect();
+        if (val !== null) {
+          if (val.length === 0) {
+            matchOddsCount += 1;
+            if (matchOddsCount >= 3) {
+              socketMicro.emit("disconnect_market", {
+                id: marketId,
+              });
+              socketMicro.disconnect();
+            }
+          } else {
+            if (marketId === val[0]?.marketId) {
+              // dispatch(setMatchOddsLive(val[0]));
+              setMacthOddsLive(val[0]);
+            }
           }
-        } else {
-          dispatch(setMatchOddsLive(val[0]));
         }
       });
       socketMicro.on(`bookmaker${marketId}`, (val) => {
-        dispatch(setBookMakerLive(val[0]));
+        if (val !== null) {
+          if (marketId === val[0]?.marketId) {
+            // dispatch(setBookMakerLive(val[0]));
+          }
+        }
       });
     }
   }, [socket, currentMatch, socketMicro, marketId]);
@@ -317,9 +328,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     }
   }
   useEffect(() => {
-
-    if(id){
-        getThisMatch(id);
+    if (id) {
+      getThisMatch(id);
     }
     getAllBetsData();
     getAllBetsData1();
@@ -351,6 +361,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         >
           <div style={{ width: "100%" }}>
             <MatchOdds
+              matchOddsLive={matchOddsLive}
+              bookmakerLive={bookmakerLive}
               onClick={() => handleClose(true)}
               bookMakerRateLive={bookMakerRateLive}
               data={{ ...currentMatch, matchOddsData, matchSessionData }}
@@ -398,13 +410,16 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             }}
           >
             <MatchOdds
+              matchOddsLive={matchOddsLive}
+              bookmakerLive={bookmakerLive}
               onClick={() => handleClose(true)}
               data={{ ...currentMatch, matchOddsData, matchSessionData }}
             />
           </Box>
           <Box sx={{ width: "30%", paddingRight: "1%" }}>
-            <MatchComponent /> {/** Live scoreBoard */}
-            <LiveMatchHome /> {/* Poster */}
+            <MatchComponent currentMatch={currentMatch} />{" "}
+            {/** Live scoreBoard */}
+            <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
             <AllRateSeperate
               allBetsData={IObets?.filter((v) =>
                 ["MATCH ODDS"]?.includes(v.marketType)
@@ -444,4 +459,4 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   );
 };
 
-export default memo(Home);
+export default Home;

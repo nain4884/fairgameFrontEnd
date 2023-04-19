@@ -11,6 +11,7 @@ import { setRole } from "../../../newStore";
 import PlaceBetComponentWeb from "./PlaceBetComponentWeb";
 import Result from "../Result";
 import SessionResultModal from "../../../components/SessionResultModal";
+import { formatNumber } from "../../../components/helper/helper";
 
 const SessionMarketBox = ({
   index,
@@ -26,6 +27,9 @@ const SessionMarketBox = ({
   const [live, setLive] = useState(
     liveUser ? (newData?.betStatus === 0 ? true : false) : true
   );
+
+  console.log(newData, "newData");
+
   const handleLive = async (status) => {
     try {
       if (status === 1) {
@@ -44,6 +48,7 @@ const SessionMarketBox = ({
         no_rate: newData?.no_rate,
         yes_rate: newData?.yes_rate,
         rate_percent: newData?.rate_percent,
+        suspended: newData?.suspended,
         // "teamA_lay": 18,
         // "teamB_lay": 15,
         // "teamA_Back": 10,
@@ -165,61 +170,77 @@ const SessionMarketBox = ({
             />
           </Box>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            position: "relative",
-            background: "white",
-            height: "38px",
-            width: { laptop: "60%", mobile: "80%" },
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <SeperateBox color={"white"} />
-          {/* {matchesMobile && <PlaceBetComponent />} */}
 
+        {!["ACTIVE", "", undefined].includes(newData?.suspended) ? (
           <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox color={"white"} />
-
-          <SeperateBox
-            session={true}
-            back={true}
-            value={newData?.no_rate}
-            value2={newData?.rate_percent?.split("-")[0]}
-            lock={live}
-            color={"#F6D0CB"}
-          />
-
+            sx={{
+              background: "rgba(0,0,0,1)",
+              height: "40px",
+              width: { laptop: "50%", mobile: "80%" },
+              justifyContent: { mobile: "flex-end", laptop: "center" },
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
+            <h4>{newData?.suspended}</h4>
+          </Box>
+        ) : (
           <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox
-            session={true}
-            value={newData?.yes_rate}
-            value2={newData?.rate_percent?.split("-")[1]}
-            lock={live}
-            color={"#B3E0FF"}
-          />
+            sx={{
+              display: "flex",
+              position: "relative",
+              background: "white",
+              height: "38px",
+              width: { laptop: "60%", mobile: "80%" },
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <SeperateBox color={"white"} />
+            {/* {matchesMobile && <PlaceBetComponent />} */}
 
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          {!matchesMobile && (
-            <>
-              <Box
-                sx={{ width: ".45%", display: "flex", background: "pink" }}
-              ></Box>
-              <SeperateBox color={"white"} />
-              <Box
-                sx={{ width: ".45%", display: "flex", background: "pink" }}
-              ></Box>
-              <SeperateBox color={"white"} />
-            </>
-          )}
-          {/* {
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox color={"white"} />
+
+            <SeperateBox
+              session={true}
+              back={true}
+              value={newData?.no_rate}
+              value2={formatNumber(newData?.rate_percent?.split("-")[0])}
+              lock={newData?.suspended === "suspended" || live}
+              color={"#F6D0CB"}
+            />
+
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              session={true}
+              value={newData?.yes_rate}
+              value2={formatNumber(newData?.rate_percent?.split("-")[1])}
+              lock={newData?.suspended === "suspended" || live}
+              color={"#B3E0FF"}
+            />
+
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            {!matchesMobile && (
+              <>
+                <Box
+                  sx={{ width: ".45%", display: "flex", background: "pink" }}
+                ></Box>
+                <SeperateBox color={"white"} />
+                <Box
+                  sx={{ width: ".45%", display: "flex", background: "pink" }}
+                ></Box>
+                <SeperateBox color={"white"} />
+              </>
+            )}
+            {/* {
                             index != 1 && index !== 2 &&
                             <Box sx={{
                                 width: '100%', marginLeft: '-2px', display: 'flex', position: 'absolute', height: '100%', background: 'rgba(0,0,0,1)', justifyContent: 'center ', alignItems: 'center'
@@ -227,32 +248,33 @@ const SessionMarketBox = ({
                                 <img src={BallStart} style={{ width: '60px', height: '19px' }} />
                             </Box>
                         } */}
-          {
-            <PlaceBetComponentWeb
-            // onClick={() => {
-            //   if (data?.includes(index)) {
-            //     let x = [...data];
-            //     x.splice(x.indexOf(index), 1);
-            //     setData([...x]);
-            //   } else {
-            //     if (data.length < 4) {
-            //       let x = [...data];
-            //       setData([...x, index]);
-            //     }
-            //   }
-            // }}
-            />
-          }
-          {visible && (
-            <Box sx={{ position: "absolute", zIndex: 105, top: "100%" }}>
-              <SessionResultModal
-                onClick={() => {
-                  setVisible(false);
-                }}
+            {
+              <PlaceBetComponentWeb
+              // onClick={() => {
+              //   if (data?.includes(index)) {
+              //     let x = [...data];
+              //     x.splice(x.indexOf(index), 1);
+              //     setData([...x]);
+              //   } else {
+              //     if (data.length < 4) {
+              //       let x = [...data];
+              //       setData([...x, index]);
+              //     }
+              //   }
+              // }}
               />
-            </Box>
-          )}
-        </Box>
+            }
+            {visible && (
+              <Box sx={{ position: "absolute", zIndex: 105, top: "100%" }}>
+                <SessionResultModal
+                  onClick={() => {
+                    setVisible(false);
+                  }}
+                />
+              </Box>
+            )}
+          </Box>
+        )}
       </Box>
       <Divider />
     </div>

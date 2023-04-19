@@ -30,6 +30,7 @@ const matchDetails = createSlice({
       state.matchOdds = action.payload;
     },
     setMatchOddsLive: (state, action) => {
+      console.log(action.payload,"action.payload")
       state.matchOddsLive = action.payload;
     },
     removeMatchOddsLive: (state, action) => {

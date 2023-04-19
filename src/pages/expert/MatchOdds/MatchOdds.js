@@ -13,8 +13,8 @@ import { setRole } from "../../../newStore";
 import { memo } from "react";
 import { useSelector } from "react-redux";
 
-const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
-  const { matchOddsLive } = useSelector((state) => state?.matchDetails);
+const MatchOdds = ({ currentMatch, setCurrentMatch, matchOddsLive }) => {
+  // const { matchOddsLive } = useSelector((state) => state?.matchDetails);
   const { axios } = setRole();
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -24,10 +24,12 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
   )[0];
   const [stlive, setLive] = useState(
     currentMatch?.bettings?.length === 0 ||
-      matchOdds === undefined || matchOdds?.betStatus === 0
+      matchOdds === undefined ||
+      matchOdds?.betStatus === 0
       ? false
       : true
   );
+
   const activateMatchOdds = async (val, id) => {
     try {
       if (val === 0) {
@@ -271,22 +273,18 @@ const MatchOdds = ({ currentMatch, setCurrentMatch }) => {
       }
       <BoxComponent
         data={
-          matchOddsLive?.runners?.length > 0
-            ? matchOddsLive?.runners[0]?.ex
-            : []
+          matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[0] : []
         }
-        lock={!stlive}
+        lock={matchOddsLive?.runners?.length > 0 ? false : true}
         color={"#46e080"}
         name={currentMatch?.teamA}
       />
       <Divider />
       <BoxComponent
-        lock={!stlive}
+        lock={matchOddsLive?.runners?.length > 0 ? false : true}
         color={"#FF4D4D"}
         data={
-          matchOddsLive?.runners?.length > 0
-            ? matchOddsLive?.runners[1]?.ex
-            : []
+          matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[1] : []
         }
         name={currentMatch?.teamB}
       />

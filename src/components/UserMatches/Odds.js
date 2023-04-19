@@ -6,7 +6,7 @@ import Divider from "../helper/Divider";
 import { BallStart, Info, TIME } from "../../assets";
 import { memo } from "react";
 
-const SmallBox = ({ color ,value}) => {
+const SmallBox = ({ color, value }) => {
   return (
     <Box
       sx={{
@@ -25,10 +25,10 @@ const SmallBox = ({ color ,value}) => {
         sx={{
           fontSize: { laptop: "12px", mobile: "10px" },
           fontWeight: "bold",
-          color: value > 1  ? `#46e080` : `#FF9292`,
+          color: value > 1 ? `#46e080` : `#FF9292`,
         }}
       >
-        {value > 1  ? `+Book ${value}` : `-Book ${value * -1}`}
+        {value > 1 ? `+Book ${value}` : `-Book ${value * -1}`}
       </Typography>
     </Box>
   );
@@ -62,12 +62,13 @@ const Odds = ({
   lock,
   showDely,
   suspended,
-  newData
+  newData,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  const bookRatio=Math.round(teamARates/teamBRates * 100) / 100 || 0;
+  const bookRatio = Math.round((teamARates / teamBRates) * 100) / 100 || 0;
+  console.log(data[0], "DATA");
   return (
     <Box
       key="odds"
@@ -130,7 +131,7 @@ const Odds = ({
             justifyContent: "flex-end",
           }}
         >
-          <SmallBox  value={bookRatio}  />
+          <SmallBox value={bookRatio} />
           <Typography
             sx={{
               color: "white",
@@ -227,34 +228,36 @@ const Odds = ({
           </Box>
         </Box>
       }
-    
-          <BoxComponent
-            time={true}
-            newData={newData}
-            lock={lock}
-            color={"#46e080"}
-            allRates={{teamA:teamARates,teamB:teamBRates}}
-            rate={teamARates}        
-            name={newData?.teamA}
-            data={data[0]?.ex}
-            team={"teamA"}
-            typeOfBet={"Match"}
-          />
-          <Divider />
-          <BoxComponent
-            time={true}
-            newData={newData}
-            lock={lock}
-            color={"#FF4D4D"}
-            name={newData?.teamB}
-            data={data[1]?.ex}
-            rate={teamBRates}
-            allRates={{teamA:teamARates,teamB:teamBRates}}
-            team={"teamB"}
-            typeOfBet={"Match"}
-          />
-          <Divider />
-  
+
+      <BoxComponent
+        time={true}
+        newData={newData}
+        lock={lock}
+        color={"#46e080"}
+        allRates={{ teamA: teamARates, teamB: teamBRates }}
+        rate={teamARates}
+        name={newData?.teamA}
+        data={data[0]?.ex}
+        team={"teamA"}
+        suspendedData={data[0]?.status}
+        typeOfBet={"Match"}
+      />
+      <Divider />
+      <BoxComponent
+        time={true}
+        newData={newData}
+        lock={lock}
+        color={"#FF4D4D"}
+        name={newData?.teamB}
+        data={data[1]?.ex}
+        suspendedData={data[1]?.status}
+        rate={teamBRates}
+        allRates={{ teamA: teamARates, teamB: teamBRates }}
+        team={"teamB"}
+        typeOfBet={"Match"}
+      />
+      <Divider />
+
       {/* {data?.teamC && !suspended && (
         <BoxComponent
           time={true}

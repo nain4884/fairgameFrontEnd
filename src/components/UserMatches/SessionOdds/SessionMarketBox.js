@@ -5,6 +5,7 @@ import PlaceBetComponent from '../PlaceBetComponent';
 import PlaceBetComponentWeb from '../PlaceBetComponentWeb';
 import SeprateBox from '../SeprateBox';
 import { memo } from 'react';
+import { formatNumber } from '../../helper/helper';
 
 const SessionMarketBox = ({ index, typeOfBet, data, newData,mainData, allRates }) => {
     const theme = useTheme();
@@ -78,7 +79,7 @@ const SessionMarketBox = ({ index, typeOfBet, data, newData,mainData, allRates }
             rates={allRates}
             session={true}
             value={data.no_rate}
-            value2={data?.rate_percent?.split("-")[0]}
+            value2={formatNumber(data?.rate_percent?.split("-")[0])}
             lock={data?.betStatus===0 || data.no_rate===null ? true : false}
             color={"#F6D0CB"}
             type={{ color: "#FFB5B5", type: "YN" }}
@@ -93,7 +94,7 @@ const SessionMarketBox = ({ index, typeOfBet, data, newData,mainData, allRates }
             session={true}
             back={true}
             value={data.yes_rate}
-            value2={data?.rate_percent?.split("-")[1]}
+            value2={formatNumber(data?.rate_percent?.split("-")[1])}
             lock={data?.betStatus===0 || data.yes_rate===null ? true : false}
             color={"#B3E0FF"}
             type={{ color: "#A7DCFF", type: "YN" }}

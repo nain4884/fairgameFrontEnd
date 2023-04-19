@@ -5,6 +5,7 @@ import MoneyBox from "./MoneyBox";
 import SeprateBox from "./SeprateBox";
 import { INDIA, PAKISTAN } from "../../assets";
 import Divider from "../helper/Divider";
+import { formatNumber } from "../helper/helper";
 
 const BoxComponent = ({
   name,
@@ -15,7 +16,8 @@ const BoxComponent = ({
   rate,
   allRates,
   lock,
-  newData
+  newData,
+  suspendedData,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -23,19 +25,16 @@ const BoxComponent = ({
     layValue,
     suspended = null;
 
-
   // console.log(data?.matchOddsData?.[0],"SDDDDDDDDDD")
   if (team === "teamA") {
     backValue = data?.availableToBack;
     layValue = data?.availableToLay;
-    suspended =false
-
+    suspended = suspendedData || "";
   }
   if (team === "teamB") {
     backValue = data?.availableToBack;
     layValue = data?.availableToLay;
-    suspended =false
-     
+    suspended = suspendedData || "";
   }
   // if (team === "draw") {
   //   backValue = data?.matchOddsData?.[0]?.teamC_Back;
@@ -103,7 +102,7 @@ const BoxComponent = ({
         </Box>
         <MoneyBox color={color} rates={rate} />
       </Box>
-      {backValue?.length > 0 && layValue?.length > 0  ? (
+      {backValue?.length > 0 && layValue?.length > 0 ? (
         <Box
           sx={{
             display: "flex",
@@ -119,7 +118,7 @@ const BoxComponent = ({
               lock={lock}
               rates={allRates}
               value={backValue[2]?.price}
-              value2={backValue[0]?.size}
+              value2={formatNumber(backValue[2]?.size)}
               color={matchesMobile ? "white" : "#CEEBFF"}
               type={{ color: "#A7DCFF", type: "BL" }}
               name={name}
@@ -135,7 +134,7 @@ const BoxComponent = ({
               lock={lock}
               rates={allRates}
               value={backValue[1]?.price}
-              value2={backValue[0]?.size}
+              value2={formatNumber(backValue[1]?.size)}
               color={matchesMobile ? "white" : "#C2E6FF"}
               type={{ color: "#A7DCFF", type: "BL" }}
               name={name}
@@ -151,7 +150,7 @@ const BoxComponent = ({
             lock={lock}
             rates={allRates}
             value={backValue[0]?.price}
-            value2={backValue[0]?.size}
+            value2={formatNumber(backValue[0]?.size)}
             color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
             type={{ color: "#A7DCFF", type: "BL" }}
             name={name}
@@ -167,7 +166,7 @@ const BoxComponent = ({
             lock={lock}
             rates={allRates}
             value={layValue[0]?.price}
-            value2={layValue[0]?.size}
+            value2={formatNumber(layValue[0]?.size)}
             color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
             type={{ color: "#FFB5B5", type: "BL" }}
             name={name}
@@ -182,7 +181,7 @@ const BoxComponent = ({
               rates={allRates}
               lock={lock}
               value={layValue[1]?.price}
-              value2={layValue[1]?.size}
+              value2={formatNumber(layValue[1]?.size)}
               color={matchesMobile ? "white" : "#F2CBCB"}
               type={{ color: "#FFB5B5", type: "BL" }}
               name={name}
@@ -198,7 +197,7 @@ const BoxComponent = ({
               rates={allRates}
               lock={lock}
               value={layValue[2]?.price}
-              value2={layValue[1]?.size}
+              value2={formatNumber(layValue[2]?.size)}
               color={matchesMobile ? "white" : "#ECD6D6"}
               type={{ color: "#FFB5B5", type: "BL" }}
               name={name}
@@ -212,7 +211,7 @@ const BoxComponent = ({
         </Box>
       ) : (
         <>
-          {suspended ? (
+          {!["ACTIVE", ""].includes(suspended) ? (
             <Box
               sx={{
                 background: "rgba(0,0,0,1)",

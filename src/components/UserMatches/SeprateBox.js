@@ -173,7 +173,7 @@ const SeprateBox = ({
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: "12px",
+                    fontSize: "8px",
                     marginTop: -0.4,
                     color: color == "white" ? "white" : "black",
                     textAlign: "center",
