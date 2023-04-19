@@ -6,6 +6,7 @@ import SeprateBox from "./SeprateBox";
 import { INDIA, PAKISTAN } from "../../assets";
 import Divider from "../helper/Divider";
 import { formatNumber } from "../helper/helper";
+import SeperateBox from "../../pages/expert/SeperateBox";
 
 const BoxComponent = ({
   name,
@@ -13,6 +14,7 @@ const BoxComponent = ({
   data,
   team,
   typeOfBet,
+  align,
   rate,
   allRates,
   lock,
@@ -21,29 +23,7 @@ const BoxComponent = ({
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  let backValue,
-    layValue,
-    suspended = null;
-
-  // console.log(data?.matchOddsData?.[0],"SDDDDDDDDDD")
-  if (team === "teamA") {
-    backValue = data?.availableToBack;
-    layValue = data?.availableToLay;
-    suspended = suspendedData || "";
-  }
-  if (team === "teamB") {
-    backValue = data?.availableToBack;
-    layValue = data?.availableToLay;
-    suspended = suspendedData || "";
-  }
-  // if (team === "draw") {
-  //   backValue = data?.matchOddsData?.[0]?.teamC_Back;
-  //   layValue = data?.matchOddsData?.[0]?.teamC_lay;
-  //   suspended =
-  //     data?.matchOddsData?.[0]?.teamA_suspend !== null
-  //       ? data?.matchOddsData?.[0]?.teamC_suspend
-  //       : data?.matchOddsData?.[0]?.teamC_suspend;
-  // }
+  const { ex, status } = data;
   return (
     <Box
       sx={{
@@ -74,17 +54,18 @@ const BoxComponent = ({
           }}
         >
           {name != "DRAW" ? (
-            <img
-              src={name == "INDIA" ? INDIA : PAKISTAN}
-              style={{
-                width: "22px",
-                height: "25px",
-                marginLeft: "10px",
-                backgroundSize: "contains",
-              }}
-              alt="draw"
-            />
+            <></>
           ) : (
+            // <img
+            //   src={name == "INDIA" ? INDIA : PAKISTAN}
+            //   style={{
+            //     width: "22px",
+            //     height: "25px",
+            //     marginLeft: "10px",
+            //     backgroundSize: "contains",
+            //   }}
+            //   alt="draw"
+            // />
             <Box
               sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
             ></Box>
@@ -102,234 +83,140 @@ const BoxComponent = ({
         </Box>
         <MoneyBox color={color} rates={rate} />
       </Box>
-      {backValue?.length > 0 && layValue?.length > 0 ? (
+      {!["ACTIVE", "", undefined].includes(status) ? (
         <Box
           sx={{
-            display: "flex",
-            background: "white",
+            background: "rgba(0,0,0,1)",
             height: "40px",
-            width: { laptop: "60%", mobile: "80%" },
+            width: { laptop: "65%", mobile: "80%" },
             justifyContent: { mobile: "flex-end", laptop: "center" },
             alignItems: "center",
+            display: "flex",
           }}
         >
-          {!matchesMobile && (
-            <SeprateBox
-              lock={lock}
-              rates={allRates}
-              value={backValue[2]?.price}
-              value2={formatNumber(backValue[2]?.size)}
-              color={matchesMobile ? "white" : "#CEEBFF"}
-              type={{ color: "#A7DCFF", type: "BL" }}
-              name={name}
-              data={data}
-              typeOfBet={typeOfBet}
-            />
-          )}
-          <Box
-            sx={{ width: ".25%", display: "flex", background: "pink" }}
-          ></Box>
-          {!matchesMobile && (
-            <SeprateBox
-              lock={lock}
-              rates={allRates}
-              value={backValue[1]?.price}
-              value2={formatNumber(backValue[1]?.size)}
-              color={matchesMobile ? "white" : "#C2E6FF"}
-              type={{ color: "#A7DCFF", type: "BL" }}
-              name={name}
-              data={data}
-              typeOfBet={typeOfBet}
-            />
-          )}
-          <Box
-            sx={{ width: ".25%", display: "flex", background: "pink" }}
-          ></Box>
-
-          <SeprateBox
-            lock={lock}
-            rates={allRates}
-            value={backValue[0]?.price}
-            value2={formatNumber(backValue[0]?.size)}
-            color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
-            type={{ color: "#A7DCFF", type: "BL" }}
-            name={name}
-            data={data}
-            typeOfBet={typeOfBet}
-          />
-
-          <Box
-            sx={{ width: ".25%", display: "flex", background: "pink" }}
-          ></Box>
-
-          <SeprateBox
-            lock={lock}
-            rates={allRates}
-            value={layValue[0]?.price}
-            value2={formatNumber(layValue[0]?.size)}
-            color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
-            type={{ color: "#FFB5B5", type: "BL" }}
-            name={name}
-            data={data}
-            typeOfBet={typeOfBet}
-          />
-          <Box
-            sx={{ width: ".25%", display: "flex", background: "pink" }}
-          ></Box>
-          {!matchesMobile && (
-            <SeprateBox
-              rates={allRates}
-              lock={lock}
-              value={layValue[1]?.price}
-              value2={formatNumber(layValue[1]?.size)}
-              color={matchesMobile ? "white" : "#F2CBCB"}
-              type={{ color: "#FFB5B5", type: "BL" }}
-              name={name}
-              data={data}
-              typeOfBet={typeOfBet}
-            />
-          )}
-          <Box
-            sx={{ width: ".25%", display: "flex", background: "pink" }}
-          ></Box>
-          {!matchesMobile && (
-            <SeprateBox
-              rates={allRates}
-              lock={lock}
-              value={layValue[2]?.price}
-              value2={formatNumber(layValue[2]?.size)}
-              color={matchesMobile ? "white" : "#ECD6D6"}
-              type={{ color: "#FFB5B5", type: "BL" }}
-              name={name}
-              data={data}
-              typeOfBet={typeOfBet}
-            />
-          )}
-          <Box
-            sx={{ width: ".25%", display: "flex", background: "pink" }}
-          ></Box>
+          {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
+          <h2>{status}</h2>
         </Box>
       ) : (
         <>
-          {!["ACTIVE", ""].includes(suspended) ? (
-            <Box
-              sx={{
-                background: "rgba(0,0,0,1)",
-                width: "60%",
-                height: "40px",
-                alignItems: "center",
-                justifyContent: "center",
-                display: "flex",
-              }}
-            >
-              {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-              <h2>{suspended}</h2>
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                display: "flex",
-                background: "white",
-                height: "40px",
-                width: { laptop: "60%", mobile: "80%" },
-                justifyContent: { mobile: "flex-end", laptop: "center" },
-                alignItems: "center",
-              }}
-            >
-              {!matchesMobile && (
-                <SeprateBox
-                  rates={allRates}
-                  value={0}
-                  lock={lock}
-                  value2={"  "}
-                  color={matchesMobile ? "white" : "#CEEBFF"}
-                  type={{ color: "#A7DCFF", type: "BL" }}
-                  name={name}
-                  data={data}
-                  typeOfBet={typeOfBet}
-                />
-              )}
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-              {!matchesMobile && (
-                <SeprateBox
-                  rates={allRates}
-                  value={0}
-                  lock={lock}
-                  value2={"  "}
-                  color={matchesMobile ? "white" : "#C2E6FF"}
-                  type={{ color: "#A7DCFF", type: "BL" }}
-                  name={name}
-                  data={data}
-                  typeOfBet={typeOfBet}
-                />
-              )}
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-              <SeprateBox
-                rates={allRates}
+          <Box
+            sx={{
+              display: "flex",
+              background: "white",
+              height: "40px",
+              width: { laptop: "65%", mobile: "80%" },
+              justifyContent: { mobile: "flex-end", laptop: "center" },
+              alignItems: "center",
+            }}
+          >
+            {!matchesMobile && (
+              <SeperateBox
+                align={align}
                 lock={lock}
-                value={0}
-                value2={"  "}
-                color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
-                type={{ color: "#A7DCFF", type: "BL" }}
-                name={name}
-                data={data}
-                typeOfBet={typeOfBet}
+                value={
+                  ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[2]?.price
+                    : 0
+                }
+                value2={formatNumber(
+                  ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[2]?.size
+                    : 0
+                )}
+                color={matchesMobile ? "white" : "#CEEBFF"}
               />
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-              <SeprateBox
-                rates={allRates}
+            )}
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            {!matchesMobile && (
+              <SeperateBox
+                align={align}
                 lock={lock}
-                value={0}
-                value2={"  "}
-                color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
-                type={{ color: "#FFB5B5", type: "BL" }}
-                name={name}
-                data={data}
-                typeOfBet={typeOfBet}
+                value={
+                  ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[1]?.price
+                    : 0
+                }
+                value2={formatNumber(
+                  ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[1]?.size
+                    : 0
+                )}
+                color={matchesMobile ? "white" : "#C2E6FF"}
               />
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-              {!matchesMobile && (
-                <SeprateBox
-                  rates={allRates}
-                  value={0}
-                  lock={lock}
-                  value2={"  "}
-                  color={matchesMobile ? "white" : "#F2CBCB"}
-                  type={{ color: "#FFB5B5", type: "BL" }}
-                  name={name}
-                  data={data}
-                  typeOfBet={typeOfBet}
-                />
+            )}
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              align={align}
+              value={
+                ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.price
+                  : 0
+              }
+              lock={lock}
+              value2={formatNumber(
+                ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.size
+                  : 0
               )}
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-              {!matchesMobile && (
-                <SeprateBox
-                  rates={allRates}
-                  value={0}
-                  lock={lock}
-                  value2={"  "}
-                  color={matchesMobile ? "white" : "#ECD6D6"}
-                  type={{ color: "#FFB5B5", type: "BL" }}
-                  name={name}
-                  data={data}
-                  typeOfBet={typeOfBet}
-                />
+              color={matchesMobile ? "white" : "#A7DCFF"}
+            />
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              align={align}
+              value={
+                ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[0]?.price
+                  : 0
+              }
+              lock={lock}
+              value2={formatNumber(
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0
               )}
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-            </Box>
-          )}
+              color={matchesMobile ? "white" : "#FFB5B5"}
+            />
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              back={true}
+              align={align}
+              lock={lock}
+              value={
+                ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[1]?.price
+                  : 0
+              }
+              value2={formatNumber(
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[1]?.size : 0
+              )}
+              color={"#F2CBCB"}
+            />
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeperateBox
+              align={align}
+              value={
+                ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[2]?.price
+                  : 0
+              }
+              lock={lock}
+              value2={formatNumber(
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[2]?.size : 0
+              )}
+              color={"#ECD6D6"}
+            />
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+          </Box>
         </>
       )}
     </Box>

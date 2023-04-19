@@ -200,11 +200,9 @@ import { memo } from "react";
 //   );
 // };
 const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive }) => {
-  const {
-    manualBookMarkerRates,
-
-    selectedMatch,
-  } = useSelector((state) => state?.matchDetails);
+  const { manualBookMarkerRates, selectedMatch } = useSelector(
+    (state) => state?.matchDetails
+  );
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>

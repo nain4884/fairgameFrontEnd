@@ -215,7 +215,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             }
             return betting;
           });
-
+           
           setMatchSessionData(updatedBettings1);
         }
 
@@ -243,6 +243,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         if (val !== null) {
           if (marketId === val[0]?.marketId) {
             // dispatch(setBookMakerLive(val[0]));
+            setBookmakerLive(val[0])
           }
         }
       });

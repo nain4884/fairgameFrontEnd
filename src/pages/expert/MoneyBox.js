@@ -21,7 +21,7 @@ const MoneyBox = ({ color }) => {
         }}
       >
         <Typography sx={{ fontSize: ".8vw", fontWeight: "bold", color: color }}>
-          40,000,000
+          {/* 40,000,000 */}
         </Typography>
         {color != "#46e080" && (
           <img src={ArrowDownRed} style={{ width: "12px", height: "10px" }} />

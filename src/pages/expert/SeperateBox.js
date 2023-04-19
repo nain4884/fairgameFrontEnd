@@ -60,7 +60,7 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
               <Box sx={{ alignItems: "center", justifyContent: "space-around" }}>
                 <Typography
                   sx={{
-                    fontSize: "13px",
+                    fontSize: "15px",
                     color: color == "white" ? "white" : "black",
                     fontWeight: "700",
                     textAlign: "center",
@@ -70,7 +70,7 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: "8px",
+                    fontSize: "6px",
                     marginTop: -0.4,
                     color: color == "white" ? "white" : "black",
                     textAlign: "center",

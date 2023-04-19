@@ -5,6 +5,7 @@ import MoneyBox from "./MoneyBox";
 import { INDIA, PAKISTAN } from "../../assets";
 import { useTheme } from "@emotion/react";
 import { formatNumber } from "../../components/helper/helper";
+import { apiBasePath } from "../../components/helper/constants";
 const BoxComponent = ({ name, data, color, align, lock }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -38,16 +39,16 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
             alignItems: "center",
           }}
         >
-          {name != "DRAW" ? (
-            <img
-              src={name == "INDIA" ? INDIA : PAKISTAN}
-              style={{
-                width: "22px",
-                height: "25px",
-                marginLeft: "10px",
-                backgroundSize: "contains",
-              }}
-            />
+          {name != "DRAW" ? ( <></>
+            // <img
+            //   src={`${apiBasePath}/${data?.}`}
+            //   style={{
+            //     width: "22px",
+            //     height: "25px",
+            //     marginLeft: "10px",
+            //     backgroundSize: "contains",
+            //   }}
+            // />
           ) : (
             <Box
               sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
