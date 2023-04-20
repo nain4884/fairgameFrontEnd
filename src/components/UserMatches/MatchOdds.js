@@ -214,6 +214,7 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive }) => {
       {data?.apiMatchActive && (
         <Odds
           showDely={true}
+          showBox={ data?.matchOddsData?.length>0  && data?.matchOddsData[0]?.betStatus === 0 ? true : false}
           newData={data}
           data={
             matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
@@ -235,9 +236,15 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive }) => {
 
       {data?.apiBookMakerActive && (
         <Odds
+          showBox={!data?.bookMakerRateLive}
           newData={data}
           showDely={true}
-          lock={!data?.bookMakerRateLive}
+          lock={
+            data?.bookmakerLive?.length > 0 &&
+            data?.bookmakerLive[0]?.betStatus === 0
+              ? true
+              : false
+          }
           data={
             bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
           }

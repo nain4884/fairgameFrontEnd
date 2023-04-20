@@ -6,7 +6,7 @@ const Result = ({ color, title, invert, onClick }) => {
       <Box onClick={onClick}>
         <Box
           sx={{
-            width: { laptop: "90px", mobile: "17vw" },
+            width: { laptop: "90px", mobile: "12vw" },
             display: "flex",
             marginRight: "10px",
             justifyContent: "center",

@@ -6,7 +6,15 @@ import { INDIA, PAKISTAN } from "../../assets";
 import { useTheme } from "@emotion/react";
 import { formatNumber } from "../../components/helper/helper";
 import { apiBasePath } from "../../components/helper/constants";
-const BoxComponent = ({ name, data, color, align, lock }) => {
+const BoxComponent = ({
+  name,
+  data,
+  teamImage,
+  currentMatch,
+  color,
+  align,
+  lock,
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { ex, status } = data;
@@ -39,20 +47,36 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
             alignItems: "center",
           }}
         >
-          {name != "DRAW" ? ( <></>
-            // <img
-            //   src={`${apiBasePath}/${data?.}`}
-            //   style={{
-            //     width: "22px",
-            //     height: "25px",
-            //     marginLeft: "10px",
-            //     backgroundSize: "contains",
-            //   }}
-            // />
+          {/* {name != "DRAW" ? (
+            <></>
           ) : (
+        <img
+              src={`${apiBasePath}/${teamImage}`}
+              style={{
+                width: "22px",
+                height: "25px",
+                marginLeft: "10px",
+                backgroundSize: "contains",
+              }}
+            />
             <Box
               sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
             ></Box>
+          )} */}
+          {teamImage !== null && (
+            <>
+              <img
+                src={`${apiBasePath}/${teamImage}`}
+                style={{
+                  width: "22px",
+                  height: "25px",
+                  marginLeft: "10px",
+                  backgroundSize: "contains",
+                }}
+                alt={name}
+              />
+     
+            </>
           )}
           <Typography
             sx={{
@@ -68,7 +92,7 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
         {name != "DRAW" && <MoneyBox color={color} />}
       </Box>
 
-      {!["ACTIVE","",undefined].includes(status) ? (
+      {!["ACTIVE", "", undefined].includes(status) ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
@@ -80,7 +104,7 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <h2>{status}</h2>
+          <h4>{status}</h4>
         </Box>
       ) : (
         <>
@@ -96,6 +120,7 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
           >
             {!matchesMobile && (
               <SeperateBox
+                currentMatch={currentMatch}
                 align={align}
                 lock={lock}
                 value={
@@ -116,6 +141,7 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
             ></Box>
             {!matchesMobile && (
               <SeperateBox
+                currentMatch={currentMatch}
                 align={align}
                 lock={lock}
                 value={
@@ -135,6 +161,7 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
             <SeperateBox
+              currentMatch={currentMatch}
               align={align}
               value={
                 ex?.availableToBack?.length > 0
@@ -153,6 +180,7 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
             <SeperateBox
+              currentMatch={currentMatch}
               align={align}
               value={
                 ex?.availableToLay?.length > 0
@@ -169,6 +197,7 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
             <SeperateBox
+              currentMatch={currentMatch}
               back={true}
               align={align}
               lock={lock}
@@ -186,6 +215,7 @@ const BoxComponent = ({ name, data, color, align, lock }) => {
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
             <SeperateBox
+              currentMatch={currentMatch}
               align={align}
               value={
                 ex?.availableToLay?.length > 0

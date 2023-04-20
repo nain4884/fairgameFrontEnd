@@ -11,7 +11,7 @@ const SessionMarket = ({ data, newData, teamARates, teamBRates }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-
+console.log("newData?.matchSessionData",newData)
   return (
     <>
       <Box
@@ -144,7 +144,7 @@ const SessionMarket = ({ data, newData, teamARates, teamBRates }) => {
                 <Box
                   sx={{
                     background: "#FF9292",
-                    width: { laptop: "16.5%", mobile: "25%" },
+                    width: { laptop: "16.5%", mobile: "30%" },
                     height: "100%",
                     display: "flex",
                     justifyContent: "center",
@@ -161,7 +161,7 @@ const SessionMarket = ({ data, newData, teamARates, teamBRates }) => {
                 <Box
                   sx={{
                     background: "#00C0F9",
-                    width: { laptop: "16.5%", mobile: "25%" },
+                    width: { laptop: "16.5%", mobile: "30%" },
                     height: "100%",
                     display: "flex",
                     justifyContent: "center",
@@ -180,7 +180,7 @@ const SessionMarket = ({ data, newData, teamARates, teamBRates }) => {
           {newData?.matchSessionData?.length > 0 &&
             newData?.matchSessionData?.map((element) => {
               return (
-                <Box key={element?.id}>
+                <Box key={element?.id} sx={{width:"100%"}}>
                   <SessionMarketBox
                     typeOfBet={"Session"}
                     data={element}

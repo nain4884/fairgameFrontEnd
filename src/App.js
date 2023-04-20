@@ -14,8 +14,7 @@ import { useEffect } from "react";
 
 let persistor = persistStore(store);
 function App() {
-
-
+  if (process.env.ENV !== "production") console.log = () => {};
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>

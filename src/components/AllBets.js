@@ -351,7 +351,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
   return (
     <Box
       sx={{
-        width: { mobile: "98%", laptop: "100%" },
+        width: "100%" ,
         marginTop: submit ? "10px" : ".25vh",
         padding: 0.2,
         background: "white",

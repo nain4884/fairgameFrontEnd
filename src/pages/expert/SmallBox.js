@@ -7,7 +7,7 @@ const SmallBox = ({ color, title, width, textSize, onClick }) => {
       <Box
         onClick={onClick}
         sx={{
-          width: { laptop: width ? width : "80px", mobile: "17vw" },
+          width: { laptop: width ? width : "80px", mobile: "12vw" },
           display: "flex",
           marginRight: "10px",
           justifyContent: "space-between",

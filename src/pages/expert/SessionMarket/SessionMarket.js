@@ -6,13 +6,17 @@ import { useState } from "react";
 import { useTheme } from "@emotion/react";
 import SessionMarketBox from "./SessionMarketBox";
 import { memo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { setSelectedMatch } from "../../../newStore/reducers/matchDetails";
+import { setRole } from "../../../newStore";
 const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
   const { sessionOddsLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [live, setLive] = useState(true);
-
+  const dispatch = useDispatch();
+  const { axios } = setRole();
   // var sessionMatch = currentMatch?.bettings?.filter(
   //   (v) => v?.sessionBet === true
   // );
@@ -32,14 +36,73 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
   //   }
   // };
 
+  const handleLive = async () => {
+    try {
+      const bettingsToUpdate = currentMatch?.bettings?.filter(
+        (v) => v?.sessionBet === true && v.id
+      );
+
+      const addBettingPromises = bettingsToUpdate?.map(async (betting) => {
+        const body = {
+          match_id: currentMatch?.id,
+          matchType: currentMatch?.gameType,
+          id: betting?.id ? betting?.id : "",
+          selectionId: betting?.selectionId,
+          betStatus: 0,
+          sessionBet: true,
+          bet_condition: betting?.bet_condition,
+          no_rate: betting?.no_rate,
+          yes_rate: betting?.yes_rate,
+          rate_percent: betting?.rate_percent,
+          suspended: betting?.suspended,
+        };
+
+        const { data } = await axios.post("betting/addBetting", body);
+        return data.data;
+      });
+
+      const bettingsData = await Promise.all(addBettingPromises);
+      console.log(bettingsData, "bettingsData");
+
+      // const updatedBettingsWithIds = currentMatch?.bettings?.map((betting) => {
+      //   if (betting?.id && bettingsData.some((d) => d?.id === betting?.id)) {
+      //     return {
+      //       ...betting,
+      //       betStatus: 0,
+      //       suspended: betting?.suspended
+      //     };
+      //   }
+      //   return betting;
+      // });
+
+      // setCurrentMatch((prevState) => ({
+      //   ...prevState,
+      //   bettings: updatedBettingsWithIds,
+      // }));
+      // dispatch(
+      //   setSelectedMatch({
+      //     ...currentMatch,
+      //     bettings: updatedBettingsWithIds,
+      //   })
+      // );
+    } catch (err) {
+      toast.error(err.response.data.message);
+      console.log(err?.message);
+    }
+  };
+
+  const newSissionbettings =
+    currentMatch?.bettings?.length > 0 &&
+    currentMatch?.bettings?.filter((v) => v?.sessionBet === true);
+
   return (
     <Box
       sx={{
         display: "flex",
-        background: "white",
+        backgroundColor: "white",
         flexDirection: "column",
         marginY: { laptop: ".5vh" },
-        width: { laptop: "99%" },
+        width: "100%",
         alignSelf: {
           mobile: "center",
           tablet: "center",
@@ -77,7 +140,12 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
           </Typography>
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
-          <Stop onClick={() => setLive(false)} />
+          <Stop
+            onClick={() => {
+              setLive(false);
+              handleLive();
+            }}
+          />
         </Box>
         <Box
           sx={{
@@ -144,14 +212,14 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                width: { laptop: "60%", mobile: "80%" },
+                width: { laptop: "67%", mobile: "80%" },
                 justifyContent: { laptop: "center", mobile: "flex-end" },
               }}
             >
               <Box
                 sx={{
                   background: "#FF9292",
-                  width: { laptop: "16.5%", mobile: "25%" },
+                  width: { laptop: "15.5%", mobile: "26.5%" },
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
@@ -164,11 +232,11 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
                   No
                 </Typography>
               </Box>
-              <Box sx={{ width: ".35%", display: "flex" }}></Box>
+              <Box sx={{ width: ".45%", display: "flex" }}></Box>
               <Box
                 sx={{
                   background: "#00C0F9",
-                  width: { laptop: "16.5%", mobile: "25%" },
+                  width: { laptop: "15.5%", mobile: "26.5%" },
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
@@ -194,7 +262,7 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
             overflowY: "auto",
           }}
         >
-          {currentMatch?.bettings?.length >0 && currentMatch?.bettings?.filter(v=>v?.sessionBet===true)?.map((match, index) => (
+          {newSissionbettings?.map((match, index) => (
             <Box key={index}>
               <SessionMarketBox
                 currentMatch={currentMatch}
@@ -206,23 +274,6 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
               <Divider />
             </Box>
           ))}
-          {/* <SeasonMarketBox liveUser={live} index={1} />
-            <Divider />
-            <SeasonMarketBox liveUser={live} index={2} />
-            <Divider />
-            <SeasonMarketBox liveUser={live} index={3} />
-            <Divider />
-            <SeasonMarketBox liveUser={live} index={4} />
-            <Divider />
-            <SeasonMarketBox liveUser={live} index={5} />
-            <Divider />
-            <SeasonMarketBox liveUser={live} index={6} />
-            <Divider />
-            <SeasonMarketBox liveUser={live} index={7} />
-            <Divider />
-            <SeasonMarketBox liveUser={live} index={7} />
-            <Divider />
-            <SeasonMarketBox liveUser={live} index={7} /> */}
         </Box>
       </Box>
     </Box>

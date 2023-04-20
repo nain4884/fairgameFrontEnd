@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setColorValue } from '../../store/selectedColorBox';
 import { Lock } from '../../assets';
 
-const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
+const SeperateBox = ({ color, empty, value,  currentMatch, value2, lock, session, back }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     const dispatch = useDispatch();

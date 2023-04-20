@@ -84,9 +84,8 @@ const MatchOdds = ({ currentMatch, setCurrentMatch, matchOddsLive }) => {
         display: "flex",
         backgroundColor: "white",
         flexDirection: "column",
-        marginY: { laptop: ".5vh" },
-        width: { laptop: "99%" },
-        marginX: ".5vw",
+        width: "100%",
+        margin: ".5vw",
         alignSelf: {
           mobile: "center",
           tablet: "center",
@@ -275,18 +274,22 @@ const MatchOdds = ({ currentMatch, setCurrentMatch, matchOddsLive }) => {
         data={
           matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[0] : []
         }
+        teamImage={currentMatch?.teamA_Image}
         lock={matchOddsLive?.runners?.length > 0 ? false : true}
         color={"#46e080"}
         name={currentMatch?.teamA}
+        currentMatch={currentMatch}
       />
       <Divider />
       <BoxComponent
         lock={matchOddsLive?.runners?.length > 0 ? false : true}
         color={"#FF4D4D"}
+        teamImage={currentMatch?.teamB_Image}
         data={
           matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[1] : []
         }
         name={currentMatch?.teamB}
+        currentMatch={currentMatch}
       />
       {/* <Divider />
         <BoxComponent color={"#FF4D4D"} name={"DRAW"} /> */}

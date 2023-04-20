@@ -29,6 +29,7 @@ const SeprateBox = ({
     lock,
     session,
     back,
+    currentMatch,
     time,
     type,
     name,
@@ -229,6 +230,7 @@ const SeprateBox = ({
                   }}
                   season={session}
                   back={back}
+                  currentMatch={currentMatch}
                   isBack={isBack}
                   selectedValue={selectedValue}
                   isSessionYes={isSessionYes}

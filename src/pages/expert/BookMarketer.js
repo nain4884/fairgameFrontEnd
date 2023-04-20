@@ -22,9 +22,8 @@ const BookMarketer = ({ currentMatch, socket,liveData }) => {
         display: "flex",
         backgroundColor: "white",
         flexDirection: "column",
-        marginY: { laptop: ".25vh" },
-        width: { laptop: "99%" },
-        marginX: ".5vw",
+        width: "100%",
+        margin: ".5vw",
         alignSelf: {
           mobile: "center",
           tablet: "center",
@@ -196,6 +195,7 @@ const BookMarketer = ({ currentMatch, socket,liveData }) => {
       }
       <Box sx={{ position: "relative" }}>
         <BoxComponent
+         teamImage={currentMatch?.teamA_Image}
           data={
             liveData?.runners?.length > 0
               ? liveData?.runners[0]
@@ -208,6 +208,7 @@ const BookMarketer = ({ currentMatch, socket,liveData }) => {
         <Divider />
         <BoxComponent
           color={"#FF4D4D"}
+          teamImage={currentMatch?.teamB_Image}
           lock={liveData?.runners?.length > 0 ? false : true}
           name={currentMatch?.teamB}
           data={

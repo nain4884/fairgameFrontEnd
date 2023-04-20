@@ -12,6 +12,8 @@ import PlaceBetComponentWeb from "./PlaceBetComponentWeb";
 import Result from "../Result";
 import SessionResultModal from "../../../components/SessionResultModal";
 import { formatNumber } from "../../../components/helper/helper";
+import { useDispatch } from "react-redux";
+import { setSelectedMatch } from "../../../newStore/reducers/expertMatchDetails";
 
 const SessionMarketBox = ({
   index,
@@ -21,14 +23,13 @@ const SessionMarketBox = ({
   newData,
 }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
   const { axios } = setRole();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [visible, setVisible] = useState(false);
   const [live, setLive] = useState(
     liveUser ? (newData?.betStatus === 0 ? true : false) : true
   );
-
-  console.log(newData, "newData");
 
   const handleLive = async (status) => {
     try {
@@ -58,35 +59,39 @@ const SessionMarketBox = ({
       const { data } = await axios.post("betting/addBetting", body);
 
       if (data.data?.id) {
-        const updatedBettings = currentMatch?.bettings?.map((betting) => {
-          if (betting?.id === newData?.id) {
-            // If the betting's ID matches the given `id`, update the `betStatus` value
-            return {
-              ...betting,
-              betStatus: status,
-            };
+        const updatedBettings = currentMatch?.bettings?.map(
+          (betting, index) => {
+            if (betting?.selectionId === newData?.selectionId) {
+              // If the betting's ID matches the given `id`, update the `betStatus` value
+              return { ...data?.data, suspended: newData?.suspended };
+            }
+            // Otherwise, return the original betting object
+            return betting;
           }
-          // Otherwise, return the original betting object
-          return betting;
-        });
+        );
+
         setCurrentMatch((prevState) => ({
           ...prevState,
           bettings: updatedBettings,
         }));
+        dispatch(
+          setSelectedMatch({ ...currentMatch, bettings: updatedBettings })
+        );
       }
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
     }
   };
-
   return (
     <div style={{ position: "relative" }}>
       {live && (
         <Box
           sx={{
-            width: "100%",
+            margin: "1px",
+            width: { laptop: "100%", mobile: "100%" },
             height: "100%",
+            right: 0,
             position: "absolute",
             background: "rgba(0,0,0,0.4)",
             zIndex: 2,
@@ -132,6 +137,7 @@ const SessionMarketBox = ({
           <Box
             sx={{
               position: "absolute",
+              right: { tablet: "30vh" },
               left: { laptop: "13vw" },
               display: "flex",
               zIndex: 100,
@@ -174,10 +180,13 @@ const SessionMarketBox = ({
         {!["ACTIVE", "", undefined].includes(newData?.suspended) ? (
           <Box
             sx={{
+              margin: "1px",
               background: "rgba(0,0,0,1)",
               height: "40px",
-              width: { laptop: "50%", mobile: "80%" },
-              justifyContent: { mobile: "flex-end", laptop: "center" },
+              right: 0,
+              position: "absolute",
+              width: { laptop: "50%", mobile: "40.5%" },
+              justifyContent: { mobile: "center", laptop: "center" },
               alignItems: "center",
               display: "flex",
             }}
@@ -210,7 +219,7 @@ const SessionMarketBox = ({
               back={true}
               value={newData?.no_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[0])}
-              lock={newData?.suspended === "suspended" || live}
+              lock={newData?.suspended === "suspended"}
               color={"#F6D0CB"}
             />
 
@@ -221,7 +230,7 @@ const SessionMarketBox = ({
               session={true}
               value={newData?.yes_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[1])}
-              lock={newData?.suspended === "suspended" || live}
+              lock={newData?.suspended === "suspended"}
               color={"#B3E0FF"}
             />
 

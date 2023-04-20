@@ -1,44 +1,86 @@
-import { useTheme } from '@emotion/react';
-import { Box, Typography, useMediaQuery } from '@mui/material';
-import React from 'react'
-import PlaceBetComponent from '../PlaceBetComponent';
-import PlaceBetComponentWeb from '../PlaceBetComponentWeb';
-import SeprateBox from '../SeprateBox';
-import { memo } from 'react';
-import { formatNumber } from '../../helper/helper';
+import { useTheme } from "@emotion/react";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+import React from "react";
+import PlaceBetComponent from "../PlaceBetComponent";
+import PlaceBetComponentWeb from "../PlaceBetComponentWeb";
+import SeprateBox from "../SeprateBox";
+import { memo } from "react";
+import { formatNumber } from "../../helper/helper";
 
-const SessionMarketBox = ({ index, typeOfBet, data, newData,mainData, allRates }) => {
-    const theme = useTheme();
-    const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-    return (
+const SessionMarketBox = ({
+  index,
+  typeOfBet,
+  data,
+  newData,
+  mainData,
+  allRates,
+}) => {
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        position: "relative",
+        background: "white",
+        height: "38px",
+        width: "100%",
+        justifyContent: "flex-start",
+      }}
+    >
+      {data?.betStatus === 0 && (
+        <Box
+          sx={{
+            margin:"1px",
+            width:  "60%",
+            height: "100%",
+            position: "absolute",
+            right:0,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 2,
+          }}
+        ></Box>
+      )}
       <Box
         sx={{
           display: "flex",
           background: "white",
           height: "38px",
-          width: "100%",
+          width: "40%",
+          justifyContent:"flex-start",
+          alignItems: "center",
         }}
       >
-        <Box
+        <Typography
           sx={{
-            display: "flex",
-            background: "white",
-            height: "38px",
-            width: "40%",
-            alignItems: "center",
+            color: "black",
+            fontSize: { laptop: "11px", tablet: "10px", mobile: "8px" },
+            marginLeft: "7px",
+            fontWeight: "600",
+            textAlign: "start"
           }}
         >
-          <Typography
-            sx={{
-              color: "black",
-              fontSize: { laptop: "11px", tablet: "10px", mobile: "8px" },
-              marginLeft: "7px",
-              fontWeight: "600",
-            }}
-          >
-            {data.bet_condition}
-          </Typography>
+          {data.bet_condition}
+        </Typography>
+      </Box>
+      {!["ACTIVE", "", undefined].includes(data?.suspended) ? (
+        <Box
+          sx={{
+            background: "rgba(0,0,0,1)",
+            margin:"1px",
+            height: "40px",
+            position:"absolute",
+            right:0,
+            width: "60%",
+            justifyContent: { mobile: "center", laptop: "center" },
+            alignItems: "center",
+            display: "flex",
+          }}
+        >
+          {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
+          <h4>{data?.suspended}</h4>
         </Box>
+      ) : (
         <Box
           sx={{
             display: "flex",
@@ -62,17 +104,19 @@ const SessionMarketBox = ({ index, typeOfBet, data, newData,mainData, allRates }
               <Box
                 sx={{ width: ".45%", display: "flex", background: "pink" }}
               ></Box>
-              <SeprateBox  po={2} color={"white"} rates={allRates} />
+              <SeprateBox po={2} color={"white"} rates={allRates} />
               <Box
                 sx={{ width: ".45%", display: "flex", background: "pink" }}
               ></Box>
               <Box
                 sx={{ width: ".45%", display: "flex", background: "pink" }}
               ></Box>
-              <SeprateBox   po={3} color={"white"} rates={allRates} />
+              <SeprateBox po={3} color={"white"} rates={allRates} />
             </>
           )}
-          <Box sx={{ width: ".45%", display: "flex", background: "pink" }}></Box>
+          <Box
+            sx={{ width: ".45%", display: "flex", background: "pink" }}
+          ></Box>
           <SeprateBox po={6} color={"white"} />
           <SeprateBox
             po={2}
@@ -80,14 +124,16 @@ const SessionMarketBox = ({ index, typeOfBet, data, newData,mainData, allRates }
             session={true}
             value={data.no_rate}
             value2={formatNumber(data?.rate_percent?.split("-")[0])}
-            lock={data?.betStatus===0 || data.no_rate===null ? true : false}
+            lock={data?.no_rate === null ? true : false}
             color={"#F6D0CB"}
             type={{ color: "#FFB5B5", type: "YN" }}
             typeOfBet={typeOfBet}
             data={data}
             mainData={mainData}
           />
-          <Box sx={{ width: ".45%", display: "flex", background: "pink" }}></Box>
+          <Box
+            sx={{ width: ".45%", display: "flex", background: "pink" }}
+          ></Box>
           <SeprateBox
             po={1}
             rates={allRates}
@@ -95,14 +141,16 @@ const SessionMarketBox = ({ index, typeOfBet, data, newData,mainData, allRates }
             back={true}
             value={data.yes_rate}
             value2={formatNumber(data?.rate_percent?.split("-")[1])}
-            lock={data?.betStatus===0 || data.yes_rate===null ? true : false}
+            lock={data?.yes_rate === null ? true : false}
             color={"#B3E0FF"}
             type={{ color: "#A7DCFF", type: "YN" }}
             typeOfBet={typeOfBet}
             data={data}
             mainData={mainData}
           />
-          <Box sx={{ width: ".45%", display: "flex", background: "pink" }}></Box>
+          <Box
+            sx={{ width: ".45%", display: "flex", background: "pink" }}
+          ></Box>
           {!matchesMobile && (
             <>
               <Box
@@ -122,8 +170,9 @@ const SessionMarketBox = ({ index, typeOfBet, data, newData,mainData, allRates }
             />
           )}
         </Box>
-      </Box>
-    );
-  };
+      )}
+    </Box>
+  );
+};
 
-export default memo(SessionMarketBox)
+export default memo(SessionMarketBox);

@@ -13,7 +13,7 @@ const SmallBox = ({ color, value }) => {
         width: { laptop: "70px", mobile: "17vw" },
         position: "absolute",
         display: "flex",
-        left: { mobile: "56.5%", laptop: "49vw", tablet: "49%" },
+        left: { mobile: "60%", laptop: "49vw", tablet: "60%" },
         justifyContent: "center",
         alignItems: "center",
         height: "30px",
@@ -60,6 +60,7 @@ const Odds = ({
   min,
   max,
   lock,
+  showBox,
   showDely,
   suspended,
   newData,
@@ -68,7 +69,7 @@ const Odds = ({
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const bookRatio = Math.round((teamARates / teamBRates) * 100) / 100 || 0;
-  console.log(data[0], "DATA");
+
   return (
     <Box
       key="odds"
@@ -195,7 +196,7 @@ const Odds = ({
             <Box
               sx={{
                 background: "#00C0F9",
-                width: { laptop: "16.5%", mobile: "25%" },
+                width: { laptop: "16.5%", mobile: "30%" },
                 height: "100%",
                 display: "flex",
                 justifyContent: "center",
@@ -212,7 +213,7 @@ const Odds = ({
             <Box
               sx={{
                 background: "#FF9292",
-                width: { laptop: "16.5%", mobile: "25%" },
+                width: { laptop: "16.5%", mobile: "30%" },
                 height: "100%",
                 display: "flex",
                 justifyContent: "center",
@@ -231,32 +232,37 @@ const Odds = ({
 
       <BoxComponent
         time={true}
+        showBox={showBox}
+        teamImage={newData?.teamA_Image}
         newData={newData}
-        lock={lock}
+        // lock={data?.length > 0 ? false : true}
         color={"#46e080"}
         allRates={{ teamA: teamARates, teamB: teamBRates }}
         rate={teamARates}
         name={newData?.teamA}
-        data={data?.length>0  ?data[0] :[]}
+        data={data?.length > 0 ? data[0] : []}
         team={"teamA"}
         suspendedData={data[0]?.status}
         typeOfBet={"Match"}
       />
       <Divider />
       <BoxComponent
+        teamImage={newData?.teamB_Image}
         time={true}
+        showBox={showBox}
         newData={newData}
-        lock={lock}
+        // lock={data?.length > 0 ? false : true}
         color={"#FF4D4D"}
         name={newData?.teamB}
-        data={data?.length>0  ?data[1] :[]}
+        data={data?.length > 0 ? data[1] : []}
         suspendedData={data[1]?.status}
         rate={teamBRates}
         allRates={{ teamA: teamARates, teamB: teamBRates }}
         team={"teamB"}
         typeOfBet={"Match"}
       />
-      <Divider />
+      {/* <Divider /> */}
+      
 
       {/* {data?.teamC && !suspended && (
         <BoxComponent

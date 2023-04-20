@@ -9,7 +9,7 @@ const SmallBoxSeason = ({ color }) => {
           flexDirection: "column",
           position: "absolute",
           display: "flex",
-          left: { mobile: "56.5%", laptop: "49vw", tablet: "49%" },
+          left: { mobile: "60%", laptop: "49vw", tablet: "60%" },
           justifyContent: "center",
           alignItems: "center",
           height: "30px",

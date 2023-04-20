@@ -185,15 +185,15 @@ const MatchScreen = () => {
             var selectedData = newVal?.find(
               (data) => data?.selectionId === betting?.selectionId
             );
-            if (selectedData!==undefined) {
+            if (selectedData !== undefined) {
               return {
                 ...betting,
-                bet_condition: selectedData?.RunnerName,
-                no_rate: selectedData?.LayPrice1,
-                yes_rate: selectedData?.BackPrice1,
-                rate_percent: `${selectedData?.LaySize1}-${selectedData?.BackSize1}`,
-                suspended: selectedData?.GameStatus,
-                selectionId: selectedData?.SelectionId,
+                bet_condition: selectedData?.bet_condition,
+                no_rate: selectedData?.no_rate,
+                yes_rate: selectedData?.yes_rate,
+                rate_percent: selectedData?.rate_percent,
+                suspended: selectedData?.suspended,
+                selectionId: selectedData?.selectionId,
               };
             }
             return betting;
@@ -213,9 +213,6 @@ const MatchScreen = () => {
             ...currentMatch,
             bettings: [...data, ...filteredNewVal],
           });
-
-          // console.log("data",data)
-          // setCurrentMatch({ ...currentMatch, bettings: [...data, ...newVal] });
         } else {
           setCurrentMatch({ ...currentMatch, bettings: newVal });
         }
@@ -229,17 +226,23 @@ const MatchScreen = () => {
             socketMicro.emit("disconnect_market", {
               id: currentMatch?.marketId,
             });
-            socketMicro.disconnect();
+            // socketMicro.disconnect();
           }
         } else {
           // dispatch(setMatchOddsLive(val[0]));
           if (currentMatch?.marketId === val[0]?.marketId) {
             setMatchOddsLive(val[0]);
+            if (val[0]?.status === "CLOSED") {
+              socketMicro.emit("disconnect_market", {
+                id: currentMatch?.marketId,
+              });
+            }
           } else {
             setMatchOddsLive([]);
           }
         }
       });
+
       socketMicro.on(`bookmaker${currentMatch?.marketId}`, (val) => {
         // dispatch(setBookMakerLive(val[0]));
 
@@ -250,14 +253,14 @@ const MatchScreen = () => {
         }
       });
       return () => {
-        socketMicro.emit("disconnect_market", {
+        socketMicro?.emit("disconnect_market", {
           id: currentMatch?.marketId,
         });
         setMatchOddsLive([]);
       };
     }
   }, [socketMicro, currentMatch?.marketId]);
-  console.log(currentMatch, "currentMatcg");
+
   async function getAllBetsData(val) {
     let payload = {
       match_id: val,
@@ -392,21 +395,27 @@ const MatchScreen = () => {
       <CustomHeader />
       <Box
         sx={{
-          display: "flex",
+          display: { laptop: "flex" },
           alignSelf: "center",
           borderRadius: "10px",
           flexDirection: "row",
-          width: "99%",
-          marginX: ".5%",
+          width: "100%",
+          // marginX: ".5%",
           height: "100%",
-          marginTop: "5px",
+          // marginTop: "5px",
           background: "white",
           padding: 1,
         }}
       >
         {(currentMatch?.manualSessionActive ||
           currentMatch?.apiSessionActive) && (
-          <Box sx={{ width: "50%", flexDirection: "column", display: "flex" }}>
+          <Box
+            sx={{
+              width: { laptop: "50%", mobile: "100%", tablet: "100%" },
+              flexDirection: "column",
+              display: "flex",
+            }}
+          >
             <SessionMarket
               setCurrentMatch={setCurrentMatch}
               currentMatch={currentMatch}
@@ -422,9 +431,16 @@ const MatchScreen = () => {
             </Box>
           </Box>
         )}
-        <Box sx={{ width: "50%", flexDirection: "column", display: "flex" }}>
+        <Box
+          sx={{
+            width: { laptop: "50%", mobile: "100%", tablet: "100%" },
+            flexDirection: "column",
+            display: "flex",
+          }}
+        >
           {currentMatch?.apiMatchActive && (
             <MatchOdds
+              showHeader={true}
               currentMatch={currentMatch}
               setCurrentMatch={setCurrentMatch}
               matchOddsLive={matchOddsLive}
