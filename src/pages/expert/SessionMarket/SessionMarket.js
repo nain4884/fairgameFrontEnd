@@ -91,10 +91,6 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
     }
   };
 
-  const newSissionbettings =
-    currentMatch?.bettings?.length > 0 &&
-    currentMatch?.bettings?.filter((v) => v?.sessionBet === true);
-
   return (
     <Box
       sx={{
@@ -262,18 +258,21 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
             overflowY: "auto",
           }}
         >
-          {newSissionbettings?.map((match, index) => (
-            <Box key={index}>
-              <SessionMarketBox
-                currentMatch={currentMatch}
-                setCurrentMatch={setCurrentMatch}
-                newData={match}
-                liveUser={live}
-                index={index}
-              />
-              <Divider />
-            </Box>
-          ))}
+          {currentMatch?.bettings?.length > 0 &&
+            currentMatch?.bettings
+              ?.filter((v) => v?.sessionBet === true)
+              ?.map((match, index) => (
+                <Box key={index}>
+                  <SessionMarketBox
+                    currentMatch={currentMatch}
+                    setCurrentMatch={setCurrentMatch}
+                    newData={match}
+                    liveUser={live}
+                    index={index}
+                  />
+                  <Divider />
+                </Box>
+              ))}
         </Box>
       </Box>
     </Box>

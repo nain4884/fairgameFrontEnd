@@ -31,11 +31,11 @@ const SessionMarketBox = ({
       {data?.betStatus === 0 && (
         <Box
           sx={{
-            margin:"1px",
-            width:  "60%",
+            margin: "1px",
+            width: "100%",
             height: "100%",
             position: "absolute",
-            right:0,
+            right: 0,
             background: "rgba(0,0,0,0.5)",
             zIndex: 2,
           }}
@@ -47,7 +47,7 @@ const SessionMarketBox = ({
           background: "white",
           height: "38px",
           width: "40%",
-          justifyContent:"flex-start",
+          justifyContent: "flex-start",
           alignItems: "center",
         }}
       >
@@ -57,7 +57,7 @@ const SessionMarketBox = ({
             fontSize: { laptop: "11px", tablet: "10px", mobile: "8px" },
             marginLeft: "7px",
             fontWeight: "600",
-            textAlign: "start"
+            textAlign: "start",
           }}
         >
           {data.bet_condition}
@@ -67,10 +67,10 @@ const SessionMarketBox = ({
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
-            margin:"1px",
+            margin: "1px",
             height: "40px",
-            position:"absolute",
-            right:0,
+            position: "absolute",
+            right: 0,
             width: "60%",
             justifyContent: { mobile: "center", laptop: "center" },
             alignItems: "center",

@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDown, CANCEL, CancelDark } from "../assets";
 import "../components/index.css";
 import StyledImage from "./StyledImage";
@@ -39,9 +39,21 @@ const PlaceBet = ({
     (state) => state.selectedColorBox
   )?.value;
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+  const myDivRef = useRef(null);
+
+  const scrollToBottom = () => {
+    myDivRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [selectedValue]);
+
   const CustomButton = ({ color, title, onClick }) => {
     return (
       <Box
+        ref={myDivRef}
         onClick={onClick}
         sx={{
           width: { laptop: "150px", mobile: "130px" },

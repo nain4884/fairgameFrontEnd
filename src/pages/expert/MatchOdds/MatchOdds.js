@@ -13,21 +13,20 @@ import { setRole } from "../../../newStore";
 import { memo } from "react";
 import { useSelector } from "react-redux";
 
-const MatchOdds = ({ currentMatch, setCurrentMatch, matchOddsLive }) => {
+const MatchOdds = ({
+  currentMatch,
+  matchOdds,
+  setCurrentMatch,
+  matchOddsLive,
+}) => {
   // const { matchOddsLive } = useSelector((state) => state?.matchDetails);
   const { axios } = setRole();
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [visible, setVisible] = useState(false);
-  const matchOdds = currentMatch?.bettings?.filter(
-    (v) => v?.sessionBet === false
-  )[0];
+
   const [stlive, setLive] = useState(
-    currentMatch?.bettings?.length === 0 ||
-      matchOdds === undefined ||
-      matchOdds?.betStatus === 0
-      ? false
-      : true
+    matchOdds !== null && matchOdds?.betStatus === 0 ? false : true
   );
 
   const activateMatchOdds = async (val, id) => {

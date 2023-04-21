@@ -154,9 +154,9 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               }
             );
             if (
-              !updatedBettings1.some((betting) => betting?.id === value?.id)
+              !updatedBettings1?.some((betting) => betting?.id === value?.id)
             ) {
-              updatedBettings1.push(value);
+              updatedBettings1?.push(value);
             }
 
             // Merge the filteredNewVal with the currentMatch bettings array
@@ -176,10 +176,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
                 return betting;
               }
             );
-
-            if (!updatedBettings.some((betting) => betting?.id === value?.id)) {
-              updatedBettings.push(value);
-            }
+            console.log(updatedBettings, "updatedBettings");
 
             // setMatchOddsData(updatedBettings);
 
@@ -204,7 +201,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         }
       });
     }
-  }, [socket]);
+  }, [socket, marketId]);
   useEffect(() => {
     if (socketMicro && socketMicro.connected && marketId) {
       socketMicro.emit("init", { id: marketId });
