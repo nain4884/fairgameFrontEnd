@@ -27,6 +27,7 @@ const PlaceBet = ({
   isBack,
   type,
   name,
+  betOn,
   data,
   typeOfBet,
   selectedValue,
@@ -504,7 +505,7 @@ const PlaceBet = ({
           <CustomButton
             onClick={() => {
               handleClose();
-              onSubmit(SubmitPayloadForPlaceBet("asd", typeOfBet));
+              onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
             }}
             title={"Submit"}
             color={"#262626"}

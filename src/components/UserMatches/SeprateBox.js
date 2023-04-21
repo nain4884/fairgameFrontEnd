@@ -140,7 +140,6 @@ const SeprateBox = ({
                 return null;
               }
               setSelectedValue(value);
-              console.log("TEAM A", value);
               type?.type === "BL"
                 ? setIsBack(type?.color === "#A7DCFF")
                 : setIsSessionYes(type?.color === "#A7DCFF");
@@ -236,6 +235,7 @@ const SeprateBox = ({
                   isSessionYes={isSessionYes}
                   type={type}
                   data={data}
+                  betOn={name}
                   typeOfBet={typeOfBet}
                   mainData={mainData}
                 />

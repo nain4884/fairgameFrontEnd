@@ -242,6 +242,7 @@ const Odds = ({
         name={newData?.teamA}
         data={data?.length > 0 ? data[0] : []}
         team={"teamA"}
+       
         suspendedData={data[0]?.status}
         typeOfBet={"Match"}
       />

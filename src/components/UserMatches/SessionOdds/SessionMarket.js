@@ -176,21 +176,32 @@ const SessionMarket = ({ data, newData, teamARates, teamBRates }) => {
               </Box>
             </Box>
           }
-          {newData?.matchSessionData?.length > 0 &&
-            newData?.matchSessionData?.map((element) => {
-              return (
-                <Box key={element?.id} sx={{ width: "100%" }}>
-                  <SessionMarketBox
-                    typeOfBet={"Session"}
-                    data={element}
-                    mainData={data}
-                    newData={newData}
-                    allRates={{ teamA: teamARates, teamB: teamBRates }}
-                  />
-                  <Divider />
-                </Box>
-              );
-            })}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              position: "relative",
+              // maxHeight: "400px",
+              // overflowY: "auto",
+            }}
+          >
+            {newData?.matchSessionData?.length > 0 &&
+              newData?.matchSessionData?.map((element) => {
+                return (
+                  <Box key={element?.id} sx={{ width: "100%" }}>
+                    <SessionMarketBox
+                      typeOfBet={"Session"}
+                      data={element}
+                      mainData={data}
+                      newData={newData}
+                      allRates={{ teamA: teamARates, teamB: teamBRates }}
+                    />
+                    <Divider />
+                  </Box>
+                );
+              })}
+          </Box>
         </Box>
       </Box>
       {/* <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} /> */}
