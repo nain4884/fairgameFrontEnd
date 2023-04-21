@@ -24,9 +24,9 @@ const MatchOdds = ({
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [visible, setVisible] = useState(false);
-
+  const [newMatchOdds, setNewMatchOdds] = useState(matchOdds);
   const [stlive, setLive] = useState(
-    matchOdds !== null && matchOdds?.betStatus === 0 ? false : true
+    newMatchOdds === null || newMatchOdds?.betStatus === 0 ? false : true
   );
 
   const activateMatchOdds = async (val, id) => {
@@ -42,14 +42,15 @@ const MatchOdds = ({
         matchType: currentMatch?.gameType,
         id: id,
       });
+      setNewMatchOdds(data?.data);
 
       if (data?.data?.id && id !== "") {
         const updatedBettings = currentMatch?.bettings?.map((betting) => {
           if (betting?.id === data?.data?.id) {
             // If the betting's ID matches the given `id`, update the `betStatus` value
             return {
-              ...betting,
-              betStatus: val,
+              
+              ...val,
             };
           }
           // Otherwise, return the original betting object
@@ -62,8 +63,7 @@ const MatchOdds = ({
       } else {
         const updatedBettings = currentMatch?.bettings?.map((betting) => {
           return {
-            ...betting,
-            betStatus: val,
+            ...val,
           };
         });
         setCurrentMatch((prevState) => ({
@@ -124,7 +124,7 @@ const MatchOdds = ({
           <Stop
             onClick={() => {
               setLive(false);
-              activateMatchOdds(0, matchOdds?.id);
+              activateMatchOdds(0, newMatchOdds?.id);
             }}
           />
         </Box>
@@ -158,7 +158,7 @@ const MatchOdds = ({
             <SmallBox
               onClick={() => {
                 if (currentMatch?.bettings.length > 0) {
-                  activateMatchOdds(1, matchOdds?.id);
+                  activateMatchOdds(1, newMatchOdds?.id);
                 } else {
                   activateMatchOdds(1, "");
                 }
@@ -170,7 +170,7 @@ const MatchOdds = ({
           {stlive && (
             <SmallBox
               onClick={() => {
-                activateMatchOdds(0, matchOdds?.id);
+                activateMatchOdds(0, newMatchOdds?.id);
               }}
               title={"Live"}
             />
