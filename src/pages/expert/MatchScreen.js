@@ -65,7 +65,6 @@ const MatchScreen = () => {
     }
   }, [state?.id]);
 
-  console.log(currentMatch, "currentMatch");
   useEffect(() => {
     if (socket && socket.connected && currentMatch !== null) {
       socket.on("newBetAdded", (value) => {

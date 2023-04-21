@@ -275,8 +275,8 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive }) => {
 
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
-      {(data?.apiSessionActive || data.manualSessionActive) && (
-        <SessionMarket
+      {(data?.apiSessionActive || data?.manualSessionActive) && (
+        <SessionMarket 
           data={sessionOddsLive}
           newData={data}
           teamARates={manualBookMarkerRates?.teamA}

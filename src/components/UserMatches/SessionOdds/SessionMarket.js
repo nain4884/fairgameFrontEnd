@@ -11,7 +11,6 @@ const SessionMarket = ({ data, newData, teamARates, teamBRates }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-console.log("newData?.matchSessionData",newData)
   return (
     <>
       <Box
@@ -180,7 +179,7 @@ console.log("newData?.matchSessionData",newData)
           {newData?.matchSessionData?.length > 0 &&
             newData?.matchSessionData?.map((element) => {
               return (
-                <Box key={element?.id} sx={{width:"100%"}}>
+                <Box key={element?.id} sx={{ width: "100%" }}>
                   <SessionMarketBox
                     typeOfBet={"Session"}
                     data={element}
@@ -199,4 +198,4 @@ console.log("newData?.matchSessionData",newData)
   );
 };
 
-export default memo(SessionMarket)
+export default memo(SessionMarket);

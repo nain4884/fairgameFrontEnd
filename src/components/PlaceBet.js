@@ -50,6 +50,8 @@ const PlaceBet = ({
     scrollToBottom();
   }, [selectedValue]);
 
+  console.log(data,"datadata")
+
   const CustomButton = ({ color, title, onClick }) => {
     return (
       <Box
@@ -306,35 +308,35 @@ const PlaceBet = ({
   ) {
     let payload = {
       id: currentMatch?.id,
-      matchType: currentMatch.gameType,
+      matchType: currentMatch?.gameType,
       betId: currentMatch?.matchOddsData?.[0]?.id,
       bet_type: isBack ? "back" : "lay",
-      odds: document.getElementsByClassName("OddValue")?.[0]?.textContent,
+      odds: Number(document.getElementsByClassName("OddValue")?.[0]?.textContent),
       betOn: betOn,
       stack: defaultValue,
       team_bet: name,
       country: ip?.country_name,
       ip_address: ip?.IPv4,
       stake: defaultValue,
-      teamA_name: currentMatch.teamA,
-      teamB_name: currentMatch.teamB,
+      teamA_name: currentMatch?.teamA,
+      teamB_name: currentMatch?.teamB,
       marketType: marketType === "Match" ? "MATCH ODDS" : "BOOKMAKER",
     };
     if (marketType == "Session") {
       delete payload.betOn;
       delete payload.odds;
-      payload.matchType = currentMatch?.matchType;
+       
+      payload.matchType = data?.matchType;
       payload.teamA_name = mainData?.teamA;
       payload.teamB_name = mainData?.teamB;
-      payload.id = mainData?.id;
-      payload.betId = currentMatch?.id;
+      payload.id = data?.match_id;
+      payload.betId = data?.id;
       payload.bet_type = isSessionYes ? "yes" : "no";
-      payload.bet_condition = currentMatch?.bet_condition;
-      payload.rate_percent = currentMatch?.no_rate
-        ? `${currentMatch?.no_rate}-${currentMatch?.yes_rate}`
-        : `${currentMatch?.rate_percent}-${currentMatch?.rate_percent}`;
+      payload.bet_condition = data?.bet_condition;
+      payload.rate_percent = data?.rate_percent
       payload.marketType = currentMatch?.bet_condition;
       payload.odds = selectedValue;
+      payload.sessionBet=true
     }
     return payload;
   }

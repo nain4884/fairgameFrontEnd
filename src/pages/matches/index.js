@@ -18,8 +18,9 @@ import { AuthContext } from "../../Authprovider";
 
 import Home from "./Home";
 import Match from "./Match";
+import { memo } from "react";
 
-export default function Matches() {
+const Matches = () => {
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState("CRICKET");
   const [open, handleClose] = useState(false);
@@ -29,7 +30,7 @@ export default function Matches() {
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { activeTab } = useSelector((state) => state.betPlace);
   const { tokenUser } = useContext(AuthContext);
- 
+
   useEffect(() => {
     if (flag) {
       navigate("/matches");
@@ -461,7 +462,8 @@ export default function Matches() {
       {/* <DailogModal /> */}
     </div>
   );
-}
+};
+export default memo(Matches);
 
 const ValButton = ({ value }) => {
   return (

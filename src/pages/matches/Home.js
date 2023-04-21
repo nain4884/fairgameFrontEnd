@@ -154,9 +154,9 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               }
             );
             if (
-              !updatedBettings1?.some((betting) => betting?.id === value?.id)
+              !updatedBettings1.some((betting) => betting?.id === value?.id)
             ) {
-              updatedBettings1?.push(value);
+              updatedBettings1.push(value);
             }
 
             // Merge the filteredNewVal with the currentMatch bettings array
@@ -165,6 +165,13 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               ...prev,
               matchSessionData: updatedBettings1,
             }));
+
+            dispatch(
+              setSelectedMatch({
+                ...currentMatch,
+                matchSessionData: updatedBettings1,
+              })
+            );
           } else {
             const updatedBettings = currentMatch?.matchOddsData?.map(
               (betting) => {
@@ -176,7 +183,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
                 return betting;
               }
             );
-            console.log(updatedBettings, "updatedBettings");
 
             // setMatchOddsData(updatedBettings);
 
@@ -184,6 +190,12 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               ...prev,
               matchOddsData: updatedBettings,
             }));
+            dispatch(
+              setSelectedMatch({
+                ...currentMatch,
+                matchOddsData: updatedBettings,
+              })
+            );
           }
         } catch (err) {
           console.log(err?.message);
@@ -201,7 +213,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         }
       });
     }
-  }, [socket, marketId]);
+  }, [socket]);
+
   useEffect(() => {
     if (socketMicro && socketMicro.connected && marketId) {
       socketMicro.emit("init", { id: marketId });
@@ -233,17 +246,16 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               return betting;
             }
           );
-
-          setCurrentMatch((prev) => ({
-            ...prev,
-            matchSessionData: updatedBettings1,
-          }));
           dispatch(
             setSelectedMatch({
               ...currentMatch,
               matchSessionData: updatedBettings1,
             })
           );
+          setCurrentMatch((prev) => ({
+            ...prev,
+            matchSessionData: updatedBettings1,
+          }));
         }
 
         // dispatch(setSessionOddsLive(body));
@@ -476,7 +488,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               )}
               mark
             />
-            {matchDetail?.manualSessionActive && (
+            {(matchDetail?.manualSessionActive ||
+              matchDetail?.apiSessionActive) && (
               <SessionBetSeperate allBetsData={allSessionBets} mark />
             )}
           </Box>
@@ -509,4 +522,4 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   );
 };
 
-export default Home;
+export default memo(Home);
