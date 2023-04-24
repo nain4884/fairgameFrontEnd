@@ -22,7 +22,7 @@ const MatchesComponent = ({ doNavigateWithState }) => {
   async function getAllMatch() {
     try {
       let { data } = await axios.get(
-        `/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`
+        `/game-match/getAllMatch?isActveMatch=1&bets=0&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
       if (data.length > 0) {
         setMatchData(data[0]);

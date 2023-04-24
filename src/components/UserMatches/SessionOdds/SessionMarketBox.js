@@ -64,22 +64,26 @@ const SessionMarketBox = ({
         </Typography>
       </Box>
       {!["ACTIVE", "", undefined].includes(data?.suspended) ? (
+        <>
+        <SeprateBox po={6} color={"white"} />
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
-            margin: "1px",
-            height: "40px",
-            position: "absolute",
-            right: 0,
-            width: "60%",
+            marginLeft: "-2px",
+            height: "39px",
+            // position: "absolute",
+            // right: 0,
+            width: "20%",
             justifyContent: { mobile: "center", laptop: "center" },
             alignItems: "center",
             display: "flex",
+            zIndex:1
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
           <h4>{data?.suspended}</h4>
         </Box>
+        </>
       ) : (
         <Box
           sx={{

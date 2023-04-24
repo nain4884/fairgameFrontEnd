@@ -298,10 +298,12 @@ const RowComponent = ({ header, data }) => {
   const getColor = () => {
     if (header) {
       return "black";
-    } else if (data?.bet_type === "back") {
-      return "#B3E0FF";
-    } else {
+    } else if (data?.bet_type === "back" || data?.bet_type == "yes") {
+      // return "#FF9292"; 
+      return "#00C0F9"; 
+    } else if (data?.bet_type === "lay" || data?.bet_type == "no") {
       return "#FF9292";
+      // return "#B3E0FF";
     }
   };
   return (

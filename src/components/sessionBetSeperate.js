@@ -91,15 +91,22 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
 const RowComponent = ({ header, data }) => {
     const getColor = () => {
 
+        // if (header) {
+        //     return "black"
+        // }
+        // else if (data?.type == "Yes") {
+        //     return "#B3E0FF"
+        // }
+        // else {
+        //     return "#FF9292"
+        // }
         if (header) {
-            return "black"
-        }
-        else if (data?.type == "Yes") {
-            return "#B3E0FF"
-        }
-        else {
-            return "#FF9292"
-        }
+            return "black";
+          } else if (data?.bet_type === "back" || data?.bet_type == "yes") {
+            return "#00C0F9"; 
+          } else if (data?.bet_type === "lay" || data?.bet_type == "no") {
+            return "#FF9292";
+          }
 
     }
 
