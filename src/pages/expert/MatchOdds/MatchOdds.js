@@ -290,8 +290,20 @@ const MatchOdds = ({
         name={currentMatch?.teamB}
         currentMatch={currentMatch}
       />
-      {/* <Divider />
-        <BoxComponent color={"#FF4D4D"} name={"DRAW"} /> */}
+      {currentMatch?.teamC &&<>
+        <Divider />
+      <BoxComponent
+        lock={matchOddsLive?.runners?.length > 0 ? false : true}
+        color={"#FF4D4D"}
+        teamImage={null}
+        data={
+          matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[2] : []
+        }
+        name={currentMatch?.teamC}
+        currentMatch={currentMatch}
+      />
+      </>}
+      
       {!stlive && (
         <Box
           sx={{

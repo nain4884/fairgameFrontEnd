@@ -502,14 +502,23 @@ const PlaceBet = ({
             title={"Reset"}
             color={"#FF4949"}
           />
-          <CustomButton
+          {/* <CustomButton
             onClick={() => {
               handleClose();
               onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
             }}
             title={"Submit"}
             color={"#262626"}
-          />
+          /> */}
+          <button style={{color:"#fff", backgroundColor:"#262626",
+           width: "150px",
+          height:"35px",
+          borderRadius: "5px",
+          border: "2px solid white",
+          }} onClick={() => {
+              handleClose();
+              onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
+            }}>Submit</button>
         </Box>
       </Box>
     </Box>

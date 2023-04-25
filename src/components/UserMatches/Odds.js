@@ -229,14 +229,13 @@ const Odds = ({
           </Box>
         </Box>
       }
-
       <BoxComponent
         time={true}
         showBox={showBox}
         teamImage={newData?.teamA_Image}
         newData={newData}
         // lock={data?.length > 0 ? false : true}
-        color={"#46e080"}
+        color={teamARates <=0 ? "#FF4D4D":"#46e080"}
         allRates={{ teamA: teamARates, teamB: teamBRates }}
         rate={teamARates}
         name={newData?.teamA}
@@ -253,7 +252,7 @@ const Odds = ({
         showBox={showBox}
         newData={newData}
         // lock={data?.length > 0 ? false : true}
-        color={"#FF4D4D"}
+        color={teamBRates <=0 ? "#FF4D4D":"#46e080"}
         name={newData?.teamB}
         data={data?.length > 0 ? data[1] : []}
         suspendedData={data[1]?.status}
@@ -262,7 +261,25 @@ const Odds = ({
         team={"teamB"}
         typeOfBet={"Match"}
       />
-      {/* <Divider /> */}
+      {newData?.teamC &&<>
+        <Divider />
+        {console.warn("ccccc ", JSON.stringify(newData))}
+      <BoxComponent
+        teamImage={null}
+        time={true}
+        showBox={showBox}
+        newData={newData}
+        // lock={data?.length > 0 ? false : true}
+        color={"#FF4D4D"}
+        name={newData?.teamC}
+        data={data?.length > 0 ? data[2] : []}
+        suspendedData={data[2]?.status}
+        rate={0}
+        allRates={{ teamA: teamARates, teamB: teamBRates }}
+        team={"teamC"}
+        typeOfBet={"Match"}
+      />
+      </>}
       
 
       {/* {data?.teamC && !suspended && (

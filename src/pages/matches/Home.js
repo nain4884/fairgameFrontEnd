@@ -41,7 +41,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     (state) => state?.matchDetails
   );
   const [IObets, setIObtes] = useState(allBetRates);
-  // const [allBetRates, setAllBetRates] = useState([]);
   const id = location.state;
   const [matchDetail, setMatchDetail] = useState();
   const [matchOddsData, setMatchOddsData] = useState([]);
@@ -78,7 +77,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
 
         session = [...allSessionBets];
         session.unshift(data?.betPlaceData);
-        //  console.log(session,"SDsdsdasdsa")
         dispatch(setCurrentUser(user));
         dispatch(setAllSessionBets(session));
         dispatch(setSessionRates(data?.profitLoss));

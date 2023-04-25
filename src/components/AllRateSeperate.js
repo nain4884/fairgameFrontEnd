@@ -177,7 +177,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
               overflowY: "scroll",
             }}
           >
-            {[...new Set(allBetsData?.map((v) => v))]?.map((i, k) => {
+            {[...new Set(allBetsData?.filter((v) => v.bet_type == "back" || v.bet_type == "lay"))]?.map((i, k) => {
               const num = k + 1;
 
               return (

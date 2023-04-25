@@ -126,6 +126,7 @@ const SessionMarketBox = ({
             po={2}
             rates={allRates}
             session={true}
+            back={true}
             value={data.no_rate}
             value2={formatNumber(data?.rate_percent?.split("-")[0])}
             lock={data?.no_rate === null ? true : false}

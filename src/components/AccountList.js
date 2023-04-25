@@ -22,7 +22,8 @@ const AccountList = () => {
   // const {currentUser} = useSelector((state) => state?.currentUser);
   const { userAdmin } = useSelector((state) => state?.auth);
   console.log(userAdmin, "userAdmin");
-  const [roles, setRoles] = useState([]);
+  // const [roles, setRoles] = useState([]);
+  const roles = useSelector((state) => state?.auth?.allRole)
   const [data1, setData] = useState([]);
   const [sumValue, setSumVal] = useState({
     creditsum: 0.0,
@@ -76,12 +77,12 @@ const AccountList = () => {
     setCurrentPage(parseInt(val));
   }
 
-  async function getRoles() {
-    setRoles(JSON.parse(localStorage.getItem("allRoles")));
-  }
+  // async function getRoles() {
+  //   setRoles(JSON.parse(localStorage.getItem("allRoles")));
+  // }
 
   useEffect(() => {
-    getRoles();
+    // getRoles();
     getListOfUser();
   }, [currentPage, pageCount, userAdmin?.access_token]);
 

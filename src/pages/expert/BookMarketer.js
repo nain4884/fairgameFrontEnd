@@ -218,6 +218,19 @@ const BookMarketer = ({ currentMatch, socket,liveData }) => {
           }
           align="end"
         />
+        <BoxComponent
+          color={"#FF4D4D"}
+          teamImage={null}
+          lock={liveData?.runners?.length > 0 ? false : true}
+          name={currentMatch?.teamC}
+          data={
+            liveData?.runners?.length > 0
+              ? liveData?.runners[2]
+              : []
+          }
+          align="end"
+        />
+         <Divider />
         {!live && (
           <Box
             sx={{
