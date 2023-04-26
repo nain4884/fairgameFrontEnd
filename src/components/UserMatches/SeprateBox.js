@@ -211,6 +211,7 @@ const SeprateBox = ({
                       showDialogModal(isPopoverOpen,true,response.data.message)
                       setVisible(true);
                       setCanceled(false);
+                      // navigate("/matchDetail")
                     } catch (e) {
                       console.log(e.response.data.message);
                       toast.error(e.response.data.message)

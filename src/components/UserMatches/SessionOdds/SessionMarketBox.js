@@ -81,8 +81,14 @@ const SessionMarketBox = ({
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <h4>{data?.suspended}</h4>
+          <h6>{data?.suspended}</h6>
         </Box>
+        {!matchesMobile && (
+            <PlaceBetComponentWeb
+              amount={index == 2}
+              profitLoss={data?.profitLoss}
+            />
+          )}
         </>
       ) : (
         <Box
@@ -168,6 +174,7 @@ const SessionMarketBox = ({
               <SeprateBox color={"white"} rates={allRates} />
             </>
           )}
+          {console.warn("data ggg 333:", data?.profitLoss)}
           {!matchesMobile && (
             <PlaceBetComponentWeb
               amount={index == 2}

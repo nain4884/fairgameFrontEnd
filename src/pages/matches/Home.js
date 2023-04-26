@@ -330,7 +330,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       let matchOddsDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
-
+      
       let matchSessionDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === true
       );

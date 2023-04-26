@@ -66,7 +66,7 @@ function AddBetComp() {
     if (id != "") {
       setDetail({
         ...Detail,
-        [1]: {
+        1: {
           ...Detail[1],
           val: id,
         },
@@ -79,7 +79,7 @@ function AddBetComp() {
       setId(id);
       setError({
         ...Error,
-        [1]: {
+        1: {
           ...Error[1],
           val: !id,
         },
@@ -88,14 +88,14 @@ function AddBetComp() {
     if (gameType) {
       setDetail({
         ...Detail,
-        [2]: {
+        2: {
           ...Detail[2],
           val: gameType,
         },
       });
       setError({
         ...Error,
-        [2]: {
+        2: {
           ...Error[2],
           val: !gameType,
         },

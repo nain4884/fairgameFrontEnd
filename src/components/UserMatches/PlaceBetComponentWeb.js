@@ -74,7 +74,8 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
                 color: "#0B4F26",
               }}
             >
-              {proLoss?.total_bet || 0}
+              {/* {proLoss?.total_bet || 0} */}
+              {profitLoss?.total_bet || 0}
             </Typography>
           </Box>
           <Box
@@ -103,7 +104,8 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
             <DropdownMenu
               open={Boolean(anchorEl)}
               anchorEl={anchorEl}
-              list={proLoss?.betData}
+              // list={proLoss?.betData}
+              list={profitLoss?.betData}
               handleClose={handleClose}
             />
           )}

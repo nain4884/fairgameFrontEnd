@@ -191,6 +191,7 @@ const CustomHeader = ({}) => {
                     py: "5px",
                     borderRadius: "5px",
                     marginLeft: "15px",
+                    cursor:'pointer' 
                   }}
                   titleStyle={{
                     color: currentSelected == 1 ? "green" : "white",
@@ -212,6 +213,7 @@ const CustomHeader = ({}) => {
                       py: "5px",
                       borderRadius: "5px",
                       marginLeft: "15px",
+                      cursor:'pointer' 
                     }}
                     titleStyle={{
                       color: currentSelected == 5 ? "green" : "white",
@@ -236,6 +238,7 @@ const CustomHeader = ({}) => {
                       py: "5px",
                       borderRadius: "5px",
                       marginLeft: "15px",
+                      cursor:'pointer' 
                     }}
                     titleStyle={{
                       color:

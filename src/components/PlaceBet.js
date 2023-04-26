@@ -51,7 +51,6 @@ const PlaceBet = ({
     scrollToBottom();
   }, [selectedValue]);
 
-  console.log(data,"datadata")
 
   const CustomButton = ({ color, title, onClick }) => {
     return (
@@ -510,12 +509,16 @@ const PlaceBet = ({
             title={"Submit"}
             color={"#262626"}
           /> */}
-          <button style={{color:"#fff", backgroundColor:"#262626",
+          <button 
+          // style={classes.CustomButton_Btn("#262626")}
+          style={{color:"#fff", backgroundColor:"#262626",
            width: "150px",
+          // width: { laptop: "150px", mobile: "130px" },
           height:"35px",
           borderRadius: "5px",
           border: "2px solid white",
-          }} onClick={() => {
+          }}
+           onClick={() => {
               handleClose();
               onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
             }}>Submit</button>

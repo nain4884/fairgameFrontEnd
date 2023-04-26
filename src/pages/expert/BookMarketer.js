@@ -218,6 +218,9 @@ const BookMarketer = ({ currentMatch, socket,liveData }) => {
           }
           align="end"
         />
+        {currentMatch?.teamC &&
+        <>
+        <Divider />
         <BoxComponent
           color={"#FF4D4D"}
           teamImage={null}
@@ -230,6 +233,9 @@ const BookMarketer = ({ currentMatch, socket,liveData }) => {
           }
           align="end"
         />
+        </>
+        }
+       
          <Divider />
         {!live && (
           <Box
