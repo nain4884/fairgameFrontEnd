@@ -263,7 +263,6 @@ const Odds = ({
       />
       {newData?.teamC &&<>
         <Divider />
-        {console.warn("ccccc ", JSON.stringify(newData))}
       <BoxComponent
         teamImage={null}
         time={true}

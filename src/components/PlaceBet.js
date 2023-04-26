@@ -99,6 +99,7 @@ const PlaceBet = ({
     containerStyle,
     valueContainerStyle,
     valueTextStyle,
+    bet_condition
   }) => {
     const [oddValue, setOddValue] = useState(selectedValue || "0");
     const selectedColorBox = useSelector(
@@ -141,6 +142,13 @@ const PlaceBet = ({
             <Typography
               sx={[
                 {
+                  
+                  overflow: bet_condition && "hidden",
+                  textOverflow:  bet_condition && "ellipsis",
+                  whiteSpace:  bet_condition && "nowrap",
+                  width:   bet_condition && "100px",
+                  margin:  bet_condition && "auto",
+                  marginTop:  bet_condition && "5px",
                   color: "#262626",
                   fontSize:
                     title == "Back/Lay" || title == "Yes/No" ? "16px" : "13px",
@@ -156,7 +164,7 @@ const PlaceBet = ({
                   : "Lay"
                 : title === "Team"
                 ? name
-                : isSessionYes
+                : bet_condition ? bet_condition : isSessionYes
                 ? "Yes"
                 : "No"}
             </Typography>
@@ -402,6 +410,7 @@ const PlaceBet = ({
             value={season ? "6 OVER RUNS INDIA" : "INDIA"}
             valueContainerStyle={{ background: "#F8C851" }}
             containerStyle={{ flex: season ? { mobile: 2.5, laptop: 2 } : 1 }}
+            bet_condition={data?.bet_condition}
           />
           <TeamsOdssData
             input={true}

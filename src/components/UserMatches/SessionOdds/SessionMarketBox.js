@@ -174,7 +174,6 @@ const SessionMarketBox = ({
               <SeprateBox color={"white"} rates={allRates} />
             </>
           )}
-          {console.warn("data ggg 333:", data?.profitLoss)}
           {!matchesMobile && (
             <PlaceBetComponentWeb
               amount={index == 2}

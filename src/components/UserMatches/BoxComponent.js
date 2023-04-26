@@ -148,6 +148,7 @@ const BoxComponent = ({
           >
             {!matchesMobile && (
               <SeprateBox
+              back={true}
                 currentMatch={newData}
                 lock={lock}
                 rates={allRates}
@@ -173,6 +174,7 @@ const BoxComponent = ({
             ></Box>
             {!matchesMobile && (
               <SeprateBox
+              back={true}
                 currentMatch={newData}
                 lock={lock}
                 rates={allRates}

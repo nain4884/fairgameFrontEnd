@@ -59,6 +59,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [isHandled, setIsHandled] = useState(false);
+  const checkMarketId = useSelector((state) =>state?.matchDetails?.selectedMatch?.marketId);
 
   const { axios, role } = setRole();
 
@@ -74,7 +75,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           current_balance: data.newBalance,
           exposure: data.exposure,
         };
-
+        // alert(JSON.stringify(data?.betPlaceData))
+// console.warn("data?.betPlaceData :", data?.betPlaceData)
         session = [...allSessionBets];
         session.unshift(data?.betPlaceData);
         dispatch(setCurrentUser(user));
@@ -137,8 +139,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
 
       socket.on("newBetAdded", (value) => {
-        console.log(value, "newBetAdded");
-
+        // console.log(value, "newBetAdded");
         try {
           if (value?.sessionBet) {
             const updatedBettings1 = currentMatch?.matchSessionData?.map(
@@ -223,7 +224,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
 
       socketMicro.on(`session${marketId}`, (val) => {
         // console.log("val", val);
-
+// alert(marketId)
+// console.warn("data?.betPlaceData :", marketId)
         if (val !== null) {
           const updatedBettings1 = currentMatch?.matchSessionData?.map(
             (betting) => {
