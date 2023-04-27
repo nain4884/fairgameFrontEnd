@@ -43,6 +43,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
             height: "32px",
             right: "8px",
             position: "absolute",
+            cursor:'pointer',
           }}
         >
           <Box

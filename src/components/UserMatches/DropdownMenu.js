@@ -63,11 +63,11 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
               list?.map((v) => {
                 const getColor = (value) => {
                   if (value > 1) {
-                    return "#306A47";
+                    return "#DC3545";
                   } else if (value === v?.profit_loss && value > 1) {
                     return "#F8C851";
                   } else {
-                    return "#DC3545";
+                    return "#10DC61";
                   }
                 };
                 const getSVG = (value) => {
@@ -149,7 +149,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
                     borderTop: "1px solid #306A47",
                   }}
                 >
-                  <Box
+                  {/* <Box
                     sx={{
                       width: "60px",
                       display: "flex",
@@ -425,7 +425,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
                         width: "15px",
                       }}
                     />
-                  </Box>
+                  </Box> */}
                 </Box>{" "}
               </>
             )}

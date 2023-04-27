@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   manualBookMarkerRates: {
-    teamA: "",
-    teamB: "",
+    teamA: 0,
+    teamB: 0,
   },
   sessionRates: null,
   matchOdds: {},

@@ -135,7 +135,8 @@ const SideBar = ({ mobileShow }) => {
               laptop: showSideBarMobile ? "15px" : "13px",
               mobile: "20px",
             },
-            marginLeft: { mobile: "35px", laptop: "0px" },
+            marginLeft: { mobile: "35px", laptop: "0px" }, 
+            cursor:'pointer'
           }}
         >
           {item}

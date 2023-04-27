@@ -246,6 +246,7 @@ const Odds = ({
         typeOfBet={"Match"}
       />
       <Divider />
+      {/* {console.log("newData :",newData)} */}
       <BoxComponent
         teamImage={newData?.teamB_Image}
         time={true}

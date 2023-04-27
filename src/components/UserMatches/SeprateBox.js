@@ -157,10 +157,11 @@ const SeprateBox = ({
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
+              cursor: !empty && !lock && value && value2 &&'pointer'
             }}
           >
             {!empty && !lock && (
-              <Box sx={{ alignItems: "center", justifyContent: "space-around" }}>
+              <Box sx={{ alignItems: "center", justifyContent: "space-around"}}>
                 <Typography
                   sx={{
                     fontSize: "15px",

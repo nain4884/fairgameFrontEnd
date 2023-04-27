@@ -146,7 +146,7 @@ const PlaceBet = ({
                   overflow: bet_condition && "hidden",
                   textOverflow:  bet_condition && "ellipsis",
                   whiteSpace:  bet_condition && "nowrap",
-                  width:   bet_condition && "100px",
+                  width:  bet_condition && { laptop: "140px", mobile: "100px" },
                   margin:  bet_condition && "auto",
                   marginTop:  bet_condition && "5px",
                   color: "#262626",
@@ -362,8 +362,10 @@ const PlaceBet = ({
           width: { mobile: "90vw", laptop: "30vw" },
         },
         matchesMobile
-          ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
-          : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
+          // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
+          // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
+          ? { position: "absolute", right: back ? "-12.5vw" : "0vw" }
+          : { position: "absolute", right: back ? "-12.5vw" : "0vw" },
       ]}
     >
       <Box sx={{ background: "white", width: "100%", overflow: "hidden" }}>

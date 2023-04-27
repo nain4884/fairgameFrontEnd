@@ -7,7 +7,7 @@ import { useTheme } from "@emotion/react";
 import SmallBoxSeason from "../SmallBoxSeason";
 import { memo } from "react";
 
-const SessionMarket = ({ data, newData, teamARates, teamBRates }) => {
+const SessionMarket = ({ data, newData, teamARates, teamBRates,allBetsData }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -76,7 +76,8 @@ const SessionMarket = ({ data, newData, teamARates, teamBRates }) => {
               justifyContent: "flex-end",
             }}
           >
-            <SmallBoxSeason />
+          {/* {console.warn("newData11 ",newData)} */}
+            <SmallBoxSeason allBetsData={allBetsData} />
             <Typography
               sx={{
                 color: "white",

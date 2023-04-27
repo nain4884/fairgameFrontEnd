@@ -199,7 +199,7 @@ import { memo } from "react";
 //     </Box>
 //   );
 // };
-const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive }) => {
+const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBetsData }) => {
   const { manualBookMarkerRates, selectedMatch } = useSelector(
     (state) => state?.matchDetails
   );
@@ -281,6 +281,7 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive }) => {
           newData={data}
           teamARates={manualBookMarkerRates?.teamA}
           teamBRates={manualBookMarkerRates?.teamB}
+          allBetsData={allBetsData}
         />
       )}
     </Box>

@@ -161,6 +161,7 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
             laptop: "flex-start",
           },
           background: "white",
+          cursor:'pointer',
         }}
       >
         {!upcoming && (

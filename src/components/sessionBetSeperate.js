@@ -24,7 +24,7 @@ const data = [
     },
 ]
 const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
- 
+//  {console.warn("allBetsData qq:",allBetsData)}
     return (
         <Box sx={{ width: { mobile: "100%", laptop: '100%' }, marginY: { mobile: '.2vh', laptop: '1vh' }, padding: .2, background: 'white', height: 'auto' }}>
             <Box sx={[{ width: '100%', height: "42px", justifyContent: 'space-between', alignItems: 'center', paddingLeft: '10px', paddingRight: '4px', marginBottom: '.1vh', display: 'flex', }, (theme) => ({
@@ -132,7 +132,7 @@ const SingleBox = ({ data, header, color, up, first, time }) => {
         <Box sx={{ width: '140%', height: '40px', flexDirection: 'column', background: "#F8C851", marginX: { mobile: '1px', laptop: '0.4px' }, display: 'flex', justifyContent: 'center' }}>
             <Typography sx={{ fontWeight: '600', fontSize: { mobile: '6px', laptop: '8px' }, color: 'black', textAlign: 'end', marginRight: '3px' }} >{time}</Typography>
             <Box sx={{ height: '.4vh' }} ></Box>
-            <Typography sx={{ fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{"6 OVER RUNS PAKISTAN"}</Typography>
+            <Typography sx={{ fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{data}</Typography>
 
         </Box>
     ) : up ? (

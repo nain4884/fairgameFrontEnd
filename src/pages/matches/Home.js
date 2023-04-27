@@ -4,7 +4,7 @@ import React from "react";
 import { useContext } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigation } from "react-router-dom";
 import { SocketContext } from "../../context/socketContext";
 import { setRole } from "../../newStore";
 import { useEffect } from "react";
@@ -59,9 +59,11 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [isHandled, setIsHandled] = useState(false);
-  const checkMarketId = useSelector((state) =>state?.matchDetails?.selectedMatch?.marketId);
-
+  const checkMctchId = useSelector(
+    (state) => state?.matchDetails?.selectedMatch?.id
+  );
   const { axios, role } = setRole();
+  var matchId = id;
 
   useEffect(() => {
     if (socket && socket.connected) {
@@ -69,14 +71,14 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         console.log(value);
       });
       socket.on("session_bet", (data) => {
-        console.log("SESSION Response", data);
+        // console.warn("SESSION Response", data);
         const user = {
           ...currentUser,
           current_balance: data.newBalance,
           exposure: data.exposure,
         };
         // alert(JSON.stringify(data?.betPlaceData))
-// console.warn("data?.betPlaceData :", data?.betPlaceData)
+        // console.warn("data?.betPlaceData :", data?.betPlaceData)
         session = [...allSessionBets];
         session.unshift(data?.betPlaceData);
         dispatch(setCurrentUser(user));
@@ -88,8 +90,9 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         if (!isHandled) {
           setIsHandled(true);
           try {
+            // console.warn(data, "check rates");
             // getAllBets();
-            console.log(data, "MATCHH_BET", data?.betPlaceData?.match_id, id);
+            // console.log(data, "MATCHH_BET", data?.betPlaceData?.match_id, id);
             if (data) {
               const user = {
                 ...currentUser,
@@ -139,6 +142,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
 
       socket.on("newBetAdded", (value) => {
+        // alert(value.match_id);
+        matchId = value?.match_id;
         // console.log(value, "newBetAdded");
         try {
           if (value?.sessionBet) {
@@ -201,7 +206,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         }
       });
 
-      socket.on("bookMakerRateLive", (value) => {
+      socket.on("bookMakerRateLive", (value) => {// Bookmaker Market live and stop disable condition
         if (value?.matchId === currentMatch?.id) {
           const body = {
             ...currentMatch,
@@ -223,10 +228,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       // });
 
       socketMicro.on(`session${marketId}`, (val) => {
-        // console.log("val", val);
-// alert(marketId)
-// console.warn("data?.betPlaceData :", marketId)
-        if (val !== null) {
+        if (val !== null && matchId == checkMctchId) {
           const updatedBettings1 = currentMatch?.matchSessionData?.map(
             (betting) => {
               const selectedData = val.find(
@@ -260,7 +262,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
 
         // dispatch(setSessionOddsLive(body));
       });
-      socketMicro.on(`matchOdds${marketId}`, (val) => {
+      socketMicro.on(`matchOdds${marketId}`, (val) => {// matchodds Market live and stop disable condition
         if (val !== null) {
           if (val.length === 0) {
             matchOddsCount += 1;
@@ -312,6 +314,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       // console.log(rates,"Rates");
       setIObtes(data?.data[0]);
       dispatch(setAllBetRate(data?.data[0]));
+      // dispatch(setAllSessionBets(data?.data[0]));// duplicate bets related issue
       // console.log(data,"after");
     } catch (e) {
       console.log(e);
@@ -327,12 +330,13 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   };
 
   async function getThisMatch(id) {
+    // alert(1111)
     try {
       const response = await axios.get(`/game-match/matchDetail/${id}`);
       let matchOddsDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
-      
+
       let matchSessionDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === true
       );
@@ -348,12 +352,19 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           matchOddsData: matchOddsDataTemp,
         })
       );
+      dispatch(
+        setManualBookMarkerRates({
+          teamA: response.data.teamA_rate ? response.data.teamA_rate : 0,
+          teamB: response.data.teamB_rate ? response.data.teamB_rate : 0,
+        })
+      );
       // setCurrentMatch(response.data);
       // setMatchOddsData(matchOddsDataTemp);
 
       // setMatchSessionData(matchSessionDataTemp);
 
       // dispatch(
+        // console.warn("response.dat :",response.data)
       setMarketId(response.data.marketId);
       setMatchDetail(response.data);
 
@@ -428,6 +439,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               onClick={() => handleClose(true)}
               bookMakerRateLive={bookMakerRateLive}
               data={currentMatch}
+              allBetsData={allSessionBets}
             />
           </div>
           <Box
@@ -476,6 +488,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               bookmakerLive={bookmakerLive}
               onClick={() => handleClose(true)}
               data={currentMatch}
+              allBetsData={allSessionBets}
             />
           </Box>
           <Box sx={{ width: "30%", paddingRight: "1%" }}>
