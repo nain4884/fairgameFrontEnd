@@ -7,7 +7,7 @@ import Lottie from "lottie-react";
 import EventListing from '../../components/EventListing';
 import MatchesComponent from '../../components/Matches/Matches';
 import { HourGlass } from '../../assets';
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 
 const Match = ({activeTab,setSelected}) => {
     const [id, setId] = useState("");
@@ -20,6 +20,7 @@ const Match = ({activeTab,setSelected}) => {
     const doNavigateWithState = (e) => {
       navigate("/matchDetail", { state: e });
     };
+
     return (
       <>
         {!matchesMobile ? (

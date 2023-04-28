@@ -177,6 +177,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
               overflowY: "scroll",
             }}
           >
+          {/* {console.warn("allBetsData :", allBetsData)} */}
             {[...new Set(allBetsData?.filter((v) => v.bet_type == "back" || v.bet_type == "lay"))]?.map((i, k) => {
               const num = k + 1;
 
@@ -300,9 +301,11 @@ const RowComponent = ({ header, data }) => {
       return "black";
     } else if (data?.bet_type === "back" || data?.bet_type == "yes") {
       // return "#FF9292"; 
-      return "#00C0F9"; 
+      // return "#00C0F9"; 
+      return "rgb(179, 224, 255)"
     } else if (data?.bet_type === "lay" || data?.bet_type == "no") {
-      return "#FF9292";
+      return "rgb(255, 146, 146)"
+      // return "#FF9292";
       // return "#B3E0FF";
     }
   };
@@ -372,9 +375,10 @@ const SingleBox = ({ data, header, color, up, first }) => {
           <Typography
             sx={{
               fontWeight: "700",
-              fontSize: { mobile: "10px", laptop: ".7vw" },
+              fontSize: { mobile: "10px", laptop: ".6vw" },
               color: "black",
               textAlign: "center",
+              maxHeight:"2em", overflow:'hidden', lineHeight:1, 
             }}
           >
             {data}
@@ -413,6 +417,7 @@ const SingleBox = ({ data, header, color, up, first }) => {
             textAlign: "start",
             marginLeft: "3px",
             textTransform: "uppercase",
+            maxHeight:"2em", overflow:'hidden', lineHeight:1, 
           }}
         >
           {data.team_bet}

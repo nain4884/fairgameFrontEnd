@@ -29,6 +29,8 @@ import { setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import moment from "moment";
 import { setMatchOddsLive } from "../../newStore/reducers/matchDetails";
+import { toast } from 'react-toastify';
+
 const containerStyles = {
   marginTop: "10px",
 };
@@ -111,8 +113,10 @@ export default function Home1() {
       }
       const { data } = await axios.post(`/game-match/addmatch`, request);
       if (data.message === "Match added successfully.")
+      toast.error(data.message)
         navigate("/expert/match");
     } catch (e) {
+      toast.error(e.response.data.message)
       console.log(e);
     }
   };

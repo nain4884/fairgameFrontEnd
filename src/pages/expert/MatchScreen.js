@@ -257,7 +257,6 @@ const MatchScreen = () => {
 
       socketMicro.on(`bookmaker${marketId}`, (val) => {
         // dispatch(setBookMakerLive(val[0]));
-
         if (marketId === val[0]?.marketId) {
           setBookmakerLiveData(val[0]);
         } else {

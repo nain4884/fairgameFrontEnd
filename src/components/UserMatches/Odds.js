@@ -64,6 +64,8 @@ const Odds = ({
   showDely,
   suspended,
   newData,
+  isRound,
+  typeOfBet
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -243,7 +245,8 @@ const Odds = ({
         team={"teamA"}
        
         suspendedData={data[0]?.status}
-        typeOfBet={"Match"}
+        typeOfBet={typeOfBet}
+        isRound={isRound}
       />
       <Divider />
       {/* {console.log("newData :",newData)} */}
@@ -260,7 +263,8 @@ const Odds = ({
         rate={teamBRates}
         allRates={{ teamA: teamARates, teamB: teamBRates }}
         team={"teamB"}
-        typeOfBet={"Match"}
+        typeOfBet={typeOfBet}
+        isRound={isRound}
       />
       {newData?.teamC &&<>
         <Divider />
@@ -277,7 +281,8 @@ const Odds = ({
         rate={0}
         allRates={{ teamA: teamARates, teamB: teamBRates }}
         team={"teamC"}
-        typeOfBet={"Match"}
+        typeOfBet={typeOfBet}
+        isRound={isRound}
       />
       </>}
       

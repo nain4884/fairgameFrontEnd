@@ -360,12 +360,14 @@ const PlaceBet = ({
           marginLeft: season ? "40px" : 0,
           overflow: "hidden",
           width: { mobile: "90vw", laptop: "30vw" },
+          left: isSessionYes?"-30%": "95%"
         },
         matchesMobile
           // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
           // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-          ? { position: "absolute", right: back ? "-12.5vw" : "0vw" }
-          : { position: "absolute", right: back ? "-12.5vw" : "0vw" },
+          ? { position: "absolute", right: back ? "auto" : "0vw" }
+          : { position: "absolute", right: back ? "auto" : "0vw" },
+          
       ]}
     >
       <Box sx={{ background: "white", width: "100%", overflow: "hidden" }}>

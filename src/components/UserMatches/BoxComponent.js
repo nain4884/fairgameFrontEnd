@@ -23,6 +23,7 @@ const BoxComponent = ({
   newData,
   suspendedData,
   showBox,
+  isRound
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -153,14 +154,16 @@ const BoxComponent = ({
                 lock={lock}
                 rates={allRates}
                 value={
-                  ex?.availableToBack?.length > 0
+                  isRound ? Math.round( ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[2]?.price
+                    : 0) :  ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[2]?.price
                     : 0
                 }
                 value2={formatNumber(
                   ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[2]?.size
-                    : 0
+                    : 0, isRound
                 )}
                 color={matchesMobile ? "white" : "#CEEBFF"}
                 type={{ color: "#A7DCFF", type: "BL" }}
@@ -179,14 +182,16 @@ const BoxComponent = ({
                 lock={lock}
                 rates={allRates}
                 value={
-                  ex?.availableToBack?.length > 0
+                  isRound ? Math.round(ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[1]?.price
+                    : 0) : ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[1]?.price
                     : 0
                 }
                 value2={formatNumber(
                   ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[1]?.size
-                    : 0
+                    : 0, isRound
                 )}
                 color={matchesMobile ? "white" : "#C2E6FF"}
                 type={{ color: "#A7DCFF", type: "BL" }}
@@ -205,14 +210,16 @@ const BoxComponent = ({
               lock={lock}
               rates={allRates}
               value={
-                ex?.availableToBack?.length > 0
+                isRound ? Math.round( ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.price
+                  : 0):  ex?.availableToBack?.length > 0
                   ? ex?.availableToBack[0]?.price
                   : 0
               }
               value2={formatNumber(
                 ex?.availableToBack?.length > 0
                   ? ex?.availableToBack[0]?.size
-                  : 0
+                  : 0, isRound
               )}
               color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
               type={{ color: "#A7DCFF", type: "BL" }}
@@ -231,12 +238,14 @@ const BoxComponent = ({
               lock={lock}
               rates={allRates}
               value={
-                ex?.availableToLay?.length > 0
+                isRound ? Math.round(ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[0]?.price
+                  : 0) : ex?.availableToLay?.length > 0
                   ? ex?.availableToLay[0]?.price
                   : 0
               }
               value2={formatNumber(
-                ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0, isRound
               )}
               color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
               type={{ color: "#FFB5B5", type: "BL" }}
@@ -254,14 +263,16 @@ const BoxComponent = ({
                 rates={allRates}
                 lock={lock}
                 value={
-                  ex?.availableToLay?.length > 0
+                  isRound ? Math.round(ex?.availableToLay?.length > 0
+                    ? ex?.availableToLay[1]?.price
+                    : 0): ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[1]?.price
                     : 0
                 }
                 value2={formatNumber(
                   ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[1]?.size
-                    : 0
+                    : 0, isRound
                 )}
                 color={matchesMobile ? "white" : "#F2CBCB"}
                 type={{ color: "#FFB5B5", type: "BL" }}
@@ -279,15 +290,16 @@ const BoxComponent = ({
                 currentMatch={newData}
                 rates={allRates}
                 lock={lock}
-                value={
-                  ex?.availableToLay?.length > 0
+                value={isRound ? Math.round(ex?.availableToLay?.length > 0
+                    ? ex?.availableToLay[2]?.price
+                    : 0) : ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[2]?.price
                     : 0
                 }
                 value2={formatNumber(
                   ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[2]?.size
-                    : 0
+                    : 0, isRound
                 )}
                 color={matchesMobile ? "white" : "#ECD6D6"}
                 type={{ color: "#FFB5B5", type: "BL" }}

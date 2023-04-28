@@ -30,6 +30,7 @@ const MatchOdds = ({
   );
 
   const activateMatchOdds = async (val, id) => {
+    // alert(5555)
     try {
       if (val === 0) {
         setLive(false);

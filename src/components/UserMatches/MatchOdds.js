@@ -231,6 +231,7 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
           min={data?.betfair_match_min_bet || 0}
           max={data?.betfair_match_max_bet || 0}
           title={"Match Odds"}
+          typeOfBet={"MATCH ODDS"}
         />
       )}
 
@@ -254,6 +255,8 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
           min={data?.betfair_bookmaker_min_bet || 0}
           max={data?.betfair_bookmaker_max_bet || 0}
           title={"Bookmaker Market "}
+          isRound={true}
+          typeOfBet={"BOOKMAKER"}
         />
       )}
 
@@ -270,6 +273,7 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
           min={data?.bookmaker_manual_min_bet || 0}
           max={data?.bookmaker_manual_max_bet || 0}
           title={"Manual Bookmaker"}
+          typeOfBet={"MANUAL BOOKMAKER"}
         />
       )}
 

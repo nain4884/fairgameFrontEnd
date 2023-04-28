@@ -103,21 +103,23 @@ const RowComponent = ({ header, data }) => {
         if (header) {
             return "black";
           } else if (data?.bet_type === "back" || data?.bet_type == "yes") {
-            return "#00C0F9"; 
+            // return "#00C0F9"; 
+            return "rgb(179, 224, 255)"
           } else if (data?.bet_type === "lay" || data?.bet_type == "no") {
-            return "#FF9292";
+            // return "#FF9292";
+            return "rgb(255, 146, 146)"
           }
 
     }
 
-    console.log(data,"DTACOM")
+    // console.log(data,"DTACOM")
     return (
         <Box sx={{ width: '100%', height: header ? '30px' : '42px', background: 'white', justifyContent: 'space-between', alignItems: 'center', display: 'flex' }}>
             {!header && <>
                 <SingleBox color={getColor} data={data?.marketType} first={true} header={header} time={data?.time} />
                 <SingleBox color={getColor()} data={data?.odds} header={header} />
                 <SingleBox color={getColor()} data={data?.bet_type} header={header} />
-                <SingleBox color={getColor()} data={data?.stack || data?.stake} header={header} /></>}
+                <SingleBox color={getColor()} data={data?.stack || data?.stake || data?.amount} header={header} /></>}
             {header && <>
                 <SingleBox color={getColor} data={data[0]} first={true} header={header} />
                 <SingleBox color={getColor()} data={data[1]} header={header} />
@@ -132,7 +134,7 @@ const SingleBox = ({ data, header, color, up, first, time }) => {
         <Box sx={{ width: '140%', height: '40px', flexDirection: 'column', background: "#F8C851", marginX: { mobile: '1px', laptop: '0.4px' }, display: 'flex', justifyContent: 'center' }}>
             <Typography sx={{ fontWeight: '600', fontSize: { mobile: '6px', laptop: '8px' }, color: 'black', textAlign: 'end', marginRight: '3px' }} >{time}</Typography>
             <Box sx={{ height: '.4vh' }} ></Box>
-            <Typography sx={{ fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{data}</Typography>
+            <Typography sx={{ maxHeight:"2em", overflow:'hidden', lineHeight:1, fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{data}</Typography>
 
         </Box>
     ) : up ? (

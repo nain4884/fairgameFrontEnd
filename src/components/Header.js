@@ -9,9 +9,10 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { SocketContext } from "../context/socketContext";
 import {
   ArrowDown,
   DownArrow,
@@ -46,6 +47,7 @@ const CustomHeader = ({}) => {
   const [exposure, setExposure] = useState(0);
   const {currentUser} = useSelector((state) => state?.currentUser);
   // const auth = useSelector(state => state?.auth?.user);
+
   async function getUserDetail(axios, role) {
     try {
       const { data } = await axios.get("users/profile");
@@ -506,8 +508,11 @@ const DropdownMenu = ({ anchorEl, open, handleClose ,axios }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { socket, socketMicro } = useContext(SocketContext);
+
   const logoutProcess = async () => {
     // dispatch(stateActions.logout("role4"));
+    // socketMicro.emit("logoutUserForce");
     dispatch(logout({roleType:"role4"}));
     await axios.get("auth/logout")
     removeCurrentUser()
@@ -566,6 +571,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose ,axios }) => {
       ))}
       <Box
         onClick={() => {
+          // alert(1)
           logoutProcess();
         }}
         sx={{

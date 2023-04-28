@@ -71,7 +71,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         console.log(value);
       });
       socket.on("session_bet", (data) => {
-        // console.warn("SESSION Response", data);
+        // console.warn("SESSION Response", data?.betPlaceData);
         const user = {
           ...currentUser,
           current_balance: data.newBalance,
@@ -302,6 +302,17 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     };
   }, [socketMicro, marketId]);
 
+
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.on("logoutUserForce", (value) => {
+        // alert(222222)
+        console.log(value);
+      });
+    }
+  }, [socket]);
+
+
   async function getAllBetsData1() {
     let payload = {
       match_id: id,
@@ -313,8 +324,11 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       // const rates=data?.data[0]?.sort((a, b) => b.id - a.id)
       // console.log(rates,"Rates");
       setIObtes(data?.data[0]);
+      // alert(data?.data[0].length)
       dispatch(setAllBetRate(data?.data[0]));
-      // dispatch(setAllSessionBets(data?.data[0]));// duplicate bets related issue
+      var filteredData = data?.data?.[0]?.filter((item) => item.bet_type == "yes" || item.bet_type == "no");
+      // alert(filteredData.length)
+      dispatch(setAllSessionBets(filteredData));// duplicate bets related issue
       // console.log(data,"after");
     } catch (e) {
       console.log(e);
@@ -497,7 +511,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
             <AllRateSeperate
               allBetsData={IObets?.filter((v) =>
-                ["MATCH ODDS"]?.includes(v.marketType)
+                ["MATCH ODDS", "BOOKMAKER"]?.includes(v.marketType)
               )}
               mark
             />
