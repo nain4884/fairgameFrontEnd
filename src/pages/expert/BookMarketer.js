@@ -10,7 +10,7 @@ import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-const BookMarketer = ({ currentMatch, socket,liveData }) => {
+const BookMarketer = ({ currentMatch, socket, liveData }) => {
   // const { bookmakerLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -92,11 +92,11 @@ const BookMarketer = ({ currentMatch, socket,liveData }) => {
           {!live ? (
             <SmallBox
               onClick={() => {
-                setLive(true);
                 socket.emit("bookMakerRateLive", {
                   matchId: currentMatch?.id,
                   bookMakerLive: true,
-                });
+                }); 
+                setLive(true);
               }}
               width={"80px"}
               title={"Go Live"}
@@ -105,11 +105,11 @@ const BookMarketer = ({ currentMatch, socket,liveData }) => {
           ) : (
             <SmallBox
               onClick={() => {
-                setLive(false);
                 socket.emit("bookMakerRateLive", {
                   matchId: currentMatch?.id,
                   bookMakerLive: false,
                 });
+                setLive(false);
               }}
               width={"80px"}
               title={"Live"}

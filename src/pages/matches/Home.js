@@ -207,6 +207,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
 
       socket.on("bookMakerRateLive", (value) => {// Bookmaker Market live and stop disable condition
+        console.warn("value qqqq:", value)
         if (value?.matchId === currentMatch?.id) {
           const body = {
             ...currentMatch,
@@ -301,16 +302,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
     };
   }, [socketMicro, marketId]);
-
-
-  useEffect(() => {
-    if (socket && socket.connected) {
-      socket.on("logoutUserForce", (value) => {
-        // alert(222222)
-        console.log(value);
-      });
-    }
-  }, [socket]);
 
 
   async function getAllBetsData1() {

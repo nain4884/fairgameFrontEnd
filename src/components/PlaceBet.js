@@ -44,7 +44,7 @@ const PlaceBet = ({
   const myDivRef = useRef(null);
 
   const scrollToBottom = () => {
-    myDivRef.current?.scrollIntoView({ behavior: "smooth" });
+    myDivRef.current?.scrollIntoView({ behavior: "smooth", block:"nearest" });
   };
 
   useEffect(() => {
@@ -360,13 +360,14 @@ const PlaceBet = ({
           marginLeft: season ? "40px" : 0,
           overflow: "hidden",
           width: { mobile: "90vw", laptop: "30vw" },
-          left: isSessionYes?"-30%": "95%"
+          // left: isSessionYes?"-30%": "95%"
         },
+        // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ? 
         matchesMobile
           // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
           // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-          ? { position: "absolute", right: back ? "auto" : "0vw" }
-          : { position: "absolute", right: back ? "auto" : "0vw" },
+          ? { position: "absolute", right: back ? "0vw" : "0vw" }
+          : typeOfBet == "Session" ? { position: "absolute", right: back ? "auto" : "0vw", left: isSessionYes?"-30%": "95%" } :{position: "absolute", right: back ? typeOfBet != "Session" ? "1.5vw" : "-16.5vw" : "0vw"}
           
       ]}
     >

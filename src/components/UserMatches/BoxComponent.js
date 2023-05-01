@@ -145,6 +145,7 @@ const BoxComponent = ({
               width: { laptop: "60%", mobile: "80%" },
               justifyContent: { mobile: "flex-end", laptop: "center" },
               alignItems: "center",
+              position: "relative",
             }}
           >
             {!matchesMobile && (

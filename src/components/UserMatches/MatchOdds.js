@@ -203,7 +203,7 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
   const { manualBookMarkerRates, selectedMatch } = useSelector(
     (state) => state?.matchDetails
   );
-
+{console.warn("mach data", data)}
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {data?.apiBookMakerActive && <BookMarketer data={data} />}
