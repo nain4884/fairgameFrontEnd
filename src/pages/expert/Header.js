@@ -28,8 +28,9 @@ import {
 } from "../../newStore/reducers/currentUser";
 import { setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
+import { removeSocket } from "../../components/helper/removeSocket";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -191,7 +192,7 @@ const CustomHeader = ({}) => {
                     py: "5px",
                     borderRadius: "5px",
                     marginLeft: "15px",
-                    cursor:'pointer' 
+                    cursor: 'pointer'
                   }}
                   titleStyle={{
                     color: currentSelected == 1 ? "green" : "white",
@@ -213,7 +214,7 @@ const CustomHeader = ({}) => {
                       py: "5px",
                       borderRadius: "5px",
                       marginLeft: "15px",
-                      cursor:'pointer' 
+                      cursor: 'pointer'
                     }}
                     titleStyle={{
                       color: currentSelected == 5 ? "green" : "white",
@@ -238,7 +239,7 @@ const CustomHeader = ({}) => {
                       py: "5px",
                       borderRadius: "5px",
                       marginLeft: "15px",
-                      cursor:'pointer' 
+                      cursor: 'pointer'
                     }}
                     titleStyle={{
                       color:
@@ -342,8 +343,8 @@ const CustomHeader = ({}) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                    ? "Bookmaker"
-                    : "Betfair"
+                      ? "Bookmaker"
+                      : "Betfair"
                 }
                 value1={currentUser?.fullName || ""}
               />
@@ -704,7 +705,7 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
         }}
       >
         <Box
-          onClick={(event) => {}}
+          onClick={(event) => { }}
           sx={[
             {
               backgroundColor: "white",
@@ -778,6 +779,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     removeCurrentUser();
     navigate("/");
     handleClose();
+    removeSocket();
   };
   return (
     <Menu

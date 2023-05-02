@@ -30,12 +30,13 @@ import SessionTimeOut from "./helper/SessionTimeOut";
 import SideBar from "./sideBar/SideBar";
 import StyledImage from "./StyledImage";
 import { userActions } from "../newStore/Actions/userActions";
-import { signIn,logout } from "../newStore/reducers/auth";
+import { signIn, logout } from "../newStore/reducers/auth";
 import { removeCurrentUser, setCurrentUser } from "../newStore/reducers/currentUser";
 import axios from "../axios/axios";
 import { setRole } from "../newStore";
+import { removeSocket } from "./helper/removeSocket";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const location = useLocation();
@@ -45,7 +46,7 @@ const CustomHeader = ({}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [balance, setBalance] = useState(0);
   const [exposure, setExposure] = useState(0);
-  const {currentUser} = useSelector((state) => state?.currentUser);
+  const { currentUser } = useSelector((state) => state?.currentUser);
   // const auth = useSelector(state => state?.auth?.user);
 
   async function getUserDetail(axios, role) {
@@ -271,7 +272,7 @@ const NewBoxData = ({
     setAnchorEl(0);
   };
 
-  const {axios} = setRole()
+  const { axios } = setRole()
   return (
     <Box>
       <Box
@@ -345,7 +346,7 @@ const NewBoxData = ({
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         handleClose={handleClose}
-                axios={axios}
+        axios={axios}
       />
     </Box>
   );
@@ -504,7 +505,7 @@ const menutItems = [
   { title: "Change Password", link: "/change_password" },
   { title: "Rules", link: "/rules" },
 ];
-const DropdownMenu = ({ anchorEl, open, handleClose ,axios }) => {
+const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -513,11 +514,12 @@ const DropdownMenu = ({ anchorEl, open, handleClose ,axios }) => {
   const logoutProcess = async () => {
     // dispatch(stateActions.logout("role4"));
     // socketMicro.emit("logoutUserForce");
-    dispatch(logout({roleType:"role4"}));
+    dispatch(logout({ roleType: "role4" }));
     await axios.get("auth/logout")
     removeCurrentUser()
     navigate("/");
     handleClose();
+    removeSocket();
   };
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (

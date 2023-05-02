@@ -44,7 +44,7 @@ const PlaceBet = ({
   const myDivRef = useRef(null);
 
   const scrollToBottom = () => {
-    myDivRef.current?.scrollIntoView({ behavior: "smooth", block:"nearest" });
+    myDivRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   };
 
   useEffect(() => {
@@ -142,13 +142,13 @@ const PlaceBet = ({
             <Typography
               sx={[
                 {
-                  
+
                   overflow: bet_condition && "hidden",
-                  textOverflow:  bet_condition && "ellipsis",
-                  whiteSpace:  bet_condition && "nowrap",
-                  width:  bet_condition && { laptop: "140px", mobile: "100px" },
-                  margin:  bet_condition && "auto",
-                  marginTop:  bet_condition && "5px",
+                  textOverflow: bet_condition && "ellipsis",
+                  whiteSpace: bet_condition && "nowrap",
+                  width: bet_condition && { laptop: "140px", mobile: "100px" },
+                  margin: bet_condition && "auto",
+                  marginTop: bet_condition && "5px",
                   color: "#262626",
                   fontSize:
                     title == "Back/Lay" || title == "Yes/No" ? "16px" : "13px",
@@ -163,10 +163,10 @@ const PlaceBet = ({
                   ? "Back"
                   : "Lay"
                 : title === "Team"
-                ? name
-                : bet_condition ? bet_condition : isSessionYes
-                ? "Yes"
-                : "No"}
+                  ? name
+                  : bet_condition ? bet_condition : isSessionYes
+                    ? "Yes"
+                    : "No"}
             </Typography>
           </Box>
         )}
@@ -328,12 +328,12 @@ const PlaceBet = ({
       stake: defaultValue,
       teamA_name: currentMatch?.teamA,
       teamB_name: currentMatch?.teamB,
-      marketType: marketType === "Match" ? "MATCH ODDS" : "BOOKMAKER",
+      marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : "BOOKMAKER",
     };
     if (marketType == "Session") {
       delete payload.betOn;
       delete payload.odds;
-       
+
       payload.matchType = data?.matchType;
       payload.teamA_name = mainData?.teamA;
       payload.teamB_name = mainData?.teamB;
@@ -344,7 +344,7 @@ const PlaceBet = ({
       payload.rate_percent = data?.rate_percent
       payload.marketType = currentMatch?.bet_condition;
       payload.odds = selectedValue;
-      payload.sessionBet=true
+      payload.sessionBet = true
     }
     return payload;
   }
@@ -367,8 +367,8 @@ const PlaceBet = ({
           // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
           // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
           ? { position: "absolute", right: back ? "0vw" : "0vw" }
-          : typeOfBet == "Session" ? { position: "absolute", right: back ? "auto" : "0vw", left: isSessionYes?"-30%": "95%" } :{position: "absolute", right: back ? typeOfBet != "Session" ? "1.5vw" : "-16.5vw" : "0vw"}
-          
+          : typeOfBet == "Session" ? { position: "absolute", right: back ? "auto" : "0vw", left: isSessionYes ? "-30%" : "95%" } : { position: "absolute", right: back ? typeOfBet != "Session" ? "1.5vw" : "-16.5vw" : "0vw" }
+
       ]}
     >
       <Box sx={{ background: "white", width: "100%", overflow: "hidden" }}>
@@ -431,8 +431,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                ? "Lay"
-                : "Back"
+                  ? "Lay"
+                  : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}
@@ -523,16 +523,17 @@ const PlaceBet = ({
             title={"Submit"}
             color={"#262626"}
           /> */}
-          <button 
-          // style={classes.CustomButton_Btn("#262626")}
-          style={{color:"#fff", backgroundColor:"#262626",
-           width: "150px",
-          // width: { laptop: "150px", mobile: "130px" },
-          height:"35px",
-          borderRadius: "5px",
-          border: "2px solid white",
-          }}
-           onClick={() => {
+          <button
+            // style={classes.CustomButton_Btn("#262626")}
+            style={{
+              color: "#fff", backgroundColor: "#262626",
+              width: "150px",
+              // width: { laptop: "150px", mobile: "130px" },
+              height: "35px",
+              borderRadius: "5px",
+              border: "2px solid white",
+            }}
+            onClick={() => {
               handleClose();
               onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
             }}>Submit</button>

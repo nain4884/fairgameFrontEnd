@@ -27,8 +27,9 @@ import DropdownMenu1 from "./MenuBar";
 import currentUser, { removeCurrentUser, setCurrentUser } from "../../newStore/reducers/currentUser";
 import { logout } from "../../newStore/reducers/auth";
 import { setRole } from "../../newStore";
+import { removeSocket } from "../helper/removeSocket";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const CustomHeader = ({}) => {
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
-  
+
   const { userAdmin } = useSelector((state) => state.auth);
   const location = useLocation();
   React.useEffect(() => {
@@ -64,7 +65,7 @@ const CustomHeader = ({}) => {
     let { transPass, axios, role } = setRole();
     setIsTransPasswordExist(userAdmin?.isTransPasswordCreated);
     getUserDetail(axios, role);
-  }, [location, window.location.pathname ,userAdmin]);
+  }, [location, window.location.pathname, userAdmin]);
 
 
 
@@ -425,10 +426,11 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     handleClose();
   });
   const logoutProcess = () => {
-    dispatch(logout({roleType:"role2"}));
+    dispatch(logout({ roleType: "role2" }));
     removeCurrentUser()
     navigate("/");
     handleClose();
+    removeSocket();
   };
   const classes = {
     mainBoxsx: {

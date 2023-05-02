@@ -22,6 +22,7 @@ import { setAllRoles, signIn } from "../../newStore/reducers/auth";
 import { setCurrentUser } from "../../newStore/reducers/currentUser";
 import UseTokenUpdate from "../../useTokenUpdate";
 import { setRole } from "../../newStore";
+import { removeSocket } from "../../components/helper/removeSocket";
 
 export default function Login() {
   let { transPass, axios, role } = setRole()
@@ -268,6 +269,7 @@ export default function Login() {
         getUserDetail();
         // dispatch(setActiveRole(foundRoles.data));
         // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+        removeSocket();
         dispatch(signIn(data.data));
         setRole(data.data.access_token);
         switch (data.data.role.roleName) {

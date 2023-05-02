@@ -218,6 +218,10 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         }
       });
     }
+    // if (socket && !socket.connected) {
+    //   alert("Socket is not connected. Reconnecting...");
+    //   socket.connect();
+    // }
   }, [socket]);
 
   useEffect(() => {
@@ -303,7 +307,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     };
   }, [socketMicro, marketId]);
 
-
   async function getAllBetsData1() {
     let payload = {
       match_id: id,
@@ -369,7 +372,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       // setMatchSessionData(matchSessionDataTemp);
 
       // dispatch(
-        // console.warn("response.dat :",response.data)
+      // console.warn("response.dat :",response.data)
       setMarketId(response.data.marketId);
       setMatchDetail(response.data);
 
@@ -508,8 +511,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-              <SessionBetSeperate allBetsData={allSessionBets} mark />
-            )}
+                <SessionBetSeperate allBetsData={allSessionBets} mark />
+              )}
           </Box>
         </Box>
       )}

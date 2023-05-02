@@ -70,7 +70,7 @@ const Odds = ({
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  const bookRatio = Math.round((teamARates / teamBRates) * 100) / 100 || 0;
+  const bookRatio = teamBRates !== 0 ? Math.round((teamARates / teamBRates) * 100) / 100 || 0 : 0;
 
   return (
     <Box
@@ -237,13 +237,13 @@ const Odds = ({
         teamImage={newData?.teamA_Image}
         newData={newData}
         // lock={data?.length > 0 ? false : true}
-        color={teamARates <=0 ? "#FF4D4D":"#46e080"}
+        color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
         allRates={{ teamA: teamARates, teamB: teamBRates }}
         rate={teamARates}
         name={newData?.teamA}
         data={data?.length > 0 ? data[0] : []}
         team={"teamA"}
-       
+
         suspendedData={data[0]?.status}
         typeOfBet={typeOfBet}
         isRound={isRound}
@@ -256,7 +256,7 @@ const Odds = ({
         showBox={showBox}
         newData={newData}
         // lock={data?.length > 0 ? false : true}
-        color={teamBRates <=0 ? "#FF4D4D":"#46e080"}
+        color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
         name={newData?.teamB}
         data={data?.length > 0 ? data[1] : []}
         suspendedData={data[1]?.status}
@@ -266,26 +266,26 @@ const Odds = ({
         typeOfBet={typeOfBet}
         isRound={isRound}
       />
-      {newData?.teamC &&<>
+      {newData?.teamC && <>
         <Divider />
-      <BoxComponent
-        teamImage={null}
-        time={true}
-        showBox={showBox}
-        newData={newData}
-        // lock={data?.length > 0 ? false : true}
-        color={"#FF4D4D"}
-        name={newData?.teamC}
-        data={data?.length > 0 ? data[2] : []}
-        suspendedData={data[2]?.status}
-        rate={0}
-        allRates={{ teamA: teamARates, teamB: teamBRates }}
-        team={"teamC"}
-        typeOfBet={typeOfBet}
-        isRound={isRound}
-      />
+        <BoxComponent
+          teamImage={null}
+          time={true}
+          showBox={showBox}
+          newData={newData}
+          // lock={data?.length > 0 ? false : true}
+          color={"#FF4D4D"}
+          name={newData?.teamC}
+          data={data?.length > 0 ? data[2] : []}
+          suspendedData={data[2]?.status}
+          rate={0}
+          allRates={{ teamA: teamARates, teamB: teamBRates }}
+          team={"teamC"}
+          typeOfBet={typeOfBet}
+          isRound={isRound}
+        />
       </>}
-      
+
 
       {/* {data?.teamC && !suspended && (
         <BoxComponent

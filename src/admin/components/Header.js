@@ -24,6 +24,7 @@ import SideBarAdmin from "./SideBarAdmin";
 import { logout } from "../../newStore/reducers/auth";
 import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import { setRole } from "../../newStore";
+import { removeSocket } from "../../components/helper/removeSocket";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -35,7 +36,7 @@ const CustomHeader = ({ }) => {
   const [anchor, setAnchor] = React.useState(null);
   const [balance, setBalance] = useState(0)
   const [fullName, setFullName] = useState('')
-  const {axios} = setRole()
+  const { axios } = setRole()
   async function getUserDetail() {
     try {
       const { data } = await axios.get('users/profile');
@@ -650,10 +651,11 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   });
   const dispatch = useDispatch();
   const logoutProcess = () => {
-    dispatch(logout({roleType:"role1"}));
+    dispatch(logout({ roleType: "role1" }));
     removeCurrentUser()
     navigate("/");
     handleClose();
+    removeSocket();
   };
   return (
     <Box
