@@ -113,7 +113,7 @@ export default function Home1() {
       }
       const { data } = await axios.post(`/game-match/addmatch`, request);
       if (data.message === "Match added successfully.")
-      toast.error(data.message)
+      toast.success(data.message)
         navigate("/expert/match");
     } catch (e) {
       toast.error(e.response.data.message)
@@ -838,7 +838,7 @@ const ListH = () => {
         <SearchInput placeholder={"Search Match..."} />
         <CusButton
           onClick={() => {
-            navigate("/expert/home1");
+            navigate("/expert/home");
           }}
           title={"Add Match"}
         />

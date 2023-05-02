@@ -5,6 +5,7 @@ import {
   AccountList,
   DailogModal,
 } from ".";
+import CustomHeader from "./CommonMasterAdminLayout/Header";
 
 export default function Home() {
   function CondiionCheck(path) {
@@ -17,7 +18,7 @@ export default function Home() {
     <Background>
       {CondiionCheck(window.location.pathname) ? (
         <>
-          {/* <Header /> */}
+          <CustomHeader />
           <HomeSlide />
           <Account />
           <AccountList />

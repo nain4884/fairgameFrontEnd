@@ -1,6 +1,10 @@
 import React, { createContext, useState, useEffect } from "react";
 import io from "socket.io-client";
-import { apiBasePath, apiMicroBasePath, microServiceApiPath } from "../components/helper/constants";
+import {
+  apiBasePath,
+  apiMicroBasePath,
+  microServiceApiPath,
+} from "../components/helper/constants";
 import { setRole } from "../newStore";
 
 export const SocketContext = createContext();
@@ -44,6 +48,7 @@ export const SocketProvider = ({ children }) => {
     });
     // }
   }, [token]);
+
   return (
     <SocketContext.Provider value={{ socket, socketMicro }} >{children}</SocketContext.Provider>
   );

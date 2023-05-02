@@ -69,7 +69,7 @@ const CustomHeader = ({ }) => {
 
   const { userExpert } = useSelector((state) => state.auth);
   useEffect(() => {
-    if (location.pathname.includes("home1")) {
+    if (location.pathname.includes("home")) {
       dispatch(setSelected(0));
     } else if (location.pathname.includes("match")) {
       dispatch(setSelected(null));
@@ -162,7 +162,7 @@ const CustomHeader = ({ }) => {
               <ButtonHead
                 onClick={(e) => {
                   dispatch(setSelected(0));
-                  navigate("/expert/home1");
+                  navigate("/expert/home");
                 }}
                 title={"ADD MATCH"}
                 boxStyle={{
@@ -346,7 +346,7 @@ const CustomHeader = ({ }) => {
                       ? "Bookmaker"
                       : "Betfair"
                 }
-                value1={currentUser?.fullName || ""}
+                value1={currentUser?.userName || ""}
               />
             </Box>
           </Box>
@@ -777,7 +777,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     dispatch(logout({ roleType: "role3" }));
     await axios.get("auth/logout");
     removeCurrentUser();
-    navigate("/");
+    navigate("/expert");
     handleClose();
     removeSocket();
   };

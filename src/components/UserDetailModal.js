@@ -16,10 +16,9 @@ import {
   LockOpen,
   UnLockIcon,
 } from "../admin/assets";
-import adminAxios from "../axios/adminAxios";
-import axios from "../axios/axios";
 import { onChangeKeyCheck } from "./helper/PassKeyCheck";
 import { useNavigate } from "react-router-dom";
+import { setRole } from "../newStore";
 
 const style = {
   position: "absolute",
@@ -46,6 +45,7 @@ export default function UserDetailModal({
   prevElement
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
+  const {axios} =setRole()
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate()
@@ -1640,9 +1640,10 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const UpdateAvailableBalance = async (body) => {
+  const {axios} =setRole()
   return new Promise(async (resolve, reject) => {
     try {
-      const { data, status } = await adminAxios.post(`/fair-game-wallet/updateBalance`, body);
+      const { data, status } = await axios.post(`/fair-game-wallet/updateBalance`, body);
       resolve({ bool: data.message === 'Balance update successfully.' || status == 200, message: data.message })
     } catch (e) {
       console.log(e)
@@ -1652,9 +1653,10 @@ const UpdateAvailableBalance = async (body) => {
 };
 
 const UpdateLockUnlock = (body) => {
+  const {axios} =setRole()
   return new Promise(async (resolve, reject) => {
     try {
-      const { data, status } = await adminAxios.post(`/fair-game-wallet/lockUnclockUser`, body);
+      const { data, status } = await axios.post(`/fair-game-wallet/lockUnclockUser`, body);
       resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
     } catch (e) {
       console.log(e)
@@ -1664,9 +1666,10 @@ const UpdateLockUnlock = (body) => {
 };
 
 const UserDelete = (id) => {
+  const {axios} =setRole()
   return new Promise(async (resolve, reject) => {
     try {
-      const { data, status } = await adminAxios.delete(`/users/deleteUser/${id}`);
+      const { data, status } = await axios.delete(`/users/deleteUser/${id}`);
       resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
     } catch (e) {
       console.log(e)
@@ -1676,9 +1679,10 @@ const UserDelete = (id) => {
 };
 
 const UpdatePassword = (body) => {
+  const {axios} =setRole()
   return new Promise(async (resolve, reject) => {
     try {
-      const { data, status } = await adminAxios.post(`/fair-game-wallet/updatePassword`, body);
+      const { data, status } = await axios.post(`/fair-game-wallet/updatePassword`, body);
       resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
     } catch (e) {
       console.log(e)

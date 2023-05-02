@@ -42,7 +42,7 @@ export default function Login() {
                                 else if (activeUser == '2') {
                                     navigate('/expert/market')
                                 } else if (activeUser == '3') {
-                                    navigate('/expert/home1')
+                                    navigate('/expert/home')
                                 }
                             }} buttonStyle={{ background: theme.palette.button.main }} title="Login" />
                         </Box>

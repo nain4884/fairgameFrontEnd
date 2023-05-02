@@ -171,7 +171,7 @@ const CustomHeader = ({ }) => {
               />
               <NewBoxData
                 showDropDown={true}
-                title={currentUser?.fullName || ""}
+                title={currentUser?.userName || ""}
                 valueStyle={{ color: "white" }}
                 titleStyle={{ color: "white" }}
                 value={currentUser?.current_balance || 0}
