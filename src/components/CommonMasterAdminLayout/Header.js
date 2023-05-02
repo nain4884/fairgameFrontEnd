@@ -24,7 +24,10 @@ import LiveMarket from "./LiveMarket";
 import ButtonHead from "./ButtonHead";
 import DropdownMenu2 from "./WithrawDepositMenu";
 import DropdownMenu1 from "./MenuBar";
-import currentUser, { removeCurrentUser, setCurrentUser } from "../../newStore/reducers/currentUser";
+import currentUser, {
+  removeCurrentUser,
+  setCurrentUser,
+} from "../../newStore/reducers/currentUser";
 import { logout } from "../../newStore/reducers/auth";
 import { setRole } from "../../newStore";
 
@@ -41,7 +44,7 @@ const CustomHeader = ({}) => {
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
-  
+
   const { userAdmin } = useSelector((state) => state.auth);
   const location = useLocation();
   React.useEffect(() => {
@@ -64,9 +67,7 @@ const CustomHeader = ({}) => {
     let { transPass, axios, role } = setRole();
     setIsTransPasswordExist(userAdmin?.isTransPasswordCreated);
     getUserDetail(axios, role);
-  }, [location, window.location.pathname ,userAdmin]);
-
-
+  }, [location, window.location.pathname, userAdmin]);
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
@@ -276,8 +277,8 @@ const CustomHeader = ({}) => {
             <BoxProfile
               containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
               image={"https://picsum.photos/200/300"}
-              value={currentUser?.fullName || ""}
-              amount={currentUser?.balance || ""}
+              value={currentUser?.userName || ""}
+              amount={currentUser?.current_balance || ""}
             />
           </Box>
         </Box>
@@ -425,9 +426,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     handleClose();
   });
   const logoutProcess = () => {
-    dispatch(logout({roleType:"role2"}));
-    removeCurrentUser()
-    navigate("/");
+    dispatch(logout({ roleType: "role2" }));
+    removeCurrentUser();
+    navigate("/fairgame_wallet/login");
     handleClose();
   };
   const classes = {

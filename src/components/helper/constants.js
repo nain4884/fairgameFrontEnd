@@ -3,7 +3,7 @@ module.exports = {
 	apiBasePath: 'http://159.65.154.97:3100/', // server url
 	// apiBasePath: 'http://localhost:3100/', // server url
 	apiMicroBasePath: 'http://localhost:3200', // server url
-	microServiceApiPath: 'http://139.59.88.49:3200/',
+	microServiceApiPath: 'http://139.59.88.49:3200',
 	// microServiceApiPath: 'http://139.59.88.49:3200',
 	// microServiceApiPath: 'http://localhost:3200',
 	'imageBasePath': 'http://localhost:4000/public/images/', /// server image base path

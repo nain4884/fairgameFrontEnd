@@ -10,21 +10,19 @@ import {
   ReCAPTCHACustom,
 } from "../../components";
 import { useDispatch } from "react-redux";
-import { stateActions } from "../../store/stateActions";
 import {
   apiBasePath,
   LoginServerError,
 } from "../../components/helper/constants";
-import OTPInput, { ResendOTP } from "otp-input-react";
-import { setActiveRole } from "../../store/activeRole";
-import { userActions } from "../../newStore/Actions/userActions";
+import OTPInput from "otp-input-react";
 import { setAllRoles, signIn } from "../../newStore/reducers/auth";
 import { setCurrentUser } from "../../newStore/reducers/currentUser";
 import UseTokenUpdate from "../../useTokenUpdate";
 import { setRole } from "../../newStore";
+import { toast } from "react-toastify";
 
-export default function Login() {
-  let { transPass, axios, role } = setRole()
+export default function Login(props) {
+  let { transPass, axios, role } = setRole();
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -41,161 +39,8 @@ export default function Login() {
 
   const [loginError, setLoginError] = useState();
 
-
   // useEffect(() => {
   // }, [error, loginDetail])
-
-  function changeErrors() {
-    setError({
-      ...error,
-      1: {
-        ...loginDetail[1],
-        val: loginDetail[1].val === "",
-      },
-      2: {
-        ...loginDetail[2],
-        val: loginDetail[2].val === "",
-      },
-    });
-  }
-
-  const ForgotPassword = () => {
-    return (
-      <>
-        <Typography
-          variant="header"
-          sx={{
-            fontSize: { laptop: "20px", mobile: "22px" },
-            marginTop: matchesMobile ? "100px" : "1vh",
-          }}
-        >
-          Forgot Password?
-        </Typography>
-        <Typography
-          variant="subHeader"
-          sx={{
-            fontSize: { laptop: "11px", mobile: "13px" },
-            lineHeight: "18px",
-            marginTop: "1vh",
-            textAlign: "center",
-            fontFamily: "200",
-          }}
-        >
-          Enter the email associated with your account.
-        </Typography>
-        <Box
-          sx={{
-            width: { laptop: "55%", mobile: "75%", marginTop: "20px" },
-            opacity: 1,
-          }}
-        >
-          <Input placeholder={"Enter Username"} title={"Username"} img={mail} />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              marginY: "1vh",
-              marginTop: "4vh",
-            }}
-          >
-            <CustomButton
-              onClick={() => {
-                navigate("/verification");
-              }}
-              buttonStyle={{ background: theme.palette.button.main }}
-              title="Next"
-            />
-          </Box>
-        </Box>
-      </>
-    );
-  };
-
-  const Verification = () => {
-    return (
-      <>
-        <Typography
-          variant="header"
-          sx={{
-            fontSize: { laptop: "20px", mobile: "22px" },
-            marginTop: matchesMobile ? "100px" : "1vh",
-          }}
-        >
-          Verification
-        </Typography>
-        <Typography
-          variant="subHeader"
-          sx={{
-            fontSize: { laptop: "11px", mobile: "13px" },
-            lineHeight: "18px",
-            marginTop: "1vh",
-            textAlign: "center",
-            fontFamily: "200",
-          }}
-        >
-          Please enter the 4-digit verification code
-          <br /> sent to your email address.
-        </Typography>
-        <Box
-          sx={{
-            width: { laptop: "55%", mobile: "75%", marginTop: "20px" },
-            opacity: 1,
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              paddingLeft: "15px",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <OTPInput
-              placeholder={["*", "*", "*", "*"]}
-              inputStyles={{
-                height: "50px",
-                width: "50px",
-                background: "white",
-                borderRadius: "10px",
-                verticalAlign: "bottom",
-                fontSize: "16px",
-              }}
-              value={OTP}
-              onChange={setOTP}
-              style={{ display: "flex" }}
-              OTPLength={4}
-              disabled={false}
-              secure
-            />
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              marginY: "1vh",
-              marginTop: "4vh",
-            }}
-          >
-            <CustomButton
-              onClick={() => {
-                navigate("/new_password");
-              }}
-              buttonStyle={{
-                background: theme.palette.button.main,
-                width: "120px",
-                marginTop: "40px",
-              }}
-              title="Next"
-            />
-          </Box>
-        </Box>
-      </>
-    );
-  };
 
   async function getToken(val) {
     try {
@@ -230,7 +75,6 @@ export default function Login() {
 
   async function getUserDetail() {
     try {
-
       const { data } = await axios.get("users/profile");
 
       // dispatch(
@@ -256,49 +100,55 @@ export default function Login() {
         username: loginDetail[1].val,
         password: loginDetail[2].val,
       });
-      let foundRoles = await axios.get(`/role`);
-      let roles = foundRoles.data;
-      dispatch(setAllRoles(roles))
-      let roleDetail = roles.find(findThisRole);
-      function findThisRole(role) {
-        return role.id === data.data.roleId;
-      }
-      if (roleDetail) data.data.role = roleDetail;
-      if (data.message === "User login successfully.") {
-        getUserDetail();
-        // dispatch(setActiveRole(foundRoles.data));
-        // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
-        dispatch(signIn(data.data));
-        setRole(data.data.access_token);
-        switch (data.data.role.roleName) {
-          case "master":
-            handleNavigate("/master/list_of_clients", "master");
-            break;
-          case "superMaster":
-            handleNavigate("/super_master/list_of_clients", "master");
-            break;
-          case "admin":
-            handleNavigate("/admin/list_of_clients", "master");
-            break;
-          case "superAdmin":
-            handleNavigate("/super_admin/list_of_clients", "master");
-            break;
-          case "expert":
-            handleNavigate("/expert/match", "expert");
-            break;
-          case "user":
-            handleNavigate("/matches", "user");
-            break;
-          case "fairGameWallet":
-            handleNavigate("/fairgame_wallet/list_of_clients", "admin");
-            break;
-          case "fairGameAdmin":
-            handleNavigate("/fairgame_admin/list_of_clients", "admin");
-            break;
-          default:
-            handleNavigate("/matches", "user");
-            break;
+
+      if(props.allowedRole.includes(data.data.role)) {
+        let foundRoles = await axios.get(`/role`);
+        let roles = foundRoles.data;
+        dispatch(setAllRoles(roles));
+        let roleDetail = roles.find(findThisRole);
+        function findThisRole(role) {
+          return role.id === data.data.roleId;
         }
+        if (roleDetail) data.data.role = roleDetail;
+        if (data.message === "User login successfully.") {
+          getUserDetail();
+          // dispatch(setActiveRole(foundRoles.data));
+          // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+          dispatch(signIn(data.data));
+          setRole(data.data.access_token);
+          switch (data.data.role.roleName) {
+            case "master":
+              handleNavigate("/master/list_of_clients", "master");
+              break;
+            case "superMaster":
+              handleNavigate("/super_master/list_of_clients", "master");
+              break;
+            case "admin":
+              handleNavigate("/admin/list_of_clients", "master");
+              break;
+            case "superAdmin":
+              handleNavigate("/super_admin/list_of_clients", "master");
+              break;
+            case "expert":
+              handleNavigate("/expert/match", "expert");
+              break;
+            case "user":
+              handleNavigate("/matches", "user");
+              break;
+            case "fairGameWallet":
+              handleNavigate("/fairgame_wallet/list_of_clients", "admin");
+              break;
+            case "fairGameAdmin":
+              handleNavigate("/fairgame_admin/list_of_clients", "admin");
+              break;
+            default:
+              handleNavigate("/matches", "user");
+              break;
+          }
+        }
+      }
+      else {
+        toast.error("User Unauthorized !"); 
       }
     } catch (e) {
       console.log(e);
@@ -309,71 +159,6 @@ export default function Login() {
   }
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));
-
-  const NewPassword = () => {
-    return (
-      <>
-        <Typography
-          variant="header"
-          sx={{
-            fontSize: { laptop: "20px", mobile: "22px" },
-            marginTop: matchesMobile ? "100px" : "1vh",
-          }}
-        >
-          New Password
-        </Typography>
-        <Typography
-          variant="subHeader"
-          sx={{
-            fontSize: { laptop: "11px", mobile: "13px" },
-            lineHeight: "18px",
-            marginTop: "1vh",
-            textAlign: "center",
-            fontFamily: "200",
-          }}
-        >
-          Please enter new password.
-        </Typography>
-        <Box
-          sx={{
-            width: { laptop: "55%", mobile: "75%", marginTop: "20px" },
-            opacity: 1,
-          }}
-        >
-          <Input
-            placeholder={"Enter Password"}
-            inputProps={{ type: "password" }}
-            title={"New Password"}
-            containerStyle={{}}
-            img={eye}
-          />
-          <Input
-            placeholder={"Enter Password"}
-            inputProps={{ type: "password" }}
-            title={"Confirm New Password"}
-            containerStyle={{ marginTop: "10px" }}
-            img={eye}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              marginY: "1vh",
-              marginTop: "50px",
-            }}
-          >
-            <CustomButton
-              onClick={() => {
-                navigate("/");
-              }}
-              buttonStyle={{ background: theme.palette.button.main }}
-              title="Continue"
-            />
-          </Box>
-        </Box>
-      </>
-    );
-  };
 
   return (
     <Box style={{ position: "relative" }}>
@@ -405,92 +190,79 @@ export default function Login() {
           ]}
         >
           <AuthLogo />
-          {window.location.pathname === "/" ? (
-            <Box
+
+          <Box
+            sx={{
+              width: {
+                laptop: "55%",
+                mobile: "75%",
+                marginTop: matchesMobile ? "100px" : "20px",
+              },
+              opacity: 1,
+            }}
+          >
+            <Input
+              placeholder={"Enter Username"}
+              title={"Username"}
+              img={mail}
+              setDetail={setLoginDetail}
+              Detail={loginDetail}
+              setError={setError}
+              error={error}
+              place={1}
+            />
+            {error[1].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+            <Input
+              placeholder={"Enter Password"}
+              inputProps={{ type: "password" }}
+              title={"Password"}
+              containerStyle={{ marginTop: "10px" }}
+              img={eye}
+              setDetail={setLoginDetail}
+              Detail={loginDetail}
+              setError={setError}
+              error={error}
+              place={2}
+            />
+            {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+            <Typography
+              onClick={() => {
+                navigate("/forget_password");
+              }}
               sx={{
-                width: {
-                  laptop: "55%",
-                  mobile: "75%",
-                  marginTop: matchesMobile ? "100px" : "20px",
-                },
-                opacity: 1,
+                color: theme.palette.button.main,
+                fontSize: { laptop: "10px", mobile: "12px" },
+                textAlign: "right",
+                marginRight: "10px",
+                marginTop: ".5em",
+                fontWeight: "600",
               }}
             >
-              <Input
-                placeholder={"Enter Username"}
-                title={"Username"}
-                img={mail}
-                setDetail={setLoginDetail}
-                Detail={loginDetail}
-                setError={setError}
-                error={error}
-                place={1}
-              />
-              {error[1].val && (
-                <p style={{ color: "#fa1e1e" }}>Field Required</p>
-              )}
-              <Input
-                placeholder={"Enter Password"}
-                inputProps={{ type: "password" }}
-                title={"Password"}
-                containerStyle={{ marginTop: "10px" }}
-                img={eye}
-                setDetail={setLoginDetail}
-                Detail={loginDetail}
-                setError={setError}
-                error={error}
-                place={2}
-              />
-              {error[2].val && (
-                <p style={{ color: "#fa1e1e" }}>Field Required</p>
-              )}
-              <Typography
+              Forgot Password?
+            </Typography>
+            <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginY: "1vh",
+                marginTop: "4vh",
+              }}
+            >
+              <CustomButton
                 onClick={() => {
-                  navigate("/forget_password");
+                  loginToAccount();
                 }}
-                sx={{
-                  color: theme.palette.button.main,
-                  fontSize: { laptop: "10px", mobile: "12px" },
-                  textAlign: "right",
-                  marginRight: "10px",
-                  marginTop: ".5em",
-                  fontWeight: "600",
-                }}
-              >
-                Forgot Password?
-              </Typography>
-              <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginY: "1vh",
-                  marginTop: "4vh",
-                }}
-              >
-                <CustomButton
-                  onClick={() => {
-                    loginToAccount();
-                  }}
-                  buttonStyle={{ background: theme.palette.button.main }}
-                  title="Login"
-                />
-              </Box>
-              {loginError && (
-                <p style={{ color: "#f50c0c" }} className={"text-center"}>
-                  {loginError}
-                </p>
-              )}
+                buttonStyle={{ background: theme.palette.button.main }}
+                title="Login"
+              />
             </Box>
-          ) : window.location.pathname === "/forget_password" ? (
-            <ForgotPassword />
-          ) : window.location.pathname === "/verification" ? (
-            <Verification />
-          ) : window.location.pathname === "/new_password" ? (
-            <NewPassword />
-          ) : (
-            <></>
-          )}
+            {loginError && (
+              <p style={{ color: "#f50c0c" }} className={"text-center"}>
+                {loginError}
+              </p>
+            )}
+          </Box>
         </Card>
       </Box>
     </Box>

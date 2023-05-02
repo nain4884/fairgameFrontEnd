@@ -17,17 +17,25 @@ import Home from "../../components/List_Of_Client";
 import DepositWallet from "../../components/DepositWallet";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Authprovider";
+import Login from "../login";
+import ForgotPassword from "../ForgotPassword";
+import Verification from "../Varification";
+import NewPassword from "../NewPassword";
 const FairGameWalletRoutes = () => {
   const { tokenAdmin } = useContext(AuthContext);
   useEffect(() => {
-    if (tokenAdmin != localStorage.getItem('JWTadmin')) {
-      window.location.reload()
+    if (tokenAdmin != localStorage.getItem("JWTadmin")) {
+      window.location.reload();
     }
-  }, [])
+  }, []);
   return (
     <>
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       <Routes forceRefresh={true}>
+        <Route path="/" element={<Login allowedRole={["fairGameAdmin"]} />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/verification" element={<Verification />} />
+        <Route path="/newpassword" element={<NewPassword />} />
         <Route path="/list_of_clients" element={<Home />} />
         <Route
           exact
