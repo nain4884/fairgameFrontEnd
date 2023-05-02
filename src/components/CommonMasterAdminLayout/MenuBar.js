@@ -2,7 +2,7 @@ import { Menu, MenuItem } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const menutItems1 = [{ title: "Account Statement", link: "/wallet/account_statement" }, { title: "Current Bet", link: "/wallet/current_bet" }, { title: "General Report", link: "/wallet/general_report" }, { title: "Profit/Loss", link: "/wallet/profit_loss" }]
+const menutItems1 = [{ title: "Account Statement", link: "/fairgame_wallet/account_statement" }, { title: "Current Bet", link: "/fairgame_wallet/current_bet" }, { title: "General Report", link: "/fairgame_wallet/general_report" }, { title: "Profit/Loss", link: "/fairgame_wallet/profit_loss" }]
 
 const DropdownMenu1 = ({ anchorEl, open, handleClose }) => {
     const navigate = useNavigate()

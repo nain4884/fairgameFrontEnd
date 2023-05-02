@@ -30,7 +30,7 @@ const FairGameWalletRoutes = () => {
   }, []);
   return (
     <>
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       <Routes forceRefresh={true}>
         <Route
           path="/"

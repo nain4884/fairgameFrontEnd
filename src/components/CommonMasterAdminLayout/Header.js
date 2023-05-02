@@ -428,7 +428,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const logoutProcess = () => {
     dispatch(logout({ roleType: "role2" }));
     removeCurrentUser();
-    navigate("/fairgame_wallet/login");
+    navigate("/fairgame_wallet");
     handleClose();
   };
   const classes = {
