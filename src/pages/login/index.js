@@ -1,6 +1,6 @@
 import { Card, Typography, Box, useTheme, useMediaQuery } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { eye, logo, mail } from "../../assets";
 import {
   Input,
@@ -27,6 +27,7 @@ export default function Login(props) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [loginDetail, setLoginDetail] = useState({
     1: { field: "username", val: "" },
     2: { field: "password", val: "" },
@@ -100,8 +101,8 @@ export default function Login(props) {
         username: loginDetail[1].val,
         password: loginDetail[2].val,
       });
-
-      if(props.allowedRole.includes(data.data.role)) {
+       
+      if (props.allowedRole.includes(data.data.role)) {
         let foundRoles = await axios.get(`/role`);
         let roles = foundRoles.data;
         dispatch(setAllRoles(roles));
@@ -146,9 +147,8 @@ export default function Login(props) {
               break;
           }
         }
-      }
-      else {
-        toast.error("User Unauthorized !"); 
+      } else {
+        toast.error("User Unauthorized !");
       }
     } catch (e) {
       console.log(e);

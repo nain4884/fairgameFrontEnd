@@ -46,6 +46,8 @@ const CustomHeader = ({}) => {
   );
 
   const { userAdmin } = useSelector((state) => state.auth);
+  const nav=userAdmin?.role?.roleName==="fairGameAdmin" ? "fairgame_admin" :userAdmin?.role?.roleName === "fairGameWallet" ? "fairgame_wallet" :userAdmin?.role?.roleName==="admin" ? "admin": ""
+
   const location = useLocation();
   React.useEffect(() => {
     if (location.pathname.includes("market_analysis")) {
@@ -87,7 +89,6 @@ const CustomHeader = ({}) => {
     }
   }, [matchesMobile]);
 
-  console.log(currentUser, "currentUser");
   const classes = {
     AppBarVal: { zIndex: (theme) => theme.zIndex.drawer + 1 },
     BoxCont1: [
@@ -181,13 +182,14 @@ const CustomHeader = ({}) => {
       <StyledImage
         onClick={(e) => {
           e.stopPropagation();
-          navigate("/fairgame_wallet/list_of_clients");
+          navigate(`/${nav}/list_of_clients`);
         }}
         src={logo}
         sx={classes.RenderLogoCompStyleImg}
       />
     );
   }, []);
+
   return (
     <>
       <SessionTimeOut />
@@ -207,7 +209,7 @@ const CustomHeader = ({}) => {
             <ButtonHead
               onClick={() => {
                 dispatch(setActiveAdmin(0));
-                navigate("/fairgame_wallet/list_of_clients");
+                navigate(`/${nav}/list_of_clients`);
               }}
               title={"LIST OF CLIENTS"}
               boxStyle={classes.BoxCont1sub1ButtonHead1boxStyle}
@@ -219,7 +221,7 @@ const CustomHeader = ({}) => {
             <LiveMarket
               onClick={() => {
                 dispatch(setActiveAdmin(1));
-                navigate("/fairgame_wallet/live_market");
+                navigate(`/${nav}/live_market`);
               }}
               title={"LIVE MARKET"}
               boxStyle={classes.BoxCont1sub1LiveMarketboxStyle}
@@ -241,7 +243,7 @@ const CustomHeader = ({}) => {
             <ButtonHead
               onClick={() => {
                 dispatch(setActiveAdmin(3));
-                navigate("/fairgame_wallet/market_analysis");
+                navigate(`/${nav}/market_analysis`);
               }}
               title={"MARKET ANALYSIS"}
               boxStyle={classes.BoxCont1sub1ButtonHead3boxStyle}
@@ -415,11 +417,12 @@ function useOuterClick(callback) {
   }, []); // no dependencies -> stable click listener
   return innerRef; // convenience for client (doesn't need to init ref himself)
 }
-const menutItems = [
-  { title: "Secure Auth Verification" },
-  { title: "Change Password", link: "/fairgame_wallet/change_password" },
-];
+
+
 const DropdownMenu = ({ anchorEl, open, handleClose }) => {
+  const { userAdmin } = useSelector((state) => state.auth);
+  const nav=userAdmin?.role?.roleName==="fairGameAdmin" ? "fairgame_admin" :userAdmin?.role?.roleName === "fairGameWallet" ? "fairgame_wallet" :userAdmin?.role?.roleName==="admin" ? "admin": ""
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const innerRef = useOuterClick((ev) => {
@@ -428,9 +431,14 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const logoutProcess = () => {
     dispatch(logout({ roleType: "role2" }));
     removeCurrentUser();
-    navigate("/fairgame_wallet");
+    navigate(`/${nav}`);
     handleClose();
   };
+  const menutItems = [
+    { title: "Secure Auth Verification" },
+    { title: "Change Password", link: `/${nav}/change_password` },
+  ];
+
   const classes = {
     mainBoxsx: {
       position: "absolute",

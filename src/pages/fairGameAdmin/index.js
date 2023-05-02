@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AccountStatement from "../admin/AccountStatement";
 import AddAccountScreen from "../admin/AddAccount";
 import ChangePassword from "../admin/ChangePassword";
@@ -21,6 +21,7 @@ import Login from "../login";
 import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
+import jwtDecode from "jwt-decode"
 const FairGameWalletRoutes = () => {
   const { tokenAdmin } = useContext(AuthContext);
   useEffect(() => {
@@ -28,6 +29,17 @@ const FairGameWalletRoutes = () => {
       window.location.reload();
     }
   }, []);
+
+  
+  function AdminPrivateRoute({ children }) {
+    const token = localStorage.getItem("JWTadmin");
+    const decodedToken = jwtDecode(token);
+    if (decodedToken?.role!=="fairGameAdmin") {
+      return <Navigate to="/fairgame_admin" />;
+    }
+    return children;
+  }
+
   return (
     <>
       {/* <CustomHeader /> */}
@@ -36,15 +48,15 @@ const FairGameWalletRoutes = () => {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/verification" element={<Verification />} />
         <Route path="/newpassword" element={<NewPassword />} />
-        <Route path="/list_of_clients" element={<Home />} />
+        <Route path="/list_of_clients" element={<AdminPrivateRoute><Home /></AdminPrivateRoute>} />
         <Route
           exact
           path="/market_analysis"
-          element={<MarketAnaylsisContainer />}
+          element={<AdminPrivateRoute><MarketAnaylsisContainer /></AdminPrivateRoute>}
         />
-        <Route exact path="/live_market" element={<Home />} />
-        <Route exact path="/match" element={<NewMatchScreen />} />
-        <Route exact path="/account_statement" element={<AccountStatement />} />
+        <Route exact path="/live_market" element={<AdminPrivateRoute><Home /></AdminPrivateRoute>} />
+        <Route exact path="/match" element={<AdminPrivateRoute><NewMatchScreen /></AdminPrivateRoute>} />
+        <Route exact path="/account_statement" element={<AdminPrivateRoute><AccountStatement /></AdminPrivateRoute>} />
         <Route exact path="/general_report" element={<GeneralReport />} />
         <Route exact path="/profit_loss" element={<ProfitLoss />} />
         <Route exact path="/add_account" element={<AddAccountScreen />} />

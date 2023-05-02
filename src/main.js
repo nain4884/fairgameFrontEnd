@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Redirect, Navigate } from "react-router-dom";
 import Matches from "./pages/matches";
 import Admin from "./pages/admin";
 import FairGameWalletRoutes from "./pages/fairGameWallet";
@@ -36,25 +36,49 @@ const Main = () => {
     setLoginJWT(JWT);
   };
 
+  function UserPrivateRoute({ children }) {
+    const token = localStorage.getItem("JWTuser");
+    if (!token) {
+      return <Navigate to="/" />;
+    }
+    return children;
+  }
+
+
   return (
     <AuthProvider>
       <Routes>
         {/* User Routes */}
-        <Route path="/" element={<Login allowedRole={["user"]}  />} />
+        <Route path="/" element={<Login allowedRole={["user"]} />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/verification" element={<Verification />} />
         <Route path="/newpassword" element={<NewPassword />} />
-        <Route path="/matches" element={<Matches />} />
-        <Route path="/matchDetail" element={<Matches />} />
+        <Route
+          path="/matches"
+          element={
+            <UserPrivateRoute>
+              <Matches />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/matchDetail"
+          element={
+            <UserPrivateRoute>
+              <Matches />
+            </UserPrivateRoute>
+          }
+        />
 
         {/* Admin Routes */}
         <Route path="/admin/*" element={<Admin />} />
 
         {/* Expert Routes */}
-        <Route path="/expert/*" element={<ExpertRoutes />} />
+        <Route path="/expert/*"  element={
+              <ExpertRoutes />
+          }  />
 
         {/* Wallet Routes */}
-       
 
         <Route path="/change_button_value" element={<Matches />} />
         <Route path="/change_password" element={<Matches />} />

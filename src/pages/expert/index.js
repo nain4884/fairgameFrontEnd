@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home1 from "./Home1";
 import Live from "./Live";
 import BetFairOdds from "./BetFairOdds";
@@ -16,10 +16,19 @@ import NewPassword from "../NewPassword";
 import Login from "../login";
 
 const ExportRoutes = () => {
+
+  function ExpertPrivateRoute({ children }) {
+    const token = localStorage.getItem("JWTexpert");
+    if (!token) {
+      return <Navigate to="/expert" />;
+    }
+    return children;
+  }
+
   return (
     <Routes>
-      <Route path="/home" element={<Home1 />} />
       <Route path="/" element={<Login allowedRole={["expert"]}/>} />
+      <Route path="/home" element={ <ExpertPrivateRoute><Home1 /></ExpertPrivateRoute> } />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/verification" element={<Verification />} />
       <Route path="/newpassword" element={<NewPassword />} />

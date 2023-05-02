@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import ChangePassword from "./ChangePassword.js";
 import AccountStatement from "./AccountStatement.js";
 import AddAccount from "./AddAccount";
@@ -20,6 +20,7 @@ import Login from "../login/index.js";
 import ForgotPassword from "../ForgotPassword/index.js";
 import Verification from "../Varification/index.js";
 import NewPassword from "../NewPassword/index.js";
+import jwtDecode from "jwt-decode";
 const AdminRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   useEffect(() => {
@@ -27,6 +28,15 @@ const AdminRoutes = () => {
       window.location.reload();
     }
   }, []);
+
+  function AdminPrivateRoute({ children }) {
+    const token = localStorage.getItem("JWTadmin");
+    const decodedToken = jwtDecode(token);
+    if (decodedToken?.role !== "admin") {
+      return <Navigate to="/admin" />;
+    }
+    return children;
+  }
   return (
     <>
       {/* <CustomHeader /> */}
@@ -35,13 +45,32 @@ const AdminRoutes = () => {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/verification" element={<Verification />} />
         <Route path="/newpassword" element={<NewPassword />} />
-        <Route path="/list_of_clients" element={<Home />} />
+        <Route
+          path="/list_of_clients"
+          element={
+            <AdminPrivateRoute>
+              <Home />{" "}
+            </AdminPrivateRoute>
+          }
+        />
         <Route
           exact
           path="/market_analysis"
-          element={<MarketAnaylsisContainer />}
+          element={
+            <AdminPrivateRoute>
+              <MarketAnaylsisContainer />
+            </AdminPrivateRoute>
+          }
         />
-        <Route exact path="/live_market" element={<Home />} />
+        <Route
+          exact
+          path="/live_market"
+          element={
+            <AdminPrivateRoute>
+              <Home />{" "}
+            </AdminPrivateRoute>
+          }
+        />
         <Route exact path="/add_account" element={<AddAccount />} />
         <Route exact path="/match" element={<MatchScreen />} />
         <Route exact path="/account_statement" element={<AccountStatement />} />

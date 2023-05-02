@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AccountStatement from "../admin/AccountStatement";
 import AddAccountScreen from "../admin/AddAccount";
 import ChangePassword from "../admin/ChangePassword";
@@ -21,6 +21,7 @@ import Login from "../login";
 import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
+import jwtDecode from "jwt-decode";
 const FairGameWalletRoutes = () => {
   const { tokenAdmin } = useContext(AuthContext);
   useEffect(() => {
@@ -28,24 +29,50 @@ const FairGameWalletRoutes = () => {
       window.location.reload();
     }
   }, []);
+
+  function WalletPrivateRoute({ children }) {
+    const token = localStorage.getItem("JWTadmin");
+    const decodedToken = jwtDecode(token);
+    if (decodedToken?.role !== "fairGameWallet") {
+      return <Navigate to="/fairgame_wallet" />;
+    }
+    return children;
+  }
+
   return (
     <>
       {/* <CustomHeader /> */}
       <Routes forceRefresh={true}>
-        <Route
-          path="/"
-          element={<Login allowedRole={["fairGameWallet"]} />}
-        />
+        <Route path="/" element={<Login allowedRole={["fairGameWallet"]} />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/verification" element={<Verification />} />
         <Route path="/newpassword" element={<NewPassword />} />
-        <Route path="/list_of_clients" element={<Home />} />
+        <Route
+          path="/list_of_clients"
+          element={
+            <WalletPrivateRoute>
+              <Home />
+            </WalletPrivateRoute>
+          }
+        />
         <Route
           exact
           path="/market_analysis"
-          element={<MarketAnaylsisContainer />}
+          element={
+            <WalletPrivateRoute>
+              <MarketAnaylsisContainer />
+            </WalletPrivateRoute>
+          }
         />
-        <Route exact path="/live_market" element={<Home />} />
+        <Route
+          exact
+          path="/live_market"
+          element={
+            <WalletPrivateRoute>
+              <Home />
+            </WalletPrivateRoute>
+          }
+        />
         <Route exact path="/match" element={<NewMatchScreen />} />
         <Route exact path="/account_statement" element={<AccountStatement />} />
         <Route exact path="/general_report" element={<GeneralReport />} />

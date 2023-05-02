@@ -776,7 +776,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     dispatch(logout({ roleType: "role3" }));
     await axios.get("auth/logout");
     removeCurrentUser();
-    navigate("/expert/");
+    navigate("/expert");
     handleClose();
   };
   return (
