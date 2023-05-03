@@ -9,7 +9,7 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout, Money, MoneyBag } from "../../assets";
 import SearchInput from "../../components/SearchInput";
@@ -29,6 +29,7 @@ import {
 import { setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
+import { GlobalStore } from "../../context/globalStore";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -771,10 +772,12 @@ const menutItems = [
   { title: "Change Password" },
 ];
 const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logoutProcess = async () => {
     dispatch(logout({ roleType: "role3" }));
+    setGlobalStore(prev=>({...prev,expertJWT:""}))
     await axios.get("auth/logout");
     removeCurrentUser();
     navigate("/expert");

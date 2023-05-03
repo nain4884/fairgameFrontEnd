@@ -30,7 +30,7 @@ const AdminRoutes = () => {
   }, []);
 
   function AdminPrivateRoute({ children }) {
-    const token = localStorage.getItem("JWTadmin");
+    const token = localStorage.getItem("JWTmaster");
     const decodedToken = jwtDecode(token);
     if (decodedToken?.role !== "admin") {
       return <Navigate to="/admin" />;
@@ -49,7 +49,7 @@ const AdminRoutes = () => {
           path="/list_of_clients"
           element={
             <AdminPrivateRoute>
-              <Home />{" "}
+              <Home />
             </AdminPrivateRoute>
           }
         />

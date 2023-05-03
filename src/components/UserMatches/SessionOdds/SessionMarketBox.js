@@ -84,7 +84,7 @@ const SessionMarketBox = ({
               justifyContent: { mobile: "center", laptop: "center" },
               alignItems: "center",
               display: "flex",
-              zIndex: 1
+              zIndex: 1,
             }}
           >
             {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}

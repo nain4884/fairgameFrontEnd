@@ -10,6 +10,8 @@ import Odds from "./Odds";
 
 import SessionMarket from "./SessionOdds/SessionMarket";
 import { memo } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
 
 // const BookMarketer = ({ manual, data }) => {
 //   const theme = useTheme();
@@ -199,11 +201,30 @@ import { memo } from "react";
 //     </Box>
 //   );
 // };
-const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBetsData, dataProfit }) => {
-  const { manualBookMarkerRates, selectedMatch } = useSelector(
+const MatchOdds = ({
+  data,
+  matchOddsLive,
+  bookmakerLive,
+  sessionOddsLive,
+  allBetsData,
+  dataProfit
+}) => {
+  const { manualBookMarkerRates } = useSelector(
     (state) => state?.matchDetails
   );
-  // { console.warn("mach data 1", dataProfit) }
+  const [matchOddsData, setMatchOddsData] = useState([]);
+  const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
+
+  useEffect(() => {
+    if (data) {
+      const matchOdds = data?.bettings?.filter(
+        (element) => element.sessionBet === false
+      );
+      setMatchOddsData(matchOdds);
+      setBookMakerRateLive(data?.bookMakerRateLive)
+    }
+  }, [data]);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {data?.apiBookMakerActive && <BookMarketer data={data} />}
@@ -214,14 +235,17 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
       {data?.apiMatchActive && (
         <Odds
           showDely={true}
-          showBox={data?.matchOddsData?.length > 0 && data?.matchOddsData[0]?.betStatus === 0 ? true : false}
+          showBox={
+            matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0
+              ? true
+              : false
+          }
           newData={data}
           data={
             matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
           }
           lock={
-            data?.matchOddsData?.length > 0 &&
-              data?.matchOddsData[0]?.betStatus === 0
+            matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0
               ? true
               : false
           }
@@ -237,7 +261,7 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
 
       {data?.apiBookMakerActive && (
         <Odds
-          showBox={!data?.bookMakerRateLive}
+          showBox={!bookMakerRateLive}
           newData={data}
           showDely={true}
           lock={

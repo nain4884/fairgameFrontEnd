@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Divider from "../../helper/Divider";
 import SessionMarketBox from "./SessionMarketBox";
 import { Box, Typography, useMediaQuery } from "@mui/material";
@@ -6,10 +6,23 @@ import { Info } from "../../../assets";
 import { useTheme } from "@emotion/react";
 import SmallBoxSeason from "../SmallBoxSeason";
 import { memo } from "react";
+import { useState } from "react";
 
-const SessionMarket = ({ data, newData, teamARates, teamBRates, allBetsData, dataProfit }) => {
+const SessionMarket = ({
+  data,
+  newData,
+  teamARates,
+  teamBRates,
+  allBetsData,
+  dataProfit,
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+  const matchSessionData = newData?.bettings?.filter(
+    (element) => element.sessionBet === true
+  );
+
 
   return (
     <>
@@ -187,8 +200,8 @@ const SessionMarket = ({ data, newData, teamARates, teamBRates, allBetsData, dat
               // overflowY: "auto",
             }}
           >
-            {newData?.matchSessionData?.length > 0 &&
-              newData?.matchSessionData?.map((element) => {
+            {matchSessionData?.length > 0 &&
+              matchSessionData?.map((element) => {
                 return (
                   <Box key={element?.id} sx={{ width: "100%" }}>
                     <SessionMarketBox

@@ -670,7 +670,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         borderRadius: "5px",
         marginTop: "2px",
       }}
-    >
+    > 
       {menutItems.map((x) => (
         <MenuItem
           dense={true}

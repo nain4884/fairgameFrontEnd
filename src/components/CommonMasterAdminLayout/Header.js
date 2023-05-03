@@ -46,8 +46,10 @@ const CustomHeader = ({ }) => {
     (state) => state?.activeAdmin?.activeTabAdmin
   );
 
-  const { userAdmin } = useSelector((state) => state.auth);
-  const nav=userAdmin?.role?.roleName==="fairGameAdmin" ? "fairgame_admin" :userAdmin?.role?.roleName === "fairGameWallet" ? "fairgame_wallet" :userAdmin?.role?.roleName==="admin" ? "admin": ""
+  const { userAdmin ,allRole} = useSelector((state) => state.auth);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const {roleName}=allRole.find(role => role.id===currentUser.roleId);
+  const nav=roleName==="fairGameAdmin" ? "fairgame_admin" :roleName === "fairGameWallet" ? "fairgame_wallet" :roleName==="admin" ? "admin": ""
 
   const location = useLocation();
   React.useEffect(() => {
@@ -76,7 +78,6 @@ const CustomHeader = ({ }) => {
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
-  const { currentUser } = useSelector((state) => state?.currentUser);
   async function getUserDetail(axios, role) {
     try {
       const { data } = await axios.get("users/profile");
@@ -423,8 +424,10 @@ function useOuterClick(callback) {
 
 
 const DropdownMenu = ({ anchorEl, open, handleClose }) => {
-  const { userAdmin } = useSelector((state) => state.auth);
-  const nav=userAdmin?.role?.roleName==="fairGameAdmin" ? "fairgame_admin" :userAdmin?.role?.roleName === "fairGameWallet" ? "fairgame_wallet" :userAdmin?.role?.roleName==="admin" ? "admin": ""
+  const { userAdmin ,allRole} = useSelector((state) => state.auth);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const {roleName}=allRole.find(role => role.id===currentUser.roleId);
+  const nav=roleName==="fairGameAdmin" ? "fairgame_admin" :roleName === "fairGameWallet" ? "fairgame_wallet" :roleName==="admin" ? "admin": ""
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -434,6 +437,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const logoutProcess = () => {
     dispatch(logout({ roleType: "role2" }));
     removeCurrentUser()
+    if(nav==="admin")
+    dispatch(logout({ roleType: "role1" }));
+
     navigate(`/${nav}`);
     handleClose();
     removeSocket();

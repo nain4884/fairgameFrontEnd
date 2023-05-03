@@ -9,7 +9,7 @@ import {
   AuthBackground,
   ReCAPTCHACustom,
 } from "../../components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   apiBasePath,
   LoginServerError,
@@ -21,14 +21,15 @@ import UseTokenUpdate from "../../useTokenUpdate";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { toast } from "react-toastify";
+import jwtDecode from "jwt-decode";
+import { GlobalStore } from "../../context/globalStore";
 
 export default function Login(props) {
   let { transPass, axios, role } = setRole();
-
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loginDetail, setLoginDetail] = useState({
     1: { field: "username", val: "" },
     2: { field: "password", val: "" },
@@ -102,7 +103,15 @@ export default function Login(props) {
         username: loginDetail[1].val,
         password: loginDetail[2].val,
       });
-       
+
+      const token = await localStorage.getItem("JWTuser");
+      if (token) {
+        const decodeToken = jwtDecode(token);
+        console.log(decodeToken, "decoded token");
+        const resToken = jwtDecode(data?.data?.access_token);
+        //  if(decodeToken.id)
+      }
+
       if (props.allowedRole.includes(data.data.role)) {
         let foundRoles = await axios.get(`/role`);
         let roles = foundRoles.data;
@@ -127,15 +136,18 @@ export default function Login(props) {
               handleNavigate("/super_master/list_of_clients", "master");
               break;
             case "admin":
+              setGlobalStore(prev=>({...prev,masterJWT:data.data.access_token}))
               handleNavigate("/admin/list_of_clients", "master");
               break;
             case "superAdmin":
               handleNavigate("/super_admin/list_of_clients", "master");
               break;
             case "expert":
+              setGlobalStore(prev=>({...prev,expertJWT:data.data.access_token}))
               handleNavigate("/expert/match", "expert");
               break;
             case "user":
+              setGlobalStore(prev=>({...prev,userJWT:data.data.access_token}))
               handleNavigate("/matches", "user");
               break;
             case "fairGameWallet":

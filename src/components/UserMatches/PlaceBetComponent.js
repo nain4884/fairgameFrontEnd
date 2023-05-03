@@ -27,7 +27,6 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
       }
     }, [sessionRates]);
   
-    console.log(profitLoss, sessionRates, "profitLoss>>>");
   
     return (
       <Box sx={{ marginTop: "-8.4vw" }}>
