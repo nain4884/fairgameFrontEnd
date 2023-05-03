@@ -72,10 +72,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         console.log(value);
       });
       socket.on("session_bet", (data) => {
-        // console.warn("SESSION Response", data);
-        // console.warn("currentMatch 111111", currentMatch);
         const updatedBettings1 = currentMatchProfit?.matchSessionData?.map((betting) => {
-          console.warn("betting :", betting)
           if (data?.betPlaceData?.bet_id == betting?.id) {
             return {
               ...betting,
@@ -85,7 +82,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           return betting;
         }
         );
-        console.warn("SESSION updatedBettings1", updatedBettings1);
         setCurrentMatchProfit((prev) => ({
           ...prev,
           matchSessionData: updatedBettings1,
