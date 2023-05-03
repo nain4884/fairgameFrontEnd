@@ -35,6 +35,7 @@ import { removeCurrentUser, setCurrentUser } from "../newStore/reducers/currentU
 import axios from "../axios/axios";
 import { setRole } from "../newStore";
 import { removeSocket } from "./helper/removeSocket";
+import { GlobalStore } from "../context/globalStore";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -506,6 +507,7 @@ const menutItems = [
   { title: "Rules", link: "/rules" },
 ];
 const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -515,6 +517,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     // dispatch(stateActions.logout("role4"));
     // socketMicro.emit("logoutUserForce");
     dispatch(logout({ roleType: "role4" }));
+    setGlobalStore(prev=>({...prev,userJWT:""}))
     await axios.get("auth/logout")
     removeCurrentUser()
     navigate("/");

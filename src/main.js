@@ -86,8 +86,8 @@ const Main = () => {
         <Route path="/bet_history" element={<Matches />} />
         <Route path="/profit_loss" element={<Matches />} />
         <Route path="/rules" element={<Matches />} />
-        <Route path="/fairgame_wallet/*" element={<FairGameWalletRoutes />} />
-        <Route path="/fairgame_admin/*" element={<FairGameAdminRoutes />} />
+        <Route exact path="/fairgame_admin/*" element={<FairGameAdminRoutes />} />
+        <Route exact path="/fairgame_wallet/*" element={<FairGameWalletRoutes />} />
         <Route path="/master/*" element={<MasterRoutes />} />
         <Route path="/super_master/*" element={<SuperMasterRoutes />} />
         <Route path="/super_admin/*" element={<SuperAdminRoutes />} />

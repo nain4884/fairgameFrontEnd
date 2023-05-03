@@ -26,7 +26,8 @@ export const auth = createSlice({
           break;
         case "expert":
           localStorage.setItem("JWTexpert", action.payload.access_token);
-          state.userExpert = { roleType: "role3", ...action.payload };
+          const userExpert = { roleType: "role3", ...action.payload };
+          state.userExpert = userExpert;
           break;
         case "user":
           localStorage.setItem("JWTuser", action.payload.access_token);
@@ -45,7 +46,6 @@ export const auth = createSlice({
       }
     },
     logout: (state, action) => {
-      console.log(action.payload, "logout");
       switch (action?.payload?.roleType) {
         case "role1":
           state.userMaster = {};
@@ -76,7 +76,7 @@ export const auth = createSlice({
   },
 });
 
-export const { signIn, logout ,setAllRoles} = auth.actions;
+export const { signIn, logout, setAllRoles } = auth.actions;
 
 // export const selectCount = state => state.counter;
 

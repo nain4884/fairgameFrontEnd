@@ -65,25 +65,25 @@ const SessionMarketBox = ({
       </Box>
       {!["ACTIVE", "", undefined].includes(data?.suspended) ? (
         <>
-        <SeprateBox po={6} color={"white"} />
-        <Box
-          sx={{
-            background: "rgba(0,0,0,1)",
-            marginLeft: "-2px",
-            height: "39px",
-            // position: "absolute",
-            // right: 0,
-            width: "20%",
-            justifyContent: { mobile: "center", laptop: "center" },
-            alignItems: "center",
-            display: "flex",
-            zIndex:1
-          }}
-        >
-          {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <h6>{data?.suspended}</h6>
-        </Box>
-        {!matchesMobile && (
+          <SeprateBox po={6} color={"white"} />
+          <Box
+            sx={{
+              background: "rgba(0,0,0,1)",
+              marginLeft: "-2px",
+              height: "39px",
+              // position: "absolute",
+              // right: 0,
+              width: "20%",
+              justifyContent: { mobile: "center", laptop: "center" },
+              alignItems: "center",
+              display: "flex",
+              zIndex: 1,
+            }}
+          >
+            {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
+            <h6>{data?.suspended}</h6>
+          </Box>
+          {!matchesMobile && (
             <PlaceBetComponentWeb
               amount={index == 2}
               profitLoss={data?.profitLoss}
