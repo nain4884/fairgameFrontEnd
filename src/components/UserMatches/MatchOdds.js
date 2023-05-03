@@ -199,11 +199,11 @@ import { memo } from "react";
 //     </Box>
 //   );
 // };
-const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBetsData }) => {
+const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBetsData, dataProfit }) => {
   const { manualBookMarkerRates, selectedMatch } = useSelector(
     (state) => state?.matchDetails
   );
-{console.warn("mach data", data)}
+  // { console.warn("mach data 1", dataProfit) }
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {data?.apiBookMakerActive && <BookMarketer data={data} />}
@@ -214,14 +214,14 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
       {data?.apiMatchActive && (
         <Odds
           showDely={true}
-          showBox={ data?.matchOddsData?.length>0  && data?.matchOddsData[0]?.betStatus === 0 ? true : false}
+          showBox={data?.matchOddsData?.length > 0 && data?.matchOddsData[0]?.betStatus === 0 ? true : false}
           newData={data}
           data={
             matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
           }
           lock={
             data?.matchOddsData?.length > 0 &&
-            data?.matchOddsData[0]?.betStatus === 0
+              data?.matchOddsData[0]?.betStatus === 0
               ? true
               : false
           }
@@ -242,7 +242,7 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-            data?.bookmakerLive[0]?.betStatus === 0
+              data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }
@@ -280,9 +280,10 @@ const MatchOdds = ({ data, matchOddsLive, bookmakerLive, sessionOddsLive, allBet
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
       {(data?.apiSessionActive || data?.manualSessionActive) && (
-        <SessionMarket 
+        <SessionMarket
           data={sessionOddsLive}
           newData={data}
+          dataProfit={dataProfit}
           teamARates={manualBookMarkerRates?.teamA}
           teamBRates={manualBookMarkerRates?.teamB}
           allBetsData={allBetsData}

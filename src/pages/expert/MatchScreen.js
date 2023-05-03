@@ -49,7 +49,7 @@ const MatchScreen = () => {
     (state) => state?.matchDetails?.selectedMatch?.id
   );
 
-  
+
   const getSingleMatch = async (val) => {
     try {
       // dispatch(removeSelectedMatch());
@@ -64,7 +64,7 @@ const MatchScreen = () => {
   };
   useEffect(() => {
     if (state?.id) {
-     
+
       getSingleMatch(state.id);
       getAllBetsData(state?.id);
     }
@@ -92,17 +92,16 @@ const MatchScreen = () => {
         }
       });
       socket.on("session_bet", (data) => {
-        console.log("SESSION Response", data);
-
         //  console.log(session,"SDsdsdasdsa")
         // dispatch(setCurrentUser(user));
         // dispatch(setAllSessionBets(session));
         // dispatch(setSessionRates(data?.profitLoss))
       });
       socket.on("match_bet", (data) => {
+        // alert(1)
         try {
           // getAllBets();
-          console.log(data, "MATCHH_BET");
+          // console.warn(data, "MATCHH_BET");
           if (data) {
             const body = {
               id: data?.betPlaceData?.id,
@@ -164,7 +163,8 @@ const MatchScreen = () => {
       });
       // socket.emit("init", { id: currentMatch?.marketId });
     }
-  }, [socket, currentMatch]);
+    // }, [socket, currentMatch]);
+  }, [socket]);
 
   const activateLiveMatchMarket = async (val) => {
     try {
@@ -422,28 +422,28 @@ const MatchScreen = () => {
       >
         {(currentMatch?.manualSessionActive ||
           currentMatch?.apiSessionActive) && (
-          <Box
-            sx={{
-              width: { laptop: "50%", mobile: "100%", tablet: "100%" },
-              flexDirection: "column",
-              display: "flex",
-            }}
-          >
-            <SessionMarket
-              setCurrentMatch={setCurrentMatch}
-              currentMatch={currentMatch}
-              SessionMarket={SessionMarket}
-            />
-
             <Box
-              sx={{ display: "flex", flexDirection: "row", marginTop: ".25vw" }}
+              sx={{
+                width: { laptop: "50%", mobile: "100%", tablet: "100%" },
+                flexDirection: "column",
+                display: "flex",
+              }}
             >
-              {data.map(() => {
-                return <RunsBox />;
-              })}
+              <SessionMarket
+                setCurrentMatch={setCurrentMatch}
+                currentMatch={currentMatch}
+                SessionMarket={SessionMarket}
+              />
+
+              <Box
+                sx={{ display: "flex", flexDirection: "row", marginTop: ".25vw" }}
+              >
+                {data.map(() => {
+                  return <RunsBox />;
+                })}
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
         <Box
           sx={{
             width: { laptop: "50%", mobile: "100%", tablet: "100%" },

@@ -4,9 +4,9 @@ import { BroadCast } from '../../expert/assets';
 import { Button } from "@mui/material";
 
 const SmallBox = ({ color, title, width, textSize, onClick }) => {
-    return (
-      <>
-      {/* <Box
+  return (
+    <>
+      <Box
         onClick={onClick}
         sx={{
           width: { laptop: width ? width : "80px", mobile: "12vw" },
@@ -18,7 +18,7 @@ const SmallBox = ({ color, title, width, textSize, onClick }) => {
           height: "30px",
           background: color ? color : "#46e080",
           borderRadius: "3px",
-          cursor:"pointer"
+          cursor: "pointer",
         }}
       >
         <Typography
@@ -31,8 +31,8 @@ const SmallBox = ({ color, title, width, textSize, onClick }) => {
           {title}
         </Typography>
         <img src={BroadCast} style={{ height: "15px", width: "15px" }} />
-      </Box> */}
-      <Button 
+      </Box>
+      {/* <Button
         onClick={onClick}
         sx={{
           width: { laptop: width ? width : "80px", mobile: "12vw" },
@@ -44,9 +44,9 @@ const SmallBox = ({ color, title, width, textSize, onClick }) => {
           height: "30px",
           background: color ? color : "#46e080",
           borderRadius: "3px",
-          cursor:"pointer",
+          cursor: "pointer",
           '&:hover': {
-              backgroundColor:  color ? color : "#46e080",
+            backgroundColor: color ? color : "#46e080",
           },
         }}
       >
@@ -60,9 +60,9 @@ const SmallBox = ({ color, title, width, textSize, onClick }) => {
           {title}
         </Typography>
         <img src={BroadCast} style={{ height: "15px", width: "15px" }} />
-      </Button>
-      </>
-    );
-  };
+      </Button> */}
+    </>
+  );
+};
 
 export default SmallBox

@@ -50,6 +50,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { selectedMatch } = useSelector((state) => state?.matchDetails);
   const [currentMatch, setCurrentMatch] = useState(selectedMatch);
+  const [currentMatchProfit, setCurrentMatchProfit] = useState(selectedMatch);
   const [bookMakerRateLive, setBookMakerLive] = useState(
     currentMatch?.bookMakerRateLive
   );
@@ -71,7 +72,28 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         console.log(value);
       });
       socket.on("session_bet", (data) => {
-        // console.warn("SESSION Response", data?.betPlaceData);
+        // console.warn("SESSION Response", data);
+        // console.warn("currentMatch 111111", currentMatch);
+        const updatedBettings1 = currentMatchProfit?.matchSessionData?.map((betting) => {
+          console.warn("betting :", betting)
+          if (data?.betPlaceData?.bet_id == betting?.id) {
+            return {
+              ...betting,
+              profitLoss: data?.profitLoss,
+            };
+          }
+          return betting;
+        }
+        );
+        console.warn("SESSION updatedBettings1", updatedBettings1);
+        setCurrentMatchProfit((prev) => ({
+          ...prev,
+          matchSessionData: updatedBettings1,
+        }));
+        // setCurrentMatch({
+        //   ...currentMatch,
+        //   matchSessionData: updatedBettings1
+        // });
         const user = {
           ...currentUser,
           current_balance: data.newBalance,
@@ -79,6 +101,9 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         };
         // alert(JSON.stringify(data?.betPlaceData))
         // console.warn("data?.betPlaceData :", data?.betPlaceData)
+
+        // console.warn("selectedData val112", val);
+
         session = [...allSessionBets];
         session.unshift(data?.betPlaceData);
         dispatch(setCurrentUser(user));
@@ -234,6 +259,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
 
       socketMicro.on(`session${marketId}`, (val) => {
         if (val !== null && matchId == checkMctchId) {
+
           const updatedBettings1 = currentMatch?.matchSessionData?.map(
             (betting) => {
               const selectedData = val.find(
@@ -259,6 +285,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               matchSessionData: updatedBettings1,
             })
           );
+          // console.warn("updatedBettings1 ", updatedBettings1);
           setCurrentMatch((prev) => ({
             ...prev,
             matchSessionData: updatedBettings1,
@@ -348,7 +375,13 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       let matchSessionDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === true
       );
+      console.warn("matchSessionDataTemp ddddd :", matchSessionDataTemp);
       setCurrentMatch({
+        ...response.data,
+        matchSessionData: matchSessionDataTemp,
+        matchOddsData: matchOddsDataTemp,
+      });
+      setCurrentMatchProfit({
         ...response.data,
         matchSessionData: matchSessionDataTemp,
         matchOddsData: matchOddsDataTemp,
@@ -430,8 +463,10 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     >
       <EventListing setSelected={setSelected} selected={activeTab} />
       <BetPlaced visible={visible} setVisible={setVisible} />
+      {/* {console.warn("currentMatch :", currentMatch)} */}
       {matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
-        <div
+
+        < div
           style={{
             width: "100%",
             alignItems: "center",
@@ -447,6 +482,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               onClick={() => handleClose(true)}
               bookMakerRateLive={bookMakerRateLive}
               data={currentMatch}
+              dataProfit={currentMatchProfit}
               allBetsData={allSessionBets}
             />
           </div>
@@ -481,65 +517,71 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             <LiveMatchHome />
           </Box>
         </div>
-      )}
-      {!matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
-        <Box sx={{ display: "flex", width: "100%" }}>
+      )
+      }
+      {
+        !matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
+          <Box sx={{ display: "flex", width: "100%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "70%",
+              }}
+            >
+              <MatchOdds
+                matchOddsLive={matchOddsLive}
+                bookmakerLive={bookmakerLive}
+                onClick={() => handleClose(true)}
+                data={currentMatch}
+                dataProfit={currentMatchProfit}
+                allBetsData={allSessionBets}
+              />
+            </Box>
+            <Box sx={{ width: "30%", paddingRight: "1%" }}>
+              <MatchComponent currentMatch={currentMatch} />{" "}
+              {/** Live scoreBoard */}
+              <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
+              <AllRateSeperate
+                allBetsData={IObets?.filter((v) =>
+                  ["MATCH ODDS", "BOOKMAKER"]?.includes(v.marketType)
+                )}
+                mark
+              />
+              {(matchDetail?.manualSessionActive ||
+                matchDetail?.apiSessionActive) && (
+                  <SessionBetSeperate allBetsData={allSessionBets} mark />
+                )}
+            </Box>
+          </Box>
+        )
+      }
+      {
+        activeTab != "CRICKET" && activeTab != "INPLAY" && (
           <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "70%",
-            }}
-          >
-            <MatchOdds
-              matchOddsLive={matchOddsLive}
-              bookmakerLive={bookmakerLive}
-              onClick={() => handleClose(true)}
-              data={currentMatch}
-              allBetsData={allSessionBets}
-            />
-          </Box>
-          <Box sx={{ width: "30%", paddingRight: "1%" }}>
-            <MatchComponent currentMatch={currentMatch} />{" "}
-            {/** Live scoreBoard */}
-            <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
-            <AllRateSeperate
-              allBetsData={IObets?.filter((v) =>
-                ["MATCH ODDS", "BOOKMAKER"]?.includes(v.marketType)
-              )}
-              mark
-            />
-            {(matchDetail?.manualSessionActive ||
-              matchDetail?.apiSessionActive) && (
-                <SessionBetSeperate allBetsData={allSessionBets} mark />
-              )}
-          </Box>
-        </Box>
-      )}
-      {activeTab != "CRICKET" && activeTab != "INPLAY" && (
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            width: "100%",
-            flex: 1,
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Lottie
-            animationData={HourGlass}
             style={{
               display: "flex",
-              alignSelf: "center",
-              width: "200px",
-              height: "200px",
+              justifyContent: "center",
+              width: "100%",
+              flex: 1,
+              alignItems: "center",
+              flexDirection: "column",
             }}
-          />
-          <Typography sx={{ color: "text.white" }}>Coming Soon</Typography>
-        </Box>
-      )}
-    </Box>
+          >
+            <Lottie
+              animationData={HourGlass}
+              style={{
+                display: "flex",
+                alignSelf: "center",
+                width: "200px",
+                height: "200px",
+              }}
+            />
+            <Typography sx={{ color: "text.white" }}>Coming Soon</Typography>
+          </Box>
+        )
+      }
+    </Box >
   );
 };
 
