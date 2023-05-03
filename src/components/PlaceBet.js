@@ -309,6 +309,12 @@ const PlaceBet = ({
     e.preventDefault();
     setDefaultValue("");
   }
+  function findBetId(data) {
+    const matchOdds = data?.bettings?.filter(
+      (element) => element.sessionBet === false
+    );
+    return matchOdds?.[0]?.id
+  }
 
   function SubmitPayloadForPlaceBet(
     betOn = "teamA_back",
@@ -317,7 +323,8 @@ const PlaceBet = ({
     let payload = {
       id: currentMatch?.id,
       matchType: currentMatch?.gameType,
-      betId: currentMatch?.matchOddsData?.[0]?.id,
+      // betId: currentMatch?.matchOddsData?.[0]?.id,
+      betId: findBetId(currentMatch),
       bet_type: isBack ? "back" : "lay",
       odds: Number(document.getElementsByClassName("OddValue")?.[0]?.textContent),
       betOn: betOn,

@@ -24,7 +24,7 @@ const data = [
     },
 ]
 const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
-//  {console.warn("allBetsData qq:",allBetsData)}
+    //  {console.warn("allBetsData qq:",allBetsData)}
     return (
         <Box sx={{ width: { mobile: "100%", laptop: '100%' }, marginY: { mobile: '.2vh', laptop: '1vh' }, padding: .2, background: 'white', height: 'auto' }}>
             <Box sx={[{ width: '100%', height: "42px", justifyContent: 'space-between', alignItems: 'center', paddingLeft: '10px', paddingRight: '4px', marginBottom: '.1vh', display: 'flex', }, (theme) => ({
@@ -49,16 +49,16 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                     </Box>
                 }
             </Box>
-            <Box sx={{ maxHeight:  { mobile: "200px", laptop:  "420px" }, overflowY: "auto" }}>
-            {
-                allBetsData?.map((i, k) => {                   
-                    return (
-                        <Box sx={{ display: 'flex', flexDirection: 'row', position: 'relative' }} >
-                            <Box sx={{ height: '40px', margin: { mobile: '1px', laptop: '0.4px' }, width: '30px', display: 'flex', background: 'black', justifyContent: 'center', alignItems: 'center' }} >
-                                <Typography sx={{ color: 'white', fontSize: '10px', fontWeight: '500' }} >{"0" + (k + 1)}</Typography>
-                            </Box>
-                            <RowComponent header={false} data={i} />
-                            {/* {
+            <Box sx={{ maxHeight: { mobile: "200px", laptop: "420px" }, overflowY: "auto" }}>
+                {
+                    allBetsData?.map((i, k) => {
+                        return (
+                            <Box sx={{ display: 'flex', flexDirection: 'row', position: 'relative' }} >
+                                <Box sx={{ height: '40px', margin: { mobile: '1px', laptop: '0.4px' }, width: '30px', display: 'flex', background: 'black', justifyContent: 'center', alignItems: 'center' }} >
+                                    <Typography sx={{ color: 'white', fontSize: '10px', fontWeight: '500' }} >{"0" + (k + 1)}</Typography>
+                                </Box>
+                                <RowComponent header={false} data={i} />
+                                {/* {
                                 k == 2 && <Box sx={{ width: { mobile: profit ? '100%' : '100%', alignItems: 'flex-end', justifyContent: 'center', display: 'flex', laptop: profit ? '100 % ' : '100% ' }, background: 'rgba(0, 0, 0, 0.5)', height: '42px', position: 'absolute' }}>
                                     <Box sx={{ width: mark2 ? '35%' : '35%' }} >
                                     </Box>
@@ -67,28 +67,33 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                                     </Box>
                                 </Box>
                             } */}
-                            {
-                                profit && k !== 2 && <Box sx={{ height: '40px', width: '30%', margin: { mobile: '1px', laptop: '0.4px' }, display: 'flex', background: k % 2 == 0 ? '#E32A2A' : "#10DC61", justifyContent: 'center', alignItems: 'center' }} >
-                                    <Typography sx={{ fontSize: { mobile: '11px', laptop: '14px' }, color: 'white', fontWeight: '700' }}>{"100,000,00"}</Typography>
-                                    <StyledImage sx={{ width: { mobile: '15px', laptop: "25px" }, height: { laptop: '15px', mobile: '7px' }, }} src={k % 2 == 0 ? ARROWDOWN : ARROWUP} />
-                                </Box>
-                            }
-                            {
-                                profit && k == 2 && <Box sx={{ height: '40px', width: '30%', margin: { mobile: '1px', laptop: '0.4px' }, display: 'flex', background: "black", justifyContent: 'center', alignItems: 'center', paddingX: '2px', zIndex: 999 }} >
-                                    <StyledImage sx={{ width: { mobile: '15px', laptop: "20px" }, height: { laptop: '20px', mobile: '14px' }, marginRight: '5px' }} src={DELETE} />
-                                    <Typography sx={{ fontSize: { mobile: '7px', laptop: '.8vw' }, color: 'white', fontWeight: '700', width: { laptop: '65%', mobile: "55%" }, textTransform: 'uppercase' }}>Bet <span style={{ color: "#e41b23" }} >Deleted</span> Due {"\n"} to No Ball</Typography>
-                                </Box>
-                            }
-                        </Box>
-                    )
-                })
-            }
+                                {
+                                    profit && k !== 2 && <Box sx={{ height: '40px', width: '30%', margin: { mobile: '1px', laptop: '0.4px' }, display: 'flex', background: k % 2 == 0 ? '#E32A2A' : "#10DC61", justifyContent: 'center', alignItems: 'center' }} >
+                                        <Typography sx={{ fontSize: { mobile: '11px', laptop: '14px' }, color: 'white', fontWeight: '700' }}>{"100,000,00"}</Typography>
+                                        <StyledImage sx={{ width: { mobile: '15px', laptop: "25px" }, height: { laptop: '15px', mobile: '7px' }, }} src={k % 2 == 0 ? ARROWDOWN : ARROWUP} />
+                                    </Box>
+                                }
+                                {
+                                    profit && k == 2 && <Box sx={{ height: '40px', width: '30%', margin: { mobile: '1px', laptop: '0.4px' }, display: 'flex', background: "black", justifyContent: 'center', alignItems: 'center', paddingX: '2px', zIndex: 999 }} >
+                                        <StyledImage sx={{ width: { mobile: '15px', laptop: "20px" }, height: { laptop: '20px', mobile: '14px' }, marginRight: '5px' }} src={DELETE} />
+                                        <Typography sx={{ fontSize: { mobile: '7px', laptop: '.8vw' }, color: 'white', fontWeight: '700', width: { laptop: '65%', mobile: "55%" }, textTransform: 'uppercase' }}>Bet <span style={{ color: "#e41b23" }} >Deleted</span> Due {"\n"} to No Ball</Typography>
+                                    </Box>
+                                }
+                            </Box>
+                        )
+                    })
+                }
             </Box>
         </Box >
     )
 }
 
 const RowComponent = ({ header, data }) => {
+    const getTime = (date) => {
+        const now = new Date(date);
+        const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        return timeString;
+    }
     const getColor = () => {
 
         // if (header) {
@@ -102,21 +107,19 @@ const RowComponent = ({ header, data }) => {
         // }
         if (header) {
             return "black";
-          } else if (data?.bet_type === "back" || data?.bet_type == "yes") {
+        } else if (data?.bet_type === "back" || data?.bet_type == "yes") {
             // return "#00C0F9"; 
             return "rgb(179, 224, 255)"
-          } else if (data?.bet_type === "lay" || data?.bet_type == "no") {
+        } else if (data?.bet_type === "lay" || data?.bet_type == "no") {
             // return "#FF9292";
             return "rgb(255, 146, 146)"
-          }
+        }
 
     }
-
-    // console.log(data,"DTACOM")
     return (
         <Box sx={{ width: '100%', height: header ? '30px' : '42px', background: 'white', justifyContent: 'space-between', alignItems: 'center', display: 'flex' }}>
             {!header && <>
-                <SingleBox color={getColor} data={data?.marketType} first={true} header={header} time={data?.time} />
+                <SingleBox color={getColor} data={data?.marketType} first={true} header={header} time={getTime(data.createAt)} />
                 <SingleBox color={getColor()} data={data?.odds} header={header} />
                 <SingleBox color={getColor()} data={data?.bet_type} header={header} />
                 <SingleBox color={getColor()} data={data?.stack || data?.stake || data?.amount} header={header} /></>}
@@ -134,7 +137,7 @@ const SingleBox = ({ data, header, color, up, first, time }) => {
         <Box sx={{ width: '140%', height: '40px', flexDirection: 'column', background: "#F8C851", marginX: { mobile: '1px', laptop: '0.4px' }, display: 'flex', justifyContent: 'center' }}>
             <Typography sx={{ fontWeight: '600', fontSize: { mobile: '6px', laptop: '8px' }, color: 'black', textAlign: 'end', marginRight: '3px' }} >{time}</Typography>
             <Box sx={{ height: '.4vh' }} ></Box>
-            <Typography sx={{ maxHeight:"2em", overflow:'hidden', lineHeight:1, fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{data}</Typography>
+            <Typography sx={{ maxHeight: "2em", overflow: 'hidden', lineHeight: 1, fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{data}</Typography>
 
         </Box>
     ) : up ? (
