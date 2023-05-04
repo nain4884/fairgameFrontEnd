@@ -87,7 +87,7 @@ export default function Login(props) {
 
       const token = await localStorage.getItem("JWTuser");
 
-      const decodeToken = token && jwtDecode(token);
+      const decodeToken = token !==null && jwtDecode(token);
       const resToken = jwtDecode(data?.data?.access_token);
       if (decodeToken.sub === resToken.sub) {
         toast.warn("Please logout from previous session");

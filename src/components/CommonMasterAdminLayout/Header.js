@@ -64,6 +64,25 @@ const CustomHeader = ({}) => {
 
   const location = useLocation();
 
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
+
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      dispatch(logout({ roleType: "role2" }));
+      setGlobalStore((prev) => ({ ...prev, adminJWT: "" }));
+      if (nav === "admin") {
+        dispatch(logout({ roleType: "role1" }));
+        setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
+      }
+      await axios.get("auth/logout");
+      dispatch(removeCurrentUser());
+      removeSocket();
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
@@ -445,6 +464,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const { axios } = setRole();
   const nav = ["fairGameAdmin", "fairGameWallet"].includes(roleName)
     ? "admin"
     : "master";
@@ -454,7 +474,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const innerRef = useOuterClick((ev) => {
     handleClose();
   });
-  const logoutProcess = () => {
+  const logoutProcess = async () => {
     dispatch(removeCurrentUser());
     dispatch(logout({ roleType: "role2" }));
     setGlobalStore((prev) => ({ ...prev, adminJWT: "" }));
@@ -462,7 +482,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
       dispatch(logout({ roleType: "role1" }));
       setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
     }
-
+    await axios.get("auth/logout");
     navigate(`/${nav}`);
     handleClose();
     removeSocket();

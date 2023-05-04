@@ -42,7 +42,6 @@ export default function Login(props) {
   });
 
   const getLocalToken = (val) => {
-    console.log(val, "val");
     if (
       ["admin", "master", "superAdmin", "supperMaster"].some((v) =>
         val.includes(v)
@@ -102,9 +101,8 @@ export default function Login(props) {
         username: loginDetail[1].val,
         password: loginDetail[2].val,
       });
-      const decoded = newtoken !== "" && jwtDecode(newtoken);
+      const decoded = newtoken !== null && jwtDecode(newtoken);
       const resToken = jwtDecode(data?.data?.access_token);
-      console.log(decoded, resToken, "SDD");
       if (decoded.sub === resToken.sub) {
         toast.warn("Please logout from previous session");
         return;
@@ -159,7 +157,7 @@ export default function Login(props) {
         toast.error("User Unauthorized !");
       }
     } catch (e) {
-      console.log(e);
+      console.log(e?.message);
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
     }

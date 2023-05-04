@@ -55,6 +55,21 @@ const CustomHeader = ({}) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   // const auth = useSelector(state => state?.auth?.user);
 
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      dispatch(logout({ roleType: "role4" }));
+      setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+      await axios.get("auth/logout");
+      dispatch(removeCurrentUser());
+      removeSocket();
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
