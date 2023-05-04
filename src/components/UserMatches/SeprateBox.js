@@ -15,260 +15,301 @@ import { setAllBetRate } from '../../newStore/reducers/matchDetails';
 import { toast } from 'react-toastify';
 import { setRole } from '../../newStore';
 const PlaceBetType = {
-    BackLay: "BackLay",
-    YesNo: "YesNo",
-  };
-  
+  BackLay: "BackLay",
+  YesNo: "YesNo",
+};
+
 
 const SeprateBox = ({
-    color,
-    po,
-    empty,
-    value,
-    value2,
-    lock,
-    session,
-    back,
-    currentMatch,
-    time,
-    type,
-    name,
-    data,
-    typeOfBet,
-    mainData,
-    rates
-  }) => {
-    const theme = useTheme();
-    const { axios } = setRole();
-    const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-    const dispatch = useDispatch();
-    const navigate=useNavigate()
-    const [anchor, setAnchor] = React.useState(null);
-    const [isBack, setIsBack] = React.useState(false);
-    const [isSessionYes, setIsSessionYes] = React.useState(false);
-    const [placeBetType, setPlaceBetType] = React.useState(PlaceBetType.BackLay);
-    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-    const [visible, setVisible] = React.useState(false);
-    const [canceled, setCanceled] = React.useState(false);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [showModalMessage, setShowModalMessage] = useState("");
-    const [selectedValue, setSelectedValue] = useState("");
-  
-    function showDialogModal(isModalOpen, showRight, message) {
-      dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }))
-      setTimeout(() => {
-        dispatch(setDailogData({ isModalOpen: false }))
-        // navigate(`/${window.location.pathname.split('/')[1]}`,{state:data.id})
-      }, [2000])
-      setShowModalMessage(message)
-      
-    }
-  
-    const handleChangeShowModalSuccess = (val) => {
-      setShowSuccessModal(val);
-    };
-    const innerRef = useOuterClick((ev) => {
-      if (isPopoverOpen) {
-        setIsPopoverOpen(false);
-      }
-    });
-    const getMargin = () => {
-      if (po === 1 && session) {
-        return {
-          right: { mobile: 0, laptop: "-80%" },
-          left: { mobile: 0, laptop: "50%" },
-        };
-      }
-      if (po === 2 && session) {
-        return {
-          right: { mobile: 0, laptop: "-124.3%" },
-          left: { mobile: 0, laptop: "50%" },
-        };
-      }
-      if (po === 1) {
-        return {
-          right: { mobile: 0, laptop: 0 },
-          left: { mobile: 0, laptop: "78%" },
-        };
-      }
-      if (po === 2) {
-        return {
-          right: { mobile: 0, laptop: 0 },
-          left: { mobile: 0, laptop: "46.7%" },
-        };
-      }
-      if (po === 3) {
-        return {
-          right: { mobile: 0, laptop: 0 },
-          left: { mobile: 0, laptop: "15.8395%" },
-        };
-      }
-      if (po === 4) {
-        return {
-          right: { mobile: 0, laptop: "380%" },
-          left: { mobile: 0, laptop: "-280%" },
-        };
-      }
-      if (po === 5) {
-        return {
-          right: { laptop: "427%", mobile: 0 },
-          left: { laptop: "-344%", mobile: 0 },
-        };
-      }
-      if (po === 6) {
-        return {
-          right: { laptop: "427.55%", mobile: 0 },
-          left: { laptop: "-375%", mobile: 0 },
-        };
-      }
-      return { right: 0 };
-    };
+  color,
+  po,
+  empty,
+  value,
+  value2,
+  lock,
+  session,
+  back,
+  currentMatch,
+  time,
+  type,
+  name,
+  data,
+  typeOfBet,
+  mainData,
+  rates
+}) => {
+  const theme = useTheme();
+  const { axios } = setRole();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const [anchor, setAnchor] = React.useState(null);
+  const [isBack, setIsBack] = React.useState(false);
+  const [isSessionYes, setIsSessionYes] = React.useState(false);
+  const [placeBetType, setPlaceBetType] = React.useState(PlaceBetType.BackLay);
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+  const [visible, setVisible] = React.useState(false);
+  const [canceled, setCanceled] = React.useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showModalMessage, setShowModalMessage] = useState("");
+  const [selectedValue, setSelectedValue] = useState("");
 
-    return (
-      <>
+  function showDialogModal(isModalOpen, showRight, message) {
+    dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }))
+    setTimeout(() => {
+      dispatch(setDailogData({ isModalOpen: false }))
+      // navigate(`/${window.location.pathname.split('/')[1]}`,{state:data.id})
+    }, [2000])
+    setShowModalMessage(message)
+
+  }
+  // console.warn("Modal: ", currentMatch)
+  const handleChangeShowModalSuccess = (val) => {
+    setShowSuccessModal(val);
+  };
+  const innerRef = useOuterClick((ev) => {
+    if (isPopoverOpen) {
+      setIsPopoverOpen(false);
+    }
+  });
+  const getMargin = () => {
+    if (po === 1 && session) {
+      return {
+        right: { mobile: 0, laptop: "-80%" },
+        left: { mobile: 0, laptop: "50%" },
+      };
+    }
+    if (po === 2 && session) {
+      return {
+        right: { mobile: 0, laptop: "-124.3%" },
+        left: { mobile: 0, laptop: "50%" },
+      };
+    }
+    if (po === 1) {
+      return {
+        right: { mobile: 0, laptop: 0 },
+        left: { mobile: 0, laptop: "78%" },
+      };
+    }
+    if (po === 2) {
+      return {
+        right: { mobile: 0, laptop: 0 },
+        left: { mobile: 0, laptop: "46.7%" },
+      };
+    }
+    if (po === 3) {
+      return {
+        right: { mobile: 0, laptop: 0 },
+        left: { mobile: 0, laptop: "15.8395%" },
+      };
+    }
+    if (po === 4) {
+      return {
+        right: { mobile: 0, laptop: "380%" },
+        left: { mobile: 0, laptop: "-280%" },
+      };
+    }
+    if (po === 5) {
+      return {
+        right: { laptop: "427%", mobile: 0 },
+        left: { laptop: "-344%", mobile: 0 },
+      };
+    }
+    if (po === 6) {
+      return {
+        right: { laptop: "427.55%", mobile: 0 },
+        left: { laptop: "-375%", mobile: 0 },
+      };
+    }
+    return { right: 0 };
+  };
+  const handlePlaceBet = async (payload, match) => {
+    let oddValue = Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
+    if (oddValue != payload.odds) {
+      toast.warning("Odds value has been updated. You can not place bet.")
+      return
+    }
+    if (payload.marketType == "MATCH ODDS") {
+      let delay = match?.delaySecond ? match?.delaySecond : 0;
+      delay = delay * 1000;
+      setTimeout(() => {
+        PlaceBetSubmit(payload);
+      }, delay);
+    } else {
+      PlaceBetSubmit(payload);
+    }
+  }
+
+  const PlaceBetSubmit = async (payload) => {
+    try {
+      let response = await axios.post(
+        `/betting/placeBet`,
+        payload
+      );
+      // setAllRateBets(response?.data?.data[0])
+      // dispatch(setAllBetRate(response?.data?.data[0]))
+      showDialogModal(isPopoverOpen, true, response.data.message)
+      setVisible(true);
+      setCanceled(false);
+      // navigate("/matchDetail")
+    } catch (e) {
+      console.log(e.response.data.message);
+      toast.error(e.response.data.message)
+      showDialogModal(isPopoverOpen, false, e.response.data.message)
+      setShowModalMessage(e.response.data.message);
+      setShowSuccessModal(true);
+    }
+  }
+
+  return (
+    <>
+      <Box
+        ref={innerRef}
+        sx={{
+          width: { mobile: "30%", laptop: "20%" },
+          height: "94%",
+          position: typeOfBet === "Session" && "relative", // add
+        }}
+      >
         <Box
-          ref={innerRef}
+          onClick={(e) => {
+            if (lock || color == "white") {
+              return null;
+            }
+            setSelectedValue(value);
+            type?.type === "BL"
+              ? setIsBack(type?.color === "#A7DCFF")
+              : setIsSessionYes(type?.color === "#A7DCFF");
+            setIsPopoverOpen(true);
+            dispatch(setColorValue(color));
+          }}
+          style={{ position: "relative" }}
           sx={{
-            width: { mobile: "30%", laptop: "20%" },
-            height: "94%",
-            position: typeOfBet === "Session" && "relative", // add
+            background: lock ? "#FDF21A" : color,
+            border:
+              color != "white" ? "1px solid #2626264D" : "0px solid white",
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            cursor: !empty && !lock && value && value2 && 'pointer'
           }}
         >
-          <Box
-            onClick={(e) => {
-              if (lock || color == "white") {
-                return null;
-              }
-              setSelectedValue(value);
-              type?.type === "BL"
-                ? setIsBack(type?.color === "#A7DCFF")
-                : setIsSessionYes(type?.color === "#A7DCFF");
-              setIsPopoverOpen(true);
-              dispatch(setColorValue(color));
-            }}
-            style={{ position: "relative" }}
-            sx={{
-              background: lock ? "#FDF21A" : color,
-              border:
-                color != "white" ? "1px solid #2626264D" : "0px solid white",
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              cursor: !empty && !lock && value && value2 &&'pointer'
-            }}
-          >
-            {!empty && !lock && (
-              <Box sx={{ alignItems: "center", justifyContent: "space-around"}}>
-                <Typography
-                  sx={{
-                    fontSize: "15px",
-                    color: color == "white" ? "white" : "black",
-                    fontWeight: "700",
-                    textAlign: "center",
-                  }}
-                >
-                  {value}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: "8px",
-                    marginTop: -0.4,
-                    color: color == "white" ? "white" : "black",
-                    textAlign: "center",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {value2}
-                </Typography>
-              </Box>
-            )}
-            {lock && <img src={Lock} style={{ width: "10px", height: "15px" }}  alt="lock"/>}
-          </Box>
-          {isPopoverOpen && (
-            <>
-              <Box
+          {!empty && !lock && (
+            <Box sx={{ alignItems: "center", justifyContent: "space-around" }}>
+              <Typography
                 sx={{
-                  zIndex: 110,
-                  position: "absolute",
-                  ...getMargin(),
-                  transform: { laptop: "translate( -230%)" },
-                  top: "40px",
+                  fontSize: "15px",
+                  color: color == "white" ? "white" : "black",
+                  fontWeight: "700",
+                  textAlign: "center",
                 }}
               >
-                <PlaceBet
-                  name={name}
-                  rates={rates}
-                  onSubmit={async (payload) => {
-                    try {
-                      console.log(payload, "payload");
-                      let response = await axios.post(
-                        `/betting/placeBet`,
-                        payload
-                      );
-                      // setAllRateBets(response?.data?.data[0])
-                      // dispatch(setAllBetRate(response?.data?.data[0]))
-                      showDialogModal(isPopoverOpen,true,response.data.message)
-                      setVisible(true);
-                      setCanceled(false);
-                      // navigate("/matchDetail")
-                    } catch (e) {
-                      console.log(e.response.data.message);
-                      toast.error(e.response.data.message)
-                      showDialogModal(isPopoverOpen,false,e.response.data.message)
-                      setShowModalMessage(e.response.data.message);
-                      setShowSuccessModal(true);
-                    }
-                  }}
-                  onCancel={() => {
-                    setVisible(true);
-                    setCanceled(true);
-                    setIsPopoverOpen(false);
-                  }}
-                  handleClose={() => {
-                    setIsPopoverOpen(false);
-                  }}
-                  season={session}
-                  back={back}
-                  currentMatch={currentMatch}
-                  isBack={isBack}
-                  selectedValue={selectedValue}
-                  isSessionYes={isSessionYes}
-                  type={type}
-                  data={data}
-                  betOn={name}
-                  typeOfBet={typeOfBet}
-                  mainData={mainData}
-                />
-              </Box>
-            </>
+                {value}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "8px",
+                  marginTop: -0.4,
+                  color: color == "white" ? "white" : "black",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                {value2}
+              </Typography>
+            </Box>
           )}
-          {
-            <BetPlaced
-              time={time}
-              not={canceled}
-              visible={visible}
-              setVisible={(i) => {
-                setIsPopoverOpen(false);
-                setVisible(i);
-              }}
-            />
-          }
+          {lock && <img src={Lock} style={{ width: "10px", height: "15px" }} alt="lock" />}
         </Box>
-        {showSuccessModal && (
-          <Modal
-            message={showModalMessage}
-            setShowSuccessModal={handleChangeShowModalSuccess}
-            showSuccessModal={showSuccessModal}
-            buttonMessage={"OK"}
-            navigateTo={"matchDetail"}
-            userPG={true}
-          />
+        {isPopoverOpen && (
+          <>
+            <Box
+              sx={{
+                zIndex: 110,
+                position: "absolute",
+                ...getMargin(),
+                transform: { laptop: "translate( -230%)" },
+                top: "40px",
+              }}
+            >
+              <PlaceBet
+                name={name}
+                rates={rates}
+                onSubmit={async (payload) => {
+                  handlePlaceBet(payload, currentMatch);
+                }}
+
+                // onSubmit={async (payload) => {
+                //   try {
+                //     console.log(payload, "payload");
+                //     let response = await axios.post(
+                //       `/betting/placeBet`,
+                //       payload
+                //     );
+                //     // setAllRateBets(response?.data?.data[0])
+                //     // dispatch(setAllBetRate(response?.data?.data[0]))
+                //     showDialogModal(isPopoverOpen, true, response.data.message)
+                //     setVisible(true);
+                //     setCanceled(false);
+                //     // navigate("/matchDetail")
+                //   } catch (e) {
+                //     console.log(e.response.data.message);
+                //     toast.error(e.response.data.message)
+                //     showDialogModal(isPopoverOpen, false, e.response.data.message)
+                //     setShowModalMessage(e.response.data.message);
+                //     setShowSuccessModal(true);
+                //   }
+                // }}
+                onCancel={() => {
+                  setVisible(true);
+                  setCanceled(true);
+                  setIsPopoverOpen(false);
+                }}
+                handleClose={() => {
+                  setIsPopoverOpen(false);
+                }}
+                season={session}
+                back={back}
+                currentMatch={currentMatch}
+                isBack={isBack}
+                selectedValue={selectedValue}
+                isSessionYes={isSessionYes}
+                type={type}
+                data={data}
+                betOn={name}
+                typeOfBet={typeOfBet}
+                mainData={mainData}
+              />
+            </Box>
+          </>
         )}
-      </>
-    );
-  };
+        {
+          <BetPlaced
+            time={time}
+            not={canceled}
+            visible={visible}
+            setVisible={(i) => {
+              setIsPopoverOpen(false);
+              setVisible(i);
+            }}
+          />
+        }
+      </Box>
+      {showSuccessModal && (
+        <Modal
+          message={showModalMessage}
+          setShowSuccessModal={handleChangeShowModalSuccess}
+          showSuccessModal={showSuccessModal}
+          buttonMessage={"OK"}
+          navigateTo={"matchDetail"}
+          userPG={true}
+        />
+      )}
+    </>
+  );
+};
 
 export default SeprateBox
