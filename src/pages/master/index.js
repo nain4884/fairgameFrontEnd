@@ -25,7 +25,8 @@ import NewPassword from "../NewPassword";
 const MasterRoutes = () => {
   function MasterPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTmaster");
-    const decodedToken = jwtDecode(token);
+
+    const decodedToken = token!==null && jwtDecode(token);
     if (
       !["master", "admin", "superAdmin", "superMaster"].includes(
         decodedToken?.role
