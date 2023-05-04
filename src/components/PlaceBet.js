@@ -105,7 +105,7 @@ const PlaceBet = ({
     const selectedColorBox = useSelector(
       (state) => state.selectedColorBox
     )?.value;
-    console.log(selectedColorBox, "selectedColorBox");
+    // console.log(selectedColorBox, "selectedColorBox");
     return (
       <Box sx={[{ display: "flex", flexDirection: "column" }, containerStyle]}>
         <Box

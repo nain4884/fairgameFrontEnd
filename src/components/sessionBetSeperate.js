@@ -5,6 +5,7 @@ import userAxios from "../axios/userAxios"
 import { ARROWDOWN, ARROWUP } from "../expert/assets"
 import StyledImage from './StyledImage'
 import { useSelector } from "react-redux"
+import { formatNumber } from "./helper/helper"
 const data = [
     {
         title: "BOOKMAKER",
@@ -87,7 +88,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
         </Box >
     )
 }
-
+// value2 = { formatNumber(newData?.rate_percent?.split("-")[0])}
 const RowComponent = ({ header, data }) => {
     const getTime = (date) => {
         const now = new Date(date);
@@ -120,7 +121,7 @@ const RowComponent = ({ header, data }) => {
         <Box sx={{ width: '100%', height: header ? '30px' : '42px', background: 'white', justifyContent: 'space-between', alignItems: 'center', display: 'flex' }}>
             {!header && <>
                 <SingleBox color={getColor} data={data?.marketType} first={true} header={header} time={getTime(data.createAt)} />
-                <SingleBox color={getColor()} data={data?.odds} header={header} />
+                <SingleBox color={getColor()} data={data?.odds} header={header} isPercent={true} rate={formatNumber(data?.bet_type == "no" ? data?.rate?.split("-")[0] : data?.rate?.split("-")[1])} />
                 <SingleBox color={getColor()} data={data?.bet_type} header={header} />
                 <SingleBox color={getColor()} data={data?.stack || data?.stake || data?.amount} header={header} /></>}
             {header && <>
@@ -131,13 +132,13 @@ const RowComponent = ({ header, data }) => {
         </Box>
     )
 }
-const SingleBox = ({ data, header, color, up, first, time }) => {
-
+const SingleBox = ({ data, header, color, up, first, time, isPercent, rate }) => {
+    // console.log(data, "dataaaa")
     return !header ? first ? (
         <Box sx={{ width: '140%', height: '40px', flexDirection: 'column', background: "#F8C851", marginX: { mobile: '1px', laptop: '0.4px' }, display: 'flex', justifyContent: 'center' }}>
             <Typography sx={{ fontWeight: '600', fontSize: { mobile: '6px', laptop: '8px' }, color: 'black', textAlign: 'end', marginRight: '3px' }} >{time}</Typography>
             <Box sx={{ height: '.4vh' }} ></Box>
-            <Typography sx={{ maxHeight: "2em", overflow: 'hidden', lineHeight: 1, fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{data}</Typography>
+            <Typography sx={{ maxHeight: "1em", overflow: 'hidden', lineHeight: 1, fontWeight: '800', fontSize: { laptop: '.6vw', mobile: '8px' }, color: 'black', textAlign: 'start', marginLeft: '3px' }} >{data}</Typography>
 
         </Box>
     ) : up ? (
@@ -148,8 +149,9 @@ const SingleBox = ({ data, header, color, up, first, time }) => {
 
         </Box>
     ) : (
-        <Box sx={{ width: '100%', height: '40px', background: color, marginX: { mobile: '1px', laptop: '0.4px' }, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ width: '100%', height: '40px', background: color, marginX: { mobile: '1px', laptop: '0.4px' }, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
             <Typography sx={{ fontWeight: '700', fontSize: { mobile: '11px', laptop: '13px' }, color: 'black' }} >{data}</Typography>
+            {isPercent && <Typography sx={{ fontSize: "6px", marginTop: -0.4, color: color == "white" ? "white" : "black", textAlign: "center", fontWeight: 'bold' }} >{rate}</Typography>}
         </Box>
     ) : header && first ?
         (

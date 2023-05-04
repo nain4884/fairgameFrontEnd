@@ -21,7 +21,7 @@ const SessionMarketBox = ({
   // { console.warn("Please :", data) }
   // { console.warn("dataProfit :", dataProfit) }
   const findProfitLoss = (id) => {
-    const foundObject = dataProfit?.matchSessionData?.find((sessionData) => sessionData?.id == id);
+    const foundObject = dataProfit?.bettings?.find((sessionData) => sessionData?.id == id);
     return foundObject?.profitLoss
   };
   return (

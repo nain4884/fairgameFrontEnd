@@ -50,13 +50,13 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { selectedMatch } = useSelector((state) => state?.matchDetails);
   const [currentMatch, setCurrentMatch] = useState(selectedMatch);
-  const [currentMatchProfit, setCurrentMatchProfit] = useState(selectedMatch);
+  const [currentMatchProfit, setCurrentMatchProfit] = useState([]);
   const [bookMakerRateLive, setBookMakerLive] = useState(
     currentMatch?.bookMakerRateLive
   );
   // const [liveSssionOdd,setLiveSessionOdd] = useState(currentMatch?.)
   const { socket, socketMicro } = useContext(SocketContext);
-
+  // console.log("selectedMatch :", selectedMatch)
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [isHandled, setIsHandled] = useState(false);
@@ -65,31 +65,40 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   );
   const { axios, role } = setRole();
   var matchId = id;
-
+  // console.log("currentMatchProfit 444:", currentMatchProfit);
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
         console.log(value);
       });
       socket.on("session_bet", (data) => {
-        const updatedBettings1 = currentMatchProfit?.matchSessionData?.map((betting) => {
-          if (data?.betPlaceData?.bet_id == betting?.id) {
+        try {
+          setCurrentMatchProfit((currentMatch) => {
+            const updatedBettings = currentMatch.bettings.map((betting) => {
+              if (betting.id === data?.betPlaceData?.bet_id) {
+                // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                let profitLoss = data?.profitLoss
+                return {
+                  ...betting,
+                  profitLoss: profitLoss,
+                };
+              }
+              return betting;
+            });
+            // Return the updated current match object
             return {
-              ...betting,
-              profitLoss: data?.profitLoss,
+              ...currentMatch,
+              bettings: updatedBettings,
             };
-          }
-          return betting;
+          });
+        } catch (err) {
+          console.log(err?.message);
         }
-        );
-        setCurrentMatchProfit((prev) => ({
-          ...prev,
-          matchSessionData: updatedBettings1,
-        }));
         // setCurrentMatch({
         //   ...currentMatch,
         //   matchSessionData: updatedBettings1
         // });
+
         const user = {
           ...currentUser,
           current_balance: data.newBalance,
@@ -239,6 +248,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       // });
 
       socketMicro.on(`session${marketId}`, (val) => {
+        // console.log("currentMatchProfit 33:", currentMatchProfit);
         if (val !== null && matchId == checkMctchId) {
 
           const updatedBettings1 = currentMatch?.matchSessionData?.map(
@@ -349,20 +359,25 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   };
 
   async function getThisMatch(id) {
-    // alert(1111)
     try {
       const response = await axios.get(`/game-match/matchDetail/${id}`);
 
-      let matchSessionDataTemp = response.data?.bettings?.filter(
-        (element) => element.sessionBet === true
-      );
+      // let matchOddsDataTemp = response.data?.bettings?.filter(
+      //   (element) => element.sessionBet === false
+      // );
+
+      // let matchSessionDataTemp = response.data?.bettings?.filter(
+      //   (element) => element.sessionBet === true
+      // );
       setCurrentMatch({
         ...response.data,
       });
-      setCurrentMatchProfit({
-        ...response.data,
-        matchSessionData: matchSessionDataTemp,
-      });
+
+      let bettingsData = response?.data;
+      console.log("response.data :", bettingsData)
+      setCurrentMatchProfit(bettingsData);
+
+      // console.log("currentMatchProfit 111:", currentMatchProfit);
       dispatch(
         setSelectedMatch({
           ...response.data,

@@ -224,7 +224,7 @@ const MatchOdds = ({
       setBookMakerRateLive(data?.bookMakerRateLive)
     }
   }, [data]);
-
+  // { console.warn("dataProfit :", dataProfit) }
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {data?.apiBookMakerActive && <BookMarketer data={data} />}

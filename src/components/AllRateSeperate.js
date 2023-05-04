@@ -177,7 +177,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
               overflowY: "scroll",
             }}
           >
-          {/* {console.warn("allBetsData :", allBetsData)} */}
+            {/* {console.warn("allBetsData :", allBetsData)} */}
             {[...new Set(allBetsData?.filter((v) => v.bet_type == "back" || v.bet_type == "lay"))]?.map((i, k) => {
               const num = k + 1;
 
@@ -296,6 +296,11 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
 };
 
 const RowComponent = ({ header, data }) => {
+  const getTime = (date) => {
+    const now = new Date(date);
+    const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+    return timeString;
+  }
   const getColor = () => {
     if (header) {
       return "black";
@@ -328,7 +333,7 @@ const RowComponent = ({ header, data }) => {
             first={true}
             header={header}
           />
-          <SingleBox color={getColor()} data={data} up={true} header={header} />
+          <SingleBox color={getColor()} data={data} up={true} header={header} time={getTime(data.createAt)} />
           <SingleBox color={getColor()} data={data?.bet_type} header={header} />
           <SingleBox color={getColor()} data={data?.odds} header={header} />
           <SingleBox color={getColor()} data={data?.amount} header={header} />
@@ -346,7 +351,7 @@ const RowComponent = ({ header, data }) => {
     </Box>
   );
 };
-const SingleBox = ({ data, header, color, up, first }) => {
+const SingleBox = ({ data, header, color, up, first, time }) => {
   return !header ? (
     first ? (
       <Box
@@ -378,7 +383,7 @@ const SingleBox = ({ data, header, color, up, first }) => {
               fontSize: { mobile: "10px", laptop: ".6vw" },
               color: "black",
               textAlign: "center",
-              maxHeight:"2em", overflow:'hidden', lineHeight:1, 
+              maxHeight: "2em", overflow: 'hidden', lineHeight: 1,
             }}
           >
             {data}
@@ -406,7 +411,7 @@ const SingleBox = ({ data, header, color, up, first }) => {
             marginRight: "3px",
           }}
         >
-          {data.time}
+          {time}
         </Typography>
         <Box sx={{ height: ".4vh" }}></Box>
         <Typography
@@ -417,7 +422,7 @@ const SingleBox = ({ data, header, color, up, first }) => {
             textAlign: "start",
             marginLeft: "3px",
             textTransform: "uppercase",
-            maxHeight:"2em", overflow:'hidden', lineHeight:1, 
+            maxHeight: "1em", overflow: 'hidden', lineHeight: 1,
           }}
         >
           {data.team_bet}
