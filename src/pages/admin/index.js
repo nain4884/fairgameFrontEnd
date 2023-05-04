@@ -21,7 +21,7 @@ import ForgotPassword from "../ForgotPassword/index.js";
 import Verification from "../Varification/index.js";
 import NewPassword from "../NewPassword/index.js";
 import jwtDecode from "jwt-decode";
-const AdminRoutes = () => {
+const MasterRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   useEffect(() => {
     if (tokenMaster != localStorage.getItem("JWTmaster")) {
@@ -41,7 +41,14 @@ const AdminRoutes = () => {
     <>
       {/* <CustomHeader /> */}
       <Routes forceRefresh={true}>
-        <Route path="/" element={<Login allowedRole={["admin"]} />} />
+        <Route
+          path="/"
+          element={
+            <Login
+              allowedRole={["admin", "master", "superMaster", "superAdmin"]}
+            />
+          }
+        />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/verification" element={<Verification />} />
         <Route path="/newpassword" element={<NewPassword />} />
@@ -67,26 +74,130 @@ const AdminRoutes = () => {
           path="/live_market"
           element={
             <AdminPrivateRoute>
-              <Home />{" "}
+              <Home />
             </AdminPrivateRoute>
           }
         />
-        <Route exact path="/add_account" element={<AddAccount />} />
-        <Route exact path="/match" element={<MatchScreen />} />
-        <Route exact path="/account_statement" element={<AccountStatement />} />
-        <Route exact path="/general_report" element={<GeneralReport />} />
-        <Route exact path="/profit_loss" element={<ProfitLoss />} />
-        <Route exact path="/current_bet" element={<CurrentBets />} />
-        <Route exact path="/delete_bet" element={<DeleteBet />} />
-        <Route exact path="/reports" element={<Reports />} />
-        <Route exact path="/game_report" element={<Reports />} />
-        <Route exact path="/total_bets" element={<TotalBets />} />
-        <Route exact path="/match_submit" element={<MatchSubmit />} />
-        <Route exact path="/change_password" element={<ChangePassword />} />
-        <Route exact path="/match_submit1" element={<MatchSubmit1 />} />
+        <Route
+          exact
+          path="/add_account"
+          element={
+            <AdminPrivateRoute>
+              <AddAccount />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/match"
+          element={
+            <AdminPrivateRoute>
+              <MatchScreen />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/account_statement"
+          element={
+            <AdminPrivateRoute>
+              <AccountStatement />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/general_report"
+          element={
+            <AdminPrivateRoute>
+              <GeneralReport />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/profit_loss"
+          element={
+            <AdminPrivateRoute>
+              <ProfitLoss />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/current_bet"
+          element={
+            <AdminPrivateRoute>
+              <CurrentBets />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/delete_bet"
+          element={
+            <AdminPrivateRoute>
+              <DeleteBet />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/reports"
+          element={
+            <AdminPrivateRoute>
+              <Reports />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/game_report"
+          element={
+            <AdminPrivateRoute>
+              <Reports />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/total_bets"
+          element={
+            <AdminPrivateRoute>
+              <TotalBets />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/match_submit"
+          element={
+            <AdminPrivateRoute>
+              <MatchSubmit />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/change_password"
+          element={
+            <AdminPrivateRoute>
+              <ChangePassword />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/match_submit1"
+          element={
+            <AdminPrivateRoute>
+              <MatchSubmit1 />
+            </AdminPrivateRoute>
+          }
+        />
       </Routes>
     </>
   );
 };
 
-export default AdminRoutes;
+export default MasterRoutes;

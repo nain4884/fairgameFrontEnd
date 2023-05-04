@@ -5,7 +5,7 @@ import BetFairOdds from "./BetFairOdds";
 import MatchScreen from "./MatchScreen";
 import BookMakerMarket from "./BookMakerMarket";
 import AddBookMakerMarket from "./AddBookMakerMarket";
-import LoginId from "./Login";
+import Login from "./Login";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
 import AddBet from "./AddBet";
@@ -13,10 +13,8 @@ import { memo } from "react";
 import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
-import Login from "../login";
 
 const ExportRoutes = () => {
-
   function ExpertPrivateRoute({ children }) {
     const token = localStorage.getItem("JWTexpert");
     if (!token) {
@@ -27,20 +25,77 @@ const ExportRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/" element={<Login allowedRole={["expert"]}/>} />
-      <Route path="/home" element={ <ExpertPrivateRoute><Home1 /></ExpertPrivateRoute> } />
+      <Route path="/" element={<Login allowedRole={["expert"]} />} />
+      <Route
+        path="/home"
+        element={
+          <ExpertPrivateRoute>
+            <Home1 />
+          </ExpertPrivateRoute>
+        }
+      />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="/verification" element={<Verification />} />
       <Route path="/newpassword" element={<NewPassword />} />
-      <Route path="/live" element={<Live />} />
-      <Route path="/addBet" element={<AddBet />} />{" "}
+      <Route
+        path="/live"
+        element={
+          <ExpertPrivateRoute>
+            <Live />
+          </ExpertPrivateRoute>
+        }
+      />
+      <Route
+        path="/addBet"
+        element={
+          <ExpertPrivateRoute>
+            {" "}
+            <AddBet />
+          </ExpertPrivateRoute>
+        }
+      />{" "}
       {/* Remove when addBet page found */}
-      <Route path="/match" element={<BetFairOdds />} />
-      <Route path="/add_match" element={<Home1 />} />
-      <Route path="/betodds" element={<MatchScreen />} />
-      <Route path="/market" element={<BookMakerMarket />} />
-      <Route path="/login/:id" element={<LoginId />} />
-      <Route path="/add_book_maker" element={<AddBookMakerMarket />} />
+      <Route
+        path="/match"
+        element={
+          <ExpertPrivateRoute>
+            <BetFairOdds />
+          </ExpertPrivateRoute>
+        }
+      />
+      <Route
+        path="/add_match"
+        element={
+          <ExpertPrivateRoute>
+            <Home1 />
+          </ExpertPrivateRoute>
+        }
+      />
+      <Route
+        path="/betodds"
+        element={
+          <ExpertPrivateRoute>
+            <MatchScreen />
+          </ExpertPrivateRoute>
+        }
+      />
+      <Route
+        path="/market"
+        element={
+          <ExpertPrivateRoute>
+            <BookMakerMarket />
+          </ExpertPrivateRoute>
+        }
+      />
+      <Route
+        path="/add_book_maker"
+        element={
+          <ExpertPrivateRoute>
+            {" "}
+            <AddBookMakerMarket />
+          </ExpertPrivateRoute>
+        }
+      />
     </Routes>
   );
 };

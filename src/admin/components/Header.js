@@ -9,7 +9,7 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout, Money, MoneyBag } from "../../assets";
@@ -25,32 +25,34 @@ import { logout } from "../../newStore/reducers/auth";
 import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
+import { GlobalStore } from "../../context/globalStore";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const { currentUser } = useSelector((state) => state?.currentUser);
   // const [currentSelected, setCurrentSelected] = useState(0)
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchor, setAnchor] = React.useState(null);
-  const [balance, setBalance] = useState(0)
-  const [fullName, setFullName] = useState('')
-  const { axios } = setRole()
+  const [balance, setBalance] = useState(0);
+  const [fullName, setFullName] = useState("");
+  const { axios,JWT } = setRole();
   async function getUserDetail() {
     try {
-      const { data } = await axios.get('users/profile');
-      setBalance(data.data.current_balance)
-      setFullName(data.data.fullName)
+      const { data } = await axios.get("users/profile");
+      setBalance(data.data.current_balance);
+      setFullName(data.data.fullName);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
   }
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
   const location = useLocation();
-  React.useEffect(() => {
+  useEffect(() => {
     if (location.pathname.includes("market_analysis")) {
       dispatch(setActiveAdmin(3));
     } else if (location.pathname.includes("list_of_clients")) {
@@ -58,20 +60,27 @@ const CustomHeader = ({ }) => {
     } else if (location.pathname.includes("live_market")) {
       dispatch(setActiveAdmin(1));
     } else if (
-      location.pathname.includes("reports") ||
-      location.pathname.includes("account_statement") ||
-      location.pathname.includes("current_bet") ||
-      location.pathname.includes("general_report") ||
-      location.pathname.includes("game_report") ||
-      location.pathname.includes("profit_loss")
+
+      [
+        "reports",
+        "account_statement",
+        "current_bet",
+        "general_report",
+        "game_report",
+        "profit_loss",
+      ].includes(location.pathname)
     ) {
       dispatch(setActiveAdmin(2));
     }
-    getUserDetail()
   }, [location]);
 
   useEffect(() => {
-  }, [currentSelected]);
+    if (JWT) {
+      getUserDetail();
+    }
+  }, [JWT]);
+
+  useEffect(() => {}, [currentSelected]);
   useEffect(() => {
     if (!matchesMobile) {
       setMobileOpen(false);
@@ -535,14 +544,15 @@ const LiveMarket = ({ title, boxStyle, titleStyle, onClick }) => {
 const BoxProfile = ({ image, value, containerStyle, balance }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+
+
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  useEffect(() => {
-  }, [anchorEl]);
+  useEffect(() => {}, [anchorEl]);
   const handleClose = () => {
     setOpen(false);
   };
@@ -646,13 +656,15 @@ const menutItems = [
 ];
 const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const innerRef = useOuterClick((ev) => {
     handleClose();
   });
   const dispatch = useDispatch();
   const logoutProcess = () => {
     dispatch(logout({ roleType: "role1" }));
-    removeCurrentUser()
+    setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
+    dispatch(removeCurrentUser());
     navigate("/admin");
     handleClose();
     removeSocket();
@@ -670,7 +682,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         borderRadius: "5px",
         marginTop: "2px",
       }}
-    > 
+    >
       {menutItems.map((x) => (
         <MenuItem
           dense={true}

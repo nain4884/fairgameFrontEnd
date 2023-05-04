@@ -17,25 +17,18 @@ import Home from "../../components/List_Of_Client";
 import DepositWallet from "../../components/DepositWallet";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Authprovider";
-import Login from "../login";
+import Login from "../expert/Login";
 import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
-import jwtDecode from "jwt-decode"
-const FairGameWalletRoutes = () => {
-  const { tokenAdmin } = useContext(AuthContext);
-  useEffect(() => {
-    if (tokenAdmin != localStorage.getItem("JWTadmin")) {
-      window.location.reload();
-    }
-  }, []);
+import jwtDecode from "jwt-decode";
+const AdminRoutes = () => {
 
-  
   function AdminPrivateRoute({ children }) {
     const token = localStorage.getItem("JWTadmin");
     const decodedToken = jwtDecode(token);
-    if (decodedToken?.role!=="fairGameAdmin") {
-      return <Navigate to="/fairgame_admin" />;
+    if (!["fairGameAdmin", "fairGameWallet"].includes(decodedToken?.role)) {
+      return <Navigate to="/admin" />;
     }
     return children;
   }
@@ -44,19 +37,57 @@ const FairGameWalletRoutes = () => {
     <>
       {/* <CustomHeader /> */}
       <Routes forceRefresh={true}>
-        <Route path="/" element={<Login allowedRole={["fairGameAdmin"]} />} />
+        <Route
+          path="/"
+          element={<Login allowedRole={["fairGameAdmin", "fairGameWallet"]} />}
+        />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/verification" element={<Verification />} />
         <Route path="/newpassword" element={<NewPassword />} />
-        <Route path="/list_of_clients" element={<AdminPrivateRoute><Home /></AdminPrivateRoute>} />
+        <Route
+          path="/list_of_clients"
+          element={
+            <AdminPrivateRoute>
+              <Home />
+            </AdminPrivateRoute>
+          }
+        />
         <Route
           exact
           path="/market_analysis"
-          element={<AdminPrivateRoute><MarketAnaylsisContainer /></AdminPrivateRoute>}
+          element={
+            <AdminPrivateRoute>
+              <MarketAnaylsisContainer />
+            </AdminPrivateRoute>
+          }
         />
-        <Route exact path="/live_market" element={<AdminPrivateRoute><Home /></AdminPrivateRoute>} />
-        <Route exact path="/match" element={<AdminPrivateRoute><NewMatchScreen /></AdminPrivateRoute>} />
-        <Route exact path="/account_statement" element={<AdminPrivateRoute><AccountStatement /></AdminPrivateRoute>} />
+        <Route
+          exact
+          path="/live_market"
+          element={
+            <AdminPrivateRoute>
+              <Home />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/match"
+          element={
+            <AdminPrivateRoute>
+              <NewMatchScreen />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/account_statement"
+          element={
+            <AdminPrivateRoute>
+              <AccountStatement />
+            </AdminPrivateRoute>
+          }
+        />
         <Route exact path="/general_report" element={<GeneralReport />} />
         <Route exact path="/profit_loss" element={<ProfitLoss />} />
         <Route exact path="/add_account" element={<AddAccountScreen />} />
@@ -75,4 +106,4 @@ const FairGameWalletRoutes = () => {
   );
 };
 
-export default FairGameWalletRoutes;
+export default AdminRoutes;

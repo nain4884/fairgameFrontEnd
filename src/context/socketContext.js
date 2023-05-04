@@ -24,41 +24,48 @@ export const SocketProvider = ({ children }) => {
       token = "Bearer " + (tk.userJWT || localStorage.getItem("JWTuser"));
     } else if (rl === "role3") {
       token = "Bearer " + (tk.expertJWT || localStorage.getItem("JWTexpert"));
+    } else if (rl === "role2") {
+      token = "Bearer " + (tk.adminJWT || localStorage.getItem("JWTadmin"));
+    }
+    if (rl === "role1") {
+      token = "Bearer " + (tk.masterJWT || localStorage.getItem("JWTmaster"));
     }
     return token;
   };
   useEffect(() => {
-    // if (checkSocket != "true") {
     const token = getToken(globalStore, role);
-    const newSocket = io(`${apiBasePath}`, {
-      transports: ["websocket"],
-      headers: {
-        Authorization: `${token}`,
-      },
-      auth: {
-        token: `${token}`,
-      },
-    });
-    newSocket.on("connect", () => {
-      setSocket(newSocket);
-      // localStorage.setItem("socket", newSocket.connected)
-    });
-    // }
-    // if (checkSocket != "true") {
-    const newMicroSocket = io(`${microServiceApiPath}`, {
-      transports: ["websocket"],
-      headers: {
-        Authorization: `${token}`,
-      },
-      auth: {
-        token: `${token}`,
-      },
-    });
-    newMicroSocket.on("connect", () => {
-      setSocketMicro(newMicroSocket);
-      // localStorage.setItem("microSocket", newMicroSocket.connected)
-    });
-    // }
+    if (!["Bearer null", ""].includes(token)) {
+      // if (checkSocket != "true") {
+      const newSocket = io(`${apiBasePath}`, {
+        transports: ["websocket"],
+        headers: {
+          Authorization: `${token}`,
+        },
+        auth: {
+          token: `${token}`,
+        },
+      });
+      newSocket.on("connect", () => {
+        setSocket(newSocket);
+        // localStorage.setItem("socket", newSocket.connected)
+      });
+      // }
+      // if (checkSocket != "true") {
+      const newMicroSocket = io(`${microServiceApiPath}`, {
+        transports: ["websocket"],
+        headers: {
+          Authorization: `${token}`,
+        },
+        auth: {
+          token: `${token}`,
+        },
+      });
+      newMicroSocket.on("connect", () => {
+        setSocketMicro(newMicroSocket);
+        // localStorage.setItem("microSocket", newMicroSocket.connected)
+      });
+      // }
+    }
   }, [globalStore, role]);
 
   return (

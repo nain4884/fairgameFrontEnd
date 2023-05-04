@@ -17,7 +17,7 @@ import DepositWallet from "../../components/DepositWallet";
 import DeleteBet from "../admin/DeleteBet";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../../Authprovider";
-import Login from "../login";
+import Login from "../expert/Login";
 import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";

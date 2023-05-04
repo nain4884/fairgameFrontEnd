@@ -31,13 +31,16 @@ import SideBar from "./sideBar/SideBar";
 import StyledImage from "./StyledImage";
 import { userActions } from "../newStore/Actions/userActions";
 import { signIn, logout } from "../newStore/reducers/auth";
-import { removeCurrentUser, setCurrentUser } from "../newStore/reducers/currentUser";
+import {
+  removeCurrentUser,
+  setCurrentUser,
+} from "../newStore/reducers/currentUser";
 import axios from "../axios/axios";
 import { setRole } from "../newStore";
 import { removeSocket } from "./helper/removeSocket";
 import { GlobalStore } from "../context/globalStore";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const location = useLocation();
@@ -47,10 +50,12 @@ const CustomHeader = ({ }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [balance, setBalance] = useState(0);
   const [exposure, setExposure] = useState(0);
+  let { axios, role, JWT } = setRole();
+
   const { currentUser } = useSelector((state) => state?.currentUser);
   // const auth = useSelector(state => state?.auth?.user);
 
-  async function getUserDetail(axios, role) {
+  async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
 
@@ -91,10 +96,10 @@ const CustomHeader = ({ }) => {
     } else {
       setShowSideBarMobile(false);
     }
-    let { axios, role } = setRole();
-    getUserDetail(axios, role);
-  }, [location, bal]);
-
+    if (JWT) {
+      getUserDetail();
+    }
+  }, [location, bal, JWT]);
   return (
     <>
       <SessionTimeOut />
@@ -273,7 +278,7 @@ const NewBoxData = ({
     setAnchorEl(0);
   };
 
-  const { axios } = setRole()
+  const { axios } = setRole();
   return (
     <Box>
       <Box
@@ -517,9 +522,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     // dispatch(stateActions.logout("role4"));
     // socketMicro.emit("logoutUserForce");
     dispatch(logout({ roleType: "role4" }));
-    setGlobalStore(prev=>({...prev,userJWT:""}))
-    await axios.get("auth/logout")
-    removeCurrentUser()
+    setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+    await axios.get("auth/logout");
+    dispatch(removeCurrentUser());
     navigate("/");
     handleClose();
     removeSocket();

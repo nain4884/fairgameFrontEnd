@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AccountStatement from "../admin/AccountStatement";
 import AddAccountScreen from "../admin/AddAccount";
 import ChangePassword from "../admin/ChangePassword";
@@ -17,40 +17,190 @@ import DepositWallet from "../../components/DepositWallet";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
 import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
+import jwtDecode from "jwt-decode";
+import Login from "../expert/Login";
+import ForgotPassword from "../ForgotPassword";
+import Verification from "../Varification";
+import NewPassword from "../NewPassword";
 const MasterRoutes = () => {
-  const { tokenMaster } = useContext(AuthContext);
-  useEffect(() => {
-    if (tokenMaster != localStorage.getItem('JWTmaster')) {
-      window.location.reload()
+  function MasterPrivateRoute({ children }) {
+    const token = localStorage.getItem("JWTmaster");
+    const decodedToken = jwtDecode(token);
+    if (
+      !["master", "admin", "superAdmin", "superMaster"].includes(
+        decodedToken?.role
+      )
+    ) {
+      return <Navigate to="/master" />;
     }
-  }, [])
+    return children;
+  }
+
   return (
     <>
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       <Routes>
-        <Route path="/list_of_clients" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Login
+              allowedRole={["master", "admin", "superAdmin", "superMaster"]}
+            />
+          }
+        />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/verification" element={<Verification />} />
+        <Route path="/newpassword" element={<NewPassword />} />
+        <Route
+          path="/list_of_clients"
+          element={
+            <MasterPrivateRoute>
+              <Home />
+            </MasterPrivateRoute>
+          }
+        />
         <Route
           exact
           path="/market_analysis"
           element={<MarketAnaylsisContainer />}
         />
-        <Route exact path="/live_market" element={<Home />} />
-        <Route exact path="/match" element={<NewMatchScreen />} />
-        <Route exact path="/account_statement" element={<AccountStatement />} />
-        <Route exact path="/general_report" element={<GeneralReport />} />
-        <Route exact path="/profit_loss" element={<ProfitLoss />} />
-        <Route exact path="/add_account" element={<AddAccountScreen />} />
-        <Route exact path="/current_bet" element={<CurrentBets />} />
-        <Route exact path="/reports" element={<Reports />} />
-        <Route exact path="/game_report" element={<Reports />} />
-        <Route exact path="/total_bets" element={<TotalBets />} />
-        <Route exact path="/change_password" element={<ChangePassword />} />
-        <Route exact path="/match_submit" element={<MatchSubmit />} />
-        <Route exact path="/match_submit1" element={<MatchSubmit1 />} />
-        {/* <Route exact path="/deposit" element={<DepositWallet />} />
-        <Route exact path="/withdraw" element={<DepositWallet />} /> */}
-        <Route exact path="/delete_bet" element={<DeleteBet />} />
-        <Route exact path="/createTransPassword" element={<ChangePassword />} />
+        <Route
+          exact
+          path="/live_market"
+          element={
+            <MasterPrivateRoute>
+              <Home />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/match"
+          element={
+            <MasterPrivateRoute>
+              <NewMatchScreen />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/account_statement"
+          element={
+            <MasterPrivateRoute>
+              <AccountStatement />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/general_report"
+          element={
+            <MasterPrivateRoute>
+              <GeneralReport />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/profit_loss"
+          element={
+            <MasterPrivateRoute>
+              <ProfitLoss />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/add_account"
+          element={
+            <MasterPrivateRoute>
+              <AddAccountScreen />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/current_bet"
+          element={
+            <MasterPrivateRoute>
+              <CurrentBets />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/reports"
+          element={
+            <MasterPrivateRoute>
+              <Reports />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/game_report"
+          element={
+            <MasterPrivateRoute>
+              <Reports />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/total_bets"
+          element={
+            <MasterPrivateRoute>
+              <TotalBets />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/change_password"
+          element={
+            <MasterPrivateRoute>
+              <ChangePassword />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/match_submit"
+          element={
+            <MasterPrivateRoute>
+              <MatchSubmit />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/match_submit1"
+          element={
+            <MasterPrivateRoute>
+              <MatchSubmit1 />
+            </MasterPrivateRoute>
+          }
+        />
+        {/* <Route exact path="/deposit" element={  <MasterPrivateRoute> <DepositWallet />} / </MasterPrivateRoute>>
+        <Route exact path="/withdraw" element={  <MasterPrivateRoute> <DepositWallet />} / </MasterPrivateRoute>> */}
+        <Route
+          exact
+          path="/delete_bet"
+          element={
+            <MasterPrivateRoute>
+              <DeleteBet />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/createTransPassword"
+          element={
+            <MasterPrivateRoute>
+              <ChangePassword />
+            </MasterPrivateRoute>
+          }
+        />
       </Routes>
     </>
   );
