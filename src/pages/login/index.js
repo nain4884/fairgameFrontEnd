@@ -75,7 +75,7 @@ export default function Login(props) {
       navigate(path);
     }
   };
- 
+
   async function loginToAccount() {
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
@@ -86,12 +86,12 @@ export default function Login(props) {
       });
 
       const token = await localStorage.getItem("JWTuser");
-      if (token) {
-        const decodeToken = jwtDecode(token);
-        const resToken = jwtDecode(data?.data?.access_token);
-        if (decodeToken.sub === resToken.sub) {
-          toast.warn("Please logout from previous session");
-        }
+
+      const decodeToken = token && jwtDecode(token);
+      const resToken = jwtDecode(data?.data?.access_token);
+      if (decodeToken.sub === resToken.sub) {
+        toast.warn("Please logout from previous session");
+        return;
       }
 
       if (props.allowedRole.includes(data.data.role)) {
