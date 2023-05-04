@@ -34,7 +34,7 @@ const SmallBox = ({ color, value }) => {
   );
 };
 
-const Time = () => {
+const Time = (data) => {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Typography
@@ -45,7 +45,7 @@ const Time = () => {
           width: { mobile: "40px", laptop: "80px" },
         }}
       >
-        5 sec Delay
+        {data.time} sec Delay
       </Typography>
       <img style={{ width: "20px", height: "20px" }} src={TIME} />
     </Box>
@@ -113,7 +113,9 @@ const Odds = ({
           >
             {title}
           </Typography>
-          {showDely && <Time />}
+          {showDely && typeOfBet === "MATCH ODDS" && <Time
+            time={newData.delaySecond ? newData?.delaySecond : 0}
+          />}
         </Box>
         <Box
           sx={{

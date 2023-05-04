@@ -400,7 +400,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
 
       let bettingsData = response?.data;
-      console.log("response.data :", bettingsData);
+      // console.log("response.data :", bettingsData)
       setCurrentMatchProfit(bettingsData);
 
       // console.log("currentMatchProfit 111:", currentMatchProfit);

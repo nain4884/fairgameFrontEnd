@@ -69,6 +69,7 @@ const stateDetail = {
   18: { field: "betfair_match_min_bet", val: "" },
   19: { field: "manaual_session_max_bet", val: "" },
   20: { field: "marketId", val: "" },
+  21: { field: "delaySecond", val: "" },
 };
 
 export default function Home1() {
@@ -95,6 +96,7 @@ export default function Home1() {
     18: { field: "betfair_match_min_bet", val: false },
     19: { field: "manaual_session_max_bet", val: false },
     20: { field: "marketId", val: false },
+    21: { field: "delaySecond", val: false },
   });
 
   const [matches, setMatches] = useState([
@@ -106,15 +108,15 @@ export default function Home1() {
     try {
       let request = new FormData();
       let i;
-      for (i = 0; i < 20; i++) {
+      for (i = 0; i < 21; i++) {
         if ((!Detail[i + 1].val || Detail[i + 1].val !== 0) && i !== 19)
           request.append(`${Detail[i + 1].field}`, Detail[i + 1].val);
         if (i === 19) request.append(`${Detail[i + 1].field}`, marketId);
       }
       const { data } = await axios.post(`/game-match/addmatch`, request);
       if (data.message === "Match added successfully.")
-      toast.success(data.message)
-        navigate("/expert/match");
+        toast.success(data.message)
+      navigate("/expert/match");
     } catch (e) {
       toast.error(e.response.data.message)
       console.log(e);
@@ -513,7 +515,22 @@ export default function Home1() {
                 type: "String",
               }}
             />
-            <Box sx={{ flex: 1, marginLeft: "1%" }} />
+            <LabelValueComponent
+              containerStyle={{ flex: 1, marginLeft: "1%" }}
+              title={"Delay Time Limit"}
+              type={"Number"}
+              value="Enter Delay Time..."
+              InputValType={"InputVal"}
+              place={21}
+              DetailError={{
+                Error,
+                setDetail,
+                Detail,
+                setError,
+                type: "String",
+              }}
+            />
+            {/* <Box sx={{ flex: 1, marginLeft: "1%" }} /> */}
           </Box>
         </Box>
         <Box
