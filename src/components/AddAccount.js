@@ -29,9 +29,9 @@ const inputContainerStyle = {
   border: "1px solid #DEDEDE",
 };
 const AddAccount = () => {
-  const { axios ,locPath} = setRole();
+  const { axios, locPath,JWT } = setRole();
   const navigate = useNavigate();
-  const { userAdmin ,allRole} = useSelector((state) => state.auth);
+  const { userAdmin, allRole } = useSelector((state) => state.auth);
   const [roleOfUser, setRoleOfUser] = useState("");
   const [errorShow, setErrorShow] = useState("");
   const [successShow, setSuccessShow] = useState("");
@@ -70,9 +70,12 @@ const AddAccount = () => {
     14: { field: "adminTransPassword", val: false },
     15: { field: "myPartnership", val: false },
   });
-  const [roles, setRoles] = useState(allRole?.map(v=>({role: v.roleName, roleId: v.id })))
+  const [roles, setRoles] = useState(
+    allRole?.map((v) => ({ role: v.roleName, roleId: v.id }))
+  );
   const [userAlreadyExist, setUserAlredyExist] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const {currentUser} = useSelector((state) => state?.currentUser);
 
   const [typeToShow, setTypeToShow] = useState([
     "Select your account type",
@@ -121,10 +124,10 @@ const AddAccount = () => {
     setTypeToShow(typo);
   };
 
-  console.log(Detail,"Detail",allRole)
-
+  console.log(Detail, "Detail", allRole);
 
   const addAccount = async () => {
+
     let payload = {
       userName: "",
       password: "",
@@ -138,35 +141,13 @@ const AddAccount = () => {
       myPartnership: 0,
       credit_refer: 0,
     };
-    switch (locationPath) {
-      case "super_master":
-        // payload.a_partnership=Detail[10].val
-        payload.sm_partnership = Detail[11].val;
-        payload.m_partnership = Detail[12].val;
-        break;
-      case "super_admin":
-        // payload.fa_partnership=Detail[10].val
-        payload.sa_partnership = Detail[11].val;
-        payload.a_partnership = Detail[12].val;
-        break;
-      case "master":
-        // payload.sm_partnership=Detail[10].val
-        payload.m_partnership = Detail[11].val;
-        break;
-      case "admin":
-        // payload.sa_partnership=Detail[10].val
-        payload.a_partnership = Detail[11].val;
-        payload.sm_partnership = Detail[12].val;
-        break;
-      case "fairgame_wallet":
-        payload.fw_partnership = Detail[11].val;
-        payload.fa_partnership = Detail[12].val;
-        break;
-      case "fairgame_admin":
-        // payload.fw_partnership=Detail[10].val
-        payload.fa_partnership = Detail[11].val;
-        payload.sa_partnership = Detail[12].val;
-        break;
+    if (["master", "admin"].includes(locationPath)) {
+      // payload.a_partnership=Detail[10].val
+      payload = {
+        ...payload,
+        sm_partnership: Detail[11].val,
+        m_partnership: Detail[12].val,
+      };
     }
     try {
       function checkRoleId(age) {
@@ -194,7 +175,7 @@ const AddAccount = () => {
           fullName: Detail[4].val,
           city: Detail[5].val,
           phoneNumber: Detail[6].val,
-          roleId:  roles.filter(checkRoleId)[0].roleId,
+          roleId: roles.filter(checkRoleId)[0].roleId,
           remark: Detail[13].val,
           adminTransPassword: Detail[14].val,
           myPartnership: Detail[11].val,
@@ -210,7 +191,7 @@ const AddAccount = () => {
     } catch (e) {
       console.log(e);
       setSuccessShow("");
-      toast.error(e?.response?.data?.message)
+      toast.error(e?.response?.data?.message);
       setErrorShow(e?.response?.data?.message);
     }
   };
@@ -286,14 +267,16 @@ const AddAccount = () => {
   }
 
   useEffect(() => {
-    getUserDetail();
-    handleUpline();
-  }, []);
+  }, [currentUser]);
 
+  useEffect(() => {
+    if (JWT) {
+      getUserDetail();
+    }
+  }, [JWT]);
   useEffect(() => {
     setTypeForAccountType();
   }, [userAdmin?.role?.roleName, Detail, error, showSuccessModal]);
-
 
   async function checkUserName({ val }) {
     try {

@@ -19,8 +19,9 @@ function App() {
     userJWT:"",
     adminJWT:"",
     expertJWT:"",
+    masterJWT:"",
   })
-  if (process.env.ENV !== "production") console.log = () => { };
+  // if (process.env.ENV !== "production") console.log = () => { };
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>

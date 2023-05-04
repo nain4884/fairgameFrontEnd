@@ -75,26 +75,7 @@ export default function Login(props) {
       navigate(path);
     }
   };
-
-  async function getUserDetail() {
-    try {
-      const { data } = await axios.get("users/profile");
-
-      // dispatch(
-      //   stateActions.setBalance(
-      //     data.data.current_balance || 0,
-      //     role,
-      //     data.data.exposure || 0,
-      //     data.data.id
-      //   )
-      // );
-      dispatch(setCurrentUser(data.data));
-      // setFullName(data.data.fullName);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
+ 
   async function loginToAccount() {
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
@@ -107,9 +88,10 @@ export default function Login(props) {
       const token = await localStorage.getItem("JWTuser");
       if (token) {
         const decodeToken = jwtDecode(token);
-        console.log(decodeToken, "decoded token");
         const resToken = jwtDecode(data?.data?.access_token);
-        //  if(decodeToken.id)
+        if (decodeToken.sub === resToken.sub) {
+          toast.warn("Please logout from previous session");
+        }
       }
 
       if (props.allowedRole.includes(data.data.role)) {
@@ -122,43 +104,20 @@ export default function Login(props) {
         }
         if (roleDetail) data.data.role = roleDetail;
         if (data.message === "User login successfully.") {
-          getUserDetail();
+          // getUserDetail();
           removeSocket();
           // dispatch(setActiveRole(foundRoles.data));
           // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
-          dispatch(signIn(data.data));
           setRole(data.data.access_token);
-          switch (data.data.role.roleName) {
-            case "master":
-              handleNavigate("/master/list_of_clients", "master");
-              break;
-            case "superMaster":
-              handleNavigate("/super_master/list_of_clients", "master");
-              break;
-            case "admin":
-              setGlobalStore(prev=>({...prev,masterJWT:data.data.access_token}))
-              handleNavigate("/admin/list_of_clients", "master");
-              break;
-            case "superAdmin":
-              handleNavigate("/super_admin/list_of_clients", "master");
-              break;
-            case "expert":
-              setGlobalStore(prev=>({...prev,expertJWT:data.data.access_token}))
-              handleNavigate("/expert/match", "expert");
-              break;
-            case "user":
-              setGlobalStore(prev=>({...prev,userJWT:data.data.access_token}))
-              handleNavigate("/matches", "user");
-              break;
-            case "fairGameWallet":
-              handleNavigate("/fairgame_wallet/list_of_clients", "admin");
-              break;
-            case "fairGameAdmin":
-              handleNavigate("/fairgame_admin/list_of_clients", "admin");
-              break;
-            default:
-              handleNavigate("/matches", "user");
-              break;
+          dispatch(signIn(data.data));
+          if (["user"].includes(data.data.role.roleName)) {
+            setGlobalStore((prev) => ({
+              ...prev,
+              userJWT: data.data.access_token,
+            }));
+            handleNavigate("/matches", "user");
+          } else {
+            toast.error("User Unauthorized !");
           }
         }
       } else {

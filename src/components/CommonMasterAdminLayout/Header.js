@@ -9,7 +9,13 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout } from "../../assets";
@@ -31,8 +37,9 @@ import currentUser, {
 import { logout } from "../../newStore/reducers/auth";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../helper/removeSocket";
-
-const CustomHeader = ({ }) => {
+import { GlobalStore } from "../../context/globalStore";
+var roleName = "";
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -45,14 +52,32 @@ const CustomHeader = ({ }) => {
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
-
-  const { userAdmin ,allRole} = useSelector((state) => state.auth);
+  const { axios, role, JWT } = setRole();
+  const { userAdmin, allRole } = useSelector((state) => state.auth);
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const {roleName}=allRole.find(role => role.id===currentUser.roleId);
-  const nav=roleName==="fairGameAdmin" ? "fairgame_admin" :roleName === "fairGameWallet" ? "fairgame_wallet" :roleName==="admin" ? "admin": ""
+  const nav =
+    roleName !== ""
+      ? ["fairGameAdmin", "fairGameWallet"].includes(roleName)
+        ? "admin"
+        : "master"
+      : "";
 
   const location = useLocation();
-  React.useEffect(() => {
+
+  async function getUserDetail() {
+    try {
+      const { data } = await axios.get("users/profile");
+      setBalance(data.data.current_balance);
+
+      const value = allRole?.find((role) => role?.id === data?.data?.roleId);
+      roleName = value?.roleName;
+      dispatch(setCurrentUser(data.data));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
     if (location.pathname.includes("market_analysis")) {
       dispatch(setActiveAdmin(3));
     } else if (location.pathname.includes("list_of_clients")) {
@@ -60,33 +85,26 @@ const CustomHeader = ({ }) => {
     } else if (location.pathname.includes("live_market")) {
       dispatch(setActiveAdmin(1));
     } else if (
-      location.pathname.includes("reports") ||
-      location.pathname.includes("account_statement") ||
-      location.pathname.includes("current_bet") ||
-      location.pathname.includes("general_report") ||
-      location.pathname.includes("game_report") ||
-      location.pathname.includes("profit_loss")
+      [
+        "reports",
+        "account_statement",
+        "current_bet",
+        "general_report",
+        "game_report",
+        "profit_loss",
+      ].includes(location.pathname)
     ) {
       dispatch(setActiveAdmin(2));
     }
-    let { transPass, axios, role } = setRole();
     setIsTransPasswordExist(userAdmin?.isTransPasswordCreated);
-    getUserDetail(axios, role);
-  }, [location, window.location.pathname, userAdmin]);
-
-
+    if (JWT) {
+      getUserDetail();
+    }
+  }, [location, window.location.pathname, userAdmin, JWT]);
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
-  async function getUserDetail(axios, role) {
-    try {
-      const { data } = await axios.get("users/profile");
-      setBalance(data.data.current_balance);
-      dispatch(setCurrentUser(data.data));
-    } catch (e) {
-      console.log(e);
-    }
-  }
+
   useEffect(() => {
     if (!matchesMobile) {
       setMobileOpen(false);
@@ -256,7 +274,7 @@ const CustomHeader = ({ }) => {
                 3
               )}
             />
-            {window.location.pathname.split("/")[1] == "fairgame_wallet" && (
+            {roleName === "fairGameWallet" && (
               <ButtonHead
                 onClick={(e) => {
                   dispatch(setActiveAdmin(4));
@@ -422,12 +440,14 @@ function useOuterClick(callback) {
   return innerRef; // convenience for client (doesn't need to init ref himself)
 }
 
-
 const DropdownMenu = ({ anchorEl, open, handleClose }) => {
-  const { userAdmin ,allRole} = useSelector((state) => state.auth);
+  const { userAdmin, allRole } = useSelector((state) => state.auth);
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const {roleName}=allRole.find(role => role.id===currentUser.roleId);
-  const nav=roleName==="fairGameAdmin" ? "fairgame_admin" :roleName === "fairGameWallet" ? "fairgame_wallet" :roleName==="admin" ? "admin": ""
+  const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const nav = ["fairGameAdmin", "fairGameWallet"].includes(roleName)
+    ? "admin"
+    : "master";
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -435,10 +455,13 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     handleClose();
   });
   const logoutProcess = () => {
+    dispatch(removeCurrentUser());
     dispatch(logout({ roleType: "role2" }));
-    removeCurrentUser()
-    if(nav==="admin")
-    dispatch(logout({ roleType: "role1" }));
+    setGlobalStore((prev) => ({ ...prev, adminJWT: "" }));
+    if (nav === "admin") {
+      dispatch(logout({ roleType: "role1" }));
+      setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
+    }
 
     navigate(`/${nav}`);
     handleClose();

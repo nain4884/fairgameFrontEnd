@@ -59,24 +59,20 @@ const SessionMarketBox = ({
       const { data } = await axios.post("betting/addBetting", body);
 
       if (data.data?.id) {
-        const updatedBettings = currentMatch?.bettings?.map(
-          (betting, index) => {
-            if (betting?.selectionId === newData?.selectionId) {
-              // If the betting's ID matches the given `id`, update the `betStatus` value
-              return { ...data?.data, suspended: newData?.suspended };
-            }
-            // Otherwise, return the original betting object
-            return betting;
-          }
-        );
-
-        setCurrentMatch((prevState) => ({
-          ...prevState,
-          bettings: updatedBettings,
-        }));
-        dispatch(
-          setSelectedMatch({ ...currentMatch, bettings: updatedBettings })
-        );
+        setCurrentMatch((currentMatch) => {
+          return {
+            ...currentMatch,
+            bettings: currentMatch?.bettings?.map((betting) => {
+              if (betting?.selectionId === newData?.selectionId) {
+                return {
+                  ...data?.data,
+                  suspended: newData?.suspended,
+                };
+              }
+              return betting;
+            }),
+          };
+        });
       }
     } catch (err) {
       toast.error(err.response.data.message);

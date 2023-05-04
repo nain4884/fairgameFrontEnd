@@ -26,7 +26,7 @@ const FairGameWalletRoutes = () => {
   }, [])
   return (
     <>
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       <Routes>
         <Route path="/list_of_clients" element={<Home />} />
         <Route
