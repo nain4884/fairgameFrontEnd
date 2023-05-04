@@ -38,6 +38,7 @@ import { logout } from "../../newStore/reducers/auth";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
+import { SocketContext } from "../../context/socketContext";
 var roleName = "";
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -66,23 +67,29 @@ const CustomHeader = ({}) => {
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
+  const { socket } = useContext(SocketContext);
   useEffect(() => {
-    const handleBeforeUnload = async () => {
-      dispatch(logout({ roleType: "role2" }));
-      setGlobalStore((prev) => ({ ...prev, adminJWT: "" }));
-      if (nav === "admin") {
-        dispatch(logout({ roleType: "role1" }));
-        setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
-      }
-      await axios.get("auth/logout");
-      dispatch(removeCurrentUser());
-      removeSocket();
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        if (packet.data[0] === "logoutUserForce") {
+          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role2" }));
+          setGlobalStore((prev) => ({ ...prev, adminJWT: "" }));
+          if (nav === "master") {
+            dispatch(logout({ roleType: "role1" }));
+            setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
+            navigate("/master");
+          }
+          await axios.get("auth/logout");
+          navigate(`/${nav}`);
+          removeSocket();
+        }
+      };
+    }
+  }, [socket, nav]);
+
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
@@ -341,6 +348,7 @@ const CustomHeader = ({}) => {
           )}
       </AppBar>
       <DropdownMenu1
+        nav={nav}
         open={Boolean(anchor)}
         anchorEl={anchor}
         handleClose={() => setAnchor(null)}
@@ -478,7 +486,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     dispatch(removeCurrentUser());
     dispatch(logout({ roleType: "role2" }));
     setGlobalStore((prev) => ({ ...prev, adminJWT: "" }));
-    if (nav === "admin") {
+    if (nav === "master") {
       dispatch(logout({ roleType: "role1" }));
       setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
     }

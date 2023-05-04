@@ -30,6 +30,7 @@ import { setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
+import { SocketContext } from "../../context/socketContext";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -52,20 +53,6 @@ const CustomHeader = ({}) => {
   let { transPass, axios, role, JWT } = setRole();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  
-  useEffect(() => {
-    const handleBeforeUnload = async () => {
-      dispatch(logout({ roleType: "role3" }));
-      setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
-      await axios.get("auth/logout");
-      dispatch(removeCurrentUser());
-      removeSocket();
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
 
   async function getUserDetail() {
     try {
@@ -85,6 +72,23 @@ const CustomHeader = ({}) => {
   }, [matchesMobile]);
 
   const { userExpert } = useSelector((state) => state.auth);
+  const { socket } = useContext(SocketContext);
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        if (packet.data[0] === "logoutUserForce") {
+          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role3" }));
+          setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
+          await axios.get("auth/logout");
+          removeSocket();
+          navigate("/expert")
+        }
+      };
+    }
+  }, [socket]);
   useEffect(() => {
     if (location.pathname.includes("home")) {
       dispatch(setSelected(0));

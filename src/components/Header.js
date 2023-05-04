@@ -56,19 +56,21 @@ const CustomHeader = ({}) => {
   // const auth = useSelector(state => state?.auth?.user);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const { socket } = useContext(SocketContext);
   useEffect(() => {
-    const handleBeforeUnload = async () => {
-      dispatch(logout({ roleType: "role4" }));
-      setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-      await axios.get("auth/logout");
-      dispatch(removeCurrentUser());
-      removeSocket();
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        if (packet.data[0] === "logoutUserForce") {
+          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role4" }));
+          setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+          await axios.get("auth/logout");
+          removeSocket();
+        }
+      };
+    }
+  }, [socket]);
 
   async function getUserDetail() {
     try {

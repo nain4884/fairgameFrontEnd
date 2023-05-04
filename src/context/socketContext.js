@@ -21,14 +21,14 @@ export const SocketProvider = ({ children }) => {
   const getToken = (tk, rl) => {
     let token = "";
     if (rl === "role4") {
-      token = "Bearer " + (tk.userJWT || localStorage.getItem("JWTuser"));
+      token = "Bearer " + (tk.userJWT || sessionStorage.getItem("JWTuser"));
     } else if (rl === "role3") {
-      token = "Bearer " + (tk.expertJWT || localStorage.getItem("JWTexpert"));
+      token = "Bearer " + (tk.expertJWT || sessionStorage.getItem("JWTexpert"));
     } else if (rl === "role2") {
-      token = "Bearer " + (tk.adminJWT || localStorage.getItem("JWTadmin"));
+      token = "Bearer " + (tk.adminJWT || sessionStorage.getItem("JWTadmin"));
     }
     if (rl === "role1") {
-      token = "Bearer " + (tk.masterJWT || localStorage.getItem("JWTmaster"));
+      token = "Bearer " + (tk.masterJWT || sessionStorage.getItem("JWTmaster"));
     }
     return token;
   };

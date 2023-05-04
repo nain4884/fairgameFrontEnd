@@ -47,13 +47,13 @@ export default function Login(props) {
         val.includes(v)
       )
     ) {
-      newtoken = localStorage.getItem("JWTmaster");
+      newtoken = sessionStorage.getItem("JWTmaster");
     } else if (
       ["fairGameWallet", "fairGameAdmin"].some((v) => val.includes(v))
     ) {
-      newtoken = localStorage.getItem("JWTadmin");
+      newtoken = sessionStorage.getItem("JWTadmin");
     } else if (["expert"].some((v) => val.includes(v))) {
-      newtoken = localStorage.getItem("JWTexpert");
+      newtoken = sessionStorage.getItem("JWTexpert");
     }
   };
 
@@ -64,7 +64,7 @@ export default function Login(props) {
 
   async function getToken(val) {
     try {
-      const token = await localStorage.getItem(val);
+      const token = await sessionStorage.getItem(val);
       return token;
     } catch (error) {
       console.log("Error fetching token from local storage:", error);

@@ -17,17 +17,17 @@ export const auth = createSlice({
     signIn: (state, action) => {
       const role = action?.payload?.role?.roleName.trim();
       if (["admin", "master", "superAdmin", "superMaster"].includes(role)) {
-        localStorage.setItem("JWTmaster", action.payload.access_token);
+        sessionStorage.setItem("JWTmaster", action.payload.access_token);
         state.userMaster = { roleType: "role1", ...action.payload };
       } else if (["fairGameWallet", "fairGameAdmin"].includes(role)) {
-        localStorage.setItem("JWTadmin", action.payload.access_token);
+        sessionStorage.setItem("JWTadmin", action.payload.access_token);
         state.userAdmin = { roleType: "role2", ...action.payload };
       } else if (["expert"].includes(role)) {
-        localStorage.setItem("JWTexpert", action.payload.access_token);
+        sessionStorage.setItem("JWTexpert", action.payload.access_token);
         const userExpert = { roleType: "role3", ...action.payload };
         state.userExpert = userExpert;
       } else if (["user"].includes(role)) {
-        localStorage.setItem("JWTuser", action.payload.access_token);
+        sessionStorage.setItem("JWTuser", action.payload.access_token);
         const body = { roleType: "role4", ...action.payload };
         state.user = body;
       }
@@ -36,23 +36,23 @@ export const auth = createSlice({
       switch (action?.payload?.roleType) {
         case "role1":
           state.userMaster = {};
-          localStorage.removeItem("JWTmaster", action.payload.access_token);
+          sessionStorage.removeItem("JWTmaster", action.payload.access_token);
           break;
         case "role2":
           state.userAdmin = {};
-          localStorage.removeItem("JWTadmin", action.payload.access_token);
+          sessionStorage.removeItem("JWTadmin", action.payload.access_token);
           break;
         case "role3":
           state.userExpert = {};
-          localStorage.removeItem("JWTexpert", action.payload.access_token);
+          sessionStorage.removeItem("JWTexpert", action.payload.access_token);
           break;
         case "role4":
           state.user = {};
-          localStorage.removeItem("JWTuser", action.payload.access_token);
+          sessionStorage.removeItem("JWTuser", action.payload.access_token);
           break;
         default:
           state.guest = {};
-          localStorage.removeItem("JWT", action.payload.access_token);
+          sessionStorage.removeItem("JWT", action.payload.access_token);
           break;
       }
     },

@@ -36,28 +36,28 @@ export const setRole = (token) => {
   const userAxiosInstance = axios.create({
     baseURL: apiBasePath,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("JWTuser")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("JWTuser")}`,
     },
   });
 
   const expertInstance = axios.create({
     baseURL: apiBasePath,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("JWTexpert")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("JWTexpert")}`,
     },
   });
 
   const masterInstance = axios.create({
     baseURL: apiBasePath,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("JWTmaster")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("JWTmaster")}`,
     },
   });
 
   const adminInstance = axios.create({
     baseURL: apiBasePath,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("JWTadmin")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("JWTadmin")}`,
     },
   });
 

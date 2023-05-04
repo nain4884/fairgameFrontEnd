@@ -16,7 +16,7 @@ import NewPassword from "../NewPassword";
 
 const ExportRoutes = () => {
   function ExpertPrivateRoute({ children }) {
-    const token = localStorage.getItem("JWTexpert");
+    const token = sessionStorage.getItem("JWTexpert");
     if (!token) {
       return <Navigate to="/expert" />;
     }

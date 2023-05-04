@@ -3,13 +3,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const DropdownMenu1 = ({ anchorEl, open, handleClose }) => {
-  const { allRole } = useSelector((state) => state.auth);
-  const { currentUser } = useSelector((state) => state?.currentUser);
-  const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
-  const nav = ["fairGameAdmin", "fairGameWallet"].includes(roleName)
-    ? "admin"
-    : "master";
+const DropdownMenu1 = ({ anchorEl, open, handleClose,nav }) => {
+
   const menutItems1 = [
     { title: "Account Statement", link: `/${nav}/account_statement` },
     { title: "Current Bet", link: `/${nav}/current_bet` },

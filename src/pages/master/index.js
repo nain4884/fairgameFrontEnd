@@ -24,7 +24,7 @@ import Verification from "../Varification";
 import NewPassword from "../NewPassword";
 const MasterRoutes = () => {
   function MasterPrivateRoute({ children }) {
-    const token = localStorage.getItem("JWTmaster");
+    const token = sessionStorage.getItem("JWTmaster");
     const decodedToken = jwtDecode(token);
     if (
       !["master", "admin", "superAdmin", "superMaster"].includes(

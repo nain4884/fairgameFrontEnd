@@ -38,7 +38,7 @@ const Main = () => {
   };
 
   function UserPrivateRoute({ children }) {
-    const token = localStorage.getItem("JWTuser");
+    const token = sessionStorage.getItem("JWTuser");
     if (!token) {
       return <Navigate to="/" />;
     }

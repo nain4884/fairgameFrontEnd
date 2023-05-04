@@ -8,7 +8,10 @@ import { useLocation, useNavigation } from "react-router-dom";
 import { SocketContext } from "../../context/socketContext";
 import { setRole } from "../../newStore";
 import { useEffect } from "react";
-import { setCurrentUser } from "../../newStore/reducers/currentUser";
+import {
+  removeCurrentUser,
+  setCurrentUser,
+} from "../../newStore/reducers/currentUser";
 import {
   setAllBetRate,
   setAllSessionBets,
@@ -28,6 +31,9 @@ import { HourGlass } from "../../assets";
 import BetPlaced from "../../components/BetPlaced";
 import EventListing from "../../components/EventListing";
 import { memo } from "react";
+import { logout } from "../../newStore/reducers/auth";
+import { removeSocket } from "../../components/helper/removeSocket";
+import { GlobalStore } from "../../context/globalStore";
 
 let session = [];
 let matchOddsCount = 0;
@@ -66,18 +72,33 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const { axios, role } = setRole();
   var matchId = id;
   // console.log("currentMatchProfit 444:", currentMatchProfit);
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   useEffect(() => {
     if (socket && socket.connected) {
+      console.log("message received",socket)
       socket.on("newMessage", (value) => {
         console.log(value);
       });
+
+      socket.onevent = async(packet) => {
+        if (packet.data[0] === 'logoutUserForce') {
+          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+        
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role4" }));
+          setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+          await axios.get("auth/logout");
+          removeSocket();
+        }
+      };
+    
       socket.on("session_bet", (data) => {
         try {
           setCurrentMatchProfit((currentMatch) => {
             const updatedBettings = currentMatch.bettings.map((betting) => {
               if (betting.id === data?.betPlaceData?.bet_id) {
                 // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                let profitLoss = data?.profitLoss
+                let profitLoss = data?.profitLoss;
                 return {
                   ...betting,
                   profitLoss: profitLoss,
@@ -256,7 +277,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       socketMicro.on(`session${marketId}`, (val) => {
         // console.log("currentMatchProfit 33:", currentMatchProfit);
         if (val !== null && matchId == checkMctchId) {
-
           const updatedBettings1 = currentMatch?.matchSessionData?.map(
             (betting) => {
               const selectedData = val.find(
@@ -380,7 +400,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
 
       let bettingsData = response?.data;
-      console.log("response.data :", bettingsData)
+      console.log("response.data :", bettingsData);
       setCurrentMatchProfit(bettingsData);
 
       // console.log("currentMatchProfit 111:", currentMatchProfit);
@@ -461,8 +481,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       <BetPlaced visible={visible} setVisible={setVisible} />
       {/* {console.warn("currentMatch :", currentMatch)} */}
       {matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
-
-        < div
+        <div
           style={{
             width: "100%",
             alignItems: "center",
@@ -513,71 +532,66 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             <LiveMatchHome />
           </Box>
         </div>
-      )
-      }
-      {
-        !matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
-          <Box sx={{ display: "flex", width: "100%" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "70%",
-              }}
-            >
-              <MatchOdds
-                matchOddsLive={matchOddsLive}
-                bookmakerLive={bookmakerLive}
-                onClick={() => handleClose(true)}
-                data={currentMatch}
-                dataProfit={currentMatchProfit}
-                allBetsData={allSessionBets}
-              />
-            </Box>
-            <Box sx={{ width: "30%", paddingRight: "1%" }}>
-              <MatchComponent currentMatch={currentMatch} />{" "}
-              {/** Live scoreBoard */}
-              <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
-              <AllRateSeperate
-                allBetsData={IObets?.filter((v) =>
-                  ["MATCH ODDS", "BOOKMAKER"]?.includes(v.marketType)
-                )}
-                mark
-              />
-              {(matchDetail?.manualSessionActive ||
-                matchDetail?.apiSessionActive) && (
-                  <SessionBetSeperate allBetsData={allSessionBets} mark />
-                )}
-            </Box>
-          </Box>
-        )
-      }
-      {
-        activeTab != "CRICKET" && activeTab != "INPLAY" && (
+      )}
+      {!matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
+        <Box sx={{ display: "flex", width: "100%" }}>
           <Box
-            style={{
+            sx={{
               display: "flex",
-              justifyContent: "center",
-              width: "100%",
-              flex: 1,
-              alignItems: "center",
               flexDirection: "column",
+              width: "70%",
             }}
           >
-            <Lottie
-              animationData={HourGlass}
-              style={{
-                display: "flex",
-                alignSelf: "center",
-                width: "200px",
-                height: "200px",
-              }}
+            <MatchOdds
+              matchOddsLive={matchOddsLive}
+              bookmakerLive={bookmakerLive}
+              onClick={() => handleClose(true)}
+              data={currentMatch}
+              dataProfit={currentMatchProfit}
+              allBetsData={allSessionBets}
             />
-            <Typography sx={{ color: "text.white" }}>Coming Soon</Typography>
           </Box>
-        )
-      }
-    </Box >
+          <Box sx={{ width: "30%", paddingRight: "1%" }}>
+            <MatchComponent currentMatch={currentMatch} />{" "}
+            {/** Live scoreBoard */}
+            <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
+            <AllRateSeperate
+              allBetsData={IObets?.filter((v) =>
+                ["MATCH ODDS", "BOOKMAKER"]?.includes(v.marketType)
+              )}
+              mark
+            />
+            {(matchDetail?.manualSessionActive ||
+              matchDetail?.apiSessionActive) && (
+              <SessionBetSeperate allBetsData={allSessionBets} mark />
+            )}
+          </Box>
+        </Box>
+      )}
+      {activeTab != "CRICKET" && activeTab != "INPLAY" && (
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
+            flex: 1,
+            alignItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <Lottie
+            animationData={HourGlass}
+            style={{
+              display: "flex",
+              alignSelf: "center",
+              width: "200px",
+              height: "200px",
+            }}
+          />
+          <Typography sx={{ color: "text.white" }}>Coming Soon</Typography>
+        </Box>
+      )}
+    </Box>
   );
 };
 

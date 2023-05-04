@@ -55,7 +55,6 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
     if (socketMicro && socketMicro.connected && match?.marketId) {
       socketMicro.emit("init", { id: match?.marketId });
       activateLiveMatchMarket();
-
       socketMicro.on(`matchOdds${match?.marketId}`, (val) => {
         if (val.length === 0) {
           matchOddsCount += 1;

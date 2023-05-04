@@ -10,7 +10,7 @@ import AllBets from "../../components/AllBets";
 import { Background, CustomHeader as CHeader } from "../../components/index";
 import CustomHeader from "./Header";
 import { SocketContext } from "../../context/socketContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   setAllBetRate,
   setBookMakerLive,
@@ -29,6 +29,10 @@ import SessionMarket from "./SessionMarket/SessionMarket";
 import RunsBox from "./RunsBox";
 import MatchOdds from "./MatchOdds/MatchOdds";
 import DropdownMenu from "./DropdownMenu";
+import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { logout } from "../../newStore/reducers/auth";
+import { removeSocket } from "../../components/helper/removeSocket";
+import { GlobalStore } from "../../context/globalStore";
 
 let matchOddsCount = 0;
 let marketId = "";
@@ -36,7 +40,7 @@ const MatchScreen = () => {
   const [data, setData] = useState([]);
   const { socket, socketMicro } = useContext(SocketContext);
   const { state } = useLocation();
-
+  const navigate = useNavigate();
   const { axios } = setRole();
   const dispatch = useDispatch();
   const { allBetRates } = useSelector((state) => state?.matchDetails);
@@ -48,7 +52,7 @@ const MatchScreen = () => {
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
   );
-
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
   const getSingleMatch = async (val) => {
     try {
@@ -72,6 +76,19 @@ const MatchScreen = () => {
 
   useEffect(() => {
     if (socket && socket.connected && currentMatch !== null) {
+
+      socket.onevent = async(packet) => {
+        if (packet.data[0] === 'logoutUserForce') {
+          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+        
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role3" }));
+          setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
+          await axios.get("auth/logout");
+          removeSocket();
+          navigate("/expert")
+        }
+      };
       socket.on("newBetAdded", (value) => {
         console.log(value, "newBetAdded");
 

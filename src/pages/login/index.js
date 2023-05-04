@@ -47,7 +47,7 @@ export default function Login(props) {
 
   async function getToken(val) {
     try {
-      const token = await localStorage.getItem(val);
+      const token = await sessionStorage.getItem(val);
       return token;
     } catch (error) {
       console.log("Error fetching token from local storage:", error);
@@ -85,9 +85,9 @@ export default function Login(props) {
         password: loginDetail[2].val,
       });
 
-      const token = await localStorage.getItem("JWTuser");
+      const token = await sessionStorage.getItem("JWTuser");
 
-      const decodeToken = token !==null && jwtDecode(token);
+      const decodeToken = token !== null && jwtDecode(token);
       const resToken = jwtDecode(data?.data?.access_token);
       if (decodeToken.sub === resToken.sub) {
         toast.warn("Please logout from previous session");
