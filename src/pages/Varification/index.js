@@ -245,66 +245,7 @@ export default function Verification() {
     }
   }
 
-  async function loginToAccount() {
-    // changeErrors()
-    // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
-    try {
-      let { data } = await axios.post(`/auth/login`, {
-        username: loginDetail[1].val,
-        password: loginDetail[2].val,
-      });
-      let foundRoles = await axios.get(`/role`);
-      let roles = foundRoles.data;
-      dispatch(setAllRoles(roles))
-      let roleDetail = roles.find(findThisRole);
-      function findThisRole(role) {
-        return role.id === data.data.roleId;
-      }
-      if (roleDetail) data.data.role = roleDetail;
-      if (data.message === "User login successfully.") {
-        getUserDetail();
-        // dispatch(setActiveRole(foundRoles.data));
-        // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
-        dispatch(signIn(data.data));
-        setRole(data.data.access_token);
-        switch (data.data.role.roleName) {
-          case "master":
-            handleNavigate("/master/list_of_clients", "master");
-            break;
-          case "superMaster":
-            handleNavigate("/super_master/list_of_clients", "master");
-            break;
-          case "admin":
-            handleNavigate("/admin/list_of_clients", "master");
-            break;
-          case "superAdmin":
-            handleNavigate("/super_admin/list_of_clients", "master");
-            break;
-          case "expert":
-            handleNavigate("/expert/match", "expert");
-            break;
-          case "user":
-            handleNavigate("/matches", "user");
-            break;
-          case "fairGameWallet":
-            handleNavigate("/fairgame_wallet/list_of_clients", "admin");
-            break;
-          case "fairGameAdmin":
-            handleNavigate("/fairgame_admin/list_of_clients", "admin");
-            break;
-          default:
-            handleNavigate("/matches", "user");
-            break;
-        }
-      }
-    } catch (e) {
-      console.log(e);
-      if (!e?.response) return setLoginError(LoginServerError);
-      setLoginError(e.response.data.message);
-    }
-    // }
-  }
-
+  
   const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));
 
 

@@ -16,33 +16,20 @@ export const auth = createSlice({
   reducers: {
     signIn: (state, action) => {
       const role = action?.payload?.role?.roleName.trim();
-      switch (role) {
-        case "superAdmin":
-        case "master":
-        case "superMaster":
-        case "admin":
-          localStorage.setItem("JWTmaster", action.payload.access_token);
-          state.userMaster = { roleType: "role1", ...action.payload };
-          break;
-        case "expert":
-          localStorage.setItem("JWTexpert", action.payload.access_token);
-          const userExpert = { roleType: "role3", ...action.payload };
-          state.userExpert = userExpert;
-          break;
-        case "user":
-          localStorage.setItem("JWTuser", action.payload.access_token);
-          const body = { roleType: "role4", ...action.payload };
-          state.user = body;
-          break;
-        case "fairGameWallet":
-        case "fairGameAdmin":
-          localStorage.setItem("JWTadmin", action.payload.access_token);
-          state.userAdmin = { roleType: "role2", ...action.payload };
-          break;
-        default:
-          localStorage.setItem("JWT", action.payload.access_token);
-          state.guest = { roleType: "role", ...action.payload };
-          break;
+      if (["admin", "master", "superAdmin", "superMaster"].includes(role)) {
+        localStorage.setItem("JWTmaster", action.payload.access_token);
+        state.userMaster = { roleType: "role1", ...action.payload };
+      } else if (["fairGameWallet", "fairGameAdmin"].includes(role)) {
+        localStorage.setItem("JWTadmin", action.payload.access_token);
+        state.userAdmin = { roleType: "role2", ...action.payload };
+      } else if (["expert"].includes(role)) {
+        localStorage.setItem("JWTexpert", action.payload.access_token);
+        const userExpert = { roleType: "role3", ...action.payload };
+        state.userExpert = userExpert;
+      } else if (["user"].includes(role)) {
+        localStorage.setItem("JWTuser", action.payload.access_token);
+        const body = { roleType: "role4", ...action.payload };
+        state.user = body;
       }
     },
     logout: (state, action) => {

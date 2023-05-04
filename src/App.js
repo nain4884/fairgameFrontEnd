@@ -19,6 +19,7 @@ function App() {
     userJWT:"",
     adminJWT:"",
     expertJWT:"",
+    masterJWT:"",
   })
   if (process.env.ENV !== "production") console.log = () => { };
   return (

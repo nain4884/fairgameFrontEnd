@@ -2,7 +2,7 @@ import { Menu, MenuItem } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const menutItems2 = [{ title: "Deposit", link: "/fairgame_wallet/deposit" }, { title: "Withdraw", link: "/fairgame_wallet/withdraw" }]
+const menutItems2 = [{ title: "Deposit", link: "/admin/deposit" }, { title: "Withdraw", link: "/admin/withdraw" }]
 
 const DropdownMenu2 = ({ anchorEl, open, handleClose }) => {
     const navigate = useNavigate()

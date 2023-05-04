@@ -172,6 +172,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
 
       socket.on("newBetAdded", (value) => {
+        console.log(value, "newBetAdded");
         matchId = value?.match_id;
         try {
           setCurrentMatch((currentMatch) => {
@@ -199,11 +200,17 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               }
               return betting;
             });
+            var newUpdatedValue = updatedBettings;
+            const bettingsIds = updatedBettings?.map((betting) => betting.id);
+            if (!bettingsIds.includes(value.id)) {
+              // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
+              newUpdatedValue = [...newUpdatedValue, value];
+            }
 
             // Return the updated current match object
             return {
               ...currentMatch,
-              bettings: updatedBettings,
+              bettings: newUpdatedValue,
             };
           });
         } catch (err) {
@@ -216,7 +223,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
 
         console.log("value qqqq:", value);
         setCurrentMatch((prev) => {
-
           if (prev?.id === value?.matchId) {
             return {
               ...prev,

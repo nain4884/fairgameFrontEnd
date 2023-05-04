@@ -10,7 +10,7 @@ import CustomHeader from "./CommonMasterAdminLayout/Header";
 export default function Home() {
   function CondiionCheck(path) {
     let success = true
-    success *= (path.split("/")[1] === "fairgame_wallet" || path.split("/")[1] === "super_master" || path.split("/")[1] === "fairgame_admin" || path.split("/")[1] === "super_admin" || path.split("/")[1] === "super_master" || path.split("/")[1] === "master" || path.split("/")[1] === "admin")
+    success *=  ["admin","master" ].includes(path.split("/")[1])
     success *= path.split("/")[2] === "list_of_clients"
     return success
   }

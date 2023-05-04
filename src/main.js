@@ -15,6 +15,7 @@ import { setRole } from "./newStore";
 import ForgotPassword from "./pages/ForgotPassword";
 import Verification from "./pages/Varification";
 import NewPassword from "./pages/NewPassword";
+import AdminRoutes from "./pages/fairGameAdmin";
 
 const Main = () => {
   const [loginRole, setLoginRole] = useState("");
@@ -44,7 +45,6 @@ const Main = () => {
     return children;
   }
 
-
   return (
     <AuthProvider>
       <Routes>
@@ -69,28 +69,25 @@ const Main = () => {
             </UserPrivateRoute>
           }
         />
-
-        {/* Admin Routes */}
-        <Route path="/admin/*" element={<Admin />} />
-
-        {/* Expert Routes */}
-        <Route path="/expert/*"  element={
-              <ExpertRoutes />
-          }  />
-
-        {/* Wallet Routes */}
-
         <Route path="/change_button_value" element={<Matches />} />
         <Route path="/change_password" element={<Matches />} />
         <Route path="/account_statement" element={<Matches />} />
         <Route path="/bet_history" element={<Matches />} />
         <Route path="/profit_loss" element={<Matches />} />
         <Route path="/rules" element={<Matches />} />
-        <Route exact path="/fairgame_admin/*" element={<FairGameAdminRoutes />} />
-        <Route exact path="/fairgame_wallet/*" element={<FairGameWalletRoutes />} />
+        {/* Master Routes */}
         <Route path="/master/*" element={<MasterRoutes />} />
-        <Route path="/super_master/*" element={<SuperMasterRoutes />} />
-        <Route path="/super_admin/*" element={<SuperAdminRoutes />} />
+
+        {/* Expert Routes */}
+        <Route path="/expert/*" element={<ExpertRoutes />} />
+
+        {/* admin Routes */}
+        <Route exact path="/admin/*" element={<AdminRoutes />} />
+
+        {/* <Route exact path="/fairgame_wallet/*" element={<FairGameWalletRoutes />} /> */}
+        {/* <Route path="/master/*" element={<MasterRoutes />} /> */}
+        {/* <Route path="/super_master/*" element={<SuperMasterRoutes />} /> */}
+        {/* <Route path="/super_admin/*" element={<SuperAdminRoutes />} /> */}
       </Routes>
     </AuthProvider>
   );

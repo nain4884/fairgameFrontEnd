@@ -31,7 +31,7 @@ import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -49,7 +49,23 @@ const CustomHeader = ({ }) => {
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
-  let { transPass, axios, role } = setRole();
+  let { transPass, axios, role, JWT } = setRole();
+
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      dispatch(logout({ roleType: "role3" }));
+      setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
+      await axios.get("auth/logout");
+      dispatch(removeCurrentUser());
+      removeSocket();
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   async function getUserDetail() {
     try {
@@ -80,8 +96,13 @@ const CustomHeader = ({ }) => {
     setIsTransPasswordExist(userExpert?.isTransPasswordCreated);
     getAllMatch();
     getMatchLiveSession();
-    getUserDetail();
   }, [location, userExpert]);
+
+  useEffect(() => {
+    if (JWT) {
+      getUserDetail();
+    }
+  }, [JWT]);
   const getAllMatch = async () => {
     try {
       let response = await axios.get(`/game-match/getAllMatch`);
@@ -193,7 +214,7 @@ const CustomHeader = ({ }) => {
                     py: "5px",
                     borderRadius: "5px",
                     marginLeft: "15px",
-                    cursor: 'pointer'
+                    cursor: "pointer",
                   }}
                   titleStyle={{
                     color: currentSelected == 1 ? "green" : "white",
@@ -215,7 +236,7 @@ const CustomHeader = ({ }) => {
                       py: "5px",
                       borderRadius: "5px",
                       marginLeft: "15px",
-                      cursor: 'pointer'
+                      cursor: "pointer",
                     }}
                     titleStyle={{
                       color: currentSelected == 5 ? "green" : "white",
@@ -240,7 +261,7 @@ const CustomHeader = ({ }) => {
                       py: "5px",
                       borderRadius: "5px",
                       marginLeft: "15px",
-                      cursor: 'pointer'
+                      cursor: "pointer",
                     }}
                     titleStyle={{
                       color:
@@ -344,8 +365,8 @@ const CustomHeader = ({ }) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                      ? "Bookmaker"
-                      : "Betfair"
+                    ? "Bookmaker"
+                    : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />
@@ -706,7 +727,7 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
         }}
       >
         <Box
-          onClick={(event) => { }}
+          onClick={(event) => {}}
           sx={[
             {
               backgroundColor: "white",
@@ -777,9 +798,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
   const dispatch = useDispatch();
   const logoutProcess = async () => {
     dispatch(logout({ roleType: "role3" }));
-    setGlobalStore(prev=>({...prev,expertJWT:""}))
+    setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
     await axios.get("auth/logout");
-    removeCurrentUser();
+    dispatch(removeCurrentUser());
     navigate("/expert");
     handleClose();
     removeSocket();
