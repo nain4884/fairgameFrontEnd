@@ -335,6 +335,7 @@ const PlaceBet = ({
       stake: defaultValue,
       teamA_name: currentMatch?.teamA,
       teamB_name: currentMatch?.teamB,
+      teamC_name: currentMatch?.teamC,
       marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : "BOOKMAKER",
     };
     if (marketType == "Session") {

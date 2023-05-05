@@ -74,10 +74,10 @@ const MatchSubmit = ({ }) => {
                         }
                         <Typography sx={{ color: 'black', fontSize: { laptop: '14px', mobile: "13px" }, fontWeight: '600', marginLeft: '10px' }} >{name}</Typography>
                     </Box>
-                    
+
                 </Box>
                 <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'flex-end' }, alignItems: 'center' }} >
-                <MoneyBox color={color} />
+                    <MoneyBox color={color} />
                     {!lock && <SeperateBox align={align} value={"1.71"} value2={" $23000"} color={matchesMobile ? "white" : "#A7DCFF"} />}
                     {lock && <Box sx={{ height: "94%", background: "#FDF21A", border: "1px solid #2626264D", width: "5vw", justifyContent: "center", alignItems: "center", display: "flex" }} >
                         <StyledImage src={LockSolid} sx={{ height: "20px", width: "20px" }} />
@@ -113,7 +113,7 @@ const MatchSubmit = ({ }) => {
         return (
             <Box sx={{
                 // width: '80px',
-                borderRadius: "5px", justifyContent: 'center', position: 'relative' , right:  '20px', alignItems: 'center', display: 'flex', height: '25px', borderRadius: '7px'
+                borderRadius: "5px", justifyContent: 'center', position: 'relative', right: '20px', alignItems: 'center', display: 'flex', height: '25px', borderRadius: '7px'
             }}>
                 <Typography sx={{ fontSize: '13px', fontWeight: 'bold', color: color }} >+600,000,000</Typography>
 
@@ -587,7 +587,7 @@ const MatchSubmit = ({ }) => {
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', flex: 1, height: '100%', marginX: "0.5%" }}>
-                {location?.state?.match>=3&&<Box sx={{ flex: 0.5, flexDirection: 'column', minHeight: "100px", display: 'flex' }}>
+                {location?.state?.match >= 3 && <Box sx={{ flex: 0.5, flexDirection: 'column', minHeight: "100px", display: 'flex' }}>
                     <Typography sx={{ fontSize: '16px', color: 'white', fontWeight: '700', paddingTop: '0.7%', alignSelf: 'start', }} >INDIA V/S PAKISTAN</Typography>
                     <Odds />
                     <BookMarketer />
@@ -595,7 +595,7 @@ const MatchSubmit = ({ }) => {
                     <AllBets tag={true} />
                 </Box>}
                 <Box sx={{ width: "10px" }} />
-                {location?.state?.match==4&&<Box sx={{ flex: 0.5, flexDirection: 'column', display: 'flex', minHeight: "100px" }}>
+                {location?.state?.match == 4 && <Box sx={{ flex: 0.5, flexDirection: 'column', display: 'flex', minHeight: "100px" }}>
                     <Typography sx={{ fontSize: '16px', color: 'white', fontWeight: '700', paddingTop: '0.7%', alignSelf: 'start', }} >INDIA V/S PAKISTAN</Typography>
                     <Odds />
                     <BookMarketer />

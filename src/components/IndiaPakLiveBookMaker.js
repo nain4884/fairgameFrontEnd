@@ -4,25 +4,119 @@ import StyledImage from "./StyledImage";
 import ResultComponent from "./ResultComponent";
 import './index.css'
 import { BALLSTART, BroadCast } from "../expert/assets";
+import KeyboardEventHandler from 'react-keyboard-event-handler';
+
 export default function IndiaPakLiveBookMaker({ add, match }) {
     const [visible, setVisible] = useState(false)
     const [visible1, setVisible1] = useState(false)
     console.log('match', match)
-    
+
     const AddSession = () => {
-        const [value1, setValue1] = useState(add ? "" : '10,000,00')
-        const [value2, setValue2] = useState(add ? "" : '10,000,00')
+        const [teamARate, setTeamARate] = useState()
+        const [teamALayValue, setTeamALayValue] = useState()
+        const [teamBRate, setTeamBRate] = useState()
+        const [teamBLayValue, setTeamBLayValue] = useState()
+        const [incGap, setIncGap] = useState(0)
+
+        const handleChange = (event) => {
+            let target = event.target;
+            // alert(event.target.name)
+            // console.warn("event :", event)
+            if (target.name === 'teamA_rate') {
+                setTeamARate(target.value)
+                if (target.value !== '') {
+                    let teamA_lay = parseInt(target.value) + 1
+                    // if (incGap > 0) {
+                    //     // teamA_lay = teamA_lay + this.state.up_keypress
+                    // }
+                    setTeamALayValue(teamA_lay);
+                } else {
+                    setTeamALayValue('');
+                }
+            }
+            else if (target.name === 'teamB_rate') {
+                setTeamBRate(target.value)
+                if (target.value !== '') {
+                    let teamB_lay = parseInt(target.value) + 1
+                    // if (incGap > 0) {
+                    //     // teamB_lay = teamB_lay + this.state.up_keypress
+                    // }
+                    setTeamBLayValue(teamB_lay);
+                } else {
+                    setTeamBLayValue('');
+                }
+            }
+        }
+
+        const handleKeysMatchEvents = (key, event) => {
+            // alert(key);
+            // console.log('handle key event');
+            event.preventDefault();
+            // this.setState({ focus_team: event.target.getAttribute('id'), ERROR: false });
+            let targetValue = parseFloat(event.target.value);
+            event.target.value = targetValue;
+            if (key == 'right') {
+                let value = targetValue + 1
+                if (event.target.name === 'teamA_rate') {
+                    setTeamALayValue(teamALayValue + 1);
+                }
+
+                if (event.target.name === 'teamB_rate') {
+                    // this.setState({ teamB_rate: value, ERROR: false });
+                    setTeamBLayValue(teamBLayValue + 1)
+                }
+
+                // event.target.value = value
+            }
+            if (key == 'left') {
+                let value = targetValue - 1
+                if (event.target.name === 'teamA_rate') {
+                    setTeamALayValue(teamALayValue - 1);
+                }
+
+                if (event.target.name === 'teamB_rate') {
+                    setTeamBLayValue(teamBLayValue - 1)
+                }
+
+                // event.target.value = value
+            }
+            // if (key == 'up') {
+            //     let upkey = this.state.up_keypress;
+            //     upkey = upkey + 1
+            //     let lay_value = targetValue + upkey + 1
+            //     if (event.target.name === 'teamB_rate') {
+            //         document.getElementById('teamB_lay').innerText = lay_value;
+            //         this.setState({ teamB_lay: lay_value, ERROR: false });
+            //     } else if (event.target.name === 'teamA_rate') {
+            //         document.getElementById('teamA_lay').innerText = targetValue + upkey + 1;
+            //         this.setState({ teamA_lay: lay_value, ERROR: false });
+            //     }
+            //     this.setState({ up_keypress: upkey, ERROR: false });
+            // }
+            // if (key == 'down') {
+            //     let upkey = this.state.up_keypress;
+            //     upkey = upkey - 1
+            //     if (event.target.name === 'teamB_rate') {
+            //         document.getElementById('teamB_lay').innerText = targetValue + upkey + 1;
+            //     } else if (event.target.name === 'teamA_rate') {
+            //         document.getElementById('teamA_lay').innerText = targetValue + upkey + 1;
+            //     }
+            //     this.setState({ up_keypress: upkey, ERROR: false });
+            // }
+
+        }
+
         return (
             <Box sx={{ border: "2px solid #FFFFFF" }}>
                 <Box sx={{ display: "flex" }}>
                     <Box sx={{ background: "#319E5B", width: "60%", px: "5px" }}>
                         {/* <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>Add Session</Typography> */}
                     </Box>
-                    <Box sx={{ background: "#FF9292", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>No</Typography>
-                    </Box>
                     <Box sx={{ background: "#00C0F9", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Yes</Typography>
+                        <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Back</Typography>
+                    </Box>
+                    <Box sx={{ background: "#FF9292", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Lay</Typography>
                     </Box>
                 </Box>
                 <Box sx={{ display: "flex" }}>
@@ -31,15 +125,41 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             <img src={BALLSTART} style={{ width: '80%', height: '30%', position: 'absolute', zIndex: 3 }} />
                         </Box>}
                         <Box sx={{ borderWidth: 0, justifyContent: 'space-between', height: '50%', paddingX: '10px', alignItems: 'center', display: 'flex', width: '100%' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '600', }}>{match?.teamA}</Typography>
+                            <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamA}</Typography>
+                            <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                <TextField
+                                    onChange={
+                                        (e) => handleChange(e)
+                                        // (i) => setValue1(i.target.value)
+                                    }
+                                    name={"teamA_rate"}
+                                    variant="standard"
+                                    value={teamARate}
+                                    InputProps={{
+                                        disableUnderline: true,
+                                        sx: {
+                                            height: '30px', width: '90%',
+                                            background: '#F6F6F6',
+                                            border: '1px solid #2626264D',
+                                            borderRadius: '4px',
+                                            alignSelf: 'flex-end',
+                                            textAlign: 'center',
+                                            alignItems: 'center',
+                                            paddingX: '10px',
+                                            color: "#319E5B",
+                                            fontWeight: '600'
+                                        }
+                                    }}
+                                />
+                            </KeyboardEventHandler>
                             <TextField
-                                onChange={(i) => setValue1(i.target.value)}
+                                // onChange={(e) => handleChange(e)}
                                 variant="standard"
-                                value={value1}
+                                value={teamALayValue}
                                 InputProps={{
                                     disableUnderline: true,
                                     sx: {
-                                        height: '30px', width: '50%',
+                                        height: '30px', width: '90%',
                                         background: '#F6F6F6',
                                         border: '1px solid #2626264D',
                                         borderRadius: '4px',
@@ -54,15 +174,37 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             />
                         </Box>
                         <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingX: '10px', borderLeftWidth: 0, width: '100%', height: '50%', justifyContent: 'space-between' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '600', }}>{match?.teamB}</Typography>
+                            <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamB}</Typography>
+                            <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                <TextField
+                                    variant="standard"
+                                    value={teamBRate}
+                                    onChange={(e) => handleChange(e)}
+                                    name={"teamB_rate"}
+                                    // onChange={(i) => setValue2(i.target.value)}
+                                    InputProps={{
+                                        disableUnderline: true,
+                                        sx: {
+                                            height: '30px', width: '90% ',
+                                            background: '#F6F6F6',
+                                            border: '1px solid #2626264D',
+                                            borderRadius: '4px',
+                                            alignSelf: 'flex-end',
+                                            paddingX: '10px',
+                                            color: "#FF4D4D",
+                                            fontWeight: '600'
+                                        }
+                                    }}
+                                />
+                            </KeyboardEventHandler>
                             <TextField
                                 variant="standard"
-                                value={value2}
-                                onChange={(i) => setValue2(i.target.value)}
+                                value={teamBLayValue}
+                                // onChange={(i) => setTeamBLayValue(i.target.value)}
                                 InputProps={{
                                     disableUnderline: true,
                                     sx: {
-                                        height: '30px', width: '50% ',
+                                        height: '30px', width: '90% ',
                                         background: '#F6F6F6',
                                         border: '1px solid #2626264D',
                                         borderRadius: '4px',
@@ -77,18 +219,18 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     </Box>
                     <Box sx={{ borderLeft: "2px solid white", width: "40%" }}>
                         <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                            <Box sx={{ background: "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            <Box sx={{ background: "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}</Typography>
                             </Box>
-                            <Box sx={{ background: "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            <Box sx={{ background: "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}</Typography>
                             </Box>
                         </Box>
                         <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                            <Box sx={{ background: "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            <Box sx={{ background: "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}</Typography>
                             </Box>
-                            <Box sx={{ background: "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            <Box sx={{ background: "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}</Typography>
                             </Box>
                         </Box>
@@ -113,7 +255,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             <Box sx={{ display: "flex", marginTop: "20px", flexDirection: 'column' }}>
                 <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '100%', alignSelf: 'center', paddingX: .2, paddingTop: .2, background: 'white' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market</Typography>
+                        <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market 1</Typography>
                     </Box>
                     <Box sx={{
                         flex: .1, background: '#262626'
