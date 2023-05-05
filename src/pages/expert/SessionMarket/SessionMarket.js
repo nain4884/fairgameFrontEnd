@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setSelectedMatch } from "../../../newStore/reducers/matchDetails";
 import { setRole } from "../../../newStore";
-const SessionMarket = ({ currentMatch, setCurrentMatch, }) => {
+const SessionMarket = ({ currentMatch, setCurrentMatch,setLocalState, }) => {
   const { sessionOddsLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -251,6 +251,7 @@ const SessionMarket = ({ currentMatch, setCurrentMatch, }) => {
               ?.map((match, index) => (
                 <Box key={index}>
                   <SessionMarketBox
+                    setLocalState={(val)=>setLocalState(val)}
                     currentMatch={currentMatch}
                     setCurrentMatch={setCurrentMatch}
                     newData={match}

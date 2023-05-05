@@ -11,16 +11,8 @@ import { Background, CustomHeader as CHeader } from "../../components/index";
 import CustomHeader from "./Header";
 import { SocketContext } from "../../context/socketContext";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  setAllBetRate,
-  setBookMakerLive,
-  setMatchOddsLive,
-  setSessionOddsLive,
-} from "../../newStore/reducers/matchDetails";
-import {
-  removeSelectedMatch,
-  setSelectedMatch,
-} from "../../newStore/reducers/expertMatchDetails";
+import { setAllBetRate } from "../../newStore/reducers/matchDetails";
+
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
 import { setRole } from "../../newStore";
@@ -49,9 +41,8 @@ const MatchScreen = () => {
   const [IObets, setIObtes] = useState(allBetRates);
   const [bookmakerLivedata, setBookmakerLiveData] = useState([]);
   const [matchOddsLive, setMatchOddsLive] = useState([]);
-  const checkMctchId = useSelector(
-    (state) => state?.matchDetails?.selectedMatch?.id
-  );
+  const [localState, setLocalState] = useState(null);
+
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
   const getSingleMatch = async (val) => {
@@ -72,6 +63,14 @@ const MatchScreen = () => {
       getAllBetsData(state?.id);
     }
   }, [state?.id]);
+
+  useEffect(() => {
+    if (localState?.id) {
+      setCurrentMatch(localState);
+      setLocalState(null)
+    }
+  }, [localState]);
+
 
   useEffect(() => {
     if (socket && socket.connected && currentMatch !== null) {
@@ -129,21 +128,6 @@ const MatchScreen = () => {
           } catch (e) {
             console.log("error", e?.message);
           }
-          // // dispatch(setAllBetRates(allBetRates.push(body)));
-          // const manualBookmaker = {
-          //   teamA: data.teamA_rate,
-          //   teamB: data.teamB_rate,
-          // };
-          // setMatchOddsRates((prev) => ({
-          //   ...prev,
-          //   manualBookmaker,
-          // }));
-          // // dispatch(
-          // //   stateActions.setMatchDetails(manualBookmaker)
-          // // );
-          // dispatch(
-          //   stateActions.setBalance(data.newBalance, role, data.exposure)
-          // );
         }
 
         if (packet.data[0] === "bookMakerRateLive") {
@@ -160,22 +144,22 @@ const MatchScreen = () => {
           const value = packet.data[1];
           try {
             setCurrentMatch((currentMatch) => {
-              const updatedBettings = currentMatch?.bettings.map((betting,index) => {
-                if (betting.selectionId === value.selectionId) {
-                  return betting[index]=value
-                 
-                } else if (betting.id === value.id) {
-                  return betting[index]=value
+              const updatedBettings = currentMatch?.bettings.map(
+                (betting, index) => {
+                  if (betting.selectionId === value.selectionId) {
+                    return (betting[index] = value);
+                  } else if (betting.id === value.id) {
+                    return (betting[index] = value);
+                  }
+                  return betting;
                 }
-                return betting;
-              });
+              );
               console.log("updatedBettings", updatedBettings);
               return {
                 ...currentMatch,
                 bettings: updatedBettings,
               };
             });
-         
           } catch (e) {
             console.log(e.message);
           }
@@ -242,7 +226,6 @@ const MatchScreen = () => {
     if (socketMicro && socketMicro.connected && marketId !== "") {
       socketMicro.emit("init", { id: marketId });
       activateLiveMatchMarket(marketId);
-
       socketMicro.on(`session${marketId}`, (val) => {
         if (state?.marketId == marketId) {
           // add this check ignore duplicate rates
@@ -256,12 +239,10 @@ const MatchScreen = () => {
             suspended: v?.GameStatus,
             selectionId: v?.SelectionId,
           }));
-console.log('currentMatch?.bettings11', currentMatch?.bettings)
           if (currentMatch?.bettings?.length > 0) {
             const data = currentMatch?.bettings?.map((betting) => {
               var selectedData = newVal?.find(
-                (data) =>
-                  data?.selectionId === betting?.selectionId 
+                (data) => data?.selectionId === betting?.selectionId
               );
               if (selectedData !== undefined) {
                 return {
@@ -331,16 +312,16 @@ console.log('currentMatch?.bettings11', currentMatch?.bettings)
           setBookmakerLiveData([]);
         }
       });
-      return () => {
-        socketMicro?.emit("disconnect_market", {
-          id: marketId,
-        });
-        setMatchOddsLive([]);
+      // return () => {
+      //   socketMicro?.emit("disconnect_market", {
+      //     id: marketId,
+      //   });
+      //   setMatchOddsLive([]);
 
-        marketId = "";
-      };
+      //   marketId = "";
+      // };
     }
-  }, [socketMicro, marketId]);
+  }, [socketMicro, marketId,localState]);
 
   async function getAllBetsData(val) {
     let payload = {
@@ -490,28 +471,29 @@ console.log('currentMatch?.bettings11', currentMatch?.bettings)
       >
         {(currentMatch?.manualSessionActive ||
           currentMatch?.apiSessionActive) && (
-            <Box
-              sx={{
-                width: { laptop: "50%", mobile: "100%", tablet: "100%" },
-                flexDirection: "column",
-                display: "flex",
-              }}
-            >
-              <SessionMarket
-                setCurrentMatch={setCurrentMatch}
-                currentMatch={currentMatch}
-                SessionMarket={SessionMarket}
-              />
+          <Box
+            sx={{
+              width: { laptop: "50%", mobile: "100%", tablet: "100%" },
+              flexDirection: "column",
+              display: "flex",
+            }}
+          >
+            <SessionMarket
+              setLocalState={setLocalState}
+              setCurrentMatch={setCurrentMatch}
+              currentMatch={currentMatch}
+              SessionMarket={SessionMarket}
+            />
 
-              <Box
-                sx={{ display: "flex", flexDirection: "row", marginTop: ".25vw" }}
-              >
-                {data.map(() => {
-                  return <RunsBox />;
-                })}
-              </Box>
+            <Box
+              sx={{ display: "flex", flexDirection: "row", marginTop: ".25vw" }}
+            >
+              {data.map(() => {
+                return <RunsBox />;
+              })}
             </Box>
-          )}
+          </Box>
+        )}
         <Box
           sx={{
             width: { laptop: "50%", mobile: "100%", tablet: "100%" },

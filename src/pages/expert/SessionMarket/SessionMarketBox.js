@@ -21,6 +21,7 @@ const SessionMarketBox = ({
   setCurrentMatch,
   currentMatch,
   newData,
+  setLocalState,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -56,8 +57,25 @@ const SessionMarketBox = ({
         // "teamB_Back": 4,
         // "drawRate": 10
       };
-console.log(newData,"a",body)
       const { data } = await axios.post("betting/addBetting", body);
+      if (data?.data?.id) {
+        setLocalState(() => {
+          const updatedBettings = currentMatch?.bettings.map(
+            (betting, index) => {
+              if (betting.selectionId === data?.data?.selectionId) {
+                return (betting[index] = data?.data);
+              } else if (betting.id === data?.data?.id) {
+                return (betting[index] = data?.data);
+              }
+              return betting;
+            }
+          );
+          return {
+            ...currentMatch,
+            bettings: updatedBettings,
+          };
+        });
+      }
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
@@ -256,7 +274,7 @@ console.log(newData,"a",body)
             {visible && (
               <Box sx={{ position: "absolute", zIndex: 105, top: "100%" }}>
                 <SessionResultModal
-                newData={newData}
+                  newData={newData}
                   onClick={() => {
                     setVisible(false);
                   }}
