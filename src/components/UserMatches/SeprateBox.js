@@ -130,6 +130,8 @@ const SeprateBox = ({
       return
     }
     if (payload.marketType == "MATCH ODDS") {
+      setVisible(true);
+      setCanceled(false);
       let delay = match?.delaySecond ? match?.delaySecond : 0;
       delay = delay * 1000;
       setTimeout(() => {
@@ -288,7 +290,8 @@ const SeprateBox = ({
         )}
         {
           <BetPlaced
-            time={time}
+            // time={5}
+            time={currentMatch?.delaySecond ? currentMatch?.delaySecond : 0}
             not={canceled}
             visible={visible}
             setVisible={(i) => {

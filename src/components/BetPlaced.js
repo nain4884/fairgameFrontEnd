@@ -22,7 +22,7 @@ const BetPlaced = ({ visible, setVisible, not, time }) => {
         }
     }, [visible])
     if (!flag && visible && !not && time) {
-        return <CountDownTimer visible={true} setVisible={setFlag} />
+        return <CountDownTimer visible={true} setVisible={setFlag} time={time} />
     }
     return (
         <Modal
