@@ -21,7 +21,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const handleChange = (event) => {
             let target = event.target;
             // alert(event.target.name)
-            // console.warn("event :", event)
             if (target.name === 'teamA_rate') {
                 setTeamARate(target.value)
                 if (target.value !== '') {
