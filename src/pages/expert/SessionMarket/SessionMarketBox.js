@@ -60,17 +60,22 @@ const SessionMarketBox = ({
 
       if (data.data?.id) {
         setCurrentMatch((currentMatch) => {
+          // Update the bettings array in the current match object
+          const updatedBettings = currentMatch.bettings.map((betting) => {
+            if (betting.selectionId === data.data.selectionId) {
+              // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+              return {
+                ...data.data,
+              };
+            }
+
+            return betting;
+          });
+console.log(updatedBettings,"updatedBetting");
+          // Return the updated current match object
           return {
             ...currentMatch,
-            bettings: currentMatch?.bettings?.map((betting) => {
-              if (betting?.selectionId === newData?.selectionId) {
-                return {
-                  ...data?.data,
-                  suspended: newData?.suspended,
-                };
-              }
-              return betting;
-            }),
+            bettings: updatedBettings,
           };
         });
       }
