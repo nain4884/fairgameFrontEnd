@@ -25,10 +25,10 @@ export const SocketProvider = ({ children }) => {
     } else if (rl === "role3") {
       token = "Bearer " + (tk.expertJWT || sessionStorage.getItem("JWTexpert"));
     } else if (rl === "role2") {
-      token = "Bearer " + (tk.adminJWT || sessionStorage.getItem("JWTadmin"));
+      token = "Bearer " + (tk.adminWT || sessionStorage.getItem("JWTwallet"));
     }
     if (rl === "role1") {
-      token = "Bearer " + (tk.masterJWT || sessionStorage.getItem("JWTmaster"));
+      token = "Bearer " + (tk.walletWT || sessionStorage.getItem("JWTadmin"));
     }
     return token;
   };

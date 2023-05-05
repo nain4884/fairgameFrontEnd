@@ -56,29 +56,8 @@ const SessionMarketBox = ({
         // "teamB_Back": 4,
         // "drawRate": 10
       };
+console.log(newData,"a",body)
       const { data } = await axios.post("betting/addBetting", body);
-
-      if (data.data?.id) {
-        setCurrentMatch((currentMatch) => {
-          // Update the bettings array in the current match object
-          const updatedBettings = currentMatch.bettings.map((betting) => {
-            if (betting.selectionId === data.data.selectionId) {
-              // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-              return {
-                ...data.data,
-              };
-            }
-
-            return betting;
-          });
-console.log(updatedBettings,"updatedBetting");
-          // Return the updated current match object
-          return {
-            ...currentMatch,
-            bettings: updatedBettings,
-          };
-        });
-      }
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
@@ -277,6 +256,7 @@ console.log(updatedBettings,"updatedBetting");
             {visible && (
               <Box sx={{ position: "absolute", zIndex: 105, top: "100%" }}>
                 <SessionResultModal
+                newData={newData}
                   onClick={() => {
                     setVisible(false);
                   }}

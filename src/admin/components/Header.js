@@ -663,7 +663,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const dispatch = useDispatch();
   const logoutProcess = () => {
     dispatch(logout({ roleType: "role1" }));
-    setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
+    setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
     dispatch(removeCurrentUser());
     navigate("/admin");
     handleClose();

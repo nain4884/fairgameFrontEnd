@@ -19,6 +19,7 @@ import {
 import { onChangeKeyCheck } from "./helper/PassKeyCheck";
 import { useNavigate } from "react-router-dom";
 import { setRole } from "../newStore";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -575,8 +576,10 @@ const DepositComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(depositObj).then(({ bool, message }) => {
+                toast.success(message)
                 showDialogModal(true, true, message)
               }).catch(({ bool, message }) => {
+                toast.error(message)
                 showDialogModal(true, false, message)
               })
             }}
@@ -783,8 +786,10 @@ const WithDrawComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(withDrawObj).then(({ bool, message }) => {
+                toast.success(message)
                 showDialogModal(true, true, message)
               }).catch(({ bool, message }) => {
+                toast.error(message)
                 showDialogModal(true, false, message)
               })
             }}
@@ -986,8 +991,10 @@ const NewCreditComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(newCreditObj).then(({ bool, message }) => {
+                toast.success(message)
                 showDialogModal(true, true, message)
               }).catch(({ bool, message }) => {
+                toast.error(message)
                 showDialogModal(true, false, message)
               })
             }}
@@ -1188,8 +1195,10 @@ const SetExposureComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateAvailableBalance(exposureObj).then(({ bool, message }) => {
+                toast.success(message)
                 showDialogModal(true, true, message)
               }).catch(({ bool, message }) => {
+                toast.error(message)
                 showDialogModal(true, false, message)
               })
             }}
@@ -1371,8 +1380,10 @@ const ChangePasswordComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdatePassword(changePasswordObj).then(({ bool, message }) => {
+                toast.success(message)
                 showDialogModal(true, true, message)
               }).catch(({ bool, message }) => {
+                toast.error(message)
                 showDialogModal(true, false, message)
               })
             }}
@@ -1522,8 +1533,10 @@ const LockUnlockComponent = ({
             isSelected={true}
             onClick={(e) => {
               UpdateLockUnlock(lockUnlockObj).then(({ bool, message }) => {
+                toast.success(message)
                 showDialogModal(true, true, message)
               }).catch(({ bool, message }) => {
+                toast.error(message)
                 showDialogModal(true, false, message)
               })
             }}

@@ -72,8 +72,11 @@ const MatchScreen = () => {
       getAllBetsData(state?.id);
     }
   }, [state?.id]);
+
   useEffect(() => {
     if (socket && socket.connected && currentMatch !== null) {
+      console.log("BookMaker", socket);
+
       socket.onevent = async (packet) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
@@ -145,7 +148,6 @@ const MatchScreen = () => {
 
         if (packet.data[0] === "bookMakerRateLive") {
           const e = packet.data[1];
-          console.log("BookMaker", e);
           if (e?.matchId === currentMatch?.id) {
             const body = {
               ...currentMatch,
@@ -156,19 +158,24 @@ const MatchScreen = () => {
         }
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
-          console.log("NewBetAdded", value);
           try {
-            if (value) {
-              const updatedBettings = currentMatch?.bettings?.map(
-                (betting, index) => {
-                  if (betting?.id === value?.id) {
-                    return (betting[index] = value);
-                  }
-                  return betting;
+            setCurrentMatch((currentMatch) => {
+              const updatedBettings = currentMatch?.bettings.map((betting,index) => {
+                if (betting.selectionId === value.selectionId) {
+                  return betting[index]=value
+                 
+                } else if (betting.id === value.id) {
+                  return betting[index]=value
                 }
-              );
-              setCurrentMatch({ ...currentMatch, bettings: updatedBettings });
-            }
+                return betting;
+              });
+              console.log("updatedBettings", updatedBettings);
+              return {
+                ...currentMatch,
+                bettings: updatedBettings,
+              };
+            });
+         
           } catch (e) {
             console.log(e.message);
           }
@@ -222,6 +229,7 @@ const MatchScreen = () => {
     // }, [socket, currentMatch]);
   }, [socket]);
 
+  // console.log('currentMatch', currentMatch)
   const activateLiveMatchMarket = async (val) => {
     try {
       await Axios.get(`${microServiceApiPath}/market/${marketId}`);
@@ -248,11 +256,12 @@ const MatchScreen = () => {
             suspended: v?.GameStatus,
             selectionId: v?.SelectionId,
           }));
-
+console.log('currentMatch?.bettings11', currentMatch?.bettings)
           if (currentMatch?.bettings?.length > 0) {
             const data = currentMatch?.bettings?.map((betting) => {
               var selectedData = newVal?.find(
-                (data) => data?.selectionId === betting?.selectionId
+                (data) =>
+                  data?.selectionId === betting?.selectionId 
               );
               if (selectedData !== undefined) {
                 return {
@@ -268,16 +277,17 @@ const MatchScreen = () => {
               return betting;
             });
 
-            const filteredNewVal = newVal?.filter((newData) => {
-              const hasMatch = currentMatch.bettings.some(
-                (betting) => betting.selectionId === newData.selectionId
-              );
-
-              // Return false to exclude newData from filteredNewVal if a match is found
-              return !hasMatch;
-            });
+            const filteredNewVal =
+              newVal?.filter((newData) => {
+                const hasMatch = currentMatch?.bettings.some(
+                  (betting) => betting.selectionId === newData.selectionId
+                );
+                // Return false to exclude newData from filteredNewVal if a match is found
+                return !hasMatch;
+              }) || [];
 
             // Merge the filteredNewVal with the currentMatch bettings array
+
             setCurrentMatch({
               ...currentMatch,
               bettings: [...data, ...filteredNewVal],
@@ -288,6 +298,7 @@ const MatchScreen = () => {
         }
         // dispatch(setSessionOddsLive(updatedBettings1));
       });
+
       socketMicro.on(`matchOdds${marketId}`, (val) => {
         if (val.length === 0) {
           matchOddsCount += 1;

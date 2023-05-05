@@ -5,13 +5,14 @@ import Odds from "./Odds";
 import { useDispatch } from "react-redux";
 import { setAllBetRate, setMatchOddsLive, setSelectedMatch, setSessionOddsLive } from "../../newStore/reducers/matchDetails";
 import { setRole } from "../../newStore";
+import constants from "../helper/constants";
 
 const MatchesComponent = ({ doNavigateWithState }) => {
   // const classes=useStyle()
   const [matchData, setMatchData] = useState([]);
-  const [pageCount, setPageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const dispatch = useDispatch();
   const { axios } = setRole();
 

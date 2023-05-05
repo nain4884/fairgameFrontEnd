@@ -24,7 +24,7 @@ import Verification from "../Varification";
 import NewPassword from "../NewPassword";
 const MasterRoutes = () => {
   function MasterPrivateRoute({ children }) {
-    const token = sessionStorage.getItem("JWTmaster");
+    const token = sessionStorage.getItem("JWTadmin");
 
     const decodedToken = token!==null && jwtDecode(token);
     if (
@@ -32,7 +32,7 @@ const MasterRoutes = () => {
         decodedToken?.role
       )
     ) {
-      return <Navigate to="/master" />;
+      return <Navigate to="/admin" />;
     }
     return children;
   }

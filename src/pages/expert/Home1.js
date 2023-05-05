@@ -21,7 +21,7 @@ import Header from "./Header";
 import Background from "./Background";
 import "./style.css";
 import DropDownSimple from "../../components/DropdownSimple";
-import { defaultMarketId, matchType } from "../../components/helper/constants";
+import constants, { defaultMarketId, matchType } from "../../components/helper/constants";
 import microServiceAxios from "../../axios/microServiceAxios";
 import { setDailogData } from "../../store/dailogModal";
 import { useDispatch } from "react-redux";
@@ -780,9 +780,9 @@ const ShowComponent = ({
 
 const MatchListComp = () => {
   const [allMatch, setAllMatch] = useState([]);
-  const [pageCount, setPageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const { axios } = setRole();
   const getAllMatch = async () => {
     try {

@@ -31,7 +31,7 @@ const store = configureStore({
 
 export const setRole = (token) => {
   const {
-    auth: { user, userAdmin, userExpert, userMaster },
+    auth: { user, userWallet, userExpert, userAdmin },
   } = store.getState();
   const userAxiosInstance = axios.create({
     baseURL: apiBasePath,
@@ -47,13 +47,6 @@ export const setRole = (token) => {
     },
   });
 
-  const masterInstance = axios.create({
-    baseURL: apiBasePath,
-    headers: {
-      Authorization: `Bearer ${sessionStorage.getItem("JWTmaster")}`,
-    },
-  });
-
   const adminInstance = axios.create({
     baseURL: apiBasePath,
     headers: {
@@ -61,11 +54,18 @@ export const setRole = (token) => {
     },
   });
 
+  const walletInstance = axios.create({
+    baseURL: apiBasePath,
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("JWTwallet")}`,
+    },
+  });
+
   let role = "role4";
   let JWT = user?.access_token;
   let transPass = "isTransPasswordCreated4";
-  let pattern1 = /master/;
-  let pattern2 = /admin/;
+  let pattern1 = /admin/;
+  let pattern2 = /wallet/;
   let pattern3 = /expert/;
   let userAxios = userAxiosInstance;
   userAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -73,17 +73,17 @@ export const setRole = (token) => {
   if (pattern1.test(window.location.pathname)) {
     role = "role1";
 
-    JWT = userMaster?.access_token;
+    JWT = userAdmin?.access_token;
     transPass = "isTransPasswordCreated1";
-    userAxios = masterInstance;
-    masterInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    userAxios = adminInstance;
+    adminInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
   if (pattern2.test(window.location.pathname)) {
     role = "role2";
-    JWT = userAdmin?.access_token;
+    JWT = userWallet?.access_token;
     transPass = "isTransPasswordCreated2";
-    userAxios = adminInstance;
-    adminInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    userAxios = walletInstance;
+    walletInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
   if (pattern3.test(window.location.pathname)) {
     role = "role3";

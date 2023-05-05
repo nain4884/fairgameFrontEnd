@@ -17,11 +17,11 @@ let persistor = persistStore(store);
 function App() {
   const [globalStore,setGlobalStore] =useState({
     userJWT:"",
-    adminJWT:"",
+    adminWT:"",
     expertJWT:"",
-    masterJWT:"",
+    walletJWT:"",
   })
-  if (process.env.ENV !== "production") console.log = () => { };
+  // if (process.env.ENV !== "production") console.log = () => { };
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>

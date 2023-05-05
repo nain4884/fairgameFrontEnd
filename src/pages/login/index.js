@@ -58,8 +58,8 @@ export default function Login(props) {
 
     let token = "";
     switch (type) {
-      case "master":
-        token = getToken("JWTmaster");
+      case "admin":
+        token = getToken("JWTwallet");
         break;
       case "expert":
         token = getToken("JWTexpert");
@@ -67,8 +67,8 @@ export default function Login(props) {
       case "user":
         token = getToken("JWTuser");
         break;
-      case "admin":
-        token = getToken("JWTadmin");
+      case "wallet":
+        token = getToken("JWTwallet");
         break;
     }
     if (token !== "") {
@@ -124,7 +124,8 @@ export default function Login(props) {
         toast.error("User Unauthorized !");
       }
     } catch (e) {
-      console.log(e);
+      console.log(e?.message);
+      toast.error(e?.response.data.message);
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
     }

@@ -47,11 +47,11 @@ export default function Login(props) {
         val.includes(v)
       )
     ) {
-      newtoken = sessionStorage.getItem("JWTmaster");
+      newtoken = sessionStorage.getItem("JWTwallet");
     } else if (
       ["fairGameWallet", "fairGameAdmin"].some((v) => val.includes(v))
     ) {
-      newtoken = sessionStorage.getItem("JWTadmin");
+      newtoken = sessionStorage.getItem("JWTwallet");
     } else if (["expert"].some((v) => val.includes(v))) {
       newtoken = sessionStorage.getItem("JWTexpert");
     }
@@ -75,8 +75,8 @@ export default function Login(props) {
 
     let token = "";
     switch (type) {
-      case "master":
-        token = getToken("JWTmaster");
+      case "admin":
+        token = getToken("JWTadmin");
         break;
       case "expert":
         token = getToken("JWTexpert");
@@ -84,8 +84,8 @@ export default function Login(props) {
       case "user":
         token = getToken("JWTuser");
         break;
-      case "admin":
-        token = getToken("JWTadmin");
+      case "wallet":
+        token = getToken("JWTwallet");
         break;
     }
     if (token !== "") {
@@ -130,9 +130,9 @@ export default function Login(props) {
           ) {
             setGlobalStore((prev) => ({
               ...prev,
-              masterJWT: data.data.access_token,
+              adminWT: data.data.access_token,
             }));
-            handleNavigate("/master/list_of_clients", "master");
+            handleNavigate("/admin/list_of_clients", "admin");
           } else if (
             ["fairGameWallet", "fairGameAdmin"].includes(
               data.data.role.roleName
@@ -140,9 +140,9 @@ export default function Login(props) {
           ) {
             setGlobalStore((prev) => ({
               ...prev,
-              adminJWT: data.data.access_token,
+              walletWT: data.data.access_token,
             }));
-            handleNavigate("/admin/list_of_clients", "admin");
+            handleNavigate("/wallet/list_of_clients", "wallet");
           } else if (["expert"].includes(data.data.role.roleName)) {
             setGlobalStore((prev) => ({
               ...prev,
@@ -158,6 +158,7 @@ export default function Login(props) {
       }
     } catch (e) {
       console.log(e?.message);
+      toast.error(e?.response.data.message);
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
     }

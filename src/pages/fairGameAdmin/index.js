@@ -25,10 +25,10 @@ import jwtDecode from "jwt-decode";
 const AdminRoutes = () => {
 
   function AdminPrivateRoute({ children }) {
-    const token = sessionStorage.getItem("JWTadmin");
+    const token = sessionStorage.getItem("JWTwallet");
     const decodedToken = token!==null && jwtDecode(token);
     if (!["fairGameAdmin", "fairGameWallet"].includes(decodedToken?.role)) {
-      return <Navigate to="/admin" />;
+      return <Navigate to="/wallet" />;
     }
     return children;
   }

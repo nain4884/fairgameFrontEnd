@@ -50,7 +50,6 @@ const MatchOdds = ({
           if (betting?.id === data?.data?.id) {
             // If the betting's ID matches the given `id`, update the `betStatus` value
             return {
-              
               ...val,
             };
           }
@@ -77,6 +76,7 @@ const MatchOdds = ({
       console.log(err?.response?.data?.message, "err");
     }
   };
+
   return (
     <Box
       key="odds"
@@ -182,12 +182,18 @@ const MatchOdds = ({
         sx={{
           position: "absolute",
           zIndex: 999,
-          top: "40px",
+          top: "26%",
           right: "100px",
         }}
       >
         {visible && (
           <ResultComponent
+            betId={currentMatch?.bettings?.length>0 && currentMatch?.bettings?.filter(v=>v.sessionBet===false)}
+        
+            teamA={currentMatch?.teamA}
+            teamB={currentMatch?.teamB}
+            tie={"Tie"}
+            draw={"Draw"}
             onClick={() => {
               setVisible(false);
             }}
@@ -291,20 +297,24 @@ const MatchOdds = ({
         name={currentMatch?.teamB}
         currentMatch={currentMatch}
       />
-      {currentMatch?.teamC &&<>
-        <Divider />
-      <BoxComponent
-        lock={matchOddsLive?.runners?.length > 0 ? false : true}
-        color={"#FF4D4D"}
-        teamImage={null}
-        data={
-          matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[2] : []
-        }
-        name={currentMatch?.teamC}
-        currentMatch={currentMatch}
-      />
-      </>}
-      
+      {currentMatch?.teamC && (
+        <>
+          <Divider />
+          <BoxComponent
+            lock={matchOddsLive?.runners?.length > 0 ? false : true}
+            color={"#FF4D4D"}
+            teamImage={null}
+            data={
+              matchOddsLive?.runners?.length > 0
+                ? matchOddsLive?.runners[2]
+                : []
+            }
+            name={currentMatch?.teamC}
+            currentMatch={currentMatch}
+          />
+        </>
+      )}
+
       {!stlive && (
         <Box
           sx={{

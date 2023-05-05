@@ -9,12 +9,15 @@ import { useEffect } from "react";
 import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import ResultComponent from "../../components/ResultComponent";
+import Result from "./Result";
 
 const BookMarketer = ({ currentMatch, socket, liveData }) => {
   // const { bookmakerLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [live, setLive] = useState(currentMatch?.bookMakerRateLive);
+  const [visible, setVisible] = useState(false);
   return (
     <Box
       sx={{
@@ -88,6 +91,12 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
             justifyContent: "flex-end",
           }}
         >
+          {/* <Result
+            onClick={() => {
+              setVisible(true);
+            }}
+            invert={true}
+          /> */}
           {/* { <SmallBox title={'Live'} />} */}
           {!live ? (
             <SmallBox
@@ -95,7 +104,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
                 socket.emit("bookMakerRateLive", {
                   matchId: currentMatch?.id,
                   bookMakerLive: true,
-                }); 
+                });
                 setLive(true);
               }}
               width={"80px"}
@@ -118,6 +127,31 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
         </Box>
       </Box>
       <Divider />
+      {/* <Box
+        sx={{
+          position: "absolute",
+          zIndex: 999,
+          top: "31%",
+          right: "100px",
+        }}
+      >
+        {visible && (
+          <ResultComponent
+            betId={
+              currentMatch?.bettings?.length > 0 &&
+              currentMatch?.bettings?.filter((v) => v.sessionBet === false)
+            }
+            matchId={currentMatch?.matchId}
+            teamA={currentMatch?.teamA}
+            teamB={currentMatch?.teamB}
+            tie={"Tie"}
+            draw={"Draw"}
+            onClick={() => {
+              setVisible(false);
+            }}
+          />
+        )}
+      </Box> */}
       {
         <Box
           sx={{
@@ -195,12 +229,8 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
       }
       <Box sx={{ position: "relative" }}>
         <BoxComponent
-         teamImage={currentMatch?.teamA_Image}
-          data={
-            liveData?.runners?.length > 0
-              ? liveData?.runners[0]
-              : []
-          }
+          teamImage={currentMatch?.teamA_Image}
+          data={liveData?.runners?.length > 0 ? liveData?.runners[0] : []}
           lock={liveData?.runners?.length > 0 ? false : true}
           color={"#46e080"}
           name={currentMatch?.teamA}
@@ -211,32 +241,24 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
           teamImage={currentMatch?.teamB_Image}
           lock={liveData?.runners?.length > 0 ? false : true}
           name={currentMatch?.teamB}
-          data={
-            liveData?.runners?.length > 0
-              ? liveData?.runners[1]
-              : []
-          }
+          data={liveData?.runners?.length > 0 ? liveData?.runners[1] : []}
           align="end"
         />
-        {currentMatch?.teamC &&
-        <>
+        {currentMatch?.teamC && (
+          <>
+            <Divider />
+            <BoxComponent
+              color={"#FF4D4D"}
+              teamImage={null}
+              lock={liveData?.runners?.length > 0 ? false : true}
+              name={currentMatch?.teamC}
+              data={liveData?.runners?.length > 0 ? liveData?.runners[2] : []}
+              align="end"
+            />
+          </>
+        )}
+
         <Divider />
-        <BoxComponent
-          color={"#FF4D4D"}
-          teamImage={null}
-          lock={liveData?.runners?.length > 0 ? false : true}
-          name={currentMatch?.teamC}
-          data={
-            liveData?.runners?.length > 0
-              ? liveData?.runners[2]
-              : []
-          }
-          align="end"
-        />
-        </>
-        }
-       
-         <Divider />
         {!live && (
           <Box
             sx={{

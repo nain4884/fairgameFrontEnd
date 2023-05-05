@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Divider from "../../../components/helper/Divider";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import Stop from "../Stop";
@@ -10,31 +10,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setSelectedMatch } from "../../../newStore/reducers/matchDetails";
 import { setRole } from "../../../newStore";
-const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
+const SessionMarket = ({ currentMatch, setCurrentMatch, }) => {
   const { sessionOddsLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [live, setLive] = useState(true);
   const dispatch = useDispatch();
   const { axios } = setRole();
-  // var sessionMatch = currentMatch?.bettings?.filter(
-  //   (v) => v?.sessionBet === true
-  // );
 
-  // const activateSessionLive = async (val, id) => {
-  //   try {
-  //     const data = await axios.post("/betting/addBetting", {
-  //       match_id: currentMatch?.id,
-  //       sessionBet: val,
-  //       matchType: currentMatch?.gameType,
-  //       id: id,
-  //     });
-  //   } catch (err) {
-  //     toast.error(err.response.data.message);
+  
+  const matchSessionData = currentMatch?.bettings?.filter(
+    (element) => element.sessionBet === true
+  );
 
-  //     console.log(err?.response?.data?.message, "err");
-  //   }
-  // };
 
   const handleLive = async () => {
     try {
@@ -258,9 +246,8 @@ const SessionMarket = ({ currentMatch, setCurrentMatch }) => {
             overflowY: "auto",
           }}
         >
-          {currentMatch?.bettings?.length > 0 &&
-            currentMatch?.bettings
-              ?.filter((v) => v?.sessionBet === true)
+          {matchSessionData?.length > 0 &&
+            matchSessionData
               ?.map((match, index) => (
                 <Box key={index}>
                   <SessionMarketBox

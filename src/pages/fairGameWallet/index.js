@@ -25,13 +25,13 @@ import jwtDecode from "jwt-decode";
 const FairGameWalletRoutes = () => {
   const { tokenAdmin } = useContext(AuthContext);
   useEffect(() => {
-    if (tokenAdmin != localStorage.getItem("JWTadmin")) {
+    if (tokenAdmin != localStorage.getItem("JWTwallet")) {
       window.location.reload();
     }
   }, []);
 
   function WalletPrivateRoute({ children }) {
-    const token = localStorage.getItem("JWTadmin");
+    const token = localStorage.getItem("JWTwallet");
     const decodedToken = jwtDecode(token);
     if (decodedToken?.role !== "fairGameWallet") {
       return <Navigate to="/fairgame_wallet" />;

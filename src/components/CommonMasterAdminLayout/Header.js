@@ -54,13 +54,13 @@ const CustomHeader = ({}) => {
     (state) => state?.activeAdmin?.activeTabAdmin
   );
   const { axios, role, JWT } = setRole();
-  const { userAdmin, allRole } = useSelector((state) => state.auth);
+  const { userWallet, allRole } = useSelector((state) => state.auth);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const nav =
     roleName !== ""
       ? ["fairGameAdmin", "fairGameWallet"].includes(roleName)
-        ? "admin"
-        : "master"
+        ? "wallet"
+        : "admin"
       : "";
 
   const location = useLocation();
@@ -76,11 +76,11 @@ const CustomHeader = ({}) => {
 
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role2" }));
-          setGlobalStore((prev) => ({ ...prev, adminJWT: "" }));
-          if (nav === "master") {
+          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+          if (nav === "admin") {
             dispatch(logout({ roleType: "role1" }));
-            setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
-            navigate("/master");
+            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+            navigate("/admin");
           }
           await axios.get("auth/logout");
           navigate(`/${nav}`);
@@ -122,11 +122,11 @@ const CustomHeader = ({}) => {
     ) {
       dispatch(setActiveAdmin(2));
     }
-    setIsTransPasswordExist(userAdmin?.isTransPasswordCreated);
+    setIsTransPasswordExist(userWallet?.isTransPasswordCreated);
     if (JWT) {
       getUserDetail();
     }
-  }, [location, window.location.pathname, userAdmin, JWT]);
+  }, [location, window.location.pathname, userWallet, JWT]);
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
@@ -468,14 +468,14 @@ function useOuterClick(callback) {
 }
 
 const DropdownMenu = ({ anchorEl, open, handleClose }) => {
-  const { userAdmin, allRole } = useSelector((state) => state.auth);
+  const { userWallet, allRole } = useSelector((state) => state.auth);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { axios } = setRole();
   const nav = ["fairGameAdmin", "fairGameWallet"].includes(roleName)
-    ? "admin"
-    : "master";
+    ? "wallet"
+    : "admin";
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -485,10 +485,10 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const logoutProcess = async () => {
     dispatch(removeCurrentUser());
     dispatch(logout({ roleType: "role2" }));
-    setGlobalStore((prev) => ({ ...prev, adminJWT: "" }));
-    if (nav === "master") {
+    setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+    if (nav === "admin") {
       dispatch(logout({ roleType: "role1" }));
-      setGlobalStore((prev) => ({ ...prev, masterJWT: "" }));
+      setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
     }
     await axios.get("auth/logout");
     navigate(`/${nav}`);

@@ -16,12 +16,13 @@ import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
 import { useSelector } from "react-redux";
 import { setRole } from "../newStore";
+import constants from "./helper/constants";
 
 const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   // const {currentUser} = useSelector((state) => state?.currentUser);
-  const { userAdmin } = useSelector((state) => state?.auth);
-  console.log(userAdmin, "userAdmin");
+  const { userWallet } = useSelector((state) => state?.auth);
+  console.log(userWallet, "userWallet");
   // const [roles, setRoles] = useState([]);
   const roles = useSelector((state) => state?.auth?.allRole)
   const [data1, setData] = useState([]);
@@ -69,9 +70,9 @@ const AccountList = () => {
     }
   }
 
-  const [pageCount, setPageCount] = useState(10);
+  const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(5);
+  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
 
   function callPage(val) {
     setCurrentPage(parseInt(val));
@@ -84,7 +85,7 @@ const AccountList = () => {
   useEffect(() => {
     // getRoles();
     getListOfUser();
-  }, [currentPage, pageCount, userAdmin?.access_token]);
+  }, [currentPage, pageCount, userWallet?.access_token]);
 
   return (
     <>

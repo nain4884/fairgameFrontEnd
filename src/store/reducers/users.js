@@ -13,7 +13,7 @@ export let userReducer = (state = initialState, action) => {
                     case "master":
                     case "superMaster":
                     case "admin":
-                        localStorage.setItem('JWTmaster', action.payload.jwt)
+                        localStorage.setItem('JWTwallet', action.payload.jwt)
                         localStorage.setItem('role1', action.payload.role)
                         localStorage.setItem('isTransPasswordCreated1', action.payload.isTransPasswordCreated)
                         break;
@@ -29,7 +29,7 @@ export let userReducer = (state = initialState, action) => {
                         break;
                     case "fairGameWallet":
                     case "fairGameAdmin":
-                        localStorage.setItem('JWTadmin', action.payload.jwt)
+                        localStorage.setItem('JWTwallet', action.payload.jwt)
                         localStorage.setItem('role2', action.payload.role)
                         localStorage.setItem('isTransPasswordCreated2', action.payload.isTransPasswordCreated)
                         break;
@@ -45,7 +45,7 @@ export let userReducer = (state = initialState, action) => {
         case 'LOGOUT': {
             switch (action.role.trim()) {
                 case "role1":
-                    localStorage.removeItem('JWTmaster')
+                    localStorage.removeItem('JWTwallet')
                     localStorage.removeItem('role1')
                     localStorage.removeItem('isTransPasswordCreated1')
                     localStorage.removeItem('exposure1')
@@ -66,7 +66,7 @@ export let userReducer = (state = initialState, action) => {
                     localStorage.removeItem('Balance4')
                     break;
                 case "role2":
-                    localStorage.removeItem('JWTadmin')
+                    localStorage.removeItem('JWTwallet')
                     localStorage.removeItem('role2')
                     localStorage.removeItem('isTransPasswordCreated2')
                     localStorage.removeItem('exposure2')
@@ -79,12 +79,12 @@ export let userReducer = (state = initialState, action) => {
                     localStorage.removeItem('Balance')
                     break;
             }
-            return { role: null, jwt: null, JWTadmin: null, JWTuser: null, JWTexpert: null, JWTmaster: null, role1: null, role2: null, role3: null, role4: null };
+            return { role: null, jwt: null, JWTwallet: null, JWTuser: null, JWTexpert: null, JWTwallet: null, role1: null, role2: null, role3: null, role4: null };
         }
         case 'SET_BAL': {
             switch (action.payload.role.trim()) {
                 case "role1":
-                    localStorage.setItem('user1', action.payload.amount) //JWTmaster
+                    localStorage.setItem('user1', action.payload.amount) //JWTwallet
                 
                     break;
                 case "role3":
@@ -96,8 +96,8 @@ export let userReducer = (state = initialState, action) => {
                     localStorage.setItem('exposure4', action.payload.exposure) //JWTuser
                     break;
                 case "role2":
-                    localStorage.setItem('Balance2', action.payload.amount) //JWTadmin
-                    localStorage.setItem('exposure2', action.payload.exposure) //JWTadmin
+                    localStorage.setItem('Balance2', action.payload.amount) //JWTwallet
+                    localStorage.setItem('exposure2', action.payload.exposure) //JWTwallet
                     break;
                 default:
                     localStorage.setItem('Balance', action.payload.amount)

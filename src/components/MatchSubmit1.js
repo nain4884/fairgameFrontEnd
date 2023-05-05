@@ -1,4 +1,4 @@
-import React from "react"
+import React, { memo } from "react"
 import { useTheme } from "@emotion/react"
 import { Typography, useMediaQuery, Box, Menu, MenuItem } from "@mui/material"
 import { BallStart, INDIA, Lock, PAKISTAN, TIME, UD } from "../assets/index"
@@ -593,4 +593,4 @@ const MatchSubmit1 = ({ }) => {
     )
 }
 
-export default MatchSubmit1;
+export default memo(MatchSubmit1);

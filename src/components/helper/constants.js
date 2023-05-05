@@ -58,6 +58,11 @@ module.exports = {
 	// ----------- Matches ---------- //
 
 	matchType: ['cricket','tennis','football','ice','hockey','volleyball','politics','basketball','table_tennis','darts'],
-	defaultMarketId: 4312
+	defaultMarketId: 4312,
+
+
+	pageLimit:10,
+	pageCount:10
+
 	
 }

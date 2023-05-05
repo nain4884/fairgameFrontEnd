@@ -14,13 +14,13 @@ export const setRole = () => {
     let axios = userAxios
     if (pattern1.test(window.location.pathname)) {
         role = "role1"
-        JWT = localStorage.getItem('JWTmaster')
+        JWT = localStorage.getItem('JWTwallet')
         transPass = "isTransPasswordCreated1"
         axios = masterAxios
     }
     if (pattern2.test(window.location.pathname)) {
         role = "role2"
-        JWT = localStorage.getItem('JWTadmin')
+        JWT = localStorage.getItem('JWTwallet')
         transPass = "isTransPasswordCreated2"
         axios = adminAxios
     }

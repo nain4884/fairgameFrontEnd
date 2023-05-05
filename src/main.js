@@ -76,13 +76,13 @@ const Main = () => {
         <Route path="/profit_loss" element={<Matches />} />
         <Route path="/rules" element={<Matches />} />
         {/* Master Routes */}
-        <Route path="/master/*" element={<MasterRoutes />} />
+        <Route path="/admin/*" element={<MasterRoutes />} />
 
         {/* Expert Routes */}
         <Route path="/expert/*" element={<ExpertRoutes />} />
 
         {/* admin Routes */}
-        <Route exact path="/admin/*" element={<AdminRoutes />} />
+        <Route exact path="/wallet/*" element={<AdminRoutes />} />
 
         {/* <Route exact path="/fairgame_wallet/*" element={<FairGameWalletRoutes />} /> */}
         {/* <Route path="/master/*" element={<MasterRoutes />} /> */}

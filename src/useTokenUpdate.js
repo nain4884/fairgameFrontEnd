@@ -21,8 +21,8 @@ const UseTokenUpdate = () => {
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
-    //         const newTokenMaster = localStorage.getItem('JWTmaster');
-    //         const newTokenAdmin = localStorage.getItem('JWTadmin');
+    //         const newTokenMaster = localStorage.getItem('JWTwallet');
+    //         const newTokenAdmin = localStorage.getItem('JWTwallet');
     //         const newTokenUser = localStorage.getItem('JWTuser');
     //         const newTokenExpert = localStorage.getItem('JWTexpert');
     //         if (newTokenMaster !== tokenMaster) {

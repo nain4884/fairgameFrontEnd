@@ -24,13 +24,13 @@ import jwtDecode from "jwt-decode";
 const MasterRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   useEffect(() => {
-    if (tokenMaster != localStorage.getItem("JWTmaster")) {
+    if (tokenMaster != localStorage.getItem("JWTwallet")) {
       window.location.reload();
     }
   }, []);
 
   function AdminPrivateRoute({ children }) {
-    const token = localStorage.getItem("JWTmaster");
+    const token = localStorage.getItem("JWTwallet");
     const decodedToken = jwtDecode(token);
     if (decodedToken?.role !== "admin") {
       return <Navigate to="/admin" />;

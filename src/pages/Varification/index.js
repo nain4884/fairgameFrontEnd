@@ -194,58 +194,7 @@ export default function Verification() {
     );
   };
 
-  async function getToken(val) {
-    try {
-      const token = await localStorage.getItem(val);
-      return token;
-    } catch (error) {
-      console.log("Error fetching token from local storage:", error);
-    }
-  }
-  const handleNavigate = async (path, type) => {
-    // Set a timeout for 2 seconds before navigating
 
-    let token = "";
-    switch (type) {
-      case "master":
-        token = getToken("JWTmaster");
-        break;
-      case "expert":
-        token = getToken("JWTexpert");
-        break;
-      case "user":
-        token = getToken("JWTuser");
-        break;
-      case "admin":
-        token = getToken("JWTadmin");
-        break;
-    }
-    if (token !== "") {
-      navigate(path);
-    }
-  };
-
-  async function getUserDetail() {
-    try {
-
-      const { data } = await axios.get("users/profile");
-
-      // dispatch(
-      //   stateActions.setBalance(
-      //     data.data.current_balance || 0,
-      //     role,
-      //     data.data.exposure || 0,
-      //     data.data.id
-      //   )
-      // );
-      dispatch(setCurrentUser(data.data));
-      // setFullName(data.data.fullName);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  
   const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));
 
 

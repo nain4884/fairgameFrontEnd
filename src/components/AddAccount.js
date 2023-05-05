@@ -29,9 +29,9 @@ const inputContainerStyle = {
   border: "1px solid #DEDEDE",
 };
 const AddAccount = () => {
-  const { axios, locPath,JWT } = setRole();
+  const { axios, locPath, JWT } = setRole();
   const navigate = useNavigate();
-  const { userAdmin, allRole } = useSelector((state) => state.auth);
+  const { userWallet, allRole } = useSelector((state) => state.auth);
   const [roleOfUser, setRoleOfUser] = useState("");
   const [errorShow, setErrorShow] = useState("");
   const [successShow, setSuccessShow] = useState("");
@@ -75,7 +75,7 @@ const AddAccount = () => {
   );
   const [userAlreadyExist, setUserAlredyExist] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const {currentUser} = useSelector((state) => state?.currentUser);
+  const { currentUser } = useSelector((state) => state?.currentUser);
 
   const [typeToShow, setTypeToShow] = useState([
     "Select your account type",
@@ -104,18 +104,18 @@ const AddAccount = () => {
     setShowSuccessModal(val);
   };
 
+  const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
   const setTypeForAccountType = () => {
     let typo = [];
     let k = 8;
-    if (userAdmin?.role?.roleName === "fairGameWallet") k = 0;
+    if (locationPath === "admin") k = 0;
     types.map((element) => {
-      if (element.role === userAdmin?.role?.roleName) {
+      if (element.role === userWallet?.role?.roleName) {
         k = element.level;
       }
       if (k < element.level) {
         if (element.level === 6) {
-          if (userAdmin?.role?.roleName === "fairGameAdmin")
-            typo.push(element.val);
+          if (roleName === "fairGameAdmin") typo.push(element.val);
         } else {
           typo.push(element.val);
         }
@@ -127,7 +127,6 @@ const AddAccount = () => {
   console.log(Detail, "Detail", allRole);
 
   const addAccount = async () => {
-
     let payload = {
       userName: "",
       password: "",
@@ -141,7 +140,7 @@ const AddAccount = () => {
       myPartnership: 0,
       credit_refer: 0,
     };
-    if (["master", "admin"].includes(locationPath)) {
+    if (["admin", "wallet"].includes(locationPath)) {
       // payload.a_partnership=Detail[10].val
       payload = {
         ...payload,
@@ -266,8 +265,7 @@ const AddAccount = () => {
     setUplineP(thisUplinePertnerShip);
   }
 
-  useEffect(() => {
-  }, [currentUser]);
+  useEffect(() => {}, [currentUser]);
 
   useEffect(() => {
     if (JWT) {
@@ -276,7 +274,7 @@ const AddAccount = () => {
   }, [JWT]);
   useEffect(() => {
     setTypeForAccountType();
-  }, [userAdmin?.role?.roleName, Detail, error, showSuccessModal]);
+  }, [userWallet?.role?.roleName, Detail, error, showSuccessModal]);
 
   async function checkUserName({ val }) {
     try {
@@ -303,7 +301,6 @@ const AddAccount = () => {
   }
 
   function CheckThisPosition({ place, val, setError, error }) {
-    console.log("val.toString().length>0", val.toString().length > 0);
     setError({
       ...error,
       [place]: {
