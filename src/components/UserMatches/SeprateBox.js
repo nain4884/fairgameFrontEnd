@@ -291,7 +291,7 @@ const SeprateBox = ({
         {
           <BetPlaced
             // time={5}
-            time={currentMatch?.delaySecond ? currentMatch?.delaySecond : 0}
+            time={typeOfBet == "MATCH ODDS" ? currentMatch?.delaySecond ? currentMatch?.delaySecond : 0 : 0}
             not={canceled}
             visible={visible}
             setVisible={(i) => {

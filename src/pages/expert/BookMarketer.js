@@ -95,7 +95,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
                 socket.emit("bookMakerRateLive", {
                   matchId: currentMatch?.id,
                   bookMakerLive: true,
-                }); 
+                });
                 setLive(true);
               }}
               width={"80px"}
@@ -195,7 +195,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
       }
       <Box sx={{ position: "relative" }}>
         <BoxComponent
-         teamImage={currentMatch?.teamA_Image}
+          teamImage={currentMatch?.teamA_Image}
           data={
             liveData?.runners?.length > 0
               ? liveData?.runners[0]
@@ -219,24 +219,24 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
           align="end"
         />
         {currentMatch?.teamC &&
-        <>
-        <Divider />
-        <BoxComponent
-          color={"#FF4D4D"}
-          teamImage={null}
-          lock={liveData?.runners?.length > 0 ? false : true}
-          name={currentMatch?.teamC}
-          data={
-            liveData?.runners?.length > 0
-              ? liveData?.runners[2]
-              : []
-          }
-          align="end"
-        />
-        </>
+          <>
+            <Divider />
+            <BoxComponent
+              color={"#FF4D4D"}
+              teamImage={null}
+              lock={liveData?.runners?.length > 0 ? false : true}
+              name={currentMatch?.teamC}
+              data={
+                liveData?.runners?.length > 0
+                  ? liveData?.runners[2]
+                  : []
+              }
+              align="end"
+            />
+          </>
         }
-       
-         <Divider />
+
+        <Divider />
         {!live && (
           <Box
             sx={{

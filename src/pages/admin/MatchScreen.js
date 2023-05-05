@@ -72,7 +72,7 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
     )
 }
 
-export const MatchScreen = ({submit,showLock}) => {
+export const MatchScreen = ({ submit, showLock }) => {
     const [data, setData] = useState([])
 
     const Divider = () => {
@@ -80,7 +80,7 @@ export const MatchScreen = ({submit,showLock}) => {
             <Box sx={{ width: '100%', background: 'rgba(211,211,211)', height: '1.5px' }} ></Box>
         )
     }
-    const BoxComponent = ({ name, color, align ,submit}) => {
+    const BoxComponent = ({ name, color, align, submit }) => {
         const theme = useTheme()
         const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
         return (
@@ -124,10 +124,10 @@ export const MatchScreen = ({submit,showLock}) => {
     const SmallBoxSeason = ({ color }) => {
         return (
             <Box sx={{ width: { laptop: '85px', mobile: '17vw' }, flexDirection: 'column', position: 'absolute', display: 'flex', marginRight: '5px', justifyContent: 'center', alignItems: 'center', height: '30px', background: 'white', borderRadius: '3px' }}>
-            <Typography sx={{ fontSize: '12px', fontWeight: 'bold', color: '#FF4D4D' }} >Session Bets</Typography>
-            <Typography sx={{ fontSize: '10px', fontWeight: 'bold', color: "#0B4F26" }} >999</Typography>
+                <Typography sx={{ fontSize: '12px', fontWeight: 'bold', color: '#FF4D4D' }} >Session Bets</Typography>
+                <Typography sx={{ fontSize: '10px', fontWeight: 'bold', color: "#0B4F26" }} >999</Typography>
 
-        </Box>
+            </Box>
         )
     }
     const MoneyBox = ({ color }) => {
@@ -151,17 +151,17 @@ export const MatchScreen = ({submit,showLock}) => {
             </Box>
         )
     }
-    const Odds = ({submit}) => {
+    const Odds = ({ submit }) => {
         const theme = useTheme()
         const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
         const [showUnlock, setShowUnlock] = useState(false)
         const [locked, setLocked] = useState(false)
         return (
-            <Box key="odds" sx={{ position: 'relative', display: 'flex', backgroundColor: 'white', padding: .2, flexDirection: 'column', marginTop:'.5vh' , width: { laptop: '99%' }, marginX: '.5vw', alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start', position: 'relative' } }}>
+            <Box key="odds" sx={{ position: 'relative', display: 'flex', backgroundColor: 'white', padding: .2, flexDirection: 'column', marginTop: '.5vh', width: { laptop: '99%' }, marginX: '.5vw', alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start', position: 'relative' } }}>
                 <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '99.7%', alignSelf: 'center' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Match Odds</Typography>
-                        {!submit&&<img onClick={() => {
+                        {!submit && <img onClick={() => {
                             setShowUnlock(true)
                         }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
                     </Box>
@@ -424,17 +424,17 @@ export const MatchScreen = ({submit,showLock}) => {
             </Menu>
         )
     }
-    const SessionMarket = ({ submit}) => {
+    const SessionMarket = ({ submit }) => {
         const theme = useTheme()
         const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
         const [showUnlock, setShowUnlock] = useState(false)
         const [locked, setLocked] = useState(false)
         return (
-            <Box sx={{ display: 'flex', position: "relative", background: 'white', padding: .3, flexDirection: 'column', marginTop:submit?"10px":'.25vh' , width: { laptop: '99%' }, marginX: ".5vw", alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start', } }}>
+            <Box sx={{ display: 'flex', position: "relative", background: 'white', padding: .3, flexDirection: 'column', marginTop: submit ? "10px" : '.25vh', width: { laptop: '99%' }, marginX: ".5vw", alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start', } }}>
                 <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '99.7%', alignSelf: 'center' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Session Odds</Typography>
-                       {!submit&& <img onClick={() => {
+                        {!submit && <img onClick={() => {
                             setShowUnlock(true)
                         }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
                     </Box>
@@ -452,7 +452,7 @@ export const MatchScreen = ({submit,showLock}) => {
                         alignItems: 'center',
                         justifyContent: 'flex-end'
                     }}>
-                        <SmallBoxSeason  submit={submit} />
+                        <SmallBoxSeason submit={submit} />
 
 
                     </Box>
@@ -516,17 +516,17 @@ export const MatchScreen = ({submit,showLock}) => {
 
         )
     }
-    const BookMarketer = ({submit}) => {
+    const BookMarketer = ({ submit }) => {
         const theme = useTheme()
         const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
         const [showUnlock, setShowUnlock] = useState(false)
         const [locked, setLocked] = useState(false)
         return (
-            <Box sx={{ display: 'flex', position: "relative", backgroundColor: 'white', padding: .2, flexDirection: 'column', marginTop:submit?"10px":'.25vh' , width: { laptop: '99%' }, marginX: '.5vw', alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start', } }}>
+            <Box sx={{ display: 'flex', position: "relative", backgroundColor: 'white', padding: .2, flexDirection: 'column', marginTop: submit ? "10px" : '.25vh', width: { laptop: '99%' }, marginX: '.5vw', alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start', } }}>
                 <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '99.7%', alignSelf: 'center' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market</Typography>
-                        {!submit&&<img onClick={() => {
+                        {!submit && <img onClick={() => {
                             setShowUnlock(true)
                         }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
 
@@ -684,30 +684,30 @@ export const MatchScreen = ({submit,showLock}) => {
         )
     }
     return (
-            <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', marginTop: "2px" }}>
-                <Box sx={{ width: '60%', flexDirection: 'column', display: 'flex' }}>
-                    <Odds submit={submit} />
-                    <BookMarketer submit={submit} />
-                    <SessionMarket  submit={submit}/>
-                    <Box sx={{ display: 'flex', flexDirection: 'row',marginLeft:"0.75%", marginTop: '10px' }}>
-                        {
-                            data.map((x,i) => {
-                                return <RunsBox  margin={i!=0}  />
-                            })
-                        }
-                    </Box>
-                </Box>
-                <Box sx={{ width: submit?"38.83%":'39.5%',marginLeft:submit?"10px":"0px", flexDirection: 'column', display: 'flex' }}>
-                    <LiveMatchComponent submit={submit} />
-                    <LiveMatchAdmin submit={submit} />
-                    <AllBets tag={submit} submit={submit} />
+        <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', marginTop: "2px" }}>
+            <Box sx={{ width: '60%', flexDirection: 'column', display: 'flex' }}>
+                <Odds submit={submit} />
+                <BookMarketer submit={submit} />
+                <SessionMarket submit={submit} />
+                <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: "0.75%", marginTop: '10px' }}>
+                    {
+                        data.map((x, i) => {
+                            return <RunsBox margin={i != 0} />
+                        })
+                    }
                 </Box>
             </Box>
+            <Box sx={{ width: submit ? "38.83%" : '39.5%', marginLeft: submit ? "10px" : "0px", flexDirection: 'column', display: 'flex' }}>
+                <LiveMatchComponent submit={submit} />
+                <LiveMatchAdmin submit={submit} />
+                <AllBets tag={submit} submit={submit} />
+            </Box>
+        </Box>
     )
 }
-const NewMatchScreen=()=>{
-    const location=useLocation()
-    return(
+const NewMatchScreen = () => {
+    const location = useLocation()
+    return (
         <Background>
             <MatchScreen submit={location?.state?.submit} />
         </Background>
