@@ -325,6 +325,7 @@ const CustomHeader = ({}) => {
               inputContainerStyle={classes.BoxCont1sub2SearchInputContStyle}
             />
             <BoxProfile
+            nav={nav}
               containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
               image={"https://picsum.photos/200/300"}
               value={currentUser?.userName || ""}
@@ -363,7 +364,7 @@ const CustomHeader = ({}) => {
   );
 };
 
-const BoxProfile = ({ image, value, containerStyle, amount }) => {
+const BoxProfile = ({ image, value, containerStyle, amount,nav }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -437,6 +438,7 @@ const BoxProfile = ({ image, value, containerStyle, amount }) => {
       </Box>
       {open && (
         <DropdownMenu
+          nav={nav}
           open={Boolean(anchorEl)}
           anchorEl={anchorEl}
           handleClose={handleClose}
@@ -467,15 +469,10 @@ function useOuterClick(callback) {
   return innerRef; // convenience for client (doesn't need to init ref himself)
 }
 
-const DropdownMenu = ({ anchorEl, open, handleClose }) => {
-  const { userWallet, allRole } = useSelector((state) => state.auth);
-  const { currentUser } = useSelector((state) => state?.currentUser);
-  const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
+const DropdownMenu = ({ anchorEl, open, handleClose,nav }) => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { axios } = setRole();
-  const nav = ["fairGameAdmin", "fairGameWallet"].includes(roleName)
-    ? "wallet"
-    : "admin";
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -279,7 +279,7 @@ const MatchOdds = ({
           min={data?.betfair_bookmaker_min_bet || 0}
           max={data?.betfair_bookmaker_max_bet || 0}
           title={"Bookmaker Market "}
-          isRound={true}
+          isRound={false}
           typeOfBet={"BOOKMAKER"}
         />
       )}

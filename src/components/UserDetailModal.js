@@ -20,6 +20,7 @@ import { onChangeKeyCheck } from "./helper/PassKeyCheck";
 import { useNavigate } from "react-router-dom";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
+import { setCurrentUser } from "../newStore/reducers/currentUser";
 
 const style = {
   position: "absolute",
@@ -43,20 +44,20 @@ export default function UserDetailModal({
   activeWalletAmount,
   elementToUDM,
   setElementToUDM,
-  prevElement
+  prevElement,
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
-  const {axios} =setRole()
+  const { axios } = setRole();
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   function showDialogModal(isModalOpen, showRight, message) {
-    dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }))
+    dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
     setTimeout(() => {
-      dispatch(setDailogData({ isModalOpen: false }))
-      navigate(`/${window.location.pathname.split('/')[1]}/list_of_clients`)
-    }, [2000])
-    setShowModalMessage(message)
+      dispatch(setDailogData({ isModalOpen: false }));
+      navigate(`/${window.location.pathname.split("/")[1]}/list_of_clients`);
+    }, [2000]);
+    setShowModalMessage(message);
     setShowUserModal(false);
   }
 
@@ -86,17 +87,12 @@ export default function UserDetailModal({
       marginLeft: "10px",
       marginRight: "10px",
       alignSelf: "center",
-    }
-  }
+    },
+  };
 
   return (
-    <Box
-      sx={classes.mainBox}
-    >
-      <Box
-        onClick={() => { }}
-        sx={classes.mainBoxSubsx}
-      ></Box>
+    <Box sx={classes.mainBox}>
+      <Box onClick={() => {}} sx={classes.mainBoxSubsx}></Box>
       {selected != null && (
         <Box sx={{ width: "88.5vw" }}>
           {selected == 0 && (
@@ -248,23 +244,26 @@ export default function UserDetailModal({
           <BoxButton
             deleteBtn={true}
             onClick={(e) => {
-              if (prevElement.credit_refer == 0 && prevElement.profit_loss == 0 && prevElement.available_balance == 0) {
-                UserDelete(userModal.id).then(({ bool, message }) => {
-                  showDialogModal(true, true, message)
-                }).catch(({ bool, message }) => {
-                  showDialogModal(true, false, message)
-                })
+              if (
+                prevElement.credit_refer == 0 &&
+                prevElement.profit_loss == 0 &&
+                prevElement.available_balance == 0
+              ) {
+                UserDelete(userModal.id)
+                  .then(({ bool, message }) => {
+                    showDialogModal(true, true, message);
+                  })
+                  .catch(({ bool, message }) => {
+                    showDialogModal(true, false, message);
+                  });
               } else {
-                let message = "First Settle Account to Delete The User"
-                showDialogModal(true, false, message)
+                let message = "First Settle Account to Delete The User";
+                showDialogModal(true, false, message);
               }
             }}
             title={"Delete User"}
             icon={
-              <StyledImage
-                src={DeleteIcon}
-                sx={classes.BoxButtonStyledImage}
-              />
+              <StyledImage src={DeleteIcon} sx={classes.BoxButtonStyledImage} />
             }
             containerStyle={classes.BoxButtonContStyle}
           />
@@ -305,16 +304,11 @@ const BoxButton = ({
         color: isSelected || deleteBtn ? "white" : "white",
       },
       titleStyle,
-    ]
-  }
+    ],
+  };
   return (
-    <Box
-      onClick={onClick}
-      sx={classes.mainBox}
-    >
-      <Typography
-        sx={classes.mainBoxTypography}
-      >
+    <Box onClick={onClick} sx={classes.mainBox}>
+      <Typography sx={classes.mainBoxTypography}>
         {title}
         {icon}
       </Typography>
@@ -334,7 +328,7 @@ const BoxButtonWithSwitch = ({
   setLockUnlockObj,
   lockUnlockObj,
   elementToUDM,
-  setElementToUDM
+  setElementToUDM,
 }) => {
   const [checked, setChecked] = useState(false);
   const classes = {
@@ -360,13 +354,10 @@ const BoxButtonWithSwitch = ({
         minWidth: "80px",
       },
       titleStyle,
-    ]
-  }
+    ],
+  };
   return (
-    <Box
-      onClick={onClick}
-      sx={classes.mainBox}
-    >
+    <Box onClick={onClick} sx={classes.mainBox}>
       <MaterialUISwitch
         checked={!val}
         onChange={(e) => {
@@ -374,21 +365,25 @@ const BoxButtonWithSwitch = ({
             setLockUnlockObj({
               ...lockUnlockObj,
               all_blocked: !val === true ? 1 : 0,
-            })
-            setElementToUDM({ ...elementToUDM, all_blocked: !val === true ? 1 : 0 })
+            });
+            setElementToUDM({
+              ...elementToUDM,
+              all_blocked: !val === true ? 1 : 0,
+            });
           } else {
             setLockUnlockObj({
               ...lockUnlockObj,
               bet_blocked: !val === true ? 1 : 0,
             });
-            setElementToUDM({ ...elementToUDM, bet_blocked: !val === true ? 1 : 0 })
+            setElementToUDM({
+              ...elementToUDM,
+              bet_blocked: !val === true ? 1 : 0,
+            });
           }
           setChecked(!checked);
         }}
       />
-      <Typography
-        sx={classes.mainBoxTypography}
-      >
+      <Typography sx={classes.mainBoxTypography}>
         {title} {!val ? "Unlocked" : "Locked"}
       </Typography>
     </Box>
@@ -406,20 +401,27 @@ const DepositComponent = ({
   elementToUDM,
   setElementToUDM,
   dispatch,
-  showDialogModal
+  showDialogModal,
 }) => {
   const [showPass, setShowPass] = useState(false);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const [initialBalance, setInitialBalance] = useState(
+    currentUser?.current_balance
+  );
   const defaultDepositObj = {
     userId: "",
-    amount: 0,
+    amount: "",
     trans_type: "add",
     adminTransPassword: "",
     remark: "",
   };
+
   const [depositObj, setDepositObj] = useState(defaultDepositObj);
-  const activeWalletAmount = useSelector(state => state?.rootReducer?.user?.amount)
+  const activeWalletAmount = useSelector(
+    (state) => state?.rootReducer?.user?.amount
+  );
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px" }}>
+    <Box sx={{ display: "flex", borderRadius: "5px", gap: 2 }}>
       <Box sx={{ width: "31.65vw" }}>
         <Box
           sx={{
@@ -450,7 +452,41 @@ const DepositComponent = ({
                   amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
                   userId: userModal.id,
                 });
-                setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss + parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value), balance: prevElement.balance + parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value), available_balance: prevElement.available_balance + parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value) })
+
+                if (e.target.value) {
+                  const newUserbalance = {
+                    ...currentUser,
+                    current_balance:
+                      currentUser?.current_balance - e.target.value,
+                  };
+
+                  dispatch(setCurrentUser(newUserbalance));
+                } else {
+                  const newUserbalance = {
+                    ...currentUser,
+                    current_balance: initialBalance,
+                  };
+
+                  dispatch(setCurrentUser(newUserbalance));
+                }
+                setElementToUDM({
+                  ...elementToUDM,
+                  profit_loss:
+                    prevElement.profit_loss +
+                    parseInt(
+                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+                    ),
+                  balance:
+                    prevElement.balance +
+                    parseInt(
+                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+                    ),
+                  available_balance:
+                    prevElement.available_balance +
+                    parseInt(
+                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+                    ),
+                });
               }}
               variant="standard"
               InputProps={{
@@ -483,7 +519,7 @@ const DepositComponent = ({
           <Typography
             sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
           >
-            Transaction Password
+            Wallet Balance
           </Typography>
           <Box
             sx={{
@@ -498,6 +534,46 @@ const DepositComponent = ({
             }}
           >
             <TextField
+              value={currentUser?.current_balance || 0}
+              sx={{ width: "100%", height: "45px" }}
+              variant="standard"
+              InputProps={{
+                disabled: true,
+                placeholder: "",
+                disableUnderline: true,
+                type: "text",
+                style: { fontSize: "13px", height: "45px", fontWeight: "600" },
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
+      <Box sx={{ overflow: "hidden", width: "19.1vw" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            overflow: "hidden",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Typography
+            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+          >
+            Transaction Password
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              height: "45px",
+              background: "white",
+              display: "flex",
+              alignItems: "center",
+              borderRadius: "5px",
+              border: "2px solid #26262633",
+            }}
+          >
+            <TextField
               onChange={(e) => {
                 setDepositObj({
                   ...depositObj,
@@ -507,7 +583,7 @@ const DepositComponent = ({
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
-                placeholder: "Donotopen|",
+                placeholder: "",
                 disableUnderline: true,
                 type: !showPass ? "password" : "text",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
@@ -529,20 +605,18 @@ const DepositComponent = ({
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss + parseInt(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
           </Box> */}
         </Box>
-      </Box>
-      <Box sx={{ display: "flex", overflow: "hidden", width: "19.1vw" }}>
         <Box
           sx={{
             borderRadius: "5px",
             flex: 1,
             background: backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
-            marginLeft: "20px",
             display: "flex",
             alignItems: "center",
             borderRadius: "5px",
             border: "2px solid #26262633",
             minHeight: "80px",
             maxHeight: "115px",
+            marginTop: "10px",
             paddingX: "10px",
           }}
         >
@@ -575,13 +649,15 @@ const DepositComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(depositObj).then(({ bool, message }) => {
-                toast.success(message)
-                showDialogModal(true, true, message)
-              }).catch(({ bool, message }) => {
-                toast.error(message)
-                showDialogModal(true, false, message)
-              })
+              UpdateAvailableBalance(depositObj)
+                .then(({ bool, message }) => {
+                  toast.success(message);
+                  showDialogModal(true, true, message);
+                })
+                .catch(({ bool, message }) => {
+                  toast.error(message);
+                  showDialogModal(true, false, message);
+                });
             }}
             title={"Submit"}
           />
@@ -597,7 +673,12 @@ const DepositComponent = ({
             isSelected={true}
             onClick={(e) => {
               setDepositObj(defaultDepositObj);
-              setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss, balance: prevElement.balance, available_balance: prevElement.available_balances })
+              setElementToUDM({
+                ...elementToUDM,
+                profit_loss: prevElement.profit_loss,
+                balance: prevElement.balance,
+                available_balance: prevElement.available_balances,
+              });
               setShowUserModal(false);
             }}
             title={"Cancel"}
@@ -618,13 +699,15 @@ const WithDrawComponent = ({
   elementToUDM,
   setElementToUDM,
   dispatch,
-  showDialogModal
+  showDialogModal,
 }) => {
   const [showPass, setShowPass] = useState(false);
-  const activeWalletAmount = useSelector(state => state?.rootReducer?.user?.amount)
+  const activeWalletAmount = useSelector(
+    (state) => state?.rootReducer?.user?.amount
+  );
   const defaultWithDrawObj = {
     userId: "",
-    amount: 0,
+    amount: "",
     trans_type: "withdraw",
     adminTransPassword: "",
     remark: "",
@@ -660,7 +743,24 @@ const WithDrawComponent = ({
                   amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
                   userId: userModal.id,
                 });
-                setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss - parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value), balance: prevElement.balance - parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value), available_balance: prevElement.available_balance - parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value) })
+                setElementToUDM({
+                  ...elementToUDM,
+                  profit_loss:
+                    prevElement.profit_loss -
+                    parseInt(
+                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+                    ),
+                  balance:
+                    prevElement.balance -
+                    parseInt(
+                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+                    ),
+                  available_balance:
+                    prevElement.available_balance -
+                    parseInt(
+                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+                    ),
+                });
               }}
               variant="standard"
               InputProps={{
@@ -716,7 +816,7 @@ const WithDrawComponent = ({
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
-                placeholder: "Donotopen|",
+                placeholder: "",
                 disableUnderline: true,
                 type: !showPass ? "password" : "text",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
@@ -785,13 +885,15 @@ const WithDrawComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(withDrawObj).then(({ bool, message }) => {
-                toast.success(message)
-                showDialogModal(true, true, message)
-              }).catch(({ bool, message }) => {
-                toast.error(message)
-                showDialogModal(true, false, message)
-              })
+              UpdateAvailableBalance(withDrawObj)
+                .then(({ bool, message }) => {
+                  toast.success(message);
+                  showDialogModal(true, true, message);
+                })
+                .catch(({ bool, message }) => {
+                  toast.error(message);
+                  showDialogModal(true, false, message);
+                });
             }}
             title={"Submit"}
           />
@@ -807,7 +909,12 @@ const WithDrawComponent = ({
             isSelected={true}
             onClick={(e) => {
               setWithDrawObj(defaultWithDrawObj);
-              setElementToUDM({ ...elementToUDM, profit_loss: prevElement.profit_loss, balance: prevElement.balance, available_balance: prevElement.available_balance })
+              setElementToUDM({
+                ...elementToUDM,
+                profit_loss: prevElement.profit_loss,
+                balance: prevElement.balance,
+                available_balance: prevElement.available_balance,
+              });
               setShowUserModal(false);
             }}
             title={"Cancel"}
@@ -828,7 +935,7 @@ const NewCreditComponent = ({
   setElementToUDM,
   prevElement,
   dispatch,
-  showDialogModal
+  showDialogModal,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const defaultNewCreditObj = {
@@ -871,7 +978,20 @@ const NewCreditComponent = ({
                   amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
                   userId: userModal.id,
                 });
-                setElementToUDM({ ...elementToUDM, credit_refer: isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value), profit_loss: prevElement.profit_loss + prevElement.credit_refer - parseInt(isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value)) })
+                setElementToUDM({
+                  ...elementToUDM,
+                  credit_refer: isNaN(parseInt(e.target.value))
+                    ? 0
+                    : parseInt(e.target.value),
+                  profit_loss:
+                    prevElement.profit_loss +
+                    prevElement.credit_refer -
+                    parseInt(
+                      isNaN(parseInt(e.target.value))
+                        ? 0
+                        : parseInt(e.target.value)
+                    ),
+                });
               }}
               variant="standard"
               InputProps={{
@@ -925,7 +1045,7 @@ const NewCreditComponent = ({
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
-                placeholder: "Donotopen|",
+                placeholder: "",
                 disableUnderline: true,
                 type: !showPass ? "password" : "text",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
@@ -990,13 +1110,15 @@ const NewCreditComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(newCreditObj).then(({ bool, message }) => {
-                toast.success(message)
-                showDialogModal(true, true, message)
-              }).catch(({ bool, message }) => {
-                toast.error(message)
-                showDialogModal(true, false, message)
-              })
+              UpdateAvailableBalance(newCreditObj)
+                .then(({ bool, message }) => {
+                  toast.success(message);
+                  showDialogModal(true, true, message);
+                })
+                .catch(({ bool, message }) => {
+                  toast.error(message);
+                  showDialogModal(true, false, message);
+                });
             }}
             title={"Submit"}
           />
@@ -1012,7 +1134,11 @@ const NewCreditComponent = ({
             isSelected={true}
             onClick={(e) => {
               setNewCreditObj(defaultNewCreditObj);
-              setElementToUDM({ ...elementToUDM, credit_refer: prevElement.credit_refer, profit_loss: prevElement.profit_loss })
+              setElementToUDM({
+                ...elementToUDM,
+                credit_refer: prevElement.credit_refer,
+                profit_loss: prevElement.profit_loss,
+              });
               setShowUserModal(false);
             }}
             title={"Cancel"}
@@ -1034,7 +1160,7 @@ const SetExposureComponent = ({
   elementToUDM,
   setElementToUDM,
   dispatch,
-  showDialogModal
+  showDialogModal,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const defaultExposureObj = {
@@ -1076,7 +1202,14 @@ const SetExposureComponent = ({
                   amount: parseInt(e.target.value),
                   userId: userModal.id,
                 });
-                setElementToUDM({ ...elementToUDM, exposure_limit: parseInt(isNaN(parseInt(e.target.value)) ? 0 : parseInt(e.target.value)) })
+                setElementToUDM({
+                  ...elementToUDM,
+                  exposure_limit: parseInt(
+                    isNaN(parseInt(e.target.value))
+                      ? 0
+                      : parseInt(e.target.value)
+                  ),
+                });
               }}
               variant="standard"
               InputProps={{
@@ -1130,7 +1263,7 @@ const SetExposureComponent = ({
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
-                placeholder: "Donotopen|",
+                placeholder: "",
                 disableUnderline: true,
                 type: !showPass ? "password" : "text",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
@@ -1194,13 +1327,15 @@ const SetExposureComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(exposureObj).then(({ bool, message }) => {
-                toast.success(message)
-                showDialogModal(true, true, message)
-              }).catch(({ bool, message }) => {
-                toast.error(message)
-                showDialogModal(true, false, message)
-              })
+              UpdateAvailableBalance(exposureObj)
+                .then(({ bool, message }) => {
+                  toast.success(message);
+                  showDialogModal(true, true, message);
+                })
+                .catch(({ bool, message }) => {
+                  toast.error(message);
+                  showDialogModal(true, false, message);
+                });
             }}
             title={"Submit"}
           />
@@ -1217,7 +1352,10 @@ const SetExposureComponent = ({
             onClick={(e) => {
               setExposureObj(defaultExposureObj);
               setShowUserModal(false);
-              setElementToUDM({ ...elementToUDM, exposure_limit: elementToUDM.exposure_limit })
+              setElementToUDM({
+                ...elementToUDM,
+                exposure_limit: elementToUDM.exposure_limit,
+              });
             }}
             title={"Cancel"}
           />
@@ -1234,7 +1372,7 @@ const ChangePasswordComponent = ({
   setShowModalMessage,
   navigate,
   dispatch,
-  showDialogModal
+  showDialogModal,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [showPass1, setShowPass1] = useState(false);
@@ -1286,7 +1424,7 @@ const ChangePasswordComponent = ({
               sx={{ width: "100%", height: "45px", color: "white" }}
               variant="standard"
               InputProps={{
-                placeholder: "Donotopen|",
+                placeholder: "",
                 disableUnderline: true,
                 type: !showPass1 ? "password" : "text",
                 style: {
@@ -1309,7 +1447,11 @@ const ChangePasswordComponent = ({
             </Box>
           </Box>
         </Box>
-        <p style={{ color: "#fa1e1e" }}>{changePasswordObj.password && onChangeKeyCheck(changePasswordObj.password) !== false && onChangeKeyCheck(changePasswordObj.password)}</p>
+        <p style={{ color: "#fa1e1e" }}>
+          {changePasswordObj.password &&
+            onChangeKeyCheck(changePasswordObj.password) !== false &&
+            onChangeKeyCheck(changePasswordObj.password)}
+        </p>
         <Box
           sx={{
             display: "flex",
@@ -1347,7 +1489,7 @@ const ChangePasswordComponent = ({
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
-                placeholder: "Donotopen|",
+                placeholder: "",
                 disableUnderline: true,
                 type: !showPass ? "password" : "text",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
@@ -1379,13 +1521,15 @@ const ChangePasswordComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdatePassword(changePasswordObj).then(({ bool, message }) => {
-                toast.success(message)
-                showDialogModal(true, true, message)
-              }).catch(({ bool, message }) => {
-                toast.error(message)
-                showDialogModal(true, false, message)
-              })
+              UpdatePassword(changePasswordObj)
+                .then(({ bool, message }) => {
+                  toast.success(message);
+                  showDialogModal(true, true, message);
+                })
+                .catch(({ bool, message }) => {
+                  toast.error(message);
+                  showDialogModal(true, false, message);
+                });
             }}
             title={"Submit"}
           />
@@ -1417,7 +1561,7 @@ const LockUnlockComponent = ({
   showDialogModal,
   elementToUDM,
   setElementToUDM,
-  prevElement
+  prevElement,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const defaultLockUnlockObj = {
@@ -1500,7 +1644,7 @@ const LockUnlockComponent = ({
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
-                placeholder: "Donotopen|",
+                placeholder: "",
                 disableUnderline: true,
                 type: !showPass ? "password" : "text",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
@@ -1532,13 +1676,15 @@ const LockUnlockComponent = ({
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateLockUnlock(lockUnlockObj).then(({ bool, message }) => {
-                toast.success(message)
-                showDialogModal(true, true, message)
-              }).catch(({ bool, message }) => {
-                toast.error(message)
-                showDialogModal(true, false, message)
-              })
+              UpdateLockUnlock(lockUnlockObj)
+                .then(({ bool, message }) => {
+                  toast.success(message);
+                  showDialogModal(true, true, message);
+                })
+                .catch(({ bool, message }) => {
+                  toast.error(message);
+                  showDialogModal(true, false, message);
+                });
             }}
             title={"Submit"}
           />
@@ -1554,8 +1700,16 @@ const LockUnlockComponent = ({
             isSelected={true}
             onClick={(e) => {
               setShowUserModal(false);
-              console.log('elementToUDM.bet_blocked, elementToUDM.all_blocked', elementToUDM.bet_blocked, elementToUDM.all_blocked)
-              setElementToUDM({ ...elementToUDM, bet_blocked: prevElement.bet_blocked, all_blocked: prevElement.all_blocked })
+              console.log(
+                "elementToUDM.bet_blocked, elementToUDM.all_blocked",
+                elementToUDM.bet_blocked,
+                elementToUDM.all_blocked
+              );
+              setElementToUDM({
+                ...elementToUDM,
+                bet_blocked: prevElement.bet_blocked,
+                all_blocked: prevElement.all_blocked,
+              });
             }}
             title={"Cancel"}
           />
@@ -1653,52 +1807,73 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 const UpdateAvailableBalance = async (body) => {
-  const {axios} =setRole()
+  const { axios } = setRole();
   return new Promise(async (resolve, reject) => {
     try {
-      const { data, status } = await axios.post(`/fair-game-wallet/updateBalance`, body);
-      resolve({ bool: data.message === 'Balance update successfully.' || status == 200, message: data.message })
+      const { data, status } = await axios.post(
+        `/fair-game-wallet/updateBalance`,
+        body
+      );
+      resolve({
+        bool: data.message === "Balance update successfully." || status == 200,
+        message: data.message,
+      });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       reject({ bool: false, message: e.response.data.message });
     }
   });
 };
 
 const UpdateLockUnlock = (body) => {
-  const {axios} =setRole()
+  const { axios } = setRole();
   return new Promise(async (resolve, reject) => {
     try {
-      const { data, status } = await axios.post(`/fair-game-wallet/lockUnclockUser`, body);
-      resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
+      const { data, status } = await axios.post(
+        `/fair-game-wallet/lockUnclockUser`,
+        body
+      );
+      resolve({
+        bool: data.message === "User update successfully." || status == 200,
+        message: data.message,
+      });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       reject({ bool: false, message: e.response.data.message });
     }
   });
 };
 
 const UserDelete = (id) => {
-  const {axios} =setRole()
+  const { axios } = setRole();
   return new Promise(async (resolve, reject) => {
     try {
       const { data, status } = await axios.delete(`/users/deleteUser/${id}`);
-      resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
+      resolve({
+        bool: data.message === "User update successfully." || status == 200,
+        message: data.message,
+      });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       reject({ bool: false, message: e.response.data.message });
     }
   });
 };
 
 const UpdatePassword = (body) => {
-  const {axios} =setRole()
+  const { axios } = setRole();
   return new Promise(async (resolve, reject) => {
     try {
-      const { data, status } = await axios.post(`/fair-game-wallet/updatePassword`, body);
-      resolve({ bool: data.message === 'User update successfully.' || status == 200, message: data.message })
+      const { data, status } = await axios.post(
+        `/fair-game-wallet/updatePassword`,
+        body
+      );
+      resolve({
+        bool: data.message === "User update successfully." || status == 200,
+        message: data.message,
+      });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       reject({ bool: false, message: e.response.data.message });
     }
   });

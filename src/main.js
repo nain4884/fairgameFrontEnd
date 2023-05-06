@@ -1,42 +1,16 @@
-import { Routes, Route, Redirect, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Matches from "./pages/matches";
-import Admin from "./pages/admin";
-import FairGameWalletRoutes from "./pages/fairGameWallet";
-import FairGameAdminRoutes from "./pages/fairGameAdmin";
 import MasterRoutes from "./pages/master";
-import SuperAdminRoutes from "./pages/superAdmin";
-import SuperMasterRoutes from "./pages/superMaster";
 import ExpertRoutes from "./pages/expert";
 import Login from "./pages/login";
-import { useEffect, useState } from "react";
 
 import { AuthProvider } from "./Authprovider";
-import { setRole } from "./newStore";
 import ForgotPassword from "./pages/ForgotPassword";
 import Verification from "./pages/Varification";
 import NewPassword from "./pages/NewPassword";
 import AdminRoutes from "./pages/fairGameAdmin";
 
 const Main = () => {
-  const [loginRole, setLoginRole] = useState("");
-  const [loginJWT, setLoginJWT] = useState(null);
-  const [socketInit, setSocketInit] = useState(null);
-  // useEffect(() => {
-  //   const newSocket = io);
-  //   setSocket(newSocket);
-  //   return () => newSocket.off();
-  // }, [loginJWT]);
-
-  useEffect(() => {
-    setRoleAndJWT();
-  }, [window.location.pathname]);
-
-  const setRoleAndJWT = () => {
-    let { role, JWT } = setRole();
-    setLoginRole(role);
-    setLoginJWT(JWT);
-  };
-
   function UserPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTuser");
     if (!token) {

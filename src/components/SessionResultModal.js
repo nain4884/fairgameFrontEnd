@@ -23,6 +23,21 @@ const SessionResultModal = ({ onClick, newData }) => {
     }
   };
 
+  const noResultDeclare = async () => {
+    try {
+      const body = {
+        betId: newData?.id,
+        matchId: newData?.match_id,
+        sessionBets: true,
+      };
+      const { data } = await axios.post("/game-match/NoResultDeclare", body);
+      toast.success(data?.message);
+    } catch (e) {
+      toast.error(e?.response?.data?.message);
+      console.log("error", e?.message);
+    }
+  };
+
   const CustomButton = ({ title, color, onClick }) => {
     return (
       <Box
@@ -139,7 +154,7 @@ const SessionResultModal = ({ onClick, newData }) => {
           <CustomButton
             color={"rgb(106 90 90)"}
             title={"No Result"}
-            onClick={() => onClick()}
+            onClick={() => noResultDeclare()}
           />
         </Box>
         <Box

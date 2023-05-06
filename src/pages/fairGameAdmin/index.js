@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import AccountStatement from "../admin/AccountStatement";
 import AddAccountScreen from "../admin/AddAccount";
 import ChangePassword from "../admin/ChangePassword";
@@ -24,6 +24,11 @@ import NewPassword from "../NewPassword";
 import jwtDecode from "jwt-decode";
 const AdminRoutes = () => {
 
+  const location = useLocation();
+
+  // Check if the current route is the login page
+  const isLoginPage = location.pathname === "/wallet";
+
   function AdminPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTwallet");
     const decodedToken = token!==null && jwtDecode(token);
@@ -35,7 +40,7 @@ const AdminRoutes = () => {
 
   return (
     <>
-      {/* <CustomHeader /> */}
+      {isLoginPage ? null : <CustomHeader />}
       <Routes forceRefresh={true}>
         <Route
           path="/"

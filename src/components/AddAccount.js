@@ -106,25 +106,20 @@ const AddAccount = () => {
 
   const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
   const setTypeForAccountType = () => {
-    let typo = [];
-    let k = 8;
-    if (locationPath === "admin") k = 0;
-    types.map((element) => {
-      if (element.role === userWallet?.role?.roleName) {
-        k = element.level;
-      }
-      if (k < element.level) {
-        if (element.level === 6) {
-          if (roleName === "fairGameAdmin") typo.push(element.val);
-        } else {
-          typo.push(element.val);
-        }
-      }
-    });
-    setTypeToShow(typo);
-  };
+    const typo =
+      roleName === "fairGameWallet"
+        ? types.filter((type) => type.role !== "expert")
+        : types?.filter((type) => {
+            const roleLevel = types?.find((t) => t?.role === roleName)?.level;
+            return (
+              roleLevel &&
+              type?.level > roleLevel &&
+              !(type?.role === "expert" && roleName === "fairGameAdmin")
+            );
+          });
 
-  console.log(Detail, "Detail", allRole);
+    setTypeToShow(typo?.map((v) => v.role));
+  };
 
   const addAccount = async () => {
     let payload = {

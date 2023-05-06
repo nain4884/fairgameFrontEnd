@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import AccountStatement from "../admin/AccountStatement";
 import AddAccountScreen from "../admin/AddAccount";
 import ChangePassword from "../admin/ChangePassword";
@@ -23,10 +23,14 @@ import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
 const MasterRoutes = () => {
+  const location = useLocation();
+
+  // Check if the current route is the login page
+  const isLoginPage = location.pathname === "/admin";
   function MasterPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTadmin");
-
-    const decodedToken = token!==null && jwtDecode(token);
+    // Conditionally render the header
+    const decodedToken = token !== null && jwtDecode(token);
     if (
       !["master", "admin", "superAdmin", "superMaster"].includes(
         decodedToken?.role
@@ -39,7 +43,7 @@ const MasterRoutes = () => {
 
   return (
     <>
-      {/* <CustomHeader /> */}
+      {isLoginPage ? null : <CustomHeader />}
       <Routes>
         <Route
           path="/"

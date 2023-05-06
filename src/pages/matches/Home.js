@@ -42,11 +42,11 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [sessionbets, setSessionBets] = useState([]);
   const { allBetRates, allSessionBets } = useSelector(
     (state) => state?.matchDetails
   );
   const [IObets, setIObtes] = useState(allBetRates);
+  const [sessionBets, setSessionBets] = useState(allSessionBets);
   const id = location.state;
   const [matchDetail, setMatchDetail] = useState();
   const [matchOddsData, setMatchOddsData] = useState([]);
@@ -57,6 +57,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const { selectedMatch } = useSelector((state) => state?.matchDetails);
   const [currentMatch, setCurrentMatch] = useState(selectedMatch);
   const [currentMatchProfit, setCurrentMatchProfit] = useState([]);
+
   const [bookMakerRateLive, setBookMakerLive] = useState(
     currentMatch?.bookMakerRateLive
   );
@@ -73,6 +74,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   var matchId = id;
   // console.log("currentMatchProfit 444:", currentMatchProfit);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+
+  console.log(sessionBets, "sessionBets");
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
@@ -254,10 +257,9 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
 
           // console.warn("selectedData val112", val);
 
-          session = [...allSessionBets];
-          session.unshift(data?.betPlaceData);
+          setSessionBets((prev) => [data.betPlaceData, ...prev]);
+          // dispatch(setAllSessionBets([data.betPlaceData, ...session]));
           dispatch(setCurrentUser(user));
-          dispatch(setAllSessionBets(session));
           dispatch(setSessionRates(data?.profitLoss));
         }
       };
@@ -267,6 +269,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     //   socket.connect();
     // }
   }, [socket]);
+
   useEffect(() => {
     if (socketMicro && socketMicro.connected && marketId) {
       socketMicro.emit("init", { id: marketId });
@@ -360,18 +363,17 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     };
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
-      // console.log(data,"Before");
-      // const rates=data?.data[0]?.sort((a, b) => b.id - a.id)
-      // console.log(rates,"Rates");
-      setIObtes(data?.data[0]);
-      // alert(data?.data[0].length)
-      dispatch(setAllBetRate(data?.data[0]));
-      var filteredData = data?.data?.[0]?.filter(
-        (item) => item.bet_type == "yes" || item.bet_type == "no"
+
+      setIObtes(
+        data?.data[0]?.filter((b) =>
+          ["MATCH ODDS", "BOOKMAKER"].includes(b?.marketType)
+        )
       );
-      // alert(filteredData.length)
-      dispatch(setAllSessionBets(filteredData)); // duplicate bets related issue
-      // console.log(data,"after");
+      setSessionBets(
+        data?.data[0]?.filter(
+          (b) => !["MATCH ODDS", "BOOKMAKER"].includes(b?.marketType)
+        )
+      );
     } catch (e) {
       console.log(e);
     }
@@ -425,24 +427,28 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       // console.warn("response.dat :",response.data)
       setMarketId(response.data.marketId);
       setMatchDetail(response.data);
-
-      response.data.bettings?.forEach((element) => {
-        if (element.sessionBet) {
-          setSessionBets((prev) => {
-            if (!prev.some((bet) => bet.id === element.id)) {
-              return [...prev, element];
-            }
-            return prev;
-          });
-        } else {
-          // setAllBetRates((prev) => {
-          //   if (!prev.some((bet) => bet.id === element.id)) {
-          //     return [...prev, element];
-          //   }
-          //   return prev;
-          // });
-        }
-      });
+      dispatch(
+        setAllSessionBets(
+          response?.data?.betting?.filter((v) => v?.sessionBet === true) || []
+        )
+      );
+      // response.data.bettings?.forEach((element) => {
+      //   if (element.sessionBet) {
+      //     setSessionBets((prev) => {
+      //       if (!prev.some((bet) => bet.id === element.id)) {
+      //         return [...prev, element];
+      //       }
+      //       return prev;
+      //     });
+      //   } else {
+      // setAllBetRates((prev) => {
+      //   if (!prev.some((bet) => bet.id === element.id)) {
+      //     return [...prev, element];
+      //   }
+      //   return prev;
+      // });
+      //   }
+      // });
       // console.log(response.data, "sda");
     } catch (e) {
       console.log("response", e.response.data);
@@ -499,7 +505,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               bookMakerRateLive={bookMakerRateLive}
               data={currentMatch}
               dataProfit={currentMatchProfit}
-              allBetsData={allSessionBets}
+              allBetsData={sessionBets}
             />
           </div>
           <Box
@@ -519,7 +525,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               }}
             >
               {matchDetail?.manualSessionActive && (
-                <SessionBetSeperate allBetsData={allSessionBets} mark />
+                <SessionBetSeperate allBetsData={sessionBets} mark />
               )}
               {allBetsData.length > 0 && (
                 <AllRateSeperate
@@ -564,7 +570,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-              <SessionBetSeperate allBetsData={allSessionBets} mark />
+              <SessionBetSeperate allBetsData={sessionBets} mark />
             )}
           </Box>
         </Box>

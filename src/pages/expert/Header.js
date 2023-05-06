@@ -31,6 +31,7 @@ import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
+import { memo } from "react";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -917,4 +918,4 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
   );
 };
 
-export default CustomHeader;
+export default memo(CustomHeader);

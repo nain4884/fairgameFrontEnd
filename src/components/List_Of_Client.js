@@ -18,7 +18,6 @@ export default function Home() {
     <Background>
       {CondiionCheck(window.location.pathname) ? (
         <>
-          <CustomHeader />
           <HomeSlide />
           <Account />
           <AccountList />
