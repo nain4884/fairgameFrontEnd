@@ -196,11 +196,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
       <Box sx={{ position: "relative" }}>
         <BoxComponent
           teamImage={currentMatch?.teamA_Image}
-          data={
-            liveData?.runners?.length > 0
-              ? liveData?.runners[0]
-              : []
-          }
+          data={liveData?.runners?.length > 0 ? liveData?.runners[0] : []}
           lock={liveData?.runners?.length > 0 ? false : true}
           color={"#46e080"}
           name={currentMatch?.teamA}
@@ -211,11 +207,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
           teamImage={currentMatch?.teamB_Image}
           lock={liveData?.runners?.length > 0 ? false : true}
           name={currentMatch?.teamB}
-          data={
-            liveData?.runners?.length > 0
-              ? liveData?.runners[1]
-              : []
-          }
+          data={liveData?.runners?.length > 0 ? liveData?.runners[1] : []}
           align="end"
         />
         {currentMatch?.teamC &&
@@ -226,11 +218,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
               teamImage={null}
               lock={liveData?.runners?.length > 0 ? false : true}
               name={currentMatch?.teamC}
-              data={
-                liveData?.runners?.length > 0
-                  ? liveData?.runners[2]
-                  : []
-              }
+              data={liveData?.runners?.length > 0 ? liveData?.runners[2] : []}
               align="end"
             />
           </>
