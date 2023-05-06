@@ -10,27 +10,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setSelectedMatch } from "../../../newStore/reducers/matchDetails";
 import { setRole } from "../../../newStore";
-const SessionMarket = ({ currentMatch, setCurrentMatch,setLocalState, }) => {
+const SessionMarket = ({ currentMatch, setCurrentMatch, setLocalState }) => {
   const { sessionOddsLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [live, setLive] = useState(true);
+  const [stop, setStop] = useState(true);
   const dispatch = useDispatch();
   const { axios } = setRole();
-
-  
-  const matchSessionData = currentMatch?.bettings?.filter(
-    (element) => element.sessionBet === true
+  const [matchSessionData, setMatchSessionData] = useState(
+    currentMatch?.bettings?.filter((element) => element.sessionBet === true)
   );
-
-
   const handleLive = async () => {
     try {
-      const bettingsToUpdate = currentMatch?.bettings?.filter(
-        (v) => v?.sessionBet === true && v.id
+      const bettingsToUpdate = matchSessionData?.filter(
+        (v) => v?.sessionBet === true && v?.id && v?.betStatus === 1
       );
 
-      const addBettingPromises = bettingsToUpdate?.map(async (betting) => {
+      const promises = bettingsToUpdate?.map(async (betting) => {
         const body = {
           match_id: currentMatch?.id,
           matchType: currentMatch?.gameType,
@@ -46,33 +42,24 @@ const SessionMarket = ({ currentMatch, setCurrentMatch,setLocalState, }) => {
         };
 
         const { data } = await axios.post("betting/addBetting", body);
-        return data.data;
+        return data?.data;
       });
 
-      const bettingsData = await Promise.all(addBettingPromises);
-      console.log(bettingsData, "bettingsData");
+      const results = await Promise.all(promises);
+      setMatchSessionData((matchSessionData) => {
+        const updatedBettings = matchSessionData?.map((betting) => {
+          const updatedBetting = results?.find(
+            (result) =>
+              (betting.selectionId &&
+                betting.selectionId === result.selectionId) ||
+              (betting.id && betting.id === result.id)
+          );
 
-      // const updatedBettingsWithIds = currentMatch?.bettings?.map((betting) => {
-      //   if (betting?.id && bettingsData.some((d) => d?.id === betting?.id)) {
-      //     return {
-      //       ...betting,
-      //       betStatus: 0,
-      //       suspended: betting?.suspended
-      //     };
-      //   }
-      //   return betting;
-      // });
-
-      // setCurrentMatch((prevState) => ({
-      //   ...prevState,
-      //   bettings: updatedBettingsWithIds,
-      // }));
-      // dispatch(
-      //   setSelectedMatch({
-      //     ...currentMatch,
-      //     bettings: updatedBettingsWithIds,
-      //   })
-      // );
+          return updatedBetting ? updatedBetting : betting;
+        });
+        return updatedBettings;
+      });
+      setStop(false);
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
@@ -126,7 +113,7 @@ const SessionMarket = ({ currentMatch, setCurrentMatch,setLocalState, }) => {
            */}
           <Stop
             onClick={() => {
-              setLive(false);
+              setStop(false);
               handleLive();
             }}
           />
@@ -247,20 +234,20 @@ const SessionMarket = ({ currentMatch, setCurrentMatch,setLocalState, }) => {
           }}
         >
           {matchSessionData?.length > 0 &&
-            matchSessionData
-              ?.map((match, index) => (
-                <Box key={index}>
-                  <SessionMarketBox
-                    setLocalState={(val)=>setLocalState(val)}
-                    currentMatch={currentMatch}
-                    setCurrentMatch={setCurrentMatch}
-                    newData={match}
-                    liveUser={live}
-                    index={index}
-                  />
-                  <Divider />
-                </Box>
-              ))}
+            matchSessionData?.map((match, index) => (
+              <Box key={index}>
+                <SessionMarketBox
+                  setLocalState={(val) => setLocalState(val)}
+                  currentMatch={currentMatch}
+                  setCurrentMatch={setCurrentMatch}
+                  newData={match}
+                  setStop={setStop}
+                  stop={stop}
+                  index={index}
+                />
+                <Divider />
+              </Box>
+            ))}
         </Box>
       </Box>
     </Box>

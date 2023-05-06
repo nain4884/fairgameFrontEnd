@@ -79,7 +79,7 @@ const stateDetail = {
   21: { field: "delaySecond", val: "" },
 };
 
- function Home1() {
+function Home1() {
   const [Detail, setDetail] = useState(stateDetail);
 
   const { axios } = setRole();
@@ -111,7 +111,6 @@ const stateDetail = {
     { EventName: "No Matches Available", MarketId: defaultMarketId },
   ]);
   const [marketId, setMarketId] = useState(defaultMarketId);
-
 
   const createMatch = async () => {
     try {
@@ -587,7 +586,7 @@ const stateDetail = {
     </Background>
   );
 }
-export default memo(Home1)
+export default memo(Home1);
 
 const LabelValueComponent = ({
   title,
@@ -964,6 +963,22 @@ const Row = ({ index, containerStyle, data }) => {
       );
     }, [2000]);
   }
+
+  const { socket, socketMicro } = useContext(SocketContext);
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
+
+  useEffect(() => {
+    if (socketMicro && socketMicro.connected) {
+      const marketId = sessionStorage.getItem("marketId");
+      if (marketId !== null) {
+        socketMicro?.emit("disconnect_market", {
+          id: marketId,
+        });
+        // socketMicro.disconnect();
+        sessionStorage.removeItem("marketId");
+      }
+    }
+  }, [socketMicro]);
 
   async function submitMatchUpdation() {
     let defaultMatchStatus = {

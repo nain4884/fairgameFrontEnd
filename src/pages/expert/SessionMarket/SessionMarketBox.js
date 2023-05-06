@@ -17,10 +17,11 @@ import { setSelectedMatch } from "../../../newStore/reducers/expertMatchDetails"
 
 const SessionMarketBox = ({
   index,
-  liveUser,
+  stop,
   setCurrentMatch,
   currentMatch,
   newData,
+  setStop,
   setLocalState,
 }) => {
   const theme = useTheme();
@@ -28,14 +29,20 @@ const SessionMarketBox = ({
   const { axios } = setRole();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [visible, setVisible] = useState(false);
-  const [live, setLive] = useState(
-    liveUser ? (newData?.betStatus === 0 ? true : false) : true
-  );
+  const [live, setLive] = useState(newData?.betStatus === 0 ? true : false);
+
+  useEffect(() => {
+    if (!stop) {
+      setLive(true);
+    }
+  }, [stop]);
+
 
   const handleLive = async (status) => {
     try {
       if (status === 1) {
         setLive(false);
+        setStop(true);
       } else {
         setLive(true);
       }

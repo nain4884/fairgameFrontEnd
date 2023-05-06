@@ -27,7 +27,7 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 
 let matchOddsCount = 0;
-let marketId = "";
+let marketId=""
 const MatchScreen = () => {
   const [data, setData] = useState([]);
   const { socket, socketMicro } = useContext(SocketContext);
@@ -51,7 +51,7 @@ const MatchScreen = () => {
       // setCurrentMatch({});
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
       setCurrentMatch(data);
-      marketId = data?.marketId;
+      marketId=data?.marketId;
       // dispatch(setSelectedMatch(data));
     } catch (e) {
       console.log(e?.message, "message");
@@ -215,17 +215,20 @@ const MatchScreen = () => {
   // console.log('currentMatch', currentMatch)
   const activateLiveMatchMarket = async (val) => {
     try {
-      await Axios.get(`${microServiceApiPath}/market/${marketId}`);
+      await Axios.get(`${microServiceApiPath}/market/${val}`);
     } catch (e) {
       console.log("error", e?.message);
     }
   };
+
   useEffect(() => {
-    if (socketMicro && socketMicro.connected && marketId !== "") {
-      socketMicro.emit("init", { id: marketId });
-      activateLiveMatchMarket(marketId);
-      socketMicro.on(`session${marketId}`, (val) => {
-        if (state?.marketId === marketId) {
+    if (socketMicro && socketMicro.connected && state?.marketId !== "" && marketId!=="") {
+
+      socketMicro.emit("init", { id: state?.marketId });
+      activateLiveMatchMarket(state?.marketId);
+      sessionStorage.setItem("marketId", state?.marketId);
+      socketMicro.on(`session${state?.marketId}`, (val) => {
+        if (state?.marketId===marketId) {
           // add this check ignore duplicate rates
           var newVal = val?.map((v) => ({
             bet_condition: v?.RunnerName,
@@ -281,23 +284,24 @@ const MatchScreen = () => {
         // dispatch(setSessionOddsLive(updatedBettings1));
       });
 
-      socketMicro.on(`matchOdds${marketId}`, (val) => {
+      socketMicro.on(`matchOdds${state?.marketId}`, (val) => {
         if (val.length === 0) {
           matchOddsCount += 1;
           if (matchOddsCount >= 3) {
             socketMicro.emit("disconnect_market", {
-              id: marketId,
+              id: state?.marketId,
             });
             // socketMicro.disconnect();
           }
         } else {
           // dispatch(setMatchOddsLive(val[0]));
-          if (marketId === val[0]?.marketId) {
+          if (state?.marketId === val[0]?.marketId) {
             setMatchOddsLive(val[0]);
             if (val[0]?.status === "CLOSED") {
               socketMicro.emit("disconnect_market", {
-                id: marketId,
+                id: state?.marketId,
               });
+              // socketMicro.disconnect();
             }
           } else {
             setMatchOddsLive([]);
@@ -305,9 +309,9 @@ const MatchScreen = () => {
         }
       });
 
-      socketMicro.on(`bookmaker${marketId}`, (val) => {
+      socketMicro.on(`bookmaker${state?.marketId}`, (val) => {
         // dispatch(setBookMakerLive(val[0]));
-        if (marketId === val[0]?.marketId) {
+        if (state?.marketId === val[0]?.marketId) {
           setBookmakerLiveData(val[0]);
         } else {
           setBookmakerLiveData([]);
@@ -322,7 +326,7 @@ const MatchScreen = () => {
       //   marketId = "";
       // };
     }
-  }, [socketMicro, marketId, localState]);
+  }, [socketMicro,marketId, state?.marketId, localState]);
 
   async function getAllBetsData(val) {
     let payload = {

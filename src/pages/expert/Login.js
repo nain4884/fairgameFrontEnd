@@ -30,7 +30,8 @@ export default function Login(props) {
   const activeUser = useSelector((state) => {
     return state?.activeUser?.activeUser;
   });
-
+  
+  
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loginDetail, setLoginDetail] = useState({
     1: { field: "username", val: "" },
