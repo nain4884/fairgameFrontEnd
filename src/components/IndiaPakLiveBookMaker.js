@@ -153,10 +153,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setIsTeamADisabled(true);
                     setIsTeamBDisabled(false);
                     innerRefTeamB.current.focus();
+                    setPressEnter(false);
                 } else {
                     setIsTeamADisabled(false);
                     setIsTeamBDisabled(true);
                     innerRefTeamA.current.focus();
+                    setPressEnter(false);
                 }
             }
             else if (key == 'enter' || key == 'return') {
