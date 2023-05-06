@@ -67,10 +67,9 @@ const MatchScreen = () => {
   useEffect(() => {
     if (localState?.id) {
       setCurrentMatch(localState);
-      setLocalState(null)
+      setLocalState(null);
     }
   }, [localState]);
-
 
   useEffect(() => {
     if (socket && socket.connected && currentMatch !== null) {
@@ -221,13 +220,12 @@ const MatchScreen = () => {
       console.log("error", e?.message);
     }
   };
-
   useEffect(() => {
     if (socketMicro && socketMicro.connected && marketId !== "") {
       socketMicro.emit("init", { id: marketId });
       activateLiveMatchMarket(marketId);
       socketMicro.on(`session${marketId}`, (val) => {
-        if (state?.marketId == marketId) {
+        if (state?.marketId === marketId) {
           // add this check ignore duplicate rates
           var newVal = val?.map((v) => ({
             bet_condition: v?.RunnerName,
@@ -239,43 +237,46 @@ const MatchScreen = () => {
             suspended: v?.GameStatus,
             selectionId: v?.SelectionId,
           }));
-          if (currentMatch?.bettings?.length > 0) {
-            const data = currentMatch?.bettings?.map((betting) => {
-              var selectedData = newVal?.find(
-                (data) => data?.selectionId === betting?.selectionId
-              );
-              if (selectedData !== undefined) {
-                return {
-                  ...betting,
-                  bet_condition: selectedData?.bet_condition,
-                  no_rate: selectedData?.no_rate,
-                  yes_rate: selectedData?.yes_rate,
-                  rate_percent: selectedData?.rate_percent,
-                  suspended: selectedData?.suspended,
-                  selectionId: selectedData?.selectionId,
-                };
-              }
-              return betting;
-            });
 
-            const filteredNewVal =
-              newVal?.filter((newData) => {
-                const hasMatch = currentMatch?.bettings.some(
-                  (betting) => betting.selectionId === newData.selectionId
+          setCurrentMatch((currentMatch) => {
+            if (currentMatch?.bettings?.length > 0) {
+              const data = currentMatch?.bettings?.map((betting) => {
+                var selectedData = newVal?.find(
+                  (data) => data?.selectionId === betting?.selectionId
                 );
-                // Return false to exclude newData from filteredNewVal if a match is found
-                return !hasMatch;
-              }) || [];
+                if (selectedData !== undefined) {
+                  return {
+                    ...betting,
+                    bet_condition: selectedData?.bet_condition,
+                    no_rate: selectedData?.no_rate,
+                    yes_rate: selectedData?.yes_rate,
+                    rate_percent: selectedData?.rate_percent,
+                    suspended: selectedData?.suspended,
+                    selectionId: selectedData?.selectionId,
+                  };
+                }
+                return betting;
+              });
 
-            // Merge the filteredNewVal with the currentMatch bettings array
+              const filteredNewVal =
+                newVal?.filter((newData) => {
+                  const hasMatch = currentMatch?.bettings.some(
+                    (betting) => betting.selectionId === newData.selectionId
+                  );
+                  // Return false to exclude newData from filteredNewVal if a match is found
+                  return !hasMatch;
+                }) || [];
 
-            setCurrentMatch({
-              ...currentMatch,
-              bettings: [...data, ...filteredNewVal],
-            });
-          } else {
-            setCurrentMatch({ ...currentMatch, bettings: newVal });
-          }
+              // Merge the filteredNewVal with the currentMatch bettings array
+
+              return {
+                ...currentMatch,
+                bettings: [...data, ...filteredNewVal],
+              };
+            } else {
+              return { ...currentMatch, bettings: newVal };
+            }
+          });
         }
         // dispatch(setSessionOddsLive(updatedBettings1));
       });
@@ -321,7 +322,7 @@ const MatchScreen = () => {
       //   marketId = "";
       // };
     }
-  }, [socketMicro, marketId,localState]);
+  }, [socketMicro, marketId, localState]);
 
   async function getAllBetsData(val) {
     let payload = {

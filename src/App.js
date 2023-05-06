@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import Main from "./main";
 import { ThemeProvider } from "@mui/system";
@@ -15,24 +16,26 @@ import { GlobalStore } from "./context/globalStore";
 
 let persistor = persistStore(store);
 function App() {
-  const [globalStore,setGlobalStore] =useState({
-    userJWT:"",
-    adminWT:"",
-    expertJWT:"",
-    walletJWT:"",
-  })
-  if (process.env.ENV !== "production") console.log = () => { };
+  const [globalStore, setGlobalStore] = useState({
+    userJWT: "",
+    adminWT: "",
+    expertJWT: "",
+    walletJWT: "",
+  });
+  // if (process.env.ENV !== "production") console.log = () => {};
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <GlobalStore.Provider value={{globalStore,setGlobalStore}}>
-          <SocketProvider>
-            <ToastContainer />
-            <div className="App">
-              <Main />
-            </div>
-          </SocketProvider>
+          <GlobalStore.Provider value={{ globalStore, setGlobalStore }}>
+            <SocketProvider>
+              <ToastContainer />
+              <React.StrictMode>
+                <div className="App">
+                  <Main />
+                </div>
+              </React.StrictMode>
+            </SocketProvider>
           </GlobalStore.Provider>
         </PersistGate>
       </Provider>

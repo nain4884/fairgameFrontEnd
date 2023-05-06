@@ -4,7 +4,11 @@ import Background from './Background'
 import { MatchListComp } from "./Home1";
 import { DailogModal } from "../../components";
 
-export default function BetFairOdds() {
+import { memo } from "react";
+ function BetFairOdds() {
+
+  
+  
     return (
         <Background>
             <Header />
@@ -16,3 +20,5 @@ export default function BetFairOdds() {
         </Background>
     )
 }
+
+export default memo(BetFairOdds)

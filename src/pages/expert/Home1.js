@@ -21,7 +21,10 @@ import Header from "./Header";
 import Background from "./Background";
 import "./style.css";
 import DropDownSimple from "../../components/DropdownSimple";
-import constants, { defaultMarketId, matchType } from "../../components/helper/constants";
+import constants, {
+  defaultMarketId,
+  matchType,
+} from "../../components/helper/constants";
 import microServiceAxios from "../../axios/microServiceAxios";
 import { setDailogData } from "../../store/dailogModal";
 import { useDispatch } from "react-redux";
@@ -29,7 +32,11 @@ import { setSelectedMatch } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import moment from "moment";
 import { setMatchOddsLive } from "../../newStore/reducers/matchDetails";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import { useContext } from "react";
+import { SocketContext } from "../../context/socketContext";
+import { GlobalStore } from "../../context/globalStore";
+import { memo } from "react";
 
 const containerStyles = {
   marginTop: "10px",
@@ -72,8 +79,9 @@ const stateDetail = {
   21: { field: "delaySecond", val: "" },
 };
 
-export default function Home1() {
+ function Home1() {
   const [Detail, setDetail] = useState(stateDetail);
+
   const { axios } = setRole();
   const [Error, setError] = useState({
     1: { field: "gameType", val: false },
@@ -104,6 +112,7 @@ export default function Home1() {
   ]);
   const [marketId, setMarketId] = useState(defaultMarketId);
 
+
   const createMatch = async () => {
     try {
       let request = new FormData();
@@ -115,10 +124,10 @@ export default function Home1() {
       }
       const { data } = await axios.post(`/game-match/addmatch`, request);
       if (data.message === "Match added successfully.")
-        toast.success(data.message)
+        toast.success(data.message);
       navigate("/expert/match");
     } catch (e) {
-      toast.error(e.response.data.message)
+      toast.error(e.response.data.message);
       console.log(e);
     }
   };
@@ -578,6 +587,7 @@ export default function Home1() {
     </Background>
   );
 }
+export default memo(Home1)
 
 const LabelValueComponent = ({
   title,
@@ -956,7 +966,6 @@ const Row = ({ index, containerStyle, data }) => {
   }
 
   async function submitMatchUpdation() {
-
     let defaultMatchStatus = {
       apiMatchActive: false,
       apiBookMakerActive: false,

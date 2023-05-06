@@ -22,7 +22,6 @@ const ExportRoutes = () => {
     }
     return children;
   }
-
   return (
     <Routes>
       <Route path="/" element={<Login allowedRole={["expert"]} />} />
@@ -49,7 +48,7 @@ const ExportRoutes = () => {
         path="/addBet"
         element={
           <ExpertPrivateRoute>
-            {" "}
+            
             <AddBet />
           </ExpertPrivateRoute>
         }

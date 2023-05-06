@@ -728,7 +728,7 @@ const WithDrawComponent = ({
           </Typography>
           <Box
             sx={{
-              background: "#004A25",
+              background: "#E32A2A",
               width: "50%",
               height: "45px",
               borderRadius: "5px",
