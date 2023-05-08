@@ -85,7 +85,7 @@ const CustomHeader = ({}) => {
           setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
           await axios.get("auth/logout");
           removeSocket();
-          navigate("/expert")
+          navigate("/expert");
         }
       };
     }
@@ -178,7 +178,12 @@ const CustomHeader = ({}) => {
               />
               <StyledImage
                 src={logo}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/expert/match`);
+                }}
                 sx={{
+                  cursor: "pointer",
                   height: { laptop: "45px", mobile: "40px" },
                   width: "auto",
                   marginLeft: { laptop: "20px", mobile: "10px" },

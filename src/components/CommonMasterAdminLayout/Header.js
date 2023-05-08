@@ -236,7 +236,7 @@ const CustomHeader = ({}) => {
         sx={classes.RenderLogoCompStyleImg}
       />
     );
-  }, []);
+  }, [classes.RenderLogoCompStyleImg, nav, navigate]);
 
   return (
     <>
@@ -304,7 +304,6 @@ const CustomHeader = ({}) => {
               <ButtonHead
                 onClick={(e) => {
                   dispatch(setActiveAdmin(4));
-                  // navigate('/fairgame_wallet/wallet')
                   setAnchor1(e.currentTarget);
                 }}
                 title={"WALLET"}
@@ -325,7 +324,7 @@ const CustomHeader = ({}) => {
               inputContainerStyle={classes.BoxCont1sub2SearchInputContStyle}
             />
             <BoxProfile
-            nav={nav}
+              nav={nav}
               containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
               image={"https://picsum.photos/200/300"}
               value={currentUser?.userName || ""}
@@ -364,7 +363,7 @@ const CustomHeader = ({}) => {
   );
 };
 
-const BoxProfile = ({ image, value, containerStyle, amount,nav }) => {
+const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -469,10 +468,9 @@ function useOuterClick(callback) {
   return innerRef; // convenience for client (doesn't need to init ref himself)
 }
 
-const DropdownMenu = ({ anchorEl, open, handleClose,nav }) => {
+const DropdownMenu = ({ anchorEl, open, handleClose, nav }) => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { axios } = setRole();
-
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

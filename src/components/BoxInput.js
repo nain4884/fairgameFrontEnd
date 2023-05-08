@@ -9,6 +9,7 @@ const BoxInput = ({
   valueContainerStyle,
   valueTextStyle,
   trendingUp,
+  getLatestBetAmount,
   trendingDown,
   setDefaultValue,
 }) => {
@@ -56,7 +57,9 @@ const BoxInput = ({
             style: { fontSize: "16px", fontWeight: "600", color: "white" },
           }}
           onChange={(e) => {
+            console.log('e.target.value', e.target.value)
             setDefaultValue(e.target.value);
+            getLatestBetAmount(e?.target.value)
           }}
           sx={{ textAlign: "center", alignItems: "center" }}
         />

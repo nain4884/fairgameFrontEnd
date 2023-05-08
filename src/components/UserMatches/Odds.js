@@ -1,21 +1,23 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import BoxComponent from "./BoxComponent";
 import Divider from "../helper/Divider";
 import { BallStart, Info, TIME } from "../../assets";
 import { memo } from "react";
 
-const SmallBox = ({ color, value }) => {
+const SmallBox = ({ valueA, valueB }) => {
   return (
     <Box
       sx={{
-        width: { laptop: "70px", mobile: "17vw" },
+        width: "max-content",
         position: "absolute",
+        paddingX: "5px",
         display: "flex",
         left: { mobile: "60%", laptop: "49vw", tablet: "60%" },
         justifyContent: "center",
         alignItems: "center",
+        gap: 2,
         height: "30px",
         background: "white",
         borderRadius: "7px",
@@ -25,10 +27,27 @@ const SmallBox = ({ color, value }) => {
         sx={{
           fontSize: { laptop: "12px", mobile: "10px" },
           fontWeight: "bold",
-          color: value > 1 ? `#46e080` : `#FF9292`,
         }}
       >
-        {value > 1 ? `+Book ${value}` : `-Book ${value * -1}`}
+        Book
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: { laptop: "12px", mobile: "10px" },
+          fontWeight: "bold",
+          color: valueA <0 ?  `#FF9292` : `#46e080`,
+        }}
+      >
+        {valueA<0 ? ` ${valueA}` : `${valueA }`}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: { laptop: "12px", mobile: "10px" },
+          fontWeight: "bold",
+          color: valueB<0  ?  `#FF9292` : `#46e080`,
+        }}
+      >
+        {valueB<0  ? ` ${valueB}` : `${valueB}`}
       </Typography>
     </Box>
   );
@@ -65,12 +84,22 @@ const Odds = ({
   suspended,
   newData,
   isRound,
-  typeOfBet
+  typeOfBet,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  const bookRatio = teamBRates !== 0 ? Math.round((teamARates / teamBRates) * 100) / 100 || 0 : 0;
+  const bookRatioA =
+   ( teamBRates !== 0
+      ?  (teamARates / teamBRates)|| 0
+      : 0).toFixed(2)
+
+  const bookRatioB =
+    (teamARates !== 0
+      ? (teamBRates / teamARates) || 0
+      : 0).toFixed(2)
+
+
 
   return (
     <Box
@@ -113,9 +142,9 @@ const Odds = ({
           >
             {title}
           </Typography>
-          {showDely && typeOfBet === "MATCH ODDS" && <Time
-            time={newData.delaySecond ? newData?.delaySecond : 0}
-          />}
+          {showDely && typeOfBet === "MATCH ODDS" && (
+            <Time time={newData.delaySecond ? newData?.delaySecond : 0} />
+          )}
         </Box>
         <Box
           sx={{
@@ -136,7 +165,7 @@ const Odds = ({
             justifyContent: "flex-end",
           }}
         >
-          <SmallBox value={bookRatio} />
+          <SmallBox valueA={bookRatioA} valueB={bookRatioB} />
           <Typography
             sx={{
               color: "white",
@@ -245,7 +274,6 @@ const Odds = ({
         name={newData?.teamA}
         data={data?.length > 0 ? data[0] : []}
         team={"teamA"}
-
         suspendedData={data[0]?.status}
         typeOfBet={typeOfBet}
         isRound={isRound}
@@ -268,26 +296,27 @@ const Odds = ({
         typeOfBet={typeOfBet}
         isRound={isRound}
       />
-      {newData?.teamC && <>
-        <Divider />
-        <BoxComponent
-          teamImage={null}
-          time={true}
-          showBox={showBox}
-          newData={newData}
-          // lock={data?.length > 0 ? false : true}
-          color={"#FF4D4D"}
-          name={newData?.teamC}
-          data={data?.length > 0 ? data[2] : []}
-          suspendedData={data[2]?.status}
-          rate={0}
-          allRates={{ teamA: teamARates, teamB: teamBRates }}
-          team={"teamC"}
-          typeOfBet={typeOfBet}
-          isRound={isRound}
-        />
-      </>}
-
+      {newData?.teamC && (
+        <>
+          <Divider />
+          <BoxComponent
+            teamImage={null}
+            time={true}
+            showBox={showBox}
+            newData={newData}
+            // lock={data?.length > 0 ? false : true}
+            color={"#FF4D4D"}
+            name={newData?.teamC}
+            data={data?.length > 0 ? data[2] : []}
+            suspendedData={data[2]?.status}
+            rate={0}
+            allRates={{ teamA: teamARates, teamB: teamBRates }}
+            team={"teamC"}
+            typeOfBet={typeOfBet}
+            isRound={isRound}
+          />
+        </>
+      )}
 
       {/* {data?.teamC && !suspended && (
         <BoxComponent

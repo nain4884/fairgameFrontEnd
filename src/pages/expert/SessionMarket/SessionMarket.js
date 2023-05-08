@@ -10,16 +10,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setSelectedMatch } from "../../../newStore/reducers/matchDetails";
 import { setRole } from "../../../newStore";
-const SessionMarket = ({ currentMatch, setCurrentMatch, setLocalState }) => {
-  const { sessionOddsLive } = useSelector((state) => state?.matchDetails);
+const SessionMarket = ({
+  currentMatch,
+  liveOnly,
+  setCurrentMatch,
+  setLocalState,
+  hideResult,
+  sessionData,
+  setLiveData,
+  stopAllHide,
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [stop, setStop] = useState(true);
   const dispatch = useDispatch();
   const { axios } = setRole();
-  const [matchSessionData, setMatchSessionData] = useState(
-    currentMatch?.bettings?.filter((element) => element.sessionBet === true)
-  );
+  const [matchSessionData, setMatchSessionData] = useState(sessionData);
+
+  useEffect(() => {
+    if (sessionData?.length > 0) {
+      setMatchSessionData(sessionData);
+    }
+  }, [sessionData]);
   const handleLive = async () => {
     try {
       const bettingsToUpdate = matchSessionData?.filter(
@@ -111,12 +123,14 @@ const SessionMarket = ({ currentMatch, setCurrentMatch, setLocalState }) => {
           </Typography>
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
-          <Stop
-            onClick={() => {
-              setStop(false);
-              handleLive();
-            }}
-          />
+          {!stopAllHide && (
+            <Stop
+              onClick={() => {
+                setStop(false);
+                handleLive();
+              }}
+            />
+          )}
         </Box>
         <Box
           sx={{
@@ -237,6 +251,8 @@ const SessionMarket = ({ currentMatch, setCurrentMatch, setLocalState }) => {
             matchSessionData?.map((match, index) => (
               <Box key={index}>
                 <SessionMarketBox
+                  setLiveData={setLiveData}
+                  hideResult={hideResult}
                   setLocalState={(val) => setLocalState(val)}
                   currentMatch={currentMatch}
                   setCurrentMatch={setCurrentMatch}

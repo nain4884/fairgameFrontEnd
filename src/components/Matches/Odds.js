@@ -22,7 +22,7 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
-    }, 1000);
+    }, 0);
     return () => clearTimeout(timer);
   });
 

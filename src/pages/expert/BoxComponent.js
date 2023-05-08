@@ -92,7 +92,7 @@ const BoxComponent = ({
         {name != "DRAW" && <MoneyBox color={color} />}
       </Box>
 
-      {!["ACTIVE", "", undefined].includes(status) ? (
+      {!["ACTIVE", "", undefined,null].includes(status) ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",

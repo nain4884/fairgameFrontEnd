@@ -14,6 +14,8 @@ import "../components/index.css";
 import StyledImage from "./StyledImage";
 import { useSelector } from "react-redux";
 import BoxInput from "./BoxInput";
+import { toast } from "react-toastify";
+import { setRole } from "../newStore";
 const PlaceBet = ({
   open,
   refs,
@@ -35,7 +37,12 @@ const PlaceBet = ({
   rates,
 }) => {
   const [defaultValue, setDefaultValue] = useState("");
+  const [newRates, setNewRates] = useState({
+    loss_amount: 0,
+    win_amount: 0,
+  });
   const theme = useTheme();
+  const { axios } = setRole();
   const selectedColorBox = useSelector(
     (state) => state.selectedColorBox
   )?.value;
@@ -51,6 +58,30 @@ const PlaceBet = ({
     scrollToBottom();
   }, [selectedValue]);
 
+  const getLatestBetAmount = async (value, newData) => {
+    try {
+      const title = season ? (isBack ? "no" : "yes") : isBack ? "back" : "lay";
+      const bet_type = title;
+
+      var body = {
+        bet_type,
+        odds: selectedValue,
+        stake: Number(value),
+      };
+
+      if (season) {
+        body = { ...body, rate_percent: newData?.rate_percent };
+      }
+      console.log("body", body);
+      const { data } = await axios.post("/betting/calculateBetAmount", body);
+      if (data?.data) {
+        setNewRates(data?.data);
+      }
+    } catch (e) {
+      toast.error(e.response.data.message);
+      console.log("error", e.message);
+    }
+  };
 
   const CustomButton = ({ color, title, onClick }) => {
     return (
@@ -99,7 +130,7 @@ const PlaceBet = ({
     containerStyle,
     valueContainerStyle,
     valueTextStyle,
-    bet_condition
+    bet_condition,
   }) => {
     const [oddValue, setOddValue] = useState(selectedValue || "0");
     const selectedColorBox = useSelector(
@@ -142,7 +173,6 @@ const PlaceBet = ({
             <Typography
               sx={[
                 {
-
                   overflow: bet_condition && "hidden",
                   textOverflow: bet_condition && "ellipsis",
                   whiteSpace: bet_condition && "nowrap",
@@ -163,10 +193,12 @@ const PlaceBet = ({
                   ? "Back"
                   : "Lay"
                 : title === "Team"
-                  ? name
-                  : bet_condition ? bet_condition : isSessionYes
-                    ? "Yes"
-                    : "No"}
+                ? name
+                : bet_condition
+                ? bet_condition
+                : isSessionYes
+                ? "Yes"
+                : "No"}
             </Typography>
           </Box>
         )}
@@ -313,7 +345,7 @@ const PlaceBet = ({
     const matchOdds = data?.bettings?.filter(
       (element) => element.sessionBet === false
     );
-    return matchOdds?.[0]?.id
+    return matchOdds?.[0]?.id;
   }
 
   function SubmitPayloadForPlaceBet(
@@ -326,7 +358,9 @@ const PlaceBet = ({
       // betId: currentMatch?.matchOddsData?.[0]?.id,
       betId: findBetId(currentMatch),
       bet_type: isBack ? "back" : "lay",
-      odds: Number(document.getElementsByClassName("OddValue")?.[0]?.textContent),
+      odds: Number(
+        document.getElementsByClassName("OddValue")?.[0]?.textContent
+      ),
       betOn: betOn,
       stack: defaultValue,
       team_bet: name,
@@ -349,10 +383,10 @@ const PlaceBet = ({
       payload.betId = data?.id;
       payload.bet_type = isSessionYes ? "yes" : "no";
       payload.bet_condition = data?.bet_condition;
-      payload.rate_percent = data?.rate_percent
+      payload.rate_percent = data?.rate_percent;
       payload.marketType = currentMatch?.bet_condition;
       payload.odds = selectedValue;
-      payload.sessionBet = true
+      payload.sessionBet = true;
     }
     return payload;
   }
@@ -370,13 +404,25 @@ const PlaceBet = ({
           width: { mobile: "90vw", laptop: "30vw" },
           // left: isSessionYes?"-30%": "95%"
         },
-        // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ? 
+        // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
         matchesMobile
-          // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
-          // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-          ? { position: "absolute", right: back ? "0vw" : "0vw" }
-          : typeOfBet == "Session" ? { position: "absolute", right: back ? "auto" : "0vw", left: isSessionYes ? "-30%" : "95%" } : { position: "absolute", right: back ? typeOfBet != "Session" ? "1.5vw" : "-16.5vw" : "0vw" }
-
+          ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
+            // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
+            { position: "absolute", right: back ? "0vw" : "0vw" }
+          : typeOfBet == "Session"
+          ? {
+              position: "absolute",
+              right: back ? "auto" : "0vw",
+              left: isSessionYes ? "-30%" : "95%",
+            }
+          : {
+              position: "absolute",
+              right: back
+                ? typeOfBet != "Session"
+                  ? "1.5vw"
+                  : "-16.5vw"
+                : "0vw",
+            },
       ]}
     >
       <Box sx={{ background: "white", width: "100%", overflow: "hidden" }}>
@@ -402,11 +448,15 @@ const PlaceBet = ({
           <Box
             sx={{ display: "flex", marginRight: -"10px", alignItems: "center" }}
           >
-            <MoneyBox trendingUp={true} rate={rates?.teamA} color={"#10DC61"} />
+            <MoneyBox
+              trendingUp={true}
+              rate={Number(newRates?.win_amount)?.toFixed(2)}
+              color={"#10DC61"}
+            />
             <Box sx={{ width: "5px" }}></Box>
             <MoneyBox
               trendingDown={true}
-              rate={rates?.teamB}
+              rate={Number(newRates?.loss_amount).toFixed(2)}
               color={"#FF4D4D"}
             />
             <Box sx={{ width: "5px" }}></Box>
@@ -439,8 +489,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                  ? "Lay"
-                  : "Back"
+                ? "Lay"
+                : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}
@@ -449,6 +499,9 @@ const PlaceBet = ({
           <BoxInput
             setDefaultValue={setDefaultValue}
             defaultValue={defaultValue}
+            getLatestBetAmount={(value) =>
+              value && getLatestBetAmount(value, data)
+            }
             containerStyle={{ marginLeft: "2px", flex: 1.3 }}
             title={"Stake"}
           />
@@ -459,48 +512,28 @@ const PlaceBet = ({
         {
           <>
             <Box sx={{ display: "flex", marginTop: "15px", marginX: "2px" }}>
-              <NumberData
-                containerStyle={{ flex: 1 }}
-                value={"2000"}
-                setDefaultValue={setDefaultValue}
-              />
-              <NumberData
-                containerStyle={{ marginLeft: "2px", flex: 1 }}
-                value={"3000"}
-                setDefaultValue={setDefaultValue}
-              />
-              <NumberData
-                containerStyle={{ marginLeft: "2px", flex: 1 }}
-                value={"5000"}
-                setDefaultValue={setDefaultValue}
-              />
-              <NumberData
-                containerStyle={{ marginLeft: "2px", flex: 1 }}
-                value={"10000"}
-                setDefaultValue={setDefaultValue}
-              />
+              {["2000", "3000", "5000", "10000"]?.map((v) => (
+                <NumberData
+                  containerStyle={{ marginLeft: "2px", flex: 1 }}
+                  value={v}
+                  getLatestBetAmount={(value) =>
+                    getLatestBetAmount(value, data)
+                  }
+                  setDefaultValue={setDefaultValue}
+                />
+              ))}
             </Box>
             <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }}>
-              <NumberData
-                containerStyle={{ flex: 1 }}
-                value={"20000"}
-                setDefaultValue={setDefaultValue}
-              />
-              <NumberData
-                containerStyle={{ marginLeft: "2px", flex: 1 }}
-                value={"100000"}
-                setDefaultValue={setDefaultValue}
-              />
-              <NumberData
-                containerStyle={{ marginLeft: "2px", flex: 1 }}
-                value={"200000"}
-                setDefaultValue={setDefaultValue}
-              />
-              <NumberData
-                containerStyle={{ marginLeft: "2px", flex: 1 }}
-                value={"500000"}
-                setDefaultValue={setDefaultValue}
-              />
+              {["20000", "100000", "200000", "500000"]?.map((v) => (
+                <NumberData
+                  containerStyle={{ marginLeft: "2px", flex: 1 }}
+                  value={v}
+                  getLatestBetAmount={(value) =>
+                    getLatestBetAmount(value, data)
+                  }
+                  setDefaultValue={setDefaultValue}
+                />
+              ))}
             </Box>
           </>
         }
@@ -534,7 +567,8 @@ const PlaceBet = ({
           <button
             // style={classes.CustomButton_Btn("#262626")}
             style={{
-              color: "#fff", backgroundColor: "#262626",
+              color: "#fff",
+              backgroundColor: "#262626",
               width: "150px",
               // width: { laptop: "150px", mobile: "130px" },
               height: "35px",
@@ -544,22 +578,32 @@ const PlaceBet = ({
             onClick={() => {
               handleClose();
               onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
-            }}>Submit</button>
+            }}
+          >
+            Submit
+          </button>
         </Box>
       </Box>
     </Box>
   );
 };
 
-const NumberData = ({ value, containerStyle, setDefaultValue }) => {
+const NumberData = ({
+  value,
+  containerStyle,
+  setDefaultValue,
+  getLatestBetAmount,
+}) => {
   return (
     <Box
       onClick={() => {
         setDefaultValue(value);
+        getLatestBetAmount(value);
       }}
       sx={[
         {
           display: "flex",
+          cursor: "pointer",
           borderRadius: "3px",
           justifyContent: "center",
           alignItems: "center",

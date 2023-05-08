@@ -70,7 +70,7 @@ const SessionMarketBox = ({
           {data.bet_condition}
         </Typography>
       </Box>
-      {!["ACTIVE", "", undefined].includes(data?.suspended) ? (
+      {!["ACTIVE", "", undefined,null].includes(data?.suspended) ? (
         <>
           <SeprateBox po={6} color={"white"} />
           <Box
@@ -141,7 +141,7 @@ const SessionMarketBox = ({
             po={2}
             rates={allRates}
             session={true}
-            back={true}
+            isBack={false}
             value={data.no_rate}
             value2={formatNumber(data?.rate_percent?.split("-")[0])}
             lock={data?.no_rate === null ? true : false}
@@ -158,7 +158,7 @@ const SessionMarketBox = ({
             po={1}
             rates={allRates}
             session={true}
-            back={true}
+            isBack={true}
             value={data.yes_rate}
             value2={formatNumber(data?.rate_percent?.split("-")[1])}
             lock={data?.yes_rate === null ? true : false}

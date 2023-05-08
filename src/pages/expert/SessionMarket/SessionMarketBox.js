@@ -23,6 +23,8 @@ const SessionMarketBox = ({
   newData,
   setStop,
   setLocalState,
+  setLiveData,
+  hideResult,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -36,7 +38,6 @@ const SessionMarketBox = ({
       setLive(true);
     }
   }, [stop]);
-
 
   const handleLive = async (status) => {
     try {
@@ -66,6 +67,9 @@ const SessionMarketBox = ({
       };
       const { data } = await axios.post("betting/addBetting", body);
       if (data?.data?.id) {
+        setLiveData((live) =>
+          live?.filter((val) => val?.selectionId !== data?.data?.selectionId)
+        );
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
             (betting, index) => {
@@ -88,6 +92,7 @@ const SessionMarketBox = ({
       console.log(err?.message);
     }
   };
+
   return (
     <div style={{ position: "relative" }}>
       {live && (
@@ -173,16 +178,18 @@ const SessionMarketBox = ({
                 title={"Live"}
               />
             )}
-            <Result
-              onClick={(e) => {
-                e.preventDefault();
-                setVisible(true);
-              }}
-            />
+            {!hideResult && (
+              <Result
+                onClick={(e) => {
+                  e.preventDefault();
+                  setVisible(true);
+                }}
+              />
+            )}
           </Box>
         </Box>
 
-        {!["ACTIVE", "", undefined].includes(newData?.suspended) ? (
+        {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ? (
           <Box
             sx={{
               margin: "1px",
