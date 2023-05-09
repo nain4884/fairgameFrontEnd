@@ -4,18 +4,55 @@ import { CancelDark } from "../assets";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
 
-const SessionResultModal = ({ onClick, newData }) => {
+const SessionResultModal = ({
+  onClick,
+  newData,
+  updateSessionData,
+  setLive,
+  setLocalState,
+  currentMatch,
+}) => {
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const declareResult = async () => {
     try {
       const body = {
         betId: newData?.id,
-        matchId: newData?.match_id,
-        sessionBets: true,
+        match_id: newData?.match_id,
+        sessionBet: true,
         score: selected,
       };
       const { data } = await axios.post("/game-match/declearResult", body);
+      if (data) {
+        // const updatedData = {
+        //   ...newData,
+        //   betStatus: 2,
+        //   suspended: "Result Declared",
+        // };
+        // // call the parent component's updateSessionData function
+        // updateSessionData(updatedData);
+
+        setLocalState(() => {
+          const updatedBettings = currentMatch?.bettings.map(
+            (betting, index) => {
+              if (betting?.id === newData?.id) {
+                setLive(true)
+                return {
+                  ...newData,
+                  betStatus: 2,
+                  suspended: "Result Declared",
+                };
+              }
+              return betting;
+            }
+          );
+          return {
+            ...currentMatch,
+            bettings: updatedBettings,
+          };
+        });
+      }
+      onClick();
       toast.success(data?.message);
     } catch (e) {
       toast.error(e?.response?.data?.message);
@@ -31,6 +68,7 @@ const SessionResultModal = ({ onClick, newData }) => {
         sessionBets: true,
       };
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
+      onClick();
       toast.success(data?.message);
     } catch (e) {
       toast.error(e?.response?.data?.message);
@@ -62,7 +100,6 @@ const SessionResultModal = ({ onClick, newData }) => {
     );
   };
 
-  console.log("selected", selected);
   return (
     <Box
       sx={{

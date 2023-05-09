@@ -22,8 +22,11 @@ const SessionMarketBox = ({
   currentMatch,
   newData,
   setStop,
+  liveOnly,
   setLocalState,
   setLiveData,
+  setMatchSessionData,
+  updateSessionData,
   hideResult,
 }) => {
   const theme = useTheme();
@@ -31,7 +34,9 @@ const SessionMarketBox = ({
   const { axios } = setRole();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [visible, setVisible] = useState(false);
-  const [live, setLive] = useState(newData?.betStatus === 0 ? true : false);
+  const [live, setLive] = useState(
+    [0, 2].includes(newData?.betStatus) ? true : false
+  );
 
   useEffect(() => {
     if (!stop) {
@@ -67,9 +72,20 @@ const SessionMarketBox = ({
       };
       const { data } = await axios.post("betting/addBetting", body);
       if (data?.data?.id) {
-        setLiveData((live) =>
-          live?.filter((val) => val?.selectionId !== data?.data?.selectionId)
-        );
+        if (liveOnly) {
+          setLive(true);
+          setMatchSessionData((prev) =>
+            prev?.filter((v) => v?.selectionId !== data?.data?.selectionId)
+          );
+        } else {
+          setMatchSessionData((prev) => {
+            const exists = prev.some((v) => v?.id === data?.data?.id);
+            if (!exists) {
+              return [data.data, ...prev];
+            }
+            return prev;
+          });
+        }
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
             (betting, index) => {
@@ -147,13 +163,12 @@ const SessionMarketBox = ({
           <Box
             sx={{
               position: "absolute",
-              right: { tablet: "30vh" },
-              left: { laptop: "13vw" },
+              right: { tablet: "43vh" },
               display: "flex",
               zIndex: 100,
             }}
           >
-            {live && (
+            {live && newData?.betStatus !== 2 && (
               <SmallBox
                 onClick={(e) => {
                   e.preventDefault();
@@ -189,7 +204,8 @@ const SessionMarketBox = ({
           </Box>
         </Box>
 
-        {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ? (
+        {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
+        newData?.betStatus === 2 ? (
           <Box
             sx={{
               margin: "1px",
@@ -204,7 +220,11 @@ const SessionMarketBox = ({
             }}
           >
             {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-            <h4>{newData?.suspended}</h4>
+            <h4>
+              {newData?.betStatus === 2
+                ? `Result Declared`
+                : newData?.suspended}
+            </h4>
           </Box>
         ) : (
           <Box
@@ -289,6 +309,10 @@ const SessionMarketBox = ({
               <Box sx={{ position: "absolute", zIndex: 105, top: "100%" }}>
                 <SessionResultModal
                   newData={newData}
+                  setLocalState={setLocalState}
+                  currentMatch={currentMatch}
+                  setLive={setLive}
+                  updateSessionData={updateSessionData}
                   onClick={() => {
                     setVisible(false);
                   }}

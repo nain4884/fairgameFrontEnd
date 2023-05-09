@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Divider from "../../../components/helper/Divider";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import Stop from "../Stop";
@@ -8,7 +8,6 @@ import SessionMarketBox from "./SessionMarketBox";
 import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setSelectedMatch } from "../../../newStore/reducers/matchDetails";
 import { setRole } from "../../../newStore";
 const SessionMarket = ({
   currentMatch,
@@ -16,9 +15,10 @@ const SessionMarket = ({
   setCurrentMatch,
   setLocalState,
   hideResult,
-  sessionData,
   setLiveData,
   stopAllHide,
+  title,
+  sessionData,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -26,12 +26,28 @@ const SessionMarket = ({
   const dispatch = useDispatch();
   const { axios } = setRole();
   const [matchSessionData, setMatchSessionData] = useState(sessionData);
-
   useEffect(() => {
-    if (sessionData?.length > 0) {
-      setMatchSessionData(sessionData);
-    }
+    setMatchSessionData(sessionData);
   }, [sessionData]);
+  // const updateSessionData = useCallback(
+  //   (updatedData) => {
+  //     setMatchSessionData((prevData) => {
+  //       return prevData?.map((item) => {
+  //         if (item.id === updatedData.id) {
+  //           return {
+  //             ...item,
+  //             betStatus: 2,
+  //             suspended: "Result Declared",
+  //           };
+  //         } else {
+  //           return item;
+  //         }
+  //       });
+  //     });
+  //   },
+  //   [setMatchSessionData]
+  // );
+
   const handleLive = async () => {
     try {
       const bettingsToUpdate = matchSessionData?.filter(
@@ -77,7 +93,6 @@ const SessionMarket = ({
       console.log(err?.message);
     }
   };
-
   return (
     <Box
       sx={{
@@ -119,7 +134,7 @@ const SessionMarket = ({
               marginLeft: "7px",
             }}
           >
-            Session Market
+            {title} {sessionData?.length}
           </Typography>
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
@@ -251,8 +266,10 @@ const SessionMarket = ({
             matchSessionData?.map((match, index) => (
               <Box key={index}>
                 <SessionMarketBox
-                  setLiveData={setLiveData}
+                  liveOnly={liveOnly}
                   hideResult={hideResult}
+                  // updateSessionData={updateSessionData}
+                  setMatchSessionData={setMatchSessionData}
                   setLocalState={(val) => setLocalState(val)}
                   currentMatch={currentMatch}
                   setCurrentMatch={setCurrentMatch}

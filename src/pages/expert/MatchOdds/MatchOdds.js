@@ -188,8 +188,10 @@ const MatchOdds = ({
       >
         {visible && (
           <ResultComponent
-            betId={currentMatch?.bettings?.length>0 && currentMatch?.bettings?.filter(v=>v.sessionBet===false)}
-        
+            betId={
+              currentMatch?.bettings?.length > 0 &&
+              currentMatch?.bettings?.filter((v) => v.sessionBet === false)
+            }
             teamA={currentMatch?.teamA}
             teamB={currentMatch?.teamB}
             tie={"Tie"}
