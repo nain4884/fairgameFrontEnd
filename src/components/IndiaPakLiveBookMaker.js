@@ -43,10 +43,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     if (packet.data[0] === "teamA_suspend_user") {
                         console.log("teamA_suspend_use : ", data);
                         setIsTeamASuspend(data.teamA_suspend);
+                        // setIsTeamBSuspend(data.teamA_suspend);//aaa
                         setIsTeamBackUnlock(true);
                     }
                     if (packet.data[0] === "teamB_suspend_user") {
                         setIsTeamBSuspend(data.teamB_suspend);
+                        // setIsTeamASuspend(data.teamB_suspend);//aaa
                         setIsTeamBackUnlock(true);
                         // alert("teamB_suspend_user")
                     }
@@ -137,34 +139,34 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             // alert(event.current.name)
             // console.log(event.current.name)
             if (match?.teamC) {
-                if (event.current.name === 'teamA_rate') {
-                    socket.emit("teamA_Suspend", {
-                        betId: match?.id,
-                        teamA_suspend: true,
-                    })
-                } else if (event.current.name === 'teamB_rate') {
-                    socket.emit("teamB_Suspend", {
-                        betId: match?.id,
-                        teamB_suspend: true,
-                    });
-                } else if (event.current.name === 'teamC_rate') {
-                    socket.emit("teamC_Suspend", {
-                        betId: match?.id,
-                        teamC_suspend: true,
-                    });
-                }
+                // if (event.current.name === 'teamA_rate') {
+                socket.emit("teamA_Suspend", {
+                    betId: match?.id,
+                    teamA_suspend: true,
+                })
+                // } else if (event.current.name === 'teamB_rate') {
+                socket.emit("teamB_Suspend", {
+                    betId: match?.id,
+                    teamB_suspend: true,
+                });
+                // } else if (event.current.name === 'teamC_rate') {
+                socket.emit("teamC_Suspend", {
+                    betId: match?.id,
+                    teamC_suspend: true,
+                });
+                // }
             } else {
-                if (event.current.name === 'teamA_rate') {
-                    socket.emit("teamA_Suspend", {
-                        betId: match?.id,
-                        teamA_suspend: true,
-                    });
-                } else if (event.current.name === 'teamB_rate') {
-                    socket.emit("teamB_Suspend", {
-                        betId: match?.id,
-                        teamB_suspend: true,
-                    });
-                }
+                // if (event.current.name === 'teamA_rate') {
+                socket.emit("teamA_Suspend", {
+                    betId: match?.id,
+                    teamA_suspend: true,
+                });
+                // } else if (event.current.name === 'teamB_rate') {
+                socket.emit("teamB_Suspend", {
+                    betId: match?.id,
+                    teamB_suspend: true,
+                });
+                // }
             }
         }
         const handleKeysMatchEvents = (key, event) => {
@@ -207,7 +209,8 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // let value = targetValue - 1
                 let value = targetValue - incGap
                 setPressEnter(false);
-                if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate && teamARate > 0) {
+                // if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate && teamARate > 0) {
+                if (event.target.name === 'teamA_rate' && teamARate > 0) {
                     setTeamARate(value);
                     // setTeamALayValue(teamALayValue - 1);
                     setTeamALayValue(teamALayValue - incGap);
@@ -217,7 +220,8 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     })
                 }
 
-                if (event.target.name === 'teamB_rate' && teamBLayValue - incGap > teamBRate && teamBRate > 0) {
+                // if (event.target.name === 'teamB_rate' && teamBLayValue - incGap > teamBRate && teamBRate > 0) {
+                if (event.target.name === 'teamB_rate' && teamBRate > 0) {
                     setTeamBRate(value);
                     // setTeamBLayValue(teamBLayValue - 1)
                     setTeamBLayValue(teamBLayValue - incGap)
@@ -250,6 +254,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             }
             else if (key == 'down') {
                 setPressEnter(false);
+                // if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate) {
                 if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate) {
                     setTeamALayValue(teamALayValue - incGap);
                     socket.emit("teamA_Suspend", { betId: match?.id, teamA_suspend: true, })
@@ -315,34 +320,206 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // setTeamALayValue('');
                 // setTeamBLayValue('');
             }
-            if (key == '.') {
+            // if (key == ',') {
+            //     // setIncGap(0.25)
+            //     if (event.target.name === 'teamA_rate') {
+            //         // let value = event.target.value ? targetValue + 0.25 : 0;
+            //         // alert(value)
+            //         // setTeamARate(value);
+            //         // setTeamALayValue(value + 0.50);
+            //         // setIncGap(0.25)
+            //     } else if (event.target.name === 'teamB_rate') {
+            //         // let value = event.target.value ? targetValue + 0.25 : 0;
+            //         // setTeamBRate(value);
+            //         // setTeamBLayValue(value + 0.50);
+            //         // setIncGap(0.25)
+            //     }
+            // }
+            // if (key == '.') {
+            //     if (event.target.name === 'teamA_rate') {
+            //         let value = event.target.value ? targetValue + 0.5 : 0;
+            //         setTeamARate(value);
+            //         setTeamALayValue(value + 0.5);
+            //         setIncGap(0.25)
+            //     } else if (event.target.name === 'teamB_rate') {
+            //         let value = event.target.value ? targetValue + 0.5 : 0;
+            //         setTeamBRate(value);
+            //         setTeamBLayValue(value + 0.5);
+            //         setIncGap(0.25)
+            //     }
+            //     // this.setState({ lay_5: 1, ERROR: false });
+            // }
+            if (key == '*') {
+                // alert(1)
                 if (event.target.name === 'teamA_rate') {
-                    let value = event.target.value ? targetValue + 0.5 : 0.5;
+                    let value = event.target.value ? targetValue + 0.5 : 0;
                     setTeamARate(value);
                     setTeamALayValue(value + 0.5);
                     setIncGap(0.25)
-                    // setIncGap(0.25);`
-                    // let yes_value = document.getElementById('teamA_lay').innerText
-                    // document.getElementById('teamA_lay').innerText = parseInt(yes_value) + 0.5
-                    // this.setState({ teamA_lay: parseInt(yes_value) + 0.5, ERROR: false });
                 } else if (event.target.name === 'teamB_rate') {
-                    let value = event.target.value ? targetValue + 0.5 : 0.5;
+                    let value = event.target.value ? targetValue + 0.5 : 0;
                     setTeamBRate(value);
                     setTeamBLayValue(value + 0.5);
                     setIncGap(0.25)
-                    // let yes_value = document.getElementById('teamB_lay').innerText
-                    // document.getElementById('teamB_lay').innerText = parseInt(yes_value) + 0.5
-                    // this.setState({ teamB_lay: parseInt(yes_value) + 0.5, ERROR: false });
                 }
                 // this.setState({ lay_5: 1, ERROR: false });
             }
-            if (key == ',') {
+            if (key == '/') {
                 // let value = event.target.value ? targetValue - 0.5 : -0.5;
                 // setTeamARate(value);
                 // setTeamALayValue(value - 0.5);
                 setIncGap(1)
                 // event.target.value = parseFloat(targetValue) - 0.5
                 // this.setState({ back_5: 1, ERROR: false });
+            }
+            // if (key == 'control') {
+            //     setIncGap(1)
+            // }
+            if (key == 'esc') {
+                setIncGap(1)
+                if (event.target.name === 'teamA_rate') {
+                    let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
+                    let teamALayValueDecimal = teamALayValue % 1; // get the decimal portion of the number
+                    let value;
+                    let layValue;
+                    if (teamARateDecimal >= 0.5) {
+                        value = Math.round(teamARate) - 1;
+                    } else {
+                        value = Math.round(teamARate);
+                    }
+                    if (teamALayValueDecimal >= 0.5) {
+                        layValue = Math.round(teamALayValue)
+                    } else {
+                        layValue = Math.round(teamALayValue);
+                    }
+                    // let value = Math.round(teamARate);
+                    // let layValue = Math.round(teamALayValue);
+                    setTeamARate(value);
+                    setTeamALayValue(value + 1);
+                } else if (event.target.name === 'teamB_rate') {
+                    // let value = Math.round(teamBRate);
+                    // let layValue = Math.round(teamBLayValue);
+                    let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
+                    let teamBLayValueDecimal = teamBLayValue % 1; // get the decimal portion of the number
+                    let value;
+                    let layValue;
+                    if (teamBRateDecimal >= 0.5) {
+                        value = Math.round(teamBRate) - 1;
+                    } else {
+                        value = Math.round(teamBRate);
+                    }
+                    if (teamBLayValueDecimal >= 0.5) {
+                        layValue = Math.round(teamBLayValue)
+                    } else {
+                        layValue = Math.round(teamBLayValue);
+                    }
+                    setTeamBRate(value);
+                    setTeamBLayValue(value + 1);
+                }
+            }
+            if (key == '.') {
+                setIncGap(1)
+                // if (event.target.name === 'teamA_rate') {
+                //     let value = event.target.value ? targetValue + 0.5 : 0;
+                //     setTeamARate(value);
+                //     setTeamALayValue(value + 0.5);
+                //     setIncGap(0.25)
+                // } else if (event.target.name === 'teamB_rate') {
+                //     let value = event.target.value ? targetValue + 0.5 : 0;
+                //     setTeamBRate(value);
+                //     setTeamBLayValue(value + 0.5);
+                //     setIncGap(0.25)
+                // }
+                if (event.target.name === 'teamA_rate') {
+                    let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
+                    let teamALayValueDecimal = teamALayValue % 1; // get the decimal portion of the number
+                    let value;
+                    let layValue;
+                    if (teamARateDecimal >= 0.5) {
+                        value = teamARate ? Math.round(teamARate) - 1 : 0;
+                    } else {
+                        value = teamARate ? Math.round(teamARate) : 0;
+                    }
+                    if (teamALayValueDecimal >= 0.5) {
+                        layValue = teamALayValue ? Math.round(teamALayValue) : 0
+                    } else {
+                        layValue = teamALayValue ? Math.round(teamALayValue) : 0;
+                    }
+                    // let value = Math.round(teamARate);
+                    // let layValue = Math.round(teamALayValue);
+                    // alert(value)
+                    setTeamARate(value);
+                    setTeamALayValue(value > 1 ? layValue + 0.5 : layValue + 1.5);
+                } else if (event.target.name === 'teamB_rate') {
+                    // let value = Math.round(teamBRate);
+                    // let layValue = Math.round(teamBLayValue);
+                    let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
+                    let teamBLayValueDecimal = teamBLayValue % 1; // get the decimal portion of the number
+                    let value;
+                    let layValue;
+                    if (teamBRateDecimal >= 0.5) {
+                        value = teamBRate ? Math.round(teamBRate) - 1 : 0;
+                    } else {
+                        value = teamBRate ? Math.round(teamBRate) : 0;
+                    }
+                    if (teamBLayValueDecimal >= 0.5) {
+                        layValue = teamBLayValue ? Math.round(teamBLayValue) : 0
+                    } else {
+                        layValue = teamBLayValue ? Math.round(teamBLayValue) : 0;
+                    }
+                    setTeamBRate(value);
+                    setTeamBLayValue(value > 1 ? layValue + 0.5 : layValue + 1.5);
+                }
+
+            }
+            if (key == ',') {
+                // let value = event.target.value ? targetValue - 0.5 : -0.5;
+                // setTeamARate(value);
+                // setTeamALayValue(value - 0.5);
+                setIncGap(1)
+                if (event.target.name === 'teamA_rate') {
+                    if (teamARate > 0.5) {
+                        let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
+                        let teamALayValueDecimal = teamALayValue % 1; // get the decimal portion of the number
+                        let value;
+                        let layValue;
+                        if (teamARateDecimal >= 0.5) {
+                            value = Math.round(teamARate) - 1;
+                        } else {
+                            value = Math.round(teamARate);
+                        }
+                        if (teamALayValueDecimal >= 0.5) {
+                            layValue = Math.round(teamALayValue)
+                        } else {
+                            layValue = Math.round(teamALayValue);
+                        }
+                        // let value = Math.round(teamARate);
+                        // let layValue = Math.round(teamALayValue);
+                        setTeamARate(value - 0.5);
+                        setTeamALayValue(layValue - 1);
+                    }
+                } else if (event.target.name === 'teamB_rate') {
+                    // let value = Math.round(teamBRate);
+                    // let layValue = Math.round(teamBLayValue);
+                    if (teamBRate > 0.5) {
+                        let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
+                        let teamBLayValueDecimal = teamBLayValue % 1; // get the decimal portion of the number
+                        let value;
+                        let layValue;
+                        if (teamBRateDecimal >= 0.5) {
+                            value = Math.round(teamBRate) - 1;
+                        } else {
+                            value = Math.round(teamBRate);
+                        }
+                        if (teamBLayValueDecimal >= 0.5) {
+                            layValue = Math.round(teamBLayValue)
+                        } else {
+                            layValue = Math.round(teamBLayValue);
+                        }
+                        setTeamBRate(value - 0.5);
+                        setTeamBLayValue(layValue - 1);
+                    }
+                }
             }
             // console.log('event :', event)
             // console.warn('event :', event)
@@ -369,7 +546,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         <Box sx={{ borderWidth: 0, justifyContent: 'space-between', alignItems: 'center', display: 'flex', width: '100%', paddingLeft: '10px' }}>
                             <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%", }}>{match?.teamA}</Typography>
                             <Box sx={{ display: "flex", width: '30%', borderTop: "1px solid white" }}>
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', '/']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                     <TextField
                                         onChange={
                                             (e) => handleChange(e)
@@ -430,7 +607,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingLeft: '10px', borderLeftWidth: 0, width: '100%', justifyContent: 'space-between' }}>
                             <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamB}</Typography>
                             <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', '/']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                     <TextField
                                         variant="standard"
                                         value={teamBRate}
@@ -488,7 +665,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         {match?.teamC && <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingLeft: '10px', borderLeftWidth: 0, width: '100%', justifyContent: 'space-between' }}>
                             <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamC}</Typography>
                             <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', '/']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                     <TextField
                                         variant="standard"
                                         value={teamCRate}
