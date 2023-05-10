@@ -65,12 +65,12 @@ const PlaceBet = ({
 
       var body = {
         bet_type,
+        marketType: typeOfBet,
         odds: selectedValue,
         stake: Number(value),
       };
-
       if (season) {
-        body = { ...body, rate_percent: newData?.rate_percent };
+        body = { ...body, marketType: "", rate_percent: newData?.rate_percent };
       }
       console.log("body", body);
       const { data } = await axios.post("/betting/calculateBetAmount", body);

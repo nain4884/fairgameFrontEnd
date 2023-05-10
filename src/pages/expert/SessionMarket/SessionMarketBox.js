@@ -196,13 +196,27 @@ const SessionMarketBox = ({
             {!hideResult && (
               <Result
                 onClick={(e) => {
-                  e.preventDefault();
                   setVisible(true);
                 }}
               />
             )}
           </Box>
         </Box>
+
+        {visible && (
+          <Box sx={{ position: "absolute", zIndex: 105, top: "100%",right:"0vh" }}>
+            <SessionResultModal
+              newData={newData}
+              setLocalState={setLocalState}
+              currentMatch={currentMatch}
+              setLive={setLive}
+              updateSessionData={updateSessionData}
+              onClick={() => {
+                setVisible(false);
+              }}
+            />
+          </Box>
+        )}
 
         {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
         newData?.betStatus === 2 ? (
@@ -305,20 +319,6 @@ const SessionMarketBox = ({
               // }}
               />
             }
-            {visible && (
-              <Box sx={{ position: "absolute", zIndex: 105, top: "100%" }}>
-                <SessionResultModal
-                  newData={newData}
-                  setLocalState={setLocalState}
-                  currentMatch={currentMatch}
-                  setLive={setLive}
-                  updateSessionData={updateSessionData}
-                  onClick={() => {
-                    setVisible(false);
-                  }}
-                />
-              </Box>
-            )}
           </Box>
         )}
       </Box>

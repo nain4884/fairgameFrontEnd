@@ -205,6 +205,7 @@ const SessionResultModal = ({
             color={"#0B4F26"}
             title={"Declare"}
             onClick={() => {
+              alert(2)
               if (selected !== "") {
                 declareResult();
               } else {

@@ -23,7 +23,6 @@ const SessionMarket = ({
     (element) => element.sessionBet === true
   );
 
-
   return (
     <>
       <Box
