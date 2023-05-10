@@ -26,6 +26,7 @@ const ResultComponent = ({
 
       const { data } = await axios.post("/game-match/declearResult", body);
       toast.success(data?.message);
+      onClick()
     } catch (e) {
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
@@ -40,6 +41,7 @@ const ResultComponent = ({
       };
       console.log("first", betId, body);
       const { data } = await axios.post("/game-match/declearResult", body);
+      onClick()
       toast.success(data?.message);
     } catch (e) {
       toast.error(e?.response?.data?.message);

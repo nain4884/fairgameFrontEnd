@@ -269,6 +269,13 @@ console.log('sessionBets', sessionBets)
           const value = packet.data[1];
           matchId = value?.match_id;
           try {
+            const user = {
+              ...currentUser,
+              current_balance: value.current_balance,
+              exposure: value.exposure,
+            };
+           
+            dispatch(setCurrentUser(user));
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.matchId !== value?.matchId) {
                 // If the new bet doesn't belong to the current match, return the current state
@@ -295,6 +302,13 @@ console.log('sessionBets', sessionBets)
           const value = packet.data[1];
           matchId = value?.match_id;
           try {
+            const user = {
+              ...currentUser,
+              current_balance: value.current_balance,
+              exposure: value.exposure,
+            };
+           
+            dispatch(setCurrentUser(user));
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.matchId !== value?.matchId) {
                 // If the new bet doesn't belong to the current match, return the current state
