@@ -259,7 +259,7 @@ const SessionMarket = ({
             width: "100%",
             position: "relative",
             height: "400px",
-            overflowY: "scroll",
+            overflowY: "auto",
           }}
         >
           {matchSessionData?.length > 0 &&

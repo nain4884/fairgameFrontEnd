@@ -63,11 +63,11 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
               list?.map((v) => {
                 const getColor = (value) => {
                   if (value > 1) {
-                    return "#DC3545";
+                    return "#10DC61";
                   } else if (value === v?.profit_loss && value > 1) {
                     return "#F8C851";
                   } else {
-                    return "#10DC61";
+                    return "#DC3545";
                   }
                 };
                 const getSVG = (value) => {

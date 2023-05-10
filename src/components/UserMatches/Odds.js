@@ -139,7 +139,6 @@ const Odds = ({
     }
   })();
   
-
   return (
     <Box
       key="odds"

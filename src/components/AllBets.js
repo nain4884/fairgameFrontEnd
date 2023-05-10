@@ -348,6 +348,8 @@ const AllBets = ({ tag, submit, allBetRates }) => {
     return values;
   });
 
+
+  console.log('newData', newData)
   return (
     <Box
       sx={{
@@ -703,6 +705,7 @@ const Row = ({ values, index }) => {
   return (
     <Box sx={{ width: "100%", display: "flex" }}>
       {values?.map((item, k) => {
+
         if (!item?.small) {
           return <LargeBox k={k} item={item} />;
         } else {

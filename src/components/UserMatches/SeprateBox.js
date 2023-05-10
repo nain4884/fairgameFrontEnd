@@ -1,24 +1,23 @@
-import { useTheme } from '@emotion/react';
-import { Box, Typography, useMediaQuery } from '@mui/material';
-import React from 'react'
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { setDailogData } from '../../store/dailogModal';
-import useOuterClick from '../helper/userOuterClick';
-import { setColorValue } from '../../store/selectedColorBox';
-import PlaceBet from '../PlaceBet';
-import BetPlaced from '../BetPlaced';
-import { Modal } from 'react-bootstrap';
-import { Lock } from '../../assets';
-import { useState } from 'react';
-import { setAllBetRate } from '../../newStore/reducers/matchDetails';
-import { toast } from 'react-toastify';
-import { setRole } from '../../newStore';
+import { useTheme } from "@emotion/react";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setDailogData } from "../../store/dailogModal";
+import useOuterClick from "../helper/userOuterClick";
+import { setColorValue } from "../../store/selectedColorBox";
+import PlaceBet from "../PlaceBet";
+import BetPlaced from "../BetPlaced";
+import { Modal } from "react-bootstrap";
+import { Lock } from "../../assets";
+import { useState } from "react";
+import { setAllBetRate } from "../../newStore/reducers/matchDetails";
+import { toast } from "react-toastify";
+import { setRole } from "../../newStore";
 const PlaceBetType = {
   BackLay: "BackLay",
   YesNo: "YesNo",
 };
-
 
 const SeprateBox = ({
   color,
@@ -36,13 +35,13 @@ const SeprateBox = ({
   data,
   typeOfBet,
   mainData,
-  rates
+  rates,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [anchor, setAnchor] = React.useState(null);
   const [isBack, setIsBack] = React.useState(false);
   const [isSessionYes, setIsSessionYes] = React.useState(false);
@@ -55,13 +54,12 @@ const SeprateBox = ({
   const [selectedValue, setSelectedValue] = useState("");
 
   function showDialogModal(isModalOpen, showRight, message) {
-    dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }))
+    dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
     setTimeout(() => {
-      dispatch(setDailogData({ isModalOpen: false }))
+      dispatch(setDailogData({ isModalOpen: false }));
       // navigate(`/${window.location.pathname.split('/')[1]}`,{state:data.id})
-    }, [2000])
-    setShowModalMessage(message)
-
+    }, [2000]);
+    setShowModalMessage(message);
   }
   // console.warn("Modal: ", currentMatch)
   const handleChangeShowModalSuccess = (val) => {
@@ -124,10 +122,12 @@ const SeprateBox = ({
     return { right: 0 };
   };
   const handlePlaceBet = async (payload, match) => {
-    let oddValue = Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
+    let oddValue = Number(
+      document.getElementsByClassName("OddValue")?.[0]?.textContent
+    );
     if (oddValue != payload.odds) {
-      toast.warning("Odds value has been updated. You can not place bet.")
-      return
+      toast.warning("Odds value has been updated. You can not place bet.");
+      return;
     }
     if (payload.marketType == "MATCH ODDS") {
       setVisible(true);
@@ -140,28 +140,25 @@ const SeprateBox = ({
     } else {
       PlaceBetSubmit(payload);
     }
-  }
+  };
 
   const PlaceBetSubmit = async (payload) => {
     try {
-      let response = await axios.post(
-        `/betting/placeBet`,
-        payload
-      );
+      let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
       // dispatch(setAllBetRate(response?.data?.data[0]))
-      showDialogModal(isPopoverOpen, true, response.data.message)
+      showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
       setCanceled(false);
       // navigate("/matchDetail")
     } catch (e) {
       console.log(e.response.data.message);
-      toast.error(e.response.data.message)
-      showDialogModal(isPopoverOpen, false, e.response.data.message)
+      toast.error(e.response.data.message);
+      showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
     }
-  }
+  };
 
   return (
     <>
@@ -196,7 +193,7 @@ const SeprateBox = ({
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            cursor: !empty && !lock && value && value2 && 'pointer'
+            cursor: !empty && !lock && value && value2 && "pointer",
           }}
         >
           {!empty && !lock && (
@@ -224,7 +221,13 @@ const SeprateBox = ({
               </Typography>
             </Box>
           )}
-          {lock && <img src={Lock} style={{ width: "10px", height: "15px" }} alt="lock" />}
+          {lock && (
+            <img
+              src={Lock}
+              style={{ width: "10px", height: "15px" }}
+              alt="lock"
+            />
+          )}
         </Box>
         {isPopoverOpen && (
           <>
@@ -241,9 +244,12 @@ const SeprateBox = ({
                 name={name}
                 rates={rates}
                 onSubmit={async (payload) => {
-                  handlePlaceBet(payload, currentMatch);
+                  if (Number(payload?.odds) === Number(value)) {
+                    handlePlaceBet(payload, currentMatch);
+                  } else {
+                    toast.error("Rate changed ");
+                  }
                 }}
-
                 // onSubmit={async (payload) => {
                 //   try {
                 //     console.log(payload, "payload");
@@ -291,7 +297,13 @@ const SeprateBox = ({
         {
           <BetPlaced
             // time={5}
-            time={typeOfBet == "MATCH ODDS" ? currentMatch?.delaySecond ? currentMatch?.delaySecond : 0 : 0}
+            time={
+              typeOfBet == "MATCH ODDS"
+                ? currentMatch?.delaySecond
+                  ? currentMatch?.delaySecond
+                  : 0
+                : 0
+            }
             not={canceled}
             visible={visible}
             setVisible={(i) => {
@@ -315,4 +327,4 @@ const SeprateBox = ({
   );
 };
 
-export default SeprateBox
+export default SeprateBox;
