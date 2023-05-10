@@ -96,13 +96,13 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
-              if (currentMatch.matchId !== value.matchId) {
+              if (currentMatch?.matchId !== value?.matchId) {
                 // If the new bet doesn't belong to the current match, return the current state
                 return currentMatch;
               }
 
               // Update the bettings array in the current match object
-              const updatedBettings = currentMatch.bettings.map((betting) => {
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting.id === value.id && value.sessionBet) {
                   // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                   return {
@@ -110,7 +110,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
                     ...value,
                   };
                 } else if (
-                  betting.id === value.id &&
+                  betting?.id === value?.id &&
                   value.sessionBet === false
                 ) {
                   return {
@@ -121,8 +121,10 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
                 return betting;
               });
               var newUpdatedValue = updatedBettings;
-              const bettingsIds = updatedBettings?.map((betting) => betting.id);
-              if (!bettingsIds.includes(value.id)) {
+              const bettingsIds = updatedBettings?.map(
+                (betting) => betting?.id
+              );
+              if (!bettingsIds?.includes(value.id)) {
                 // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
                 newUpdatedValue = [...newUpdatedValue, value];
               }
@@ -181,8 +183,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
-                  createAt: data?.betPlaceData?.createdAt,
-                  updateAt: data?.betPlaceData?.createdAt,
+                  createAt: data?.betPlaceData?.createAt,
+                  updateAt: data?.betPlaceData?.createAt,
                   createdBy: null,
                   deletedAt: null,
                   user_id: null,
@@ -276,6 +278,10 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       // socketMicro.on("bookMakerRateLive", (e) => {
       //   console.log("BookMaker", e);
       // });
+
+      socketMicro.on("reconnect", () => {
+        socket.emit("init", { id: marketId });
+      });
 
       socketMicro.on(`session${marketId}`, (val) => {
         // console.log("currentMatchProfit 33:", val);

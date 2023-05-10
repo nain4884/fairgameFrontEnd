@@ -337,6 +337,9 @@ const MatchScreen = () => {
   useEffect(() => {
     if (socketMicro?.connected && state?.marketId && marketId) {
       socketMicro.emit("init", { id: state?.marketId });
+      socketMicro.on("reconnect", () => {
+        socket.emit("init", { id: state?.marketId });
+      });
       activateLiveMatchMarket(state?.marketId);
       sessionStorage.setItem("marketId", state?.marketId);
       socketMicro.on(`session${state?.marketId}`, handleSession);
@@ -429,6 +432,7 @@ const MatchScreen = () => {
                   width: "100%",
                   flexDirection: "column",
                   display: "flex",
+                  
                 }}
               >
                 <SessionMarket
@@ -471,7 +475,7 @@ const MatchScreen = () => {
           {currentMatch?.apiMatchActive && (
             <MatchOdds
               matchOdds={
-                currentMatch?.bettings?.filter(
+                [...currentMatch?.bettings].filter(
                   (v) => v?.sessionBet === false
                 )[0] || null
               }

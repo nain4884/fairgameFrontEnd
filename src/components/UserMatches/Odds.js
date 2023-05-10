@@ -8,47 +8,76 @@ import { memo } from "react";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
-    <Box
-      sx={{
-        width: "max-content",
-        position: "absolute",
-        paddingX: "5px",
-        display: "flex",
-        left: { mobile: "60%", laptop: "49vw", tablet: "60%" },
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 2,
-        height: "30px",
-        background: "white",
-        borderRadius: "7px",
-      }}
-    >
-      <Typography
+    <Box sx={{ marginTop: "-3vh" }}>
+      <Box
         sx={{
-          fontSize: { laptop: "12px", mobile: "10px" },
-          fontWeight: "bold",
+          width: { laptop: "70px", mobile: "10vw" },
+          position: "absolute",
+          flexDirection: "column",
+          paddingX: "5px",
+          display: "flex",
+          left: { mobile: "53%", laptop: "49vw", tablet: "53%" },
+          justifyContent: "center",
+          alignItems: "center",
+          height: "30px",
+          background: "white",
+          borderRadius: "3px",
         }}
       >
-        Book
-      </Typography>
-      <Typography
+        <Typography
+          sx={{
+            color: "#FF4D4D",
+            fontSize: "8px",
+            fontWeight: "bold",
+          }}
+        >
+          Book
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "10px",
+            fontWeight: "bold",
+            color: valueA < 0 ? `#FF9292` : `#46e080`,
+          }}
+        >
+          {valueA < 0 ? ` ${valueA}` : `${valueA}`}
+        </Typography>
+      </Box>
+      <Box
         sx={{
-          fontSize: { laptop: "12px", mobile: "10px" },
-          fontWeight: "bold",
-          color: valueA <0 ?  `#FF9292` : `#46e080`,
+          width: { laptop: "70px", mobile: "10vw" },
+          position: "absolute",
+          paddingX: "5px",
+          display: "flex",
+          flexDirection: "column",
+          left: { mobile: "65%", laptop: "55vw", tablet: "65%" },
+          justifyContent: "center",
+          alignItems: "center",
+          height: "30px",
+          background: "white",
+          borderRadius: "3px",
         }}
       >
-        {valueA<0 ? ` ${valueA}` : `${valueA }`}
-      </Typography>
-      <Typography
-        sx={{
-          fontSize: { laptop: "12px", mobile: "10px" },
-          fontWeight: "bold",
-          color: valueB<0  ?  `#FF9292` : `#46e080`,
-        }}
-      >
-        {valueB<0  ? ` ${valueB}` : `${valueB}`}
-      </Typography>
+        <Typography
+          sx={{
+            color: "#FF4D4D",
+            fontSize: "8px",
+            fontWeight: "bold",
+          }}
+        >
+          Book
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: "10px",
+            fontWeight: "bold",
+            color: valueB < 0 ? `#FF9292` : `#46e080`,
+          }}
+        >
+          {valueB < 0 ? ` ${valueB}` : `${valueB}`}
+        </Typography>
+      </Box>
     </Box>
   );
 };
@@ -89,17 +118,27 @@ const Odds = ({
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  const bookRatioA =
-   ( teamBRates !== 0
-      ?  (teamARates / teamBRates)|| 0
-      : 0).toFixed(2)
+  const bookRatioB= (() => {
+    if (teamARates === 0) {
+      return 0;
+    } else {
+      const bookRatio = teamARates / teamBRates || 0;
+      const formattedRatio = Math.abs(bookRatio).toFixed(2);
+      return teamBRates < 0 ? `-${formattedRatio}` : formattedRatio;
+    }
+  })();
+  
 
-  const bookRatioB =
-    (teamARates !== 0
-      ? (teamBRates / teamARates) || 0
-      : 0).toFixed(2)
-
-
+  const bookRatioA = (() => {
+    if (teamARates === 0) {
+      return 0;
+    } else {
+      const bookRatio = teamBRates / teamARates || 0;
+      const formattedRatio = Math.abs(bookRatio).toFixed(2);
+      return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
+    }
+  })();
+  
 
   return (
     <Box

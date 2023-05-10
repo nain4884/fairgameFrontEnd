@@ -71,7 +71,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
 
   //   });
   // }
-
+console.log('allBetsData', allBetsData)
   return (
     <>
       {
