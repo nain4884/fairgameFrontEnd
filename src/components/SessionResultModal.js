@@ -14,6 +14,51 @@ const SessionResultModal = ({
 }) => {
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
+  const undeclareResult = async () => {
+    try {
+      const body = {
+        betId: newData?.id,
+        match_id: newData?.match_id,
+        sessionBet: true,
+        score: selected,
+      };
+      const { data } = await axios.post("/game-match/undeclareresult", body);
+      if (data) {
+        // const updatedData = {
+        //   ...newData,
+        //   betStatus: 2,
+        //   suspended: "Result Declared",
+        // };
+        // // call the parent component's updateSessionData function
+        // updateSessionData(updatedData);
+
+        setLocalState(() => {
+          const updatedBettings = currentMatch?.bettings.map(
+            (betting, index) => {
+              if (betting?.id === newData?.id) {
+                setLive(true);
+                return {
+                  ...newData,
+                  betStatus: 1,
+                  suspended: "",
+                };
+              }
+              return betting;
+            }
+          );
+          return {
+            ...currentMatch,
+            bettings: updatedBettings,
+          };
+        });
+      }
+      onClick();
+      toast.success(data?.message);
+    } catch (e) {
+      toast.error(e?.response?.data?.message);
+      console.log("error", e?.message);
+    }
+  };
   const declareResult = async () => {
     try {
       const body = {
@@ -36,7 +81,7 @@ const SessionResultModal = ({
           const updatedBettings = currentMatch?.bettings.map(
             (betting, index) => {
               if (betting?.id === newData?.id) {
-                setLive(true)
+                setLive(true);
                 return {
                   ...newData,
                   betStatus: 2,
@@ -185,7 +230,7 @@ const SessionResultModal = ({
           <CustomButton
             color={"#FF4D4D"}
             title={"Un Declare"}
-            onClick={() => onClick()}
+            onClick={() => undeclareResult()}
           />
 
           <CustomButton
@@ -205,7 +250,6 @@ const SessionResultModal = ({
             color={"#0B4F26"}
             title={"Declare"}
             onClick={() => {
-              alert(2)
               if (selected !== "") {
                 declareResult();
               } else {

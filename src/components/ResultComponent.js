@@ -16,13 +16,29 @@ const ResultComponent = ({
   const [selected, setSelected] = useState(teamA);
   const { axios } = setRole();
 
+  const undeclareResult = async () => {
+    try {
+      const body = {
+        betId: betId?.[0]?.id,
+        match_id: betId?.[0]?.match_id,
+        selectOption: selected,
+      };
+
+      const { data } = await axios.post("/game-match/declearResult", body);
+      toast.success(data?.message);
+    } catch (e) {
+      toast.error(e?.response?.data?.message);
+      console.log("error", e?.message);
+    }
+  };
   const declareResult = async () => {
     try {
       const body = {
         betId: betId?.[0]?.id,
-        matchId: betId?.[0]?.match_id,
+        match_id: betId?.[0]?.match_id,
         selectOption: selected,
       };
+      console.log("first", betId, body);
       const { data } = await axios.post("/game-match/declearResult", body);
       toast.success(data?.message);
     } catch (e) {
@@ -149,7 +165,7 @@ const ResultComponent = ({
         <CustomButton
           color={"#FF4D4D"}
           title={"Un Declare"}
-          onClick={() => onClick()}
+          onClick={() => undeclareResult()}
         />
         <CustomButton
           color={"#0B4F26"}

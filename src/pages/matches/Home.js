@@ -4,7 +4,7 @@ import React from "react";
 import { useContext } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigation } from "react-router-dom";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { SocketContext } from "../../context/socketContext";
 import { setRole } from "../../newStore";
 import { useEffect } from "react";
@@ -40,6 +40,7 @@ let matchOddsCount = 0;
 const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { allBetRates, allSessionBets } = useSelector(
@@ -262,6 +263,46 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           // dispatch(setAllSessionBets([data.betPlaceData, ...session]));
           dispatch(setCurrentUser(user));
           dispatch(setSessionRates(data?.profitLoss));
+        }
+
+        if (packet.data[0] === "sessionResult") {
+          const value = packet.data[1];
+          matchId = value?.match_id;
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.matchId !== value?.matchId) {
+                // If the new bet doesn't belong to the current match, return the current state
+                return currentMatch;
+              }
+
+              const updatedBettings = currentMatch?.bettings?.filter(
+                (betting) => betting?.id !== value?.betId
+              );
+
+              return {
+                ...currentMatch,
+                bettings: updatedBettings,
+              };
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
+        if (packet.data[0] === "matchResult") {
+          const value = packet.data[1];
+          matchId = value?.match_id;
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.matchId !== value?.matchId) {
+                // If the new bet doesn't belong to the current match, return the current state
+                return currentMatch;
+              }
+              navigate("/matches");
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
         }
       };
     }

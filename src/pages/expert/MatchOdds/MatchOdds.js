@@ -190,7 +190,7 @@ const MatchOdds = ({
           <ResultComponent
             betId={
               currentMatch?.bettings?.length > 0 &&
-              currentMatch?.bettings?.filter((v) => v.sessionBet === false)
+              currentMatch?.bettings?.filter((v) => v?.sessionBet === false)
             }
             teamA={currentMatch?.teamA}
             teamB={currentMatch?.teamB}
