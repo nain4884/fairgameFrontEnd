@@ -23,7 +23,7 @@ const SessionResultModal = ({
         score: selected,
       };
       const { data } = await axios.post("/game-match/undeclareresult", body);
-      if (data) {
+      if (data?.statusCode !== 500) {
         // const updatedData = {
         //   ...newData,
         //   betStatus: 2,
@@ -68,7 +68,7 @@ const SessionResultModal = ({
         score: selected,
       };
       const { data } = await axios.post("/game-match/declearResult", body);
-      if (data) {
+      if (data?.statusCode !== 500) {
         // const updatedData = {
         //   ...newData,
         //   betStatus: 2,
@@ -109,10 +109,31 @@ const SessionResultModal = ({
     try {
       const body = {
         betId: newData?.id,
-        matchId: newData?.match_id,
+        match_id: newData?.match_id,
         sessionBets: true,
       };
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
+      if (data?.statusCode !== 500) {
+        setLocalState(() => {
+          const updatedBettings = currentMatch?.bettings.map(
+            (betting, index) => {
+              if (betting?.id === newData?.id) {
+                setLive(true);
+                return {
+                  ...newData,
+                  betStatus: 2,
+                  suspended: "NO RESULT",
+                };
+              }
+              return betting;
+            }
+          );
+          return {
+            ...currentMatch,
+            bettings: updatedBettings,
+          };
+        });
+      }
       onClick();
       toast.success(data?.message);
     } catch (e) {

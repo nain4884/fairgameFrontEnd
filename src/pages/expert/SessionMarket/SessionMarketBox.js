@@ -234,7 +234,7 @@ const SessionMarketBox = ({
             }}
           >
             {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-            <h4>
+            <h4 style={{textTransform:"uppercase"}}>
               {newData?.betStatus === 2
                 ? `Result Declared`
                 : newData?.suspended}

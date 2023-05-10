@@ -75,7 +75,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   var matchId = id;
   // console.log("currentMatchProfit 444:", currentMatchProfit);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-
+console.log('sessionBets', sessionBets)
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
@@ -284,6 +284,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
                 bettings: updatedBettings,
               };
             });
+
+            setSessionBets((sessionBets) => sessionBets?.filter(v => v?.bet_id !== value?.betId))
           } catch (err) {
             console.log(err?.message);
           }
