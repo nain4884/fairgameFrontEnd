@@ -239,7 +239,7 @@ const MatchOdds = ({
         <Odds
           showDely={true}
           showBox={
-            matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0
+            matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0 || data?.bettings?.length === 0
               ? true
               : false
           }
@@ -252,7 +252,6 @@ const MatchOdds = ({
               ? true
               : false
           }
-          // suspended={false}
           teamARates={teamRates?.teamA}
           teamBRates={teamRates?.teamB}
           min={data?.betfair_match_min_bet || 0}

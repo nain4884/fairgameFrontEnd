@@ -96,7 +96,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
-              if (currentMatch?.matchId !== value?.matchId) {
+              console.log('first', currentMatch?.id  ,currentMatch?.matchId,value?.match_id)
+              if (currentMatch?.id !== value?.match_id) {
                 // If the new bet doesn't belong to the current match, return the current state
                 return currentMatch;
               }
@@ -385,6 +386,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
                 bettings: data,
               };
             }
+            return currentMatch;
           });
         }
 
@@ -547,6 +549,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     getAllBetsData1();
   }, [id]);
 
+  console.log('currentMatch', currentMatch)
   return (
     <Box
       sx={{
