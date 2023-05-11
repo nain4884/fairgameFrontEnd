@@ -3,7 +3,7 @@ import React from 'react'
 import { BroadCast } from '../../expert/assets';
 import { Button } from "@mui/material";
 
-const SmallBox = ({ color, title, width, textSize, onClick }) => {
+const SmallBox = ({ color, title, width, textSize, onClick,hide }) => {
   return (
     <>
       <Box
@@ -25,12 +25,12 @@ const SmallBox = ({ color, title, width, textSize, onClick }) => {
           sx={{
             fontSize: { laptop: textSize ? textSize : "11px", mobile: "10px" },
             fontWeight: "600",
-            color: color ? "white" : "white",
+            color: color!=="#FFF" && "white",
           }}
         >
           {title}
         </Typography>
-        <img src={BroadCast} style={{ height: "15px", width: "15px" }} />
+      {hide &&  <img src={BroadCast} style={{ height: "15px", width: "15px" }} />}
       </Box>
       {/* <Button
         onClick={onClick}

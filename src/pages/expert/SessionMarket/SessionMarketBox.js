@@ -170,6 +170,7 @@ const SessionMarketBox = ({
           >
             {live && newData?.betStatus !== 2 && (
               <SmallBox
+                hide={true}
                 onClick={(e) => {
                   e.preventDefault();
                   setLive(!live);
@@ -181,8 +182,18 @@ const SessionMarketBox = ({
                 color={"#FF4D4D"}
               />
             )}
+            {(newData?.betStatus === 2 && newData?.betRestult) && (
+              <SmallBox
+                hide={false}
+                textSize={"12px"}
+                width={"80px"}
+                title={`Score : ${newData?.betRestult || 0}`}
+                color={"#FFF"}
+              />
+            )}
             {!live && (
               <SmallBox
+                hide={true}
                 onClick={(e) => {
                   e.preventDefault();
                   setLive(!live);
@@ -241,11 +252,11 @@ const SessionMarketBox = ({
             }}
           >
             {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-            <h4 style={{ textTransform: "uppercase" }}>
+            <h6 style={{ textTransform: "uppercase" }}>
               {newData?.betStatus === 2
                 ? `Result Declared`
                 : newData?.suspended}
-            </h4>
+            </h6>
           </Box>
         ) : (
           <Box
