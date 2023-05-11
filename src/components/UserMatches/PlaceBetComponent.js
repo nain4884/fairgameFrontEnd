@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const PlaceBetComponent = ({ amount, profitLoss }) => {
-    const { sessionRates } = useSelector((state) => state?.matchDetails);
     const [proLoss, setProfitLoss] = useState(profitLoss);
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
@@ -22,11 +21,10 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
     });
   
     useEffect(() => {
-      if (sessionRates) {
-        setProfitLoss(sessionRates);
+      if (profitLoss) {
+        setProfitLoss(profitLoss);
       }
-    }, [sessionRates]);
-  
+    }, [profitLoss]);
   
     return (
       <Box sx={{ marginTop: "-8.4vw" }}>

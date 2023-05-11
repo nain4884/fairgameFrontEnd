@@ -15,6 +15,7 @@ const SessionMarket = ({
   teamBRates,
   allBetsData,
   dataProfit,
+  sessionBets
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -23,6 +24,7 @@ const SessionMarket = ({
     (element) => element.sessionBet === true
   );
 
+  console.log('matchSessionData', matchSessionData)
   return (
     <>
       <Box
@@ -89,7 +91,7 @@ const SessionMarket = ({
             }}
           >
             {/* {console.warn("newData11 ",newData)} */}
-            <SmallBoxSeason allBetsData={allBetsData} />
+            <SmallBoxSeason allBetsData={allBetsData} sessionBets={sessionBets} />
             <Typography
               sx={{
                 color: "white",
@@ -208,7 +210,6 @@ const SessionMarket = ({
                       data={element}
                       mainData={data}
                       newData={newData}
-                      dataProfit={dataProfit}
                       allRates={{ teamA: teamARates, teamB: teamBRates }}
                     />
                     <Divider />

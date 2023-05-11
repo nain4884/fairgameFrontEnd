@@ -207,7 +207,8 @@ const MatchOdds = ({
   bookmakerLive,
   sessionOddsLive,
   allBetsData,
-  dataProfit
+  dataProfit,
+  sessionBets
 }) => {
   const { manualBookMarkerRates } = useSelector(
     (state) => state?.matchDetails
@@ -220,10 +221,13 @@ const MatchOdds = ({
       const matchOdds = data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
-      setMatchOddsData(matchOdds);
+      setMatchOddsData(matchOdds || []);
       setBookMakerRateLive(data?.bookMakerRateLive)
     }
   }, [data]);
+
+
+  const teamRates= manualBookMarkerRates?.find(v=>v?.matchId===data?.id) || {teamA : 0 ,teamB:0}
   // { console.warn("dataProfit :", dataProfit) }
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -235,11 +239,12 @@ const MatchOdds = ({
       {data?.apiMatchActive && (
         <Odds
           showDely={true}
-          showBox={
-            matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0
-              ? true
-              : false
-          }
+          // showBox={
+          //   matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0
+          //     ? true
+          //     : false
+          // }
+          showBox={true}
           newData={data}
           data={
             matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
@@ -250,18 +255,19 @@ const MatchOdds = ({
               : false
           }
           // suspended={false}
-          teamARates={manualBookMarkerRates?.teamA}
-          teamBRates={manualBookMarkerRates?.teamB}
+          teamARates={teamRates?.teamA}
+          teamBRates={teamRates?.teamB}
           min={data?.betfair_match_min_bet || 0}
           max={data?.betfair_match_max_bet || 0}
           title={"Match Odds"}
           typeOfBet={"MATCH ODDS"}
         />
-      )}
+       )} 
 
       {data?.apiBookMakerActive && (
         <Odds
-          showBox={!bookMakerRateLive}
+          // showBox={!bookMakerRateLive}
+            showBox={true}
           newData={data}
           showDely={true}
           lock={
@@ -274,8 +280,8 @@ const MatchOdds = ({
             bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
           }
           // suspended={false}
-          teamARates={manualBookMarkerRates?.teamA}
-          teamBRates={manualBookMarkerRates?.teamB}
+          teamARates={teamRates?.teamA}
+          teamBRates={teamRates?.teamB}
           min={data?.betfair_bookmaker_min_bet || 0}
           max={data?.betfair_bookmaker_max_bet || 0}
           title={"Bookmaker Market "}
@@ -292,8 +298,8 @@ const MatchOdds = ({
           showDely={false}
           suspended={false}
           data={data}
-          teamARates={manualBookMarkerRates?.teamA}
-          teamBRates={manualBookMarkerRates?.teamB}
+          teamARates={teamRates?.teamA}
+          teamBRates={teamRates?.teamB}
           min={data?.bookmaker_manual_min_bet || 0}
           max={data?.bookmaker_manual_max_bet || 0}
           title={"Manual Bookmaker"}
@@ -304,12 +310,13 @@ const MatchOdds = ({
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
       {(data?.apiSessionActive || data?.manualSessionActive) && (
-        <SessionMarket
+        <SessionMarket 
+          sessionBets={sessionBets}
           data={sessionOddsLive}
           newData={data}
-          dataProfit={dataProfit}
-          teamARates={manualBookMarkerRates?.teamA}
-          teamBRates={manualBookMarkerRates?.teamB}
+          // dataProfit={dataProfit}
+          teamARates={teamRates?.teamA}
+          teamBRates={teamRates?.teamB}
           allBetsData={allBetsData}
         />
       )}

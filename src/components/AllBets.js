@@ -1,359 +1,76 @@
 import { Box, Typography } from "@mui/material";
 import moment from "moment/moment";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-const data = [
-  {
-    values: [
-      {
-        name: "John Doe",
-        color: "black",
-        background: "#F1C550",
-      },
-      {
-        name: "BOOKMAKER",
-        color: "black",
-        background: "#F1C550",
-      },
-      {
-        name: "INDIA",
-        color: "black",
-        background: "#B3E0FF",
-      },
-      {
-        name: "1000",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "Back",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "100,000,000",
-        color: "black",
-        background: "#B3E0FF",
-      },
-      {
-        name: "10,000,000",
-        color: "white",
-        background: "#0B4F26",
-      },
-      {
-        name: "03:23 AM",
-        color: "black",
-        background: "#B3E0FF",
-        time: true,
-        date: "02-11-2022",
-      },
-    ],
-  },
-  {
-    values: [
-      {
-        name: "John Doe",
-        color: "white",
-        background: "#319E5B",
-      },
-      {
-        name: "MATCH ODDS",
-        color: "white",
-        background: "#319E5B",
-      },
-      {
-        name: "INDIA",
-        color: "black",
-        background: "#FF9292",
-      },
-      {
-        name: "1000",
-        color: "black",
-        background: "#FF9292",
-        small: true,
-      },
-      {
-        name: "LAY",
-        color: "black",
-        background: "#FF9292",
-        small: true,
-      },
-      {
-        name: "100,000,000",
-        color: "black",
-        background: "#FF9292",
-      },
-      {
-        name: "10,000,000",
-        color: "white",
-        background: "#0B4F26",
-      },
-      {
-        name: "03:23 AM",
-        color: "black",
-        background: "#FF9292",
-        time: true,
-        date: "02-11-2022",
-      },
-    ],
-  },
-  {
-    values: [
-      {
-        name: "John Doe",
-        color: "white",
-        background: "#303030",
-      },
-      {
-        name: "6 OVER RUN INDIA",
-        color: "white",
-        background: "#303030",
-      },
-      {
-        name: "",
-        color: "black",
-        background: "#303030",
-      },
-      {
-        name: "1000",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "YES",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "100,000,000",
-        color: "black",
-        background: "#B3E0FF",
-      },
-      {
-        name: "10,000,000",
-        color: "white",
-        background: "#0B4F26",
-      },
-      {
-        name: "03:23 AM",
-        color: "black",
-        background: "#B3E0FF",
-        time: true,
-        date: "02-11-2022",
-      },
-    ],
-  },
-  {
-    values: [
-      {
-        name: "John Doe",
-        color: "black",
-        background: "#F1C550",
-      },
-      {
-        name: "BOOKMAKER",
-        color: "black",
-        background: "#F1C550",
-      },
-      {
-        name: "INDIA",
-        color: "black",
-        background: "#B3E0FF",
-      },
-      {
-        name: "1000",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "Back",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "100,000,000",
-        color: "black",
-        background: "#B3E0FF",
-      },
-      {
-        name: "10,000,000",
-        color: "white",
-        background: "#0B4F26",
-      },
-      {
-        name: "03:23 AM",
-        color: "black",
-        background: "#B3E0FF",
-        time: true,
-        date: "02-11-2022",
-      },
-    ],
-  },
-  {
-    values: [
-      {
-        name: "John Doe",
-        color: "white",
-        background: "#319E5B",
-      },
-      {
-        name: "MATCH ODDS",
-        color: "white",
-        background: "#319E5B",
-      },
-      {
-        name: "INDIA",
-        color: "black",
-        background: "#FF9292",
-      },
-      {
-        name: "1000",
-        color: "black",
-        background: "#FF9292",
-        small: true,
-      },
-      {
-        name: "LAY",
-        color: "black",
-        background: "#FF9292",
-        small: true,
-      },
-      {
-        name: "100,000,000",
-        color: "black",
-        background: "#FF9292",
-      },
-      {
-        name: "10,000,000",
-        color: "white",
-        background: "#0B4F26",
-      },
-      {
-        name: "03:23 AM",
-        color: "black",
-        background: "#FF9292",
-        time: true,
-        date: "02-11-2022",
-      },
-    ],
-  },
-  {
-    values: [
-      {
-        name: "John Doe",
-        color: "white",
-        background: "#303030",
-      },
-      {
-        name: "6 OVER RUN INDIA",
-        color: "white",
-        background: "#303030",
-      },
-      {
-        name: "",
-        color: "black",
-        background: "#303030",
-      },
-      {
-        name: "1000",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "YES",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "100,000,000",
-        color: "black",
-        background: "#B3E0FF",
-      },
-      {
-        name: "10,000,000",
-        color: "white",
-        background: "#0B4F26",
-      },
-      {
-        name: "03:23 AM",
-        color: "black",
-        background: "#B3E0FF",
-        time: true,
-        date: "02-11-2022",
-      },
-    ],
-  },
-];
 
 const AllBets = ({ tag, submit, allBetRates }) => {
   const navigate = useNavigate();
-  const newData = allBetRates?.map((v) => {
-    const values = {
-      values: [
-        {
-          name: v?.user?.userName,
-          color: "black",
-          background: "#F1C550",
-        },
-        {
-          name: v?.marketType,
-          color: "black",
-          background: "#F1C550",
-        },
-        {
-          name: v?.team_bet,
-          color: "black",
-          background: "#B3E0FF",
-        },
-        {
-          name: v?.odds,
-          color: "black",
-          background: "#B3E0FF",
-          small: true,
-        },
-        {
-          name: v?.bet_type,
-          color: "black",
-          background: "#B3E0FF",
-          small: true,
-        },
-        {
-          name: v?.amount,
-          color: "black",
-          background: "#B3E0FF",
-        },
-        {
-          name: v?.amount,
-          color: "white",
-          background: "#0B4F26",
-        },
-        {
-          name: moment(v?.createAt).format("LT"),
-          color: "black",
-          background: "#B3E0FF",
-          time: true,
-          date: moment(v?.createAt).format("L"),
-        },
-      ],
-    };
-    return values;
-  });
 
+  const [newData, setNewBets] = useState([]);
 
-  console.log('newData', newData)
+  useEffect(() => {
+    if (allBetRates) {
+      const body = allBetRates?.map((v) => {
+        const values = {
+          values: [
+            {
+              name: v?.user?.userName,
+              color: "black",
+              background: "#F1C550",
+            },
+            {
+              name: v?.marketType,
+              color: "black",
+              background: "#F1C550",
+            },
+            {
+              name: v?.team_bet,
+              color: "black",
+              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+            },
+            {
+              name: v?.odds,
+              color: "black",
+              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+              small: true,
+            },
+            {
+              name: v?.bet_type,
+              color: "black",
+              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+              small: true,
+            },
+            {
+              name: v?.amount,
+              color: "black",
+              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+            },
+            {
+              name: v?.amount,
+              color: "white",
+              background: "#0B4F26",
+            },
+            {
+              name: moment(v?.createAt).format("LT"),
+              color: "black",
+              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+              time: true,
+              date: moment(v?.createAt).format("L"),
+            },
+          ],
+        };
+        return values;
+      });
+
+      setNewBets(body);
+    }
+  }, [allBetRates]);
+
   return (
     <Box
       sx={{
-        width: "100%" ,
+        width: "100%",
         marginTop: submit ? "10px" : ".25vh",
         padding: 0.2,
         background: "white",
@@ -705,7 +422,6 @@ const Row = ({ values, index }) => {
   return (
     <Box sx={{ width: "100%", display: "flex" }}>
       {values?.map((item, k) => {
-
         if (!item?.small) {
           return <LargeBox k={k} item={item} />;
         } else {

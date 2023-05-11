@@ -30,8 +30,7 @@ export default function Login(props) {
   const activeUser = useSelector((state) => {
     return state?.activeUser?.activeUser;
   });
-  
-  
+
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loginDetail, setLoginDetail] = useState({
     1: { field: "username", val: "" },
@@ -159,7 +158,7 @@ export default function Login(props) {
       }
     } catch (e) {
       console.log(e?.message);
-      toast.error(e?.response.data.message);
+      toast.error(e?.response?.data?.message || "Something went wrong!");
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
     }

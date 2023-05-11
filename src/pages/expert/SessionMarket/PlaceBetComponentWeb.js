@@ -1,10 +1,13 @@
-import { Box, Typography } from "@mui/material";
 import React from "react";
-import { useState } from "react";
 import DropdownMenu from "../DropdownMenu";
+import { Box, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useState } from "react";
+import useOuterClick from "../../../components/helper/userOuterClick";
 import { UD } from "../../../assets";
 
-const PlaceBetComponentWeb = ({ onClick }) => {
+const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
+  const [proLoss, setProfitLoss] = useState(profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -12,29 +15,40 @@ const PlaceBetComponentWeb = ({ onClick }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const [show, setShow] = React.useState(false);
+  const innerRef = useOuterClick((ev) => {
+    setShow(false);
+  });
+
+  useEffect(() => {
+    if (profitLoss) {
+      setProfitLoss(profitLoss);
+    }
+  }, [profitLoss]);
   return (
     <>
       <Box
-        onClick={onClick}
+        onClick={(e) => setShow(!show)}
         sx={{
           background: "#0B4F26",
           flexDirection: "row",
           display: "flex",
           alignItems: "center",
           paddingX: ".2vw",
-          width: "7vw",
+          width: { laptop: "10vw" },
           borderRadius: "5px",
-          height: "30px",
+          height: "32px",
           right: "8px",
           position: "absolute",
+          cursor: "pointer",
         }}
       >
         <Box
           sx={{
             background: "#FDF21A",
             borderRadius: "3px",
-            width: "65%",
-            height: "80%",
+            width: "45%",
+            height: "85%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -43,14 +57,23 @@ const PlaceBetComponentWeb = ({ onClick }) => {
           }}
         >
           <Typography
-            sx={{ fontSize: ".5vw", fontWeight: "bold", color: "#FF4D4D" }}
+            sx={{
+              fontSize: { laptop: ".5vw" },
+              fontWeight: "bold",
+              color: "#FF4D4D",
+            }}
           >
             Total Bet
           </Typography>
           <Typography
-            sx={{ fontSize: ".5vw", fontWeight: "bold", color: "#0B4F26" }}
+            sx={{
+              fontSize: { laptop: ".5vw" },
+              fontWeight: "bold",
+              color: "#0B4F26",
+            }}
           >
-            250
+            {proLoss?.total_bet || 0}
+            {/* {profitLoss?.total_bet || 0} */}
           </Typography>
         </Box>
         <Box
@@ -62,21 +85,29 @@ const PlaceBetComponentWeb = ({ onClick }) => {
           }}
         >
           <Typography
-            sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            sx={{
+              fontSize: { laptop: amount ? ".65vw" : ".6vw" },
+              fontWeight: amount ? "bold" : "500",
+              color: "white",
+            }}
           >
-            P/L
+            {amount ? "-100,000,00" : "Profit/Loss"}
           </Typography>
           <img
             src={UD}
-            style={{ width: "12px", height: "12px", marginLeft: "3px" }}
+            style={{ width: "12px", height: "12px", marginLeft: "5px" }}
           />
         </Box>
+        {show && (
+          <DropdownMenu
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            list={proLoss?.betData}
+            // list={profitLoss?.betData}
+            handleClose={handleClose}
+          />
+        )}
       </Box>
-      <DropdownMenu
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        handleClose={handleClose}
-      />
     </>
   );
 };

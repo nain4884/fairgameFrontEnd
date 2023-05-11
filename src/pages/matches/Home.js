@@ -75,7 +75,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   var matchId = id;
   // console.log("currentMatchProfit 444:", currentMatchProfit);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-console.log('sessionBets', sessionBets)
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
@@ -97,11 +96,11 @@ console.log('sessionBets', sessionBets)
           matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
-              if (currentMatch?.matchId !== value?.matchId) {
+           
+              if (currentMatch?.id !== value?.matchId) {
                 // If the new bet doesn't belong to the current match, return the current state
                 return currentMatch;
               }
-
               // Update the bettings array in the current match object
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting.id === value.id && value.sessionBet) {
@@ -133,7 +132,7 @@ console.log('sessionBets', sessionBets)
               // Return the updated current match object
               return {
                 ...currentMatch,
-                bettings: newUpdatedValue,
+                bettings: newUpdatedValue || [],
               };
             });
           } catch (err) {
@@ -178,6 +177,7 @@ console.log('sessionBets', sessionBets)
                   exposure: data.exposure,
                 };
                 const manualBookmaker = {
+                  matchId: data?.betPlaceData?.match_id,
                   teamA: data.teamA_rate,
                   teamB: data.teamB_rate,
                 };
@@ -223,9 +223,9 @@ console.log('sessionBets', sessionBets)
         if (packet.data[0] === "session_bet") {
           const data = packet.data[1];
           try {
-            setCurrentMatchProfit((currentMatch) => {
-              const updatedBettings = currentMatch.bettings.map((betting) => {
-                if (betting.id === data?.betPlaceData?.bet_id) {
+            setCurrentMatch((currentMatch) => {
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (betting?.id === data?.betPlaceData?.bet_id) {
                   // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                   let profitLoss = data?.profitLoss;
                   return {
@@ -262,7 +262,7 @@ console.log('sessionBets', sessionBets)
           setSessionBets((prev) => [data.betPlaceData, ...prev]);
           // dispatch(setAllSessionBets([data.betPlaceData, ...session]));
           dispatch(setCurrentUser(user));
-          dispatch(setSessionRates(data?.profitLoss));
+          // dispatch(setSessionRates(data?.profitLoss));
         }
 
         if (packet.data[0] === "sessionResult") {
@@ -274,7 +274,7 @@ console.log('sessionBets', sessionBets)
               current_balance: value.current_balance,
               exposure: value.exposure,
             };
-           
+
             dispatch(setCurrentUser(user));
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.matchId !== value?.matchId) {
@@ -292,7 +292,9 @@ console.log('sessionBets', sessionBets)
               };
             });
 
-            setSessionBets((sessionBets) => sessionBets?.filter(v => v?.bet_id !== value?.betId))
+            setSessionBets((sessionBets) =>
+              sessionBets?.filter((v) => v?.bet_id !== value?.betId)
+            );
           } catch (err) {
             console.log(err?.message);
           }
@@ -307,7 +309,7 @@ console.log('sessionBets', sessionBets)
               current_balance: value.current_balance,
               exposure: value.exposure,
             };
-           
+
             dispatch(setCurrentUser(user));
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.matchId !== value?.matchId) {
@@ -475,9 +477,9 @@ console.log('sessionBets', sessionBets)
         ...response.data,
       });
 
-      let bettingsData = response?.data;
+      // let bettingsData = response?.data;
       // console.log("response.data :", bettingsData)
-      setCurrentMatchProfit(bettingsData);
+      // setCurrentMatchProfit(bettingsData);
 
       // console.log("currentMatchProfit 111:", currentMatchProfit);
       dispatch(
@@ -572,12 +574,13 @@ console.log('sessionBets', sessionBets)
         >
           <div style={{ width: "100%" }}>
             <MatchOdds
-              matchOddsLive={matchOddsLive}
+              sessionBets={sessionBets}
+              matchOddsLive={matchOddsLive }
               bookmakerLive={bookmakerLive}
               onClick={() => handleClose(true)}
               bookMakerRateLive={bookMakerRateLive}
               data={currentMatch}
-              dataProfit={currentMatchProfit}
+              // dataProfit={currentMatchProfit}
               allBetsData={sessionBets}
             />
           </div>
@@ -623,11 +626,12 @@ console.log('sessionBets', sessionBets)
             }}
           >
             <MatchOdds
+              sessionBets={sessionBets}
               matchOddsLive={matchOddsLive}
               bookmakerLive={bookmakerLive}
               onClick={() => handleClose(true)}
               data={currentMatch}
-              dataProfit={currentMatchProfit}
+              // dataProfit={currentMatchProfit}
               allBetsData={allSessionBets}
             />
           </Box>

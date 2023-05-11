@@ -204,7 +204,14 @@ const SessionMarketBox = ({
         </Box>
 
         {visible && (
-          <Box sx={{ position: "absolute", zIndex: 105, top: "100%",right:"0vh" }}>
+          <Box
+            sx={{
+              position: "absolute",
+              zIndex: 105,
+              top: "100%",
+              right: "0vh",
+            }}
+          >
             <SessionResultModal
               newData={newData}
               setLocalState={setLocalState}
@@ -234,7 +241,7 @@ const SessionMarketBox = ({
             }}
           >
             {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-            <h4 style={{textTransform:"uppercase"}}>
+            <h4 style={{ textTransform: "uppercase" }}>
               {newData?.betStatus === 2
                 ? `Result Declared`
                 : newData?.suspended}
@@ -303,22 +310,7 @@ const SessionMarketBox = ({
                                 <img src={BallStart} style={{ width: '60px', height: '19px' }} />
                             </Box>
                         } */}
-            {
-              <PlaceBetComponentWeb
-              // onClick={() => {
-              //   if (data?.includes(index)) {
-              //     let x = [...data];
-              //     x.splice(x.indexOf(index), 1);
-              //     setData([...x]);
-              //   } else {
-              //     if (data.length < 4) {
-              //       let x = [...data];
-              //       setData([...x, index]);
-              //     }
-              //   }
-              // }}
-              />
-            }
+            {<PlaceBetComponentWeb profitLoss={newData?.profitLoss} />}
           </Box>
         )}
       </Box>

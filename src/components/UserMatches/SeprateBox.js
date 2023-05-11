@@ -144,6 +144,10 @@ const SeprateBox = ({
 
   const PlaceBetSubmit = async (payload) => {
     try {
+      console.log("payload", payload);
+      if (Number(payload?.odds) !== Number(value)) {
+        return toast.error("Rate changed ");
+      }
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
       // dispatch(setAllBetRate(response?.data?.data[0]))
@@ -244,11 +248,7 @@ const SeprateBox = ({
                 name={name}
                 rates={rates}
                 onSubmit={async (payload) => {
-                  if (Number(payload?.odds) === Number(value)) {
-                    handlePlaceBet(payload, currentMatch);
-                  } else {
-                    toast.error("Rate changed ");
-                  }
+                  handlePlaceBet(payload, currentMatch);
                 }}
                 // onSubmit={async (payload) => {
                 //   try {

@@ -14,18 +14,10 @@ const SessionMarketBox = ({
   newData,
   mainData,
   allRates,
-  dataProfit,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  // { console.warn("Please :", data) }
-  // { console.warn("dataProfit :", dataProfit) }
-  const findProfitLoss = (id) => {
-    const foundObject = dataProfit?.bettings?.find(
-      (sessionData) => sessionData?.id == id
-    );
-    return foundObject?.profitLoss;
-  };
+
   return (
     <Box
       sx={{
@@ -95,8 +87,7 @@ const SessionMarketBox = ({
           {!matchesMobile && (
             <PlaceBetComponentWeb
               amount={index == 2}
-              // profitLoss={data?.profitLoss}
-              profitLoss={findProfitLoss(data.id)}
+              profitLoss={data?.profitLoss}
             />
           )}
         </>
@@ -116,8 +107,7 @@ const SessionMarketBox = ({
           {matchesMobile && (
             <PlaceBetComponent
               amount={index == 2}
-              // profitLoss={data?.profitLoss}
-              profitLoss={dataProfit?.profitLoss}
+              profitLoss={data?.profitLoss}
             />
           )}
           {false && (
@@ -188,8 +178,7 @@ const SessionMarketBox = ({
           {!matchesMobile && (
             <PlaceBetComponentWeb
               amount={index === 2}
-              // profitLoss={data?.profitLoss}
-              profitLoss={dataProfit?.profitLoss}
+              profitLoss={data?.profitLoss}
             />
           )}
         </Box>

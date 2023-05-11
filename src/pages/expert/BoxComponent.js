@@ -14,6 +14,7 @@ const BoxComponent = ({
   color,
   align,
   lock,
+  teamRates
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -89,7 +90,7 @@ const BoxComponent = ({
             {name}
           </Typography>
         </Box>
-        {name != "DRAW" && <MoneyBox color={color} />}
+        {name != "DRAW" && <MoneyBox  value={teamRates} />}
       </Box>
 
       {!["ACTIVE", "", undefined,null].includes(status) ? (

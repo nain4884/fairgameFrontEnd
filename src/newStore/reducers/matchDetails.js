@@ -1,10 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  manualBookMarkerRates: {
-    teamA: 0,
-    teamB: 0,
-  },
+  manualBookMarkerRates:[],
   sessionRates: null,
   matchOdds: {},
   sessionOdds: {},
@@ -21,7 +18,42 @@ const matchDetails = createSlice({
   initialState,
   reducers: {
     setManualBookMarkerRates: (state, action) => {
-      state.manualBookMarkerRates = action.payload;
+      const existingObject = state.manualBookMarkerRates.find(
+        (v) => v.matchId === action.payload.matchId
+      );
+
+      if (existingObject) {
+        // Update an existing object with a matching matchId
+        const updatedObject = {
+          ...existingObject,
+          teamA: action.payload.teamA,
+          teamB: action.payload.teamB,
+        };
+
+        const updatedArray = state.manualBookMarkerRates.map((v) =>
+          v.matchId === action.payload.matchId ? updatedObject : v
+        );
+
+        return {
+          ...state,
+          manualBookMarkerRates: updatedArray,
+        };
+      } else {
+        // Add a new object to the array
+        const newArray = [
+          ...state.manualBookMarkerRates,
+          {
+            matchId: action.payload.matchId,
+            teamA: action.payload.teamA,
+            teamB: action.payload.teamB,
+          },
+        ];
+
+        return {
+          ...state,
+          manualBookMarkerRates: newArray,
+        };
+      }
     },
     removeManualBookMarkerRates: (state, action) => {
       state.manualBookMarkerRates = {};

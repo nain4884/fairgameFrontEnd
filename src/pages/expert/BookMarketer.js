@@ -18,6 +18,10 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [live, setLive] = useState(currentMatch?.bookMakerRateLive);
   const [visible, setVisible] = useState(false);
+  const { manualBookMarkerRates } = useSelector(
+    (state) => state?.matchDetails
+  );
+  const teamRates= manualBookMarkerRates?.find(v=>v?.matchId===currentMatch?.id) || {teamA : 0 ,teamB:0}
   return (
     <Box
       sx={{
@@ -229,15 +233,17 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
       }
       <Box sx={{ position: "relative" }}>
         <BoxComponent
+         teamRates={teamRates?.teamA}
           teamImage={currentMatch?.teamA_Image}
           data={liveData?.runners?.length > 0 ? liveData?.runners[0] : []}
           lock={liveData?.runners?.length > 0 ? false : true}
-          color={"#46e080"}
+        
           name={currentMatch?.teamA}
         />
         <Divider />
         <BoxComponent
-          color={"#FF4D4D"}
+         teamRates={teamRates?.teamB}
+       
           teamImage={currentMatch?.teamB_Image}
           lock={liveData?.runners?.length > 0 ? false : true}
           name={currentMatch?.teamB}

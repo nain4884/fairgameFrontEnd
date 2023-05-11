@@ -29,6 +29,11 @@ const MatchOdds = ({
     newMatchOdds === null || newMatchOdds?.betStatus === 0 ? false : true
   );
 
+  const { manualBookMarkerRates } = useSelector(
+    (state) => state?.matchDetails
+  );
+  const teamRates= manualBookMarkerRates?.find(v=>v?.matchId===currentMatch?.id) || {teamA : 0 ,teamB:0}
+  console.log('first', manualBookMarkerRates)
   const activateMatchOdds = async (val, id) => {
     // alert(5555)
     try {
@@ -284,14 +289,15 @@ const MatchOdds = ({
         }
         teamImage={currentMatch?.teamA_Image}
         lock={matchOddsLive?.runners?.length > 0 ? false : true}
-        color={"#46e080"}
         name={currentMatch?.teamA}
         currentMatch={currentMatch}
+        teamRates={teamRates?.teamA}
       />
       <Divider />
       <BoxComponent
+       teamRates={teamRates?.teamB}
         lock={matchOddsLive?.runners?.length > 0 ? false : true}
-        color={"#FF4D4D"}
+
         teamImage={currentMatch?.teamB_Image}
         data={
           matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[1] : []

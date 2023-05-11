@@ -1,118 +1,116 @@
-import React from 'react'
-import DropdownMenu from './DropdownMenu';
-import { UD } from '../../assets';
-import { Box, Typography } from '@mui/material';
-import { useEffect } from 'react';
-import useOuterClick from '../helper/userOuterClick';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-
+import React from "react";
+import DropdownMenu from "./DropdownMenu";
+import { UD } from "../../assets";
+import { Box, Typography } from "@mui/material";
+import { useEffect } from "react";
+import useOuterClick from "../helper/userOuterClick";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
-    const { sessionRates } = useSelector((state) => state?.matchDetails);
-    const [proLoss, setProfitLoss] = useState(profitLoss);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-    const [show, setShow] = React.useState(false);
-    const innerRef = useOuterClick((ev) => {
-      setShow(false);
-    });
-  
-    useEffect(() => {
-      if (sessionRates) {
-        setProfitLoss(sessionRates);
-      }
-    }, [sessionRates]);
-    return (
-      <>
+  const [proLoss, setProfitLoss] = useState(profitLoss);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const [show, setShow] = React.useState(false);
+  const innerRef = useOuterClick((ev) => {
+    setShow(false);
+  });
+
+  useEffect(() => {
+    if (profitLoss) {
+      setProfitLoss(profitLoss);
+    }
+  }, [profitLoss]);
+  return (
+    <>
+      <Box
+        onClick={(e) => setShow(!show)}
+        sx={{
+          background: "#0B4F26",
+          flexDirection: "row",
+          display: "flex",
+          alignItems: "center",
+          paddingX: ".2vw",
+          width: { laptop: "10vw" },
+          borderRadius: "5px",
+          height: "32px",
+          right: "8px",
+          position: "absolute",
+          cursor: "pointer",
+        }}
+      >
         <Box
-          onClick={(e) => setShow(!show)}
           sx={{
-            background: "#0B4F26",
-            flexDirection: "row",
+            background: "#FDF21A",
+            borderRadius: "3px",
+            width: "45%",
+            height: "85%",
             display: "flex",
             alignItems: "center",
-            paddingX: ".2vw",
-            width: { laptop: "10vw" },
-            borderRadius: "5px",
-            height: "32px",
-            right: "8px",
-            position: "absolute",
-            cursor:'pointer',
+            justifyContent: "center",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          <Box
+          <Typography
             sx={{
-              background: "#FDF21A",
-              borderRadius: "3px",
-              width: "45%",
-              height: "85%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              display: "flex",
-              flexDirection: "column",
+              fontSize: { laptop: ".5vw" },
+              fontWeight: "bold",
+              color: "#FF4D4D",
             }}
           >
-            <Typography
-              sx={{
-                fontSize: { laptop: ".5vw" },
-                fontWeight: "bold",
-                color: "#FF4D4D",
-              }}
-            >
-              Total Bet
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: { laptop: ".5vw" },
-                fontWeight: "bold",
-                color: "#0B4F26",
-              }}
-            >
-              {proLoss?.total_bet || 0}
-              {/* {profitLoss?.total_bet || 0} */}
-            </Typography>
-          </Box>
-          <Box
+            Total Bet
+          </Typography>
+          <Typography
             sx={{
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-              display: "flex",
+              fontSize: { laptop: ".5vw" },
+              fontWeight: "bold",
+              color: "#0B4F26",
             }}
           >
-            <Typography
-              sx={{
-                fontSize: { laptop: amount ? ".65vw" : ".6vw" },
-                fontWeight: amount ? "bold" : "500",
-                color: "white",
-              }}
-            >
-              {amount ? "-100,000,00" : "Profit/Loss"}
-            </Typography>
-            <img
-              src={UD}
-              style={{ width: "12px", height: "12px", marginLeft: "5px" }}
-            />
-          </Box>
-          {show && (
-            <DropdownMenu
-              open={Boolean(anchorEl)}
-              anchorEl={anchorEl}
-              list={proLoss?.betData}
-              // list={profitLoss?.betData}
-              handleClose={handleClose}
-            />
-          )}
+            {proLoss?.total_bet || 0}
+            {/* {profitLoss?.total_bet || 0} */}
+          </Typography>
         </Box>
-      </>
-    );
-  };
+        <Box
+          sx={{
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: { laptop: amount ? ".65vw" : ".6vw" },
+              fontWeight: amount ? "bold" : "500",
+              color: "white",
+            }}
+          >
+            {amount ? "-100,000,00" : "Profit/Loss"}
+          </Typography>
+          <img
+            src={UD}
+            style={{ width: "12px", height: "12px", marginLeft: "5px" }}
+          />
+        </Box>
+        {show && (
+          <DropdownMenu
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            list={proLoss?.betData}
+            // list={profitLoss?.betData}
+            handleClose={handleClose}
+          />
+        )}
+      </Box>
+    </>
+  );
+};
 
-export default PlaceBetComponentWeb
+export default PlaceBetComponentWeb;
