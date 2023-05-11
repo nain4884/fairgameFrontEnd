@@ -27,24 +27,24 @@ const AllBets = ({ tag, submit, allBetRates }) => {
             {
               name: v?.team_bet,
               color: "black",
-              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
             },
             {
               name: v?.odds,
               color: "black",
-              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
               small: true,
             },
             {
               name: v?.bet_type,
               color: "black",
-              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
               small: true,
             },
             {
               name: v?.amount,
               color: "black",
-              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
             },
             {
               name: v?.amount,
@@ -54,7 +54,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
             {
               name: moment(v?.createAt).format("LT"),
               color: "black",
-              background: v?.bet_type==="yes" ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
               time: true,
               date: moment(v?.createAt).format("L"),
             },

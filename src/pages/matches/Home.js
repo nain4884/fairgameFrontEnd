@@ -96,11 +96,11 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
-           
-              if (currentMatch?.id !== value?.matchId) {
+              if (currentMatch?.matchId !== value?.matchId) {
                 // If the new bet doesn't belong to the current match, return the current state
                 return currentMatch;
               }
+
               // Update the bettings array in the current match object
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting.id === value.id && value.sessionBet) {
@@ -132,7 +132,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               // Return the updated current match object
               return {
                 ...currentMatch,
-                bettings: newUpdatedValue || [],
+                bettings: newUpdatedValue,
               };
             });
           } catch (err) {
@@ -575,7 +575,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           <div style={{ width: "100%" }}>
             <MatchOdds
               sessionBets={sessionBets}
-              matchOddsLive={matchOddsLive }
+              matchOddsLive={matchOddsLive}
               bookmakerLive={bookmakerLive}
               onClick={() => handleClose(true)}
               bookMakerRateLive={bookMakerRateLive}
@@ -606,7 +606,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               {allBetsData.length > 0 && (
                 <AllRateSeperate
                   allBetsData={IObets?.filter((v) =>
-                    ["MATCH ODDS"].includes(v.marketType)
+                    ["MATCH ODDS", "BOOKMAKER"]?.includes(v.marketType)
                   )}
                   mark
                 />

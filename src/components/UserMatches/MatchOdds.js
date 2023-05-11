@@ -208,11 +208,9 @@ const MatchOdds = ({
   sessionOddsLive,
   allBetsData,
   dataProfit,
-  sessionBets
+  sessionBets,
 }) => {
-  const { manualBookMarkerRates } = useSelector(
-    (state) => state?.matchDetails
-  );
+  const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
 
@@ -221,13 +219,14 @@ const MatchOdds = ({
       const matchOdds = data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
-      setMatchOddsData(matchOdds || []);
-      setBookMakerRateLive(data?.bookMakerRateLive)
+      setMatchOddsData(matchOdds);
+      setBookMakerRateLive(data?.bookMakerRateLive);
     }
   }, [data]);
 
-
-  const teamRates= manualBookMarkerRates?.find(v=>v?.matchId===data?.id) || {teamA : 0 ,teamB:0}
+  const teamRates = manualBookMarkerRates?.find(
+    (v) => v?.matchId === data?.id
+  ) || { teamA: 0, teamB: 0 };
   // { console.warn("dataProfit :", dataProfit) }
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -239,12 +238,11 @@ const MatchOdds = ({
       {data?.apiMatchActive && (
         <Odds
           showDely={true}
-          // showBox={
-          //   matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0
-          //     ? true
-          //     : false
-          // }
-          showBox={true}
+          showBox={
+            matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0
+              ? true
+              : false
+          }
           newData={data}
           data={
             matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
@@ -262,17 +260,16 @@ const MatchOdds = ({
           title={"Match Odds"}
           typeOfBet={"MATCH ODDS"}
         />
-       )} 
+      )}
 
       {data?.apiBookMakerActive && (
         <Odds
-          // showBox={!bookMakerRateLive}
-            showBox={true}
+          showBox={!bookMakerRateLive}
           newData={data}
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-              data?.bookmakerLive[0]?.betStatus === 0
+            data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }
@@ -310,7 +307,7 @@ const MatchOdds = ({
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
       {(data?.apiSessionActive || data?.manualSessionActive) && (
-        <SessionMarket 
+        <SessionMarket
           sessionBets={sessionBets}
           data={sessionOddsLive}
           newData={data}
