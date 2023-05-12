@@ -156,7 +156,9 @@ const AddAccount = () => {
           Detail[9].val === 0 ||
           Detail[9].val === "" ||
           Detail[14].val === 0 ||
-          Detail[14].val === ""
+          Detail[14].val === "" ||
+          Detail[11].val === 0 ||
+          Detail[11].val === ""
         )
       ) {
         //Detail[2].val === 0 || Detail[2].val === "" ||
@@ -292,19 +294,30 @@ const AddAccount = () => {
   }
 
   function CheckThisPosition({ place, val, setError, error }) {
-    // if (Number(val) > Detail[12].val) {
-    //   setMyPartnershipsError(true);
-    //   console.log("val - uplineP", val, uplineP);
-    // } else {
-    //   setMyPartnershipsError(false);
-    // }
-    setError({
-      ...error,
-      [place]: {
-        ...error[place],
-        val: !val.toString().length > 0,
-      },
-    });
+    console.log('Number(val', Number(val))
+    if (Number(val) > Detail[12].val) {
+      setMyPartnershipsError(true);
+      // console.log("val - uplineP", val, uplineP);
+    } else {
+      setMyPartnershipsError(false);
+    }
+    if (Number(val)) {
+      setError({
+        ...error,
+        [place]: {
+          ...error[place],
+          val: true,
+        },
+      });
+    } else {
+      setError({
+        ...error,
+        [place]: {
+          ...error[place],
+          val: false,
+        },
+      });
+    }
   }
 
   useEffect(() => {

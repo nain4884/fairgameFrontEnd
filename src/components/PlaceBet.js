@@ -405,7 +405,7 @@ const PlaceBet = ({
           borderRadius: "5px",
           marginLeft: season ? "40px" : 0,
           overflow: "hidden",
-          width: { mobile: "90vw", laptop: "30vw" },
+          width: { mobile: "70vw", laptop: "30vw" },
           // left: isSessionYes?"-30%": "95%"
         },
         // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?

@@ -33,7 +33,7 @@ const MatchOdds = ({
     (state) => state?.matchDetails
   );
   const teamRates=manualBookMarkerRates?.length>0 ? manualBookMarkerRates?.find(v=>v?.matchId===currentMatch?.id) : {teamA : 0 ,teamB:0}
-  console.log('first', manualBookMarkerRates)
+  
   const activateMatchOdds = async (val, id) => {
     // alert(5555)
     try {

@@ -236,7 +236,11 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
         <BoxComponent
           teamRates={teamRates?.teamA}
           teamImage={currentMatch?.teamA_Image}
-          data={liveData?.runners?.length > 0 ? liveData?.runners[0] : []}
+          data={
+            liveData?.runners?.length > 0 
+              ? liveData?.runners[0]
+              : []
+          }
           lock={liveData?.runners?.length > 0 ? false : true}
           name={currentMatch?.teamA}
         />

@@ -69,9 +69,10 @@ const MatchScreen = () => {
       getAllBetsData(state?.id);
     }
   }, [state?.id]);
+  
   useEffect(() => {
     if (localState?.id) {
-      setCurrentMatch(localState);
+      setCurrentMatch((currentMatch)=>({...currentMatch,...localState}))
       setLocalState(null);
     }
   }, [localState]);
