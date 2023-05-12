@@ -32,7 +32,7 @@ const MatchOdds = ({
   const { manualBookMarkerRates } = useSelector(
     (state) => state?.matchDetails
   );
-  const teamRates= manualBookMarkerRates?.find(v=>v?.matchId===currentMatch?.id) || {teamA : 0 ,teamB:0}
+  const teamRates=manualBookMarkerRates?.length>0 ? manualBookMarkerRates?.find(v=>v?.matchId===currentMatch?.id) : {teamA : 0 ,teamB:0}
   console.log('first', manualBookMarkerRates)
   const activateMatchOdds = async (val, id) => {
     // alert(5555)

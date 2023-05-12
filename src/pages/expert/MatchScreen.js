@@ -11,7 +11,10 @@ import { Background, CustomHeader as CHeader } from "../../components/index";
 import CustomHeader from "./Header";
 import { SocketContext } from "../../context/socketContext";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setAllBetRate, setManualBookMarkerRates } from "../../newStore/reducers/matchDetails";
+import {
+  setAllBetRate,
+  setManualBookMarkerRates,
+} from "../../newStore/reducers/matchDetails";
 
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -72,6 +75,7 @@ const MatchScreen = () => {
   }, [localState]);
 
   useEffect(() => {
+    console.log('socket', socket)
     if (socket && socket.connected && currentMatch !== null) {
       console.log("BookMaker", socket);
       socket.onevent = async (packet) => {
@@ -86,45 +90,58 @@ const MatchScreen = () => {
           removeSocket();
           navigate("/expert");
         }
+
+
+        
         if (packet.data[0] === "match_bet") {
           const data = packet.data[1];
           try {
             // getAllBets();
             // console.warn(data, "MATCHH_BET");
             if (data) {
-              const body = {
-                id: data?.betPlaceData?.id,
-                isActive: true,
-                createAt: data?.betPlaceData?.createdAt,
-                updateAt: data?.betPlaceData?.createdAt,
-                createdBy: null,
-                deletedAt: null,
-                user: { userName: data?.betPlaceData?.userName },
-                user_id: null,
-                match_id: data?.betPlaceData?.match_id,
-                bet_id: data?.betPlaceData?.bet_id,
-                result: "pending",
-                team_bet: data?.betPlaceData?.team_bet,
-                odds: data?.betPlaceData?.odds,
-                win_amount: null,
-                loss_amount: null,
-                bet_type: data?.betPlaceData?.bet_type,
-                country: null,
-                ip_address: null,
-                rate: null,
-                marketType: data?.betPlaceData?.marketType,
-                amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-              };
               const manualBookmaker = {
                 matchId: data?.betPlaceData?.match_id,
                 teamA: data.teamA_rate,
                 teamB: data.teamB_rate,
               };
-              if (currentMatch?.id === data?.betPlaceData?.match_id) {
-                setIObtes((prev) => [body, ...prev]);
-              }
-              dispatch(setManualBookMarkerRates(manualBookmaker));
 
+              console.log(
+                "currentMatch?.i",
+                currentMatch?.id,
+                data?.betPlaceData?.match_id
+              );
+              setIObtes((prev) => {
+                if (currentMatch?.id === data?.betPlaceData?.match_id) {
+                  const body = {
+                    id: data?.betPlaceData?.id,
+                    isActive: true,
+                    createAt: data?.betPlaceData?.createdAt,
+                    updateAt: data?.betPlaceData?.createdAt,
+                    createdBy: null,
+                    deletedAt: null,
+                    user: { userName: data?.betPlaceData?.userName },
+                    user_id: null,
+                    match_id: data?.betPlaceData?.match_id,
+                    bet_id: data?.betPlaceData?.bet_id,
+                    result: "pending",
+                    team_bet: data?.betPlaceData?.team_bet,
+                    odds: data?.betPlaceData?.odds,
+                    win_amount: null,
+                    loss_amount: null,
+                    bet_type: data?.betPlaceData?.bet_type,
+                    country: null,
+                    ip_address: null,
+                    rate: null,
+                    marketType: data?.betPlaceData?.marketType,
+                    amount:
+                      data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                  };
+                  return [body, ...prev];
+                }
+                return prev;
+              });
+
+              dispatch(setManualBookMarkerRates(manualBookmaker));
             }
           } catch (e) {
             console.log("error", e?.message);
@@ -181,7 +198,6 @@ const MatchScreen = () => {
                 updatedBettings = updatedBettings.concat(value);
               }
 
-        
               return {
                 ...currentMatch,
                 bettings: updatedBettings,
@@ -196,7 +212,11 @@ const MatchScreen = () => {
           //  console.log(data,"session_bet")
           try {
             // getAllBets();
-            // console.warn(data, "MATCHH_BET");
+            // console.log(
+            //   currentMatch?.id,
+            //   data?.betPlaceData?.match_id,
+            //   "MATCHH_BET"
+            // );
             if (data) {
               setIObtes((IObets) => {
                 if (currentMatch?.id === data?.betPlaceData?.match_id) {
@@ -236,7 +256,7 @@ const MatchScreen = () => {
                     if (betting?.id === data?.betPlaceData?.bet_id) {
                       // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                       let profitLoss = data?.profitLoss;
-                      
+
                       return {
                         ...betting,
                         profitLoss: profitLoss,
@@ -264,7 +284,7 @@ const MatchScreen = () => {
       // socket.emit("init", { id: currentMatch?.marketId });
     }
     // }, [socket, currentMatch]);
-  }, [socket]);
+  }, [socket,currentMatch]);
 
   // console.log('currentMatch', currentMatch)
   const activateLiveMatchMarket = async (val) => {

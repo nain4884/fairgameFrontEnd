@@ -37,6 +37,8 @@ const PlaceBet = ({
   rates,
 }) => {
   const [defaultValue, setDefaultValue] = useState("");
+  const [currentOdds, setCurrentOdds] = useState(selectedValue);
+  console.log('currentodds', currentOdds)
   const [newRates, setNewRates] = useState({
     loss_amount: 0,
     win_amount: 0,
@@ -54,9 +56,9 @@ const PlaceBet = ({
     myDivRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [selectedValue]);
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [selectedValue]);
 
   const getLatestBetAmount = async (value, newData) => {
     try {
@@ -66,7 +68,7 @@ const PlaceBet = ({
       var body = {
         bet_type,
         marketType: typeOfBet,
-        odds: selectedValue,
+        odds: currentOdds,
         stake: Number(value),
       };
       if (season) {
@@ -132,7 +134,7 @@ const PlaceBet = ({
     valueTextStyle,
     bet_condition,
   }) => {
-    const [oddValue, setOddValue] = useState(selectedValue || "0");
+    const [oddValue, setOddValue] = useState(currentOdds || "0");
     const selectedColorBox = useSelector(
       (state) => state.selectedColorBox
     )?.value;
@@ -222,6 +224,7 @@ const PlaceBet = ({
               <Box
                 onClick={() => {
                   setOddValue((i) => Number(i) - 1);
+                  setCurrentOdds(prev=>Number(prev)-1)
                 }}
                 sx={{
                   width: "18px",
@@ -265,6 +268,7 @@ const PlaceBet = ({
               <Box
                 onClick={() => {
                   setOddValue((i) => Number(i) + 1);
+                  setCurrentOdds(prev=>Number(prev)+1)
                 }}
                 sx={{
                   width: "18px",

@@ -67,6 +67,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
     }
   }, [allBetRates]);
 
+  console.log('allBetRates', allBetRates)
   return (
     <Box
       sx={{

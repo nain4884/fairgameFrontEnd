@@ -224,9 +224,9 @@ const MatchOdds = ({
     }
   }, [data]);
 
-  const teamRates = manualBookMarkerRates?.find(
+  const teamRates =manualBookMarkerRates?.length>0 ? manualBookMarkerRates?.find(
     (v) => v?.matchId === data?.id
-  ) || { teamA: 0, teamB: 0 };
+  ) : { teamA: 0, teamB: 0 };
   // { console.warn("dataProfit :", dataProfit) }
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
