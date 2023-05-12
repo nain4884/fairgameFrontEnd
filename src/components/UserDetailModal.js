@@ -453,22 +453,7 @@ const DepositComponent = ({
                   userId: userModal.id,
                 });
 
-                if (e.target.value) {
-                  const newUserbalance = {
-                    ...currentUser,
-                    current_balance:
-                      currentUser?.current_balance - parseInt(e.target.value),
-                  };
-
-                  dispatch(setCurrentUser(newUserbalance));
-                } else {
-                  const newUserbalance = {
-                    ...currentUser,
-                    current_balance: initialBalance,
-                  };
-
-                  dispatch(setCurrentUser(newUserbalance));
-                }
+            
                 setElementToUDM({
                   ...elementToUDM,
                   profit_loss:
@@ -487,6 +472,24 @@ const DepositComponent = ({
                       isNaN(parseInt(e.target.value)) ? 0 : e.target.value
                     ),
                 });
+              }}
+              onBlur={(e)=>{
+                if (e.target.value) {
+                  const newUserbalance = {
+                    ...currentUser,
+                    current_balance:
+                      currentUser?.current_balance - e.target.value,
+                  };
+
+                  dispatch(setCurrentUser(newUserbalance));
+                } else {
+                  const newUserbalance = {
+                    ...currentUser,
+                    current_balance: initialBalance,
+                  };
+
+                  dispatch(setCurrentUser(newUserbalance));
+                }
               }}
               variant="standard"
               InputProps={{
