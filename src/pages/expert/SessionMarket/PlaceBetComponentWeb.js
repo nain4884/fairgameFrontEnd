@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import DropdownMenu from "../DropdownMenu";
 import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
@@ -15,7 +15,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = useState(false);
   const innerRef = useOuterClick((ev) => {
     setShow(false);
   });
@@ -28,7 +28,8 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
   return (
     <>
       <Box
-        onClick={(e) => setShow(!show)}
+        onClick={(e) =>{ 
+          setShow(!show)}}
         sx={{
           background: "#0B4F26",
           flexDirection: "row",
@@ -112,4 +113,4 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
   );
 };
 
-export default PlaceBetComponentWeb;
+export default memo(PlaceBetComponentWeb);
