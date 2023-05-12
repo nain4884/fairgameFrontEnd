@@ -69,23 +69,23 @@ const MatchScreen = () => {
       getAllBetsData(state?.id);
     }
   }, [state?.id]);
-  
+
   useEffect(() => {
     if (localState?.id) {
-      setCurrentMatch((currentMatch)=>({...currentMatch,...localState}))
+      setCurrentMatch((currentMatch) => ({ ...currentMatch, ...localState }));
       setLocalState(null);
     }
   }, [localState]);
 
   useEffect(() => {
-    console.log('socket', socket)
+    console.log("socket", socket);
     if (socket && socket.connected && currentMatch !== null) {
       console.log("BookMaker", socket);
       socket.onevent = async (packet) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-          dispatch(removeManualBookMarkerRates())
+          dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
           dispatch(removeSelectedMatch());
@@ -95,8 +95,6 @@ const MatchScreen = () => {
           navigate("/expert");
         }
 
-
-        
         if (packet.data[0] === "match_bet") {
           const data = packet.data[1];
           try {
@@ -288,7 +286,7 @@ const MatchScreen = () => {
       // socket.emit("init", { id: currentMatch?.marketId });
     }
     // }, [socket, currentMatch]);
-  }, [socket,currentMatch]);
+  }, [socket, currentMatch]);
 
   // console.log('currentMatch', currentMatch)
   const activateLiveMatchMarket = async (val) => {
@@ -307,13 +305,9 @@ const MatchScreen = () => {
           socketMicro.emit("disconnect_market", { id: state?.marketId });
         }
       } else {
-        if (state?.marketId === val[0]?.marketId) {
-          setMatchOddsLive(val[0]);
-          if (val[0]?.status === "CLOSED") {
-            socketMicro.emit("disconnect_market", { id: state?.marketId });
-          }
-        } else {
-          setMatchOddsLive([]);
+        setMatchOddsLive(val[0]);
+        if (val[0]?.status === "CLOSED") {
+          socketMicro.emit("disconnect_market", { id: state?.marketId });
         }
       }
     },
@@ -322,12 +316,8 @@ const MatchScreen = () => {
 
   const handleBookmaker = useCallback(
     (val) => {
-      if (state?.marketId === val[0]?.marketId) {
-        if (state?.marketId === val[0]?.marketId) {
-          setBookmakerLiveData(val[0]);
-        } else {
-          setBookmakerLiveData([]);
-        }
+      if (val.length > 0) {
+        setBookmakerLiveData(val[0]);
       }
     },
     [state?.marketId]

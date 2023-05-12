@@ -87,8 +87,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
           dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates())
-          dispatch(removeSelectedMatch())
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeSelectedMatch());
           dispatch(logout({ roleType: "role4" }));
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           await axios.get("auth/logout");
@@ -100,7 +100,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
-              console.log('first', currentMatch?.id  ,currentMatch?.matchId,value?.match_id)
+         
               if (currentMatch?.id !== value?.match_id) {
                 // If the new bet doesn't belong to the current match, return the current state
                 return currentMatch;
@@ -408,21 +408,19 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               // socketMicro.disconnect();
             }
           } else {
-            if (marketId === val[0]?.marketId) {
-              // dispatch(setMatchOddsLive(val[0]));
-              setMacthOddsLive(val[0]);
-              if (val[0]?.status === "CLOSED") {
-                socketMicro.emit("disconnect_market", {
-                  id: marketId,
-                });
-              }
+            // dispatch(setMatchOddsLive(val[0]));
+            setMacthOddsLive(val[0]);
+            if (val[0]?.status === "CLOSED") {
+              socketMicro.emit("disconnect_market", {
+                id: marketId,
+              });
             }
           }
         }
       });
       socketMicro.on(`bookmaker${marketId}`, (val) => {
         if (val !== null) {
-          if (marketId === val[0]?.marketId) {
+          if (val.length > 0) {
             // dispatch(setBookMakerLive(val[0]));
             setBookmakerLive(val[0]);
           }
@@ -553,7 +551,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     getAllBetsData1();
   }, [id]);
 
-  console.log('currentMatch', currentMatch)
+  console.log("currentMatch", currentMatch);
   return (
     <Box
       sx={{

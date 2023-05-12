@@ -303,6 +303,8 @@ const Odds = ({
       <BoxComponent
         time={true}
         showBox={showBox}
+        livestatus={newData?.status==="SUSPENDED" ? true : false}
+
         teamImage={newData?.teamA_Image}
         newData={newData}
         // lock={data?.length > 0 ? false : true}
@@ -323,6 +325,7 @@ const Odds = ({
         time={true}
         showBox={showBox}
         newData={newData}
+        livestatus={newData?.status==="SUSPENDED" ? true : false}
         // lock={data?.length > 0 ? false : true}
         color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
         name={newData?.teamB}
@@ -340,6 +343,7 @@ const Odds = ({
           <BoxComponent
             teamImage={null}
             time={true}
+            livestatus={newData?.status==="SUSPENDED" ? true : false}
             showBox={showBox}
             newData={newData}
             // lock={data?.length > 0 ? false : true}

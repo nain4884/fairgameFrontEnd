@@ -149,6 +149,24 @@ const AddAccount = () => {
           Detail[9].val.split(" ").join("").toLowerCase()
         );
       }
+
+      if (Detail[11].val === 0) {
+        setError({
+          ...error,
+          [11]: {
+            ...error[11],
+            val: true,
+          },
+        });
+        return false;
+      }
+      if (Detail[11].val > 100) {
+        setMyPartnershipsError(true);
+        return false;
+      }
+      if(myPartnershipsError){
+        return false;
+      }
       if (
         !(
           Detail[3].val === 0 ||
@@ -294,14 +312,7 @@ const AddAccount = () => {
   }
 
   function CheckThisPosition({ place, val, setError, error }) {
-    console.log('Number(val', Number(val))
-    if (Number(val) > Detail[12].val) {
-      setMyPartnershipsError(true);
-      // console.log("val - uplineP", val, uplineP);
-    } else {
-      setMyPartnershipsError(false);
-    }
-    if (Number(val)) {
+    if (isNaN(val) || val === 0) {
       setError({
         ...error,
         [place]: {
@@ -317,6 +328,11 @@ const AddAccount = () => {
           val: false,
         },
       });
+    }
+    if (Number(val) > Detail[12].val) {
+      setMyPartnershipsError(true);
+    } else {
+      setMyPartnershipsError(false);
     }
   }
 
@@ -530,7 +546,7 @@ const AddAccount = () => {
               </p>
             )}
 
-            {error[11]?.val && (
+            {error[11]?.val && !myPartnershipsError && (
               <p style={{ color: "#fa1e1e" }}>Field Required</p>
             )}
             <Input

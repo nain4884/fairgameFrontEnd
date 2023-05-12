@@ -66,15 +66,11 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
           }
         } else {
           // dispatch(setMatchOddsLive(val[0]));
-          if (match?.marketId === val[0]?.marketId) {
-            setMatchOddsLive(val[0]);
-            if (val[0]?.status === "CLOSED") {
-              socketMicro.emit("disconnect_market", {
-                id: match?.marketId,
-              });
-            }
-          } else {
-            setMatchOddsLive([]);
+          setMatchOddsLive(val[0]);
+          if (val[0]?.status === "CLOSED") {
+            socketMicro.emit("disconnect_market", {
+              id: match?.marketId,
+            });
           }
         }
       });

@@ -1,4 +1,4 @@
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, CircularProgress, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { CancelDark } from "../assets";
 import { setRole } from "../newStore";
@@ -14,6 +14,7 @@ const SessionResultModal = ({
 }) => {
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
+  const [loading, setLoading] = useState({ id: "", value: false });
   const undeclareResult = async () => {
     try {
       const body = {
@@ -22,8 +23,10 @@ const SessionResultModal = ({
         sessionBet: true,
         score: selected,
       };
+      setLoading({ id: "UD", value: true });
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
+        setLoading({ id: "", value: false });
         // const updatedData = {
         //   ...newData,
         //   betStatus: 2,
@@ -55,6 +58,7 @@ const SessionResultModal = ({
       onClick();
       toast.success(data?.message);
     } catch (e) {
+      setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
@@ -67,6 +71,7 @@ const SessionResultModal = ({
         sessionBet: true,
         score: selected,
       };
+      setLoading({ id: "DR", value: true });
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
         // const updatedData = {
@@ -98,8 +103,10 @@ const SessionResultModal = ({
         });
       }
       onClick();
+      setLoading({ id: "", value: false });
       toast.success(data?.message);
     } catch (e) {
+      setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
@@ -112,6 +119,7 @@ const SessionResultModal = ({
         match_id: newData?.match_id,
         sessionBets: true,
       };
+      setLoading({ id: "NR", value: true });
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
       if (data?.statusCode !== 500) {
         setLocalState(() => {
@@ -135,14 +143,16 @@ const SessionResultModal = ({
         });
       }
       onClick();
+      setLoading({ id: "", value: false });
       toast.success(data?.message);
     } catch (e) {
       toast.error(e?.response?.data?.message);
+      setLoading({ id: "", value: false });
       console.log("error", e?.message);
     }
   };
 
-  const CustomButton = ({ title, color, onClick }) => {
+  const CustomButton = ({ id, title, color, loading, onClick }) => {
     return (
       <Box
         onClick={onClick}
@@ -160,7 +170,18 @@ const SessionResultModal = ({
         <Typography
           sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
         >
-          {title}
+          {loading?.id === id ? (
+            <CircularProgress
+              sx={{
+                color: "#FFF",
+              }}
+              size={20}
+              thickness={4}
+              value={60}
+            />
+          ) : (
+            title
+          )}
         </Typography>
       </Box>
     );
@@ -251,13 +272,29 @@ const SessionResultModal = ({
           <CustomButton
             color={"#FF4D4D"}
             title={"Un Declare"}
-            onClick={() => undeclareResult()}
+            loading={loading}
+            id="UD"
+            onClick={() => {
+              if (loading?.value) {
+                return false;
+              }
+
+              undeclareResult();
+            }}
           />
 
           <CustomButton
             color={"rgb(106 90 90)"}
             title={"No Result"}
-            onClick={() => noResultDeclare()}
+            loading={loading}
+            id="NR"
+            onClick={() => {
+              if (loading?.value) {
+                return false;
+              }
+
+              noResultDeclare();
+            }}
           />
         </Box>
         <Box
@@ -269,8 +306,13 @@ const SessionResultModal = ({
         >
           <CustomButton
             color={"#0B4F26"}
+            id="DR"
             title={"Declare"}
+            loading={loading}
             onClick={() => {
+              if (loading?.value) {
+                return false;
+              }
               if (selected !== "") {
                 declareResult();
               } else {

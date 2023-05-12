@@ -62,7 +62,8 @@ const Input = ({ props, title, value, containerStyle, placeholder, imgstyle, tit
                         }) : setDetail({
                             ...Detail, [place]: {
                                 ...Detail[place],
-                                val: type === "Number" ? (title === "Upline Partnership" || title === "My Partnership") ? parseInt(e.target.value) < 100 && parseInt(e.target.value) : parseInt(e.target.value) : e.target.value
+                                // || title === "My Partnership"
+                                val: type === "Number" ? (title === "Upline Partnership" ) ? parseInt(e.target.value) < 100 && parseInt(e.target.value) : parseInt(e.target.value) : e.target.value
                             }
                         });
                         String(title).toLowerCase().includes("password") ? setError({

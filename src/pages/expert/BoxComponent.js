@@ -14,11 +14,13 @@ const BoxComponent = ({
   color,
   align,
   lock,
-  teamRates
+  teamRates,
+  livestatus,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { ex, status } = data;
+  console.log('livestaus', livestatus)
   return (
     <Box
       sx={{
@@ -76,7 +78,6 @@ const BoxComponent = ({
                 }}
                 alt={name}
               />
-     
             </>
           )}
           <Typography
@@ -90,10 +91,10 @@ const BoxComponent = ({
             {name}
           </Typography>
         </Box>
-        {name != "DRAW" && <MoneyBox  value={teamRates} />}
+        {name != "DRAW" && <MoneyBox value={teamRates} />}
       </Box>
 
-      {!["ACTIVE", "", undefined,null].includes(status) ? (
+      {!["ACTIVE", "", undefined, null].includes(status) || livestatus ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
@@ -105,7 +106,9 @@ const BoxComponent = ({
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <h4 style={{ textTransform: "uppercase" }}>{status}</h4>
+          <h4 style={{ textTransform: "uppercase" }}>
+            {livestatus ? "SUSPENDED" : status}
+          </h4>
         </Box>
       ) : (
         <>

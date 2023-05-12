@@ -23,6 +23,7 @@ const BoxComponent = ({
   newData,
   suspendedData,
   showBox,
+  livestatus,
   isRound
 }) => {
   const theme = useTheme();
@@ -121,7 +122,7 @@ const BoxComponent = ({
           }}
         ></Box>
       )}
-      {!["ACTIVE", "", undefined,null].includes(status) ||   newData?.bettings?.length === 0  ? (
+      {!["ACTIVE", "", undefined,null].includes(status) ||   newData?.bettings?.length === 0  || livestatus ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
@@ -133,7 +134,7 @@ const BoxComponent = ({
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0  ? "suspended" :status}</h4>
+          <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0  || livestatus ? "suspended" :status}</h4>
         </Box>
       ) : (
         <>

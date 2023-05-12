@@ -84,6 +84,7 @@ const SessionMarketBox = ({
             {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
             <h6 style={{ textTransform: "uppercase" }}>{data?.suspended}</h6>
           </Box>
+          
           {!matchesMobile && (
             <PlaceBetComponentWeb
               amount={index == 2}

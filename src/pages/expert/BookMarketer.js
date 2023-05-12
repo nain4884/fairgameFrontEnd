@@ -236,6 +236,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
         <BoxComponent
           teamRates={teamRates?.teamA}
           teamImage={currentMatch?.teamA_Image}
+          livestatus={liveData?.status==="SUSPENDED" ? true : false}
           data={
             liveData?.runners?.length > 0 
               ? liveData?.runners[0]
@@ -246,6 +247,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
         />
         <Divider />
         <BoxComponent
+         livestatus={liveData?.status==="SUSPENDED" ? true : false}
           teamRates={teamRates?.teamB}
           teamImage={currentMatch?.teamB_Image}
           lock={liveData?.runners?.length > 0 ? false : true}
@@ -258,6 +260,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
             <Divider />
             <BoxComponent
               color={"#FF4D4D"}
+              livestatus={liveData?.status==="SUSPENDED" ? true : false}
               teamImage={null}
               lock={liveData?.runners?.length > 0 ? false : true}
               name={currentMatch?.teamC}
