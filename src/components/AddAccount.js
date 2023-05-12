@@ -36,6 +36,7 @@ const AddAccount = () => {
   const [errorShow, setErrorShow] = useState("");
   const [successShow, setSuccessShow] = useState("");
   const [locationPath, setLocationPath] = useState(locPath);
+  const [myPartnershipsError, setMyPartnershipsError] = useState(false);
   const [Detail, setDetail] = useState({
     1: { field: "userName", val: "" },
     2: { field: "password", val: "" },
@@ -88,8 +89,6 @@ const AddAccount = () => {
   ]);
 
   const [profile, setProfile] = useState({});
-  const [uplineP, setUplineP] = useState(0);
-
   const types = [
     { role: "fairGameAdmin", val: "Fairgame Admin", level: 1 },
     { role: "superAdmin", val: "Super Admin", level: 2 },
@@ -103,7 +102,7 @@ const AddAccount = () => {
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
-
+  const [uplineP, setUplineP] = useState(0);
   const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
   const setTypeForAccountType = () => {
     const typo =
@@ -211,56 +210,53 @@ const AddAccount = () => {
   }
 
   function handleUpline() {
-    let thisUplinePertnerShip = 0;
-    switch (locationPath) {
-      case "super_master":
-        thisUplinePertnerShip =
-          profile.a_partnership +
-          profile.sa_partnership +
-          profile.fa_partnership +
-          profile.fw_partnership;
-        break;
-      case "super_admin":
-        thisUplinePertnerShip = profile.fa_partnership + profile.fw_partnership;
-        break;
-      case "master":
-        thisUplinePertnerShip =
-          profile.sm_partnership +
-          profile.a_partnership +
-          profile.sa_partnership +
-          profile.fa_partnership +
-          profile.fw_partnership;
-        break;
-      case "admin":
-        thisUplinePertnerShip =
-          profile.sa_partnership +
-          profile.fa_partnership +
-          profile.fw_partnership;
-        break;
-      case "fairgame_wallet":
-        break;
-      case "fairgame_admin":
-        thisUplinePertnerShip = profile.fw_partnership;
-        break;
-    }
-    setDetail({
-      ...Detail,
-      10: {
-        ...Detail[10],
-        val: thisUplinePertnerShip,
-      },
-    });
-    setError({
-      ...error,
-      10: {
-        ...error[10],
-        val: false,
-      },
-    });
-    setUplineP(thisUplinePertnerShip);
-  }
+    const {
+      a_partnership,
+      sa_partnership,
+      sm_partnership,
+      fa_partnership,
+      fw_partnership,
+    } = profile;
 
-  useEffect(() => {}, [currentUser]);
+    const partnershipMap = {
+      superMaster:
+        a_partnership + sa_partnership + fa_partnership + fw_partnership,
+      superAdmin: fa_partnership + fw_partnership,
+      master:
+        sm_partnership +
+        a_partnership +
+        sa_partnership +
+        fa_partnership +
+        fw_partnership,
+      admin: sa_partnership + fa_partnership + fw_partnership,
+      fairgame_wallet: 0,
+      fairgame_admin: fw_partnership,
+    };
+
+    const thisUplinePertnerShip = partnershipMap[roleName] || 0;
+
+    return thisUplinePertnerShip;
+  }
+  useEffect(() => {
+    if (profile && roleName) {
+      const res = handleUpline(roleName);
+      setUplineP(res);
+      setDetail({
+        ...Detail,
+        10: {
+          ...Detail[10],
+          val: res,
+        },
+      });
+      setError({
+        ...error,
+        10: {
+          ...error[10],
+          val: false,
+        },
+      });
+    }
+  }, [profile, roleName]);
 
   useEffect(() => {
     if (JWT) {
@@ -296,6 +292,12 @@ const AddAccount = () => {
   }
 
   function CheckThisPosition({ place, val, setError, error }) {
+    // if (Number(val) > Detail[12].val) {
+    //   setMyPartnershipsError(true);
+    //   console.log("val - uplineP", val, uplineP);
+    // } else {
+    //   setMyPartnershipsError(false);
+    // }
     setError({
       ...error,
       [place]: {
@@ -306,8 +308,8 @@ const AddAccount = () => {
   }
 
   useEffect(() => {
-    setDownParterShipVal(Detail[10].val, Detail[11].val);
-  }, [Detail[10].val, Detail[11].val]);
+    setDownParterShipVal(Detail[10]?.val, Detail[11]?.val);
+  }, [Detail[10]?.val, Detail[11]?.val]);
 
   return (
     <>
@@ -378,7 +380,7 @@ const AddAccount = () => {
               error={error}
               place={3}
             />
-            {Detail[2].val !== Detail[3].val && (
+            {Detail[2]?.val !== Detail[3]?.val && (
               <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>
             )}
             <Input
@@ -454,8 +456,8 @@ const AddAccount = () => {
               setDetail={setDetail}
               place={9}
             />
-            {error[9].val ||
-              (Detail[9].val === "" && (
+            {error[9]?.val ||
+              (Detail[9]?.val === "" && (
                 <p style={{ color: "#fa1e1e" }}>Field Required</p>
               ))}
             <Input
@@ -471,7 +473,9 @@ const AddAccount = () => {
               place={8}
               type={"Number"}
             />
-            {error[9].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
+            {error[9]?.val && (
+              <p style={{ color: "#fa1e1e" }}>Field Required</p>
+            )}
             <Input
               containerStyle={containerStyles}
               titleStyle={titleStyles}
@@ -486,7 +490,7 @@ const AddAccount = () => {
               setError={setError}
               error={error}
               place={10}
-              autoMaticFillValue={`${Detail[10].val}`}
+              autoMaticFillValue={`${Detail[10]?.val}`}
             />
             {error[10].val && (
               <p style={{ color: "#fa1e1e" }}>Field Required</p>
@@ -506,7 +510,14 @@ const AddAccount = () => {
               place={11}
               type={"Number"}
             />
-            {error[11].val && (
+            {myPartnershipsError && (
+              <p style={{ color: "#fa1e1e" }}>
+                {" "}
+                Value should not be greater than Downline Partnerships
+              </p>
+            )}
+
+            {error[11]?.val && (
               <p style={{ color: "#fa1e1e" }}>Field Required</p>
             )}
             <Input
@@ -524,9 +535,9 @@ const AddAccount = () => {
               error={error}
               place={12}
               type={"Number"}
-              autoMaticFillValue={Detail[12].val}
+              autoMaticFillValue={Detail[12]?.val}
             />
-            {error[12].val && (
+            {error[12]?.val && (
               <p style={{ color: "#fa1e1e" }}>Field Required</p>
             )}
           </Box>
@@ -560,8 +571,8 @@ const AddAccount = () => {
               error={error}
               place={14}
             />
-            {!error[14].val ||
-              (Detail[14].val && (
+            {!error[14]?.val ||
+              (Detail[14]?.val && (
                 <p style={{ color: "#fa1e1e" }}>Field Required</p>
               ))}
             <Button

@@ -32,6 +32,7 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 import { memo } from "react";
+import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -79,9 +80,10 @@ const CustomHeader = ({}) => {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-
+          dispatch(removeManualBookMarkerRates())
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
+          dispatch(removeSelectedMatch());
           setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
           await axios.get("auth/logout");
           removeSocket();
@@ -807,7 +809,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logoutProcess = async () => {
+    dispatch(removeManualBookMarkerRates())
     dispatch(logout({ roleType: "role3" }));
+    dispatch(removeSelectedMatch());
     setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
     await axios.get("auth/logout");
     dispatch(removeCurrentUser());

@@ -39,6 +39,7 @@ import { setRole } from "../../newStore";
 import { removeSocket } from "../helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
+import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
 var roleName = "";
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -73,8 +74,9 @@ const CustomHeader = ({}) => {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-
+          dispatch(removeSelectedMatch());
           dispatch(removeCurrentUser());
+          dispatch(removeManualBookMarkerRates())
           dispatch(logout({ roleType: "role2" }));
           setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
           if (nav === "admin") {
@@ -480,6 +482,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose, nav }) => {
   const logoutProcess = async () => {
     dispatch(removeCurrentUser());
     dispatch(logout({ roleType: "role2" }));
+    dispatch(removeManualBookMarkerRates())
+    dispatch(removeSelectedMatch());
     setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
     if (nav === "admin") {
       dispatch(logout({ roleType: "role1" }));

@@ -457,7 +457,7 @@ const DepositComponent = ({
                   const newUserbalance = {
                     ...currentUser,
                     current_balance:
-                      currentUser?.current_balance - e.target.value,
+                      currentUser?.current_balance - parseInt(e.target.value),
                   };
 
                   dispatch(setCurrentUser(newUserbalance));

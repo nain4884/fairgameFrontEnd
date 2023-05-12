@@ -12,6 +12,8 @@ import CustomHeader from "./Header";
 import { SocketContext } from "../../context/socketContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
   setAllBetRate,
   setManualBookMarkerRates,
 } from "../../newStore/reducers/matchDetails";
@@ -82,9 +84,10 @@ const MatchScreen = () => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-
+          dispatch(removeManualBookMarkerRates())
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
+          dispatch(removeSelectedMatch());
           setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
           await axios.get("auth/logout");
           removeSocket();

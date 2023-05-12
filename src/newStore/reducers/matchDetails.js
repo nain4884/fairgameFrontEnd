@@ -56,7 +56,7 @@ const matchDetails = createSlice({
       }
     },
     removeManualBookMarkerRates: (state, action) => {
-      state.manualBookMarkerRates = {};
+      state.manualBookMarkerRates = []
     },
     setMatchOdds: (state, action) => {
       state.matchOdds = action.payload;

@@ -39,6 +39,7 @@ import axios from "../axios/axios";
 import { setRole } from "../newStore";
 import { removeSocket } from "./helper/removeSocket";
 import { GlobalStore } from "../context/globalStore";
+import { removeManualBookMarkerRates, removeSelectedMatch } from "../newStore/reducers/matchDetails";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -63,6 +64,8 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
           dispatch(removeCurrentUser());
+          dispatch(removeManualBookMarkerRates())
+          dispatch(removeSelectedMatch());
           dispatch(logout({ roleType: "role4" }));
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           await axios.get("auth/logout");
@@ -539,6 +542,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     // dispatch(stateActions.logout("role4"));
     // socketMicro.emit("logoutUserForce");
     dispatch(logout({ roleType: "role4" }));
+    dispatch(removeManualBookMarkerRates())
+    dispatch(removeSelectedMatch())
     setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
     await axios.get("auth/logout");
     dispatch(removeCurrentUser());

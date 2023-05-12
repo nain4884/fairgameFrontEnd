@@ -32,27 +32,33 @@ export const auth = createSlice({
         state.user = body;
       }
     },
+    
     logout: (state, action) => {
       switch (action?.payload?.roleType) {
         case "role1":
           state.userAdmin = {};
           sessionStorage.removeItem("JWTadmin", action.payload.access_token);
+          sessionStorage.clear();
           break;
         case "role2":
           state.userWallet = {};
           sessionStorage.removeItem("JWTwallet", action.payload.access_token);
+          sessionStorage.clear();
           break;
         case "role3":
           state.userExpert = {};
           sessionStorage.removeItem("JWTexpert", action.payload.access_token);
+          sessionStorage.clear();
           break;
         case "role4":
           state.user = {};
           sessionStorage.removeItem("JWTuser", action.payload.access_token);
+          sessionStorage.clear();
           break;
         default:
           state.guest = {};
           sessionStorage.removeItem("JWT", action.payload.access_token);
+          sessionStorage.clear();
           break;
       }
     },

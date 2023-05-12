@@ -38,7 +38,7 @@ const PlaceBet = ({
 }) => {
   const [defaultValue, setDefaultValue] = useState("");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
-  console.log('currentodds', currentOdds)
+  console.log("currentodds", currentOdds);
   const [newRates, setNewRates] = useState({
     loss_amount: 0,
     win_amount: 0,
@@ -53,12 +53,12 @@ const PlaceBet = ({
   const myDivRef = useRef(null);
 
   const scrollToBottom = () => {
-    myDivRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    myDivRef.current?.scrollIntoView({});
   };
 
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [selectedValue]);
+  useEffect(() => {
+    scrollToBottom();
+  }, [selectedValue]);
 
   const getLatestBetAmount = async (value, newData) => {
     try {
@@ -224,7 +224,7 @@ const PlaceBet = ({
               <Box
                 onClick={() => {
                   setOddValue((i) => Number(i) - 1);
-                  setCurrentOdds(prev=>Number(prev)-1)
+                  setCurrentOdds((prev) => Number(prev) - 1);
                 }}
                 sx={{
                   width: "18px",
@@ -268,7 +268,7 @@ const PlaceBet = ({
               <Box
                 onClick={() => {
                   setOddValue((i) => Number(i) + 1);
-                  setCurrentOdds(prev=>Number(prev)+1)
+                  setCurrentOdds((prev) => Number(prev) + 1);
                 }}
                 sx={{
                   width: "18px",

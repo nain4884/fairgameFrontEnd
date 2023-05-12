@@ -13,6 +13,8 @@ import {
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
 import {
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
   setAllBetRate,
   setAllSessionBets,
   setManualBookMarkerRates,
@@ -85,6 +87,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
           dispatch(removeCurrentUser());
+          dispatch(removeManualBookMarkerRates())
+          dispatch(removeSelectedMatch())
           dispatch(logout({ roleType: "role4" }));
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           await axios.get("auth/logout");

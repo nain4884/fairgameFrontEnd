@@ -33,7 +33,7 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
 
     if (difference > 0) {
       timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)) ,
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / 1000 / 60) % 60),
         seconds: Math.floor((difference / 1000) % 60),
@@ -160,7 +160,7 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
             laptop: "flex-start",
           },
           background: "white",
-          cursor:'pointer',
+          cursor: "pointer",
         }}
       >
         {!upcoming && (
@@ -218,7 +218,9 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
               }}
             >
               {match.teamA} vs {match.teamB}{" "}
-              <span style={{ fontWeight: "500" }}>({moment(match.startAt).format("LL")})</span>
+              <span style={{ fontWeight: "500" }}>
+                ({moment(match.startAt).format("LL")})
+              </span>
             </Typography>{" "}
             {/* Today at 9:30 PM */}
           </Box>
@@ -762,168 +764,179 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
             ></Box>
           </Box>
         </Box>
-        {match.teamC &&
-        <>
-        <Divider />
-        <Box
-          sx={{
-            display: "flex",
-            background: "white",
-            height: "40px",
-            width: "100%",
-            alignItems: "center",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              background: "white",
-              height: "40px",
-              width: "40%",
-              alignItems: "center",
-            }}
-          >
-            <Typography
+        {match.teamC && (
+          <>
+            <Divider />
+            <Box
               sx={{
-                color: "black",
-                fontSize: { laptop: "12px", mobile: "11px" },
-                marginLeft: "7px",
-                fontWeight: "600",
+                display: "flex",
+                background: "white",
+                height: "40px",
+                width: "100%",
+                alignItems: "center",
               }}
             >
-              {match.teamC}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              background: "white",
-              height: "40px",
-              width: { laptop: "60%", mobile: "80%" },
-              justifyContent: { mobile: "flex-end", laptop: "center" },
-              alignItems: "center",
-            }}
-          >
-            {!matchesMobile && (
-              <SeparateBox
-                value={
-                  matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[12]?.ex?.availableToBack?.length > 0
-                    ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]?.price
-                    : 0
-                }
-                value2={formatNumber(
-                  matchOddsLive?.runners?.length &&
+              <Box
+                sx={{
+                  display: "flex",
+                  background: "white",
+                  height: "40px",
+                  width: "40%",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "black",
+                    fontSize: { laptop: "12px", mobile: "11px" },
+                    marginLeft: "7px",
+                    fontWeight: "600",
+                  }}
+                >
+                  {match.teamC}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  background: "white",
+                  height: "40px",
+                  width: { laptop: "60%", mobile: "80%" },
+                  justifyContent: { mobile: "flex-end", laptop: "center" },
+                  alignItems: "center",
+                }}
+              >
+                {!matchesMobile && (
+                  <SeparateBox
+                    value={
+                      matchOddsLive?.runners?.length &&
+                      matchOddsLive?.runners[12]?.ex?.availableToBack?.length >
+                        0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]
+                            ?.price
+                        : 0
+                    }
+                    value2={formatNumber(
+                      matchOddsLive?.runners?.length &&
+                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
+                          0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]
+                            ?.size
+                        : 0
+                    )}
+                    color={matchesMobile ? "white" : "#CEEBFF"}
+                  />
+                )}
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+                {!matchesMobile && (
+                  <SeparateBox
+                    value={
+                      matchOddsLive?.runners?.length &&
+                      matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]
+                            ?.price
+                        : 0
+                    }
+                    value2={formatNumber(
+                      matchOddsLive?.runners?.length &&
+                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
+                          0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]
+                            ?.size
+                        : 0
+                    )}
+                    color={matchesMobile ? "white" : "#C2E6FF"}
+                  />
+                )}
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+                <SeparateBox
+                  value={
+                    matchOddsLive?.runners?.length &&
                     matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
-                    ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]?.size
-                    : 0
-                )}
-                color={matchesMobile ? "white" : "#CEEBFF"}
-              />
-            )}
-            <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box>
-            {!matchesMobile && (
-              <SeparateBox
-                value={
-                  matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
-                    ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]?.price
-                    : 0
-                }
-                value2={formatNumber(
-                  matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
-                    ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]?.size
-                    : 0
-                )}
-                color={matchesMobile ? "white" : "#C2E6FF"}
-              />
-            )}
-            <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box>
-            <SeparateBox
-              value={
-                matchOddsLive?.runners?.length &&
-                matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
-                  ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]?.price
-                  : 0
-              }
-              value2={formatNumber(
-                matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
-                  ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]?.size
-                  : 0
-              )}
-              color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
-            />
-            <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box>
-            <SeparateBox
-              value={
-                matchOddsLive?.runners?.length &&
-                matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
-                  ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]?.price
-                  : 0
-              }
-              value2={formatNumber(
-                matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
-                  ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]?.size
-                  : 0
-              )}
-              color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
-            />
-            <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box>
-            {!matchesMobile && (
-              <SeparateBox
-                value={
-                  matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
-                    ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]?.price
-                    : 0
-                }
-                value2={formatNumber(
-                  matchOddsLive?.runners?.length &&
+                      ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]?.price
+                      : 0
+                  }
+                  value2={formatNumber(
+                    matchOddsLive?.runners?.length &&
+                      matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
+                      ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]?.size
+                      : 0
+                  )}
+                  color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
+                />
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+                <SeparateBox
+                  value={
+                    matchOddsLive?.runners?.length &&
                     matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
-                    ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]?.size
-                    : 0
+                      ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]?.price
+                      : 0
+                  }
+                  value2={formatNumber(
+                    matchOddsLive?.runners?.length &&
+                      matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                      ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]?.size
+                      : 0
+                  )}
+                  color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
+                />
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+                {!matchesMobile && (
+                  <SeparateBox
+                    value={
+                      matchOddsLive?.runners?.length &&
+                      matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]
+                            ?.price
+                        : 0
+                    }
+                    value2={formatNumber(
+                      matchOddsLive?.runners?.length &&
+                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
+                          0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]?.size
+                        : 0
+                    )}
+                    color={matchesMobile ? "white" : "#F2CBCB"}
+                  />
                 )}
-                color={matchesMobile ? "white" : "#F2CBCB"}
-              />
-            )}
-            <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box>
-            {!matchesMobile && (
-              <SeparateBox
-                value={
-                  matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
-                    ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]?.price
-                    : 0
-                }
-                value2={formatNumber(
-                  matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
-                    ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]?.size
-                    : 0
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+                {!matchesMobile && (
+                  <SeparateBox
+                    value={
+                      matchOddsLive?.runners?.length &&
+                      matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]
+                            ?.price
+                        : 0
+                    }
+                    value2={formatNumber(
+                      matchOddsLive?.runners?.length &&
+                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
+                          0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]?.size
+                        : 0
+                    )}
+                    color={matchesMobile ? "white" : "#ECD6D6"}
+                  />
                 )}
-                color={matchesMobile ? "white" : "#ECD6D6"}
-              />
-            )}
-            <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box>
-          </Box>
-        </Box>
-        </>
-        }
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+              </Box>
+            </Box>
+          </>
+        )}
       </Box>
     </Box>
   );
