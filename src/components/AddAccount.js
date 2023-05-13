@@ -249,8 +249,8 @@ const AddAccount = () => {
         fa_partnership +
         fw_partnership,
       admin: sa_partnership + fa_partnership + fw_partnership,
-      fairgame_wallet: 0,
-      fairgame_admin: fw_partnership,
+      fairGameWallet: 0,
+      fairGameAdmin: fw_partnership,
     };
 
     const thisUplinePertnerShip = partnershipMap[roleName] || 0;
@@ -259,6 +259,7 @@ const AddAccount = () => {
   }
   useEffect(() => {
     if (profile && roleName) {
+      console.log('roleName', roleName)
       const res = handleUpline(roleName);
       setUplineP(res);
       setDetail({

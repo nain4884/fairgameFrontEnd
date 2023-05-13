@@ -1,329 +1,174 @@
-import { Box, Typography } from '@mui/material';
-import React from 'react'
-import { StyledImage } from '../../components';
+import { Box, Typography } from "@mui/material";
+import React from "react";
+import { StyledImage } from "../../components";
+import { CANCEL } from "../../assets";
 
-const RunsBox = () => {
-    return (
+const RunsBox = ({ item ,setData}) => {
+  return (
+    <Box
+      sx={{
+        minHeight: "100px",
+        flexDirection: "column",
+        borderRadius: "10px",
+        backgroundColor: "white",
+        display: "flex",
+        width: "25%",
+        marginX: ".5vw",
+        border: "3px solid #0B4F26",
+      }}
+    >
       <Box
         sx={{
-          minHeight: "100px",
-          flexDirection: "column",
-          borderRadius: "10px",
-          backgroundColor: "white",
           display: "flex",
-          width: "25%",
-          marginX: ".5vw",
-          border: "3px solid #0B4F26",
+          paddingX:"2px",
+          height: "20px",
+          background: "#0B4F26",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
+        <Typography sx={{ fontSize: "8px", color: "white", fontWeight: "600" }}>
+          {item?.bet_condition}
+        </Typography>
+        <img 
+            onClick={(e) => {
+              setData((prev) => {
+                const updatedArray = prev?.filter((v) => v?.id !== item?.id);
+                return updatedArray;
+              });
+            }}
+          src={CANCEL}
+          alt="close"
+          style={{ width: "18px", height: "18px",cursor: "pointer" }}
+        />
+      </Box>
+      <Box sx={{ display: "flex", height: "25px" }}>
         <Box
           sx={{
+            width: "30%",
             display: "flex",
-            height: "20px",
-            background: "#0B4F26",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
           <Typography
-            sx={{ fontSize: "8px", color: "white", fontWeight: "600" }}
+            sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
           >
-            6 Over runs INDIA
+            Runs
           </Typography>
         </Box>
-        <Box sx={{ display: "flex", height: "25px" }}>
-          <Box
-            sx={{
-              width: "30%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              Runs
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              Amount
-            </Typography>
-          </Box>
-        </Box>
         <Box
           sx={{
+            width: "80%",
             display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
+            borderLeft: "1px solid #306A47",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              width: "30%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+          <Typography
+            sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
           >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              40
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#10DC61",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "30%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              41
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#10DC61",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "30%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              42
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#F8C851",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "30%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              43
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#F8C851",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            height: "25px",
-            borderTop: "1px solid #306A47",
-          }}
-        >
-          <Box
-            sx={{
-              width: "30%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
-            >
-              44
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              width: "80%",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              background: "#DC3545",
-              justifyContent: "center",
-              alignItems: "center",
-              borderBottomRightRadius: "7px",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#306A47",
-                fontWeight: "500",
-                fontSize: "12px",
-                color: "white",
-              }}
-            >
-              4,02,350
-            </Typography>
-            <StyledImage
-              src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
-              sx={{
-                height: "15px",
-                marginLeft: "5px",
-                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "15px",
-              }}
-            />
-          </Box>
+            Amount
+          </Typography>
         </Box>
       </Box>
-    );
-  };
-export default RunsBox
+      <Box sx={{ height: "200px", overflowY: "scroll" }}>
+        {item?.profitLoss?.betData?.length > 0 ? (
+          item?.profitLoss?.betData?.map((v) => {
+            const getColor = (value) => {
+              if (value > 1) {
+                return "#10DC61";
+              } else if (value === v?.profit_loss && value > 1) {
+                return "#F8C851";
+              } else {
+                return "#DC3545";
+              }
+            };
+            const getSVG = (value) => {
+              if (value > 1) {
+                return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+              } else if (value === v?.profit_loss && value > 1) {
+                return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+              } else {
+                return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+              }
+            };
+            return (
+              <Box
+                key={v?.odds}
+                sx={{
+                  display: "flex",
+                  height: "25px",
+                  borderTop: "1px solid #306A47",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "30%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "#306A47",
+                      fontWeight: "bold",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {v?.odds}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    width: "80%",
+                    display: "flex",
+                    borderLeft: "1px solid #306A47",
+                    background: getColor(v?.profit_loss),
+
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontWeight: "500",
+                      fontSize: "12px",
+                      color: "white",
+                    }}
+                  >
+                    {v?.profit_loss}
+                  </Typography>
+                  <StyledImage
+                    src={getSVG(v?.profit_loss)}
+                    sx={{
+                      height: "15px",
+                      marginLeft: "5px",
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      width: "15px",
+                    }}
+                  />
+                </Box>
+              </Box>
+            );
+          })
+        ) : (
+          <>
+            {" "}
+            <Box
+              sx={{
+                display: "flex",
+                height: "25px",
+                borderTop: "1px solid #306A47",
+              }}
+            ></Box>
+          </>
+        )}
+      </Box>
+    </Box>
+  );
+};
+export default RunsBox;

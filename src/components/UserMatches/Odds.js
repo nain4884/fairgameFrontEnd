@@ -8,11 +8,11 @@ import { memo } from "react";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
-    <Box sx={{ marginTop: "-3vh" }}>
+    <Box sx={{ marginLeft: "12px",display:"flex" ,width:"100%",gap:"4px" }}>
       <Box
         sx={{
           width: { laptop: "70px", mobile: "10vw" },
-          position: "absolute",
+          // position: "absolute",
           flexDirection: "column",
           paddingX: "5px",
           display: "flex",
@@ -46,7 +46,7 @@ const SmallBox = ({ valueA, valueB }) => {
       <Box
         sx={{
           width: { laptop: "70px", mobile: "10vw" },
-          position: "absolute",
+          // position: "absolute",
           paddingX: "5px",
           display: "flex",
           flexDirection: "column",

@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect } from "react";
-import Divider from "../../../components/helper/Divider";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import Stop from "../Stop";
 import { useState } from "react";
 import { useTheme } from "@emotion/react";
-import SessionMarketBox from "./SessionMarketBox";
+import SessionMarketBox from "./SessionMarketBoxLive";
 import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setRole } from "../../../newStore";
-const SessionMarket = ({
+import SessionMarketBoxLive from "./SessionMarketBoxLive";
+import { setRole } from "../../../../newStore";
+import Divider from "../../../../components/helper/Divider";
+const SessionMarketLive = ({
   currentMatch,
   liveOnly,
   setCurrentMatch,
@@ -20,7 +20,6 @@ const SessionMarket = ({
   title,
   hideTotalBet,
   sessionData,
-  setData
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -50,51 +49,7 @@ const SessionMarket = ({
   //   [setMatchSessionData]
   // );
 
-  const handleLive = async () => {
-    try {
-      const bettingsToUpdate = matchSessionData?.filter(
-        (v) => v?.sessionBet === true && v?.id && v?.betStatus === 1
-      );
-
-      const promises = bettingsToUpdate?.map(async (betting) => {
-        const body = {
-          match_id: currentMatch?.id,
-          matchType: currentMatch?.gameType,
-          id: betting?.id ? betting?.id : "",
-          selectionId: betting?.selectionId,
-          betStatus: 0,
-          sessionBet: true,
-          bet_condition: betting?.bet_condition,
-          no_rate: betting?.no_rate,
-          yes_rate: betting?.yes_rate,
-          rate_percent: betting?.rate_percent,
-          suspended: betting?.suspended,
-        };
-
-        const { data } = await axios.post("betting/addBetting", body);
-        return data?.data;
-      });
-
-      const results = await Promise.all(promises);
-      setMatchSessionData((matchSessionData) => {
-        const updatedBettings = matchSessionData?.map((betting) => {
-          const updatedBetting = results?.find(
-            (result) =>
-              (betting.selectionId &&
-                betting.selectionId === result.selectionId) ||
-              (betting.id && betting.id === result.id)
-          );
-
-          return updatedBetting ? updatedBetting : betting;
-        });
-        return updatedBettings;
-      });
-      setStop(false);
-    } catch (err) {
-      toast.error(err.response.data.message);
-      console.log(err?.message);
-    }
-  };
+ 
   return (
     <Box
       sx={{
@@ -140,14 +95,7 @@ const SessionMarket = ({
           </Typography>
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
-          {!stopAllHide && (
-            <Stop
-              onClick={() => {
-                setStop(false);
-                handleLive();
-              }}
-            />
-          )}
+   
         </Box>
         <Box
           sx={{
@@ -214,7 +162,6 @@ const SessionMarket = ({
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                marginRight:"4vh",
                 width: { laptop: "67%", mobile: "80%" },
                 justifyContent: { laptop: "center", mobile: "flex-end" },
               }}
@@ -268,9 +215,8 @@ const SessionMarket = ({
           {matchSessionData?.length > 0 &&
             matchSessionData?.map((match, index) => (
               <Box key={index}>
-                <SessionMarketBox
+                <SessionMarketBoxLive
                   liveOnly={liveOnly}
-                  setData={setData}
                   hideResult={hideResult}
                   hideTotalBet={hideTotalBet}
                   // updateSessionData={updateSessionData}
@@ -292,4 +238,4 @@ const SessionMarket = ({
   );
 };
 
-export default memo(SessionMarket);
+export default memo(SessionMarketLive);

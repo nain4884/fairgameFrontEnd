@@ -330,7 +330,7 @@ const CustomHeader = ({}) => {
               containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
               image={"https://picsum.photos/200/300"}
               value={currentUser?.userName || ""}
-              amount={currentUser?.current_balance || ""}
+              amount={currentUser?.current_balance || 0}
             />
           </Box>
         </Box>

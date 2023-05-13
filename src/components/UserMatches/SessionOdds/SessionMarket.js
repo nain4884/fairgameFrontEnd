@@ -14,6 +14,7 @@ const SessionMarket = ({
   teamARates,
   teamBRates,
   allBetsData,
+  sessionExposer,
   dataProfit,
   sessionBets
 }) => {
@@ -91,7 +92,7 @@ const SessionMarket = ({
             }}
           >
             {/* {console.warn("newData11 ",newData)} */}
-            <SmallBoxSeason allBetsData={allBetsData} sessionBets={sessionBets} />
+            <SmallBoxSeason allBetsData={allBetsData} sessionBets={sessionBets} totalAmount={sessionExposer} />
             <Typography
               sx={{
                 color: "white",
@@ -202,7 +203,7 @@ const SessionMarket = ({
             }}
           >
             {matchSessionData?.length > 0 &&
-              matchSessionData?.map((element) => {
+              matchSessionData?.reverse()?.map((element) => {
                 return (
                   <Box key={element?.id} sx={{ width: "100%" }}>
                     <SessionMarketBox

@@ -1,21 +1,21 @@
 import React from "react";
-import Divider from "../../../components/helper/Divider";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import SeperateBox from "../SeperateBox";
-import SmallBox from "../SmallBox";
+import SeperateBox from "../../SeperateBox";
+import SmallBox from "../../SmallBox";
 import { toast } from "react-toastify";
 import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { setRole } from "../../../newStore";
-import PlaceBetComponentWeb from "./PlaceBetComponentWeb";
-import Result from "../Result";
-import SessionResultModal from "../../../components/SessionResultModal";
-import { formatNumber } from "../../../components/helper/helper";
+import PlaceBetComponentWeb from "../PlaceBetComponentWeb";
+import Result from "../../Result";
+import SessionResultModal from "../../../../components/SessionResultModal";
+import { formatNumber } from "../../../../components/helper/helper";
 import { useDispatch } from "react-redux";
-import { setSelectedMatch } from "../../../newStore/reducers/expertMatchDetails";
+import { setSelectedMatch } from "../../../../newStore/reducers/expertMatchDetails";
+import { setRole } from "../../../../newStore"
+import Divider from "../../../../components/helper/Divider";
 
-const SessionMarketBox = ({
+const SessionMarketBoxLive = ({
   index,
   stop,
   setCurrentMatch,
@@ -29,7 +29,6 @@ const SessionMarketBox = ({
   updateSessionData,
   hideResult,
   hideTotalBet,
-  setData,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -159,7 +158,7 @@ const SessionMarketBox = ({
           sx={{
             position: "absolute",
             top: "5px",
-            right: { laptop: "30vh", tablet: "30vh" },
+            right: { laptop: "18vh", tablet: "18vh" },
             display: "flex",
             zIndex: 100,
           }}
@@ -220,7 +219,6 @@ const SessionMarketBox = ({
           >
             <SessionResultModal
               newData={newData}
-              visible={visible}
               setLocalState={setLocalState}
               currentMatch={currentMatch}
               setLive={setLive}
@@ -239,9 +237,9 @@ const SessionMarketBox = ({
               margin: "1px",
               background: "rgba(0,0,0,1)",
               height: "40px",
-              right: "16.5vh",
+              right: "7vh",
               position: "absolute",
-              width: { laptop: "18%", mobile: "18%" },
+              width: { laptop: "23%", mobile: "23%" },
               justifyContent: { mobile: "center", laptop: "center" },
               alignItems: "center",
               display: "flex",
@@ -268,8 +266,8 @@ const SessionMarketBox = ({
               position: "relative",
               background: "white",
               height: "38px",
-              marginLeft: "4vh",
-              width: { laptop: "43%", mobile: "60%" },
+              marginLeft: "55px",
+              width: { laptop: "60%", mobile: "60%" },
               justifyContent: "center",
               alignItems: "center",
             }}
@@ -303,14 +301,8 @@ const SessionMarketBox = ({
                                 <img src={BallStart} style={{ width: '60px', height: '19px' }} />
                             </Box>
                         } */}
+        
           </Box>
-        )}
-        {!hideTotalBet && (
-          <PlaceBetComponentWeb
-            profitLoss={newData?.profitLoss}
-            newData={newData}
-            setData={setData}
-          />
         )}
       </Box>
       <Divider />
@@ -318,4 +310,4 @@ const SessionMarketBox = ({
   );
 };
 
-export default SessionMarketBox;
+export default SessionMarketBoxLive;

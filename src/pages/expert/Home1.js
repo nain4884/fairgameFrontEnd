@@ -49,6 +49,7 @@ const titleStyles = {
 };
 const imputStyle = {
   fontSize: { mobile: "14px", laptop: "14px", fontWeight: "600" },
+  textTransform:"capitalize",
 };
 const inputContainerStyle = {
   borderRadius: "5px",

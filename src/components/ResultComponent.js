@@ -1,8 +1,10 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useState } from "react";
 import { CancelDark } from "../assets";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
+import { memo } from "react";
+import MatchOddsResultCustomButton from "./MatchOddsResultCustomButom";
 
 const ResultComponent = ({
   onClick,
@@ -15,7 +17,7 @@ const ResultComponent = ({
 }) => {
   const [selected, setSelected] = useState(teamA);
   const { axios } = setRole();
-
+  const [loading, setLoading] = useState({ id: "", value: false });
   const undeclareResult = async () => {
     try {
       const body = {
@@ -23,12 +25,14 @@ const ResultComponent = ({
         match_id: betId?.[0]?.match_id,
         selectOption: selected,
       };
-
+      setLoading({ id: "UD", value: true });
       const { data } = await axios.post("/game-match/declearResult", body);
       toast.success(data?.message);
-      onClick()
+      setLoading({ id: "", value: false });
+      onClick();
     } catch (e) {
       toast.error(e?.response?.data?.message);
+      setLoading({ id: "", value: false });
       console.log("error", e?.message);
     }
   };
@@ -39,37 +43,19 @@ const ResultComponent = ({
         match_id: betId?.[0]?.match_id,
         selectOption: selected,
       };
+      setLoading({ id: "DR", value: true });
       console.log("first", betId, body);
       const { data } = await axios.post("/game-match/declearResult", body);
-      onClick()
+      onClick();
       toast.success(data?.message);
+      setLoading({ id: "", value: false });
     } catch (e) {
+      setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
   };
-  const CustomButton = ({ title, color, onClick }) => {
-    return (
-      <Box
-        onClick={onClick}
-        sx={{
-          width: "45%",
-          height: "40px",
-          borderRadius: "10px",
-          background: color,
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
-        >
-          {title}
-        </Typography>
-      </Box>
-    );
-  };
+
   return (
     <Box
       sx={{
@@ -164,18 +150,33 @@ const ResultComponent = ({
           alignItems: "center",
         }}
       >
-        <CustomButton
+        <MatchOddsResultCustomButton
           color={"#FF4D4D"}
+          loading={loading}
+          id="UD"
           title={"Un Declare"}
-          onClick={() => undeclareResult()}
+          onClick={() => {
+            if (loading?.value) {
+              return false;
+            }
+            undeclareResult();
+          }}
         />
-        <CustomButton
+        <MatchOddsResultCustomButton
+          id="DR"
           color={"#0B4F26"}
+          loading={loading}
           title={"Declare"}
-          onClick={() => declareResult()}
+          onClick={() => {
+            if (loading?.value) {
+              return false;
+            }
+
+            declareResult();
+          }}
         />
       </Box>
     </Box>
   );
 };
-export default ResultComponent;
+export default memo(ResultComponent);

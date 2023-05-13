@@ -76,6 +76,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   const { axios, role } = setRole();
   var matchId = id;
   // console.log("currentMatchProfit 444:", currentMatchProfit);
+  const [sessionExposer, setSessionExposure] = useState(0);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   useEffect(() => {
     if (socket && socket.connected) {
@@ -100,7 +101,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
-         
               if (currentMatch?.id !== value?.match_id) {
                 // If the new bet doesn't belong to the current match, return the current state
                 return currentMatch;
@@ -228,6 +228,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "session_bet") {
           const data = packet.data[1];
           try {
+            setSessionExposure(data?.sessionExposure);
             setCurrentMatch((currentMatch) => {
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting?.id === data?.betPlaceData?.bet_id) {
@@ -477,6 +478,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       // let matchSessionDataTemp = response.data?.bettings?.filter(
       //   (element) => element.sessionBet === true
       // );
+      setSessionExposure(response?.data?.sessionExposure);
       setCurrentMatch({
         ...response.data,
       });
@@ -551,7 +553,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     getAllBetsData1();
   }, [id]);
 
-  console.log("currentMatch", currentMatch);
   return (
     <Box
       sx={{
@@ -581,6 +582,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             <MatchOdds
               sessionBets={sessionBets}
               matchOddsLive={matchOddsLive}
+              sessionExposer={sessionExposer}
               bookmakerLive={bookmakerLive}
               onClick={() => handleClose(true)}
               bookMakerRateLive={bookMakerRateLive}
@@ -632,6 +634,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           >
             <MatchOdds
               sessionBets={sessionBets}
+              sessionExposer={sessionExposer}
               matchOddsLive={matchOddsLive}
               bookmakerLive={bookmakerLive}
               onClick={() => handleClose(true)}

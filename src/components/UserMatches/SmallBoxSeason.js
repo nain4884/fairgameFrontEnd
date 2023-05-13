@@ -1,15 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 
-const SmallBoxSeason = ({ color, allBetsData ,sessionBets}) => {
-  const totalAmount = sessionBets?.reduce((acc, obj) => acc + obj?.amount || Number(obj?.stake), 0);
+const SmallBoxSeason = ({ color, allBetsData ,sessionBets ,totalAmount}) => {
+  // const totalAmount = sessionBets?.reduce((acc, obj) => acc + obj?.amount || Number(obj?.stake), 0);
+  
   return (
-    <Box sx={{ marginTop: "-3vh" }}>
+    <Box sx={{ marginLeft: "12px",display:"flex" ,width:"100%",gap:"4px" }}>
       <Box
         sx={{
           width: { laptop: "70px", mobile: "10vw" },
           flexDirection: "column",
-          position: "absolute",
+          // position: "absolute",
           display: "flex",
           left: { mobile: "53%", laptop: "49vw", tablet: "53%" },
           justifyContent: "center",
@@ -34,7 +35,7 @@ const SmallBoxSeason = ({ color, allBetsData ,sessionBets}) => {
         sx={{
           width: { laptop: "70px", mobile: "10vw" },
           flexDirection: "column",
-          position: "absolute",
+          // position: "absolute",
           display: "flex",
           left: { mobile: "65%", laptop: "55vw", tablet: "65%" },
           justifyContent: "center",

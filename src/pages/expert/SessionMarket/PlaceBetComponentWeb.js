@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import DropdownMenu from "../DropdownMenu";
 import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
@@ -6,15 +6,10 @@ import { useState } from "react";
 import useOuterClick from "../../../components/helper/userOuterClick";
 import { UD } from "../../../assets";
 
-const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
+const PlaceBetComponentWeb = ({ amount, profitLoss, setData, newData }) => {
   const [proLoss, setProfitLoss] = useState(profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+ 
   const [show, setShow] = useState(false);
   const innerRef = useOuterClick((ev) => {
     setShow(false);
@@ -25,18 +20,65 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
       setProfitLoss(profitLoss);
     }
   }, [profitLoss]);
+
+  useEffect(() => {
+    setData((prev) => {
+      if (Array.isArray(prev)) {
+        const index = prev.findIndex((item) => item.id === newData.id);
+        if (index !== -1) {
+          // merge newData with the existing object
+          const updatedItem = { ...prev[index], ...newData };
+          const updatedArray = [...prev];
+          updatedArray.splice(index, 1, updatedItem);
+          return updatedArray;
+        } else {
+          return prev;
+        }
+      } else {
+        // handle the case when prev is not an array
+        return prev;
+      }
+    });
+  }, [newData]);
+  
+  const handleClick = useCallback(
+    (e) => {
+      setData((prev) => {
+        if (Array.isArray(prev)) {
+          const index = prev.findIndex((item) => item.id === newData.id);
+          if (index !== -1) {
+            const updatedItem = { ...prev[index], ...newData };
+            const updatedArray = [...prev];
+            updatedArray.splice(index, 1, updatedItem);
+            return updatedArray;
+          } else {
+            if (prev.length < 4) {
+              return [...prev, newData];
+            }
+            return prev;
+          }
+        } else {
+          // handle the case when prev is not an array
+          return prev;
+        }
+      });
+      
+    },
+    [setData, newData]
+  );
+
   return (
     <>
       <Box
-        onClick={(e) =>{ 
-          setShow(!show)}}
+        onClick={handleClick}
         sx={{
           background: "#0B4F26",
           flexDirection: "row",
           display: "flex",
           alignItems: "center",
+          top: "4px",
           paddingX: ".2vw",
-          width: { laptop: "10vw" },
+          width: { laptop: "7vw" },
           borderRadius: "5px",
           height: "32px",
           right: "8px",
@@ -48,19 +90,21 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
           sx={{
             background: "#FDF21A",
             borderRadius: "3px",
-            width: "45%",
+            width: "100%",
             height: "85%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             display: "flex",
+
             flexDirection: "column",
           }}
         >
           <Typography
             sx={{
-              fontSize: { laptop: ".5vw" },
+              fontSize: { laptop: "10px" },
               fontWeight: "bold",
+              textAlign: "center",
               color: "#FF4D4D",
             }}
           >
@@ -79,6 +123,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
         </Box>
         <Box
           sx={{
+            paddingX: "2px",
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
@@ -87,7 +132,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
         >
           <Typography
             sx={{
-              fontSize: { laptop: amount ? ".65vw" : ".6vw" },
+              fontSize: { laptop: amount ? "10px" : "10px" },
               fontWeight: amount ? "bold" : "500",
               color: "white",
             }}
@@ -99,15 +144,6 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
             style={{ width: "12px", height: "12px", marginLeft: "5px" }}
           />
         </Box>
-        {show && (
-          <DropdownMenu
-            open={Boolean(anchorEl)}
-            anchorEl={anchorEl}
-            list={proLoss?.betData}
-            // list={profitLoss?.betData}
-            handleClose={handleClose}
-          />
-        )}
       </Box>
     </>
   );

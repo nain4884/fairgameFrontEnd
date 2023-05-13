@@ -32,6 +32,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
             {
               name: v?.odds,
               color: "black",
+              rate:v?.bet_type==="no" && v?.rate?.split("-")[0] || v?.bet_type==="yes" && v?.rate?.split("-")[1] ,
               background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
               small: true,
             },
@@ -132,6 +133,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
         {newData?.length > 0 &&
           newData?.map((i, k) => {
             const num = k + 1;
+            console.log('newData,i,k', newData,i,k)
             return (
               <div style={{ display: "flex", position: "relative" }}>
                 <Box
@@ -363,6 +365,7 @@ const HeaderRow = ({ tag }) => {
   );
 };
 const SmallBox = ({ item }) => {
+  console.log('first', item)
   return (
     <Box
       sx={{
@@ -373,12 +376,22 @@ const SmallBox = ({ item }) => {
         justifyContent: "center",
         alignItems: "center",
         display: "flex",
+        flexDirection: "column",
       }}
     >
       <Typography
-        sx={{ fontSize: "10px", fontWeight: "600", color: item?.color }}
+        sx={{ fontSize: "12px", fontWeight: "600", color: item?.color }}
       >
         {item?.name}
+       
+     
+      </Typography>
+      <Typography 
+        sx={{ fontSize: "8px", fontWeight: "600", color: item?.color }}
+      >
+       
+     
+      {item?.rate && item?.rate}
       </Typography>
     </Box>
   );
@@ -420,6 +433,7 @@ const LargeBox = ({ item, k }) => {
   );
 };
 const Row = ({ values, index }) => {
+  console.log("value", values)
   return (
     <Box sx={{ width: "100%", display: "flex" }}>
       {values?.map((item, k) => {

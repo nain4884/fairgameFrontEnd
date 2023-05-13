@@ -3,6 +3,10 @@ import { useState } from "react";
 import { CancelDark } from "../assets";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
+import { useRef } from "react";
+import { useEffect } from "react";
+import { memo } from "react";
+import SessionResultCustomButton from "./SessionResultCustomButton";
 
 const SessionResultModal = ({
   onClick,
@@ -11,10 +15,21 @@ const SessionResultModal = ({
   setLive,
   setLocalState,
   currentMatch,
+  visible,
 }) => {
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
+
+  const myDivRef = useRef(null);
+
+  const scrollToBottom = () => {
+    myDivRef.current?.scrollIntoView({});
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [visible]);
   const undeclareResult = async () => {
     try {
       const body = {
@@ -43,6 +58,7 @@ const SessionResultModal = ({
                 return {
                   ...newData,
                   betStatus: 1,
+                  betRestult: data?.data?.score,
                   suspended: "",
                 };
               }
@@ -90,6 +106,7 @@ const SessionResultModal = ({
                 return {
                   ...newData,
                   betStatus: 2,
+                  betRestult: data?.data?.score,
                   suspended: "Result Declared",
                 };
               }
@@ -117,7 +134,7 @@ const SessionResultModal = ({
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
-        sessionBets: true,
+        sessionBet: true,
       };
       setLoading({ id: "NR", value: true });
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
@@ -130,6 +147,7 @@ const SessionResultModal = ({
                 return {
                   ...newData,
                   betStatus: 2,
+
                   suspended: "NO RESULT",
                 };
               }
@@ -152,46 +170,12 @@ const SessionResultModal = ({
     }
   };
 
-  const CustomButton = ({ id, title, color, loading, onClick }) => {
-    return (
-      <Box
-        onClick={onClick}
-        sx={{
-          width: "100%",
-          cursor: "pointer",
-          height: "38px",
-          borderRadius: "10px",
-          background: color,
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
-        >
-          {loading?.id === id ? (
-            <CircularProgress
-              sx={{
-                color: "#FFF",
-              }}
-              size={20}
-              thickness={4}
-              value={60}
-            />
-          ) : (
-            title
-          )}
-        </Typography>
-      </Box>
-    );
-  };
-
   return (
     <Box
+      ref={myDivRef}
       sx={{
-        width: "300px",
-        height: "240px",
+        width: "250px",
+        height: "180px",
         padding: 0.2,
         borderRadius: 2,
         boxShadow: "0px 5px 10px #1A568414",
@@ -203,10 +187,10 @@ const SessionResultModal = ({
           {
             width: "100%",
             justifyContent: "space-between",
-            paddingX: "10px",
+            paddingX: "20px",
             display: "flex",
             alignItems: "center",
-            height: "50px",
+            height: "40px",
             background: "white",
             borderRadius: 2,
           },
@@ -216,7 +200,7 @@ const SessionResultModal = ({
         ]}
       >
         <Typography
-          sx={{ fontWeight: "bold", color: "white", fontSize: "18px" }}
+          sx={{ fontWeight: "bold", color: "white", fontSize: "14px" }}
         >
           Session Result
         </Typography>
@@ -234,7 +218,7 @@ const SessionResultModal = ({
         sx={{
           width: "100%",
           flexWrap: "wrap",
-          paddingTop: "3%",
+          padding: "8px",
           flexDirection: "row",
           display: "flex",
           alignSelf: "center",
@@ -262,14 +246,13 @@ const SessionResultModal = ({
           sx={{
             display: "flex",
             paddingY: "5px",
-            paddingX: "1vw",
             width: "100%",
             gap: 1,
             marginTop: 2,
             marginBottom: 2,
           }}
         >
-          <CustomButton
+          <SessionResultCustomButton
             color={"#FF4D4D"}
             title={"Un Declare"}
             loading={loading}
@@ -283,12 +266,13 @@ const SessionResultModal = ({
             }}
           />
 
-          <CustomButton
+          <SessionResultCustomButton
             color={"rgb(106 90 90)"}
             title={"No Result"}
             loading={loading}
             id="NR"
             onClick={() => {
+              console.log("click");
               if (loading?.value) {
                 return false;
               }
@@ -300,11 +284,11 @@ const SessionResultModal = ({
         <Box
           sx={{
             paddingY: "5px",
-            paddingX: "1vw",
+
             width: "100%",
           }}
         >
-          <CustomButton
+          <SessionResultCustomButton
             color={"#0B4F26"}
             id="DR"
             title={"Declare"}
@@ -313,7 +297,7 @@ const SessionResultModal = ({
               if (loading?.value) {
                 return false;
               }
-              if (selected !== "") {
+              if (selected !== "" || !isNaN(selected)) {
                 declareResult();
               } else {
                 toast.warn("Please enter score");
@@ -325,4 +309,4 @@ const SessionResultModal = ({
     </Box>
   );
 };
-export default SessionResultModal;
+export default memo(SessionResultModal);

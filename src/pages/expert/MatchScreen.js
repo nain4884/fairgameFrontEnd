@@ -30,7 +30,7 @@ import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import { logout } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
-
+import SessionMarketLive from "../expert/SessionMarket/LiveSessionMarket/SessionMarketLive";
 let matchOddsCount = 0;
 let marketId = "";
 const MatchScreen = () => {
@@ -56,7 +56,8 @@ const MatchScreen = () => {
       // dispatch(removeSelectedMatch());
       // setCurrentMatch({});
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
-      setCurrentMatch(data);
+      const newMatch = { ...data, bettings: data?.bettings?.reverse() };
+      setCurrentMatch(newMatch);
       marketId = data?.marketId;
       // dispatch(setSelectedMatch(data));
     } catch (e) {
@@ -133,7 +134,7 @@ const MatchScreen = () => {
                     bet_type: data?.betPlaceData?.bet_type,
                     country: null,
                     ip_address: null,
-                    rate: null,
+                    rate: data?.betPlaceData?.rate,
                     marketType: data?.betPlaceData?.marketType,
                     amount:
                       data?.betPlaceData?.stack || data?.betPlaceData?.stake,
@@ -197,7 +198,7 @@ const MatchScreen = () => {
                     betting?.id === value?.id
                 )
               ) {
-                updatedBettings = updatedBettings.concat(value);
+                updatedBettings.unshift(value);
               }
 
               return {
@@ -241,7 +242,7 @@ const MatchScreen = () => {
                     bet_type: data?.betPlaceData?.bet_type,
                     country: null,
                     ip_address: null,
-                    rate: null,
+                    rate: data?.betPlaceData?.rate,
                     marketType: data?.betPlaceData?.marketType,
                     amount:
                       data?.betPlaceData?.stack || data?.betPlaceData?.stake,
@@ -429,23 +430,28 @@ const MatchScreen = () => {
       >
         <Box
           sx={{
-            width: { laptop: "50%", mobile: "100%", tablet: "100%" },
-            flexDirection: "column",
-            display: "flex",
+            width: { laptop: "60%", mobile: "100%", tablet: "100%" },
           }}
         >
           {(currentMatch?.apiSessionActive ||
             currentMatch?.manualSessionActive) && (
-            <>
+            <Box
+              sx={{
+                width: { laptop: "100%", mobile: "100%", tablet: "100%" },
+                display: "flex",
+                flexDirection: { tablet: "column", laptop: "row" },
+              }}
+            >
               <Box
                 sx={{
-                  width: "100%",
+                  width: { laptop: "40%", mobile: "100%", tablet: "100%" },
                   flexDirection: "column",
                   display: "flex",
                 }}
               >
-                <SessionMarket
+                <SessionMarketLive
                   title={"Session API Market"}
+                  hideTotalBet={true}
                   liveOnly={true}
                   stopAllHide={true}
                   hideResult={true}
@@ -457,22 +463,10 @@ const MatchScreen = () => {
                   currentMatch={currentMatch}
                   SessionMarket={SessionMarket}
                 />
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginTop: ".25vw",
-                  }}
-                >
-                  {data.map(() => {
-                    return <RunsBox />;
-                  })}
-                </Box>
               </Box>
               <Box
                 sx={{
-                  width: "100%",
+                  width: { laptop: "60%", mobile: "100%", tablet: "100%" },
                   flexDirection: "column",
                   display: "flex",
                 }}
@@ -481,7 +475,9 @@ const MatchScreen = () => {
                   title={"Session Market"}
                   setLiveData={setLiveData}
                   liveOnly={false}
+                  hideTotalBet={false}
                   stopAllHide={false}
+                  setData={setData}
                   sessionData={[...currentMatch?.bettings]?.filter(
                     (element) => element?.sessionBet && element?.id
                   )}
@@ -491,25 +487,27 @@ const MatchScreen = () => {
                   currentMatch={currentMatch}
                   SessionMarket={SessionMarket}
                 />
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginTop: ".25vw",
-                  }}
-                >
-                  {data.map(() => {
-                    return <RunsBox />;
-                  })}
-                </Box>
               </Box>
-            </>
+            </Box>
+          )}
+
+          {data?.length > 0 && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                marginTop: ".25vw",
+              }}
+            >
+              {data?.map((v) => {
+                return <RunsBox key={v?.id} item={v} setData={setData} />;
+              })}
+            </Box>
           )}
         </Box>
         <Box
           sx={{
-            width: { laptop: "50%", mobile: "100%", tablet: "100%" },
+            width: { laptop: "40%", mobile: "100%", tablet: "100%" },
             flexDirection: "column",
             display: "flex",
           }}

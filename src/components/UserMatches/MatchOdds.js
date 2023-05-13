@@ -208,6 +208,7 @@ const MatchOdds = ({
   sessionOddsLive,
   allBetsData,
   dataProfit,
+  sessionExposer,
   sessionBets,
 }) => {
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
@@ -310,6 +311,7 @@ const MatchOdds = ({
           sessionBets={sessionBets}
           data={sessionOddsLive}
           newData={data}
+          sessionExposer={sessionExposer}
           // dataProfit={dataProfit}
           teamARates={teamRates?.teamA}
           teamBRates={teamRates?.teamB}
