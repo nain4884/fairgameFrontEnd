@@ -88,7 +88,7 @@ const SessionMarketBox = ({
           {!matchesMobile && (
             <PlaceBetComponentWeb
               amount={index == 2}
-              profitLoss={data?.profitLoss}
+              profitLoss={data}
             />
           )}
         </>
@@ -108,7 +108,7 @@ const SessionMarketBox = ({
           {matchesMobile && (
             <PlaceBetComponent
               amount={index == 2}
-              profitLoss={data?.profitLoss}
+              profitLoss={data}
             />
           )}
           {false && (
@@ -179,7 +179,7 @@ const SessionMarketBox = ({
           {!matchesMobile && (
             <PlaceBetComponentWeb
               amount={index === 2}
-              profitLoss={data?.profitLoss}
+              profitLoss={data}
             />
           )}
         </Box>

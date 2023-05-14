@@ -30,6 +30,7 @@ const SessionMarketBox = ({
   hideResult,
   hideTotalBet,
   setData,
+  setIObtes
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -221,6 +222,7 @@ const SessionMarketBox = ({
             <SessionResultModal
               newData={newData}
               visible={visible}
+              setIObtes={setIObtes}
               setLocalState={setLocalState}
               currentMatch={currentMatch}
               setLive={setLive}
@@ -307,7 +309,6 @@ const SessionMarketBox = ({
         )}
         {!hideTotalBet && (
           <PlaceBetComponentWeb
-            profitLoss={newData?.profitLoss}
             newData={newData}
             setData={setData}
           />

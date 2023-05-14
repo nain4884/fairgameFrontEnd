@@ -6,8 +6,8 @@ import { useState } from "react";
 import useOuterClick from "../../../components/helper/userOuterClick";
 import { UD } from "../../../assets";
 
-const PlaceBetComponentWeb = ({ amount, profitLoss, setData, newData }) => {
-  const [proLoss, setProfitLoss] = useState(profitLoss);
+const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
+  const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
  
   const [show, setShow] = useState(false);
@@ -15,11 +15,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss, setData, newData }) => {
     setShow(false);
   });
 
-  useEffect(() => {
-    if (profitLoss) {
-      setProfitLoss(profitLoss);
-    }
-  }, [profitLoss]);
+
 
   useEffect(() => {
     setData((prev) => {
@@ -39,6 +35,9 @@ const PlaceBetComponentWeb = ({ amount, profitLoss, setData, newData }) => {
         return prev;
       }
     });
+
+    setProfitLoss(newData?.profitLoss);
+
   }, [newData]);
   
   const handleClick = useCallback(

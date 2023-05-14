@@ -20,7 +20,8 @@ const SessionMarket = ({
   title,
   hideTotalBet,
   sessionData,
-  setData
+  setIObtes,
+  setData,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -214,7 +215,7 @@ const SessionMarket = ({
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                marginRight:"4vh",
+                marginRight: "4vh",
                 width: { laptop: "67%", mobile: "80%" },
                 justifyContent: { laptop: "center", mobile: "flex-end" },
               }}
@@ -270,6 +271,7 @@ const SessionMarket = ({
               <Box key={index}>
                 <SessionMarketBox
                   liveOnly={liveOnly}
+                  setIObtes={setIObtes}
                   setData={setData}
                   hideResult={hideResult}
                   hideTotalBet={hideTotalBet}

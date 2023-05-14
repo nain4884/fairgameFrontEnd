@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const PlaceBetComponent = ({ amount, profitLoss }) => {
-    const [proLoss, setProfitLoss] = useState(profitLoss);
+    const [proLoss, setProfitLoss] = useState(profitLoss?.profitLoss);
     const [anchorEl, setAnchorEl] = useState(null);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
@@ -22,7 +22,7 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
   
     useEffect(() => {
       if (profitLoss) {
-        setProfitLoss(profitLoss);
+        setProfitLoss(profitLoss?.profitLoss);
       }
     }, [profitLoss]);
   

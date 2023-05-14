@@ -16,6 +16,7 @@ const SessionResultModal = ({
   setLocalState,
   currentMatch,
   visible,
+  setIObtes,
 }) => {
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
@@ -138,16 +139,16 @@ const SessionResultModal = ({
       };
       setLoading({ id: "NR", value: true });
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
+      console.log(data, "data");
       if (data?.statusCode !== 500) {
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
             (betting, index) => {
-              if (betting?.id === newData?.id) {
-                setLive(true);
+              if (betting?.id === data?.data?.betId) {
                 return {
                   ...newData,
-                  betStatus: 2,
-
+                  profitLoss: null,
+                  betRestult: null,
                   suspended: "NO RESULT",
                 };
               }
@@ -159,6 +160,8 @@ const SessionResultModal = ({
             bettings: updatedBettings,
           };
         });
+        setIObtes(data?.data);
+        onClick();
       }
       onClick();
       setLoading({ id: "", value: false });

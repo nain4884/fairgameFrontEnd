@@ -26,7 +26,10 @@ import SessionMarket from "./SessionMarket/SessionMarket";
 import RunsBox from "./RunsBox";
 import MatchOdds from "./MatchOdds/MatchOdds";
 import DropdownMenu from "./DropdownMenu";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import {
+  removeCurrentUser,
+  setCurrentUser,
+} from "../../newStore/reducers/currentUser";
 import { logout } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
@@ -48,6 +51,7 @@ const MatchScreen = () => {
   const [matchOddsLive, setMatchOddsLive] = useState([]);
   const [localState, setLocalState] = useState(null);
   const [liveData, setLiveData] = useState([]);
+  const { currentUser } = useSelector((state) => state?.currentUser);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
@@ -410,6 +414,8 @@ const MatchScreen = () => {
       console.log(e);
     }
   }
+
+  console.log('IObets', IObets)
   return (
     <Background>
       {/* <CHeader /> */}
@@ -472,6 +478,11 @@ const MatchScreen = () => {
                 }}
               >
                 <SessionMarket
+                  setIObtes={(val) => {
+                    setIObtes((IObets) =>
+                      IObets?.filter((v) => v?.bet_id !== val?.betId && val?.match_id===v?.match_id)
+                    );
+                  }}
                   title={"Session Market"}
                   setLiveData={setLiveData}
                   liveOnly={false}

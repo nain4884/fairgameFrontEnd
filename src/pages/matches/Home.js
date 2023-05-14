@@ -305,6 +305,38 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "sessionNoResult") {
+          const value = packet.data[1];
+          matchId = value?.match_id;
+          try {
+            const user = {
+              ...currentUser,
+              current_balance: value.current_balance,
+              exposure: value.exposure,
+            };
+
+            dispatch(setCurrentUser(user));
+            setCurrentMatch((currentMatch) => {
+              const bettingToUpdate = currentMatch?.bettings?.find(
+                (betting) => betting?.id === value?.betId && currentMatch?.id === value?.match_id
+              );
+              if (bettingToUpdate) {
+                bettingToUpdate.profitLoss = null;
+              }
+              return {
+                ...currentMatch,
+                bettings: currentMatch?.bettings,
+              };
+            });
+            
+            setSessionExposure(value?.sessionExposure);
+            setSessionBets((sessionBets) =>
+              sessionBets?.filter((v) => v?.bet_id !== value?.betId)
+            );
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
 
         if (packet.data[0] === "matchResult") {
           const value = packet.data[1];
