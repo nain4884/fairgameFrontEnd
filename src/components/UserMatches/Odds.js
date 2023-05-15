@@ -2,13 +2,14 @@ import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 import BoxComponent from "./BoxComponent";
+import ManualBoxComponent from "./ManualBoxComponent";
 import Divider from "../helper/Divider";
 import { BallStart, Info, TIME } from "../../assets";
 import { memo } from "react";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
-    <Box sx={{ marginLeft: "12px",display:"flex" ,width:"100%",gap:"4px" }}>
+    <Box sx={{ marginLeft: "12px", display: "flex", width: "100%", gap: "4px" }}>
       <Box
         sx={{
           width: { laptop: "70px", mobile: "10vw" },
@@ -114,11 +115,12 @@ const Odds = ({
   newData,
   isRound,
   typeOfBet,
+  matchOddsData
 }) => {
+  console.log("matchOddsData 11:", matchOddsData);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-
-  const bookRatioB= (() => {
+  const bookRatioB = (() => {
     if (teamARates === 0) {
       return 0;
     } else {
@@ -127,7 +129,7 @@ const Odds = ({
       return teamBRates < 0 ? `-${formattedRatio}` : formattedRatio;
     }
   })();
-  
+
 
   const bookRatioA = (() => {
     if (teamARates === 0) {
@@ -138,7 +140,7 @@ const Odds = ({
       return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
     }
   })();
-  
+
   return (
     <Box
       key="odds"
@@ -300,14 +302,14 @@ const Odds = ({
           </Box>
         </Box>
       }
-      <BoxComponent
+
+      {typeOfBet == "MANUAL BOOKMAKER" ? <><ManualBoxComponent
         time={true}
         showBox={showBox}
-        livestatus={newData?.status==="SUSPENDED" ? true : false}
+        livestatus={newData?.status === "SUSPENDED" ? true : false}
 
         teamImage={newData?.teamA_Image}
         newData={newData}
-        // lock={data?.length > 0 ? false : true}
         color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
         allRates={{ teamA: teamARates, teamB: teamBRates }}
         rate={teamARates}
@@ -317,48 +319,117 @@ const Odds = ({
         suspendedData={data[0]?.status}
         typeOfBet={typeOfBet}
         isRound={isRound}
+        matchOddsData={{
+          back: matchOddsData?.[0]?.teamA_Back,
+          lay: matchOddsData?.[0]?.teamA_lay
+        }}
       />
-      <Divider />
-      {/* {console.log("newData :",newData)} */}
-      <BoxComponent
-        teamImage={newData?.teamB_Image}
-        time={true}
-        showBox={showBox}
-        newData={newData}
-        livestatus={newData?.status==="SUSPENDED" ? true : false}
-        // lock={data?.length > 0 ? false : true}
-        color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
-        name={newData?.teamB}
-        data={data?.length > 0 ? data[1] : []}
-        suspendedData={data[1]?.status}
-        rate={teamBRates}
-        allRates={{ teamA: teamARates, teamB: teamBRates }}
-        team={"teamB"}
-        typeOfBet={typeOfBet}
-        isRound={isRound}
-      />
-      {newData?.teamC && (
+        <Divider />
+        <ManualBoxComponent
+          teamImage={newData?.teamB_Image}
+          time={true}
+          showBox={showBox}
+          newData={newData}
+          livestatus={newData?.status === "SUSPENDED" ? true : false}
+          color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
+          name={newData?.teamB}
+          data={data?.length > 0 ? data[1] : []}
+          suspendedData={data[1]?.status}
+          rate={teamBRates}
+          allRates={{ teamA: teamARates, teamB: teamBRates }}
+          team={"teamB"}
+          typeOfBet={typeOfBet}
+          isRound={isRound}
+          matchOddsData={{
+            back: matchOddsData?.[0]?.teamB_Back,
+            lay: matchOddsData?.[0]?.teamB_lay
+          }}
+        />
+        {newData?.teamC && (
+          <>
+            <Divider />
+            <ManualBoxComponent
+              teamImage={null}
+              time={true}
+              livestatus={newData?.status === "SUSPENDED" ? true : false}
+              showBox={showBox}
+              newData={newData}
+              color={"#FF4D4D"}
+              name={newData?.teamC}
+              data={data?.length > 0 ? data[2] : []}
+              suspendedData={data[2]?.status}
+              rate={0}
+              allRates={{ teamA: teamARates, teamB: teamBRates }}
+              team={"teamC"}
+              typeOfBet={typeOfBet}
+              isRound={isRound}
+              matchOddsData={{
+                back: matchOddsData?.[0]?.teamC_Back,
+                lay: matchOddsData?.[0]?.teamC_lay
+              }}
+            />
+          </>
+        )}</> :
         <>
-          <Divider />
           <BoxComponent
-            teamImage={null}
             time={true}
-            livestatus={newData?.status==="SUSPENDED" ? true : false}
             showBox={showBox}
+            livestatus={newData?.status === "SUSPENDED" ? true : false}
+
+            teamImage={newData?.teamA_Image}
             newData={newData}
             // lock={data?.length > 0 ? false : true}
-            color={"#FF4D4D"}
-            name={newData?.teamC}
-            data={data?.length > 0 ? data[2] : []}
-            suspendedData={data[2]?.status}
-            rate={0}
+            color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
             allRates={{ teamA: teamARates, teamB: teamBRates }}
-            team={"teamC"}
+            rate={teamARates}
+            name={newData?.teamA}
+            data={data?.length > 0 ? data[0] : []}
+            team={"teamA"}
+            suspendedData={data[0]?.status}
             typeOfBet={typeOfBet}
             isRound={isRound}
           />
-        </>
-      )}
+          <Divider />
+          {/* {console.log("newData :",newData)} */}
+          <BoxComponent
+            teamImage={newData?.teamB_Image}
+            time={true}
+            showBox={showBox}
+            newData={newData}
+            livestatus={newData?.status === "SUSPENDED" ? true : false}
+            // lock={data?.length > 0 ? false : true}
+            color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
+            name={newData?.teamB}
+            data={data?.length > 0 ? data[1] : []}
+            suspendedData={data[1]?.status}
+            rate={teamBRates}
+            allRates={{ teamA: teamARates, teamB: teamBRates }}
+            team={"teamB"}
+            typeOfBet={typeOfBet}
+            isRound={isRound}
+          />
+          {newData?.teamC && (
+            <>
+              <Divider />
+              <BoxComponent
+                teamImage={null}
+                time={true}
+                livestatus={newData?.status === "SUSPENDED" ? true : false}
+                showBox={showBox}
+                newData={newData}
+                // lock={data?.length > 0 ? false : true}
+                color={"#FF4D4D"}
+                name={newData?.teamC}
+                data={data?.length > 0 ? data[2] : []}
+                suspendedData={data[2]?.status}
+                rate={0}
+                allRates={{ teamA: teamARates, teamB: teamBRates }}
+                team={"teamC"}
+                typeOfBet={typeOfBet}
+                isRound={isRound}
+              />
+            </>
+          )}</>}
 
       {/* {data?.teamC && !suspended && (
         <BoxComponent

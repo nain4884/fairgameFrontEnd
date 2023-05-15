@@ -69,6 +69,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   // console.log("selectedMatch :", selectedMatch)
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
+  const [manualBookmakerData, setManualBookmakerData] = useState([]);
   const [isHandled, setIsHandled] = useState(false);
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
@@ -328,7 +329,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
                 bettings: currentMatch?.bettings,
               };
             });
-            
+
             setSessionExposure(value?.sessionExposure);
             setSessionBets((sessionBets) =>
               sessionBets?.filter((v) => v?.bet_id !== value?.betId)
@@ -360,8 +361,113 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             console.log(err?.message);
           }
         }
+
+        // manual bookmaker
+        if (packet.data[0] === "teamA_rate_user") {
+          const value = packet.data[1];
+          // console.log("value :", value);
+          // console.log("manualBookmakerData :", manualBookmakerData);
+          // alert(value?.betId);
+          try {
+            setManualBookmakerData(currentMatches => {
+              // alert(currentMatches.id)
+              // Find the index of the match that you want to update
+              // const index = currentMatches.findIndex(match => match.id === value?.betId);
+              // alert(index)
+              // if (index === -1) {
+              //   // Match not found, return the current state
+              //   return currentMatches;
+              // }
+
+              // Update the match object at the specified index
+              const updatedMatch = {
+                ...currentMatches[0],
+                teamA_Back: value?.teamA_Back, // Update the teamA_Back value 
+                teamA_lay: value?.teamA_lay // Update the teamA_lay value 
+              };
+
+              // Create a new array with the updated match object
+              const updatedMatches = [
+                ...currentMatches.slice(0, 0),
+                updatedMatch,
+                ...currentMatches.slice(0 + 1)
+              ];
+
+              // Return the new array as the updated state
+              return updatedMatches;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+        if (packet.data[0] === "teamB_rate_user") {
+          const value = packet.data[1];
+          try {
+            setManualBookmakerData(currentMatches => {
+              // Find the index of the match that you want to update
+              // const index = currentMatches.findIndex(match => match.id === value?.betId);
+              // if (index === -1) {
+              //   // Match not found, return the current state
+              //   return currentMatches;
+              // }
+
+              // Update the match object at the specified index
+              const updatedMatch = {
+                ...currentMatches[0],
+                teamB_Back: value?.teamB_Back, // Update the teamA_Back value 
+                teamB_lay: value?.teamB_lay // Update the teamA_lay value 
+              };
+
+              // Create a new array with the updated match object
+              const updatedMatches = [
+                ...currentMatches.slice(0, 0),
+                updatedMatch,
+                ...currentMatches.slice(0 + 1)
+              ];
+
+              // Return the new array as the updated state
+              return updatedMatches;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+        if (packet.data[0] === "teamC_rate_user") {
+          const value = packet.data[1];
+          try {
+            setManualBookmakerData(currentMatches => {
+              // Find the index of the match that you want to update
+              // const index = currentMatches.findIndex(match => match.id === value?.betId);
+              // if (index === -1) {
+              //   // Match not found, return the current state
+              //   return currentMatches;
+              // }
+
+              // Update the match object at the specified index
+              const updatedMatch = {
+                ...currentMatches[0],
+                teamC_Back: value?.teamC_Back, // Update the teamA_Back value 
+                teamC_lay: value?.teamC_lay // Update the teamA_lay value 
+              };
+
+              // Create a new array with the updated match object
+              const updatedMatches = [
+                ...currentMatches.slice(0, 0),
+                updatedMatch,
+                ...currentMatches.slice(0 + 1)
+              ];
+
+              // Return the new array as the updated state
+              return updatedMatches;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
+
+
     // if (socket && !socket.connected) {
     //   alert("Socket is not connected. Reconnecting...");
     //   socket.connect();
@@ -453,6 +559,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       });
       socketMicro.on(`bookmaker${marketId}`, (val) => {
         if (val !== null) {
+          // console.log("val 222:", val);
           if (val.length > 0) {
             // dispatch(setBookMakerLive(val[0]));
             setBookmakerLive(val[0]);
@@ -502,10 +609,15 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
   async function getThisMatch(id) {
     try {
       const response = await axios.get(`/game-match/matchDetail/${id}`);
+      console.log("response.data :", response.data);
 
-      // let matchOddsDataTemp = response.data?.bettings?.filter(
-      //   (element) => element.sessionBet === false
-      // );
+      let matchOddsDataTemp = response.data?.bettings?.filter(
+        (element) => element.sessionBet === false
+      );
+      console.log("matchOddsDataTemp :", JSON.stringify(matchOddsDataTemp))
+      setManualBookmakerData(matchOddsDataTemp)
+      // console.log("manualBookmakerData:", manualBookmakerData);
+
 
       // let matchSessionDataTemp = response.data?.bettings?.filter(
       //   (element) => element.sessionBet === true
@@ -621,6 +733,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               data={currentMatch}
               // dataProfit={currentMatchProfit}
               allBetsData={sessionBets}
+              manualBookmakerData={manualBookmakerData}
             />
           </div>
           <Box
@@ -673,6 +786,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               data={currentMatch}
               // dataProfit={currentMatchProfit}
               allBetsData={allSessionBets}
+              manualBookmakerData={manualBookmakerData}
             />
           </Box>
           <Box sx={{ width: "30%", paddingRight: "1%" }}>
@@ -687,8 +801,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-              <SessionBetSeperate allBetsData={sessionBets} mark />
-            )}
+                <SessionBetSeperate allBetsData={sessionBets} mark />
+              )}
           </Box>
         </Box>
       )}

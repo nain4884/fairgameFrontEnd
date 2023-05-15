@@ -7,6 +7,9 @@ import { BALLSTART, BroadCast } from "../expert/assets";
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { Lock, BallStart } from '../assets';
 import { SocketContext } from "../context/socketContext";
+import { setRole } from "../newStore";
+import { useLocation } from "react-router-dom";
+
 
 export default function IndiaPakLiveBookMaker({ add, match }) {
     const [visible, setVisible] = useState(false)
@@ -14,7 +17,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
     // console.log('match', match)
     const { socket, socketMicro } = useContext(SocketContext);
 
+    const { axios } = setRole();
+
     const AddSession = () => {
+        const location = useLocation();
         const [teamARate, setTeamARate] = useState()
         const [teamALayValue, setTeamALayValue] = useState()
         const [teamBRate, setTeamBRate] = useState()
@@ -33,10 +39,52 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const [isABall, setIsABall] = useState(false)
         const [isBBall, setIsBBall] = useState(false)
         const [isCBall, setIsCBall] = useState(false)
+        const [betId, setBetId] = useState("")
         // const [isTeamCDisabled, setIsTeamCDisabled] = useState(true)
         const innerRefTeamA = useRef();
         const innerRefTeamB = useRef();
         const innerRefTeamC = useRef();
+        // const id = location.state.match.id;
+
+        useEffect(() => {
+            // alert(JSON.stringify(location.state.match))
+            getManuallBookMaker(match?.id);
+        }, []);
+
+        async function getManuallBookMaker(id) {
+            try {
+                let response = await axios.get(`/betting/getManuallBookMaker/${id}`);
+                console.log("response?.data?.data 111:", response?.data?.data)
+                if (response?.data?.data?.length === 0) {
+                    doSubmitSessionBet(id);
+                } else {
+                    setBetId(response?.data?.data[0].id);
+                    setTeamARate(response?.data?.data[0].teamA_Back);
+                    setTeamALayValue(response?.data?.data[0].teamA_lay);
+                    setTeamBRate(response?.data?.data[0].teamB_Back);
+                    setTeamBLayValue(response?.data?.data[0].teamB_lay);
+                    setTeamCRate(response?.data?.data[0].teamC_Back);
+                    setTeamCLayValue(response?.data?.data[0].teamC_lay);
+                }
+            } catch (e) {
+                console.log(e.response.data.message);
+            }
+        }
+
+        async function doSubmitSessionBet(id) {
+            const payload = {
+                betStatus: 1,
+                sessionBet: true,
+                matchType: "cricket",
+                match_id: id
+            }
+            try {
+                let response = await axios.post(`/betting/addBetting`, payload);
+                setBetId(response?.data?.data[0].id)
+            } catch (e) {
+                console.log(e.response.data.message);
+            }
+        }
 
         useEffect(() => {
             if (socket && socket.connected) {
@@ -138,12 +186,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
         const handleSuspend = () => {
             if (match?.teamC) {
-                socket.emit("teamA_Suspend", { betId: match?.id, teamA_suspend: true, })
-                socket.emit("teamB_Suspend", { betId: match?.id, teamB_suspend: true, });
-                socket.emit("teamC_Suspend", { betId: match?.id, teamC_suspend: true, });
+                socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
+                socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, });
+                socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: true, });
             } else {
-                socket.emit("teamA_Suspend", { betId: match?.id, teamA_suspend: true, });
-                socket.emit("teamB_Suspend", { betId: match?.id, teamB_suspend: true, });
+                socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, });
+                socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, });
             }
         }
 
@@ -238,7 +286,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 if (event.target.name === 'teamA_rate') {
                     // alert(teamARate)
                     socket.emit("teamA_Suspend", {
-                        betId: match?.id,
+                        betId: betId,
                         teamA_suspend: true,
                     })
                     setTeamARate(value);
@@ -265,7 +313,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate && teamARate > 0) {
                 if (event.target.name === 'teamA_rate' && teamARate > 0) {
                     socket.emit("teamA_Suspend", {
-                        betId: match?.id,
+                        betId: betId,
                         teamA_suspend: true,
                     })
                     setTeamARate(value);
@@ -275,7 +323,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // if (event.target.name === 'teamB_rate' && teamBLayValue - incGap > teamBRate && teamBRate > 0) {
                 if (event.target.name === 'teamB_rate' && teamBRate > 0) {
                     socket.emit("teamB_Suspend", {
-                        betId: match?.id,
+                        betId: betId,
                         teamB_suspend: true,
                     })
                     setTeamBRate(value);
@@ -291,13 +339,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // upkey = upkey + 1
                 // let lay_value = targetValue + upkey + 1
                 if (event.target.name === 'teamA_rate') {
-                    socket.emit("teamA_Suspend", { betId: match?.id, teamA_suspend: true, })
+                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
                     setTeamALayValue(teamALayValue + incGap);
                 }
 
                 if (event.target.name === 'teamB_rate') {
                     // this.setState({ teamB_rate: value, ERROR: false });
-                    socket.emit("teamB_Suspend", { betId: match?.id, teamB_suspend: true, })
+                    socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, })
                     setTeamBLayValue(teamBLayValue + incGap)
                 }
             }
@@ -307,11 +355,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate) {
                 if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate) {
                     setTeamALayValue(teamALayValue - incGap);
-                    socket.emit("teamA_Suspend", { betId: match?.id, teamA_suspend: true, })
+                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
                 }
 
                 if (event.target.name === 'teamB_rate' && teamBLayValue - incGap > teamBRate) {
-                    socket.emit("teamB_Suspend", { betId: match?.id, teamB_suspend: true, })
+                    socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, })
                     setTeamBLayValue(teamBLayValue - incGap)
                 }
             }
@@ -342,7 +390,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // alert(event.target.name)
                 if (event.target.name === 'teamA_rate') {
                     socket.emit("teamA_rate", {
-                        betId: match?.id,
+                        betId: betId,
                         teamA_lay: teamALayValue,
                         teamA_Back: teamARate,
                         teamA_suspend: false,
@@ -350,7 +398,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 }
                 if (event.target.name === 'teamB_rate') {
                     socket.emit("teamB_rate", {
-                        betId: match?.id,
+                        betId: betId,
                         teamB_lay: teamBLayValue,
                         teamB_Back: teamBRate,
                         teamB_suspend: false,
@@ -358,7 +406,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 }
                 if (event.target.name === 'teamC_rate') {
                     socket.emit("teamC_rate", {
-                        betId: match?.id,
+                        betId: betId,
                         teamC_lay: teamCLayValue,
                         teamC_Back: teamCRate,
                         teamC_suspend: false,
@@ -374,7 +422,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 let data = {};
                 if (match?.teamC) {
                     data = {
-                        betId: match?.id,
+                        betId: betId,
                         teamA_Back: targetValue,
                         teamA_suspend: false,
                         teamB_Back: targetValue,
@@ -384,7 +432,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                 } else {
                     data = {
-                        betId: match?.id,
+                        betId: betId,
                         teamA_Back: targetValue,
                         teamALayValue: "",
                         teamA_suspend: false,
@@ -611,11 +659,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             }
             if (key == 'shift') {
                 if (event.target.name === 'teamA_rate') {
-                    socket.emit("teamA_Suspend", { betId: match?.id, teamA_suspend: 'Ball Started', })
+                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: 'Ball Started', })
                 } else if (event.target.name === 'teamB_rate') {
-                    socket.emit("teamB_Suspend", { betId: match?.id, teamB_suspend: 'Ball Started', })
+                    socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: 'Ball Started', })
                 } else if (event.target.name === 'teamC_rate') {
-                    socket.emit("teamC_Suspend", { betId: match?.id, teamC_suspend: 'Ball Started', })
+                    socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: 'Ball Started', })
                 }
             }
             // teamA_suspended = 'ball started '
@@ -922,7 +970,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             <Box sx={{ display: "flex", marginTop: "20px", flexDirection: 'column' }}>
                 <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '100%', alignSelf: 'center', paddingX: .2, paddingTop: .2, background: 'white' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
-                        <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market 1</Typography>
+                        <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market</Typography>
                     </Box>
                     <Box sx={{
                         flex: .1, background: '#262626'
