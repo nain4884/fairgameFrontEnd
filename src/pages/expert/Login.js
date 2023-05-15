@@ -121,6 +121,10 @@ export default function Login(props) {
           removeSocket();
           // dispatch(setActiveRole(foundRoles.data));
           // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+          sessionStorage.setItem(
+            "isTransPasswordCreated",
+            data.data.isTransPasswordCreated
+          );
           dispatch(signIn(data.data));
           setRole(data.data.access_token);
           if (

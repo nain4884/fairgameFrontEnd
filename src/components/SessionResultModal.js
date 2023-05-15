@@ -255,58 +255,55 @@ const SessionResultModal = ({
             marginBottom: 2,
           }}
         >
-          <SessionResultCustomButton
-            color={"#FF4D4D"}
-            title={"Un Declare"}
-            loading={loading}
-            id="UD"
-            onClick={() => {
-              if (loading?.value) {
-                return false;
-              }
+          {newData?.betStatus === 2 ? (
+            <SessionResultCustomButton
+              color={"#FF4D4D"}
+              title={"Un Declare"}
+              loading={loading}
+              id="UD"
+              onClick={() => {
+                if (loading?.value) {
+                  return false;
+                }
 
-              undeclareResult();
-            }}
-          />
+                undeclareResult();
+              }}
+            />
+          ) : (
+            <SessionResultCustomButton
+              color={"#0B4F26"}
+              id="DR"
+              title={"Declare"}
+              loading={loading}
+              onClick={() => {
+                if (loading?.value) {
+                  return false;
+                }
+                if (selected !== "" || !isNaN(selected)) {
+                  declareResult();
+                } else {
+                  toast.warn("Please enter score");
+                }
+              }}
+            />
+          )}
 
-          <SessionResultCustomButton
-            color={"rgb(106 90 90)"}
-            title={"No Result"}
-            loading={loading}
-            id="NR"
-            onClick={() => {
-              console.log("click");
-              if (loading?.value) {
-                return false;
-              }
+          {newData?.betStatus !== 2 && (
+            <SessionResultCustomButton
+              color={"rgb(106 90 90)"}
+              title={"No Result"}
+              loading={loading}
+              id="NR"
+              onClick={() => {
+                console.log("click");
+                if (loading?.value) {
+                  return false;
+                }
 
-              noResultDeclare();
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            paddingY: "5px",
-
-            width: "100%",
-          }}
-        >
-          <SessionResultCustomButton
-            color={"#0B4F26"}
-            id="DR"
-            title={"Declare"}
-            loading={loading}
-            onClick={() => {
-              if (loading?.value) {
-                return false;
-              }
-              if (selected !== "" || !isNaN(selected)) {
-                declareResult();
-              } else {
-                toast.warn("Please enter score");
-              }
-            }}
-          />
+                noResultDeclare();
+              }}
+            />
+          )}
         </Box>
       </Box>
     </Box>

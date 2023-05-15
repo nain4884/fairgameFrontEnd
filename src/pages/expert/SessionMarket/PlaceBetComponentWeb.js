@@ -76,7 +76,9 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
           display: "flex",
           alignItems: "center",
           top: "4px",
-          paddingX: ".2vw",
+          '@media screen and (max-width: 1366px)': {
+            width: '9vw',
+          },
           width: { laptop: "7vw" },
           borderRadius: "5px",
           height: "32px",

@@ -18,7 +18,7 @@ const encryptor = encryptTransform({
 
 const persistConfig = {
   key: "root",
-  storage:storageSession,
+  storage: storageSession,
   transform: [encryptor],
 };
 
@@ -63,6 +63,7 @@ export const setRole = (token) => {
   });
 
   let role = "role4";
+  let roleName = user?.role?.roleName;
   let JWT = user?.access_token;
   let transPass = "isTransPasswordCreated4";
   let pattern1 = /admin/;
@@ -70,18 +71,20 @@ export const setRole = (token) => {
   let pattern3 = /expert/;
   let userAxios = userAxiosInstance;
   userAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  console.log('userAdmin', userAdmin,userAdmin?.role?.roleName)
 
   if (pattern1.test(window.location.pathname)) {
     role = "role1";
-
     JWT = userAdmin?.access_token;
-    transPass = "isTransPasswordCreated1";
+    transPass = userAdmin?.isTransPasswordCreated;
     userAxios = adminInstance;
+    roleName = userAdmin?.role?.roleName;
     adminInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
   if (pattern2.test(window.location.pathname)) {
     role = "role2";
     JWT = userWallet?.access_token;
+    roleName = userWallet?.role?.roleName;
     transPass = "isTransPasswordCreated2";
     userAxios = walletInstance;
     walletInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -91,6 +94,7 @@ export const setRole = (token) => {
     JWT = userExpert?.access_token;
     transPass = "isTransPasswordCreated3";
     userAxios = expertInstance;
+    roleName = userExpert?.role?.roleName;
     expertInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
 
@@ -98,6 +102,7 @@ export const setRole = (token) => {
     role,
     JWT,
     transPass,
+    roleName,
     axios: userAxios,
     locPath: window.location.pathname.split("/")[1].trim(),
   };

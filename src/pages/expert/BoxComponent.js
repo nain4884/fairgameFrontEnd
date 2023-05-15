@@ -106,7 +106,7 @@ const BoxComponent = ({
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <h4 style={{ textTransform: "uppercase" }}>
+          <h4 style={{ textTransform: "uppercase", color:"#FFF" }}>
             {livestatus ? "SUSPENDED" : status}
           </h4>
         </Box>

@@ -10,6 +10,7 @@ export function ThisUseModal() {
   const handleClose = () => {
     setOpen(false);
   };
+  
   return (
     <>
       {open && <Box p={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, left: 0, backgroundColor: '#00000069', borderRadius: '15px', height: '100vh', width: '100vw', zIndex:9999 }}>

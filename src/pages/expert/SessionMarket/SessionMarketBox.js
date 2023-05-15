@@ -256,6 +256,7 @@ const SessionMarketBox = ({
                 fontSize: "12px",
                 textAlign: "center",
                 lineHeight: "11px",
+                color:"#FFF"
               }}
             >
               {newData?.betStatus === 2

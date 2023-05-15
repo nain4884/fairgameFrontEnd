@@ -29,7 +29,7 @@ const inputContainerStyle = {
   border: "1px solid #DEDEDE",
 };
 const AddAccount = () => {
-  const { axios, locPath, JWT } = setRole();
+  const { axios, locPath, JWT ,roleName} = setRole();
   const navigate = useNavigate();
   const { userWallet, allRole } = useSelector((state) => state.auth);
   const [roleOfUser, setRoleOfUser] = useState("");
@@ -103,7 +103,7 @@ const AddAccount = () => {
     setShowSuccessModal(val);
   };
   const [uplineP, setUplineP] = useState(0);
-  const { roleName } = allRole.find((role) => role.id === currentUser.roleId);
+  // const { roleName } = allRole?.find((role) => role?.id === currentUser?.roleId);
   const setTypeForAccountType = () => {
     const typo =
       roleName === "fairGameWallet"

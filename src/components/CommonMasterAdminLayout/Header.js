@@ -39,7 +39,11 @@ import { setRole } from "../../newStore";
 import { removeSocket } from "../helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
-import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
+import {
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
+} from "../../newStore/reducers/matchDetails";
+import { toast } from "react-toastify";
 var roleName = "";
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -54,7 +58,8 @@ const CustomHeader = ({}) => {
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
-  const { axios, role, JWT } = setRole();
+  const { axios, role, JWT, transPass, roleName } = setRole();
+
   const { userWallet, allRole } = useSelector((state) => state.auth);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const nav =
@@ -74,19 +79,25 @@ const CustomHeader = ({}) => {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-          dispatch(removeSelectedMatch());
-          dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates())
-          dispatch(logout({ roleType: "role2" }));
-          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-          if (nav === "admin") {
-            dispatch(logout({ roleType: "role1" }));
-            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-            navigate("/admin");
+
+          const { data } = await axios.get("auth/logout");
+          if (data?.data === "success logout") {
+            dispatch(removeSelectedMatch());
+            dispatch(removeCurrentUser());
+            dispatch(removeManualBookMarkerRates());
+            dispatch(logout({ roleType: "role2" }));
+            setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+            if (nav === "admin") {
+              navigate("/admin");
+
+              dispatch(logout({ roleType: "role1" }));
+              setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+            }
+            navigate(`/${nav}`);
+            removeSocket();
+          } else {
+            toast.error("Something went wrong");
           }
-          await axios.get("auth/logout");
-          navigate(`/${nav}`);
-          removeSocket();
         }
       };
     }
@@ -124,11 +135,11 @@ const CustomHeader = ({}) => {
     ) {
       dispatch(setActiveAdmin(2));
     }
-    setIsTransPasswordExist(userWallet?.isTransPasswordCreated);
+    setIsTransPasswordExist(transPass);
     if (JWT) {
       getUserDetail();
     }
-  }, [location, window.location.pathname, userWallet, JWT]);
+  }, [location, window.location.pathname, JWT, transPass]);
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
@@ -340,14 +351,14 @@ const CustomHeader = ({}) => {
             setMobileOpen={setMobileOpen}
           />
         }
-        {isTransPasswordExist === "false" &&
-          !/createTransPassword/.test(window.location.pathname) && (
-            <ThisUseModal
-              message="You don't have transaction password"
-              buttonMessage="Create Transaction Password"
-              navigateTo="createTransPassword"
-            />
-          )}
+
+        {!isTransPasswordExist && (
+          <ThisUseModal
+            message="You don't have transaction password"
+            buttonMessage="Create Transaction Password"
+            navigateTo="createTransPassword"
+          />
+        )}
       </AppBar>
       <DropdownMenu1
         nav={nav}
@@ -480,19 +491,24 @@ const DropdownMenu = ({ anchorEl, open, handleClose, nav }) => {
     handleClose();
   });
   const logoutProcess = async () => {
-    dispatch(removeCurrentUser());
-    dispatch(logout({ roleType: "role2" }));
-    dispatch(removeManualBookMarkerRates())
-    dispatch(removeSelectedMatch());
-    setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-    if (nav === "admin") {
-      dispatch(logout({ roleType: "role1" }));
-      setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+    const { data } = await axios.get("auth/logout");
+    if (data?.data === "success logout") {
+      dispatch(removeCurrentUser());
+      dispatch(logout({ roleType: "role2" }));
+      dispatch(removeManualBookMarkerRates());
+      dispatch(removeSelectedMatch());
+      setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+      if (nav === "admin") {
+        navigate("/admin");
+        dispatch(logout({ roleType: "role1" }));
+        setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+      }
+      navigate(`/${nav}`);
+      handleClose();
+      removeSocket();
+    } else {
+      toast.error("Something went wrong");
     }
-    await axios.get("auth/logout");
-    navigate(`/${nav}`);
-    handleClose();
-    removeSocket();
   };
   const menutItems = [
     { title: "Secure Auth Verification" },

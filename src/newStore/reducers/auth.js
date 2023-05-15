@@ -32,7 +32,7 @@ export const auth = createSlice({
         state.user = body;
       }
     },
-    
+
     logout: (state, action) => {
       switch (action?.payload?.roleType) {
         case "role1":
@@ -66,10 +66,27 @@ export const auth = createSlice({
     setAllRoles: (state, action) => {
       state.allRole = action.payload;
     },
+    setUpdatedTransPasswords: (state, action) => {
+      const role = action?.payload?.role?.roleName.trim();
+      if (["admin", "master", "superAdmin", "superMaster"].includes(role)) {
+        const body = {
+          ...state.userAdmin,
+          isTransPasswordCreated: true,
+        };
+        console.log("UpdatedTrans", body);
+        state.userAdmin = body;
+      } else if (["fairGameWallet", "fairGameAdmin"].includes(role)) {
+        state.userWallet = {
+          ...state.userWallet,
+          isTransPasswordCreated: true,
+        };
+      }
+    },
   },
 });
 
-export const { signIn, logout, setAllRoles } = auth.actions;
+export const { signIn, logout, setAllRoles, setUpdatedTransPasswords } =
+  auth.actions;
 
 // export const selectCount = state => state.counter;
 

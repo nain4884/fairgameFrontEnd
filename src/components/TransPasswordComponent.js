@@ -1,14 +1,13 @@
 import { CustomHeader, Input } from ".";
 import { Box, Typography } from "@mui/material";
 import { eye } from "../assets";
-import { useEffect, useState } from "react";
-import axios from "../axios/axios";
-import masterAxios from "../axios/masterAxios";
-import adminAxios from "../axios/adminAxios";
-import expertAxios from "../axios/expertAxios";
-import userAxios from "../axios/userAxios";
+import { useCallback, useEffect, useState } from "react";
+
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 import { setRole } from "../newStore";
+import { useDispatch } from "react-redux";
+import { setUpdatedTransPasswords } from "../newStore/reducers/auth";
+import { toast } from "react-toastify";
 
 export const TransPassword = () => {
   return (
@@ -45,6 +44,7 @@ export const TransPasswordComponent = () => {
 };
 
 export const TransPassComp = ({ onCancel }) => {
+  const dispatch = useDispatch();
   const [passwordDetail, setPasswordDetail] = useState({
     1: { field: "transPassword", val: "" },
     2: { field: "confirmtransPassword", val: "" },
@@ -54,18 +54,10 @@ export const TransPassComp = ({ onCancel }) => {
     2: { field: "confirmtransPassword", val: false },
   });
   const [responseError, setResponseError] = useState();
-  const [roleOfUser, setRoleOfUser] = useState("");
-  const [transPassoword, setTransPassword] = useState("");
-  let { role, transPass } = setRole();
-  useEffect(() => {
-    setRoleOfUser(role);
-    setTransPassword(transPass);
-  }, [role, transPass]);
-  const generateTrandPassword = async () => {
-    let payload = {
-      transPassword: "",
-      confirmtransPassword: "",
-    };
+
+  let { axios, roleName } = setRole();
+
+  const generateTrandPassword = useCallback(async () => {
     if (
       !error[1].val &&
       !error[2].val &&
@@ -73,24 +65,27 @@ export const TransPassComp = ({ onCancel }) => {
       passwordDetail[2].val !== ""
     ) {
       try {
-        let response;
-        payload = {
-          ...payload,
+        const payload = {
           transPassword: passwordDetail[1].val,
           confirmtransPassword: passwordDetail[2].val,
         };
-        await axios.post(`/fair-game-wallet/savetransPassword`, payload);
-        const { data } = response;
-        if (data.message == "Transaction password update successfully.") {
-          localStorage.setItem(transPassoword, true);
-          window.location.reload();
+        const { data } = await axios.post(
+          `/fair-game-wallet/savetransPassword`,
+          payload
+        );
+
+        if (data.message === "Transaction password update successfully.") {
+          toast.success("Transaction saved successfully");
+
+          dispatch(setUpdatedTransPasswords(roleName));
+          onCancel();
         }
       } catch (e) {
         console.log(e);
         setResponseError(e.response.data.message);
       }
     }
-  };
+  }, [axios, error, passwordDetail]);
   return (
     <>
       <Typography
@@ -151,6 +146,8 @@ export const TransPassComp = ({ onCancel }) => {
           setError={setError}
           error={error}
           place={2}
+          onFocusOut={doSendErrorForPassword}
+          toFoucs={true}
         />
         {passwordDetail[1].val !== passwordDetail[2].val && (
           <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>
@@ -159,6 +156,7 @@ export const TransPassComp = ({ onCancel }) => {
           sx={{
             height: "50px",
             display: "flex",
+            cursor: "pointer",
             justifyContent: "center",
             alignItems: "center",
             mx: "auto",
@@ -172,9 +170,7 @@ export const TransPassComp = ({ onCancel }) => {
           <Typography
             sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
             color={"white"}
-            onClick={() => {
-              generateTrandPassword();
-            }}
+            onClick={generateTrandPassword}
           >
             Generate Password
           </Typography>
@@ -190,6 +186,7 @@ export const TransPassComp = ({ onCancel }) => {
             marginBottom: "40px",
             width: "80%",
             background: "#0B4F26",
+            cursor: "pointer",
             borderRadius: "5px",
           }}
         >
