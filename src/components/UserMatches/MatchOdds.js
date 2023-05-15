@@ -210,11 +210,12 @@ const MatchOdds = ({
   dataProfit,
   sessionExposer,
   sessionBets,
+  manualBookmakerData
 }) => {
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
-
+  // console.log("dddd 11:", manualBookmakerData);
   useEffect(() => {
     if (data) {
       const matchOdds = data?.bettings?.filter(
@@ -225,7 +226,7 @@ const MatchOdds = ({
     }
   }, [data]);
 
-  const teamRates =manualBookMarkerRates?.length>0 ? manualBookMarkerRates?.find(
+  const teamRates = manualBookMarkerRates?.length > 0 ? manualBookMarkerRates?.find(
     (v) => v?.matchId === data?.id
   ) : { teamA: 0, teamB: 0 };
   // { console.warn("dataProfit :", dataProfit) }
@@ -269,7 +270,7 @@ const MatchOdds = ({
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-            data?.bookmakerLive[0]?.betStatus === 0
+              data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }
@@ -301,6 +302,7 @@ const MatchOdds = ({
           max={data?.bookmaker_manual_max_bet || 0}
           title={"Manual Bookmaker"}
           typeOfBet={"MANUAL BOOKMAKER"}
+          matchOddsData={manualBookmakerData}
         />
       )}
 

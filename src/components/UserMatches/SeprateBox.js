@@ -212,7 +212,7 @@ const SeprateBox = ({
               >
                 {value}
               </Typography>
-              <Typography
+              {typeOfBet != "MANUAL BOOKMAKER" ? <Typography
                 sx={{
                   fontSize: "8px",
                   marginTop: -0.4,
@@ -222,7 +222,7 @@ const SeprateBox = ({
                 }}
               >
                 {value2}
-              </Typography>
+              </Typography> : null}
             </Box>
           )}
           {lock && (
