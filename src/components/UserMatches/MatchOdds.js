@@ -215,7 +215,8 @@ const MatchOdds = ({
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
-  // console.log("dddd 11:", manualBookmakerData);
+  const [matchOddRateLive, setMatchOddRateLive] = useState(false);
+
   useEffect(() => {
     if (data) {
       const matchOdds = data?.bettings?.filter(
@@ -223,12 +224,14 @@ const MatchOdds = ({
       );
       setMatchOddsData(matchOdds);
       setBookMakerRateLive(data?.bookMakerRateLive);
+      setMatchOddRateLive(data?.matchOddRateLive);
     }
   }, [data]);
 
-  const teamRates = manualBookMarkerRates?.length > 0 ? manualBookMarkerRates?.find(
-    (v) => v?.matchId === data?.id
-  ) : { teamA: 0, teamB: 0 };
+  const teamRates =
+    manualBookMarkerRates?.length > 0
+      ? manualBookMarkerRates?.find((v) => v?.matchId === data?.id)
+      : { teamA: 0, teamB: 0 };
   // { console.warn("dataProfit :", dataProfit) }
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -240,11 +243,7 @@ const MatchOdds = ({
       {data?.apiMatchActive && (
         <Odds
           showDely={true}
-          showBox={
-            matchOddsData?.length > 0 && matchOddsData[0]?.betStatus === 0 || data?.bettings?.length === 0
-              ? true
-              : false
-          }
+          showBox={!matchOddRateLive}
           newData={data}
           data={
             matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []

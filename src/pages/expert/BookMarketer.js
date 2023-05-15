@@ -11,11 +11,20 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import ResultComponent from "../../components/ResultComponent";
 import Result from "./Result";
+import { setRole } from "../../newStore";
+import { toast } from "react-toastify";
 
-const BookMarketer = ({ currentMatch, socket, liveData }) => {
+const BookMarketer = ({
+  currentMatch,
+  socket,
+  liveData,
+  matchOdds,
+  setCurrentMatch,
+}) => {
   // const { bookmakerLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const [newMatchOdds, setNewMatchOdds] = useState(matchOdds);
   const [live, setLive] = useState(currentMatch?.bookMakerRateLive);
   const [visible, setVisible] = useState(false);
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
@@ -23,6 +32,55 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
     manualBookMarkerRates?.length > 0
       ? manualBookMarkerRates?.find((v) => v?.matchId === currentMatch?.id)
       : { teamA: 0, teamB: 0 };
+
+  const { axios } = setRole();
+
+  useEffect(() => {
+    if (matchOdds) {
+      setNewMatchOdds(matchOdds);
+    }
+  }, [matchOdds]);
+  const activateMatchOdds = async (val, id) => {
+    // alert(5555)
+    try {
+      const { data } = await axios.post("/betting/addBetting", {
+        match_id: currentMatch?.id,
+        betStatus: val,
+        matchType: currentMatch?.gameType,
+        sessionBet: false,
+      });
+      // setNewMatchOdds(data?.data);
+      // if (data?.data?.id && id !== "") {
+      //   const updatedBettings = currentMatch?.bettings?.map((betting) => {
+      //     if (betting?.id === data?.data?.id) {
+      //       // If the betting's ID matches the given `id`, update the `betStatus` value
+      //       return {
+      //         ...val,
+      //       };
+      //     }
+      //     // Otherwise, return the original betting object
+      //     return betting;
+      //   });
+      //   setCurrentMatch((prevState) => ({
+      //     ...prevState,
+      //     bettings: updatedBettings,
+      //   }));
+      // } else {
+      //   const updatedBettings = currentMatch?.bettings?.map((betting) => {
+      //     return {
+      //       ...val,
+      //     };
+      //   });
+      //   setCurrentMatch((prevState) => ({
+      //     ...prevState,
+      //     bettings: updatedBettings,
+      //   }));
+      // }
+    } catch (err) {
+      toast.error(err?.message);
+      console.log(err?.response?.data?.message, "err");
+    }
+  };
   return (
     <Box
       sx={{
@@ -106,11 +164,20 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
           {!live ? (
             <SmallBox
               onClick={() => {
-                socket.emit("bookMakerRateLive", {
-                  matchId: currentMatch?.id,
-                  bookMakerLive: true,
-                });
-                setLive(true);
+                if (newMatchOdds?.id) {
+                  socket.emit("bookMakerRateLive", {
+                    matchId: currentMatch?.id,
+                    bookMakerLive: true,
+                  });
+                  setLive(true);
+                } else {
+                  activateMatchOdds(1, "");
+                  socket.emit("bookMakerRateLive", {
+                    matchId: currentMatch?.id,
+                    bookMakerLive: true,
+                  });
+                  setLive(true);
+                }
               }}
               width={"80px"}
               title={"Go Live"}
@@ -236,18 +303,14 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
         <BoxComponent
           teamRates={teamRates?.teamA}
           teamImage={currentMatch?.teamA_Image}
-          livestatus={liveData?.status==="SUSPENDED" ? true : false}
-          data={
-            liveData?.runners?.length > 0 
-              ? liveData?.runners[0]
-              : []
-          }
+          livestatus={liveData?.status === "SUSPENDED" ? true : false}
+          data={liveData?.runners?.length > 0 ? liveData?.runners[0] : []}
           lock={liveData?.runners?.length > 0 ? false : true}
           name={currentMatch?.teamA}
         />
         <Divider />
         <BoxComponent
-         livestatus={liveData?.status==="SUSPENDED" ? true : false}
+          livestatus={liveData?.status === "SUSPENDED" ? true : false}
           teamRates={teamRates?.teamB}
           teamImage={currentMatch?.teamB_Image}
           lock={liveData?.runners?.length > 0 ? false : true}
@@ -260,7 +323,7 @@ const BookMarketer = ({ currentMatch, socket, liveData }) => {
             <Divider />
             <BoxComponent
               color={"#FF4D4D"}
-              livestatus={liveData?.status==="SUSPENDED" ? true : false}
+              livestatus={liveData?.status === "SUSPENDED" ? true : false}
               teamImage={null}
               lock={liveData?.runners?.length > 0 ? false : true}
               name={currentMatch?.teamC}

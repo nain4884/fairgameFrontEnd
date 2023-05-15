@@ -167,6 +167,26 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           //   }));
           // }
         }
+        if (packet.data[0] === "matchOddRateLive") {
+          // Bookmaker Market live and stop disable condition
+          const value = packet.data[1];
+          setCurrentMatch((prev) => {
+            if (prev?.id === value?.matchId) {
+              return {
+                ...prev,
+                matchOddRateLive: value?.matchOddLive,
+              };
+            }
+            return prev;
+          });
+
+          // if (value?.matchId === currentMatch?.id) {
+          //   setCurrentMatch((prev) => ({
+          //     ...prev,
+          //     bookMakerRateLive: value?.bookMakerLive,
+          //   }));
+          // }
+        }
 
         if (packet.data[0] === "match_bet") {
           const data = packet.data[1];
@@ -319,7 +339,9 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             dispatch(setCurrentUser(user));
             setCurrentMatch((currentMatch) => {
               const bettingToUpdate = currentMatch?.bettings?.find(
-                (betting) => betting?.id === value?.betId && currentMatch?.id === value?.match_id
+                (betting) =>
+                  betting?.id === value?.betId &&
+                  currentMatch?.id === value?.match_id
               );
               if (bettingToUpdate) {
                 bettingToUpdate.profitLoss = null;

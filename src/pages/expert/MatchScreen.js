@@ -165,6 +165,17 @@ const MatchScreen = () => {
             setCurrentMatch(body);
           }
         }
+
+        if (packet.data[0] === "matchOddRateLive") {
+          const e = packet.data[1];
+          if (e?.matchId === currentMatch?.id) {
+            const body = {
+              ...currentMatch,
+              matchOddRateLive: e?.matchOddLive,
+            };
+            setCurrentMatch(body);
+          }
+        }
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
           try {
@@ -415,7 +426,7 @@ const MatchScreen = () => {
     }
   }
 
-  console.log('IObets', IObets)
+  // console.log('IObets', IObets)
   return (
     <Background>
       {/* <CHeader /> */}
@@ -480,7 +491,11 @@ const MatchScreen = () => {
                 <SessionMarket
                   setIObtes={(val) => {
                     setIObtes((IObets) =>
-                      IObets?.filter((v) => v?.bet_id !== val?.betId && val?.match_id===v?.match_id)
+                      IObets?.filter(
+                        (v) =>
+                          v?.bet_id !== val?.betId &&
+                          val?.match_id === v?.match_id
+                      )
                     );
                   }}
                   title={"Session Market"}
@@ -525,6 +540,7 @@ const MatchScreen = () => {
         >
           {currentMatch?.apiMatchActive && (
             <MatchOdds
+              socket={socket}
               matchOdds={
                 [...currentMatch?.bettings].filter(
                   (v) => v?.sessionBet === false
@@ -539,6 +555,12 @@ const MatchScreen = () => {
           {currentMatch?.apiBookMakerActive && (
             <BookMarketer
               socket={socket}
+              setCurrentMatch={setCurrentMatch}
+              matchOdds={
+                [...currentMatch?.bettings].filter(
+                  (v) => v?.sessionBet === false
+                )[0] || null
+              }
               currentMatch={currentMatch}
               liveData={bookmakerLivedata}
             />
