@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Divider from "../../../components/helper/Divider";
 import BoxComponent from "../BoxComponent";
 import { Box, Typography, useMediaQuery } from "@mui/material";
@@ -18,6 +18,7 @@ const MatchOdds = ({
   matchOdds,
   setCurrentMatch,
   matchOddsLive,
+  socket,
 }) => {
   // const { matchOddsLive } = useSelector((state) => state?.matchDetails);
   const { axios } = setRole();
@@ -25,57 +26,41 @@ const MatchOdds = ({
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [visible, setVisible] = useState(false);
   const [newMatchOdds, setNewMatchOdds] = useState(matchOdds);
-  const [stlive, setLive] = useState(
-    newMatchOdds === null || newMatchOdds?.betStatus === 0 ? false : true
-  );
+  const [stlive, setLive] = useState(currentMatch?.matchOddRateLive);
 
-  const { manualBookMarkerRates } = useSelector(
-    (state) => state?.matchDetails
-  );
-  const teamRates=manualBookMarkerRates?.length>0 ? manualBookMarkerRates?.find(v=>v?.matchId===currentMatch?.id) : {teamA : 0 ,teamB:0}
-  
+  const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
+  const teamRates =
+    manualBookMarkerRates?.length > 0
+      ? manualBookMarkerRates?.find((v) => v?.matchId === currentMatch?.id)
+      : { teamA: 0, teamB: 0 };
+
+      
+  useEffect(() => {
+    if (matchOdds) {
+      setNewMatchOdds(matchOdds);
+    }
+  }, [matchOdds]);
   const activateMatchOdds = async (val, id) => {
-    // alert(5555)
     try {
-      if (val === 0) {
-        setLive(false);
-      } else {
-        setLive(true);
-      }
+      setLive(true);
+
       const { data } = await axios.post("/betting/addBetting", {
         match_id: currentMatch?.id,
         betStatus: val,
         matchType: currentMatch?.gameType,
-        id: id,
       });
-      setNewMatchOdds(data?.data);
 
-      if (data?.data?.id && id !== "") {
-        const updatedBettings = currentMatch?.bettings?.map((betting) => {
-          if (betting?.id === data?.data?.id) {
-            // If the betting's ID matches the given `id`, update the `betStatus` value
-            return {
-              ...val,
-            };
-          }
-          // Otherwise, return the original betting object
-          return betting;
-        });
-        setCurrentMatch((prevState) => ({
-          ...prevState,
-          bettings: updatedBettings,
-        }));
-      } else {
-        const updatedBettings = currentMatch?.bettings?.map((betting) => {
-          return {
-            ...val,
-          };
-        });
-        setCurrentMatch((prevState) => ({
-          ...prevState,
-          bettings: updatedBettings,
-        }));
-      }
+      // setCurrentMatch((currentMatch) => {
+      //   const updatedBettings = [...currentMatch?.bettings]; // Create a copy of the bettings array
+
+      //   updatedBettings.push(data); // Push the response data into the updatedBettings array
+
+      //   return {
+      //     ...currentMatch,
+      //     bettings: updatedBettings,
+      //   };
+      // });
+      // setNewMatchOdds(data?.data);
     } catch (err) {
       toast.error(err?.message);
       console.log(err?.response?.data?.message, "err");
@@ -129,8 +114,13 @@ const MatchOdds = ({
           </Typography>
           <Stop
             onClick={() => {
-              setLive(false);
-              activateMatchOdds(0, newMatchOdds?.id);
+              if (newMatchOdds?.id) {
+                setLive(false);
+                socket.emit("matchOddRateLive", {
+                  matchId: currentMatch?.id,
+                  matchOddLive: false,
+                });
+              }
             }}
           />
         </Box>
@@ -163,8 +153,12 @@ const MatchOdds = ({
           {!stlive && (
             <SmallBox
               onClick={() => {
-                if (currentMatch?.bettings.length > 0) {
-                  activateMatchOdds(1, newMatchOdds?.id);
+                if (newMatchOdds?.id) {
+                  socket.emit("matchOddRateLive", {
+                    matchId: currentMatch?.id,
+                    matchOddLive: true,
+                  });
+                  setLive(true);
                 } else {
                   activateMatchOdds(1, "");
                 }
@@ -176,7 +170,11 @@ const MatchOdds = ({
           {stlive && (
             <SmallBox
               onClick={() => {
-                activateMatchOdds(0, newMatchOdds?.id);
+                socket.emit("matchOddRateLive", {
+                  matchId: currentMatch?.id,
+                  matchOddLive: false,
+                });
+                setLive(false);
               }}
               title={"Live"}
             />
@@ -295,9 +293,8 @@ const MatchOdds = ({
       />
       <Divider />
       <BoxComponent
-       teamRates={teamRates?.teamB}
+        teamRates={teamRates?.teamB}
         lock={matchOddsLive?.runners?.length > 0 ? false : true}
-
         teamImage={currentMatch?.teamB_Image}
         data={
           matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[1] : []
