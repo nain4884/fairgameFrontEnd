@@ -464,6 +464,32 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "updateRate_user") {
+          const value = packet.data[1];
+          try {
+            setManualBookmakerData(currentMatches => {
+              const updatedMatch = {
+                ...currentMatches[0],
+                teamA_Back: value?.teamA_Back,
+                teamB_Back: value?.teamB_Back,
+                teamC_Back: value?.teamC_Back
+              };
+
+              // Create a new array with the updated match object
+              const updatedMatches = [
+                ...currentMatches.slice(0, 0),
+                updatedMatch,
+                ...currentMatches.slice(0 + 1)
+              ];
+
+              // Return the new array as the updated state
+              return updatedMatches;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
       };
     }
 
