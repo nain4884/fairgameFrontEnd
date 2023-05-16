@@ -9,9 +9,9 @@ import MatchOdds from "../../pages/expert/MatchOdds/MatchOdds";
 import { SocketContext } from "../../context/socketContext";
 import Axios from "axios";
 import { formatNumber } from "../helper/helper";
-import moment from "moment";
+import moment from "moment-timezone";
 let matchOddsCount = 0;
-const Odds = ({ upcoming, onClick, top, blur, match }) => {
+const Odds = ({ onClick, top, blur, match }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [matchOddsLive, setMatchOddsLive] = useState([]);
@@ -27,10 +27,10 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
   });
 
   function calculateTimeLeft() {
-    const targetDate = new Date(match?.startAt);
-    const difference = targetDate.getTime() - new Date().getTime();
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const targetDate = moment(match?.startAt).tz(timezone);
+    const difference = targetDate.diff(moment().tz(timezone), "milliseconds");
     let timeLeft = {};
-
     if (difference > 0) {
       timeLeft = {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -42,6 +42,8 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
 
     return timeLeft;
   }
+
+  const upcoming = (timeLeft?.hours || timeLeft?.days) > 1 ? true : false;
 
   const activateLiveMatchMarket = async () => {
     try {
@@ -108,7 +110,7 @@ const Odds = ({ upcoming, onClick, top, blur, match }) => {
             background: "rgba(0,0,0,0.5)",
             width: "100%",
             right: 0,
-            height: "144px",
+            height: "100%",
           }}
         ></Box>
       )}

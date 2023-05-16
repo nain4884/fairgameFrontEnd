@@ -34,6 +34,7 @@ const PlaceBet = ({
   typeOfBet,
   selectedValue,
   mainData,
+  betType,
   rates,
 }) => {
   const [defaultValue, setDefaultValue] = useState("");
@@ -62,7 +63,7 @@ const PlaceBet = ({
 
   const getLatestBetAmount = async (value, newData) => {
     try {
-      const title = season ? (isBack ? "no" : "yes") : isBack ? "back" : "lay";
+      const title = season ? betType : isBack ? "back" : "lay";
       const bet_type = title;
 
       var body = {

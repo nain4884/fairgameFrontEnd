@@ -7,12 +7,12 @@ const RunsBox = ({ item ,setData}) => {
   return (
     <Box
       sx={{
-        minHeight: "100px",
+        height: "252px",
         flexDirection: "column",
         borderRadius: "10px",
         backgroundColor: "white",
         display: "flex",
-        width: "25%",
+        width: "22%",
         marginX: ".5vw",
         border: "3px solid #0B4F26",
       }}

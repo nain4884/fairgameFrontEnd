@@ -68,7 +68,6 @@ const AllBets = ({ tag, submit, allBetRates }) => {
     }
   }, [allBetRates]);
 
-  console.log('allBetRates', allBetRates)
   return (
     <Box
       sx={{
@@ -133,7 +132,6 @@ const AllBets = ({ tag, submit, allBetRates }) => {
         {newData?.length > 0 &&
           newData?.map((i, k) => {
             const num = k + 1;
-            console.log('newData,i,k', newData,i,k)
             return (
               <div style={{ display: "flex", position: "relative" }}>
                 <Box
@@ -365,7 +363,6 @@ const HeaderRow = ({ tag }) => {
   );
 };
 const SmallBox = ({ item }) => {
-  console.log('first', item)
   return (
     <Box
       sx={{
@@ -433,7 +430,6 @@ const LargeBox = ({ item, k }) => {
   );
 };
 const Row = ({ values, index }) => {
-  console.log("value", values)
   return (
     <Box sx={{ width: "100%", display: "flex" }}>
       {values?.map((item, k) => {

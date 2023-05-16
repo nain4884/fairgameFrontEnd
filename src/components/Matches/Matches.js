@@ -7,7 +7,7 @@ import { setAllBetRate, setMatchOddsLive, setSelectedMatch, setSessionOddsLive }
 import { setRole } from "../../newStore";
 import constants from "../helper/constants";
 
-const MatchesComponent = ({ doNavigateWithState }) => {
+const MatchesComponent = ({ doNavigateWithState,selected }) => {
   // const classes=useStyle()
   const [matchData, setMatchData] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
@@ -18,13 +18,23 @@ const MatchesComponent = ({ doNavigateWithState }) => {
 
   useEffect(() => {
     getAllMatch();
-  }, [currentPage, pageCount]);
+  }, [currentPage, pageCount,selected]);
 
   async function getAllMatch() {
     try {
       let { data } = await axios.get(
-        `/game-match/getAllMatch?isActveMatch=1&bets=0&pageNo=${currentPage}&pageLimit=${pageLimit}`
+        `/game-match/getAllMatch`,
+        {
+          params: {
+            isActiveMatch: 1,
+            bets: 0,
+            pageNo: currentPage,
+            pageLimit: pageLimit,
+            gameType: selected==="CRICKET" ? "cricket":""
+          }
+        }
       );
+      
       if (data.length > 0) {
         setMatchData(data[0]);
         setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
@@ -51,6 +61,7 @@ const MatchesComponent = ({ doNavigateWithState }) => {
               doNavigateWithState(match.id);
             }}
             top={true}
+           
             blur={false}
             match={match}
           />

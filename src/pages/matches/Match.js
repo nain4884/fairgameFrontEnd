@@ -9,7 +9,7 @@ import MatchesComponent from '../../components/Matches/Matches';
 import { HourGlass } from '../../assets';
 import { memo, useEffect } from 'react';
 
-const Match = ({activeTab,setSelected}) => {
+const Match = ({selected}) => {
     const [id, setId] = useState("");
     const navigate = useNavigate();
     const theme = useTheme();
@@ -35,10 +35,11 @@ const Match = ({activeTab,setSelected}) => {
               alignItems: "flex-start",
             }}
           >
-            <EventListing selected={activeTab} setSelected={setSelected} />
+            <EventListing selected={selected}  />
             <div style={{ height: "1vh" }} />
-            {(activeTab == "CRICKET" || activeTab == "INPLAY") && (
+            {(selected === "CRICKET" || selected === "INPLAY") && (
               <MatchesComponent
+              selected={selected}
                 // onClick={() => {
                 //   dispatch(setActive("CRICKET"));
                 //   navigate("/home",{state:id});
@@ -48,7 +49,7 @@ const Match = ({activeTab,setSelected}) => {
                 doNavigateWithState={doNavigateWithState}
               />
             )}
-            {activeTab != "CRICKET" && activeTab != "INPLAY" && (
+            {selected !== "CRICKET" && selected !== "INPLAY" && (
               <Box
                 style={{
                   display: "flex",
@@ -76,15 +77,16 @@ const Match = ({activeTab,setSelected}) => {
           </Box>
         ) : (
           <Box sx={{ overflowX: "hidden", minHeight: "100vh" }}>
-            <EventListing selected={activeTab} setSelected={setSelected} />
-            {(activeTab == "CRICKET" || activeTab == "INPLAY") && (
+            <EventListing selected={selected}  />
+            {(selected === "CRICKET" || selected === "INPLAY") && (
               <MatchesComponent
                 doNavigateWithState={doNavigateWithState}
                 setMatchId={doSetId}
+                selected={selected}
                 macthId={id}
               />
             )}
-            {activeTab != "CRICKET" && activeTab != "INPLAY" && (
+            {selected !== "CRICKET" && selected !== "INPLAY" && (
               <Box
                 style={{
                   display: "flex",

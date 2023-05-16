@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { CustomHeader, SideBar } from "../../components";
 
 import { useMediaQuery, useTheme } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
@@ -19,27 +19,32 @@ import { AuthContext } from "../../Authprovider";
 import Home from "./Home";
 import Match from "./Match";
 import { memo } from "react";
+import { SocketContext } from "../../context/socketContext";
 
 const Matches = () => {
   const [visible, setVisible] = useState(false);
-  const [selected, setSelected] = useState("CRICKET");
-  const [open, handleClose] = useState(false);
-  const [flag, setFlag] = useState(false);
+  const location = useLocation();
+  const selected = location.state?.activeTab || "CRICKET";
+  const { socket } = useContext(SocketContext);
   const theme = useTheme();
-  const navigate = useNavigate();
+
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const { activeTab } = useSelector((state) => state.betPlace);
-  const { tokenUser } = useContext(AuthContext);
 
   useEffect(() => {
-    if (flag) {
-      navigate("/matches");
-    } else {
-      setFlag(true);
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+        if (packet.data[0] === "newMatchAdded") {
+          window.location.reload();
+        }
+      };
     }
-  }, [activeTab]);
 
-  // console.log(activeTab, "activeTab");
+    // if (socket && !socket.connected) {
+    //   alert("Socket is not connected. Reconnecting...");
+    //   socket.connect();
+    // }
+  }, [socket]);
 
   const ChangeButtonValue = () => {
     return (
@@ -441,19 +446,17 @@ const Matches = () => {
             <SideBar />
             {window.location.pathname === "/matches" && (
               <Match
-                activeTab={activeTab}
+                selected={selected}
                 setVisible={setVisible}
-                setSelected={setSelected}
-                handleClose={handleClose}
+                // handleClose={handleClose}
               />
             )}
             {window.location.pathname === "/matchDetail" && (
               <Home
-                activeTab={activeTab}
+                selected={selected}
                 setVisible={setVisible}
                 visible={visible}
-                setSelected={setSelected}
-                handleClose={handleClose}
+                // handleClose={handleClose}
               />
             )}
           </Box>

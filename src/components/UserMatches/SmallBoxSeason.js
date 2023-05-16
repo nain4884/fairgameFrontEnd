@@ -51,9 +51,9 @@ const SmallBoxSeason = ({ color, allBetsData ,sessionBets ,totalAmount}) => {
           Total Amount
         </Typography>
         <Typography
-          sx={{ fontSize: "10px", fontWeight: "bold", color: "#46e080" }}
+          sx={{ fontSize: "10px", fontWeight: "bold", color: "#FF4D4D" }}
         >
-          {totalAmount}
+          -{totalAmount}
         </Typography>
       </Box>
     </Box>

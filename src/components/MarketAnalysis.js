@@ -270,10 +270,6 @@ const MarketAnalysis = () => {
   }, [selected]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getAllMatch();
-  }, [currentPage, pageCount]);
-
   async function getAllMatch() {
     try {
       let { data } = await axios.get(
@@ -287,6 +283,10 @@ const MarketAnalysis = () => {
       console.log(e);
     }
   }
+
+  useEffect(() => {
+    getAllMatch();
+  }, [currentPage, pageCount, selected]);
 
   return (
     <Box sx={{ display: "flex", width: "100vw", flexDirection: "column" }}>

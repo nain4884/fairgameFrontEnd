@@ -83,9 +83,7 @@ const MatchScreen = () => {
   }, [localState]);
 
   useEffect(() => {
-    console.log("socket", socket);
     if (socket && socket.connected && currentMatch !== null) {
-      console.log("BookMaker", socket);
       socket.onevent = async (packet) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
@@ -522,6 +520,10 @@ const MatchScreen = () => {
               sx={{
                 display: "flex",
                 flexDirection: "row",
+                flexWrap:"wrap",
+                gap:"12px",
+                height:"524px",
+                overflow:"scroll",
                 marginTop: ".25vw",
               }}
             >

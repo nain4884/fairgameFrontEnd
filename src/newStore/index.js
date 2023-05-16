@@ -71,7 +71,6 @@ export const setRole = (token) => {
   let pattern3 = /expert/;
   let userAxios = userAxiosInstance;
   userAxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  console.log('userAdmin', userAdmin,userAdmin?.role?.roleName)
 
   if (pattern1.test(window.location.pathname)) {
     role = "role1";

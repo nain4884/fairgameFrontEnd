@@ -36,6 +36,7 @@ const SeprateBox = ({
   typeOfBet,
   mainData,
   rates,
+  betType
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -282,7 +283,9 @@ const SeprateBox = ({
                 season={session}
                 back={back}
                 currentMatch={currentMatch}
-                isBack={isBack}
+                isBack={isBack }
+                betType={betType}
+
                 selectedValue={selectedValue}
                 isSessionYes={isSessionYes}
                 type={type}

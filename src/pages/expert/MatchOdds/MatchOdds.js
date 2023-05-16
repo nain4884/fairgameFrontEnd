@@ -198,7 +198,7 @@ const MatchOdds = ({
             teamA={currentMatch?.teamA}
             teamB={currentMatch?.teamB}
             tie={"Tie"}
-            draw={"Draw"}
+            draw={currentMatch?.teamC ? currentMatch?.teamC  : "Draw"}
             onClick={() => {
               setVisible(false);
             }}
@@ -325,7 +325,7 @@ const MatchOdds = ({
           sx={{
             width: "100%",
             position: "absolute",
-            height: "57%",
+            height: "66%",
             bottom: 0,
             background: "rgba(0,0,0,0.5)",
           }}

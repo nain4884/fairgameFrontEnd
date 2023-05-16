@@ -39,7 +39,7 @@ import { GlobalStore } from "../../context/globalStore";
 
 let session = [];
 let matchOddsCount = 0;
-const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
+const Home = ({ selected, setVisible, visible, handleClose }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -87,6 +87,23 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
 
       socket.onevent = async (packet) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+        if (packet.data[0] === "updateMatchActiveStatus") {
+          const value = packet.data[1];
+          matchId = value?.matchId;
+          setCurrentMatch((currentMatch) => {
+            if (currentMatch?.id === matchId) {
+              return {
+                ...currentMatch,
+                apiBookMakerActive: value?.apiBookMakerActive,
+                apiMatchActive: value?.apiMatchActive,
+                apiSessionActive: value?.apiSessionActive,
+                manualBookMakerActive: value?.manualBookMakerActive,
+                manualSessionActive: value?.manualSessionActive,
+              };
+            }
+            return currentMatch;
+          });
+        }
         if (packet.data[0] === "logoutUserForce") {
           dispatch(removeCurrentUser());
           dispatch(removeManualBookMarkerRates());
@@ -391,7 +408,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           // console.log("manualBookmakerData :", manualBookmakerData);
           // alert(value?.betId);
           try {
-            setManualBookmakerData(currentMatches => {
+            setManualBookmakerData((currentMatches) => {
               // alert(currentMatches.id)
               // Find the index of the match that you want to update
               // const index = currentMatches.findIndex(match => match.id === value?.betId);
@@ -404,15 +421,15 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               // Update the match object at the specified index
               const updatedMatch = {
                 ...currentMatches[0],
-                teamA_Back: value?.teamA_Back, // Update the teamA_Back value 
-                teamA_lay: value?.teamA_lay // Update the teamA_lay value 
+                teamA_Back: value?.teamA_Back, // Update the teamA_Back value
+                teamA_lay: value?.teamA_lay, // Update the teamA_lay value
               };
 
               // Create a new array with the updated match object
               const updatedMatches = [
                 ...currentMatches.slice(0, 0),
                 updatedMatch,
-                ...currentMatches.slice(0 + 1)
+                ...currentMatches.slice(0 + 1),
               ];
 
               // Return the new array as the updated state
@@ -425,7 +442,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "teamB_rate_user") {
           const value = packet.data[1];
           try {
-            setManualBookmakerData(currentMatches => {
+            setManualBookmakerData((currentMatches) => {
               // Find the index of the match that you want to update
               // const index = currentMatches.findIndex(match => match.id === value?.betId);
               // if (index === -1) {
@@ -436,15 +453,15 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               // Update the match object at the specified index
               const updatedMatch = {
                 ...currentMatches[0],
-                teamB_Back: value?.teamB_Back, // Update the teamA_Back value 
-                teamB_lay: value?.teamB_lay // Update the teamA_lay value 
+                teamB_Back: value?.teamB_Back, // Update the teamA_Back value
+                teamB_lay: value?.teamB_lay, // Update the teamA_lay value
               };
 
               // Create a new array with the updated match object
               const updatedMatches = [
                 ...currentMatches.slice(0, 0),
                 updatedMatch,
-                ...currentMatches.slice(0 + 1)
+                ...currentMatches.slice(0 + 1),
               ];
 
               // Return the new array as the updated state
@@ -457,7 +474,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "teamC_rate_user") {
           const value = packet.data[1];
           try {
-            setManualBookmakerData(currentMatches => {
+            setManualBookmakerData((currentMatches) => {
               // Find the index of the match that you want to update
               // const index = currentMatches.findIndex(match => match.id === value?.betId);
               // if (index === -1) {
@@ -468,15 +485,15 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
               // Update the match object at the specified index
               const updatedMatch = {
                 ...currentMatches[0],
-                teamC_Back: value?.teamC_Back, // Update the teamA_Back value 
-                teamC_lay: value?.teamC_lay // Update the teamA_lay value 
+                teamC_Back: value?.teamC_Back, // Update the teamA_Back value
+                teamC_lay: value?.teamC_lay, // Update the teamA_lay value
               };
 
               // Create a new array with the updated match object
               const updatedMatches = [
                 ...currentMatches.slice(0, 0),
                 updatedMatch,
-                ...currentMatches.slice(0 + 1)
+                ...currentMatches.slice(0 + 1),
               ];
 
               // Return the new array as the updated state
@@ -489,19 +506,19 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "updateRate_user") {
           const value = packet.data[1];
           try {
-            setManualBookmakerData(currentMatches => {
+            setManualBookmakerData((currentMatches) => {
               const updatedMatch = {
                 ...currentMatches[0],
                 teamA_Back: value?.teamA_Back,
                 teamB_Back: value?.teamB_Back,
-                teamC_Back: value?.teamC_Back
+                teamC_Back: value?.teamC_Back,
               };
 
               // Create a new array with the updated match object
               const updatedMatches = [
                 ...currentMatches.slice(0, 0),
                 updatedMatch,
-                ...currentMatches.slice(0 + 1)
+                ...currentMatches.slice(0 + 1),
               ];
 
               // Return the new array as the updated state
@@ -511,10 +528,8 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             console.log(err?.message);
           }
         }
-
       };
     }
-
 
     // if (socket && !socket.connected) {
     //   alert("Socket is not connected. Reconnecting...");
@@ -662,10 +677,9 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
       let matchOddsDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
-      console.log("matchOddsDataTemp :", JSON.stringify(matchOddsDataTemp))
-      setManualBookmakerData(matchOddsDataTemp)
+      console.log("matchOddsDataTemp :", JSON.stringify(matchOddsDataTemp));
+      setManualBookmakerData(matchOddsDataTemp);
       // console.log("manualBookmakerData:", manualBookmakerData);
-
 
       // let matchSessionDataTemp = response.data?.bettings?.filter(
       //   (element) => element.sessionBet === true
@@ -744,7 +758,6 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
     getAllBetsData();
     getAllBetsData1();
   }, [id]);
-
   return (
     <Box
       sx={{
@@ -757,10 +770,10 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         alignItems: "flex-start",
       }}
     >
-      <EventListing setSelected={setSelected} selected={activeTab} />
+      <EventListing selected={selected} />
       <BetPlaced visible={visible} setVisible={setVisible} />
       {/* {console.warn("currentMatch :", currentMatch)} */}
-      {matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
+      {matchesMobile && (selected === "CRICKET" || selected === "INPLAY") && (
         <div
           style={{
             width: "100%",
@@ -816,7 +829,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           </Box>
         </div>
       )}
-      {!matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
+      {!matchesMobile && (selected === "CRICKET" || selected === "INPLAY") && (
         <Box sx={{ display: "flex", width: "100%" }}>
           <Box
             sx={{
@@ -849,12 +862,12 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-                <SessionBetSeperate allBetsData={sessionBets} mark />
-              )}
+              <SessionBetSeperate allBetsData={sessionBets} mark />
+            )}
           </Box>
         </Box>
       )}
-      {activeTab != "CRICKET" && activeTab != "INPLAY" && (
+      {selected !== "CRICKET" && selected !== "INPLAY" && (
         <Box
           style={{
             display: "flex",

@@ -51,10 +51,10 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
             updatedArray.splice(index, 1, updatedItem);
             return updatedArray;
           } else {
-            if (prev.length < 4) {
+            // if (prev.length < 4) {
               return [...prev, newData];
-            }
-            return prev;
+            // }
+            // return prev;
           }
         } else {
           // handle the case when prev is not an array
