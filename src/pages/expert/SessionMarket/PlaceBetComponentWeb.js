@@ -76,7 +76,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
           display: "flex",
           alignItems: "center",
           top: "4px",
-          '@media screen and (max-width: 1366px)': {
+          '@media screen and (max-width: 1300px)': {
             width: '9vw',
           },
           width: { laptop: "7vw" },
@@ -103,7 +103,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
         >
           <Typography
             sx={{
-              fontSize: { laptop: "10px" },
+              fontSize: { laptop: "8px" },
               fontWeight: "bold",
               textAlign: "center",
               color: "#FF4D4D",

@@ -145,7 +145,7 @@ const SessionMarketBoxLive = ({
           <Typography
             sx={{
               color: "black",
-              fontSize: { laptop: "10px", tablet: "10px", mobile: "8px" },
+              fontSize: { laptop: "8px", tablet: "8px", mobile: "8px" },
               marginLeft: "7px",
               fontWeight: "600",
             }}
@@ -158,7 +158,7 @@ const SessionMarketBoxLive = ({
           sx={{
             position: "absolute",
             top: "5px",
-            right: { laptop: "18vh", tablet: "18vh" },
+            right: { laptop: "12vh", tablet: "12vh" },
             display: "flex",
             zIndex: 100,
           }}
@@ -172,8 +172,8 @@ const SessionMarketBoxLive = ({
                 handleLive(1);
               }}
               textSize={"8px"}
-              width={"80px"}
-              title={"Go Live"}
+              width={"33px"}
+              // title={"Go Live"}
               color={"#FF4D4D"}
             />
           )}
@@ -195,8 +195,8 @@ const SessionMarketBoxLive = ({
                 handleLive(0);
               }}
               textSize={"8px"}
-              width={"80px"}
-              title={"Live"}
+              width={"33px"}
+              // title={"Live"}
             />
           )}
           {!hideResult && (

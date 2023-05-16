@@ -9,7 +9,13 @@ import {
   AppBar,
   Toolbar,
 } from "@mui/material";
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout, Money, MoneyBag } from "../../assets";
@@ -22,7 +28,10 @@ import { ARROWDROPDOWN, Down, DropDown } from "../assets";
 import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "./SideBarAdmin";
 import { logout } from "../../newStore/reducers/auth";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import {
+  removeCurrentUser,
+  setCurrentUser,
+} from "../../newStore/reducers/currentUser";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
@@ -36,14 +45,15 @@ const CustomHeader = ({}) => {
   // const [currentSelected, setCurrentSelected] = useState(0)
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchor, setAnchor] = React.useState(null);
-  const [balance, setBalance] = useState(0);
-  const [fullName, setFullName] = useState("");
-  const { axios,JWT } = setRole();
+  const [balance, setBalance] = useState(currentUser?.current_balance);
+  const [fullName, setFullName] = useState(currentUser?.userName)
+  const { axios, JWT } = setRole();
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
       setBalance(data.data.current_balance);
-      setFullName(data.data.fullName);
+      setFullName(data.data.userName);
+      dispatch(setCurrentUser(data?.data));
     } catch (e) {
       console.log(e);
     }
@@ -51,6 +61,7 @@ const CustomHeader = ({}) => {
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
+
   const location = useLocation();
   useEffect(() => {
     if (location.pathname.includes("market_analysis")) {
@@ -60,7 +71,6 @@ const CustomHeader = ({}) => {
     } else if (location.pathname.includes("live_market")) {
       dispatch(setActiveAdmin(1));
     } else if (
-
       [
         "reports",
         "account_statement",
@@ -544,7 +554,6 @@ const LiveMarket = ({ title, boxStyle, titleStyle, onClick }) => {
 const BoxProfile = ({ image, value, containerStyle, balance }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 

@@ -160,7 +160,7 @@ const SessionMarketBox = ({
           sx={{
             position: "absolute",
             top: "5px",
-            right: { laptop: "30vh", tablet: "30vh" },
+            left: { laptop: "24vh", tablet: "24vh" },
             display: "flex",
             zIndex: 100,
           }}
@@ -174,8 +174,8 @@ const SessionMarketBox = ({
                 handleLive(1);
               }}
               textSize={"8px"}
-              width={"80px"}
-              title={"Go Live"}
+              width={"33px"}
+              // title={"Go Live"}
               color={"#FF4D4D"}
             />
           )}
@@ -197,8 +197,9 @@ const SessionMarketBox = ({
                 handleLive(0);
               }}
               textSize={"8px"}
-              width={"80px"}
-              title={"Live"}
+              // width={"80px"}
+              width={"33px"}
+              // title={"Live"}
             />
           )}
           {!hideResult && (
@@ -241,7 +242,7 @@ const SessionMarketBox = ({
               margin: "1px",
               background: "rgba(0,0,0,1)",
               height: "40px",
-              right: "16.5vh",
+              right: "24%",
               position: "absolute",
               width: { laptop: "18%", mobile: "18%" },
               justifyContent: { mobile: "center", laptop: "center" },

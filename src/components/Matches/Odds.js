@@ -33,17 +33,18 @@ const Odds = ({ onClick, top, blur, match }) => {
     let timeLeft = {};
     if (difference > 0) {
       timeLeft = {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+          days: ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2),
+          hours: ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(-2),
+          minutes: ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2),
+          seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2),
       };
     }
 
     return timeLeft;
   }
 
-  const upcoming = (timeLeft?.hours || timeLeft?.days) > 1 ? true : false;
+  // const upcoming = (timeLeft?.hours || timeLeft?.days) > 1 ? true : false;
+    const upcoming =  false;
 
   const activateLiveMatchMarket = async () => {
     try {

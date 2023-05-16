@@ -30,7 +30,7 @@ import LiveMarket from "./LiveMarket";
 import ButtonHead from "./ButtonHead";
 import DropdownMenu2 from "./WithrawDepositMenu";
 import DropdownMenu1 from "./MenuBar";
-import currentUser, {
+import {
   removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
@@ -72,6 +72,7 @@ const CustomHeader = ({}) => {
   const location = useLocation();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const [localUser,setLocalUser]=useState(currentUser)
 
   const { socket } = useContext(SocketContext);
   useEffect(() => {
@@ -108,13 +109,17 @@ const CustomHeader = ({}) => {
       const { data } = await axios.get("users/profile");
       setBalance(data.data.current_balance);
 
+      console.log('data?.data', data?.data)
+      dispatch(setCurrentUser(data.data));
+      setLocalUser(data.data)
       const value = allRole?.find((role) => role?.id === data?.data?.roleId);
       roleName = value?.roleName;
-      dispatch(setCurrentUser(data.data));
     } catch (e) {
       console.log(e);
     }
   }
+
+
 
   useEffect(() => {
     if (location.pathname.includes("market_analysis")) {
@@ -143,6 +148,7 @@ const CustomHeader = ({}) => {
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
+  console.log('currentUser', currentUser)
 
   useEffect(() => {
     if (!matchesMobile) {
@@ -340,8 +346,8 @@ const CustomHeader = ({}) => {
               nav={nav}
               containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
               image={"https://picsum.photos/200/300"}
-              value={currentUser?.userName || ""}
-              amount={currentUser?.current_balance || 0}
+              value={localUser?.userName || ""}
+              amount={localUser?.current_balance || 0}
             />
           </Box>
         </Box>
