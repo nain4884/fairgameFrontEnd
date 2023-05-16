@@ -84,7 +84,7 @@ const EventListing = ({ selected }) => {
       ]}
     >
       {data?.map((i) => {
-        return <EventComponent ket={i} data={i} selected={selected} />;
+        return <EventComponent key={i} data={i} selected={selected} />;
       })}
     </Box>
   );

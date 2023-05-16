@@ -39,7 +39,7 @@ import { GlobalStore } from "../../context/globalStore";
 
 let session = [];
 let matchOddsCount = 0;
-const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
+const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -87,6 +87,23 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
 
       socket.onevent = async (packet) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+        if (packet.data[0] === "updateMatchActiveStatus") {
+          const value = packet.data[1];
+          matchId = value?.matchId;
+          setCurrentMatch((currentMatch) => {
+            if (currentMatch?.id === matchId) {
+              return {
+                ...currentMatch,
+                apiBookMakerActive: value?.apiBookMakerActive,
+                apiMatchActive: value?.apiMatchActive,
+                apiSessionActive: value?.apiSessionActive,
+                manualBookMakerActive: value?.manualBookMakerActive,
+                manualSessionActive: value?.manualSessionActive,
+              };
+            }
+            return currentMatch;
+          });
+        }
         if (packet.data[0] === "logoutUserForce") {
           dispatch(removeCurrentUser());
           dispatch(removeManualBookMarkerRates());
@@ -96,6 +113,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           await axios.get("auth/logout");
           removeSocket();
         }
+
 
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
@@ -145,7 +163,19 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
             console.log(err?.message);
           }
         }
-
+        if (packet.data[0] === "matchOddRateLive") {
+          // Bookmaker Market live and stop disable condition
+          const value = packet.data[1];
+          setCurrentMatch((prev) => {
+            if (prev?.id === value?.matchId) {
+              return {
+                ...prev,
+                matchOddRateLive: value?.matchOddLive,
+              };
+            }
+            return prev;
+          });
+        }
         if (packet.data[0] === "bookMakerRateLive") {
           // Bookmaker Market live and stop disable condition
           const value = packet.data[1];
@@ -813,10 +843,10 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
         alignItems: "flex-start",
       }}
     >
-      <EventListing setSelected={setSelected} selected={activeTab} />
+      <EventListing setSelected={setSelected} selected={selected} />
       <BetPlaced visible={visible} setVisible={setVisible} />
       {/* {console.warn("currentMatch :", currentMatch)} */}
-      {matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
+      {matchesMobile && (selected === "CRICKET" || selected === "INPLAY") && (
         <div
           style={{
             width: "100%",
@@ -872,7 +902,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           </Box>
         </div>
       )}
-      {!matchesMobile && (activeTab == "CRICKET" || activeTab == "INPLAY") && (
+      {!matchesMobile && (selected === "CRICKET" || selected === "INPLAY") && (
         <Box sx={{ display: "flex", width: "100%" }}>
           <Box
             sx={{
@@ -910,7 +940,7 @@ const Home = ({ activeTab, setSelected, setVisible, visible, handleClose }) => {
           </Box>
         </Box>
       )}
-      {activeTab != "CRICKET" && activeTab != "INPLAY" && (
+      {selected !== "CRICKET" && selected !== "INPLAY" && (
         <Box
           style={{
             display: "flex",

@@ -28,6 +28,8 @@ const Matches = () => {
   const { socket } = useContext(SocketContext);
   const theme = useTheme();
 
+  console.log('selected', selected)
+
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   useEffect(() => {
