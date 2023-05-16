@@ -306,7 +306,7 @@ const Odds = ({
       {typeOfBet == "MANUAL BOOKMAKER" ? <><ManualBoxComponent
         time={true}
         showBox={showBox}
-        livestatus={newData?.status === "SUSPENDED" ? true : false}
+        livestatus={matchOddsData?.[0]?.teamA_suspend === "live" ? false : true}
 
         teamImage={newData?.teamA_Image}
         newData={newData}
@@ -330,7 +330,8 @@ const Odds = ({
           time={true}
           showBox={showBox}
           newData={newData}
-          livestatus={newData?.status === "SUSPENDED" ? true : false}
+          // livestatus={newData?.status === "SUSPENDED" ? true : false}
+          livestatus={matchOddsData?.[0]?.teamB_suspend === "live" ? false : true}
           color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
           name={newData?.teamB}
           data={data?.length > 0 ? data[1] : []}
@@ -351,7 +352,8 @@ const Odds = ({
             <ManualBoxComponent
               teamImage={null}
               time={true}
-              livestatus={newData?.status === "SUSPENDED" ? true : false}
+              // livestatus={newData?.status === "SUSPENDED" ? true : false}
+              livestatus={matchOddsData?.[0]?.teamC_suspend === "live" ? false : true}
               showBox={showBox}
               newData={newData}
               color={"#FF4D4D"}
