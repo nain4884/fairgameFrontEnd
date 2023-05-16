@@ -10,15 +10,24 @@ import { SocketContext } from "../../context/socketContext";
 import Axios from "axios";
 import { formatNumber } from "../helper/helper";
 import moment from "moment-timezone";
+import { useDispatch } from "react-redux";
+import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
+import { logout } from "../../newStore/reducers/auth";
+import { GlobalStore } from "../../context/globalStore";
+import { setRole } from "../../newStore";
+import { removeSocket } from "../helper/removeSocket";
 let matchOddsCount = 0;
 const Odds = ({ onClick, top, blur, match }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [matchOddsLive, setMatchOddsLive] = useState([]);
-  const { socketMicro } = useContext(SocketContext);
-
+  const { socketMicro ,socket} = useContext(SocketContext);
+  const dispatch = useDispatch();
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
+  
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
+const {axios}=setRole()
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
@@ -45,6 +54,24 @@ const Odds = ({ onClick, top, blur, match }) => {
 
   // const upcoming = (timeLeft?.hours || timeLeft?.days) > 1 ? true : false;
     const upcoming =  false;
+
+
+    useEffect(() => {
+      if (socket && socket.connected) {
+        socket.onevent = async (packet) => {
+          if (packet.data[0] === "logoutUserForce") {
+            console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+            dispatch(removeCurrentUser());
+            dispatch(removeManualBookMarkerRates())
+            dispatch(removeSelectedMatch());
+            dispatch(logout({ roleType: "role4" }));
+            setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+            await axios.get("auth/logout");
+            removeSocket();
+          }
+        };
+      }
+    }, [socket]);
 
   const activateLiveMatchMarket = async () => {
     try {

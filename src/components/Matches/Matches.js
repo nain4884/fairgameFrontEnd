@@ -3,11 +3,16 @@ import { useEffect, useState } from "react";
 import "../index.css";
 import Odds from "./Odds";
 import { useDispatch } from "react-redux";
-import { setAllBetRate, setMatchOddsLive, setSelectedMatch, setSessionOddsLive } from "../../newStore/reducers/matchDetails";
+import {
+  setAllBetRate,
+  setMatchOddsLive,
+  setSelectedMatch,
+  setSessionOddsLive,
+} from "../../newStore/reducers/matchDetails";
 import { setRole } from "../../newStore";
 import constants from "../helper/constants";
 
-const MatchesComponent = ({ doNavigateWithState,selected }) => {
+const MatchesComponent = ({ doNavigateWithState, selected }) => {
   // const classes=useStyle()
   const [matchData, setMatchData] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
@@ -18,23 +23,20 @@ const MatchesComponent = ({ doNavigateWithState,selected }) => {
 
   useEffect(() => {
     getAllMatch();
-  }, [currentPage, pageCount,selected]);
+  }, [currentPage, pageCount, selected]);
 
   async function getAllMatch() {
     try {
-      let { data } = await axios.get(
-        `/game-match/getAllMatch`,
-        {
-          params: {
-            isActiveMatch: 1,
-            bets: 0,
-            pageNo: currentPage,
-            pageLimit: pageLimit,
-            gameType: selected==="CRICKET" ? "cricket":""
-          }
-        }
-      );
-      
+      let { data } = await axios.get(`/game-match/getAllMatch`, {
+        params: {
+          isActveMatch: 1,
+          bets: 0,
+          pageNo: currentPage,
+          pageLimit: pageLimit,
+          filter: selected === "CRICKET" ? { gameType: "cricket" } : null,
+        },
+      });
+
       if (data.length > 0) {
         setMatchData(data[0]);
         setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
@@ -54,14 +56,13 @@ const MatchesComponent = ({ doNavigateWithState,selected }) => {
         return (
           <Odds
             onClick={() => {
-              dispatch(setSelectedMatch({}))
-              dispatch(setMatchOddsLive([]))
-              dispatch(setSessionOddsLive([]))
+              dispatch(setSelectedMatch({}));
+              dispatch(setMatchOddsLive([]));
+              dispatch(setSessionOddsLive([]));
               dispatch(setAllBetRate([]));
               doNavigateWithState(match.id);
             }}
             top={true}
-           
             blur={false}
             match={match}
           />
