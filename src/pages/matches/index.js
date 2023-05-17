@@ -32,21 +32,21 @@ const Matches = () => {
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  useEffect(() => {
-    if (socket && socket.connected) {
-      socket.onevent = async (packet) => {
-        console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-        if (packet.data[0] === "newMatchAdded") {
-          window.location.reload();
-        }
-      };
-    }
+  // useEffect(() => {
+  //   if (socket && socket.connected) {
+  //     socket.onevent = async (packet) => {
+  //       console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+  //       if (packet.data[0] === "newMatchAdded") {
+  //         window.location.reload();
+  //       }
+  //     };
+  //   }
 
-    // if (socket && !socket.connected) {
-    //   alert("Socket is not connected. Reconnecting...");
-    //   socket.connect();
-    // }
-  }, [socket]);
+  //   // if (socket && !socket.connected) {
+  //   //   alert("Socket is not connected. Reconnecting...");
+  //   //   socket.connect();
+  //   // }
+  // }, [socket]);
 
   const ChangeButtonValue = () => {
     return (
@@ -450,7 +450,7 @@ const Matches = () => {
               <Match
                 selected={selected}
                 setVisible={setVisible}
-                // handleClose={handleClose}
+              // handleClose={handleClose}
               />
             )}
             {window.location.pathname === "/matchDetail" && (
@@ -458,7 +458,7 @@ const Matches = () => {
                 selected={selected}
                 setVisible={setVisible}
                 visible={visible}
-                // handleClose={handleClose}
+              // handleClose={handleClose}
               />
             )}
           </Box>
