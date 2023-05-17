@@ -306,8 +306,8 @@ const Odds = ({
       {typeOfBet == "MANUAL BOOKMAKER" ? <><ManualBoxComponent
         time={true}
         showBox={showBox}
-        livestatus={matchOddsData?.[0]?.teamA_suspend === "live" ? false : true}
-
+        livestatus={matchOddsData?.[0]?.teamA_suspend === "suspended" ? true : false}
+        ballStatus={matchOddsData?.[0]?.teamA_Ball === "ball" ? true : false}
         teamImage={newData?.teamA_Image}
         newData={newData}
         color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
@@ -331,7 +331,8 @@ const Odds = ({
           showBox={showBox}
           newData={newData}
           // livestatus={newData?.status === "SUSPENDED" ? true : false}
-          livestatus={matchOddsData?.[0]?.teamB_suspend === "live" ? false : true}
+          livestatus={matchOddsData?.[0]?.teamB_suspend === "suspended" ? true : false}
+          ballStatus={matchOddsData?.[0]?.teamB_Ball === "ball" ? true : false}
           color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
           name={newData?.teamB}
           data={data?.length > 0 ? data[1] : []}
@@ -353,7 +354,8 @@ const Odds = ({
               teamImage={null}
               time={true}
               // livestatus={newData?.status === "SUSPENDED" ? true : false}
-              livestatus={matchOddsData?.[0]?.teamC_suspend === "live" ? false : true}
+              livestatus={matchOddsData?.[0]?.teamC_suspend === "suspended" ? true : false}
+              ballStatus={matchOddsData?.[0]?.teamC_Ball === "ball" ? true : false}
               showBox={showBox}
               newData={newData}
               color={"#FF4D4D"}

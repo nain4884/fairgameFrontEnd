@@ -122,7 +122,7 @@ const BoxComponent = ({
           }}
         ></Box>
       )}
-      {!["ACTIVE", "", undefined,null].includes(status) ||   newData?.bettings?.length === 0  || livestatus ? (
+      {!["ACTIVE", "", undefined, null].includes(status) || newData?.bettings?.length === 0 || livestatus ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
@@ -134,7 +134,7 @@ const BoxComponent = ({
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0  || livestatus ? "suspended" :status}</h4>
+          <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0 || livestatus ? "suspended" : status}</h4>
         </Box>
       ) : (
         <>
@@ -151,14 +151,14 @@ const BoxComponent = ({
           >
             {!matchesMobile && (
               <SeprateBox
-              back={true}
+                back={true}
                 currentMatch={newData}
                 lock={lock}
                 rates={allRates}
                 value={
-                  isRound ? Math.round( ex?.availableToBack?.length > 0
+                  isRound ? Math.round(ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[2]?.price
-                    : 0) :  ex?.availableToBack?.length > 0
+                    : 0) : ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[2]?.price
                     : 0
                 }
@@ -179,7 +179,7 @@ const BoxComponent = ({
             ></Box>
             {!matchesMobile && (
               <SeprateBox
-              back={true}
+                back={true}
                 currentMatch={newData}
                 lock={lock}
                 rates={allRates}
@@ -212,9 +212,9 @@ const BoxComponent = ({
               lock={lock}
               rates={allRates}
               value={
-                isRound ? Math.round( ex?.availableToBack?.length > 0
+                isRound ? Math.round(ex?.availableToBack?.length > 0
                   ? ex?.availableToBack[0]?.price
-                  : 0):  ex?.availableToBack?.length > 0
+                  : 0) : ex?.availableToBack?.length > 0
                   ? ex?.availableToBack[0]?.price
                   : 0
               }
@@ -267,7 +267,7 @@ const BoxComponent = ({
                 value={
                   isRound ? Math.round(ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[1]?.price
-                    : 0): ex?.availableToLay?.length > 0
+                    : 0) : ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[1]?.price
                     : 0
                 }
@@ -293,10 +293,10 @@ const BoxComponent = ({
                 rates={allRates}
                 lock={lock}
                 value={isRound ? Math.round(ex?.availableToLay?.length > 0
-                    ? ex?.availableToLay[2]?.price
-                    : 0) : ex?.availableToLay?.length > 0
-                    ? ex?.availableToLay[2]?.price
-                    : 0
+                  ? ex?.availableToLay[2]?.price
+                  : 0) : ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[2]?.price
+                  : 0
                 }
                 value2={formatNumber(
                   ex?.availableToLay?.length > 0

@@ -551,35 +551,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // setTeamALayValue('');
                 // setTeamBLayValue('');
             }
-            // if (key == ',') {
-            //     // setIncGap(0.25)
-            //     if (event.target.name === 'teamA_rate') {
-            //         // let value = event.target.value ? targetValue + 0.25 : 0;
-            //         // alert(value)
-            //         // setTeamARate(value);
-            //         // setTeamALayValue(value + 0.50);
-            //         // setIncGap(0.25)
-            //     } else if (event.target.name === 'teamB_rate') {
-            //         // let value = event.target.value ? targetValue + 0.25 : 0;
-            //         // setTeamBRate(value);
-            //         // setTeamBLayValue(value + 0.50);
-            //         // setIncGap(0.25)
-            //     }
-            // }
-            // if (key == '.') {
-            //     if (event.target.name === 'teamA_rate') {
-            //         let value = event.target.value ? targetValue + 0.5 : 0;
-            //         setTeamARate(value);
-            //         setTeamALayValue(value + 0.5);
-            //         setIncGap(0.25)
-            //     } else if (event.target.name === 'teamB_rate') {
-            //         let value = event.target.value ? targetValue + 0.5 : 0;
-            //         setTeamBRate(value);
-            //         setTeamBLayValue(value + 0.5);
-            //         setIncGap(0.25)
-            //     }
-            //     // this.setState({ lay_5: 1, ERROR: false });
-            // }
             if (key == '*') {
                 handleSuspend();
                 // alert(1)
@@ -692,7 +663,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     let value;
                     let layValue;
                     if (teamARateDecimal >= 0.5) {
-                        value = teamARate ? Math.round(teamARate) - 1 : 0;
+                        value = teamARate ? Math.round(teamARate) : 0;
                     } else {
                         value = teamARate ? Math.round(teamARate) : 0;
                     }
@@ -703,7 +674,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     // let value = Math.round(teamARate);
                     // let layValue = Math.round(teamALayValue);
-                    // alert(value)
                     setTeamARate(value);
                     // alert(value)
                     // setTeamALayValue(value > 1 ? layValue + 0.5 : layValue + 1.5);
@@ -718,7 +688,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     let value;
                     let layValue;
                     if (teamBRateDecimal >= 0.5) {
-                        value = teamBRate ? Math.round(teamBRate) - 1 : 0;
+                        value = teamBRate ? Math.round(teamBRate) : 0;
                     } else {
                         value = teamBRate ? Math.round(teamBRate) : 0;
                     }
@@ -740,7 +710,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     let value;
                     let layValue;
                     if (teamCRateDecimal >= 0.5) {
-                        value = teamCRate ? Math.round(teamCRate) - 1 : 0;
+                        value = teamCRate ? Math.round(teamCRate) : 0;
                     } else {
                         value = teamCRate ? Math.round(teamCRate) : 0;
                     }
@@ -853,78 +823,161 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             }
             if (key == 'plus') {
                 handleSuspend();
-                setIncGap(5)
-                if (event.target.name === 'teamA_rate') {
-                    let value = Math.round(teamARate) + 5;
-                    // alert(value)
-                    setTeamARate(value ? value : 1);
-                    setTeamALayValue(value ? value + 5 : 5);
-                    setTeamBRate('');
-                    setTeamBLayValue('')
-                } else if (event.target.name === 'teamB_rate') {
-                    let value = Math.round(teamBRate) + 5;
-                    setTeamBRate(value ? value : 1);
-                    setTeamBLayValue(value ? value + 5 : 5);
-                    setTeamARate('');
-                    setTeamALayValue('')
-                } else if (event.target.name === 'teamC_rate') {
-                    let value = Math.round(teamCRate) + 5;
-                    setTeamCRate(value ? value : 1);
-                    setTeamCLayValue(value ? value + 5 : 5);
-                    setTeamARate('');
-                    setTeamALayValue('')
-                    setTeamBRate('');
-                    setTeamBLayValue('')
+                if (incGap != 5) {
+                    setIncGap(1)
+                    if (event.target.name === 'teamA_rate') {
+                        let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
+                        let value;
+                        if (teamARateDecimal >= 0.5) {
+                            value = parseFloat(event.target.value) + 1;
+                        } else {
+                            value = parseFloat(event.target.value) + 0.50;
+                        }
+                        setTeamARate(value);
+                        setTeamALayValue(value + 1);
+                        setTeamBRate('');
+                        setTeamBLayValue('')
+                    } else if (event.target.name === 'teamB_rate') {
+                        let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
+                        let value;
+                        if (teamBRateDecimal >= 0.5) {
+                            value = parseFloat(event.target.value) + 1;
+                        } else {
+                            value = parseFloat(event.target.value) + 0.50;
+                        }
+                        setTeamBRate(value);
+                        setTeamBLayValue(value + 1);
+                        setTeamARate('');
+                        setTeamALayValue('')
+                    } else if (event.target.name === 'teamC_rate') {
+                        let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
+                        let value;
+                        if (teamCRateDecimal >= 0.5) {
+                            value = parseFloat(event.target.value) + 1;
+                        } else {
+                            value = parseFloat(event.target.value) + 0.50;
+                        }
+                        setTeamCRate(value);
+                        setTeamCLayValue(value + 1);
+                        setTeamARate('');
+                        setTeamALayValue('')
+                        setTeamBRate('');
+                        setTeamBLayValue('')
+                    }
+                } else {
+                    if (event.target.name === 'teamA_rate') {
+                        let value = Math.round(teamARate) + incGap;
+                        // alert(value)
+                        setTeamARate(value ? value : 1);
+                        setTeamALayValue(value ? value + incGap : incGap);
+                        setTeamBRate('');
+                        setTeamBLayValue('')
+                    } else if (event.target.name === 'teamB_rate') {
+                        let value = Math.round(teamBRate) + incGap;
+                        setTeamBRate(value ? value : 1);
+                        setTeamBLayValue(value ? value + incGap : incGap);
+                        setTeamARate('');
+                        setTeamALayValue('')
+                    } else if (event.target.name === 'teamC_rate') {
+                        let value = Math.round(teamCRate) + incGap;
+                        setTeamCRate(value ? value : 1);
+                        setTeamCLayValue(value ? value + incGap : incGap);
+                        setTeamARate('');
+                        setTeamALayValue('')
+                        setTeamBRate('');
+                        setTeamBLayValue('')
+                    }
                 }
             }
             if (key == 'minus') {
                 handleSuspend();
-                if (event.target.name === 'teamA_rate' && event.target.value >= 5) {
-                    let value = Math.round(teamARate) - 5;
-                    setTeamARate(value ? value : 1);
-                    setTeamALayValue(value ? value + 5 : 5);
-                    setTeamBRate('');
-                    setTeamBLayValue('')
-                } else if (event.target.name === 'teamB_rate' && event.target.value >= 5) {
-                    let value = Math.round(teamBRate) - 5;
-                    setTeamBRate(value ? value : 1);
-                    setTeamBLayValue(value ? value + 5 : 5);
+                if (incGap != 5) {
+                    setIncGap(1)
+                    if (event.target.name === 'teamA_rate') {
+                        let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
+                        let value;
+                        if (teamARateDecimal >= 0.5) {
+                            value = parseFloat(event.target.value) - 1;
+                        } else {
+                            value = parseFloat(event.target.value) - 0.50;
+                        }
+                        setTeamARate(value);
+                        setTeamALayValue(value + 1);
+                        setTeamBRate('');
+                        setTeamBLayValue('')
+                    } else if (event.target.name === 'teamB_rate') {
+                        let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
+                        let value;
+                        if (teamBRateDecimal >= 0.5) {
+                            value = parseFloat(event.target.value) - 1;
+                        } else {
+                            value = parseFloat(event.target.value) - 0.50;
+                        }
+                        setTeamBRate(value);
+                        setTeamBLayValue(value + 1);
+                        setTeamARate('');
+                        setTeamALayValue('')
+                    } else if (event.target.name === 'teamC_rate') {
+                        let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
+                        let value;
+                        if (teamCRateDecimal >= 0.5) {
+                            value = parseFloat(event.target.value) - 1;
+                        } else {
+                            value = parseFloat(event.target.value) - 0.50;
+                        }
+                        setTeamCRate(value);
+                        setTeamCLayValue(value + 1);
+                        setTeamARate('');
+                        setTeamALayValue('')
+                        setTeamBRate('');
+                        setTeamBLayValue('')
+                    }
+                } else {
+                    if (event.target.name === 'teamA_rate' && event.target.value >= 5) {
+                        let value = Math.round(teamARate) - incGap;
+                        setTeamARate(value ? value : 0);
+                        setTeamALayValue(value ? value + incGap : incGap);
+                        setTeamBRate('');
+                        setTeamBLayValue('')
+                    } else if (event.target.name === 'teamB_rate' && event.target.value >= 5) {
+                        let value = Math.round(teamBRate) - incGap;
+                        setTeamBRate(value ? value : 0);
+                        setTeamBLayValue(value ? value + incGap : incGap);
 
-                    setTeamARate('');
-                    setTeamALayValue('')
-                } else if (event.target.name === 'teamC_rate' && event.target.value >= 5) {
-                    let value = Math.round(teamCRate) - 5;
-                    setTeamCRate(value ? value : 1);
-                    setTeamCLayValue(value ? value + 5 : 5);
+                        setTeamARate('');
+                        setTeamALayValue('')
+                    } else if (event.target.name === 'teamC_rate' && event.target.value >= 5) {
+                        let value = Math.round(teamCRate) - incGap;
+                        setTeamCRate(value ? value : 0);
+                        setTeamCLayValue(value ? value + incGap : incGap);
 
-                    setTeamARate('');
-                    setTeamALayValue('');
-                    setTeamBRate('');
-                    setTeamBLayValue('')
+                        setTeamARate('');
+                        setTeamALayValue('');
+                        setTeamBRate('');
+                        setTeamBLayValue('')
+                    }
                 }
             }
             if (key == '/') {
                 handleSuspend();
-                // alert(1)
+                // alert(event.target.value)
+                setIncGap(5);
                 if (event.target.name === 'teamA_rate') {
-                    let value = event.target.value ? targetValue + 0.5 : 0;
+                    let value = event.target.value ? targetValue : 0;
                     setTeamARate(value);
-                    setTeamALayValue(value + 0.5);
-                    setIncGap(0.50)
+                    setTeamALayValue(value + 5);
                     setTeamBRate('');
                     setTeamBLayValue('')
                 } else if (event.target.name === 'teamB_rate') {
-                    let value = event.target.value ? targetValue + 0.5 : 0;
+                    let value = event.target.value ? targetValue : 0;
                     setTeamBRate(value);
-                    setTeamBLayValue(value + 0.5);
-                    setIncGap(0.50)
+                    setTeamBLayValue(value + 5);
                     setTeamARate('');
                     setTeamALayValue('')
                 } else if (event.target.name === 'teamC_rate') {
-                    let value = event.target.value ? targetValue + 0.5 : 0;
+                    let value = event.target.value ? targetValue : 0;
                     setTeamCRate(value);
-                    setTeamCLayValue(value + 0.5);
-                    setIncGap(0.50)
+                    setTeamCLayValue(value + 5);
                     setTeamARate('');
                     setTeamALayValue('');
                     setTeamBRate('');

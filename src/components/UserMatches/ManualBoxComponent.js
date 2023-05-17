@@ -4,6 +4,7 @@ import React from "react";
 import MoneyBox from "./MoneyBox";
 import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
+import { BallStart } from '../../assets';
 
 const BoxComponent = ({
     name,
@@ -21,7 +22,8 @@ const BoxComponent = ({
     showBox,
     livestatus,
     isRound,
-    matchOddsData
+    matchOddsData,
+    ballStatus
 }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -131,8 +133,8 @@ const BoxComponent = ({
                         display: "flex",
                     }}
                 >
-                    {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-                    <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0 || livestatus ? "suspended" : status}</h4>
+                    {ballStatus ? <img src={BallStart} style={{ width: '113px', height: "32px" }} /> :
+                        <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0 || livestatus ? "suspended" : status}</h4>}
                 </Box>
             ) : (
                 <>
@@ -153,9 +155,7 @@ const BoxComponent = ({
                                 currentMatch={newData}
                                 lock={lock}
                                 rates={allRates}
-                                value={Math.round(matchOddsData?.back
-                                    ? matchOddsData?.back - 2
-                                    : 0)}
+                                value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#CEEBFF"}
                                 type={{ color: "#A7DCFF", type: "BL" }}
@@ -173,9 +173,7 @@ const BoxComponent = ({
                                 currentMatch={newData}
                                 lock={lock}
                                 rates={allRates}
-                                value={Math.round(matchOddsData?.back
-                                    ? matchOddsData?.back - 1
-                                    : 0)}
+                                value={matchOddsData?.back ? matchOddsData?.back - 1 : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#C2E6FF"}
                                 type={{ color: "#A7DCFF", type: "BL" }}
@@ -193,11 +191,7 @@ const BoxComponent = ({
                             currentMatch={newData}
                             lock={lock}
                             rates={allRates}
-                            value={
-                                Math.round(matchOddsData?.back
-                                    ? matchOddsData?.back
-                                    : 0)
-                            }
+                            value={matchOddsData?.back ? matchOddsData?.back : 0}
                             value2={0}
                             color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
                             type={{ color: "#A7DCFF", type: "BL" }}
@@ -215,11 +209,7 @@ const BoxComponent = ({
                             currentMatch={newData}
                             lock={lock}
                             rates={allRates}
-                            value={
-                                Math.round(matchOddsData?.lay
-                                    ? matchOddsData?.lay
-                                    : 0)
-                            }
+                            value={matchOddsData?.lay ? matchOddsData?.lay : 0}
                             value2={0}
                             color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
                             type={{ color: "#FFB5B5", type: "BL" }}
@@ -236,11 +226,7 @@ const BoxComponent = ({
                                 currentMatch={newData}
                                 rates={allRates}
                                 lock={lock}
-                                value={
-                                    Math.round(matchOddsData?.lay
-                                        ? matchOddsData?.lay + 1
-                                        : 0)
-                                }
+                                value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#F2CBCB"}
                                 type={{ color: "#FFB5B5", type: "BL" }}
@@ -258,11 +244,7 @@ const BoxComponent = ({
                                 currentMatch={newData}
                                 rates={allRates}
                                 lock={lock}
-                                value={
-                                    Math.round(matchOddsData?.lay
-                                        ? matchOddsData?.lay + 2
-                                        : 0)
-                                }
+                                value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#ECD6D6"}
                                 type={{ color: "#FFB5B5", type: "BL" }}

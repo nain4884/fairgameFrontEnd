@@ -414,7 +414,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 ...currentMatches[0],
                 teamA_Back: value?.teamA_Back, // Update the teamA_Back value 
                 teamA_lay: value?.teamA_lay, // Update the teamA_lay value 
-                teamA_suspend: value?.teamA_suspend == false ? 'live' : 'suspended' // Update the teamA_susp
+                teamA_suspend: value?.teamA_suspend == false ? null : 'suspended' // Update the teamA_susp
               };
 
               // Create a new array with the updated match object
@@ -449,7 +449,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 ...currentMatches[0],
                 teamB_Back: value?.teamB_Back, // Update the teamA_Back value 
                 teamB_lay: value?.teamB_lay, // Update the teamA_lay value 
-                teamB_suspend: value?.teamB_suspend == false ? 'live' : 'suspended' // Update the teamA_susp
+                teamB_suspend: value?.teamB_suspend == false ? null : 'suspended' // Update the teamA_susp
               };
 
               // Create a new array with the updated match object
@@ -482,7 +482,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 ...currentMatches[0],
                 teamC_Back: value?.teamC_Back, // Update the teamA_Back value 
                 teamC_lay: value?.teamC_lay, // Update the teamA_lay value 
-                teamC_suspend: value?.teamC_suspend == false ? 'live' : 'suspended' // Update the teamA_susp
+                teamC_suspend: value?.teamC_suspend == false ? null : 'suspended' // Update the teamA_susp
               };
 
               // Create a new array with the updated match object
@@ -533,12 +533,30 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "teamA_suspend_user") {
           const value = packet.data[1];
           if (value.teamA_suspend == 'Ball Started') {
+            try {
+              setManualBookmakerData(currentMatches => {
+                const updatedMatch = {
+                  ...currentMatches[0],
+                  teamA_suspend: 'suspended',
+                  teamA_Ball: 'ball'
+                };
+                const updatedMatches = [
+                  ...currentMatches.slice(0, 0),
+                  updatedMatch,
+                  ...currentMatches.slice(0 + 1)
+                ];
+                return updatedMatches;
+              });
+            } catch (err) {
+              console.log(err?.message);
+            }
           } else {
             try {
               setManualBookmakerData(currentMatches => {
                 const updatedMatch = {
                   ...currentMatches[0],
-                  teamA_suspend: 'suspended'
+                  teamA_suspend: 'suspended',
+                  teamA_Ball: null
                 };
                 const updatedMatches = [
                   ...currentMatches.slice(0, 0),
@@ -556,12 +574,30 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "teamB_suspend_user") {
           const value = packet.data[1];
           if (value.teamB_suspend == 'Ball Started') {
+            try {
+              setManualBookmakerData(currentMatches => {
+                const updatedMatch = {
+                  ...currentMatches[0],
+                  teamB_suspend: 'suspended',
+                  teamB_Ball: 'ball'
+                };
+                const updatedMatches = [
+                  ...currentMatches.slice(0, 0),
+                  updatedMatch,
+                  ...currentMatches.slice(0 + 1)
+                ];
+                return updatedMatches;
+              });
+            } catch (err) {
+              console.log(err?.message);
+            }
           } else {
             try {
               setManualBookmakerData(currentMatches => {
                 const updatedMatch = {
                   ...currentMatches[0],
-                  teamB_suspend: 'suspended'
+                  teamB_suspend: 'suspended',
+                  teamB_Ball: null
                 };
                 const updatedMatches = [
                   ...currentMatches.slice(0, 0),
@@ -578,12 +614,30 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "teamC_suspend_user") {
           const value = packet.data[1];
           if (value.teamC_suspend == 'Ball Started') {
+            try {
+              setManualBookmakerData(currentMatches => {
+                const updatedMatch = {
+                  ...currentMatches[0],
+                  teamC_suspend: 'suspended',
+                  teamC_Ball: 'ball'
+                };
+                const updatedMatches = [
+                  ...currentMatches.slice(0, 0),
+                  updatedMatch,
+                  ...currentMatches.slice(0 + 1)
+                ];
+                return updatedMatches;
+              });
+            } catch (err) {
+              console.log(err?.message);
+            }
           } else {
             try {
               setManualBookmakerData(currentMatches => {
                 const updatedMatch = {
                   ...currentMatches[0],
-                  teamC_suspend: 'suspended'
+                  teamC_suspend: 'suspended',
+                  teamC_Ball: null
                 };
                 const updatedMatches = [
                   ...currentMatches.slice(0, 0),
@@ -748,7 +802,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       let matchOddsDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
-      console.log("matchOddsDataTemp :", JSON.stringify(matchOddsDataTemp))
+      console.log("matchOddsDataTemp :", matchOddsDataTemp)
       setManualBookmakerData(matchOddsDataTemp)
       // console.log("manualBookmakerData:", manualBookmakerData);
 
