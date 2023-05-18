@@ -265,6 +265,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 teamB_suspend: false,
                             }))
                         }
+                        setTeamBall((prevState) => ({
+                            ...prevState,
+                            isABall: false,
+                            isBBall: false,
+                            isCBall: false,
+                        }));
                         // alert(1)
                     }
 
@@ -273,7 +279,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         }, [socket]);
 
         const handleSuspend = () => {
-            // alert(JSON.stringify(teamSuspend.teamA_suspend))
+            // alert(JSON.stringify(teamSuspend))
             if (match?.teamC) {
                 if (!teamSuspend.teamA_suspend) {
                     socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
@@ -513,7 +519,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 }
             }
             else if (key == 'enter' || key == 'return') {
-                // alert("press enter");
+                // alert(isTab);
                 // setPressEnter(true);
                 // setIsTeamASuspend(data.teamA_suspend);
                 // alert(event.target.name)

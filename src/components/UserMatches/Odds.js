@@ -124,7 +124,8 @@ const Odds = ({
     if (teamARates === 0) {
       return 0;
     } else {
-      const bookRatio = teamARates / teamBRates || 0;
+      // const bookRatio = teamARates / teamBRates || 0;
+      const bookRatio = teamBRates != 0 ? ((teamARates / teamBRates) * 100) / 100 || 0 : 0;
       const formattedRatio = Math.abs(bookRatio).toFixed(2);
       return teamBRates < 0 ? `-${formattedRatio}` : formattedRatio;
     }
@@ -135,8 +136,12 @@ const Odds = ({
     if (teamARates === 0) {
       return 0;
     } else {
-      const bookRatio = teamBRates / teamARates || 0;
+      // const bookRatio = teamBRates / teamARates || 0;
+      const bookRatio = teamARates != 0 ? (teamBRates / teamARates) * 100 / 100 || 0 : 0;
+      // alert(teamARates)
       const formattedRatio = Math.abs(bookRatio).toFixed(2);
+      // alert(typeof teamARates < 0 ? `-${formattedRatio}` : formattedRatio)
+
       return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
     }
   })();
