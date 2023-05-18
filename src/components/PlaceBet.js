@@ -196,12 +196,12 @@ const PlaceBet = ({
                   ? "Back"
                   : "Lay"
                 : title === "Team"
-                ? name
-                : bet_condition
-                ? bet_condition
-                : isSessionYes
-                ? "Yes"
-                : "No"}
+                  ? name
+                  : bet_condition
+                    ? bet_condition
+                    : isSessionYes
+                      ? "Yes"
+                      : "No"}
             </Typography>
           </Box>
         )}
@@ -375,7 +375,7 @@ const PlaceBet = ({
       teamA_name: currentMatch?.teamA,
       teamB_name: currentMatch?.teamB,
       teamC_name: currentMatch?.teamC,
-      marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : "BOOKMAKER",
+      marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : marketType,
     };
     if (marketType == "Session") {
       delete payload.betOn;
@@ -412,15 +412,15 @@ const PlaceBet = ({
         // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
         matchesMobile
           ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
-            // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-            { position: "absolute", right: back ? "0vw" : "0vw" }
+          // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
+          { position: "absolute", right: back ? "0vw" : "0vw" }
           : typeOfBet == "Session"
-          ? {
+            ? {
               position: "absolute",
               right: back ? "auto" : "0vw",
               left: isSessionYes ? "-30%" : "95%",
             }
-          : {
+            : {
               position: "absolute",
               right: back
                 ? typeOfBet != "Session"
@@ -494,8 +494,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                ? "Lay"
-                : "Back"
+                  ? "Lay"
+                  : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}

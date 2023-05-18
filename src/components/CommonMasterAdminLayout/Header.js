@@ -45,7 +45,7 @@ import {
 } from "../../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 var roleName = "";
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -72,7 +72,7 @@ const CustomHeader = ({}) => {
   const location = useLocation();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const [localUser,setLocalUser]=useState(currentUser)
+  const [localUser, setLocalUser] = useState(currentUser)
 
   const { socket } = useContext(SocketContext);
   useEffect(() => {
@@ -81,24 +81,24 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
 
-          const { data } = await axios.get("auth/logout");
-          if (data?.data === "success logout") {
-            dispatch(removeSelectedMatch());
-            dispatch(removeCurrentUser());
-            dispatch(removeManualBookMarkerRates());
-            dispatch(logout({ roleType: "role2" }));
-            setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-            if (nav === "admin") {
-              navigate("/admin");
+          // const { data } = await axios.get("auth/logout");
+          // if (data?.data === "success logout") {
+          dispatch(removeSelectedMatch());
+          dispatch(removeCurrentUser());
+          dispatch(removeManualBookMarkerRates());
+          dispatch(logout({ roleType: "role2" }));
+          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+          if (nav === "admin") {
+            navigate("/admin");
 
-              dispatch(logout({ roleType: "role1" }));
-              setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-            }
-            navigate(`/${nav}`);
-            removeSocket();
-          } else {
-            toast.error("Something went wrong");
+            dispatch(logout({ roleType: "role1" }));
+            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
           }
+          navigate(`/${nav}`);
+          removeSocket();
+          // } else {
+          //   toast.error("Something went wrong");
+          // }
         }
       };
     }

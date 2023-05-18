@@ -22,12 +22,12 @@ const Odds = ({ onClick, top, blur, match }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [matchOddsLive, setMatchOddsLive] = useState([]);
-  const { socketMicro ,socket} = useContext(SocketContext);
+  const { socketMicro, socket } = useContext(SocketContext);
   const dispatch = useDispatch();
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  
+
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-const {axios}=setRole()
+  const { axios } = setRole()
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
@@ -42,10 +42,10 @@ const {axios}=setRole()
     let timeLeft = {};
     if (difference > 0) {
       timeLeft = {
-          days: ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2),
-          hours: ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(-2),
-          minutes: ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2),
-          seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2),
+        days: ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2),
+        hours: ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(-2),
+        minutes: ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2),
+        seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2),
       };
     }
 
@@ -53,25 +53,25 @@ const {axios}=setRole()
   }
 
   // const upcoming = (timeLeft?.hours || timeLeft?.days) > 1 ? true : false;
-    const upcoming =  false;
+  const upcoming = false;
 
 
-    useEffect(() => {
-      if (socket && socket.connected) {
-        socket.onevent = async (packet) => {
-          if (packet.data[0] === "logoutUserForce") {
-            console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-            dispatch(removeCurrentUser());
-            dispatch(removeManualBookMarkerRates())
-            dispatch(removeSelectedMatch());
-            dispatch(logout({ roleType: "role4" }));
-            setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-            await axios.get("auth/logout");
-            removeSocket();
-          }
-        };
-      }
-    }, [socket]);
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        if (packet.data[0] === "logoutUserForce") {
+          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+          dispatch(removeCurrentUser());
+          dispatch(removeManualBookMarkerRates())
+          dispatch(removeSelectedMatch());
+          dispatch(logout({ roleType: "role4" }));
+          setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+          // await axios.get("auth/logout");
+          removeSocket();
+        }
+      };
+    }
+  }, [socket]);
 
   const activateLiveMatchMarket = async () => {
     try {

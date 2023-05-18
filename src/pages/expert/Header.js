@@ -34,7 +34,7 @@ import { SocketContext } from "../../context/socketContext";
 import { memo } from "react";
 import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -85,7 +85,7 @@ const CustomHeader = ({}) => {
           dispatch(logout({ roleType: "role3" }));
           dispatch(removeSelectedMatch());
           setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
-          await axios.get("auth/logout");
+          // await axios.get("auth/logout");
           removeSocket();
           navigate("/expert");
         }
@@ -377,8 +377,8 @@ const CustomHeader = ({}) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                    ? "Bookmaker"
-                    : "Betfair"
+                      ? "Bookmaker"
+                      : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />
@@ -739,7 +739,7 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
         }}
       >
         <Box
-          onClick={(event) => {}}
+          onClick={(event) => { }}
           sx={[
             {
               backgroundColor: "white",

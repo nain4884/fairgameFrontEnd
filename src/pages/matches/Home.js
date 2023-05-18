@@ -110,7 +110,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           dispatch(removeSelectedMatch());
           dispatch(logout({ roleType: "role4" }));
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-          await axios.get("auth/logout");
+          // await axios.get("auth/logout");
           removeSocket();
         }
 

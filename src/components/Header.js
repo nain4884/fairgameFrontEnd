@@ -41,7 +41,7 @@ import { removeSocket } from "./helper/removeSocket";
 import { GlobalStore } from "../context/globalStore";
 import { removeManualBookMarkerRates, removeSelectedMatch } from "../newStore/reducers/matchDetails";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const location = useLocation();
@@ -68,7 +68,7 @@ const CustomHeader = ({}) => {
           dispatch(removeSelectedMatch());
           dispatch(logout({ roleType: "role4" }));
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-          await axios.get("auth/logout");
+          // await axios.get("auth/logout");
           removeSocket();
         }
       };

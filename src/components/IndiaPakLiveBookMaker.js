@@ -39,6 +39,16 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const [isABall, setIsABall] = useState(false)
         const [isBBall, setIsBBall] = useState(false)
         const [isCBall, setIsCBall] = useState(false)
+        const [teamBall, setTeamBall] = useState({
+            isABall: false,
+            isBBall: false,
+            isCBall: false,
+        })
+        const [teamSuspend, setTeamSuspend] = useState({
+            teamA_suspend: false,
+            teamB_suspend: false,
+            teamC_suspend: false,
+        })
         // const [isCall, setIsCall] = useState(false)
         const [betId, setBetId] = useState("")
         const [isTab, setIsTab] = useState("")
@@ -92,55 +102,100 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             if (socket && socket.connected) {
                 socket.onevent = async (packet) => {
                     const data = packet.data[1];
-                    console.log("check data : ", data)
                     if (packet.data[0] === "teamA_suspend_user") {
-                        // console.log("suspend")
-                        // console.log("teamA_suspend_use : ", data);
                         if (data.teamA_suspend == 'Ball Started') {
                             setIsABall(true)
+                            setTeamBall((prevState) => ({
+                                ...prevState,
+                                isABall: true,
+                                isBBall: true,
+                                isCBall: true,
+                            }));
                         } else {
                             setIsTeamASuspend(data.teamA_suspend);
-                            // setIsTeamBSuspend(data.teamA_suspend);//aaa
                             setIsTeamBackUnlock(true);
                             setIsABall(false);
+                            setTeamBall((prevState) => ({
+                                ...prevState,
+                                isABall: false,
+                                isBBall: false,
+                                isCBall: false,
+                            }));
                         }
+                        setTeamSuspend((prevState) => ({
+                            ...prevState,
+                            teamA_suspend: true,
+                        }));
 
                     }
                     if (packet.data[0] === "teamB_suspend_user") {
                         if (data.teamB_suspend == 'Ball Started') {
                             setIsBBall(true)
+                            setTeamBall((prevState) => ({
+                                ...prevState,
+                                isABall: true,
+                                isBBall: true,
+                                isCBall: true,
+                            }));
                         } else {
                             setIsTeamBSuspend(data.teamB_suspend);
-                            // setIsTeamASuspend(data.teamB_suspend);//aaa
                             setIsTeamBackUnlock(true);
                             setIsBBall(false);
-                            // alert("teamB_suspend_user")
+                            setTeamBall((prevState) => ({
+                                ...prevState,
+                                isABall: false,
+                                isBBall: false,
+                                isCBall: false,
+                            }));
                         }
+                        setTeamSuspend((prevState) => ({
+                            ...prevState,
+                            teamB_suspend: true,
+                        }));
                     }
                     if (packet.data[0] === "teamC_suspend_user") {
                         if (data.teamC_suspend == 'Ball Started') {
                             setIsCBall(true)
+                            setTeamBall((prevState) => ({
+                                ...prevState,
+                                isABall: true,
+                                isBBall: true,
+                                isCBall: true,
+                            }));
                         } else {
                             setIsTeamCSuspend(data.teamC_suspend);
                             setIsTeamBackUnlock(true);
                             setIsCBall(false);
+                            setTeamBall((prevState) => ({
+                                ...prevState,
+                                isABall: false,
+                                isBBall: false,
+                                isCBall: false,
+                            }));
                             // alert("teamB_suspend_user")
                         }
+                        setTeamSuspend((prevState) => ({
+                            ...prevState,
+                            teamC_suspend: true,
+                        }));
                     }
 
                     if (packet.data[0] === "teamA_rate_user") {
-                        // console.log("teamA_rate_use : ", data)
-                        // alert(teamALayValue)
-                        // if (teamALayValue) {
                         setIsTeamALock(data.teamA_suspend);
                         setTeamARate(data.teamA_Back);
                         setTeamALayValue(data.teamA_lay);
                         setIsTeamASuspend(data.teamA_suspend);
-                        // } else {
-                        //     alert(1)
-                        // setIsTeamBackUnlock(false);
-                        // }
                         setIsABall(false);
+                        setTeamBall((prevState) => ({
+                            ...prevState,
+                            isABall: false,
+                            isBBall: false,
+                            isCBall: false,
+                        }));
+                        setTeamSuspend((prevState) => ({
+                            ...prevState,
+                            teamA_suspend: false,
+                        }));
                     }
                     if (packet.data[0] === "teamB_rate_user") {
                         // if (teamBLayValue) {
@@ -153,6 +208,16 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         // setIsTeamBackUnlock(false);
                         // }
                         setIsBBall(false);
+                        setTeamBall((prevState) => ({
+                            ...prevState,
+                            isABall: false,
+                            isBBall: false,
+                            isCBall: false,
+                        }));
+                        setTeamSuspend((prevState) => ({
+                            ...prevState,
+                            teamB_suspend: false,
+                        }))
                     }
                     if (packet.data[0] === "teamC_rate_user") {
                         setIsTeamCLock(data.teamC_suspend);
@@ -161,6 +226,16 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setIsTeamCSuspend(data.teamC_suspend);
                         // setIsTeamBackUnlock(false);
                         setIsCBall(false);
+                        setTeamBall((prevState) => ({
+                            ...prevState,
+                            isABall: false,
+                            isBBall: false,
+                            isCBall: false,
+                        }));
+                        setTeamSuspend((prevState) => ({
+                            ...prevState,
+                            teamC_suspend: false,
+                        }))
                     }
                     if (packet.data[0] === "updateRate_user") {
                         // setIsTeamCLock(data.teamC_suspend);
@@ -172,12 +247,23 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             setTeamARate(data.teamA_Back);
                             setTeamBRate(data.teamB_Back);
                             setTeamCRate(data.teamC_Back);
+                            setTeamSuspend((prevState) => ({
+                                ...prevState,
+                                teamA_suspend: false,
+                                teamB_suspend: false,
+                                teamC_suspend: false,
+                            }))
 
                         } else {
                             // console.log("data ww :", data);
                             setIsTeamBackUnlock(false);
                             setTeamARate(data.teamA_Back);
                             setTeamBRate(data.teamB_Back);
+                            setTeamSuspend((prevState) => ({
+                                ...prevState,
+                                teamA_suspend: false,
+                                teamB_suspend: false,
+                            }))
                         }
                         // alert(1)
                     }
@@ -187,13 +273,24 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         }, [socket]);
 
         const handleSuspend = () => {
+            // alert(JSON.stringify(teamSuspend.teamA_suspend))
             if (match?.teamC) {
-                socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
-                socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, });
-                socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: true, });
+                if (!teamSuspend.teamA_suspend) {
+                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
+                }
+                if (!teamSuspend.teamB_suspend) {
+                    socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, });
+                }
+                if (!teamSuspend.teamC_suspend) {
+                    socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: true, });
+                }
             } else {
-                socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, });
-                socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, });
+                if (!teamSuspend.teamA_suspend) {
+                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, });
+                }
+                if (!teamSuspend.teamB_suspend) {
+                    socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, });
+                }
             }
         }
 
@@ -250,15 +347,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             // console.log(event.current.name)
             // if (match?.teamC) {
             //     // if (event.current.name === 'teamA_rate') {
-            //     socket.emit("teamA_Suspend", {
-            //         betId: match?.id,
-            //         teamA_suspend: true,
-            //     })
             //     // } else if (event.current.name === 'teamB_rate') {
-            //     socket.emit("teamB_Suspend", {
-            //         betId: match?.id,
-            //         teamB_suspend: true,
-            //     });
             //     // } else if (event.current.name === 'teamC_rate') {
             //     socket.emit("teamC_Suspend", {
             //         betId: match?.id,
@@ -267,15 +356,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             //     // }
             // } else {
             //     // if (event.current.name === 'teamA_rate') {
-            //     socket.emit("teamA_Suspend", {
-            //         betId: match?.id,
-            //         teamA_suspend: true,
-            //     });
             //     // } else if (event.current.name === 'teamB_rate') {
-            //     socket.emit("teamB_Suspend", {
-            //         betId: match?.id,
-            //         teamB_suspend: true,
-            //     });
             //     // }
             // }
         }
@@ -294,7 +375,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 setPressEnter(false);
                 if (event.target.name === 'teamA_rate') {
                     // alert(teamARate)
-                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
                     setTeamARate(value);
                     // setTeamALayValue(teamALayValue + 1);
                     let chckValue = teamALayValue ? teamALayValue : value
@@ -306,10 +386,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                 if (event.target.name === 'teamB_rate') {
                     // this.setState({ teamB_rate: value, ERROR: false });
-                    socket.emit("teamB_Suspend", {
-                        betId: match?.id,
-                        teamB_suspend: true,
-                    })
                     setTeamBRate(value);
                     let chckValue = teamBLayValue ? teamBLayValue : value
                     setTeamBLayValue(chckValue + incGap);
@@ -326,7 +402,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamARate('');
                     setTeamALayValue('');
                     setTeamBRate('');
-                    setTeamCLayValue('');
+                    setTeamBLayValue('');
                 }
                 // event.target.value = value
             }
@@ -337,10 +413,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 setPressEnter(false);
                 // if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate && teamARate > 0) {
                 if (event.target.name === 'teamA_rate' && teamARate > 0) {
-                    socket.emit("teamA_Suspend", {
-                        betId: betId,
-                        teamA_suspend: true,
-                    })
                     setTeamARate(value);
                     setTeamALayValue(teamALayValue - incGap);
                     setTeamBRate('');
@@ -349,10 +421,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                 // if (event.target.name === 'teamB_rate' && teamBLayValue - incGap > teamBRate && teamBRate > 0) {
                 if (event.target.name === 'teamB_rate' && teamBRate > 0) {
-                    socket.emit("teamB_Suspend", {
-                        betId: betId,
-                        teamB_suspend: true,
-                    })
                     setTeamBRate(value);
                     setTeamBLayValue(teamBLayValue - incGap)
                     setTeamARate('');
@@ -360,11 +428,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 }
                 if (event.target.name === 'teamC_rate' && teamCRate > 0) {
                     setTeamCRate(value);
-                    setTeamCLayValue(teamBLayValue - incGap)
+                    setTeamCLayValue(teamCLayValue - incGap)
                     setTeamARate('');
                     setTeamALayValue('');
                     setTeamBRate('');
-                    setTeamCLayValue('');
+                    setTeamBLayValue('');
                 }
 
                 // event.target.value = value
@@ -376,7 +444,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // upkey = upkey + 1
                 // let lay_value = targetValue + upkey + 1
                 if (event.target.name === 'teamA_rate') {
-                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
                     // alert(teamALayValue)
                     let value = teamALayValue ? teamALayValue : teamARate
                     setTeamALayValue(value + incGap);
@@ -386,7 +453,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                 if (event.target.name === 'teamB_rate') {
                     // this.setState({ teamB_rate: value, ERROR: false });
-                    socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, })
                     let value = teamBLayValue ? teamBLayValue : teamBRate
                     setTeamBLayValue(value + incGap)
                     // setTeamBLayValue(teamBLayValue + incGap)
@@ -409,13 +475,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate) {
                 if (event.target.name === 'teamA_rate' && teamALayValue - incGap > teamARate) {
                     setTeamALayValue(teamALayValue - incGap);
-                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: true, })
                     setTeamBRate('');
                     setTeamBLayValue('')
                 }
 
                 if (event.target.name === 'teamB_rate' && teamBLayValue - incGap > teamBRate) {
-                    socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: true, })
                     setTeamBLayValue(teamBLayValue - incGap)
                     setTeamARate('');
                     setTeamALayValue('');
@@ -511,6 +575,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 setIsTab("");
             }
             else if (key == 'tab') {
+                handleSuspend();
                 // if (event.target.name === 'teamA_rate') {
                 setTeamARate(targetValue);
                 setTeamBRate(targetValue);
@@ -813,13 +878,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 }
             }
             if (key == 'shift') {
-                if (event.target.name === 'teamA_rate') {
-                    socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: 'Ball Started', })
-                } else if (event.target.name === 'teamB_rate') {
-                    socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: 'Ball Started', })
-                } else if (event.target.name === 'teamC_rate') {
-                    socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: 'Ball Started', })
-                }
+                // if (event.target.name === 'teamA_rate') {
+                socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: 'Ball Started', })
+                // } else if (event.target.name === 'teamB_rate') {
+                socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: 'Ball Started', })
+                // } else if (event.target.name === 'teamC_rate') {
+                socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: 'Ball Started', })
+                // }
             }
             if (key == 'plus') {
                 handleSuspend();
@@ -1184,7 +1249,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     </Box>
 
                     <Box sx={{ borderLeft: "2px solid white", width: "40%" }}>
-                        {!isABall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                        {!teamBall?.isABall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                             {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                 {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
                                 {!isTeamBackUnlock ?
@@ -1216,7 +1281,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             >
                                 <img src={BallStart} style={{ width: '60px', height: '17px' }} />
                             </Box>}
-                        {!isBBall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                        {!teamBall?.isBBall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                             {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                 {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                             </Box> : <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
@@ -1245,7 +1310,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             </Box>}
                         {match?.teamC &&
                             <>
-                                {!isCBall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                {!teamBall?.isCBall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                                     {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                         {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
                                         {!isTeamBackUnlock ?

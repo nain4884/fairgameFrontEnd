@@ -29,6 +29,17 @@ const BoxComponent = ({
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     // console.log("check data :", matchOddsData)
     const { ex, status } = data;
+    const handleDecimal = (value, gap, type) => {
+        let checkDecimal = value % 1; // get the decimal portion of the number
+        if (checkDecimal >= 0.5) {
+            let getValue = type == "back" ? Math.round(value) - gap : Math.round(value - 1) + gap
+            return getValue
+        } else {
+            let getValue = type == "back" ? value - gap : value + gap
+            return getValue
+        }
+    }
+
     return (
         <Box
             sx={{
@@ -155,7 +166,9 @@ const BoxComponent = ({
                                 currentMatch={newData}
                                 lock={lock}
                                 rates={allRates}
-                                value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
+
+                                // value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
+                                value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#CEEBFF"}
                                 type={{ color: "#A7DCFF", type: "BL" }}
@@ -173,7 +186,8 @@ const BoxComponent = ({
                                 currentMatch={newData}
                                 lock={lock}
                                 rates={allRates}
-                                value={matchOddsData?.back ? matchOddsData?.back - 1 : 0}
+                                // value={matchOddsData?.back ? matchOddsData?.back - 1 : 0}
+                                value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#C2E6FF"}
                                 type={{ color: "#A7DCFF", type: "BL" }}
@@ -226,7 +240,8 @@ const BoxComponent = ({
                                 currentMatch={newData}
                                 rates={allRates}
                                 lock={lock}
-                                value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
+                                // value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
+                                value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 1) : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#F2CBCB"}
                                 type={{ color: "#FFB5B5", type: "BL" }}
@@ -244,7 +259,8 @@ const BoxComponent = ({
                                 currentMatch={newData}
                                 rates={allRates}
                                 lock={lock}
-                                value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
+                                // value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
+                                value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 2) : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#ECD6D6"}
                                 type={{ color: "#FFB5B5", type: "BL" }}
