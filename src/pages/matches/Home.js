@@ -199,6 +199,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         }
 
         if (packet.data[0] === "match_bet") {
+          // alert(3333)
           const data = packet.data[1];
           if (!isHandled) {
             setIsHandled(true);
@@ -206,6 +207,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               // console.warn(data, "check rates");
               // getAllBets();
               // console.log(data, "MATCHH_BET", data?.betPlaceData?.match_id, id);
+              console.log("check data :", JSON.stringify(data));
               if (data) {
                 const user = {
                   ...currentUser,
@@ -240,7 +242,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   amount:
                     data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                 };
-
                 if (data?.betPlaceData?.match_id === id) {
                   setIObtes((prev) => [body, ...prev]);
                 }
@@ -773,12 +774,12 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
       setIObtes(
         data?.data[0]?.filter((b) =>
-          ["MATCH ODDS", "BOOKMAKER"].includes(b?.marketType)
+          ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(b?.marketType)
         )
       );
       setSessionBets(
         data?.data[0]?.filter(
-          (b) => !["MATCH ODDS", "BOOKMAKER"].includes(b?.marketType)
+          (b) => !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(b?.marketType)
         )
       );
     } catch (e) {
@@ -946,7 +947,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               {allBetsData.length > 0 && (
                 <AllRateSeperate
                   allBetsData={IObets?.filter((v) =>
-                    ["MATCH ODDS", "BOOKMAKER"]?.includes(v.marketType)
+                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(v.marketType)
                   )}
                   mark
                 />
@@ -983,7 +984,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
             <AllRateSeperate
               allBetsData={IObets?.filter((v) =>
-                ["MATCH ODDS", "BOOKMAKER"]?.includes(v.marketType)
+                ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(v.marketType)
               )}
               mark
             />
