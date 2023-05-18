@@ -399,44 +399,44 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           // console.log("value :", value);
           console.log("manualBookmakerData :", manualBookmakerData);
           // alert(value?.betId);
-          if (currentMatch?.id === matchId) {
-            try {
-              setManualBookmakerData(currentMatches => {
-                // alert(currentMatches.id)
-                // Find the index of the match that you want to update
-                // const index = currentMatches.findIndex(match => match.id === value?.betId);
-                // alert(index)
-                // if (index === -1) {
-                //   // Match not found, return the current state
-                //   return currentMatches;
-                // }
+          // if (currentMatch?.id === matchId) {
+          try {
+            setManualBookmakerData(currentMatches => {
+              // alert(currentMatches.id)
+              // Find the index of the match that you want to update
+              // const index = currentMatches.findIndex(match => match.id === value?.betId);
+              // alert(index)
+              // if (index === -1) {
+              //   // Match not found, return the current state
+              //   return currentMatches;
+              // }
 
-                // Update the match object at the specified index
-                const updatedMatch = {
-                  ...currentMatches[0],
-                  teamA_Back: value?.teamA_Back, // Update the teamA_Back value 
-                  teamA_lay: value?.teamA_lay, // Update the teamA_lay value 
-                  teamA_suspend: value?.teamA_suspend == false ? null : 'suspended', // Update the teamA_susp
-                  teamB_Ball: null,
-                  teamC_Ball: null
-                };
+              // Update the match object at the specified index
+              const updatedMatch = {
+                ...currentMatches[0],
+                teamA_Back: value?.teamA_Back, // Update the teamA_Back value 
+                teamA_lay: value?.teamA_lay, // Update the teamA_lay value 
+                teamA_suspend: value?.teamA_suspend == false ? null : 'suspended', // Update the teamA_susp
+                teamB_Ball: null,
+                teamC_Ball: null
+              };
 
-                // Create a new array with the updated match object
-                const updatedMatches = [
-                  ...currentMatches.slice(0, 0),
-                  updatedMatch,
-                  ...currentMatches.slice(0 + 1)
-                ];
+              // Create a new array with the updated match object
+              const updatedMatches = [
+                ...currentMatches.slice(0, 0),
+                updatedMatch,
+                ...currentMatches.slice(0 + 1)
+              ];
 
-                // Return the new array as the updated state
-                return updatedMatches;
-              });
+              // Return the new array as the updated state
+              return updatedMatches;
+            });
 
-              console.log("manualBookmakerData 222:", manualBookmakerData);
-            } catch (err) {
-              console.log(err?.message);
-            }
+            console.log("manualBookmakerData 222:", manualBookmakerData);
+          } catch (err) {
+            console.log(err?.message);
           }
+          // }
         }
         if (packet.data[0] === "teamB_rate_user") {
           const value = packet.data[1];
