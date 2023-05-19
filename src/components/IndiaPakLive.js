@@ -31,7 +31,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
 
     async function doSubmitSessionBet(rate_percent) {
         const payload = { ...Detail, rate_percent }
-        return alert("ddd :" + betId)
+        // return alert("ddd :" + betId)
         try {
             let response = await axios.post(`/betting/addBetting`, payload);
             setBetId(response?.data?.data?.id)
