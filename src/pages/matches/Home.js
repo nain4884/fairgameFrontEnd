@@ -397,12 +397,14 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "teamA_rate_user") {
           const value = packet.data[1];
           // console.log("value :", value);
-          console.log("manualBookmakerData :", manualBookmakerData);
+          // console.log("manualBookmakerData :", manualBookmakerData);
           // alert(value?.betId);
-          // if (currentMatch?.id === matchId) {
+          // alert(JSON.stringify(value.betId));
           try {
             setManualBookmakerData(currentMatches => {
-              // alert(currentMatches.id)
+              if (currentMatches[0].id != value.betId) {
+                return currentMatches;
+              }
               // Find the index of the match that you want to update
               // const index = currentMatches.findIndex(match => match.id === value?.betId);
               // alert(index)
@@ -428,6 +430,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 ...currentMatches.slice(0 + 1)
               ];
 
+
               // Return the new array as the updated state
               return updatedMatches;
             });
@@ -436,18 +439,14 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           } catch (err) {
             console.log(err?.message);
           }
-          // }
         }
         if (packet.data[0] === "teamB_rate_user") {
           const value = packet.data[1];
           try {
             setManualBookmakerData(currentMatches => {
-              // Find the index of the match that you want to update
-              // const index = currentMatches.findIndex(match => match.id === value?.betId);
-              // if (index === -1) {
-              //   // Match not found, return the current state
-              //   return currentMatches;
-              // }
+              if (currentMatches[0].id != value.betId) {
+                return currentMatches;
+              }
 
               // Update the match object at the specified index
               const updatedMatch = {
@@ -477,12 +476,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           const value = packet.data[1];
           try {
             setManualBookmakerData(currentMatches => {
-              // Find the index of the match that you want to update
-              // const index = currentMatches.findIndex(match => match.id === value?.betId);
-              // if (index === -1) {
-              //   // Match not found, return the current state
-              //   return currentMatches;
-              // }
+              if (currentMatches[0].id != value.betId) {
+                return currentMatches;
+              }
 
               // Update the match object at the specified index
               const updatedMatch = {
@@ -512,6 +508,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           const value = packet.data[1];
           try {
             setManualBookmakerData(currentMatches => {
+              if (currentMatches[0].id != value.betId) {
+                return currentMatches;
+              }
               const updatedMatch = {
                 ...currentMatches[0],
                 teamA_Back: value?.teamA_Back,
@@ -544,6 +543,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           if (value.teamA_suspend == 'Ball Started') {
             try {
               setManualBookmakerData(currentMatches => {
+                if (currentMatches[0].id != value.betId) {
+                  return currentMatches;
+                }
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamA_suspend: 'suspended',
@@ -562,6 +564,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           } else {
             try {
               setManualBookmakerData(currentMatches => {
+                if (currentMatches[0].id != value.betId) {
+                  return currentMatches;
+                }
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamA_suspend: 'suspended',
@@ -585,6 +590,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           if (value.teamB_suspend == 'Ball Started') {
             try {
               setManualBookmakerData(currentMatches => {
+                if (currentMatches[0].id != value.betId) {
+                  return currentMatches;
+                }
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamB_suspend: 'suspended',
@@ -603,6 +611,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           } else {
             try {
               setManualBookmakerData(currentMatches => {
+                if (currentMatches[0].id != value.betId) {
+                  return currentMatches;
+                }
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamB_suspend: 'suspended',
@@ -625,6 +636,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           if (value.teamC_suspend == 'Ball Started') {
             try {
               setManualBookmakerData(currentMatches => {
+                if (currentMatches[0].id != value.betId) {
+                  return currentMatches;
+                }
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamC_suspend: 'suspended',
@@ -643,6 +657,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           } else {
             try {
               setManualBookmakerData(currentMatches => {
+                if (currentMatches[0].id != value.betId) {
+                  return currentMatches;
+                }
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamC_suspend: 'suspended',
