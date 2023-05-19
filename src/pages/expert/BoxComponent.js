@@ -82,7 +82,7 @@ const BoxComponent = ({
           <Typography
             sx={{
               color: "black",
-              fontSize: { laptop: "12px", mobile: "13px" },
+              fontSize: { laptop: "10px", mobile: "13px" },
               fontWeight: "600",
               marginLeft: "10px",
             }}

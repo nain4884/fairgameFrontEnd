@@ -131,7 +131,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
       <Box sx={{ maxHeight: submit ? "200px" : "400px", overflowY: "auto" }}>
         {newData?.length > 0 &&
           newData?.map((i, k) => {
-            const num = k + 1;
+            const num = newData?.length - k
             return (
               <div style={{ display: "flex", position: "relative" }}>
                 <Box
