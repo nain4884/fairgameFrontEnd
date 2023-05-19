@@ -107,6 +107,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
               fontWeight: "bold",
               textAlign: "center",
               color: "#FF4D4D",
+              lineHeight: "1"
             }}
           >
             Total Bet

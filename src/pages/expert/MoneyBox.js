@@ -7,6 +7,7 @@ const MoneyBox = ({ color, value }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
+    <>
     <Box
       sx={{
         width: "80px",
@@ -22,7 +23,7 @@ const MoneyBox = ({ color, value }) => {
     >
       <Typography
         sx={{
-          fontSize: ".8vw",
+          fontSize: "1.1vw",
           fontWeight: "bold",
           color: Number(value) > 0 ? "#46e080" : "#FF4D4D",
         }}
@@ -36,6 +37,7 @@ const MoneyBox = ({ color, value }) => {
         />
       ) : ""}
     </Box>
+    </>
   );
 };
 
