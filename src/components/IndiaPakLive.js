@@ -8,6 +8,7 @@ import expertAxios from "../axios/expertAxios";
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { SocketContext } from "../context/socketContext";
 import { setRole } from "../newStore";
+import { Lock, BallStart } from '../assets';
 
 export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent }) {
     const { axios } = setRole();
@@ -27,6 +28,13 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const [visible, setVisible] = useState(false)
     const [visible1, setVisible1] = useState(false)
     const [betId, setBetId] = useState("")
+    const [lock, setLock] = useState({
+        isNo: true,
+        isYes: true,
+        isNoPercent: true,
+        isYesPercent: true,
+    })
+
 
 
     async function doSubmitSessionBet(rate_percent) {
@@ -106,7 +114,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>{match?.title ? match.title : 'India vs Pakistan'}</Typography>
             <Box sx={{ display: "flex", marginTop: "20px" }}>
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
-                    <AddSession createSession={createSession} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} />
+                    <AddSession createSession={createSession} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} />
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                         {!createSession ? <>
                             <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
@@ -161,7 +169,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     )
 }
 
-const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => {
+const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock, setLock }) => {
 
 
     const handleKeysMatchEvents = (key, event) => {
@@ -172,13 +180,16 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => 
         let targetValue = parseFloat(event.target.value);
         event.target.value = targetValue;
         if (key == 'right') {
+            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             // let chckValue = teamALayValue ? teamALayValue : value
             let value = targetValue ? targetValue + incGap.incGap : incGap.incGap;
             let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
             Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue + 1, y_rate_percent: 100, n_rate_percent: 100 })
 
+
         }
         else if (key == 'left') {
+            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             if (targetValue > 0) {
                 let value = targetValue ? targetValue - incGap.incGap : incGap.incGap;
                 let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
@@ -186,6 +197,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => 
             }
         }
         else if (key == 'up') {
+            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             if (targetValue > 0) {
                 let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
                 // alert(value)
@@ -194,6 +206,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => 
 
         }
         else if (key == 'down') {
+            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
                 let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
                 Detail.setDetail({ ...Detail.Detail, yes_rate: value - incGap.incGap, y_rate_percent: 100, n_rate_percent: 100 })
@@ -217,6 +230,8 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => 
                 suspended: true,
                 rate_percent: rate_percent
             }
+            setLock({ ...lock, isNo: false, isYes: false, isNoPercent: false, isYesPercent: false })
+            // setDetail({ ...Detail, no_rate: data.no_rate, yes_rate: data.yes_rate, n_rate_percent: firstValue, y_rate_percent: secondValue, bet_condition: data.bet_condition })
             // return alert(JSON.stringify(socket))
             // socket.emit("updateSessionRate", data)
         }
@@ -244,18 +259,18 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => 
     return (
         <Box sx={{ border: "2px solid #FFFFFF", position: "relative" }}>
             <Box sx={{ display: "flex" }}>
-                <Box sx={{ background: "#319E5B", width: "60%", px: "5px" }}>
+                <Box sx={{ background: "#319E5B", width: "64%", px: "5px" }}>
                     <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>{createSession ? 'Add' : 'Your'} Session</Typography>
                 </Box>
-                <Box sx={{ background: "#FF9292", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <Box sx={{ background: "#FF9292", width: "18%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>No</Typography>
                 </Box>
-                <Box sx={{ background: "#00C0F9", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <Box sx={{ background: "#00C0F9", width: "18%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Yes</Typography>
                 </Box>
             </Box>
             <Box sx={{ display: "flex" }}>
-                <Box sx={{ background: "#FFFFFF", width: "60%" }}>
+                <Box sx={{ background: "#FFFFFF", width: "40%" }}>
                     {/* {createSession ? */}
                     <TextField
                         onChange={(e) => {
@@ -269,10 +284,14 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => 
                         }} />
                     {/* : 
                             <Typography sx={{ fontWeight: "600", fontSize: "14px", px: "5px" }}>{sessionEvent?.bet_condition}</Typography>} */}
+
+
                 </Box>
-                <Box sx={{ borderLeft: "2px solid white", width: "40%" }}>
+                <Box sx={{ borderLeft: "2px solid white", width: "60%" }}>
+
+
                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                        <Box sx={{ background: "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                        <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                                 {/* {createSession ? */}
                                 <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
@@ -285,14 +304,14 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => 
                                         value={Detail?.Detail?.no_rate}
                                         variant="standard"
                                         InputProps={{
-                                            placeholder: "No Rate ",
+                                            // placeholder: "No Rate ",
                                             disableUnderline: true,
-                                            style: { fontSize: "15px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                                            style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
                                         }} /></KeyboardEventHandler>
                                 {/* : 39} */}
                             </Typography>
                         </Box>
-                        <Box sx={{ background: "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                        <Box sx={{ background: "#A7DCFF", width: "20%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                                 {/* {createSession ?  */}
                                 <TextField
@@ -302,48 +321,78 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket }) => 
                                     type="Number"
                                     value={Detail.Detail.yes_rate}
                                     variant="standard" InputProps={{
-                                        placeholder: "Yes Rate",
+                                        // placeholder: "Yes Rate",
                                         disableUnderline: true,
-                                        style: { fontSize: "15px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                                        style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
                                     }} />
                                 {/* : 45} */}
                             </Typography>
                         </Box>
+                        <Box sx={{ background: lock?.isNo ? "#FDF21A" : "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            {!lock?.isNo ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                {Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : ""}
+                            </Typography>
+                                : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                        </Box>
+
+                        <Box sx={{ background: lock?.isYes ? "#FDF21A" : "#A7DCFF", width: "30%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            {!lock?.isYes ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                {Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ""}
+                            </Typography>
+                                : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+
+                        </Box>
                     </Box>
                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                        <Box sx={{ background: "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                        <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                                {/* {createSession ? */}
+                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                    <TextField
+                                        // onChange={(e) => {
+                                        //     Detail.setDetail({ ...Detail.Detail, no_rate: e.target.value })
+                                        // }}
+                                        // onChange={(e) => handleChange(e)}
+                                        type="Number"
+                                        value={Detail?.Detail?.n_rate_percent}
+                                        variant="standard"
+                                        InputProps={{
+                                            // placeholder: "No Rate ",
+                                            disableUnderline: true,
+                                            style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                                        }} /></KeyboardEventHandler>
+                                {/* : 39} */}
+                            </Typography>
+                        </Box>
+                        <Box sx={{ background: "#A7DCFF", width: "20%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                                 {/* {createSession ?  */}
                                 <TextField
                                     // onChange={(e) => {
-                                    //     Detail.setDetail({ ...Detail.Detail, n_rate_percent: e.target.value })
-                                    // }}
-                                    type="Number"
-                                    value={Detail.Detail.n_rate_percent}
-                                    variant="standard" InputProps={{
-                                        placeholder: "No %",
-                                        disableUnderline: true,
-                                        style: { fontSize: "15px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
-                                    }} />
-                                {/* : 39} */}
-                            </Typography>
-                        </Box>
-                        <Box sx={{ background: "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                {/* {createSession ? */}
-                                <TextField
-                                    // onChange={(e) => {
-                                    //     Detail.setDetail({ ...Detail.Detail, y_rate_percent: e.target.value })
+                                    //     Detail.setDetail({ ...Detail.Detail, yes_rate: e.target.value })
                                     // }}
                                     type="Number"
                                     value={Detail.Detail.y_rate_percent}
                                     variant="standard" InputProps={{
-                                        placeholder: "Yes %",
+                                        // placeholder: "Yes Rate",
                                         disableUnderline: true,
-                                        style: { fontSize: "15px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                                        style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
                                     }} />
                                 {/* : 45} */}
                             </Typography>
+                        </Box>
+                        <Box sx={{ background: lock?.isNoPercent ? "#FDF21A" : "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            {!lock?.isNoPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                {Detail.Detail.n_rate_percent}
+                            </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                        </Box>
+                        {/* <Box sx={{ background: "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                        </Box> */}
+                        <Box sx={{ background: lock?.isYesPercent ? "#FDF21A" : "#A7DCFF", width: "30%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                            {!lock?.isYesPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                {Detail.Detail.y_rate_percent}
+                            </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                         </Box>
                     </Box>
                 </Box>
