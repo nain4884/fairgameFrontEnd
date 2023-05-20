@@ -7,7 +7,7 @@ const RunsBox = ({ item ,setData}) => {
   return (
     <Box
       sx={{
-        height: "350px",
+        height: "354px",
         flexDirection: "column",
         borderRadius: "10px",
         backgroundColor: "white",
@@ -21,13 +21,13 @@ const RunsBox = ({ item ,setData}) => {
         sx={{
           display: "flex",
           paddingX:"2px",
-          height: "20px",
+          height: "36px",
           background: "#0B4F26",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <Typography sx={{ fontSize: "8px", color: "white", fontWeight: "600" }}>
+        <Typography sx={{ fontSize: "12px", color: "white", fontWeight: "600" ,lineHeight:"1"}}>
           {item?.bet_condition}
         </Typography>
         <img 
@@ -73,7 +73,7 @@ const RunsBox = ({ item ,setData}) => {
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ height: "348px", overflowY: "scroll" }}>
+      <Box sx={{ height: "350px", overflowY: "scroll" }}>
         {item?.profitLoss?.betData?.length > 0 ? (
           item?.profitLoss?.betData?.map((v) => {
             const getColor = (value) => {
