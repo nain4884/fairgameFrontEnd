@@ -83,7 +83,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
-            display: "flex",
+            display: "flex"
           }}
         >
           <Typography
@@ -93,7 +93,9 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
               color: "white",
             }}
           >
-            {amount ? "-100,000,00" : "Profit/Loss"}
+            {!profitLoss?.profitLoss?.max_loss ? "Profit/Loss" : profitLoss?.profitLoss?.max_loss }
+       
+      
           </Typography>
           <img
             src={UD}

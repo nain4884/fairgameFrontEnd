@@ -139,7 +139,9 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
               color: "white",
             }}
           >
-            {amount ? "-100,000,00" : "Profit/Loss"}
+           
+           {!newData?.profitLoss?.max_loss ? "Profit/Loss" : newData?.profitLoss?.max_loss }
+  
           </Typography>
           <img
             src={UD}

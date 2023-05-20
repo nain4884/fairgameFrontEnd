@@ -84,7 +84,7 @@ export const setRole = (token) => {
     role = "role2";
     JWT = userWallet?.access_token;
     roleName = userWallet?.role?.roleName;
-    transPass = "isTransPasswordCreated2";
+    transPass = userAdmin?.isTransPasswordCreated;
     userAxios = walletInstance;
     walletInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
