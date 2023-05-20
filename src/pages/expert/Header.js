@@ -84,7 +84,7 @@ const CustomHeader = ({ }) => {
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
           dispatch(removeSelectedMatch());
-          setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
+          setGlobalStore((prev) => ({ ...prev, expertJWT: "", isSession: true }));
           // await axios.get("auth/logout");
           removeSocket();
           navigate("/expert");
@@ -494,6 +494,7 @@ const MenutItemsComponent = ({
   handleClose,
   allLiveEventSession,
 }) => {
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const activeUser = useSelector((state) => state?.activeUser?.activeUser);
   const navigate = useNavigate();
   return (
@@ -594,7 +595,11 @@ const MenutItemsComponent = ({
           <Box
             onClick={(e) => {
               navigate("/expert/live", {
-                state: { createSession: true, match: x },
+                state: {
+                  createSession: true,
+                  // createSession: globalStore.isSession,
+                  match: x
+                },
               });
               handleClose();
             }}

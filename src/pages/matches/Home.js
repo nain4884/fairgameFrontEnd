@@ -113,10 +113,59 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           // await axios.get("auth/logout");
           removeSocket();
         }
+        // if (packet.data[0] === "updateSessionRate_user") {
+        // alert(JSON.stringify(value))
+        // const value = packet.data[1];
+        // matchId = value?.match_id;
+        // try {
+        //   setCurrentMatch((currentMatch) => {
+        //     if (currentMatch?.id !== value?.match_id) {
+        //       // If the new bet doesn't belong to the current match, return the current state
+        //       return currentMatch;
+        //     }
 
+        //     // Update the bettings array in the current match object
+        //     const updatedBettings = currentMatch?.bettings?.map((betting) => {
+        //       if (betting.id === value.id && value.sessionBet) {
+        //         // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+        //         return {
+        //           ...betting,
+        //           ...value,
+        //         };
+        //       } else if (
+        //         betting?.id === value?.id &&
+        //         value.sessionBet === false
+        //       ) {
+        //         return {
+        //           ...betting,
+        //           ...value,
+        //         };
+        //       }
+        //       return betting;
+        //     });
+        //     var newUpdatedValue = updatedBettings;
+        //     const bettingsIds = updatedBettings?.map(
+        //       (betting) => betting?.id
+        //     );
+        //     if (!bettingsIds?.includes(value.id)) {
+        //       // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
+        //       newUpdatedValue = [...newUpdatedValue, value];
+        //     }
+
+        //     // Return the updated current match object
+        //     return {
+        //       ...currentMatch,
+        //       bettings: newUpdatedValue,
+        //     };
+        //   });
+        // } catch (err) {
+        //   console.log(err?.message);
+        // }
+        // }
 
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
+          console.log("newBetAdded :", value);
           matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
