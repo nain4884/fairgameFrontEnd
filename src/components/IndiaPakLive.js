@@ -43,6 +43,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     })
     const [isBall, setIsBall] = useState(false)
     const [isCreateSession, setIsCreateSession] = useState(createSession)
+    const [isPercent, setIsPercent] = useState("")
 
     // alert(globalStore.isSession)
 
@@ -144,7 +145,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>{match?.title ? match.title : 'India vs Pakistan'}</Typography>
             <Box sx={{ display: "flex", marginTop: "20px" }}>
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
-                    <AddSession createSession={createSession} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} />
+                    <AddSession createSession={createSession} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} isPercent={{ isPercent, setIsPercent }} />
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                         {!isCreateSession ? <>
                             <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
@@ -199,7 +200,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     )
 }
 
-const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock, setLock, isBall, isCreateSession, match }) => {
+const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock, setLock, isBall, isCreateSession, match, isPercent }) => {
 
 
     const handleKeysMatchEvents = (key, event) => {
@@ -210,31 +211,34 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         let targetValue = parseFloat(event.target.value);
         event.target.value = targetValue;
         if (key == 'right') {
+            incGap.setIncGap(1)
+            isPercent.setIsPercent("");
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
-            // // let chckValue = teamALayValue ? teamALayValue : value
-            // let value = targetValue ? targetValue + incGap.incGap : incGap.incGap;
-            // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
-            // Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue + 1, y_rate_percent: 100, n_rate_percent: 100 })
+            // let chckValue = teamALayValue ? teamALayValue : value
+            let value = Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate ? targetValue : targetValue + 1;
+            let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
+            Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue + 1, y_rate_percent: 100, n_rate_percent: 100 })
 
 
         }
         else if (key == 'left') {
-            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
-            // if (targetValue > 0) {
-            //     let value = targetValue ? targetValue - incGap.incGap : incGap.incGap;
-            //     let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
-            //     Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue - 1, y_rate_percent: 100, n_rate_percent: 100 })
-            // }
-        }
-        else if (key == 'up') {
-            // alert(incGap.incGap)
+            isPercent.setIsPercent("");
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             if (targetValue > 0) {
-                // let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
-                // // alert(value)
-                // Detail.setDetail({ ...Detail.Detail, yes_rate: value + incGap.incGap, y_rate_percent: 100, n_rate_percent: 100 })
-
-                Detail.setDetail({ ...Detail.Detail, no_rate: Detail?.Detail?.no_rate, yes_rate: Detail?.Detail?.yes_rate, y_rate_percent: 100, y_rate_percent: Detail?.Detail?.y_rate_percent - incGap.incGap, n_rate_percent: Detail?.Detail?.n_rate_percent + incGap.incGap })
+                let value = targetValue ? targetValue - 1 : 1;
+                let yesValue = Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate ? Detail?.Detail?.yes_rate + 1 : Detail?.Detail?.yes_rate;
+                Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue - 1, y_rate_percent: 100, n_rate_percent: 100 })
+            }
+        }
+        else if (key == 'up') {
+            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
+            if (targetValue > 0) {
+                if (isPercent.isPercent == "percent") {
+                    Detail.setDetail({ ...Detail.Detail, no_rate: Detail?.Detail?.no_rate, yes_rate: Detail?.Detail?.yes_rate, y_rate_percent: 100, y_rate_percent: Detail?.Detail?.y_rate_percent - incGap.incGap, n_rate_percent: Detail?.Detail?.n_rate_percent + incGap.incGap })
+                } else {
+                    let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate
+                    Detail.setDetail({ ...Detail.Detail, yes_rate: value + incGap.incGap })
+                }
             }
 
         }
@@ -245,7 +249,14 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
             //     Detail.setDetail({ ...Detail.Detail, yes_rate: value - incGap.incGap, y_rate_percent: 100, n_rate_percent: 100 })
             // }
             if (targetValue > 0) {
-                Detail.setDetail({ ...Detail.Detail, no_rate: Detail?.Detail?.no_rate, yes_rate: Detail?.Detail?.yes_rate, y_rate_percent: 100, y_rate_percent: Detail?.Detail?.y_rate_percent + incGap.incGap, n_rate_percent: Detail?.Detail?.n_rate_percent - incGap.incGap })
+                if (isPercent.isPercent == "percent") {
+                    Detail.setDetail({ ...Detail.Detail, no_rate: Detail?.Detail?.no_rate, yes_rate: Detail?.Detail?.yes_rate, y_rate_percent: 100, y_rate_percent: Detail?.Detail?.y_rate_percent + incGap.incGap, n_rate_percent: Detail?.Detail?.n_rate_percent - incGap.incGap })
+                } else {
+                    if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
+                        let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate
+                        Detail.setDetail({ ...Detail.Detail, yes_rate: value - incGap.incGap })
+                    }
+                }
             }
         }
         else if (key == 'shift') {
@@ -263,6 +274,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         }
         else if (key == ',') {
             // alert(targetValue)
+            isPercent.setIsPercent("percent");
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
             // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
@@ -270,13 +282,19 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
             incGap.setIncGap(5)
         }
         else if (key == '.') {
+            isPercent.setIsPercent("percent");
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             let value = Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate + 1 : 0;
             Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: value, y_rate_percent: 90, n_rate_percent: 110 })
             incGap.setIncGap(5)
         }
         else if (key == 'esc') {
+            isPercent.setIsPercent("percent");
             incGap.setIncGap(1)
+            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
+            let value = Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : 0;
+            // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
+            Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: value + 1, y_rate_percent: 100, n_rate_percent: 100 })
         }
         else if (key == 'enter') {
             if (!isCreateSession) {
@@ -299,8 +317,14 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
             // socket.emit("updateSessionRate", data)
         }
 
+        // else if (key == 'backspace') {
+        //     // setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
+        // }
+
+
     }
     const handleChange = (event) => {
+        setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
         // alert(isBall.isBall)
         let target = event.target;
         // let targetValue = parseFloat(event.target.value);
@@ -359,7 +383,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                         <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                                 {/* {createSession ? */}
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                     <TextField
                                         // onChange={(e) => {
                                         //     Detail.setDetail({ ...Detail.Detail, no_rate: e.target.value })
@@ -418,7 +442,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                         <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                                 {/* {createSession ? */}
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                     <TextField
                                         // onChange={(e) => {
                                         //     Detail.setDetail({ ...Detail.Detail, no_rate: e.target.value })
