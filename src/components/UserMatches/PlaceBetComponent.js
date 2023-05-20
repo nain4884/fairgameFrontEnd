@@ -72,7 +72,7 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
               <span style={{ color: "#0B4F26" }}>{proLoss?.total_bet || 0}</span>
             </Typography>
           </Box>
-          <Box sx={{ zIndex: 100 }}>
+          <Box sx={{ zIndex: 100  ,display:"flex",flexDirection:"column"}}>
             <Typography
               sx={{
                 fontSize: { laptop: "10px", mobile: amount ? "10px" : "8px" },
@@ -80,8 +80,12 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
                 color: "white",
               }}
             >
-              {amount ? "-10,000,000" : "Profit/Loss"}
-            </Typography>
+          
+         
+      
+          {!profitLoss?.profitLoss?.max_loss ? "Profit/Loss" : profitLoss?.profitLoss?.max_loss }
+          </Typography>
+        
           </Box>
         </Box>
         {show && (

@@ -9,6 +9,7 @@ import { memo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setRole } from "../../../newStore";
+import { useRef } from "react";
 const SessionMarket = ({
   currentMatch,
   liveOnly,
@@ -30,7 +31,10 @@ const SessionMarket = ({
   const { axios } = setRole();
   const [matchSessionData, setMatchSessionData] = useState(sessionData);
   useEffect(() => {
-    setMatchSessionData(sessionData);
+    if (sessionData?.length > 0) {
+      setMatchSessionData(sessionData);
+      // scrollToMessage();
+    }
   }, [sessionData]);
   // const updateSessionData = useCallback(
   //   (updatedData) => {
@@ -50,6 +54,14 @@ const SessionMarket = ({
   //   },
   //   [setMatchSessionData]
   // );
+
+  // const messageRef = useRef(null);
+
+  // const scrollToMessage = () => {
+  //   if (messageRef.current) {
+  //     messageRef.current.scrollIntoView({});
+  //   }
+  // };
 
   const handleLive = async () => {
     try {
@@ -268,7 +280,10 @@ const SessionMarket = ({
         >
           {matchSessionData?.length > 0 &&
             matchSessionData?.map((match, index) => (
-              <Box key={index}>
+              <Box key={index}
+              //  ref={messageRef} 
+              
+              >
                 <SessionMarketBox
                   liveOnly={liveOnly}
                   setIObtes={setIObtes}

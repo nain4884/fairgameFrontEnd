@@ -569,6 +569,8 @@ const DepositComponent = ({
             sx={{
               width: "100%",
               height: "45px",
+              paddingLeft: "20px",
+              paddingRight: "20px",
               background: "white",
               display: "flex",
               alignItems: "center",
