@@ -457,7 +457,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           // alert(JSON.stringify(value.betId));
           try {
             setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0].id != value.betId) {
+              if (currentMatches[0]?.id != value?.betId) {
                 return currentMatches;
               }
               // Find the index of the match that you want to update
@@ -499,7 +499,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           const value = packet.data[1];
           try {
             setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0].id != value.betId) {
+              if (currentMatches[0]?.id != value?.betId) {
                 return currentMatches;
               }
 
@@ -532,7 +532,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           const value = packet.data[1];
           try {
             setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0].id != value.betId) {
+              if (currentMatches[0]?.id != value?.betId) {
                 return currentMatches;
               }
 
@@ -565,7 +565,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           const value = packet.data[1];
           try {
             setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0].id != value.betId) {
+              if (currentMatches[0]?.id != value?.betId) {
                 return currentMatches;
               }
               const updatedMatch = {
@@ -600,7 +600,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           if (value.teamA_suspend == "Ball Started") {
             try {
               setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0].id != value.betId) {
+                if (currentMatches[0]?.id != value?.betId) {
                   return currentMatches;
                 }
                 const updatedMatch = {
@@ -621,7 +621,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           } else {
             try {
               setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0].id != value.betId) {
+                if (currentMatches[0]?.id != value?.betId) {
                   return currentMatches;
                 }
                 const updatedMatch = {
@@ -646,7 +646,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           if (value.teamB_suspend == "Ball Started") {
             try {
               setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0].id != value.betId) {
+                if (currentMatches[0]?.id != value?.betId) {
                   return currentMatches;
                 }
                 const updatedMatch = {
@@ -667,7 +667,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           } else {
             try {
               setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0].id != value.betId) {
+                if (currentMatches[0]?.id != value?.betId) {
                   return currentMatches;
                 }
                 const updatedMatch = {
@@ -692,7 +692,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           if (value.teamC_suspend == "Ball Started") {
             try {
               setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0].id != value.betId) {
+                if (currentMatches[0]?.id != value?.betId) {
                   return currentMatches;
                 }
                 const updatedMatch = {
@@ -713,7 +713,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           } else {
             try {
               setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0].id != value.betId) {
+                if (currentMatches[0]?.id != value?.betId) {
                   return currentMatches;
                 }
                 const updatedMatch = {
