@@ -521,7 +521,7 @@ const MatchScreen = () => {
                 display: "flex",
                 flexDirection: "row",
                 flexWrap: "wrap",
-                gap: ".7vw",
+                gap: "1px",
                 height: "524px",
                 overflow: "scroll",
                 marginTop: ".25vw",
