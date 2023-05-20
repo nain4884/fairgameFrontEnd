@@ -14,9 +14,10 @@ import SearchInput from "./SearchInput";
 
 import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
 import constants from "./helper/constants";
+import { setPage } from "../newStore/reducers/auth";
 
 const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
@@ -37,7 +38,7 @@ const AccountList = () => {
     let { axios } = setRole();
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?&page=${currentPage}&limit=${pageLimit}`
+        `/fair-game-wallet/getAllUser?&page=${currentPageNo}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole);
@@ -71,11 +72,13 @@ const AccountList = () => {
   }
 
   const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-
+  const { currentPageNo } = useSelector((state) => state?.auth);
+  const dispatch = useDispatch()
   function callPage(val) {
-    setCurrentPage(parseInt(val));
+    dispatch(setPage(parseInt(val)));
+    // setCurrentPage(parseInt(val));
   }
 
   // async function getRoles() {
@@ -85,7 +88,7 @@ const AccountList = () => {
   useEffect(() => {
     // getRoles();
     getListOfUser();
-  }, [currentPage, pageCount, userWallet?.access_token]);
+  }, [currentPageNo, pageCount, userWallet?.access_token]);
 
   return (
     <>
@@ -120,7 +123,7 @@ const AccountList = () => {
                     fTextStyle={{ color: "white" }}
                     element={element}
                     getListOfUser={getListOfUser}
-                    currentPage={currentPage}
+                    currentPage={currentPageNo}
                   />
                 );
               } else {
@@ -132,7 +135,7 @@ const AccountList = () => {
                     fTextStyle={{ color: "#0B4F26" }}
                     element={element}
                     getListOfUser={getListOfUser}
-                    currentPage={currentPage}
+                    currentPage={currentPageNo}
                   />
                 );
               }
@@ -140,7 +143,7 @@ const AccountList = () => {
           </Box>
         </Box>
       </Box>
-      <Footer currentPage={currentPage} pages={pageCount} callPage={callPage} />
+      <Footer currentPage={currentPageNo} pages={pageCount} callPage={callPage} />
     </>
   );
 };
