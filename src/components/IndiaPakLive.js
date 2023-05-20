@@ -9,19 +9,26 @@ import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { SocketContext } from "../context/socketContext";
 import { setRole } from "../newStore";
 import { Lock, BallStart } from '../assets';
+import { GlobalStore } from "../context/globalStore";
+
+
 
 export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent }) {
+
     const { axios } = setRole();
     const { socket, socketMicro } = useContext(SocketContext);
+    const { globalStore, setGlobalStore } = useContext(GlobalStore);
     const stateDetail = {
         match_id: match?.id,
         matchType: match?.gameType,
         sessionBet: true,
+        betStatus: 1,
         bet_condition: '',
         no_rate: '',
         yes_rate: '',
         y_rate_percent: '',
-        n_rate_percent: ''
+        n_rate_percent: '',
+        suspended: "ACTIVE",
     }
     const [Detail, setDetail] = useState(stateDetail)
     const [incGap, setIncGap] = useState(1)
@@ -34,15 +41,25 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
         isNoPercent: true,
         isYesPercent: true,
     })
+    const [isBall, setIsBall] = useState(false)
+    const [isCreateSession, setIsCreateSession] = useState(createSession)
 
-
+    // alert(globalStore.isSession)
 
     async function doSubmitSessionBet(rate_percent) {
         const payload = { ...Detail, rate_percent }
         // return alert("ddd :" + betId)
         try {
             let response = await axios.post(`/betting/addBetting`, payload);
-            setBetId(response?.data?.data?.id)
+            setBetId(response?.data?.data?.id);
+            setIsCreateSession(false);
+            setGlobalStore((prev) => ({ ...prev, isSession: false }));
+            setLock({
+                isNo: false,
+                isYes: false,
+                isNoPercent: false,
+                isYesPercent: false,
+            })
             // console.log("response :bbb", response)
             // alert("ddd :" + JSON.stringify(response?.data?.data?.id))
         } catch (e) {
@@ -51,13 +68,14 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     }
 
     useEffect(() => {
+        // alert(isCreateSession)
         // alert(JSON.stringify(sessionEvent))
         // 2 over runs RR(PBKS vs RR)adv
         if (socket && socket.connected) {
             socket.onevent = async (packet) => {
                 const data = packet.data[1];
-                if (packet.data[0] === "updateSessionRate") {
-                    alert("lllll")
+                if (packet.data[0] === "updateSessionRate_user") {
+                    // alert("lllll")
                 }
 
             }
@@ -65,10 +83,22 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     }, [socket]);
 
     useEffect(() => {
+        // alert(JSON.stringify(globalStore.isSession))
         if (sessionEvent?.id) {
             getManuallBookMaker(sessionEvent?.id);
+        } else {
+            setDetail(stateDetail);
+            setLock({
+                isNo: true,
+                isYes: true,
+                isNoPercent: true,
+                isYesPercent: true,
+            })
         }
-    }, []);
+        setIsCreateSession(createSession);
+    }, [sessionEvent?.id]);
+
+
 
     async function getManuallBookMaker(id) {
         try {
@@ -114,9 +144,9 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>{match?.title ? match.title : 'India vs Pakistan'}</Typography>
             <Box sx={{ display: "flex", marginTop: "20px" }}>
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
-                    <AddSession createSession={createSession} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} />
+                    <AddSession createSession={createSession} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} />
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        {!createSession ? <>
+                        {!isCreateSession ? <>
                             <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
                                 <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Go Live</Typography>
                                 <StyledImage src={LiveOn} sx={{ marginLeft: "5px", height: "15px", width: "15px" }} />
@@ -162,14 +192,14 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                     </Box>
                 </Box>
                 <Box sx={{ marginLeft: "15px" }}>
-                    {createSession ? <Box sx={{ width: "162px", minHeight: "182px" }} /> : <RunsAmountBox />}
+                    {isCreateSession ? <Box sx={{ width: "162px", minHeight: "182px" }} /> : <RunsAmountBox />}
                 </Box>
             </Box>
         </Box>
     )
 }
 
-const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock, setLock }) => {
+const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock, setLock, isBall, isCreateSession, match }) => {
 
 
     const handleKeysMatchEvents = (key, event) => {
@@ -181,38 +211,48 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         event.target.value = targetValue;
         if (key == 'right') {
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
-            // let chckValue = teamALayValue ? teamALayValue : value
-            let value = targetValue ? targetValue + incGap.incGap : incGap.incGap;
-            let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
-            Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue + 1, y_rate_percent: 100, n_rate_percent: 100 })
+            // // let chckValue = teamALayValue ? teamALayValue : value
+            // let value = targetValue ? targetValue + incGap.incGap : incGap.incGap;
+            // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
+            // Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue + 1, y_rate_percent: 100, n_rate_percent: 100 })
 
 
         }
         else if (key == 'left') {
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
-            if (targetValue > 0) {
-                let value = targetValue ? targetValue - incGap.incGap : incGap.incGap;
-                let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
-                Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue - 1, y_rate_percent: 100, n_rate_percent: 100 })
-            }
+            // if (targetValue > 0) {
+            //     let value = targetValue ? targetValue - incGap.incGap : incGap.incGap;
+            //     let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
+            //     Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: yesValue - 1, y_rate_percent: 100, n_rate_percent: 100 })
+            // }
         }
         else if (key == 'up') {
+            // alert(incGap.incGap)
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             if (targetValue > 0) {
-                let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
-                // alert(value)
-                Detail.setDetail({ ...Detail.Detail, yes_rate: value + incGap.incGap, y_rate_percent: 100, n_rate_percent: 100 })
+                // let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
+                // // alert(value)
+                // Detail.setDetail({ ...Detail.Detail, yes_rate: value + incGap.incGap, y_rate_percent: 100, n_rate_percent: 100 })
+
+                Detail.setDetail({ ...Detail.Detail, no_rate: Detail?.Detail?.no_rate, yes_rate: Detail?.Detail?.yes_rate, y_rate_percent: 100, y_rate_percent: Detail?.Detail?.y_rate_percent - incGap.incGap, n_rate_percent: Detail?.Detail?.n_rate_percent + incGap.incGap })
             }
 
         }
         else if (key == 'down') {
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
-            if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
-                let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
-                Detail.setDetail({ ...Detail.Detail, yes_rate: value - incGap.incGap, y_rate_percent: 100, n_rate_percent: 100 })
+            // if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
+            //     let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
+            //     Detail.setDetail({ ...Detail.Detail, yes_rate: value - incGap.incGap, y_rate_percent: 100, n_rate_percent: 100 })
+            // }
+            if (targetValue > 0) {
+                Detail.setDetail({ ...Detail.Detail, no_rate: Detail?.Detail?.no_rate, yes_rate: Detail?.Detail?.yes_rate, y_rate_percent: 100, y_rate_percent: Detail?.Detail?.y_rate_percent + incGap.incGap, n_rate_percent: Detail?.Detail?.n_rate_percent - incGap.incGap })
             }
         }
         else if (key == 'shift') {
+            isBall.setIsBall(true);
+            if (!isCreateSession) {
+                socket.emit("updateSessionRate", { betId: sessionEvent?.id, suspended: 'Ball Started', })
+            }
             // if (event.target.name === 'teamA_rate') {
             // socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: 'Ball Started', })
             // // } else if (event.target.name === 'teamB_rate') {
@@ -221,16 +261,39 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
             // socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: 'Ball Started', })
             // }
         }
+        else if (key == ',') {
+            // alert(targetValue)
+            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
+            let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
+            // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
+            Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: value, y_rate_percent: 90, n_rate_percent: 110 })
+            incGap.setIncGap(5)
+        }
+        else if (key == '.') {
+            setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
+            let value = Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate + 1 : 0;
+            Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: value, y_rate_percent: 90, n_rate_percent: 110 })
+            incGap.setIncGap(5)
+        }
+        else if (key == 'esc') {
+            incGap.setIncGap(1)
+        }
         else if (key == 'enter') {
-            let rate_percent = Detail.Detail.n_rate_percent + '-' + Detail.Detail.y_rate_percent
-            let data = {
-                betId: sessionEvent?.id,
-                no_rate: Detail.Detail.no_rate,
-                yes_rate: Detail.Detail.yes_rate,
-                suspended: true,
-                rate_percent: rate_percent
+            if (!isCreateSession) {
+                let rate_percent = Detail.Detail.n_rate_percent + '-' + Detail.Detail.y_rate_percent
+                let data = {
+                    match_id: match?.id,
+                    betId: sessionEvent?.id,
+                    betStatus: 1,
+                    no_rate: Detail.Detail.no_rate,
+                    yes_rate: Detail.Detail.yes_rate,
+                    suspended: "ACTIVE",
+                    rate_percent: rate_percent
+                }
+                setLock({ ...lock, isNo: false, isYes: false, isNoPercent: false, isYesPercent: false })
+                isBall.setIsBall(false);
+                socket.emit("updateSessionRate", data)
             }
-            setLock({ ...lock, isNo: false, isYes: false, isNoPercent: false, isYesPercent: false })
             // setDetail({ ...Detail, no_rate: data.no_rate, yes_rate: data.yes_rate, n_rate_percent: firstValue, y_rate_percent: secondValue, bet_condition: data.bet_condition })
             // return alert(JSON.stringify(socket))
             // socket.emit("updateSessionRate", data)
@@ -238,11 +301,13 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
 
     }
     const handleChange = (event) => {
+        // alert(isBall.isBall)
         let target = event.target;
         // let targetValue = parseFloat(event.target.value);
         let targetValue = parseFloat(event.target.value);
+        let checkValue = parseFloat(event.target.value);
         // alert(targetValue)
-        Detail.setDetail({ ...Detail.Detail, no_rate: targetValue, yes_rate: targetValue + 1, y_rate_percent: 100, n_rate_percent: 100 })
+        Detail.setDetail({ ...Detail.Detail, no_rate: targetValue, yes_rate: targetValue + 1, y_rate_percent: checkValue ? 100 : '', n_rate_percent: checkValue ? 100 : '' })
         // if (target.name === 'teamA_rate') {
         //     // setTeamARate(target.value)
         //     // if (target.value !== '') {
@@ -260,7 +325,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         <Box sx={{ border: "2px solid #FFFFFF", position: "relative" }}>
             <Box sx={{ display: "flex" }}>
                 <Box sx={{ background: "#319E5B", width: "64%", px: "5px" }}>
-                    <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>{createSession ? 'Add' : 'Your'} Session</Typography>
+                    <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>{isCreateSession ? 'Add' : 'Your'} Session</Typography>
                 </Box>
                 <Box sx={{ background: "#FF9292", width: "18%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>No</Typography>
@@ -328,20 +393,26 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                                 {/* : 45} */}
                             </Typography>
                         </Box>
-                        <Box sx={{ background: lock?.isNo ? "#FDF21A" : "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            {!lock?.isNo ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
-                                {Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : ""}
-                            </Typography>
-                                : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                        </Box>
+                        {!isBall?.isBall ?
+                            <>
+                                <Box sx={{ background: lock?.isNo ? "#FDF21A" : "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                    {!lock?.isNo ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                        {Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : ""}
+                                    </Typography>
+                                        : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                </Box>
 
-                        <Box sx={{ background: lock?.isYes ? "#FDF21A" : "#A7DCFF", width: "30%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            {!lock?.isYes ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
-                                {Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ""}
-                            </Typography>
-                                : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                <Box sx={{ background: lock?.isYes ? "#FDF21A" : "#A7DCFF", width: "30%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                    {!lock?.isYes ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                        {Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ""}
+                                    </Typography>
+                                        : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
 
-                        </Box>
+                                </Box>
+                            </> :
+                            <Box sx={{ background: "#000", width: "60%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                            </Box>}
                     </Box>
                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                         <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
@@ -381,19 +452,22 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                                 {/* : 45} */}
                             </Typography>
                         </Box>
-                        <Box sx={{ background: lock?.isNoPercent ? "#FDF21A" : "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            {!lock?.isNoPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
-                                {Detail.Detail.n_rate_percent}
-                            </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                        </Box>
-                        {/* <Box sx={{ background: "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <img src={BallStart} style={{ width: '60px', height: '17px' }} />
-                        </Box> */}
-                        <Box sx={{ background: lock?.isYesPercent ? "#FDF21A" : "#A7DCFF", width: "30%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            {!lock?.isYesPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
-                                {Detail.Detail.y_rate_percent}
-                            </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                        </Box>
+                        {!isBall?.isBall ?
+                            <>
+                                <Box sx={{ background: lock?.isNoPercent ? "#FDF21A" : "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                    {!lock?.isNoPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                        {Detail.Detail.n_rate_percent}
+                                    </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                </Box>
+                                <Box sx={{ background: lock?.isYesPercent ? "#FDF21A" : "#A7DCFF", width: "30%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                    {!lock?.isYesPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                        {Detail.Detail.y_rate_percent}
+                                    </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                </Box>
+                            </> :
+                            <Box sx={{ background: "#000", width: "60%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                            </Box>}
                     </Box>
                 </Box>
             </Box>
