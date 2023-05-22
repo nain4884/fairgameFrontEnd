@@ -117,7 +117,7 @@ const Odds = ({
   typeOfBet,
   matchOddsData
 }) => {
-  console.log("matchOddsData 11:", matchOddsData);
+  // console.log("matchOddsData 11:", matchOddsData);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const bookRatioB = (() => {

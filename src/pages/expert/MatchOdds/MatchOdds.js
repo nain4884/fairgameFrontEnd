@@ -13,6 +13,85 @@ import { setRole } from "../../../newStore";
 import { memo } from "react";
 import { useSelector } from "react-redux";
 
+
+
+
+const SmallBox2 = ({ valueA, valueB }) => {
+  return (
+    <Box sx={{ display: "flex", width: "33%", gap: "3px", margin: "0px", justifyContent: "flex-end" }}>
+      <Box
+        sx={{
+          width: { laptop: "70px", mobile: "10vw" },
+          // position: "absolute", 
+          flexDirection: "column",
+          paddingX: "5px",
+          display: "flex",
+          left: { mobile: "53%", laptop: "49vw", tablet: "53%" },
+          justifyContent: "center",
+          alignItems: "center",
+          height: "30px",
+          background: "white",
+          borderRadius: "3px",
+
+        }}
+      >
+        <Typography
+          sx={{
+            color: "#FF4D4D",
+            fontSize: "10px",
+            fontWeight: "bold",
+          }}
+        >
+          Book
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: "11px",
+            fontWeight: "bold",
+            color: valueA < 0 ? `#FF9292` : `#46e080`,
+          }}
+        >
+          {valueA < 0 ? ` ${valueA}` : `${valueA}`}
+        </Typography>
+      </Box>
+      <Box
+        sx={{
+          width: { laptop: "70px", mobile: "10vw" },
+          // position: "absolute",
+          paddingX: "5px",
+          display: "flex",
+          flexDirection: "column",
+          left: { mobile: "65%", laptop: "55vw", tablet: "65%" },
+          justifyContent: "center",
+          alignItems: "center",
+          height: "30px",
+          background: "white",
+          borderRadius: "3px",
+        }}
+      >
+        <Typography
+          sx={{
+            color: "#FF4D4D",
+            fontSize: "10px",
+            fontWeight: "bold",
+          }}
+        >
+          Book
+        </Typography>
+
+        <Typography
+          sx={{
+            fontSize: "11px",
+            fontWeight: "bold",
+            color: valueB < 0 ? `#FF9292` : `#46e080`,
+          }}
+        >
+          {valueB < 0 ? ` ${valueB}` : `${valueB}`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
 const MatchOdds = ({
   currentMatch,
   matchOdds,
@@ -34,7 +113,31 @@ const MatchOdds = ({
       ? manualBookMarkerRates?.find((v) => v?.matchId === currentMatch?.id)
       : { teamA: 0, teamB: 0 };
 
-      
+  const valueA = teamRates?.teamA
+  const valueB = teamRates?.teamB
+  const bookRatioB = (() => {
+    if (valueA === 0) {
+      return 0;
+    } else {
+      const bookRatio = valueB != 0 ? valueA / valueB || 0 : 0;
+      const formattedRatio = Math.abs(bookRatio).toFixed(2);
+      return valueB < 0 ? `-${formattedRatio}` : formattedRatio;
+    }
+  })();
+
+
+  const bookRatioA = (() => {
+    if (valueA === 0) {
+      return 0;
+    } else {
+      const bookRatio = valueA != 0 ? valueB / valueA || 0 : 0;
+      // alert(teamARates)
+      const formattedRatio = Math.abs(bookRatio).toFixed(2);
+      // alert(typeof teamARates < 0 ? `-${formattedRatio}` : formattedRatio)
+
+      return valueA < 0 ? `-${formattedRatio}` : formattedRatio;
+    }
+  })();
   useEffect(() => {
     if (matchOdds) {
       setNewMatchOdds(matchOdds);
@@ -67,271 +170,280 @@ const MatchOdds = ({
     }
   };
 
+
   return (
-    <Box
-      key="odds"
-      sx={{
-        display: "flex",
-        backgroundColor: "white",
-        flexDirection: "column",
-        width: "100%",
-        margin: ".5vw",
-        alignSelf: {
-          mobile: "center",
-          tablet: "center",
-          laptop: "flex-start",
-          boxShadow: "0px 5px 10px #0000001A",
-          position: "relative",
-        },
-      }}
-    >
+    <>
       <Box
+        key="odds"
         sx={{
           display: "flex",
-          height: 38,
-          flexDirection: "row",
-          width: "99.7%",
-          alignSelf: "center",
+          backgroundColor: "white",
+          flexDirection: "column",
+          width: "100%",
+          margin: ".5vw",
+          alignSelf: {
+            mobile: "center",
+            tablet: "center",
+            laptop: "flex-start",
+            boxShadow: "0px 5px 10px #0000001A",
+            position: "relative",
+          },
         }}
       >
         <Box
           sx={{
-            flex: 1,
-            background: "#f1c550",
-            alignItems: "center",
             display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
-              fontWeight: "bold",
-              marginLeft: "7px",
-            }}
-          >
-            Match Odds
-          </Typography>
-          <Stop
-            onClick={() => {
-              if (newMatchOdds?.id) {
-                setLive(false);
-                socket.emit("matchOddRateLive", {
-                  matchId: currentMatch?.id,
-                  matchOddLive: false,
-                });
-              }
-            }}
-          />
-        </Box>
-
-        <Box
-          sx={{
-            flex: 0.1,
-            background: "#262626",
-            // '#262626'
-          }}
-        >
-          <div class="slanted"></div>
-        </Box>
-        <Box
-          sx={{
-            flex: 1,
-            background: "#262626",
-            // '#262626' ,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Result
-            onClick={() => {
-              setVisible(true);
-            }}
-            invert={true}
-          />
-          {!stlive && (
-            <SmallBox
-              onClick={() => {
-                if (newMatchOdds?.id) {
-                  socket.emit("matchOddRateLive", {
-                    matchId: currentMatch?.id,
-                    matchOddLive: true,
-                  });
-                  setLive(true);
-                } else {
-                  activateMatchOdds(1, "");
-                }
-              }}
-              title={"Go Live"}
-              color={"#FF4D4D"}
-            />
-          )}
-          {stlive && (
-            <SmallBox
-              onClick={() => {
-                socket.emit("matchOddRateLive", {
-                  matchId: currentMatch?.id,
-                  matchOddLive: false,
-                });
-                setLive(false);
-              }}
-              title={"Live"}
-            />
-          )}
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          zIndex: 999,
-          top: "26%",
-          right: "100px",
-        }}
-      >
-        {visible && (
-          <ResultComponent
-            betId={
-              currentMatch?.bettings?.length > 0 &&
-              currentMatch?.bettings?.filter((v) => v?.sessionBet === false)
-            }
-            teamA={currentMatch?.teamA}
-            teamB={currentMatch?.teamB}
-            tie={"Tie"}
-            draw={currentMatch?.teamC ? currentMatch?.teamC  : "Draw"}
-            onClick={() => {
-              setVisible(false);
-            }}
-          />
-        )}
-      </Box>
-      {
-        <Box
-          sx={{
-            display: "flex",
-            background: "#319E5B",
-            height: "25px",
+            height: 38,
+            flexDirection: "row",
             width: "99.7%",
             alignSelf: "center",
           }}
         >
           <Box
             sx={{
-              display: "flex",
-              background: "'#319E5B'",
-              height: "25px",
-              width: "35%",
+              flex: 1,
+              background: "#f1c550",
               alignItems: "center",
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
             <Typography
               sx={{
-                color: "white",
-                fontSize: { laptop: "11px", mobile: "9px" },
+                fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+                fontWeight: "bold",
                 marginLeft: "7px",
               }}
             >
-              MIN: {currentMatch?.betfair_match_min_bet} MAX:
-              {currentMatch?.betfair_match_max_bet}
+              Match Odds
             </Typography>
+            <Stop
+              onClick={() => {
+                if (newMatchOdds?.id) {
+                  setLive(false);
+                  socket.emit("matchOddRateLive", {
+                    matchId: currentMatch?.id,
+                    matchOddLive: false,
+                  });
+                }
+              }}
+            />
+            {/* teamARates={teamRates?.teamA}
+          teamBRates={teamRates?.teamB} */}
+
+            <SmallBox2 valueA={bookRatioA} valueB={bookRatioB} />
+
           </Box>
+
+          <Box
+            sx={{
+              flex: 0.1,
+              background: "#262626",
+              // '#262626'
+            }}
+          >
+            <div class="slanted"></div>
+          </Box>
+          <Box
+            sx={{
+              flex: 1,
+              background: "#262626",
+              // '#262626' ,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Result
+            width={"80px"}
+              onClick={() => {
+                setVisible(true);
+              }}
+              invert={true}
+            />
+            {!stlive && (
+              <SmallBox
+                onClick={() => {
+                  if (newMatchOdds?.id) {
+                    socket.emit("matchOddRateLive", {
+                      matchId: currentMatch?.id,
+                      matchOddLive: true,
+                    });
+                    setLive(true);
+                  } else {
+                    activateMatchOdds(1, "");
+                  }
+                }}
+                title={"Go Live"}
+                color={"#FF4D4D"}
+              />
+            )}
+            {stlive && (
+              <SmallBox
+                onClick={() => {
+                  socket.emit("matchOddRateLive", {
+                    matchId: currentMatch?.id,
+                    matchOddLive: false,
+                  });
+                  setLive(false);
+                }}
+                title={"Live"}
+              />
+            )}
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            zIndex: 999,
+            top: "26%",
+            right: "100px",
+          }}
+        >
+          {visible && (
+            <ResultComponent
+              betId={
+                currentMatch?.bettings?.length > 0 &&
+                currentMatch?.bettings?.filter((v) => v?.sessionBet === false)
+              }
+              teamA={currentMatch?.teamA}
+              teamB={currentMatch?.teamB}
+              tie={"Tie"}
+              draw={currentMatch?.teamC ? currentMatch?.teamC : "Draw"}
+              onClick={() => {
+                setVisible(false);
+              }}
+            />
+          )}
+        </Box>
+        {
           <Box
             sx={{
               display: "flex",
               background: "#319E5B",
               height: "25px",
-              width: { laptop: "65%", mobile: "80%" },
-              justifyContent: { laptop: "center", mobile: "flex-end" },
+              width: "99.7%",
+              alignSelf: "center",
             }}
           >
             <Box
               sx={{
-                background: "#00C0F9",
-                width: { laptop: "16.5%", mobile: "25%" },
-                height: "100%",
                 display: "flex",
-                justifyContent: "center",
+                background: "'#319E5B'",
+                height: "25px",
+                width: "35%",
                 alignItems: "center",
               }}
             >
               <Typography
-                sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                sx={{
+                  color: "white",
+                  fontSize: { laptop: "11px", mobile: "9px" },
+                  marginLeft: "7px",
+                }}
               >
-                Back
+                MIN: {currentMatch?.betfair_match_min_bet} MAX:
+                {currentMatch?.betfair_match_max_bet}
               </Typography>
             </Box>
-            <Box sx={{ width: ".35%", display: "flex" }}></Box>
-
             <Box
               sx={{
-                background: "#FF9292",
-                width: { laptop: "16.5%", mobile: "25%" },
-                height: "100%",
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                background: "#319E5B",
+                height: "25px",
+                width: { laptop: "65%", mobile: "80%" },
+                justifyContent: { laptop: "center", mobile: "flex-end" },
               }}
             >
-              <Typography
-                sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+              <Box
+                sx={{
+                  background: "#00C0F9",
+                  width: { laptop: "16.5%", mobile: "25%" },
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                Lay
-              </Typography>
+                <Typography
+                  sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                >
+                  Back
+                </Typography>
+              </Box>
+              <Box sx={{ width: ".35%", display: "flex" }}></Box>
+
+              <Box
+                sx={{
+                  background: "#FF9292",
+                  width: { laptop: "16.5%", mobile: "25%" },
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                >
+                  Lay
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      }
-      <BoxComponent
-        data={
-          matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[0] : []
         }
-        teamImage={currentMatch?.teamA_Image}
-        lock={matchOddsLive?.runners?.length > 0 ? false : true}
-        name={currentMatch?.teamA}
-        currentMatch={currentMatch}
-        teamRates={teamRates?.teamA}
-      />
-      <Divider />
-      <BoxComponent
-        teamRates={teamRates?.teamB}
-        lock={matchOddsLive?.runners?.length > 0 ? false : true}
-        teamImage={currentMatch?.teamB_Image}
-        data={
-          matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[1] : []
-        }
-        name={currentMatch?.teamB}
-        currentMatch={currentMatch}
-      />
-      {currentMatch?.teamC && (
-        <>
-          <Divider />
-          <BoxComponent
-            lock={matchOddsLive?.runners?.length > 0 ? false : true}
-            color={"#FF4D4D"}
-            teamImage={null}
-            data={
-              matchOddsLive?.runners?.length > 0
-                ? matchOddsLive?.runners[2]
-                : []
-            }
-            name={currentMatch?.teamC}
-            currentMatch={currentMatch}
-          />
-        </>
-      )}
+        <BoxComponent
+          data={
+            matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[0] : []
+          }
+          teamImage={currentMatch?.teamA_Image}
+          lock={matchOddsLive?.runners?.length > 0 ? false : true}
+          name={currentMatch?.teamA}
+          currentMatch={currentMatch}
+          teamRates={teamRates?.teamA}
+        />
+        <Divider />
+        <BoxComponent
+          teamRates={teamRates?.teamB}
+          lock={matchOddsLive?.runners?.length > 0 ? false : true}
+          teamImage={currentMatch?.teamB_Image}
+          data={
+            matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[1] : []
+          }
+          name={currentMatch?.teamB}
+          currentMatch={currentMatch}
+        />
+        {currentMatch?.teamC && (
+          <>
+            <Divider />
+            <BoxComponent
+              lock={matchOddsLive?.runners?.length > 0 ? false : true}
+              color={"#FF4D4D"}
+              teamImage={null}
+              data={
+                matchOddsLive?.runners?.length > 0
+                  ? matchOddsLive?.runners[2]
+                  : []
+              }
+              name={currentMatch?.teamC}
+              currentMatch={currentMatch}
+            />
+          </>
+        )}
 
-      {!stlive && (
-        <Box
-          sx={{
-            width: "100%",
-            position: "absolute",
-            height: "66%",
-            bottom: 0,
-            background: "rgba(0,0,0,0.5)",
-          }}
-        ></Box>
-      )}
-    </Box>
+        {!stlive && (
+          <Box
+            sx={{
+              width: "100%",
+              position: "absolute",
+              height: "66%",
+              bottom: 0,
+              background: "rgba(0,0,0,0.5)",
+            }}
+          ></Box>
+        )}
+      </Box>
+    </>
   );
 };
 

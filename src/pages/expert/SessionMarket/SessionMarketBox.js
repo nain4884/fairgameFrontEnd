@@ -199,10 +199,10 @@ const SessionMarketBox = ({
               textSize={"8px"}
               // width={"80px"}
               width={"33px"}
-              // title={"Live"}
+            // title={"Live"}
             />
           )}
-          {!hideResult && (
+          {!hideResult && ( 
             <Result
               onClick={(e) => {
                 setVisible(true);
@@ -236,13 +236,13 @@ const SessionMarketBox = ({
         )}
 
         {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
-        newData?.betStatus === 2 ? (
+          newData?.betStatus === 2 ? (
           <Box
             sx={{
               margin: "1px",
               background: "rgba(0,0,0,1)",
               height: "40px",
-              right: "24%",
+              right: "20.5%",
               position: "absolute",
               width: { laptop: "18%", mobile: "18%" },
               justifyContent: { mobile: "center", laptop: "center" },
@@ -257,7 +257,7 @@ const SessionMarketBox = ({
                 fontSize: "12px",
                 textAlign: "center",
                 lineHeight: "11px",
-                color:"#FFF"
+                color: "#FFF"
               }}
             >
               {newData?.betStatus === 2
@@ -276,7 +276,8 @@ const SessionMarketBox = ({
               width: { laptop: "43%", mobile: "60%" },
               justifyContent: "center",
               alignItems: "center",
-            }}
+              margin:"auto"
+            }}  
           >
             <SeperateBox
               session={true}
@@ -306,11 +307,12 @@ const SessionMarketBox = ({
                             }}>
                                 <img src={BallStart} style={{ width: '60px', height: '19px' }} />
                             </Box>
-                        } */}
+                        } */} 
           </Box>
         )}
         {!hideTotalBet && (
           <PlaceBetComponentWeb
+            width={7}
             newData={newData}
             setData={setData}
           />
