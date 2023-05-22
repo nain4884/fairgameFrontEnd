@@ -73,7 +73,7 @@ const ExportRoutes = () => {
       <Route
         path="/betodds"
         element={
-          <ExpertPrivateRoute>
+          <ExpertPrivateRoute>MatchScreen
             <MatchScreen />
           </ExpertPrivateRoute>
         }

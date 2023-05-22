@@ -203,7 +203,8 @@ const SessionMarketBox = ({
             />
           )}
           {!hideResult && ( 
-            <Result
+            <Result 
+            width={7}
               onClick={(e) => {
                 setVisible(true);
               }}

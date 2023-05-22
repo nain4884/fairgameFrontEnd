@@ -2,12 +2,12 @@ import { Box, Typography } from '@mui/material';
 import React from 'react'
 
 const Result = ({ color, title, invert, onClick,width }) => {
-  const boxWidth = width ? { laptop: "7vw" } : { "@media screen and (max-width: 1300px)": { width: "9vw" } };
+  const boxWidth = width ? { laptop: "6vw" } : { "@media screen and (max-width: 1300px)": { width: "9vw" } };
     return (
       <Box onClick={onClick}>
         <Box
           sx={{
-            width: { laptop: "80px", mobile: "12vw" },
+            width: { laptop: "75px", mobile: "12vw" },
             display: "flex",
             marginRight: "10px",
             justifyContent: "center",
