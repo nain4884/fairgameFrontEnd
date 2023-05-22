@@ -8,7 +8,8 @@ const initialState = {
   userWallet: {},
   user: {},
   loading: false,
-  currentPageNo:1
+  currentPageNo:1,
+  userData:[]
 };
 
 export const auth = createSlice({
@@ -35,6 +36,9 @@ export const auth = createSlice({
     },
     setPage:(state,action) => {
       state.currentPageNo = action.payload;
+    },
+    setUserData:(state,action) => {
+      state.userData = action.payload
     },
 
     logout: (state, action) => {
@@ -89,7 +93,7 @@ export const auth = createSlice({
   },
 });
 
-export const { signIn, logout, setAllRoles, setUpdatedTransPasswords,setPage } =
+export const { signIn, logout, setAllRoles, setUpdatedTransPasswords,setPage,setUserData } =
   auth.actions;
 
 // export const selectCount = state => state.counter;

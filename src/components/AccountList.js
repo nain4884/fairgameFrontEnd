@@ -17,14 +17,17 @@ import UserDetailModal from "./UserDetailModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
 import constants from "./helper/constants";
-import { setPage } from "../newStore/reducers/auth";
+import { setPage, setUserData } from "../newStore/reducers/auth";
 
 const AccountList = () => {
+  const dispatch = useDispatch()
+
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   // const {currentUser} = useSelector((state) => state?.currentUser);
   const { userWallet } = useSelector((state) => state?.auth);
   console.log(userWallet, "userWallet");
   // const [roles, setRoles] = useState([]);
+  const { userData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole)
   const [data1, setData] = useState([]);
   const [sumValue, setSumVal] = useState({
@@ -47,6 +50,7 @@ const AccountList = () => {
         }
         element.role = roleDetail?.roleName;
       });
+      dispatch(setUserData(data?.data?.data));
       setData(data?.data?.data);
       setPageCount(
         Math.ceil(
@@ -75,7 +79,6 @@ const AccountList = () => {
   // const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const { currentPageNo } = useSelector((state) => state?.auth);
-  const dispatch = useDispatch()
   function callPage(val) {
     dispatch(setPage(parseInt(val)));
     // setCurrentPage(parseInt(val));
@@ -113,7 +116,7 @@ const AccountList = () => {
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
             <ListSubHeaderT data={sumValue} />
-            {data1.map((element, i) => {
+            {userData.map((element, i) => {
               if (i % 2 === 0) {
                 return (
                   <Row
@@ -281,7 +284,7 @@ const ListH = () => {
           <StyledImage src={Pdf} sx={{ height: "25px" }} />
         </Box>
       </Box>
-      <SearchInput placeholder={"Search User..."} />
+      <SearchInput placeholder={"Search User..."}/>
     </Box>
   );
 };

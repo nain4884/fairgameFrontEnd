@@ -6,7 +6,7 @@ import { useState } from "react";
 import useOuterClick from "../../../components/helper/userOuterClick";
 import { UD } from "../../../assets";
 
-const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
+const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
   const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
  
@@ -65,7 +65,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
     },
     [setData, newData]
   );
-
+  const boxWidth = width ? { laptop: "7vw" } : { "@media screen and (max-width: 1300px)": { width: "9vw" } };
   return (
     <>
       <Box
@@ -76,10 +76,11 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
           display: "flex",
           alignItems: "center",
           top: "4px",
-          '@media screen and (max-width: 1300px)': {
-            width: '9vw',
-          },
-          width: { laptop: "7vw" },
+          // '@media screen and (max-width: 1300px)': {
+          //   width: '9vw',
+          // },
+          // width: { laptop: "7vw" },
+          width: boxWidth,
           borderRadius: "5px",
           height: "32px",
           right: "8px",
