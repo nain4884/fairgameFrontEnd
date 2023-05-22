@@ -10,6 +10,7 @@ import { SocketContext } from "../context/socketContext";
 import { setRole } from "../newStore";
 import { Lock, BallStart } from '../assets';
 import { GlobalStore } from "../context/globalStore";
+import { toast } from "react-toastify";
 
 
 
@@ -43,7 +44,60 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     })
     const [isBall, setIsBall] = useState(false)
     const [isCreateSession, setIsCreateSession] = useState(createSession)
-    const [isPercent, setIsPercent] = useState("")
+    const [isPercent, setIsPercent] = useState("");
+    const [live, setLive] = useState(true);
+    const [proLoss, setProLoss] = useState({
+        "betData": [
+            {
+                "odds": 41,
+                "profit_loss": -101
+            },
+            {
+                "odds": 42,
+                "profit_loss": -101
+            },
+            {
+                "odds": 43,
+                "profit_loss": -101
+            },
+            {
+                "odds": 44,
+                "profit_loss": -101
+            },
+            {
+                "odds": 45,
+                "profit_loss": -101
+            },
+            {
+                "odds": 46,
+                "profit_loss": 101
+            },
+            {
+                "odds": 47,
+                "profit_loss": 101
+            },
+            {
+                "odds": 48,
+                "profit_loss": 101
+            },
+            {
+                "odds": 49,
+                "profit_loss": 101
+            },
+            {
+                "odds": 50,
+                "profit_loss": 101
+            },
+            {
+                "odds": 51,
+                "profit_loss": 101
+            }
+        ],
+        "line": 5,
+        "max_loss": 101,
+        "total_bet": 1
+    });
+
 
     // alert(globalStore.isSession)
 
@@ -74,11 +128,16 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
         // 2 over runs RR(PBKS vs RR)adv
         if (socket && socket.connected) {
             socket.onevent = async (packet) => {
-                const data = packet.data[1];
-                if (packet.data[0] === "updateSessionRate_user") {
-                    // alert("lllll")
-                }
+                if (packet.data[0] === "session_bet") {
+                    const data = packet.data[1];
+                    try {
+                        let profitLoss = data?.profitLoss;
+                        setProLoss(profitLoss);
+                    } catch (err) {
+                        console.log(err?.message);
+                    }
 
+                }
             }
         }
     }, [socket]);
@@ -139,6 +198,27 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     //         console.log(e.response.data.message);
     //     }
     // }
+    const handleLive = async (status) => {
+        try {
+            if (status === 1) {
+                setLive(true);
+            } else {
+                setLive(false);
+            }
+            const body = {
+                match_id: match?.id,
+                matchType: match?.gameType,
+                id: betId ? betId : "",
+                betStatus: status,
+                sessionBet: true,
+            };
+            const { data } = await axios.post("betting/addBetting", body);
+
+        } catch (err) {
+            toast.error(err.response.data.message);
+            console.log(err?.message);
+        }
+    };
 
     return (
         <Box sx={{ flex: 1, background: "#F8C851", borderRadius: "5px", minHeight: "300px", py: "30px", px: "20px" }}>
@@ -148,8 +228,13 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                     <AddSession createSession={createSession} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} isPercent={{ isPercent, setIsPercent }} />
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                         {!isCreateSession ? <>
-                            <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
-                                <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Go Live</Typography>
+                            <Box
+                                onClick={(e) => {
+                                    handleLive(live ? 0 : 1)
+                                    // setLive(!live);
+                                }}
+                                sx={{ width: "30%", display: "flex", maxWidth: "120px", background: live ? "#10DC61" : "#FF4D4D", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
+                                <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>{live ? "Go Live" : "Stop"}</Typography>
                                 <StyledImage src={LiveOn} sx={{ marginLeft: "5px", height: "15px", width: "15px" }} />
                             </Box>
                             <Box
@@ -160,6 +245,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                                 <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Un Declare</Typography>
                                 <Box sx={{ position: "absolute", zIndex: 999, top: '40px', left: 0 }}>
                                     {visible1 && <SessionResultModal
+                                        newData={{ id: betId, match_id: match?.id, betStatus: 2 }}
                                         undeclare={true}
                                         onClick={() => {
                                             setVisible1(false)
@@ -172,9 +258,11 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                             }} sx={{ width: "30%", position: 'relative', display: "flex", background: "#0B4F26", marginLeft: "5px", maxWidth: "120px", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
                                 <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Declare</Typography>
                                 <Box sx={{ position: "absolute", zIndex: 999, top: '40px', left: 0 }}>
-                                    {visible && <SessionResultModal onClick={() => {
-                                        setVisible(false)
-                                    }} />}
+                                    {visible && <SessionResultModal
+                                        newData={{ id: betId, match_id: match?.id, betStatus: 0 }}
+                                        onClick={() => {
+                                            setVisible(false)
+                                        }} />}
                                 </Box>
                             </Box>
                             <Box sx={{ width: "30%", display: "flex", background: "#303030", marginLeft: "5px", justifyContent: "center", maxWidth: "120px", alignItems: "center", height: "35px", borderRadius: "5px" }}>
@@ -193,7 +281,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                     </Box>
                 </Box>
                 <Box sx={{ marginLeft: "15px" }}>
-                    {isCreateSession ? <Box sx={{ width: "162px", minHeight: "182px" }} /> : <RunsAmountBox />}
+                    {isCreateSession ? <Box sx={{ width: "162px", minHeight: "182px" }} /> : <RunsAmountBox proLoss={proLoss} />}
                 </Box>
             </Box>
         </Box>
@@ -213,6 +301,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         if (key == 'right') {
             incGap.setIncGap(1)
             isPercent.setIsPercent("");
+            handleSuspend();
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             // let chckValue = teamALayValue ? teamALayValue : value
             let value = Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate ? targetValue : targetValue + 1;
@@ -223,6 +312,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         }
         else if (key == 'left') {
             isPercent.setIsPercent("");
+            handleSuspend();
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             if (targetValue > 0) {
                 let value = targetValue ? targetValue - 1 : 1;
@@ -231,6 +321,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
             }
         }
         else if (key == 'up') {
+            handleSuspend();
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             if (targetValue > 0) {
                 if (isPercent.isPercent == "percent") {
@@ -243,6 +334,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
 
         }
         else if (key == 'down') {
+            handleSuspend();
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             // if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
             //     let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
@@ -262,7 +354,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         else if (key == 'shift') {
             isBall.setIsBall(true);
             if (!isCreateSession) {
-                socket.emit("updateSessionRate", { betId: sessionEvent?.id, suspended: 'Ball Started', })
+                socket.emit("updateSessionRate", { match_id: match?.id, betId: sessionEvent?.id, suspended: 'Ball Started', })
             }
             // if (event.target.name === 'teamA_rate') {
             // socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: 'Ball Started', })
@@ -275,6 +367,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         else if (key == ',') {
             // alert(targetValue)
             isPercent.setIsPercent("percent");
+            handleSuspend();
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
             // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
@@ -283,6 +376,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         }
         else if (key == '.') {
             isPercent.setIsPercent("percent");
+            handleSuspend();
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             let value = Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate + 1 : 0;
             Detail.setDetail({ ...Detail.Detail, no_rate: value, yes_rate: value, y_rate_percent: 90, n_rate_percent: 110 })
@@ -291,6 +385,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         else if (key == 'esc') {
             isPercent.setIsPercent("percent");
             incGap.setIncGap(1)
+            handleSuspend();
             setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
             let value = Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : 0;
             // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
@@ -345,16 +440,24 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         //     // }
         // }
     }
+
+    const handleSuspend = () => {
+        if (!lock.isNo || !lock.isNo || !lock.isNoPercent || !lock.isYesPercent) {
+            isBall.setIsBall(false);
+            socket.emit("updateSessionRate", { match_id: match?.id, betId: sessionEvent?.id, suspended: 'suspended', })
+        }
+    }
+
     return (
         <Box sx={{ border: "2px solid #FFFFFF", position: "relative" }}>
             <Box sx={{ display: "flex" }}>
-                <Box sx={{ background: "#319E5B", width: "64%", px: "5px" }}>
+                <Box sx={{ background: "#319E5B", width: "70%", px: "5px" }}>
                     <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>{isCreateSession ? 'Add' : 'Your'} Session</Typography>
                 </Box>
-                <Box sx={{ background: "#FF9292", width: "18%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <Box sx={{ background: "#FF9292", width: "15%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>No</Typography>
                 </Box>
-                <Box sx={{ background: "#00C0F9", width: "18%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <Box sx={{ background: "#00C0F9", width: "15%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Yes</Typography>
                 </Box>
             </Box>
@@ -376,45 +479,33 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
 
 
                 </Box>
-                <Box sx={{ borderLeft: "2px solid white", width: "60%" }}>
+                {/* <Box sx={{ borderLeft: "2px solid white", width: "60%" }}>
 
 
                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                         <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                {/* {createSession ? */}
                                 <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                     <TextField
-                                        // onChange={(e) => {
-                                        //     Detail.setDetail({ ...Detail.Detail, no_rate: e.target.value })
-                                        // }}
                                         onChange={(e) => handleChange(e)}
                                         type="Number"
                                         value={Detail?.Detail?.no_rate}
                                         variant="standard"
                                         InputProps={{
-                                            // placeholder: "No Rate ",
                                             disableUnderline: true,
                                             style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
                                         }} /></KeyboardEventHandler>
-                                {/* : 39} */}
                             </Typography>
                         </Box>
                         <Box sx={{ background: "#A7DCFF", width: "20%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                {/* {createSession ?  */}
                                 <TextField
-                                    // onChange={(e) => {
-                                    //     Detail.setDetail({ ...Detail.Detail, yes_rate: e.target.value })
-                                    // }}
                                     type="Number"
                                     value={Detail.Detail.yes_rate}
                                     variant="standard" InputProps={{
-                                        // placeholder: "Yes Rate",
                                         disableUnderline: true,
                                         style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
                                     }} />
-                                {/* : 45} */}
                             </Typography>
                         </Box>
                         {!isBall?.isBall ?
@@ -437,43 +528,31 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                             <Box sx={{ background: "#000", width: "60%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                 <img src={BallStart} style={{ width: '60px', height: '17px' }} />
                             </Box>}
+
                     </Box>
                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                         <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                {/* {createSession ? */}
                                 <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                     <TextField
-                                        // onChange={(e) => {
-                                        //     Detail.setDetail({ ...Detail.Detail, no_rate: e.target.value })
-                                        // }}
-                                        // onChange={(e) => handleChange(e)}
                                         type="Number"
                                         value={Detail?.Detail?.n_rate_percent}
                                         variant="standard"
                                         InputProps={{
-                                            // placeholder: "No Rate ",
                                             disableUnderline: true,
                                             style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
                                         }} /></KeyboardEventHandler>
-                                {/* : 39} */}
                             </Typography>
                         </Box>
                         <Box sx={{ background: "#A7DCFF", width: "20%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                             <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                {/* {createSession ?  */}
                                 <TextField
-                                    // onChange={(e) => {
-                                    //     Detail.setDetail({ ...Detail.Detail, yes_rate: e.target.value })
-                                    // }}
                                     type="Number"
                                     value={Detail.Detail.y_rate_percent}
                                     variant="standard" InputProps={{
-                                        // placeholder: "Yes Rate",
                                         disableUnderline: true,
                                         style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
                                     }} />
-                                {/* : 45} */}
                             </Typography>
                         </Box>
                         {!isBall?.isBall ?
@@ -493,6 +572,99 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                                 <img src={BallStart} style={{ width: '60px', height: '17px' }} />
                             </Box>}
                     </Box>
+                </Box> */}
+                <Box display={"flex"} sx={{ borderLeft: "2px solid white", width: "60%" }}>
+                    <Box sx={{ width: "50%" }}>
+                        <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                            <Box sx={{ background: "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                                    <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                        <TextField
+                                            onChange={(e) => handleChange(e)}
+                                            type="Number"
+                                            value={Detail?.Detail?.no_rate}
+                                            variant="standard"
+                                            InputProps={{
+                                                disableUnderline: true,
+                                                style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                                            }} /></KeyboardEventHandler>
+                                </Typography>
+                            </Box>
+                            <Box sx={{ background: "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                                    <TextField
+                                        type="Number"
+                                        value={Detail.Detail.yes_rate}
+                                        variant="standard" InputProps={{
+                                            disableUnderline: true,
+                                            style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                                        }} />
+                                </Typography>
+                            </Box>
+                        </Box>
+                        <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                            <Box sx={{ background: "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                                    <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                        <TextField
+                                            type="Number"
+                                            value={Detail?.Detail?.n_rate_percent}
+                                            variant="standard"
+                                            InputProps={{
+                                                disableUnderline: true,
+                                                style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                                            }} /></KeyboardEventHandler>
+                                </Typography>
+                            </Box>
+                            <Box sx={{ background: "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                                    <TextField
+                                        type="Number"
+                                        value={Detail.Detail.y_rate_percent}
+                                        variant="standard" InputProps={{
+                                            disableUnderline: true,
+                                            style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
+                                        }} />
+                                </Typography>
+                            </Box>
+                        </Box>
+                    </Box>
+                    <Box sx={{ width: "50%" }}>
+                        {!isBall?.isBall ?
+                            <>
+                                <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                    <Box sx={{ background: lock?.isNo ? "#FDF21A" : "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!lock?.isNo ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                            {Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : ""}
+                                        </Typography>
+                                            : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                    </Box>
+
+                                    <Box sx={{ background: lock?.isYes ? "#FDF21A" : "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!lock?.isYes ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                            {Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ""}
+                                        </Typography>
+                                            : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+
+                                    </Box>
+                                </Box>
+                                <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                    <Box sx={{ background: lock?.isNoPercent ? "#FDF21A" : "#FFB5B5", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!lock?.isNoPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                            {Detail.Detail.n_rate_percent}
+                                        </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                    </Box>
+                                    <Box sx={{ background: lock?.isYesPercent ? "#FDF21A" : "#A7DCFF", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!lock?.isYesPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
+                                            {Detail.Detail.y_rate_percent}
+                                        </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                    </Box>
+                                </Box>
+                            </> :
+                            <Box sx={{ borderTop: "2px solid white", background: "#000", width: "100%", display: "flex", height: "94px", justifyContent: "center", alignItems: "center" }}>
+                                <img src={BallStart} style={{ width: '80%', height: '30%' }} />
+                            </Box>}
+                    </Box>
                 </Box>
             </Box>
             {/* comment */}
@@ -508,7 +680,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
 }
 
 
-const RunsAmountBox = ({ anchorEl, open, handleClose }) => {
+const RunsAmountBox = ({ anchorEl, open, handleClose, proLoss }) => {
     const theme = useTheme()
 
     return (
@@ -528,7 +700,7 @@ const RunsAmountBox = ({ anchorEl, open, handleClose }) => {
                         <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>Amount</Typography>
                     </Box>
                 </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
+                {/* <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
                     <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>40</Typography>
                     </Box>
@@ -536,8 +708,93 @@ const RunsAmountBox = ({ anchorEl, open, handleClose }) => {
                         <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
                         <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
                     </Box>
+                </Box> */}
+                <Box sx={{ maxHeight: "200px", overflowY: "scroll" }}>
+                    {proLoss?.betData?.length > 0 ? (
+                        proLoss?.betData?.map((v) => {
+                            const getColor = (value) => {
+                                if (value > 1) {
+                                    return "#10DC61";
+                                } else if (value === v?.profit_loss && value > 1) {
+                                    return "#F8C851";
+                                } else {
+                                    return "#DC3545";
+                                }
+                            };
+                            const getSVG = (value) => {
+                                if (value > 1) {
+                                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                                } else if (value === v?.profit_loss && value > 1) {
+                                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                                } else {
+                                    return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+                                }
+                            };
+                            return (
+                                <Box
+                                    key={v?.odds}
+                                    sx={{
+                                        display: "flex",
+                                        height: "25px",
+                                        borderTop: "1px solid #306A47",
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            width: "60px",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                color: "#306A47",
+                                                fontWeight: "bold",
+                                                fontSize: "12px",
+                                            }}
+                                        >
+                                            {v?.odds}
+                                        </Typography>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            width: "90px",
+                                            display: "flex",
+                                            borderLeft: `1px solid #306A47`,
+                                            background: getColor(v?.profit_loss),
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                        }}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                fontWeight: "500",
+                                                fontSize: "12px",
+                                                color: "white",
+                                            }}
+                                        >
+                                            {v?.profit_loss}
+                                        </Typography>
+                                        <StyledImage
+                                            src={getSVG(v?.profit_loss)}
+                                            sx={{
+                                                height: "15px",
+                                                marginLeft: "5px",
+                                                filter:
+                                                    "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                                                width: "15px",
+                                            }}
+                                        />
+                                    </Box>
+                                </Box>
+                            );
+                        })
+                    ) : (
+                        null
+                    )}
                 </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
+                {/* <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
                     <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
                         <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>41</Typography>
                     </Box>
@@ -572,7 +829,7 @@ const RunsAmountBox = ({ anchorEl, open, handleClose }) => {
                         <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
                         <StyledImage src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
                     </Box>
-                </Box>
+                </Box> */}
             </Box>
         </Box>
     )
