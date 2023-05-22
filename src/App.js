@@ -22,6 +22,8 @@ function App() {
     expertJWT: "",
     walletJWT: "",
   });
+
+
   if (process.env.ENV !== "production") console.log = () => {};
   return (
     <ThemeProvider theme={theme}>

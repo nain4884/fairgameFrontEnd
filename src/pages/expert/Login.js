@@ -12,7 +12,7 @@ import { setCurrentUser } from "../../newStore/reducers/currentUser";
 import { setRole } from "../../newStore";
 
 import jwtDecode from "jwt-decode";
-import { setAllRoles, signIn } from "../../newStore/reducers/auth";
+import { setAllRoles, setUpdatedTransPasswords, signIn } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { toast } from "react-toastify";
 import {
@@ -121,10 +121,8 @@ export default function Login(props) {
           removeSocket();
           // dispatch(setActiveRole(foundRoles.data));
           // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
-          sessionStorage.setItem(
-            "isTransPasswordCreated",
-            data.data.isTransPasswordCreated
-          );
+          dispatch(setUpdatedTransPasswords(data.data.isTransPasswordCreated))
+
           dispatch(signIn(data.data));
           setRole(data.data.access_token);
           if (

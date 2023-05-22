@@ -7,8 +7,9 @@ const initialState = {
   userExpert: {},
   userWallet: {},
   user: {},
+  isTransPasswordCreated: false,
   loading: false,
-  currentPageNo:1
+  currentPageNo: 1,
 };
 
 export const auth = createSlice({
@@ -33,7 +34,7 @@ export const auth = createSlice({
         state.user = body;
       }
     },
-    setPage:(state,action) => {
+    setPage: (state, action) => {
       state.currentPageNo = action.payload;
     },
 
@@ -71,26 +72,18 @@ export const auth = createSlice({
       state.allRole = action.payload;
     },
     setUpdatedTransPasswords: (state, action) => {
-      const role = action?.payload?.role?.roleName.trim();
-      if (["admin", "master", "superAdmin", "superMaster"].includes(role)) {
-        const body = {
-          ...state.userAdmin,
-          isTransPasswordCreated: true,
-        };
-        console.log("UpdatedTrans", body);
-        state.userAdmin = body;
-      } else if (["fairGameWallet", "fairGameAdmin"].includes(role)) {
-        state.userWallet = {
-          ...state.userWallet,
-          isTransPasswordCreated: true,
-        };
-      }
+      state.isTransPasswordCreated = action.payload;
     },
   },
 });
 
-export const { signIn, logout, setAllRoles, setUpdatedTransPasswords,setPage } =
-  auth.actions;
+export const {
+  signIn,
+  logout,
+  setAllRoles,
+  setUpdatedTransPasswords,
+  setPage,
+} = auth.actions;
 
 // export const selectCount = state => state.counter;
 

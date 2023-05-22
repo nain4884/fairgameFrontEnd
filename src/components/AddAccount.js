@@ -153,12 +153,12 @@ const AddAccount = () => {
         );
       }
 
-      if (Detail[11].val === 0 || Detail[14].val === "") {
+      if (Detail[11].val === "" ) {
         setError({
           ...error,
           [11]: {
             ...error[11],
-            val: true,
+            val: "Field is required",
           },
         });
         return false;
@@ -189,7 +189,6 @@ const AddAccount = () => {
           Detail[9].val === "" ||
           Detail[14].val === 0 ||
           Detail[14].val === "" ||
-          Detail[11].val === 0 ||
           Detail[11].val === ""
         )
       ) {
@@ -357,15 +356,13 @@ const AddAccount = () => {
       return false;
     }
     if (total <= 100) {
-     
-        setError({
-          ...error,
-          [place]: {
-            ...error[place],
-            val: "",
-          },
-        });
-      
+      setError({
+        ...error,
+        [place]: {
+          ...error[place],
+          val: "",
+        },
+      });
     }
     if (total > 101) {
       setError({

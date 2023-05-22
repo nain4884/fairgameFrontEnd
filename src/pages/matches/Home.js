@@ -78,7 +78,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   // console.log("currentMatchProfit 444:", currentMatchProfit);
   const [sessionExposer, setSessionExposure] = useState(0);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  // console.log("sessionBets", sessionBets);
+  console.log("sessionBets", sessionBets);
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
@@ -177,9 +177,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               // Update the bettings array in the current match object
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting.id === value.id && value.sessionBet) {
-                  // const newres = sessionOffline.filter((id) => id !== value.id);
-                  // // console.log('newRes', newres)
-                  // sessionOffline = newres;
                   // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                   return {
                     ...betting,
@@ -206,11 +203,19 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
                 newUpdatedValue = [...newUpdatedValue, value];
               } else {
-                // alert(4);
-                // sessionOffline.push(value.id);
-                newUpdatedValue = newUpdatedValue?.filter(
-                  (v) => v?.id !== value?.id && v?.betStatus === 1
-                );
+                if (
+                  sessionOffline.includes(value.id) &&
+                  value.betStatus === 1
+                ) {
+                  const newres = sessionOffline.filter((id) => id !== value.id);
+                  sessionOffline = newres;
+                }
+                if (value?.betStatus === 0) {
+                  sessionOffline.push(value.id);
+                }
+                // newUpdatedValue = newUpdatedValue?.filter(
+                //   (v) => v?.id !== value?.id && v?.betStatus === 1
+                // );
               }
 
               // Return the updated current match object

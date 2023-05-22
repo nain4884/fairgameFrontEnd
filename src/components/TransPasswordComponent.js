@@ -8,6 +8,8 @@ import { setRole } from "../newStore";
 import { useDispatch } from "react-redux";
 import { setUpdatedTransPasswords } from "../newStore/reducers/auth";
 import { toast } from "react-toastify";
+import { useContext } from "react";
+import { GlobalStore } from "../context/globalStore";
 
 export const TransPassword = () => {
   return (
@@ -45,6 +47,7 @@ export const TransPasswordComponent = () => {
 
 export const TransPassComp = ({ onCancel }) => {
   const dispatch = useDispatch();
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [passwordDetail, setPasswordDetail] = useState({
     1: { field: "transPassword", val: "" },
     2: { field: "confirmtransPassword", val: "" },
@@ -77,7 +80,7 @@ export const TransPassComp = ({ onCancel }) => {
         if (data.message === "Transaction password update successfully.") {
           toast.success("Transaction saved successfully");
 
-          dispatch(setUpdatedTransPasswords(roleName));
+          dispatch(setUpdatedTransPasswords(true));
           onCancel();
         }
       } catch (e) {
@@ -86,6 +89,7 @@ export const TransPassComp = ({ onCancel }) => {
       }
     }
   }, [axios, error, passwordDetail]);
+
   return (
     <>
       <Typography
