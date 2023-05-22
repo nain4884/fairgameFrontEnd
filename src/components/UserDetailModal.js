@@ -21,6 +21,8 @@ import { useNavigate } from "react-router-dom";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
 import { setCurrentUser } from "../newStore/reducers/currentUser";
+import { debounce } from "lodash";
+import { useEffect } from "react";
 
 const style = {
   position: "absolute",
@@ -417,9 +419,50 @@ const DepositComponent = ({
   };
 
   const [depositObj, setDepositObj] = useState(defaultDepositObj);
+  console.log("depostiObj", depositObj);
   const activeWalletAmount = useSelector(
     (state) => state?.rootReducer?.user?.amount
   );
+  const handleChange = debounce((e) => {
+    setDepositObj({
+      ...depositObj,
+      amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
+      userId: userModal.id,
+    });
+
+    setElementToUDM({
+      ...elementToUDM,
+      profit_loss:
+        prevElement.profit_loss +
+        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+      balance:
+        prevElement.balance +
+        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+      available_balance:
+        prevElement.available_balance +
+        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+    });
+    if (e.target.value) {
+      const newUserbalance = {
+        ...currentUser,
+        current_balance: currentUser?.current_balance - e.target.value,
+      };
+
+      setTimeout(() => {
+        dispatch(setCurrentUser(newUserbalance));
+      }, 1000);
+    } else {
+      const newUserbalance = {
+        ...currentUser,
+        current_balance: initialBalance,
+      };
+
+      setTimeout(() => {
+        dispatch(setCurrentUser(newUserbalance));
+      }, 1000);
+    }
+  }, 500);
+
   return (
     <Box sx={{ display: "flex", borderRadius: "5px", gap: 2 }}>
       <Box sx={{ width: "31.65vw" }}>
@@ -445,52 +488,8 @@ const DepositComponent = ({
             }}
           >
             <TextField
-              value={depositObj.amount}
-              onChange={(e) => {
-                setDepositObj({
-                  ...depositObj,
-                  amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
-                  userId: userModal.id,
-                });
-
-            
-                setElementToUDM({
-                  ...elementToUDM,
-                  profit_loss:
-                    prevElement.profit_loss +
-                    parseInt(
-                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
-                    ),
-                  balance:
-                    prevElement.balance +
-                    parseInt(
-                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
-                    ),
-                  available_balance:
-                    prevElement.available_balance +
-                    parseInt(
-                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
-                    ),
-                });
-              }}
-              onBlur={(e)=>{
-                if (e.target.value) {
-                  const newUserbalance = {
-                    ...currentUser,
-                    current_balance:
-                      currentUser?.current_balance - e.target.value,
-                  };
-
-                  dispatch(setCurrentUser(newUserbalance));
-                } else {
-                  const newUserbalance = {
-                    ...currentUser,
-                    current_balance: initialBalance,
-                  };
-
-                  dispatch(setCurrentUser(newUserbalance));
-                }
-              }}
+              // value={depositObj.amount}
+              onChange={handleChange}
               variant="standard"
               InputProps={{
                 placeholder: "Type Amount...",

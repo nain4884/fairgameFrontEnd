@@ -72,7 +72,6 @@ const CustomHeader = ({ }) => {
   const location = useLocation();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const [localUser, setLocalUser] = useState(currentUser)
 
   const { socket } = useContext(SocketContext);
   useEffect(() => {
@@ -111,7 +110,7 @@ const CustomHeader = ({ }) => {
 
       console.log('data?.data', data?.data)
       dispatch(setCurrentUser(data.data));
-      setLocalUser(data.data)
+      
       const value = allRole?.find((role) => role?.id === data?.data?.roleId);
       roleName = value?.roleName;
     } catch (e) {
@@ -346,8 +345,8 @@ const CustomHeader = ({ }) => {
               nav={nav}
               containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
               image={"https://picsum.photos/200/300"}
-              value={localUser?.userName || ""}
-              amount={localUser?.current_balance || 0}
+              value={currentUser?.userName || ""}
+              amount={currentUser?.current_balance || 0}
             />
           </Box>
         </Box>

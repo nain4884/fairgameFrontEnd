@@ -12,7 +12,7 @@ import { onChangeKeyCheck } from "./helper/PassKeyCheck";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 
-const Input = ({
+const InputMyPartnership = ({
   props,
   title,
   value,
@@ -21,11 +21,12 @@ const Input = ({
   placeholder,
   imgstyle,
   titleStyle,
-  inputStyle,
+  MyPartnershipStyle,
   inputContainerStyle,
   img,
   inputProps,
   setDetail,
+  inputStyle,
   Detail,
   max,
   setError,
@@ -51,14 +52,14 @@ const Input = ({
         ...Detail,
         [11]: {
           ...Detail[11],
-          val: value,
+          val: 0,
         },
       });
       setError({
         ...error,
         [11]: {
           ...error[11],
-          val: "value must be 0 or greater",
+          val: true,
         },
       });
       return false;
@@ -75,7 +76,7 @@ const Input = ({
         ...error,
         [11]: {
           ...error[11],
-          val: "sum of upline , downline and  my partnership should be not exceeding 100.",
+          val: true,
         },
       });
       return false;
@@ -98,7 +99,7 @@ const Input = ({
         ...error,
         [place]: {
           ...error[place],
-          val: "sum of upline , downline and  my partnership should be not exceeding 100.",
+          val: true,
         },
       });
       setDownlinePar(0);
@@ -123,7 +124,7 @@ const Input = ({
         ...error,
         [place]: {
           ...error[place],
-          val: "sum of upline , downline and  my partnership should be not exceeding 100.",
+          val: true,
         },
       });
     } else {
@@ -140,7 +141,7 @@ const Input = ({
         },
       });
     }
-  }, 500);
+  }, 300);
   return (
     <Box sx={[{}, containerStyle]}>
       <Typography
@@ -171,67 +172,7 @@ const Input = ({
           inputContainerStyle,
         ]}
       >
-        {autoMaticFillValue ? (
-          <TextField
-            variant="standard"
-            placeholder={placeholder}
-            value={autoMaticFillValue}
-            required={required}
-            InputProps={{
-              disableUnderline: true,
-              justifyContent: "center",
-              ...inputProps,
-              placeholder: placeholder,
-              type:
-                showPass && String(title).toLowerCase().includes("password")
-                  ? "password"
-                  : type === "Number"
-                  ? "number"
-                  : "text",
-              sx: [
-                { fontSize: { laptop: "12px", mobile: "14px" } },
-                inputStyle,
-              ],
-            }}
-            sx={{
-              borderColor: "white",
-              display: "flex",
-              flex: 1,
-              fontSize: { laptop: "1px", mobile: "5px" },
-            }}
-            onChange={(e) => {
-              String(title).toLowerCase().includes("password")
-                ? setDetail({
-                    ...Detail,
-                    [place]: {
-                      ...Detail[place],
-                      val: autoMaticFillValue,
-                    },
-                  })
-                : setDetail({
-                    ...Detail,
-                    [place]: {
-                      ...Detail[place],
-                      val:
-                        type === "Number"
-                          ? parseInt(autoMaticFillValue)
-                          : autoMaticFillValue,
-                    },
-                  });
-              setError({
-                ...error,
-                [place]: {
-                  ...Detail[place],
-                  val:
-                    type === "Number"
-                      ? Detail[place].val === 0
-                      : Detail[place].val === "",
-                },
-              });
-            }}
-            disabled
-          />
-        ) : (
+    
           <TextField
             variant="standard"
             placeholder={placeholder}
@@ -245,7 +186,7 @@ const Input = ({
               disableUnderline: true,
               justifyContent: "center",
               ...inputProps,
-              // value: Detail[9]?.val==="user" && Detail[place]?.val,
+              value: value,
               type:
                 showPass && String(title).toLowerCase().includes("password")
                   ? "password"
@@ -321,7 +262,7 @@ const Input = ({
                 });
             }}
           />
-        )}
+        
         {img && (
           <img
             src={img}
@@ -342,4 +283,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default InputMyPartnership;

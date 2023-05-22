@@ -10,6 +10,8 @@ import Modal from "./Modal";
 import { setRole } from "../newStore";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { debounce } from "lodash";
+import InputMyPartnership from "./InputMypartnership";
 
 const containerStyles = {
   marginTop: "10px",
@@ -65,7 +67,7 @@ const AddAccount = () => {
     8: { field: "creditReference", val: false },
     9: { field: "roleId", val: false },
     10: { field: "uplinePertnerShip", val: false },
-    11: { field: "myPertnerShip", val: false },
+    11: { field: "myPertnerShip", val: "" },
     12: { field: "downLinePertnerShip", val: false },
     13: { field: "remark", val: false },
     14: { field: "adminTransPassword", val: "error" },
@@ -77,6 +79,7 @@ const AddAccount = () => {
   const [userAlreadyExist, setUserAlredyExist] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
+  const [downLinePar, setDownlinePar] = useState(0);
 
   const [typeToShow, setTypeToShow] = useState([
     "Select your account type",
@@ -150,7 +153,7 @@ const AddAccount = () => {
         );
       }
 
-      if (Detail[11].val === 0 || Detail[14].val==='') {
+      if (Detail[11].val === 0 || Detail[14].val === "") {
         setError({
           ...error,
           [11]: {
@@ -161,7 +164,7 @@ const AddAccount = () => {
         return false;
       }
 
-      if (Detail[14].val==='') {
+      if (Detail[14].val === "") {
         setError({
           ...error,
           [14]: {
@@ -279,7 +282,12 @@ const AddAccount = () => {
           ...Detail[10],
           val: res,
         },
+        12: {
+          ...Detail[12],
+          val: 100 - res,
+        },
       });
+      setDownlinePar(100 - res);
       setError({
         ...error,
         10: {
@@ -343,37 +351,49 @@ const AddAccount = () => {
       });
     }
   }
-
   function CheckThisPosition({ place, val, setError, error }) {
-    if (isNaN(val) || val === 0) {
-      setError({
-        ...error,
-        [place]: {
-          ...error[place],
-          val: true,
-        },
-      });
-    } else {
-      setError({
-        ...error,
-        [place]: {
-          ...error[place],
-          val: false,
-        },
-      });
+    const total = Detail[11].val + Detail[10].val;
+    if (isNaN(Detail[11].val) || Detail[11].val < 0) {
+      return false;
     }
-    if (Number(val) > Detail[12].val) {
-      setMyPartnershipsError(true);
-    } else {
-      setMyPartnershipsError(false);
+    if (total <= 100) {
+     
+        setError({
+          ...error,
+          [place]: {
+            ...error[place],
+            val: "",
+          },
+        });
+      
+    }
+    if (total > 101) {
+      setError({
+        ...error,
+        [place]: {
+          ...error[place],
+          val: " sum of upline , downline and  my partnership should be not exceeding 100.",
+        },
+      });
     }
   }
 
+  console.log(Detail, "error");
   useEffect(() => {
-    setDownParterShipVal(Detail[10]?.val, Detail[11]?.val);
-  }, [Detail[10]?.val, Detail[11]?.val]);
-
-  console.log(error,"error")
+    if (Detail[9].val === "user") {
+      setDetail({
+        ...Detail,
+        11: {
+          ...Detail[11],
+          val: 100 - Detail[10].val,
+        },
+        12: {
+          ...Detail[12],
+          val: 0,
+        },
+      });
+    }
+  }, [Detail[9].val]);
 
   return (
     <>
@@ -563,41 +583,79 @@ const AddAccount = () => {
                 Detail={Detail}
                 setError={setError}
                 error={error}
+                disabled={true}
                 place={10}
                 autoMaticFillValue={`${Detail[10]?.val}`}
               />
               {error[10].val && (
                 <p style={{ color: "#fa1e1e" }}>Field Required</p>
               )}
-              <Input
-                containerStyle={containerStyles}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputContainerStyle={inputContainerStyle}
-                title={"My Partnership"}
-                setDetail={setDetail}
-                onFocusOut={CheckThisPosition}
-                toFoucs={true}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={11}
-                type={"Number"}
-              />
+
+              {Detail[9].val === "user" ? (
+                <InputMyPartnership
+                  inputContainerStyle={{
+                    ...inputContainerStyle,
+                    backgroundColor: Detail[9].val === "user" && "#DEDEDE",
+                  }}
+                  containerStyle={containerStyles}
+                  titleStyle={titleStyles}
+                  inputStyle={imputStyle}
+                  title={"My Partnership"}
+                  setDetail={setDetail}
+                  onFocusOut={CheckThisPosition}
+                  toFoucs={true}
+                  min={0}
+                  max={100}
+                  disabled={Detail[9].val === "user"}
+                  setDownlinePar={setDownlinePar}
+                  Detail={Detail}
+                  value={Detail[11].val}
+                  placeholder={Detail[11].val}
+                  setError={setError}
+                  error={error}
+                  place={11}
+                  type={"Number"}
+                />
+              ) : (
+                <Input
+                  inputContainerStyle={{
+                    ...inputContainerStyle,
+                    backgroundColor: Detail[9].val === "user" && "#DEDEDE",
+                  }}
+                  containerStyle={containerStyles}
+                  titleStyle={titleStyles}
+                  inputStyle={imputStyle}
+                  title={"My Partnership"}
+                  setDetail={setDetail}
+                  onFocusOut={CheckThisPosition}
+                  toFoucs={true}
+                  min={0}
+                  max={100}
+                  setDownlinePar={setDownlinePar}
+                  Detail={Detail}
+                  placeholder={Detail[11].val}
+                  setError={setError}
+                  error={error}
+                  place={11}
+                  type={"Number"}
+                />
+              )}
+
               {myPartnershipsError && (
                 <p style={{ color: "#fa1e1e" }}>
-                  {" "}
-                  Value should not be greater than Downline Partnerships
+                  sum of upline , downline and my partnership should be not
+                  exceeding 100.
                 </p>
               )}
 
-              {error[11]?.val && !myPartnershipsError && (
-                <p style={{ color: "#fa1e1e" }}>My Partnerships required</p>
+              {error[11]?.val !== "" && (
+                <p style={{ color: "#fa1e1e" }}>{error[11]?.val}</p>
               )}
               <Input
                 containerStyle={containerStyles}
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
+                disabled={true}
                 inputContainerStyle={{
                   backgroundColor: "#DEDEDE",
                   ...inputContainerStyle,
@@ -609,7 +667,8 @@ const AddAccount = () => {
                 error={error}
                 place={12}
                 type={"Number"}
-                autoMaticFillValue={Detail[12]?.val}
+                placeholder={Detail[12].val}
+                // autoMaticFillValue={Detail[12].val}
               />
               {error[12]?.val && (
                 <p style={{ color: "#fa1e1e" }}>Field Required</p>
@@ -648,9 +707,11 @@ const AddAccount = () => {
                 onFocusOut={handleTransPass}
                 toFoucs={true}
               />
-              {error[14]?.val !=="" && (
-                  <p style={{ color: "#fa1e1e" }}>Admin Transaction Password Required</p>
-                )}
+              {error[14]?.val !== "" && (
+                <p style={{ color: "#fa1e1e" }}>
+                  Admin Transaction Password Required
+                </p>
+              )}
               <Button
                 className="cursor-pointer"
                 sx={{
