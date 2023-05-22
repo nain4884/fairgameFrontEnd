@@ -15,6 +15,7 @@ import { debounce } from "lodash";
 const Input = ({
   props,
   title,
+  setMypar,
   value,
   containerStyle,
   required,
@@ -309,12 +310,13 @@ const Input = ({
                   });
               // checkMesasge && errorHandle(Detail[place].val)
             }}
-            onBlur={() => {
+            onBlur={(e) => {
               console.log("toFocus", toFoucs);
               toFoucs &&
                 onFocusOut({
                   place,
                   val: Detail[place].val,
+                  val2:e?.target.value ,
                   setError,
                   Detail,
                   error,

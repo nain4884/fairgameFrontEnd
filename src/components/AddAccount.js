@@ -104,6 +104,7 @@ const AddAccount = () => {
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
+  const [mypar,setMypar]=useState("")
   const [uplineP, setUplineP] = useState(0);
   // const { roleName } = allRole?.find((role) => role?.id === currentUser?.roleId);
   const setTypeForAccountType = () => {
@@ -350,8 +351,8 @@ const AddAccount = () => {
       });
     }
   }
-  function CheckThisPosition({ place, val, setError, error }) {
-    const total = Detail[11].val + Detail[10].val;
+  function CheckThisPosition({ place, val,val2, setError, error }) {
+    const total = parseInt(val2) + Detail[10].val;
     if (isNaN(Detail[11].val) || Detail[11].val < 0) {
       return false;
     }
@@ -627,6 +628,7 @@ const AddAccount = () => {
                   onFocusOut={CheckThisPosition}
                   toFoucs={true}
                   min={0}
+                  setMypar={(val)=>setMypar(val)}
                   max={100}
                   setDownlinePar={setDownlinePar}
                   Detail={Detail}
