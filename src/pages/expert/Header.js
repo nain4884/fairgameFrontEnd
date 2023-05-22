@@ -32,9 +32,12 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 import { memo } from "react";
-import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
+import {
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
+} from "../../newStore/reducers/matchDetails";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -59,7 +62,9 @@ const CustomHeader = ({ }) => {
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
+      localStorage.setItem("role3","role3");
       dispatch(setCurrentUser(data.data));
+
       // setBalance(data.data.current_balance)
       // dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
       // setFullName(data.data.fullName)
@@ -75,16 +80,31 @@ const CustomHeader = ({ }) => {
 
   const { userExpert } = useSelector((state) => state.auth);
   const { socket } = useContext(SocketContext);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      localStorage.removeItem("role3");
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-          dispatch(removeManualBookMarkerRates())
+          dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
           dispatch(removeSelectedMatch());
-          setGlobalStore((prev) => ({ ...prev, expertJWT: "", isSession: true }));
+          setGlobalStore((prev) => ({
+            ...prev,
+            expertJWT: "",
+            isSession: true,
+          }));
           // await axios.get("auth/logout");
           removeSocket();
           navigate("/expert");
@@ -377,8 +397,8 @@ const CustomHeader = ({ }) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                      ? "Bookmaker"
-                      : "Betfair"
+                    ? "Bookmaker"
+                    : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />
@@ -598,7 +618,7 @@ const MenutItemsComponent = ({
                 state: {
                   createSession: true,
                   // createSession: globalStore.isSession,
-                  match: x
+                  match: x,
                 },
               });
               handleClose();
@@ -744,7 +764,7 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
         }}
       >
         <Box
-          onClick={(event) => { }}
+          onClick={(event) => {}}
           sx={[
             {
               backgroundColor: "white",
@@ -814,7 +834,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logoutProcess = async () => {
-    dispatch(removeManualBookMarkerRates())
+    dispatch(removeManualBookMarkerRates());
     dispatch(logout({ roleType: "role3" }));
     dispatch(removeSelectedMatch());
     setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));

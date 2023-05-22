@@ -77,6 +77,24 @@ const CustomHeader = ({}) => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
   const { socket } = useContext(SocketContext);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (nav === "admin") {
+        localStorage.removeItem("role1");
+      } else {
+        localStorage.removeItem("role2");
+      }
+      // Chrome requires the returnValue to be set for the event
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [nav]);
+
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
@@ -93,7 +111,6 @@ const CustomHeader = ({}) => {
           setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
           if (nav === "admin") {
             navigate("/admin");
-
             dispatch(logout({ roleType: "role1" }));
             setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
           }
@@ -107,12 +124,17 @@ const CustomHeader = ({}) => {
     }
   }, [socket, nav]);
 
-  async function getUserDetail() {
+  async function getUserDetail(nav) {
     try {
+      console.log("nav", nav);
+      if (nav === "admin") {
+        localStorage.setItem("role1", "role1");
+      }
+    if (nav === "wallet") {
+      localStorage.setItem("role2", "role2");
+    }
       const { data } = await axios.get("users/profile");
       setBalance(data.data.current_balance);
-
-      console.log("data?.data", data?.data);
       dispatch(setCurrentUser(data.data));
 
       const value = allRole?.find((role) => role?.id === data?.data?.roleId);
@@ -143,9 +165,9 @@ const CustomHeader = ({}) => {
     }
 
     if (JWT) {
-      getUserDetail();
+      getUserDetail(nav);
     }
-  }, [location, window.location.pathname, JWT]);
+  }, [location, window.location.pathname, JWT, nav]);
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");

@@ -12,7 +12,11 @@ import { setCurrentUser } from "../../newStore/reducers/currentUser";
 import { setRole } from "../../newStore";
 
 import jwtDecode from "jwt-decode";
-import { setAllRoles, setUpdatedTransPasswords, signIn } from "../../newStore/reducers/auth";
+import {
+  setAllRoles,
+  setUpdatedTransPasswords,
+  signIn,
+} from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { toast } from "react-toastify";
 import {
@@ -47,13 +51,13 @@ export default function Login(props) {
         val.includes(v)
       )
     ) {
-      newtoken = sessionStorage.getItem("JWTwallet");
+      newtoken = localStorage.getItem("role1");
     } else if (
       ["fairGameWallet", "fairGameAdmin"].some((v) => val.includes(v))
     ) {
-      newtoken = sessionStorage.getItem("JWTwallet");
+      newtoken = localStorage.getItem("role2");
     } else if (["expert"].some((v) => val.includes(v))) {
-      newtoken = sessionStorage.getItem("JWTexpert");
+      newtoken = localStorage.getItem("role3");
     }
   };
 
@@ -97,16 +101,16 @@ export default function Login(props) {
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
+      
+      if (["role1", "role2", "role3"].includes(newtoken)) {
+        toast.warn("Please logout from previous session");
+        return false
+      }
       let { data } = await axios.post(`/auth/login`, {
         username: loginDetail[1].val,
         password: loginDetail[2].val,
       });
-      const decoded = newtoken !== null && jwtDecode(newtoken);
-      const resToken = jwtDecode(data?.data?.access_token);
-      if (decoded.sub === resToken.sub) {
-        toast.warn("Please logout from previous session");
-        return;
-      }
+
 
       if (props.allowedRole.includes(data.data.role)) {
         let foundRoles = await axios.get(`/role`);
@@ -121,7 +125,7 @@ export default function Login(props) {
           removeSocket();
           // dispatch(setActiveRole(foundRoles.data));
           // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
-          dispatch(setUpdatedTransPasswords(data.data.isTransPasswordCreated))
+          dispatch(setUpdatedTransPasswords(data.data.isTransPasswordCreated));
 
           dispatch(signIn(data.data));
           setRole(data.data.access_token);

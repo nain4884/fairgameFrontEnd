@@ -265,6 +265,7 @@ const MatchScreen = () => {
                     ip_address: null,
                     rate: data?.betPlaceData?.rate,
                     marketType: data?.betPlaceData?.marketType,
+                    myStack: data?.betPlaceData?.myStack,
                     amount:
                       data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                   };

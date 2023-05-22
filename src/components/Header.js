@@ -39,9 +39,12 @@ import axios from "../axios/axios";
 import { setRole } from "../newStore";
 import { removeSocket } from "./helper/removeSocket";
 import { GlobalStore } from "../context/globalStore";
-import { removeManualBookMarkerRates, removeSelectedMatch } from "../newStore/reducers/matchDetails";
+import {
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
+} from "../newStore/reducers/matchDetails";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const location = useLocation();
@@ -58,13 +61,26 @@ const CustomHeader = ({ }) => {
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { socket } = useContext(SocketContext);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      localStorage.removeItem("role4");
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
           console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
           dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates())
+          dispatch(removeManualBookMarkerRates());
           dispatch(removeSelectedMatch());
           dispatch(logout({ roleType: "role4" }));
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
@@ -78,6 +94,8 @@ const CustomHeader = ({ }) => {
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
+
+      localStorage.setItem("role4", "role4");
 
       // dispatch(
       //   stateActions.setBalance(
@@ -542,8 +560,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     // dispatch(stateActions.logout("role4"));
     // socketMicro.emit("logoutUserForce");
     dispatch(logout({ roleType: "role4" }));
-    dispatch(removeManualBookMarkerRates())
-    dispatch(removeSelectedMatch())
+    dispatch(removeManualBookMarkerRates());
+    dispatch(removeSelectedMatch());
     setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
     await axios.get("auth/logout");
     dispatch(removeCurrentUser());

@@ -80,19 +80,16 @@ export default function Login(props) {
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
+      const token = await localStorage.getItem("role4");
+
+      if (["role4"].includes(token)) {
+        toast.warn("Please logout from previous session");
+        return false;
+      }
       let { data } = await axios.post(`/auth/login`, {
         username: loginDetail[1].val,
         password: loginDetail[2].val,
       });
-
-      const token = await sessionStorage.getItem("JWTuser");
-
-      const decodeToken = token !== null && jwtDecode(token);
-      const resToken = jwtDecode(data?.data?.access_token);
-      if (decodeToken.sub === resToken.sub) {
-        toast.warn("Please logout from previous session");
-        return;
-      }
 
       if (props.allowedRole.includes(data.data.role)) {
         let foundRoles = await axios.get(`/role`);

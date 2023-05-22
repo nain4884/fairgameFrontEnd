@@ -48,7 +48,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
             },
             {
-              name: v?.amount,
+              name: v?.myStack,
               color: "white",
               background: "#0B4F26",
             },
