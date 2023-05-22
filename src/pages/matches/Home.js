@@ -36,8 +36,7 @@ import { memo } from "react";
 import { logout } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
-
-let session = [];
+let sessionOffline = [];
 let matchOddsCount = 0;
 const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   const location = useLocation();
@@ -79,6 +78,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   // console.log("currentMatchProfit 444:", currentMatchProfit);
   const [sessionExposer, setSessionExposure] = useState(0);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  // console.log("sessionBets", sessionBets);
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
@@ -177,6 +177,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               // Update the bettings array in the current match object
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting.id === value.id && value.sessionBet) {
+                  // const newres = sessionOffline.filter((id) => id !== value.id);
+                  // // console.log('newRes', newres)
+                  // sessionOffline = newres;
                   // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                   return {
                     ...betting,
@@ -197,13 +200,17 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               const bettingsIds = updatedBettings?.map(
                 (betting) => betting?.id
               );
+
               if (!bettingsIds?.includes(value.id)) {
                 // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
+
                 newUpdatedValue = [...newUpdatedValue, value];
               } else {
+                // alert(4);
+                // sessionOffline.push(value.id);
                 newUpdatedValue = newUpdatedValue?.filter(
                   (v) => v?.id !== value?.id && v?.betStatus === 1
-                )
+                );
               }
 
               // Return the updated current match object
@@ -1009,6 +1016,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               onClick={() => handleClose(true)}
               bookMakerRateLive={bookMakerRateLive}
               data={currentMatch}
+              sessionOffline={sessionOffline}
               // dataProfit={currentMatchProfit}
               allBetsData={sessionBets}
               manualBookmakerData={manualBookmakerData}
@@ -1062,6 +1070,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               sessionExposer={sessionExposer}
               matchOddsLive={matchOddsLive}
               bookmakerLive={bookmakerLive}
+              sessionOffline={sessionOffline}
               onClick={() => handleClose(true)}
               data={currentMatch}
               // dataProfit={currentMatchProfit}
@@ -1083,8 +1092,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-                <SessionBetSeperate allBetsData={sessionBets} mark />
-              )}
+              <SessionBetSeperate allBetsData={sessionBets} mark />
+            )}
           </Box>
         </Box>
       )}

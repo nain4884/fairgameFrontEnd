@@ -445,7 +445,7 @@ const DepositComponent = ({
     if (e.target.value) {
       const newUserbalance = {
         ...currentUser,
-        current_balance: currentUser?.current_balance - e.target.value,
+        current_balance: initialBalance - e.target.value,
       };
 
       setTimeout(() => {

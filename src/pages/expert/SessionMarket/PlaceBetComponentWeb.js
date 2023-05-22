@@ -91,7 +91,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
           sx={{
             background: "#FDF21A",
             borderRadius: "3px",
-            width: "100%",
+            width: "40%",
             height: "85%",
             display: "flex",
             alignItems: "center",
@@ -126,17 +126,17 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
         <Box
           sx={{
             paddingX: "2px",
-            width: "100%",
+            width: "60%",
             alignItems: "center",
             justifyContent: "center",
             display: "flex",
           }}
         >
           <Typography
-            sx={{
-              fontSize: { laptop: amount ? "10px" : "10px" },
-              fontWeight: amount ? "bold" : "500",
-              color: "white",
+              sx={{
+                fontSize: { laptop:!newData?.profitLoss?.max_loss ? ".60vw" : ".60vw" },
+                fontWeight: !newData?.profitLoss?.max_loss ? "bold" : "bold",
+                color: "white",
             }}
           >
            

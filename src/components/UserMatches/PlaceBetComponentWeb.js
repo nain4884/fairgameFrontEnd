@@ -88,8 +88,8 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
         >
           <Typography
             sx={{
-              fontSize: { laptop: amount ? ".65vw" : ".6vw" },
-              fontWeight: amount ? "bold" : "500",
+              fontSize: { laptop:!profitLoss?.profitLoss?.max_loss ? ".65vw" : ".65vw" },
+              fontWeight: !profitLoss?.profitLoss?.max_loss ? "bold" : "bold",
               color: "white",
             }}
           >

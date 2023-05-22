@@ -16,7 +16,8 @@ const SessionMarket = ({
   allBetsData,
   sessionExposer,
   dataProfit,
-  sessionBets
+  sessionBets,
+  sessionOffline,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -25,7 +26,7 @@ const SessionMarket = ({
     (element) => element.sessionBet === true
   );
 
-  console.log('matchSessionData', matchSessionData)
+  console.log("sessionOffline", sessionOffline);
   return (
     <>
       <Box
@@ -92,7 +93,11 @@ const SessionMarket = ({
             }}
           >
             {/* {console.warn("newData11 ",newData)} */}
-            <SmallBoxSeason allBetsData={allBetsData} sessionBets={sessionBets} totalAmount={sessionExposer} />
+            <SmallBoxSeason
+              allBetsData={allBetsData}
+              sessionBets={sessionBets}
+              totalAmount={sessionExposer}
+            />
             <Typography
               sx={{
                 color: "white",
@@ -205,7 +210,15 @@ const SessionMarket = ({
             {matchSessionData?.length > 0 &&
               matchSessionData?.reverse()?.map((element) => {
                 return (
-                  <Box key={element?.id} sx={{ width: "100%" }}>
+                  <Box
+                    key={element?.id}
+                    sx={{
+                      width: "100%",
+                      display: sessionOffline?.includes(element.id)
+                        ? "none"
+                        : "block",
+                    }}
+                  >
                     <SessionMarketBox
                       typeOfBet={"Session"}
                       data={element}
