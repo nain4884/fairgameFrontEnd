@@ -280,9 +280,9 @@ const SessionMarket = ({
         >
           {matchSessionData?.length > 0 &&
             matchSessionData?.map((match, index) => (
-              <Box key={index}
-              //  ref={messageRef} 
-              
+              <Box
+                key={index}
+                //  ref={messageRef}
               >
                 <SessionMarketBox
                   liveOnly={liveOnly}

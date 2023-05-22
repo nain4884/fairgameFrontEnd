@@ -362,7 +362,11 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
           // console.warn("selectedData val112", val);
 
-          setSessionBets((prev) => [data.betPlaceData, ...prev]);
+          setSessionBets((prev) => {
+            const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
+            return [data.betPlaceData, ...updatedPrev];
+          });
+
           // dispatch(setAllSessionBets([data.betPlaceData, ...session]));
           dispatch(setCurrentUser(user));
           // dispatch(setSessionRates(data?.profitLoss));
@@ -867,20 +871,21 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
 
       setIObtes(
-        data?.data[0]?.filter((b) =>
+        data?.data?.data?.filter((b) =>
           ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
             b?.marketType
           )
         )
       );
-      setSessionBets(
-        data?.data[0]?.filter(
-          (b) =>
-            !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-              b?.marketType
-            )
-        )
+      const bets = data?.data?.data?.filter(
+        (b) =>
+          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+            b?.marketType
+          )
       );
+
+      console.log("bets", bets, data?.data?.data);
+      setSessionBets(bets || []);
     } catch (e) {
       console.log(e);
     }

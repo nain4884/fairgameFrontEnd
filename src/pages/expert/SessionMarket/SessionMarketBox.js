@@ -89,22 +89,22 @@ const SessionMarketBox = ({
             return prev;
           });
         }
-        setLocalState(() => {
-          const updatedBettings = currentMatch?.bettings.map(
-            (betting, index) => {
-              if (betting.selectionId === data?.data?.selectionId) {
-                return (betting[index] = data?.data);
-              } else if (betting.id === data?.data?.id) {
-                return (betting[index] = data?.data);
-              }
-              return betting;
-            }
-          );
-          return {
-            ...currentMatch,
-            bettings: updatedBettings,
-          };
-        });
+        // setLocalState(() => {
+        //   const updatedBettings = currentMatch?.bettings.map(
+        //     (betting, index) => {
+        //       if (betting.selectionId === data?.data?.selectionId) {
+        //         return (betting[index] = data?.data);
+        //       } else if (betting.id === data?.data?.id) {
+        //         return (betting[index] = data?.data);
+        //       }
+        //       return betting;
+        //     }
+        //   );
+        //   return {
+        //     ...currentMatch,
+        //     bettings: updatedBettings,
+        //   };
+        // });
       }
     } catch (err) {
       toast.error(err.response.data.message);

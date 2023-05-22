@@ -15,6 +15,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData }) => {
     setShow(false);
   });
 
+  console.log('newData?.profitLoss', newData)
 
 
   useEffect(() => {

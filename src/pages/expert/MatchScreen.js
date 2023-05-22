@@ -36,6 +36,7 @@ import { GlobalStore } from "../../context/globalStore";
 import SessionMarketLive from "../expert/SessionMarket/LiveSessionMarket/SessionMarketLive";
 let matchOddsCount = 0;
 let marketId = "";
+let profitLoss;
 const MatchScreen = () => {
   const [data, setData] = useState([]);
   const { socket, socketMicro } = useContext(SocketContext);
@@ -204,12 +205,11 @@ const MatchScreen = () => {
                   betting?.selectionId === value?.selectionId ||
                   betting?.id === value?.id
                 ) {
-                  return value;
+                  return { ...betting, betStatus: value?.betStatus };
                 } else {
                   return betting;
                 }
               });
-
               if (
                 !updatedBettings.find(
                   (betting) =>
@@ -219,7 +219,7 @@ const MatchScreen = () => {
               ) {
                 updatedBettings.unshift(value);
               }
-
+              console.log("updatedBettings", updatedBettings,value);
               return {
                 ...currentMatch,
                 bettings: updatedBettings,
@@ -241,6 +241,8 @@ const MatchScreen = () => {
             // );
             if (data) {
               setIObtes((IObets) => {
+                const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
+
                 if (currentMatch?.id === data?.betPlaceData?.match_id) {
                   const body = {
                     id: data?.betPlaceData?.id,
@@ -266,10 +268,11 @@ const MatchScreen = () => {
                     amount:
                       data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                   };
-                  return [body, ...IObets];
+
+                  return [body, ...updatedIObets];
                 }
 
-                return IObets;
+                return updatedIObets;
               });
 
               setCurrentMatch((currentMatch) => {
@@ -308,7 +311,6 @@ const MatchScreen = () => {
     // }, [socket, currentMatch]);
   }, [socket, currentMatch]);
 
-  // console.log('currentMatch', currentMatch)
   const activateLiveMatchMarket = async (val) => {
     try {
       await Axios.get(`${microServiceApiPath}/market/${val}`);
@@ -423,8 +425,8 @@ const MatchScreen = () => {
     };
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
-      setIObtes(data?.data[0]);
-      dispatch(setAllBetRate(data?.data[0]));
+      setIObtes(data?.data?.data || []);
+      dispatch(setAllBetRate(data?.data?.data || []));
     } catch (e) {
       console.log(e);
     }
@@ -514,7 +516,7 @@ const MatchScreen = () => {
                   setData={setData}
                   sessionData={
                     currentMatch?.bettings?.length > 0
-                      ? [...currentMatch?.bettings]?.filter(
+                      ? currentMatch?.bettings?.filter(
                           (element) => element?.sessionBet && element?.id
                         )
                       : 0
@@ -559,7 +561,7 @@ const MatchScreen = () => {
               socket={socket}
               matchOdds={
                 currentMatch?.bettings?.length > 0
-                  ? [...currentMatch?.bettings].filter(
+                  ? currentMatch?.bettings?.filter(
                       (v) => v?.sessionBet === false
                     )[0]
                   : null
@@ -585,7 +587,7 @@ const MatchScreen = () => {
               liveData={bookmakerLivedata}
             />
           )}
-          
+
           <AllBets allBetRates={IObets} />
         </Box>
       </Box>
