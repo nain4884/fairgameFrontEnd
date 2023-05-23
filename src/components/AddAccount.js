@@ -104,7 +104,7 @@ const AddAccount = () => {
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
-  const [mypar,setMypar]=useState("")
+  const [mypar, setMypar] = useState("");
   const [uplineP, setUplineP] = useState(0);
   // const { roleName } = allRole?.find((role) => role?.id === currentUser?.roleId);
   const setTypeForAccountType = () => {
@@ -154,7 +154,7 @@ const AddAccount = () => {
         );
       }
 
-      if (Detail[11].val === "" ) {
+      if (Detail[11].val === "") {
         setError({
           ...error,
           [11]: {
@@ -351,7 +351,7 @@ const AddAccount = () => {
       });
     }
   }
-  function CheckThisPosition({ place, val,val2, setError, error }) {
+  function CheckThisPosition({ place, val, val2, setError, error }) {
     const total = parseInt(val2) + Detail[10].val;
     if (isNaN(Detail[11].val) || Detail[11].val < 0) {
       return false;
@@ -390,6 +390,14 @@ const AddAccount = () => {
           val: 0,
         },
       });
+
+      setError({
+        ...error,
+        11: {
+          ...error[11],
+          val: "",
+        },
+      });
     }
   }, [Detail[9].val]);
 
@@ -424,7 +432,7 @@ const AddAccount = () => {
                 inputStyle={imputStyle}
                 inputContainerStyle={inputContainerStyle}
                 placeholder={"Username (Required)"}
-                title={"Username"}
+                title={"Username*"}
                 setDetail={setDetail}
                 Detail={Detail}
                 setError={setError}
@@ -521,7 +529,7 @@ const AddAccount = () => {
                   filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
                 }}
                 valueStyle={{ ...imputStyle, color: "white" }}
-                title={"Account Type"}
+                title={"Account Type*"}
                 valueContainerStyle={{
                   height: "45px",
                   marginX: "0px",
@@ -556,7 +564,7 @@ const AddAccount = () => {
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
                 inputContainerStyle={inputContainerStyle}
-                title={"Credit Reference"}
+                title={"Credit Reference*"}
                 setDetail={setDetail}
                 required={true}
                 Detail={Detail}
@@ -628,7 +636,7 @@ const AddAccount = () => {
                   onFocusOut={CheckThisPosition}
                   toFoucs={true}
                   min={0}
-                  setMypar={(val)=>setMypar(val)}
+                  setMypar={(val) => setMypar(val)}
                   max={100}
                   setDownlinePar={setDownlinePar}
                   Detail={Detail}
@@ -696,7 +704,7 @@ const AddAccount = () => {
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
                 inputContainerStyle={{ ...inputContainerStyle }}
-                title={"Admin Transaction Password"}
+                title={"Admin Transaction Password*"}
                 required={true}
                 setDetail={setDetail}
                 Detail={Detail}

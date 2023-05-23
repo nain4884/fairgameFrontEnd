@@ -9,8 +9,10 @@ const initialState = {
   user: {},
   isTransPasswordCreated: false,
   loading: false,
-  currentPageNo:1,
-  userData:[]
+  currentPageNo: 1,
+  userData: [],
+  subCurrentPageNo: 1,
+  subUserData: [],
 };
 
 export const auth = createSlice({
@@ -43,10 +45,15 @@ export const auth = createSlice({
     setPage: (state, action) => {
       state.currentPageNo = action.payload;
     },
-    setUserData:(state,action) => {
-      state.userData = action.payload
+    setUserData: (state, action) => {
+      state.userData = action.payload;
     },
-
+    setSubPage: (state, action) => {
+      state.subCurrentPageNo = action.payload;
+    },
+    setSubUserData: (state, action) => {
+      state.subUserData = action.payload;
+    },
     logout: (state, action) => {
       switch (action?.payload?.roleType) {
         case "role1":
@@ -91,8 +98,16 @@ export const auth = createSlice({
   },
 });
 
-export const { signIn, logout, setAllRoles, setUpdatedTransPasswords,setPage,setUserData } =
-  auth.actions;
+export const {
+  signIn,
+  logout,
+  setAllRoles,
+  setUpdatedTransPasswords,
+  setPage,
+  setSubPage,
+  setUserData,
+  setSubUserData,
+} = auth.actions;
 
 // export const selectCount = state => state.counter;
 

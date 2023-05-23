@@ -450,7 +450,7 @@ const DepositComponent = ({
 
       setTimeout(() => {
         dispatch(setCurrentUser(newUserbalance));
-      }, 1000);
+      }, 51);
     } else {
       const newUserbalance = {
         ...currentUser,
@@ -459,9 +459,9 @@ const DepositComponent = ({
 
       setTimeout(() => {
         dispatch(setCurrentUser(newUserbalance));
-      }, 1000);
+      }, 51);
     }
-  }, 500);
+  }, 50);
 
   return (
     <Box sx={{ display: "flex", borderRadius: "5px", gap: 2 }}>

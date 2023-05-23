@@ -1,4 +1,4 @@
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,7 +11,7 @@ import {
 } from "../admin/assets";
 import Modal from "./Modal";
 import SearchInput from "./SearchInput";
-import ModalMUI from "@mui/material/Modal";
+
 import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,17 +23,16 @@ import {
   setSubUserData,
   setUserData,
 } from "../newStore/reducers/auth";
-import AccountListModal from "./AccountListModal";
+import SearchInputModal from "./SearchInputModal";
 
-const AccountList = () => {
+const AccountListModal = ({ id, show, setShow, title }) => {
   const dispatch = useDispatch();
 
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   // const {currentUser} = useSelector((state) => state?.currentUser);
   const { userWallet } = useSelector((state) => state?.auth);
-  console.log(userWallet, "userWallet");
   // const [roles, setRoles] = useState([]);
-  const { userData } = useSelector((state) => state?.auth);
+  const { subUserData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole);
   const [data1, setData] = useState([]);
   const [sumValue, setSumVal] = useState({
@@ -43,11 +42,18 @@ const AccountList = () => {
     exposuresum: 0.0,
     availablebalancesum: 0.0,
   });
+
+  useEffect(
+    () => {
+      getListOfUser();
+    },
+    { show }
+  );
   async function getListOfUser() {
     let { axios } = setRole();
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?&page=${currentPageNo}&limit=${pageLimit}`
+        `/fair-game-wallet/getAllUserById/${id}?&page=${subCurrentPageNo}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole);
@@ -56,7 +62,7 @@ const AccountList = () => {
         }
         element.role = roleDetail?.roleName;
       });
-      dispatch(setUserData(data?.data?.data));
+      dispatch(setSubUserData(data?.data?.data));
       setData(data?.data?.data);
       setPageCount(
         Math.ceil(
@@ -84,9 +90,9 @@ const AccountList = () => {
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   // const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-  const { currentPageNo } = useSelector((state) => state?.auth);
+  const { subCurrentPageNo } = useSelector((state) => state?.auth);
   function callPage(val) {
-    dispatch(setPage(parseInt(val)));
+    dispatch(setSubPage(parseInt(val)));
     // setCurrentPage(parseInt(val));
   }
 
@@ -94,10 +100,10 @@ const AccountList = () => {
   //   setRoles(JSON.parse(localStorage.getItem("allRoles")));
   // }
 
-  useEffect(() => {
-    // getRoles();
-    getListOfUser();
-  }, [currentPageNo, pageCount, userWallet?.access_token]);
+  //   useEffect(() => {
+  //     // getRoles();
+  //     getListOfUser(id);
+  //   }, [currentPageNo, pageCount,id, userWallet?.access_token]);
 
   return (
     <>
@@ -117,12 +123,25 @@ const AccountList = () => {
           }),
         ]}
       >
-        <ListH />
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <ListH id={id} title={title} />
+          <Button
+            sx={{ color: "", fontSize: "30px" }}
+            onClick={() => {
+              setShow({ value: false, id: "", title: "" });
+              dispatch(setSubUserData([]));
+              dispatch(setSubPage(1));
+            }}
+          >
+            &times;
+          </Button>
+        </Box>
+
         <Box sx={{ overflowX: "auto" }}>
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
-            <ListSubHeaderT data={sumValue} />
-            {userData.map((element, i) => {
+            {/* <ListSubHeaderT data={sumValue} /> */}
+            {subUserData?.map((element, i) => {
               if (i % 2 === 0) {
                 return (
                   <Row
@@ -132,7 +151,7 @@ const AccountList = () => {
                     fTextStyle={{ color: "white" }}
                     element={element}
                     getListOfUser={getListOfUser}
-                    currentPage={currentPageNo}
+                    currentPage={subCurrentPageNo}
                   />
                 );
               } else {
@@ -144,19 +163,19 @@ const AccountList = () => {
                     fTextStyle={{ color: "#0B4F26" }}
                     element={element}
                     getListOfUser={getListOfUser}
-                    currentPage={currentPageNo}
+                    currentPage={subCurrentPageNo}
                   />
                 );
               }
             })}
           </Box>
         </Box>
+        <Footer
+          currentPage={subCurrentPageNo}
+          pages={pageCount}
+          callPage={callPage}
+        />
       </Box>
-      <Footer
-        currentPage={currentPageNo}
-        pages={pageCount}
-        callPage={callPage}
-      />
     </>
   );
 };
@@ -167,12 +186,12 @@ const Footer = ({ currentPage, pages, callPage }) => {
       sx={{
         height: "50px",
         display: "flex",
+        width: "100%",
         alignItems: "center",
         px: { mobile: "5px", laptop: "10px" },
         justifyContent: "space-between",
         background: "#FAFAFA",
-        marginX: "0.5%",
-        marginBottom: "20px",
+        paddingX: "10%",
       }}
     >
       <Typography
@@ -259,13 +278,28 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = () => {
+const ListH = ({ id, title }) => {
   return (
     <Box
       display={"flex"}
-      sx={{ justifyContent: "space-between", px: "10px", py: "6px" }}
+      sx={{
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: "100%",
+        px: "10px",
+        py: "6px",
+      }}
     >
-      <Box display={"flex"} alignItems="center">
+      <Box display={"flex"} alignItems="center" sx={{ alignItems: "center" }}>
+        <Typography
+          sx={{
+            fontSize: "18px",
+            color: "#FFF",
+            marginRight: "20px",
+          }}
+        >
+          {title}
+        </Typography>
         <Box
           sx={{
             background: "white",
@@ -277,7 +311,7 @@ const ListH = () => {
             alignItems: "center",
           }}
         >
-          <StyledImage src={Excel} sx={{ height: "25px" }} />
+          <StyledImage src={Excel} sx={{ height: "20px" }} />
         </Box>
         <Box
           sx={{
@@ -291,10 +325,10 @@ const ListH = () => {
             alignItems: "center",
           }}
         >
-          <StyledImage src={Pdf} sx={{ height: "25px" }} />
+          <StyledImage src={Pdf} sx={{ height: "20px" }} />
         </Box>
       </Box>
-      <SearchInput placeholder={"Search User..."} />
+      <SearchInputModal id={id} placeholder={"Search User..."} />
     </Box>
   );
 };
@@ -690,16 +724,11 @@ const Row = ({
   profit,
   element,
 }) => {
-  const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
   const [showUserModal, setShowUserModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [showSubUsers, setSubSusers] = useState({
-    value: false,
-    id: "",
-    title: "",
-  });
+  const [showSubUsers, setSubSusers] = useState({ value: false, id: "" });
   const prevElement = {
     credit_refer: element.credit_refer,
     balance: element.balance,
@@ -724,7 +753,6 @@ const Row = ({
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
-  console.log("element", element);
   // checkIfElementUpdated()
   return (
     <>
@@ -757,24 +785,13 @@ const Row = ({
         >
           <Typography
             onClick={() => {
-              if (!["user", "expert"].includes(element?.role)) {
-                setSubSusers({
-                  value: true,
-                  id: element?.id,
-                  title: element?.userName,
-                });
-              } else {
-                return false;
-              }
+              setSubSusers({ value: true, id: element?.id });
             }}
-            sx={[
-              { fontSize: "12px", fontWeight: "600", cursor: "pointer" },
-              fTextStyle,
-            ]}
+            sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
           >
             {element.userName}
           </Typography>
-          <StyledImage
+          {/* <StyledImage
             onClick={() => {
               if (!showUserModal) {
                 setUserModal(element);
@@ -785,8 +802,8 @@ const Row = ({
               setShowUserModal(!showUserModal);
             }}
             src={fContainerStyle.background == "#F8C851" ? DownGIcon : DownIcon}
-            style={{ height: "10px", cursor: "pointer", width: "15px" }}
-          />
+            style={{ height: "10px", width: "15px" }}
+          /> */}
         </Box>
         <Box
           sx={{
@@ -947,7 +964,7 @@ const Row = ({
           </Typography>
         </Box>
       </Box>
-      {showUserModal && (
+      {/* {showUserModal && (
         <UserDetailModal
           setShowUserModal={setShowUserModal}
           backgroundColor={containerStyle?.background}
@@ -958,36 +975,7 @@ const Row = ({
           setElementToUDM={handleSetUDM}
           prevElement={prevElement}
         />
-      )}
-
-      <ModalMUI
-        open={showSubUsers?.value}
-        onClose={() => {
-          setSubSusers({ value: false, id: "", title: "" });
-          dispatch(setSubUserData([]));
-          dispatch(setSubPage(1));
-        }}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box
-          sx={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <AccountListModal
-            id={showSubUsers?.id}
-            show={showSubUsers?.value}
-            setShow={setSubSusers}
-            title={showSubUsers?.title}
-          />
-        </Box>
-      </ModalMUI>
+      )} */}
 
       {showSuccessModal && (
         <Modal
@@ -1001,4 +989,4 @@ const Row = ({
     </>
   );
 };
-export default AccountList;
+export default AccountListModal;
