@@ -3,15 +3,18 @@ import { Input } from ".";
 import { EyeIcon } from "../admin/assets";
 import { Background, DailogModal } from ".";
 import { setDailogData } from "../store/dailogModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import { setRole } from "../newStore";
+import { pageLimit } from "./helper/constants";
+import { setUserData } from "../newStore/reducers/auth";
 
 export default function DepositWallet() {
   const { axios } = setRole();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [Detail, setDetail] = useState({
     1: { field: "Previous_Balance", val: "" },
     2: { field: "amount", val: 0 },
@@ -34,6 +37,8 @@ export default function DepositWallet() {
   });
   const [showModalMessage, setShowModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const roles = useSelector((state) => state?.auth?.allRole);
+  const { currentPageNo } = useSelector((state) => state?.auth);
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
@@ -49,6 +54,24 @@ export default function DepositWallet() {
   useEffect(() => {
     getUserDetail();
   }, [showSuccessModal]);
+
+  async function getListOfUser() {
+    try {
+      const { data } = await axios.get(
+        `/fair-game-wallet/getAllUser?&page=${currentPageNo}&limit=${pageLimit}`
+      );
+      data?.data?.data.map((element) => {
+        let roleDetail = roles.find(findThisRole);
+        function findThisRole(role) {
+          return role.id === element.roleId;
+        }
+        element.role = roleDetail?.roleName;
+      });
+      dispatch(setUserData(data?.data?.data));
+    } catch (e) {
+      console.log(e);
+    }
+  }
   async function submit() {
     let trans_type;
     if (window.location.pathname.split("/")[2] === "deposit") {
@@ -69,6 +92,7 @@ export default function DepositWallet() {
         defaultDepositObj
       );
       if (data.message === "Balance update successfully.") {
+        getListOfUser();
         setShowModalMessage(data.message);
         handleChangeShowModalSuccess(true);
       }

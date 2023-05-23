@@ -46,6 +46,7 @@ export default function UserDetailModal({
   activeWalletAmount,
   elementToUDM,
   setElementToUDM,
+  getListOfUser,
   prevElement,
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
@@ -102,6 +103,7 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
+              getListOfUser={getListOfUser}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
               activeWalletAmount={activeWalletAmount}
@@ -124,6 +126,7 @@ export default function UserDetailModal({
               prevElement={prevElement}
               navigate={navigate}
               elementToUDM={elementToUDM}
+              getListOfUser={getListOfUser}
               setElementToUDM={setElementToUDM}
               dispatch={dispatch}
               showDialogModal={showDialogModal}
@@ -404,6 +407,7 @@ const DepositComponent = ({
   setElementToUDM,
   dispatch,
   showDialogModal,
+  getListOfUser,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -419,7 +423,6 @@ const DepositComponent = ({
   };
 
   const [depositObj, setDepositObj] = useState(defaultDepositObj);
-  console.log("depostiObj", depositObj);
   const activeWalletAmount = useSelector(
     (state) => state?.rootReducer?.user?.amount
   );
@@ -656,6 +659,7 @@ const DepositComponent = ({
               UpdateAvailableBalance(depositObj)
                 .then(({ bool, message }) => {
                   toast.success(message);
+                  getListOfUser();
                   showDialogModal(true, true, message);
                 })
                 .catch(({ bool, message }) => {
@@ -704,8 +708,13 @@ const WithDrawComponent = ({
   setElementToUDM,
   dispatch,
   showDialogModal,
+  getListOfUser,
 }) => {
   const [showPass, setShowPass] = useState(false);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const [initialBalance, setInitialBalance] = useState(
+    currentUser?.current_balance
+  );
   const activeWalletAmount = useSelector(
     (state) => state?.rootReducer?.user?.amount
   );
@@ -717,14 +726,53 @@ const WithDrawComponent = ({
     remark: "",
   };
   const [withDrawObj, setWithDrawObj] = useState(defaultWithDrawObj);
+  const handleChange = debounce((e) => {
+    setWithDrawObj({
+      ...withDrawObj,
+      amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
+      userId: userModal.id,
+    });
+    setElementToUDM({
+      ...elementToUDM,
+      profit_loss:
+        prevElement.profit_loss -
+        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+      balance:
+        prevElement.balance -
+        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+      available_balance:
+        prevElement.available_balance -
+        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+    });
+
+    if (e.target.value) {
+      const newUserbalance = {
+        ...currentUser,
+        current_balance: initialBalance + parseInt(e.target.value),
+      };
+
+      setTimeout(() => {
+        dispatch(setCurrentUser(newUserbalance));
+      }, 51);
+    } else {
+      const newUserbalance = {
+        ...currentUser,
+        current_balance: initialBalance,
+      };
+
+      setTimeout(() => {
+        dispatch(setCurrentUser(newUserbalance));
+      }, 51);
+    }
+  }, 50);
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px" }}>
+    <Box sx={{ display: "flex", borderRadius: "5px", gap: 2 }}>
       <Box sx={{ width: "31.65vw" }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
           }}
         >
           <Typography sx={{ fontSize: "1vw", fontWeight: "600" }}>
@@ -732,40 +780,20 @@ const WithDrawComponent = ({
           </Typography>
           <Box
             sx={{
+              marginLeft: "20px",
               background: "#E32A2A",
               width: "50%",
               height: "45px",
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
               borderRadius: "5px",
               paddingX: "20px",
             }}
           >
             <TextField
-              value={withDrawObj.amount}
-              onChange={(e) => {
-                setWithDrawObj({
-                  ...withDrawObj,
-                  amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
-                  userId: userModal.id,
-                });
-                setElementToUDM({
-                  ...elementToUDM,
-                  profit_loss:
-                    prevElement.profit_loss -
-                    parseInt(
-                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
-                    ),
-                  balance:
-                    prevElement.balance -
-                    parseInt(
-                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
-                    ),
-                  available_balance:
-                    prevElement.available_balance -
-                    parseInt(
-                      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
-                    ),
-                });
-              }}
+              // value={withDrawObj.amount}
+              onChange={handleChange}
               variant="standard"
               InputProps={{
                 placeholder: "Type Amount...",
@@ -787,19 +815,19 @@ const WithDrawComponent = ({
         </Box>
         <Box
           sx={{
+            marginTop: "10px",
             display: "flex",
             alignItems: "center",
-            overflow: "hidden",
-            justifyContent: "space-between",
-            marginTop: "10px",
+            justifyContent: "flex-end",
           }}
         >
-          <Typography sx={{ fontSize: "1vw", fontWeight: "600" }}>
-            Transaction Password
+          <Typography
+            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+          >
+            Wallet Balance
           </Typography>
           <Box
             sx={{
-              borderRadius: "px",
               width: "50%",
               height: "45px",
               background: "white",
@@ -808,6 +836,48 @@ const WithDrawComponent = ({
               borderRadius: "5px",
               border: "2px solid #26262633",
               paddingX: "20px",
+            }}
+          >
+            <TextField
+              value={currentUser?.current_balance || 0}
+              sx={{ width: "100%", height: "45px" }}
+              variant="standard"
+              InputProps={{
+                disabled: true,
+                placeholder: "",
+                disableUnderline: true,
+                type: "text",
+                style: { fontSize: "13px", height: "45px", fontWeight: "600" },
+              }}
+            />
+          </Box>
+        </Box>
+      </Box>
+      <Box sx={{ overflow: "hidden", width: "19.1vw" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            overflow: "hidden",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Typography
+            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+          >
+            Transaction Password
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              height: "45px",
+              paddingLeft: "20px",
+              paddingRight: "20px",
+              background: "white",
+              display: "flex",
+              alignItems: "center",
+              borderRadius: "5px",
+              border: "2px solid #26262633",
             }}
           >
             <TextField
@@ -842,20 +912,18 @@ const WithDrawComponent = ({
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss - parseInt(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
           </Box> */}
         </Box>
-      </Box>
-      <Box sx={{ display: "flex", overflow: "hidden", width: "19.1vw" }}>
         <Box
           sx={{
             borderRadius: "5px",
             flex: 1,
             background: backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
-            marginLeft: "20px",
             display: "flex",
             alignItems: "center",
             borderRadius: "5px",
             border: "2px solid #26262633",
             minHeight: "80px",
             maxHeight: "115px",
+            marginTop: "10px",
             paddingX: "10px",
           }}
         >
@@ -892,6 +960,7 @@ const WithDrawComponent = ({
               UpdateAvailableBalance(withDrawObj)
                 .then(({ bool, message }) => {
                   toast.success(message);
+                  getListOfUser();
                   showDialogModal(true, true, message);
                 })
                 .catch(({ bool, message }) => {

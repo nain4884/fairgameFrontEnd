@@ -24,6 +24,7 @@ import {
   setUserData,
 } from "../newStore/reducers/auth";
 import AccountListModal from "./AccountListModal";
+import { setCurrentUser } from "../newStore/reducers/currentUser";
 
 const AccountList = () => {
   const dispatch = useDispatch();
@@ -689,12 +690,14 @@ const Row = ({
   fTextStyle,
   profit,
   element,
+  getListOfUser,
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
   const [showUserModal, setShowUserModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const { axios } = setRole();
   const [showSubUsers, setSubSusers] = useState({
     value: false,
     id: "",
@@ -711,6 +714,20 @@ const Row = ({
     bet_blocked: element.bet_blocked,
     all_blocked: element.all_blocked,
   };
+
+  const updatedUserProfile = async () => {
+    try {
+      const { data } = await axios.get("users/profile");
+      dispatch(setCurrentUser(data.data));
+    } catch (e) {
+      console.log("e", e);
+    }
+  };
+  useEffect(() => {
+    if (showUserModal === false) {
+      updatedUserProfile();
+    }
+  }, [showUserModal]);
   const [elementToUDM, setElementToUDM] = useState(prevElement);
   function handleSetUDM(val) {
     setElementToUDM(val);
@@ -949,6 +966,7 @@ const Row = ({
       </Box>
       {showUserModal && (
         <UserDetailModal
+          getListOfUser={getListOfUser}
           setShowUserModal={setShowUserModal}
           backgroundColor={containerStyle?.background}
           userModal={userModal}
