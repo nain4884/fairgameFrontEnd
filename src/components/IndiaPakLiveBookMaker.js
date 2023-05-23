@@ -104,7 +104,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     const data = packet.data[1];
                     if (packet.data[0] === "teamA_suspend_user") {
                         if (data.teamA_suspend == 'Ball Started') {
-                            setIsABall(true)
+                            // setIsABall(true)
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: true,
@@ -114,7 +114,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         } else {
                             setIsTeamASuspend(data.teamA_suspend);
                             setIsTeamBackUnlock(true);
-                            setIsABall(false);
+                            // setIsABall(false);
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: false,
@@ -130,7 +130,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     if (packet.data[0] === "teamB_suspend_user") {
                         if (data.teamB_suspend == 'Ball Started') {
-                            setIsBBall(true)
+                            // setIsBBall(true)
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: true,
@@ -140,7 +140,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         } else {
                             setIsTeamBSuspend(data.teamB_suspend);
                             setIsTeamBackUnlock(true);
-                            setIsBBall(false);
+                            // setIsBBall(false);
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: false,
@@ -155,7 +155,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     if (packet.data[0] === "teamC_suspend_user") {
                         if (data.teamC_suspend == 'Ball Started') {
-                            setIsCBall(true)
+                            // setIsCBall(true)
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: true,
@@ -165,7 +165,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         } else {
                             setIsTeamCSuspend(data.teamC_suspend);
                             setIsTeamBackUnlock(true);
-                            setIsCBall(false);
+                            // setIsCBall(false);
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: false,
@@ -185,7 +185,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamARate(data.teamA_Back);
                         setTeamALayValue(data.teamA_lay);
                         setIsTeamASuspend(data.teamA_suspend);
-                        setIsABall(false);
+                        // setIsABall(false);
                         setTeamBall((prevState) => ({
                             ...prevState,
                             isABall: false,
@@ -207,7 +207,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         // else {
                         // setIsTeamBackUnlock(false);
                         // }
-                        setIsBBall(false);
+                        // setIsBBall(false);
                         setTeamBall((prevState) => ({
                             ...prevState,
                             isABall: false,
@@ -225,7 +225,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamCLayValue(data.teamC_lay);
                         setIsTeamCSuspend(data.teamC_suspend);
                         // setIsTeamBackUnlock(false);
-                        setIsCBall(false);
+                        // setIsCBall(false);
                         setTeamBall((prevState) => ({
                             ...prevState,
                             isABall: false,
@@ -301,41 +301,44 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         }
 
         const handleChange = (event) => {
+            handleSuspend();
             let target = event.target;
-            if (target.name === 'teamA_rate') {
-                setTeamARate(target.value)
-                if (target.value !== '') {
-                    let teamA_lay = parseInt(target.value) + 1
-                    // if (incGap > 0) {
-                    //     // teamA_lay = teamA_lay + this.state.up_keypress
-                    // }
-                    setTeamALayValue(teamA_lay);
-                } else {
-                    setTeamALayValue('');
+            if (target.value <= 100) {
+                if (target.name === 'teamA_rate') {
+                    setTeamARate(target.value)
+                    if (target.value !== '') {
+                        let teamA_lay = parseInt(target.value) + 1
+                        // if (incGap > 0) {
+                        //     // teamA_lay = teamA_lay + this.state.up_keypress
+                        // }
+                        setTeamALayValue(teamA_lay);
+                    } else {
+                        setTeamALayValue('');
+                    }
                 }
-            }
-            else if (target.name === 'teamB_rate') {
-                setTeamBRate(target.value)
-                if (target.value !== '') {
-                    let teamB_lay = parseInt(target.value) + 1
-                    // if (incGap > 0) {
-                    //     // teamB_lay = teamB_lay + this.state.up_keypress
-                    // }
-                    setTeamBLayValue(teamB_lay);
-                } else {
-                    setTeamBLayValue('');
+                else if (target.name === 'teamB_rate') {
+                    setTeamBRate(target.value)
+                    if (target.value !== '') {
+                        let teamB_lay = parseInt(target.value) + 1
+                        // if (incGap > 0) {
+                        //     // teamB_lay = teamB_lay + this.state.up_keypress
+                        // }
+                        setTeamBLayValue(teamB_lay);
+                    } else {
+                        setTeamBLayValue('');
+                    }
                 }
-            }
-            else if (target.name === 'teamC_rate') {
-                setTeamCRate(target.value)
-                if (target.value !== '') {
-                    let teamC_lay = parseInt(target.value) + 1
-                    // if (incGap > 0) {
-                    //     // teamB_lay = teamB_lay + this.state.up_keypress
-                    // }
-                    setTeamCLayValue(teamC_lay);
-                } else {
-                    setTeamCLayValue('');
+                else if (target.name === 'teamC_rate') {
+                    setTeamCRate(target.value)
+                    if (target.value !== '') {
+                        let teamC_lay = parseInt(target.value) + 1
+                        // if (incGap > 0) {
+                        //     // teamB_lay = teamB_lay + this.state.up_keypress
+                        // }
+                        setTeamCLayValue(teamC_lay);
+                    } else {
+                        setTeamCLayValue('');
+                    }
                 }
             }
         }
@@ -366,13 +369,36 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             //     // }
             // }
         }
+        const handleHunderedValue = (back, lay) => {
+            // alert(back)
+            if (back >= 100) {
+                return true;
+            }
+            if (lay >= 100) {
+                return true;
+            }
+            return false;
+        }
+        const handleZeroValue = (back, lay) => {
+            // alert(back)
+            if (back < 1) {
+                return true;
+            }
+            if (lay < 0) {
+                return true;
+            }
+            return false;
+        }
+
         const handleKeysMatchEvents = (key, event) => {
+
             // alert(key);
             // console.log('handle key event');
             event.preventDefault();
             // this.setState({ focus_team: event.target.getAttribute('id'), ERROR: false });
             let targetValue = parseFloat(event.target.value);
             event.target.value = targetValue;
+            // alert(targetValue)
             if (key == 'right') {
                 handleSuspend();
                 // let value = targetValue + 1
@@ -380,6 +406,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 console.log("value :", value)
                 setPressEnter(false);
                 if (event.target.name === 'teamA_rate') {
+                    let result = handleHunderedValue(targetValue, teamALayValue);
+                    if (result) {
+                        return;
+                    }
                     // alert(teamARate)
                     setTeamARate(value);
                     // setTeamALayValue(teamALayValue + 1);
@@ -391,6 +421,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 }
 
                 if (event.target.name === 'teamB_rate') {
+                    let result = handleHunderedValue(targetValue, teamBLayValue);
+                    if (result) {
+                        return;
+                    }
                     // this.setState({ teamB_rate: value, ERROR: false });
                     setTeamBRate(value);
                     let chckValue = teamBLayValue ? teamBLayValue : value
@@ -401,6 +435,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue('');
                 }
                 if (event.target.name === 'teamC_rate') {
+                    let result = handleHunderedValue(targetValue, teamCLayValue);
+                    if (result) {
+                        return;
+                    }
                     setTeamCRate(value);
                     let chckValue = teamCLayValue ? teamCLayValue : value
                     setTeamCLayValue(chckValue + incGap);
@@ -450,6 +488,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // upkey = upkey + 1
                 // let lay_value = targetValue + upkey + 1
                 if (event.target.name === 'teamA_rate') {
+                    let result = handleHunderedValue(targetValue, teamALayValue);
+                    if (result) {
+                        return;
+                    }
                     // alert(teamALayValue)
                     let value = teamALayValue ? teamALayValue : teamARate
                     setTeamALayValue(value + incGap);
@@ -458,6 +500,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 }
 
                 if (event.target.name === 'teamB_rate') {
+                    let result = handleHunderedValue(targetValue, teamBLayValue);
+                    if (result) {
+                        return;
+                    }
                     // this.setState({ teamB_rate: value, ERROR: false });
                     let value = teamBLayValue ? teamBLayValue : teamBRate
                     setTeamBLayValue(value + incGap)
@@ -466,6 +512,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue('');
                 }
                 if (event.target.name === 'teamC_rate') {
+                    let result = handleHunderedValue(targetValue, teamCLayValue);
+                    if (result) {
+                        return;
+                    }
                     let value = teamCLayValue ? teamCLayValue : teamCRate
                     setTeamCLayValue(value + incGap)
                     // setTeamBLayValue(teamBLayValue + incGap)
@@ -892,11 +942,16 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: 'Ball Started', })
                 // }
             }
-            if (key == 'plus') {
+            if (key == 'plus' || key == '=') {
                 handleSuspend();
                 if (incGap != 5) {
                     setIncGap(1)
                     if (event.target.name === 'teamA_rate') {
+                        // alert(targetValue)
+                        let result = handleHunderedValue(targetValue, teamALayValue);
+                        if (result) {
+                            return;
+                        }
                         let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
                         let value;
                         if (teamARateDecimal >= 0.5) {
@@ -909,6 +964,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamBRate('');
                         setTeamBLayValue('')
                     } else if (event.target.name === 'teamB_rate') {
+                        let result = handleHunderedValue(targetValue, teamBLayValue);
+                        if (result) {
+                            return;
+                        }
                         let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
                         let value;
                         if (teamBRateDecimal >= 0.5) {
@@ -921,6 +980,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamARate('');
                         setTeamALayValue('')
                     } else if (event.target.name === 'teamC_rate') {
+                        let result = handleHunderedValue(targetValue, teamCLayValue);
+                        if (result) {
+                            return;
+                        }
                         let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
                         let value;
                         if (teamCRateDecimal >= 0.5) {
@@ -965,6 +1028,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 if (incGap != 5) {
                     setIncGap(1)
                     if (event.target.name === 'teamA_rate') {
+                        let result = handleZeroValue(targetValue, teamALayValue);
+                        if (result) {
+                            return;
+                        }
                         let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
                         let value;
                         if (teamARateDecimal >= 0.5) {
@@ -977,6 +1044,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamBRate('');
                         setTeamBLayValue('')
                     } else if (event.target.name === 'teamB_rate') {
+                        let result = handleZeroValue(targetValue, teamBLayValue);
+                        if (result) {
+                            return;
+                        }
                         let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
                         let value;
                         if (teamBRateDecimal >= 0.5) {
@@ -989,6 +1060,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamARate('');
                         setTeamALayValue('')
                     } else if (event.target.name === 'teamC_rate') {
+                        let result = handleZeroValue(targetValue, teamCLayValue);
+                        if (result) {
+                            return;
+                        }
                         let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
                         let value;
                         if (teamCRateDecimal >= 0.5) {
@@ -1005,12 +1080,20 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                 } else {
                     if (event.target.name === 'teamA_rate' && event.target.value >= 5) {
+                        let result = handleZeroValue(targetValue, teamALayValue);
+                        if (result) {
+                            return;
+                        }
                         let value = Math.round(teamARate) - incGap;
                         setTeamARate(value ? value : 0);
                         setTeamALayValue(value ? value + incGap : incGap);
                         setTeamBRate('');
                         setTeamBLayValue('')
                     } else if (event.target.name === 'teamB_rate' && event.target.value >= 5) {
+                        let result = handleZeroValue(targetValue, teamBLayValue);
+                        if (result) {
+                            return;
+                        }
                         let value = Math.round(teamBRate) - incGap;
                         setTeamBRate(value ? value : 0);
                         setTeamBLayValue(value ? value + incGap : incGap);
@@ -1018,6 +1101,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamARate('');
                         setTeamALayValue('')
                     } else if (event.target.name === 'teamC_rate' && event.target.value >= 5) {
+                        let result = handleZeroValue(targetValue, teamCLayValue);
+                        if (result) {
+                            return;
+                        }
                         let value = Math.round(teamCRate) - incGap;
                         setTeamCRate(value ? value : 0);
                         setTeamCLayValue(value ? value + incGap : incGap);
@@ -1056,6 +1143,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 }
                 // this.setState({ lay_5: 1, ERROR: false });
             }
+
             // teamA_suspended = 'ball started '
             // console.log('event :', event)
             // console.warn('event :', event)
@@ -1129,7 +1217,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             alignSelf: 'flex-end',
                                             textAlign: 'center',
                                             alignItems: 'center',
-                                            paddingX: '10px',
+                                            paddingX: '5px',
                                             color: "#319E5B",
                                             fontWeight: '600',
                                             backgroundColor: '#FFB5B5',
@@ -1188,7 +1276,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             alignSelf: 'flex-end',
                                             textAlign: 'center',
                                             alignItems: 'center',
-                                            paddingX: '10px',
+                                            paddingX: '5px',
                                             color: "#319E5B",
                                             fontWeight: '600',
                                             backgroundColor: '#FFB5B5',
@@ -1255,82 +1343,41 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     </Box>
 
                     <Box sx={{ borderLeft: "2px solid white", width: "40%" }}>
-                        {!teamBall?.isABall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                            {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
-                                {!isTeamBackUnlock ?
-                                    <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                            </Box> :
-                                <Box sx={{ background: isTeamASuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                    {!isTeamASuspend ?
-                                        <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                </Box>}
-                            <Box sx={{ background: isTeamASuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                {!isTeamASuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamALayValue}</Typography> :
-                                    <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                            </Box>
+                        {teamBall?.isABall ? <Box
+                            sx={{
+                                borderTop: "2px solid white",
+                                background: "rgba(0,0,0,1)",
+                                height: "92px",
+                                right: 0,
+                                // position: "absolute",
+                                width: "100%",
+                                // width: { laptop: "50%", mobile: "40.5%" },
+                                justifyContent: { mobile: "center", laptop: "center" },
+                                alignItems: "center",
+                                display: "flex",
+                                color: "#fff"
+                            }}
+                        >
+                            <img src={BallStart} style={{ width: '60px', height: '17px' }} />
                         </Box> :
-                            <Box
-                                sx={{
-                                    borderTop: "2px solid white",
-                                    background: "rgba(0,0,0,1)",
-                                    height: "45px",
-                                    right: 0,
-                                    // position: "absolute",
-                                    width: "100%",
-                                    // width: { laptop: "50%", mobile: "40.5%" },
-                                    justifyContent: { mobile: "center", laptop: "center" },
-                                    alignItems: "center",
-                                    display: "flex",
-                                    color: "#fff"
-                                }}
-                            >
-                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
-                            </Box>}
-                        {!teamBall?.isBBall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                            {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                            </Box> : <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                            </Box>}
-                            <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBLayValue}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                            </Box>
-
-                        </Box> :
-                            <Box
-                                sx={{
-                                    borderTop: "2px solid white",
-                                    background: "rgba(0,0,0,1)",
-                                    height: "45px",
-                                    right: 0,
-                                    // position: "absolute",
-                                    width: "100%",
-                                    // width: { laptop: "50%", mobile: "40.5%" },
-                                    justifyContent: { mobile: "center", laptop: "center" },
-                                    alignItems: "center",
-                                    display: "flex",
-                                }}
-                            >
-                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
-                            </Box>}
-                        {match?.teamC &&
                             <>
-                                {!teamBall?.isCBall ? <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                {/* {!teamBall?.isABall ?  */}
+                                <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                                     {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                         {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
                                         {!isTeamBackUnlock ?
-                                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                     </Box> :
-                                        <Box sx={{ background: isTeamCSuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamCSuspend ?
-                                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        <Box sx={{ background: isTeamASuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamASuspend ?
+                                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box>}
-                                    <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                        {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCLayValue}</Typography> :
+                                    <Box sx={{ background: isTeamASuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!isTeamASuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamALayValue}</Typography> :
                                             <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                     </Box>
-                                </Box> :
+                                </Box>
+                                {/* :
                                     <Box
                                         sx={{
                                             borderTop: "2px solid white",
@@ -1347,33 +1394,76 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         }}
                                     >
                                         <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                                    </Box>} */}
+
+                                {/* {!teamBall?.isBBall ? */}
+                                <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                    {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                    </Box> : <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                     </Box>}
-                            </>
-                        }
-                        {/* {match?.teamC && <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                            <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                            </Box>
-                            <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                            </Box>
-                        </Box>}
-                        {isCBall && <Box
-                            sx={{
-                                borderTop: "2px solid white",
-                                background: "rgba(0,0,0,1)",
-                                height: "45px",
-                                right: 0,
-                                // position: "absolute",
-                                width: "100%",
-                                // width: { laptop: "50%", mobile: "40.5%" },
-                                justifyContent: { mobile: "center", laptop: "center" },
-                                alignItems: "center",
-                                display: "flex",
-                            }}
-                        >
-                            <img src={BallStart} style={{ width: '60px', height: '17px' }} />
-                        </Box>} */}
+                                    <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBLayValue}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                    </Box>
+
+                                </Box>
+                                {/* :
+                                    <Box
+                                        sx={{
+                                            borderTop: "2px solid white",
+                                            background: "rgba(0,0,0,1)",
+                                            height: "45px",
+                                            right: 0,
+                                            // position: "absolute",
+                                            width: "100%",
+                                            // width: { laptop: "50%", mobile: "40.5%" },
+                                            justifyContent: { mobile: "center", laptop: "center" },
+                                            alignItems: "center",
+                                            display: "flex",
+                                        }}
+                                    >
+                                        <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                                    </Box>} */}
+                                {match?.teamC &&
+                                    <>
+                                        {/* {!teamBall?.isCBall ?  */}
+                                        <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                            {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
+                                                {!isTeamBackUnlock ?
+                                                    <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                            </Box> :
+                                                <Box sx={{ background: isTeamCSuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                    {!isTeamCSuspend ?
+                                                        <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                </Box>}
+                                            <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCLayValue}</Typography> :
+                                                    <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                            </Box>
+                                        </Box>
+                                        {/* :
+                                            <Box
+                                                sx={{
+                                                    borderTop: "2px solid white",
+                                                    background: "rgba(0,0,0,1)",
+                                                    height: "45px",
+                                                    right: 0,
+                                                    // position: "absolute",
+                                                    width: "100%",
+                                                    // width: { laptop: "50%", mobile: "40.5%" },
+                                                    justifyContent: { mobile: "center", laptop: "center" },
+                                                    alignItems: "center",
+                                                    display: "flex",
+                                                    color: "#fff"
+                                                }}
+                                            >
+                                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                                            </Box>} */}
+                                    </>
+                                }
+                            </>}
                     </Box>
                 </Box>
             </Box>

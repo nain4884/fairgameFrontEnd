@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  manualBookMarkerRates:[],
+  manualBookMarkerRates: [],
   sessionRates: null,
   matchOdds: {},
   sessionOdds: {},
@@ -11,6 +11,7 @@ const initialState = {
   bookmakerLive: null,
   sessionOddsLive: [],
   selectedMatch: {},
+  sessionAllBetRates: [],
 };
 
 const matchDetails = createSlice({
@@ -62,7 +63,7 @@ const matchDetails = createSlice({
       state.matchOdds = action.payload;
     },
     setMatchOddsLive: (state, action) => {
-      console.log(action.payload,"action.payload")
+      console.log(action.payload, "action.payload")
       state.matchOddsLive = action.payload;
     },
     removeMatchOddsLive: (state, action) => {
@@ -93,6 +94,10 @@ const matchDetails = createSlice({
     setAllBetRate: (state, action) => {
       state.allBetRates = action.payload;
     },
+    setSessionAllBetRate: (state, action) => {
+      state.sessionAllBetRates = action.payload;
+    },
+
     setAddBetRates: (state, action) => {
       // const body= [...state.items,action.payload];
       // console.log(body,"BODY")
@@ -118,8 +123,8 @@ const matchDetails = createSlice({
     setSelectedMatch: (state, action) => {
       state.selectedMatch = action.payload;
     },
-    removeSelectedMatch: (state, action)=>{
-      state.selectedMatch ={}
+    removeSelectedMatch: (state, action) => {
+      state.selectedMatch = {}
     }
   },
 });
@@ -134,6 +139,7 @@ export const {
   setSessionOdds,
   removeSessionOdds,
   setAllBetRate,
+  setSessionAllBetRate,
   removeAllBetRates,
   setAddBetRates,
   removeSessionOddsLive,
