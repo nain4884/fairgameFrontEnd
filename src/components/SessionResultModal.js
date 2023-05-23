@@ -229,22 +229,25 @@ const SessionResultModal = ({
           justifyContent: "center",
         }}
       >
-        <TextField
-          placeholder="Enter score"
-          variant="standard"
-          value={selected}
-          onChange={(e) => setSelected(e?.target.value)}
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              alignSelf: "center",
-              border: "1px solid #303030",
-              borderRadius: "5px",
-              paddingY: "5px",
-              paddingX: "1vw",
-            },
-          }}
-        />
+        {newData?.betStatus !== 3 ?
+          <TextField
+            placeholder="Enter score"
+            variant="standard"
+            value={selected}
+            onChange={(e) => setSelected(e?.target.value)}
+            InputProps={{
+              disableUnderline: true,
+              sx: {
+                alignSelf: "center",
+                border: "1px solid #303030",
+                borderRadius: "5px",
+                paddingY: "5px",
+                paddingX: "1vw",
+              },
+            }}
+          /> : <Typography sx={{ color: "#0B4F26", fontSize: "13px", fontWeight: "500", fontWeight: "600", textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }} >
+            Are you sure to set no result
+          </Typography>}
         <Box
           sx={{
             display: "flex",
@@ -270,28 +273,31 @@ const SessionResultModal = ({
               }}
             />
           ) : (
-            <SessionResultCustomButton
-              color={"#0B4F26"}
-              id="DR"
-              title={"Declare"}
-              loading={loading}
-              onClick={() => {
-                if (loading?.value) {
-                  return false;
-                }
-                if (selected !== "" || !isNaN(selected)) {
-                  declareResult();
-                } else {
-                  toast.warn("Please enter score");
-                }
-              }}
-            />
+            <>
+              {newData?.betStatus !== 3 ?
+                < SessionResultCustomButton
+                  color={"#0B4F26"}
+                  id="DR"
+                  title={"Declare"}
+                  loading={loading}
+                  onClick={() => {
+                    if (loading?.value) {
+                      return false;
+                    }
+                    if (selected !== "" || !isNaN(selected)) {
+                      declareResult();
+                    } else {
+                      toast.warn("Please enter score");
+                    }
+                  }}
+                /> : null}
+            </>
           )}
 
           {newData?.betStatus !== 2 && (
             <SessionResultCustomButton
               color={"rgb(106 90 90)"}
-              title={"No Result"}
+              title={newData?.betStatus !== 3 ? "No Result" : "Yes"}
               loading={loading}
               id="NR"
               onClick={() => {

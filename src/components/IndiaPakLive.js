@@ -11,14 +11,18 @@ import { setRole } from "../newStore";
 import { Lock, BallStart } from '../assets';
 import { GlobalStore } from "../context/globalStore";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setSessionAllBetRate } from "../newStore/reducers/matchDetails";
 
 
 
-export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent }) {
+export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent, betData, handleBetData }) {
 
     const { axios } = setRole();
+    const dispatch = useDispatch();
     const { socket, socketMicro } = useContext(SocketContext);
     const { globalStore, setGlobalStore } = useContext(GlobalStore);
+    const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
     const stateDetail = {
         match_id: match?.id,
         matchType: match?.gameType,
@@ -34,7 +38,9 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const [Detail, setDetail] = useState(stateDetail)
     const [incGap, setIncGap] = useState(1)
     const [visible, setVisible] = useState(false)
+    const [isConfirm, setIsConfirm] = useState(false)
     const [visible1, setVisible1] = useState(false)
+    const [visible2, setVisible2] = useState(false)
     const [betId, setBetId] = useState("")
     const [lock, setLock] = useState({
         isNo: true,
@@ -47,56 +53,9 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const [isPercent, setIsPercent] = useState("");
     const [live, setLive] = useState(true);
     const [proLoss, setProLoss] = useState({
-        "betData": [
-            {
-                "odds": 41,
-                "profit_loss": -101
-            },
-            {
-                "odds": 42,
-                "profit_loss": -101
-            },
-            {
-                "odds": 43,
-                "profit_loss": -101
-            },
-            {
-                "odds": 44,
-                "profit_loss": -101
-            },
-            {
-                "odds": 45,
-                "profit_loss": -101
-            },
-            {
-                "odds": 46,
-                "profit_loss": 101
-            },
-            {
-                "odds": 47,
-                "profit_loss": 101
-            },
-            {
-                "odds": 48,
-                "profit_loss": 101
-            },
-            {
-                "odds": 49,
-                "profit_loss": 101
-            },
-            {
-                "odds": 50,
-                "profit_loss": 101
-            },
-            {
-                "odds": 51,
-                "profit_loss": 101
-            }
-        ],
-        "line": 5,
-        "max_loss": 101,
-        "total_bet": 1
+
     });
+    // const [betData, setBetData] = useState(sessionAllBetRates);
 
 
     // alert(globalStore.isSession)
@@ -123,9 +82,6 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     }
 
     useEffect(() => {
-        // alert(isCreateSession)
-        // alert(JSON.stringify(sessionEvent))
-        // 2 over runs RR(PBKS vs RR)adv
         if (socket && socket.connected) {
             socket.onevent = async (packet) => {
                 if (packet.data[0] === "session_bet") {
@@ -145,6 +101,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     useEffect(() => {
         // alert(JSON.stringify(globalStore.isSession))
         if (sessionEvent?.id) {
+            // alert(JSON.stringify(betData))
             getManuallBookMaker(sessionEvent?.id);
         } else {
             setDetail(stateDetail);
@@ -168,6 +125,8 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             let [firstValue, secondValue] = data.rate_percent.split("-");
             setDetail({ ...Detail, no_rate: data.no_rate, yes_rate: data.yes_rate, n_rate_percent: firstValue, y_rate_percent: secondValue, bet_condition: data.bet_condition })
             setBetId(data.id);
+            getAllBetsData(data.id);
+            setProLoss(data?.profitLoss);
             // if (response?.data?.data?.length === 0) {
             //     doSubmitSessionBet(id);
             // } else {
@@ -183,21 +142,25 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             console.log(e.response.data.message);
         }
     }
-    // async function doSubmitSessionBet(id) {
-    //     const payload = {
-    //         betStatus: 1,
-    //         sessionBet: true,
-    //         matchType: "cricket",
-    //         match_id: id
-    //     }
-    //     try {
-    //         let response = await axios.post(`/betting/addBetting`, payload);
-    //         setBetId(response?.data?.data?.id)
-    //         // alert("ddd :" + JSON.stringify(response?.data))
-    //     } catch (e) {
-    //         console.log(e.response.data.message);
-    //     }
-    // }
+
+    async function getAllBetsData(id) {
+        // alert(122)
+        let payload = {
+            match_id: match?.id,
+            bet_id: id
+        };
+        // alert(JSON.stringify(payload))
+        try {
+            let { data } = await axios.post(`/betting/getPlacedBets`, payload);
+            console.log("data :", data.data);
+            // setBetData(data?.data?.data || []);
+            // alert(handleBetData)
+            handleBetData(data?.data?.data || [])
+            dispatch(setSessionAllBetRate(data?.data?.data || []));
+        } catch (e) {
+            console.log(e);
+        }
+    }
     const handleLive = async (status) => {
         try {
             if (status === 1) {
@@ -265,8 +228,20 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                                         }} />}
                                 </Box>
                             </Box>
-                            <Box sx={{ width: "30%", display: "flex", background: "#303030", marginLeft: "5px", justifyContent: "center", maxWidth: "120px", alignItems: "center", height: "35px", borderRadius: "5px" }}>
+                            <Box
+                                onClick={(e) => {
+                                    setVisible2(true)
+                                    e.stopPropagation()
+                                }}
+                                sx={{ width: "30%", position: 'relative', display: "flex", background: "#303030", marginLeft: "5px", justifyContent: "center", maxWidth: "120px", alignItems: "center", height: "35px", borderRadius: "5px" }}>
                                 <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>No Result</Typography>
+                                <Box sx={{ position: "absolute", zIndex: 999, top: '40px', left: 0 }}>
+                                    {visible2 && <SessionResultModal
+                                        newData={{ id: betId, match_id: match?.id, betStatus: 3 }}
+                                        onClick={() => {
+                                            setVisible2(false)
+                                        }} />}
+                                </Box>
                             </Box></> :
                             <Box onClick={(e) => {
                                 doSubmitSessionBet(Detail.n_rate_percent + '-' + Detail.y_rate_percent)
@@ -420,6 +395,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
     }
     const handleChange = (event) => {
         setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
+        handleSuspend();
         // alert(isBall.isBall)
         let target = event.target;
         // let targetValue = parseFloat(event.target.value);
@@ -427,18 +403,6 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         let checkValue = parseFloat(event.target.value);
         // alert(targetValue)
         Detail.setDetail({ ...Detail.Detail, no_rate: targetValue, yes_rate: targetValue + 1, y_rate_percent: checkValue ? 100 : '', n_rate_percent: checkValue ? 100 : '' })
-        // if (target.name === 'teamA_rate') {
-        //     // setTeamARate(target.value)
-        //     // if (target.value !== '') {
-        //     //     let teamA_lay = parseInt(target.value) + 1
-        //     //     // if (incGap > 0) {
-        //     //     //     // teamA_lay = teamA_lay + this.state.up_keypress
-        //     //     // }
-        //     //     setTeamALayValue(teamA_lay);
-        //     // } else {
-        //     //     setTeamALayValue('');
-        //     // }
-        // }
     }
 
     const handleSuspend = () => {
@@ -709,7 +673,7 @@ const RunsAmountBox = ({ anchorEl, open, handleClose, proLoss }) => {
                         <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
                     </Box>
                 </Box> */}
-                <Box sx={{ maxHeight: "200px", overflowY: "scroll" }}>
+                <Box sx={{ maxHeight: "300px", overflowY: "scroll" }}>
                     {proLoss?.betData?.length > 0 ? (
                         proLoss?.betData?.map((v) => {
                             const getColor = (value) => {
