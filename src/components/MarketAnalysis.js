@@ -73,7 +73,9 @@ const LiveMarketComponent = ({
     <Box
       onClick={() => {
         if (mode == "0") {
-          navigate("/admin/delete_bet", { state: { submit: true } });
+          navigate("/admin/matches", {
+            state: { submit: true, matchId: data?.id },
+          });
         }
         setSelected();
       }}
@@ -224,6 +226,7 @@ const CustomBox = ({ title, onClick }) => {
           background: "#F8C851",
           borderRadius: "5px",
           display: "flex",
+          cursor: "pointer",
         }}
       >
         <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>

@@ -232,6 +232,7 @@ const CustomHeader = ({}) => {
                       borderRadius: "3px",
                       marginLeft: "1.5%",
                       justifyContent: "center",
+                  
                     }}
                     titleStyle={{
                       color: currentSelected == 3 ? "green" : "white",
@@ -400,6 +401,7 @@ const ButtonHead = ({
           alignItems: "center",
           display: "flex",
           flexDirection: "row",
+          cursor: "pointer",
         },
         boxStyle,
       ]}

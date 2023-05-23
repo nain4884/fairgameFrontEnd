@@ -1,20 +1,12 @@
-import React, { memo, useCallback } from "react";
 import { Box, Typography } from "@mui/material";
-import { useEffect } from "react";
 import { useState } from "react";
-import useOuterClick from "../../../components/helper/userOuterClick";
 import { UD } from "../../../assets";
+import DropdownMenu from "./DropdownMenu";
+import { useEffect } from "react";
+import { useCallback } from "react";
 
-const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
+const PlaceBetComponentWeb = ({ onClick, amount, setData, newData, width }) => {
   const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
-  const [anchorEl, setAnchorEl] = useState(null);
- 
-  const [show, setShow] = useState(false);
-  const innerRef = useOuterClick((ev) => {
-    setShow(false);
-  });
-
-  console.log('newData?.profitLoss', newData)
 
 
   useEffect(() => {
@@ -37,9 +29,8 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
     });
 
     setProfitLoss(newData?.profitLoss);
-
   }, [newData]);
-  
+
   const handleClick = useCallback(
     (e) => {
       setData((prev) => {
@@ -52,7 +43,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
             return updatedArray;
           } else {
             // if (prev.length < 4) {
-              return [...prev, newData];
+            return [...prev, newData];
             // }
             // return prev;
           }
@@ -61,11 +52,10 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
           return prev;
         }
       });
-      
     },
     [setData, newData]
   );
-  const boxWidth = width ? { laptop: "7vw" } : { "@media screen and (max-width: 1300px)": { width: "9vw" } };
+
   return (
     <>
       <Box
@@ -75,74 +65,57 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
           flexDirection: "row",
           display: "flex",
           alignItems: "center",
-          top: "4px",
-          // '@media screen and (max-width: 1300px)': {
-          //   width: '9vw',
-          // },
-          // width: { laptop: "7vw" },
-          width: boxWidth,
+          paddingX: ".2vw",
+          width: "10vw",
           borderRadius: "5px",
           height: "32px",
-          right: "8px",
+          right: "11vw",
           position: "absolute",
-          cursor: "pointer",
         }}
       >
         <Box
           sx={{
             background: "#FDF21A",
             borderRadius: "3px",
-            width: "40%",
+            width: "45%",
             height: "85%",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             display: "flex",
-
             flexDirection: "column",
           }}
         >
           <Typography
-            sx={{
-              fontSize: { laptop: "8px" },
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "#FF4D4D",
-              lineHeight: "1"
-            }}
+            sx={{ fontSize: ".5vw", fontWeight: "bold", color: "#FF4D4D" }}
           >
             Total Bet
           </Typography>
           <Typography
-            sx={{
-              fontSize: { laptop: ".5vw" },
-              fontWeight: "bold",
-              color: "#0B4F26",
-            }}
+            sx={{ fontSize: ".5vw", fontWeight: "bold", color: "#0B4F26" }}
           >
             {proLoss?.total_bet || 0}
-            {/* {profitLoss?.total_bet || 0} */}
           </Typography>
         </Box>
         <Box
           sx={{
-            paddingX: "2px",
-            width: "60%",
+            width: "100%",
             alignItems: "center",
             justifyContent: "center",
             display: "flex",
           }}
         >
           <Typography
-              sx={{
-                fontSize: { laptop:!newData?.profitLoss?.max_loss ? ".60vw" : ".60vw" },
-                fontWeight: !newData?.profitLoss?.max_loss ? "bold" : "bold",
-                color: "white",
+            sx={{
+              fontSize: { laptop: amount ? ".65vw" : ".6vw" },
+              fontWeight: amount ? "bold" : "500",
+              color: "white",
             }}
           >
-           
-           {!newData?.profitLoss?.max_loss ? "Profit/Loss" : newData?.profitLoss?.max_loss }
-  
+            {" "}
+            {!newData?.profitLoss?.max_loss
+              ? "Profit/Loss"
+              : newData?.profitLoss?.max_loss}
           </Typography>
           <img
             src={UD}
@@ -150,8 +123,13 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
           />
         </Box>
       </Box>
+      {/* <DropdownMenu
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+      /> */}
     </>
   );
 };
 
-export default memo(PlaceBetComponentWeb);
+export default PlaceBetComponentWeb;

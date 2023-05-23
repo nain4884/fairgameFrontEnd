@@ -134,7 +134,7 @@ const MasterRoutes = () => {
         />
         <Route
           exact
-          path="/delete_bet"
+          path="/matches"
           element={
             <AdminPrivateRoute>
               <DeleteBet />

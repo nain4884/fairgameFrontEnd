@@ -9,6 +9,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Verification from "./pages/Varification";
 import NewPassword from "./pages/NewPassword";
 import AdminRoutes from "./pages/fairGameAdmin";
+import PageNotFound from "./components/PageNotFound";
 
 const Main = () => {
   function UserPrivateRoute({ children }) {
@@ -62,6 +63,7 @@ const Main = () => {
         {/* <Route path="/master/*" element={<MasterRoutes />} /> */}
         {/* <Route path="/super_master/*" element={<SuperMasterRoutes />} /> */}
         {/* <Route path="/super_admin/*" element={<SuperAdminRoutes />} /> */}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </AuthProvider>
   );

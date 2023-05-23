@@ -13,6 +13,7 @@ import { memo } from "react";
 import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
+import PageNotFound from "../../components/PageNotFound";
 
 const ExportRoutes = () => {
   function ExpertPrivateRoute({ children }) {
@@ -95,6 +96,7 @@ const ExportRoutes = () => {
           </ExpertPrivateRoute>
         }
       />
+           <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

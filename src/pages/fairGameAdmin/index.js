@@ -22,16 +22,16 @@ import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
 import jwtDecode from "jwt-decode";
+import PageNotFound from "../../components/PageNotFound";
 const AdminRoutes = () => {
-
   const location = useLocation();
 
   // Check if the current route is the login page
-  const isLoginPage = location.pathname === "/wallet";
+  const isLoginPage = ["/wallet", "/wallet/"].includes(location.pathname);
 
   function AdminPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTwallet");
-    const decodedToken = token!==null && jwtDecode(token);
+    const decodedToken = token !== null && jwtDecode(token);
     if (!["fairGameAdmin", "fairGameWallet"].includes(decodedToken?.role)) {
       return <Navigate to="/wallet" />;
     }
@@ -105,7 +105,16 @@ const AdminRoutes = () => {
         <Route exact path="/match_submit1" element={<MatchSubmit1 />} />
         <Route exact path="/deposit" element={<DepositWallet />} />
         <Route exact path="/withdraw" element={<DepositWallet />} />
-        <Route exact path="/delete_bet" element={<DeleteBet />} />
+        <Route
+          exact
+          path="/matches"
+          element={
+            <AdminPrivateRoute>
+              <DeleteBet />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );

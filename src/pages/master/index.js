@@ -22,11 +22,12 @@ import Login from "../expert/Login";
 import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
+import PageNotFound from "../../components/PageNotFound";
 const MasterRoutes = () => {
   const location = useLocation();
 
   // Check if the current route is the login page
-  const isLoginPage = location.pathname === "/admin";
+  const isLoginPage = ["/admin", "/admin/"].includes(location.pathname);
   function MasterPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTadmin");
     // Conditionally render the header
@@ -190,7 +191,7 @@ const MasterRoutes = () => {
         <Route exact path="/withdraw" element={  <MasterPrivateRoute> <DepositWallet />} / </MasterPrivateRoute>> */}
         <Route
           exact
-          path="/delete_bet"
+          path="/matches"
           element={
             <MasterPrivateRoute>
               <DeleteBet />
@@ -206,6 +207,7 @@ const MasterRoutes = () => {
             </MasterPrivateRoute>
           }
         />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
   );

@@ -210,6 +210,7 @@ const CustomHeader = ({}) => {
     BoxCont1sub1sub1StyleImg: {
       height: { laptop: "24px", mobile: "20px" },
       width: "auto",
+      cursor: "pointer",
     },
     RenderLogoCompStyleImg: {
       height: { laptop: "45px", mobile: "40px" },
@@ -226,6 +227,7 @@ const CustomHeader = ({}) => {
       backgroundColor: currentSelected == 1 ? "white" : "transparent",
       borderRadius: "3px",
       justifyContent: "center",
+      cursor:"pointer",
       alignItems: "center",
       marginLeft: "2%",
     },

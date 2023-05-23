@@ -4,7 +4,7 @@ import { Down } from "../../fairGameWallet/assets";
 
 const ButtonHead = ({ title, boxStyle, titleStyle, onClick, report, selected }) => {
     const classes = {
-        mainBox: [{ justifyContent: 'space-between', paddingX: "0.5%", height: "28px", alignItems: 'center', display: 'flex', flexDirection: 'row' }, boxStyle],
+        mainBox: [{ justifyContent: 'space-between', paddingX: "0.5%", height: "28px", alignItems: 'center', display: 'flex', flexDirection: 'row',cursor:"pointer" }, boxStyle],
         mainBoxTypography: [{ fontSize: "10px", fontWeight: "bold", fontFamily: "Montserrat" }, titleStyle],
         mainBoxTypographyimgstyle: { width: selected ? '10px' : '0px', height: '6px', marginLeft: '4px', opacity: selected ? 1 : 0 }
     }
