@@ -37,7 +37,7 @@ const PlaceBet = ({
   betType,
   rates,
 }) => {
-  const [defaultValue, setDefaultValue] = useState("");
+  const [defaultValue, setDefaultValue] = useState(" ");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
   console.log("currentodds", currentOdds);
   const [newRates, setNewRates] = useState({
@@ -62,6 +62,7 @@ const PlaceBet = ({
   }, [selectedValue]);
 
   const getLatestBetAmount = async (value, newData) => {
+    console.log('value', value)
     try {
       const title = season ? betType : isBack ? "back" : "lay";
       const bet_type = title;
@@ -75,7 +76,6 @@ const PlaceBet = ({
       if (season) {
         body = { ...body, marketType: "", rate_percent: newData?.rate_percent };
       }
-      console.log("body", body);
       const { data } = await axios.post("/betting/calculateBetAmount", body);
       if (data?.data) {
         setNewRates(data?.data);

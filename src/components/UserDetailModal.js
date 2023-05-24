@@ -1013,7 +1013,7 @@ const NewCreditComponent = ({
   const [showPass, setShowPass] = useState(false);
   const defaultNewCreditObj = {
     userId: "",
-    amount: 0,
+    amount: null,
     trans_type: "credit_refer",
     adminTransPassword: "",
     remark: "",
@@ -1238,7 +1238,7 @@ const SetExposureComponent = ({
   const [showPass, setShowPass] = useState(false);
   const defaultExposureObj = {
     userId: "",
-    amount: 0,
+    amount: null,
     trans_type: "exposure_limit",
     adminTransPassword: "",
     remark: "",

@@ -47,6 +47,7 @@ const AccountList = () => {
     balancesum: 0.0,
     exposuresum: 0.0,
     percent_profit_loss: 0,
+    exposurelimit:"",
     availablebalancesum: 0.0,
   });
   async function getListOfUser() {
@@ -81,6 +82,7 @@ const AccountList = () => {
       setSumVal({
         ...data?.data,
         percent_profit_loss: 0,
+        exposurelimit:"",
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
     } catch (e) {
