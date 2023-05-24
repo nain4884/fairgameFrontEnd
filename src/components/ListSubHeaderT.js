@@ -125,7 +125,7 @@ const ListSubHeaderT = ({ data }) => {
             width: "11.5vw",
             display: "flex",
             paddingLeft: "10px",
-  
+            background: `${data?.profitsum >= 0 ? "#27AC1E" : "#E32A2A"}`,
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -138,6 +138,15 @@ const ListSubHeaderT = ({ data }) => {
           >
             {data?.percent_profit_loss}
           </Typography>
+          <StyledImage
+            src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
+            sx={{
+              height: "15px",
+              marginLeft: "5px",
+              filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+              width: "15px",
+            }}
+          />
         </Box>
         <Box
           sx={{

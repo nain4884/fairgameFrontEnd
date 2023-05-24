@@ -209,15 +209,28 @@ const AccountListRow = ({
             width: "11.5vw",
             display: "flex",
             paddingLeft: "10px",
-
+            background: elementToUDM.profit_loss >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+          <Typography sx={{ fontSize: "12px", fontWeight: "600",color:"white" }}>
             {elementToUDM.percent_profit_loss}
           </Typography>
+          <StyledImage
+            src={
+              profit
+                ? "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
+                : "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
+            }
+            sx={{
+              height: "15px",
+              marginLeft: "5px",
+              filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+              width: "15px",
+            }}
+          />
         </Box>
         <Box
           sx={{

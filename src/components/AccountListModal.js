@@ -82,6 +82,8 @@ const AccountListModal = ({ id, show, setShow, title }) => {
       );
       setSumVal({
         ...data?.data,
+        percent_profit_loss: 0,
+
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
     } catch (e) {
@@ -126,7 +128,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
         ]}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <ListH id={id} title={title}  setData={setData}/>
+          <ListH id={id} title={title} setData={setData} />
           <Button
             sx={{ color: "", fontSize: "30px" }}
             onClick={() => {
@@ -284,7 +286,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({ id, title,setData }) => {
+const ListH = ({ id, title, setData }) => {
   return (
     <Box
       display={"flex"}
@@ -334,7 +336,11 @@ const ListH = ({ id, title,setData }) => {
           <StyledImage src={Pdf} sx={{ height: "20px" }} />
         </Box>
       </Box>
-      <SearchInputModal setData={setData} id={id} placeholder={"Search User..."} />
+      <SearchInputModal
+        setData={setData}
+        id={id}
+        placeholder={"Search User..."}
+      />
     </Box>
   );
 };
