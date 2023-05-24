@@ -79,7 +79,7 @@ const ListHeaderT = () => {
           }}
         >
           <Typography sx={{ color: "white", fontSize: "12px" }}>
-            Client Profit/Loss (%)
+          % Profit/Loss
           </Typography>
         </Box>
         <Box
