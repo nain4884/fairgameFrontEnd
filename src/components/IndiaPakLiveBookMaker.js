@@ -9,6 +9,8 @@ import { Lock, BallStart } from '../assets';
 import { SocketContext } from "../context/socketContext";
 import { setRole } from "../newStore";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setBookMakerBetRate } from "../newStore/reducers/matchDetails";
 
 
 export default function IndiaPakLiveBookMaker({ add, match }) {
@@ -18,6 +20,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
     const { socket, socketMicro } = useContext(SocketContext);
 
     const { axios } = setRole();
+    const dispatch = useDispatch();
 
     const AddSession = () => {
         const location = useLocation();
@@ -76,6 +79,9 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamBLayValue(response?.data?.data[0].teamB_lay);
                     setTeamCRate(response?.data?.data[0].teamC_Back);
                     setTeamCLayValue(response?.data?.data[0].teamC_lay);
+                    // alert(id)
+                    getAllBetsData(response?.data?.data[0].id, id);
+
                 }
             } catch (e) {
                 console.log(e.response.data.message);
@@ -95,6 +101,21 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 // alert("ddd :" + JSON.stringify(response?.data?.data?.id))
             } catch (e) {
                 console.log(e.response.data.message);
+            }
+        }
+
+        async function getAllBetsData(id, matchId) {
+            // alert(122)
+            let payload = {
+                match_id: matchId,
+                bet_id: id,
+                marketType: "MANUAL BOOKMAKER"
+            };
+            try {
+                let { data } = await axios.post(`/betting/getPlacedBets`, payload);
+                dispatch(setBookMakerBetRate(data?.data?.data || []));
+            } catch (e) {
+                console.log(e);
             }
         }
 
@@ -1506,10 +1527,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
                     <AddSession />
                     <Box sx={{ display: "flex", zIndex: 2, position: 'relative', justifyContent: "center", width: '100%', marginTop: '5%', alignSelf: 'center' }}>
-                        <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: 'space-between', paddingX: '10px', alignItems: "center", height: "35px", borderRadius: "5px" }}>
+                        {/* <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: 'space-between', paddingX: '10px', alignItems: "center", height: "35px", borderRadius: "5px" }}>
                             <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Live</Typography>
                             <img style={{ width: '23px', height: '18px', marginLeft: '5px' }} src={BroadCast} />
-                        </Box>
+                        </Box> */}
                         <Box sx={{ width: '2%' }} ></Box>
                         <Box
                             onClick={(e) => {
