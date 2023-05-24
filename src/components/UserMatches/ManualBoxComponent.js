@@ -30,13 +30,31 @@ const BoxComponent = ({
     // console.log("check data :", matchOddsData)
     const { ex, status } = data;
     const handleDecimal = (value, gap, type) => {
+        // alert(type)
         let checkDecimal = value % 1; // get the decimal portion of the number
+        // alert(checkDecimal)
         if (checkDecimal >= 0.5) {
-            let getValue = type == "back" ? Math.round(value) - gap : Math.round(value - 1) + gap
-            return getValue
+            let getValue = type == "back" ? Math.round(value) - gap : Math.round(value - 1) + gap;
+            let checkZeroHundred = type == "back" ? getValue < 1 ? 0 : Math.round(getValue) : getValue >= 100 ? 100 : Math.round(getValue);
+            let returnValue;
+            if (type == "back") {
+                let check = value % 1;
+                returnValue = check >= 0.5 ? getValue < 1 ? checkZeroHundred : checkZeroHundred - 1 : checkZeroHundred;
+            } else {
+                returnValue = checkZeroHundred
+            }
+            return returnValue
         } else {
-            let getValue = type == "back" ? value - gap : value + gap
-            return getValue
+            let getValue = type == "back" ? value - gap : value + gap;
+            let checkZeroHundred = type == "back" ? getValue < 1 ? 0 : Math.round(getValue) : getValue >= 100 ? 100 : Math.round(getValue);
+            let returnValue;
+            if (type == "back") {
+                let check = value % 1;
+                returnValue = check >= 0.5 ? checkZeroHundred - 1 : checkZeroHundred;
+            } else {
+                returnValue = checkZeroHundred
+            }
+            return returnValue;
         }
     }
 
@@ -168,6 +186,7 @@ const BoxComponent = ({
                                 rates={allRates}
 
                                 // value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
+                                // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
                                 value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#CEEBFF"}
@@ -241,7 +260,7 @@ const BoxComponent = ({
                                 rates={allRates}
                                 lock={lock}
                                 // value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
-                                value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 1) : 0}
+                                value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 1, "") : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#F2CBCB"}
                                 type={{ color: "#FFB5B5", type: "BL" }}
@@ -260,7 +279,7 @@ const BoxComponent = ({
                                 rates={allRates}
                                 lock={lock}
                                 // value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
-                                value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 2) : 0}
+                                value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 2, "") : 0}
                                 value2={0}
                                 color={matchesMobile ? "white" : "#ECD6D6"}
                                 type={{ color: "#FFB5B5", type: "BL" }}

@@ -96,6 +96,23 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                 }
             }
         }
+        // return () => {
+        //     // Code to run on component unmount
+        //     // alert(JSON.stringify(Detail));
+        //     setIsBall(false);
+        //     let rate_percent = Detail.n_rate_percent + '-' + Detail.y_rate_percent
+        //     let data = {
+        //         match_id: match?.id,
+        //         betId: betId,
+        //         no_rate: Detail.no_rate,
+        //         yes_rate: Detail.yes_rate,
+        //         suspended: "suspended",
+        //         rate_percent: rate_percent
+        //     }
+        //     // alert(JSON.stringify(data));
+        //     // socket.emit("updateSessionRate", { match_id: match?.id, betId: sessionEvent?.id, suspended: 'suspended', })
+
+        // };
     }, [socket]);
 
     useEffect(() => {
@@ -122,11 +139,18 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             let response = await axios.get(`/betting/getById/${id}`);
             // console.log("dddddd :", response?.data)
             let data = response?.data?.data[0]
-            let [firstValue, secondValue] = data.rate_percent.split("-");
+            // alert(JSON.stringify(data.no_rate))
+            let [firstValue, secondValue] = data.rate_percent ? data.rate_percent.split("-") : "";
             setDetail({ ...Detail, no_rate: data.no_rate, yes_rate: data.yes_rate, n_rate_percent: firstValue, y_rate_percent: secondValue, bet_condition: data.bet_condition })
             setBetId(data.id);
             getAllBetsData(data.id);
             setProLoss(data?.profitLoss);
+            // alert(data.suspended)
+            if (data.suspended == "ACTIVE") {
+                setLock({ isNo: false, isYes: false, isNoPercent: false, isYesPercent: false, })
+            } else {
+                setLock({ isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
+            }
             // if (response?.data?.data?.length === 0) {
             //     doSubmitSessionBet(id);
             // } else {
@@ -188,7 +212,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>{match?.title ? match.title : 'India vs Pakistan'}</Typography>
             <Box sx={{ display: "flex", marginTop: "20px" }}>
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
-                    <AddSession createSession={createSession} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} isPercent={{ isPercent, setIsPercent }} />
+                    <AddSession createSession={createSession} betId={betId} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} isPercent={{ isPercent, setIsPercent }} />
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                         {!isCreateSession ? <>
                             <Box
@@ -263,7 +287,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     )
 }
 
-const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock, setLock, isBall, isCreateSession, match, isPercent }) => {
+const AddSession = ({ createSession, betId, Detail, sessionEvent, incGap, socket, lock, setLock, isBall, isCreateSession, match, isPercent }) => {
 
 
     const handleKeysMatchEvents = (key, event) => {
@@ -329,7 +353,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
         else if (key == 'shift') {
             isBall.setIsBall(true);
             if (!isCreateSession) {
-                socket.emit("updateSessionRate", { match_id: match?.id, betId: sessionEvent?.id, suspended: 'Ball Started', })
+                socket.emit("updateSessionRate", { match_id: match?.id, betId: betId, suspended: 'Ball Started', })
             }
             // if (event.target.name === 'teamA_rate') {
             // socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: 'Ball Started', })
@@ -371,7 +395,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                 let rate_percent = Detail.Detail.n_rate_percent + '-' + Detail.Detail.y_rate_percent
                 let data = {
                     match_id: match?.id,
-                    betId: sessionEvent?.id,
+                    betId: betId,
                     betStatus: 1,
                     no_rate: Detail.Detail.no_rate,
                     yes_rate: Detail.Detail.yes_rate,
@@ -406,9 +430,10 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
     }
 
     const handleSuspend = () => {
+        // alert(JSON.stringify(lock))
         if (!lock.isNo || !lock.isNo || !lock.isNoPercent || !lock.isYesPercent) {
             isBall.setIsBall(false);
-            socket.emit("updateSessionRate", { match_id: match?.id, betId: sessionEvent?.id, suspended: 'suspended', })
+            socket.emit("updateSessionRate", { match_id: match?.id, betId: betId, suspended: 'suspended', })
         }
     }
 
@@ -546,7 +571,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                                         <TextField
                                             onChange={(e) => handleChange(e)}
                                             type="Number"
-                                            value={Detail?.Detail?.no_rate}
+                                            value={Detail.Detail.no_rate ? Detail.Detail.no_rate : ""}
                                             variant="standard"
                                             InputProps={{
                                                 disableUnderline: true,
@@ -558,7 +583,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                                     <TextField
                                         type="Number"
-                                        value={Detail.Detail.yes_rate}
+                                        value={Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ""}
                                         variant="standard" InputProps={{
                                             disableUnderline: true,
                                             style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
@@ -572,7 +597,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                                     <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                         <TextField
                                             type="Number"
-                                            value={Detail?.Detail?.n_rate_percent}
+                                            value={Detail?.Detail?.n_rate_percent ? Detail?.Detail?.n_rate_percent : ""}
                                             variant="standard"
                                             InputProps={{
                                                 disableUnderline: true,
@@ -584,7 +609,7 @@ const AddSession = ({ createSession, Detail, sessionEvent, incGap, socket, lock,
                                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                                     <TextField
                                         type="Number"
-                                        value={Detail.Detail.y_rate_percent}
+                                        value={Detail.Detail.y_rate_percent ? Detail.Detail.y_rate_percent : ""}
                                         variant="standard" InputProps={{
                                             disableUnderline: true,
                                             style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }

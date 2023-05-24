@@ -942,7 +942,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: 'Ball Started', })
                 // }
             }
-            if (key == 'plus' || key == '=') {
+            if (key == 'plus') {
                 handleSuspend();
                 if (incGap != 5) {
                     setIncGap(1)
