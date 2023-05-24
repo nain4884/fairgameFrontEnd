@@ -141,6 +141,7 @@ export default function UserDetailModal({
               setShowModalMessage={setShowModalMessage}
               prevElement={prevElement}
               navigate={navigate}
+              getListOfUser={getListOfUser}
               elementToUDM={elementToUDM}
               dispatch={dispatch}
               setElementToUDM={setElementToUDM}
@@ -152,6 +153,7 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
+              getListOfUser={getListOfUser}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
               navigate={navigate}
@@ -1009,6 +1011,7 @@ const NewCreditComponent = ({
   prevElement,
   dispatch,
   showDialogModal,
+  getListOfUser,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const defaultNewCreditObj = {
@@ -1186,6 +1189,7 @@ const NewCreditComponent = ({
               UpdateAvailableBalance(newCreditObj)
                 .then(({ bool, message }) => {
                   toast.success(message);
+                  getListOfUser();
                   showDialogModal(true, true, message);
                 })
                 .catch(({ bool, message }) => {
@@ -1234,6 +1238,7 @@ const SetExposureComponent = ({
   setElementToUDM,
   dispatch,
   showDialogModal,
+  getListOfUser,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const defaultExposureObj = {
@@ -1403,6 +1408,7 @@ const SetExposureComponent = ({
               UpdateAvailableBalance(exposureObj)
                 .then(({ bool, message }) => {
                   toast.success(message);
+                  getListOfUser();
                   showDialogModal(true, true, message);
                 })
                 .catch(({ bool, message }) => {
