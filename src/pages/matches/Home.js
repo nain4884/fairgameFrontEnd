@@ -396,7 +396,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 bettings: updatedBettings,
               };
             });
-
+            setSessionExposure(value?.sessionExposure);
             setSessionBets((sessionBets) =>
               sessionBets?.filter((v) => v?.bet_id !== value?.betId)
             );

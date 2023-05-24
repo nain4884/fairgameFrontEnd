@@ -454,13 +454,13 @@ const PlaceBet = ({
             sx={{ display: "flex", marginRight: -"10px", alignItems: "center" }}
           >
             <MoneyBox
-              trendingUp={true}
+              trendingUp={false}
               rate={Number(newRates?.win_amount)?.toFixed(2)}
               color={"#10DC61"}
             />
             <Box sx={{ width: "5px" }}></Box>
             <MoneyBox
-              trendingDown={true}
+              trendingDown={false}
               rate={Number(newRates?.loss_amount).toFixed(2)}
               color={"#FF4D4D"}
             />
