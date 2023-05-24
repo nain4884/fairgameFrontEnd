@@ -1,6 +1,6 @@
 import { Card, Typography, Box, useTheme, useMediaQuery } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { eye, logo, mail } from "../../assets";
 import {
   Input,
@@ -26,6 +26,7 @@ import { GlobalStore } from "../../context/globalStore";
 
 export default function Login(props) {
   let { transPass, axios, role } = setRole();
+  const location = useLocation();
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,6 +45,25 @@ export default function Login(props) {
 
   // useEffect(() => {
   // }, [error, loginDetail])
+
+  useEffect(() => {
+    let checkLocalStorage;
+    let checkSessionStorage;
+
+    if (location.pathname === "/") {
+      checkLocalStorage = localStorage.getItem("role4");
+      checkSessionStorage = sessionStorage.getItem("JWTuser");
+      if (checkSessionStorage && checkLocalStorage === null) {
+        localStorage.setItem("role4", "role4");
+      }
+    }
+
+    if (checkLocalStorage && checkSessionStorage) {
+      navigate(`/matches`);
+    }
+  }, [location.pathname, localStorage]);
+
+  console.log("location", location, location.pathname.split("/")[0]);
 
   async function getToken(val) {
     try {

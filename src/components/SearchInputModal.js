@@ -30,6 +30,7 @@ const SearchInputModal = ({
   searchContainerStyle,
   onChange,
   id,
+  setData,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -57,8 +58,8 @@ const SearchInputModal = ({
         // }
         // element.role = roleDetail?.roleName;
       });
-      // setData(data?.data?.data);
-      dispatch(setSubUserData(data?.data?.data));
+      setData(data?.data?.data);
+      // dispatch(setSubUserData(data?.data?.data));
     } catch (e) {
       console.log(e);
     }

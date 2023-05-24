@@ -28,7 +28,7 @@ import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
 
-const AccountListModal = ({ id, show, setShow, title }) => {
+const AccountListModalChild = ({ id, show, setShow, title }) => {
   const dispatch = useDispatch();
 
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
@@ -47,15 +47,17 @@ const AccountListModal = ({ id, show, setShow, title }) => {
     availablebalancesum: 0.0,
   });
 
-  useEffect(() => {
-    getListOfUser();
-  }, [show]);
-
+  useEffect(
+    () => {
+      getListOfUser();
+    },
+    { show }
+  );
   async function getListOfUser() {
     let { axios } = setRole();
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUserById/${id}?&page=${currentPage}&limit=${pageLimit}`
+        `/fair-game-wallet/getAllUserById/${id}?&page=${subCurrentPageNo}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole);
@@ -64,7 +66,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
         }
         element.role = roleDetail?.roleName;
       });
-      // dispatch(setSubUserData(data?.data?.data));
+      dispatch(setSubUserData(data?.data?.data));
       setData(data?.data?.data);
       setPageCount(
         Math.ceil(
@@ -90,12 +92,12 @@ const AccountListModal = ({ id, show, setShow, title }) => {
   }
 
   const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const { subCurrentPageNo } = useSelector((state) => state?.auth);
   function callPage(val) {
-    // dispatch(setSubPage(parseInt(val)));
-    setCurrentPage(parseInt(val));
+    dispatch(setSubPage(parseInt(val)));
+    // setCurrentPage(parseInt(val));
   }
 
   // async function getRoles() {
@@ -126,13 +128,13 @@ const AccountListModal = ({ id, show, setShow, title }) => {
         ]}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <ListH id={id} title={title}  setData={setData}/>
+          <ListH id={id} title={title} />
           <Button
             sx={{ color: "", fontSize: "30px" }}
             onClick={() => {
               setShow({ value: false, id: "", title: "" });
-              // dispatch(setSubUserData([]));
-              // dispatch(setSubPage(1));
+              dispatch(setSubUserData([]));
+              dispatch(setSubPage(1));
             }}
           >
             &times;
@@ -143,33 +145,31 @@ const AccountListModal = ({ id, show, setShow, title }) => {
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
             <ListSubHeaderT data={sumValue} />
-            {data1?.map((element, i) => {
+            {subUserData?.map((element, i) => {
               if (i % 2 === 0) {
                 return (
                   <AccountListRow
                     showOptions={false}
-                    showChildModal={true}
                     containerStyle={{ background: "#FFE094" }}
                     profit={element.profit_loss >= 0}
                     fContainerStyle={{ background: "#0B4F26" }}
                     fTextStyle={{ color: "white" }}
                     element={element}
                     getListOfUser={getListOfUser}
-                    currentPage={currentPage}
+                    currentPage={subCurrentPageNo}
                   />
                 );
               } else {
                 return (
                   <AccountListRow
                     showOptions={false}
-                    showChildModal={true}
                     containerStyle={{ background: "#ECECEC" }}
                     profit={element.profit_loss >= 0}
                     fContainerStyle={{ background: "#F8C851" }}
                     fTextStyle={{ color: "#0B4F26" }}
                     element={element}
                     getListOfUser={getListOfUser}
-                    currentPage={currentPage}
+                    currentPage={subCurrentPageNo}
                   />
                 );
               }
@@ -177,7 +177,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
           </Box>
         </Box>
         <Footer
-          currentPage={currentPage}
+          currentPage={subCurrentPageNo}
           pages={pageCount}
           callPage={callPage}
         />
@@ -284,7 +284,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({ id, title,setData }) => {
+const ListH = ({ id, title }) => {
   return (
     <Box
       display={"flex"}
@@ -334,9 +334,9 @@ const ListH = ({ id, title,setData }) => {
           <StyledImage src={Pdf} sx={{ height: "20px" }} />
         </Box>
       </Box>
-      <SearchInputModal setData={setData} id={id} placeholder={"Search User..."} />
+      <SearchInputModal id={id} placeholder={"Search User..."} />
     </Box>
   );
 };
 
-export default AccountListModal;
+export default AccountListModalChild;

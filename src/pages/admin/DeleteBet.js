@@ -85,7 +85,7 @@ const DeleteBet = ({}) => {
   async function getAllBetsData(val) {
     let payload = {
       match_id: val,
-    //   user_id: currentUser?.id,
+      user_id: currentUser?.id,
     };
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);

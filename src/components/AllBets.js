@@ -27,25 +27,35 @@ const AllBets = ({ tag, submit, allBetRates }) => {
             {
               name: v?.team_bet,
               color: "black",
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes", "back"].includes(v?.bet_type)
+                ? "#B3E0FF"
+                : "rgb(255, 146, 146)",
             },
             {
               name: v?.odds,
               color: "black",
-              rate:v?.bet_type==="no" && v?.rate?.split("-")[0] || v?.bet_type==="yes" && v?.rate?.split("-")[1] ,
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              rate:
+                (v?.bet_type === "no" && v?.rate?.split("-")[0]) ||
+                (v?.bet_type === "yes" && v?.rate?.split("-")[1]),
+              background: ["yes", "back"].includes(v?.bet_type)
+                ? "#B3E0FF"
+                : "rgb(255, 146, 146)",
               small: true,
             },
             {
               name: v?.bet_type,
               color: "black",
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes", "back"].includes(v?.bet_type)
+                ? "#B3E0FF"
+                : "rgb(255, 146, 146)",
               small: true,
             },
             {
               name: v?.amount,
               color: "black",
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes", "back"].includes(v?.bet_type)
+                ? "#B3E0FF"
+                : "rgb(255, 146, 146)",
             },
             {
               name: v?.myStack,
@@ -55,7 +65,9 @@ const AllBets = ({ tag, submit, allBetRates }) => {
             {
               name: moment(v?.createAt).format("LT"),
               color: "black",
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes", "back"].includes(v?.bet_type)
+                ? "#B3E0FF"
+                : "rgb(255, 146, 146)",
               time: true,
               date: moment(v?.createAt).format("L"),
             },
@@ -78,10 +90,10 @@ const AllBets = ({ tag, submit, allBetRates }) => {
       }}
     >
       <Box
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate("/admin/total_bets");
-        }}
+        // onClick={(e) => {
+        //   e.stopPropagation();
+        //   navigate("/admin/total_bets");
+        // }}
         sx={[
           {
             width: "100%",
@@ -131,7 +143,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
       <Box sx={{ maxHeight: submit ? "200px" : "400px", overflowY: "auto" }}>
         {newData?.length > 0 &&
           newData?.map((i, k) => {
-            const num = newData?.length - k
+            const num = newData?.length - k;
             return (
               <div style={{ display: "flex", position: "relative" }}>
                 <Box
@@ -380,15 +392,11 @@ const SmallBox = ({ item }) => {
         sx={{ fontSize: "12px", fontWeight: "600", color: item?.color }}
       >
         {item?.name}
-       
-     
       </Typography>
-      <Typography 
+      <Typography
         sx={{ fontSize: "8px", fontWeight: "600", color: item?.color }}
       >
-       
-     
-      {item?.rate && item?.rate}
+        {item?.rate && item?.rate}
       </Typography>
     </Box>
   );

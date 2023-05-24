@@ -1,10 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ARROWUP, BACKIMAGE, CHECK } from "../admin/assets/index";
 import StyledImage from "./StyledImage";
 import constants from "./helper/constants";
 import { setRole } from "../newStore";
+
 const LiveMarketComponent = ({
   team,
   team_2,
@@ -14,6 +15,7 @@ const LiveMarketComponent = ({
   data,
 }) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const StockBox = ({ team, value, up }) => {
     return (
       <Box
@@ -73,7 +75,7 @@ const LiveMarketComponent = ({
     <Box
       onClick={() => {
         if (mode == "0") {
-          navigate("/admin/matches", {
+          navigate(`/${pathname.split("/")[1]}/matches`, {
             state: { submit: true, matchId: data?.id },
           });
         }
@@ -237,6 +239,7 @@ const CustomBox = ({ title, onClick }) => {
   );
 };
 const MarketAnalysis = () => {
+  const { pathname } = useLocation();
   const [selected, setSelected] = useState([]);
   const [mode, setMode] = useState("0");
   const [max, setMax] = useState("2");
@@ -356,9 +359,9 @@ const MarketAnalysis = () => {
                 if (selected) setMode("0");
                 setSelected([]);
                 if (max == "3") {
-                  navigate("/admin/match_submit1");
+                  navigate(`/${pathname.split("/")[1]}/match_submit1`);
                 } else {
-                  navigate("/admin/match_submit", {
+                  navigate(`/${pathname.split("/")[1]}/match_submit`, {
                     state: { match: Number(max) },
                   });
                 }

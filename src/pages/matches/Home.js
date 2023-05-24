@@ -53,7 +53,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   const [matchDetail, setMatchDetail] = useState();
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [matchSessionData, setMatchSessionData] = useState([]);
-  const [allBetsData, setAllBetsData] = useState([]);
   const [marketId, setMarketId] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { selectedMatch } = useSelector((state) => state?.matchDetails);
@@ -114,7 +113,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           removeSocket();
         }
         if (packet.data[0] === "updateSessionRate_user") {
-
           const value = packet.data[1];
           // alert(JSON.stringify(value))
           matchId = value?.match_id;
@@ -974,21 +972,21 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       console.log("response", e.response.data);
     }
   }
-  async function getAllBetsData() {
-    try {
-      let response = await axios.get(
-        `/game-match/getAllMatch?bets=1&field=id,marketId`
-      );
-      setAllBetsData(response.data[0]);
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  // async function getAllBetsData() {
+  //   try {
+  //     let response = await axios.get(
+  //       `/game-match/getAllMatch?bets=1&field=id,marketId`
+  //     );
+  //     setAllBetsData(response.data[0]);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
   useEffect(() => {
     if (id) {
       getThisMatch(id);
     }
-    getAllBetsData();
+    // getAllBetsData();
     getAllBetsData1();
   }, [id]);
 
@@ -1051,7 +1049,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               {matchDetail?.manualSessionActive && (
                 <SessionBetSeperate allBetsData={sessionBets} mark />
               )}
-              {allBetsData.length > 0 && (
+              {IObets.length > 0 && (
                 <AllRateSeperate
                   allBetsData={IObets?.filter((v) =>
                     ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
@@ -1102,8 +1100,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-                <SessionBetSeperate allBetsData={sessionBets} mark />
-              )}
+              <SessionBetSeperate allBetsData={sessionBets} mark />
+            )}
           </Box>
         </Box>
       )}

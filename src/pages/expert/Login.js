@@ -45,6 +45,40 @@ export default function Login(props) {
     2: { field: "password", val: false },
   });
 
+  useEffect(() => {
+    let checkLocalStorage;
+    let checkSessionStorage;
+
+    if (location.pathname.split("/")[1] === "admin") {
+      checkLocalStorage = localStorage.getItem("role1");
+      checkSessionStorage = sessionStorage.getItem("JWTadmin");
+      if (checkSessionStorage && checkLocalStorage === null) {
+        localStorage.setItem("role1", "role1");
+      }
+    }
+    if (location.pathname.split("/")[1] === "wallet") {
+      checkLocalStorage = localStorage.getItem("role2");
+      checkSessionStorage = sessionStorage.getItem("JWTwallet");
+      if (checkSessionStorage && checkLocalStorage === null) {
+        localStorage.setItem("role2", "role2");
+      }
+    }
+
+    if (location.pathname.split("/")[1] === "expert") {
+      let checkLoStorage = localStorage.getItem("role3");
+      let checkSeStorage = sessionStorage.getItem("JWTexpert");
+      if (checkSeStorage && checkLoStorage === null) {
+        localStorage.setItem("role3", "role3");
+      }
+      if (checkSeStorage && checkLoStorage) {
+        navigate(`/${location.pathname.split("/")[1]}/match`);
+      }
+    }
+    if (checkLocalStorage && checkSessionStorage) {
+      navigate(`/${location.pathname.split("/")[1]}/list_of_clients`);
+    }
+  }, [location.pathname.split("/")[1], localStorage]);
+
   const getLocalToken = (val) => {
     if (
       ["admin", "master", "superAdmin", "supperMaster"].some((v) =>
@@ -64,7 +98,7 @@ export default function Login(props) {
   const [loginError, setLoginError] = useState();
   useEffect(() => {
     getLocalToken(props.allowedRole);
-  }, [props.allowedRole]);
+  }, [props.allowedRole, localStorage]);
 
   async function getToken(val) {
     try {
@@ -98,19 +132,18 @@ export default function Login(props) {
   };
 
   async function loginToAccount() {
+    getLocalToken(props.allowedRole);
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
-      
       if (["role1", "role2", "role3"].includes(newtoken)) {
         toast.warn("Please logout from previous session");
-        return false
+        return false;
       }
       let { data } = await axios.post(`/auth/login`, {
         username: loginDetail[1].val,
         password: loginDetail[2].val,
       });
-
 
       if (props.allowedRole.includes(data.data.role)) {
         let foundRoles = await axios.get(`/role`);

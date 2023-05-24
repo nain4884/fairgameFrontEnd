@@ -152,7 +152,10 @@ const MatchOdds = ({
         betStatus: val,
         matchType: currentMatch?.gameType,
       });
-
+      socket.emit("matchOddRateLive", {
+        matchId: currentMatch?.id,
+        matchOddLive: true,
+      });
       // setCurrentMatch((currentMatch) => {
       //   const updatedBettings = [...currentMatch?.bettings]; // Create a copy of the bettings array
 
