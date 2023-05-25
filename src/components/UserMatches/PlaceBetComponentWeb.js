@@ -37,6 +37,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
           display: "flex",
           alignItems: "center",
           paddingX: ".2vw",
+          top:"3px",
           width: { laptop: "10vw" },
           borderRadius: "5px",
           height: "32px",
