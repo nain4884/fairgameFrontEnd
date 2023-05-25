@@ -1,8 +1,11 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, SliderValueLabel, Typography, } from "@mui/material";
 import { useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
+import { useSelector } from "react-redux";
 
-const SmallDropDown = ({ handleChange }) => {
+const SmallDropDown = ({ handleChange ,entrylimit}) => {
+  const { setCurrentStatementPage } = useSelector((state) => state?.currentUser);
+
     const [value, setValue] = useState(10)
     const [open, setOpen] = useState(false)
     const Divider = () => {
