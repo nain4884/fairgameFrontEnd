@@ -80,7 +80,7 @@ const SeprateBox = ({
     }
     if (po === 2 && session) {
       return {
-        right: { mobile: 0, laptop: "-124.3%" },
+        right: { mobile:"-100%",tablet:0, laptop: "-124.3%" },
         left: { mobile: 0, laptop: "50%" },
       };
     }
