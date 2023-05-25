@@ -1,11 +1,12 @@
 import { Box, FormControl, InputLabel, MenuItem, Select, SliderValueLabel, Typography, } from "@mui/material";
 import { useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const SmallDropDown = ({ handleChange ,entrylimit}) => {
-  const { setCurrentStatementPage } = useSelector((state) => state?.currentUser);
-
+  const { currentStatementPage } = useSelector((state) => state?.auth);
+//   alert(currentStatementPage)
+  const dispatch = useDispatch()
     const [value, setValue] = useState(10)
     const [open, setOpen] = useState(false)
     const Divider = () => {
@@ -17,6 +18,8 @@ const SmallDropDown = ({ handleChange ,entrylimit}) => {
         return (
             <>
                 <Typography onClick={() => {
+
+dispatch((1));
                     setValue(item)
                     setOpen(false)
                 }} sx={{ textAlign: 'center', paddingY: '3px' }}>{item}</Typography>

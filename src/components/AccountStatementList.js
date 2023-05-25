@@ -2,7 +2,7 @@ import { Box, Typography, useMediaQuery } from "@mui/material"
 import SearchInput from "./SearchInput"
 import { Excel, LockIcon, Pdf, UnLockIcon } from "../assets"
 import SmallDropDown from "./smallDropDown"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import constants from "./helper/constants"
 import { setRole } from "../newStore"
@@ -12,6 +12,7 @@ import { formatDate } from "./helper/Dateconverter.js";
 import jwtDecode from "jwt-decode";
 import YellowHeaderAdmin from "./YellowHeaderAdmin"
 import { useTheme } from "@emotion/react"
+import { setCurrentStatementPage } from "../newStore/reducers/auth"
 
 
 
@@ -27,11 +28,15 @@ const AccountStatementList = ({ user }) => {
     const decodedTokenUser = userToken !== null && jwtDecode(userToken);
 
     const { currentUser } = useSelector((state) => state?.currentUser);
+    const [pageCount, setPageCount] = useState(constants.pageLimit);
 
+    const dispatch = useDispatch()
     const [pageLimit, setPageLimit] = useState(constants.pageLimit);
     const [currentPage, setCurrentPage] = useState(0);
+    const [currenLimit, setCurrenLimit] = useState(1)
     const [transactionHistory, setTransactionHistory] = useState([])
     const [data, setData] = useState('');
+    const [isDated, setIsDated] = useState(false)
     const handleChildData = (childData) => {
         setData(childData);
     };
@@ -39,24 +44,27 @@ const AccountStatementList = ({ user }) => {
         setPageLimit(childLimitData);
     };
     function callPage(val) {
-        // dispatch(setPage(parseInt(val)));
+        // dispatch(secallPagetCurrentStatementPage(parseInt(val)));
+        // setCurrentPage(parseInt(val * pageLimit));
         setCurrentPage(parseInt(val));
-      }
+        setCurrenLimit(parseInt(val))
+        setIsDated(true)
+    }
     async function getAccountStatement() {
         const userId = currentUser.id
         const originalDatefrom = formatDate(data[0]);
         const originalDateto = formatDate(data[1])
-        if (data !== '') {
+        if (data !== '' && isDated === false) {
             var payload = {
                 limit: pageLimit,
-                skip: currentPage,
+                skip: currentPage * pageLimit,
                 fromDate: originalDatefrom,
                 toDate: originalDateto,
             };
         } else {
             var payload = {
                 limit: pageLimit,
-                skip: currentPage,
+                skip: currentPage * pageLimit,
             };
         }
         console.log(payload)
@@ -67,6 +75,12 @@ const AccountStatementList = ({ user }) => {
             );
             // console.log(data.data[0], 'datadatadatadata')
             setTransactionHistory(data.data[0])
+            setPageCount(
+                Math.ceil(
+                    parseInt(data.data[1] ? data.data[1] : 1) /
+                    pageLimit
+                )
+            );
             //   toast.success(data?.message);
         } catch (e) {
             console.log(e);
@@ -75,9 +89,9 @@ const AccountStatementList = ({ user }) => {
 
     useEffect(() => {
         getAccountStatement()
-    }, []);
+    }, [currentPage,pageCount]);
 
-    
+
 
     // const Footer = () => {
     //     return (
@@ -99,163 +113,170 @@ const AccountStatementList = ({ user }) => {
     //         </>
     //     )
     // }
-    
-const Footer = ({ currentPage, pages, callPage }) => {
-    return ( 
-      <Box
-        sx={{
-          height: "40px",
-          display: "flex",
-          alignItems: "center",
-          px: { mobile: "5px", laptop: "10px" },
-          justifyContent: "space-between",
-          background: "#FAFAFA",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}
-        >
-          Showing 1 to {pages}
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Box
-            sx={{
-              height: "35px",
-              width: { mobile: "80px", laptop: "100px" },
-              background: "#0B4F26",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "5px",
-            }}
-            onClick={() => {
-              callPage(
-                parseInt(currentPage) - 1 === 0 ? 1 : parseInt(currentPage) - 1
-              );
-            }}
-          >
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: { laptop: "14px", mobile: "12px" },
-              }}
+
+    const Footer = ({ currentPage, pages, callPage, currenLimit }) => {
+        return (
+            <Box
+                sx={{
+                    height: "40px",
+                    display: "flex",
+                    alignItems: "center",
+                    px: { mobile: "5px", laptop: "10px" },
+                    justifyContent: "space-between",
+                    background: "#FAFAFA",
+                }}
             >
-              Previous
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              height: "35px",
-              marginX: { laptop: "10px", mobile: "5px" },
-              width: "40px",
-              background: "#262626",
-              display: "flex",
-              borderRadius: "5px",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: { laptop: "14px", mobile: "12px" },
-              }}
-            >
-              {currentPage}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              height: "35px",
-              width: { mobile: "80px", laptop: "100px" },
-              background: "#0B4F26",
-              display: "flex",
-              borderRadius: "5px",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={() => {
-              callPage(
-                parseInt(currentPage) === pages
-                  ? pages
-                  : parseInt(currentPage) + 1
-              );
-            }}
-          >
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: { laptop: "14px", mobile: "12px" },
-              }}
-            >
-              Next
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-    );
-  };
-  
+                <Typography
+                    sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}
+                >
+                    Showing 1 to {pages}
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box
+                        sx={{
+                            height: "35px",
+                            width: { mobile: "80px", laptop: "100px" },
+                            background: "#0B4F26",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            borderRadius: "5px",
+                        }}
+                        // onClick={() => {
+                        //     callPage(
+                        //         parseInt(currentPage) - 1 === 0 ? 0 : parseInt(currentPage) - 1
+                        //     );
+                        // }}
+                        onClick={() => {
+                            callPage(
+                              parseInt(currentPage) - 1 === -1 ? 1 : parseInt(currentPage) - 1
+                            );
+                          }}
+                        
+                    >
+                        <Typography
+                            sx={{
+                                color: "white",
+                                fontSize: { laptop: "14px", mobile: "12px" },
+                            }}
+                        >
+                            Previous
+                        </Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            height: "35px",
+                            marginX: { laptop: "10px", mobile: "5px" },
+                            width: "40px",
+                            background: "#262626",
+                            display: "flex",
+                            borderRadius: "5px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                color: "white",
+                                fontSize: { laptop: "14px", mobile: "12px" },
+                            }}
+                        >
+                            {currentPage + 1}
+                        </Typography>
+                    </Box>
+                    <Box
+                        sx={{
+                            height: "35px",
+                            width: { mobile: "80px", laptop: "100px" },
+                            background: "#0B4F26",
+                            display: "flex",
+                            borderRadius: "5px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                        onClick={() => {
+                            callPage(
+                                parseInt(currentPage) === pages
+                                    ? pages
+                                    : parseInt(currentPage) + 1
+                            );
+                        }}
+
+                    >
+                        <Typography
+                            sx={{
+                                color: "white",
+                                fontSize: { laptop: "14px", mobile: "12px" },
+                            }}
+                        >
+                            Next
+                        </Typography>
+                    </Box>
+                </Box>
+            </Box>
+        );
+    };
+
     return (
         <>
             {decodedTokenUser.role === "user" && (
                 <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} />
             )}
             {decodedTokenAdmin.role === "admin" && (
-              <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} />  
+                <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} />
                 // <YellowHeaderAdmin onChildData={handleChildData} getAccountStatement={getAccountStatement} />
             )}
-                {/* <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} /> */}
+            {/* <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} /> */}
 
 
             <Box sx={[{ marginX: "0.5%", minHeight: "100px", borderRadius: "2px", border: "2px solid white", borderTopRightRadius: { mobile: "10px", laptop: '0px', tablet: '10px' }, borderTopLeftRadius: { mobile: "10px", laptop: '0px', tablet: '10px' } }, (theme) => ({
                 backgroundImage: `${theme.palette.primary.headerGradient}`
             })]}>
-                <ListH onChildData={getLimitEntries}/> 
-                    <Box sx={{ overflowX: 'scroll', minWidth: '900px' }}>
-                        <ListHeaderT />
-                        {decodedTokenUser.role === "user" ?
-                             transactionHistory.map((item) => (
-                                <Row
-                                    index={item?.id}
-                                    containerStyle={{ background: "#FFE094" }}
-                                    profit={true}
-                                    fContainerStyle={{ background: "#0B4F26" }}
-                                    fTextStyle={{ color: "white" }}
-                                    date={item?.createAt}
-                                    closing={item?.current_amount}
-                                    trans_type={item?.trans_type}
-                                    amount={item?.amount}
-                                    touserName={item?.action_by.userName}
-                                    fromuserName={item?.user.userName}
-                                    {...(item.trans_type === "withdraw" ? { debit: item.amount } : { credit: item.amount })}
-                                    {...(item.trans_type === "add" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
-                                />
-                            )):
-                            transactionHistory.map((item) => (
-                                <Row
-                                    index={item?.id}
-                                    containerStyle={{ background: "#FFE094" }}
-                                    profit={true}
-                                    fContainerStyle={{ background: "#0B4F26" }}
-                                    fTextStyle={{ color: "white" }}
-                                    date={item?.createAt}
-                                    closing={item?.current_amount}
-                                    trans_type={item?.trans_type}
-                                    amount={item?.amount}
-                                    touserName={item?.action_by.userName}
-                                    fromuserName={item?.user.userName}
-                                    {...(item.trans_type === "win" || item.trans_type === "add" ? { credit: item.amount } : { debit: item.amount })}
-                                    {...(item.trans_type === "add" || item.trans_type === "win" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
-                                />
-                            ))
-                        }
+                <ListH onChildData={getLimitEntries} />
+                <Box sx={{ overflowX: 'scroll', minWidth: '900px' }}>
+                    <ListHeaderT />
+                    {decodedTokenUser.role === "user" ?
+                        transactionHistory.map((item) => (
+                            <Row
+                                index={item?.id}
+                                containerStyle={{ background: "#FFE094" }}
+                                profit={true}
+                                fContainerStyle={{ background: "#0B4F26" }}
+                                fTextStyle={{ color: "white" }}
+                                date={item?.createAt}
+                                closing={item?.current_amount}
+                                trans_type={item?.trans_type}
+                                amount={item?.amount}
+                                touserName={item?.action_by.userName}
+                                fromuserName={item?.user.userName}
+                                {...(item.trans_type === "withdraw" ? { debit: item.amount } : { credit: item.amount })}
+                                {...(item.trans_type === "add" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
+                            />
+                        )) :
+                        transactionHistory.map((item) => (
+                            <Row
+                                index={item?.id}
+                                containerStyle={{ background: "#FFE094" }}
+                                profit={true}
+                                fContainerStyle={{ background: "#0B4F26" }}
+                                fTextStyle={{ color: "white" }}
+                                date={item?.createAt}
+                                closing={item?.current_amount}
+                                trans_type={item?.trans_type}
+                                amount={item?.amount}
+                                touserName={item?.action_by.userName}
+                                fromuserName={item?.user.userName}
+                                {...(item.trans_type === "win" || item.trans_type === "add" ? { credit: item.amount } : { debit: item.amount })}
+                                {...(item.trans_type === "add" || item.trans_type === "win" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
+                            />
+                        ))
+                    }
 
-                        {transactionHistory.length === 0 && (
-                             <EmptyRow containerStyle={{ background: "#FFE094" }}/>
-                        )}
-                        
-                        {/* {transactionHistory.map((item) => (
+                    {transactionHistory.length === 0 && (
+                        <EmptyRow containerStyle={{ background: "#FFE094" }} />
+                    )}
+
+                    {/* {transactionHistory.map((item) => (
                             <Row
                                 index={item?.id}
                                 containerStyle={{ background: "#FFE094" }}
@@ -273,24 +294,25 @@ const Footer = ({ currentPage, pages, callPage }) => {
                                 {...(item.trans_type === "add" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
                             />
                         ))} */}
-                    </Box>
+                </Box>
                 <Footer
-        currentPage={currentPage}
-        pages={pageLimit}
-        callPage={callPage}
-      />
+                    currenLimit={currenLimit}
+                    currentPage={currentPage}
+                    pages={pageCount}
+                    callPage={callPage}
+                />
             </Box>
         </>
     )
 }
 
-const ListH = ({getLimitEntries}) => {
-    return (<Box display={"flex"} sx={{ justifyContent: "space-between", px: "10px", py: "6px" }}>
-        <Box display={"flex"} alignItems="center">
+const ListH = ({ getLimitEntries }) => {
+    return (<Box display={"flex"} sx={{ justifyContent: "flex-end", px: "10px", py: "6px" }}>
+        {/* <Box display={"flex"} alignItems="center">
             <Typography sx={{ fontSize: '10px', color: 'white', fontWeight: '500' }}>Show</Typography>
-            <SmallDropDown onChildData={getLimitEntries}/>
+            <SmallDropDown onChildData={getLimitEntries} />
             <Typography sx={{ fontSize: '10px', color: 'white', fontWeight: '500' }}>Entries</Typography>
-        </Box>
+        </Box> */}
         <SearchInput placeholder={"Search..."} />
     </Box>)
 }
@@ -323,10 +345,10 @@ const ListHeaderT = () => {
     )
 }
 
-const EmptyRow = ({containerStyle}) => {
+const EmptyRow = ({ containerStyle }) => {
     return (
-        <Box sx={[{ display: "flex", height: "45px", background: "#0B4F26", alignItems: "center", overflow: "hidden", borderBottom: "2px solid white",justifyContent:"center" }, containerStyle]}>
-           <Typography>No Results found</Typography>
+        <Box sx={[{ display: "flex", height: "45px", background: "#0B4F26", alignItems: "center", overflow: "hidden", borderBottom: "2px solid white", justifyContent: "center" }, containerStyle]}>
+            <Typography>No Results found</Typography>
         </Box>
     )
 }
