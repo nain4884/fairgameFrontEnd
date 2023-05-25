@@ -197,8 +197,8 @@ const AccountStatementList = ({ user }) => {
                         }}
                             onClick={() => {
                                 callPage(
-                                    parseInt(currentPage) === pages
-                                        ? pages
+                                    parseInt(currentPage) === pages-1
+                                        ? pages-1
                                         : parseInt(currentPage) + 1
                                 );
                             }}
