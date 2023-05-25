@@ -4,7 +4,7 @@ import React from "react";
 import MoneyBox from "./MoneyBox";
 import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
-import { BallStart } from "../../assets";
+import { BallStart } from '../../assets';
 
 const BoxComponent = ({
   name,
@@ -24,6 +24,7 @@ const BoxComponent = ({
   isRound,
   matchOddsData,
   ballStatus,
+  isBall
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -34,49 +35,29 @@ const BoxComponent = ({
     let checkDecimal = value % 1; // get the decimal portion of the number
     // alert(checkDecimal)
     if (checkDecimal >= 0.5) {
-      let getValue =
-        type == "back" ? Math.round(value) - gap : Math.round(value - 1) + gap;
-      let checkZeroHundred =
-        type == "back"
-          ? getValue < 1
-            ? 0
-            : Math.round(getValue)
-          : getValue >= 100
-            ? 100
-            : Math.round(getValue);
+      let getValue = type == "back" ? Math.round(value) - gap : Math.round(value - 1) + gap;
+      let checkZeroHundred = type == "back" ? getValue < 1 ? 0 : Math.round(getValue) : getValue >= 100 ? 100 : Math.round(getValue);
       let returnValue;
       if (type == "back") {
         let check = value % 1;
-        returnValue =
-          check >= 0.5
-            ? getValue < 1
-              ? checkZeroHundred
-              : checkZeroHundred - 1
-            : checkZeroHundred;
+        returnValue = check >= 0.5 ? getValue < 1 ? checkZeroHundred : checkZeroHundred - 1 : checkZeroHundred;
       } else {
-        returnValue = checkZeroHundred;
+        returnValue = checkZeroHundred
       }
-      return returnValue;
+      return returnValue
     } else {
       let getValue = type == "back" ? value - gap : value + gap;
-      let checkZeroHundred =
-        type == "back"
-          ? getValue < 1
-            ? 0
-            : Math.round(getValue)
-          : getValue >= 100
-            ? 100
-            : Math.round(getValue);
+      let checkZeroHundred = type == "back" ? getValue < 1 ? 0 : Math.round(getValue) : getValue >= 100 ? 100 : Math.round(getValue);
       let returnValue;
       if (type == "back") {
         let check = value % 1;
         returnValue = check >= 0.5 ? checkZeroHundred - 1 : checkZeroHundred;
       } else {
-        returnValue = checkZeroHundred;
+        returnValue = checkZeroHundred
       }
       return returnValue;
     }
-  };
+  }
 
   return (
     <Box
@@ -96,7 +77,7 @@ const BoxComponent = ({
           background: "white",
           position: "relative",
           height: "40px",
-          width: { mobile: "60%", laptop: "40%" },
+          width: "40%",
           alignItems: "center",
         }}
       >
@@ -126,25 +107,23 @@ const BoxComponent = ({
             ></Box>
           )} */}
 
-          {
-            teamImage != null && (
-              <>
-                <img
-                  src={`${apiBasePath}/${teamImage}`}
-                  style={{
-                    width: "22px",
-                    height: "25px",
-                    marginLeft: "10px",
-                    backgroundSize: "contains",
-                  }}
-                  alt={name}
-                />
-                <Box
-                  sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
-                ></Box>
-              </>
-            )
-          }
+          {teamImage != null && (
+            <>
+              <img
+                src={`${apiBasePath}/${teamImage}`}
+                style={{
+                  width: "22px",
+                  height: "25px",
+                  marginLeft: "10px",
+                  backgroundSize: "contains",
+                }}
+                alt={name}
+              />
+              <Box
+                sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
+              ></Box>
+            </>
+          )}
           <Typography
             sx={{
               color: "black",
@@ -153,58 +132,60 @@ const BoxComponent = ({
               marginLeft: "10px",
             }}
           >
-            {name}
+            {name}{ballStatus.toString()}
           </Typography>
-        </Box >
+        </Box>
         <MoneyBox color={color} rates={rate} />
-      </Box >
-      {showBox && (
-        <Box
+      </Box>
+      {ballStatus ? <>
+        {isBall ? <Box
           sx={{
-            background: "rgba(0,0,0,0.5)",
-            height: "40px",
+            background: "#000",
+            height: "82px",
             position: "absolute",
             right: 0,
+            top: 0,
             zIndex: 10,
             width: { laptop: "60%", mobile: "40.5%" },
             justifyContent: { mobile: "flex-end", laptop: "center" },
             alignItems: "center",
             display: "flex",
           }}
-        ></Box>
-      )}
-      {
-        !["ACTIVE", "", undefined, null].includes(status) ||
-          newData?.bettings?.length === 0 ||
-          livestatus ? (
+        >
+          <img src={BallStart} style={{ width: '113px', height: "32px" }} />
+        </Box> : null}</> : <>
+        {showBox && (
+          <Box
+            sx={{
+              background: "rgba(0,0,0,0.5)",
+              height: "40px",
+              position: "absolute",
+              right: 0,
+              zIndex: 10,
+              width: { laptop: "60%", mobile: "40.5%" },
+              justifyContent: { mobile: "flex-end", laptop: "center" },
+              alignItems: "center",
+              display: "flex",
+            }}
+          ></Box>
+        )}
+        {!["ACTIVE", "", undefined, null].includes(status) || newData?.bettings?.length === 0 || livestatus ? (
           <Box
             sx={{
               background: "rgba(0,0,0,1)",
               height: "40px",
-              width: { laptop: "60%", mobile: "40%" },
+              width: { laptop: "60%", mobile: "40.5%" },
               justifyContent: { mobile: "flex-end", laptop: "center" },
               alignItems: "center",
               display: "flex",
             }}
           >
-            {ballStatus ? (
-              <img src={BallStart} style={{ width: "113px", height: "32px" }} />
-            ) : (
-              <Typography
-                style={{
-                  fontSize: { mobile: "12px", laptop: "22px" },
-                  textTransform: "uppercase",
-                  textAlign: "center",
-                  width: "100%",
-                  color: "white",
-                  fontWeight: "600",
-                }}
-              >
-                {newData?.bettings?.length === 0 || livestatus
-                  ? "suspended"
-                  : status}
-              </Typography>
-            )}
+            {ballStatus ?
+              null
+              // <img src={BallStart} style={{ width: '113px', height: "32px" }} /> 
+              :
+              <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0 || livestatus ? "suspended" : status}</h4>
+            }
           </Box>
         ) : (
           <>
@@ -213,7 +194,7 @@ const BoxComponent = ({
                 display: "flex",
                 background: "white",
                 height: "40px",
-                width: { laptop: "60%", mobile: "40%" },
+                width: { laptop: "60%", mobile: "80%" },
                 justifyContent: { mobile: "flex-end", laptop: "center" },
                 alignItems: "center",
                 position: "relative",
@@ -225,13 +206,10 @@ const BoxComponent = ({
                   currentMatch={newData}
                   lock={lock}
                   rates={allRates}
+
                   // value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
                   // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
-                  value={
-                    matchOddsData?.back
-                      ? handleDecimal(matchOddsData?.back, 2, "back")
-                      : 0
-                  }
+                  value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
                   value2={0}
                   color={matchesMobile ? "white" : "#CEEBFF"}
                   type={{ color: "#A7DCFF", type: "BL" }}
@@ -250,11 +228,7 @@ const BoxComponent = ({
                   lock={lock}
                   rates={allRates}
                   // value={matchOddsData?.back ? matchOddsData?.back - 1 : 0}
-                  value={
-                    matchOddsData?.back
-                      ? handleDecimal(matchOddsData?.back, 1, "back")
-                      : 0
-                  }
+                  value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") : 0}
                   value2={0}
                   color={matchesMobile ? "white" : "#C2E6FF"}
                   type={{ color: "#A7DCFF", type: "BL" }}
@@ -308,11 +282,7 @@ const BoxComponent = ({
                   rates={allRates}
                   lock={lock}
                   // value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
-                  value={
-                    matchOddsData?.lay
-                      ? handleDecimal(matchOddsData?.lay, 1, "")
-                      : 0
-                  }
+                  value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 1, "") : 0}
                   value2={0}
                   color={matchesMobile ? "white" : "#F2CBCB"}
                   type={{ color: "#FFB5B5", type: "BL" }}
@@ -331,11 +301,7 @@ const BoxComponent = ({
                   rates={allRates}
                   lock={lock}
                   // value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
-                  value={
-                    matchOddsData?.lay
-                      ? handleDecimal(matchOddsData?.lay, 2, "")
-                      : 0
-                  }
+                  value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 2, "") : 0}
                   value2={0}
                   color={matchesMobile ? "white" : "#ECD6D6"}
                   type={{ color: "#FFB5B5", type: "BL" }}
@@ -349,9 +315,10 @@ const BoxComponent = ({
               ></Box>
             </Box>
           </>
-        )
+        )}
+      </>
       }
-    </Box >
+    </Box>
   );
 };
 
