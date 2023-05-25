@@ -22,7 +22,9 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
     const { axios } = setRole();
     const dispatch = useDispatch();
 
+
     const AddSession = () => {
+        // const id = location.state.match.id;
         const location = useLocation();
         const [teamARate, setTeamARate] = useState()
         const [teamALayValue, setTeamALayValue] = useState()
@@ -39,9 +41,9 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const [isTeamBSuspend, setIsTeamBSuspend] = useState(true)
         const [isTeamCSuspend, setIsTeamCSuspend] = useState(true)
         const [isTeamBackUnlock, setIsTeamBackUnlock] = useState(true)
-        const [isABall, setIsABall] = useState(false)
-        const [isBBall, setIsBBall] = useState(false)
-        const [isCBall, setIsCBall] = useState(false)
+        // const [isABall, setIsABall] = useState(false)
+        // const [isBBall, setIsBBall] = useState(false)
+        // const [isCBall, setIsCBall] = useState(false)
         const [teamBall, setTeamBall] = useState({
             isABall: false,
             isBBall: false,
@@ -59,7 +61,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const innerRefTeamA = useRef();
         const innerRefTeamB = useRef();
         const innerRefTeamC = useRef();
-        // const id = location.state.match.id;
 
         useEffect(() => {
             // alert(JSON.stringify(location.state.match))
@@ -1171,42 +1172,67 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         }
 
         return (
-            <Box sx={{ border: "2px solid #FFFFFF" }}>
-                <Box sx={{ display: "flex" }}>
-                    <Box sx={{ background: "#319E5B", width: "60%", px: "5px" }}>
-                        {/* <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>Add Session</Typography> */}
+            <>
+                <Box sx={{ border: "2px solid #FFFFFF" }}>
+                    <Box sx={{ display: "flex" }}>
+                        <Box sx={{ background: "#319E5B", width: "60%", px: "5px" }}>
+                            {/* <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>Add Session</Typography> */}
+                        </Box>
+                        <Box sx={{ background: "#00C0F9", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Back</Typography>
+                        </Box>
+                        <Box sx={{ background: "#FF9292", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Lay</Typography>
+                        </Box>
                     </Box>
-                    <Box sx={{ background: "#00C0F9", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Back</Typography>
-                    </Box>
-                    <Box sx={{ background: "#FF9292", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>Lay</Typography>
-                    </Box>
-                </Box>
-                <Box sx={{ display: "flex" }}>
-                    <Box sx={{ background: "#FFFFFF", width: "60%", position: 'relative' }}>
-                        {!add && <Box sx={{ width: '35%', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', left: '30%', top: '1px', background: 'black' }} >
-                            <img src={BALLSTART} style={{ width: '80%', height: '30%', position: 'absolute', zIndex: 3 }} />
-                        </Box>}
-                        <Box sx={{ borderWidth: 0, justifyContent: 'space-between', alignItems: 'center', display: 'flex', width: '100%', paddingLeft: '10px' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%", }}>{match?.teamA}</Typography>
-                            <Box sx={{ display: "flex", width: '30%', borderTop: "1px solid white" }}>
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                    <Box sx={{ display: "flex" }}>
+                        <Box sx={{ background: "#FFFFFF", width: "60%", position: 'relative' }}>
+                            {!add && <Box sx={{ width: '35%', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', left: '30%', top: '1px', background: 'black' }} >
+                                <img src={BALLSTART} style={{ width: '80%', height: '30%', position: 'absolute', zIndex: 3 }} />
+                            </Box>}
+                            <Box sx={{ borderWidth: 0, justifyContent: 'space-between', alignItems: 'center', display: 'flex', width: '100%', paddingLeft: '10px' }}>
+                                <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%", }}>{match?.teamA}</Typography>
+                                <Box sx={{ display: "flex", width: '30%', borderTop: "1px solid white" }}>
+                                    <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                        <TextField
+                                            onChange={
+                                                (e) => handleChange(e)
+                                                // (i) => setValue1(i.target.value)
+                                            }
+                                            name={"teamA_rate"}
+                                            inputRef={innerRefTeamA}
+                                            onFocus={() => handleFocus(innerRefTeamA)}
+                                            type="number"
+                                            variant="standard"
+                                            value={teamARate}
+                                            InputProps={{
+                                                disableUnderline: true,
+                                                sx: {
+                                                    height: '45px', width: '98%',
+                                                    background: '#F6F6F6',
+                                                    // border: '1px solid #2626264D',
+                                                    // borderRadius: '4px',
+                                                    // border: "0.5px solid white",
+                                                    alignSelf: 'flex-end',
+                                                    textAlign: 'center',
+                                                    alignItems: 'center',
+                                                    paddingX: '5px',
+                                                    color: "#319E5B",
+                                                    fontWeight: '600',
+                                                    backgroundColor: '#A7DCFF',
+                                                }
+                                            }}
+                                        />
+                                    </KeyboardEventHandler>
                                     <TextField
-                                        onChange={
-                                            (e) => handleChange(e)
-                                            // (i) => setValue1(i.target.value)
-                                        }
-                                        name={"teamA_rate"}
-                                        inputRef={innerRefTeamA}
-                                        onFocus={() => handleFocus(innerRefTeamA)}
-                                        type="number"
+                                        disabled
+                                        // onChange={(e) => handleChange(e)}
                                         variant="standard"
-                                        value={teamARate}
+                                        value={teamALayValue}
                                         InputProps={{
                                             disableUnderline: true,
                                             sx: {
-                                                height: '45px', width: '98%',
+                                                height: '45px', width: '97%',
                                                 background: '#F6F6F6',
                                                 // border: '1px solid #2626264D',
                                                 // borderRadius: '4px',
@@ -1217,188 +1243,164 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                                 paddingX: '5px',
                                                 color: "#319E5B",
                                                 fontWeight: '600',
-                                                backgroundColor: '#A7DCFF',
+                                                backgroundColor: '#FFB5B5',
+                                                textAlign: 'center'
                                             }
                                         }}
                                     />
-                                </KeyboardEventHandler>
-                                <TextField
-                                    disabled
-                                    // onChange={(e) => handleChange(e)}
-                                    variant="standard"
-                                    value={teamALayValue}
-                                    InputProps={{
-                                        disableUnderline: true,
-                                        sx: {
-                                            height: '45px', width: '97%',
-                                            background: '#F6F6F6',
-                                            // border: '1px solid #2626264D',
-                                            // borderRadius: '4px',
-                                            // border: "0.5px solid white",
-                                            alignSelf: 'flex-end',
-                                            textAlign: 'center',
-                                            alignItems: 'center',
-                                            paddingX: '5px',
-                                            color: "#319E5B",
-                                            fontWeight: '600',
-                                            backgroundColor: '#FFB5B5',
-                                            textAlign: 'center'
-                                        }
-                                    }}
-                                />
-                            </Box>
-                        </Box>
-
-                        <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingLeft: '10px', borderLeftWidth: 0, width: '100%', justifyContent: 'space-between' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamB}</Typography>
-                            <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
-                                    <TextField
-                                        variant="standard"
-                                        value={teamBRate}
-                                        onChange={(e) => handleChange(e)}
-                                        name={"teamB_rate"}
-                                        inputRef={innerRefTeamB}
-                                        type="number"
-                                        onFocus={() => handleFocus(innerRefTeamB)}
-                                        // onChange={(i) => setValue2(i.target.value)}
-                                        InputProps={{
-                                            disableUnderline: true,
-                                            sx: {
-                                                height: '45px', width: '98%',
-                                                background: '#F6F6F6',
-                                                // border: '1px solid #2626264D',
-                                                // borderRadius: '4px',
-                                                // border: "0.5px solid white",
-                                                alignSelf: 'flex-end',
-                                                textAlign: 'center',
-                                                alignItems: 'center',
-                                                paddingX: '5px',
-                                                color: "#319E5B",
-                                                fontWeight: '600',
-                                                backgroundColor: '#A7DCFF',
-                                            }
-                                        }}
-                                    />
-                                </KeyboardEventHandler>
-                                <TextField
-                                    variant="standard"
-                                    disabled
-                                    value={teamBLayValue}
-                                    // onChange={(i) => setTeamBLayValue(i.target.value)}
-                                    InputProps={{
-                                        disableUnderline: true,
-                                        sx: {
-                                            height: '45px', width: '97%',
-                                            background: '#F6F6F6',
-                                            // border: '1px solid #2626264D',
-                                            // borderRadius: '4px',
-                                            // border: "0.5px solid white",
-                                            alignSelf: 'flex-end',
-                                            textAlign: 'center',
-                                            alignItems: 'center',
-                                            paddingX: '5px',
-                                            color: "#319E5B",
-                                            fontWeight: '600',
-                                            backgroundColor: '#FFB5B5',
-                                            textAlign: 'center'
-                                        }
-                                    }}
-                                />
-                            </Box>
-                        </Box>
-                        {match?.teamC && <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingLeft: '10px', borderLeftWidth: 0, width: '100%', justifyContent: 'space-between' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamC}</Typography>
-                            <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
-                                    <TextField
-                                        variant="standard"
-                                        value={teamCRate}
-                                        onChange={(e) => handleChange(e)}
-                                        name={"teamC_rate"}
-                                        inputRef={innerRefTeamC}
-                                        type="number"
-                                        onFocus={() => handleFocus(innerRefTeamC)}
-                                        // onChange={(i) => setValue2(i.target.value)}
-                                        InputProps={{
-                                            disableUnderline: true,
-                                            sx: {
-                                                height: '45px', width: '98%',
-                                                background: '#F6F6F6',
-                                                alignSelf: 'flex-end',
-                                                textAlign: 'center',
-                                                alignItems: 'center',
-                                                paddingX: '5px',
-                                                color: "#319E5B",
-                                                fontWeight: '600',
-                                                backgroundColor: '#A7DCFF',
-                                            }
-                                        }}
-                                    />
-                                </KeyboardEventHandler>
-                                <TextField
-                                    variant="standard"
-                                    disabled
-                                    value={teamCLayValue}
-                                    InputProps={{
-                                        disableUnderline: true,
-                                        sx: {
-                                            height: '45px', width: '97%',
-                                            background: '#F6F6F6',
-                                            // border: '1px solid #2626264D',
-                                            // borderRadius: '4px',
-                                            // border: "0.5px solid white",
-                                            alignSelf: 'flex-end',
-                                            textAlign: 'center',
-                                            alignItems: 'center',
-                                            paddingX: '10px',
-                                            color: "#319E5B",
-                                            fontWeight: '600',
-                                            backgroundColor: '#FFB5B5',
-                                            textAlign: 'center'
-                                        }
-                                    }}
-                                />
-                            </Box>
-                        </Box>}
-                    </Box>
-
-                    <Box sx={{ borderLeft: "2px solid white", width: "40%" }}>
-                        {teamBall?.isABall ? <Box
-                            sx={{
-                                borderTop: "2px solid white",
-                                background: "rgba(0,0,0,1)",
-                                height: "92px",
-                                right: 0,
-                                // position: "absolute",
-                                width: "100%",
-                                // width: { laptop: "50%", mobile: "40.5%" },
-                                justifyContent: { mobile: "center", laptop: "center" },
-                                alignItems: "center",
-                                display: "flex",
-                                color: "#fff"
-                            }}
-                        >
-                            <img src={BallStart} style={{ width: '60px', height: '17px' }} />
-                        </Box> :
-                            <>
-                                {/* {!teamBall?.isABall ?  */}
-                                <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                                    {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                        {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
-                                        {!isTeamBackUnlock ?
-                                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                    </Box> :
-                                        <Box sx={{ background: isTeamASuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamASuspend ?
-                                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                        </Box>}
-                                    <Box sx={{ background: isTeamASuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                        {!isTeamASuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamALayValue}</Typography> :
-                                            <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                    </Box>
                                 </Box>
-                                {/* :
+                            </Box>
+
+                            <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingLeft: '10px', borderLeftWidth: 0, width: '100%', justifyContent: 'space-between' }}>
+                                <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamB}</Typography>
+                                <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
+                                    <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                        <TextField
+                                            variant="standard"
+                                            value={teamBRate}
+                                            onChange={(e) => handleChange(e)}
+                                            name={"teamB_rate"}
+                                            inputRef={innerRefTeamB}
+                                            type="number"
+                                            onFocus={() => handleFocus(innerRefTeamB)}
+                                            // onChange={(i) => setValue2(i.target.value)}
+                                            InputProps={{
+                                                disableUnderline: true,
+                                                sx: {
+                                                    height: '45px', width: '98%',
+                                                    background: '#F6F6F6',
+                                                    // border: '1px solid #2626264D',
+                                                    // borderRadius: '4px',
+                                                    // border: "0.5px solid white",
+                                                    alignSelf: 'flex-end',
+                                                    textAlign: 'center',
+                                                    alignItems: 'center',
+                                                    paddingX: '5px',
+                                                    color: "#319E5B",
+                                                    fontWeight: '600',
+                                                    backgroundColor: '#A7DCFF',
+                                                }
+                                            }}
+                                        />
+                                    </KeyboardEventHandler>
+                                    <TextField
+                                        variant="standard"
+                                        disabled
+                                        value={teamBLayValue}
+                                        // onChange={(i) => setTeamBLayValue(i.target.value)}
+                                        InputProps={{
+                                            disableUnderline: true,
+                                            sx: {
+                                                height: '45px', width: '97%',
+                                                background: '#F6F6F6',
+                                                // border: '1px solid #2626264D',
+                                                // borderRadius: '4px',
+                                                // border: "0.5px solid white",
+                                                alignSelf: 'flex-end',
+                                                textAlign: 'center',
+                                                alignItems: 'center',
+                                                paddingX: '5px',
+                                                color: "#319E5B",
+                                                fontWeight: '600',
+                                                backgroundColor: '#FFB5B5',
+                                                textAlign: 'center'
+                                            }
+                                        }}
+                                    />
+                                </Box>
+                            </Box>
+                            {match?.teamC && <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingLeft: '10px', borderLeftWidth: 0, width: '100%', justifyContent: 'space-between' }}>
+                                <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamC}</Typography>
+                                <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
+                                    <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
+                                        <TextField
+                                            variant="standard"
+                                            value={teamCRate}
+                                            onChange={(e) => handleChange(e)}
+                                            name={"teamC_rate"}
+                                            inputRef={innerRefTeamC}
+                                            type="number"
+                                            onFocus={() => handleFocus(innerRefTeamC)}
+                                            // onChange={(i) => setValue2(i.target.value)}
+                                            InputProps={{
+                                                disableUnderline: true,
+                                                sx: {
+                                                    height: '45px', width: '98%',
+                                                    background: '#F6F6F6',
+                                                    alignSelf: 'flex-end',
+                                                    textAlign: 'center',
+                                                    alignItems: 'center',
+                                                    paddingX: '5px',
+                                                    color: "#319E5B",
+                                                    fontWeight: '600',
+                                                    backgroundColor: '#A7DCFF',
+                                                }
+                                            }}
+                                        />
+                                    </KeyboardEventHandler>
+                                    <TextField
+                                        variant="standard"
+                                        disabled
+                                        value={teamCLayValue}
+                                        InputProps={{
+                                            disableUnderline: true,
+                                            sx: {
+                                                height: '45px', width: '97%',
+                                                background: '#F6F6F6',
+                                                // border: '1px solid #2626264D',
+                                                // borderRadius: '4px',
+                                                // border: "0.5px solid white",
+                                                alignSelf: 'flex-end',
+                                                textAlign: 'center',
+                                                alignItems: 'center',
+                                                paddingX: '10px',
+                                                color: "#319E5B",
+                                                fontWeight: '600',
+                                                backgroundColor: '#FFB5B5',
+                                                textAlign: 'center'
+                                            }
+                                        }}
+                                    />
+                                </Box>
+                            </Box>}
+                        </Box>
+
+                        <Box sx={{ borderLeft: "2px solid white", width: "40%" }}>
+                            {teamBall?.isABall ? <Box
+                                sx={{
+                                    borderTop: "2px solid white",
+                                    background: "rgba(0,0,0,1)",
+                                    height: "92px",
+                                    right: 0,
+                                    // position: "absolute",
+                                    width: "100%",
+                                    // width: { laptop: "50%", mobile: "40.5%" },
+                                    justifyContent: { mobile: "center", laptop: "center" },
+                                    alignItems: "center",
+                                    display: "flex",
+                                    color: "#fff"
+                                }}
+                            >
+                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                            </Box> :
+                                <>
+                                    {/* {!teamBall?.isABall ?  */}
+                                    <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                        {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                            {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
+                                            {!isTeamBackUnlock ?
+                                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        </Box> :
+                                            <Box sx={{ background: isTeamASuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                {!isTeamASuspend ?
+                                                    <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                            </Box>}
+                                        <Box sx={{ background: isTeamASuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamASuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamALayValue}</Typography> :
+                                                <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        </Box>
+                                    </Box>
+                                    {/* :
                                     <Box
                                         sx={{
                                             borderTop: "2px solid white",
@@ -1417,19 +1419,19 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         <img src={BallStart} style={{ width: '60px', height: '17px' }} />
                                     </Box>} */}
 
-                                {/* {!teamBall?.isBBall ? */}
-                                <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                                    {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                        {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                    </Box> : <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                        {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                    </Box>}
-                                    <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                        {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBLayValue}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                    </Box>
+                                    {/* {!teamBall?.isBBall ? */}
+                                    <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                        {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        </Box> : <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        </Box>}
+                                        <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBLayValue}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        </Box>
 
-                                </Box>
-                                {/* :
+                                    </Box>
+                                    {/* :
                                     <Box
                                         sx={{
                                             borderTop: "2px solid white",
@@ -1446,25 +1448,25 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     >
                                         <img src={BallStart} style={{ width: '60px', height: '17px' }} />
                                     </Box>} */}
-                                {match?.teamC &&
-                                    <>
-                                        {/* {!teamBall?.isCBall ?  */}
-                                        <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                                            {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                                {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
-                                                {!isTeamBackUnlock ?
-                                                    <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                            </Box> :
-                                                <Box sx={{ background: isTeamCSuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                                    {!isTeamCSuspend ?
-                                                        <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                                </Box>}
-                                            <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                                {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCLayValue}</Typography> :
-                                                    <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                    {match?.teamC &&
+                                        <>
+                                            {/* {!teamBall?.isCBall ?  */}
+                                            <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                                                {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                    {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
+                                                    {!isTeamBackUnlock ?
+                                                        <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                </Box> :
+                                                    <Box sx={{ background: isTeamCSuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                        {!isTeamCSuspend ?
+                                                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                    </Box>}
+                                                <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                    {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCLayValue}</Typography> :
+                                                        <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                        {/* :
+                                            {/* :
                                             <Box
                                                 sx={{
                                                     borderTop: "2px solid white",
@@ -1482,15 +1484,73 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             >
                                                 <img src={BallStart} style={{ width: '60px', height: '17px' }} />
                                             </Box>} */}
-                                    </>
-                                }
-                            </>}
+                                        </>
+                                    }
+                                </>}
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
+                <Box sx={{ display: "flex", zIndex: 2, position: 'relative', justifyContent: "center", width: '100%', marginTop: '5%', alignSelf: 'center' }}>
+                    {/* <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: 'space-between', paddingX: '10px', alignItems: "center", height: "35px", borderRadius: "5px" }}>
+                            <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Live</Typography>
+                            <img style={{ width: '23px', height: '18px', marginLeft: '5px' }} src={BroadCast} />
+                        </Box> */}
+                    <Box sx={{ width: '2%' }} ></Box>
+                    <Box
+                        onClick={(e) => {
+                            setVisible1(true)
+                            setVisible(false)
+                            e.stopPropagation()
+                        }} sx={{ position: 'relative', width: "30%", display: "flex", background: "#FF4D4D", maxWidth: "120px", marginLeft: "5px", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
+                        <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Un Declare</Typography>
+                        <Box sx={{ position: "absolute", zIndex: 999, top: '40px', left: '-120%' }}>
+                            {visible1 && <ResultComponent
+
+                                onClick={() => {
+                                    setVisible1(false)
+                                }}
+                                // betId={
+                                //     currentMatch?.bettings?.length > 0 &&
+                                //     currentMatch?.bettings?.filter((v) => v?.sessionBet === false)
+                                // }
+                                betId={
+                                    [{ match_id: match?.id, id: betId }]
+                                }
+                                teamA={match?.teamA}
+                                teamB={match?.teamB}
+                                tie={"Tie"}
+                                draw={match?.teamC ? match?.teamC : ""}
+                            />}
+                        </Box>
+                    </Box>
+                    <Box sx={{ width: '2%' }} ></Box>
+
+                    <Box onClick={(e) => {
+                        setVisible(true)
+                        setVisible1(false)
+                        e.stopPropagation()
+                    }} sx={{ width: "30%", position: 'relative', display: "flex", background: "white", marginLeft: "5px", maxWidth: "120px", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
+                        <Typography sx={{ color: "#0B4F26", fontWeight: "500", fontSize: "12px" }}>Declare</Typography>
+                        <Box sx={{ position: "absolute", zIndex: 999, top: '40px', right: 0 }}>
+                            {visible && <ResultComponent onClick={() => {
+                                setVisible(false)
+                            }}
+                                betId={
+                                    [{ match_id: match?.id, id: betId }]
+                                }
+                                teamA={match?.teamA}
+                                teamB={match?.teamB}
+                                tie={"Tie"}
+                                draw={match?.teamC ? match?.teamC : ""}
+                            />}
+                        </Box>
+                    </Box>
+                </Box>
+            </>
         )
     }
     const BookButton = () => {
+        // alert(match)
         return (
             <Box
                 sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '90px', height: '30px', background: 'white', marginRight: '2px', borderRadius: '2px' }}
@@ -1526,11 +1586,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 </Box >
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
                     <AddSession />
-                    <Box sx={{ display: "flex", zIndex: 2, position: 'relative', justifyContent: "center", width: '100%', marginTop: '5%', alignSelf: 'center' }}>
-                        {/* <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: 'space-between', paddingX: '10px', alignItems: "center", height: "35px", borderRadius: "5px" }}>
-                            <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Live</Typography>
-                            <img style={{ width: '23px', height: '18px', marginLeft: '5px' }} src={BroadCast} />
-                        </Box> */}
+                    {/* <Box sx={{ display: "flex", zIndex: 2, position: 'relative', justifyContent: "center", width: '100%', marginTop: '5%', alignSelf: 'center' }}>
                         <Box sx={{ width: '2%' }} ></Box>
                         <Box
                             onClick={(e) => {
@@ -1544,7 +1600,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                                     onClick={() => {
                                         setVisible1(false)
-                                    }} />}
+                                    }}
+                                    // betId={betId}
+                                    teamA={match?.teamA}
+                                    teamB={match?.teamB}
+                                    tie={"Tie"}
+                                    draw={match?.teamC ? match?.teamC : ""}
+                                />}
                             </Box>
                         </Box>
                         <Box sx={{ width: '2%' }} ></Box>
@@ -1558,10 +1620,16 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             <Box sx={{ position: "absolute", zIndex: 999, top: '40px', right: 0 }}>
                                 {visible && <ResultComponent onClick={() => {
                                     setVisible(false)
-                                }} />}
+                                }}
+                                    // betId={betId}
+                                    teamA={match?.teamA}
+                                    teamB={match?.teamB}
+                                    tie={"Tie"}
+                                    draw={match?.teamC ? match?.teamC : ""}
+                                />}
                             </Box>
                         </Box>
-                    </Box>
+                    </Box> */}
                 </Box>
             </Box>
         </Box>

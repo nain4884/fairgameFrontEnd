@@ -12,7 +12,7 @@ import { Lock, BallStart } from '../assets';
 import { GlobalStore } from "../context/globalStore";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { setSessionAllBetRate } from "../newStore/reducers/matchDetails";
+import { setSessionAllBetRate, setSessionResults } from "../newStore/reducers/matchDetails";
 
 
 
@@ -60,6 +60,46 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
 
     // alert(globalStore.isSession)
 
+    useEffect(() => {
+        if (socket && socket.connected) {
+            socket.onevent = async (packet) => {
+                if (packet.data[0] === "session_bet") {
+                    const data = packet.data[1];
+                    try {
+                        let profitLoss = data?.profitLoss;
+                        setProLoss(profitLoss);
+                    } catch (err) {
+                        console.log(err?.message);
+                    }
+
+                }
+            }
+        }
+    }, [socket]);
+
+    useEffect(() => {
+        // alert(JSON.stringify(globalStore.isSession))
+        if (sessionEvent?.id) {
+            // alert(JSON.stringify(betData))
+            getManuallBookMaker(sessionEvent?.id);
+        } else {
+            setDetail(stateDetail);
+            setLock({
+                isNo: true,
+                isYes: true,
+                isNoPercent: true,
+                isYesPercent: true,
+            })
+        }
+        setIsCreateSession(createSession);
+        // getSessionResult(match?.id);
+    }, [sessionEvent?.id]);
+
+    const getSessionResult = async (match_id) => {
+        let response = await axios.get(`/game-match/getResults/${match_id}`);
+        // setSessionResults
+    }
+
     async function doSubmitSessionBet(rate_percent) {
         const payload = { ...Detail, rate_percent }
         // return alert("ddd :" + betId)
@@ -80,59 +120,6 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             console.log(e.response.data.message);
         }
     }
-
-    useEffect(() => {
-        if (socket && socket.connected) {
-            socket.onevent = async (packet) => {
-                if (packet.data[0] === "session_bet") {
-                    const data = packet.data[1];
-                    try {
-                        let profitLoss = data?.profitLoss;
-                        setProLoss(profitLoss);
-                    } catch (err) {
-                        console.log(err?.message);
-                    }
-
-                }
-            }
-        }
-        // return () => {
-        //     // Code to run on component unmount
-        //     // alert(JSON.stringify(Detail));
-        //     setIsBall(false);
-        //     let rate_percent = Detail.n_rate_percent + '-' + Detail.y_rate_percent
-        //     let data = {
-        //         match_id: match?.id,
-        //         betId: betId,
-        //         no_rate: Detail.no_rate,
-        //         yes_rate: Detail.yes_rate,
-        //         suspended: "suspended",
-        //         rate_percent: rate_percent
-        //     }
-        //     // alert(JSON.stringify(data));
-        //     // socket.emit("updateSessionRate", { match_id: match?.id, betId: sessionEvent?.id, suspended: 'suspended', })
-
-        // };
-    }, [socket]);
-
-    useEffect(() => {
-        // alert(JSON.stringify(globalStore.isSession))
-        if (sessionEvent?.id) {
-            // alert(JSON.stringify(betData))
-            getManuallBookMaker(sessionEvent?.id);
-        } else {
-            setDetail(stateDetail);
-            setLock({
-                isNo: true,
-                isYes: true,
-                isNoPercent: true,
-                isYesPercent: true,
-            })
-        }
-        setIsCreateSession(createSession);
-    }, [sessionEvent?.id]);
-
-
 
     async function getManuallBookMaker(id) {
         try {
@@ -212,7 +199,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>{match?.title ? match.title : 'India vs Pakistan'}</Typography>
             <Box sx={{ display: "flex", marginTop: "20px" }}>
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
-                    <AddSession createSession={createSession} betId={betId} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} isPercent={{ isPercent, setIsPercent }} />
+                    <AddSession createSession={createSession} betId={betId} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} isPercent={{ isPercent, setIsPercent }} live={live} />
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                         {!isCreateSession ? <>
                             <Box
@@ -287,7 +274,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     )
 }
 
-const AddSession = ({ createSession, betId, Detail, sessionEvent, incGap, socket, lock, setLock, isBall, isCreateSession, match, isPercent }) => {
+const AddSession = ({ createSession, betId, Detail, sessionEvent, incGap, socket, lock, setLock, isBall, isCreateSession, match, isPercent, live }) => {
 
 
     const handleKeysMatchEvents = (key, event) => {
@@ -657,13 +644,13 @@ const AddSession = ({ createSession, betId, Detail, sessionEvent, incGap, socket
                 </Box>
             </Box>
             {/* comment */}
-            {/* {!createSession && <Box sx={{
+            {!live && <Box sx={{
                 position: "absolute", width: "100%", top: "0px", display: "flex", justifyContent: "center", alignItems: "center", height: "100%", opacity: 1,
                 backdropFilter: " blur(1px)",
                 "-webkit-backdrop-filter": "blur(1px)"
             }}>
                 <StyledImage src={LiveOff} sx={{ height: "4vw", width: "4vw" }} />
-            </Box>} */}
+            </Box>}
         </Box>
     )
 }

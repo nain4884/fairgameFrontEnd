@@ -266,6 +266,7 @@ const Odds = ({
               display: "flex",
               background: "#319E5B",
               height: "25px",
+              gap: {mobile:"0px",laptop:"1px",tablet:"1px"},
               width: { laptop: "60%", mobile: "80%" },
               justifyContent: { laptop: "center", mobile: "flex-end" },
             }}
@@ -327,6 +328,7 @@ const Odds = ({
           back: matchOddsData?.[0]?.teamA_Back,
           lay: matchOddsData?.[0]?.teamA_lay
         }}
+        isBall={true}
       />
         <Divider />
         <ManualBoxComponent
@@ -350,6 +352,7 @@ const Odds = ({
             back: matchOddsData?.[0]?.teamB_Back,
             lay: matchOddsData?.[0]?.teamB_lay
           }}
+          isBall={false}
         />
         {newData?.teamC && (
           <>
@@ -375,6 +378,7 @@ const Odds = ({
                 back: matchOddsData?.[0]?.teamC_Back,
                 lay: matchOddsData?.[0]?.teamC_lay
               }}
+              isBall={false}
             />
           </>
         )}</> :

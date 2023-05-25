@@ -62,7 +62,7 @@ const PlaceBet = ({
   }, [selectedValue]);
 
   const getLatestBetAmount = async (value, newData) => {
-    console.log('value', value)
+    console.log("value", value);
     try {
       const title = season ? betType : isBack ? "back" : "lay";
       const bet_type = title;
@@ -153,7 +153,11 @@ const PlaceBet = ({
           }}
         >
           <Typography
-            sx={{ color: "white", fontSize: "11px", fontWeight: "600" }}
+            sx={{
+              color: "white",
+              fontSize: { mobile: "10px",tablet:"11px", laptop: "11px" },
+              fontWeight: "600",
+            }}
           >
             {title}
           </Typography>
@@ -183,8 +187,21 @@ const PlaceBet = ({
                   margin: bet_condition && "auto",
                   marginTop: bet_condition && "5px",
                   color: "#262626",
-                  fontSize:
-                    title == "Back/Lay" || title == "Yes/No" ? "16px" : "13px",
+                  padding:"1px",
+                  fontSize: {
+                    mobile:
+                      title == "Back/Lay" || title == "Yes/No"
+                        ? "12px"
+                        : "10px",
+                        tablet:
+                        title == "Back/Lay" || title == "Yes/No"
+                          ? "14px"
+                          : "12px",
+                    laptop:
+                      title == "Back/Lay" || title == "Yes/No"
+                        ? "14px"
+                        : "12px",
+                  },
                   fontWeight:
                     title === "Back/Lay" || title === "Yes/No" ? "800" : "600",
                 },
@@ -196,12 +213,12 @@ const PlaceBet = ({
                   ? "Back"
                   : "Lay"
                 : title === "Team"
-                  ? name
-                  : bet_condition
-                    ? bet_condition
-                    : isSessionYes
-                      ? "Yes"
-                      : "No"}
+                ? name
+                : bet_condition
+                ? bet_condition
+                : isSessionYes
+                ? "Yes"
+                : "No"}
             </Typography>
           </Box>
         )}
@@ -298,7 +315,7 @@ const PlaceBet = ({
     return (
       <Box
         sx={{
-          width: "100px",
+          width: { mobile: "70px", tablet:"100px", laptop: "100px" },
           height: "25px",
           alignItems: "center",
           justifyContent: "center",
@@ -309,7 +326,7 @@ const PlaceBet = ({
       >
         <Typography
           sx={{
-            fontSize: { mobile: "12px", laptop: "13px" },
+            fontSize: { mobile: "10px",tablet:"13px", laptop: "13px" },
             fontWeight: "700",
             color: "white",
           }}
@@ -406,21 +423,21 @@ const PlaceBet = ({
           borderRadius: "5px",
           marginLeft: season ? "40px" : 0,
           overflow: "hidden",
-          width: { mobile: "70vw", laptop: "30vw" },
+          width: { mobile: "98vw", tablet: "60vw", laptop: "30vw" },
           // left: isSessionYes?"-30%": "95%"
         },
         // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
         matchesMobile
           ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
-          // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-          { position: "absolute", right: back ? "0vw" : "0vw" }
+            // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
+            { position: "absolute", right: back ? "0vw" : "0vw" }
           : typeOfBet == "Session"
-            ? {
+          ? {
               position: "absolute",
               right: back ? "auto" : "0vw",
               left: isSessionYes ? "-30%" : "95%",
             }
-            : {
+          : {
               position: "absolute",
               right: back
                 ? typeOfBet != "Session"
@@ -446,7 +463,11 @@ const PlaceBet = ({
           ]}
         >
           <Typography
-            sx={{ fontWeight: "bold", fontSize: "14px", color: "text.white" }}
+            sx={{
+              fontWeight: "bold",
+              fontSize: { mobile: "10px", tablet: "14px", laptop: "14px" },
+              color: "text.white",
+            }}
           >
             Place Bet
           </Typography>
@@ -494,8 +515,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                  ? "Lay"
-                  : "Back"
+                ? "Lay"
+                : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}

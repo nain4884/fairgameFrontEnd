@@ -41,9 +41,9 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
           flexDirection: "column",
           display: "flex",
           alignItems: "center",
-          right:"41vw",
+          right: { mobile: "43vw", laptop: "41vw", tablet: "41vw" },
           justifyContent: "center",
-          width: { laptop: "90px", mobile: "80px" },
+          width: { laptop: "90px", mobile: "60px", tablet: "90px" },
           borderRadius: "5px",
           height: "35px",
 
@@ -76,7 +76,7 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
         <Box sx={{ zIndex: 100, display: "flex", flexDirection: "column" }}>
           <Typography
             sx={{
-              marginTop:"2px",  
+              marginTop: "2px",
               fontSize: {
                 laptop: !profitLoss?.profitLoss?.max_loss ? "8px" : "8px",
                 tablet: "8px",

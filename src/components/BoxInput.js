@@ -26,7 +26,7 @@ const BoxInput = ({
         }}
       >
         <Typography
-          sx={{ color: "white", fontSize: "11px", fontWeight: "600" }}
+          sx={{ color: "white", fontSize: {mobile:"10px",laptop:"11px"}, fontWeight: "600" }}
         >
           {title}
         </Typography>

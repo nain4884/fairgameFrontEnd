@@ -24,7 +24,7 @@ const data = [
     country: "INDIA",
   },
 ];
-const SessionBetSeperate = ({ profit, mark, mark2, allBetsData ,}) => {
+const SessionBetSeperate = ({ profit, mark, mark2, allBetsData, }) => {
   //  {console.warn("allBetsData qq:",allBetsData)}
   return (
     <Box
