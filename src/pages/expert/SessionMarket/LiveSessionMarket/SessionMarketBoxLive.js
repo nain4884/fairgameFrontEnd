@@ -237,28 +237,30 @@ const SessionMarketBoxLive = ({
               margin: "1px",
               background: "rgba(0,0,0,1)",
               height: "40px",
-              right: "7vh",
+              right: "0vh",
               position: "absolute",
-              width: { laptop: "23%", mobile: "23%" },
+              width: { laptop: "27%", mobile: "27%" },
               justifyContent: { mobile: "center", laptop: "center" },
               alignItems: "center",
               display: "flex",
             }}
           >
             {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-            <h6
+        
+            <Typography
               style={{
+                fontSize: { mobile: "10px", laptop: "10px" },
                 textTransform: "uppercase",
-                fontSize: "12px",
                 textAlign: "center",
-                lineHeight: "11px",
-                color:"#FFF"
+                width: "100%",
+                color: "white",
+                fontWeight: "600",
               }}
             >
               {newData?.betStatus === 2
                 ? `Result Declared`
                 : newData?.suspended}
-            </h6>
+            </Typography>
           </Box>
         ) : (
           <Box

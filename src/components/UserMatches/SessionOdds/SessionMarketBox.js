@@ -6,7 +6,7 @@ import PlaceBetComponentWeb from "../PlaceBetComponentWeb";
 import SeprateBox from "../SeprateBox";
 import { memo } from "react";
 import { formatNumber } from "../../helper/helper";
-import { BallStart } from '../../../assets';
+import { BallStart } from "../../../assets";
 
 const SessionMarketBox = ({
   index,
@@ -48,7 +48,7 @@ const SessionMarketBox = ({
           display: "flex",
           background: "white",
           height: "38px",
-          width: {mobile:"60%",laptop:"40%"},
+          width: { mobile: "60%", laptop: "40%" },
           justifyContent: "flex-start",
           alignItems: "center",
         }}
@@ -65,130 +65,134 @@ const SessionMarketBox = ({
           {data.bet_condition}
         </Typography>
       </Box>
+      {matchesMobile && (
+            <PlaceBetComponent amount={index == 2} profitLoss={data} />
+          )}
+             {!matchesMobile && (
+              <PlaceBetComponentWeb amount={index === 2} profitLoss={data} />
+            )}
       {!["ACTIVE", "", undefined, null].includes(data?.suspended) ? (
-        <>
-          <SeprateBox po={6} color={"white"} />
           <Box
             sx={{
               background: "rgba(0,0,0,1)",
-              marginLeft: "-2px",
-              height: "39px",
+              // marginLeft: "-2px",
+              height: "38px",
               // position: "absolute",
+              marginLeft:{laptop:"20%",tablet:"0%",mobile:"0%"},
               // right: 0,
-              width: "20%",
+              width: { laptop: "19.5%", tablet: "40%", mobile: "40.5%" },
               justifyContent: { mobile: "center", laptop: "center" },
               alignItems: "center",
               display: "flex",
               zIndex: 1,
             }}
           >
-
-            {data?.suspended == "Ball Started" ? <img src={BallStart} style={{ width: '113px', height: "32px" }} /> :
-              <h6 style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase",textAlign:"center",color:"white" ,width:"100%" }}>{data?.suspended}</h6>}
+            {data?.suspended == "Ball Started" ? (
+              <img src={BallStart} style={{ width: "113px", height: "32px" }} />
+            ) : (
+              <Typography
+                style={{
+                  fontSize: { mobile: "12px", laptop: "22px" },
+                  textTransform: "uppercase",
+                  textAlign: "center",
+                  width: "100%",
+                  color: "white",
+                  fontWeight: "600",
+                }}
+              >
+                {data?.suspended}
+              </Typography>
+            )}
           </Box>
 
-          {!matchesMobile && (
-            <PlaceBetComponentWeb
-              amount={index == 2}
-              profitLoss={data}
-            />
-          )}
-        </>
+       
       ) : (
         <>
-           {matchesMobile && (
-            <PlaceBetComponent
-              amount={index == 2}
-              profitLoss={data}
+        
+          <Box
+            sx={{
+              display: "flex",
+              position: "relative",
+              background: "white",
+              height: "38px",
+              width: { laptop: "60%", mobile: "40.5%" },
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            {!matchesMobile && <SeprateBox po={1} color={"white"} />}
+
+            {false && (
+              <>
+                <Box
+                  sx={{ width: ".45%", display: "flex", background: "pink" }}
+                ></Box>
+                <SeprateBox po={2} color={"white"} rates={allRates} />
+                <Box
+                  sx={{ width: ".45%", display: "flex", background: "pink" }}
+                ></Box>
+                <Box
+                  sx={{ width: ".45%", display: "flex", background: "pink" }}
+                ></Box>
+                <SeprateBox po={3} color={"white"} rates={allRates} />
+              </>
+            )}
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            {!matchesMobile && <SeprateBox po={6} color={"white"} />}
+            <SeprateBox
+              po={2}
+              rates={allRates}
+              session={true}
+              betType={"no"}
+              value={data.no_rate}
+              value2={formatNumber(data?.rate_percent?.split("-")[0])}
+              lock={data?.no_rate === null ? true : false}
+              color={"#F6D0CB"}
+              type={{ color: "#FFB5B5", type: "YN" }}
+              typeOfBet={typeOfBet}
+              data={data}
+              mainData={mainData}
             />
-          )}
-           <Box
-          sx={{
-            display: "flex",
-            position: "relative",
-            background: "white",
-            height: "38px",
-            width: { laptop: "60%", mobile: "40.5%" },
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
-        {!matchesMobile &&  <SeprateBox po={1} color={"white"} />}
-       
-          {false && (
-            <>
-              <Box
-                sx={{ width: ".45%", display: "flex", background: "pink" }}
-              ></Box>
-              <SeprateBox po={2} color={"white"} rates={allRates} />
-              <Box
-                sx={{ width: ".45%", display: "flex", background: "pink" }}
-              ></Box>
-              <Box
-                sx={{ width: ".45%", display: "flex", background: "pink" }}
-              ></Box>
-              <SeprateBox po={3} color={"white"} rates={allRates} />
-            </>
-          )}
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-         {!matchesMobile &&   <SeprateBox po={6} color={"white"} />}
-          <SeprateBox
-            po={2}
-            rates={allRates}
-            session={true}
-            betType={"no"}
-            value={data.no_rate}
-            value2={formatNumber(data?.rate_percent?.split("-")[0])}
-            lock={data?.no_rate === null ? true : false}
-            color={"#F6D0CB"}
-            type={{ color: "#FFB5B5", type: "YN" }}
-            typeOfBet={typeOfBet}
-            data={data}
-            mainData={mainData}
-          />
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          <SeprateBox
-            po={1}
-            rates={allRates}
-            session={true}
-            betType={"yes"}
-            value={data.yes_rate}
-            value2={formatNumber(data?.rate_percent?.split("-")[1])}
-            lock={data?.yes_rate === null ? true : false}
-            color={"#B3E0FF"}
-            type={{ color: "#A7DCFF", type: "YN" }}
-            typeOfBet={typeOfBet}
-            data={data}
-            mainData={mainData}
-          />
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          {!matchesMobile && (
-            <>
-              <Box
-                sx={{ width: ".45%", display: "flex", background: "pink" }}
-              ></Box>
-              <SeprateBox color={"white"} rates={allRates} />
-              <Box
-                sx={{ width: ".45%", display: "flex", background: "pink" }}
-              ></Box>
-              <SeprateBox color={"white"} rates={allRates} />
-            </>
-          )}
-          {!matchesMobile && (
-            <PlaceBetComponentWeb
-              amount={index === 2}
-              profitLoss={data}
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            <SeprateBox
+              po={1}
+              rates={allRates}
+              session={true}
+              betType={"yes"}
+              value={data.yes_rate}
+              value2={formatNumber(data?.rate_percent?.split("-")[1])}
+              lock={data?.yes_rate === null ? true : false}
+              color={"#B3E0FF"}
+              type={{ color: "#A7DCFF", type: "YN" }}
+              typeOfBet={typeOfBet}
+              data={data}
+              mainData={mainData}
             />
-          )}
-        </Box>
-          </>
-       
+            <Box
+              sx={{ width: ".45%", display: "flex", background: "pink" }}
+            ></Box>
+            {!matchesMobile && (
+              <>
+                <Box
+                  sx={{ width: ".45%", display: "flex", background: "pink" }}
+                ></Box>
+                <SeprateBox color={"white"} rates={allRates} />
+                <Box
+                  sx={{ width: ".45%", display: "flex", background: "pink" }}
+                ></Box>
+                <SeprateBox color={"white"} rates={allRates} />
+              </>
+            )}
+          
+          </Box>
+          {!matchesMobile && (
+              <PlaceBetComponentWeb amount={index === 2} profitLoss={data} />
+            )}
+        </>
       )}
     </Box>
   );
