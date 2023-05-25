@@ -98,6 +98,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const getSessionResult = async (match_id) => {
         let response = await axios.get(`/game-match/getResults/${match_id}`);
         // setSessionResults
+
     }
 
     async function doSubmitSessionBet(rate_percent) {
