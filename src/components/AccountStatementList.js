@@ -79,8 +79,9 @@ const AccountStatementList = ({ user }) => {
                 Math.ceil(
                     parseInt(data.data[1] ? data.data[1] : 1) /
                     pageLimit
-                )
+                )    
             );
+            
             //   toast.success(data?.message);
         } catch (e) {
             console.log(e);
@@ -149,7 +150,7 @@ const AccountStatementList = ({ user }) => {
                         // }}
                         onClick={() => {
                             callPage(
-                              parseInt(currentPage) - 1 === -1 ? 1 : parseInt(currentPage) - 1
+                              parseInt(currentPage) - 1 === -1 ? 0 : parseInt(currentPage) - 1
                             );
                           }}
                         
@@ -194,13 +195,13 @@ const AccountStatementList = ({ user }) => {
                             justifyContent: "center",
                             alignItems: "center",
                         }}
-                        onClick={() => {
-                            callPage(
-                                parseInt(currentPage) === pages
-                                    ? pages
-                                    : parseInt(currentPage) + 1
-                            );
-                        }}
+                            onClick={() => {
+                                callPage(
+                                    parseInt(currentPage) === pages
+                                        ? pages
+                                        : parseInt(currentPage) + 1
+                                );
+                            }}
 
                     >
                         <Typography
