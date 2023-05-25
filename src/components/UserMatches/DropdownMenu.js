@@ -15,7 +15,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
           zIndex: 1001,
           overflow: "hidden",
           top: "35px",
-          left: matchesMobile ? "0%" : "0%",
+          left: {laptop:"0%",mobile:"20%",tablet:"36.5vw"},
           position: "absolute",
         }}
       >
