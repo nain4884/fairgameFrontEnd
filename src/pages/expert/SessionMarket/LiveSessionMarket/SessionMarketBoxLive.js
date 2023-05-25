@@ -138,14 +138,14 @@ const SessionMarketBoxLive = ({
             display: "flex",
             background: "white",
             height: "38px",
-            width: "40%",
+            width: "55%",
             alignItems: "center",
           }}
         >
           <Typography
             sx={{
               color: "black",
-              fontSize: { laptop: "8px", tablet: "8px", mobile: "8px" },
+              fontSize: { laptop: "10px", tablet: "10px", mobile: "10px" },
               marginLeft: "7px",
               fontWeight: "600",
             }}
@@ -158,7 +158,7 @@ const SessionMarketBoxLive = ({
           sx={{
             position: "absolute",
             top: "5px",
-            right: { laptop: "12vh", tablet: "12vh" },
+            right: { laptop: "7vh", tablet: "7vh" },
             display: "flex",
             zIndex: 100,
           }}
@@ -267,15 +267,16 @@ const SessionMarketBoxLive = ({
               position: "relative",
               background: "white",
               height: "38px",
-              marginLeft: "55px",
-              width: { laptop: "60%", mobile: "60%" },
-              justifyContent: "center",
+              // marginLeft: "40px",
+              width: { laptop: "45%", mobile: "60%" },
+              justifyContent: "flex-end",
               alignItems: "center",
             }}
           >
             <SeperateBox
               session={true}
               back={true}
+              width={"30%"}
               value={newData?.no_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[0])}
               lock={newData?.suspended === "suspended"}
@@ -288,6 +289,7 @@ const SessionMarketBoxLive = ({
 
             <SeperateBox
               session={true}
+              width={"30%"}
               value={newData?.yes_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[1])}
               lock={newData?.suspended === "suspended"}

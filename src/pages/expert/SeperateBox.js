@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setColorValue } from '../../store/selectedColorBox';
 import { Lock } from '../../assets';
 
-const SeperateBox = ({ color, empty, value,  currentMatch, value2, lock, session, back }) => {
+const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, session, back }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const SeperateBox = ({ color, empty, value,  currentMatch, value2, lock, session
               background: lock ? "#FDF21A" : color,
               border:
                 color != "white" ? "1px solid #2626264D" : "0px solid white",
-              width: { mobile: "30%", laptop: "20%" },
+              width: { mobile: "30%", laptop: width ? width : "20%"},
               height: "94%",
               display: "flex",
               justifyContent: "center",

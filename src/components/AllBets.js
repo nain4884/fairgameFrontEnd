@@ -418,11 +418,11 @@ const LargeBox = ({ item, k }) => {
     >
       <Typography
         sx={{
-          fontSize: ".8vw",
+          fontSize: "0.6vw",
           fontWeight: "600",
           color: item?.color,
           wordWrap: "break-word",
-          textAlign: "center",
+          textAlign: "left",
         }}
       >
         {item?.name}
