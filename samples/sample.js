@@ -10,7 +10,7 @@ import constants from "./helper/constants";
 import { setRole } from "../newStore";
 import CustomButtonAdmin from "./CustomButtonAdmin";
 import jwtDecode from "jwt-decode";
-
+ 
 
 const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
     const adminToken = sessionStorage.getItem("JWTadmin")
@@ -18,6 +18,7 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
 
     const decodedTokenAdmin = adminToken !== null && jwtDecode(adminToken);
     const decodedTokenUser = userToken !== null && jwtDecode(userToken);
+
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [pageLimit, setPageLimit] = useState(constants.pageLimit);
@@ -63,16 +64,13 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
                     selectedDate={toDate}
                     onDateChange={handleToDateChange}
                 />
-
-                {/* <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} /> */}
                 {decodedTokenAdmin.role === "admin" && (
-                    ""
-                // <CustomButtonAdmin btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }}  getAccountStatement={getAccountStatement} />
+                <CustomButtonAdmin btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }}  getAccountStatement={getAccountStatement} />
                 )}
                 {decodedTokenUser.role === "user" && (
-                <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} />
+                <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }}  getAccountStatement={getAccountStatement} />
                 )}
-           </Box>
+            </Box>
         </Box>
     )
 }

@@ -3,6 +3,7 @@ import { Background, Header } from "../../components";
 import AccountStatementList from "../../components/AccountStatementList";
 import YellowHeader from "../../components/yellowheader";
 import YellowHeaderMobile from "../../components/YellowHeaderMobile";
+import YellowHeaderAdmin from "../../components/YellowHeaderAdmin";
 
 const AccountStatement = () => {
     const theme = useTheme()
@@ -12,8 +13,8 @@ const AccountStatement = () => {
     return (
         <Background>
             {/* <Header /> */}
-            {matchesMobile ? <YellowHeaderMobile /> : <YellowHeader />}
-            <AccountStatementList />
+            {matchesMobile ? <YellowHeaderMobile /> : <YellowHeaderAdmin />}
+            <AccountStatementList user={"admin"} />
         </Background>
     )
 }

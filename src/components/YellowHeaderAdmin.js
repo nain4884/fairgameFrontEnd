@@ -12,7 +12,7 @@ import CustomButtonAdmin from "./CustomButtonAdmin";
 import jwtDecode from "jwt-decode";
 
 
-const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
+const YellowHeaderAdmin = ({ }) => {
     const adminToken = sessionStorage.getItem("JWTadmin")
     const userToken = sessionStorage.getItem("JWTuser")
 
@@ -24,19 +24,9 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const { currentUser } = useSelector((state) => state?.currentUser);
 
-    const handleFromDateChange = (date) => {
-        setFromDate(date)
-    };
-
-    const handleToDateChange = (date) => {
-        setToDate(date);
-    };
-    const sendDataToParent = () => {
-        onChildData([fromDate, toDate]);
-    };
+   
 
     useEffect(() => {
-        sendDataToParent()
 
     }, [fromDate, toDate]);
 
@@ -54,26 +44,26 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
                     containerStyle={{ width: matchesMobile ? "31%" : "19%", height: "40px" }}
                     title={'From'}
                     selectedDate={fromDate}
-                    onDateChange={handleFromDateChange}
+                    // onDateChange={handleFromDateChange}
                 />
                 <Calendar
                     pickerStyles={{ height: "40px" }}
                     containerStyle={{ width: matchesMobile ? "31%" : "19%", marginLeft: "20px", height: "40px" }}
                     title={'To'}
                     selectedDate={toDate}
-                    onDateChange={handleToDateChange}
+                    // onDateChange={handleToDateChange}
                 />
 
                 {/* <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} /> */}
-                {decodedTokenAdmin.role === "admin" && (
+                {/* {decodedTokenAdmin.role === "admin" && (
                     ""
                 // <CustomButtonAdmin btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }}  getAccountStatement={getAccountStatement} />
                 )}
                 {decodedTokenUser.role === "user" && (
                 <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} />
-                )}
+                )} */}
            </Box>
-        </Box>
+        </Box>   
     )
 }
 
@@ -129,4 +119,4 @@ const Calendar = ({ title, containerStyle, DatePickerProps, pickerStyles, select
     );
 };
 
-export default YellowHeader;
+export default YellowHeaderAdmin;
