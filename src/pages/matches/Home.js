@@ -125,6 +125,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               // Update the bettings array in the current match object
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting.id === value.betId) {
+                  // alert(JSON.stringify(value));
                   // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                   return {
                     ...betting,
@@ -489,6 +490,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 teamA_lay: value?.teamA_lay, // Update the teamA_lay value
                 teamA_suspend:
                   value?.teamA_suspend == false ? null : "suspended", // Update the teamA_susp
+                teamA_Ball: null,
                 teamB_Ball: null,
                 teamC_Ball: null,
               };
@@ -525,6 +527,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 teamB_suspend:
                   value?.teamB_suspend == false ? null : "suspended", // Update the teamA_susp
                 teamA_Ball: null,
+                teamB_Ball: null,
                 teamC_Ball: null,
               };
 
@@ -559,6 +562,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   value?.teamC_suspend == false ? null : "suspended", // Update the teamA_susp
                 teamA_Ball: null,
                 teamB_Ball: null,
+                teamC_Ball: null,
               };
 
               // Create a new array with the updated match object
@@ -622,6 +626,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   ...currentMatches[0],
                   teamA_suspend: "suspended",
                   teamA_Ball: "ball",
+                  teamB_Ball: "ball",
+                  teamC_Ball: "ball",
                 };
                 const updatedMatches = [
                   ...currentMatches.slice(0, 0),
@@ -644,6 +650,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   ...currentMatches[0],
                   teamA_suspend: "suspended",
                   teamA_Ball: null,
+                  teamB_Ball: null,
+                  teamC_Ball: null,
                 };
                 const updatedMatches = [
                   ...currentMatches.slice(0, 0),
@@ -669,7 +677,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamB_suspend: "suspended",
+                  teamA_Ball: "ball",
                   teamB_Ball: "ball",
+                  teamC_Ball: "ball",
                 };
                 const updatedMatches = [
                   ...currentMatches.slice(0, 0),
@@ -690,7 +700,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamB_suspend: "suspended",
+                  teamA_Ball: null,
                   teamB_Ball: null,
+                  teamC_Ball: null,
                 };
                 const updatedMatches = [
                   ...currentMatches.slice(0, 0),
@@ -715,6 +727,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamC_suspend: "suspended",
+                  teamA_Ball: "ball",
+                  teamB_Ball: "ball",
                   teamC_Ball: "ball",
                 };
                 const updatedMatches = [
@@ -736,6 +750,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 const updatedMatch = {
                   ...currentMatches[0],
                   teamC_suspend: "suspended",
+                  teamA_Ball: null,
+                  teamB_Ball: null,
                   teamC_Ball: null,
                 };
                 const updatedMatches = [
@@ -1100,8 +1116,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-              <SessionBetSeperate allBetsData={sessionBets} mark />
-            )}
+                <SessionBetSeperate allBetsData={sessionBets} mark />
+              )}
           </Box>
         </Box>
       )}

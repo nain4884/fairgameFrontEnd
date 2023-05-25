@@ -26,7 +26,7 @@ const ResultComponent = ({
         selectOption: selected,
       };
       setLoading({ id: "UD", value: true });
-      const { data } = await axios.post("/game-match/declearResult", body);
+      const { data } = await axios.post("/game-match/undeclareresult", body);
       toast.success(data?.message);
       setLoading({ id: "", value: false });
       onClick();
@@ -55,7 +55,7 @@ const ResultComponent = ({
       console.log("error", e?.message);
     }
   };
-
+  const teamData = draw ? [`${teamA}`, `${teamB}`, `${tie}`, `${draw}`] : [`${teamA}`, `${teamB}`, `${tie}`]
   return (
     <Box
       sx={{
@@ -109,7 +109,8 @@ const ResultComponent = ({
           justifyContent: "space-between",
         }}
       >
-        {[`${teamA}`, `${teamB}`, `${tie}`, `${draw}`].map((i, k) => {
+
+        {teamData.map((i, k) => {
           return (
             <Box
               onClick={() => {

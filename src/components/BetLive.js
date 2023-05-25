@@ -78,23 +78,38 @@ const Row = ({ index, values }) => {
         });
         return timeString;
     };
+
+
     return (
-        <Box sx={{ display: "flex", height: "50px", borderTop: "2px solid white" }}>
+        <Box sx={{ display: "flex", height: "40px", borderTop: "2px solid white" }}>
             <Box sx={{ background: "#F8C851", width: "10%", px: "5px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{index}.</Typography>
+                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "14px" }}>{index}.</Typography>
             </Box>
             <Box sx={{ background: "#0B4F26", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Typography sx={{ color: "white", fontWeight: "600", fontSize: "18px" }}>{values?.user?.userName || values?.userName}</Typography>
+                <Typography sx={{ color: "white", fontWeight: "600", fontSize: "14px" }}>{values?.user?.userName || values?.userName}</Typography>
             </Box>
             {/* <Box sx={{ background: yes ? "#B3E0FF" : "#FFB5B5", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Typography sx={{ fontWeight: "800", color: "black", fontSize: "18px" }}>40</Typography>
             </Box> */}
-            <Box sx={{ background: values.bet_type == "yes" ? "#B3E0FF" : "#FFB5B5", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center", position: 'relative' }} >
+            <Box sx={{ background: values.bet_type == "yes" ? "#B3E0FF" : "#FFB5B5", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center", position: 'relative', flexDirection: "column", }} >
                 <Typography sx={{ fontWeight: "600", fontSize: { mobile: "6px", laptop: "8px" }, color: "black", position: 'absolute', top: 5, right: 5 }} >{getTime(values.createAt)}</Typography>
-                <Typography sx={{ fontWeight: "800", color: "black", fontSize: "18px" }} > {values.odds} </Typography>
+                <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black", lineHeight: 1.1 }} > {values.odds} </Typography>
+                <Typography
+                    sx={{
+                        fontSize: "8px",
+                        marginTop: -0.4,
+                        color: "black",
+                        textAlign: "center",
+                        fontWeight: "bold",
+                    }}
+                >
+                    {values?.bet_type == "no"
+                        ? values?.rate?.split("-")[0]
+                        : values?.rate?.split("-")[1]}
+                </Typography>
             </Box>
             <Box sx={{ background: values.bet_type == "yes" ? "#B3E0FF" : "#FFB5B5", width: "10%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Typography sx={{ fontWeight: "800", fontSize: "18px", color: "black", }}>{values.bet_type == "yes" ? "Yes" : "No"}</Typography>
+                <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black", }}>{values.bet_type == "yes" ? "Yes" : "No"}</Typography>
             </Box>
             <Box sx={{ background: values.bet_type == "yes" ? "#B3E0FF" : "#FFB5B5", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black", }}>{values.amount || values.stake}</Typography>
