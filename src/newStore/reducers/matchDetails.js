@@ -13,6 +13,7 @@ const initialState = {
   selectedMatch: {},
   sessionAllBetRates: [],
   bookMakerBetRates: [],
+  sessionResults: [],
 };
 
 const matchDetails = createSlice({
@@ -101,6 +102,9 @@ const matchDetails = createSlice({
     setBookMakerBetRate: (state, action) => {
       state.bookMakerBetRates = action.payload;
     },
+    setSessionResults: (state, action) => {
+      state.sessionResults = action.payload;
+    },
 
     setAddBetRates: (state, action) => {
       // const body= [...state.items,action.payload];
@@ -145,6 +149,7 @@ export const {
   setAllBetRate,
   setSessionAllBetRate,
   setBookMakerBetRate,
+  setSessionResults,
   removeAllBetRates,
   setAddBetRates,
   removeSessionOddsLive,
