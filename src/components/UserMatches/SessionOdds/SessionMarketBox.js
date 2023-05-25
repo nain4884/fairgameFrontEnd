@@ -48,7 +48,7 @@ const SessionMarketBox = ({
           display: "flex",
           background: "white",
           height: "38px",
-          width: "40%",
+          width: {mobile:"60%",laptop:"40%"},
           justifyContent: "flex-start",
           alignItems: "center",
         }}
@@ -84,7 +84,7 @@ const SessionMarketBox = ({
           >
 
             {data?.suspended == "Ball Started" ? <img src={BallStart} style={{ width: '113px', height: "32px" }} /> :
-              <h6 style={{ textTransform: "uppercase" }}>{data?.suspended}</h6>}
+              <h6 style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase",textAlign:"center",color:"white" ,width:"100%" }}>{data?.suspended}</h6>}
           </Box>
 
           {!matchesMobile && (
@@ -95,24 +95,26 @@ const SessionMarketBox = ({
           )}
         </>
       ) : (
-        <Box
-          sx={{
-            display: "flex",
-            position: "relative",
-            background: "white",
-            height: "38px",
-            width: { laptop: "60%", mobile: "80%" },
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <SeprateBox po={1} color={"white"} />
-          {matchesMobile && (
+        <>
+           {matchesMobile && (
             <PlaceBetComponent
               amount={index == 2}
               profitLoss={data}
             />
           )}
+           <Box
+          sx={{
+            display: "flex",
+            position: "relative",
+            background: "white",
+            height: "38px",
+            width: { laptop: "60%", mobile: "40.5%" },
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
+        >
+        {!matchesMobile &&  <SeprateBox po={1} color={"white"} />}
+       
           {false && (
             <>
               <Box
@@ -131,7 +133,7 @@ const SessionMarketBox = ({
           <Box
             sx={{ width: ".45%", display: "flex", background: "pink" }}
           ></Box>
-          <SeprateBox po={6} color={"white"} />
+         {!matchesMobile &&   <SeprateBox po={6} color={"white"} />}
           <SeprateBox
             po={2}
             rates={allRates}
@@ -185,6 +187,8 @@ const SessionMarketBox = ({
             />
           )}
         </Box>
+          </>
+       
       )}
     </Box>
   );

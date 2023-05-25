@@ -9,11 +9,12 @@ const MoneyBox = ({ color, rates }) => {
     <Box
       sx={{
         width: "80px",
+        marginRight:"15px",
         border: "1px solid #2626264D",
         borderRadius: "5px",
         justifyContent: "center",
-        position: matchesMobile ? "absolute" : "relative",
-        right: matchesMobile ? "-75%" : "7px",
+        // position: matchesMobile ? "relative" : "relative",
+        // right: matchesMobile ? "7px" : "7px",
         alignItems: "center",
         display: "flex",
         height: "25px",

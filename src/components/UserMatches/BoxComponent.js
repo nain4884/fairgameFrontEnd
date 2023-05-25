@@ -47,7 +47,7 @@ const BoxComponent = ({
           background: "white",
           position: "relative",
           height: "40px",
-          width: "40%",
+          width:{mobile:"60%",laptop:"40%"},
           alignItems: "center",
         }}
       >
@@ -115,7 +115,7 @@ const BoxComponent = ({
             position: "absolute",
             right: 0,
             zIndex: 10,
-            width: { laptop: "60%", mobile: "40.5%" },
+            width: { laptop: "60%", mobile: "40%" },
             justifyContent: { mobile: "flex-end", laptop: "center" },
             alignItems: "center",
             display: "flex",
@@ -128,13 +128,13 @@ const BoxComponent = ({
             background: "rgba(0,0,0,1)",
             height: "40px",
             width: { laptop: "60%", mobile: "40.5%" },
-            justifyContent: { mobile: "flex-end", laptop: "center" },
+            justifyContent: { mobile: "center", laptop: "center" },
             alignItems: "center",
             display: "flex",
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0 || livestatus ? "suspended" : status}</h4>
+          <Typography style={{  fontSize: { mobile: "12px", laptop: "22px" },textTransform: "uppercase" ,width:"100%",textAlign:"center",color:"white" ,fontWeight:"600"}}>{newData?.bettings?.length === 0 || livestatus ? "suspended" : status}</Typography>
         </Box>
       ) : (
         <>
@@ -143,7 +143,7 @@ const BoxComponent = ({
               display: "flex",
               background: "white",
               height: "40px",
-              width: { laptop: "60%", mobile: "80%" },
+              width: { laptop: "60%", mobile: "40.5%" },
               justifyContent: { mobile: "flex-end", laptop: "center" },
               alignItems: "center",
               position: "relative",
@@ -153,7 +153,7 @@ const BoxComponent = ({
               <SeprateBox
                 back={true}
                 currentMatch={newData}
-                lock={lock}
+                lock={  ex?.availableToBack?.length > 0 ? false : true}
                 rates={allRates}
                 value={
                   isRound ? Math.round(ex?.availableToBack?.length > 0
@@ -181,7 +181,7 @@ const BoxComponent = ({
               <SeprateBox
                 back={true}
                 currentMatch={newData}
-                lock={lock}
+                lock={  ex?.availableToBack?.length > 0 ? false : true}
                 rates={allRates}
                 value={
                   isRound ? Math.round(ex?.availableToBack?.length > 0
@@ -209,7 +209,7 @@ const BoxComponent = ({
             <SeprateBox
               back={true}
               currentMatch={newData}
-              lock={lock}
+              lock={  ex?.availableToBack?.length > 0 ? false : true}
               rates={allRates}
               value={
                 isRound ? Math.round(ex?.availableToBack?.length > 0
@@ -237,7 +237,7 @@ const BoxComponent = ({
             <SeprateBox
               back={true}
               currentMatch={newData}
-              lock={lock}
+              lock={  ex?.availableToLay?.length > 0 ? false : true}
               rates={allRates}
               value={
                 isRound ? Math.round(ex?.availableToLay?.length > 0
@@ -263,7 +263,7 @@ const BoxComponent = ({
                 back={true}
                 currentMatch={newData}
                 rates={allRates}
-                lock={lock}
+                lock={  ex?.availableToLay?.length > 0 ? false : true}
                 value={
                   isRound ? Math.round(ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[1]?.price
@@ -291,7 +291,7 @@ const BoxComponent = ({
                 back={true}
                 currentMatch={newData}
                 rates={allRates}
-                lock={lock}
+                lock={  ex?.availableToLay?.length > 0 ? false : true}
                 value={isRound ? Math.round(ex?.availableToLay?.length > 0
                   ? ex?.availableToLay[2]?.price
                   : 0) : ex?.availableToLay?.length > 0

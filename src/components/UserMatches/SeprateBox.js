@@ -170,7 +170,7 @@ const SeprateBox = ({
       <Box
         ref={innerRef}
         sx={{
-          width: { mobile: "30%", laptop: "20%" },
+          width: { mobile: "100%", laptop: "20%" },
           height: "94%",
           position: typeOfBet === "Session" && "relative", // add
         }}

@@ -27,7 +27,9 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
   }, [profitLoss]);
 
   return (
-    <Box sx={{ marginTop: "-8.4vw" }}>
+    <Box
+      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+    >
       <Box
         ref={innerRef}
         onClick={(e) => {
@@ -35,17 +37,16 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
         }}
         sx={{
           background: "#0B4F26",
-          position: "relative",
+          position: "absolute",
           flexDirection: "column",
           display: "flex",
           alignItems: "center",
+          right:"41vw",
           justifyContent: "center",
           width: { laptop: "90px", mobile: "80px" },
           borderRadius: "5px",
           height: "35px",
-          marginTop: "24px",
-          left: "144px",
-          position: "absolute",
+
           zIndex: 100,
         }}
       >
@@ -75,8 +76,11 @@ const PlaceBetComponent = ({ amount, profitLoss }) => {
         <Box sx={{ zIndex: 100, display: "flex", flexDirection: "column" }}>
           <Typography
             sx={{
+              marginTop:"2px",  
               fontSize: {
                 laptop: !profitLoss?.profitLoss?.max_loss ? "8px" : "8px",
+                tablet: "8px",
+                mobile: "8px",
               },
               fontWeight: !profitLoss?.profitLoss?.max_loss ? "500" : "500",
               color: "white",
