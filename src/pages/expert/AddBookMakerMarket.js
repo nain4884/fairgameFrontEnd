@@ -14,7 +14,7 @@ export default function AddBookMakerMarket() {
                     <IndiaPakLiveBookMaker add={true} match={location?.state?.match} />
                 </Box>
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
-                    <BetMakerMarket add={true} />
+                    <BetMakerMarket add={true} match={location?.state?.match} />
                 </Box>
             </Box>
         </Background>
