@@ -185,19 +185,19 @@ const BoxComponent = ({
               // <img src={BallStart} style={{ width: '113px', height: "32px" }} /> 
               :
               <Typography
-              style={{
-                fontSize: { mobile: "12px", laptop: "22px" },
-                textTransform: "uppercase",
-                textAlign: "center",
-                width: "100%",
-                color: "white",
-                fontWeight: "600",
-              }}
-            >
-              {newData?.bettings?.length === 0 || livestatus
-                ? "suspended"
-                : status}
-            </Typography>
+                style={{
+                  fontSize: { mobile: "12px", laptop: "22px" },
+                  textTransform: "uppercase",
+                  textAlign: "center",
+                  width: "100%",
+                  color: "white",
+                  fontWeight: "600",
+                }}
+              >
+                {newData?.bettings?.length === 0 || livestatus
+                  ? "suspended"
+                  : status}
+              </Typography>
             }
           </Box>
         ) : (
