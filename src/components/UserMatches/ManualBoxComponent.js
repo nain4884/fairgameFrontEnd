@@ -131,10 +131,10 @@ const BoxComponent = ({
               fontWeight: "600",
               marginLeft: "10px",
               marginRight: "10px",
-              width:{mobile:"113px",table:"100%",laptop:"100%"}
+              width: { mobile: "113px", table: "100%", laptop: "100%" }
             }}
           >
-            {name}{ballStatus.toString()}
+            {name}
           </Typography>
         </Box>
         <MoneyBox color={color} rates={rate} />
