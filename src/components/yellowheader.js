@@ -64,14 +64,11 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
                     onDateChange={handleToDateChange}
                 />
 
-                {/* <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} /> */}
-                {decodedTokenAdmin.role === "admin" && (
-                    ""
-                // <CustomButtonAdmin btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }}  getAccountStatement={getAccountStatement} />
-                )}
-                {decodedTokenUser.role === "user" && (
                 <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} />
-                )}
+              
+                {/* {decodedTokenUser.role === "user" && (
+                <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} />
+                )} */}
            </Box>
         </Box>
     )
