@@ -124,6 +124,55 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             if (socket && socket.connected) {
                 socket.onevent = async (packet) => {
                     const data = packet.data[1];
+                    if (packet.data[0] === "match_bet") {
+                        const data = packet.data[1];
+                        try {
+                            // console.warn(data, "check rates");
+                            // getAllBets();
+                            // console.log(data, "MATCHH_BET", data?.betPlaceData?.match_id, id);
+                            if (data) {
+                                const body = {
+                                    id: data?.betPlaceData?.id,
+                                    isActive: true,
+                                    createAt: data?.betPlaceData?.createAt,
+                                    updateAt: data?.betPlaceData?.createAt,
+                                    createdBy: null,
+                                    deletedAt: null,
+                                    user_id: null,
+                                    match_id: data?.betPlaceData?.match_id,
+                                    bet_id: data?.betPlaceData?.bet_id,
+                                    result: "pending",
+                                    team_bet: data?.betPlaceData?.team_bet,
+                                    odds: data?.betPlaceData?.odds,
+                                    win_amount: null,
+                                    loss_amount: null,
+                                    bet_type: data?.betPlaceData?.bet_type,
+                                    country: null,
+                                    ip_address: null,
+                                    rate: null,
+                                    marketType: data?.betPlaceData?.marketType,
+                                    amount:
+                                        data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                                };
+                                // alert(11)
+                                if (data?.betPlaceData?.match_id === match?.id) {
+                                    // dispatch(setBookMakerBetRate((prev) => [body, ...prev]));
+                                    dispatch(setBookMakerBetRate((prev) => {
+                                        // Create a new array by adding `body` at the beginning and spreading the previous values
+                                        const newData = [body, ...prev];
+
+                                        // Modify the `newData` array if needed
+
+                                        // Return the modified `newData` array
+                                        return newData;
+                                    }));
+                                }
+                            }
+                        } catch (err) {
+                            console.log(err?.message);
+                        }
+
+                    }
                     if (packet.data[0] === "teamA_suspend_user") {
                         if (data.teamA_suspend == 'Ball Started') {
                             // setIsABall(true)

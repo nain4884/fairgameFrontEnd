@@ -16,6 +16,8 @@ export default function Live() {
     const dispatch = useDispatch()
     const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
     const [betData, setBetData] = useState(sessionAllBetRates);
+    const [betId, setBetId] = useState();
+
 
     function showDialogModal(isModalOpen, showRight, message, navigateTo, state) {
         dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }))
@@ -25,9 +27,13 @@ export default function Live() {
         }, [2000])
     }
 
-    const handleBetData = async (data) => {
+    const handleBetData = async (data, id) => {
         // alert("call" + data.length)
+        //
         setBetData(data);
+        if (id) {
+            setBetId(id)
+        }
     }
     useEffect(() => {
         if (socket && socket.connected) {
@@ -52,7 +58,7 @@ export default function Live() {
             <Box display="flex">
                 <Box flex={1} sx={{ margin: "10px" }}>
                     <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} handleBetData={handleBetData} />
-                    <SessionResult createSession={location?.state?.createSession} showDialogModal={showDialogModal} />
+                    <SessionResult createSession={location?.state?.createSession} showDialogModal={showDialogModal} betId={betId} />
                 </Box>
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
                     {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={betData} />}

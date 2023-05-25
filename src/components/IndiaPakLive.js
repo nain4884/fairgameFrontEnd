@@ -92,11 +92,13 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             })
         }
         setIsCreateSession(createSession);
-        // getSessionResult(match?.id);
+        getSessionResult(match?.id);
     }, [sessionEvent?.id]);
 
     const getSessionResult = async (match_id) => {
         let response = await axios.get(`/game-match/getResults/${match_id}`);
+        // alert(JSON.stringify(response?.data?.data.length))
+        dispatch(setSessionResults(response?.data?.data || []));
         // setSessionResults
     }
 
@@ -166,7 +168,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             console.log("data :", data.data);
             // setBetData(data?.data?.data || []);
             // alert(handleBetData)
-            handleBetData(data?.data?.data || [])
+            handleBetData(data?.data?.data || [], id)
             dispatch(setSessionAllBetRate(data?.data?.data || []));
         } catch (e) {
             console.log(e);
