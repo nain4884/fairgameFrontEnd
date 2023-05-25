@@ -35,7 +35,13 @@ const AccountStatementList = ({ user }) => {
     const handleChildData = (childData) => {
         setData(childData);
     };
-
+    const getLimitEntries = (childLimitData) => {
+        setPageLimit(childLimitData);
+    };
+    function callPage(val) {
+        // dispatch(setPage(parseInt(val)));
+        setCurrentPage(parseInt(val));
+      }
     async function getAccountStatement() {
         const userId = currentUser.id
         const originalDatefrom = formatDate(data[0]);
@@ -71,26 +77,125 @@ const AccountStatementList = ({ user }) => {
         getAccountStatement()
     }, []);
 
-    const Footer = () => {
-        return (
-            <>
-            <Box sx={{ height: "50px", display: "flex", alignItems: "center", px: { mobile: "5px", laptop: "10px" }, justifyContent: "space-between", background: "#FAFAFA", }}>
-                <Typography sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}>Showing 1 to 6</Typography>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box sx={{ height: "35px", width: { mobile: "80px", laptop: "100px" }, background: "#0B4F26", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px" }}>
-                        <Typography sx={{ color: "white", fontSize: { laptop: "14px", mobile: "12px" } }}>Previous</Typography>
-                    </Box>
-                    <Box sx={{ height: "35px", marginX: { laptop: "10px", mobile: "5px" }, width: "40px", background: "#262626", display: "flex", borderRadius: "5px", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "white", fontSize: { laptop: "14px", mobile: "12px" } }}>1</Typography>
-                    </Box>
-                    <Box sx={{ height: "35px", width: { mobile: "80px", laptop: "100px" }, background: "#0B4F26", display: "flex", borderRadius: "5px", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "white", fontSize: { laptop: "14px", mobile: "12px" } }}>Next</Typography>
-                    </Box>
-                </Box>
-            </Box>
-            </>
-        )
-    }
+    
+
+    // const Footer = () => {
+    //     return (
+    //         <>
+    //         <Box sx={{ height: "50px", display: "flex", alignItems: "center", px: { mobile: "5px", laptop: "10px" }, justifyContent: "space-between", background: "#FAFAFA", }}>
+    //             <Typography sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}>Showing 1 to 6</Typography>
+    //             <Box sx={{ display: "flex", alignItems: "center" }}>
+    //                 <Box sx={{ height: "35px", width: { mobile: "80px", laptop: "100px" }, background: "#0B4F26", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "5px" }}>
+    //                     <Typography sx={{ color: "white", fontSize: { laptop: "14px", mobile: "12px" } }}>Previous</Typography>
+    //                 </Box>
+    //                 <Box sx={{ height: "35px", marginX: { laptop: "10px", mobile: "5px" }, width: "40px", background: "#262626", display: "flex", borderRadius: "5px", justifyContent: "center", alignItems: "center" }}>
+    //                     <Typography sx={{ color: "white", fontSize: { laptop: "14px", mobile: "12px" } }}>1</Typography>
+    //                 </Box>
+    //                 <Box sx={{ height: "35px", width: { mobile: "80px", laptop: "100px" }, background: "#0B4F26", display: "flex", borderRadius: "5px", justifyContent: "center", alignItems: "center" }}>
+    //                     <Typography sx={{ color: "white", fontSize: { laptop: "14px", mobile: "12px" } }}>Next</Typography>
+    //                 </Box>
+    //             </Box>
+    //         </Box>
+    //         </>
+    //     )
+    // }
+    
+const Footer = ({ currentPage, pages, callPage }) => {
+    return ( 
+      <Box
+        sx={{
+          height: "40px",
+          display: "flex",
+          alignItems: "center",
+          px: { mobile: "5px", laptop: "10px" },
+          justifyContent: "space-between",
+          background: "#FAFAFA",
+        }}
+      >
+        <Typography
+          sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}
+        >
+          Showing 1 to {pages}
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            sx={{
+              height: "35px",
+              width: { mobile: "80px", laptop: "100px" },
+              background: "#0B4F26",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: "5px",
+            }}
+            onClick={() => {
+              callPage(
+                parseInt(currentPage) - 1 === 0 ? 1 : parseInt(currentPage) - 1
+              );
+            }}
+          >
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: { laptop: "14px", mobile: "12px" },
+              }}
+            >
+              Previous
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              height: "35px",
+              marginX: { laptop: "10px", mobile: "5px" },
+              width: "40px",
+              background: "#262626",
+              display: "flex",
+              borderRadius: "5px",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: { laptop: "14px", mobile: "12px" },
+              }}
+            >
+              {currentPage}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              height: "35px",
+              width: { mobile: "80px", laptop: "100px" },
+              background: "#0B4F26",
+              display: "flex",
+              borderRadius: "5px",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onClick={() => {
+              callPage(
+                parseInt(currentPage) === pages
+                  ? pages
+                  : parseInt(currentPage) + 1
+              );
+            }}
+          >
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: { laptop: "14px", mobile: "12px" },
+              }}
+            >
+              Next
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+    );
+  };
+  
     return (
         <>
             {decodedTokenUser.role === "user" && (
@@ -98,7 +203,6 @@ const AccountStatementList = ({ user }) => {
             )}
             {decodedTokenAdmin.role === "admin" && (
               <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} />  
-
                 // <YellowHeaderAdmin onChildData={handleChildData} getAccountStatement={getAccountStatement} />
             )}
                 {/* <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} /> */}
@@ -107,7 +211,7 @@ const AccountStatementList = ({ user }) => {
             <Box sx={[{ marginX: "0.5%", minHeight: "100px", borderRadius: "2px", border: "2px solid white", borderTopRightRadius: { mobile: "10px", laptop: '0px', tablet: '10px' }, borderTopLeftRadius: { mobile: "10px", laptop: '0px', tablet: '10px' } }, (theme) => ({
                 backgroundImage: `${theme.palette.primary.headerGradient}`
             })]}>
-                <ListH />
+                <ListH onChildData={getLimitEntries}/> 
                     <Box sx={{ overflowX: 'scroll', minWidth: '900px' }}>
                         <ListHeaderT />
                         {decodedTokenUser.role === "user" ?
@@ -170,19 +274,22 @@ const AccountStatementList = ({ user }) => {
                             />
                         ))} */}
                     </Box>
-                {/* <Footer /> */}
+                <Footer
+        currentPage={currentPage}
+        pages={pageLimit}
+        callPage={callPage}
+      />
             </Box>
         </>
     )
 }
 
-const ListH = () => {
+const ListH = ({getLimitEntries}) => {
     return (<Box display={"flex"} sx={{ justifyContent: "space-between", px: "10px", py: "6px" }}>
         <Box display={"flex"} alignItems="center">
             <Typography sx={{ fontSize: '10px', color: 'white', fontWeight: '500' }}>Show</Typography>
-            <SmallDropDown />
+            <SmallDropDown onChildData={getLimitEntries}/>
             <Typography sx={{ fontSize: '10px', color: 'white', fontWeight: '500' }}>Entries</Typography>
-
         </Box>
         <SearchInput placeholder={"Search..."} />
     </Box>)
