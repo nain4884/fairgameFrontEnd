@@ -230,6 +230,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             sx={{
               flex: 1.2,
               background: "#f1c550",
+              overflow: "hidden",
               alignItems: { laptop: "center", mobile: "flex-end" },
               display: "flex",
             }}
@@ -237,6 +238,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             <Typography
               noWrap={true}
               sx={{
+                overflow: "hidden",
                 marginBottom: "2px",
                 fontSize: { laptop: "14px", mobile: "10px" },
                 fontWeight: "bold",

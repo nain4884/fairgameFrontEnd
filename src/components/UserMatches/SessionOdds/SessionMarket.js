@@ -65,7 +65,7 @@ const SessionMarket = ({
           >
             <Typography
               sx={{
-                fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+                fontSize: { laptop: "13px", tablet: "12px", mobile: "10px" },
                 fontWeight: "bold",
                 marginLeft: "7px",
               }}
@@ -101,7 +101,7 @@ const SessionMarket = ({
             <Typography
               sx={{
                 color: "white",
-                width: "60px",
+                width: {mobile:"40px",tablet:"100px",laptop:"100px"},
                 fontSize: { laptop: "9px", tablet: "9px", mobile: "7px" },
                 fontWeight: "500",
                 flexWrap: "wrap",

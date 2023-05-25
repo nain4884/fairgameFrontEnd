@@ -194,7 +194,7 @@ const CustomHeader = ({}) => {
                 }}
                 src={logo}
                 sx={{
-                  height: { laptop: "45px", mobile: "45px" },
+                  height: { laptop: "45px", mobile: "30px" },
                   width: "auto",
                   marginLeft: { laptop: "20px", mobile: "10px" },
                 }}

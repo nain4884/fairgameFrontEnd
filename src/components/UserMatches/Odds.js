@@ -9,10 +9,10 @@ import { memo } from "react";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
-    <Box sx={{ marginLeft: "12px", display: "flex", width: "100%", gap: "4px" }}>
+    <Box sx={{ marginLeft: {mobile: "34px",laptop:"12px",tablet:"12px"}, display: "flex", width: "100%", gap: "4px" }}>
       <Box
         sx={{
-          width: { laptop: "70px", mobile: "10vw" },
+          width: { laptop: "70px", mobile: "50px",tablet:"70px" },
           // position: "absolute",
           flexDirection: "column",
           paddingX: "5px",
@@ -46,7 +46,7 @@ const SmallBox = ({ valueA, valueB }) => {
       </Box>
       <Box
         sx={{
-          width: { laptop: "70px", mobile: "10vw" },
+          width: { laptop: "70px", mobile: "50px",tablet:"70px" },
           // position: "absolute",
           paddingX: "5px",
           display: "flex",
@@ -178,7 +178,7 @@ const Odds = ({
         >
           <Typography
             sx={{
-              fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+              fontSize: { laptop: "13px", tablet: "12px", mobile: "10px" },
               fontWeight: "bold",
               marginLeft: "7px",
             }}
@@ -212,7 +212,8 @@ const Odds = ({
           <Typography
             sx={{
               color: "white",
-              width: "60px",
+              width: {mobile:"40px",tablet:"100px",laptop:"100px"},
+
               fontSize: { laptop: "9px", mobile: "7px" },
               fontWeight: "500",
               flexWrap: "wrap",
@@ -382,7 +383,7 @@ const Odds = ({
             time={true}
             showBox={showBox}
             livestatus={newData?.status === "SUSPENDED" ? true : false}
-
+            
             teamImage={newData?.teamA_Image}
             newData={newData}
             // lock={data?.length > 0 ? false : true}

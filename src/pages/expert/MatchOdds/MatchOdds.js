@@ -439,7 +439,7 @@ const MatchOdds = ({
             sx={{
               width: "100%",
               position: "absolute",
-              height: "66%",
+              height: "57%",
               bottom: 0,
               background: "rgba(0,0,0,0.5)",
             }}

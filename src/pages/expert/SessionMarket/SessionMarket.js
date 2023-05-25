@@ -149,7 +149,7 @@ const SessionMarket = ({
               marginLeft: "7px",
             }}
           >
-            {title} {sessionData?.length}
+            {title} 
           </Typography>
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
@@ -207,7 +207,7 @@ const SessionMarket = ({
                 display: "flex",
                 background: "'#319E5B'",
                 height: "25px",
-                width: "50%",
+                width: "60%",
                 alignItems: "center",
               }}
             >
@@ -227,15 +227,15 @@ const SessionMarket = ({
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                marginRight: "4vh",
-                width: { laptop: "67%", mobile: "80%" },
-                justifyContent: { laptop: "center", mobile: "flex-end" },
+                // marginLeft: "0vw",          
+                width: { laptop: "40%", mobile: "80%" },
+                justifyContent: { laptop: "flex-start", mobile: "flex-end" },
               }}
             >
               <Box
                 sx={{
                   background: "#FF9292",
-                  width: { laptop: "15.5%", mobile: "26.5%" },
+                  width: { laptop: "23%", mobile: "26.5%" },
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
@@ -252,7 +252,7 @@ const SessionMarket = ({
               <Box
                 sx={{
                   background: "#00C0F9",
-                  width: { laptop: "15.5%", mobile: "26.5%" },
+                  width: { laptop: "23%", mobile: "26.5%" },
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",

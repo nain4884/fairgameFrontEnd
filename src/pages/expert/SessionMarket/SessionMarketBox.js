@@ -30,7 +30,7 @@ const SessionMarketBox = ({
   hideResult,
   hideTotalBet,
   setData,
-  setIObtes
+  setIObtes,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -160,6 +160,8 @@ const SessionMarketBox = ({
           sx={{
             position: "absolute",
             top: "5px",
+            width: "30%",
+            justifyContent: "flex-end",
             left: { laptop: "24vh", tablet: "24vh" },
             display: "flex",
             zIndex: 100,
@@ -199,12 +201,12 @@ const SessionMarketBox = ({
               textSize={"8px"}
               // width={"80px"}
               width={"33px"}
-            // title={"Live"}
+              // title={"Live"}
             />
           )}
-          {!hideResult && ( 
-            <Result 
-            width={7}
+          {!hideResult && (
+            <Result
+              width={7}
               onClick={(e) => {
                 setVisible(true);
               }}
@@ -237,7 +239,7 @@ const SessionMarketBox = ({
         )}
 
         {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
-          newData?.betStatus === 2 ? (
+        newData?.betStatus === 2 ? (
           <Box
             sx={{
               margin: "1px",
@@ -258,7 +260,7 @@ const SessionMarketBox = ({
                 fontSize: "12px",
                 textAlign: "center",
                 lineHeight: "11px",
-                color: "#FFF"
+                color: "#FFF",
               }}
             >
               {newData?.betStatus === 2
@@ -277,8 +279,8 @@ const SessionMarketBox = ({
               width: { laptop: "43%", mobile: "60%" },
               justifyContent: "center",
               alignItems: "center",
-              margin:"auto"
-            }}  
+              margin: "auto",
+            }}
           >
             <SeperateBox
               session={true}
@@ -308,15 +310,11 @@ const SessionMarketBox = ({
                             }}>
                                 <img src={BallStart} style={{ width: '60px', height: '19px' }} />
                             </Box>
-                        } */} 
+                        } */}
           </Box>
         )}
         {!hideTotalBet && (
-          <PlaceBetComponentWeb
-            width={7}
-            newData={newData}
-            setData={setData}
-          />
+          <PlaceBetComponentWeb width={7} newData={newData} setData={setData} />
         )}
       </Box>
       <Divider />

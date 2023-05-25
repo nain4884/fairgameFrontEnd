@@ -463,12 +463,13 @@ const MatchScreen = () => {
               sx={{
                 width: { laptop: "100%", mobile: "100%", tablet: "100%" },
                 display: "flex",
+                gap:1,
                 flexDirection: { tablet: "column", laptop: "row" },
               }}
             >
               <Box
                 sx={{
-                  width: { laptop: "30%", mobile: "100%", tablet: "100%" },
+                  width: { laptop: "25%", mobile: "100%", tablet: "100%" },
                   flexDirection: "column",
                   display: "flex",
                 }}
@@ -494,7 +495,7 @@ const MatchScreen = () => {
               </Box>
               <Box
                 sx={{
-                  width: { laptop: "70%", mobile: "100%", tablet: "100%" },
+                  width: { laptop: "75%", mobile: "100%", tablet: "100%" },
                   flexDirection: "column",
                   display: "flex",
                 }}

@@ -49,7 +49,6 @@ const SessionMarketLive = ({
   //   [setMatchSessionData]
   // );
 
- 
   return (
     <Box
       sx={{
@@ -91,11 +90,10 @@ const SessionMarketLive = ({
               marginLeft: "7px",
             }}
           >
-            {title} {sessionData?.length}
+            {title} 
           </Typography>
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
-   
         </Box>
         <Box
           sx={{
@@ -142,7 +140,7 @@ const SessionMarketLive = ({
                 display: "flex",
                 background: "'#319E5B'",
                 height: "25px",
-                width: "50%",
+                width: "60%",
                 alignItems: "center",
               }}
             >
@@ -162,14 +160,15 @@ const SessionMarketLive = ({
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                width: { laptop: "67%", mobile: "80%" },
-                justifyContent: { laptop: "center", mobile: "flex-end" },
+                paddingRight: "17px",
+                width: { laptop: "60%", mobile: "80%" },
+                justifyContent: "flex-end",
               }}
             >
               <Box
                 sx={{
                   background: "#FF9292",
-                  width: { laptop: "15.5%", mobile: "26.5%" },
+                  width: "28%" ,
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
@@ -186,7 +185,7 @@ const SessionMarketLive = ({
               <Box
                 sx={{
                   background: "#00C0F9",
-                  width: { laptop: "15.5%", mobile: "26.5%" },
+                  width: "28%" ,
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
