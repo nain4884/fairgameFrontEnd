@@ -157,7 +157,7 @@ const SessionMarket = ({
                   display: "flex",
                   background: "#319E5B",
                   height: "25px",
-                  gap: "1px",
+                  gap: {mobile:"0px",laptop:"1px",tablet:"1px"},
                   width: { laptop: "60%", mobile: "80%" },
                   justifyContent: { laptop: "center", mobile: "flex-end" },
                 }}
