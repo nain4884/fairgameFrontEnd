@@ -77,7 +77,7 @@ const BoxComponent = ({
           background: "white",
           position: "relative",
           height: "40px",
-          width: "40%",
+          width: { mobile: "60%", laptop: "40%" },
           alignItems: "center",
         }}
       >
@@ -184,7 +184,20 @@ const BoxComponent = ({
               null
               // <img src={BallStart} style={{ width: '113px', height: "32px" }} /> 
               :
-              <h4 style={{ textTransform: "uppercase" }}>{newData?.bettings?.length === 0 || livestatus ? "suspended" : status}</h4>
+              <Typography
+              style={{
+                fontSize: { mobile: "12px", laptop: "22px" },
+                textTransform: "uppercase",
+                textAlign: "center",
+                width: "100%",
+                color: "white",
+                fontWeight: "600",
+              }}
+            >
+              {newData?.bettings?.length === 0 || livestatus
+                ? "suspended"
+                : status}
+            </Typography>
             }
           </Box>
         ) : (
@@ -194,7 +207,7 @@ const BoxComponent = ({
                 display: "flex",
                 background: "white",
                 height: "40px",
-                width: { laptop: "60%", mobile: "80%" },
+                width: { laptop: "60%", mobile: "40%" },
                 justifyContent: { mobile: "flex-end", laptop: "center" },
                 alignItems: "center",
                 position: "relative",
