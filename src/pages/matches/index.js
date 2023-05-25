@@ -182,7 +182,6 @@ const Matches = () => {
             }),
           ]}
         >
-          <YellowHeader />
           <AccountStatementList />
         </Box>
       </>

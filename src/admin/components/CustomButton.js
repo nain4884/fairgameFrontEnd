@@ -1,6 +1,6 @@
 import { Typography, Box } from "@mui/material";
 
-const CustomButton = ({ btnStyle }) => {
+const CustomButton = ({ btnStyle ,onClick,getAccountStatement }) => {
   const classes = {
     mainBox: [
       {
@@ -13,14 +13,25 @@ const CustomButton = ({ btnStyle }) => {
         background: "#0B4F26",
         alignSelf: "end",
         marginRight: "10px",
+        cursor: "pointer"
       },
       btnStyle,
     ],
     mainBoxTypographysx: { fontSize: "16px", color: "white", fontWeight: "600" }
   }
+  const handleClick = () => {
+    
+    // Call the onClick function provided by the parent component
+    if (onClick) {
+      // alert('hitted')
+      getAccountStatement()
+      // onClick();
+    }
+  };
   return (
     <Box
       sx={classes.mainBox}
+      onClick={handleClick}
     >
       <Typography sx={classes.mainBoxTypographysx}>
         Load
