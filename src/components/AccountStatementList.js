@@ -15,7 +15,7 @@ import { useTheme } from "@emotion/react"
 
 
 
-const AccountStatementList = ({user}) => {
+const AccountStatementList = ({ user }) => {
     const theme = useTheme()
 
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
@@ -38,8 +38,8 @@ const AccountStatementList = ({user}) => {
 
     async function getAccountStatement() {
         const userId = currentUser.id
-        const originalDatefrom =  formatDate(data[0]);
-        const originalDateto =  formatDate(data[1])
+        const originalDatefrom = formatDate(data[0]);
+        const originalDateto = formatDate(data[1])
         if (data !== '') {
             var payload = {
                 limit: pageLimit,
@@ -73,6 +73,7 @@ const AccountStatementList = ({user}) => {
 
     const Footer = () => {
         return (
+            <>
             <Box sx={{ height: "50px", display: "flex", alignItems: "center", px: { mobile: "5px", laptop: "10px" }, justifyContent: "space-between", background: "#FAFAFA", }}>
                 <Typography sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}>Showing 1 to 6</Typography>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -87,23 +88,70 @@ const AccountStatementList = ({user}) => {
                     </Box>
                 </Box>
             </Box>
+            </>
         )
     }
     return (
-        <>      
+        <>
             {decodedTokenUser.role === "user" && (
                 <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} />
-            ) }
-          
-            
-            <Box sx={[{ marginX: "0.5%", minHeight: "200px", borderRadius: "2px", border: "2px solid white", borderTopRightRadius: { mobile: "10px", laptop: '0px', tablet: '10px' }, borderTopLeftRadius: { mobile: "10px", laptop: '0px', tablet: '10px' } }, (theme) => ({
+            )}
+            {/* {decodedTokenAdmin.role === "admin" && (
+                // <YellowHeaderAdmin/>
+
+                <YellowHeaderAdmin onChildData={handleChildData} getAccountStatement={getAccountStatement} />
+            )} */}
+                <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} />
+
+
+            <Box sx={[{ marginX: "0.5%", minHeight: "100px", borderRadius: "2px", border: "2px solid white", borderTopRightRadius: { mobile: "10px", laptop: '0px', tablet: '10px' }, borderTopLeftRadius: { mobile: "10px", laptop: '0px', tablet: '10px' } }, (theme) => ({
                 backgroundImage: `${theme.palette.primary.headerGradient}`
             })]}>
                 <ListH />
-                <Box sx={{ overflowX: 'scroll' }}>
                     <Box sx={{ overflowX: 'scroll', minWidth: '900px' }}>
                         <ListHeaderT />
-                        {transactionHistory.map((item) => (
+                        {decodedTokenUser.role === "user" ?
+                             transactionHistory.map((item) => (
+                                <Row
+                                    index={item?.id}
+                                    containerStyle={{ background: "#FFE094" }}
+                                    profit={true}
+                                    fContainerStyle={{ background: "#0B4F26" }}
+                                    fTextStyle={{ color: "white" }}
+                                    date={item?.createAt}
+                                    closing={item?.current_amount}
+                                    trans_type={item?.trans_type}
+                                    amount={item?.amount}
+                                    touserName={item?.action_by.userName}
+                                    fromuserName={item?.user.userName}
+                                    {...(item.trans_type === "withdraw" ? { debit: item.amount } : { credit: item.amount })}
+                                    {...(item.trans_type === "add" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
+                                />
+                            )):
+                            transactionHistory.map((item) => (
+                                <Row
+                                    index={item?.id}
+                                    containerStyle={{ background: "#FFE094" }}
+                                    profit={true}
+                                    fContainerStyle={{ background: "#0B4F26" }}
+                                    fTextStyle={{ color: "white" }}
+                                    date={item?.createAt}
+                                    closing={item?.current_amount}
+                                    trans_type={item?.trans_type}
+                                    amount={item?.amount}
+                                    touserName={item?.action_by.userName}
+                                    fromuserName={item?.user.userName}
+                                    {...(item.trans_type === "win" || item.trans_type === "add" ? { credit: item.amount } : { debit: item.amount })}
+                                    {...(item.trans_type === "add" || item.trans_type === "win" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
+                                />
+                            ))
+                        }
+
+                        {transactionHistory.length === 0 && (
+                             <EmptyRow containerStyle={{ background: "#FFE094" }}/>
+                        )}
+                        
+                        {/* {transactionHistory.map((item) => (
                             <Row
                                 index={item?.id}
                                 containerStyle={{ background: "#FFE094" }}
@@ -114,14 +162,14 @@ const AccountStatementList = ({user}) => {
                                 closing={item?.current_amount}
                                 trans_type={item?.trans_type}
                                 amount={item?.amount}
+                                
                                 touserName={item?.action_by.userName}
                                 fromuserName={item?.user.userName}
                                 {...(item.trans_type === "withdraw" ? { debit: item.amount } : { credit: item.amount })}
                                 {...(item.trans_type === "add" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
                             />
-                        ))}
+                        ))} */}
                     </Box>
-                </Box>
                 {/* <Footer /> */}
             </Box>
         </>
@@ -168,7 +216,13 @@ const ListHeaderT = () => {
     )
 }
 
-
+const EmptyRow = ({containerStyle}) => {
+    return (
+        <Box sx={[{ display: "flex", height: "45px", background: "#0B4F26", alignItems: "center", overflow: "hidden", borderBottom: "2px solid white",justifyContent:"center" }, containerStyle]}>
+           <Typography>No Results found</Typography>
+        </Box>
+    )
+}
 
 
 const Row = ({ containerStyle, fContainerStyle, fTextStyle, profit, index, date, closing, description, touserName, fromuserName, trans_type, amount, debit, credit }) => {
