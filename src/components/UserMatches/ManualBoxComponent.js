@@ -219,7 +219,6 @@ const BoxComponent = ({
                   currentMatch={newData}
                   lock={lock}
                   rates={allRates}
-
                   // value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
                   // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
                   value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
