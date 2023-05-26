@@ -13,7 +13,8 @@ const initialState = {
   userData: [],
   subCurrentPageNo: 1,
   subUserData: [],
-  currentStatementPage:1
+  currentStatementPage:1,
+  allbetsPage:0
 };
 
 export const auth = createSlice({
@@ -57,6 +58,9 @@ export const auth = createSlice({
     },
     setCurrentStatementPage:(state,action) => {
       state.currentStatementPage = action.payload
+    },
+    setallbetsPage:(state,action) => {
+      state.allbetsPage = action.payload
     },
     logout: (state, action) => {
       switch (action?.payload?.roleType) {
@@ -111,7 +115,8 @@ export const {
   setSubPage,
   setUserData,
   setSubUserData,
-  setCurrentStatementPage
+  setCurrentStatementPage,
+  setallbetsPage
 } = auth.actions;
 
 // export const selectCount = state => state.counter;

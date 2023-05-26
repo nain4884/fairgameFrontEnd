@@ -5,7 +5,7 @@ import { CustomHeader, SideBar } from "../../components";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import SessionBetSeperate from "../../components/sessionBetSeperate";
 import AllRateSeperate from "../../components/AllRateSeperate";
@@ -15,22 +15,80 @@ import YellowHeader from "../../components/yellowheader";
 import ProfitLossComponent from "../../components/ProfitLossComponent";
 import { ChangePassword } from "../../components/ChangePassword";
 import { AuthContext } from "../../Authprovider";
+import constants from "../../components/helper/constants";
+import jwtDecode from "jwt-decode";
+import { setRole } from "../../newStore"
+
+
 
 import Home from "./Home";
 import Match from "./Match";
 import { memo } from "react";
 import { SocketContext } from "../../context/socketContext";
+import { setallbetsPage } from "../../newStore/reducers/auth";
 
 const Matches = () => {
   const [visible, setVisible] = useState(false);
-  const location = useLocation();
+  const [allBets,SetAllBets] = useState([])
+  const [count,setCount] = useState(0)
+   const location = useLocation();
   const selected = location.state?.activeTab || "CRICKET";
-  const { socket } = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);  
   const theme = useTheme();
+  // const { currentUser } = useSelector((state) => state?.currentUser);
+  const userToken = sessionStorage.getItem("JWTuser")
+  const decodedTokenUser = userToken !== null && jwtDecode(userToken);
+
+  // console.log(decodedTokenUser.sub)
+  const userID = decodedTokenUser.sub
+  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+    const [pageCount, setPageCount] = useState(constants.pageLimit);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [currenLimit, setCurrenLimit] = useState(1)
+  
 
   console.log('selected', selected)
+  const dispatch = useDispatch()
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+    async function getBetHisory() {
+    const userId =userID
+    let { axios } = setRole();
+    const payload = {
+      userId :userId,
+      limit: pageLimit,
+      // skip: 0 ,
+      skip: currentPage * pageLimit
+    }
+    try {
+        const { data } = await axios.post(
+            `/betting/getBetHisory`, payload
+        );
+        console.log(data.data[0], 'datadatadatadata')
+        SetAllBets(data.data[0])
+        setCount(parseInt(data.data[1]))
+        setPageCount(
+            Math.ceil(
+                parseInt(data.data[1] ? data.data[1] : 1) /
+                pageLimit
+            )    
+        );
+          
+        //   toast.success(data?.message);
+    } catch (e) {
+        console.log(e);
+    }
+}
+function callPage(val) {
+  dispatch(setallbetsPage(parseInt(val)));
+  // setCurrentPage(parseInt(val * pageLimit));
+  setCurrentPage(parseInt(val));
+  setCurrenLimit(parseInt(val))
+}
+
+
+
 
   // useEffect(() => {
   //   if (socket && socket.connected) {
@@ -47,6 +105,9 @@ const Matches = () => {
   //   //   socket.connect();
   //   // }
   // }, [socket]);
+  useEffect(() => {
+    getBetHisory()
+  },[currentPage])
 
   const ChangeButtonValue = () => {
     return (
@@ -229,7 +290,7 @@ const Matches = () => {
                 flexDirection: { laptop: "row", mobile: "column" },
               }}
             >
-              <AllRateSeperate mark2 mark />
+              <AllRateSeperate mark2 mark allBetsData={allBets} count={count} setPageCountOuter={setPageCount} callPage={callPage}/>
               <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
               <SessionBetSeperate mark />
             </Box>
