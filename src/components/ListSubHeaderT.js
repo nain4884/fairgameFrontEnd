@@ -41,6 +41,7 @@ const ListSubHeaderT = ({ data }) => {
     return (
       <Box
         sx={{
+          width: '100%',
           display: "flex",
           height: "45px",
           background: "#0B4F26",
@@ -51,7 +52,7 @@ const ListSubHeaderT = ({ data }) => {
       >
         <Box
           sx={{
-            width: "11.5vw",
+               width: {laptop:"11.5vw",tablet:"20.5vw",mobile:"42.5vw"},
             display: "flex",
             alignItems: "center",
             height: "45px",
@@ -62,7 +63,7 @@ const ListSubHeaderT = ({ data }) => {
         </Box>
         <Box
           sx={{
-            width: "10.5vw",
+               width: {laptop:"10.5vw",tablet:"10.5vw",mobile:"28.5vw"},
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -78,7 +79,7 @@ const ListSubHeaderT = ({ data }) => {
         </Box>
         <Box
           sx={{
-            width: "9.5vw",
+            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"28.5vw"},
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -94,7 +95,7 @@ const ListSubHeaderT = ({ data }) => {
         </Box>
         <Box
           sx={{
-            width: "11.5vw",
+              width: {laptop:"11.5vw",tablet:"11.5vw",mobile:"42.5vw"},
             display: "flex",
             paddingLeft: "10px",
             background: `${data?.profitsum >= 0 ? "#27AC1E" : "#E32A2A"}`,
@@ -122,7 +123,7 @@ const ListSubHeaderT = ({ data }) => {
         </Box>
         <Box
           sx={{
-            width: "11.5vw",
+          width: {laptop:"11.5vw",tablet:"11.5vw",mobile:"42.5vw"},
             display: "flex",
             paddingLeft: "10px",
             background: `${data?.profitsum >= 0 ? "#27AC1E" : "#E32A2A"}`,
@@ -150,7 +151,7 @@ const ListSubHeaderT = ({ data }) => {
         </Box>
         <Box
           sx={{
-            width: "9.5vw",
+         width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"28.5vw"},
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -166,7 +167,7 @@ const ListSubHeaderT = ({ data }) => {
         </Box>
         <Box
           sx={{
-            width: "9.5vw",
+              width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"28.5vw"},
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -182,7 +183,7 @@ const ListSubHeaderT = ({ data }) => {
         </Box>
         <Box
           sx={{
-            width: "5vw",
+            width: {laptop:"5vw",tablet:"5vw",mobile:"24vw"},
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -192,7 +193,7 @@ const ListSubHeaderT = ({ data }) => {
         ></Box>
         <Box
           sx={{
-            width: "5vw",
+         width: {laptop:"5vw",tablet:"5vw",mobile:"24vw"},
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -202,7 +203,7 @@ const ListSubHeaderT = ({ data }) => {
         ></Box>
         <Box
           sx={{
-            width: "8vw",
+           width: {laptop:"8vw",tablet:"8vw",mobile:"42vw"},
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -218,7 +219,7 @@ const ListSubHeaderT = ({ data }) => {
         </Box>
         <Box
           sx={{
-            width: "8vw",
+           width: {laptop:"8vw",tablet:"8vw",mobile:"42vw"},
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

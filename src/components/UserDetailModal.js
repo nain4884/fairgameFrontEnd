@@ -69,6 +69,11 @@ export default function UserDetailModal({
       background: backgroundColor ?? "#F8C851",
       display: "flex",
       width: "100%",
+      justifyContent: {
+        mobile: "flex-start",
+        tablet: "center",
+        laptop: "center",
+      },
       overflow: "hidden",
       paddingY: "15px",
       paddingTop: "5px",
@@ -78,6 +83,7 @@ export default function UserDetailModal({
       {
         width: "11.5vw",
         display: "flex",
+
         height: "45px",
         paddingLeft: "10px",
         borderRight: "2px solid #0000",
@@ -95,9 +101,14 @@ export default function UserDetailModal({
 
   return (
     <Box sx={classes.mainBox}>
-      <Box onClick={() => {}} sx={classes.mainBoxSubsx}></Box>
+      {/* <Box onClick={() => {}} sx={classes.mainBoxSubsx}></Box> */}
       {selected != null && (
-        <Box sx={{ width: "88.5vw" }}>
+        <Box
+          sx={{
+            width: { mobile: "26%", tablet: "90%", laptop: "70%" },
+            padding: "5px",
+          }}
+        >
           {selected == 0 && (
             <DepositComponent
               backgroundColor={backgroundColor}
@@ -195,14 +206,23 @@ export default function UserDetailModal({
       )}
 
       {selected == null && (
-        <Box sx={{ flex: 1, display: "flex" }}>
+        <Box
+          sx={{
+            // flex: 1,
+            display: "flex",
+            flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
+            gap: { mobile: 1 },
+
+            width: { mobile: "26%", laptop: "77%", tablet: "100%" },
+          }}
+        >
           <BoxButton
             onClick={() => {
               setSelected(0);
             }}
             title={"Deposit"}
             isSelected={selected == 0}
-            containerStyle={{ flex: 1 }}
+            containerStyle={{ marginLeft: "10px", flex: 1 }}
             labelStyle={{}}
           />
           <BoxButton
@@ -234,7 +254,7 @@ export default function UserDetailModal({
             onClick={() => {
               setSelected(2);
             }}
-            title={"set credit reference"}
+            title={"set Credit Reference"}
             isSelected={selected == 2}
             labelStyle={{}}
             containerStyle={{ marginLeft: "10px", flex: 1 }}
@@ -301,12 +321,13 @@ const BoxButton = ({
         height: "45px",
         alignItems: "center",
         borderRadius: "5px",
+        padding: "5px",
       },
       containerStyle,
     ],
     mainBoxTypography: [
       {
-        fontSize: "0.9vw",
+        fontSize: { mobile: "3.5vw", laptop: "0.6vw", tablet: "0.9vw" },
         fontWeight: "600",
         color: isSelected || deleteBtn ? "white" : "white",
       },
@@ -353,7 +374,7 @@ const BoxButtonWithSwitch = ({
     ],
     mainBoxTypography: [
       {
-        fontSize: "0.9vw",
+        fontSize: { mobile: "3vw", laptop: "0.9vw", tablet: "0.9vw" },
         fontWeight: "600",
         textAlign: "right",
         color: "white",
@@ -469,24 +490,38 @@ const DepositComponent = ({
   }, 50);
 
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", gap: 2 }}>
-      <Box sx={{ width: "31.65vw" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+        gap: 2,
+        borderRadius: "5px",
+      }}
+    >
+      <Box sx={{ width: { mobile: "100%", laptop: "100%", tablet: "100%" } }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
+            width: "100%",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
             justifyContent: "flex-end",
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Deposit Amount
           </Typography>
           <Box
             sx={{
               background: "#004A25",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               borderRadius: "5px",
               paddingX: "20px",
@@ -516,21 +551,28 @@ const DepositComponent = ({
         </Box>
         <Box
           sx={{
+            width: "100%",
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
             justifyContent: "flex-end",
             marginTop: "10px",
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Wallet Balance
           </Typography>
           <Box
             sx={{
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               background: "white",
               display: "flex",
@@ -555,23 +597,30 @@ const DepositComponent = ({
           </Box>
         </Box>
       </Box>
-      <Box sx={{ overflow: "hidden", width: "19.1vw" }}>
+      <Box sx={{ overflow: "hidden", width: "100%" }}>
         <Box
           sx={{
+            width: "100%",
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
             justifyContent: "flex-end",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Transaction Password
           </Typography>
           <Box
             sx={{
-              width: "100%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               paddingLeft: "20px",
               paddingRight: "20px",
@@ -648,9 +697,10 @@ const DepositComponent = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
           justifyContent: "center",
-          marginLeft: "20px",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <Box sx={{ display: "flex", width: "150px" }}>
@@ -672,7 +722,13 @@ const DepositComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px", marginTop: "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            width: "150px",
+            marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+          }}
+        >
           <BoxButton
             containerStyle={{
               width: "150px",
@@ -768,23 +824,39 @@ const WithDrawComponent = ({
     }
   }, 50);
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", gap: 2 }}>
-      <Box sx={{ width: "31.65vw" }}>
+    <Box
+      sx={{
+        display: "flex",
+        borderRadius: "5px",
+        flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+        borderRadius: "5px",
+        gap: 2,
+      }}
+    >
+      <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
-          <Typography sx={{ fontSize: "1vw", fontWeight: "600" }}>
+          <Typography
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
+          >
             Withdraw Amount
           </Typography>
           <Box
             sx={{
-              marginLeft: "20px",
+              marginLeft: { mobile: 0, laptop: "20px", tablet: "20px" },
               background: "#E32A2A",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               display: "flex",
               gap: 2,
@@ -817,20 +889,27 @@ const WithDrawComponent = ({
         </Box>
         <Box
           sx={{
+            width: "100%",
             marginTop: "10px",
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Wallet Balance
           </Typography>
           <Box
             sx={{
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               background: "white",
               display: "flex",
@@ -855,23 +934,30 @@ const WithDrawComponent = ({
           </Box>
         </Box>
       </Box>
-      <Box sx={{ overflow: "hidden", width: "19.1vw" }}>
+      <Box sx={{ overflow: "hidden", width: "100%" }}>
         <Box
           sx={{
+            width: "100%",
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
             justifyContent: "flex-end",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Transaction Password
           </Typography>
           <Box
             sx={{
-              width: "100%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               paddingLeft: "20px",
               paddingRight: "20px",
@@ -949,9 +1035,10 @@ const WithDrawComponent = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
           justifyContent: "center",
-          marginLeft: "20px",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <Box sx={{ display: "flex", width: "150px" }}>
@@ -973,7 +1060,13 @@ const WithDrawComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px", marginTop: "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            width: "150px",
+            marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+          }}
+        >
           <BoxButton
             containerStyle={{
               width: "150px",
@@ -1023,24 +1116,38 @@ const NewCreditComponent = ({
   };
   const [newCreditObj, setNewCreditObj] = useState(defaultNewCreditObj);
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px" }}>
-      <Box sx={{ width: "31.65vw" }}>
+    <Box
+      sx={{
+        display: "flex",
+        borderRadius: "5px",
+        paddingRight: "10px",
+        flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+        gap: 2,
+      }}
+    >
+      <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             New Credit Limit
           </Typography>
           <Box
             sx={{
               background: "#004A25",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               borderRadius: "5px",
               paddingX: "20px",
@@ -1091,17 +1198,23 @@ const NewCreditComponent = ({
             overflow: "hidden",
             justifyContent: "flex-end",
             marginTop: "10px",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Transaction Password
           </Typography>
           <Box
             sx={{
               borderRadius: "px",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               background: "white",
               display: "flex",
@@ -1140,13 +1253,12 @@ const NewCreditComponent = ({
           </Box>
         </Box>
       </Box>
-      <Box sx={{ display: "flex", overflow: "hidden", width: "19.1vw" }}>
+      <Box sx={{ display: "flex", overflow: "hidden", width: "100%" }}>
         <Box
           sx={{
             borderRadius: "5px",
             flex: 1,
             background: backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
-            marginLeft: "20px",
             display: "flex",
             alignItems: "center",
             borderRadius: "5px",
@@ -1176,9 +1288,10 @@ const NewCreditComponent = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
           justifyContent: "center",
-          marginLeft: "20px",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <Box sx={{ display: "flex", width: "150px" }}>
@@ -1200,7 +1313,13 @@ const NewCreditComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px", marginTop: "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            width: "150px",
+            marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+          }}
+        >
           <BoxButton
             containerStyle={{
               width: "150px",
@@ -1250,24 +1369,31 @@ const SetExposureComponent = ({
   };
   const [exposureObj, setExposureObj] = useState(defaultExposureObj);
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px" }}>
-      <Box sx={{ width: "31.65vw" }}>
+    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px",   flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+    gap: 2, }}>
+      <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             New Exposure Limit
           </Typography>
           <Box
             sx={{
               background: "#004A25",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               borderRadius: "5px",
               paddingX: "20px",
@@ -1311,17 +1437,23 @@ const SetExposureComponent = ({
             overflow: "hidden",
             justifyContent: "flex-end",
             marginTop: "10px",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Transaction Password
           </Typography>
           <Box
             sx={{
               borderRadius: "px",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               background: "white",
               display: "flex",
@@ -1360,13 +1492,12 @@ const SetExposureComponent = ({
           </Box>
         </Box>
       </Box>
-      <Box sx={{ display: "flex", overflow: "hidden", width: "19.1vw" }}>
+      <Box sx={{ display: "flex", overflow: "hidden", width: "100%" }}>
         <Box
           sx={{
             borderRadius: "5px",
             flex: 1,
             background: backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
-            marginLeft: "20px",
             display: "flex",
             alignItems: "center",
             borderRadius: "5px",
@@ -1395,9 +1526,10 @@ const SetExposureComponent = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
           justifyContent: "center",
-          marginLeft: "20px",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <Box sx={{ display: "flex", width: "150px" }}>
@@ -1419,7 +1551,7 @@ const SetExposureComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px", marginTop: "10px" }}>
+        <Box sx={{ display: "flex", width: "150px",             marginTop: { mobile: 0, tablet: "10px", laptop: "10px" }, }}>
           <BoxButton
             containerStyle={{
               width: "150px",
@@ -1464,25 +1596,32 @@ const ChangePasswordComponent = ({
     defaultChangePasswordObj
   );
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px" }}>
-      <Box sx={{ width: "31.65vw" }}>
+    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px"   ,flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+    gap: 2, }}>
+      <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
             justifyContent: "flex-end",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             New Password
           </Typography>
           <Box
             sx={{
               borderRadius: "px",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               background: "#0B4F26",
               display: "flex",
@@ -1538,17 +1677,23 @@ const ChangePasswordComponent = ({
             overflow: "hidden",
             justifyContent: "flex-end",
             marginTop: "10px",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Transaction Password
           </Typography>
           <Box
             sx={{
               borderRadius: "px",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               background: "white",
               display: "flex",
@@ -1590,9 +1735,10 @@ const ChangePasswordComponent = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
           justifyContent: "center",
-          marginLeft: "20px",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <Box sx={{ display: "flex", width: "150px" }}>
@@ -1613,7 +1759,7 @@ const ChangePasswordComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px", marginTop: "10px" }}>
+        <Box sx={{ display: "flex", width: "150px",             marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },}}>
           <BoxButton
             containerStyle={{
               width: "150px",
@@ -1651,12 +1797,13 @@ const LockUnlockComponent = ({
   };
   const [lockUnlockObj, setLockUnlockObj] = useState(defaultLockUnlockObj);
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px" }}>
-      <Box sx={{ width: "31.65vw" }}>
+    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px",   flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+    gap: 2, }}>
+      <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: { mobile: "center", tablet: "flex-end", laptop: "flex-end" },
             height: "45px",
             alignItems: "center",
             overflow: "hidden",
@@ -1690,19 +1837,26 @@ const LockUnlockComponent = ({
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
+            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
             justifyContent: "flex-end",
             marginTop: "10px",
+            width:"100%",
           }}
         >
           <Typography
-            sx={{ fontSize: "1vw", fontWeight: "600", marginRight: "20px" }}
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+            }}
           >
             Transaction Password
           </Typography>
           <Box
             sx={{
               borderRadius: "px",
-              width: "50%",
+              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
               background: "white",
               display: "flex",
@@ -1745,9 +1899,10 @@ const LockUnlockComponent = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
           justifyContent: "center",
-          marginLeft: "20px",
+          gap: 1,
+          alignItems: "center",
         }}
       >
         <Box sx={{ display: "flex", width: "150px" }}>
@@ -1768,7 +1923,7 @@ const LockUnlockComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px", marginTop: "10px" }}>
+        <Box sx={{ display: "flex", width: "150px",             marginTop: { mobile: 0, tablet: "10px", laptop: "10px" }, }}>
           <BoxButton
             containerStyle={{
               width: "150px",

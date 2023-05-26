@@ -1110,6 +1110,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 />
               )}
             </Box>
+            <MatchComponent currentMatch={currentMatch} />
             <LiveMatchHome />
           </Box>
         </div>

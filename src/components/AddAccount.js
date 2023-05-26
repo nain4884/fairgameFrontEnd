@@ -424,9 +424,13 @@ const AddAccount = () => {
               paddingTop: "10px",
               marginTop: "10px",
               display: "flex",
+              flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
+              width: "100%",
+              gap: 5,
+              // flexWrap:"wrap",
             }}
           >
-            <Box sx={{ flex: 1 }}>
+            <Box sx={{ flex: 2 }}>
               <Input
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
@@ -523,7 +527,7 @@ const AddAccount = () => {
                 type={"Number"}
               />
             </Box>
-            <Box sx={{ flex: 1, marginX: "20px" }}>
+            <Box sx={{ flex: 2 }}>
               <DropDownSimple
                 dropStyle={{
                   filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
@@ -681,7 +685,7 @@ const AddAccount = () => {
                 <p style={{ color: "#fa1e1e" }}>Field Required</p>
               )}
             </Box>
-            <Box sx={{ flex: 1.5 }}>
+            <Box sx={{ flex: 2 }}>
               <Input
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
@@ -690,7 +694,7 @@ const AddAccount = () => {
                 inputContainerStyle={{
                   ...inputContainerStyle,
                   height: { laptop: "205px", mobile: "205px" },
-                  width: "50%",
+                  width: "100%",
                 }}
                 title={"Remark"}
                 setDetail={setDetail}
@@ -700,7 +704,7 @@ const AddAccount = () => {
                 place={13}
               />
               <Input
-                containerStyle={{ ...containerStyles, width: "50%" }}
+                containerStyle={{ ...containerStyles, width: "100%" }}
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
                 inputContainerStyle={{ ...inputContainerStyle }}

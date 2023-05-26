@@ -27,16 +27,18 @@ import SearchInputModal from "./SearchInputModal";
 import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
+import { useTheme } from "@emotion/react";
 
 const AccountListModal = ({ id, show, setShow, title }) => {
   const dispatch = useDispatch();
-
+  const theme = useTheme();
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   // const {currentUser} = useSelector((state) => state?.currentUser);
   const { userWallet } = useSelector((state) => state?.auth);
   // const [roles, setRoles] = useState([]);
   const { subUserData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole);
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [data1, setData] = useState([]);
   const [sumValue, setSumVal] = useState({
     creditsum: 0.0,
@@ -45,7 +47,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
     exposuresum: 0.0,
     percent_profit_loss: 0,
     availablebalancesum: 0.0,
-    exposurelimit:""
+    exposurelimit: "",
   });
 
   useEffect(() => {
@@ -84,7 +86,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
       setSumVal({
         ...data?.data,
         percent_profit_loss: 0,
-        exposurelimit:"",
+        exposurelimit: "",
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
     } catch (e) {
@@ -116,6 +118,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
         sx={[
           {
             marginX: "0.5%",
+            width: " 98%",
             minHeight: "200px",
             borderRadius: "10px",
             borderBottomRightRadius: "0px",
@@ -129,7 +132,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
         ]}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <ListH id={id} title={title} setData={setData} />
+          <ListH id={id} title={title} setData={setData}  matchesMobile={matchesMobile}/>
           <Button
             sx={{ color: "", fontSize: "30px" }}
             onClick={() => {
@@ -287,7 +290,8 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({ id, title, setData }) => {
+const ListH = ({ id, title, setData , matchesMobile}) => {
+ 
   return (
     <Box
       display={"flex"}
@@ -302,44 +306,103 @@ const ListH = ({ id, title, setData }) => {
       <Box display={"flex"} alignItems="center" sx={{ alignItems: "center" }}>
         <Typography
           sx={{
-            fontSize: "18px",
+            fontSize: { mobile: "14px", laptop: "18px", tablet: "18px" },
             color: "#FFF",
-            marginRight: "20px",
+            marginRight: { mobile: "10px", laptop: "20px", tablet: "20px" },
           }}
         >
           {title}
+          
+       {matchesMobile &&   <Box sx={{display:"flex",marginTop:"5px"}} >
+            <Box
+              sx={{
+                background: "white",
+                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
+                borderRadius: "5px",
+                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <StyledImage
+                src={Excel}
+                sx={{
+                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                }}
+              />
+            </Box>
+            <Box
+              sx={{
+                background: "white",
+                marginLeft: "10px",
+                borderRadius: "5px",
+                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
+                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <StyledImage
+                src={Pdf}
+                sx={{
+                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                }}
+              />
+            </Box>
+          </Box>}
+        
         </Typography>
+    {
+      !matchesMobile && 
+      < >
         <Box
           sx={{
             background: "white",
-            height: "30px",
+            height: { mobile: "25px", laptop: "30px", tablet: "30px" },
             borderRadius: "5px",
-            width: "45px",
+            width: { mobile: "25px", laptop: "45px", tablet: "45px" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <StyledImage src={Excel} sx={{ height: "20px" }} />
+          <StyledImage
+            src={Excel}
+            sx={{
+              height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+            }}
+          />
         </Box>
         <Box
           sx={{
             background: "white",
             marginLeft: "10px",
-            height: "30px",
             borderRadius: "5px",
-            width: "45px",
+            height: { mobile: "25px", laptop: "30px", tablet: "30px" },
+            width: { mobile: "25px", laptop: "45px", tablet: "45px" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <StyledImage src={Pdf} sx={{ height: "20px" }} />
+          <StyledImage
+            src={Pdf}
+            sx={{
+              height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+            }}
+          />
         </Box>
+      </>
+    
+    }
       </Box>
+
       <SearchInputModal
         setData={setData}
         id={id}
+        show={true}
         placeholder={"Search User..."}
       />
     </Box>

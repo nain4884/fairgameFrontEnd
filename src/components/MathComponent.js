@@ -29,7 +29,7 @@ const MatchComponent = ({ currentMatch }) => {
     <Box
       sx={[
         {
-          width: { tablet: "55%", mobile: "98%", laptop: "100%" },
+          width: { tablet: "98%", mobile: "98%", laptop: "100%" },
           display: "flex",
           flexDirection: "column",
           alignSelf: "center",

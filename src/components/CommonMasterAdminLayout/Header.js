@@ -53,6 +53,7 @@ const CustomHeader = ({}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const matchesTablet = useMediaQuery(theme.breakpoints.down("tablet"));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchor, setAnchor] = React.useState(null);
   const [anchor1, setAnchor1] = React.useState(null);
@@ -130,9 +131,9 @@ const CustomHeader = ({}) => {
       if (nav === "admin") {
         localStorage.setItem("role1", "role1");
       }
-    if (nav === "wallet") {
-      localStorage.setItem("role2", "role2");
-    }
+      if (nav === "wallet") {
+        localStorage.setItem("role2", "role2");
+      }
       const { data } = await axios.get("users/profile");
       setBalance(data.data.current_balance);
       dispatch(setCurrentUser(data.data));
@@ -171,6 +172,7 @@ const CustomHeader = ({}) => {
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
+  const [showSearch,setShowSearch]=useState(false)
 
   useEffect(() => {
     if (!matchesMobile) {
@@ -227,7 +229,7 @@ const CustomHeader = ({}) => {
       backgroundColor: currentSelected == 1 ? "white" : "transparent",
       borderRadius: "3px",
       justifyContent: "center",
-      cursor:"pointer",
+      cursor: "pointer",
       alignItems: "center",
       marginLeft: "2%",
     },
@@ -254,9 +256,11 @@ const CustomHeader = ({}) => {
       justifyContent: "space-around",
     },
     BoxCont1sub2: {
+      width: "100%",
       display: "flex",
-      justifyContent: "space-between",
-      minWidth: matchesMobile ? "100%" : "0px",
+      marginLeft:{mobile:"-36px",laptop:0,tablet:0},
+      justifyContent: "flex-end",
+      // minWidth: matchesMobile ? "100%" : "0px",
       alignItems: "center",
       marginTop: matchesMobile ? "15px" : "0px",
     },
@@ -297,84 +301,167 @@ const CustomHeader = ({}) => {
               />
               <RenderLogo />
             </Box>
-            <ButtonHead
-              onClick={() => {
-                dispatch(setActiveAdmin(0));
-                navigate(`/${nav}/list_of_clients`);
+            {!matchesTablet && (
+              <Box
+                sx={{ display: "flex", alignItems: "center", width: "100%" }}
+              >
+                <ButtonHead
+                  onClick={() => {
+                    dispatch(setActiveAdmin(0));
+                    navigate(`/${nav}/list_of_clients`);
+                  }}
+                  title={"LIST OF CLIENTS"}
+                  boxStyle={classes.BoxCont1sub1ButtonHead1boxStyle}
+                  titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
+                    currentSelected,
+                    0
+                  )}
+                />
+                <LiveMarket
+                  onClick={() => {
+                    dispatch(setActiveAdmin(1));
+                    navigate(`/${nav}/live_market`);
+                  }}
+                  title={"LIVE MARKET"}
+                  boxStyle={classes.BoxCont1sub1LiveMarketboxStyle}
+                />
+                <ButtonHead
+                  selected={currentSelected == 2}
+                  report={true}
+                  onClick={(e) => {
+                    dispatch(setActiveAdmin(2));
+                    setAnchor(e.currentTarget);
+                  }}
+                  title={"REPORTS"}
+                  boxStyle={classes.BoxCont1sub1ButtonHead2boxStyle}
+                  titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
+                    currentSelected,
+                    2
+                  )}
+                />
+                <ButtonHead
+                  onClick={() => {
+                    dispatch(setActiveAdmin(3));
+                    navigate(`/${nav}/market_analysis`);
+                  }}
+                  title={"MARKET ANALYSIS"}
+                  boxStyle={classes.BoxCont1sub1ButtonHead3boxStyle}
+                  titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
+                    currentSelected,
+                    3
+                  )}
+                />
+                {roleName === "fairGameWallet" && (
+                  <ButtonHead
+                    onClick={(e) => {
+                      dispatch(setActiveAdmin(4));
+                      setAnchor1(e.currentTarget);
+                    }}
+                    title={"WALLET"}
+                    report={true}
+                    selected={currentSelected == 4}
+                    boxStyle={classes.BoxCont1sub1ButtonHead4boxStyle}
+                    titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
+                      currentSelected,
+                      4
+                    )}
+                  />
+                )}
+              </Box>
+            )}
+            <Box sx={classes.BoxCont1sub2}>
+              <SearchInput
+                show={showSearch}
+                setShowSearch={()=>{setShowSearch(prev=>!prev)}}
+                placeholder={"All Clients..."}
+                header={true}
+                inputContainerStyle={classes.BoxCont1sub2SearchInputContStyle}
+              />
+              <BoxProfile
+                nav={nav}
+                containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
+                image={"https://picsum.photos/200/300"}
+                value={currentUser?.userName || ""}
+                amount={currentUser?.current_balance || 0}
+              />
+            </Box>
+          </Box>
+
+          {matchesTablet && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
+                marginTop: "10px",
               }}
-              title={"LIST OF CLIENTS"}
-              boxStyle={classes.BoxCont1sub1ButtonHead1boxStyle}
-              titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
-                currentSelected,
-                0
-              )}
-            />
-            <LiveMarket
-              onClick={() => {
-                dispatch(setActiveAdmin(1));
-                navigate(`/${nav}/live_market`);
-              }}
-              title={"LIVE MARKET"}
-              boxStyle={classes.BoxCont1sub1LiveMarketboxStyle}
-            />
-            <ButtonHead
-              selected={currentSelected == 2}
-              report={true}
-              onClick={(e) => {
-                dispatch(setActiveAdmin(2));
-                setAnchor(e.currentTarget);
-              }}
-              title={"REPORTS"}
-              boxStyle={classes.BoxCont1sub1ButtonHead2boxStyle}
-              titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
-                currentSelected,
-                2
-              )}
-            />
-            <ButtonHead
-              onClick={() => {
-                dispatch(setActiveAdmin(3));
-                navigate(`/${nav}/market_analysis`);
-              }}
-              title={"MARKET ANALYSIS"}
-              boxStyle={classes.BoxCont1sub1ButtonHead3boxStyle}
-              titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
-                currentSelected,
-                3
-              )}
-            />
-            {roleName === "fairGameWallet" && (
+            >
               <ButtonHead
-                onClick={(e) => {
-                  dispatch(setActiveAdmin(4));
-                  setAnchor1(e.currentTarget);
+                onClick={() => {
+                  dispatch(setActiveAdmin(0));
+                  navigate(`/${nav}/list_of_clients`);
                 }}
-                title={"WALLET"}
-                report={true}
-                selected={currentSelected == 4}
-                boxStyle={classes.BoxCont1sub1ButtonHead4boxStyle}
+                title={"LIST OF CLIENTS"}
+                boxStyle={classes.BoxCont1sub1ButtonHead1boxStyle}
                 titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
                   currentSelected,
-                  4
+                  0
                 )}
               />
-            )}
-          </Box>
-          <Box sx={classes.BoxCont1sub2}>
-            <SearchInput
-              placeholder={"All Clients..."}
-              header={true}
-              inputContainerStyle={classes.BoxCont1sub2SearchInputContStyle}
-            />
-            <BoxProfile
-              nav={nav}
-              containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
-              image={"https://picsum.photos/200/300"}
-              value={currentUser?.userName || ""}
-              amount={currentUser?.current_balance || 0}
-            />
-          </Box>
+              <LiveMarket
+                onClick={() => {
+                  dispatch(setActiveAdmin(1));
+                  navigate(`/${nav}/live_market`);
+                }}
+                title={"LIVE MARKET"}
+                boxStyle={classes.BoxCont1sub1LiveMarketboxStyle}
+              />
+              <ButtonHead
+                selected={currentSelected == 2}
+                report={true}
+                onClick={(e) => {
+                  dispatch(setActiveAdmin(2));
+                  setAnchor(e.currentTarget);
+                }}
+                title={"REPORTS"}
+                boxStyle={classes.BoxCont1sub1ButtonHead2boxStyle}
+                titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
+                  currentSelected,
+                  2
+                )}
+              />
+              <ButtonHead
+                onClick={() => {
+                  dispatch(setActiveAdmin(3));
+                  navigate(`/${nav}/market_analysis`);
+                }}
+                title={"MARKET ANALYSIS"}
+                boxStyle={classes.BoxCont1sub1ButtonHead3boxStyle}
+                titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
+                  currentSelected,
+                  3
+                )}
+              />
+              {roleName === "fairGameWallet" && (
+                <ButtonHead
+                  onClick={(e) => {
+                    dispatch(setActiveAdmin(4));
+                    setAnchor1(e.currentTarget);
+                  }}
+                  title={"WALLET"}
+                  report={true}
+                  selected={currentSelected == 4}
+                  boxStyle={classes.BoxCont1sub1ButtonHead4boxStyle}
+                  titleStyle={classes.BoxCont1sub1ButtonHeadtitleStylefn(
+                    currentSelected,
+                    4
+                  )}
+                />
+              )}
+            </Box>
+          )}
         </Box>
+
         {
           <MobileSideBar
             mobileOpen={mobileOpen}

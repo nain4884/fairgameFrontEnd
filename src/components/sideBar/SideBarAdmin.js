@@ -337,6 +337,7 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
     <Box
       sx={[
         {
+          marginTop:{mobile:"2.5vh",laptop:0,tablet:0},
           minHeight: "100vh",
           width: "100%",
           display: "flex",

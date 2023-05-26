@@ -5,32 +5,40 @@ import { SEARCH } from "../admin/assets";
 import { Search } from "../assets";
 import StyledImage from "./StyledImage";
 
-import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import ListItemButton from '@mui/material/ListItemButton'; 
-import ListItemIcon from '@mui/material/ListItemIcon';
+import * as React from "react";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import { setRole } from "../newStore";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../newStore/reducers/auth";
 // import InboxIcon from '@mui/icons-material/Inbox';
 // import DraftsIcon from '@mui/icons-material/Drafts';
 
-  
-const SearchInput = ({ placeholder, inputContainerStyle, showTextInput, header, show, searchContainerStyle, onChange }) => {
+const SearchInput = ({
+  placeholder,
+  inputContainerStyle,
+  setData,
+  showTextInput,
+  header,
+  setShowSearch,
+  show,
+  searchContainerStyle,
+  onChange,
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-const { axios } = setRole();
-const { userData } = useSelector((state) => state?.auth);
-const dispatch = useDispatch()
-
+  const { axios } = setRole();
+  const { userData } = useSelector((state) => state?.auth);
+  const dispatch = useDispatch();
 
   const handleInputChange = async (event) => {
     const value = event.target.value;
@@ -38,31 +46,29 @@ const dispatch = useDispatch()
     if (onChange && typeof onChange === "function") {
       onChange(value);
     }
-      try {
-        const { data } = await axios.get(
-          `/fair-game-wallet/getAllUser?userName=${value}`
-        );
-        console.log(data.data.data,'data')
-        data?.data?.data.map((element) => {
-          // let roleDetail = roles.find(findThisRole);
-          // function findThisRole(role) {
-          //   return role.id === element.roleId;
-          // }
-          // element.role = roleDetail?.roleName;
-        });
-        // setData(data?.data?.data);
-        dispatch(setUserData(data?.data?.data));
-
-       
-      } catch (e) {
-        console.log(e);
-      }
-   
+    try {
+      const { data } = await axios.get(
+        `/fair-game-wallet/getAllUser?userName=${value}`
+      );
+      console.log(data.data.data, "data");
+      data?.data?.data.map((element) => {
+        // let roleDetail = roles.find(findThisRole);
+        // function findThisRole(role) {
+        //   return role.id === element.roleId;
+        // }
+        // element.role = roleDetail?.roleName;
+      });
+      setData(data?.data?.data);
+      // dispatch(setUserData(data?.data?.data));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <>
       <Box
+        onClick={setShowSearch}
         sx={[
           {
             backgroundColor: {
@@ -71,9 +77,10 @@ const dispatch = useDispatch()
             },
             minWidth: {
               laptop: header ? "10vw" : "17vw",
-              mobile: "0vw",
+              mobile: "10vw",
             },
             display: "flex",
+            justifyContent:"flex-end",
             alignItems: "center",
             boxShadow: "0px 3px 10px #B7B7B726",
             height: { laptop: "35px", mobile: "35px" },
@@ -156,17 +163,8 @@ const dispatch = useDispatch()
     </>
   );
   const BasicList = () => {
-    return (
-      <>
-      
-      </>
-    );
-  }
+    return <></>;
+  };
 };
 
 export default SearchInput;
-
-
-
-
-

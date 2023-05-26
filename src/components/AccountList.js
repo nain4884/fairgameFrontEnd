@@ -47,7 +47,7 @@ const AccountList = () => {
     balancesum: 0.0,
     exposuresum: 0.0,
     percent_profit_loss: 0,
-    exposurelimit:"",
+    exposurelimit: "",
     availablebalancesum: 0.0,
   });
   async function getListOfUser() {
@@ -63,7 +63,7 @@ const AccountList = () => {
         }
         element.role = roleDetail?.roleName;
       });
-      dispatch(setUserData(data?.data?.data));
+      // dispatch(setUserData(data?.data?.data));
       setData(data?.data?.data);
       setPageCount(
         Math.ceil(
@@ -82,7 +82,7 @@ const AccountList = () => {
       setSumVal({
         ...data?.data,
         percent_profit_loss: 0,
-        exposurelimit:"",
+        exposurelimit: "",
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
     } catch (e) {
@@ -126,12 +126,12 @@ const AccountList = () => {
           }),
         ]}
       >
-        <ListH />
+        <ListH setData={setData} />
         <Box sx={{ overflowX: "auto" }}>
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
             <ListSubHeaderT data={sumValue} />
-            {userData.map((element, i) => {
+            {data1.map((element, i) => {
               if (i % 2 === 0) {
                 return (
                   <AccountListRow
@@ -270,11 +270,11 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = () => {
+const ListH = ({setData}) => {
   return (
     <Box
       display={"flex"}
-      sx={{ justifyContent: "space-between", px: "10px", py: "6px" }}
+      sx={{ justifyContent: "space-between", px: "10px", py: "6px" ,gap:2 }}
     >
       <Box display={"flex"} alignItems="center">
         <Box
@@ -305,7 +305,7 @@ const ListH = () => {
           <StyledImage src={Pdf} sx={{ height: "25px" }} />
         </Box>
       </Box>
-      <SearchInput placeholder={"Search User..."} />
+      <SearchInput placeholder={"Search User..."} show={true} setData={setData} />
     </Box>
   );
 };
