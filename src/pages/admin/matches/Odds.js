@@ -4,10 +4,33 @@ import BoxComponent from "./BoxComponent";
 import SmallBox from "./SmallBox";
 import { useTheme } from "@emotion/react";
 
-const Odds = ({ currentMatch }) => {
+const Odds = ({ currentMatch, data }) => {
   const theme = useTheme();
-  console.log("currentMatch", currentMatch);
+  // console.log("currentMatch 22222", data);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+  const bookRatioB = (teamARates, teamBRates) => {
+    const bookRatio = teamBRates != 0 ? teamARates / teamBRates || 0 : 0;
+    const formattedRatio = Math.abs(bookRatio).toFixed(2);
+    return teamBRates < 0 ? `-${formattedRatio}` : formattedRatio;
+  };
+
+
+  const bookRatioA = (teamARates, teamBRates) => {
+    const bookRatio = teamARates != 0 ? teamBRates / teamARates || 0 : 0;
+    const formattedRatio = Math.abs(bookRatio).toFixed(2);
+    return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
+  };
+  // data = { data?.length > 0 ? data[1] : []
+  // lock = { ex?.availableToBack?.length > 0 ? false : true
+  const handleLock = (data) => {
+    // console.log('data ddd :', data);
+    // if (data?.length > 0) {
+    return data?.ex?.availableToBack?.length > 0 ? false : true
+    // }
+    // return true;
+  }
+
   return (
     <Box
       key="odds"
@@ -72,7 +95,7 @@ const Odds = ({ currentMatch }) => {
             justifyContent: "flex-end",
           }}
         >
-          <SmallBox />
+          <SmallBox valueA={bookRatioA(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} valueB={bookRatioB(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} />
         </Box>
       </Box>
       <Box
@@ -159,14 +182,25 @@ const Odds = ({ currentMatch }) => {
       <Box sx={{ position: "relative", width: "99.8%", background: "red" }}>
         <BoxComponent
           teamImage={currentMatch?.teamA_Image}
-          color={"#46e080"}
+          // color={"#46e080"}
           name={currentMatch?.teamA}
+          rates={currentMatch?.teamA_rate}
+          color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
+          data={data?.length > 0 ? data[0] : []}
+          lock={handleLock(data?.length > 0 ? data[0] : [])}
+        // name1={currentMatch?.teamA}
+        // teamARates={teamRates?.teamA}
+        // teamBRates={teamRates?.teamB}
         />
         <Divider />
         <BoxComponent
           teamImage={currentMatch?.teamB_Image}
-          color={"#FF4D4D"}
+          // color={"#FF4D4D"}
+          color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#46e080"}
           name={currentMatch?.teamB}
+          rates={currentMatch?.teamB_rate}
+          data={data?.length > 0 ? data[1] : []}
+          lock={handleLock(data?.length > 0 ? data[1] : [])}
           align="end"
         />
       </Box>

@@ -5,11 +5,27 @@ import SmallBox from "./SmallBox";
 import { useState } from "react";
 import { useTheme } from "@emotion/react";
 
-const BookMarketer = ({ currentMatch }) => {
+const BookMarketer = ({ currentMatch, data }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [showUnlock, setShowUnlock] = useState(false);
   const [locked, setLocked] = useState(false);
+
+  const bookRatioB = (teamARates, teamBRates) => {
+    const bookRatio = teamBRates != 0 ? teamARates / teamBRates || 0 : 0;
+    const formattedRatio = Math.abs(bookRatio).toFixed(2);
+    return teamBRates < 0 ? `-${formattedRatio}` : formattedRatio;
+  };
+
+  const bookRatioA = (teamARates, teamBRates) => {
+    const bookRatio = teamARates != 0 ? teamBRates / teamARates || 0 : 0;
+    const formattedRatio = Math.abs(bookRatio).toFixed(2);
+    return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
+  };
+  const handleLock = (data) => {
+    return data?.ex?.availableToBack?.length > 0 ? false : true
+  }
+
   return (
     <Box
       sx={{
@@ -68,7 +84,7 @@ const BookMarketer = ({ currentMatch }) => {
             justifyContent: "flex-end",
           }}
         >
-          <SmallBox color={"#FF4D4D"} />
+          <SmallBox color={"#FF4D4D"} valueA={bookRatioA(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} valueB={bookRatioB(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} />
         </Box>
       </Box>
       <Divider />
@@ -150,16 +166,24 @@ const BookMarketer = ({ currentMatch }) => {
       }
       <Box sx={{ position: "relative", width: "99.8%" }}>
         <BoxComponent
-          color={"#46e080"}
+          // color={"#46e080"}
           teamImage={currentMatch?.teamA_Image}
           name={currentMatch?.teamA}
+          rates={currentMatch?.teamA_rate}
+          color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
+          data={data?.length > 0 ? data[0] : []}
+          lock={handleLock(data?.length > 0 ? data[0] : [])}
         />
         <Divider />
         <BoxComponent
-          color={"#FF4D4D"}
-          lock={true}
+          // color={"#FF4D4D"}
+          // lock={true}
           teamImage={currentMatch?.teamB_Image}
           name={currentMatch?.teamB}
+          rates={currentMatch?.teamB_rate}
+          color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#46e080"}
+          data={data?.length > 0 ? data[1] : []}
+          lock={handleLock(data?.length > 0 ? data[1] : [])}
           align="end"
         />
       </Box>

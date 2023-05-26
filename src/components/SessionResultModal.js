@@ -1,5 +1,5 @@
 import { Box, CircularProgress, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { CancelDark } from "../assets";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
@@ -7,6 +7,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { memo } from "react";
 import SessionResultCustomButton from "./SessionResultCustomButton";
+import { SocketContext } from "..//context/socketContext";
 
 const SessionResultModal = ({
   onClick,
@@ -18,6 +19,7 @@ const SessionResultModal = ({
   visible,
   setIObtes,
 }) => {
+  const { socket, socketMicro } = useContext(SocketContext);
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
@@ -27,6 +29,22 @@ const SessionResultModal = ({
   const scrollToBottom = () => {
     myDivRef.current?.scrollIntoView({});
   };
+
+  // useEffect(() => {
+  //   if (socket && socket.connected) {
+  //     socket.onevent = async (packet) => {
+  //       if (packet.data[0] === "resultDeclareForBet") {
+  //         const data = packet.data[1];
+  //         try {
+  //           let profitLoss = data?.profitLoss;
+  //           setProLoss(profitLoss);
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
+  //       }
+  //     }
+  //   }
+  // }, [socket]);
 
   useEffect(() => {
     scrollToBottom();
@@ -43,6 +61,7 @@ const SessionResultModal = ({
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         setLoading({ id: "", value: false });
+        socket.emit("resultDeclareForBet", { match_id: newData?.match_id, betId: newData?.id })
         // const updatedData = {
         //   ...newData,
         //   betStatus: 2,
