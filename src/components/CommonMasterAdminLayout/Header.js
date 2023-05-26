@@ -215,8 +215,9 @@ const CustomHeader = ({}) => {
       cursor: "pointer",
     },
     RenderLogoCompStyleImg: {
-      height: { laptop: "45px", mobile: "40px" },
+      height: { laptop: "45px", mobile: "30px" },
       width: "auto",
+      marginTop: "12px",
       marginLeft: { laptop: "20px", mobile: "10px" },
     },
     BoxCont1sub1ButtonHead1boxStyle: {
@@ -258,7 +259,7 @@ const CustomHeader = ({}) => {
     BoxCont1sub2: {
       width: "100%",
       display: "flex",
-      marginLeft:{mobile:"-36px",laptop:0,tablet:0},
+      marginLeft:{mobile:"-143px",laptop:0,tablet:0},
       justifyContent: "flex-end",
       // minWidth: matchesMobile ? "100%" : "0px",
       alignItems: "center",
