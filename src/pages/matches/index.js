@@ -5,7 +5,7 @@ import { CustomHeader, SideBar } from "../../components";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import SessionBetSeperate from "../../components/sessionBetSeperate";
 import AllRateSeperate from "../../components/AllRateSeperate";
@@ -25,6 +25,7 @@ import Home from "./Home";
 import Match from "./Match";
 import { memo } from "react";
 import { SocketContext } from "../../context/socketContext";
+import { setallbetsPage } from "../../newStore/reducers/auth";
 
 const Matches = () => {
   const [visible, setVisible] = useState(false);
@@ -47,6 +48,7 @@ const Matches = () => {
   
 
   console.log('selected', selected)
+  const dispatch = useDispatch()
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -79,7 +81,7 @@ const Matches = () => {
     }
 }
 function callPage(val) {
-  // dispatch(secallPagetCurrentStatementPage(parseInt(val)));
+  dispatch(setallbetsPage(parseInt(val)));
   // setCurrentPage(parseInt(val * pageLimit));
   setCurrentPage(parseInt(val));
   setCurrenLimit(parseInt(val))

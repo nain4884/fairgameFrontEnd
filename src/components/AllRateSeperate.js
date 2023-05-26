@@ -35,6 +35,8 @@ const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,co
 
   const [currentPage, setCurrentPage] = useState(0);  
   const [pageCount, setPageCount] = useState(constants.pageLimit);
+  const { allbetsPage } = useSelector((state) => state?.auth);
+    
 
 
   // function callPage(val) {
@@ -43,6 +45,7 @@ const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,co
   //   setCurrentPage(parseInt(val));
   //   setPageCountOuter(parseInt(val))
   // }
+    
 
 
 
@@ -312,6 +315,7 @@ const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,co
         currentPage={currentPage} 
         pages={pageCount}
         callPage={callPage}
+        currentPageNo={allbetsPage}
       />
           </Box>
         </Box>
@@ -377,7 +381,7 @@ const RowComponent = ({ header, data }) => {
   );
 };
 
-const Footer = ({ currentPage, pages, callPage }) => {
+const Footer = ({ currentPage, pages, callPage,currentPageNo }) => {
   return (
     <Box
       sx={{
@@ -441,7 +445,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
               fontSize: { laptop: "12px", mobile: "12px" },
             }}
           >
-            {currentPage +1 }
+            {currentPageNo +1 }
           </Typography>
         </Box>
         <Box
