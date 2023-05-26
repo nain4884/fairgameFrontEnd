@@ -5,7 +5,7 @@ import { BallStart, INDIA, Lock, PAKISTAN, TIME, UD } from "../../assets/index";
 import "../../components/index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setColorValue } from "../../store/selectedColorBox";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { StyledImage } from "../../components";
 import { Popover } from "react-tiny-popover";
 import { DeleteIcon, LOCKED, LOCKOPEN, LockSolid } from "../../admin/assets";
@@ -20,8 +20,11 @@ import BookMarketer from "./matches/BookMaketer";
 import { useEffect } from "react";
 import { setRole } from "../../newStore";
 import { setSelectedMatch } from "../../newStore/reducers/matchDetails";
+import { SocketContext } from "../../context/socketContext";
 
-const DeleteBet = ({}) => {
+let matchOddsCount = 0;
+const DeleteBet = ({ }) => {
+  const { socket, socketMicro } = useContext(SocketContext);
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState("");
   const location = useLocation();
@@ -37,6 +40,56 @@ const DeleteBet = ({}) => {
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
   const [matchDetail, setMatchDetail] = useState();
+
+
+  useEffect(() => {
+    if (socketMicro && socketMicro.connected && marketId) {
+      socketMicro.emit("init", { id: marketId });
+      // activateLiveMatchMarket();
+
+      socketMicro.on("reconnect", () => {
+        socket.emit("init", { id: marketId });
+      });
+      socketMicro.on(`matchOdds${marketId}`, (val) => {
+        // matchodds Market live and stop disable condition
+        if (val !== null) {
+          if (val.length === 0) {
+            matchOddsCount += 1;
+            if (matchOddsCount >= 3) {
+              socketMicro.emit("disconnect_market", {
+                id: marketId,
+              });
+              // socketMicro.disconnect();
+            }
+          } else {
+            // dispatch(setMatchOddsLive(val[0]));
+            setMacthOddsLive(val[0]);
+            console.log("setMatchOddsLive :", val[0]);
+            if (val[0]?.status === "CLOSED") {
+              socketMicro.emit("disconnect_market", {
+                id: marketId,
+              });
+            }
+          }
+        }
+      });
+      socketMicro.on(`bookmaker${marketId}`, (val) => {
+        if (val !== null) {
+          // console.log("val 222:", val);
+          if (val.length > 0) {
+            // dispatch(setBookMakerLive(val[0]));
+            setBookmakerLive(val[0]);
+          }
+        }
+      });
+    }
+
+    return () => {
+      socketMicro?.emit("disconnect_market", {
+        id: marketId,
+      });
+    };
+  }, [socketMicro, marketId]);
 
   async function getThisMatch(id) {
     try {
@@ -81,7 +134,7 @@ const DeleteBet = ({}) => {
     }
   }
 
-  
+
   async function getAllBetsData(val) {
     let payload = {
       match_id: val,
@@ -97,7 +150,7 @@ const DeleteBet = ({}) => {
           )
         )
       );
- 
+
     } catch (e) {
       console.log(e);
     }
@@ -260,10 +313,27 @@ const DeleteBet = ({}) => {
           >
             {currentMatch?.teamA} V/S {currentMatch?.teamB}
           </Typography>
-          {currentMatch?.apiMatchActive && <Odds  currentMatch={currentMatch}/>}
-          {currentMatch?.apiBookMakerActive && <BookMarketer  currentMatch={currentMatch} />}
+          {currentMatch?.apiMatchActive && <Odds
+            currentMatch={currentMatch}
+            // matchOddsLive={matchOddsLive}
+            data={
+              matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
+            }
+          // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+          />
+          }
+          {currentMatch?.apiBookMakerActive && <BookMarketer
+            currentMatch={currentMatch}
+            data={
+              bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
+            }
+
+          />}
           {(currentMatch?.apiSessionActive ||
-            currentMatch?.manualSessionActive) && <SessionMarket  currentMatch={currentMatch} />}
+            currentMatch?.manualSessionActive) && <SessionMarket
+              currentMatch={currentMatch}
+              data={[]}
+            />}
         </Box>
         <Box sx={{ width: "20px" }} />
         <Box

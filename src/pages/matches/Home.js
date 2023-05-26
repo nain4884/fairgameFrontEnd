@@ -89,6 +89,37 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
       socket.onevent = async (packet) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+
+        if (packet.data[1] === "resultDeclareForBet") {
+          const value = packet.data[0];
+          matchId = value?.match_id;
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id !== value?.match_id) {
+                return currentMatch;
+              }
+              // Update the bettings array in the current match object
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (betting.id === value.betId) {
+                  if (sessionOffline.includes(value.betId)) {
+                    const newres = sessionOffline.filter((id) => id !== value.betId);
+                    sessionOffline = newres;
+                  }
+                  sessionOffline.push(value.betId);
+                }
+                return betting;
+              });
+              var newUpdatedValue = updatedBettings;
+              return {
+                ...currentMatch,
+                bettings: newUpdatedValue,
+              };
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+
+        }
         if (packet.data[0] === "updateMatchActiveStatus") {
           const value = packet.data[1];
           matchId = value?.matchId;

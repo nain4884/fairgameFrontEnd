@@ -6,10 +6,14 @@ import { LockSolid } from "../../../admin/assets";
 import SeperateBox from "./SeperateBox";
 import MoneyBox from "./MoneyBox";
 import { apiBasePath } from "../../../components/helper/constants";
+import { formatNumber } from "../../../components/helper/helper";
 
-const BoxComponent = ({ name, color, align, lock,teamImage }) => {
+const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  // alert(data.length)
+  const { ex, status } = data;
+  console.log("ex 222:", ex);
   return (
     <Box
       sx={{
@@ -90,13 +94,21 @@ const BoxComponent = ({ name, color, align, lock,teamImage }) => {
           alignItems: "center",
         }}
       >
-        <MoneyBox color={color} />
+        <MoneyBox color={color} rates={rates} />
 
         {!lock && (
           <SeperateBox
             align={align}
-            value={"1.71"}
-            value2={" $23000"}
+            value={
+              ex?.availableToBack?.length > 0
+                ? ex?.availableToBack[0]?.price
+                : 0
+            }
+            value2={formatNumber(
+              ex?.availableToBack?.length > 0
+                ? ex?.availableToBack[0]?.size
+                : 0, false
+            )}
             color={matchesMobile ? "white" : "#A7DCFF"}
           />
         )}
@@ -118,12 +130,20 @@ const BoxComponent = ({ name, color, align, lock,teamImage }) => {
             />
           </Box>
         )}
+
+
+
         <Box sx={{ width: "3px", display: "flex", background: "pink" }}></Box>
         {!lock && (
           <SeperateBox
             align={align}
-            value={"1.72"}
-            value2={" $23000"}
+            value={ex?.availableToLay?.length > 0
+              ? ex?.availableToLay[0]?.price
+              : 0
+            }
+            value2={formatNumber(
+              ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0, false
+            )}
             color={matchesMobile ? "white" : "#FFB5B5"}
           />
         )}
@@ -150,4 +170,18 @@ const BoxComponent = ({ name, color, align, lock,teamImage }) => {
   );
 };
 
+{/* <Box
+  sx={{
+    background: "rgba(0,0,0,1)",
+    height: "40px",
+    width: { laptop: "60%", mobile: "80%" },
+    justifyContent: { mobile: "center", laptop: "center" },
+    alignItems: "center",
+    display: "flex",
+  }}
+>
+  <Typography style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase", width: "100%", textAlign: "center", color: "white", fontWeight: "600" }}>
+    suspended
+  </Typography>
+</Box> */}
 export default BoxComponent;
