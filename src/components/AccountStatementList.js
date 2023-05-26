@@ -43,6 +43,7 @@ const AccountStatementList = ({ user }) => {
     const getLimitEntries = (childLimitData) => {
         setPageLimit(childLimitData);
     };
+    console.log(pageLimit,'pagelimit')
     function callPage(val) {
         // dispatch(secallPagetCurrentStatementPage(parseInt(val)));
         // setCurrentPage(parseInt(val * pageLimit));
@@ -54,7 +55,7 @@ const AccountStatementList = ({ user }) => {
         const userId = currentUser.id
         const originalDatefrom = formatDate(data[0]);
         const originalDateto = formatDate(data[1])
-        if (data !== '' && isDated === false) {
+        if (data !== '' && isDated === false && originalDatefrom !== 'NaN-NaN-NaN' && originalDateto !== 'NaN-NaN-NaN') {
             var payload = {
                 limit: pageLimit,
                 skip: currentPage * pageLimit,
@@ -90,7 +91,7 @@ const AccountStatementList = ({ user }) => {
 
     useEffect(() => {
         getAccountStatement()
-    }, [currentPage,pageCount]);
+    }, [currentPage,pageCount,pageLimit]);
 
 
 
@@ -233,7 +234,7 @@ const AccountStatementList = ({ user }) => {
             <Box sx={[{ marginX: "0.5%", minHeight: "100px", borderRadius: "2px", border: "2px solid white", borderTopRightRadius: { mobile: "10px", laptop: '0px', tablet: '10px' }, borderTopLeftRadius: { mobile: "10px", laptop: '0px', tablet: '10px' } }, (theme) => ({
                 backgroundImage: `${theme.palette.primary.headerGradient}`
             })]}>
-                <ListH onChildData={getLimitEntries} />
+                <ListH getLimitEntries={getLimitEntries} />
                 <Box sx={{ overflowX: 'scroll', minWidth: '900px' }}>
                     <ListHeaderT />
                     {decodedTokenUser.role === "user" ?
@@ -308,12 +309,12 @@ const AccountStatementList = ({ user }) => {
 }
 
 const ListH = ({ getLimitEntries }) => {
-    return (<Box display={"flex"} sx={{ justifyContent: "flex-end", px: "10px", py: "6px" }}>
-        {/* <Box display={"flex"} alignItems="center">
+    return (<Box display={"flex"} sx={{ justifyContent: "space-between", px: "10px", py: "6px" }}>
+        <Box display={"flex"} alignItems="center">
             <Typography sx={{ fontSize: '10px', color: 'white', fontWeight: '500' }}>Show</Typography>
-            <SmallDropDown onChildData={getLimitEntries} />
+            <SmallDropDown getLimitEntries={getLimitEntries} />
             <Typography sx={{ fontSize: '10px', color: 'white', fontWeight: '500' }}>Entries</Typography>
-        </Box> */}
+        </Box>
         <SearchInput placeholder={"Search..."} />
     </Box>)
 }

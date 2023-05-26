@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
 import { useDispatch, useSelector } from "react-redux";
 
-const SmallDropDown = ({ handleChange ,entrylimit}) => {
+const SmallDropDown = ({ handleChange ,getLimitEntries}) => {
   const { currentStatementPage } = useSelector((state) => state?.auth);
 //   alert(currentStatementPage)
   const dispatch = useDispatch()
@@ -18,11 +18,10 @@ const SmallDropDown = ({ handleChange ,entrylimit}) => {
         return (
             <>
                 <Typography onClick={() => {
-
-dispatch((1));
+                    getLimitEntries(item)
                     setValue(item)
                     setOpen(false)
-                }} sx={{ textAlign: 'center', paddingY: '3px' }}>{item}</Typography>
+                }} sx={{ textAlign: 'center', paddingY: '1px' }}>{item}</Typography>
                 <Divider /></>
         )
     }
@@ -36,8 +35,8 @@ dispatch((1));
             </Box>
             {open && <Box sx={{ display: 'flex', flexDirection: 'column', background: 'white', width: '47px', alignSelf: 'center', marginX: '5px', borderRadius: '2px', marginTop: '2px', position: 'absolute' }} >
 
-                {['1', '2', '3', '4', '5'].map((i) => {
-                    return (<Item item={i} />)
+                {['1', '2', '3', '4', '5','6','7','8','9','10'].map((i) => {
+                    return (<Item item={i} getLimitEntries={getLimitEntries} />)
                 })}
             </Box>}
         </Box>
