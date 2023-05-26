@@ -84,88 +84,104 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
           </Typography>
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          background: "white",
-          height: "40px",
-          width: { laptop: "60%", mobile: "80%" },
-          justifyContent: { mobile: "flex-end", laptop: "flex-end" },
-          alignItems: "center",
-        }}
-      >
-        <MoneyBox color={color} rates={rates} />
+      {!["ACTIVE", "", undefined, null].includes(status) ?
+        <Box
+          sx={{
+            background: "rgba(0,0,0,1)",
+            height: "40px",
+            display: "flex",
+            width: { laptop: "60%", mobile: "80%" },
+            justifyContent: { mobile: "flex-end", laptop: "flex-end" },
+            alignItems: "center",
+          }}
+        >
+          <Typography style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase", width: "100%", textAlign: "center", color: "white", fontWeight: "600" }}>
+            suspended
+          </Typography>
+        </Box> :
+        <Box
+          sx={{
+            display: "flex",
+            background: "white",
+            height: "40px",
+            width: { laptop: "60%", mobile: "80%" },
+            justifyContent: { mobile: "flex-end", laptop: "flex-end" },
+            alignItems: "center",
+          }}
+        >
+          <MoneyBox color={color} rates={rates} />
 
-        {!lock && (
-          <SeperateBox
-            align={align}
-            value={
-              ex?.availableToBack?.length > 0
-                ? ex?.availableToBack[0]?.price
+          {!lock && (
+            <SeperateBox
+              align={align}
+              value={
+                ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.price
+                  : 0
+              }
+              value2={formatNumber(
+                ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.size
+                  : 0, false
+              )}
+              color={matchesMobile ? "white" : "#A7DCFF"}
+            />
+          )}
+          {lock && (
+            <Box
+              sx={{
+                height: "94%",
+                background: "#FDF21A",
+                border: "1px solid #2626264D",
+                width: "5vw",
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <StyledImage
+                src={LockSolid}
+                sx={{ height: "20px", width: "20px" }}
+              />
+            </Box>
+          )}
+
+
+
+          <Box sx={{ width: "3px", display: "flex", background: "pink" }}></Box>
+          {!lock && (
+            <SeperateBox
+              align={align}
+              value={ex?.availableToLay?.length > 0
+                ? ex?.availableToLay[0]?.price
                 : 0
-            }
-            value2={formatNumber(
-              ex?.availableToBack?.length > 0
-                ? ex?.availableToBack[0]?.size
-                : 0, false
-            )}
-            color={matchesMobile ? "white" : "#A7DCFF"}
-          />
-        )}
-        {lock && (
-          <Box
-            sx={{
-              height: "94%",
-              background: "#FDF21A",
-              border: "1px solid #2626264D",
-              width: "5vw",
-              justifyContent: "center",
-              alignItems: "center",
-              display: "flex",
-            }}
-          >
-            <StyledImage
-              src={LockSolid}
-              sx={{ height: "20px", width: "20px" }}
+              }
+              value2={formatNumber(
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0, false
+              )}
+              color={matchesMobile ? "white" : "#FFB5B5"}
             />
-          </Box>
-        )}
-
-
-
-        <Box sx={{ width: "3px", display: "flex", background: "pink" }}></Box>
-        {!lock && (
-          <SeperateBox
-            align={align}
-            value={ex?.availableToLay?.length > 0
-              ? ex?.availableToLay[0]?.price
-              : 0
-            }
-            value2={formatNumber(
-              ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0, false
-            )}
-            color={matchesMobile ? "white" : "#FFB5B5"}
-          />
-        )}
-        {lock && (
-          <Box
-            sx={{
-              height: "94%",
-              background: "#FDF21A",
-              border: "1px solid #2626264D",
-              width: "5vw",
-              justifyContent: "center",
-              alignItems: "center",
-              display: "flex",
-            }}
-          >
-            <StyledImage
-              src={LockSolid}
-              sx={{ height: "20px", width: "20px" }}
-            />
-          </Box>
-        )}
-      </Box>
+          )}
+          {lock && (
+            <Box
+              sx={{
+                height: "94%",
+                background: "#FDF21A",
+                border: "1px solid #2626264D",
+                width: "5vw",
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <StyledImage
+                src={LockSolid}
+                sx={{ height: "20px", width: "20px" }}
+              />
+            </Box>
+          )}
+        </Box>
+      }
     </Box>
   );
 };

@@ -39,55 +39,141 @@ const DeleteBet = ({ }) => {
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
+  const [sessionBets, setSessionBets] = useState([]);
   const [matchDetail, setMatchDetail] = useState();
-
+  const [sessionLock, setSessionLock] = useState(false)
+  const checkMctchId = useSelector(
+    (state) => state?.matchDetails?.selectedMatch?.id
+  );
 
   useEffect(() => {
-    if (socketMicro && socketMicro.connected && marketId) {
-      socketMicro.emit("init", { id: marketId });
-      // activateLiveMatchMarket();
+    try {
+      if (socketMicro && socketMicro.connected && marketId) {
+        socketMicro.on("connect", () => {
+          socketMicro.emit("init", { id: marketId });
+          // activateLiveMatchMarket();
+          setSessionLock(false)
+        });
+        socketMicro.on("connect_error", (event) => {
+          // Handle the WebSocket connection error here
 
-      socketMicro.on("reconnect", () => {
-        socket.emit("init", { id: marketId });
-      });
-      socketMicro.on(`matchOdds${marketId}`, (val) => {
-        // matchodds Market live and stop disable condition
-        if (val !== null) {
-          if (val.length === 0) {
-            matchOddsCount += 1;
-            if (matchOddsCount >= 3) {
-              socketMicro.emit("disconnect_market", {
-                id: marketId,
-              });
-              // socketMicro.disconnect();
-            }
-          } else {
-            // dispatch(setMatchOddsLive(val[0]));
-            setMacthOddsLive(val[0]);
-            console.log("setMatchOddsLive :", val[0]);
-            if (val[0]?.status === "CLOSED") {
-              socketMicro.emit("disconnect_market", {
-                id: marketId,
-              });
+          setMacthOddsLive([]);
+          setBookmakerLive([]);
+          setSessionLock(true)
+          console.log("WebSocket connection failed:", event);
+        });
+
+        socketMicro.emit("init", { id: marketId });
+        // activateLiveMatchMarket();
+        // socketMicro.on("bookMakerRateLive", (e) => {
+        //   console.log("BookMaker", e);
+        // });
+
+        socketMicro.on("reconnect", () => {
+          socketMicro.emit("init", { id: marketId });
+          // activateLiveMatchMarket();
+          setSessionLock(false)
+        });
+
+        socketMicro.on(`session${marketId}`, (val) => {
+          // console.log("currentMatchProfit 33:", val);
+
+          if (val !== null && matchId === checkMctchId) {
+            // console.warn("updatedBettings1 ", updatedBettings1);
+            var newVal = val?.map((v) => ({
+              bet_condition: v?.RunnerName,
+              betStatus: 0,
+              sessionBet: true,
+              no_rate: v?.LayPrice1,
+              yes_rate: v?.BackPrice1,
+              rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
+              suspended: v?.GameStatus,
+              selectionId: v?.SelectionId,
+            }));
+
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.bettings?.length > 0) {
+                const data = currentMatch?.bettings?.map((betting) => {
+                  var selectedData = newVal?.find(
+                    (data) => data?.selectionId === betting?.selectionId
+                  );
+                  if (selectedData !== undefined) {
+                    return {
+                      ...betting,
+                      bet_condition: selectedData?.bet_condition,
+                      no_rate: selectedData?.no_rate,
+                      yes_rate: selectedData?.yes_rate,
+                      rate_percent: selectedData?.rate_percent,
+                      suspended: selectedData?.suspended,
+                      selectionId: selectedData?.selectionId,
+                    };
+                  }
+                  return betting;
+                });
+
+                // Merge the filteredNewVal with the currentMatch bettings array
+
+                return {
+                  ...currentMatch,
+                  bettings: data,
+                };
+              }
+              return currentMatch;
+            });
+          }
+
+          // dispatch(setSessionOddsLive(body));
+        });
+        socketMicro.on(`matchOdds${marketId}`, (val) => {
+          // matchodds Market live and stop disable condition
+          if (val !== null) {
+            if (val.length === 0) {
+              matchOddsCount += 1;
+              if (matchOddsCount >= 3) {
+                socketMicro.emit("disconnect_market", {
+                  id: marketId,
+                });
+                setMacthOddsLive([]);
+                // socketMicro.disconnect();
+              }
+            } else {
+              // dispatch(setMatchOddsLive(val[0]));
+              setMacthOddsLive(val[0]);
+              if (val[0]?.status === "CLOSED") {
+                socketMicro.emit("disconnect_market", {
+                  id: marketId,
+                });
+                setMacthOddsLive([]);
+              }
             }
           }
-        }
-      });
-      socketMicro.on(`bookmaker${marketId}`, (val) => {
-        if (val !== null) {
-          // console.log("val 222:", val);
-          if (val.length > 0) {
-            // dispatch(setBookMakerLive(val[0]));
-            setBookmakerLive(val[0]);
+        });
+        socketMicro.on(`bookmaker${marketId}`, (val) => {
+          if (val !== null) {
+            // console.log("val 222:", val);
+            if (val.length > 0) {
+              // dispatch(setBookMakerLive(val[0]));
+              setBookmakerLive(val[0]);
+            }
+            setBookmakerLive([]);
+
           }
-        }
-      });
+        });
+      } else {
+        setMacthOddsLive([]);
+        setBookmakerLive([]);
+        setSessionLock(false)
+      }
+    } catch (e) {
+      console.log("error", e);
     }
-
     return () => {
       socketMicro?.emit("disconnect_market", {
         id: marketId,
       });
+      setMacthOddsLive([]);
+      setBookmakerLive([]);
+      setSessionLock(false)
     };
   }, [socketMicro, marketId]);
 
@@ -150,7 +236,6 @@ const DeleteBet = ({ }) => {
           )
         )
       );
-
     } catch (e) {
       console.log(e);
     }
@@ -349,13 +434,14 @@ const DeleteBet = ({ }) => {
           >
             {mode && <CancelButton />}
             <Box sx={{ width: "2%" }}></Box>
-            <CustomButton />
+            {/* <CustomButton /> */}
+            <Box sx={{ width: "150px", marginY: ".75%", height: "35px", }} ></Box>
           </Box>
           <FullAllBets IObets={IObets} mode={mode} tag={false} />
         </Box>
       </Box>
       <DailogModal />
-    </Background>
+    </Background >
   );
 };
 

@@ -20,8 +20,8 @@ const SessionMarket = ({ currentMatch }) => {
       const sessionData =
         currentMatch?.bettings?.length > 0
           ? currentMatch?.bettings?.filter(
-              (element) => element?.sessionBet && element?.id
-            )
+            (element) => element?.sessionBet && element?.id
+          )
           : 0;
 
       setMatchSessionData(sessionData);
@@ -92,7 +92,7 @@ const SessionMarket = ({ currentMatch }) => {
               justifyContent: "flex-end",
             }}
           >
-            <SmallBoxSeason  total={matchSessionData?.length || 0} />
+            <SmallBoxSeason total={matchSessionData?.length || 0} />
           </Box>
         </Box>
         <Box
@@ -156,7 +156,7 @@ const SessionMarket = ({ currentMatch }) => {
                   <Typography
                     sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
                   >
-                    BACK
+                    NO
                   </Typography>
                 </Box>
                 <Box
@@ -175,7 +175,7 @@ const SessionMarket = ({ currentMatch }) => {
                   <Typography
                     sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
                   >
-                    LAY
+                    YES
                   </Typography>
                 </Box>
               </Box>

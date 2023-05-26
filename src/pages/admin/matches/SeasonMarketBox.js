@@ -6,7 +6,7 @@ import { useTheme } from "@emotion/react";
 import PlaceBetComponentWeb from "./PlaceBetComponentWeb";
 import { formatNumber } from "../../../components/helper/helper";
 
-const SeasonMarketBox = ({ index, setMatchSessionData, newData,setData }) => {
+const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
@@ -36,7 +36,7 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData,setData }) => {
               fontWeight: "600",
             }}
           >
-         {newData?.bet_condition}
+            {newData?.bet_condition}
           </Typography>
         </Box>
         <Box

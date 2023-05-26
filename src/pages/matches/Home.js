@@ -79,7 +79,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   // console.log("currentMatchProfit 444:", currentMatchProfit);
   const [sessionExposer, setSessionExposure] = useState(0);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const [sessionLock,setSessionLock]=useState(false)
+  const [sessionLock, setSessionLock] = useState(false)
 
   useEffect(() => {
     if (socket && socket.connected) {
@@ -919,7 +919,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               setBookmakerLive(val[0]);
             }
             setBookmakerLive([]);
-            
+
           }
         });
       } else {
@@ -1182,8 +1182,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-              <SessionBetSeperate allBetsData={sessionBets} mark />
-            )}
+                <SessionBetSeperate allBetsData={sessionBets} mark />
+              )}
           </Box>
         </Box>
       )}
