@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { ArrowDown, DELETE, MyBet } from "../assets";
 import userAxios from "../axios/userAxios";
+
 import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +11,7 @@ import {
   setAllBetRate,
   setAllBetRates,
 } from "../newStore/reducers/matchDetails";
+import constants from "./helper/constants";
 const data = [
   {
     title: "Bookmaker",
@@ -22,55 +24,72 @@ const data = [
   {
     title: "Match odds",
     time: "03:23 AM",
-    type: "Lay",
+    type: "Lay",   
     odds: "90.00",
     stake: "1000.00",
-    country: "INDIA",
+    country: "INDIA",   
   },
 ];
-const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
+const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,count,callPage}) => {
+  console.log(allBetsData,'allBets')
+
+  const [currentPage, setCurrentPage] = useState(0);  
+  const [pageCount, setPageCount] = useState(constants.pageLimit);
+
+
+  // function callPage(val) {
+  //   alert(val)
+  //   // dispatch(setPage(parseInt(val)));
+  //   setCurrentPage(parseInt(val));
+  //   setPageCountOuter(parseInt(val))
+  // }
+
+
+
+  
+
   // const user = useSelector((state) => state?.rootReducer?.user);
   const location = useLocation();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state?.currentUser);
   const match_id = location.state;
 
-  // const [allRateBets, setAllRateBets] = useState([]);
+  const [allRateBets, setAllRateBets] = useState([]);
 
-  // function doEmptyGetAllBets() {
-  //   setAllRateBets([]);
-  // }
+  function doEmptyGetAllBets() {
+    setAllRateBets([]);
+  }
 
-  // async function getAllBetsData() {
-  //   let allRateBetsTemp = [];
-  //   let Bets = [];
-  //   allBetsData?.forEach((element) => {
-  //     element?.bettings?.forEach((element2) => {
-  //       Bets.push({ ...element2, marketId: element.marketId });
-  //     });
-  //   });
-  //   Promise.all(
-  //     Bets.map(async (element) => {
-  //       let payload = {
-  //         match_id: element.match_id,
-  //         user_id:currentUser?.id
-  //       };
-  //       try {
-  //         let { data } = await userAxios.post(
-  //           `/betting/getPlacedBets`,
-  //           payload
-  //         );
+  async function getAllBetsData() {
+    let allRateBetsTemp = [];
+    let Bets = [];
+    allBetsData?.forEach((element) => {
+      element?.bettings?.forEach((element2) => {
+        Bets.push({ ...element2, marketId: element.marketId });
+      });
+    });
+    Promise.all(
+      Bets.map(async (element) => {
+        let payload = {
+          match_id: element.match_id,
+          user_id: currentUser?.id
+        };
+        try {
+          let { data } = await userAxios.post(
+            `/betting/getPlacedBets`,
+            payload
+          );
 
-  //         allRateBetsTemp.push(...data.data[0]);
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     })
-  //   ).then(() => {
-  //     setAllRateBets(allRateBetsTemp);
+          allRateBetsTemp.push(...data.data[0]);
+        } catch (e) {
+          console.log(e);
+        }
+      })
+    ).then(() => {
+      setAllRateBets(allRateBetsTemp);
 
-  //   });
-  // }
+    });
+  }
   return (
     <>
       {
@@ -124,7 +143,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
               <Typography
                 sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
               >
-                {allBetsData?.length || 0}
+                {count || 0}
               </Typography>
             </Box>
           </Box>
@@ -150,6 +169,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
               header={true}
               data={["Market", "Favourite", "Back/Lay", "Odds", "Stake"]}
             />
+
             {profit && (
               <Box
                 sx={{
@@ -177,7 +197,7 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
             }}
           >
             {/* {console.warn("allBetsData :", allBetsData)} */}
-            {[...new Set(allBetsData?.filter((v) => v.bet_type == "back" || v.bet_type == "lay"))]?.map((i, k) => {
+            {[...new Set(allBetsData?.filter((v) => v.bet_type === "back" || v.bet_type === "lay" || v.bet_type ==="no" || v.bet_type === "yes" ))]?.map((i, k) => {
               const num = k + 1;
 
               return (
@@ -217,7 +237,8 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
                                         {mark && <Typography sx={{ fontSize: '10px', fontWeight: '700', color: 'white', textTransform: "uppercase" }}>Bet <span style={{ color: '#e41b23' }} >deleted</span> due to no ball</Typography>}
                                         
                                     </Box>
-                                </Box>} */}
+                                </Box>} */} 
+
                   {profit && k !== 2 && (
                     <Box
                       sx={{
@@ -287,6 +308,11 @@ const AllRateSeperate = ({ profit, mark, mark2, allBetsData }) => {
                 </Box>
               );
             })}
+            <Footer
+        currentPage={currentPage} 
+        pages={pageCount}
+        callPage={callPage}
+      />
           </Box>
         </Box>
       }
@@ -303,11 +329,11 @@ const RowComponent = ({ header, data }) => {
   const getColor = () => {
     if (header) {
       return "black";
-    } else if (data?.bet_type === "back" || data?.bet_type == "yes") {
+    } else if (data?.bet_type === "back" || data?.bet_type === "yes") {
       // return "#FF9292"; 
       // return "#00C0F9"; 
       return "rgb(179, 224, 255)"
-    } else if (data?.bet_type === "lay" || data?.bet_type == "no") {
+    } else if (data?.bet_type === "lay" || data?.bet_type === "no") {
       return "rgb(255, 146, 146)"
       // return "#FF9292";
       // return "#B3E0FF";
@@ -335,7 +361,7 @@ const RowComponent = ({ header, data }) => {
           <SingleBox color={getColor()} data={data} up={true} header={header} time={getTime(data.createAt)} />
           <SingleBox color={getColor()} data={data?.bet_type} header={header} />
           <SingleBox color={getColor()} data={data?.odds} header={header} />
-          <SingleBox color={getColor()} data={data?.amount} header={header} />
+          <SingleBox color={getColor()} data={data?.rate} header={header} width={"50%"}/>
         </>
       )}
       {header && (
@@ -350,12 +376,111 @@ const RowComponent = ({ header, data }) => {
     </Box>
   );
 };
-const SingleBox = ({ data, header, color, up, first, time }) => {
+
+const Footer = ({ currentPage, pages, callPage }) => {
+  return (
+    <Box
+      sx={{
+        height: "35px",
+        display: "flex",
+        alignItems: "center",
+        px: { mobile: "5px", laptop: "10px" },
+        justifyContent: "space-between",
+        background: "#FAFAFA",
+        // marginX: "0%",
+        // marginBottom: "10px",
+      }}
+    >
+      <Typography
+        sx={{ fontSize: { mobile: "10px", laptop: "12px" }, fontWeight: "600" }}
+      >
+        Showing 1 to {pages}
+      </Typography>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box
+          sx={{
+            height: "25px",
+            width: { mobile: "60px", laptop: "80px" },
+            background: "#0B4F26",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "5px",
+          }}
+          onClick={() => {
+
+            callPage(
+              parseInt(currentPage) - 1 === -1 ? 0 : parseInt(currentPage) - 1
+            );
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { laptop: "12px", mobile: "10px" },
+            }}
+          >
+            Previous
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            height: "25px",
+            marginX: { laptop: "8px", mobile: "3.5px" },
+            width: "40px",
+            background: "#262626",
+            display: "flex",
+            borderRadius: "5px",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { laptop: "12px", mobile: "12px" },
+            }}
+          >
+            {currentPage +1 }
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            height: "25px",
+            width: { mobile: "60px", laptop: "80px" },
+            background: "#0B4F26",
+            display: "flex",
+            borderRadius: "5px",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClick={() => {
+            callPage(
+                parseInt(currentPage) === pages-1
+                    ? pages-1
+                    : parseInt(currentPage) + 1
+            );
+        }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { laptop: "14px", mobile: "12px" },
+            }}
+          >
+            Next
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+const SingleBox = ({ data, header, color, up, first, time, width }) => {
   return !header ? (
     first ? (
       <Box
         sx={{
-          width: "100%",
+          width: width ? width : "100%",
           height: "40px",
           background: "#F1C550",
           marginX: { mobile: "1px", laptop: "0.4px" },

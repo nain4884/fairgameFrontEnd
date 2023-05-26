@@ -28,10 +28,10 @@ const AccountStatementList = ({ user }) => {
     const decodedTokenUser = userToken !== null && jwtDecode(userToken);
 
     const { currentUser } = useSelector((state) => state?.currentUser);
-    const [pageCount, setPageCount] = useState(constants.pageLimit);
 
     const dispatch = useDispatch()
     const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+    const [pageCount, setPageCount] = useState(constants.pageLimit);
     const [currentPage, setCurrentPage] = useState(0);
     const [currenLimit, setCurrenLimit] = useState(1)
     const [transactionHistory, setTransactionHistory] = useState([])
