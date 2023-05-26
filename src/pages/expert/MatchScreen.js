@@ -405,6 +405,7 @@ const MatchScreen = () => {
       socketMicro.emit("init", { id: state?.marketId });
       socketMicro.on("reconnect", () => {
         socket.emit("init", { id: state?.marketId });
+        activateLiveMatchMarket(state?.marketId);
       });
       activateLiveMatchMarket(state?.marketId);
       sessionStorage.setItem("marketId", state?.marketId);

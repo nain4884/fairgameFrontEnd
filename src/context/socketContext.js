@@ -33,7 +33,8 @@ export const SocketProvider = ({ children }) => {
     return token;
   };
   useEffect(() => {
-    const token = getToken(globalStore, role);
+    try{
+      const token = getToken(globalStore, role);
     if (!["Bearer null", ""].includes(token)) {
       // if (checkSocket != "true") {
       const newSocket = io(`${apiBasePath}`, {
@@ -64,7 +65,15 @@ export const SocketProvider = ({ children }) => {
         setSocketMicro(newMicroSocket);
         // localStorage.setItem("microSocket", newMicroSocket.connected)
       });
+
+      newMicroSocket.onerror = (event) => {
+        // Handle the WebSocket connection error here
+        console.error('WebSocket connection failed:', event);
+      };
       // }
+    }
+    }catch(e){
+      console.log("Error: " + e)
     }
   }, [globalStore, role]);
 

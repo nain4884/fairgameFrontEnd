@@ -62,7 +62,7 @@ const SessionMarketBox = ({
             textAlign: "start",
           }}
         >
-          {data.bet_condition}
+          {data?.bet_condition}
         </Typography>
       </Box>
       {matchesMobile && (
@@ -146,7 +146,7 @@ const SessionMarketBox = ({
               rates={allRates}
               session={true}
               betType={"no"}
-              value={data.no_rate}
+              value={data?.no_rate}
               value2={formatNumber(data?.rate_percent?.split("-")[0])}
               lock={data?.no_rate === null ? true : false}
               color={"#F6D0CB"}
@@ -163,7 +163,7 @@ const SessionMarketBox = ({
               rates={allRates}
               session={true}
               betType={"yes"}
-              value={data.yes_rate}
+              value={data?.yes_rate}
               value2={formatNumber(data?.rate_percent?.split("-")[1])}
               lock={data?.yes_rate === null ? true : false}
               color={"#B3E0FF"}

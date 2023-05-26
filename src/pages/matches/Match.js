@@ -19,6 +19,7 @@ const Match = ({selected}) => {
     };
     const doNavigateWithState = (e) => {
       navigate("/matchDetail", { state: e });
+      sessionStorage.setItem("matchId", e)
     };
 
     return (
