@@ -9,7 +9,7 @@ import Odds from "./matches/Odds";
 import BookMarketer from "./matches/BookMaketer";
 import SessionMarket from "./matches/SessionMarket";
 
-const MatchSubmit = ({}) => {
+const MatchSubmit = ({ }) => {
   const location = useLocation();
 
   return (

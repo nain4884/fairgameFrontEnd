@@ -92,7 +92,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
         if (packet.data[1] === "resultDeclareForBet") {
           const value = packet.data[0];
-          matchId = value?.match_id;
+          // matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id !== value?.match_id) {
@@ -122,9 +122,10 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         }
         if (packet.data[0] === "updateMatchActiveStatus") {
           const value = packet.data[1];
-          matchId = value?.matchId;
+          // matchId = value?.matchId;
           setCurrentMatch((currentMatch) => {
-            if (currentMatch?.id === matchId) {
+            // if (currentMatch?.id === matchId) {
+            if (currentMatch?.id === value?.matchId) {
               return {
                 ...currentMatch,
                 apiBookMakerActive: value?.apiBookMakerActive,
@@ -148,8 +149,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         }
         if (packet.data[0] === "updateSessionRate_user") {
           const value = packet.data[1];
-          // alert(JSON.stringify(value))
-          matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id !== value?.match_id) {
@@ -199,7 +198,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
           console.log("newBetAdded :", value);
-          matchId = value?.match_id;
+          // matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id !== value?.match_id) {
@@ -277,7 +276,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "bookMakerRateLive") {
           // Bookmaker Market live and stop disable condition
           const value = packet.data[1];
-          console.log("value qqqq:", value);
           setCurrentMatch((prev) => {
             if (prev?.id === value?.matchId) {
               return {
@@ -305,7 +303,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               // console.warn(data, "check rates");
               // getAllBets();
               // console.log(data, "MATCHH_BET", data?.betPlaceData?.match_id, id);
-              console.log("check data :", JSON.stringify(data));
               if (data) {
                 const user = {
                   ...currentUser,
@@ -407,7 +404,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
         if (packet.data[0] === "sessionResult") {
           const value = packet.data[1];
-          matchId = value?.match_id;
+          // matchId = value?.match_id;
           try {
             const user = {
               ...currentUser,
@@ -441,7 +438,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         }
         if (packet.data[0] === "sessionNoResult") {
           const value = packet.data[1];
-          matchId = value?.match_id;
+          // matchId = value?.match_id;
           try {
             const user = {
               ...currentUser,
@@ -476,7 +473,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
         if (packet.data[0] === "matchResult") {
           const value = packet.data[1];
-          matchId = value?.match_id;
+          // matchId = value?.match_id;
           try {
             const user = {
               ...currentUser,
