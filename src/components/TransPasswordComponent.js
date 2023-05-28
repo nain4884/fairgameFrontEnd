@@ -95,7 +95,7 @@ export const TransPassComp = ({ onCancel }) => {
       <Typography
         sx={{
           color: "white",
-          fontSize: { laptop: "18px", mobile: "20px" },
+          fontSize: { laptop: "18px", mobile: "14px" },
           fontWeight: "700",
         }}
       >
@@ -103,7 +103,7 @@ export const TransPassComp = ({ onCancel }) => {
       </Typography>
       <Box
         sx={{
-          width: "400px",
+          width: {laptop:"400px", mobile: "300px",tablet: "400px"},
           height: "460px",
           minHeight: "200px",
           background: "#F8C851",
@@ -172,7 +172,7 @@ export const TransPassComp = ({ onCancel }) => {
           }}
         >
           <Typography
-            sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
+            sx={{ fontSize: { laptop: "18px", mobile: "14px" } }}
             color={"white"}
             onClick={generateTrandPassword}
           >
@@ -195,7 +195,7 @@ export const TransPassComp = ({ onCancel }) => {
           }}
         >
           <Typography
-            sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
+            sx={{ fontSize: { laptop: "18px", mobile: "14px" } }}
             color={"white"}
             onClick={() => {
               onCancel();

@@ -1,5 +1,17 @@
 import { useState } from "react";
-import { Box, Typography, Switch, TextField, styled } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Switch,
+  TextField,
+  styled,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalOpen } from "../store/userdetail";
 import StyledImage from "./StyledImage";
@@ -54,6 +66,7 @@ export default function UserDetailModal({
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
+  const [deleteModal, setDeleteModal] = useState(false);
   function showDialogModal(isModalOpen, showRight, message) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
     setTimeout(() => {
@@ -271,22 +284,7 @@ export default function UserDetailModal({
           <BoxButton
             deleteBtn={true}
             onClick={(e) => {
-              if (
-                prevElement.credit_refer == 0 &&
-                prevElement.profit_loss == 0 &&
-                prevElement.available_balance == 0
-              ) {
-                UserDelete(userModal.id)
-                  .then(({ bool, message }) => {
-                    showDialogModal(true, true, message);
-                  })
-                  .catch(({ bool, message }) => {
-                    showDialogModal(true, false, message);
-                  });
-              } else {
-                let message = "First Settle Account to Delete The User";
-                showDialogModal(true, false, message);
-              }
+              setDeleteModal((prev) => !prev);
             }}
             title={"Delete User"}
             icon={
@@ -294,6 +292,52 @@ export default function UserDetailModal({
             }
             containerStyle={classes.BoxButtonContStyle}
           />
+
+          <Dialog
+            open={deleteModal}
+            onClose={() => setDeleteModal((prev) => !prev)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure want to delete this user?"}
+            </DialogTitle>
+            {/* <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent> */}
+            <DialogActions>
+              <Button onClick={() => setDeleteModal((prev) => !prev)}>
+                Cancel
+              </Button>
+              <Button
+                sx={{ color: "#E32A2A" }}
+                onClick={(e) => {
+                  if (
+                    prevElement.credit_refer == 0 &&
+                    prevElement.profit_loss == 0 &&
+                    prevElement.available_balance == 0
+                  ) {
+                    UserDelete(userModal.id)
+                      .then(({ bool, message }) => {
+                        showDialogModal(true, true, message);
+                      })
+                      .catch(({ bool, message }) => {
+                        showDialogModal(true, false, message);
+                      });
+                  } else {
+                    let message = "First Settle Account to Delete The User";
+                    toast.error(message);
+                    showDialogModal(true, false, message);
+                  }
+                }}
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       )}
     </Box>
@@ -463,7 +507,7 @@ const DepositComponent = ({
       percent_profit_loss = profitLoss;
     } else {
       const newVal = profitLoss + inputValue;
-      percent_profit_loss = newVal * (rateToCalculatePercentage/100);
+      percent_profit_loss = newVal * (rateToCalculatePercentage / 100);
     }
     return percent_profit_loss.toFixed(2);
   };
@@ -817,7 +861,7 @@ const WithDrawComponent = ({
       percent_profit_loss = profitLoss;
     } else {
       const newVal = profitLoss - inputValue;
-      percent_profit_loss = newVal * (rateToCalculatePercentage/100);
+      percent_profit_loss = newVal * (rateToCalculatePercentage / 100);
     }
     return percent_profit_loss.toFixed(2);
   };
@@ -2160,6 +2204,7 @@ const UpdateLockUnlock = (body) => {
 };
 
 const UserDelete = (id) => {
+  console.log('first', axios)
   const { axios } = setRole();
   return new Promise(async (resolve, reject) => {
     try {
