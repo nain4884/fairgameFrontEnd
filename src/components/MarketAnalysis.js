@@ -244,6 +244,7 @@ const MarketAnalysis = () => {
   const [mode, setMode] = useState("0");
   const [max, setMax] = useState("2");
   const [matchData, setMatchData] = useState([]);
+  const [matchIds, setMatchIds] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
@@ -251,15 +252,18 @@ const MarketAnalysis = () => {
     setMax(value);
     setMode("1");
   };
-  const changeSelected = (index) => {
+  const changeSelected = (index, i) => {
     if (mode == "0") {
       return false;
     }
     let x = [...selected];
     if (x.includes(index?.toString())) {
+      // setMatchIds
+      setMatchIds((prevIds) => prevIds.filter((matchId) => matchId !== i.id));
       x.splice(x.indexOf(index?.toString()), 1);
       setSelected([...x]);
     } else {
+      setMatchIds((prevIds) => [...prevIds, i.id]);
       if (max == selected?.length) {
         return;
       }
@@ -359,10 +363,12 @@ const MarketAnalysis = () => {
                 if (selected) setMode("0");
                 setSelected([]);
                 if (max == "3") {
-                  navigate(`/${pathname.split("/")[1]}/match_submit1`);
+                  navigate(`/${pathname.split("/")[1]}/match_submit1`, {
+                    state: { matchIds: matchIds },
+                  });
                 } else {
                   navigate(`/${pathname.split("/")[1]}/match_submit`, {
-                    state: { match: Number(max) },
+                    state: { match: Number(max), matchIds: matchIds },
                   });
                 }
               }}
@@ -379,7 +385,7 @@ const MarketAnalysis = () => {
             <LiveMarketComponent
               key={i?.id}
               data={i}
-              setSelected={() => changeSelected(k)}
+              setSelected={() => changeSelected(k, i)}
               mode={mode}
               selected={!selected.includes(k?.toString())}
               team={i?.teamA}

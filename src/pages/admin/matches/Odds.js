@@ -1,10 +1,11 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import Divider from "../../../components/helper/Divider";
 import BoxComponent from "./BoxComponent";
+import ManualBoxComponent from "./ManualBoxComponent";
 import SmallBox from "./SmallBox";
 import { useTheme } from "@emotion/react";
 
-const Odds = ({ currentMatch, data }) => {
+const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
   const theme = useTheme();
   // console.log("currentMatch 22222", data);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -41,7 +42,8 @@ const Odds = ({ currentMatch, data }) => {
         padding: 0.2,
         flexDirection: "column",
         width: "100%",
-        marginTop: "10px",
+        marginTop: typeOfBet == "MANUAL BOOKMAKER" ? "0" : "10px",
+        marginBottom: typeOfBet == "MANUAL BOOKMAKER" ? "10px" : "0",
         alignSelf: {
           mobile: "center",
           tablet: "center",
@@ -75,7 +77,7 @@ const Odds = ({ currentMatch, data }) => {
               marginLeft: "7px",
             }}
           >
-            Match Odds
+            {typeOfBet}
           </Typography>
         </Box>
         <Box
@@ -180,29 +182,64 @@ const Odds = ({ currentMatch, data }) => {
         </Box>
       </Box>
       <Box sx={{ position: "relative", width: "99.8%", background: "red" }}>
-        <BoxComponent
-          teamImage={currentMatch?.teamA_Image}
-          // color={"#46e080"}
-          name={currentMatch?.teamA}
-          rates={currentMatch?.teamA_rate}
-          color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
-          data={data?.length > 0 ? data[0] : []}
-          lock={handleLock(data?.length > 0 ? data[0] : [])}
-        // name1={currentMatch?.teamA}
-        // teamARates={teamRates?.teamA}
-        // teamBRates={teamRates?.teamB}
-        />
-        <Divider />
-        <BoxComponent
-          teamImage={currentMatch?.teamB_Image}
-          // color={"#FF4D4D"}
-          color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#46e080"}
-          name={currentMatch?.teamB}
-          rates={currentMatch?.teamB_rate}
-          data={data?.length > 0 ? data[1] : []}
-          lock={handleLock(data?.length > 0 ? data[1] : [])}
-          align="end"
-        />
+        {typeOfBet == "MANUAL BOOKMAKER" ?
+          <>
+            <ManualBoxComponent
+              teamImage={currentMatch?.teamA_Image}
+              // color={"#46e080"}
+              name={currentMatch?.teamA}
+              rates={currentMatch?.teamA_rate}
+              color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
+              data={data?.length > 0 ? data[0] : []}
+              lock={handleLock(data?.length > 0 ? data[0] : [])}
+              // manualBookmakerData
+              matchOddsData={{
+                back: manualBookmakerData?.[0]?.teamA_Back,
+                lay: manualBookmakerData?.[0]?.teamA_lay
+              }}
+            />
+            <Divider />
+            <ManualBoxComponent
+              teamImage={currentMatch?.teamA_Image}
+              // color={"#46e080"}
+              name={currentMatch?.teamA}
+              rates={currentMatch?.teamA_rate}
+              color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
+              data={data?.length > 0 ? data[0] : []}
+              lock={handleLock(data?.length > 0 ? data[0] : [])}
+              matchOddsData={{
+                back: manualBookmakerData?.[0]?.teamA_Back,
+                lay: manualBookmakerData?.[0]?.teamA_lay
+              }}
+            />
+          </>
+          :
+          <>
+            <BoxComponent
+              teamImage={currentMatch?.teamA_Image}
+              // color={"#46e080"}
+              name={currentMatch?.teamA}
+              rates={currentMatch?.teamA_rate}
+              color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
+              data={data?.length > 0 ? data[0] : []}
+              lock={handleLock(data?.length > 0 ? data[0] : [])}
+            // name1={currentMatch?.teamA}
+            // teamARates={teamRates?.teamA}
+            // teamBRates={teamRates?.teamB}
+            />
+            <Divider />
+            <BoxComponent
+              teamImage={currentMatch?.teamB_Image}
+              // color={"#FF4D4D"}
+              color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#46e080"}
+              name={currentMatch?.teamB}
+              rates={currentMatch?.teamB_rate}
+              data={data?.length > 0 ? data[1] : []}
+              lock={handleLock(data?.length > 0 ? data[1] : [])}
+              align="end"
+            />
+          </>
+        }
       </Box>
     </Box>
   );

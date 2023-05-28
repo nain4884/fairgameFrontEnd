@@ -24,18 +24,18 @@ const data = [
   {
     title: "Match odds",
     time: "03:23 AM",
-    type: "Lay",   
+    type: "Lay",
     odds: "90.00",
     stake: "1000.00",
-    country: "INDIA",   
+    country: "INDIA",
   },
 ];
-const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,count,callPage}) => {
+const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, count, callPage }) => {
 
-  const [currentPage, setCurrentPage] = useState(0);  
+  const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const { allbetsPage } = useSelector((state) => state?.auth);
-    
+
 
 
   // function callPage(val) {
@@ -44,11 +44,11 @@ const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,co
   //   setCurrentPage(parseInt(val));
   //   setPageCountOuter(parseInt(val))
   // }
-    
 
 
 
-  
+
+
 
   // const user = useSelector((state) => state?.rootReducer?.user);
   const location = useLocation();
@@ -199,7 +199,7 @@ const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,co
             }}
           >
             {/* {console.warn("allBetsData :", allBetsData)} */}
-            {[...new Set(allBetsData?.filter((v) => v.bet_type === "back" || v.bet_type === "lay" || v.bet_type ==="no" || v.bet_type === "yes" ))]?.map((i, k) => {
+            {[...new Set(allBetsData?.filter((v) => v.bet_type === "back" || v.bet_type === "lay" || v.bet_type === "no" || v.bet_type === "yes"))]?.map((i, k) => {
               const num = k + 1;
 
               return (
@@ -239,7 +239,7 @@ const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,co
                                         {mark && <Typography sx={{ fontSize: '10px', fontWeight: '700', color: 'white', textTransform: "uppercase" }}>Bet <span style={{ color: '#e41b23' }} >deleted</span> due to no ball</Typography>}
                                         
                                     </Box>
-                                </Box>} */} 
+                                </Box>} */}
 
                   {profit && k !== 2 && (
                     <Box
@@ -311,11 +311,11 @@ const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,co
               );
             })}
             <Footer
-        currentPage={currentPage} 
-        pages={pageCount}
-        callPage={callPage}
-        currentPageNo={allbetsPage}
-      />
+              currentPage={currentPage}
+              pages={pageCount}
+              callPage={callPage}
+              currentPageNo={allbetsPage}
+            />
           </Box>
         </Box>
       }
@@ -364,7 +364,7 @@ const RowComponent = ({ header, data }) => {
           <SingleBox color={getColor()} data={data} up={true} header={header} time={getTime(data.createAt)} />
           <SingleBox color={getColor()} data={data?.bet_type} header={header} />
           <SingleBox color={getColor()} data={data?.odds} header={header} />
-          <SingleBox color={getColor()} data={data?.rate || data?.amount} header={header} width={"50%"}/>
+          <SingleBox color={getColor()} data={data?.rate || data?.amount} header={header} width={"50%"} />
         </>
       )}
       {header && (
@@ -380,7 +380,7 @@ const RowComponent = ({ header, data }) => {
   );
 };
 
-const Footer = ({ currentPage, pages, callPage,currentPageNo }) => {
+const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
   return (
     <Box
       sx={{
@@ -444,7 +444,7 @@ const Footer = ({ currentPage, pages, callPage,currentPageNo }) => {
               fontSize: { laptop: "12px", mobile: "12px" },
             }}
           >
-            {currentPageNo +1 }
+            {currentPageNo + 1}
           </Typography>
         </Box>
         <Box
@@ -459,11 +459,11 @@ const Footer = ({ currentPage, pages, callPage,currentPageNo }) => {
           }}
           onClick={() => {
             callPage(
-                parseInt(currentPage) === pages-1
-                    ? pages-1
-                    : parseInt(currentPage) + 1
+              parseInt(currentPage) === pages - 1
+                ? pages - 1
+                : parseInt(currentPage) + 1
             );
-        }}
+          }}
         >
           <Typography
             sx={{
