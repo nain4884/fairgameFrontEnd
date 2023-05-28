@@ -79,7 +79,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   // console.log("currentMatchProfit 444:", currentMatchProfit);
   const [sessionExposer, setSessionExposure] = useState(0);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const [sessionLock, setSessionLock] = useState(false)
+  const [sessionLock, setSessionLock] = useState(false);
 
   useEffect(() => {
     if (socket && socket.connected) {
@@ -102,7 +102,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting.id === value.betId) {
                   if (sessionOffline.includes(value.betId)) {
-                    const newres = sessionOffline.filter((id) => id !== value.betId);
+                    const newres = sessionOffline.filter(
+                      (id) => id !== value.betId
+                    );
                     sessionOffline = newres;
                   }
                   sessionOffline.push(value.betId);
@@ -118,7 +120,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           } catch (err) {
             console.log(err?.message);
           }
-
         }
         if (packet.data[0] === "updateMatchActiveStatus") {
           const value = packet.data[1];
@@ -812,14 +813,14 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         socketMicro.on("connect", () => {
           socketMicro.emit("init", { id: marketId });
           activateLiveMatchMarket();
-          setSessionLock(false)
+          setSessionLock(false);
         });
         socketMicro.on("connect_error", (event) => {
           // Handle the WebSocket connection error here
 
           setMacthOddsLive([]);
           setBookmakerLive([]);
-          setSessionLock(true)
+          setSessionLock(true);
           console.log("WebSocket connection failed:", event);
         });
 
@@ -832,7 +833,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         socketMicro.on("reconnect", () => {
           socketMicro.emit("init", { id: marketId });
           activateLiveMatchMarket();
-          setSessionLock(false)
+          setSessionLock(false);
         });
 
         socketMicro.on(`session${marketId}`, (val) => {
@@ -914,15 +915,15 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             if (val.length > 0) {
               // dispatch(setBookMakerLive(val[0]));
               setBookmakerLive(val[0]);
+            } else {
+              setBookmakerLive([]);
             }
-            setBookmakerLive([]);
-
           }
         });
       } else {
         setMacthOddsLive([]);
         setBookmakerLive([]);
-        setSessionLock(false)
+        setSessionLock(false);
       }
     } catch (e) {
       console.log("error", e);
@@ -933,7 +934,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       });
       setMacthOddsLive([]);
       setBookmakerLive([]);
-      setSessionLock(false)
+      setSessionLock(false);
     };
   }, [socketMicro, marketId]);
 
@@ -959,13 +960,14 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           )
       );
 
-      console.log("bets", bets, data?.data?.data);
+      // console.log("bets", bets, data?.data?.data);
       setSessionBets(bets || []);
     } catch (e) {
       console.log(e);
     }
   }
 
+  console.log("amount", bookmakerLive);
   const activateLiveMatchMarket = async () => {
     try {
       await Axios.get(`${microServiceApiPath}/market/${marketId}`);
@@ -1093,6 +1095,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             flexDirection: "column",
           }}
         >
+              <MatchComponent currentMatch={currentMatch} />
           <div style={{ width: "100%" }}>
             <MatchOdds
               sessionBets={sessionBets}
@@ -1138,7 +1141,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 />
               )}
             </Box>
-            <MatchComponent currentMatch={currentMatch} />
             <LiveMatchHome />
           </Box>
         </div>
@@ -1175,12 +1177,19 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   v.marketType
                 )
               )}
+              count={
+                IObets?.filter((v) =>
+                  ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
+                    v.marketType
+                  )
+                ).length
+              }
               mark
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-                <SessionBetSeperate allBetsData={sessionBets} mark />
-              )}
+              <SessionBetSeperate allBetsData={sessionBets} mark />
+            )}
           </Box>
         </Box>
       )}

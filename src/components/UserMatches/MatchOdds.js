@@ -234,6 +234,7 @@ const MatchOdds = ({
       ? manualBookMarkerRates?.find((v) => v?.matchId === data?.id)
       : { teamA: 0, teamB: 0 };
   // { console.warn("dataProfit :", dataProfit) }
+  console.log('bookmakerLive?.runners ', bookmakerLive )
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {data?.apiBookMakerActive && <BookMarketer data={data} />}

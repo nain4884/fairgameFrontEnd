@@ -145,6 +145,7 @@ const MatchScreen = () => {
                     ip_address: null,
                     rate: data?.betPlaceData?.rate,
                     marketType: data?.betPlaceData?.marketType,
+                    myStack:data?.betPlaceData?.myStack,
                     amount:
                       data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                   };
@@ -434,7 +435,7 @@ const MatchScreen = () => {
     }
   }
 
-  // console.log('IObets', IObets)
+  console.log('IObets', IObets)
   return (
     <Background>
       {/* <CHeader /> */}

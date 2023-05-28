@@ -3,7 +3,7 @@ import React from "react";
 import { StyledImage } from "../../components";
 import { CANCEL } from "../../assets";
 
-const RunsBox = ({ item ,setData}) => {
+const RunsBox = ({ item, setData }) => {
   return (
     <Box
       sx={{
@@ -20,26 +20,33 @@ const RunsBox = ({ item ,setData}) => {
       <Box
         sx={{
           display: "flex",
-          paddingX:"2px",
+          paddingX: "2px",
           height: "36px",
           background: "#0B4F26",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <Typography sx={{ fontSize: "12px", color: "white", fontWeight: "600" ,lineHeight:"1"}}>
+        <Typography
+          sx={{
+            fontSize: "12px",
+            color: "white",
+            fontWeight: "600",
+            lineHeight: "1",
+          }}
+        >
           {item?.bet_condition}
         </Typography>
-        <img 
-            onClick={(e) => {
-              setData((prev) => {
-                const updatedArray = prev?.filter((v) => v?.id !== item?.id);
-                return updatedArray;
-              });
-            }}
+        <img
+          onClick={(e) => {
+            setData((prev) => {
+              const updatedArray = prev?.filter((v) => v?.id !== item?.id);
+              return updatedArray;
+            });
+          }}
           src={CANCEL}
           alt="close"
-          style={{ width: "18px", height: "18px",cursor: "pointer" }}
+          style={{ width: "18px", height: "18px", cursor: "pointer" }}
         />
       </Box>
       <Box sx={{ display: "flex", height: "25px" }}>
@@ -81,6 +88,8 @@ const RunsBox = ({ item ,setData}) => {
                 return "#10DC61";
               } else if (value === v?.profit_loss && value > 1) {
                 return "#F8C851";
+              } else if (value === 0) {
+                return "#F8C851";
               } else {
                 return "#DC3545";
               }
@@ -89,6 +98,8 @@ const RunsBox = ({ item ,setData}) => {
               if (value > 1) {
                 return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
               } else if (value === v?.profit_loss && value > 1) {
+                return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+              } else if (value === 0) {
                 return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
               } else {
                 return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";

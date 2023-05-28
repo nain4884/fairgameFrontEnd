@@ -31,7 +31,6 @@ const data = [
   },
 ];
 const AllRateSeperate = ({ profit, mark,setPageCountOuter, mark2 ,allBetsData,count,callPage}) => {
-  console.log(allBetsData,'allBets')
 
   const [currentPage, setCurrentPage] = useState(0);  
   const [pageCount, setPageCount] = useState(constants.pageLimit);
@@ -365,7 +364,7 @@ const RowComponent = ({ header, data }) => {
           <SingleBox color={getColor()} data={data} up={true} header={header} time={getTime(data.createAt)} />
           <SingleBox color={getColor()} data={data?.bet_type} header={header} />
           <SingleBox color={getColor()} data={data?.odds} header={header} />
-          <SingleBox color={getColor()} data={data?.rate} header={header} width={"50%"}/>
+          <SingleBox color={getColor()} data={data?.rate || data?.amount} header={header} width={"50%"}/>
         </>
       )}
       {header && (

@@ -117,7 +117,6 @@ const AccountListRow = ({
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
-  console.log("element", element);
   // checkIfElementUpdated()
   return (
     <>

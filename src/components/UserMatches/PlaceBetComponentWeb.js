@@ -30,6 +30,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
   return (
     <>
       <Box
+      ref={innerRef}
         onClick={(e) => setShow(!show)}
         sx={{
           background: "#0B4F26",
