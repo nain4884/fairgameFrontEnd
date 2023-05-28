@@ -1137,6 +1137,14 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                       v.marketType
                     )
                   )}
+
+                  count={
+                    IObets?.filter((v) =>
+                      ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
+                        v.marketType
+                      )
+                    ).length
+                  }
                   mark
                 />
               )}
