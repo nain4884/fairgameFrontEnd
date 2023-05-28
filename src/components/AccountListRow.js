@@ -22,7 +22,7 @@ const AccountListRow = ({
   element,
   getListOfUser,
   showOptions,
-  showChildModal
+  showChildModal,
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -37,6 +37,43 @@ const AccountListRow = ({
     id: "",
     title: "",
   });
+
+  function handleUpline() {
+    const {
+      a_partnership,
+      sa_partnership,
+      sm_partnership,
+      fa_partnership,
+      fw_partnership,
+      m_partnership,
+    } = element;
+
+    const partnershipMap = {
+      superMaster:
+        a_partnership + sa_partnership + fa_partnership + fw_partnership,
+      superAdmin: fa_partnership + fw_partnership,
+      master:
+        sm_partnership +
+        a_partnership +
+        sa_partnership +
+        fa_partnership +
+        fw_partnership,
+      admin: sa_partnership + fa_partnership + fw_partnership,
+      fairGameWallet: 0,
+      fairGameAdmin: fw_partnership,
+      user:
+        a_partnership +
+        sa_partnership +
+        sm_partnership +
+        fa_partnership +
+        fw_partnership +
+        m_partnership,
+    };
+
+    const thisUplinePertnerShip = partnershipMap[element.role] || 0;
+
+    return thisUplinePertnerShip;
+  }
   const prevElement = {
     credit_refer: element.credit_refer,
     balance: element.balance,
@@ -48,8 +85,10 @@ const AccountListRow = ({
     percent_profit_loss: element.percent_profit_loss || 0,
     bet_blocked: element.bet_blocked,
     all_blocked: element.all_blocked,
+    rateToCalculatePercentage: handleUpline(),
   };
 
+  console.log("hand", prevElement);
   const updatedUserProfile = async () => {
     try {
       const { data } = await axios.get("users/profile");
@@ -85,7 +124,7 @@ const AccountListRow = ({
       <Box
         sx={[
           {
-            width: '100%',
+            width: "100%",
             display: "flex",
             height: "45px",
             background: "#0B4F26",
@@ -99,7 +138,7 @@ const AccountListRow = ({
         <Box
           sx={[
             {
-              width: {laptop:"11.5vw",tablet:"20.5vw",mobile:"42.5vw"},
+              width: { laptop: "11.5vw", tablet: "20.5vw", mobile: "42.5vw" },
               display: "flex",
               paddingX: "10px",
               justifyContent: "space-between",
@@ -149,7 +188,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: {laptop:"10.5vw",tablet:"10.5vw",mobile:"28.5vw"},
+            width: { laptop: "10.5vw", tablet: "10.5vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -163,7 +202,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"28.5vw"},
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -177,7 +216,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: {laptop:"11.5vw",tablet:"11.5vw",mobile:"42.5vw"},
+            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "42.5vw" },
             display: "flex",
             paddingLeft: "10px",
             background: elementToUDM.profit_loss >= 0 ? "#27AC1E" : "#E32A2A",
@@ -207,7 +246,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: {laptop:"11.5vw",tablet:"11.5vw",mobile:"42.5vw"},
+            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "42.5vw" },
             display: "flex",
             paddingLeft: "10px",
             background: elementToUDM.profit_loss >= 0 ? "#27AC1E" : "#E32A2A",
@@ -216,7 +255,9 @@ const AccountListRow = ({
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ fontSize: "12px", fontWeight: "600",color:"white" }}>
+          <Typography
+            sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
+          >
             {elementToUDM.percent_profit_loss}
           </Typography>
           <StyledImage
@@ -235,7 +276,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"28.5vw"},
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -249,7 +290,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"28.5vw"},
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -263,7 +304,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-             width: {laptop:"5vw",tablet:"5vw",mobile:"24vw"},
+            width: { laptop: "5vw", tablet: "5vw", mobile: "24vw" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -278,7 +319,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-             width: {laptop:"5vw",tablet:"5vw",mobile:"24vw"},
+            width: { laptop: "5vw", tablet: "5vw", mobile: "24vw" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -293,7 +334,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-             width: {laptop:"8vw",tablet:"8vw",mobile:"42vw"},
+            width: { laptop: "8vw", tablet: "8vw", mobile: "42vw" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -307,7 +348,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-             width: {laptop:"8vw",tablet:"8vw",mobile:"42vw"},
+            width: { laptop: "8vw", tablet: "8vw", mobile: "42vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -361,10 +402,7 @@ const AccountListRow = ({
             setShow={setSubSusers}
             title={showSubUsers?.title}
           />
-          
         </Box>
-
-        
       </ModalMUI>
 
       {showSuccessModal && (

@@ -449,6 +449,25 @@ const DepositComponent = ({
   const activeWalletAmount = useSelector(
     (state) => state?.rootReducer?.user?.amount
   );
+
+  const calculatePercentProfitLoss = (val, e) => {
+    const rateToCalculatePercentage = val.rateToCalculatePercentage;
+    const inputValue = parseInt(
+      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+    );
+    const profitLoss = prevElement.profit_loss;
+
+    let percent_profit_loss;
+
+    if (rateToCalculatePercentage === 0) {
+      percent_profit_loss = profitLoss;
+    } else {
+      const newVal = profitLoss + inputValue;
+      percent_profit_loss = newVal * (rateToCalculatePercentage/100);
+    }
+    return percent_profit_loss.toFixed(2);
+  };
+
   const handleChange = debounce((e) => {
     setDepositObj({
       ...depositObj,
@@ -458,6 +477,7 @@ const DepositComponent = ({
 
     setElementToUDM({
       ...elementToUDM,
+      percent_profit_loss: calculatePercentProfitLoss(prevElement, e),
       profit_loss:
         prevElement.profit_loss +
         parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
@@ -784,6 +804,23 @@ const WithDrawComponent = ({
     remark: "",
   };
   const [withDrawObj, setWithDrawObj] = useState(defaultWithDrawObj);
+  const calculatePercentProfitLoss = (val, e) => {
+    const rateToCalculatePercentage = val.rateToCalculatePercentage;
+    const inputValue = parseInt(
+      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+    );
+    const profitLoss = prevElement.profit_loss;
+
+    let percent_profit_loss;
+
+    if (rateToCalculatePercentage === 0) {
+      percent_profit_loss = profitLoss;
+    } else {
+      const newVal = profitLoss - inputValue;
+      percent_profit_loss = newVal * (rateToCalculatePercentage/100);
+    }
+    return percent_profit_loss.toFixed(2);
+  };
   const handleChange = debounce((e) => {
     setWithDrawObj({
       ...withDrawObj,
@@ -792,6 +829,7 @@ const WithDrawComponent = ({
     });
     setElementToUDM({
       ...elementToUDM,
+      percent_profit_loss: calculatePercentProfitLoss(prevElement, e),
       profit_loss:
         prevElement.profit_loss -
         parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
@@ -1369,8 +1407,15 @@ const SetExposureComponent = ({
   };
   const [exposureObj, setExposureObj] = useState(defaultExposureObj);
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px",   flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-    gap: 2, }}>
+    <Box
+      sx={{
+        display: "flex",
+        borderRadius: "5px",
+        paddingRight: "10px",
+        flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+        gap: 2,
+      }}
+    >
       <Box sx={{ width: "100%" }}>
         <Box
           sx={{
@@ -1551,7 +1596,13 @@ const SetExposureComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px",             marginTop: { mobile: 0, tablet: "10px", laptop: "10px" }, }}>
+        <Box
+          sx={{
+            display: "flex",
+            width: "150px",
+            marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+          }}
+        >
           <BoxButton
             containerStyle={{
               width: "150px",
@@ -1596,8 +1647,15 @@ const ChangePasswordComponent = ({
     defaultChangePasswordObj
   );
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px"   ,flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-    gap: 2, }}>
+    <Box
+      sx={{
+        display: "flex",
+        borderRadius: "5px",
+        paddingRight: "10px",
+        flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+        gap: 2,
+      }}
+    >
       <Box sx={{ width: "100%" }}>
         <Box
           sx={{
@@ -1759,7 +1817,13 @@ const ChangePasswordComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px",             marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },}}>
+        <Box
+          sx={{
+            display: "flex",
+            width: "150px",
+            marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+          }}
+        >
           <BoxButton
             containerStyle={{
               width: "150px",
@@ -1797,13 +1861,24 @@ const LockUnlockComponent = ({
   };
   const [lockUnlockObj, setLockUnlockObj] = useState(defaultLockUnlockObj);
   return (
-    <Box sx={{ display: "flex", borderRadius: "5px", paddingRight: "10px",   flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-    gap: 2, }}>
+    <Box
+      sx={{
+        display: "flex",
+        borderRadius: "5px",
+        paddingRight: "10px",
+        flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+        gap: 2,
+      }}
+    >
       <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
-            justifyContent: { mobile: "center", tablet: "flex-end", laptop: "flex-end" },
+            justifyContent: {
+              mobile: "center",
+              tablet: "flex-end",
+              laptop: "flex-end",
+            },
             height: "45px",
             alignItems: "center",
             overflow: "hidden",
@@ -1840,7 +1915,7 @@ const LockUnlockComponent = ({
             flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
             justifyContent: "flex-end",
             marginTop: "10px",
-            width:"100%",
+            width: "100%",
           }}
         >
           <Typography
@@ -1923,7 +1998,13 @@ const LockUnlockComponent = ({
             title={"Submit"}
           />
         </Box>
-        <Box sx={{ display: "flex", width: "150px",             marginTop: { mobile: 0, tablet: "10px", laptop: "10px" }, }}>
+        <Box
+          sx={{
+            display: "flex",
+            width: "150px",
+            marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+          }}
+        >
           <BoxButton
             containerStyle={{
               width: "150px",
