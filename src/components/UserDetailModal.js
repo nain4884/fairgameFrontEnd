@@ -936,7 +936,6 @@ const WithDrawComponent = ({
           </Typography>
           <Box
             sx={{
-              marginLeft: { mobile: 0, laptop: "20px", tablet: "20px" },
               background: "#E32A2A",
               width: { mobile: "100%", laptop: "60%", tablet: "60%" },
               height: "45px",
