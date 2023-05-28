@@ -820,6 +820,19 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
           setMacthOddsLive([]);
           setBookmakerLive([]);
+          setCurrentMatch((currentMatch) => {
+            const bettingToUpdate = currentMatch?.bettings?.map((betting) => {
+              if (betting?.id && betting?.selectionId && betting?.sessionBet) {
+                return { ...betting, yes_rate: null, no_rate: null };
+              }
+              return betting;
+            });
+
+            return {
+              ...currentMatch,
+              bettings: bettingToUpdate,
+            };
+          });
           setSessionLock(true);
           console.log("WebSocket connection failed:", event);
         });
@@ -882,7 +895,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               return currentMatch;
             });
           }
-
           // dispatch(setSessionOddsLive(body));
         });
         socketMicro.on(`matchOdds${marketId}`, (val) => {
@@ -1095,7 +1107,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             flexDirection: "column",
           }}
         >
-              <MatchComponent currentMatch={currentMatch} />
+          <MatchComponent currentMatch={currentMatch} />
           <div style={{ width: "100%" }}>
             <MatchOdds
               sessionBets={sessionBets}
@@ -1137,7 +1149,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                       v.marketType
                     )
                   )}
-
                   count={
                     IObets?.filter((v) =>
                       ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
