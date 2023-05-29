@@ -57,8 +57,15 @@ const BoxInput = ({
             style: { fontSize: "16px", fontWeight: "600", color: "white" },
           }}
           onChange={(e) => {
-            setDefaultValue(e.target.value);
-            getLatestBetAmount(e?.target.value);
+            const value = e.target.value.trim(); // Remove leading/trailing spaces
+          
+            if (value === '') {
+              setDefaultValue(" "); // Set your desired default value here
+              getLatestBetAmount(" ");
+            } else {
+              setDefaultValue(value);
+              getLatestBetAmount(value);
+            }
           }}
           sx={{ textAlign: "center", alignItems: "center" }}
         />

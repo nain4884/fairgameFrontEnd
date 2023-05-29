@@ -39,7 +39,6 @@ const PlaceBet = ({
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
-  console.log("currentodds", currentOdds);
   const [newRates, setNewRates] = useState({
     loss_amount: 0,
     win_amount: 0,
