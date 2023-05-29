@@ -90,8 +90,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       socket.onevent = async (packet) => {
         console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
 
-        if (packet.data[1] === "resultDeclareForBet") {
-          const value = packet.data[0];
+        if (packet.data[0] === "resultDeclareForBet") {
+          const value = packet.data[1];
           // matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
