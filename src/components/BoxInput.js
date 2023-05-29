@@ -1,6 +1,7 @@
 import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const BoxInput = ({
   title,
@@ -12,12 +13,13 @@ const BoxInput = ({
   getLatestBetAmount,
   trendingDown,
   setDefaultValue,
+  selectedColorBox,
 }) => {
   return (
     <Box sx={[{ display: "flex", flexDirection: "column" }, containerStyle]}>
       <Box
         sx={{
-          background: "#262626",
+          background:  "#262626",
           border: "1px solid #C7B6B6",
           display: "flex",
           justifyContent: "center",
@@ -26,7 +28,11 @@ const BoxInput = ({
         }}
       >
         <Typography
-          sx={{ color: "white", fontSize: {mobile:"10px",laptop:"11px"}, fontWeight: "600" }}
+          sx={{
+            color: "white",
+            fontSize: { mobile: "10px", laptop: "11px" },
+            fontWeight: "600",
+          }}
         >
           {title}
         </Typography>
@@ -34,12 +40,13 @@ const BoxInput = ({
       <Box
         sx={[
           {
-            background: "#0B4F26",
+            background: selectedColorBox ? selectedColorBox :"#0B4F26",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "37px",
+            height: "32px",
             marginTop: "1px",
+            border:"1px solid #FFF"
           },
           valueContainerStyle,
         ]}
@@ -54,12 +61,12 @@ const BoxInput = ({
               },
             },
             disableUnderline: true,
-            style: { fontSize: "16px", fontWeight: "600", color: "white" },
+            style: { fontSize: "16px", fontWeight: "600", color:!selectedColorBox && "white" },
           }}
           onChange={(e) => {
             const value = e.target.value.trim(); // Remove leading/trailing spaces
-          
-            if (value === '') {
+
+            if (value === "") {
               setDefaultValue(" "); // Set your desired default value here
               getLatestBetAmount(" ");
             } else {

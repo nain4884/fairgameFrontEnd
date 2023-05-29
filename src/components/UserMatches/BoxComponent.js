@@ -24,7 +24,8 @@ const BoxComponent = ({
   suspendedData,
   showBox,
   livestatus,
-  isRound
+  isRound,
+  fromOdds
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -155,6 +156,7 @@ const BoxComponent = ({
           >
             {!matchesMobile && (
               <SeprateBox
+              fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}
                 lock={  ex?.availableToBack?.length > 0 ? false : true}
@@ -183,6 +185,7 @@ const BoxComponent = ({
             ></Box>
             {!matchesMobile && (
               <SeprateBox
+              fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}
                 lock={  ex?.availableToBack?.length > 0 ? false : true}
@@ -212,6 +215,7 @@ const BoxComponent = ({
 
             <SeprateBox
               back={true}
+              fromOdds={fromOdds}
               currentMatch={newData}
               lock={  ex?.availableToBack?.length > 0 ? false : true}
               rates={allRates}
@@ -240,6 +244,7 @@ const BoxComponent = ({
 
             <SeprateBox
               back={true}
+              fromOdds={fromOdds}
               currentMatch={newData}
               lock={  ex?.availableToLay?.length > 0 ? false : true}
               rates={allRates}
@@ -265,6 +270,7 @@ const BoxComponent = ({
             {!matchesMobile && (
               <SeprateBox
                 back={true}
+                fromOdds={fromOdds}
                 currentMatch={newData}
                 rates={allRates}
                 lock={  ex?.availableToLay?.length > 0 ? false : true}
@@ -292,6 +298,7 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+              fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}
                 rates={allRates}

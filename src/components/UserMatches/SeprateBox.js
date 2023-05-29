@@ -36,7 +36,8 @@ const SeprateBox = ({
   typeOfBet,
   mainData,
   rates,
-  betType
+  betType,
+  fromOdds
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -282,6 +283,7 @@ const SeprateBox = ({
                   setIsPopoverOpen(false);
                 }}
                 season={session}
+                fromOdds={fromOdds}
                 back={back}
                 currentMatch={currentMatch}
                 isBack={isBack }

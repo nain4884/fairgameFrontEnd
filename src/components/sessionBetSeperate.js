@@ -368,7 +368,7 @@ const SingleBox = ({
             overflow: "hidden",
             lineHeight: 1,
             fontWeight: "800",
-            fontSize: { laptop: ".6vw", mobile: "8px" },
+            fontSize: { laptop: ".5vw", mobile: "8px" },
             color: "black",
             textAlign: "start",
             marginLeft: "3px",

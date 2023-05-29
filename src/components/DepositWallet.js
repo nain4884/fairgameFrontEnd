@@ -147,202 +147,242 @@ export default function DepositWallet() {
         </Typography>
         <Box
           sx={{
-            marginLeft: "0.5%",
+            margin: "0.5%",
             padding: "10px",
             paddingBottom: "20px",
+            width: { mobile: "100%", laptop: "50%", tablet: "100%" },
+            justifyContent: "center",
             display: "flex",
+            gap: 1,
+            flexDirection: {
+              mobile: "column",
+              tablet: "column",
+              laptop: "column",
+            },
             background: "#F8C851",
             minHeight: "200px",
-            maxWidth: "52vw",
           }}
         >
-          <Box sx={{ flex: 1 }}>
-            <Box sx={{ display: "flex" }}>
-              <Box sx={{ flex: 1 }}>
-                <Box
-                  sx={{
-                    flex: 1,
-                    display: "flex",
-                    border: "2px solid #FFFFFF4D",
-                    paddingLeft: "5px",
-                    height: "35px",
-                    background: "#262626",
-                    alignItems: "center",
-                  }}
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+            }}
+          >
+            <Box sx={{ flex: 1 }}>
+              <Box
+                sx={{
+                  flex: 1,
+                  display: "flex",
+                  border: "2px solid #FFFFFF4D",
+                  paddingLeft: "5px",
+                  height: "35px",
+                  background: "#262626",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{ color: "white", fontSize: "12px", fontWeight: "500" }}
                 >
-                  <Typography
-                    sx={{ color: "white", fontSize: "12px", fontWeight: "500" }}
-                  >
-                    Main Balance
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    flex: 1,
-                    background: "#0B4F26",
-                    marginTop: "2px",
-                    display: "flex",
-                    paddingLeft: "5px",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    border: "2px solid #FFFFFF4D",
-                  }}
-                >
-                  <Typography
-                    sx={{ color: "white", fontSize: "12px", fontWeight: "400" }}
-                  >
-                    Previous Balance
-                  </Typography>
-                  <Typography sx={{ color: "white", fontWeight: "600" }}>
-                    {balance}
-                  </Typography>
-                </Box>
+                  Main Balance
+                </Typography>
               </Box>
-              <Box sx={{ marginLeft: "2px", flex: 1 }}>
-                <Box
-                  sx={{
-                    flex: 1,
-                    display: "flex",
-                    paddingLeft: "5px",
-                    border: "2px solid #FFFFFF4D",
-                    height: "35px",
-                    background: "#262626",
-                    alignItems: "center",
-                  }}
+              <Box
+                sx={{
+                  flex: 1,
+                  background: "#0B4F26",
+                  marginTop: "2px",
+                  display: "flex",
+                  paddingLeft: "5px",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  border: "2px solid #FFFFFF4D",
+                }}
+              >
+                <Typography
+                  sx={{ color: "white", fontSize: "12px", fontWeight: "400" }}
                 >
-                  <Typography
-                    sx={{ color: "white", fontSize: "12px", fontWeight: "500" }}
-                  >
-                    New Balance
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    flex: 1,
-                    background: "#0B4F26",
-                    marginTop: "2px",
-                    display: "flex",
-                    paddingLeft: "5px",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    border: "2px solid #FFFFFF4D",
-                  }}
-                >
-                  <Typography
-                    sx={{ color: "white", fontSize: "12px", fontWeight: "400" }}
-                  >
-                    New Balance
-                  </Typography>
-                  <Typography sx={{ color: "#10DC61", fontWeight: "600" }}>
-                    {isNaN(Detail[2].val)
-                      ? balance
-                      : window.location.pathname.split("/")[2] === "withdraw" &&
-                        (Detail[2].val !== 0 || isNaN(Detail[2].val))
-                      ? -Detail[2].val + balance
-                      : Detail[2].val + balance}
-                  </Typography>
-                </Box>{" "}
-                {/**{(window.location.pathname.split("/")[2] === 'withdraw' && (Detail[2].val !== 0 || isNaN(Detail[2].val))) && '-'}{isNaN(Detail[2].val) ? 0 : Detail[2].val}  */}
+                  Previous Balance
+                </Typography>
+                <Typography sx={{ color: "white", fontWeight: "600" }}>
+                  {balance}
+                </Typography>
               </Box>
             </Box>
-            <Box sx={{ display: "flex" }}>
-              <Box sx={{ flex: 1 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    paddingLeft: "5px",
-                    border: "0px solid #FFFFFF4D",
-                    height: "19px",
-                    alignItems: "center",
-                  }}
-                ></Box>
-                <Box
-                  sx={{
-                    flex: 1,
-                    height: "45px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                    marginRight: "10px",
-                  }}
+            <Box sx={{ marginLeft: "2px", flex: 1 }}>
+              <Box
+                sx={{
+                  flex: 1,
+                  display: "flex",
+                  paddingLeft: "5px",
+                  border: "2px solid #FFFFFF4D",
+                  height: "35px",
+                  background: "#262626",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{ color: "white", fontSize: "12px", fontWeight: "500" }}
                 >
-                  <Typography
-                    sx={{ color: "black", fontSize: "14px", fontWeight: "600" }}
-                  >
-                    {(
-                      window.location.pathname.split("/")[2] + " Points"
-                    ).toUpperCase()}
-                  </Typography>
-                </Box>
+                  New Balance
+                </Typography>
               </Box>
-              <Box sx={{ marginLeft: "2px", flex: 1 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    paddingLeft: "5px",
-                    border: "0px solid #FFFFFF4D",
-                    height: "19px",
-                    alignItems: "center",
-                  }}
-                ></Box>
-                <Box
-                  sx={{
-                    flex: 1,
-                    marginTop: "2px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                  }}
+              <Box
+                sx={{
+                  flex: 1,
+                  background: "#0B4F26",
+                  marginTop: "2px",
+                  display: "flex",
+                  paddingLeft: "5px",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  border: "2px solid #FFFFFF4D",
+                }}
+              >
+                <Typography
+                  sx={{ color: "white", fontSize: "12px", fontWeight: "400" }}
                 >
-                  <Input
-                    placeholder="Type Amount..."
-                    titleStyle={{ display: "none" }}
-                    inputStyle={{
-                      paddingTop: 0,
-                      marginTop: 0,
-                      color: "white",
-                      fontSize: "20px",
-                      fontWeight: "600",
-                    }}
-                    inputProps={{ color: "white", padding: 0, margin: 0 }}
-                    inputContainerStyle={{
-                      minHeight: "45px",
-                      width: "100%",
-                      background: "#0B4F26",
-                      border: "2px solid #FFFFFF4D",
-                      borderRadius: "5px",
-                      marginTop: 0,
-                    }}
-                    title={"Remark (Optional)"}
-                    setDetail={setDetail}
-                    Detail={Detail}
-                    setError={setError}
-                    error={error}
-                    place={2}
-                    type={"Number"}
-                  />
-                </Box>
+                  New Balance
+                </Typography>
+                <Typography sx={{ color: "#10DC61", fontWeight: "600" }}>
+                  {isNaN(Detail[2].val)
+                    ? balance
+                    : window.location.pathname.split("/")[2] === "withdraw" &&
+                      (Detail[2].val !== 0 || isNaN(Detail[2].val))
+                    ? -Detail[2].val + balance
+                    : Detail[2].val + balance}
+                </Typography>
+              </Box>{" "}
+              {/**{(window.location.pathname.split("/")[2] === 'withdraw' && (Detail[2].val !== 0 || isNaN(Detail[2].val))) && '-'}{isNaN(Detail[2].val) ? 0 : Detail[2].val}  */}
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: 1,
+              width: "100%",
+              flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+              alignItems: "center",
+              justifyContent: {
+                mobile: "flex-start",
+                tablet: "flex-start",
+                laptop: "flex-end",
+              },
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                marginTop: "10px",
+                gap: 1,
+                flexDirection: {
+                  mobile: "column",
+                  tablet: "row",
+                  laptop: "row",
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  width: "100%",
+                  height: { mobile: "18px", tablet: "45px", laptop: "45px" },
+                  display: "flex",
+                  alignItems: "center",
+
+                  justifyContent: {
+                    mobile: "flex-start",
+                    tablet: "flex-start",
+                    laptop: "flex-end",
+                  },
+                }}
+              >
+                <Typography
+                  sx={{ color: "black", fontSize: "14px", fontWeight: "600" }}
+                >
+                  {(
+                    window.location.pathname.split("/")[2] + " Points"
+                  ).toUpperCase()}
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}
+              >
+                <Input
+                  placeholder="Type Amount..."
+                  titleStyle={{ display: "none" }}
+                  inputStyle={{
+                    paddingTop: 0,
+                    marginTop: 0,
+                    color: "white",
+                    fontSize: "20px",
+                    fontWeight: "600",
+                  }}
+                  inputProps={{ color: "white", padding: 0, margin: 0 }}
+                  inputContainerStyle={{
+                    minHeight: "45px",
+                    width: "100%",
+                    background: "#0B4F26",
+                    border: "2px solid #FFFFFF4D",
+                    borderRadius: "5px",
+                    marginTop: 0,
+                  }}
+                  title={"Remark (Optional)"}
+                  setDetail={setDetail}
+                  Detail={Detail}
+                  setError={setError}
+                  error={error}
+                  place={2}
+                  type={"Number"}
+                />
               </Box>
             </Box>
-            <Box sx={{ display: "flex" }}>
-              <Box sx={{ flex: 1 }}>
+
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                marginTop: "10px",
+                gap: 1,
+                flexDirection: {
+                  mobile: "column",
+                  tablet: "row",
+                  laptop: "row",
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  marginTop: "10px",
+                  gap: 1,
+                  flexDirection: {
+                    mobile: "column",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                }}
+              >
                 <Box
                   sx={{
-                    display: "flex",
-                    paddingLeft: "5px",
-                    border: "0px solid #FFFFFF4D",
-                    height: "15px",
-                    alignItems: "center",
-                  }}
-                ></Box>
-                <Box
-                  sx={{
-                    flex: 1,
-                    height: "45px",
+                    width: "100%",
+                    height: { mobile: "18px", tablet: "45px", laptop: "45px" },
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "flex-end",
-                    marginRight: "10px",
+                    justifyContent: {
+                      mobile: "flex-start",
+                      tablet: "flex-start",
+                      laptop: "flex-end",
+                    },
                   }}
                 >
                   <Typography
@@ -352,64 +392,54 @@ export default function DepositWallet() {
                   </Typography>
                 </Box>
               </Box>
-              <Box sx={{ marginLeft: "2px", flex: 1 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    paddingLeft: "5px",
-                    border: "0px solid #FFFFFF4D",
-                    height: "15px",
-                    alignItems: "center",
+
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                }}
+              >
+                <Input
+                  placeholder=""
+                  imgstyle={{ marginRight: 0 }}
+                  img={EyeIcon}
+                  titleStyle={{ display: "none" }}
+                  inputStyle={{
+                    paddingTop: 0,
+                    marginTop: 0,
+                    color: "black",
+                    fontSize: "20px",
+                    fontWeight: "600",
                   }}
-                ></Box>
-                <Box
-                  sx={{
-                    flex: 1,
-                    marginTop: "2px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
+                  inputProps={{ color: "white", padding: 0, margin: 0 }}
+                  inputContainerStyle={{
+                    minHeight: "45px",
+                    width: "100%",
+                    background: "#FFFFFF",
+                    border: "2px solid #26262633",
+                    borderRadius: "5px",
+                    marginTop: 0,
                   }}
-                >
-                  <Input
-                    placeholder="Donottel"
-                    imgstyle={{ marginRight: 0 }}
-                    img={EyeIcon}
-                    titleStyle={{ display: "none" }}
-                    inputStyle={{
-                      paddingTop: 0,
-                      marginTop: 0,
-                      color: "black",
-                      fontSize: "20px",
-                      fontWeight: "600",
-                    }}
-                    inputProps={{ color: "white", padding: 0, margin: 0 }}
-                    inputContainerStyle={{
-                      minHeight: "45px",
-                      width: "100%",
-                      background: "#FFFFFF",
-                      border: "2px solid #26262633",
-                      borderRadius: "5px",
-                      marginTop: 0,
-                    }}
-                    title={"Admin Transaction Password"}
-                    setDetail={setDetail}
-                    Detail={Detail}
-                    setError={setError}
-                    error={error}
-                    place={3}
-                  />
-                </Box>
+                  title={"Admin Transaction Password"}
+                  setDetail={setDetail}
+                  Detail={Detail}
+                  setError={setError}
+                  error={error}
+                  place={3}
+                />
               </Box>
             </Box>
           </Box>
-          <Box sx={{ flex: 0.8, marginLeft: "15px" }}>
+
+          <Box sx={{ width: "100%" }}>
             <Input
               placeholder="Remark (Optional)"
               titleStyle={{ display: "none" }}
               inputStyle={{
-                paddingTop: 0,
-                marginTop: 0,
+                paddingTop: "10px",
+                width: "100%",
                 fontWeight: "600",
                 color: "black",
               }}
@@ -417,8 +447,7 @@ export default function DepositWallet() {
                 multiline: true,
                 rows: 9,
                 color: "black",
-                padding: 0,
-                margin: 0,
+
                 fontSize: "600",
               }}
               inputContainerStyle={{
@@ -427,8 +456,6 @@ export default function DepositWallet() {
                 background: "#FFECBC",
                 border: "2px solid #26262633",
                 borderRadius: "5px",
-                marginTop: 0,
-                paddingTop: "20px",
               }}
               title={"Remark (Optional)"}
               setDetail={setDetail}
@@ -464,6 +491,7 @@ export default function DepositWallet() {
             </Box>
           </Box>
         </Box>
+
         <DailogModal />
       </Background>
       {showSuccessModal && (

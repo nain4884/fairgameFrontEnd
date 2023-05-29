@@ -496,7 +496,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
           <Typography
             sx={{
               fontWeight: "700",
-              fontSize: { mobile: "7px", laptop: ".6vw" },
+              fontSize: { mobile: "7px", laptop: ".5vw" },
               color: "black",
               textAlign: "center",
             }}
@@ -507,7 +507,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
           <Typography
             sx={{
               fontWeight: "700",
-              fontSize: { mobile: "7px", laptop: ".6vw" },
+              fontSize: { mobile: "7px", laptop: ".5vw" },
               color: "black",
               textAlign: "center",
               maxHeight: "2em", overflow: 'hidden', lineHeight: 1,

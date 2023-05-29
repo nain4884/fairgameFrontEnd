@@ -33,7 +33,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
         <SideBarAdmin
           handleDrawerToggle={handleDrawerToggle}
           mobileShow={true}
-        />
+        />``
       </Box>
     </Drawer>
   );

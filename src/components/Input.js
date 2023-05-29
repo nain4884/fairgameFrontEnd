@@ -46,7 +46,7 @@ const Input = ({
   const matches = useMediaQuery(theme.breakpoints.down("tablet"));
   const [showPass, setShowPass] = useState(true);
   const handleMypartnershipChange = debounce((e, place) => {
-    const value = parseInt(e.target.value);
+    const value = Number(e.target.value);
     if (value < 0) {
       setDetail({
         ...Detail,
@@ -163,7 +163,7 @@ const Input = ({
             backgroundColor: "white",
             display: "flex",
             alignItems: "center",
-            height: { laptop: "45px", mobile: "50px" },
+            height: { laptop: "45px", mobile: "100%" },
             overflow: "hidden",
             paddingX: "10px",
             marginTop: "1px",
@@ -215,7 +215,7 @@ const Input = ({
                       ...Detail[place],
                       val:
                         type === "Number"
-                          ? parseInt(autoMaticFillValue)
+                          ? Number(autoMaticFillValue)
                           : autoMaticFillValue,
                     },
                   });
@@ -283,9 +283,9 @@ const Input = ({
                       val:
                         type === "Number"
                           ? title === "Upline Partnership"
-                            ? parseInt(e.target.value) < 100 &&
-                              parseInt(e.target.value)
-                            : parseInt(e.target.value)
+                            ? Number(e.target.value) < 100 &&
+                              Number(e.target.value)
+                            : Number(e.target.value)
                           : e.target.value,
                     },
                   });

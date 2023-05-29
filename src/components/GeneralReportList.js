@@ -23,16 +23,36 @@ const GeneralReportList = () => {
     )
 }
 
-const ListH = () => {
-    return (<Box display={"flex"} sx={{ justifyContent: "space-between", px: "10px", py: "6px" }}>
-        <Box display={"flex"} alignItems="center">
-            <Typography sx={{ fontSize: '10px', color: 'white', fontWeight: '500' }}>Show</Typography>
-            <SmallDropDown />
-            <Typography sx={{ fontSize: '10px', color: 'white', fontWeight: '500' }}>Entries</Typography>
-
+const ListH = ({getLimitEntries}) => {
+    return ( <Box
+        sx={{
+          display: "flex",
+          flexDirection: {
+            mobile: "column-reverse",
+            laptop: "row",
+            tablet: "row",
+          },
+          justifyContent: "space-between",
+          px: "10px",
+          gap: 1,
+          py: "6px",
+        }}
+      >
+        <Box display={"flex"} alignItems="center" sx={{ width: "100%" }}>
+          <Typography
+            sx={{ fontSize: "10px", color: "white", fontWeight: "500" }}
+          >
+            Show
+          </Typography>
+          <SmallDropDown getLimitEntries={getLimitEntries} />
+          <Typography
+            sx={{ fontSize: "10px", color: "white", fontWeight: "500" }}
+          >
+            Entries
+          </Typography>
         </Box>
-        <SearchInput placeholder={"Search User..."} />
-    </Box>)
+        <SearchInput show={true} width={"100%"} placeholder={"Search..."} />
+      </Box>)
 }
 
 const ListHeaderT = () => {

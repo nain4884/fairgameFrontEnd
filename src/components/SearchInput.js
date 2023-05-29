@@ -29,6 +29,7 @@ const SearchInput = ({
   header,
   setShowSearch,
   show,
+  width,
   searchContainerStyle,
   onChange,
 }) => {
@@ -79,7 +80,7 @@ const SearchInput = ({
               laptop: header ? "10vw" : "17vw",
               mobile: "10vw",
             },
-            width:{mobile:"66%",laptop:"17vw",tablet:"17vw"},
+            width:{mobile:width? width: "66%",laptop:"17vw",tablet:"17vw"},
             display: "flex",
             justifyContent:"flex-end",
             alignItems: "center",

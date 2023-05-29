@@ -89,7 +89,11 @@ const SessionMarket = ({
               // '#262626' ,
               display: "flex",
               alignItems: "center",
-              justifyContent: "flex-end",
+              justifyContent: {
+                mobile: "flex-end",
+                laptop: "center",
+                tablet: "flex-end",
+              },
             }}
           >
             {/* {console.warn("newData11 ",newData)} */}
@@ -98,7 +102,7 @@ const SessionMarket = ({
               sessionBets={sessionBets}
               totalAmount={sessionExposer}
             />
-            <Typography
+            {/* <Typography
               sx={{
                 color: "white",
                 width: { mobile: "40px", tablet: "100px", laptop: "100px" },
@@ -118,7 +122,7 @@ const SessionMarket = ({
                 marginRight: "5px",
                 marginLeft: "5px",
               }}
-            />
+            /> */}
           </Box>
         </Box>
         <Box sx={{ width: "100%" }}>

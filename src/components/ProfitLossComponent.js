@@ -27,14 +27,14 @@ const ProfitLossComponent = () => {
                 <Box sx={{ background: "#E32A2A", paddingX: '2px', width: { mobile: "25%", laptop: "30%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
                     <Typography sx={{ fontSize: { laptop: '14px', mobile: '12px' }, fontWeight: '700', color: 'white' }} >Loss</Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ fontSize: { laptop: '14px', mobile: "12px" }, fontWeight: '700', color: 'white' }}>-100,000,000</Typography>
+                        <Typography sx={{ fontSize: { laptop: '14px', mobile: "10px" }, fontWeight: '700', color: 'white' }}>-100,000,000</Typography>
                         <StyledImage src={ARROWDOWN} sx={{ width: { laptop: '25px', mobile: "15px" }, height: { laptop: '12px', mobile: "8px" }, }} />
                     </Box>
                 </Box>
                 <Box sx={{ background: "#0B4F26", paddingX: '2px', width: { mobile: "25%", laptop: "30%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
                     <Typography sx={{ fontSize: { laptop: '14px', mobile: '12px' }, fontWeight: '700', color: 'white' }} >Total Bet</Typography>
                     <Box sx={{ display: 'flex' }} >
-                        <Typography sx={{ fontSize: { laptop: '14px', mobile: "12px" }, fontWeight: '700', color: 'white' }}>100,000,000</Typography>
+                        <Typography sx={{ fontSize: { laptop: '14px', mobile: "10px" }, fontWeight: '700', color: 'white' }}>100,000,000</Typography>
                     </Box>
                 </Box>
             </Box >
@@ -64,14 +64,14 @@ const ProfitLossComponent = () => {
                     <Box sx={{ background: "#27AC1E", paddingX: '2px', width: { mobile: "25%", laptop: "30%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
                         <Typography sx={{ fontSize: { laptop: '12px', mobile: '8px' }, fontWeight: '500', color: 'white' }} >Rate Profit/Loss</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '700', color: 'white' }}>+100,000,00</Typography>
+                            <Typography sx={{ fontSize: { mobile: '10px', laptop: '14px' }, fontWeight: '700', color: 'white' }}>+100,000,00</Typography>
                             <StyledImage src={ARROWUP} sx={{ width: { laptop: '25px', mobile: "15px" }, height: { laptop: '12px', mobile: "8px" }, }} />
                         </Box>
                     </Box>
                     <Box sx={{ background: "#E32A2A", paddingX: '2px', width: { mobile: "25%", laptop: "30%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
                         <Typography sx={{ fontSize: { laptop: '12px', mobile: '8px' }, fontWeight: '500', color: 'white' }} >Session Profit/Loss</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography sx={{ fontSize: '14px', fontWeight: '700', color: 'white' }}>+100,000,00</Typography>
+                            <Typography sx={{ fontSize: { mobile: '10px', laptop: '14px' }, fontWeight: '700', color: 'white' }}>+100,000,00</Typography>
                             <StyledImage src={ARROWDOWN} sx={{ width: { laptop: '25px', mobile: "15px" }, height: { laptop: '12px', mobile: "8px" }, }} />
                         </Box>
                     </Box>

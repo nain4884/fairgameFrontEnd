@@ -282,7 +282,13 @@ const CustomHeader = ({}) => {
       width: "140px",
     },
     BoxCont1sub2BoxProfileContStyle: matchesMobile ? { width: "52%" } : {},
-    BoxEnd: { minHeight: { laptop: 60, mobile: 60 + 32 + 42 } },
+    BoxEnd: {
+      minHeight: {
+        laptop: 60,
+        mobile: ["admin", "wallet"].includes(nav) ? "113px" : 60 + 32 + 42,
+        tablet: ["admin", "wallet"].includes(nav) ? "113px" : 60 + 32 + 42,
+      },
+    },
   };
   const RenderLogo = useCallback(() => {
     return (

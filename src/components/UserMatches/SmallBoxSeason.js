@@ -7,9 +7,14 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
   return (
     <Box
       sx={{
-        marginLeft: { mobile: "34px", laptop: "12px", tablet: "12px" },
+        marginLeft: { mobile: 0, laptop: "-26%", tablet: 0 },
+        justifyContent: {
+          mobile: "center",
+          laptop: "center",
+          tablet: "center",
+        },
         display: "flex",
-        width: "100%",
+        width: { mobile: "85%", laptop: "80%", tablet: "85%" },
         gap: "4px",
       }}
     >

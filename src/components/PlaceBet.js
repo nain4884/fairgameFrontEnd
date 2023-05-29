@@ -36,6 +36,7 @@ const PlaceBet = ({
   mainData,
   betType,
   rates,
+  fromOdds,
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
@@ -53,12 +54,17 @@ const PlaceBet = ({
   const myDivRef = useRef(null);
 
   const scrollToBottom = () => {
-    myDivRef.current?.scrollIntoView({});
+    myDivRef.current?.scrollIntoView({
+      top: 2000,
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [selectedValue]);
+    if (!fromOdds) {
+      scrollToBottom();
+    }
+  }, [selectedValue, fromOdds]);
 
   const getLatestBetAmount = async (value, newData) => {
     console.log("value", value);
@@ -88,7 +94,6 @@ const PlaceBet = ({
   const CustomButton = ({ color, title, onClick }) => {
     return (
       <Box
-        ref={myDivRef}
         onClick={onClick}
         sx={{
           width: { laptop: "150px", mobile: "130px" },
@@ -154,7 +159,7 @@ const PlaceBet = ({
           <Typography
             sx={{
               color: "white",
-              fontSize: { mobile: "10px",tablet:"11px", laptop: "11px" },
+              fontSize: { mobile: "10px", tablet: "11px", laptop: "11px" },
               fontWeight: "600",
             }}
           >
@@ -166,7 +171,8 @@ const PlaceBet = ({
             sx={[
               {
                 background: "white",
-                border: "0px solid #C7B6B6",
+                border: "1px solid #FFF",
+                // border: "0px solid #C7B6B6",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -186,20 +192,20 @@ const PlaceBet = ({
                   margin: bet_condition && "auto",
                   marginTop: bet_condition && "5px",
                   color: "#262626",
-                  padding:"1px",
+                  padding: "1px",
                   fontSize: {
                     mobile:
                       title == "Back/Lay" || title == "Yes/No"
-                        ? "12px"
+                        ? "10px"
                         : "10px",
-                        tablet:
-                        title == "Back/Lay" || title == "Yes/No"
-                          ? "14px"
-                          : "12px",
+                    tablet:
+                      title == "Back/Lay" || title == "Yes/No"
+                        ? "10px"
+                        : "10px",
                     laptop:
                       title == "Back/Lay" || title == "Yes/No"
-                        ? "14px"
-                        : "12px",
+                        ? "10px"
+                        : "10px",
                   },
                   fontWeight:
                     title === "Back/Lay" || title === "Yes/No" ? "800" : "600",
@@ -225,8 +231,9 @@ const PlaceBet = ({
           <Box
             sx={[
               {
-                background: selectedColorBox,
-                border: "0px solid #C7B6B6",
+                // background: selectedColorBox,
+                border: "1px solid #FFF",
+                // border: "0px solid #C7B6B6",
                 display: "flex",
                 justifyContent: season ? "center" : "space-between",
                 paddingX: "4px",
@@ -274,7 +281,7 @@ const PlaceBet = ({
                 className="OddValue"
                 sx={{
                   color: "black",
-                  fontSize: { mobile: "18px", laptop: "16px" },
+                  fontSize: { mobile: "12px", laptop: "16px" },
                   fontWeight: { mobile: "700", laptop: "600" },
                 }}
               >
@@ -314,7 +321,7 @@ const PlaceBet = ({
     return (
       <Box
         sx={{
-          width: { mobile: "70px", tablet:"100px", laptop: "100px" },
+          width: { mobile: "70px", tablet: "100px", laptop: "100px" },
           height: "25px",
           alignItems: "center",
           justifyContent: "center",
@@ -325,7 +332,7 @@ const PlaceBet = ({
       >
         <Typography
           sx={{
-            fontSize: { mobile: "10px",tablet:"13px", laptop: "13px" },
+            fontSize: { mobile: "10px", tablet: "13px", laptop: "13px" },
             fontWeight: "700",
             color: "white",
           }}
@@ -413,16 +420,22 @@ const PlaceBet = ({
   }
   return (
     <Box
-      ref={refs}
+      // ref={refs}
+      ref={myDivRef}
       sx={[
         {
           display: "flex",
           flexDirection: "column",
           border: "1px solid white",
           borderRadius: "5px",
+          marginTop: { mobile: "16px", tablet: "16px", laptop: 0 },
           marginLeft: season ? "40px" : 0,
           overflow: "hidden",
+
           width: { mobile: "98vw", tablet: "60vw", laptop: "30vw" },
+          // boxShadow:
+          //   "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
+          boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 4px"
           // left: isSessionYes?"-30%": "95%"
         },
         // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
@@ -446,7 +459,7 @@ const PlaceBet = ({
             },
       ]}
     >
-      <Box sx={{ background: "white", width: "100%", overflow: "hidden" }}>
+      <Box sx={{ background: "#F8C851", width: "100%", overflow: "hidden" }}>
         <Box
           sx={[
             {
@@ -464,7 +477,7 @@ const PlaceBet = ({
           <Typography
             sx={{
               fontWeight: "bold",
-              fontSize: { mobile: "10px", tablet: "14px", laptop: "14px" },
+              fontSize: { mobile: "10px", tablet: "10px", laptop: "14px" },
               color: "text.white",
             }}
           >
@@ -488,7 +501,12 @@ const PlaceBet = ({
             <StyledImage
               onClick={handleClose}
               src={CancelDark}
-              sx={{ marginLeft: "5px", height: "25px", width: "25px" }}
+              sx={{
+                padding: "10px",
+                height: "50px",
+                width: "50px",
+                cursor: "pointer",
+              }}
             />
           </Box>
         </Box>
@@ -496,13 +514,18 @@ const PlaceBet = ({
           <TeamsOdssData
             title={season ? "Session" : "Team"}
             value={season ? "6 OVER RUNS INDIA" : "INDIA"}
-            valueContainerStyle={{ background: "#F8C851" }}
+            valueContainerStyle={{
+              background: type?.color ? type?.color : "#F8C851",
+            }}
             containerStyle={{ flex: season ? { mobile: 2.5, laptop: 2 } : 1 }}
             bet_condition={data?.bet_condition}
           />
           <TeamsOdssData
             input={true}
             title={"Odds"}
+            valueContainerStyle={{
+              background: type?.color ? type?.color : "#F8C851",
+            }}
             value={"60.00"}
             containerStyle={{ marginLeft: "2px", flex: 1 }}
           />
@@ -524,6 +547,7 @@ const PlaceBet = ({
           <BoxInput
             setDefaultValue={setDefaultValue}
             defaultValue={defaultValue}
+            selectedColorBox={type?.color}
             getLatestBetAmount={(value) =>
               value && getLatestBetAmount(value, data)
             }
