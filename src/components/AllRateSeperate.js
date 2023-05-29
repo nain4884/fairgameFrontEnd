@@ -181,7 +181,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
                   background: "black",
                   justifyContent: "center",
                   alignItems: "center",
-                  margin: { mobile: "1px", laptop: "0.4px" },
+                  margin: { mobile: "1px", laptop: "1px" },
                 }}
               >
                 <Typography
@@ -216,7 +216,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
                       width: "30px",
                       display: "flex",
                       background: "black",
-                      margin: { mobile: "1px", laptop: "0.4px" },
+                      margin: { mobile: "1px", laptop: "1px" },
                       justifyContent: "center",
                       alignItems: "center",
                     }}
@@ -246,7 +246,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
                       sx={{
                         height: "40px",
                         width: "30%",
-                        margin: { mobile: "1px", laptop: "0.4px" },
+                        margin: { mobile: "1px", laptop: "1px" },
                         display: "flex",
                         background: k % 2 === 0 ? "#E32A2A" : "#10DC61",
                         justifyContent: "center",
@@ -277,7 +277,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
                       sx={{
                         height: "40px",
                         width: "30%",
-                        margin: { mobile: "1px", laptop: "0.4px" },
+                        margin: { mobile: "1px", laptop: "1px" },
                         display: "flex",
                         background: "black",
                         justifyContent: "center",
@@ -486,7 +486,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
           width: width ? width : "100%",
           height: "40px",
           background: "#F1C550",
-          marginX: { mobile: "1px", laptop: "0.4px" },
+          marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -524,7 +524,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
           height: "40px",
           flexDirection: "column",
           background: color,
-          marginX: { mobile: "1px", laptop: "0.4px" },
+          marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
         }}
@@ -532,10 +532,9 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: "6px",
+            fontSize: "11px",
             color: "black",
-            textAlign: "end",
-            marginRight: "3px",
+            textAlign: "center",
           }}
         >
           {time}
@@ -546,8 +545,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
             fontWeight: "600",
             fontSize: { laptop: "12px", mobile: "10px" },
             color: "black",
-            textAlign: "start",
-            marginLeft: "3px",
+            textAlign: "center",
             textTransform: "uppercase",
             maxHeight: "1em", overflow: 'hidden', lineHeight: 1,
           }}
@@ -561,7 +559,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
           width: "100%",
           height: "40px",
           background: color,
-          marginX: { mobile: "1px", laptop: "0.4px" },
+          marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -585,7 +583,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
           width: "100%",
           height: "30px",
           background: "black",
-          marginX: { mobile: "1px", laptop: "0.4px" },
+          marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

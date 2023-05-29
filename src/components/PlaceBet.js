@@ -53,18 +53,18 @@ const PlaceBet = ({
 
   const myDivRef = useRef(null);
 
-  const scrollToBottom = () => {
-    myDivRef.current?.scrollIntoView({
-      top: 2000,
-      behavior: "smooth",
-    });
-  };
+  // const scrollToBottom = () => {
+  //   myDivRef.current?.scrollIntoView({
+  //     top: 2000,
+  //     behavior: "smooth",
+  //   });
+  // };
 
-  useEffect(() => {
-    if (!fromOdds) {
-      scrollToBottom();
-    }
-  }, [selectedValue, fromOdds]);
+  // useEffect(() => {
+  //   if (!fromOdds) {
+  //     scrollToBottom();
+  //   }
+  // }, [selectedValue, fromOdds]);
 
   const getLatestBetAmount = async (value, newData) => {
     console.log("value", value);
@@ -439,24 +439,24 @@ const PlaceBet = ({
           // left: isSessionYes?"-30%": "95%"
         },
         // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
-        matchesMobile
-          ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
-            // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-            { position: "absolute", right: back ? "0vw" : "0vw" }
-          : typeOfBet == "Session"
-          ? {
-              position: "absolute",
-              right: back ? "auto" : "0vw",
-              left: isSessionYes ? "-30%" : "95%",
-            }
-          : {
-              position: "absolute",
-              right: back
-                ? typeOfBet != "Session"
-                  ? "1.5vw"
-                  : "-16.5vw"
-                : "0vw",
-            },
+        // matchesMobile
+        //   ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
+        //     // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
+        //     { position: "absolute", right: back ? "0vw" : "0vw" }
+        //   : typeOfBet == "Session"
+        //   ? {
+        //       position: "absolute",
+        //       right: back ? "auto" : "0vw",
+        //       left: isSessionYes ? "-30%" : "95%",
+        //     }
+        //   : {
+        //       position: "absolute",
+        //       right: back
+        //         ? typeOfBet != "Session"
+        //           ? "1.5vw"
+        //           : "-16.5vw"
+        //         : "0vw",
+        //     },
       ]}
     >
       <Box sx={{ background: "#F8C851", width: "100%", overflow: "hidden" }}>
@@ -484,7 +484,7 @@ const PlaceBet = ({
             Place Bet
           </Typography>
           <Box
-            sx={{ display: "flex", marginRight: -"10px", alignItems: "center" }}
+            sx={{ display: "flex", alignItems: "center" }}
           >
             <MoneyBox
               trendingUp={false}
@@ -497,7 +497,7 @@ const PlaceBet = ({
               rate={Number(newRates?.loss_amount).toFixed(2)}
               color={"#FF4D4D"}
             />
-            <Box sx={{ width: "5px" }}></Box>
+            <Box sx={{ width: "5px", marginRight: "20px" }}></Box>
             <StyledImage
               onClick={handleClose}
               src={CancelDark}

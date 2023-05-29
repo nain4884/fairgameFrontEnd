@@ -9,11 +9,14 @@ import { setColorValue } from "../../store/selectedColorBox";
 import PlaceBet from "../PlaceBet";
 import BetPlaced from "../BetPlaced";
 import { Modal } from "react-bootstrap";
+import MUIModal from "@mui/material/Modal";
+
 import { Lock } from "../../assets";
 import { useState } from "react";
 import { setAllBetRate } from "../../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import { setRole } from "../../newStore";
+import { height } from "@mui/system";
 const PlaceBetType = {
   BackLay: "BackLay",
   YesNo: "YesNo",
@@ -37,7 +40,7 @@ const SeprateBox = ({
   mainData,
   rates,
   betType,
-  fromOdds
+  fromOdds,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -67,11 +70,7 @@ const SeprateBox = ({
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
-  const innerRef = useOuterClick((ev) => {
-    if (isPopoverOpen) {
-      setIsPopoverOpen(false);
-    }
-  });
+
   const getMargin = () => {
     if (po === 1 && session) {
       return {
@@ -81,7 +80,7 @@ const SeprateBox = ({
     }
     if (po === 2 && session) {
       return {
-        right: { mobile:"-100%",tablet:0, laptop: "-124.3%" },
+        right: { mobile: "-100%", tablet: 0, laptop: "-124.3%" },
         left: { mobile: 0, laptop: "50%" },
       };
     }
@@ -146,7 +145,6 @@ const SeprateBox = ({
 
   const PlaceBetSubmit = async (payload) => {
     try {
-      console.log("payload", payload);
       if (Number(payload?.odds) !== Number(value)) {
         return toast.error("Rate changed ");
       }
@@ -169,9 +167,9 @@ const SeprateBox = ({
   return (
     <>
       <Box
-        ref={innerRef}
+        // ref={innerRef}
         sx={{
-          padding: {mobile:"0px",laptop:"1px",tablet:"1px"},
+          padding: { mobile: "0px", laptop: "1px", tablet: "1px" },
           width: { mobile: "100%", laptop: "20%" },
           height: "94%",
           position: typeOfBet === "Session" && "relative", // add
@@ -215,17 +213,19 @@ const SeprateBox = ({
               >
                 {value}
               </Typography>
-              {typeOfBet != "MANUAL BOOKMAKER" ? <Typography
-                sx={{
-                  fontSize: "8px",
-                  marginTop: -0.4,
-                  color: color == "white" ? "white" : "black",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {value2}
-              </Typography> : null}
+              {typeOfBet != "MANUAL BOOKMAKER" ? (
+                <Typography
+                  sx={{
+                    fontSize: "8px",
+                    marginTop: -0.4,
+                    color: color == "white" ? "white" : "black",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {value2}
+                </Typography>
+              ) : null}
             </Box>
           )}
           {lock && (
@@ -236,70 +236,83 @@ const SeprateBox = ({
             />
           )}
         </Box>
-        {isPopoverOpen && (
-          <>
-            <Box
-              sx={{
-                zIndex: 110,
-                position: "absolute",
-                ...getMargin(),
-                transform: { laptop: "translate( -230%)" },
-                top: "40px",
-              }}
-            >
-              <PlaceBet
-                name={name}
-                rates={rates}
-                onSubmit={async (payload) => {
-                  handlePlaceBet(payload, currentMatch);
-                }}
-                // onSubmit={async (payload) => {
-                //   try {
-                //     console.log(payload, "payload");
-                //     let response = await axios.post(
-                //       `/betting/placeBet`,
-                //       payload
-                //     );
-                //     // setAllRateBets(response?.data?.data[0])
-                //     // dispatch(setAllBetRate(response?.data?.data[0]))
-                //     showDialogModal(isPopoverOpen, true, response.data.message)
-                //     setVisible(true);
-                //     setCanceled(false);
-                //     // navigate("/matchDetail")
-                //   } catch (e) {
-                //     console.log(e.response.data.message);
-                //     toast.error(e.response.data.message)
-                //     showDialogModal(isPopoverOpen, false, e.response.data.message)
-                //     setShowModalMessage(e.response.data.message);
-                //     setShowSuccessModal(true);
-                //   }
-                // }}
-                onCancel={() => {
-                  setVisible(true);
-                  setCanceled(true);
-                  setIsPopoverOpen(false);
-                }}
-                handleClose={() => {
-                  setIsPopoverOpen(false);
-                }}
-                season={session}
-                fromOdds={fromOdds}
-                back={back}
-                currentMatch={currentMatch}
-                isBack={isBack }
-                betType={betType}
 
-                selectedValue={selectedValue}
-                isSessionYes={isSessionYes}
-                type={type}
-                data={data}
-                betOn={name}
-                typeOfBet={typeOfBet}
-                mainData={mainData}
-              />
-            </Box>
-          </>
-        )}
+        <MUIModal
+          open={isPopoverOpen}
+          onClose={() => {
+            setIsPopoverOpen(false);
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              top:"33%",
+
+              justifyContent: "center",
+            }}
+            // sx={{
+            //   zIndex: 110,
+            //   position: "absolute",
+            //   ...getMargin(),
+            //   transform: { laptop: "translate( -230%)" },
+            //   top: "40px",
+            // }}
+          >
+            <PlaceBet
+              name={name}
+              rates={rates}
+              onSubmit={async (payload) => {
+                handlePlaceBet(payload, currentMatch);
+              }}
+              // onSubmit={async (payload) => {
+              //   try {
+              //     console.log(payload, "payload");
+              //     let response = await axios.post(
+              //       `/betting/placeBet`,
+              //       payload
+              //     );
+              //     // setAllRateBets(response?.data?.data[0])
+              //     // dispatch(setAllBetRate(response?.data?.data[0]))
+              //     showDialogModal(isPopoverOpen, true, response.data.message)
+              //     setVisible(true);
+              //     setCanceled(false);
+              //     // navigate("/matchDetail")
+              //   } catch (e) {
+              //     console.log(e.response.data.message);
+              //     toast.error(e.response.data.message)
+              //     showDialogModal(isPopoverOpen, false, e.response.data.message)
+              //     setShowModalMessage(e.response.data.message);
+              //     setShowSuccessModal(true);
+              //   }
+              // }}
+              onCancel={() => {
+                setVisible(true);
+                setCanceled(true);
+                setIsPopoverOpen(false);
+              }}
+              handleClose={() => {
+                setIsPopoverOpen(false);
+              }}
+              season={session}
+              fromOdds={fromOdds}
+              back={back}
+              currentMatch={currentMatch}
+              isBack={isBack}
+              betType={betType}
+              selectedValue={selectedValue}
+              isSessionYes={isSessionYes}
+              type={type}
+              data={data}
+              betOn={name}
+              typeOfBet={typeOfBet}
+              mainData={mainData}
+            />
+          </Box>
+        </MUIModal>
+
         {
           <BetPlaced
             // time={5}
