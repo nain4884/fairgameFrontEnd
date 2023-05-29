@@ -87,6 +87,16 @@ const CustomHeader = ({}) => {
           // await axios.get("auth/logout");
           removeSocket();
         }
+        if (packet.data[0] === "userBalanceUpdate") {
+          const data = packet.data[1];
+          const user = {
+            ...currentUser,
+            current_balance: data?.currentBalacne,
+          };
+          dispatch(setCurrentUser(user));
+
+          //currentBalacne
+        }
       };
     }
   }, [socket]);

@@ -109,6 +109,16 @@ const CustomHeader = ({}) => {
           removeSocket();
           navigate("/expert");
         }
+        if (packet.data[0] === "userBalanceUpdate") {
+          const data = packet.data[1];
+          const user = {
+            ...currentUser,
+            current_balance: data?.currentBalacne,
+          };
+          dispatch(setCurrentUser(user));
+
+          //currentBalacne
+        }
       };
     }
   }, [socket]);

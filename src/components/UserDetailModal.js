@@ -496,8 +496,8 @@ const DepositComponent = ({
 
   const calculatePercentProfitLoss = (val, e) => {
     const rateToCalculatePercentage = val.rateToCalculatePercentage;
-    const inputValue = parseInt(
-      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+    const inputValue = Number(
+      isNaN(Number(e.target.value)) ? 0 : e.target.value
     );
     const profitLoss = prevElement.profit_loss;
 
@@ -515,7 +515,7 @@ const DepositComponent = ({
   const handleChange = debounce((e) => {
     setDepositObj({
       ...depositObj,
-      amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
+      amount: e.target.value < 0 ? 0 : Number(e.target.value),
       userId: userModal.id,
     });
 
@@ -524,13 +524,13 @@ const DepositComponent = ({
       percent_profit_loss: calculatePercentProfitLoss(prevElement, e),
       profit_loss:
         prevElement.profit_loss +
-        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
       balance:
         prevElement.balance +
-        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
       available_balance:
         prevElement.available_balance +
-        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
     });
     if (e.target.value) {
       const newUserbalance = {
@@ -610,7 +610,7 @@ const DepositComponent = ({
           </Box>
           {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
             <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Predicted Wallet</Typography>
-            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount- parseInt(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
+            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount- Number(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
           </Box> */}
         </Box>
         <Box
@@ -724,7 +724,7 @@ const DepositComponent = ({
           </Box>
           {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
             <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Profit/Loss</Typography>
-            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss + parseInt(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
+            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss + Number(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
           </Box> */}
         </Box>
         <Box
@@ -850,8 +850,8 @@ const WithDrawComponent = ({
   const [withDrawObj, setWithDrawObj] = useState(defaultWithDrawObj);
   const calculatePercentProfitLoss = (val, e) => {
     const rateToCalculatePercentage = val.rateToCalculatePercentage;
-    const inputValue = parseInt(
-      isNaN(parseInt(e.target.value)) ? 0 : e.target.value
+    const inputValue = Number(
+      isNaN(Number(e.target.value)) ? 0 : e.target.value
     );
     const profitLoss = prevElement.profit_loss;
 
@@ -868,7 +868,7 @@ const WithDrawComponent = ({
   const handleChange = debounce((e) => {
     setWithDrawObj({
       ...withDrawObj,
-      amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
+      amount: e.target.value < 0 ? 0 : Number(e.target.value),
       userId: userModal.id,
     });
     setElementToUDM({
@@ -876,19 +876,19 @@ const WithDrawComponent = ({
       percent_profit_loss: calculatePercentProfitLoss(prevElement, e),
       profit_loss:
         prevElement.profit_loss -
-        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
       balance:
         prevElement.balance -
-        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
       available_balance:
         prevElement.available_balance -
-        parseInt(isNaN(parseInt(e.target.value)) ? 0 : e.target.value),
+        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
     });
 
     if (e.target.value) {
       const newUserbalance = {
         ...currentUser,
-        current_balance: initialBalance + parseInt(e.target.value),
+        current_balance: initialBalance + Number(e.target.value),
       };
 
       setTimeout(() => {
@@ -965,7 +965,7 @@ const WithDrawComponent = ({
           </Box>
           {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
             <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Predicted Wallet</Typography>
-            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount+ parseInt(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
+            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount+ Number(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
           </Box> */}
         </Box>
         <Box
@@ -1078,7 +1078,7 @@ const WithDrawComponent = ({
           </Box>
           {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
             <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Profit/Loss</Typography>
-            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss - parseInt(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
+            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss - Number(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
           </Box> */}
         </Box>
         <Box
@@ -1239,21 +1239,21 @@ const NewCreditComponent = ({
               onChange={(e) => {
                 setNewCreditObj({
                   ...newCreditObj,
-                  amount: e.target.value < 0 ? 0 : parseInt(e.target.value),
+                  amount: e.target.value < 0 ? 0 : Number(e.target.value),
                   userId: userModal.id,
                 });
                 setElementToUDM({
                   ...elementToUDM,
-                  credit_refer: isNaN(parseInt(e.target.value))
+                  credit_refer: isNaN(Number(e.target.value))
                     ? 0
-                    : parseInt(e.target.value),
+                    : Number(e.target.value),
                   profit_loss:
                     prevElement.profit_loss +
                     prevElement.credit_refer -
-                    parseInt(
-                      isNaN(parseInt(e.target.value))
+                    Number(
+                      isNaN(Number(e.target.value))
                         ? 0
-                        : parseInt(e.target.value)
+                        : Number(e.target.value)
                     ),
                 });
               }}
@@ -1491,15 +1491,15 @@ const SetExposureComponent = ({
               onChange={(e) => {
                 setExposureObj({
                   ...exposureObj,
-                  amount: parseInt(e.target.value),
+                  amount: Number(e.target.value),
                   userId: userModal.id,
                 });
                 setElementToUDM({
                   ...elementToUDM,
-                  exposure_limit: parseInt(
-                    isNaN(parseInt(e.target.value))
+                  exposure_limit: Number(
+                    isNaN(Number(e.target.value))
                       ? 0
-                      : parseInt(e.target.value)
+                      : Number(e.target.value)
                   ),
                 });
               }}

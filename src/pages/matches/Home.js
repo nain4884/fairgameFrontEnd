@@ -274,6 +274,16 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             return prev;
           });
         }
+        if (packet.data[0] === "userBalanceUpdate") {
+          const data = packet.data[1];
+          const user = {
+            ...currentUser,
+            current_balance: data?.currentBalacne,
+          };
+          dispatch(setCurrentUser(user));
+
+          //currentBalacne
+        }
         if (packet.data[0] === "bookMakerRateLive") {
           // Bookmaker Market live and stop disable condition
           const value = packet.data[1];

@@ -10,8 +10,8 @@ import { SocketContext } from "../../context/socketContext";
 import Axios from "axios";
 import { formatNumber } from "../helper/helper";
 import moment from "moment-timezone";
-import { useDispatch } from "react-redux";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { useDispatch, useSelector } from "react-redux";
+import { removeCurrentUser, setCurrentUser } from "../../newStore/reducers/currentUser";
 import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
 import { logout } from "../../newStore/reducers/auth";
 import { GlobalStore } from "../../context/globalStore";
@@ -25,7 +25,7 @@ const Odds = ({ onClick, top, blur, match }) => {
   const { socketMicro, socket } = useContext(SocketContext);
   const dispatch = useDispatch();
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
+  const { currentUser } = useSelector((state) => state?.currentUser);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { axios } = setRole()
   useEffect(() => {
@@ -68,6 +68,16 @@ const Odds = ({ onClick, top, blur, match }) => {
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           // await axios.get("auth/logout");
           removeSocket();
+        }
+        if (packet.data[0] === "userBalanceUpdate") {
+          const data = packet.data[1];
+          const user = {
+            ...currentUser,
+            current_balance: data?.currentBalacne,
+          };
+          dispatch(setCurrentUser(user));
+
+          //currentBalacne
         }
       };
     }

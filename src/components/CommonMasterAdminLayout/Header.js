@@ -121,6 +121,17 @@ const CustomHeader = ({}) => {
           //   toast.error("Something went wrong");
           // }
         }
+
+        if (packet.data[0] === "userBalanceUpdate") {
+          const data = packet.data[1];
+          const user = {
+            ...currentUser,
+            current_balance: data?.currentBalacne,
+          };
+          dispatch(setCurrentUser(user));
+
+          //currentBalacne
+        }
       };
     }
   }, [socket, nav]);
@@ -172,7 +183,7 @@ const CustomHeader = ({}) => {
 
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
-  const [showSearch,setShowSearch]=useState(false)
+  const [showSearch, setShowSearch] = useState(false);
 
   useEffect(() => {
     if (!matchesMobile) {
@@ -259,7 +270,7 @@ const CustomHeader = ({}) => {
     BoxCont1sub2: {
       width: "100%",
       display: "flex",
-      marginLeft:{mobile:"-143px",laptop:0,tablet:0},
+      marginLeft: { mobile: "-143px", laptop: 0, tablet: 0 },
       justifyContent: "flex-end",
       // minWidth: matchesMobile ? "100%" : "0px",
       alignItems: "center",
@@ -373,7 +384,9 @@ const CustomHeader = ({}) => {
             <Box sx={classes.BoxCont1sub2}>
               <SearchInput
                 show={showSearch}
-                setShowSearch={()=>{setShowSearch(prev=>!prev)}}
+                setShowSearch={() => {
+                  setShowSearch((prev) => !prev);
+                }}
                 placeholder={"All Clients..."}
                 header={true}
                 inputContainerStyle={classes.BoxCont1sub2SearchInputContStyle}

@@ -117,11 +117,6 @@ const MatchScreen = () => {
                 teamB: data.teamB_rate,
               };
 
-              console.log(
-                "currentMatch?.i",
-                currentMatch?.id,
-                data?.betPlaceData?.match_id
-              );
               setIObtes((prev) => {
                 if (currentMatch?.id === data?.betPlaceData?.match_id) {
                   const body = {
@@ -305,6 +300,17 @@ const MatchScreen = () => {
           } catch (e) {
             console.log("error", e?.message);
           }
+        }
+
+        if (packet.data[0] === "userBalanceUpdate") {
+          const data = packet.data[1];
+          const user = {
+            ...currentUser,
+            current_balance: data?.currentBalacne,
+          };
+          dispatch(setCurrentUser(user));
+
+          //currentBalacne
         }
       };
 
