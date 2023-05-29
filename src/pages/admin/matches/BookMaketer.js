@@ -23,7 +23,7 @@ const BookMarketer = ({ currentMatch, data }) => {
     return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
   };
   const handleLock = (data) => {
-    return data?.ex?.availableToBack?.length > 0 ? false : true
+    return data?.ex?.availableToLay?.length > 0 ? false : true
   }
 
   return (

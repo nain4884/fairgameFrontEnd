@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Typography, useMediaQuery, Box } from "@mui/material";
-import { INDIA, PAKISTAN } from "../../../assets";
+import { BallStart, INDIA, PAKISTAN } from "../../../assets";
 import { StyledImage } from "../../../components";
 import { LockSolid } from "../../../admin/assets";
 import SeperateBox from "./SeperateBox";
@@ -9,12 +9,12 @@ import { apiBasePath } from "../../../components/helper/constants";
 import { formatNumber } from "../../../components/helper/helper";
 
 const BoxComponent = ({
-    name, color, align, lock, teamImage, rates, data, matchOddsData
+    name, color, align, lock, teamImage, rates, data, matchOddsData, ballStatus, status
 }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-    // console.log("check data :", matchOddsData)
-    const { ex, status } = data;
+    // console.log("check data :", data)
+    // const { ex, status } = data;
 
     return (
         <Box
@@ -82,96 +82,115 @@ const BoxComponent = ({
                             marginLeft: "10px",
                         }}
                     >
-                        {name}
+                        {name}{lock.toString()}
                     </Typography>
                 </Box>
             </Box>
-            {!["ACTIVE", "", undefined, null].includes(status) ?
-                <Box
-                    sx={{
-                        background: "rgba(0,0,0,1)",
-                        height: "40px",
-                        display: "flex",
-                        width: { laptop: "60%", mobile: "80%" },
-                        justifyContent: { mobile: "flex-end", laptop: "flex-end" },
-                        alignItems: "center",
-                    }}
-                >
-                    <Typography style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase", width: "100%", textAlign: "center", color: "white", fontWeight: "600" }}>
-                        suspended
-                    </Typography>
-                </Box> :
-                <Box
-                    sx={{
-                        display: "flex",
-                        background: "white",
-                        height: "40px",
-                        width: { laptop: "60%", mobile: "80%" },
-                        justifyContent: { mobile: "flex-end", laptop: "flex-end" },
-                        alignItems: "center",
-                    }}
-                >
-                    <MoneyBox color={color} rates={rates} />
 
-                    {!lock && (
-                        <SeperateBox
-                            align={align}
-                            value={matchOddsData?.back ? matchOddsData?.back : 0}
-                            value2={0}
-                            // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") : 0}
-                            // value2={0}
-                            color={matchesMobile ? "white" : "#A7DCFF"}
-                        />
-                    )}
-                    {lock && (
-                        <Box
-                            sx={{
-                                height: "94%",
-                                background: "#FDF21A",
-                                border: "1px solid #2626264D",
-                                width: "5vw",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                display: "flex",
-                            }}
-                        >
-                            <StyledImage
-                                src={LockSolid}
-                                sx={{ height: "20px", width: "20px" }}
+            {ballStatus ? <Box
+                sx={{
+                    background: "#000",
+                    height: "82px",
+                    position: "absolute",
+                    right: 0,
+                    top: 0,
+                    zIndex: 10,
+                    width: { laptop: "60%", mobile: "40.5%" },
+                    justifyContent: { mobile: "flex-end", laptop: "center" },
+                    alignItems: "center",
+                    display: "flex",
+                }}
+            >
+                <img src={BallStart} style={{ width: '113px', height: "32px" }} />
+            </Box> : <>
+                {status ?
+                    <Box
+                        sx={{
+                            background: "rgba(0,0,0,1)",
+                            height: "40px",
+                            display: "flex",
+                            width: { laptop: "60%", mobile: "80%" },
+                            justifyContent: { mobile: "flex-end", laptop: "flex-end" },
+                            alignItems: "center",
+                        }}
+                    >
+                        <Typography style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase", width: "100%", textAlign: "center", color: "white", fontWeight: "600" }}>
+                            suspended
+                        </Typography>
+                    </Box> :
+                    <Box
+                        sx={{
+                            display: "flex",
+                            background: "white",
+                            height: "40px",
+                            width: { laptop: "60%", mobile: "80%" },
+                            justifyContent: { mobile: "flex-end", laptop: "flex-end" },
+                            alignItems: "center",
+                        }}
+                    >
+                        <MoneyBox color={color} rates={rates} />
+
+                        {!lock && (
+                            <SeperateBox
+                                align={align}
+                                value={matchOddsData?.back ? matchOddsData?.back : 0}
+                                value2={0}
+                                // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") : 0}
+                                // value2={0}
+                                color={matchesMobile ? "white" : "#A7DCFF"}
                             />
-                        </Box>
-                    )}
+                        )}
+                        {lock && (
+                            <Box
+                                sx={{
+                                    height: "94%",
+                                    background: "#FDF21A",
+                                    border: "1px solid #2626264D",
+                                    width: "5vw",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    display: "flex",
+                                }}
+                            >
+                                <StyledImage
+                                    src={LockSolid}
+                                    sx={{ height: "20px", width: "20px" }}
+                                />
+                            </Box>
+                        )}
 
 
 
-                    <Box sx={{ width: "3px", display: "flex", background: "pink" }}></Box>
-                    {!lock && (
-                        <SeperateBox
-                            align={align}
-                            value={matchOddsData?.lay ? matchOddsData?.lay : 0}
-                            value2={0}
-                            color={matchesMobile ? "white" : "#FFB5B5"}
-                        />
-                    )}
-                    {lock && (
-                        <Box
-                            sx={{
-                                height: "94%",
-                                background: "#FDF21A",
-                                border: "1px solid #2626264D",
-                                width: "5vw",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                display: "flex",
-                            }}
-                        >
-                            <StyledImage
-                                src={LockSolid}
-                                sx={{ height: "20px", width: "20px" }}
+                        <Box sx={{ width: "3px", display: "flex", background: "pink" }}></Box>
+                        {!lock && (
+                            <SeperateBox
+                                align={align}
+                                value={matchOddsData?.lay ? matchOddsData?.lay : 0}
+                                value2={0}
+                                color={matchesMobile ? "white" : "#FFB5B5"}
                             />
-                        </Box>
-                    )}
-                </Box>
+                        )}
+                        {lock && (
+                            <Box
+                                sx={{
+                                    height: "94%",
+                                    background: "#FDF21A",
+                                    border: "1px solid #2626264D",
+                                    width: "5vw",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    display: "flex",
+                                }}
+                            >
+                                <StyledImage
+                                    src={LockSolid}
+                                    sx={{ height: "20px", width: "20px" }}
+                                />
+                            </Box>
+                        )}
+                    </Box>
+                }
+            </>
             }
         </Box>
     );

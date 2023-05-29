@@ -23,6 +23,7 @@ import { setSelectedMatch } from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
 
 let matchOddsCount = 0;
+let sessionOffline = [];
 const DeleteBet = ({ }) => {
   const { socket, socketMicro } = useContext(SocketContext);
   const [visible, setVisible] = useState(false);
@@ -375,6 +376,70 @@ const DeleteBet = ({ }) => {
             }
           }
         }
+        if (packet.data[0] === "newBetAdded") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id !== value?.match_id) {
+                // If the new bet doesn't belong to the current match, return the current state
+                return currentMatch;
+              }
+
+              // Update the bettings array in the current match object
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (betting.id === value.id && value.sessionBet) {
+                  // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                  return {
+                    ...betting,
+                    ...value,
+                  };
+                } else if (
+                  betting?.id === value?.id &&
+                  value.sessionBet === false
+                ) {
+                  return {
+                    ...betting,
+                    ...value,
+                  };
+                }
+                return betting;
+              });
+              var newUpdatedValue = updatedBettings;
+              const bettingsIds = updatedBettings?.map(
+                (betting) => betting?.id
+              );
+
+              if (!bettingsIds?.includes(value.id)) {
+                // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
+
+                newUpdatedValue = [...newUpdatedValue, value];
+              } else {
+                if (
+                  sessionOffline.includes(value.id) &&
+                  value.betStatus === 1
+                ) {
+                  const newres = sessionOffline.filter((id) => id !== value.id);
+                  sessionOffline = newres;
+                }
+                if (value?.betStatus === 0) {
+                  sessionOffline.push(value.id);
+                }
+                // newUpdatedValue = newUpdatedValue?.filter(
+                //   (v) => v?.id !== value?.id && v?.betStatus === 1
+                // );
+              }
+
+              // Return the updated current match object
+              return {
+                ...currentMatch,
+                bettings: newUpdatedValue,
+              };
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
   }, [socket]);
@@ -519,7 +584,7 @@ const DeleteBet = ({ }) => {
       );
 
       setManualBookmakerData(matchOddsDataTemp);
-
+      // alert(response?.data?.status)
       //   setSessionExposure(response?.data?.sessionExposure);
       setCurrentMatch({
         ...response.data,
@@ -750,9 +815,10 @@ const DeleteBet = ({ }) => {
           {currentMatch?.manualBookMakerActive && <Odds
             currentMatch={currentMatch}
             // matchOddsLive={matchOddsLive}
-            data={
-              matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
-            }
+            // data={
+            //   matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
+            // }
+            data={currentMatch}
             manualBookmakerData={manualBookmakerData}
             typeOfBet={"MANUAL BOOKMAKER"}
           // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
@@ -762,6 +828,7 @@ const DeleteBet = ({ }) => {
             currentMatch?.manualSessionActive) && <SessionMarket
               currentMatch={currentMatch}
               data={[]}
+              sessionOffline={sessionOffline}
             />}
         </Box>
         <Box sx={{ width: "20px" }} />

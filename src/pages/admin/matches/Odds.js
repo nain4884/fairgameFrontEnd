@@ -25,9 +25,10 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
   // data = { data?.length > 0 ? data[1] : []
   // lock = { ex?.availableToBack?.length > 0 ? false : true
   const handleLock = (data) => {
-    // console.log('data ddd :', data);
+    console.log('data ddd :', data);
     // if (data?.length > 0) {
     return data?.ex?.availableToBack?.length > 0 ? false : true
+    // return data?.ex?.availableToLay?.length > 0 ? false : true
     // }
     // return true;
   }
@@ -191,26 +192,31 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
               rates={currentMatch?.teamA_rate}
               color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
               data={data?.length > 0 ? data[0] : []}
-              lock={handleLock(data?.length > 0 ? data[0] : [])}
+              lock={false}
               // manualBookmakerData
               matchOddsData={{
                 back: manualBookmakerData?.[0]?.teamA_Back,
                 lay: manualBookmakerData?.[0]?.teamA_lay
               }}
+              ballStatus={manualBookmakerData?.[0]?.teamA_Ball === "ball" ? true : false}
+              status={manualBookmakerData?.[0]?.teamA_suspend ? true : false}
+
             />
             <Divider />
             <ManualBoxComponent
               teamImage={currentMatch?.teamA_Image}
               // color={"#46e080"}
-              name={currentMatch?.teamA}
-              rates={currentMatch?.teamA_rate}
-              color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
+              name={currentMatch?.teamB}
+              rates={currentMatch?.teamB_rate}
+              color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#46e080"}
               data={data?.length > 0 ? data[0] : []}
-              lock={handleLock(data?.length > 0 ? data[0] : [])}
+              lock={false}
               matchOddsData={{
-                back: manualBookmakerData?.[0]?.teamA_Back,
-                lay: manualBookmakerData?.[0]?.teamA_lay
+                back: manualBookmakerData?.[0]?.teamB_Back,
+                lay: manualBookmakerData?.[0]?.teamB_lay
               }}
+              ballStatus={manualBookmakerData?.[0]?.teamB_Ball === "ball" ? true : false}
+              status={manualBookmakerData?.[0]?.teamB_suspend ? true : false}
             />
           </>
           :
@@ -221,6 +227,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
               name={currentMatch?.teamA}
               rates={currentMatch?.teamA_rate}
               color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
+              // data={data}
               data={data?.length > 0 ? data[0] : []}
               lock={handleLock(data?.length > 0 ? data[0] : [])}
             // name1={currentMatch?.teamA}

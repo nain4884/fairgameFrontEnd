@@ -7,7 +7,7 @@ import { useTheme } from "@emotion/react";
 import { useEffect } from "react";
 import RunsBox from "../../expert/RunsBox";
 
-const SessionMarket = ({ currentMatch }) => {
+const SessionMarket = ({ currentMatch, sessionOffline }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [showUnlock, setShowUnlock] = useState(false);
@@ -192,8 +192,36 @@ const SessionMarket = ({ currentMatch }) => {
             }}
           >
             {matchSessionData?.length > 0 &&
+              matchSessionData?.reverse()?.map((element, index) => {
+                return (
+                  <Box
+                    key={element?.id}
+                    sx={{
+                      width: "100%",
+                      display: sessionOffline?.includes(element.id)
+                        ? "none"
+                        : "block",
+                    }}
+                  >
+                    <SeasonMarketBox
+                      newData={element}
+                      setMatchSessionData={setMatchSessionData}
+                      index={index}
+                      setData={setData}
+                    />
+                    <Divider />
+                  </Box>
+                );
+              })}
+            {/* {matchSessionData?.length > 0 &&
               matchSessionData?.map((match, index) => (
-                <Box key={index}>
+                <Box key={index}
+                  sx={{
+                    // display: sessionOffline?.includes(element.id)
+                    //   ? "none"
+                    //   : "block",
+                  }}
+                >
                   <SeasonMarketBox
                     newData={match}
                     setMatchSessionData={setMatchSessionData}
@@ -203,7 +231,7 @@ const SessionMarket = ({ currentMatch }) => {
 
                   <Divider />
                 </Box>
-              ))}
+              ))} */}
           </Box>
         </Box>
         {/* {showUnlock && <Box sx={{ position: 'absolute', width: '100%', background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left: '20%' }}>

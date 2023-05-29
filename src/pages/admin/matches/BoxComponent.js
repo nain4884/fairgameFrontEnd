@@ -111,7 +111,39 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
         >
           <MoneyBox color={color} rates={rates} />
 
-          {!lock && (
+          {ex?.availableToBack?.length > 0 ?
+            <SeperateBox
+              align={align}
+              value={
+                ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.price
+                  : 0
+              }
+              value2={formatNumber(
+                ex?.availableToBack?.length > 0
+                  ? ex?.availableToBack[0]?.size
+                  : 0, false
+              )}
+              color={matchesMobile ? "white" : "#A7DCFF"}
+            /> :
+            <Box
+              sx={{
+                height: "94%",
+                background: "#FDF21A",
+                border: "1px solid #2626264D",
+                width: "5vw",
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <StyledImage
+                src={LockSolid}
+                sx={{ height: "20px", width: "20px" }}
+              />
+            </Box>
+          }
+          {/* {!lock && (
             <SeperateBox
               align={align}
               value={
@@ -144,12 +176,42 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
                 sx={{ height: "20px", width: "20px" }}
               />
             </Box>
-          )}
+          )} */}
 
 
 
           <Box sx={{ width: "3px", display: "flex", background: "pink" }}></Box>
-          {!lock && (
+          {/* {!lock ? */}
+          {ex?.availableToLay?.length > 0 ?
+            <SeperateBox
+              align={align}
+              value={ex?.availableToLay?.length > 0
+                ? ex?.availableToLay[0]?.price
+                : 0
+              }
+              value2={formatNumber(
+                ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0, false
+              )}
+              color={matchesMobile ? "white" : "#FFB5B5"}
+            /> :
+            <Box
+              sx={{
+                height: "94%",
+                background: "#FDF21A",
+                border: "1px solid #2626264D",
+                width: "5vw",
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <StyledImage
+                src={LockSolid}
+                sx={{ height: "20px", width: "20px" }}
+              />
+            </Box>
+          }
+          {/* {!lock && (
             <SeperateBox
               align={align}
               value={ex?.availableToLay?.length > 0
@@ -179,7 +241,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
                 sx={{ height: "20px", width: "20px" }}
               />
             </Box>
-          )}
+          )} */}
         </Box>
       }
     </Box>
