@@ -60,11 +60,15 @@ const PlaceBet = ({
   //   });
   // };
 
-  // useEffect(() => {
-  //   if (!fromOdds) {
-  //     scrollToBottom();
-  //   }
-  // }, [selectedValue, fromOdds]);
+  useEffect(() => {
+    if (!fromOdds) {
+      // scrollToBottom();
+      scrollToFullDiv()
+    }
+  }, [selectedValue, fromOdds]);
+
+
+
 
   const getLatestBetAmount = async (value, newData) => {
     console.log("value", value);
@@ -418,6 +422,20 @@ const PlaceBet = ({
     }
     return payload;
   }
+
+
+
+
+  const scrollToFullDiv = () => {
+    if (myDivRef.current) {
+      const { scrollTop, offsetHeight, scrollHeight } = myDivRef.current;
+      const scrollPosition = scrollTop + offsetHeight;
+
+      if (scrollPosition < scrollHeight) {
+        myDivRef.current.scrollTop = scrollHeight;
+      }
+    }
+  };
   return (
     <Box
       // ref={refs}
@@ -428,35 +446,34 @@ const PlaceBet = ({
           flexDirection: "column",
           border: "1px solid white",
           borderRadius: "5px",
-          marginTop: { mobile: "16px", tablet: "16px", laptop: 0 },
-          marginLeft: season ? "40px" : 0,
+          marginLeft: season ? 0 : 0,
           overflow: "hidden",
 
-          width: { mobile: "98vw", tablet: "60vw", laptop: "40%" },
+          width: { mobile: "98vw", tablet: "60vw", laptop: "38vw" },
           // boxShadow:
           //   "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
           boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 4px"
           // left: isSessionYes?"-30%": "95%"
         },
         // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
-        // matchesMobile
-        //   ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
-        //     // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-        //     { position: "absolute", right: back ? "0vw" : "0vw" }
-        //   : typeOfBet == "Session"
-        //   ? {
-        //       position: "absolute",
-        //       right: back ? "auto" : "0vw",
-        //       left: isSessionYes ? "-30%" : "95%",
-        //     }
-        //   : {
-        //       position: "absolute",
-        //       right: back
-        //         ? typeOfBet != "Session"
-        //           ? "1.5vw"
-        //           : "-16.5vw"
-        //         : "0vw",
-        //     },
+        matchesMobile
+          ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
+            // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
+            { position: "absolute", right: back ? "0vw" : "0vw" }
+          : typeOfBet == "Session"
+          ? {
+              position: "absolute",
+              right: back ? "auto" : "0vw",
+              left: isSessionYes ? "-30%" : "95%",
+            }
+          : {
+              position: "absolute",
+              right: back
+                ? typeOfBet != "Session"
+                  ? "1.5vw"
+                  : "-16.5vw"
+                : "0vw",
+            },
       ]}
     >
       <Box sx={{ background: "#F8C851", width: "100%", overflow: "hidden" }}>

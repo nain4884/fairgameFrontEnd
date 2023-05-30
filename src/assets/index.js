@@ -47,7 +47,7 @@ export { default as INDIA } from './homeScreen/india.png'
 export { default as PAKISTAN } from './homeScreen/pakistan.png'
 export { default as ARROWUP } from './homeScreen/arrowup.png'
 export { default as BallStart } from './homeScreen/ballStart.png'
-
+export { default as FASTTIME } from './homeScreen/fastTime.png'
 export { default as HourGlass } from './hourglass.json'
 export { default as CancelDark } from './drawer/cancel.png'
 export {default as DownIcon} from './header/down.svg'

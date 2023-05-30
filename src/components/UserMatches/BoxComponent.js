@@ -26,6 +26,7 @@ const BoxComponent = ({
   livestatus,
   isRound,
   fromOdds
+  
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));

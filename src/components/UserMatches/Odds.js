@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import BoxComponent from "./BoxComponent";
 import ManualBoxComponent from "./ManualBoxComponent";
 import Divider from "../helper/Divider";
-import { BallStart, Info, TIME } from "../../assets";
+import { BallStart, FASTTIME, Info, TIME } from "../../assets";
 import { memo } from "react";
 
 const SmallBox = ({ valueA, valueB }) => {
@@ -112,6 +112,23 @@ const Time = (data) => {
     </Box>
   );
 };
+const FastTime = (data) => {
+  return (
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      {/* <Typography
+        sx={{
+          fontSize: { mobile: "10px", laptop: "12px" },
+          fontWeight: "bold",
+          color: "#black",
+          width: { mobile: "40px", laptop: "80px" },
+        }}
+      >
+        {data.time} sec Delay
+      </Typography> */}
+      <img style={{ width: "20px", height: "20px" }} src={FASTTIME} />
+    </Box>
+  );
+};
 
 const Odds = ({
   data,
@@ -128,6 +145,7 @@ const Odds = ({
   isRound,
   typeOfBet,
   matchOddsData,
+  showFast
 }) => {
   // console.log("matchOddsData 11:", matchOddsData);
   const theme = useTheme();
@@ -198,6 +216,9 @@ const Odds = ({
           </Typography>
           {showDely && typeOfBet === "MATCH ODDS" && (
             <Time time={newData.delaySecond ? newData?.delaySecond : 0} />
+          )}
+           {showFast && (
+            <FastTime />
           )}
         </Box>
         <Box
@@ -525,6 +546,9 @@ const Odds = ({
           </Box>
         </Box>
       )} */}
+
+
+      
     </Box>
   );
 };

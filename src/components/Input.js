@@ -164,7 +164,8 @@ const Input = ({
             backgroundColor: "white",
             display: "flex",
             alignItems: "center",
-            height: { laptop: "45px", mobile: "100%" },
+
+            height: { laptop: "45px", mobile: "45px" ,tablet:"45px"},
             overflow: "hidden",
             paddingX: "10px",
             marginTop: "1px",

@@ -268,6 +268,7 @@ const MatchOdds = ({
         <Odds
           showBox={!bookMakerRateLive}
           newData={data}
+          showFast={true}
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
@@ -295,6 +296,7 @@ const MatchOdds = ({
           newData={data}
           lock={false}
           showDely={false}
+          showFast={true}
           suspended={false}
           data={data}
           teamARates={teamRates?.teamA}
@@ -311,6 +313,7 @@ const MatchOdds = ({
 
       {(data?.apiSessionActive || data?.manualSessionActive) && (
         <SessionMarket
+        showFast={true}
           sessionBets={sessionBets}
           data={sessionOddsLive}
           newData={data}

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Divider from "../../helper/Divider";
 import SessionMarketBox from "./SessionMarketBox";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import { Info } from "../../../assets";
+import { FASTTIME, Info } from "../../../assets";
 import { useTheme } from "@emotion/react";
 import SmallBoxSeason from "../SmallBoxSeason";
 import { memo } from "react";
@@ -11,6 +11,7 @@ import { useState } from "react";
 const SessionMarket = ({
   data,
   newData,
+  showFast,
   teamARates,
   teamBRates,
   allBetsData,
@@ -27,9 +28,28 @@ const SessionMarket = ({
   );
 
   console.log("sessionOffline", sessionOffline);
+
+  const FastTime = (data) => {
+  return (
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      {/* <Typography
+        sx={{
+          fontSize: { mobile: "10px", laptop: "12px" },
+          fontWeight: "bold",
+          color: "#black",
+          width: { mobile: "40px", laptop: "80px" },
+        }}
+      >
+        {data.time} sec Delay
+      </Typography> */}
+      <img style={{ width: "20px", height: "20px" }} src={FASTTIME} />
+    </Box>
+  );
+};
   return (
     <>
       <Box
+      id={"test"}
         sx={{
           display: "flex",
           background: "white",
@@ -72,6 +92,9 @@ const SessionMarket = ({
             >
               Session Odds
             </Typography>
+            {showFast && (
+            <FastTime />
+          )}
           </Box>
           <Box
             sx={{

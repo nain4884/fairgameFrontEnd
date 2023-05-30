@@ -161,6 +161,7 @@ const SessionMarketBox = ({
             <SeprateBox
               po={1}
               rates={allRates}
+              
               session={true}
               betType={"yes"}
               value={data?.yes_rate}
