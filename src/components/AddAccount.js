@@ -729,9 +729,9 @@ const AddAccount = () => {
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
                 inputContainerStyle={inputContainerStyle}
-                title={"Session Commission (%)*"}
+                title={"Session Commission (%)"}
                 setDetail={setDetail}
-                required={true}
+                // required={true}
                 Detail={Detail}
                 setError={setError}
                 error={error}
