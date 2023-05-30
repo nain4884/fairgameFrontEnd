@@ -484,7 +484,7 @@ const MatchSubmit = ({ }) => {
         //   });
         // }
 
-        for (var i = 0; i < marketIds.length; i++) {
+        for (var i = 0; i < marketIds?.length; i++) {
           (function (i) {
             socketMicro.on(`session${marketIds[i]}`, (val) => {
               // console.log("currentMatchProfit 33:", val);
@@ -803,7 +803,7 @@ const MatchSubmit = ({ }) => {
       // socketMicro?.emit("disconnect_market", {
       //   id: marketId,
       // });
-      for (var j = 0; j < marketIds.length; j++) {
+      for (var j = 0; j < marketIds?.length; j++) {
         (function (j) {
           socketMicro?.emit("disconnect_market", {
             id: marketIds[j],
@@ -963,7 +963,8 @@ const MatchSubmit = ({ }) => {
 
       </Box>
       )}
-      <Box
+
+      {location?.state?.match == 4 && (<Box
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -972,115 +973,6 @@ const MatchSubmit = ({ }) => {
           marginX: "0.5%",
         }}
       >
-        {/* {location?.state?.match >= 3 && (
-          <Box
-            sx={{
-              flex: 0.5,
-              flexDirection: "column",
-              minHeight: "100px",
-              display: "flex",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "16px",
-                color: "white",
-                fontWeight: "700",
-                paddingTop: "0.7%",
-                alignSelf: "start",
-              }}
-            >
-              INDIA V/S PAKISTAN
-            </Typography>
-            <Odds
-              currentMatch={{}}
-              // matchOddsLive={matchOddsLive}
-              data={[]}
-            />
-            <BookMarketer
-              currentMatch={{}}
-              // matchOddsLive={matchOddsLive}
-              data={[]}
-            />
-            <SessionMarket />
-            <AllBets tag={true} />
-          </Box>
-        )}
-        <Box sx={{ width: "10px" }} />
-        {location?.state?.match == 4 && (
-          <Box
-            sx={{
-              flex: 0.5,
-              flexDirection: "column",
-              display: "flex",
-              minHeight: "100px",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "16px",
-                color: "white",
-                fontWeight: "700",
-                paddingTop: "0.7%",
-                alignSelf: "start",
-              }}
-            >
-              INDIA V/S PAKISTAN
-            </Typography>
-            <Odds
-              currentMatch={{}}
-              // matchOddsLive={matchOddsLive}
-              data={[]}
-            />
-            <BookMarketer
-              currentMatch={{}}
-              // matchOddsLive={matchOddsLive}
-              data={[]}
-            />
-            <SessionMarket />
-            <AllBets tag={true} />
-          </Box>
-        )} */}
-        {/* <Grid container> */}
-
-        {/* {matchIds.map((item, index) => {
-
-          return <>
-            <Box
-              sx={{
-                // flex: 0.5,
-                flexDirection: "column",
-                minHeight: "100px",
-                display: "flex"
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "16px",
-                  color: "white",
-                  fontWeight: "700",
-                  paddingTop: "0.7%",
-                  alignSelf: "start",
-                }}
-              >
-                INDIA V/S PAKISTAN
-              </Typography>
-              <Odds
-                currentMatch={{}}
-                // matchOddsLive={matchOddsLive}
-                data={[]}
-              />
-              <BookMarketer
-                currentMatch={{}}
-                // matchOddsLive={matchOddsLive}
-                data={[]}
-              />
-              <SessionMarket />
-              <AllBets tag={true} />
-            </Box>
-            <Box sx={{ width: "10px" }} />
-          </>
-        })} */}
         <Box sx={{
           display: "flex",
           flexWrap: "wrap",
@@ -1138,56 +1030,12 @@ const MatchSubmit = ({ }) => {
                     sessionOffline={item.sessionOffline}
                   />
                 }
-                {/* {(currentMatch?.apiSessionActive ||
-                currentMatch?.manualSessionActive) && <SessionMarket
-                  currentMatch={currentMatch}
-                  data={[]}
-                  sessionOffline={sessionOffline}
-                />} */}
                 <FullAllBets tag={true} IObets={IObetsData} />
               </Box>
             </>
           })}
         </Box>
-        {/* {matchIds.map((item, index) => {
-
-          return <>
-            <Box
-              sx={{
-                // flex: 0.5,
-                flexDirection: "column",
-                minHeight: "100px",
-                display: "flex"
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "16px",
-                  color: "white",
-                  fontWeight: "700",
-                  paddingTop: "0.7%",
-                  alignSelf: "start",
-                }}
-              >
-                INDIA V/S PAKISTAN
-              </Typography>
-              <Odds
-                currentMatch={{}}
-                // matchOddsLive={matchOddsLive}
-                data={[]}
-              />
-              <BookMarketer
-                currentMatch={{}}
-                // matchOddsLive={matchOddsLive}
-                data={[]}
-              />
-              <SessionMarket />
-              <AllBets tag={true} />
-            </Box>
-            <Box sx={{ width: "10px" }} />
-          </>
-        })} */}
-      </Box>
+      </Box>)}
     </Background>
   );
 };
