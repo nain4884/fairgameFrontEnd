@@ -245,6 +245,7 @@ const MarketAnalysis = () => {
   const [max, setMax] = useState("2");
   const [matchData, setMatchData] = useState([]);
   const [matchIds, setMatchIds] = useState([]);
+  const [marketIds, setMarketIds] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
@@ -260,10 +261,12 @@ const MarketAnalysis = () => {
     if (x.includes(index?.toString())) {
       // setMatchIds
       setMatchIds((prevIds) => prevIds.filter((matchId) => matchId !== i.id));
+      setMarketIds((prevIds) => prevIds.filter((marketId) => marketId !== i.marketId));
       x.splice(x.indexOf(index?.toString()), 1);
       setSelected([...x]);
     } else {
       setMatchIds((prevIds) => [...prevIds, i.id]);
+      setMarketIds((prevIds) => [...prevIds, i.marketId]);
       if (max == selected?.length) {
         return;
       }
@@ -364,11 +367,11 @@ const MarketAnalysis = () => {
                 setSelected([]);
                 if (max == "3") {
                   navigate(`/${pathname.split("/")[1]}/match_submit1`, {
-                    state: { matchIds: matchIds },
+                    state: { matchIds: matchIds, marketIds: marketIds },
                   });
                 } else {
                   navigate(`/${pathname.split("/")[1]}/match_submit`, {
-                    state: { match: Number(max), matchIds: matchIds },
+                    state: { match: Number(max), matchIds: matchIds, marketIds: marketIds },
                   });
                 }
               }}
