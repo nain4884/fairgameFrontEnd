@@ -79,7 +79,12 @@ const DropDownSimple = ({
                     ...Detail,
                     [place]: {
                       ...Detail[place],
-                      val: item,
+                      val:
+                        item === "Total Loss"
+                          ? "totalLoss"
+                          : item === "Bet Loss"
+                          ? "BetLoss"
+                          : item,
                     },
                   });
             }
@@ -166,6 +171,7 @@ const DropDownSimple = ({
               background: "white",
               width: "18.7%",
               alignSelf: "center",
+
               borderRadius: "2px",
               marginTop: "2px",
               position: "absolute",

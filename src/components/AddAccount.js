@@ -55,6 +55,9 @@ const AddAccount = () => {
     13: { field: "remark", val: "" },
     14: { field: "adminTransPassword", val: "" },
     15: { field: "myPartnership", val: 0 },
+    16: { field: "sessionComisssion", val: null },
+    17: { field: "matchTypeComission", val: null },
+    18: { field: "matchComission", val: null },
   });
   const [error, setError] = useState({
     1: { field: "userName", val: false },
@@ -72,6 +75,9 @@ const AddAccount = () => {
     13: { field: "remark", val: false },
     14: { field: "adminTransPassword", val: "error" },
     15: { field: "myPartnership", val: false },
+    16: { field: "sessionComisssion", val: false },
+    17: { field: "matchTypeComission", val: false },
+    18: { field: "matchComission", val: false },
   });
   const [roles, setRoles] = useState(
     allRole?.map((v) => ({ role: v.roleName, roleId: v.id }))
@@ -90,6 +96,12 @@ const AddAccount = () => {
     "Master",
     "User",
   ]);
+
+  const matchComissionTypes = [
+    "Select Match Commission Type",
+    "Total Loss",
+    "Bet Loss",
+  ];
 
   const [profile, setProfile] = useState({});
   const types = [
@@ -183,6 +195,20 @@ const AddAccount = () => {
         return false;
       }
       if (
+        Detail[17].val !== null &&
+        Detail[17].val !== "Select Match Commission Type" &&
+        Detail[18].val === null
+      ) {
+        setError({
+          ...error,
+          [18]: {
+            ...error[18],
+            val: "Field is required",
+          },
+        });
+        return false;
+      }
+      if (
         !(
           Detail[3].val === 0 ||
           Detail[3].val === "" ||
@@ -207,6 +233,13 @@ const AddAccount = () => {
           adminTransPassword: Detail[14].val,
           myPartnership: Detail[11].val,
           credit_refer: Detail[8].val,
+          sessionComisssion:
+            Detail[16].val === "" ? null : parseFloat(Detail[16].val),
+          matchTypeComission:
+            Detail[17].val === "Select Match Commission Type"
+              ? null
+              : Detail[17].val,
+          matchComission: Detail[18].val,
         };
         let response;
         response = await axios.post(`/fair-game-wallet/adduser`, payload);
@@ -241,6 +274,11 @@ const AddAccount = () => {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  const matchComissionArray = [];
+  for (let i = 0; i <= 10; i += 0.25) {
+    matchComissionArray.push(i);
   }
 
   function handleUpline() {
@@ -686,6 +724,102 @@ const AddAccount = () => {
               )}
             </Box>
             <Box sx={{ flex: 2 }}>
+              <Input
+                containerStyle={containerStyles}
+                titleStyle={titleStyles}
+                inputStyle={imputStyle}
+                inputContainerStyle={inputContainerStyle}
+                title={"Session Commission (%)*"}
+                setDetail={setDetail}
+                required={true}
+                Detail={Detail}
+                setError={setError}
+                error={error}
+                place={16}
+              />
+
+              {error[16]?.val && (
+                <p style={{ color: "#fa1e1e" }}>Field Required</p>
+              )}
+
+              <DropDownSimple
+                dropStyle={{
+                  filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                }}
+                valueStyle={{ ...imputStyle, color: "white" }}
+                title={"Match Commission Type"}
+                valueContainerStyle={{
+                  height: "45px",
+                  marginX: "0px",
+                  background: "#0B4F26",
+                  border: "1px solid #DEDEDE",
+                  borderRadius: "5px",
+                }}
+                containerStyle={{
+                  width: "100%",
+                  position: "relative",
+                  marginTop: "5px",
+                }}
+                titleStyle={{ marginLeft: "0px" }}
+                data={matchComissionTypes}
+                dropDownStyle={{
+                  width: "100%",
+                  marginLeft: "0px",
+                  marginTop: "0px",
+                  position: "absolute",
+                }}
+                dropDownTextStyle={imputStyle}
+                Detail={Detail}
+                setDetail={setDetail}
+                place={17}
+              />
+              {error[17]?.val && (
+                <p style={{ color: "#fa1e1e" }}>Field Required</p>
+              )}
+              {Detail[17].val !== null &&
+                Detail[17].val !== "Select Match Commission Type" && (
+                  <>
+                    <DropDownSimple
+                      dropStyle={{
+                        filter:
+                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      }}
+                      valueStyle={{ ...imputStyle, color: "white" }}
+                      title={"Match Commission (%)*"}
+                      valueContainerStyle={{
+                        height: "45px",
+                        marginX: "0px",
+
+                        background: "#0B4F26",
+                        border: "1px solid #DEDEDE",
+                        borderRadius: "5px",
+                      }}
+                      containerStyle={{
+                        width: "100%",
+                        position: "relative",
+                        marginTop: "5px",
+                      }}
+                      titleStyle={{ marginLeft: "0px" }}
+                      data={matchComissionArray}
+                      dropDownStyle={{
+                        width: "100%",
+                        marginLeft: "0px",
+                        marginTop: "0px",
+                        position: "absolute",
+                        maxHeight: "210px",
+                        overflow: "scroll",
+                      }}
+                      dropDownTextStyle={imputStyle}
+                      Detail={Detail}
+                      setDetail={setDetail}
+                      place={18}
+                    />
+                    {error[18].val && (
+                      <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                    )}
+                  </>
+                )}
+
               <Input
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
