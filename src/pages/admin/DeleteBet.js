@@ -43,6 +43,7 @@ const DeleteBet = ({ }) => {
   const [sessionBets, setSessionBets] = useState([]);
   const [matchDetail, setMatchDetail] = useState();
   const [sessionLock, setSessionLock] = useState(false)
+  const [isHandled, setIsHandled] = useState(false);
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
   );
@@ -440,6 +441,105 @@ const DeleteBet = ({ }) => {
             console.log(err?.message);
           }
         }
+
+        if (packet.data[0] === "matchOddRateLive") {
+          // Bookmaker Market live and stop disable condition
+          const value = packet.data[1];
+          setCurrentMatch((prev) => {
+            if (prev?.id === value?.matchId) {
+              return {
+                ...prev,
+                matchOddRateLive: value?.matchOddLive,
+              };
+            }
+            return prev;
+          });
+        }
+        // if (packet.data[0] === "userBalanceUpdate") {
+        //   const data = packet.data[1];
+        //   const user = {
+        //     ...currentUser,
+        //     current_balance: data?.currentBalacne,
+        //   };
+        //   dispatch(setCurrentUser(user));
+
+        //   //currentBalacne
+        // }
+        if (packet.data[0] === "bookMakerRateLive") {
+          // Bookmaker Market live and stop disable condition
+          const value = packet.data[1];
+          setCurrentMatch((prev) => {
+            if (prev?.id === value?.matchId) {
+              return {
+                ...prev,
+                bookMakerRateLive: value?.bookMakerLive,
+              };
+            }
+            return prev;
+          });
+
+          // if (value?.matchId === currentMatch?.id) {
+          //   setCurrentMatch((prev) => ({
+          //     ...prev,
+          //     bookMakerRateLive: value?.bookMakerLive,
+          //   }));
+          // }
+        }
+
+        if (packet.data[0] === "match_bet") {
+          // alert(3333)
+          const data = packet.data[1];
+          if (!isHandled) {
+            setIsHandled(true);
+            try {
+              if (data) {
+                // const user = {
+                //   ...currentUser,
+                //   current_balance: data.newBalance,
+                //   exposure: data.exposure,
+                // };
+                // const manualBookmaker = {
+                //   matchId: data?.betPlaceData?.match_id,
+                //   teamA: data.teamA_rate,
+                //   teamB: data.teamB_rate,
+                // };
+                const body = {
+                  id: data?.betPlaceData?.id,
+                  isActive: true,
+                  createAt: data?.betPlaceData?.createAt,
+                  updateAt: data?.betPlaceData?.createAt,
+                  createdBy: null,
+                  deletedAt: null,
+                  user_id: null,
+                  match_id: data?.betPlaceData?.match_id,
+                  bet_id: data?.betPlaceData?.bet_id,
+                  result: "pending",
+                  team_bet: data?.betPlaceData?.team_bet,
+                  odds: data?.betPlaceData?.odds,
+                  win_amount: null,
+                  loss_amount: null,
+                  bet_type: data?.betPlaceData?.bet_type,
+                  country: null,
+                  ip_address: null,
+                  rate: null,
+                  marketType: data?.betPlaceData?.marketType,
+                  amount:
+                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                };
+                // if (data?.betPlaceData?.match_id === id) {
+                setIObtes((prev) => [body, ...prev]);
+                // }
+
+                // dispatch(setCurrentUser(user));
+                // dispatch(setManualBookMarkerRates(manualBookmaker));
+              }
+            } catch (e) {
+              console.log("error", e?.message);
+            } finally {
+              setIsHandled(false);
+            }
+          }
+        }
       };
     }
   }, [socket]);
@@ -798,7 +898,7 @@ const DeleteBet = ({ }) => {
           </Typography>
           {currentMatch?.apiMatchActive && <Odds
             currentMatch={currentMatch}
-            // matchOddsLive={matchOddsLive}
+            matchOddsLive={matchOddsLive}
             data={
               matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
             }

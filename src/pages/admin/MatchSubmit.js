@@ -1,38 +1,462 @@
 import { useEffect, useState, useContext } from "react"
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Grid } from "@mui/material";
 import "../../components/index.css";
 import { Background } from "../../components/index";
 import AllBets from "../../components/AllBets";
+import FullAllBets from "../../components/FullAllBets";
 import { useLocation } from "react-router-dom";
 import Odds from "./matches/Odds";
 import BookMarketer from "./matches/BookMaketer";
 import SessionMarket from "./matches/SessionMarket";
 import { setRole } from "../../newStore";
 import { SocketContext } from "../../context/socketContext";
+import { useDispatch, useSelector } from "react-redux";
 
 let matchOddsCount = 0;
 const MatchSubmit = ({ }) => {
   const { socket, socketMicro } = useContext(SocketContext);
   const { axios } = setRole();
   const location = useLocation();
+  const { currentUser } = useSelector((state) => state?.currentUser);
   const matchIds = location?.state?.matchIds;
-  const [marketIds, setMarketIds] = useState([]);
+  const marketIds = location?.state?.marketIds
+  // const [marketIds, setMarketIds] = useState([]);
   const [matchData, setMatchData] = useState([]);
+  const [IObets, setIObtes] = useState([]);
   // matchIds
   useEffect(() => {
+    // alert(matchIds)
     if (matchIds !== undefined) {
-      getThisMatch(matchIds);
-      // getAllBetsData(matchId)
+      getAllBetsData();
+      getThisMatch();
     }
   }, [matchIds]);
 
   useEffect(() => {
+    if (socket && socket.connected) {
+      socket.on("newMessage", (value) => {
+        console.log(value);
+      });
+
+      socket.onevent = async (packet) => {
+        // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+        for (var i = 0; i < matchIds.length; i++) {
+          (function (i) {
+            if (packet.data[0] === "updateMatchActiveStatus") {
+              const value = packet.data[1];
+              setMatchData(prevMatchData => {
+                return prevMatchData.map(item => {
+                  if (item?.id === matchIds[i]) {
+                    return {
+                      ...item,
+                      apiBookMakerActive: value?.apiBookMakerActive,
+                      apiMatchActive: value?.apiMatchActive,
+                      apiSessionActive: value?.apiSessionActive,
+                      manualBookMakerActive: value?.manualBookMakerActive,
+                      manualSessionActive: value?.manualSessionActive,
+                    };
+                  }
+                  return item;
+                });
+              });
+            }
+
+            // manual bookmaker
+            if (packet.data[0] === "teamA_rate_user") {
+              const value = packet.data[1];
+              try {
+                setMatchData(prevMatchData => {
+                  return prevMatchData.map(item => {
+                    const updatedBettings = item.bettings.map(betting => {
+                      // Check if the betting object has the specified ID
+                      if (betting.id === value.betId) {
+                        // Update the bet_condition value
+                        return {
+                          ...betting,
+                          teamA_Back: value?.teamA_Back,
+                          teamA_lay: value?.teamA_lay,
+                          teamA_suspend: value?.teamA_suspend === false ? null : "suspended",
+                          teamA_Ball: null,
+                          teamB_Ball: null,
+                          teamC_Ball: null,
+                        };
+                      }
+                      return betting;
+                    });
+
+                    return {
+                      ...item,
+                      bettings: updatedBettings
+                    };
+                  });
+                });
+
+                // console.log("manualBookmakerData 222:", manualBookmakerData);
+              } catch (err) {
+                console.log(err?.message);
+              }
+            }
+
+            if (packet.data[0] === "teamB_rate_user") {
+              const value = packet.data[1];
+              try {
+
+                setMatchData(prevMatchData => {
+                  return prevMatchData.map(item => {
+                    const updatedBettings = item.bettings.map(betting => {
+                      // Check if the betting object has the specified ID
+                      if (betting.id === value.betId) {
+                        // Update the bet_condition value
+                        return {
+                          ...betting,
+                          teamB_Back: value?.teamB_Back, // Update the teamA_Back value
+                          teamB_lay: value?.teamB_lay, // Update the teamA_lay value
+                          teamB_suspend: value?.teamB_suspend == false ? null : "suspended",
+                          teamA_Ball: null,
+                          teamB_Ball: null,
+                          teamC_Ball: null,
+                        };
+                      }
+                      return betting;
+                    });
+
+                    return {
+                      ...item,
+                      bettings: updatedBettings
+                    };
+                  });
+                });
+              } catch (err) {
+                console.log(err?.message);
+              }
+            }
+
+            if (packet.data[0] === "teamC_rate_user") {
+              const value = packet.data[1];
+              try {
+
+                setMatchData(prevMatchData => {
+                  return prevMatchData.map(item => {
+                    const updatedBettings = item.bettings.map(betting => {
+                      // Check if the betting object has the specified ID
+                      if (betting.id === value.betId) {
+                        // Update the bet_condition value
+                        return {
+                          ...betting,
+                          teamC_Back: value?.teamC_Back, // Update the teamA_Back value
+                          teamC_lay: value?.teamC_lay, // Update the teamA_lay value
+                          teamC_suspend:
+                            value?.teamC_suspend == false ? null : "suspended", // Update the teamA_susp
+                          teamA_Ball: null,
+                          teamB_Ball: null,
+                          teamC_Ball: null,
+                        };
+                      }
+                      return betting;
+                    });
+
+                    return {
+                      ...item,
+                      bettings: updatedBettings
+                    };
+                  });
+                });
+              } catch (err) {
+                console.log(err?.message);
+              }
+            }
+
+            if (packet.data[0] === "updateRate_user") {
+              const value = packet.data[1];
+              try {
+                setMatchData(prevMatchData => {
+                  return prevMatchData.map(item => {
+                    const updatedBettings = item.bettings.map(betting => {
+                      // Check if the betting object has the specified ID
+                      if (betting.id === value.betId) {
+                        // Update the bet_condition value
+                        return {
+                          ...betting,
+                          teamA_Back: value?.teamA_Back,
+                          teamA_lay: "",
+                          teamB_Back: value?.teamB_Back,
+                          teamB_lay: "",
+                          teamC_Back: value?.teamC_Back,
+                          teamC_lay: "",
+                          teamA_suspend: "live",
+                          teamB_suspend: "live",
+                          teamC_suspend: "live",
+                        };
+                      }
+                      return betting;
+                    });
+
+                    return {
+                      ...item,
+                      bettings: updatedBettings
+                    };
+                  });
+                });
+              } catch (err) {
+                console.log(err?.message);
+              }
+            }
+
+            if (packet.data[0] === "teamA_suspend_user") {
+              const value = packet.data[1];
+              if (value.teamA_suspend == "Ball Started") {
+                try {
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      const updatedBettings = item.bettings.map(betting => {
+                        // Check if the betting object has the specified ID
+                        if (betting.id === value.betId) {
+                          // Update the bet_condition value
+                          return {
+                            ...betting,
+                            teamA_suspend: "suspended",
+                            teamA_Ball: "ball",
+                            teamB_Ball: "ball",
+                            teamC_Ball: "ball",
+                          };
+                        }
+                        return betting;
+                      });
+
+                      return {
+                        ...item,
+                        bettings: updatedBettings
+                      };
+                    });
+                  });
+                } catch (err) {
+                  console.log(err?.message);
+                }
+              } else {
+                try {
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      const updatedBettings = item.bettings.map(betting => {
+                        // Check if the betting object has the specified ID
+                        if (betting.id === value.betId) {
+                          // Update the bet_condition value
+                          return {
+                            ...betting,
+                            teamA_suspend: "suspended",
+                            teamA_Ball: null,
+                            teamB_Ball: null,
+                            teamC_Ball: null,
+                          };
+                        }
+                        return betting;
+                      });
+
+                      return {
+                        ...item,
+                        bettings: updatedBettings
+                      };
+                    });
+                  });
+                } catch (err) {
+                  console.log(err?.message);
+                }
+              }
+            }
+
+            if (packet.data[0] === "teamB_suspend_user") {
+              const value = packet.data[1];
+              if (value.teamB_suspend == "Ball Started") {
+                try {
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      const updatedBettings = item.bettings.map(betting => {
+                        // Check if the betting object has the specified ID
+                        if (betting.id === value.betId) {
+                          // Update the bet_condition value
+                          return {
+                            ...betting,
+                            teamB_suspend: "suspended",
+                            teamA_Ball: "ball",
+                            teamB_Ball: "ball",
+                            teamC_Ball: "ball",
+                          };
+                        }
+                        return betting;
+                      });
+
+                      return {
+                        ...item,
+                        bettings: updatedBettings
+                      };
+                    });
+                  });
+                } catch (err) {
+                  console.log(err?.message);
+                }
+              } else {
+                try {
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      const updatedBettings = item.bettings.map(betting => {
+                        // Check if the betting object has the specified ID
+                        if (betting.id === value.betId) {
+                          // Update the bet_condition value
+                          return {
+                            ...betting,
+                            teamB_suspend: "suspended",
+                            teamA_Ball: null,
+                            teamB_Ball: null,
+                            teamC_Ball: null,
+                          };
+                        }
+                        return betting;
+                      });
+
+                      return {
+                        ...item,
+                        bettings: updatedBettings
+                      };
+                    });
+                  });
+                } catch (err) {
+                  console.log(err?.message);
+                }
+              }
+            }
+
+            if (packet.data[0] === "teamC_suspend_user") {
+              const value = packet.data[1];
+              if (value.teamC_suspend == "Ball Started") {
+                try {
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      const updatedBettings = item.bettings.map(betting => {
+                        // Check if the betting object has the specified ID
+                        if (betting.id === value.betId) {
+                          // Update the bet_condition value
+                          return {
+                            ...betting,
+                            teamC_suspend: "suspended",
+                            teamA_Ball: "ball",
+                            teamB_Ball: "ball",
+                            teamC_Ball: "ball",
+                          };
+                        }
+                        return betting;
+                      });
+
+                      return {
+                        ...item,
+                        bettings: updatedBettings
+                      };
+                    });
+                  });
+                } catch (err) {
+                  console.log(err?.message);
+                }
+              } else {
+                try {
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      const updatedBettings = item.bettings.map(betting => {
+                        // Check if the betting object has the specified ID
+                        if (betting.id === value.betId) {
+                          // Update the bet_condition value
+                          return {
+                            ...betting,
+                            teamC_suspend: "suspended",
+                            teamA_Ball: null,
+                            teamB_Ball: null,
+                            teamC_Ball: null,
+                          };
+                        }
+                        return betting;
+                      });
+
+                      return {
+                        ...item,
+                        bettings: updatedBettings
+                      };
+                    });
+                  });
+                } catch (err) {
+                  console.log(err?.message);
+                }
+              }
+            }
+
+            if (packet.data[0] === "newBetAdded") {
+              const value = packet.data[1];
+              // matchId = value?.match_id;
+              try {
+                setMatchData(prevMatchData => {
+                  return prevMatchData.map(item => {
+                    if (item?.id === value?.match_id) {
+                      // Update the bettings array in the current match object
+                      const updatedBettings = item?.bettings?.map(betting => {
+                        if (betting.id === value.id && value.sessionBet) {
+                          // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                          return {
+                            ...betting,
+                            ...value
+                          };
+                        } else if (betting?.id === value?.id && value.sessionBet === false) {
+                          return {
+                            ...betting,
+                            ...value
+                          };
+                        }
+                        return betting;
+                      });
+                      var newUpdatedValue = updatedBettings;
+                      const bettingsIds = updatedBettings?.map(betting => betting?.id);
+
+                      if (!bettingsIds?.includes(value.id)) {
+                        // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
+                        newUpdatedValue = [...newUpdatedValue, value];
+                      } else {
+                        if (!item.sessionOffline) {
+                          item.sessionOffline = [];
+                        }
+                        if (item?.sessionOffline && item?.sessionOffline.includes(value.id) && value.betStatus === 1) {
+                          const newres = item?.sessionOffline.filter(id => id !== value.id);
+                          item.sessionOffline = newres;
+                        }
+                        if (value?.betStatus === 0) {
+                          item.sessionOffline.push(value.id);
+                        }
+
+                        // newUpdatedValue = newUpdatedValue?.filter(v => v?.id !== value?.id && v?.betStatus === 1);
+                      }
+
+                      // Return the updated current match object
+                      return {
+                        ...item,
+                        bettings: newUpdatedValue,
+                        sessionOffline: item.sessionOffline
+                      };
+                    }
+                    return item;
+                  });
+                });
+              } catch (err) {
+                console.log(err?.message);
+              }
+            }
+          })(i);
+        }
+        // manual bookmaker end
+      };
+    }
+  }, [socket]);
+
+  useEffect(() => {
     try {
-      if (socketMicro && socketMicro.connected && matchIds) {
+      if (socketMicro && socketMicro.connected && marketIds) {
         socketMicro.on("connect", () => {
-          for (var i = 0; i < matchIds.length; i++) {
-            socketMicro.emit("init", { id: matchIds[0] });
-          }
+          // for (var index = 0; index < matchIds.length; index++) {
+          //   socketMicro.emit("init", { id: matchIds[index] });
+          // }
           // socketMicro.emit("init", { id: marketId });
           // activateLiveMatchMarket();
           // setSessionLock(false)
@@ -46,128 +470,328 @@ const MatchSubmit = ({ }) => {
           // setSessionLock(true)
           console.log("WebSocket connection failed:", event);
         });
-        for (var i = 0; i < matchIds.length; i++) {
-          socketMicro.emit("init", { id: matchIds[i] });
-          // activateLiveMatchMarket();
-          // socketMicro.on("bookMakerRateLive", (e) => {
-          //   console.log("BookMaker", e);
-          // });
+        // for (var j = 0; j < matchIds.length; j++) {
+        //   socketMicro.emit("init", { id: matchIds[j] });
+        //   // activateLiveMatchMarket();
+        //   // socketMicro.on("bookMakerRateLive", (e) => {
+        //   //   console.log("BookMaker", e);
+        //   // });
 
-          socketMicro.on("reconnect", () => {
-            socketMicro.emit("init", { id: matchIds[i] });
-            // activateLiveMatchMarket();
-            // setSessionLock(false)
-          });
-        }
-        // socketMicro.on(`session${marketId}`, (val) => {
-        //   // console.log("currentMatchProfit 33:", val);
+        //   socketMicro.on("reconnect", () => {
+        //     socketMicro.emit("init", { id: matchIds[j] });
+        //     // activateLiveMatchMarket();
+        //     // setSessionLock(false)
+        //   });
+        // }
 
-        //   if (val !== null && matchId === checkMctchId) {
-        //     // console.warn("updatedBettings1 ", updatedBettings1);
-        //     var newVal = val?.map((v) => ({
-        //       bet_condition: v?.RunnerName,
-        //       betStatus: 0,
-        //       sessionBet: true,
-        //       no_rate: v?.LayPrice1,
-        //       yes_rate: v?.BackPrice1,
-        //       rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
-        //       suspended: v?.GameStatus,
-        //       selectionId: v?.SelectionId,
-        //     }));
+        for (var i = 0; i < marketIds.length; i++) {
+          (function (i) {
+            socketMicro.on(`session${marketIds[i]}`, (val) => {
+              // console.log("currentMatchProfit 33:", val);
 
-        //     setCurrentMatch((currentMatch) => {
-        //       if (currentMatch?.bettings?.length > 0) {
-        //         const data = currentMatch?.bettings?.map((betting) => {
-        //           var selectedData = newVal?.find(
-        //             (data) => data?.selectionId === betting?.selectionId
-        //           );
-        //           if (selectedData !== undefined) {
-        //             return {
-        //               ...betting,
-        //               bet_condition: selectedData?.bet_condition,
-        //               no_rate: selectedData?.no_rate,
-        //               yes_rate: selectedData?.yes_rate,
-        //               rate_percent: selectedData?.rate_percent,
-        //               suspended: selectedData?.suspended,
-        //               selectionId: selectedData?.selectionId,
-        //             };
-        //           }
-        //           return betting;
-        //         });
+              if (val !== null) {
+                var newVal = val?.map((v) => ({
+                  bet_condition: v?.RunnerName,
+                  betStatus: 0,
+                  sessionBet: true,
+                  no_rate: v?.LayPrice1,
+                  yes_rate: v?.BackPrice1,
+                  rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
+                  suspended: v?.GameStatus,
+                  selectionId: v?.SelectionId,
+                }));
 
-        //         // Merge the filteredNewVal with the currentMatch bettings array
+                setMatchData(prevMatchData => {
+                  return prevMatchData.map(item => {
+                    if (item.marketId === marketIds[i]) {
+                      // Merge the filteredNewVal with the currentMatch bettings array
+                      const data = item.bettings?.map((betting) => {
+                        var selectedData = newVal?.find(
+                          (data) => data?.selectionId === betting?.selectionId
+                        );
+                        if (selectedData !== undefined) {
+                          return {
+                            ...betting,
+                            bet_condition: selectedData?.bet_condition,
+                            no_rate: selectedData?.no_rate,
+                            yes_rate: selectedData?.yes_rate,
+                            rate_percent: selectedData?.rate_percent,
+                            suspended: selectedData?.suspended,
+                            selectionId: selectedData?.selectionId,
+                          };
+                        }
+                        return betting;
+                      });
 
-        //         return {
-        //           ...currentMatch,
-        //           bettings: data,
-        //         };
-        //       }
-        //       return currentMatch;
-        //     });
-        //   }
-
-        //   // dispatch(setSessionOddsLive(body));
-        // });
-        for (var i = 0; i < matchIds.length; i++) {
-          socketMicro.on(`matchOdds${matchIds[i]}`, (val) => {
-
-            // matchodds Market live and stop disable condition
-            if (val !== null) {
-              if (val.length === 0) {
-                matchOddsCount += 1;
-                if (matchOddsCount >= 3) {
-                  socketMicro.emit("disconnect_market", {
-                    id: matchIds[i],
-                  });
-                  // setMacthOddsLive([]);
-                }
-              } else {
-                // dispatch(setMatchOddsLive(val[0]));
-                // setMatchData()
-                const updatedData = matchData.map(item => {
-                  if (item.marketId === matchIds[i]) {
-                    return {
-                      ...item,
-                      matchOddsLive: val[0]  // Add the new array property with an empty array
-                    };
-                  }
-                  return item;
-                });
-                setMatchData(updatedData)
-                // console.log(updatedData);
-                // setMacthOddsLive(val[0]);// add
-                if (val[0]?.status === "CLOSED") {
-                  socketMicro.emit("disconnect_market", {
-                    id: matchIds[i],
-                  });
-                  const updatedData = matchData.map(item => {
-                    if (item.marketId === matchIds[i]) {
                       return {
                         ...item,
-                        matchOddsLive: []  // Add the new array property with an empty array
+                        bettings: data,
                       };
                     }
                     return item;
                   });
-                  setMatchData(updatedData)
+                });
+              }
+
+              // dispatch(setSessionOddsLive(body));
+            });
+
+            socketMicro.on(`matchOdds${marketIds[i]}`, (val) => {
+
+              // matchodds Market live and stop disable condition
+              if (val !== null) {
+                if (val.length === 0) {
+                  // matchOddsCount += 1;
+                  // if (matchOddsCount >= 3) {
+                  socketMicro.emit("disconnect_market", {
+                    id: marketIds[i],
+                  });
                   // setMacthOddsLive([]);
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      if (item.marketId === marketIds[i]) {
+                        return {
+                          ...item,
+                          matchOddsLive: []  // Add the new array property with an empty array
+                        };
+                      }
+                      return item;
+                    });
+                  });
+                  // }
+                } else {
+                  // dispatch(setMatchOddsLive(val[0]));
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      if (item.marketId === marketIds[i]) {
+                        return {
+                          ...item,
+                          matchOddsLive: val[0]  // Add the new array property with array
+                        };
+                      }
+                      return item;
+                    });
+                  });
+                  // console.log(updatedData);
+                  // setMacthOddsLive(val[0]);// add
+                  if (val[0]?.status === "CLOSED") {
+                    socketMicro.emit("disconnect_market", {
+                      id: marketIds[i],
+                    });
+                    // const updatedData = matchData.map(item => {
+                    //   if (item.marketId === matchIds[i]) {
+                    //     return {
+                    //       ...item,
+                    //       matchOddsLive: []  // Add the new array property with an empty array
+                    //     };
+                    //   }
+                    //   return item;
+                    // });
+                    // setMatchData(updatedData)
+                    // setMacthOddsLive([]);
+                    setMatchData(prevMatchData => {
+                      return prevMatchData.map(item => {
+                        if (item.marketId === marketIds[i]) {
+                          return {
+                            ...item,
+                            matchOddsLive: []  // Add the new array property with an empty array
+                          };
+                        }
+                        return item;
+                      });
+                    });
+                  }
                 }
               }
-            }
-          });
-        }
-        // socketMicro.on(`bookmaker${marketId}`, (val) => {
-        //   if (val !== null) {
-        //     // console.log("val 222:", val);
-        //     if (val.length > 0) {
-        //       // dispatch(setBookMakerLive(val[0]));
-        //       setBookmakerLive(val[0]);
-        //     }
-        //     setBookmakerLive([]);
+            });
 
-        //   }
-        // });
+
+            socketMicro.on(`bookmaker${marketIds[i]}`, (val) => {
+              if (val !== null) {
+                // console.log("val 222:", val);
+                if (val.length > 0) {
+                  // dispatch(setBookMakerLive(val[0]));
+                  // setBookmakerLive(val[0]);
+                  setMatchData(prevMatchData => {
+                    return prevMatchData.map(item => {
+                      if (item.marketId === marketIds[i]) {
+                        return {
+                          ...item,
+                          bookmakerLive: val[0]  // Add the new array property with an empty array
+                        };
+                      }
+                      return item;
+                    });
+                  });
+                }
+                // setBookmakerLive([]);
+
+              }
+            });
+          })(i);
+        }
+        // for (var i = 0; i < matchIds.length; i++) {
+
+        //   socketMicro.on(`session${matchIds[i]}`, (val) => {
+        //     // console.log("currentMatchProfit 33:", val);
+
+        //     if (val !== null) {
+        //       var newVal = val?.map((v) => ({
+        //         bet_condition: v?.RunnerName,
+        //         betStatus: 0,
+        //         sessionBet: true,
+        //         no_rate: v?.LayPrice1,
+        //         yes_rate: v?.BackPrice1,
+        //         rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
+        //         suspended: v?.GameStatus,
+        //         selectionId: v?.SelectionId,
+        //       }));
+
+        //       setMatchData(prevMatchData => {
+        //         return prevMatchData.map(item => {
+        //           if (item.marketId === matchIds[i]) {
+        //             // Merge the filteredNewVal with the currentMatch bettings array
+        //             const data = item.bettings?.map((betting) => {
+        //               var selectedData = newVal?.find(
+        //                 (data) => data?.selectionId === betting?.selectionId
+        //               );
+        //               if (selectedData !== undefined) {
+        //                 return {
+        //                   ...betting,
+        //                   bet_condition: selectedData?.bet_condition,
+        //                   no_rate: selectedData?.no_rate,
+        //                   yes_rate: selectedData?.yes_rate,
+        //                   rate_percent: selectedData?.rate_percent,
+        //                   suspended: selectedData?.suspended,
+        //                   selectionId: selectedData?.selectionId,
+        //                 };
+        //               }
+        //               return betting;
+        //             });
+
+        //             return {
+        //               ...item,
+        //               bettings: data,
+        //             };
+        //           }
+        //           return item;
+        //         });
+        //       });
+        //     }
+
+        //     // dispatch(setSessionOddsLive(body));
+        //   });
+
+        //   socketMicro.on(`matchOdds${matchIds[i]}`, (val) => {
+
+        //     // matchodds Market live and stop disable condition
+        //     if (val !== null) {
+        //       if (val.length === 0) {
+        //         matchOddsCount += 1;
+        //         if (matchOddsCount >= 3) {
+        //           socketMicro.emit("disconnect_market", {
+        //             id: matchIds[i],
+        //           });
+        //           // setMacthOddsLive([]);
+        //           setMatchData(prevMatchData => {
+        //             return prevMatchData.map(item => {
+        //               if (item.marketId === matchIds[i]) {
+        //                 return {
+        //                   ...item,
+        //                   matchOddsLive: []  // Add the new array property with an empty array
+        //                 };
+        //               }
+        //               return item;
+        //             });
+        //           });
+        //         }
+        //       } else {
+        //         // dispatch(setMatchOddsLive(val[0]));
+        //         setMatchData(prevMatchData => {
+        //           return prevMatchData.map(item => {
+        //             if (item.marketId === matchIds[i]) {
+        //               return {
+        //                 ...item,
+        //                 matchOddsLive: val[0]  // Add the new array property with array
+        //               };
+        //             }
+        //             return item;
+        //           });
+        //         });
+        //         // console.log(updatedData);
+        //         // setMacthOddsLive(val[0]);// add
+        //         if (val[0]?.status === "CLOSED") {
+        //           socketMicro.emit("disconnect_market", {
+        //             id: matchIds[i],
+        //           });
+        //           // const updatedData = matchData.map(item => {
+        //           //   if (item.marketId === matchIds[i]) {
+        //           //     return {
+        //           //       ...item,
+        //           //       matchOddsLive: []  // Add the new array property with an empty array
+        //           //     };
+        //           //   }
+        //           //   return item;
+        //           // });
+        //           // setMatchData(updatedData)
+        //           // setMacthOddsLive([]);
+        //           setMatchData(prevMatchData => {
+        //             return prevMatchData.map(item => {
+        //               if (item.marketId === matchIds[i]) {
+        //                 return {
+        //                   ...item,
+        //                   matchOddsLive: []  // Add the new array property with an empty array
+        //                 };
+        //               }
+        //               return item;
+        //             });
+        //           });
+        //         }
+        //       }
+        //     }
+        //   });
+
+
+        //   socketMicro.on(`bookmaker${matchIds[i]}`, (val) => {
+        //     if (val !== null) {
+        //       // console.log("val 222:", val);
+        //       if (val.length > 0) {
+        //         // dispatch(setBookMakerLive(val[0]));
+        //         // setBookmakerLive(val[0]);
+        //         setMatchData(prevMatchData => {
+        //           return prevMatchData.map(item => {
+        //             if (item.marketId === matchIds[i]) {
+        //               return {
+        //                 ...item,
+        //                 bookmakerLive: val[0]  // Add the new array property with an empty array
+        //               };
+        //             }
+        //             return item;
+        //           });
+        //         });
+        //       }
+        //       // setBookmakerLive([]);
+
+        //     }
+        //   });
+        // }
       } else {
+        for (var k = 0; k < marketIds.length; k++) {
+          (function (k) {
+            setMatchData(prevMatchData => {
+              return prevMatchData.map(item => {
+                if (item.marketId === marketIds[k]) {
+                  return {
+                    ...item,
+                    matchOddsLive: [],  // Add the new array property with an empty array
+                    bookmakerLive: []
+                  };
+                }
+                return item;
+              });
+            });
+          })(k);
+        }
         // setMacthOddsLive([]);
         // setBookmakerLive([]);
         // setSessionLock(false)
@@ -179,100 +803,31 @@ const MatchSubmit = ({ }) => {
       // socketMicro?.emit("disconnect_market", {
       //   id: marketId,
       // });
+      for (var j = 0; j < marketIds.length; j++) {
+        (function (j) {
+          socketMicro?.emit("disconnect_market", {
+            id: marketIds[j],
+          });
+          setMatchData(prevMatchData => {
+            return prevMatchData.map(item => {
+              if (item.marketId === marketIds[j]) {
+                return {
+                  ...item,
+                  matchOddsLive: [],  // Add the new array property with an empty array
+                  bookmakerLive: []
+                };
+              }
+              return item;
+            });
+          });
+        })(j);
+      }
       // setMacthOddsLive([]);
       // setBookmakerLive([]);
       // setSessionLock(false)
     };
-  }, [socketMicro, matchIds]);
+  }, [socketMicro, marketIds]);
 
-  // useEffect(() => {
-  //   try {
-  //     if (socketMicro && socketMicro.connected && matchIds) {
-  //       socketMicro.on("connect", () => {
-  //         for (var i = 0; i < matchIds.length; i++) {
-  //           socketMicro.emit("init", { id: matchIds[0] });
-  //         }
-  //         // socketMicro.emit("init", { id: marketId });
-  //         // activateLiveMatchMarket();
-  //         // setSessionLock(false)
-  //       });
-
-  //       socketMicro.on("connect_error", (event) => {
-  //         // Handle the WebSocket connection error here
-
-  //         // setMacthOddsLive([]);
-  //         // setBookmakerLive([]);
-  //         // setSessionLock(true)
-  //         console.log("WebSocket connection failed:", event);
-  //       });
-  //       for (var i = 0; i < matchIds.length; i++) {
-  //         socketMicro.emit("init", { id: matchIds[i] });
-  //         // activateLiveMatchMarket();
-  //         // socketMicro.on("bookMakerRateLive", (e) => {
-  //         //   console.log("BookMaker", e);
-  //         // });
-
-  //         socketMicro.on("reconnect", () => {
-  //           socketMicro.emit("init", { id: matchIds[i] });
-  //           // activateLiveMatchMarket();
-  //           // setSessionLock(false)
-  //         });
-  //       }
-  //       for (var i = 0; i < matchIds.length; i++) {
-  //         socketMicro.on(`matchOdds${matchIds[i]}`, (val) => {
-
-  //           // matchodds Market live and stop disable condition
-  //           if (val !== null) {
-  //             if (val.length === 0) {
-  //               matchOddsCount += 1;
-  //               if (matchOddsCount >= 3) {
-  //                 socketMicro.emit("disconnect_market", {
-  //                   id: matchIds[i],
-  //                 });
-  //                 // setMacthOddsLive([]);
-  //               }
-  //             } else {
-  //               // dispatch(setMatchOddsLive(val[0]));
-  //               // setMatchData()
-  //               const updatedData = matchData.map(item => {
-  //                 if (item.marketId === matchIds[i]) {
-  //                   return {
-  //                     ...item,
-  //                     matchOddsLive: val[0]  // Add the new array property with an empty array
-  //                   };
-  //                 }
-  //                 return item;
-  //               });
-  //               setMatchData(updatedData)
-  //               // console.log(updatedData);
-  //               // setMacthOddsLive(val[0]);// add
-  //               if (val[0]?.status === "CLOSED") {
-  //                 socketMicro.emit("disconnect_market", {
-  //                   id: matchIds[i],
-  //                 });
-  //                 const updatedData = matchData.map(item => {
-  //                   if (item.marketId === matchIds[i]) {
-  //                     return {
-  //                       ...item,
-  //                       matchOddsLive: []  // Add the new array property with an empty array
-  //                     };
-  //                   }
-  //                   return item;
-  //                 });
-  //                 setMatchData(updatedData)
-  //               }
-  //             }
-  //           }
-  //         });
-  //       }
-  //     } else {
-  //     }
-  //   } catch (e) {
-  //     console.log("error", e);
-  //   }
-  //   return () => {
-  //   };
-  // }, [socketMicro, matchIds]);
   async function getThisMatch() {
     let payload = {
       idArray: matchIds,
@@ -298,9 +853,9 @@ const MatchSubmit = ({ }) => {
       //     ...response.data,
       //   })
       // );
-      const ids = response?.data?.data.map(item => item.marketId);
-      // alert(JSON.stringify(ids))
-      setMarketIds(ids);
+      // const ids = response?.data?.data.map(item => item.marketId);
+      // // alert(JSON.stringify(ids))
+      // setMarketIds(ids);
       // setMarketId(response.data.marketId);
       // setMatchDetail(response.data);
     } catch (e) {
@@ -308,9 +863,30 @@ const MatchSubmit = ({ }) => {
     }
   }
 
+  async function getAllBetsData() {
+    let payload = {
+      match_id: matchIds,
+      user_id: currentUser?.id
+    };
+    try {
+      let { data } = await axios.post(`/betting/getPlacedBets`, payload);
+
+      setIObtes(
+        data?.data?.data?.filter((b) =>
+          ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+            b?.marketType
+          )
+        )
+      );
+      // alert(IObets.length)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <Background>
-      <Box
+      {location?.state?.match == 2 && (<Box
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -323,6 +899,10 @@ const MatchSubmit = ({ }) => {
           let matchOddsDataTemp = item?.bettings?.filter(
             (element) => element.sessionBet === false
           );
+          let IObetsData = IObets?.filter(
+            (element) => element.match_id === item.id
+          );
+
           return <>
             <Box
               sx={{
@@ -352,7 +932,7 @@ const MatchSubmit = ({ }) => {
               />
               <BookMarketer
                 currentMatch={item}
-                // matchOddsLive={matchOddsLive}
+                matchOddsLive={item.bookmakerLive}
                 data={[]}
               />
               {item?.manualBookMakerActive && <Odds
@@ -363,80 +943,26 @@ const MatchSubmit = ({ }) => {
               // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
               />
               }
-              <SessionMarket />
-              <AllBets tag={true} />
+              {item?.apiSessionActive &&
+                <SessionMarket
+                  currentMatch={item}
+                  sessionOffline={item.sessionOffline}
+                />
+              }
+              {/* {(currentMatch?.apiSessionActive ||
+                currentMatch?.manualSessionActive) && <SessionMarket
+                  currentMatch={currentMatch}
+                  data={[]}
+                  sessionOffline={sessionOffline}
+                />} */}
+              <FullAllBets tag={true} IObets={IObetsData} />
             </Box>
             {index % 2 === 0 ? <Box sx={{ width: "10px" }} /> : null};
           </>
         })}
-        {/* <Box
-          sx={{
-            flex: 1,
-            flexDirection: "column",
-            minHeight: "100px",
-            display: "flex",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: "16px",
-              color: "white",
-              fontWeight: "700",
-              paddingTop: "0.7%",
-              alignSelf: "start",
-            }}
-          >
-            INDIA V/S PAKISTAN
-          </Typography>
-          <Odds
-            currentMatch={{}}
-            // matchOddsLive={matchOddsLive}
-            data={[]}
-            typeOfBet={"Match Odds"}
-          />
-          <BookMarketer
-            currentMatch={{}}
-            // matchOddsLive={matchOddsLive}
-            data={[]}
-          />
-          <SessionMarket />
-          <AllBets tag={true} />
-        </Box>
-        <Box sx={{ width: "10px" }} />
-        <Box
-          sx={{
-            flex: 1,
-            flexDirection: "column",
-            display: "flex",
-            minHeight: "100px",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: "16px",
-              color: "white",
-              fontWeight: "700",
-              paddingTop: "0.7%",
-              alignSelf: "start",
-            }}
-          >
-            INDIA V/S PAKISTAN 1
-          </Typography>
-          <Odds
-            currentMatch={{}}
-            // matchOddsLive={matchOddsLive}
-            data={[]}
-          />
-          <BookMarketer
-            currentMatch={{}}
-            // matchOddsLive={matchOddsLive}
-            data={[]}
-          />
-          <SessionMarket />
-          <AllBets tag={true} />
-        </Box> */}
 
       </Box>
+      )}
       <Box
         sx={{
           display: "flex",
@@ -446,7 +972,7 @@ const MatchSubmit = ({ }) => {
           marginX: "0.5%",
         }}
       >
-        {location?.state?.match >= 3 && (
+        {/* {location?.state?.match >= 3 && (
           <Box
             sx={{
               flex: 0.5,
@@ -514,7 +1040,153 @@ const MatchSubmit = ({ }) => {
             <SessionMarket />
             <AllBets tag={true} />
           </Box>
-        )}
+        )} */}
+        {/* <Grid container> */}
+
+        {/* {matchIds.map((item, index) => {
+
+          return <>
+            <Box
+              sx={{
+                // flex: 0.5,
+                flexDirection: "column",
+                minHeight: "100px",
+                display: "flex"
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  color: "white",
+                  fontWeight: "700",
+                  paddingTop: "0.7%",
+                  alignSelf: "start",
+                }}
+              >
+                INDIA V/S PAKISTAN
+              </Typography>
+              <Odds
+                currentMatch={{}}
+                // matchOddsLive={matchOddsLive}
+                data={[]}
+              />
+              <BookMarketer
+                currentMatch={{}}
+                // matchOddsLive={matchOddsLive}
+                data={[]}
+              />
+              <SessionMarket />
+              <AllBets tag={true} />
+            </Box>
+            <Box sx={{ width: "10px" }} />
+          </>
+        })} */}
+        <Box sx={{
+          display: "flex",
+          flexWrap: "wrap",
+
+        }}
+        >
+          {matchData.map((item, index) => {
+            let matchOddsDataTemp = item?.bettings?.filter(
+              (element) => element.sessionBet === false
+            );
+            let IObetsData = IObets?.filter(
+              (element) => element.match_id === item.id
+            );
+            return <>
+              <Box sx={{
+                maxWidth: "49.5%",
+                flex: "0 0 49.5%",
+                marginRight: "0.5%"
+
+              }}>
+                <Typography
+                  sx={{
+                    fontSize: "16px",
+                    color: "white",
+                    fontWeight: "700",
+                    paddingTop: "0.7%",
+                    alignSelf: "start",
+                  }}
+                >
+                  {item?.teamA} V/S {item?.teamB}
+                </Typography>
+                <Odds
+                  currentMatch={item}
+                  // matchOddsLive={matchOddsLive}
+                  matchOddsLive={item.matchOddsLive}
+                  data={[]}
+                  typeOfBet={"Match Odds"}
+                />
+                <BookMarketer
+                  currentMatch={item}
+                  matchOddsLive={item.bookmakerLive}
+                  data={[]}
+                />
+                {item?.manualBookMakerActive && <Odds
+                  currentMatch={item}
+                  data={item}
+                  manualBookmakerData={matchOddsDataTemp}
+                  typeOfBet={"MANUAL BOOKMAKER"}
+                // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                />
+                }
+                {item?.apiSessionActive &&
+                  <SessionMarket
+                    currentMatch={item}
+                    sessionOffline={item.sessionOffline}
+                  />
+                }
+                {/* {(currentMatch?.apiSessionActive ||
+                currentMatch?.manualSessionActive) && <SessionMarket
+                  currentMatch={currentMatch}
+                  data={[]}
+                  sessionOffline={sessionOffline}
+                />} */}
+                <FullAllBets tag={true} IObets={IObetsData} />
+              </Box>
+            </>
+          })}
+        </Box>
+        {/* {matchIds.map((item, index) => {
+
+          return <>
+            <Box
+              sx={{
+                // flex: 0.5,
+                flexDirection: "column",
+                minHeight: "100px",
+                display: "flex"
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: "16px",
+                  color: "white",
+                  fontWeight: "700",
+                  paddingTop: "0.7%",
+                  alignSelf: "start",
+                }}
+              >
+                INDIA V/S PAKISTAN
+              </Typography>
+              <Odds
+                currentMatch={{}}
+                // matchOddsLive={matchOddsLive}
+                data={[]}
+              />
+              <BookMarketer
+                currentMatch={{}}
+                // matchOddsLive={matchOddsLive}
+                data={[]}
+              />
+              <SessionMarket />
+              <AllBets tag={true} />
+            </Box>
+            <Box sx={{ width: "10px" }} />
+          </>
+        })} */}
       </Box>
     </Background>
   );

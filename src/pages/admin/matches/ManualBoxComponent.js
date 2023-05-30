@@ -82,7 +82,7 @@ const BoxComponent = ({
                             marginLeft: "10px",
                         }}
                     >
-                        {name}{lock.toString()}
+                        {name}
                     </Typography>
                 </Box>
             </Box>
