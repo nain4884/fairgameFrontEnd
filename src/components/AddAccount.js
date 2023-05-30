@@ -476,6 +476,9 @@ const AddAccount = () => {
                 placeholder={"Username (Required)"}
                 title={"Username*"}
                 setDetail={setDetail}
+               onKeyDown ={ (event) => {
+                  if (event.code === 'Space') event.preventDefault()
+                }}
                 Detail={Detail}
                 setError={setError}
                 error={error}
@@ -722,103 +725,113 @@ const AddAccount = () => {
               {error[12]?.val && (
                 <p style={{ color: "#fa1e1e" }}>Field Required</p>
               )}
+
+              {Detail[9].val === "user" && (
+                <>
+                  {" "}
+                  <Input
+                    containerStyle={containerStyles}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    inputContainerStyle={inputContainerStyle}
+                    title={"Session Commission (%)"}
+                    setDetail={setDetail}
+                    // required={true}
+                    Detail={Detail}
+                    setError={setError}
+                    error={error}
+                    place={16}
+                  />
+                  {error[16]?.val && (
+                    <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                  )}
+                </>
+              )}
             </Box>
             <Box sx={{ flex: 2 }}>
-              <Input
-                containerStyle={containerStyles}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputContainerStyle={inputContainerStyle}
-                title={"Session Commission (%)"}
-                setDetail={setDetail}
-                // required={true}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={16}
-              />
+              {Detail[9].val === "user" && (
+                <>
+                  {" "}
+                  <DropDownSimple
+                    dropStyle={{
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                    }}
+                    valueStyle={{ ...imputStyle, color: "white" }}
+                    title={"Match Commission Type"}
+                    valueContainerStyle={{
+                      height: "45px",
+                      marginX: "0px",
+                      background: "#0B4F26",
+                      border: "1px solid #DEDEDE",
+                      borderRadius: "5px",
+                    }}
+                    containerStyle={{
+                      width: "100%",
+                      position: "relative",
+                      marginTop: "5px",
+                    }}
+                    titleStyle={{ marginLeft: "0px" }}
+                    data={matchComissionTypes}
+                    dropDownStyle={{
+                      width: "100%",
+                      marginLeft: "0px",
+                      marginTop: "0px",
+                      position: "absolute",
+                    }}
+                    dropDownTextStyle={imputStyle}
+                    Detail={Detail}
+                    setDetail={setDetail}
+                    place={17}
+                  />
+                  {error[17]?.val && (
+                    <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                  )}
+                  {Detail[17].val !== null &&
+                    Detail[17].val !== "Select Match Commission Type" && (
+                      <>
+                        <DropDownSimple
+                          dropStyle={{
+                            filter:
+                              "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                          }}
+                          valueStyle={{ ...imputStyle, color: "white" }}
+                          title={"Match Commission (%)*"}
+                          valueContainerStyle={{
+                            height: "45px",
+                            marginX: "0px",
 
-              {error[16]?.val && (
-                <p style={{ color: "#fa1e1e" }}>Field Required</p>
-              )}
-
-              <DropDownSimple
-                dropStyle={{
-                  filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                }}
-                valueStyle={{ ...imputStyle, color: "white" }}
-                title={"Match Commission Type"}
-                valueContainerStyle={{
-                  height: "45px",
-                  marginX: "0px",
-                  background: "#0B4F26",
-                  border: "1px solid #DEDEDE",
-                  borderRadius: "5px",
-                }}
-                containerStyle={{
-                  width: "100%",
-                  position: "relative",
-                  marginTop: "5px",
-                }}
-                titleStyle={{ marginLeft: "0px" }}
-                data={matchComissionTypes}
-                dropDownStyle={{
-                  width: "100%",
-                  marginLeft: "0px",
-                  marginTop: "0px",
-                  position: "absolute",
-                }}
-                dropDownTextStyle={imputStyle}
-                Detail={Detail}
-                setDetail={setDetail}
-                place={17}
-              />
-              {error[17]?.val && (
-                <p style={{ color: "#fa1e1e" }}>Field Required</p>
-              )}
-              {Detail[17].val !== null &&
-                Detail[17].val !== "Select Match Commission Type" && (
-                  <>
-                    <DropDownSimple
-                      dropStyle={{
-                        filter:
-                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                      }}
-                      valueStyle={{ ...imputStyle, color: "white" }}
-                      title={"Match Commission (%)*"}
-                      valueContainerStyle={{
-                        height: "45px",
-                        marginX: "0px",
-
-                        background: "#0B4F26",
-                        border: "1px solid #DEDEDE",
-                        borderRadius: "5px",
-                      }}
-                      containerStyle={{
-                        width: "100%",
-                        position: "relative",
-                        marginTop: "5px",
-                      }}
-                      titleStyle={{ marginLeft: "0px" }}
-                      data={matchComissionArray}
-                      dropDownStyle={{
-                        width: "100%",
-                        marginLeft: "0px",
-                        marginTop: "0px",
-                        position: "absolute",
-                        maxHeight: "210px",
-                        overflow: "scroll",
-                      }}
-                      dropDownTextStyle={imputStyle}
-                      Detail={Detail}
-                      setDetail={setDetail}
-                      place={18}
-                    />
-                    {error[18].val && (
-                      <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                            background: "#0B4F26",
+                            border: "1px solid #DEDEDE",
+                            borderRadius: "5px",
+                          }}
+                          containerStyle={{
+                            width: "100%",
+                            position: "relative",
+                            marginTop: "5px",
+                          }}
+                          titleStyle={{ marginLeft: "0px" }}
+                          data={matchComissionArray}
+                          dropDownStyle={{
+                            width: "100%",
+                            marginLeft: "0px",
+                            marginTop: "0px",
+                            position: "absolute",
+                            maxHeight: "210px",
+                            overflow: "scroll",
+                          }}
+                          dropDownTextStyle={imputStyle}
+                          Detail={Detail}
+                          setDetail={setDetail}
+                          place={18}
+                        />
+                        {error[18].val && (
+                          <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                        )}
+                      </>
                     )}
-                  </>
-                )}
+                </>
+              )}
 
               <Input
                 titleStyle={titleStyles}

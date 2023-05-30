@@ -34,6 +34,7 @@ const Input = ({
   min,
   place,
   type,
+  onKeyDown,
   autoMaticFillValue,
   onFocusOut,
   toFoucs,
@@ -237,6 +238,7 @@ const Input = ({
             variant="standard"
             placeholder={placeholder}
             value={value}
+            onKeyDown={onKeyDown}
             required={required}
             InputProps={{
               min: 0,
