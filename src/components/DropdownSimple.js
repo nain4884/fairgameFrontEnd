@@ -7,10 +7,11 @@ import {
   SliderValueLabel,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
 import StyledImage from "./StyledImage";
 import moment from "moment";
+import useOuterClick from "./helper/userOuterClick";
 
 const DropDownSimple = ({
   valued,
@@ -27,15 +28,38 @@ const DropDownSimple = ({
   setDetail,
   place,
   setMarketId,
+  openDrop,
+
+  defaultValue,
   matchesSelect,
 }) => {
   const [value, setValue] = useState(valued ?? data[0]);
+  console.log("openDrop", openDrop);
+
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (defaultValue === null) {
+      setValue(0);
+    }
+  
+    if (openDrop || openDrop !== undefined) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+     
+    }
+  }, [defaultValue, openDrop]);
+
   const Divider = () => {
     return (
       <Box sx={{ width: "100%", height: "1px", background: "#DEDEDE" }}></Box>
     );
   };
+
+  const innerRef = useOuterClick((ev) => {
+    setOpen(false);
+  });
+
   const Item = ({ item, mId, matchesSelect, eventDetail }) => {
     return (
       <>
@@ -82,7 +106,7 @@ const DropDownSimple = ({
                       val:
                         item === "Total Loss"
                           ? "totalLoss"
-                          : item === "Bet Loss"
+                          : item === "Entry Wise"
                           ? "BetLoss"
                           : item,
                     },
@@ -98,6 +122,10 @@ const DropDownSimple = ({
               fontSize: "10px",
               fontWeight: "500",
               color: "black",
+              "&:hover": {
+                cursor: "pointer",
+                background: item !== Detail[place].val && "#3498ff33",
+              },
               background: item == Detail[place].val && "#DEDEDE",
             },
             dropDownTextStyle,
@@ -119,7 +147,7 @@ const DropDownSimple = ({
     );
   };
   return (
-    <Box sx={[{ width: "19%" }, containerStyle]}>
+    <Box sx={[{ width: "19%" }, containerStyle]} ref={innerRef}>
       <Typography
         sx={[
           { fontSize: "12px", fontWeight: "600", marginBottom: ".3vh" },
@@ -131,6 +159,7 @@ const DropDownSimple = ({
       <Box
         onClick={() => {
           setOpen(!open);
+          
         }}
         sx={[
           {

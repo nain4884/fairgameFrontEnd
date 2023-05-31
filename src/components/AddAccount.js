@@ -30,6 +30,9 @@ const inputContainerStyle = {
   borderRadius: "5px",
   border: "1px solid #DEDEDE",
 };
+
+var matchComissionArray = [];
+
 const AddAccount = () => {
   const { axios, locPath, JWT, roleName } = setRole();
   const navigate = useNavigate();
@@ -100,7 +103,7 @@ const AddAccount = () => {
   const matchComissionTypes = [
     "Select Match Commission Type",
     "Total Loss",
-    "Bet Loss",
+    "Entry Wise",
   ];
 
   const [profile, setProfile] = useState({});
@@ -113,6 +116,41 @@ const AddAccount = () => {
     { role: "user", val: "User", level: 7 },
   ];
 
+  const [showMatchCommision, setShowMatchCommision] = useState(false);
+
+  useEffect(() => {
+    if (Detail[17].val === "BetLoss") {
+      let local = [];
+      for (let i = 0; i <= 1.5; i += 0.25) {
+        local.push(i);
+      }
+      matchComissionArray = local;
+    } else {
+      let local = [];
+      for (let i = 0; i <= 2; i += 0.25) {
+        local.push(i);
+      }
+      matchComissionArray = local;
+    }
+    if (
+      Detail[17].val !== null &&
+      Detail[17].val !== "Select Match Commission Type"
+    ) {
+      setShowMatchCommision(false);
+      setTimeout(() => {
+        setShowMatchCommision(true);
+      }, 100); // 3 seconds
+    } else {
+      setShowMatchCommision(false);
+    }
+    setDetail({
+      ...Detail,
+      18: {
+        ...Detail[18],
+        val: null,
+      },
+    });
+  }, [Detail[17].val]);
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
@@ -234,7 +272,9 @@ const AddAccount = () => {
           myPartnership: Detail[11].val,
           credit_refer: Detail[8].val,
           sessionComisssion:
-            Detail[16].val === "" ? null : parseFloat(Detail[16].val),
+            Detail[16].val === "" || Detail[16].val === 0
+              ? null
+              : parseFloat(Detail[16].val),
           matchTypeComission:
             Detail[17].val === "Select Match Commission Type"
               ? null
@@ -276,11 +316,10 @@ const AddAccount = () => {
     }
   }
 
-  const matchComissionArray = [];
-  for (let i = 0; i <= 10; i += 0.25) {
-    matchComissionArray.push(i);
+  const sessionComissionArray = [];
+  for (let i = 0; i <= 5; i += 0.25) {
+    sessionComissionArray.push(i);
   }
-
   function handleUpline() {
     const {
       a_partnership,
@@ -476,8 +515,8 @@ const AddAccount = () => {
                 placeholder={"Username (Required)"}
                 title={"Username*"}
                 setDetail={setDetail}
-               onKeyDown ={ (event) => {
-                  if (event.code === 'Space') event.preventDefault()
+                onKeyDown={(event) => {
+                  if (event.code === "Space") event.preventDefault();
                 }}
                 Detail={Detail}
                 setError={setError}
@@ -622,7 +661,10 @@ const AddAccount = () => {
                 <p style={{ color: "#fa1e1e" }}>Field Required</p>
               )}
               <Input
-                containerStyle={containerStyles}
+                containerStyle={{
+                  ...containerStyles,
+                  display: Detail[9].val === "user" ? "none" : "block",
+                }}
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
                 inputContainerStyle={{
@@ -646,9 +688,11 @@ const AddAccount = () => {
                 <InputMyPartnership
                   inputContainerStyle={{
                     ...inputContainerStyle,
-                    backgroundColor: Detail[9].val === "user" && "#DEDEDE",
                   }}
-                  containerStyle={containerStyles}
+                  containerStyle={{
+                    ...containerStyles,
+                    display: Detail[9].val === "user" ? "none" : "block",
+                  }}
                   titleStyle={titleStyles}
                   inputStyle={imputStyle}
                   title={"My Partnership"}
@@ -673,7 +717,10 @@ const AddAccount = () => {
                     ...inputContainerStyle,
                     backgroundColor: Detail[9].val === "user" && "#DEDEDE",
                   }}
-                  containerStyle={containerStyles}
+                  containerStyle={{
+                    ...containerStyles,
+                    display: Detail[9].val === "user" ? "none" : "block",
+                  }}
                   titleStyle={titleStyles}
                   inputStyle={imputStyle}
                   title={"My Partnership"}
@@ -704,7 +751,10 @@ const AddAccount = () => {
                 <p style={{ color: "#fa1e1e" }}>{error[11]?.val}</p>
               )}
               <Input
-                containerStyle={containerStyles}
+                containerStyle={{
+                  ...containerStyles,
+                  display: Detail[9].val === "user" ? "none" : "block",
+                }}
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
                 disabled={true}
@@ -728,30 +778,45 @@ const AddAccount = () => {
 
               {Detail[9].val === "user" && (
                 <>
-                  {" "}
-                  <Input
-                    containerStyle={containerStyles}
-                    titleStyle={titleStyles}
-                    inputStyle={imputStyle}
-                    inputContainerStyle={inputContainerStyle}
+                  <DropDownSimple
+                    dropStyle={{
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                    }}
+                    valueStyle={{ ...imputStyle, color: "white" }}
                     title={"Session Commission (%)"}
-                    setDetail={setDetail}
-                    // required={true}
+                    valueContainerStyle={{
+                      height: "45px",
+                      marginX: "0px",
+
+                      background: "#0B4F26",
+                      border: "1px solid #DEDEDE",
+                      borderRadius: "5px",
+                    }}
+                    containerStyle={{
+                      width: "100%",
+                      position: "relative",
+                      marginTop: "5px",
+                    }}
+                    titleStyle={{ marginLeft: "0px" }}
+                    data={sessionComissionArray}
+                    dropDownStyle={{
+                      width: "100%",
+                      marginLeft: "0px",
+                      marginTop: "0px",
+                      position: "absolute",
+                      maxHeight: "210px",
+                      overflow: "scroll",
+                    }}
+                    dropDownTextStyle={imputStyle}
                     Detail={Detail}
-                    setError={setError}
-                    error={error}
+                    setDetail={setDetail}
                     place={16}
                   />
+
                   {error[16]?.val && (
                     <p style={{ color: "#fa1e1e" }}>Field Required</p>
                   )}
-                </>
-              )}
-            </Box>
-            <Box sx={{ flex: 2 }}>
-              {Detail[9].val === "user" && (
-                <>
-                  {" "}
                   <DropDownSimple
                     dropStyle={{
                       filter:
@@ -791,6 +856,8 @@ const AddAccount = () => {
                     Detail[17].val !== "Select Match Commission Type" && (
                       <>
                         <DropDownSimple
+                          openDrop={showMatchCommision}
+                          defaultValue={Detail[18].val}
                           dropStyle={{
                             filter:
                               "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
@@ -832,7 +899,8 @@ const AddAccount = () => {
                     )}
                 </>
               )}
-
+            </Box>
+            <Box sx={{ flex: 2 }}>
               <Input
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
