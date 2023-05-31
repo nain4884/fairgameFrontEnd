@@ -168,24 +168,24 @@ const LiveMarketComponent = ({
         >
           <Box
             sx={{
-              background: "#27AC1E",
+              background: data?.teamA_rate >= 0 ? "#27AC1E" : "#E32A2A",
               width: "34%",
               height: "100%",
               border: "1.5px solid white",
             }}
           >
-            <StockBox value={"+1,000,000,000"} up={true} team={team} />
+            <StockBox value={data?.teamA_rate ? data?.teamA_rate : 0} up={data?.teamA_rate >= 0 ? true : false} team={team} />
           </Box>
           <Box
             sx={{
-              background: "#E32A2A",
+              background: data?.teamB_rate >= 0 ? "#27AC1E" : "#E32A2A",
               width: "33%",
               height: "100%",
               marginX: "2px",
               border: "1.5px solid white",
             }}
           >
-            <StockBox value={"-1,000,000,000"} up={false} team={team_2} />
+            <StockBox value={data?.teamB_rate ? data?.teamB_rate : 0} up={data?.teamB_rate >= 0 ? true : false} team={team_2} />
           </Box>
           <Box
             sx={{
@@ -195,7 +195,7 @@ const LiveMarketComponent = ({
               border: "1.5px solid white",
             }}
           >
-            <StockBox value={"1,000,000,000"} team={"Total Bet"} />
+            <StockBox value={data?.totalPlacedBet} team={"Total Bet"} />
           </Box>
         </Box>
         {selected && mode == "1" && (
@@ -265,11 +265,11 @@ const MarketAnalysis = () => {
       x.splice(x.indexOf(index?.toString()), 1);
       setSelected([...x]);
     } else {
-      setMatchIds((prevIds) => [...prevIds, i.id]);
-      setMarketIds((prevIds) => [...prevIds, i.marketId]);
       if (max == selected?.length) {
         return;
       }
+      setMatchIds((prevIds) => [...prevIds, i.id]);
+      setMarketIds((prevIds) => [...prevIds, i.marketId]);
       let x = [...selected];
       x.push(index?.toString());
       setSelected([...x]);
@@ -366,9 +366,12 @@ const MarketAnalysis = () => {
                 if (selected) setMode("0");
                 setSelected([]);
                 if (max == "3") {
-                  navigate(`/${pathname.split("/")[1]}/match_submit1`, {
-                    state: { matchIds: matchIds, marketIds: marketIds },
+                  navigate(`/${pathname.split("/")[1]}/match_submit`, {
+                    state: { match: Number(max), matchIds: matchIds, marketIds: marketIds },
                   });
+                  // navigate(`/${pathname.split("/")[1]}/match_submit1`, {
+                  //   state: { matchIds: matchIds, marketIds: marketIds },
+                  // });
                 } else {
                   navigate(`/${pathname.split("/")[1]}/match_submit`, {
                     state: { match: Number(max), matchIds: matchIds, marketIds: marketIds },
@@ -383,7 +386,6 @@ const MarketAnalysis = () => {
       </Box>
       {matchData?.length > 0 &&
         matchData?.map((i, k) => {
-          console.log("i", i, k);
           return (
             <LiveMarketComponent
               key={i?.id}

@@ -23,6 +23,7 @@ const MatchSubmit = ({ }) => {
   // const [marketIds, setMarketIds] = useState([]);
   const [matchData, setMatchData] = useState([]);
   const [IObets, setIObtes] = useState([]);
+  const [mode, setMode] = useState(false);
   // matchIds
   useEffect(() => {
     // alert(matchIds)
@@ -183,9 +184,12 @@ const MatchSubmit = ({ }) => {
                           teamB_lay: "",
                           teamC_Back: value?.teamC_Back,
                           teamC_lay: "",
-                          teamA_suspend: "live",
-                          teamB_suspend: "live",
-                          teamC_suspend: "live",
+                          // teamA_suspend: "live",
+                          // teamB_suspend: "live",
+                          // teamC_suspend: "live",
+                          teamA_suspend: null,
+                          teamB_suspend: null,
+                          teamC_suspend: null,
                         };
                       }
                       return betting;
@@ -442,6 +446,39 @@ const MatchSubmit = ({ }) => {
               } catch (err) {
                 console.log(err?.message);
               }
+            }
+            if (packet.data[0] === "session_bet") {
+              const data = packet.data[1];
+
+              try {
+                setMatchData(prevMatchData => {
+                  return prevMatchData.map(item => {
+                    const updatedBettings = item.bettings.map(betting => {
+                      // Check if the betting object has the specified ID
+                      if (betting.id === data?.betPlaceData?.bet_id) {
+                        // Update the properties of the betting object
+                        let profitLoss = data?.profitLoss;
+                        return {
+                          ...betting,
+                          profitLoss: profitLoss,
+                        };
+                      }
+                      return betting;
+                    });
+
+                    return {
+                      ...item,
+                      bettings: updatedBettings
+                    };
+                  });
+                });
+              } catch (err) {
+                console.log(err?.message);
+              }
+              // setCurrentMatch({
+              //   ...currentMatch,
+              //   matchSessionData: updatedBettings1
+              // });
             }
           })(i);
         }
@@ -886,7 +923,7 @@ const MatchSubmit = ({ }) => {
 
   return (
     <Background>
-      {location?.state?.match == 2 && (<Box
+      {/* {location?.state?.match == 3 && (<Box
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -949,12 +986,6 @@ const MatchSubmit = ({ }) => {
                   sessionOffline={item.sessionOffline}
                 />
               }
-              {/* {(currentMatch?.apiSessionActive ||
-                currentMatch?.manualSessionActive) && <SessionMarket
-                  currentMatch={currentMatch}
-                  data={[]}
-                  sessionOffline={sessionOffline}
-                />} */}
               <FullAllBets tag={true} IObets={IObetsData} />
             </Box>
             {index % 2 === 0 ? <Box sx={{ width: "10px" }} /> : null};
@@ -962,9 +993,9 @@ const MatchSubmit = ({ }) => {
         })}
 
       </Box>
-      )}
+      )} */}
 
-      {location?.state?.match == 4 && (<Box
+      {location?.state?.match == 3 && (<Box
         sx={{
           display: "flex",
           flexDirection: "row",
@@ -976,6 +1007,153 @@ const MatchSubmit = ({ }) => {
         <Box sx={{
           display: "flex",
           flexWrap: "wrap",
+          width: "100%",
+
+        }}
+        >
+          {matchData.map((item, index) => {
+            let matchOddsDataTemp = item?.bettings?.filter(
+              (element) => element.sessionBet === false
+            );
+            let IObetsData = IObets?.filter(
+              (element) => element.match_id === item.id
+            );
+            return <>
+              {index === 0 ? <>
+                <Box
+                  sx={{
+                    flex: 1,
+                    flexDirection: "column",
+                    minHeight: "100px",
+                    display: "flex",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      color: "white",
+                      fontWeight: "700",
+                      paddingTop: "2%",
+                      alignSelf: "start",
+                    }}
+                  >
+                    {item?.teamA} V/S {item?.teamB}
+                  </Typography>
+                  {item?.apiMatchActive && <Odds
+                    currentMatch={item}
+                    matchOddsLive={item.matchOddsLive}
+                    data={[]}
+                    typeOfBet={"Match Odds"}
+                  // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                  />
+                  }
+                  {item?.apiBookMakerActive && <BookMarketer
+                    currentMatch={item}
+                    bookmakerLive={item.bookmakerLive}
+                  // data={
+                  //   bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
+                  // }
+                  />}
+                  {item?.manualBookMakerActive && <Odds
+                    currentMatch={item}
+                    // matchOddsLive={matchOddsLive}
+                    // data={
+                    //   matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
+                    // }
+                    data={item}
+                    manualBookmakerData={matchOddsDataTemp}
+                    typeOfBet={"MANUAL BOOKMAKER"}
+                  // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                  />
+                  }
+                  {(item?.apiSessionActive ||
+                    item?.manualSessionActive) && <SessionMarket
+                      currentMatch={item}
+                      data={[]}
+                      sessionOffline={item.sessionOffline}
+                    />}
+                </Box>
+                <Box sx={{ width: "20px" }} />
+                <Box
+                  sx={{
+                    flex: 1,
+                    flexDirection: "column",
+                    display: "flex",
+                    minHeight: "100px",
+                  }}
+                >
+                  <Box
+                    sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
+                  >
+                    <Box sx={{ width: "2%" }}></Box>
+                    <Box sx={{ width: "150px", marginY: ".75%", height: "35px", }} ></Box>
+                  </Box>
+                  <FullAllBets IObets={IObets} mode={mode} tag={false} />
+                </Box></> :
+                <Box sx={{
+                  maxWidth: "49.5%",
+                  flex: "0 0 49.5%",
+                  marginRight: "0.5%"
+
+                }}>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      color: "white",
+                      fontWeight: "700",
+                      paddingTop: "0.7%",
+                      alignSelf: "start",
+                    }}
+                  >
+                    {item?.teamA} V/S {item?.teamB}
+                  </Typography>
+                  <Odds
+                    currentMatch={item}
+                    // matchOddsLive={matchOddsLive}
+                    matchOddsLive={item.matchOddsLive}
+                    data={[]}
+                    typeOfBet={"Match Odds"}
+                  />
+                  <BookMarketer
+                    currentMatch={item}
+                    bookmakerLive={item.bookmakerLive}
+                    data={[]}
+                  />
+                  {item?.manualBookMakerActive && <Odds
+                    currentMatch={item}
+                    data={item}
+                    manualBookmakerData={matchOddsDataTemp}
+                    typeOfBet={"MANUAL BOOKMAKER"}
+                  // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                  />
+                  }
+                  {item?.apiSessionActive &&
+                    <SessionMarket
+                      currentMatch={item}
+                      sessionOffline={item.sessionOffline}
+                    />
+                  }
+                  <FullAllBets tag={true} IObets={IObetsData} />
+                </Box>
+              }
+            </>
+          })}
+        </Box>
+      </Box>)}
+
+      {(location?.state?.match === 4 || location?.state?.match === 2) && (<Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          flex: 1,
+          height: "100%",
+          marginX: "0.5%",
+        }}
+      >
+        <Box sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          width: "100%",
 
         }}
         >

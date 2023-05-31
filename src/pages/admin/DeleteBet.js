@@ -205,9 +205,15 @@ const DeleteBet = ({ }) => {
                 teamB_lay: "",
                 teamC_Back: value?.teamC_Back,
                 teamC_lay: "",
-                teamA_suspend: "live",
-                teamB_suspend: "live",
-                teamC_suspend: "live",
+                // teamA_suspend: "live",
+                teamA_suspend:
+                  null, // Update the teamA_susp
+                teamB_suspend:
+                  null, // Update the teamA_susp
+                teamC_suspend:
+                  null, // Update the teamA_susp
+                // teamB_suspend: "live",
+                // teamC_suspend: "live",
               };
 
               // Create a new array with the updated match object
@@ -484,6 +490,37 @@ const DeleteBet = ({ }) => {
           //     bookMakerRateLive: value?.bookMakerLive,
           //   }));
           // }
+        }
+
+        if (packet.data[0] === "session_bet") {
+          const data = packet.data[1];
+          try {
+            // setSessionExposure(data?.sessionExposure);
+            setCurrentMatch((currentMatch) => {
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (betting?.id === data?.betPlaceData?.bet_id) {
+                  // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                  let profitLoss = data?.profitLoss;
+                  return {
+                    ...betting,
+                    profitLoss: profitLoss,
+                  };
+                }
+                return betting;
+              });
+              // Return the updated current match object
+              return {
+                ...currentMatch,
+                bettings: updatedBettings,
+              };
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+          // setCurrentMatch({
+          //   ...currentMatch,
+          //   matchSessionData: updatedBettings1
+          // });
         }
 
         if (packet.data[0] === "match_bet") {

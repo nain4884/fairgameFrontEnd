@@ -186,6 +186,20 @@ const BookMarketer = ({ currentMatch, data }) => {
           lock={handleLock(data?.length > 0 ? data[1] : [])}
           align="end"
         />
+        {currentMatch?.teamC ?
+          <>
+            <Divider />
+            <BoxComponent
+              teamImage={currentMatch?.teamC_Image ? currentMatch?.teamC_Image : null}
+              // color={"#FF4D4D"}
+              color={currentMatch?.teamC_rate <= 0 ? "#FF4D4D" : "#46e080"}
+              name={currentMatch?.teamC}
+              rates={currentMatch?.teamC_rate ? currentMatch?.teamC_rate : 0}
+              data={data?.length > 0 ? data[2] : []}
+              lock={handleLock(data?.length > 0 ? data[2] : [])}
+              align="end"
+            />
+          </> : null}
       </Box>
     </Box>
   );

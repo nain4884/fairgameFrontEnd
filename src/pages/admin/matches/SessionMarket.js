@@ -23,8 +23,7 @@ const SessionMarket = ({ currentMatch, sessionOffline }) => {
             (element) => element?.sessionBet && element?.id
           )
           : 0;
-
-      setMatchSessionData(sessionData);
+      setMatchSessionData(sessionData.reverse());
     }
   }, [currentMatch]);
 
@@ -192,7 +191,8 @@ const SessionMarket = ({ currentMatch, sessionOffline }) => {
             }}
           >
             {matchSessionData?.length > 0 &&
-              matchSessionData?.reverse()?.map((element, index) => {
+              // matchSessionData?.reverse()?.map((element, index) => {
+              matchSessionData?.map((element, index) => {
                 return (
                   <Box
                     key={element?.id}
@@ -252,7 +252,8 @@ const SessionMarket = ({ currentMatch, sessionOffline }) => {
             flexDirection: "row",
             flexWrap: "wrap",
             gap: "1px",
-            height: "524px",
+            // height: "524px",
+            height: "360",
             overflow: "scroll",
             marginTop: ".25vw",
           }}

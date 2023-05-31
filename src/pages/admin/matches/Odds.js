@@ -200,7 +200,14 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
               }}
               ballStatus={manualBookmakerData?.[0]?.teamA_Ball === "ball" ? true : false}
               status={manualBookmakerData?.[0]?.teamA_suspend ? true : false}
-
+            // livestatus={
+            //   matchOddsData?.[0]?.teamA_suspend === "suspended"
+            //     ? true
+            //     : false
+            // }
+            // ballStatus={
+            //   matchOddsData?.[0]?.teamC_Ball === "ball" ? true : false
+            // }
             />
             <Divider />
             <ManualBoxComponent
@@ -218,6 +225,25 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
               ballStatus={manualBookmakerData?.[0]?.teamB_Ball === "ball" ? true : false}
               status={manualBookmakerData?.[0]?.teamB_suspend ? true : false}
             />
+            {currentMatch?.teamC ?
+              <>
+                <Divider />
+                <ManualBoxComponent
+                  teamImage={currentMatch?.teamC_Image ? currentMatch?.teamC_Image : null}
+                  // color={"#46e080"}
+                  name={currentMatch?.teamC}
+                  rates={currentMatch?.teamC_rate}
+                  color={currentMatch?.teamC_rate <= 0 ? "#FF4D4D" : "#46e080"}
+                  data={data?.length > 0 ? data[0] : []}
+                  lock={false}
+                  matchOddsData={{
+                    back: manualBookmakerData?.[0]?.teamC_Back,
+                    lay: manualBookmakerData?.[0]?.teamC_lay
+                  }}
+                  ballStatus={manualBookmakerData?.[0]?.teamC_Ball === "ball" ? true : false}
+                  status={manualBookmakerData?.[0]?.teamC_suspend ? true : false}
+                />
+              </> : null}
           </>
           :
           <>
@@ -245,6 +271,20 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
               lock={handleLock(data?.length > 0 ? data[1] : [])}
               align="end"
             />
+            {currentMatch?.teamC ?
+              <>
+                <Divider />
+                <BoxComponent
+                  teamImage={currentMatch?.teamC_Image ? currentMatch?.teamC_Image : null}
+                  // color={"#FF4D4D"}
+                  color={currentMatch?.teamC_rate <= 0 ? "#FF4D4D" : "#46e080"}
+                  name={currentMatch?.teamC}
+                  rates={currentMatch?.teamC_rate ? currentMatch?.teamC_rate : 0}
+                  data={data?.length > 0 ? data[2] : []}
+                  lock={handleLock(data?.length > 0 ? data[2] : [])}
+                  align="end"
+                />
+              </> : null}
           </>
         }
       </Box>

@@ -52,11 +52,11 @@ const data = [
       },
     ],
   },
- 
+
 ];
 const FullAllBets = ({ tag, mode, IObets }) => {
-    console.log('IObets', IObets)
-//   const [selected, setSelected] = useState([...data, ...data]);
+  console.log('IObets', IObets)
+  //   const [selected, setSelected] = useState([...data, ...data]);
   const [selectedData, setSelectedData] = useState([]);
 
 
@@ -80,25 +80,25 @@ const FullAllBets = ({ tag, mode, IObets }) => {
             {
               name: v?.team_bet,
               color: "black",
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes", "back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
             },
             {
               name: v?.odds,
               color: "black",
-              rate:v?.bet_type==="no" && v?.rate?.split("-")[0] || v?.bet_type==="yes" && v?.rate?.split("-")[1] ,
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              rate: v?.bet_type === "no" && v?.rate?.split("-")[0] || v?.bet_type === "yes" && v?.rate?.split("-")[1],
+              background: ["yes", "back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
               small: true,
             },
             {
               name: v?.bet_type,
               color: "black",
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes", "back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
               small: true,
             },
             {
               name: v?.amount,
               color: "black",
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes", "back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
             },
             {
               name: v?.myStack,
@@ -108,7 +108,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
             {
               name: moment(v?.createAt).format("LT"),
               color: "black",
-              background: ["yes","back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
+              background: ["yes", "back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
               time: true,
               date: moment(v?.createAt).format("L"),
             },
@@ -136,10 +136,10 @@ const FullAllBets = ({ tag, mode, IObets }) => {
       }}
     >
       <Box
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate("/admin/total_bets");
-        }}
+        // onClick={(e) => {
+        //   e.stopPropagation();
+        //   navigate("/admin/total_bets");
+        // }}
         sx={[
           {
             width: "100%",
@@ -188,7 +188,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
       <HeaderRow mode={mode} tag={tag} />
       <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
         {newData?.map((i, k) => {
-            const num = k+1
+          const num = k + 1
           return (
             <div
               style={{ display: "flex", position: "relative" }}
@@ -223,7 +223,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
                       color: "white",
                     }}
                   >
-                     {num < 10 ? "0" + num : num.toString()}
+                    {num < 10 ? "0" + num : num.toString()}
                   </Typography>
                 )}
                 {mode && !selectedData.includes(k) && (
@@ -246,7 +246,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
                 )}
               </Box>
               <Row index={k} values={i.values} />
-              {!tag && k == 1 && (
+              {!tag && k == -1 && (
                 <Box
                   sx={{
                     background: "rgba(0,0,0,0.5)",
