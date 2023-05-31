@@ -16,6 +16,7 @@ const BoxComponent = ({
   team,
   typeOfBet,
   align,
+  selectedFastAmount,
   rate,
   allRates,
   lock,
@@ -157,6 +158,7 @@ const BoxComponent = ({
           >
             {!matchesMobile && (
               <SeprateBox
+              selectedFastAmount={selectedFastAmount}
               fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}
@@ -186,6 +188,7 @@ const BoxComponent = ({
             ></Box>
             {!matchesMobile && (
               <SeprateBox
+              selectedFastAmount={selectedFastAmount}
               fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}
@@ -216,6 +219,7 @@ const BoxComponent = ({
 
             <SeprateBox
               back={true}
+              selectedFastAmount={selectedFastAmount}
               fromOdds={fromOdds}
               currentMatch={newData}
               lock={  ex?.availableToBack?.length > 0 ? false : true}
@@ -244,6 +248,7 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
+            selectedFastAmount={selectedFastAmount}
               back={true}
               fromOdds={fromOdds}
               currentMatch={newData}
@@ -270,6 +275,7 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+              selectedFastAmount={selectedFastAmount}
                 back={true}
                 fromOdds={fromOdds}
                 currentMatch={newData}
@@ -299,6 +305,7 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+              selectedFastAmount={selectedFastAmount}
               fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}

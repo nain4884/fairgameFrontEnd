@@ -211,13 +211,14 @@ const MatchOdds = ({
   sessionExposer,
   sessionBets,
   sessionOffline,
-  manualBookmakerData
+  manualBookmakerData,
+  setFastAmount,
+  fastAmount,
 }) => {
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
   const [matchOddRateLive, setMatchOddRateLive] = useState(false);
-
   useEffect(() => {
     if (data) {
       const matchOdds = data?.bettings?.filter(
@@ -234,7 +235,6 @@ const MatchOdds = ({
       ? manualBookMarkerRates?.find((v) => v?.matchId === data?.id)
       : { teamA: 0, teamB: 0 };
   // { console.warn("dataProfit :", dataProfit) }
-  console.log('bookmakerLive?.runners ', bookmakerLive )
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {data?.apiBookMakerActive && <BookMarketer data={data} />}
@@ -272,7 +272,7 @@ const MatchOdds = ({
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-              data?.bookmakerLive[0]?.betStatus === 0
+            data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }
@@ -286,7 +286,10 @@ const MatchOdds = ({
           max={data?.betfair_bookmaker_max_bet || 0}
           title={"Bookmaker Market "}
           isRound={false}
+          session={"bookmaker"}
           typeOfBet={"BOOKMAKER"}
+          setFastAmount={setFastAmount}
+          fastAmount={fastAmount?.bookMaker}
         />
       )}
 
@@ -296,6 +299,7 @@ const MatchOdds = ({
           newData={data}
           lock={false}
           showDely={false}
+          session={"manualBookMaker"}
           showFast={true}
           suspended={false}
           data={data}
@@ -306,6 +310,8 @@ const MatchOdds = ({
           title={"Manual Bookmaker"}
           typeOfBet={"MANUAL BOOKMAKER"}
           matchOddsData={manualBookmakerData}
+          setFastAmount={setFastAmount}
+          fastAmount={fastAmount?.mannualBookMaker}
         />
       )}
 
@@ -313,7 +319,8 @@ const MatchOdds = ({
 
       {(data?.apiSessionActive || data?.manualSessionActive) && (
         <SessionMarket
-        showFast={true}
+          showFast={true}
+          session={"sessionOdds"}
           sessionBets={sessionBets}
           data={sessionOddsLive}
           newData={data}
@@ -323,6 +330,8 @@ const MatchOdds = ({
           teamARates={teamRates?.teamA}
           teamBRates={teamRates?.teamB}
           allBetsData={allBetsData}
+          setFastAmount={setFastAmount}
+          fastAmount={fastAmount?.sessionOdds}
         />
       )}
     </Box>

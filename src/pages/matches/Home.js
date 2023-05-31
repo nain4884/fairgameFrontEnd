@@ -43,6 +43,12 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = useTheme();
+  const [fastAmount, setFastAmount] = useState({
+    bookMaker: 0,
+    mannualBookMaker: 0,
+    sessionOdds: 0,
+  });
+
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { allBetRates, allSessionBets } = useSelector(
     (state) => state?.matchDetails
@@ -147,6 +153,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           // await axios.get("auth/logout");
           removeSocket();
+          socket.disconnect();
+          socketMicro.disconnect();
         }
         if (packet.data[0] === "updateSessionRate_user") {
           const value = packet.data[1];
@@ -989,7 +997,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
     }
   }
 
-  console.log("amount", bookmakerLive);
   const activateLiveMatchMarket = async () => {
     try {
       await Axios.get(`${microServiceApiPath}/market/${marketId}`);
@@ -1121,6 +1128,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           <div style={{ width: "100%" }}>
             <MatchOdds
               sessionBets={sessionBets}
+              setFastAmount={setFastAmount}
+              fastAmount={fastAmount}
               matchOddsLive={matchOddsLive}
               sessionExposer={sessionExposer}
               bookmakerLive={bookmakerLive}
@@ -1186,6 +1195,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             <MatchOdds
               sessionBets={sessionBets}
               sessionExposer={sessionExposer}
+              setFastAmount={setFastAmount}
+              fastAmount={fastAmount}
               matchOddsLive={matchOddsLive}
               bookmakerLive={bookmakerLive}
               sessionOffline={sessionOffline}
@@ -1217,8 +1228,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-                <SessionBetSeperate allBetsData={sessionBets} mark />
-              )}
+              <SessionBetSeperate allBetsData={sessionBets} mark />
+            )}
           </Box>
         </Box>
       )}

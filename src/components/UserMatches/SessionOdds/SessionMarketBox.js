@@ -13,6 +13,7 @@ const SessionMarketBox = ({
   typeOfBet,
   data,
   newData,
+  selectedFastAmount,
   mainData,
   allRates,
 }) => {
@@ -145,6 +146,7 @@ const SessionMarketBox = ({
               po={2}
               rates={allRates}
               session={true}
+              selectedFastAmount={selectedFastAmount}
               betType={"no"}
               value={data?.no_rate}
               value2={formatNumber(data?.rate_percent?.split("-")[0])}
@@ -161,7 +163,7 @@ const SessionMarketBox = ({
             <SeprateBox
               po={1}
               rates={allRates}
-              
+              selectedFastAmount={selectedFastAmount}
               session={true}
               betType={"yes"}
               value={data?.yes_rate}

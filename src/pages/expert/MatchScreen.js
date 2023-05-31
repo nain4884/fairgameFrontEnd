@@ -103,6 +103,8 @@ const MatchScreen = () => {
           // await axios.get("auth/logout");
           removeSocket();
           navigate("/expert");
+          socket.disconnect();
+          socketMicro.disconnect();
         }
 
         if (packet.data[0] === "match_bet") {

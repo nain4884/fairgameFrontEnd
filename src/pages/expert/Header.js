@@ -79,7 +79,7 @@ const CustomHeader = ({}) => {
   }, [matchesMobile]);
 
   const { userExpert } = useSelector((state) => state.auth);
-  const { socket } = useContext(SocketContext);
+  const { socket,socketMicro } = useContext(SocketContext);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -99,6 +99,8 @@ const CustomHeader = ({}) => {
           dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
+          socketMicro.disconnect()
+          socket.disconnect();
           dispatch(removeSelectedMatch());
           setGlobalStore((prev) => ({
             ...prev,
@@ -116,6 +118,7 @@ const CustomHeader = ({}) => {
             current_balance: data?.currentBalacne,
           };
           dispatch(setCurrentUser(user));
+          
 
           //currentBalacne
         }
@@ -841,6 +844,7 @@ const menutItems = [
 ];
 const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const { socket, socketMicro } = useContext(SocketContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logoutProcess = async () => {
@@ -853,6 +857,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     navigate("/expert");
     handleClose();
     removeSocket();
+    socket.disconnect();
+    socketMicro.disconnect()
   };
   return (
     <Menu

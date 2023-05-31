@@ -35,6 +35,7 @@ import {
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
+import { SocketContext } from "../../context/socketContext";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -668,6 +669,7 @@ const menutItems = [
 const DropdownMenu = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const { socket, socketMicro } = useContext(SocketContext);
   const innerRef = useOuterClick((ev) => {
     handleClose();
   });
@@ -679,6 +681,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     navigate("/admin");
     handleClose();
     removeSocket();
+    socket.disconnect();
+    socketMicro.disconnect()
   };
   return (
     <Box

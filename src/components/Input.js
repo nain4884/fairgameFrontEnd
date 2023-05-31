@@ -164,7 +164,6 @@ const Input = ({
             backgroundColor: "white",
             display: "flex",
             alignItems: "center",
-
             height: { laptop: "45px", mobile: "45px" ,tablet:"45px"},
             overflow: "hidden",
             paddingX: "10px",
@@ -199,6 +198,7 @@ const Input = ({
             sx={{
               borderColor: "white",
               display: "flex",
+
               flex: 1,
               fontSize: { laptop: "1px", mobile: "5px" },
             }}
