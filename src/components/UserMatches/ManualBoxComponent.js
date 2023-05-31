@@ -4,7 +4,7 @@ import React from "react";
 import MoneyBox from "./MoneyBox";
 import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
-import { BallStart } from '../../assets';
+import { BallStart } from "../../assets";
 
 const BoxComponent = ({
   name,
@@ -24,7 +24,8 @@ const BoxComponent = ({
   isRound,
   matchOddsData,
   ballStatus,
-  isBall
+  isBall,
+  selectedFastAmount,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -35,29 +36,49 @@ const BoxComponent = ({
     let checkDecimal = value % 1; // get the decimal portion of the number
     // alert(checkDecimal)
     if (checkDecimal >= 0.5) {
-      let getValue = type == "back" ? Math.round(value) - gap : Math.round(value - 1) + gap;
-      let checkZeroHundred = type == "back" ? getValue < 1 ? 0 : Math.round(getValue) : getValue >= 100 ? 100 : Math.round(getValue);
+      let getValue =
+        type == "back" ? Math.round(value) - gap : Math.round(value - 1) + gap;
+      let checkZeroHundred =
+        type == "back"
+          ? getValue < 1
+            ? 0
+            : Math.round(getValue)
+          : getValue >= 100
+          ? 100
+          : Math.round(getValue);
       let returnValue;
       if (type == "back") {
         let check = value % 1;
-        returnValue = check >= 0.5 ? getValue < 1 ? checkZeroHundred : checkZeroHundred - 1 : checkZeroHundred;
+        returnValue =
+          check >= 0.5
+            ? getValue < 1
+              ? checkZeroHundred
+              : checkZeroHundred - 1
+            : checkZeroHundred;
       } else {
-        returnValue = checkZeroHundred
+        returnValue = checkZeroHundred;
       }
-      return returnValue
+      return returnValue;
     } else {
       let getValue = type == "back" ? value - gap : value + gap;
-      let checkZeroHundred = type == "back" ? getValue < 1 ? 0 : Math.round(getValue) : getValue >= 100 ? 100 : Math.round(getValue);
+      let checkZeroHundred =
+        type == "back"
+          ? getValue < 1
+            ? 0
+            : Math.round(getValue)
+          : getValue >= 100
+          ? 100
+          : Math.round(getValue);
       let returnValue;
       if (type == "back") {
         let check = value % 1;
         returnValue = check >= 0.5 ? checkZeroHundred - 1 : checkZeroHundred;
       } else {
-        returnValue = checkZeroHundred
+        returnValue = checkZeroHundred;
       }
       return returnValue;
     }
-  }
+  };
 
   return (
     <Box
@@ -131,7 +152,7 @@ const BoxComponent = ({
               fontWeight: "600",
               marginLeft: "10px",
               marginRight: "10px",
-              width: { mobile: "113px", table: "100%", laptop: "100%" }
+              width: { mobile: "113px", table: "100%", laptop: "100%" },
             }}
           >
             {name}
@@ -139,199 +160,227 @@ const BoxComponent = ({
         </Box>
         <MoneyBox color={color} rates={rate} />
       </Box>
-      {ballStatus ? <>
-        {isBall ? <Box
-          sx={{
-            background: "#000",
-            height: "82px",
-            position: "absolute",
-            right: 0,
-            top: 0,
-            zIndex: 10,
-            width: { laptop: "60%", mobile: "40.5%" },
-            justifyContent: { mobile: "flex-end", laptop: "center" },
-            alignItems: "center",
-            display: "flex",
-          }}
-        >
-          <img src={BallStart} style={{ width: '113px', height: "32px" }} />
-        </Box> : null}</> : <>
-        {showBox && (
-          <Box
-            sx={{
-              background: "rgba(0,0,0,0.5)",
-              height: "40px",
-              position: "absolute",
-              right: 0,
-              zIndex: 10,
-              width: { laptop: "60%", mobile: "40.5%" },
-              justifyContent: { mobile: "flex-end", laptop: "center" },
-              alignItems: "center",
-              display: "flex",
-            }}
-          ></Box>
-        )}
-        {!["ACTIVE", "", undefined, null].includes(status) || newData?.bettings?.length === 0 || livestatus ? (
-          <Box
-            sx={{
-              background: "rgba(0,0,0,1)",
-              height: "40px",
-              width: { laptop: "60%", mobile: "40.5%" },
-              justifyContent: { mobile: "flex-end", laptop: "center" },
-              alignItems: "center",
-              display: "flex",
-            }}
-          >
-            {ballStatus ?
-              null
-              // <img src={BallStart} style={{ width: '113px', height: "32px" }} /> 
-              :
-              <Typography
-                style={{
-                  fontSize: { mobile: "12px", laptop: "22px" },
-                  textTransform: "uppercase",
-                  textAlign: "center",
-                  width: "100%",
-                  color: "white",
-                  fontWeight: "600",
-                }}
-              >
-                {newData?.bettings?.length === 0 || livestatus
-                  ? "suspended"
-                  : status}
-              </Typography>
-            }
-          </Box>
-        ) : (
-          <>
+      {ballStatus ? (
+        <>
+          {isBall ? (
             <Box
               sx={{
-                display: "flex",
-                background: "white",
-                height: "40px",
-                width: { laptop: "60%", mobile: "40%" },
+                background: "#000",
+                height: "82px",
+                position: "absolute",
+                right: 0,
+                top: 0,
+                zIndex: 10,
+                width: { laptop: "60%", mobile: "40.5%" },
                 justifyContent: { mobile: "flex-end", laptop: "center" },
                 alignItems: "center",
-                position: "relative",
+                display: "flex",
               }}
             >
-              {!matchesMobile && (
-                <SeprateBox
-                  back={true}
-                  currentMatch={newData}
-                  lock={lock}
-                  rates={allRates}
-                  // value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
-                  // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
-                  value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
-                  value2={0}
-                  color={matchesMobile ? "white" : "#CEEBFF"}
-                  type={{ color: "#A7DCFF", type: "BL" }}
-                  name={name}
-                  data={data}
-                  typeOfBet={typeOfBet}
-                />
-              )}
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-              {!matchesMobile && (
-                <SeprateBox
-                  back={true}
-                  currentMatch={newData}
-                  lock={lock}
-                  rates={allRates}
-                  // value={matchOddsData?.back ? matchOddsData?.back - 1 : 0}
-                  value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") : 0}
-                  value2={0}
-                  color={matchesMobile ? "white" : "#C2E6FF"}
-                  type={{ color: "#A7DCFF", type: "BL" }}
-                  name={name}
-                  data={data}
-                  typeOfBet={typeOfBet}
-                />
-              )}
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-
-              <SeprateBox
-                back={true}
-                currentMatch={newData}
-                lock={lock}
-                rates={allRates}
-                value={matchOddsData?.back ? matchOddsData?.back : 0}
-                value2={0}
-                color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
-                type={{ color: "#A7DCFF", type: "BL" }}
-                name={name}
-                data={data}
-                typeOfBet={typeOfBet}
-              />
-
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
-
-              <SeprateBox
-                back={true}
-                currentMatch={newData}
-                lock={lock}
-                rates={allRates}
-                value={matchOddsData?.lay ? matchOddsData?.lay : 0}
-                value2={0}
-                color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
-                type={{ color: "#FFB5B5", type: "BL" }}
-                name={name}
-                data={data}
-                typeOfBet={typeOfBet}
-              />
-              {/* <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box> */}
-              {!matchesMobile && (
-                <SeprateBox
-                  back={true}
-                  currentMatch={newData}
-                  rates={allRates}
-                  lock={lock}
-                  // value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
-                  value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 1, "") : 0}
-                  value2={0}
-                  color={matchesMobile ? "white" : "#F2CBCB"}
-                  type={{ color: "#FFB5B5", type: "BL" }}
-                  name={name}
-                  data={data}
-                  typeOfBet={typeOfBet}
-                />
-              )}
-              {/* <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box> */}
-              {!matchesMobile && (
-                <SeprateBox
-                  back={true}
-                  currentMatch={newData}
-                  rates={allRates}
-                  lock={lock}
-                  // value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
-                  value={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 2, "") : 0}
-                  value2={0}
-                  color={matchesMobile ? "white" : "#ECD6D6"}
-                  type={{ color: "#FFB5B5", type: "BL" }}
-                  name={name}
-                  data={data}
-                  typeOfBet={typeOfBet}
-                />
-              )}
-              <Box
-                sx={{ width: ".25%", display: "flex", background: "pink" }}
-              ></Box>
+              <img src={BallStart} style={{ width: "113px", height: "32px" }} />
             </Box>
-          </>
-        )}
-      </>
-      }
+          ) : null}
+        </>
+      ) : (
+        <>
+          {showBox && (
+            <Box
+              sx={{
+                background: "rgba(0,0,0,0.5)",
+                height: "40px",
+                position: "absolute",
+                right: 0,
+                zIndex: 10,
+                width: { laptop: "60%", mobile: "40.5%" },
+                justifyContent: { mobile: "flex-end", laptop: "center" },
+                alignItems: "center",
+                display: "flex",
+              }}
+            ></Box>
+          )}
+          {!["ACTIVE", "", undefined, null].includes(status) ||
+          newData?.bettings?.length === 0 ||
+          livestatus ? (
+            <Box
+              sx={{
+                background: "rgba(0,0,0,1)",
+                height: "40px",
+                width: { laptop: "60%", mobile: "40.5%" },
+                justifyContent: { mobile: "flex-end", laptop: "center" },
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              {ballStatus ? null : (
+                // <img src={BallStart} style={{ width: '113px', height: "32px" }} />
+                <Typography
+                  style={{
+                    fontSize: { mobile: "12px", laptop: "22px" },
+                    textTransform: "uppercase",
+                    textAlign: "center",
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "600",
+                  }}
+                >
+                  {newData?.bettings?.length === 0 || livestatus
+                    ? "suspended"
+                    : status}
+                </Typography>
+              )}
+            </Box>
+          ) : (
+            <>
+              <Box
+                sx={{
+                  display: "flex",
+                  background: "white",
+                  height: "40px",
+                  width: { laptop: "60%", mobile: "40%" },
+                  justifyContent: { mobile: "flex-end", laptop: "center" },
+                  alignItems: "center",
+                  position: "relative",
+                }}
+              >
+                {!matchesMobile && (
+                  <SeprateBox
+                    selectedFastAmount={selectedFastAmount}
+                    back={true}
+                    currentMatch={newData}
+                    lock={lock}
+                    rates={allRates}
+                    // value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
+                    // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
+                    value={
+                      matchOddsData?.back
+                        ? handleDecimal(matchOddsData?.back, 2, "back")
+                        : 0
+                    }
+                    value2={0}
+                    color={matchesMobile ? "white" : "#CEEBFF"}
+                    type={{ color: "#A7DCFF", type: "BL" }}
+                    name={name}
+                    data={data}
+                    typeOfBet={typeOfBet}
+                  />
+                )}
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+                {!matchesMobile && (
+                  <SeprateBox
+                    selectedFastAmount={selectedFastAmount}
+                    back={true}
+                    currentMatch={newData}
+                    lock={lock}
+                    rates={allRates}
+                    // value={matchOddsData?.back ? matchOddsData?.back - 1 : 0}
+                    value={
+                      matchOddsData?.back
+                        ? handleDecimal(matchOddsData?.back, 1, "back")
+                        : 0
+                    }
+                    value2={0}
+                    color={matchesMobile ? "white" : "#C2E6FF"}
+                    type={{ color: "#A7DCFF", type: "BL" }}
+                    name={name}
+                    data={data}
+                    typeOfBet={typeOfBet}
+                  />
+                )}
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+
+                <SeprateBox
+                  selectedFastAmount={selectedFastAmount}
+                  back={true}
+                  currentMatch={newData}
+                  lock={lock}
+                  rates={allRates}
+                  value={matchOddsData?.back ? matchOddsData?.back : 0}
+                  value2={0}
+                  color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
+                  type={{ color: "#A7DCFF", type: "BL" }}
+                  name={name}
+                  data={data}
+                  typeOfBet={typeOfBet}
+                />
+
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+
+                <SeprateBox
+                  selectedFastAmount={selectedFastAmount}
+                  back={true}
+                  currentMatch={newData}
+                  lock={lock}
+                  rates={allRates}
+                  value={matchOddsData?.lay ? matchOddsData?.lay : 0}
+                  value2={0}
+                  color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
+                  type={{ color: "#FFB5B5", type: "BL" }}
+                  name={name}
+                  data={data}
+                  typeOfBet={typeOfBet}
+                />
+                {/* <Box
+              sx={{ width: ".25%", display: "flex", background: "pink" }}
+            ></Box> */}
+                {!matchesMobile && (
+                  <SeprateBox
+                    selectedFastAmount={selectedFastAmount}
+                    back={true}
+                    currentMatch={newData}
+                    rates={allRates}
+                    lock={lock}
+                    // value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
+                    value={
+                      matchOddsData?.lay
+                        ? handleDecimal(matchOddsData?.lay, 1, "")
+                        : 0
+                    }
+                    value2={0}
+                    color={matchesMobile ? "white" : "#F2CBCB"}
+                    type={{ color: "#FFB5B5", type: "BL" }}
+                    name={name}
+                    data={data}
+                    typeOfBet={typeOfBet}
+                  />
+                )}
+                {/* <Box
+              sx={{ width: ".25%", display: "flex", background: "pink" }}
+            ></Box> */}
+                {!matchesMobile && (
+                  <SeprateBox
+                    selectedFastAmount={selectedFastAmount}
+                    back={true}
+                    currentMatch={newData}
+                    rates={allRates}
+                    lock={lock}
+                    // value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
+                    value={
+                      matchOddsData?.lay
+                        ? handleDecimal(matchOddsData?.lay, 2, "")
+                        : 0
+                    }
+                    value2={0}
+                    color={matchesMobile ? "white" : "#ECD6D6"}
+                    type={{ color: "#FFB5B5", type: "BL" }}
+                    name={name}
+                    data={data}
+                    typeOfBet={typeOfBet}
+                  />
+                )}
+                <Box
+                  sx={{ width: ".25%", display: "flex", background: "pink" }}
+                ></Box>
+              </Box>
+            </>
+          )}
+        </>
+      )}
     </Box>
   );
 };

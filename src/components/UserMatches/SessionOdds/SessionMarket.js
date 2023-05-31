@@ -7,6 +7,9 @@ import { useTheme } from "@emotion/react";
 import SmallBoxSeason from "../SmallBoxSeason";
 import { memo } from "react";
 import { useState } from "react";
+import FastTimePlaceBet from "../../FastImePlaceBet";
+import FastTime from "../../FastTime";
+import { currencyFormatter, formatNumber } from "../../helper/helper";
 
 const SessionMarket = ({
   data,
@@ -19,37 +22,23 @@ const SessionMarket = ({
   dataProfit,
   sessionBets,
   sessionOffline,
+  setFastAmount,
+  fastAmount,
+  session
 }) => {
   const theme = useTheme();
+  const [showFastTimeBox, setShowFastTimeBox] = useState(false);
+
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const matchSessionData = newData?.bettings?.filter(
     (element) => element.sessionBet === true
   );
 
-  console.log("sessionOffline", sessionOffline);
-
-  const FastTime = (data) => {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      {/* <Typography
-        sx={{
-          fontSize: { mobile: "10px", laptop: "12px" },
-          fontWeight: "bold",
-          color: "#black",
-          width: { mobile: "40px", laptop: "80px" },
-        }}
-      >
-        {data.time} sec Delay
-      </Typography> */}
-      <img style={{ width: "20px", height: "20px" }} src={FASTTIME} />
-    </Box>
-  );
-};
   return (
     <>
       <Box
-      id={"test"}
+        id={"test"}
         sx={{
           display: "flex",
           background: "white",
@@ -85,6 +74,7 @@ const SessionMarket = ({
           >
             <Typography
               sx={{
+                width: "100%",
                 fontSize: { laptop: "13px", tablet: "12px", mobile: "10px" },
                 fontWeight: "bold",
                 marginLeft: "7px",
@@ -93,8 +83,13 @@ const SessionMarket = ({
               Session Odds
             </Typography>
             {showFast && (
-            <FastTime />
-          )}
+              <FastTime
+              session={session}
+              setFastAmount={setFastAmount}
+                setShowFastTimeBox={setShowFastTimeBox}
+                data={fastAmount ? currencyFormatter(fastAmount) :""}
+              />
+            )}
           </Box>
           <Box
             sx={{
@@ -148,6 +143,16 @@ const SessionMarket = ({
             /> */}
           </Box>
         </Box>
+        {showFastTimeBox && (
+          <Box>
+            <FastTimePlaceBet
+              session={session}
+              setFastAmount={ setFastAmount}
+              selectedFastAmount={fastAmount}
+              setShowFastTimeBox={setShowFastTimeBox}
+            />
+          </Box>
+        )}
         <Box sx={{ width: "100%" }}>
           {
             <Box
@@ -250,6 +255,7 @@ const SessionMarket = ({
                     <SessionMarketBox
                       typeOfBet={"Session"}
                       data={element}
+                      selectedFastAmount={fastAmount}
                       mainData={data}
                       newData={newData}
                       allRates={{ teamA: teamARates, teamB: teamBRates }}

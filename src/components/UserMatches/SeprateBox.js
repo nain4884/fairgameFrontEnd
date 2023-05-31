@@ -40,6 +40,7 @@ const SeprateBox = ({
   mainData,
   rates,
   betType,
+  selectedFastAmount,
   fromOdds,
 }) => {
   const theme = useTheme();
@@ -210,14 +211,16 @@ const SeprateBox = ({
             if (lock || color == "white") {
               return null;
             }
-            setSelectedValue(value);
-            type?.type === "BL"
-              ? setIsBack(type?.color === "#A7DCFF")
-              : setIsSessionYes(type?.color === "#A7DCFF");
-
-            setIsPopoverOpen(true);
-
-            dispatch(setColorValue(color));
+            if (selectedFastAmount) {
+              alert(selectedFastAmount)
+            } else {
+              setSelectedValue(value);
+              type?.type === "BL"
+                ? setIsBack(type?.color === "#A7DCFF")
+                : setIsSessionYes(type?.color === "#A7DCFF");
+              setIsPopoverOpen(true);
+              dispatch(setColorValue(color));
+            }
           }}
           style={{ position: "relative" }}
           sx={{

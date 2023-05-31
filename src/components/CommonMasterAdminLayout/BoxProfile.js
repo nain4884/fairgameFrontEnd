@@ -20,6 +20,7 @@ import {
 } from "../../newStore/reducers/matchDetails";
 import { removeSocket } from "../helper/removeSocket";
 import { toast } from "react-toastify";
+import { SocketContext } from "../../context/socketContext";
 
 const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
   const theme = useTheme();
@@ -78,7 +79,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
   const DropdownMenu = ({ anchorEl, open, handleClose, nav }) => {
     const { globalStore, setGlobalStore } = useContext(GlobalStore);
     const { axios } = setRole();
-
+    const { socket, socketMicro } = useContext(SocketContext);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const innerRef = useOuterClick((ev) => {
@@ -101,6 +102,8 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         navigate(`/${nav}`);
         handleClose();
         removeSocket();
+        socket.disconnect();
+    socketMicro.disconnect()
       } else {
         toast.error("Something went wrong");
       }

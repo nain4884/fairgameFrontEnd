@@ -60,7 +60,7 @@ const CustomHeader = ({}) => {
   // const auth = useSelector(state => state?.auth?.user);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const { socket } = useContext(SocketContext);
+  const { socket,socketMicro } = useContext(SocketContext);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -83,6 +83,8 @@ const CustomHeader = ({}) => {
           dispatch(removeManualBookMarkerRates());
           dispatch(removeSelectedMatch());
           dispatch(logout({ roleType: "role4" }));
+          socket.disconnect();
+          socketMicro.disconnect()
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           // await axios.get("auth/logout");
           removeSocket();
@@ -578,6 +580,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     navigate("/");
     handleClose();
     removeSocket();
+    socket.disconnect();
+    socketMicro.disconnect()
+
   };
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (

@@ -77,7 +77,7 @@ const CustomHeader = ({}) => {
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
-  const { socket } = useContext(SocketContext);
+  const { socket,socketMicro } = useContext(SocketContext);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -109,6 +109,8 @@ const CustomHeader = ({}) => {
           dispatch(removeManualBookMarkerRates());
           dispatch(logout({ roleType: "role2" }));
           dispatch(setUpdatedTransPasswords(false));
+          socket.disconnect();
+          socketMicro.disconnect()
           setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
           if (nav === "admin") {
             navigate("/admin");

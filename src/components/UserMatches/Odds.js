@@ -6,6 +6,10 @@ import ManualBoxComponent from "./ManualBoxComponent";
 import Divider from "../helper/Divider";
 import { BallStart, FASTTIME, Info, TIME } from "../../assets";
 import { memo } from "react";
+import FastTimePlaceBet from "../FastImePlaceBet";
+import LiveMarket from "../CommonMasterAdminLayout/LiveMarket";
+import FastTime from "../FastTime";
+import { currencyFormatter, formatNumber } from "../helper/helper";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
@@ -112,23 +116,6 @@ const Time = (data) => {
     </Box>
   );
 };
-const FastTime = (data) => {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      {/* <Typography
-        sx={{
-          fontSize: { mobile: "10px", laptop: "12px" },
-          fontWeight: "bold",
-          color: "#black",
-          width: { mobile: "40px", laptop: "80px" },
-        }}
-      >
-        {data.time} sec Delay
-      </Typography> */}
-      <img style={{ width: "20px", height: "20px" }} src={FASTTIME} />
-    </Box>
-  );
-};
 
 const Odds = ({
   data,
@@ -144,11 +131,17 @@ const Odds = ({
   newData,
   isRound,
   typeOfBet,
+  session,
   matchOddsData,
-  showFast
+  setFastAmount,
+          fastAmount,
+  showFast,
 }) => {
   // console.log("matchOddsData 11:", matchOddsData);
   const theme = useTheme();
+  const [showFastTimeBox, setShowFastTimeBox] = useState(false);
+
+  console.log('selectedFastAmount', fastAmount);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const bookRatioB = (() => {
     if (teamARates === 0) {
@@ -207,6 +200,7 @@ const Odds = ({
         >
           <Typography
             sx={{
+              width: "100%",
               fontSize: { laptop: "13px", tablet: "12px", mobile: "10px" },
               fontWeight: "bold",
               marginLeft: "7px",
@@ -217,8 +211,13 @@ const Odds = ({
           {showDely && typeOfBet === "MATCH ODDS" && (
             <Time time={newData.delaySecond ? newData?.delaySecond : 0} />
           )}
-           {showFast && (
-            <FastTime />
+          {showFast && (
+            <FastTime
+            session={session}
+            setFastAmount={setFastAmount}
+              setShowFastTimeBox={setShowFastTimeBox}
+              data={fastAmount ? currencyFormatter(fastAmount) :""}
+            />
           )}
         </Box>
         <Box
@@ -268,81 +267,89 @@ const Odds = ({
           /> */}
         </Box>
       </Box>
-      {
+      {showFastTimeBox && (
+        <Box>
+          <FastTimePlaceBet
+          session={session}
+          setFastAmount={setFastAmount}
+            selectedFastAmount={fastAmount}
+            setShowFastTimeBox={setShowFastTimeBox}
+          />
+        </Box>
+      )}
+      <Box
+        sx={{
+          display: "flex",
+          background: "#319E5B",
+          height: "25px",
+          width: "99.7%",
+          alignSelf: "center",
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            background: "'#319E5B'",
+            height: "25px",
+            width: "40%",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { laptop: "11px", mobile: "9px" },
+              marginLeft: "7px",
+            }}
+          >
+            MIN: {min} MAX:{max}
+          </Typography>
+        </Box>
         <Box
           sx={{
             display: "flex",
             background: "#319E5B",
             height: "25px",
-            width: "99.7%",
-            alignSelf: "center",
+            gap: { mobile: "0px", laptop: "1px", tablet: "1px" },
+            width: { laptop: "60%", mobile: "80%" },
+            justifyContent: { laptop: "center", mobile: "flex-end" },
           }}
         >
           <Box
             sx={{
+              background: "#00C0F9",
+              width: { laptop: "16.5%", mobile: "30%" },
+              height: "100%",
               display: "flex",
-              background: "'#319E5B'",
-              height: "25px",
-              width: "40%",
+              justifyContent: "center",
               alignItems: "center",
             }}
           >
             <Typography
-              sx={{
-                color: "white",
-                fontSize: { laptop: "11px", mobile: "9px" },
-                marginLeft: "7px",
-              }}
+              sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
             >
-              MIN: {min} MAX:{max}
+              Back
             </Typography>
           </Box>
+          <Box sx={{ width: ".35%", display: "flex" }}></Box>
           <Box
             sx={{
+              background: "#FF9292",
+              width: { laptop: "16.5%", mobile: "30%" },
+              height: "100%",
               display: "flex",
-              background: "#319E5B",
-              height: "25px",
-              gap: { mobile: "0px", laptop: "1px", tablet: "1px" },
-              width: { laptop: "60%", mobile: "80%" },
-              justifyContent: { laptop: "center", mobile: "flex-end" },
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <Box
-              sx={{
-                background: "#00C0F9",
-                width: { laptop: "16.5%", mobile: "30%" },
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+            <Typography
+              sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
             >
-              <Typography
-                sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
-              >
-                Back
-              </Typography>
-            </Box>
-            <Box sx={{ width: ".35%", display: "flex" }}></Box>
-            <Box
-              sx={{
-                background: "#FF9292",
-                width: { laptop: "16.5%", mobile: "30%" },
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
-              >
-                Lay
-              </Typography>
-            </Box>
+              Lay
+            </Typography>
           </Box>
         </Box>
-      }
+      </Box>
 
       {typeOfBet == "MANUAL BOOKMAKER" ? (
         <>
@@ -350,6 +357,7 @@ const Odds = ({
             time={true}
             fromOdds={true}
             showBox={showBox}
+            selectedFastAmount={fastAmount}
             livestatus={
               matchOddsData?.[0]?.teamA_suspend === "suspended" ? true : false
             }
@@ -380,6 +388,7 @@ const Odds = ({
             fromOdds={true}
             showBox={showBox}
             newData={newData}
+            selectedFastAmount={fastAmount}
             // livestatus={newData?.status === "SUSPENDED" ? true : false}
             livestatus={
               matchOddsData?.[0]?.teamB_suspend === "suspended" ? true : false
@@ -407,6 +416,7 @@ const Odds = ({
               <Divider />
               <ManualBoxComponent
                 teamImage={null}
+                selectedFastAmount={fastAmount}
                 fromOdds={true}
                 time={true}
                 // livestatus={newData?.status === "SUSPENDED" ? true : false}
@@ -443,6 +453,7 @@ const Odds = ({
           <BoxComponent
             time={true}
             fromOdds={true}
+            selectedFastAmount={fastAmount}
             showBox={showBox}
             livestatus={newData?.status === "SUSPENDED" ? true : false}
             teamImage={newData?.teamA_Image}
@@ -465,6 +476,7 @@ const Odds = ({
             time={true}
             showBox={showBox}
             fromOdds={true}
+            selectedFastAmount={fastAmount}
             newData={newData}
             livestatus={newData?.status === "SUSPENDED" ? true : false}
             // lock={data?.length > 0 ? false : true}
@@ -484,6 +496,7 @@ const Odds = ({
               <BoxComponent
                 fromOdds={true}
                 teamImage={null}
+                selectedFastAmount={fastAmount}
                 time={true}
                 livestatus={newData?.status === "SUSPENDED" ? true : false}
                 showBox={showBox}
@@ -546,9 +559,6 @@ const Odds = ({
           </Box>
         </Box>
       )} */}
-
-
-      
     </Box>
   );
 };
