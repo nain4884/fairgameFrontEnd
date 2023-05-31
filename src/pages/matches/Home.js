@@ -153,6 +153,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           // await axios.get("auth/logout");
           removeSocket();
+          socket.disconnect();
+          socketMicro.disconnect();
         }
         if (packet.data[0] === "updateSessionRate_user") {
           const value = packet.data[1];

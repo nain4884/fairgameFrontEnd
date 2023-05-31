@@ -68,6 +68,9 @@ const Odds = ({ onClick, top, blur, match }) => {
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           // await axios.get("auth/logout");
           removeSocket();
+
+          socket.disconnect();
+          socketMicro.disconnect();
         }
         if (packet.data[0] === "userBalanceUpdate") {
           const data = packet.data[1];
