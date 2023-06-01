@@ -32,7 +32,6 @@ import ListHeaderT from "./ListHeaderT";
 
 const AccountList = () => {
   const dispatch = useDispatch();
-
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   // const {currentUser} = useSelector((state) => state?.currentUser);
   const { userWallet } = useSelector((state) => state?.auth);
@@ -49,9 +48,10 @@ const AccountList = () => {
     percent_profit_loss: 0,
     exposurelimit: "",
     availablebalancesum: 0.0,
+    totalCommissions: "",
   });
+  let { axios, JWT } = setRole();
   async function getListOfUser() {
-    let { axios } = setRole();
     try {
       const { data } = await axios.get(
         `/fair-game-wallet/getAllUser?&page=${currentPageNo}&limit=${pageLimit}`
@@ -82,6 +82,7 @@ const AccountList = () => {
       setSumVal({
         ...data?.data,
         percent_profit_loss: 0,
+        totalCommissions: "",
         exposurelimit: "",
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
@@ -92,7 +93,8 @@ const AccountList = () => {
 
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   // const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+  const [pageLimit, setPageLimit] = useState(constants.pageCount);
+  const { currentUser } = useSelector((state) => state?.currentUser);
   const { currentPageNo } = useSelector((state) => state?.auth);
   function callPage(val) {
     dispatch(setPage(parseInt(val)));
@@ -104,9 +106,10 @@ const AccountList = () => {
   // }
 
   useEffect(() => {
-    // getRoles();
-    getListOfUser();
-  }, [currentPageNo, pageCount, userWallet?.access_token]);
+    if (currentUser?.id && currentPageNo !== 0 && pageCount !== 0) {
+      getListOfUser();
+    }
+  }, [currentPageNo, pageCount, currentUser?.id]);
 
   return (
     <>
@@ -270,11 +273,11 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({setData}) => {
+const ListH = ({ setData }) => {
   return (
     <Box
       display={"flex"}
-      sx={{ justifyContent: "space-between", px: "10px", py: "6px" ,gap:2 }}
+      sx={{ justifyContent: "space-between", px: "10px", py: "6px", gap: 2 }}
     >
       <Box display={"flex"} alignItems="center">
         <Box
@@ -305,7 +308,11 @@ const ListH = ({setData}) => {
           <StyledImage src={Pdf} sx={{ height: "25px" }} />
         </Box>
       </Box>
-      <SearchInput placeholder={"Search User..."} show={true} setData={setData} />
+      <SearchInput
+        placeholder={"Search User..."}
+        show={true}
+        setData={setData}
+      />
     </Box>
   );
 };

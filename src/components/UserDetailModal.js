@@ -112,6 +112,19 @@ export default function UserDetailModal({
     },
   };
 
+  const handleSettlement = async (val) => {
+    try {
+      const data = await axios.post(`/fair-game-wallet/comissionSettelment`, {
+        userId: val,
+      });
+      if (data?.data?.data) {
+        toast.success(data?.data?.message);
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
+      console.log(err.message);
+    }
+  };
   return (
     <Box sx={classes.mainBox}>
       {/* <Box onClick={() => {}} sx={classes.mainBoxSubsx}></Box> */}
@@ -229,6 +242,17 @@ export default function UserDetailModal({
             width: { mobile: "26%", laptop: "77%", tablet: "100%" },
           }}
         >
+          {elementToUDM?.role?.roleName === "user" && (
+            <BoxButton
+              onClick={(e) => {
+                e?.preventDefault();
+                handleSettlement(elementToUDM?.userId);
+              }}
+              title={"C_Settlement"}
+              containerStyle={{ marginLeft: "10px", flex: 1 }}
+              labelStyle={{}}
+            />
+          )}
           <BoxButton
             onClick={() => {
               setSelected(0);
@@ -1251,9 +1275,7 @@ const NewCreditComponent = ({
                     prevElement.profit_loss +
                     prevElement.credit_refer -
                     Number(
-                      isNaN(Number(e.target.value))
-                        ? 0
-                        : Number(e.target.value)
+                      isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)
                     ),
                 });
               }}
@@ -1497,9 +1519,7 @@ const SetExposureComponent = ({
                 setElementToUDM({
                   ...elementToUDM,
                   exposure_limit: Number(
-                    isNaN(Number(e.target.value))
-                      ? 0
-                      : Number(e.target.value)
+                    isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)
                   ),
                 });
               }}
@@ -2203,7 +2223,7 @@ const UpdateLockUnlock = (body) => {
 };
 
 const UserDelete = (id) => {
-  console.log('first', axios)
+  console.log("first", axios);
   const { axios } = setRole();
   return new Promise(async (resolve, reject) => {
     try {

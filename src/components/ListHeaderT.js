@@ -95,6 +95,20 @@ const ListHeaderT = () => {
           }}
         >
           <Typography sx={{ color: "white", fontSize: "12px" }}>
+            Commission
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"28.5vw"},
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "35px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography sx={{ color: "white", fontSize: "12px" }}>
             Exposure
           </Typography>
         </Box>

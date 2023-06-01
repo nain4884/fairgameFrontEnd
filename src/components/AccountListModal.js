@@ -48,6 +48,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
     percent_profit_loss: 0,
     availablebalancesum: 0.0,
     exposurelimit: "",
+    totalCommissions:"",
   });
 
   useEffect(() => {
@@ -86,6 +87,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
       setSumVal({
         ...data?.data,
         percent_profit_loss: 0,
+        totalCommissions:"",
         exposurelimit: "",
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });

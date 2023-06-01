@@ -77,7 +77,7 @@ const CustomHeader = ({}) => {
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
-  const { socket,socketMicro } = useContext(SocketContext);
+  const { socket, socketMicro } = useContext(SocketContext);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -110,7 +110,7 @@ const CustomHeader = ({}) => {
           dispatch(logout({ roleType: "role2" }));
           dispatch(setUpdatedTransPasswords(false));
           socket.disconnect();
-          socketMicro.disconnect()
+          socketMicro.disconnect();
           setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
           if (nav === "admin") {
             navigate("/admin");
@@ -178,11 +178,10 @@ const CustomHeader = ({}) => {
       dispatch(setActiveAdmin(2));
     }
 
-    if (JWT) {
+    if (JWT && !currentUser) {
       getUserDetail(nav);
     }
   }, [location, window.location.pathname, JWT, nav]);
-
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
   const [showSearch, setShowSearch] = useState(false);

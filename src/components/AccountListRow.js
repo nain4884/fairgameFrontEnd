@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
 import { useRef } from "react";
 import { setCurrentUser } from "../newStore/reducers/currentUser";
@@ -31,6 +31,7 @@ const AccountListRow = ({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { axios } = setRole();
   const hasUpdatedUserProfile = useRef(false);
+  const {  allRole } = useSelector((state) => state.auth);
 
   const [showSubUsers, setSubSusers] = useState({
     value: false,
@@ -86,6 +87,9 @@ const AccountListRow = ({
     bet_blocked: element.bet_blocked,
     all_blocked: element.all_blocked,
     rateToCalculatePercentage: handleUpline(),
+    totalCommissions: element.totalCommissions,
+    role: allRole?.find((role) => role?.id === element?.roleId),
+    userId:element?.id
   };
 
   console.log("hand", prevElement);
@@ -272,6 +276,20 @@ const AccountListRow = ({
               width: "15px",
             }}
           />
+        </Box>
+        <Box
+          sx={{
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "45px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+            {elementToUDM.totalCommissions}
+          </Typography>
         </Box>
         <Box
           sx={{
