@@ -65,10 +65,11 @@ const FullAllBets = ({ tag, mode, IObets }) => {
   useEffect(() => {
     if (IObets) {
       const body = IObets?.map((v) => {
+        console.log("ddddd :", v);
         const values = {
           values: [
             {
-              name: v?.user?.userName,
+              name: v?.user?.userName || v?.userName,
               color: "black",
               background: "#F1C550",
             },
@@ -453,6 +454,7 @@ const HeaderRow = ({ tag, mode }) => {
   );
 };
 const SmallBox = ({ item }) => {
+  // alert(JSON.stringify(item))
   return (
     <Box
       sx={{

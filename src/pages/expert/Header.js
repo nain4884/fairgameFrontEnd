@@ -36,8 +36,9 @@ import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
 } from "../../newStore/reducers/matchDetails";
+import { a } from "@react-spring/web";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -53,8 +54,10 @@ const CustomHeader = ({}) => {
   const [allMatch, setAllMatch] = useState([]);
   const [allLiveEventSession, setAllLiveEventSession] = useState([]);
   const [balance, setBalance] = useState(0);
+  const [onlineUser, setOnlineUser] = useState(0);
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
+
   let { transPass, axios, role, JWT } = setRole();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -62,7 +65,7 @@ const CustomHeader = ({}) => {
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
-      localStorage.setItem("role3","role3");
+      localStorage.setItem("role3", "role3");
       dispatch(setCurrentUser(data.data));
 
       // setBalance(data.data.current_balance)
@@ -72,6 +75,21 @@ const CustomHeader = ({}) => {
       console.log(e);
     }
   }
+
+  async function getUserCount() {
+    try {
+      const { data } = await axios.get("/users/onlineUserCount");
+      // dispatch(setCurrentUser(data.data));
+      setOnlineUser(data?.data)
+      // alert(JSON.stringify(data.data));
+      // setBalance(data.data.current_balance)
+      // dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
+      // setFullName(data.data.fullName)
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
     if (!matchesMobile) {
       setMobileOpen(false);
@@ -79,7 +97,7 @@ const CustomHeader = ({}) => {
   }, [matchesMobile]);
 
   const { userExpert } = useSelector((state) => state.auth);
-  const { socket,socketMicro } = useContext(SocketContext);
+  const { socket, socketMicro } = useContext(SocketContext);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -118,9 +136,13 @@ const CustomHeader = ({}) => {
             current_balance: data?.currentBalacne,
           };
           dispatch(setCurrentUser(user));
-          
+
 
           //currentBalacne
+        }
+        if (packet.data[0] === "loginUserCount") {
+          const data = packet.data[1];
+          setOnlineUser(data?.count)
         }
       };
     }
@@ -141,6 +163,7 @@ const CustomHeader = ({}) => {
   useEffect(() => {
     if (JWT) {
       getUserDetail();
+      getUserCount();
     }
   }, [JWT]);
   const getAllMatch = async () => {
@@ -402,7 +425,7 @@ const CustomHeader = ({}) => {
               />
             </Box>
             <Box>
-              <ActiveUsers containerStyle={{}} image={Users} value={"73,689"} />
+              <ActiveUsers containerStyle={{}} image={Users} value={onlineUser} />
               <BoxProfile
                 containerStyle={{ marginTop: "5px" }}
                 image={"https://picsum.photos/200/300"}
@@ -410,8 +433,8 @@ const CustomHeader = ({}) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                    ? "Bookmaker"
-                    : "Betfair"
+                      ? "Bookmaker"
+                      : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />
@@ -777,7 +800,7 @@ const ActiveUsers = ({ image, value, containerStyle }) => {
         }}
       >
         <Box
-          onClick={(event) => {}}
+          onClick={(event) => { }}
           sx={[
             {
               backgroundColor: "white",

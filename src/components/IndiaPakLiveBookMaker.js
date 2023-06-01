@@ -92,7 +92,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         async function doSubmitSessionBet(id) {
             const payload = {
                 betStatus: 1,
-                sessionBet: true,
+                sessionBet: false,
                 matchType: "cricket",
                 match_id: id
             }

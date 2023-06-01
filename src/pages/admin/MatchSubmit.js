@@ -24,6 +24,7 @@ const MatchSubmit = ({ }) => {
   const [matchData, setMatchData] = useState([]);
   const [IObets, setIObtes] = useState([]);
   const [mode, setMode] = useState(false);
+  const [isHandled, setIsHandled] = useState(false);
   // matchIds
   useEffect(() => {
     // alert(matchIds)
@@ -481,6 +482,54 @@ const MatchSubmit = ({ }) => {
               // });
             }
           })(i);
+        }
+
+
+        if (packet.data[0] === "match_bet") {
+          const data = packet.data[1];
+          if (!isHandled) {
+            setIsHandled(true);
+            try {
+              if (data) {
+                // alert(1111)
+                const body = {
+                  id: data?.betPlaceData?.id,
+                  isActive: true,
+                  createAt: data?.betPlaceData?.createAt,
+                  updateAt: data?.betPlaceData?.createAt,
+                  createdBy: null,
+                  deletedAt: null,
+                  user_id: null,
+                  match_id: data?.betPlaceData?.match_id,
+                  bet_id: data?.betPlaceData?.bet_id,
+                  result: "pending",
+                  team_bet: data?.betPlaceData?.team_bet,
+                  odds: data?.betPlaceData?.odds,
+                  myStack: data?.betPlaceData?.myStack,
+                  userName: data?.betPlaceData?.userName,
+                  win_amount: null,
+                  loss_amount: null,
+                  bet_type: data?.betPlaceData?.bet_type,
+                  country: null,
+                  ip_address: null,
+                  rate: null,
+                  marketType: data?.betPlaceData?.marketType,
+                  amount:
+                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                };
+                // if (data?.betPlaceData?.match_id === id) {
+                setIObtes((prev) => [body, ...prev]);
+                // }
+
+                // dispatch(setCurrentUser(user));
+                // dispatch(setManualBookMarkerRates(manualBookmaker));
+              }
+            } catch (e) {
+              console.log("error", e?.message);
+            } finally {
+              setIsHandled(false);
+            }
+          }
         }
         // manual bookmaker end
       };
@@ -985,9 +1034,9 @@ const MatchSubmit = ({ }) => {
                     {item?.apiBookMakerActive && <BookMarketer
                       currentMatch={item}
                       bookmakerLive={item.bookmakerLive}
-                    // data={
-                    //   bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
-                    // }
+                      data={
+                        item.bookmakerLive?.runners?.length > 0 ? item.bookmakerLive?.runners : []
+                      }
                     />}
                     {item?.manualBookMakerActive && <Odds
                       currentMatch={item}
@@ -1056,7 +1105,9 @@ const MatchSubmit = ({ }) => {
                   <BookMarketer
                     currentMatch={item}
                     bookmakerLive={item.bookmakerLive}
-                    data={[]}
+                    data={
+                      item.bookmakerLive?.runners?.length > 0 ? item.bookmakerLive?.runners : []
+                    }
                   />
                   {item?.manualBookMakerActive && <Odds
                     currentMatch={item}
@@ -1130,8 +1181,10 @@ const MatchSubmit = ({ }) => {
                 />
                 <BookMarketer
                   currentMatch={item}
-                  matchOddsLive={item.bookmakerLive}
-                  data={[]}
+                  bookmakerLive={item.bookmakerLive}
+                  data={
+                    item.bookmakerLive?.runners?.length > 0 ? item.bookmakerLive?.runners : []
+                  }
                 />
                 {item?.manualBookMakerActive && <Odds
                   currentMatch={item}

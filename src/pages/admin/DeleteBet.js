@@ -32,7 +32,7 @@ const DeleteBet = ({ }) => {
   const matchId = location?.state?.matchId;
   const { axios } = setRole();
 
-  const [IObets, setIObtes] = useState([]);
+  const [IOSinglebets, setSingleIObtes] = useState([]);
   const [marketId, setMarketId] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { selectedMatch } = useSelector((state) => state?.matchDetails);
@@ -524,7 +524,6 @@ const DeleteBet = ({ }) => {
         }
 
         if (packet.data[0] === "match_bet") {
-          // alert(3333)
           const data = packet.data[1];
           if (!isHandled) {
             setIsHandled(true);
@@ -556,6 +555,8 @@ const DeleteBet = ({ }) => {
                   win_amount: null,
                   loss_amount: null,
                   bet_type: data?.betPlaceData?.bet_type,
+                  myStack: data?.betPlaceData?.myStack,
+                  userName: data?.betPlaceData?.userName,
                   country: null,
                   ip_address: null,
                   rate: null,
@@ -564,7 +565,7 @@ const DeleteBet = ({ }) => {
                     data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                 };
                 // if (data?.betPlaceData?.match_id === id) {
-                setIObtes((prev) => [body, ...prev]);
+                setSingleIObtes((prev) => [body, ...prev]);
                 // }
 
                 // dispatch(setCurrentUser(user));
@@ -764,7 +765,7 @@ const DeleteBet = ({ }) => {
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
 
-      setIObtes(
+      setSingleIObtes(
         data?.data?.data?.filter((b) =>
           ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
             b?.marketType
@@ -776,7 +777,7 @@ const DeleteBet = ({ }) => {
     }
   }
 
-  console.log("currentMatch", IObets);
+  // console.log("currentMatch", IOSinglebets);
   useEffect(() => {
     if (matchId !== undefined) {
       getThisMatch(matchId);
@@ -985,7 +986,7 @@ const DeleteBet = ({ }) => {
             {/* <CustomButton /> */}
             <Box sx={{ width: "150px", marginY: ".75%", height: "35px", }} ></Box>
           </Box>
-          <FullAllBets IObets={IObets} mode={mode} tag={false} />
+          <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />
         </Box>
       </Box>
       <DailogModal />
