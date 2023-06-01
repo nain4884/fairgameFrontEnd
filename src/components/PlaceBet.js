@@ -394,11 +394,11 @@ const PlaceBet = ({
         document.getElementsByClassName("OddValue")?.[0]?.textContent
       ),
       betOn: betOn,
-      stack: defaultValue,
+      stack: Number(defaultValue),
       team_bet: name,
       country: ip?.country_name,
       ip_address: ip?.IPv4,
-      stake: defaultValue,
+      stake: Number(defaultValue),
       teamA_name: currentMatch?.teamA,
       teamB_name: currentMatch?.teamB,
       teamC_name: currentMatch?.teamC,
@@ -417,7 +417,7 @@ const PlaceBet = ({
       payload.bet_condition = data?.bet_condition;
       payload.rate_percent = data?.rate_percent;
       payload.marketType = currentMatch?.bet_condition;
-      payload.odds = selectedValue;
+      payload.odds =Number(selectedValue);
       payload.sessionBet = true;
     }
     return payload;

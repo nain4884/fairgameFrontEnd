@@ -16,6 +16,8 @@ const SessionMarketBox = ({
   selectedFastAmount,
   mainData,
   allRates,
+  sessionMain,
+  setFastAmount
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -144,8 +146,10 @@ const SessionMarketBox = ({
             {!matchesMobile && <SeprateBox po={6} color={"white"} />}
             <SeprateBox
               po={2}
+              setFastAmount={setFastAmount}
               rates={allRates}
               session={true}
+              sessionMain={sessionMain}
               selectedFastAmount={selectedFastAmount}
               betType={"no"}
               value={data?.no_rate}
@@ -162,7 +166,9 @@ const SessionMarketBox = ({
             ></Box>
             <SeprateBox
               po={1}
+              sessionMain={sessionMain}
               rates={allRates}
+              setFastAmount={setFastAmount}
               selectedFastAmount={selectedFastAmount}
               session={true}
               betType={"yes"}

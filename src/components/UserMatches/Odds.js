@@ -134,14 +134,13 @@ const Odds = ({
   session,
   matchOddsData,
   setFastAmount,
-          fastAmount,
+  fastAmount,
   showFast,
 }) => {
   // console.log("matchOddsData 11:", matchOddsData);
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
 
-  console.log('selectedFastAmount', fastAmount);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const bookRatioB = (() => {
     if (teamARates === 0) {
@@ -213,10 +212,10 @@ const Odds = ({
           )}
           {showFast && (
             <FastTime
-            session={session}
-            setFastAmount={setFastAmount}
+              session={session}
+              setFastAmount={setFastAmount}
               setShowFastTimeBox={setShowFastTimeBox}
-              data={fastAmount ? currencyFormatter(fastAmount) :""}
+              data={fastAmount ? currencyFormatter(fastAmount) : ""}
             />
           )}
         </Box>
@@ -270,8 +269,8 @@ const Odds = ({
       {showFastTimeBox && (
         <Box>
           <FastTimePlaceBet
-          session={session}
-          setFastAmount={setFastAmount}
+            session={session}
+            setFastAmount={setFastAmount}
             selectedFastAmount={fastAmount}
             setShowFastTimeBox={setShowFastTimeBox}
           />
@@ -354,7 +353,9 @@ const Odds = ({
       {typeOfBet == "MANUAL BOOKMAKER" ? (
         <>
           <ManualBoxComponent
+            setFastAmount={setFastAmount}
             time={true}
+            sessionMain={session}
             fromOdds={true}
             showBox={showBox}
             selectedFastAmount={fastAmount}
@@ -383,6 +384,8 @@ const Odds = ({
           />
           <Divider />
           <ManualBoxComponent
+            sessionMain={session}
+            setFastAmount={setFastAmount}
             teamImage={newData?.teamB_Image}
             time={true}
             fromOdds={true}
@@ -415,6 +418,8 @@ const Odds = ({
             <>
               <Divider />
               <ManualBoxComponent
+                sessionMain={session}
+                setFastAmount={setFastAmount}
                 teamImage={null}
                 selectedFastAmount={fastAmount}
                 fromOdds={true}
@@ -451,6 +456,8 @@ const Odds = ({
       ) : (
         <>
           <BoxComponent
+            sessionMain={session}
+            setFastAmount={setFastAmount}
             time={true}
             fromOdds={true}
             selectedFastAmount={fastAmount}
@@ -472,6 +479,8 @@ const Odds = ({
           <Divider />
           {/* {console.log("newData :",newData)} */}
           <BoxComponent
+            sessionMain={session}
+            setFastAmount={setFastAmount}
             teamImage={newData?.teamB_Image}
             time={true}
             showBox={showBox}
@@ -494,6 +503,8 @@ const Odds = ({
             <>
               <Divider />
               <BoxComponent
+                sessionMain={session}
+                setFastAmount={setFastAmount}
                 fromOdds={true}
                 teamImage={null}
                 selectedFastAmount={fastAmount}

@@ -332,6 +332,7 @@ const MatchOdds = ({
           allBetsData={allBetsData}
           setFastAmount={setFastAmount}
           fastAmount={fastAmount?.sessionOdds}
+          
         />
       )}
     </Box>

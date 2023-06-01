@@ -26,6 +26,8 @@ const BoxComponent = ({
   ballStatus,
   isBall,
   selectedFastAmount,
+  setFastAmount,
+  sessionMain
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -244,6 +246,8 @@ const BoxComponent = ({
               >
                 {!matchesMobile && (
                   <SeprateBox
+                  sessionMain={sessionMain}
+                    setFastAmount={setFastAmount}
                     selectedFastAmount={selectedFastAmount}
                     back={true}
                     currentMatch={newData}
@@ -269,6 +273,8 @@ const BoxComponent = ({
                 ></Box>
                 {!matchesMobile && (
                   <SeprateBox
+                  sessionMain={sessionMain}
+                    setFastAmount={setFastAmount}
                     selectedFastAmount={selectedFastAmount}
                     back={true}
                     currentMatch={newData}
@@ -293,6 +299,8 @@ const BoxComponent = ({
                 ></Box>
 
                 <SeprateBox
+                 sessionMain={sessionMain}
+                  setFastAmount={setFastAmount}
                   selectedFastAmount={selectedFastAmount}
                   back={true}
                   currentMatch={newData}
@@ -312,6 +320,8 @@ const BoxComponent = ({
                 ></Box>
 
                 <SeprateBox
+                 sessionMain={sessionMain}
+                  setFastAmount={setFastAmount}
                   selectedFastAmount={selectedFastAmount}
                   back={true}
                   currentMatch={newData}
@@ -330,6 +340,8 @@ const BoxComponent = ({
             ></Box> */}
                 {!matchesMobile && (
                   <SeprateBox
+                  sessionMain={sessionMain}
+                    setFastAmount={setFastAmount}
                     selectedFastAmount={selectedFastAmount}
                     back={true}
                     currentMatch={newData}
@@ -354,6 +366,8 @@ const BoxComponent = ({
             ></Box> */}
                 {!matchesMobile && (
                   <SeprateBox
+                  sessionMain={sessionMain}
+                    setFastAmount={setFastAmount}
                     selectedFastAmount={selectedFastAmount}
                     back={true}
                     currentMatch={newData}

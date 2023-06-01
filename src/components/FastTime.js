@@ -33,7 +33,7 @@ const FastTime = ({ data, setShowFastTimeBox, session, setFastAmount }) => {
           boxStyle={{
             backgroundColor: "transparent",
             borderRadius: "3px",
-            fontSize: "16px",
+            fontSize: "20px",
             justifyContent: "center",
             cursor: "pointer",
             alignItems: "center",

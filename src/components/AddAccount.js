@@ -788,7 +788,7 @@ const AddAccount = () => {
                     valueContainerStyle={{
                       height: "45px",
                       marginX: "0px",
-
+                     
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
@@ -796,7 +796,7 @@ const AddAccount = () => {
                     containerStyle={{
                       width: "100%",
                       position: "relative",
-                      marginTop: "5px",
+                      marginTop: "10px",
                     }}
                     titleStyle={{ marginLeft: "0px" }}
                     data={sessionComissionArray}
@@ -834,7 +834,7 @@ const AddAccount = () => {
                     containerStyle={{
                       width: "100%",
                       position: "relative",
-                      marginTop: "5px",
+                      marginTop: "10px",
                     }}
                     titleStyle={{ marginLeft: "0px" }}
                     data={matchComissionTypes}
@@ -875,7 +875,7 @@ const AddAccount = () => {
                           containerStyle={{
                             width: "100%",
                             position: "relative",
-                            marginTop: "5px",
+                            marginTop: "10px",
                           }}
                           titleStyle={{ marginLeft: "0px" }}
                           data={matchComissionArray}

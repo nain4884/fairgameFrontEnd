@@ -255,7 +255,9 @@ const SessionMarket = ({
                     <SessionMarketBox
                       typeOfBet={"Session"}
                       data={element}
+                      sessionMain={session}
                       selectedFastAmount={fastAmount}
+                      setFastAmount={setFastAmount}
                       mainData={data}
                       newData={newData}
                       allRates={{ teamA: teamARates, teamB: teamBRates }}

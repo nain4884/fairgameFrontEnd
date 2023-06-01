@@ -26,8 +26,9 @@ const BoxComponent = ({
   showBox,
   livestatus,
   isRound,
-  fromOdds
-  
+  fromOdds,
+  setFastAmount,
+  sessionMain
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -51,7 +52,7 @@ const BoxComponent = ({
           background: "white",
           position: "relative",
           height: "40px",
-          width:{mobile:"60%",laptop:"40%"},
+          width: { mobile: "60%", laptop: "40%" },
           alignItems: "center",
         }}
       >
@@ -105,8 +106,8 @@ const BoxComponent = ({
               fontWeight: "600",
               marginLeft: "10px",
               marginRight: "10px",
-        
-              width:{mobile:"113px",table:"100%",laptop:"100%"}
+
+              width: { mobile: "113px", table: "100%", laptop: "100%" },
             }}
           >
             {name}
@@ -129,7 +130,9 @@ const BoxComponent = ({
           }}
         ></Box>
       )}
-      {!["ACTIVE", "", undefined, null].includes(status) || newData?.bettings?.length === 0 || livestatus ? (
+      {!["ACTIVE", "", undefined, null].includes(status) ||
+      newData?.bettings?.length === 0 ||
+      livestatus ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
@@ -141,7 +144,20 @@ const BoxComponent = ({
           }}
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-          <Typography style={{  fontSize: { mobile: "12px", laptop: "22px" },textTransform: "uppercase" ,width:"100%",textAlign:"center",color:"white" ,fontWeight:"600"}}>{newData?.bettings?.length === 0 || livestatus ? "suspended" : status}</Typography>
+          <Typography
+            style={{
+              fontSize: { mobile: "12px", laptop: "22px" },
+              textTransform: "uppercase",
+              width: "100%",
+              textAlign: "center",
+              color: "white",
+              fontWeight: "600",
+            }}
+          >
+            {newData?.bettings?.length === 0 || livestatus
+              ? "suspended"
+              : status}
+          </Typography>
         </Box>
       ) : (
         <>
@@ -158,23 +174,31 @@ const BoxComponent = ({
           >
             {!matchesMobile && (
               <SeprateBox
-              selectedFastAmount={selectedFastAmount}
-              fromOdds={fromOdds}
+              sessionMain={sessionMain}
+
+                setFastAmount={setFastAmount}
+                selectedFastAmount={selectedFastAmount}
+                fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}
-                lock={  ex?.availableToBack?.length > 0 ? false : true}
+                lock={ex?.availableToBack?.length > 0 ? false : true}
                 rates={allRates}
                 value={
-                  isRound ? Math.round(ex?.availableToBack?.length > 0
-                    ? ex?.availableToBack[2]?.price
-                    : 0) : ex?.availableToBack?.length > 0
+                  isRound
+                    ? Math.round(
+                        ex?.availableToBack?.length > 0
+                          ? ex?.availableToBack[2]?.price
+                          : 0
+                      )
+                    : ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[2]?.price
                     : 0
                 }
                 value2={formatNumber(
                   ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[2]?.size
-                    : 0, isRound
+                    : 0,
+                  isRound
                 )}
                 color={matchesMobile ? "white" : "#CEEBFF"}
                 type={{ color: "#A7DCFF", type: "BL" }}
@@ -188,23 +212,30 @@ const BoxComponent = ({
             ></Box>
             {!matchesMobile && (
               <SeprateBox
-              selectedFastAmount={selectedFastAmount}
-              fromOdds={fromOdds}
+              sessionMain={sessionMain}
+                setFastAmount={setFastAmount}
+                selectedFastAmount={selectedFastAmount}
+                fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}
-                lock={  ex?.availableToBack?.length > 0 ? false : true}
+                lock={ex?.availableToBack?.length > 0 ? false : true}
                 rates={allRates}
                 value={
-                  isRound ? Math.round(ex?.availableToBack?.length > 0
-                    ? ex?.availableToBack[1]?.price
-                    : 0) : ex?.availableToBack?.length > 0
+                  isRound
+                    ? Math.round(
+                        ex?.availableToBack?.length > 0
+                          ? ex?.availableToBack[1]?.price
+                          : 0
+                      )
+                    : ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[1]?.price
                     : 0
                 }
                 value2={formatNumber(
                   ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[1]?.size
-                    : 0, isRound
+                    : 0,
+                  isRound
                 )}
                 color={matchesMobile ? "white" : "#C2E6FF"}
                 type={{ color: "#A7DCFF", type: "BL" }}
@@ -218,23 +249,30 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
+               sessionMain={sessionMain}
+              setFastAmount={setFastAmount}
               back={true}
               selectedFastAmount={selectedFastAmount}
               fromOdds={fromOdds}
               currentMatch={newData}
-              lock={  ex?.availableToBack?.length > 0 ? false : true}
+              lock={ex?.availableToBack?.length > 0 ? false : true}
               rates={allRates}
               value={
-                isRound ? Math.round(ex?.availableToBack?.length > 0
-                  ? ex?.availableToBack[0]?.price
-                  : 0) : ex?.availableToBack?.length > 0
+                isRound
+                  ? Math.round(
+                      ex?.availableToBack?.length > 0
+                        ? ex?.availableToBack[0]?.price
+                        : 0
+                    )
+                  : ex?.availableToBack?.length > 0
                   ? ex?.availableToBack[0]?.price
                   : 0
               }
               value2={formatNumber(
                 ex?.availableToBack?.length > 0
                   ? ex?.availableToBack[0]?.size
-                  : 0, isRound
+                  : 0,
+                isRound
               )}
               color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
               type={{ color: "#A7DCFF", type: "BL" }}
@@ -248,21 +286,30 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
-            selectedFastAmount={selectedFastAmount}
+              setFastAmount={setFastAmount}
+              selectedFastAmount={selectedFastAmount}
               back={true}
+              sessionMain={sessionMain}
               fromOdds={fromOdds}
               currentMatch={newData}
-              lock={  ex?.availableToLay?.length > 0 ? false : true}
+              lock={ex?.availableToLay?.length > 0 ? false : true}
               rates={allRates}
               value={
-                isRound ? Math.round(ex?.availableToLay?.length > 0
-                  ? ex?.availableToLay[0]?.price
-                  : 0) : ex?.availableToLay?.length > 0
+                isRound
+                  ? Math.round(
+                      ex?.availableToLay?.length > 0
+                        ? ex?.availableToLay[0]?.price
+                        : 0
+                    )
+                  : ex?.availableToLay?.length > 0
                   ? ex?.availableToLay[0]?.price
                   : 0
               }
               value2={formatNumber(
-                ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0, isRound
+                ex?.availableToLay?.length > 0
+                  ? ex?.availableToLay[0]?.size
+                  : 0,
+                isRound
               )}
               color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
               type={{ color: "#FFB5B5", type: "BL" }}
@@ -275,23 +322,30 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
-              selectedFastAmount={selectedFastAmount}
+              sessionMain={sessionMain}
+                setFastAmount={setFastAmount}
+                selectedFastAmount={selectedFastAmount}
                 back={true}
                 fromOdds={fromOdds}
                 currentMatch={newData}
                 rates={allRates}
-                lock={  ex?.availableToLay?.length > 0 ? false : true}
+                lock={ex?.availableToLay?.length > 0 ? false : true}
                 value={
-                  isRound ? Math.round(ex?.availableToLay?.length > 0
-                    ? ex?.availableToLay[1]?.price
-                    : 0) : ex?.availableToLay?.length > 0
+                  isRound
+                    ? Math.round(
+                        ex?.availableToLay?.length > 0
+                          ? ex?.availableToLay[1]?.price
+                          : 0
+                      )
+                    : ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[1]?.price
                     : 0
                 }
                 value2={formatNumber(
                   ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[1]?.size
-                    : 0, isRound
+                    : 0,
+                  isRound
                 )}
                 color={matchesMobile ? "white" : "#F2CBCB"}
                 type={{ color: "#FFB5B5", type: "BL" }}
@@ -305,22 +359,30 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
-              selectedFastAmount={selectedFastAmount}
-              fromOdds={fromOdds}
+              sessionMain={sessionMain}
+                setFastAmount={setFastAmount}
+                selectedFastAmount={selectedFastAmount}
+                fromOdds={fromOdds}
                 back={true}
                 currentMatch={newData}
                 rates={allRates}
-                lock={  ex?.availableToLay?.length > 0 ? false : true}
-                value={isRound ? Math.round(ex?.availableToLay?.length > 0
-                  ? ex?.availableToLay[2]?.price
-                  : 0) : ex?.availableToLay?.length > 0
-                  ? ex?.availableToLay[2]?.price
-                  : 0
+                lock={ex?.availableToLay?.length > 0 ? false : true}
+                value={
+                  isRound
+                    ? Math.round(
+                        ex?.availableToLay?.length > 0
+                          ? ex?.availableToLay[2]?.price
+                          : 0
+                      )
+                    : ex?.availableToLay?.length > 0
+                    ? ex?.availableToLay[2]?.price
+                    : 0
                 }
                 value2={formatNumber(
                   ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[2]?.size
-                    : 0, isRound
+                    : 0,
+                  isRound
                 )}
                 color={matchesMobile ? "white" : "#ECD6D6"}
                 type={{ color: "#FFB5B5", type: "BL" }}

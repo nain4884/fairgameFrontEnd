@@ -40,8 +40,10 @@ const SeprateBox = ({
   mainData,
   rates,
   betType,
+  setFastAmount,
   selectedFastAmount,
   fromOdds,
+  sessionMain,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -60,6 +62,12 @@ const SeprateBox = ({
   const [selectedValue, setSelectedValue] = useState("");
 
   const [showAtTop, setShowAtTop] = useState(false);
+
+  const [previousValue, setPreviousValue] = useState(false);
+
+  useEffect(() => {
+    setPreviousValue(value);
+  }, [value]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -83,7 +91,10 @@ const SeprateBox = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  console.log("showTop", showAtTop);
+  async function FetchIpAddress() {
+    const res = await fetch("https://geolocation-db.com/json/");
+    return res.json();
+  }
 
   function showDialogModal(isModalOpen, showRight, message) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -150,9 +161,10 @@ const SeprateBox = ({
     return { right: 0 };
   };
   const handlePlaceBet = async (payload, match) => {
-    let oddValue = Number(
-      document.getElementsByClassName("OddValue")?.[0]?.textContent
-    );
+    let oddValue = selectedFastAmount
+      ? Number(previousValue)
+      : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
+
     if (oddValue != payload.odds) {
       toast.warning("Odds value has been updated. You can not place bet.");
       return;
@@ -178,9 +190,18 @@ const SeprateBox = ({
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
       // dispatch(setAllBetRate(response?.data?.data[0]))
+      console.log("reponseSession", sessionMain);
+      if (sessionMain === "sessionOdds") {
+        setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
+      } else if (sessionMain === "manualBookMaker") {
+        setFastAmount((prev) => ({ ...prev, mannualBookMaker: 0 }));
+      } else if (sessionMain === "bookmaker") {
+        setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
+      }
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
       setCanceled(false);
+      setPreviousValue(0);
       // navigate("/matchDetail")
     } catch (e) {
       console.log(e.response.data.message);
@@ -194,6 +215,12 @@ const SeprateBox = ({
   const innerRef = useOuterClick((ev) => {
     setIsPopoverOpen(false);
   });
+  function findBetId(data) {
+    const matchOdds = data?.bettings?.filter(
+      (element) => element.sessionBet === false
+    );
+    return matchOdds?.[0]?.id;
+  }
 
   return (
     <>
@@ -207,12 +234,50 @@ const SeprateBox = ({
         }}
       >
         <Box
-          onClick={(e) => {
+          onClick={async (e) => {
             if (lock || color == "white") {
               return null;
             }
+            const res = await FetchIpAddress();
+            console.log("res", res);
             if (selectedFastAmount) {
-              alert(selectedFastAmount)
+              let payload = {
+                id: currentMatch?.id,
+                matchType: currentMatch?.gameType,
+                // betId: currentMatch?.matchOddsData?.[0]?.id,
+                betId: findBetId(currentMatch),
+                bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
+                odds: Number(value),
+                betOn: name,
+                stack: Number(selectedFastAmount),
+                team_bet: name,
+                country: res?.country_name,
+                ip_address: res?.IPv4,
+                stake: Number(selectedFastAmount),
+                teamA_name: currentMatch?.teamA,
+                teamB_name: currentMatch?.teamB,
+                teamC_name: currentMatch?.teamC,
+                marketType:
+                  typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
+              };
+              if (session) {
+                delete payload.betOn;
+                delete payload.odds;
+
+                payload.matchType = data?.matchType;
+                payload.teamA_name = mainData?.teamA;
+                payload.teamB_name = mainData?.teamB;
+                payload.id = data?.match_id;
+                payload.betId = data?.id;
+                payload.bet_type = type?.color === "#A7DCFF" ? "yes" : "no";
+                payload.bet_condition = data?.bet_condition;
+                payload.rate_percent = data?.rate_percent;
+                payload.marketType = typeOfBet;
+                payload.odds = Number(value);
+                payload.sessionBet = true;
+              }
+
+              handlePlaceBet(payload, currentMatch);
             } else {
               setSelectedValue(value);
               type?.type === "BL"
