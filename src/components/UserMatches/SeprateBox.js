@@ -69,6 +69,7 @@ const SeprateBox = ({
     setPreviousValue(value);
   }, [value]);
 
+
   useEffect(() => {
     const handleScroll = () => {
       const windowHeight = window.innerHeight;
@@ -339,7 +340,8 @@ const SeprateBox = ({
 
         {isPopoverOpen && (
           <>
-            <Box
+            <Box 
+          
               sx={{
                 zIndex: 110,
                 position: "absolute",

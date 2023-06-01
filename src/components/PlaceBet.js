@@ -53,6 +53,28 @@ const PlaceBet = ({
 
   const myDivRef = useRef(null);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          // The div is partially or fully outside the viewport
+          entry.target.scrollIntoView({ block: "center" });
+        }
+      },
+      { threshold: 0.5 } // Adjust the threshold as needed
+    );
+
+    if (myDivRef.current) {
+      observer.observe(myDivRef.current);
+    }
+
+    return () => {
+      if (myDivRef.current) {
+        observer.unobserve(myDivRef.current);
+      }
+    };
+  }, []);
+
   // const scrollToBottom = () => {
   //   myDivRef.current?.scrollIntoView({
   //     top: 2000,
@@ -63,12 +85,9 @@ const PlaceBet = ({
   useEffect(() => {
     if (!fromOdds) {
       // scrollToBottom();
-      scrollToFullDiv()
+      scrollToFullDiv();
     }
   }, [selectedValue, fromOdds]);
-
-
-
 
   const getLatestBetAmount = async (value, newData) => {
     console.log("value", value);
@@ -417,14 +436,11 @@ const PlaceBet = ({
       payload.bet_condition = data?.bet_condition;
       payload.rate_percent = data?.rate_percent;
       payload.marketType = currentMatch?.bet_condition;
-      payload.odds =Number(selectedValue);
+      payload.odds = Number(selectedValue);
       payload.sessionBet = true;
     }
     return payload;
   }
-
-
-
 
   const scrollToFullDiv = () => {
     if (myDivRef.current) {
@@ -452,7 +468,7 @@ const PlaceBet = ({
           width: { mobile: "98vw", tablet: "60vw", laptop: "38vw" },
           // boxShadow:
           //   "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
-          boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 4px"
+          boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 4px",
           // left: isSessionYes?"-30%": "95%"
         },
         // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
@@ -500,9 +516,7 @@ const PlaceBet = ({
           >
             Place Bet
           </Typography>
-          <Box
-            sx={{ display: "flex", alignItems: "center" }}
-          >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
             <MoneyBox
               trendingUp={false}
               rate={Number(newRates?.win_amount)?.toFixed(2)}
