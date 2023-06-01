@@ -43,11 +43,18 @@ const Matches = () => {
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(0);
   const [currenLimit, setCurrenLimit] = useState(1);
+  const [loader, setLoader] = useState(true);
 
-  console.log("selected", selected);
   const dispatch = useDispatch();
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  useEffect(() => {
+    if (["INPLAY", "CRICKET"].includes(selected)) {
+      setLoader(true);
+    } else {
+      setLoader(false);
+    }
+  }, [selected]);
 
   async function getBetHisory() {
     const userId = userID;
@@ -288,7 +295,6 @@ const Matches = () => {
               <AllRateSeperate
                 mark2
                 mark
-               
                 allBetsData={allBets?.filter((b) =>
                   ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
                     b?.marketType
@@ -529,6 +535,8 @@ const Matches = () => {
             <SideBar />
             {window.location.pathname === "/matches" && (
               <Match
+                setLoader={setLoader}
+                loader={loader}
                 selected={selected}
                 setVisible={setVisible}
                 // handleClose={handleClose}

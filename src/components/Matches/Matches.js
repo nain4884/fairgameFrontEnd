@@ -1,6 +1,6 @@
 import { Pagination, Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { } from '@mui/material';
+import {} from "@mui/material";
 import "../index.css";
 import Odds from "./Odds";
 import { useDispatch } from "react-redux";
@@ -13,9 +13,15 @@ import {
 import { setRole } from "../../newStore";
 import constants from "../helper/constants";
 import Lottie from "lottie-react";
-import { HourGlass } from '../../assets/';
+import { HourGlass } from "../../assets/";
+import CustomLoader from "../helper/CustomLoader";
 
-const MatchesComponent = ({ doNavigateWithState, selected }) => {
+const MatchesComponent = ({
+  doNavigateWithState,
+  selected,
+  setLoader,
+  loader,
+}) => {
   // const classes=useStyle()
   const [matchData, setMatchData] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
@@ -41,6 +47,7 @@ const MatchesComponent = ({ doNavigateWithState, selected }) => {
       });
 
       if (data.length > 0) {
+        setLoader(false);
         setMatchData(data[0]);
         setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
       }
@@ -71,37 +78,15 @@ const MatchesComponent = ({ doNavigateWithState, selected }) => {
           />
         );
       })}
-      {matchData.length != 0 && <Pagination
-        className="whiteTextPagination d-flex justify-content-center"
-        count={pageCount}
-        color="primary"
-        onChange={callPage}
-      />}
-      {matchData.length == 0 &&
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            width: "100%",
-            flex: 1,
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Lottie
-            animationData={HourGlass}
-            style={{
-              display: "flex",
-              alignSelf: "center",
-              width: "200px",
-              height: "200px",
-            }}
-          />
-          <Typography sx={{ color: "text.white" }}>
-            Coming Soon
-          </Typography>
-        </Box>
-      }
+      {matchData.length != 0 && (
+        <Pagination
+          className="whiteTextPagination d-flex justify-content-center"
+          count={pageCount}
+          color="primary"
+          onChange={callPage}
+        />
+      )}
+      {loader && <CustomLoader text="" />}
       {/* <Odds onClick={onClick} top={false} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} /> */}

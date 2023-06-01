@@ -36,6 +36,7 @@ import { memo } from "react";
 import { logout } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
+import CustomLoader from "../../components/helper/CustomLoader";
 let sessionOffline = [];
 let matchOddsCount = 0;
 const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
@@ -1098,7 +1099,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
     getAllBetsData1();
   }, [matchId]);
 
-  console.log("id", location);
   return (
     <Box
       sx={{
@@ -1233,29 +1233,9 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           </Box>
         </Box>
       )}
-      {selected !== "CRICKET" && selected !== "INPLAY" && (
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            width: "100%",
-            flex: 1,
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Lottie
-            animationData={HourGlass}
-            style={{
-              display: "flex",
-              alignSelf: "center",
-              width: "200px",
-              height: "200px",
-            }}
-          />
-          <Typography sx={{ color: "text.white" }}>Coming Soon</Typography>
-        </Box>
-      )}
+   
+       
+      
     </Box>
   );
 };

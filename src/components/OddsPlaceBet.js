@@ -12,58 +12,65 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown, CANCEL, CancelDark } from "../assets";
 import "../components/index.css";
 import StyledImage from "./StyledImage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BoxInput from "./BoxInput";
 import { toast } from "react-toastify";
 import { setRole } from "../newStore";
-const PlaceBet = ({
+import { setDailogData } from "../store/dailogModal";
+import BetPlaced from "./BetPlaced";
+const OddsPlaceBet = ({
   open,
   refs,
   handleClose,
   currentMatch,
   season,
-  onSubmit,
-  onCancel,
-  back,
-  isSessionYes,
-  isBack,
   type,
   name,
   betOn,
-  data,
   typeOfBet,
-  selectedValue,
   mainData,
   betType,
   rates,
   fromOdds,
+  placeBetData,
+  setPlaceBetData,
+  setFastRate,
+  fastRate,
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
-  const [currentOdds, setCurrentOdds] = useState(selectedValue);
+  const dispatch = useDispatch();
+
+  const { axios } = setRole();
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+  console.log("visible", visible);
+
+  const [canceled, setCanceled] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showModalMessage, setShowModalMessage] = useState("");
   const [newRates, setNewRates] = useState({
     loss_amount: 0,
     win_amount: 0,
   });
   const theme = useTheme();
-  const { axios } = setRole();
   const selectedColorBox = useSelector(
     (state) => state.selectedColorBox
   )?.value;
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-
-  const myDivRef = useRef(null);
-
- 
+  async function FetchIpAddress() {
+    const res = await fetch("https://geolocation-db.com/json/");
+    return res.json();
+  }
 
   const getLatestBetAmount = async (value, newData) => {
     try {
-      const title = season ? betType : isBack ? "back" : "lay";
+      const title = placeBetData?.back ? "back" : "lay";
       const bet_type = title;
 
       var body = {
         bet_type,
         marketType: typeOfBet,
-        odds: currentOdds,
+        odds: placeBetData?.odds,
         stake: Number(value),
       };
       if (season) {
@@ -79,45 +86,6 @@ const PlaceBet = ({
     }
   };
 
-  const CustomButton = ({ color, title, onClick }) => {
-    return (
-      <Box
-        onClick={onClick}
-        sx={{
-          width: { laptop: "150px", mobile: "130px" },
-          height: { laptop: "35px", mobile: "38px" },
-          borderRadius: { mobile: "7px", laptop: "5px" },
-          border: "2px solid white",
-          alignItems: "center",
-          justifyContent: "center",
-          background: color,
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ color: "white", fontWeight: "500", fontSize: "13px" }}
-        >
-          {title}
-        </Typography>
-      </Box>
-    );
-  };
-  const [ip, setIP] = useState("");
-  useEffect(() => {
-    FetchIpAddress();
-  }, []);
-
-  async function FetchIpAddress() {
-    const response = await fetch("https://geolocation-db.com/json/")
-      .then((response) => {
-        return response.json();
-      }, "jsonp")
-      .then((res) => {
-        setIP(res);
-      })
-      .catch((err) => console.log(err));
-  }
-
   const TeamsOdssData = ({
     input,
     title,
@@ -127,10 +95,7 @@ const PlaceBet = ({
     valueTextStyle,
     bet_condition,
   }) => {
-    const [oddValue, setOddValue] = useState(currentOdds || "0");
-    const selectedColorBox = useSelector(
-      (state) => state.selectedColorBox
-    )?.value;
+    const [oddValue, setOddValue] = useState(placeBetData?.odds);
     // console.log(selectedColorBox, "selectedColorBox");
     return (
       <Box sx={[{ display: "flex", flexDirection: "column" }, containerStyle]}>
@@ -182,36 +147,16 @@ const PlaceBet = ({
                   color: "#262626",
                   padding: "1px",
                   fontSize: {
-                    mobile:
-                      title == "Back/Lay" || title == "Yes/No"
-                        ? "10px"
-                        : "10px",
-                    tablet:
-                      title == "Back/Lay" || title == "Yes/No"
-                        ? "10px"
-                        : "10px",
-                    laptop:
-                      title == "Back/Lay" || title == "Yes/No"
-                        ? "10px"
-                        : "10px",
+                    mobile: "10px",
+                    tablet: "10px",
+                    laptop: "10px",
                   },
-                  fontWeight:
-                    title === "Back/Lay" || title === "Yes/No" ? "800" : "600",
+                  fontWeight: "600",
                 },
                 valueTextStyle,
               ]}
             >
-              {title === "Back/Lay"
-                ? isBack
-                  ? "Back"
-                  : "Lay"
-                : title === "Team"
-                ? name
-                : bet_condition
-                ? bet_condition
-                : isSessionYes
-                ? "Yes"
-                : "No"}
+              {value}
             </Typography>
           </Box>
         )}
@@ -236,7 +181,6 @@ const PlaceBet = ({
               <Box
                 onClick={() => {
                   setOddValue((i) => Number(i) - 1);
-                  setCurrentOdds((prev) => Number(prev) - 1);
                 }}
                 sx={{
                   width: "18px",
@@ -280,7 +224,6 @@ const PlaceBet = ({
               <Box
                 onClick={() => {
                   setOddValue((i) => Number(i) + 1);
-                  setCurrentOdds((prev) => Number(prev) + 1);
                 }}
                 sx={{
                   width: "18px",
@@ -353,103 +296,86 @@ const PlaceBet = ({
     );
   };
 
-  function setDValue(e) {
-    e.preventDefault();
-    setDefaultValue("");
-  }
-  function findBetId(data) {
-    const matchOdds = data?.bettings?.filter(
-      (element) => element.sessionBet === false
-    );
-    return matchOdds?.[0]?.id;
-  }
+  const handlePlaceBet = async (payload, match) => {
+    // let oddValue = fastRate;
 
-  function SubmitPayloadForPlaceBet(
-    betOn = "teamA_back",
-    marketType = "BOOKMAKER"
-  ) {
-    let payload = {
-      id: currentMatch?.id,
-      matchType: currentMatch?.gameType,
-      // betId: currentMatch?.matchOddsData?.[0]?.id,
-      betId: findBetId(currentMatch),
-      bet_type: isBack ? "back" : "lay",
-      odds: Number(
-        document.getElementsByClassName("OddValue")?.[0]?.textContent
-      ),
-      betOn: betOn,
-      stack: Number(defaultValue),
-      team_bet: name,
-      country: ip?.country_name,
-      ip_address: ip?.IPv4,
-      stake: Number(defaultValue),
-      teamA_name: currentMatch?.teamA,
-      teamB_name: currentMatch?.teamB,
-      teamC_name: currentMatch?.teamC,
-      marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : marketType,
-    };
-    if (marketType == "Session") {
-      delete payload.betOn;
-      delete payload.odds;
+    // console.log("oddValue", oddValue ,payload.odds);
+    // if (oddValue != payload.odds) {
+    //   toast.warning("Odds value has been updated. You can not place bet.");
+    //   return;
+    // }
 
-      payload.matchType = data?.matchType;
-      payload.teamA_name = mainData?.teamA;
-      payload.teamB_name = mainData?.teamB;
-      payload.id = data?.match_id;
-      payload.betId = data?.id;
-      payload.bet_type = isSessionYes ? "yes" : "no";
-      payload.bet_condition = data?.bet_condition;
-      payload.rate_percent = data?.rate_percent;
-      payload.marketType = currentMatch?.bet_condition;
-      payload.odds = Number(selectedValue);
-      payload.sessionBet = true;
+    PlaceBetSubmit(payload);
+  };
+
+  function showDialogModal(isModalOpen, showRight, message) {
+    dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
+    setTimeout(() => {
+      dispatch(setDailogData({ isModalOpen: false }));
+      // navigate(`/${window.location.pathname.split('/')[1]}`,{state:data.id})
+    }, [2000]);
+    setShowModalMessage(message);
+  }
+  const PlaceBetSubmit = async (payload) => {
+    try {
+      // if (Number(payload?.odds) !== Number(value)) {
+      //   return toast.error("Rate changed ");
+      // }
+      let response = await axios.post(`/betting/placeBet`, payload);
+      // setAllRateBets(response?.data?.data[0])
+      // dispatch(setAllBetRate(response?.data?.data[0]))
+
+      showDialogModal(isPopoverOpen, true, response.data.message);
+      setVisible(true);
+      setCanceled(false);
+      setFastRate(0);
+    } catch (e) {
+      console.log(e.response.data.message);
+      toast.error(e.response.data.message);
+      showDialogModal(isPopoverOpen, false, e.response.data.message);
+      setShowModalMessage(e.response.data.message);
+      setShowSuccessModal(true);
     }
-    return payload;
-  }
+  };
 
+  const onSubmit = async (e) => {
+    try {
+      const res = await FetchIpAddress();
+      let payload = {
+        id: placeBetData?.id,
+        matchType: placeBetData?.matchType,
+        // betId: currentMatch?.matchOddsData?.[0]?.id,
+        betId: placeBetData?.betId,
+        bet_type: placeBetData?.bet_type,
+        odds: placeBetData?.odds,
+        betOn: placeBetData?.betOn,
+        stack: Number(defaultValue),
+        team_bet: name,
+        country: res?.country_name,
+        ip_address: res?.IPv4,
+        stake: Number(defaultValue),
+        teamA_name: placeBetData?.teamA_name,
+        teamB_name: placeBetData?.teamB_name,
+        teamC_name: placeBetData?.teamC_name,
+        marketType: placeBetData?.marketType,
+      };
+      handlePlaceBet(payload, placeBetData?.currentMatch);
+    } catch (err) {
+      console.log(err?.message);
+    }
+  };
 
   return (
     <Box
-      // ref={refs}
-      ref={myDivRef}
       sx={[
         {
           display: "flex",
           flexDirection: "column",
           border: "1px solid white",
           borderRadius: "5px",
-          marginLeft: season ? 0 : 0,
           overflow: "hidden",
-
-          width: { mobile: "98vw", tablet: "60vw", laptop: "40%" },
-          // boxShadow:
-          //   "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
-          boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 4px",
-          // left: isSessionYes?"-30%": "95%"
+          width: "100%",
         },
-        // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
-        // matchesMobile
-        //   ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
-        //     // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-        //     { position: "absolute", right: back ? "0vw" : "0vw" }
-        //   : typeOfBet == "Session"
-        //   ? {
-        //       position: "absolute",
-        //       right: back ? "auto" : "0vw",
-        //       left: {
-        //         mobile: isSessionYes ? "-30%" : "95%",
-        //         tablet: isSessionYes ? "-30%" : "95%",
-        //         laptop: isSessionYes ? "-112%" : "34%",
-        //       },
-        //     }
-        //   : {
-        //       position: "absolute",
-        //       right: back
-        //         ? typeOfBet != "Session"
-        //           ? "1.5vw"
-        //           : "-16.5vw"
-        //         : "0vw",
-        //     },
       ]}
     >
       <Box sx={{ background: "#F8C851", width: "100%", overflow: "hidden" }}>
@@ -503,13 +429,12 @@ const PlaceBet = ({
         </Box>
         <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }}>
           <TeamsOdssData
-            title={season ? "Session" : "Team"}
-            value={season ? "6 OVER RUNS INDIA" : "INDIA"}
+            title={"Team"}
             valueContainerStyle={{
               background: type?.color ? type?.color : "#F8C851",
             }}
             containerStyle={{ flex: season ? { mobile: 2.5, laptop: 2 } : 1 }}
-            bet_condition={data?.bet_condition}
+            value={placeBetData?.name}
           />
           <TeamsOdssData
             input={true}
@@ -521,16 +446,8 @@ const PlaceBet = ({
             containerStyle={{ marginLeft: "2px", flex: 1 }}
           />
           <TeamsOdssData
-            title={season ? "Yes/No" : "Back/Lay"}
-            value={
-              season
-                ? selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                  ? "No"
-                  : "Yes"
-                : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                ? "Lay"
-                : "Back"
-            }
+            title={"Back/Lay"}
+            value={placeBetData?.bet_type}
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}
           />
@@ -540,7 +457,7 @@ const PlaceBet = ({
             defaultValue={defaultValue}
             selectedColorBox={type?.color}
             getLatestBetAmount={(value) =>
-              value && getLatestBetAmount(value, data)
+              value && getLatestBetAmount(value, placeBetData?.data)
             }
             containerStyle={{ marginLeft: "2px", flex: 1.3 }}
             title={"Stake"}
@@ -557,7 +474,7 @@ const PlaceBet = ({
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
                   value={v}
                   getLatestBetAmount={(value) =>
-                    getLatestBetAmount(value, data)
+                    getLatestBetAmount(value, placeBetData?.data)
                   }
                   setDefaultValue={setDefaultValue}
                 />
@@ -569,7 +486,7 @@ const PlaceBet = ({
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
                   value={v}
                   getLatestBetAmount={(value) =>
-                    getLatestBetAmount(value, data)
+                    getLatestBetAmount(value, placeBetData?.data)
                   }
                   setDefaultValue={setDefaultValue}
                 />
@@ -585,25 +502,28 @@ const PlaceBet = ({
             justifyContent: "space-evenly",
           }}
         >
-          <CustomButton
-            onClick={(e) => {
-              if (defaultValue !== "") {
-                setDValue(e);
-                return "";
-              }
-              handleClose();
+          <button
+            // style={classes.CustomButton_Btn("#262626")}
+            style={{
+              color: "#FFF",
+              backgroundColor: "#FF4949",
+              width: "150px",
+              // width: { laptop: "150px", mobile: "130px" },
+              height: "35px",
+              borderRadius: "5px",
+              border: "2px solid white",
             }}
-            title={"Reset"}
-            color={"#FF4949"}
-          />
-          {/* <CustomButton
             onClick={() => {
-              handleClose();
-              onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
+              setDefaultValue(" ");
+              setNewRates({
+                loss_amount: 0,
+                win_amount: 0,
+              });
             }}
-            title={"Submit"}
-            color={"#262626"}
-          /> */}
+          >
+            Reset
+          </button>
+
           <button
             // style={classes.CustomButton_Btn("#262626")}
             style={{
@@ -616,13 +536,44 @@ const PlaceBet = ({
               border: "2px solid white",
             }}
             onClick={() => {
-              handleClose();
-              onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
+              setVisible(true);
+
+              if (placeBetData.marketType == "MATCH ODDS") {
+                setVisible(true);
+                setCanceled(false);
+                let delay = placeBetData?.currentMatch?.delaySecond
+                  ? placeBetData?.currentMatch?.delaySecond
+                  : 0;
+                delay = delay * 1000;
+                setTimeout(() => {
+                  onSubmit();
+                }, delay);
+              } else {
+                onSubmit();
+              }
             }}
           >
             Submit
           </button>
         </Box>
+        {
+          <BetPlaced
+            // time={5}
+            time={
+              placeBetData?.typeOfBet == "MATCH ODDS"
+                ? placeBetData?.currentMatch?.delaySecond
+                  ? placeBetData?.currentMatch?.delaySecond
+                  : 0
+                : 0
+            }
+            not={canceled}
+            visible={visible}
+            setVisible={(i) => {
+              setPlaceBetData(null);
+              setVisible(i);
+            }}
+          />
+        }
       </Box>
     </Box>
   );
@@ -667,4 +618,4 @@ const NumberData = ({
     </Box>
   );
 };
-export default PlaceBet;
+export default OddsPlaceBet;

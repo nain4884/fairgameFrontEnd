@@ -242,17 +242,7 @@ export default function UserDetailModal({
             width: { mobile: "26%", laptop: "77%", tablet: "100%" },
           }}
         >
-          {elementToUDM?.role?.roleName === "user" && (
-            <BoxButton
-              onClick={(e) => {
-                e?.preventDefault();
-                handleSettlement(elementToUDM?.userId);
-              }}
-              title={"C_Settlement"}
-              containerStyle={{ marginLeft: "10px", flex: 1 }}
-              labelStyle={{}}
-            />
-          )}
+        
           <BoxButton
             onClick={() => {
               setSelected(0);
@@ -271,6 +261,17 @@ export default function UserDetailModal({
             title={"Withdraw"}
             labelStyle={{}}
           />
+            {elementToUDM?.role?.roleName === "user" && (
+            <BoxButton
+              onClick={(e) => {
+                e?.preventDefault();
+                handleSettlement(elementToUDM?.userId);
+              }}
+              title={"C_Settlement"}
+              containerStyle={{ marginLeft: "10px", flex: 1 }}
+              labelStyle={{}}
+            />
+          )}
           <BoxButton
             onClick={() => {
               setSelected(3);

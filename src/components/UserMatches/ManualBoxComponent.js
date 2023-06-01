@@ -27,7 +27,10 @@ const BoxComponent = ({
   isBall,
   selectedFastAmount,
   setFastAmount,
-  sessionMain
+  sessionMain,
+  setFastRate,
+  fastRate,
+  setPlaceBetData
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -246,7 +249,11 @@ const BoxComponent = ({
               >
                 {!matchesMobile && (
                   <SeprateBox
-                  sessionMain={sessionMain}
+                  
+                  setFastRate={setFastRate}
+                    fastRate={fastRate}
+                    setPlaceBetData={setPlaceBetData}
+                    sessionMain={sessionMain}
                     setFastAmount={setFastAmount}
                     selectedFastAmount={selectedFastAmount}
                     back={true}
@@ -273,7 +280,10 @@ const BoxComponent = ({
                 ></Box>
                 {!matchesMobile && (
                   <SeprateBox
-                  sessionMain={sessionMain}
+                  setPlaceBetData={setPlaceBetData}
+                    setFastRate={setFastRate}
+                    fastRate={fastRate}
+                    sessionMain={sessionMain}
                     setFastAmount={setFastAmount}
                     selectedFastAmount={selectedFastAmount}
                     back={true}
@@ -299,7 +309,10 @@ const BoxComponent = ({
                 ></Box>
 
                 <SeprateBox
-                 sessionMain={sessionMain}
+                   setPlaceBetData={setPlaceBetData}
+                  setFastRate={setFastRate}
+                  fastRate={fastRate}
+                  sessionMain={sessionMain}
                   setFastAmount={setFastAmount}
                   selectedFastAmount={selectedFastAmount}
                   back={true}
@@ -320,7 +333,10 @@ const BoxComponent = ({
                 ></Box>
 
                 <SeprateBox
-                 sessionMain={sessionMain}
+                   setPlaceBetData={setPlaceBetData}
+                  setFastRate={setFastRate}
+                  fastRate={fastRate}
+                  sessionMain={sessionMain}
                   setFastAmount={setFastAmount}
                   selectedFastAmount={selectedFastAmount}
                   back={true}
@@ -340,7 +356,10 @@ const BoxComponent = ({
             ></Box> */}
                 {!matchesMobile && (
                   <SeprateBox
-                  sessionMain={sessionMain}
+                  setPlaceBetData={setPlaceBetData}
+                    setFastRate={setFastRate}
+                    fastRate={fastRate}
+                    sessionMain={sessionMain}
                     setFastAmount={setFastAmount}
                     selectedFastAmount={selectedFastAmount}
                     back={true}
@@ -366,7 +385,10 @@ const BoxComponent = ({
             ></Box> */}
                 {!matchesMobile && (
                   <SeprateBox
-                  sessionMain={sessionMain}
+                  setPlaceBetData={setPlaceBetData}
+                    setFastRate={setFastRate}
+                    fastRate={fastRate}
+                    sessionMain={sessionMain}
                     setFastAmount={setFastAmount}
                     selectedFastAmount={selectedFastAmount}
                     back={true}

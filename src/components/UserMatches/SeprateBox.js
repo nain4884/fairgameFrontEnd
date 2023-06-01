@@ -44,6 +44,9 @@ const SeprateBox = ({
   selectedFastAmount,
   fromOdds,
   sessionMain,
+  setFastRate,
+  fastRate,
+  setPlaceBetData,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -67,8 +70,11 @@ const SeprateBox = ({
 
   useEffect(() => {
     setPreviousValue(value);
+    if (setFastRate !== undefined) {
+      console.log("value", { name, value });
+      setFastRate(value);
+    }
   }, [value]);
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -162,24 +168,30 @@ const SeprateBox = ({
     return { right: 0 };
   };
   const handlePlaceBet = async (payload, match) => {
+    const res = await FetchIpAddress();
+    let newPayload = {
+      ...payload,
+      country: res?.country_name,
+      ip_address: res?.IPv4,
+    };
     let oddValue = selectedFastAmount
       ? Number(previousValue)
       : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
 
-    if (oddValue != payload.odds) {
+    if (oddValue != newPayload.odds) {
       toast.warning("Odds value has been updated. You can not place bet.");
       return;
     }
-    if (payload.marketType == "MATCH ODDS") {
+    if (newPayload.marketType == "MATCH ODDS") {
       setVisible(true);
       setCanceled(false);
       let delay = match?.delaySecond ? match?.delaySecond : 0;
       delay = delay * 1000;
       setTimeout(() => {
-        PlaceBetSubmit(payload);
+        PlaceBetSubmit(newPayload);
       }, delay);
     } else {
-      PlaceBetSubmit(payload);
+      PlaceBetSubmit(newPayload);
     }
   };
 
@@ -191,7 +203,6 @@ const SeprateBox = ({
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
       // dispatch(setAllBetRate(response?.data?.data[0]))
-      console.log("reponseSession", sessionMain);
       if (sessionMain === "sessionOdds") {
         setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
       } else if (sessionMain === "manualBookMaker") {
@@ -216,6 +227,7 @@ const SeprateBox = ({
   const innerRef = useOuterClick((ev) => {
     setIsPopoverOpen(false);
   });
+
   function findBetId(data) {
     const matchOdds = data?.bettings?.filter(
       (element) => element.sessionBet === false
@@ -226,7 +238,7 @@ const SeprateBox = ({
   return (
     <>
       <Box
-        ref={innerRef}
+        // ref={innerRef}
         sx={{
           padding: { mobile: "0px", laptop: "1px", tablet: "1px" },
           width: { mobile: "100%", laptop: "20%" },
@@ -235,12 +247,7 @@ const SeprateBox = ({
         }}
       >
         <Box
-          onClick={async (e) => {
-            if (lock || color == "white") {
-              return null;
-            }
-            const res = await FetchIpAddress();
-            console.log("res", res);
+          onClick={(e) => {
             if (selectedFastAmount) {
               let payload = {
                 id: currentMatch?.id,
@@ -252,8 +259,8 @@ const SeprateBox = ({
                 betOn: name,
                 stack: Number(selectedFastAmount),
                 team_bet: name,
-                country: res?.country_name,
-                ip_address: res?.IPv4,
+                // country: res?.country_name,
+                // ip_address: res?.IPv4,
                 stake: Number(selectedFastAmount),
                 teamA_name: currentMatch?.teamA,
                 teamB_name: currentMatch?.teamB,
@@ -279,12 +286,40 @@ const SeprateBox = ({
               }
 
               handlePlaceBet(payload, currentMatch);
+            } else if (sessionMain !== "sessionOdds") {
+              let payload = {
+                id: currentMatch?.id,
+                matchType: currentMatch?.gameType,
+                // betId: currentMatch?.matchOddsData?.[0]?.id,
+                betId: findBetId(currentMatch),
+                bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
+                odds: Number(value),
+                betOn: name,
+                stack: Number(selectedFastAmount),
+                team_bet: name,
+                stake: Number(selectedFastAmount),
+                teamA_name: currentMatch?.teamA,
+                teamB_name: currentMatch?.teamB,
+                teamC_name: currentMatch?.teamC,
+                marketType:
+                  typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
+                name,
+                rates,
+                back,
+                currentMatch,
+                selectedValue,
+                type,
+                data,
+                betOn: name,
+                typeOfBet: typeOfBet,
+              };
+              setPlaceBetData(payload);
             } else {
+              setIsPopoverOpen(true);
               setSelectedValue(value);
               type?.type === "BL"
                 ? setIsBack(type?.color === "#A7DCFF")
                 : setIsSessionYes(type?.color === "#A7DCFF");
-              setIsPopoverOpen(true);
               dispatch(setColorValue(color));
             }
           }}
@@ -338,74 +373,53 @@ const SeprateBox = ({
           )}
         </Box>
 
-        {isPopoverOpen && (
-          <>
-            <Box 
-          
-              sx={{
-                zIndex: 110,
-                position: "absolute",
-                ...getMargin(),
-                transform: { laptop: "translate( -230%)" },
-                top: {
-                  mobile: showAtTop ? "-33.5vh" : "40px",
-                  laptop: showAtTop ? "-32.5vh" : "40px",
-                  tablet: showAtTop ? "-33.5vh" : "40px",
-                },
+        <MUIModal
+          open={isPopoverOpen}
+          onClose={() => {
+            setIsPopoverOpen(false);
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              top: "33%",
+
+              justifyContent: "center",
+            }}
+          >
+            <PlaceBet
+              name={name}
+              rates={rates}
+              onSubmit={async (payload) => {
+                handlePlaceBet(payload, currentMatch);
               }}
-            >
-              <PlaceBet
-                name={name}
-                rates={rates}
-                onSubmit={async (payload) => {
-                  handlePlaceBet(payload, currentMatch);
-                }}
-                // onSubmit={async (payload) => {
-                //   try {
-                //     console.log(payload, "payload");
-                //     let response = await axios.post(
-                //       `/betting/placeBet`,
-                //       payload
-                //     );
-                //     // setAllRateBets(response?.data?.data[0])
-                //     // dispatch(setAllBetRate(response?.data?.data[0]))
-                //     showDialogModal(isPopoverOpen, true, response.data.message)
-                //     setVisible(true);
-                //     setCanceled(false);
-                //     // navigate("/matchDetail")
-                //   } catch (e) {
-                //     console.log(e.response.data.message);
-                //     toast.error(e.response.data.message)
-                //     showDialogModal(isPopoverOpen, false, e.response.data.message)
-                //     setShowModalMessage(e.response.data.message);
-                //     setShowSuccessModal(true);
-                //   }
-                // }}
-                onCancel={() => {
-                  setVisible(true);
-                  setCanceled(true);
-                  setIsPopoverOpen(false);
-                }}
-                handleClose={() => {
-                  setIsPopoverOpen(false);
-                }}
-                season={session}
-                back={back}
-                currentMatch={currentMatch}
-                isBack={isBack}
-                betType={betType}
-                fromOdds={fromOdds}
-                selectedValue={selectedValue}
-                isSessionYes={isSessionYes}
-                type={type}
-                data={data}
-                betOn={name}
-                typeOfBet={typeOfBet}
-                mainData={mainData}
-              />
-            </Box>
-          </>
-        )}
+              onCancel={() => {
+                setVisible(true);
+                setCanceled(true);
+                setIsPopoverOpen(false);
+              }}
+              handleClose={() => {
+                setIsPopoverOpen(false);
+              }}
+              season={session}
+              back={back}
+              currentMatch={currentMatch}
+              isBack={isBack}
+              betType={betType}
+              fromOdds={fromOdds}
+              selectedValue={selectedValue}
+              isSessionYes={isSessionYes}
+              type={type}
+              data={data}
+              betOn={name}
+              typeOfBet={typeOfBet}
+              mainData={mainData}
+            />
+          </Box>
+        </MUIModal>
         {
           <BetPlaced
             // time={5}

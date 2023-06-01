@@ -28,6 +28,8 @@ const Odds = ({ onClick, top, blur, match }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { axios } = setRole()
+
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());

@@ -87,7 +87,7 @@ const AccountListRow = ({
     bet_blocked: element.bet_blocked,
     all_blocked: element.all_blocked,
     rateToCalculatePercentage: handleUpline(),
-    totalCommissions: element.totalCommissions,
+    totalCommissions: element.TotalComission,
     role: allRole?.find((role) => role?.id === element?.roleId),
     userId:element?.id
   };
