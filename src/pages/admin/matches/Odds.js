@@ -7,6 +7,7 @@ import { useTheme } from "@emotion/react";
 
 const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
   const theme = useTheme();
+  // alert(data.length)
   // console.log("currentMatch 22222", data);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -189,7 +190,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
               teamImage={currentMatch?.teamA_Image}
               // color={"#46e080"}
               name={currentMatch?.teamA}
-              rates={currentMatch?.teamA_rate}
+              rates={currentMatch?.teamA_rate ? currentMatch?.teamA_rate : 0}
               color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#46e080"}
               data={data?.length > 0 ? data[0] : []}
               lock={false}
@@ -214,9 +215,9 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
               teamImage={currentMatch?.teamA_Image}
               // color={"#46e080"}
               name={currentMatch?.teamB}
-              rates={currentMatch?.teamB_rate}
+              rates={currentMatch?.teamB_rate ? currentMatch?.teamB_rate : 0}
               color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#46e080"}
-              data={data?.length > 0 ? data[0] : []}
+              data={data?.length > 0 ? data[1] : []}
               lock={false}
               matchOddsData={{
                 back: manualBookmakerData?.[0]?.teamB_Back,
@@ -232,9 +233,9 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
                   teamImage={currentMatch?.teamC_Image ? currentMatch?.teamC_Image : null}
                   // color={"#46e080"}
                   name={currentMatch?.teamC}
-                  rates={currentMatch?.teamC_rate}
+                  rates={currentMatch?.teamC_rate ? currentMatch?.teamC_rate : 0}
                   color={currentMatch?.teamC_rate <= 0 ? "#FF4D4D" : "#46e080"}
-                  data={data?.length > 0 ? data[0] : []}
+                  data={data?.length > 0 ? data[2] : []}
                   lock={false}
                   matchOddsData={{
                     back: manualBookmakerData?.[0]?.teamC_Back,

@@ -689,9 +689,11 @@ const DeleteBet = ({ }) => {
             // console.log("val 222:", val);
             if (val.length > 0) {
               // dispatch(setBookMakerLive(val[0]));
+              // alert(JSON.stringify(val[0].runners))
               setBookmakerLive(val[0]);
+            } else {
+              setBookmakerLive([]);
             }
-            setBookmakerLive([]);
 
           }
         });
