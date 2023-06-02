@@ -324,6 +324,7 @@ const BookMarketer = ({
             <BoxComponent
               color={"#FF4D4D"}
               livestatus={liveData?.status === "SUSPENDED" ? true : false}
+              teamRates={teamRates?.teamC}
               teamImage={null}
               lock={liveData?.runners?.length > 0 ? false : true}
               name={currentMatch?.teamC}

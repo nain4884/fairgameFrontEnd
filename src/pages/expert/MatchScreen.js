@@ -68,6 +68,7 @@ const MatchScreen = () => {
         matchId: data?.id,
         teamA: data?.teamA_rate,
         teamB: data?.teamB_rate,
+        teamC: data?.teamC_rate,
       };
 
       dispatch(setManualBookMarkerRates(manualBookmaker));
@@ -117,6 +118,7 @@ const MatchScreen = () => {
                 matchId: data?.betPlaceData?.match_id,
                 teamA: data.teamA_rate,
                 teamB: data.teamB_rate,
+                teamC: data.teamC_rate,
               };
 
               setIObtes((prev) => {

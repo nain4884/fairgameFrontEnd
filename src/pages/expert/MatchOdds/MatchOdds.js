@@ -111,7 +111,7 @@ const MatchOdds = ({
   const teamRates =
     manualBookMarkerRates?.length > 0
       ? manualBookMarkerRates?.find((v) => v?.matchId === currentMatch?.id)
-      : { teamA: 0, teamB: 0 };
+      : { teamA: 0, teamB: 0, teamC: 0 };
 
   const valueA = teamRates?.teamA
   const valueB = teamRates?.teamB
@@ -258,7 +258,7 @@ const MatchOdds = ({
             }}
           >
             <Result
-            width={"80px"}
+              width={"80px"}
               onClick={() => {
                 setVisible(true);
               }}
@@ -420,6 +420,7 @@ const MatchOdds = ({
           <>
             <Divider />
             <BoxComponent
+              teamRates={teamRates?.teamC}
               lock={matchOddsLive?.runners?.length > 0 ? false : true}
               color={"#FF4D4D"}
               teamImage={null}
