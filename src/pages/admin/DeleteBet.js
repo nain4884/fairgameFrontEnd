@@ -964,12 +964,13 @@ const DeleteBet = ({ }) => {
           // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
           />
           }
-          {(currentMatch?.apiSessionActive ||
+          {/* {(currentMatch?.apiSessionActive ||
             currentMatch?.manualSessionActive) && <SessionMarket
               currentMatch={currentMatch}
               data={[]}
               sessionOffline={sessionOffline}
-            />}
+            />} */}
+          <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />
         </Box>
         <Box sx={{ width: "20px" }} />
         <Box
@@ -988,7 +989,13 @@ const DeleteBet = ({ }) => {
             {/* <CustomButton /> */}
             <Box sx={{ width: "150px", marginY: ".75%", height: "35px", }} ></Box>
           </Box>
-          <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />
+          {(currentMatch?.apiSessionActive ||
+            currentMatch?.manualSessionActive) && <SessionMarket
+              currentMatch={currentMatch}
+              data={[]}
+              sessionOffline={sessionOffline}
+            />}
+          {/* <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} /> */}
         </Box>
       </Box>
       <DailogModal />
