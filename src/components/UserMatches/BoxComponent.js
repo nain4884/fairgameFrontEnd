@@ -32,6 +32,7 @@ const BoxComponent = ({
   setPlaceBetData,
   setFastRate,
   fastRate,
+  placeBetData
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -177,7 +178,8 @@ const BoxComponent = ({
           >
             {!matchesMobile && (
               <SeprateBox
-                
+                po={1}
+                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
                 sessionMain={sessionMain}
@@ -218,6 +220,8 @@ const BoxComponent = ({
             ></Box>
             {!matchesMobile && (
               <SeprateBox
+                po={2}
+                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
                 setPlaceBetData={setPlaceBetData}
@@ -258,6 +262,8 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
+              po={3}
+               placeBetData={placeBetData}
               setFastRate={setFastRate}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
@@ -298,6 +304,8 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
+              po={4}
+               placeBetData={placeBetData}
               setFastRate={setFastRate}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
@@ -337,6 +345,8 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+                po={5}
+                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
                 setPlaceBetData={setPlaceBetData}
@@ -377,6 +387,8 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+                po={6}
+                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
                 setPlaceBetData={setPlaceBetData}

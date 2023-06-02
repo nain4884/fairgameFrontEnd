@@ -147,7 +147,7 @@ const Odds = ({
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [placeBetData, setPlaceBetData] = useState(null);
-  const [fastRate, setFastRate] = useState(0);
+  const [fastRate, setFastRate] = useState(null);
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const bookRatioB = (() => {
@@ -172,7 +172,7 @@ const Odds = ({
       return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
     }
   })();
-
+console.log('fastRate', fastRate)
   return (
     <>
       <Box
@@ -366,6 +366,7 @@ const Odds = ({
         {typeOfBet == "MANUAL BOOKMAKER" ? (
           <>
             <ManualBoxComponent
+            placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
@@ -400,6 +401,7 @@ const Odds = ({
             />
             <Divider />
             <ManualBoxComponent
+            placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
@@ -437,6 +439,7 @@ const Odds = ({
               <>
                 <Divider />
                 <ManualBoxComponent
+                placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
                   setPlaceBetData={setPlaceBetData}
@@ -478,6 +481,7 @@ const Odds = ({
         ) : (
           <>
             <BoxComponent
+             placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
@@ -504,7 +508,10 @@ const Odds = ({
             <Divider />
             {/* {console.log("newData :",newData)} */}
             <BoxComponent
-              setFastRate={setFastRate}
+             placeBetData={placeBetData}
+              setFastRate={(val) => {
+                
+                setFastRate(val)}}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
               sessionMain={session}
@@ -531,6 +538,7 @@ const Odds = ({
               <>
                 <Divider />
                 <BoxComponent
+                 placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
                   setPlaceBetData={setPlaceBetData}

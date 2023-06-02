@@ -47,6 +47,7 @@ const SeprateBox = ({
   setFastRate,
   fastRate,
   setPlaceBetData,
+  placeBetData,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -71,10 +72,16 @@ const SeprateBox = ({
   useEffect(() => {
     setPreviousValue(value);
     if (setFastRate !== undefined) {
-      console.log("value", { name, value });
-      setFastRate(value);
+      // console.log("value", placeBetData, { name, po, typeOfBet, value });
+      if (
+        placeBetData?.po === po &&
+        placeBetData?.typeOfBet === typeOfBet &&
+        placeBetData?.name === name
+      ) {
+        setFastRate(value);
+      }
     }
-  }, [value]);
+  }, [value, placeBetData]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -312,6 +319,7 @@ const SeprateBox = ({
                 data,
                 betOn: name,
                 typeOfBet: typeOfBet,
+                po: po,
               };
               setPlaceBetData(payload);
             } else {

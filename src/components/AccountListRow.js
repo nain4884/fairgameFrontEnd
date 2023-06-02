@@ -13,6 +13,7 @@ import { setSubPage, setSubUserData } from "../newStore/reducers/auth";
 import AccountListModal from "./AccountListModal";
 import Modal from "./Modal";
 import ModalMUI from "@mui/material/Modal";
+import CommissionReportTable from "./CommissionReportTable";
 
 const AccountListRow = ({
   containerStyle,
@@ -31,12 +32,17 @@ const AccountListRow = ({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { axios } = setRole();
   const hasUpdatedUserProfile = useRef(false);
-  const {  allRole } = useSelector((state) => state.auth);
+  const { allRole } = useSelector((state) => state.auth);
 
   const [showSubUsers, setSubSusers] = useState({
     value: false,
     id: "",
     title: "",
+  });
+
+  const [showCommissionReport, setShowCommissionReport] = useState({
+    value: false,
+    id: "",
   });
 
   function handleUpline() {
@@ -89,7 +95,7 @@ const AccountListRow = ({
     rateToCalculatePercentage: handleUpline(),
     totalCommissions: element.TotalComission,
     role: allRole?.find((role) => role?.id === element?.roleId),
-    userId:element?.id
+    userId: element?.id,
   };
 
   console.log("hand", prevElement);
@@ -278,6 +284,13 @@ const AccountListRow = ({
           />
         </Box>
         <Box
+          onClick={() => {
+            if (elementToUDM.totalCommissions !== null) {
+              setShowCommissionReport({ value: true, id: elementToUDM.userId });
+            } else {
+              return false;
+            }
+          }}
           sx={{
             width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
             display: "flex",
@@ -422,6 +435,31 @@ const AccountListRow = ({
         </Box>
       </ModalMUI>
 
+      <ModalMUI
+        open={showCommissionReport?.value}
+        onClose={() => {
+          setShowCommissionReport({ value: false, id: "" });
+        }}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <CommissionReportTable
+            id={showCommissionReport?.id}
+            show={showCommissionReport?.value}
+            setShow={setShowCommissionReport}
+          />
+        </Box>
+      </ModalMUI>
       {showSuccessModal && (
         <Modal
           message={showModalMessage}

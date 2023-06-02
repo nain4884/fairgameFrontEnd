@@ -297,13 +297,12 @@ const OddsPlaceBet = ({
   };
 
   const handlePlaceBet = async (payload, match) => {
-    // let oddValue = fastRate;
-
-    // console.log("oddValue", oddValue ,payload.odds);
-    // if (oddValue != payload.odds) {
-    //   toast.warning("Odds value has been updated. You can not place bet.");
-    //   return;
-    // }
+    let oddValue = fastRate !== null && fastRate;
+    // console.log("oddValue", oddValue, payload.odds);
+    if (oddValue != payload.odds) {
+      toast.warning("Odds value has been updated. You can not place bet.");
+      return;
+    }
 
     PlaceBetSubmit(payload);
   };
@@ -536,9 +535,10 @@ const OddsPlaceBet = ({
               border: "2px solid white",
             }}
             onClick={() => {
-              setVisible(true);
-
-              if (placeBetData.marketType == "MATCH ODDS") {
+              if (defaultValue === " ") {
+                toast.warn("Please amount to place a bet");
+                return false;
+              } else if (placeBetData.marketType == "MATCH ODDS") {
                 setVisible(true);
                 setCanceled(false);
                 let delay = placeBetData?.currentMatch?.delaySecond
