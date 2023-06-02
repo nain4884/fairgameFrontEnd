@@ -181,23 +181,28 @@ const SeprateBox = ({
       country: res?.country_name,
       ip_address: res?.IPv4,
     };
+
     let oddValue = selectedFastAmount ? Number(previousValue) : Number(value);
     // : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
-
-    if (oddValue != newPayload.odds) {
-      toast.warning("Odds value has been updated. You can not place bet.");
-      return;
-    }
-    if (newPayload.marketType == "MATCH ODDS") {
-      setVisible(true);
-      setCanceled(false);
-      let delay = match?.delaySecond ? match?.delaySecond : 0;
-      delay = delay * 1000;
-      setTimeout(() => {
-        PlaceBetSubmit(newPayload);
-      }, delay);
+    if (newPayload?.stake ===0) {
+      toast.warn("Please enter amount to place a bet");
+      return false;
     } else {
-      PlaceBetSubmit(newPayload);
+      if (oddValue != newPayload.odds) {
+        toast.warning("Odds value has been updated. You can not place bet.");
+        return;
+      }
+      if (newPayload.marketType == "MATCH ODDS") {
+        setVisible(true);
+        setCanceled(false);
+        let delay = match?.delaySecond ? match?.delaySecond : 0;
+        delay = delay * 1000;
+        setTimeout(() => {
+          PlaceBetSubmit(newPayload);
+        }, delay);
+      } else {
+        PlaceBetSubmit(newPayload);
+      }
     }
   };
 

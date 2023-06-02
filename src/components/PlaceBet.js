@@ -368,6 +368,7 @@ const PlaceBet = ({
     betOn = "teamA_back",
     marketType = "BOOKMAKER"
   ) {
+    
     let payload = {
       id: currentMatch?.id,
       matchType: currentMatch?.gameType,

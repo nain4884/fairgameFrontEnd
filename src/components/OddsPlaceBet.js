@@ -301,6 +301,7 @@ const OddsPlaceBet = ({
     // console.log("oddValue", oddValue, payload.odds);
     if (oddValue != payload.odds) {
       toast.warning("Odds value has been updated. You can not place bet.");
+      setCanceled(true);
       return;
     }
 
@@ -535,12 +536,13 @@ const OddsPlaceBet = ({
               border: "2px solid white",
             }}
             onClick={() => {
+              setCanceled(false);
+
               if (defaultValue === " ") {
-                toast.warn("Please amount to place a bet");
+                toast.warn("Please enter amount to place a bet");
                 return false;
               } else if (placeBetData.marketType == "MATCH ODDS") {
                 setVisible(true);
-                setCanceled(false);
                 let delay = placeBetData?.currentMatch?.delaySecond
                   ? placeBetData?.currentMatch?.delaySecond
                   : 0;
