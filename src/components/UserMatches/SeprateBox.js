@@ -181,9 +181,8 @@ const SeprateBox = ({
       country: res?.country_name,
       ip_address: res?.IPv4,
     };
-    let oddValue = selectedFastAmount
-      ? Number(previousValue)
-      : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
+    let oddValue = selectedFastAmount ? Number(previousValue) : Number(value);
+    // : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
 
     if (oddValue != newPayload.odds) {
       toast.warning("Odds value has been updated. You can not place bet.");

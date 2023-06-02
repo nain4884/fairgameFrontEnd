@@ -296,6 +296,7 @@ const AccountListRow = ({
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
+            cursor: elementToUDM.totalCommissions !== null  && "pointer",
             height: "45px",
             borderRight: "2px solid white",
           }}

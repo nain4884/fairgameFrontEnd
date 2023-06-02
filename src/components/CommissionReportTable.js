@@ -211,7 +211,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.commissionAmount}
+            {elementToUDM.commissionType}
           </Typography>
         </Box>
         <Box
@@ -225,7 +225,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.commissionType}
+            {elementToUDM.commissionAmount}
           </Typography>
         </Box>
       </Box>
