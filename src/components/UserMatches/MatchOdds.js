@@ -233,8 +233,8 @@ const MatchOdds = ({
   const teamRates =
     manualBookMarkerRates?.length > 0
       ? manualBookMarkerRates?.find((v) => v?.matchId === data?.id)
-      : { teamA: 0, teamB: 0 };
-  // { console.warn("dataProfit :", dataProfit) }
+      : { teamA: 0, teamB: 0, teamC: 0 };
+  // { console.warn("dataProfit :", manualBookMarkerRates) }
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {/* {data?.apiBookMakerActive && <BookMarketer data={data} />}
@@ -257,6 +257,7 @@ const MatchOdds = ({
           }
           teamARates={teamRates?.teamA}
           teamBRates={teamRates?.teamB}
+          teamCRates={teamRates?.teamC}
           min={data?.betfair_match_min_bet || 0}
           max={data?.betfair_match_max_bet || 0}
           title={"Match Odds"}
@@ -272,7 +273,7 @@ const MatchOdds = ({
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-            data?.bookmakerLive[0]?.betStatus === 0
+              data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }
@@ -282,6 +283,7 @@ const MatchOdds = ({
           // suspended={false}
           teamARates={teamRates?.teamA}
           teamBRates={teamRates?.teamB}
+          teamCRates={teamRates?.teamC}
           min={data?.betfair_bookmaker_min_bet || 0}
           max={data?.betfair_bookmaker_max_bet || 0}
           title={"Bookmaker Market "}
@@ -305,6 +307,7 @@ const MatchOdds = ({
           data={data}
           teamARates={teamRates?.teamA}
           teamBRates={teamRates?.teamB}
+          teamCRates={teamRates?.teamC}
           min={data?.bookmaker_manual_min_bet || 0}
           max={data?.bookmaker_manual_max_bet || 0}
           title={"Manual Bookmaker"}
@@ -329,10 +332,11 @@ const MatchOdds = ({
           // dataProfit={dataProfit}
           teamARates={teamRates?.teamA}
           teamBRates={teamRates?.teamB}
+          teamCRates={teamRates?.teamC}
           allBetsData={allBetsData}
           setFastAmount={setFastAmount}
           fastAmount={fastAmount?.sessionOdds}
-          
+
         />
       )}
     </Box>

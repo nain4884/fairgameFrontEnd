@@ -31,6 +31,7 @@ const matchDetails = createSlice({
           ...existingObject,
           teamA: action.payload.teamA,
           teamB: action.payload.teamB,
+          teamC: action.payload.teamC,
         };
 
         const updatedArray = state.manualBookMarkerRates.map((v) =>
@@ -49,6 +50,7 @@ const matchDetails = createSlice({
             matchId: action.payload.matchId,
             teamA: action.payload.teamA,
             teamB: action.payload.teamB,
+            teamC: action.payload.teamC,
           },
         ];
 
