@@ -40,6 +40,7 @@ import CustomLoader from "../../components/helper/CustomLoader";
 let sessionOffline = [];
 let matchOddsCount = 0;
 const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -1026,7 +1027,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       setCurrentMatch({
         ...response.data,
       });
-
       // let bettingsData = response?.data;
       // console.log("response.data :", bettingsData)
       // setCurrentMatchProfit(bettingsData);
@@ -1079,8 +1079,10 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       //   }
       // });
       // console.log(response.data, "sda");
+      setLoading(false);
     } catch (e) {
       console.log("response", e.response.data);
+      setLoading(false);
     }
   }
   // async function getAllBetsData() {
@@ -1116,128 +1118,139 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       <EventListing setSelected={setSelected} selected={selected} />
       <BetPlaced visible={visible} setVisible={setVisible} />
       {/* {console.warn("currentMatch :", currentMatch)} */}
-      {matchesMobile && (selected === "CRICKET" || selected === "INPLAY") && (
-        <div
-          style={{
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <MatchComponent currentMatch={currentMatch} />
-          <div style={{ width: "100%" }}>
-            <MatchOdds
-              sessionBets={sessionBets}
-              setFastAmount={setFastAmount}
-              fastAmount={fastAmount}
-              matchOddsLive={matchOddsLive}
-              sessionExposer={sessionExposer}
-              bookmakerLive={bookmakerLive}
-              onClick={() => handleClose(true)}
-              bookMakerRateLive={bookMakerRateLive}
-              data={currentMatch}
-              sessionOffline={sessionOffline}
-              // dataProfit={currentMatchProfit}
-              allBetsData={sessionBets}
-              manualBookmakerData={manualBookmakerData}
-            />
-          </div>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              alignSelf: "center",
-              alignItems: "center",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "98%",
-              }}
-            >
-              {matchDetail?.manualSessionActive && (
-                <SessionBetSeperate allBetsData={sessionBets} mark />
-              )}
-              {IObets.length > 0 && (
-                <AllRateSeperate
-                  allBetsData={IObets?.filter((v) =>
-                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
-                      v.marketType
-                    )
-                  )}
-                  count={
-                    IObets?.filter((v) =>
+      {loading ? (
+        <CustomLoader text="" />
+      ) : (
+        <>
+          {matchesMobile &&
+            (selected === "CRICKET" || selected === "INPLAY") && (
+              <div
+                style={{
+                  width: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <MatchComponent currentMatch={currentMatch} />
+                <div style={{ width: "100%" }}>
+                  <MatchOdds
+                    sessionBets={sessionBets}
+                    setFastAmount={setFastAmount}
+                    fastAmount={fastAmount}
+                    matchOddsLive={matchOddsLive}
+                    sessionExposer={sessionExposer}
+                    bookmakerLive={bookmakerLive}
+                    onClick={() => handleClose(true)}
+                    bookMakerRateLive={bookMakerRateLive}
+                    data={currentMatch}
+                    sessionOffline={sessionOffline}
+                    // dataProfit={currentMatchProfit}
+                    allBetsData={sessionBets}
+                    manualBookmakerData={manualBookmakerData}
+                  />
+                </div>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                    alignSelf: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "98%",
+                    }}
+                  >
+                    {matchDetail?.manualSessionActive && (
+                      <SessionBetSeperate allBetsData={sessionBets} mark />
+                    )}
+                    {IObets.length > 0 && (
+                      <AllRateSeperate
+                        allBetsData={IObets?.filter((v) =>
+                          [
+                            "MATCH ODDS",
+                            "BOOKMAKER",
+                            "MANUAL BOOKMAKER",
+                          ]?.includes(v.marketType)
+                        )}
+                        count={
+                          IObets?.filter((v) =>
+                            [
+                              "MATCH ODDS",
+                              "BOOKMAKER",
+                              "MANUAL BOOKMAKER",
+                            ]?.includes(v.marketType)
+                          ).length
+                        }
+                        mark
+                      />
+                    )}
+                  </Box>
+                  <LiveMatchHome />
+                </Box>
+              </div>
+            )}
+          {!matchesMobile &&
+            (selected === "CRICKET" || selected === "INPLAY") && (
+              <Box sx={{ display: "flex", width: "100%" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "70%",
+                  }}
+                >
+                  <MatchOdds
+                    sessionBets={sessionBets}
+                    sessionExposer={sessionExposer}
+                    setFastAmount={setFastAmount}
+                    fastAmount={fastAmount}
+                    matchOddsLive={matchOddsLive}
+                    bookmakerLive={bookmakerLive}
+                    sessionOffline={sessionOffline}
+                    onClick={() => handleClose(true)}
+                    data={currentMatch}
+                    // dataProfit={currentMatchProfit}
+                    allBetsData={allSessionBets}
+                    manualBookmakerData={manualBookmakerData}
+                  />
+                </Box>
+                <Box sx={{ width: "30%", paddingRight: "1%" }}>
+                  <MatchComponent currentMatch={currentMatch} />{" "}
+                  {/** Live scoreBoard */}
+                  <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
+                  <AllRateSeperate
+                    allBetsData={IObets?.filter((v) =>
                       ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
                         v.marketType
                       )
-                    ).length
-                  }
-                  mark
-                />
-              )}
-            </Box>
-            <LiveMatchHome />
-          </Box>
-        </div>
+                    )}
+                    count={
+                      IObets?.filter((v) =>
+                        [
+                          "MATCH ODDS",
+                          "BOOKMAKER",
+                          "MANUAL BOOKMAKER",
+                        ]?.includes(v.marketType)
+                      ).length
+                    }
+                    mark
+                  />
+                  {(matchDetail?.manualSessionActive ||
+                    matchDetail?.apiSessionActive) && (
+                    <SessionBetSeperate allBetsData={sessionBets} mark />
+                  )}
+                </Box>
+              </Box>
+            )}
+        </>
       )}
-      {!matchesMobile && (selected === "CRICKET" || selected === "INPLAY") && (
-        <Box sx={{ display: "flex", width: "100%" }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "70%",
-            }}
-          >
-            <MatchOdds
-              sessionBets={sessionBets}
-              sessionExposer={sessionExposer}
-              setFastAmount={setFastAmount}
-              fastAmount={fastAmount}
-              matchOddsLive={matchOddsLive}
-              bookmakerLive={bookmakerLive}
-              sessionOffline={sessionOffline}
-              onClick={() => handleClose(true)}
-              data={currentMatch}
-              // dataProfit={currentMatchProfit}
-              allBetsData={allSessionBets}
-              manualBookmakerData={manualBookmakerData}
-            />
-          </Box>
-          <Box sx={{ width: "30%", paddingRight: "1%" }}>
-            <MatchComponent currentMatch={currentMatch} />{" "}
-            {/** Live scoreBoard */}
-            <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
-            <AllRateSeperate
-              allBetsData={IObets?.filter((v) =>
-                ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
-                  v.marketType
-                )
-              )}
-              count={
-                IObets?.filter((v) =>
-                  ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
-                    v.marketType
-                  )
-                ).length
-              }
-              mark
-            />
-            {(matchDetail?.manualSessionActive ||
-              matchDetail?.apiSessionActive) && (
-                <SessionBetSeperate allBetsData={sessionBets} mark />
-              )}
-          </Box>
-        </Box>
-      )}
-
-
-
     </Box>
   );
 };

@@ -25,7 +25,7 @@ const SessionMarket = ({
   sessionOffline,
   setFastAmount,
   fastAmount,
-  session
+  session,
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);

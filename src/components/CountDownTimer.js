@@ -51,8 +51,8 @@ const CountDownTimer = ({ visible, setVisible, time }) => {
           style={{
             display: "flex",
             alignSelf: "center",
-            width: "200px",
-            height: "200px",
+            width: "50px",
+            height: "50px",
           }}
         />
       </Box>

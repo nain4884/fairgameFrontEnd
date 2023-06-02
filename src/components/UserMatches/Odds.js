@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import BoxComponent from "./BoxComponent";
 import ManualBoxComponent from "./ManualBoxComponent";
 import Divider from "../helper/Divider";
-import { BallStart, FASTTIME, Info, TIME } from "../../assets";
+import { BallStart, FASTTIME, HourGlass, Info, TIME } from "../../assets";
 import { memo } from "react";
 import FastTimePlaceBet from "../FastImePlaceBet";
 import LiveMarket from "../CommonMasterAdminLayout/LiveMarket";
@@ -16,6 +16,7 @@ import OddsPlaceBet from "../OddsPlaceBet";
 import { setRole } from "../../newStore";
 import { useDispatch } from "react-redux";
 import { setDailogData } from "../../store/dailogModal";
+import Lottie from "lottie-react";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
@@ -150,6 +151,7 @@ const Odds = ({
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [placeBetData, setPlaceBetData] = useState(null);
   const [fastRate, setFastRate] = useState(null);
+  const [fastBetLoading, setFastBetLoading] = useState(false);
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const bookRatioB = (() => {
@@ -174,12 +176,15 @@ const Odds = ({
       return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
     }
   })();
-  console.log('fastRate', fastRate)
+console.log('fastRate', fastRate)
+
+
   return (
     <>
       <Box
         key="odds"
-        sx={{
+        sx={{ 
+          position:"relative",
           display: "flex",
           backgroundColor: "white",
           padding: 0.2,
@@ -228,6 +233,7 @@ const Odds = ({
             {showFast && (
               <FastTime
                 session={session}
+                setPlaceBetData={setPlaceBetData}
                 setFastAmount={setFastAmount}
                 setShowFastTimeBox={setShowFastTimeBox}
                 data={fastAmount ? currencyFormatter(fastAmount) : ""}
@@ -364,10 +370,34 @@ const Odds = ({
             </Box>
           </Box>
         </Box>
+        {/* {!fastBetLoading &&
+        <Box
+          sx={{
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "rgba(0, 0, 0, .5)",
+          }}
+        >
+         <Lottie
+          animationData={HourGlass}
+          style={{
+            display: "flex",
+            alignSelf: "center",
+            width: "50px",
+            height: "50px",
+          }}
+        />
+        </Box>
+      } */}
 
         {typeOfBet == "MANUAL BOOKMAKER" ? (
           <>
             <ManualBoxComponent
+              placeBetData={placeBetData}
               placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
@@ -568,6 +598,7 @@ const Odds = ({
                 />
               </>
             )}
+
           </>
         )}
       </Box>

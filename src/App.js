@@ -24,7 +24,7 @@ function App() {
   });
 
 
-  if (process.env.ENV !== "production") console.log = () => {};
+  // if (process.env.ENV !== "production") console.log = () => {};
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>

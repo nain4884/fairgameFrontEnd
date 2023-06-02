@@ -9,8 +9,9 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, CANCEL, CancelDark } from "../assets";
+import { ArrowDown, BETPLACED, CANCEL, CancelDark, HourGlass, NOT } from "../assets";
 import "../components/index.css";
+import Lottie from "lottie-react";
 import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
 import BoxInput from "./BoxInput";
@@ -18,6 +19,7 @@ import { toast } from "react-toastify";
 import { setRole } from "../newStore";
 import { setDailogData } from "../store/dailogModal";
 import BetPlaced from "./BetPlaced";
+import MUIModal from "@mui/material/Modal";
 const OddsPlaceBet = ({
   open,
   refs,
@@ -38,13 +40,14 @@ const OddsPlaceBet = ({
   fastRate,
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
+  const [betPlaceLoading, setBetPlaceLoading] = useState(false);
   const dispatch = useDispatch();
 
   const { axios } = setRole();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   console.log("visible", visible);
-
+  const [betPalaceError, setBetPalaceError] = useState(false);
   const [canceled, setCanceled] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
@@ -53,6 +56,7 @@ const OddsPlaceBet = ({
     win_amount: 0,
   });
   const theme = useTheme();
+
   const selectedColorBox = useSelector(
     (state) => state.selectedColorBox
   )?.value;
@@ -302,10 +306,16 @@ const OddsPlaceBet = ({
     if (oddValue != payload.odds) {
       toast.warning("Odds value has been updated. You can not place bet.");
       setCanceled(true);
-      return;
+      setBetPlaceLoading(false);
+      setBetPalaceError(true);
+      setTimeout(() => {
+        setCanceled(false);
+        setBetPalaceError(false);
+      }, 3000);
+      return false;
+    } else {
+      PlaceBetSubmit(payload);
     }
-
-    PlaceBetSubmit(payload);
   };
 
   function showDialogModal(isModalOpen, showRight, message) {
@@ -323,20 +333,34 @@ const OddsPlaceBet = ({
       // }
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
+      setBetPalaceError(false);
+      setCanceled(true);
+      setTimeout(() => {
+        setCanceled(false);
+      }, 3000);
+      setPlaceBetData(null);
       // dispatch(setAllBetRate(response?.data?.data[0]))
-
+      toast.success(response?.data?.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
-      setCanceled(false);
       setFastRate(0);
+      setBetPlaceLoading(false);
     } catch (e) {
       console.log(e.response.data.message);
+      setCanceled(true);
+      setTimeout(() => {
+        setCanceled(false);
+      }, 3000);
+      setBetPalaceError(true);
+      setBetPlaceLoading(false);
       toast.error(e.response.data.message);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
     }
   };
+
+  console.log("canclelled", canceled);
 
   const onSubmit = async (e) => {
     try {
@@ -375,6 +399,7 @@ const OddsPlaceBet = ({
           borderRadius: "5px",
           overflow: "hidden",
           width: "100%",
+          position: "relative",
         },
       ]}
     >
@@ -530,28 +555,33 @@ const OddsPlaceBet = ({
               color: "#fff",
               backgroundColor: "#262626",
               width: "150px",
+              cursor: betPlaceLoading ? "not-allowed" : "pointer",
               // width: { laptop: "150px", mobile: "130px" },
               height: "35px",
               borderRadius: "5px",
               border: "2px solid white",
             }}
             onClick={() => {
-              setCanceled(false);
-
-              if (defaultValue === " ") {
-                toast.warn("Please enter amount to place a bet");
+              if (betPlaceLoading) {
                 return false;
-              } else if (placeBetData.marketType == "MATCH ODDS") {
-                setVisible(true);
-                let delay = placeBetData?.currentMatch?.delaySecond
-                  ? placeBetData?.currentMatch?.delaySecond
-                  : 0;
-                delay = delay * 1000;
-                setTimeout(() => {
-                  onSubmit();
-                }, delay);
               } else {
-                onSubmit();
+                setBetPlaceLoading(true);
+                if (defaultValue === " ") {
+                  toast.warn("Please enter amount to place a bet");
+                  setBetPlaceLoading(false);
+                  return false;
+                } else if (placeBetData.marketType == "MATCH ODDS") {
+                  setVisible(true);
+                  let delay = placeBetData?.currentMatch?.delaySecond
+                    ? placeBetData?.currentMatch?.delaySecond
+                    : 0;
+                  delay = delay * 1000;
+                  setTimeout(() => {
+                    onSubmit();
+                  }, delay);
+                } else {
+                  onSubmit();
+                }
               }
             }}
           >
@@ -559,24 +589,99 @@ const OddsPlaceBet = ({
           </button>
         </Box>
         {
-          <BetPlaced
-            // time={5}
-            time={
-              placeBetData?.typeOfBet == "MATCH ODDS"
-                ? placeBetData?.currentMatch?.delaySecond
-                  ? placeBetData?.currentMatch?.delaySecond
-                  : 0
-                : 0
-            }
-            not={canceled}
-            visible={visible}
-            setVisible={(i) => {
-              setPlaceBetData(null);
-              setVisible(i);
-            }}
-          />
+          // <BetPlaced
+          //   // time={5}
+          //   time={
+          //     placeBetData?.typeOfBet == "MATCH ODDS"
+          //       ? placeBetData?.currentMatch?.delaySecond
+          //         ? placeBetData?.currentMatch?.delaySecond
+          //         : 0
+          //       : 0
+          //   }
+          //   // not={canceled}
+          //   visible={visible}
+          //   setVisible={(i) => {
+          //     setPlaceBetData(null);
+          //     setVisible(i);
+          //   }}
+          // />
         }
+
+        {/* <MUIModal
+          onClose={() => {
+            setCanceled(false);
+          }}
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+            backgroundColor: "transparent",
+            outline: "none",
+          }}
+          open={canceled}
+          disableAutoFocus={true}
+        >
+          <Box
+            sx={{
+              width: "190px",
+              borderRadius: "6px",
+              paddingY: "10px",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "white",
+              alignSelf: "center",
+              display: "flex",
+              position: "absolute",
+              top: "45%",
+              zIndex: 999,
+            }}
+          >
+            <img
+              src={betPalaceError ? NOT : BETPLACED}
+              style={{ width: "60px", height: "60px", marginTop: "3px" }}
+            />
+
+            <Typography
+              sx={{
+                fontSize: { mobile: "10px", laptop: "14px", tablet: "14px" },
+                fontWeight: "500",
+                marginY: ".7vh",
+                width: "70%",
+                alignSelf: "center",
+                textAlign: "center",
+              }}
+            >
+              {!betPalaceError
+                ? " Bet Placed Successfully"
+                : "Bet Not Placed Successfully"}
+            </Typography>
+          </Box>
+        </MUIModal> */}
       </Box>
+      {betPlaceLoading &&
+        <Box
+          sx={{
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "rgba(0, 0, 0, .5)",
+          }}
+        >
+         <Lottie
+          animationData={HourGlass}
+          style={{
+            display: "flex",
+            alignSelf: "center",
+            width: "50px",
+            height: "50px",
+          }}
+        />
+        </Box>
+      }
     </Box>
   );
 };

@@ -15,8 +15,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
         zIndex: 1001,
         overflow: "hidden",
         top: "35px",
-        left: { laptop: "0%", mobile: "51%", tablet: "54.5vw" },
+        left: { laptop: "0%", mobile: "60%", tablet: "60%" },
         position: "absolute",
+        width: { tablet: "40%", mobile: "40%", laptop: "100%" },
       }}
     >
       <Box

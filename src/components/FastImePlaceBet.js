@@ -212,7 +212,13 @@ const FastTimePlaceBet = ({
               setShowFastTimeBox(false);
             }}
           >
-            Submit
+            <Typography
+              sx={{
+                fontSize: { mobile: "11px", laptop: "14px", tablet: "14px" },
+              }}
+            >
+              Submit{" "}
+            </Typography>
           </button>
         </Box>
         {

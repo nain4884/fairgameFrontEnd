@@ -11,19 +11,31 @@ const CustomLoader = ({ text }) => {
         justifyContent: "center",
         width: "100%",
         flex: 1,
+        height: "74%",
+        // height: { mobile: "74%", tablet: "74%" },
         alignItems: "center",
         flexDirection: "column",
       }}
     >
-      <Lottie
-        animationData={HourGlass}
-        style={{
+      <Box
+        sx={{
+          width: "50px",
+          height: "50px",
           display: "flex",
-          alignSelf: "center",
-          width: "200px",
-          height: "200px",
+          justifyContent: "center",
+          alignItems: "center",
         }}
-      />
+      >
+        <Lottie
+          animationData={HourGlass}
+          style={{
+            display: "flex",
+            alignSelf: "center",
+            width: 100,
+            height: 100,
+          }}
+        />
+      </Box>
       <Typography sx={{ color: "text.white" }}>{text}</Typography>
     </Box>
   );

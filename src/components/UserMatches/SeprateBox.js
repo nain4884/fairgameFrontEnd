@@ -11,7 +11,7 @@ import BetPlaced from "../BetPlaced";
 import { Modal } from "react-bootstrap";
 import MUIModal from "@mui/material/Modal";
 
-import { Lock } from "../../assets";
+import { BETPLACED, Lock, NOT } from "../../assets";
 import { useState } from "react";
 import { setAllBetRate } from "../../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
@@ -64,6 +64,8 @@ const SeprateBox = ({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
+  const [betPalaceError, setBetPalaceError] = useState(false);
+  const [betPlaceLoading, setBetPlaceLoading] = useState(false);
 
   const [showAtTop, setShowAtTop] = useState(false);
 
@@ -175,6 +177,7 @@ const SeprateBox = ({
     return { right: 0 };
   };
   const handlePlaceBet = async (payload, match) => {
+    setBetPlaceLoading(true);
     const res = await FetchIpAddress();
     let newPayload = {
       ...payload,
@@ -184,17 +187,23 @@ const SeprateBox = ({
 
     let oddValue = selectedFastAmount ? Number(previousValue) : Number(value);
     // : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
-    if (newPayload?.stake ===0) {
+    if (newPayload?.stake === 0) {
       toast.warn("Please enter amount to place a bet");
+      setBetPlaceLoading(false);
       return false;
     } else {
       if (oddValue != newPayload.odds) {
         toast.warning("Odds value has been updated. You can not place bet.");
+        setCanceled(true);
+        setBetPlaceLoading(false);
+        setTimeout(() => {
+          setCanceled(false);
+        }, 3000);
+        setBetPalaceError(true);
         return;
       }
       if (newPayload.marketType == "MATCH ODDS") {
         setVisible(true);
-        setCanceled(false);
         let delay = match?.delaySecond ? match?.delaySecond : 0;
         delay = delay * 1000;
         setTimeout(() => {
@@ -209,6 +218,7 @@ const SeprateBox = ({
   const PlaceBetSubmit = async (payload) => {
     try {
       if (Number(payload?.odds) !== Number(value)) {
+        setBetPlaceLoading(false);
         return toast.error("Rate changed ");
       }
       let response = await axios.post(`/betting/placeBet`, payload);
@@ -221,12 +231,23 @@ const SeprateBox = ({
       } else if (sessionMain === "bookmaker") {
         setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
       }
+      toast.success(response.data.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
-      setCanceled(false);
+      setBetPlaceLoading(false);
       setPreviousValue(0);
+      setCanceled(true);
+      setTimeout(() => {
+        setCanceled(false);
+      }, 3000);
       // navigate("/matchDetail")
     } catch (e) {
+      setBetPlaceLoading(false);
+      setCanceled(true);
+      setTimeout(() => {
+        setCanceled(false);
+      }, 3000);
+      setBetPalaceError(true);
       console.log(e.response.data.message);
       toast.error(e.response.data.message);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
@@ -251,6 +272,7 @@ const SeprateBox = ({
       <Box
         // ref={innerRef}
         sx={{
+          cursor: betPlaceLoading ? "not-allowed" : "pointer",
           padding: { mobile: "0px", laptop: "1px", tablet: "1px" },
           width: { mobile: "100%", laptop: "20%" },
           height: "94%",
@@ -259,80 +281,84 @@ const SeprateBox = ({
       >
         <Box
           onClick={(e) => {
-            if (selectedFastAmount) {
-              let payload = {
-                id: currentMatch?.id,
-                matchType: currentMatch?.gameType,
-                // betId: currentMatch?.matchOddsData?.[0]?.id,
-                betId: findBetId(currentMatch),
-                bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
-                odds: Number(value),
-                betOn: name,
-                stack: Number(selectedFastAmount),
-                team_bet: name,
-                // country: res?.country_name,
-                // ip_address: res?.IPv4,
-                stake: Number(selectedFastAmount),
-                teamA_name: currentMatch?.teamA,
-                teamB_name: currentMatch?.teamB,
-                teamC_name: currentMatch?.teamC,
-                marketType:
-                  typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
-              };
-              if (session) {
-                delete payload.betOn;
-                delete payload.odds;
-
-                payload.matchType = data?.matchType;
-                payload.teamA_name = mainData?.teamA;
-                payload.teamB_name = mainData?.teamB;
-                payload.id = data?.match_id;
-                payload.betId = data?.id;
-                payload.bet_type = type?.color === "#A7DCFF" ? "yes" : "no";
-                payload.bet_condition = data?.bet_condition;
-                payload.rate_percent = data?.rate_percent;
-                payload.marketType = typeOfBet;
-                payload.odds = Number(value);
-                payload.sessionBet = true;
-              }
-
-              handlePlaceBet(payload, currentMatch);
-            } else if (sessionMain !== "sessionOdds") {
-              let payload = {
-                id: currentMatch?.id,
-                matchType: currentMatch?.gameType,
-                // betId: currentMatch?.matchOddsData?.[0]?.id,
-                betId: findBetId(currentMatch),
-                bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
-                odds: Number(value),
-                betOn: name,
-                stack: Number(selectedFastAmount),
-                team_bet: name,
-                stake: Number(selectedFastAmount),
-                teamA_name: currentMatch?.teamA,
-                teamB_name: currentMatch?.teamB,
-                teamC_name: currentMatch?.teamC,
-                marketType:
-                  typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
-                name,
-                rates,
-                back,
-                currentMatch,
-                selectedValue,
-                type,
-                data,
-                betOn: name,
-                typeOfBet: typeOfBet,
-                po: po,
-              };
-              setPlaceBetData(payload);
+            if (betPlaceLoading) {
+              return false;
             } else {
-              setIsPopoverOpen(true);
-              setSelectedValue(value);
-              type?.type === "BL"
-                ? setIsBack(type?.color === "#A7DCFF")
-                : setIsSessionYes(type?.color === "#A7DCFF");
-              dispatch(setColorValue(color));
+              if (selectedFastAmount) {
+                let payload = {
+                  id: currentMatch?.id,
+                  matchType: currentMatch?.gameType,
+                  // betId: currentMatch?.matchOddsData?.[0]?.id,
+                  betId: findBetId(currentMatch),
+                  bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
+                  odds: Number(value),
+                  betOn: name,
+                  stack: Number(selectedFastAmount),
+                  team_bet: name,
+                  // country: res?.country_name,
+                  // ip_address: res?.IPv4,
+                  stake: Number(selectedFastAmount),
+                  teamA_name: currentMatch?.teamA,
+                  teamB_name: currentMatch?.teamB,
+                  teamC_name: currentMatch?.teamC,
+                  marketType:
+                    typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
+                };
+                if (session) {
+                  delete payload.betOn;
+                  delete payload.odds;
+
+                  payload.matchType = data?.matchType;
+                  payload.teamA_name = mainData?.teamA;
+                  payload.teamB_name = mainData?.teamB;
+                  payload.id = data?.match_id;
+                  payload.betId = data?.id;
+                  payload.bet_type = type?.color === "#A7DCFF" ? "yes" : "no";
+                  payload.bet_condition = data?.bet_condition;
+                  payload.rate_percent = data?.rate_percent;
+                  payload.marketType = typeOfBet;
+                  payload.odds = Number(value);
+                  payload.sessionBet = true;
+                }
+
+                handlePlaceBet(payload, currentMatch);
+              } else if (sessionMain !== "sessionOdds") {
+                let payload = {
+                  id: currentMatch?.id,
+                  matchType: currentMatch?.gameType,
+                  // betId: currentMatch?.matchOddsData?.[0]?.id,
+                  betId: findBetId(currentMatch),
+                  bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
+                  odds: Number(value),
+                  betOn: name,
+                  stack: Number(selectedFastAmount),
+                  team_bet: name,
+                  stake: Number(selectedFastAmount),
+                  teamA_name: currentMatch?.teamA,
+                  teamB_name: currentMatch?.teamB,
+                  teamC_name: currentMatch?.teamC,
+                  marketType:
+                    typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
+                  name,
+                  rates,
+                  back,
+                  currentMatch,
+                  selectedValue,
+                  type,
+                  data,
+                  betOn: name,
+                  typeOfBet: typeOfBet,
+                  po: po,
+                };
+                setPlaceBetData(payload);
+              } else {
+                setIsPopoverOpen(true);
+                setSelectedValue(value);
+                type?.type === "BL"
+                  ? setIsBack(type?.color === "#A7DCFF")
+                  : setIsSessionYes(type?.color === "#A7DCFF");
+                dispatch(setColorValue(color));
+              }
             }
           }}
           style={{ position: "relative" }}
@@ -410,7 +436,6 @@ const SeprateBox = ({
               }}
               onCancel={() => {
                 setVisible(true);
-                setCanceled(true);
                 setIsPopoverOpen(false);
               }}
               handleClose={() => {
@@ -442,8 +467,7 @@ const SeprateBox = ({
                   : 0
                 : 0
             }
-            not={canceled}
-            visible={visible}
+            visible={betPlaceLoading}
             setVisible={(i) => {
               setIsPopoverOpen(false);
               setVisible(i);
@@ -451,6 +475,58 @@ const SeprateBox = ({
           />
         }
       </Box>
+
+      {/* <MUIModal
+        onClose={() => {
+          setCanceled(false);
+        }}
+        sx={{
+          alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+          backgroundColor: "transparent",
+          outline: "none",
+        }}
+        open={canceled}
+        disableAutoFocus={true}
+      >
+        <Box
+          sx={{
+            width: "190px",
+            borderRadius: "6px",
+            paddingY: "10px",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "white",
+            alignSelf: "center",
+            display: "flex",
+            position: "absolute",
+            top: "45%",
+            zIndex: 999,
+          }}
+        >
+          <img
+            src={betPalaceError ? NOT : BETPLACED}
+            style={{ width: "60px", height: "60px", marginTop: "3px" }}
+          />
+
+          <Typography
+            sx={{
+              fontSize: { mobile: "10px", laptop: "14px", tablet: "14px" },
+              fontWeight: "500",
+              marginY: ".7vh",
+              width: "70%",
+              alignSelf: "center",
+              textAlign: "center",
+            }}
+          >
+            {!betPalaceError
+              ? " Bet Placed Successfully"
+              : "Bet Not Placed Successfully"}
+          </Typography>
+        </Box>
+      </MUIModal> */}
       {showSuccessModal && (
         <Modal
           message={showModalMessage}

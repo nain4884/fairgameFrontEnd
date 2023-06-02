@@ -3,9 +3,23 @@ import { FASTTIME } from "../assets";
 import LiveMarket from "./CommonMasterAdminLayout/LiveMarket";
 import { memo } from "react";
 
-const FastTime = ({ data, setShowFastTimeBox, session, setFastAmount }) => {
+const FastTime = ({
+  data,
+  setShowFastTimeBox,
+  session,
+  setFastAmount,
+  setPlaceBetData,
+}) => {
   return (
-    <Box sx={{ display: "flex", alignItems: "center",justifyContent:"flex-end" ,cursor: "pointer" ,width:"100%"}}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-end",
+        cursor: "pointer",
+        width: "100%",
+      }}
+    >
       {/* <Typography
           sx={{
             fontSize: { mobile: "10px", laptop: "12px" },
@@ -46,7 +60,12 @@ const FastTime = ({ data, setShowFastTimeBox, session, setFastAmount }) => {
         <img
           style={{ width: "30px", height: "30px" }}
           src={FASTTIME}
-          onClick={() => setShowFastTimeBox((prev) => !prev)}
+          onClick={() => {
+            if (setPlaceBetData !== undefined) {
+              setPlaceBetData(null);
+            }
+            setShowFastTimeBox((prev) => !prev);
+          }}
         />
       )}
     </Box>
