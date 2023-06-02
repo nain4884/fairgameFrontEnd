@@ -9,10 +9,11 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, CANCEL, CancelDark } from "../assets";
+import { ArrowDown, CANCEL, CancelDark, HourGlass } from "../assets";
 import "../components/index.css";
 import StyledImage from "./StyledImage";
 import { useSelector } from "react-redux";
+import Lottie from "lottie-react";
 import BoxInput from "./BoxInput";
 import { toast } from "react-toastify";
 import { setRole } from "../newStore";
@@ -22,6 +23,7 @@ const PlaceBet = ({
   handleClose,
   currentMatch,
   season,
+  betPlaceLoading,
   onSubmit,
   onCancel,
   back,
@@ -52,8 +54,6 @@ const PlaceBet = ({
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const myDivRef = useRef(null);
-
- 
 
   const getLatestBetAmount = async (value, newData) => {
     try {
@@ -368,7 +368,6 @@ const PlaceBet = ({
     betOn = "teamA_back",
     marketType = "BOOKMAKER"
   ) {
-    
     let payload = {
       id: currentMatch?.id,
       matchType: currentMatch?.gameType,
@@ -408,7 +407,6 @@ const PlaceBet = ({
     return payload;
   }
 
-
   return (
     <Box
       // ref={refs}
@@ -419,6 +417,7 @@ const PlaceBet = ({
           flexDirection: "column",
           border: "1px solid white",
           borderRadius: "5px",
+          position: "relative",
           marginLeft: season ? 0 : 0,
           overflow: "hidden",
 
@@ -592,7 +591,6 @@ const PlaceBet = ({
                 setDValue(e);
                 return "";
               }
-              handleClose();
             }}
             title={"Reset"}
             color={"#FF4949"}
@@ -617,7 +615,6 @@ const PlaceBet = ({
               border: "2px solid white",
             }}
             onClick={() => {
-              handleClose();
               onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
             }}
           >
@@ -625,6 +622,29 @@ const PlaceBet = ({
           </button>
         </Box>
       </Box>
+      {betPlaceLoading && (
+        <Box
+          sx={{
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "rgba(0, 0, 0, .5)",
+          }}
+        >
+          <Lottie
+            animationData={HourGlass}
+            style={{
+              display: "flex",
+              alignSelf: "center",
+              width: "50px",
+              height: "50px",
+            }}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
@@ -659,7 +679,6 @@ const NumberData = ({
         sx={{
           color: "white",
           fontSize: "13px",
-          fontWeight: "500",
           fontWeight: "600",
         }}
       >

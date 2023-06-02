@@ -17,7 +17,8 @@ const SessionMarketBox = ({
   mainData,
   allRates,
   sessionMain,
-  setFastAmount
+  setFastAmount,
+  setFastBetLoading,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -69,49 +70,46 @@ const SessionMarketBox = ({
         </Typography>
       </Box>
       {matchesMobile && (
-            <PlaceBetComponent amount={index == 2} profitLoss={data} />
-          )}
-             {!matchesMobile && (
-              <PlaceBetComponentWeb amount={index === 2} profitLoss={data} />
-            )}
+        <PlaceBetComponent amount={index == 2} profitLoss={data} />
+      )}
+      {!matchesMobile && (
+        <PlaceBetComponentWeb amount={index === 2} profitLoss={data} />
+      )}
       {!["ACTIVE", "", undefined, null].includes(data?.suspended) ? (
-          <Box
-            sx={{
-              background: "rgba(0,0,0,1)",
-              // marginLeft: "-2px",
-              height: "38px",
-              // position: "absolute",
-              marginLeft:{laptop:"20%",tablet:"0%",mobile:"0%"},
-              // right: 0,
-              width: { laptop: "19.5%", tablet: "40%", mobile: "40.5%" },
-              justifyContent: { mobile: "center", laptop: "center" },
-              alignItems: "center",
-              display: "flex",
-              zIndex: 1,
-            }}
-          >
-            {data?.suspended == "Ball Started" ? (
-              <img src={BallStart} style={{ width: "113px", height: "32px" }} />
-            ) : (
-              <Typography
-                style={{
-                  fontSize: { mobile: "12px", laptop: "22px" },
-                  textTransform: "uppercase",
-                  textAlign: "center",
-                  width: "100%",
-                  color: "white",
-                  fontWeight: "600",
-                }}
-              >
-                {data?.suspended}
-              </Typography>
-            )}
-          </Box>
-
-       
+        <Box
+          sx={{
+            background: "rgba(0,0,0,1)",
+            // marginLeft: "-2px",
+            height: "38px",
+            // position: "absolute",
+            marginLeft: { laptop: "20%", tablet: "0%", mobile: "0%" },
+            // right: 0,
+            width: { laptop: "19.5%", tablet: "40%", mobile: "40.5%" },
+            justifyContent: { mobile: "center", laptop: "center" },
+            alignItems: "center",
+            display: "flex",
+            zIndex: 1,
+          }}
+        >
+          {data?.suspended == "Ball Started" ? (
+            <img src={BallStart} style={{ width: "113px", height: "32px" }} />
+          ) : (
+            <Typography
+              style={{
+                fontSize: { mobile: "12px", laptop: "22px" },
+                textTransform: "uppercase",
+                textAlign: "center",
+                width: "100%",
+                color: "white",
+                fontWeight: "600",
+              }}
+            >
+              {data?.suspended}
+            </Typography>
+          )}
+        </Box>
       ) : (
         <>
-        
           <Box
             sx={{
               display: "flex",
@@ -145,6 +143,7 @@ const SessionMarketBox = ({
             ></Box>
             {!matchesMobile && <SeprateBox po={6} color={"white"} />}
             <SeprateBox
+              setFastBetLoading={setFastBetLoading}
               po={2}
               setFastAmount={setFastAmount}
               rates={allRates}
@@ -165,6 +164,7 @@ const SessionMarketBox = ({
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
             <SeprateBox
+              setFastBetLoading={setFastBetLoading}
               po={1}
               sessionMain={sessionMain}
               rates={allRates}
@@ -196,11 +196,10 @@ const SessionMarketBox = ({
                 <SeprateBox color={"white"} rates={allRates} />
               </>
             )}
-          
           </Box>
           {!matchesMobile && (
-              <PlaceBetComponentWeb amount={index === 2} profitLoss={data} />
-            )}
+            <PlaceBetComponentWeb amount={index === 2} profitLoss={data} />
+          )}
         </>
       )}
     </Box>

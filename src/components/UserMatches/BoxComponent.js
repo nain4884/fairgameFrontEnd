@@ -32,7 +32,8 @@ const BoxComponent = ({
   setPlaceBetData,
   setFastRate,
   fastRate,
-  placeBetData
+  placeBetData,
+  setFastBetLoading,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -135,8 +136,8 @@ const BoxComponent = ({
         ></Box>
       )}
       {!["ACTIVE", "", undefined, null].includes(status) ||
-        newData?.bettings?.length === 0 ||
-        livestatus ? (
+      newData?.bettings?.length === 0 ||
+      livestatus ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
@@ -178,6 +179,7 @@ const BoxComponent = ({
           >
             {!matchesMobile && (
               <SeprateBox
+                setFastBetLoading={setFastBetLoading}
                 po={1}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
@@ -194,13 +196,13 @@ const BoxComponent = ({
                 value={
                   isRound
                     ? Math.round(
-                      ex?.availableToBack?.length > 0
-                        ? ex?.availableToBack[2]?.price
-                        : 0
-                    )
+                        ex?.availableToBack?.length > 0
+                          ? ex?.availableToBack[2]?.price
+                          : 0
+                      )
                     : ex?.availableToBack?.length > 0
-                      ? ex?.availableToBack[2]?.price
-                      : 0
+                    ? ex?.availableToBack[2]?.price
+                    : 0
                 }
                 value2={formatNumber(
                   ex?.availableToBack?.length > 0
@@ -220,6 +222,7 @@ const BoxComponent = ({
             ></Box>
             {!matchesMobile && (
               <SeprateBox
+                setFastBetLoading={setFastBetLoading}
                 po={2}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
@@ -236,13 +239,13 @@ const BoxComponent = ({
                 value={
                   isRound
                     ? Math.round(
-                      ex?.availableToBack?.length > 0
-                        ? ex?.availableToBack[1]?.price
-                        : 0
-                    )
+                        ex?.availableToBack?.length > 0
+                          ? ex?.availableToBack[1]?.price
+                          : 0
+                      )
                     : ex?.availableToBack?.length > 0
-                      ? ex?.availableToBack[1]?.price
-                      : 0
+                    ? ex?.availableToBack[1]?.price
+                    : 0
                 }
                 value2={formatNumber(
                   ex?.availableToBack?.length > 0
@@ -262,6 +265,7 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
+              setFastBetLoading={setFastBetLoading}
               po={3}
               placeBetData={placeBetData}
               setFastRate={setFastRate}
@@ -278,13 +282,13 @@ const BoxComponent = ({
               value={
                 isRound
                   ? Math.round(
-                    ex?.availableToBack?.length > 0
-                      ? ex?.availableToBack[0]?.price
-                      : 0
-                  )
+                      ex?.availableToBack?.length > 0
+                        ? ex?.availableToBack[0]?.price
+                        : 0
+                    )
                   : ex?.availableToBack?.length > 0
-                    ? ex?.availableToBack[0]?.price
-                    : 0
+                  ? ex?.availableToBack[0]?.price
+                  : 0
               }
               value2={formatNumber(
                 ex?.availableToBack?.length > 0
@@ -304,6 +308,7 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
+              setFastBetLoading={setFastBetLoading}
               po={4}
               placeBetData={placeBetData}
               setFastRate={setFastRate}
@@ -320,13 +325,13 @@ const BoxComponent = ({
               value={
                 isRound
                   ? Math.round(
-                    ex?.availableToLay?.length > 0
-                      ? ex?.availableToLay[0]?.price
-                      : 0
-                  )
+                      ex?.availableToLay?.length > 0
+                        ? ex?.availableToLay[0]?.price
+                        : 0
+                    )
                   : ex?.availableToLay?.length > 0
-                    ? ex?.availableToLay[0]?.price
-                    : 0
+                  ? ex?.availableToLay[0]?.price
+                  : 0
               }
               value2={formatNumber(
                 ex?.availableToLay?.length > 0
@@ -345,6 +350,7 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+                setFastBetLoading={setFastBetLoading}
                 po={5}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
@@ -361,13 +367,13 @@ const BoxComponent = ({
                 value={
                   isRound
                     ? Math.round(
-                      ex?.availableToLay?.length > 0
-                        ? ex?.availableToLay[1]?.price
-                        : 0
-                    )
+                        ex?.availableToLay?.length > 0
+                          ? ex?.availableToLay[1]?.price
+                          : 0
+                      )
                     : ex?.availableToLay?.length > 0
-                      ? ex?.availableToLay[1]?.price
-                      : 0
+                    ? ex?.availableToLay[1]?.price
+                    : 0
                 }
                 value2={formatNumber(
                   ex?.availableToLay?.length > 0
@@ -387,6 +393,7 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+                setFastBetLoading={setFastBetLoading}
                 po={6}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
@@ -403,13 +410,13 @@ const BoxComponent = ({
                 value={
                   isRound
                     ? Math.round(
-                      ex?.availableToLay?.length > 0
-                        ? ex?.availableToLay[2]?.price
-                        : 0
-                    )
+                        ex?.availableToLay?.length > 0
+                          ? ex?.availableToLay[2]?.price
+                          : 0
+                      )
                     : ex?.availableToLay?.length > 0
-                      ? ex?.availableToLay[2]?.price
-                      : 0
+                    ? ex?.availableToLay[2]?.price
+                    : 0
                 }
                 value2={formatNumber(
                   ex?.availableToLay?.length > 0

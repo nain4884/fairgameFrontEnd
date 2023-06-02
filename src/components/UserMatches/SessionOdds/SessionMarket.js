@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Divider from "../../helper/Divider";
 import SessionMarketBox from "./SessionMarketBox";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import { FASTTIME, Info } from "../../../assets";
+import { FASTTIME, HourGlass, Info } from "../../../assets";
 import { useTheme } from "@emotion/react";
 import SmallBoxSeason from "../SmallBoxSeason";
 import { memo } from "react";
@@ -10,7 +10,7 @@ import { useState } from "react";
 import FastTimePlaceBet from "../../FastImePlaceBet";
 import FastTime from "../../FastTime";
 import { currencyFormatter, formatNumber } from "../../helper/helper";
-
+import Lottie from "lottie-react";
 const SessionMarket = ({
   data,
   newData,
@@ -29,7 +29,7 @@ const SessionMarket = ({
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
-
+  const [fastBetLoading, setFastBetLoading] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const matchSessionData = newData?.bettings?.filter(
@@ -42,6 +42,7 @@ const SessionMarket = ({
         id={"test"}
         sx={{
           display: "flex",
+          position: "relative",
           background: "white",
           padding: 0.3,
           flexDirection: "column",
@@ -231,6 +232,32 @@ const SessionMarket = ({
               </Box>
             </Box>
           }
+          {fastBetLoading && (
+            <Box
+              sx={{
+                position: "absolute",
+                height: "84%",
+                top: "16%",
+                width: "100%",
+                display: "flex",
+                zIndex: "999",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "rgba(0, 0, 0, .5)",
+              }}
+            >
+              <Lottie
+                animationData={HourGlass}
+                style={{
+                  display: "flex",
+                  alignSelf: "center",
+                  width: "50px",
+                  height: "50px",
+                }}
+              />
+            </Box>
+          )}
+
           <Box
             sx={{
               display: "flex",
@@ -255,13 +282,18 @@ const SessionMarket = ({
                   >
                     <SessionMarketBox
                       typeOfBet={"Session"}
+                      setFastBetLoading={setFastBetLoading}
                       data={element}
                       sessionMain={session}
                       selectedFastAmount={fastAmount}
                       setFastAmount={setFastAmount}
                       mainData={data}
                       newData={newData}
-                      allRates={{ teamA: teamARates, teamB: teamBRates, teamC: teamCRates }}
+                      allRates={{
+                        teamA: teamARates,
+                        teamB: teamBRates,
+                        teamC: teamCRates,
+                      }}
                     />
                     <Divider />
                   </Box>
