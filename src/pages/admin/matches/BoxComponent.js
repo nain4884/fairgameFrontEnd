@@ -13,7 +13,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   // alert(data.length)
   const { ex, status } = data;
-  console.log("ex 222:", ex);
+  // console.log("ex 222:", ex);
   return (
     <Box
       sx={{
@@ -87,17 +87,41 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
       {!["ACTIVE", "", undefined, null].includes(status) ?
         <Box
           sx={{
-            background: "rgba(0,0,0,1)",
+            // background: "rgba(0,0,0,1)",
             height: "40px",
             display: "flex",
-            width: { laptop: "60%", mobile: "80%" },
+            // width: { laptop: "60%", mobile: "80%" },
+            // // width: { mobile: "60%", laptop: "10.2vw" },
             justifyContent: { mobile: "flex-end", laptop: "flex-end" },
             alignItems: "center",
           }}
         >
-          <Typography style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase", width: "100%", textAlign: "center", color: "white", fontWeight: "600" }}>
-            suspended
-          </Typography>
+          <MoneyBox color={color} rates={rates} />
+          <Box
+            sx={{
+              // background: "rgba(0,0,0,1)",
+              height: "40px",
+              display: "flex",
+              // width: { mobile: "60%", laptop: "10.2vw" },
+              justifyContent: { mobile: "flex-end", laptop: "flex-end" },
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                background: "rgba(0,0,0,1)",
+                height: "40px",
+                display: "flex",
+                width: { mobile: "60%", laptop: "10.2vw" },
+                justifyContent: { mobile: "flex-end", laptop: "flex-end" },
+                alignItems: "center",
+              }}
+            >
+              <Typography style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase", width: "100%", textAlign: "center", color: "white", fontWeight: "600" }}>
+                suspended
+              </Typography>
+            </Box>
+          </Box>
         </Box> :
         <Box
           sx={{

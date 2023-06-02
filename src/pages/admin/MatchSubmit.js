@@ -1026,7 +1026,9 @@ const MatchSubmit = ({ }) => {
                     {item?.apiMatchActive && <Odds
                       currentMatch={item}
                       matchOddsLive={item.matchOddsLive}
-                      data={[]}
+                      data={
+                        item.matchOddsLive?.runners?.length > 0 ? item.matchOddsLive?.runners : []
+                      }
                       typeOfBet={"Match Odds"}
                     // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                     />
@@ -1099,7 +1101,10 @@ const MatchSubmit = ({ }) => {
                     currentMatch={item}
                     // matchOddsLive={matchOddsLive}
                     matchOddsLive={item.matchOddsLive}
-                    data={[]}
+                    // data={[]}
+                    data={
+                      item.matchOddsLive?.runners?.length > 0 ? item.matchOddsLive?.runners : []
+                    }
                     typeOfBet={"Match Odds"}
                   />
                   <BookMarketer
@@ -1176,7 +1181,9 @@ const MatchSubmit = ({ }) => {
                   currentMatch={item}
                   // matchOddsLive={matchOddsLive}
                   matchOddsLive={item.matchOddsLive}
-                  data={[]}
+                  data={
+                    item.matchOddsLive?.runners?.length > 0 ? item.matchOddsLive?.runners : []
+                  }
                   typeOfBet={"Match Odds"}
                 />
                 <BookMarketer
