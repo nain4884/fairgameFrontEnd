@@ -31,7 +31,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
         <Box sx={{ display: "flex", height: "25px" }}>
           <Box
             sx={{
-              width: "60px",
+              width: "30%",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -45,7 +45,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
           </Box>
           <Box
             sx={{
-              width: "90px",
+              width: "70%",
               display: "flex",
               borderLeft: "1px solid #306A47",
               justifyContent: "center",
@@ -95,7 +95,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
                 >
                   <Box
                     sx={{
-                      width: "60px",
+                      width: "30%",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
@@ -113,7 +113,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
                   </Box>
                   <Box
                     sx={{
-                      width: "90px",
+                      width: "70%",
                       display: "flex",
                       borderLeft: `1px solid #306A47`,
                       background: getColor(v?.profit_loss),
