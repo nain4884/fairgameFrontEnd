@@ -333,6 +333,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   matchId: data?.betPlaceData?.match_id,
                   teamA: data.teamA_rate,
                   teamB: data.teamB_rate,
+                  teamC: data.teamC_rate,
                 };
                 const body = {
                   id: data?.betPlaceData?.id,
@@ -360,7 +361,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 if (data?.betPlaceData?.match_id === id) {
                   setIObtes((prev) => [body, ...prev]);
                 }
-
+                // alert(JSON.stringify(manualBookmaker));
                 dispatch(setCurrentUser(user));
                 dispatch(setManualBookMarkerRates(manualBookmaker));
               }
@@ -1037,12 +1038,13 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         })
       );
       // alert(response.data.teamA_rate)
-      // alert(response.data.teamB_rate)
+      // alert(response.data.teamC_rate)
       dispatch(
         setManualBookMarkerRates({
           matchId: response.data.id,
           teamA: response.data.teamA_rate ? response.data.teamA_rate : 0,
           teamB: response.data.teamB_rate ? response.data.teamB_rate : 0,
+          teamC: response.data.teamC_rate ? response.data.teamC_rate : 0,
         })
       );
       // setCurrentMatch(response.data);
@@ -1228,14 +1230,14 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             />
             {(matchDetail?.manualSessionActive ||
               matchDetail?.apiSessionActive) && (
-              <SessionBetSeperate allBetsData={sessionBets} mark />
-            )}
+                <SessionBetSeperate allBetsData={sessionBets} mark />
+              )}
           </Box>
         </Box>
       )}
-   
-       
-      
+
+
+
     </Box>
   );
 };

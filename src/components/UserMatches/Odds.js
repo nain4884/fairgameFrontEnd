@@ -127,6 +127,7 @@ const Odds = ({
   data,
   teamARates,
   teamBRates,
+  teamCRates,
   title,
   min,
   max,
@@ -143,6 +144,7 @@ const Odds = ({
   fastAmount,
   showFast,
 }) => {
+  // alert(teamCRates)
   // console.log("matchOddsData 11:", matchOddsData);
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
@@ -172,7 +174,7 @@ const Odds = ({
       return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
     }
   })();
-console.log('fastRate', fastRate)
+  console.log('fastRate', fastRate)
   return (
     <>
       <Box
@@ -366,7 +368,7 @@ console.log('fastRate', fastRate)
         {typeOfBet == "MANUAL BOOKMAKER" ? (
           <>
             <ManualBoxComponent
-            placeBetData={placeBetData}
+              placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
@@ -385,7 +387,7 @@ console.log('fastRate', fastRate)
               teamImage={newData?.teamA_Image}
               newData={newData}
               color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
-              allRates={{ teamA: teamARates, teamB: teamBRates }}
+              allRates={{ teamA: teamARates, teamB: teamBRates, teamC: teamCRates }}
               rate={teamARates}
               name={newData?.teamA}
               data={data?.length > 0 ? data[0] : []}
@@ -401,7 +403,7 @@ console.log('fastRate', fastRate)
             />
             <Divider />
             <ManualBoxComponent
-            placeBetData={placeBetData}
+              placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
@@ -425,7 +427,7 @@ console.log('fastRate', fastRate)
               data={data?.length > 0 ? data[1] : []}
               suspendedData={data[1]?.status}
               rate={teamBRates}
-              allRates={{ teamA: teamARates, teamB: teamBRates }}
+              allRates={{ teamA: teamARates, teamB: teamBRates, teamC: teamCRates }}
               team={"teamB"}
               typeOfBet={typeOfBet}
               isRound={isRound}
@@ -439,7 +441,7 @@ console.log('fastRate', fastRate)
               <>
                 <Divider />
                 <ManualBoxComponent
-                placeBetData={placeBetData}
+                  placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
                   setPlaceBetData={setPlaceBetData}
@@ -460,12 +462,13 @@ console.log('fastRate', fastRate)
                   }
                   showBox={showBox}
                   newData={newData}
-                  color={"#FF4D4D"}
+                  // color={"#FF4D4D"}
+                  color={teamCRates <= 0 ? "#FF4D4D" : "#46e080"}
                   name={newData?.teamC}
                   data={data?.length > 0 ? data[2] : []}
                   suspendedData={data[2]?.status}
-                  rate={0}
-                  allRates={{ teamA: teamARates, teamB: teamBRates }}
+                  rate={teamCRates}
+                  allRates={{ teamA: teamARates, teamB: teamBRates, teamC: teamCRates }}
                   team={"teamC"}
                   typeOfBet={typeOfBet}
                   isRound={isRound}
@@ -481,7 +484,7 @@ console.log('fastRate', fastRate)
         ) : (
           <>
             <BoxComponent
-             placeBetData={placeBetData}
+              placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
@@ -496,7 +499,7 @@ console.log('fastRate', fastRate)
               newData={newData}
               // lock={data?.length > 0 ? false : true}
               color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
-              allRates={{ teamA: teamARates, teamB: teamBRates }}
+              allRates={{ teamA: teamARates, teamB: teamBRates, teamC: teamCRates }}
               rate={teamARates}
               name={newData?.teamA}
               data={data?.length > 0 ? data[0] : []}
@@ -508,10 +511,11 @@ console.log('fastRate', fastRate)
             <Divider />
             {/* {console.log("newData :",newData)} */}
             <BoxComponent
-             placeBetData={placeBetData}
+              placeBetData={placeBetData}
               setFastRate={(val) => {
-                
-                setFastRate(val)}}
+
+                setFastRate(val)
+              }}
               fastRate={fastRate}
               setPlaceBetData={setPlaceBetData}
               sessionMain={session}
@@ -529,7 +533,7 @@ console.log('fastRate', fastRate)
               data={data?.length > 0 ? data[1] : []}
               suspendedData={data[1]?.status}
               rate={teamBRates}
-              allRates={{ teamA: teamARates, teamB: teamBRates }}
+              allRates={{ teamA: teamARates, teamB: teamBRates, teamC: teamCRates }}
               team={"teamB"}
               typeOfBet={typeOfBet}
               isRound={isRound}
@@ -538,7 +542,7 @@ console.log('fastRate', fastRate)
               <>
                 <Divider />
                 <BoxComponent
-                 placeBetData={placeBetData}
+                  placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
                   setPlaceBetData={setPlaceBetData}
@@ -556,8 +560,8 @@ console.log('fastRate', fastRate)
                   name={newData?.teamC}
                   data={data?.length > 0 ? data[2] : []}
                   suspendedData={data[2]?.status}
-                  rate={0}
-                  allRates={{ teamA: teamARates, teamB: teamBRates }}
+                  rate={teamCRates}
+                  allRates={{ teamA: teamARates, teamB: teamBRates, teamC: teamCRates }}
                   team={"teamC"}
                   typeOfBet={typeOfBet}
                   isRound={isRound}

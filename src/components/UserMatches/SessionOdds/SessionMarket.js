@@ -17,6 +17,7 @@ const SessionMarket = ({
   showFast,
   teamARates,
   teamBRates,
+  teamCRates,
   allBetsData,
   sessionExposer,
   dataProfit,
@@ -84,10 +85,10 @@ const SessionMarket = ({
             </Typography>
             {showFast && (
               <FastTime
-              session={session}
-              setFastAmount={setFastAmount}
+                session={session}
+                setFastAmount={setFastAmount}
                 setShowFastTimeBox={setShowFastTimeBox}
-                data={fastAmount ? currencyFormatter(fastAmount) :""}
+                data={fastAmount ? currencyFormatter(fastAmount) : ""}
               />
             )}
           </Box>
@@ -147,7 +148,7 @@ const SessionMarket = ({
           <Box>
             <FastTimePlaceBet
               session={session}
-              setFastAmount={ setFastAmount}
+              setFastAmount={setFastAmount}
               selectedFastAmount={fastAmount}
               setShowFastTimeBox={setShowFastTimeBox}
             />
@@ -260,7 +261,7 @@ const SessionMarket = ({
                       setFastAmount={setFastAmount}
                       mainData={data}
                       newData={newData}
-                      allRates={{ teamA: teamARates, teamB: teamBRates }}
+                      allRates={{ teamA: teamARates, teamB: teamBRates, teamC: teamCRates }}
                     />
                     <Divider />
                   </Box>
