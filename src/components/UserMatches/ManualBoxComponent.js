@@ -271,7 +271,7 @@ const BoxComponent = ({
                         ? handleDecimal(matchOddsData?.back, 2, "back")
                         : 0
                     }
-                    value2={0}
+                    value2={""}
                     color={matchesMobile ? "white" : "#CEEBFF"}
                     type={{ color: "#A7DCFF", type: "BL" }}
                     name={name}
@@ -303,7 +303,7 @@ const BoxComponent = ({
                         ? handleDecimal(matchOddsData?.back, 1, "back")
                         : 0
                     }
-                    value2={0}
+                    value2={""}
                     color={matchesMobile ? "white" : "#C2E6FF"}
                     type={{ color: "#A7DCFF", type: "BL" }}
                     name={name}
@@ -330,7 +330,7 @@ const BoxComponent = ({
                   lock={lock}
                   rates={allRates}
                   value={matchOddsData?.back ? matchOddsData?.back : 0}
-                  value2={0}
+                  value2={""}
                   color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
                   type={{ color: "#A7DCFF", type: "BL" }}
                   name={name}
@@ -357,7 +357,7 @@ const BoxComponent = ({
                   lock={lock}
                   rates={allRates}
                   value={matchOddsData?.lay ? matchOddsData?.lay : 0}
-                  value2={0}
+                  value2={""}
                   color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
                   type={{ color: "#FFB5B5", type: "BL" }}
                   name={name}
@@ -388,7 +388,7 @@ const BoxComponent = ({
                         ? handleDecimal(matchOddsData?.lay, 1, "")
                         : 0
                     }
-                    value2={0}
+                    value2={""}
                     color={matchesMobile ? "white" : "#F2CBCB"}
                     type={{ color: "#FFB5B5", type: "BL" }}
                     name={name}
@@ -420,7 +420,7 @@ const BoxComponent = ({
                         ? handleDecimal(matchOddsData?.lay, 2, "")
                         : 0
                     }
-                    value2={0}
+                    value2={""}
                     color={matchesMobile ? "white" : "#ECD6D6"}
                     type={{ color: "#FFB5B5", type: "BL" }}
                     name={name}
