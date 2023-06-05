@@ -115,7 +115,7 @@ const AccountListRow = ({
     } else {
       OLDUSERBALANCE = 0;
     }
-  }, [showUserModal, OLDUSERBALANCE]);
+  }, [showUserModal]);
 
   const [elementToUDM, setElementToUDM] = useState(prevElement);
   function handleSetUDM(val) {
