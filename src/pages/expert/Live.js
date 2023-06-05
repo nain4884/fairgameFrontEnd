@@ -15,7 +15,8 @@ export default function Live() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
-    const [betData, setBetData] = useState(sessionAllBetRates);
+    // const [betData, setBetData] = useState(sessionAllBetRates);
+    const [proLoss1, setProLoss1] = useState({});
     const [betId, setBetId] = useState();
 
 
@@ -26,42 +27,48 @@ export default function Live() {
             navigateTo && navigate(`/${window.location.pathname.split('/')[1]}/${navigateTo}`, state)
         }, [2000])
     }
+    // useEffect(() => {
+    //     setBetData(sessionAllBetRates)
+    // }, [betData]);
 
-    const handleBetData = async (data, id) => {
-        // alert("call" + data.length)
-        //
-        setBetData(data);
-        if (id) {
-            setBetId(id)
-        }
-    }
-    useEffect(() => {
-        if (socket && socket.connected) {
-            socket.onevent = async (packet) => {
-                if (packet.data[0] === "session_bet") {
-                    const data = packet.data[1];
-                    try {
-                        let newData = data?.betPlaceData;
-                        setBetData(prevData => [newData, ...prevData]);
-                    } catch (err) {
-                        console.log(err?.message);
-                    }
+    // const handleBetData = async (data, id) => {
+    //     // alert("call" + data.length)
+    //     //
+    //     setBetData(data);
+    //     if (id) {
+    //         setBetId(id)
+    //     }
+    // }
+    // useEffect(() => {
+    //     if (socket && socket.connected) {
+    //         socket.onevent = async (packet) => {
+    //             if (packet.data[0] === "session_bet") {
+    //                 const data = packet.data[1];
+    //                 try {
+    //                     let newData = data?.betPlaceData;
+    //                     setBetData(prevData => [newData, ...prevData]);
+    //                     let profitLoss = data?.profitLoss;
+    //                     setProLoss1(profitLoss);
+    //                 } catch (err) {
+    //                     console.log(err?.message);
+    //                 }
 
-                }
-            }
-        }
-    }, [socket]);
+    //             }
+    //         }
+
+    //     }
+    // }, [socket]);
 
     return (
         <Background>
             {/* <Header /> */}
             <Box display="flex">
                 <Box flex={1} sx={{ margin: "10px" }}>
-                    <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} handleBetData={handleBetData} />
+                    <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} proLoss1={proLoss1} />
                     <SessionResult createSession={location?.state?.createSession} showDialogModal={showDialogModal} betId={betId} />
                 </Box>
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
-                    {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={betData} />}
+                    {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBetRates} />}
                 </Box>
             </Box>
             <DailogModal />
