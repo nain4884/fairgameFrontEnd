@@ -470,17 +470,22 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
             dispatch(setCurrentUser(user));
             setCurrentMatch((currentMatch) => {
-              const bettingToUpdate = currentMatch?.bettings?.find(
-                (betting) =>
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (
                   betting?.id === value?.betId &&
                   currentMatch?.id === value?.match_id
-              );
-              if (bettingToUpdate) {
-                bettingToUpdate.profitLoss = null;
-              }
+                ) {
+                  return {
+                    ...betting,
+                    profitLoss: null,
+                  };
+                }
+                return betting;
+              });
+
               return {
                 ...currentMatch,
-                bettings: currentMatch?.bettings,
+                bettings: updatedBettings,
               };
             });
 
