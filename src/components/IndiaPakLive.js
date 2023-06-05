@@ -15,14 +15,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSessionAllBetRate, setSessionResults } from "../newStore/reducers/matchDetails";
 
 
+export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent, betData, handleBetData, proLoss1 }) {
 
-export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent, betData, handleBetData }) {
-
+    const { socket } = useContext(SocketContext);
     const { axios } = setRole();
     const dispatch = useDispatch();
-    const { socket, socketMicro } = useContext(SocketContext);
-    const { globalStore, setGlobalStore } = useContext(GlobalStore);
     const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
+    // const { globalStore, setGlobalStore } = useContext(GlobalStore);
+    // const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
     const stateDetail = {
         match_id: match?.id,
         matchType: match?.gameType,
@@ -52,14 +52,24 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const [isCreateSession, setIsCreateSession] = useState(createSession)
     const [isPercent, setIsPercent] = useState("");
     const [live, setLive] = useState(true);
-    const [proLoss, setProLoss] = useState({
+    // alert(JSON.stringify(proLoss1))
+    const [proLoss, setProLoss] = useState(proLoss1);
 
-    });
+
     // const [betData, setBetData] = useState(sessionAllBetRates);
 
 
     // alert(globalStore.isSession)
+    // let temp = null;
+    // if (socket && socket.connected) {
+    //     console.log("socket connected", socket)
+    //     socket.onevent = () => async (done) => {
+    //         console.log("socket connected 11", done)
+    //         temp = done.data
+    //     }
+    // }
 
+    // console.log('Session', temp)
     useEffect(() => {
         if (socket && socket.connected) {
             socket.onevent = async (packet) => {
@@ -69,6 +79,34 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                         // alert(JSON.stringify(data?.profitLoss))
                         let profitLoss = data?.profitLoss;
                         setProLoss(profitLoss);
+                        // handleBetData(data?.data?.data || [], id)
+                        const body = {
+                            id: data?.betPlaceData?.id,
+                            isActive: true,
+                            createAt: data?.betPlaceData?.createdAt,
+                            updateAt: data?.betPlaceData?.createdAt,
+                            createdBy: null,
+                            deletedAt: null,
+                            user: { userName: data?.betPlaceData?.userName },
+                            user_id: null,
+                            match_id: data?.betPlaceData?.match_id,
+                            bet_id: data?.betPlaceData?.bet_id,
+                            result: "pending",
+                            team_bet: data?.betPlaceData?.team_bet,
+                            odds: data?.betPlaceData?.odds,
+                            win_amount: null,
+                            loss_amount: null,
+                            bet_type: data?.betPlaceData?.bet_type,
+                            country: null,
+                            ip_address: null,
+                            rate: data?.betPlaceData?.rate,
+                            marketType: data?.betPlaceData?.marketType,
+                            myStack: data?.betPlaceData?.myStack,
+                            amount:
+                                data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                        };
+                        const updatedData = [body, ...sessionAllBetRates]; // Combine new object with existing state data
+                        dispatch(setSessionAllBetRate(updatedData));
                     } catch (err) {
                         console.log(err?.message);
                     }
@@ -110,7 +148,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             let response = await axios.post(`/betting/addBetting`, payload);
             setBetId(response?.data?.data?.id);
             setIsCreateSession(false);
-            setGlobalStore((prev) => ({ ...prev, isSession: false }));
+            // setGlobalStore((prev) => ({ ...prev, isSession: false }));
             setLock({
                 isNo: false,
                 isYes: false,
@@ -169,7 +207,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             console.log("data :", data.data);
             // setBetData(data?.data?.data || []);
             // alert(handleBetData)
-            handleBetData(data?.data?.data || [], id)
+            // handleBetData(data?.data?.data || [], id)
             dispatch(setSessionAllBetRate(data?.data?.data || []));
         } catch (e) {
             console.log(e);
