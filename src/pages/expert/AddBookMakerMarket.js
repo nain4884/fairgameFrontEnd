@@ -8,7 +8,7 @@ export default function AddBookMakerMarket() {
     const location = useLocation()
     return (
         <Background>
-            <Header />
+            {/* <Header /> */}
             <Box display="flex">
                 <Box flex={1} sx={{ margin: "10px" }}>
                     <IndiaPakLiveBookMaker add={true} match={location?.state?.match} />

@@ -10,6 +10,7 @@ import Modal from "./Modal";
 import { setRole } from "../newStore";
 import { pageLimit } from "./helper/constants";
 import { setUserData } from "../newStore/reducers/auth";
+import { toast } from "react-toastify";
 
 export default function DepositWallet() {
   const { axios } = setRole();
@@ -93,10 +94,12 @@ export default function DepositWallet() {
       );
       if (data.message === "Balance update successfully.") {
         getListOfUser();
+        toast.success(data.message);
         setShowModalMessage(data.message);
         handleChangeShowModalSuccess(true);
       }
     } catch (e) {
+      toast.error(e.response.data.message);
       console.log(e);
     }
   }

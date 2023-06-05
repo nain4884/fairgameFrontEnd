@@ -6,7 +6,7 @@ import BetMakerMarket from '../../components/BookMakerMarket';
 export default function BookMakerMarket() {
     return (
         <Background>
-            <Header />
+            {/* <Header /> */}
             <Box display="flex">
                 <Box flex={1} sx={{ margin: "10px" }}>
                     <IndiaPakLiveBookMaker />

@@ -34,19 +34,17 @@ const DropDownSimple = ({
   matchesSelect,
 }) => {
   const [value, setValue] = useState(valued ?? data[0]);
-  console.log("openDrop", openDrop);
 
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (defaultValue === null) {
       setValue(0);
     }
-  
+
     if (openDrop || openDrop !== undefined) {
       setOpen(true);
     } else {
       setOpen(false);
-     
     }
   }, [defaultValue, openDrop]);
 
@@ -159,7 +157,6 @@ const DropDownSimple = ({
       <Box
         onClick={() => {
           setOpen(!open);
-          
         }}
         sx={[
           {

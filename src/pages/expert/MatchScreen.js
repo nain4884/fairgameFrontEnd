@@ -450,11 +450,10 @@ const MatchScreen = () => {
     }
   }
 
-  console.log("IObets", IObets);
   return (
     <Background>
       {/* <CHeader /> */}
-      <CustomHeader />
+      {/* <CustomHeader /> */}
 
       <Box
         sx={{
@@ -464,7 +463,10 @@ const MatchScreen = () => {
           flexDirection: "row",
           width: "100%",
           // marginX: ".5%",
-          height:{ mobile:loading? "80vh"  :"100%" ,laptop:loading ? "90vh" :"100%"},
+          height: {
+            mobile: loading ? "80vh" : "100%",
+            laptop: loading ? "90vh" : "100%",
+          },
           // marginTop: "5px",
           background: !loading && "white",
           padding: 1,
@@ -613,7 +615,7 @@ const MatchScreen = () => {
                 />
               )}
 
-              <AllBets allBetRates={IObets} />
+              {currentMatch?.id && <AllBets allBetRates={IObets} />}
             </Box>
           </>
         )}

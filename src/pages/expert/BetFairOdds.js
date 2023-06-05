@@ -1,26 +1,24 @@
 import { Box, Typography } from "@mui/material";
-import Header from './Header'
-import Background from './Background'
-import { MatchListComp } from "./Home1";
+import Header from "./Header";
+import Background from "./Background";
+import MatchListComp from "./Home1";
 import { DailogModal } from "../../components";
 import { useContext } from "react";
 import { SocketContext } from "../../context/socketContext";
 import { GlobalStore } from "../../context/globalStore";
 import { useEffect } from "react";
 import { memo } from "react";
- function BetFairOdds() {
-  
-  
-    return (
-        <Background>
-            <Header />
-            {/* <Box sx={{ background: "white", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "10px", width: "45%", marginX: "auto", marginTop: '15vh', minHeight: "45vh" }}>
+function BetFairOdds() {
+  return (
+    <Background>
+      {/* <Header /> */}
+      {/* <Box sx={{ background: "white", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "10px", width: "45%", marginX: "auto", marginTop: '15vh', minHeight: "45vh" }}>
                 <Typography sx={{ fontSize: "3vw", color: "#0B4F26", fontWeight: "bold" }}>No Match Added</Typography>
             </Box> */}
-            <MatchListComp />
-            <DailogModal />
-        </Background>
-    )
+      <MatchListComp />
+      <DailogModal />
+    </Background>
+  );
 }
 
-export default memo(BetFairOdds)
+export default memo(BetFairOdds);

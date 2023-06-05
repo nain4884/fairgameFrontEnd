@@ -23,8 +23,7 @@ function App() {
     walletJWT: "",
   });
 
-
-  // if (process.env.ENV !== "production") console.log = () => {};
+  if (process.env.ENV !== "production") console.log = () => {};
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
@@ -32,11 +31,9 @@ function App() {
           <GlobalStore.Provider value={{ globalStore, setGlobalStore }}>
             <SocketProvider>
               <ToastContainer />
-              <React.StrictMode>
-                <div className="App">
-                  <Main />
-                </div>
-              </React.StrictMode>
+              <div className="App">
+                <Main />
+              </div>
             </SocketProvider>
           </GlobalStore.Provider>
         </PersistGate>

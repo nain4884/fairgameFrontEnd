@@ -6,7 +6,7 @@ import AddBetComp from './AddBetComp'
 function AddBet() {
   return (
     <Background>
-        <Header />
+        {/* <Header /> */}
         <AddBetComp />
     </Background>
 )

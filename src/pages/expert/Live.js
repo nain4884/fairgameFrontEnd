@@ -54,7 +54,7 @@ export default function Live() {
 
     return (
         <Background>
-            <Header />
+            {/* <Header /> */}
             <Box display="flex">
                 <Box flex={1} sx={{ margin: "10px" }}>
                     <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} handleBetData={handleBetData} />
