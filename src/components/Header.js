@@ -60,7 +60,7 @@ const CustomHeader = ({}) => {
   // const auth = useSelector(state => state?.auth?.user);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const { socket,socketMicro } = useContext(SocketContext);
+  const { socket, socketMicro } = useContext(SocketContext);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -84,7 +84,7 @@ const CustomHeader = ({}) => {
           dispatch(removeSelectedMatch());
           dispatch(logout({ roleType: "role4" }));
           socket.disconnect();
-          socketMicro.disconnect()
+          socketMicro.disconnect();
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
           // await axios.get("auth/logout");
           removeSocket();
@@ -146,7 +146,7 @@ const CustomHeader = ({}) => {
     } else {
       setShowSideBarMobile(false);
     }
-    if (JWT) {
+    if (currentUser === null) {
       getUserDetail();
     }
   }, [location, bal, JWT]);
@@ -581,8 +581,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     handleClose();
     removeSocket();
     socket.disconnect();
-    socketMicro.disconnect()
-
+    socketMicro.disconnect();
   };
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (

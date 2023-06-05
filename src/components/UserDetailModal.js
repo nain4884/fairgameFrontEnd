@@ -59,6 +59,7 @@ export default function UserDetailModal({
   elementToUDM,
   setElementToUDM,
   getListOfUser,
+  showUserModal,
   prevElement,
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;

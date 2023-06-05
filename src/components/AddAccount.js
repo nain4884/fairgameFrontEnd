@@ -376,10 +376,10 @@ const AddAccount = () => {
   }, [profile, roleName]);
 
   useEffect(() => {
-    if (JWT) {
+    if (currentUser === null) {
       getUserDetail();
     }
-  }, [JWT]);
+  }, []);
   useEffect(() => {
     setTypeForAccountType();
   }, [userWallet?.role?.roleName, Detail, error, showSuccessModal]);
@@ -788,7 +788,7 @@ const AddAccount = () => {
                     valueContainerStyle={{
                       height: "45px",
                       marginX: "0px",
-                     
+
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",

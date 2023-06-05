@@ -53,7 +53,9 @@ export default function DepositWallet() {
     }
   }
   useEffect(() => {
-    getUserDetail();
+    if (showSuccessModal) {
+      getUserDetail();
+    }
   }, [showSuccessModal]);
 
   async function getListOfUser() {

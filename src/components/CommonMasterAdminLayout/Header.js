@@ -178,9 +178,9 @@ const CustomHeader = ({}) => {
       dispatch(setActiveAdmin(2));
     }
 
-    if (JWT && !currentUser) {
-      getUserDetail(nav);
-    }
+    // if (currentUser === null) {
+    //   getUserDetail(nav);
+    // }
   }, [location, window.location.pathname, JWT, nav]);
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");

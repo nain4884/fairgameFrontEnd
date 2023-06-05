@@ -106,10 +106,10 @@ const AccountList = () => {
   // }
 
   useEffect(() => {
-    if (currentUser?.id && currentPageNo !== 0 && pageCount !== 0) {
+    if (data1.length === 0 && currentPageNo) {
       getListOfUser();
     }
-  }, [currentPageNo, pageCount, currentUser?.id]);
+  }, [currentPageNo]);
 
   return (
     <>

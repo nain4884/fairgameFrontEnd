@@ -86,10 +86,10 @@ const CustomHeader = ({}) => {
   }, [location]);
 
   useEffect(() => {
-    if (JWT) {
+    if (currentUser === null) {
       getUserDetail();
     }
-  }, [JWT]);
+  }, []);
 
   useEffect(() => {}, [currentSelected]);
   useEffect(() => {

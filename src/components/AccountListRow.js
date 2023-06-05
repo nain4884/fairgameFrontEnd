@@ -14,6 +14,7 @@ import AccountListModal from "./AccountListModal";
 import Modal from "./Modal";
 import ModalMUI from "@mui/material/Modal";
 import CommissionReportTable from "./CommissionReportTable";
+var OLDUSERBALANCE = 0;
 
 const AccountListRow = ({
   containerStyle,
@@ -98,7 +99,6 @@ const AccountListRow = ({
     userId: element?.id,
   };
 
-  console.log("hand", prevElement);
   const updatedUserProfile = async () => {
     try {
       const { data } = await axios.get("users/profile");
@@ -109,10 +109,13 @@ const AccountListRow = ({
   };
 
   useEffect(() => {
-    if (showUserModal === false) {
+    if (showUserModal === false && OLDUSERBALANCE === 0) {
       updatedUserProfile();
+      OLDUSERBALANCE++;
+    } else {
+      OLDUSERBALANCE = 0;
     }
-  }, [showUserModal]);
+  }, [showUserModal, OLDUSERBALANCE]);
 
   const [elementToUDM, setElementToUDM] = useState(prevElement);
   function handleSetUDM(val) {
@@ -296,7 +299,7 @@ const AccountListRow = ({
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
-            cursor: elementToUDM.totalCommissions !== null  && "pointer",
+            cursor: elementToUDM.totalCommissions !== null && "pointer",
             height: "45px",
             borderRight: "2px solid white",
           }}
