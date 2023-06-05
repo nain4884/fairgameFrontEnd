@@ -78,7 +78,7 @@ const OddsPlaceBet = ({
         stake: Number(value),
       };
       if (season) {
-        body = { ...body, marketType: "", rate_percent: newData?.rate_percent };
+        body = { ...body, marketType: typeOfBet, rate_percent: newData?.rate_percent };
       }
       const { data } = await axios.post("/betting/calculateBetAmount", body);
       if (data?.data) {
@@ -671,15 +671,15 @@ const OddsPlaceBet = ({
             background: "rgba(0, 0, 0, .5)",
           }}
         >
-         <Lottie
-          animationData={HourGlass}
-          style={{
-            display: "flex",
-            alignSelf: "center",
-            width: "50px",
-            height: "50px",
-          }}
-        />
+          <Lottie
+            animationData={HourGlass}
+            style={{
+              display: "flex",
+              alignSelf: "center",
+              width: "50px",
+              height: "50px",
+            }}
+          />
         </Box>
       }
     </Box>

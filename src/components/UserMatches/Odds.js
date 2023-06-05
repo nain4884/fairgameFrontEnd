@@ -438,7 +438,7 @@ const Odds = ({
             />
             <Divider />
             <ManualBoxComponent
-            setFastBetLoading={setFastBetLoading}
+              setFastBetLoading={setFastBetLoading}
               placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
@@ -481,7 +481,7 @@ const Odds = ({
               <>
                 <Divider />
                 <ManualBoxComponent
-                setFastBetLoading={setFastBetLoading}
+                  setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
@@ -529,7 +529,7 @@ const Odds = ({
         ) : (
           <>
             <BoxComponent
-            setFastBetLoading={setFastBetLoading}
+              setFastBetLoading={setFastBetLoading}
               placeBetData={placeBetData}
               setFastRate={(val) => setFastRate(val)}
               fastRate={fastRate}
@@ -561,7 +561,7 @@ const Odds = ({
             <Divider />
             {/* {console.log("newData :",newData)} */}
             <BoxComponent
-            setFastBetLoading={setFastBetLoading}
+              setFastBetLoading={setFastBetLoading}
               placeBetData={placeBetData}
               setFastRate={(val) => {
                 setFastRate(val);
@@ -596,7 +596,7 @@ const Odds = ({
               <>
                 <Divider />
                 <BoxComponent
-                setFastBetLoading={setFastBetLoading}
+                  setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
@@ -660,6 +660,7 @@ const Odds = ({
               isBack={placeBetData?.isBack}
               selectedValue={placeBetData?.selectedValue}
               type={placeBetData?.type}
+              typeOfBet={typeOfBet}
             />
           </Box>
         </Box>
