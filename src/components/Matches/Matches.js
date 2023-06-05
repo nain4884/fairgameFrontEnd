@@ -31,7 +31,9 @@ const MatchesComponent = ({
   const { axios } = setRole();
 
   useEffect(() => {
-    getAllMatch();
+    if (matchData.length === 0) {
+      getAllMatch();
+    }
   }, [currentPage, pageCount, selected]);
 
   async function getAllMatch() {
