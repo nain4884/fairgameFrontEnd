@@ -67,7 +67,7 @@ const PlaceBet = ({
         stake: Number(value),
       };
       if (season) {
-        body = { ...body, marketType: "", rate_percent: newData?.rate_percent };
+        body = { ...body, marketType: typeOfBet, rate_percent: newData?.rate_percent };
       }
       const { data } = await axios.post("/betting/calculateBetAmount", body);
       if (data?.data) {
@@ -206,12 +206,12 @@ const PlaceBet = ({
                   ? "Back"
                   : "Lay"
                 : title === "Team"
-                ? name
-                : bet_condition
-                ? bet_condition
-                : isSessionYes
-                ? "Yes"
-                : "No"}
+                  ? name
+                  : bet_condition
+                    ? bet_condition
+                    : isSessionYes
+                      ? "Yes"
+                      : "No"}
             </Typography>
           </Box>
         )}
@@ -528,8 +528,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                ? "Lay"
-                : "Back"
+                  ? "Lay"
+                  : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}

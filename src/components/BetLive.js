@@ -16,8 +16,6 @@ export default function BetLive({ createSession, sessionEvent, betData }) {
                 <Header />
                 {betData?.length > 0 &&
                     betData?.map((i, k) => {
-                        console.log("valeu :", i);
-                        console.log("valeu ww:", i.values);
                         const num = betData?.length - k
                         return (
                             <Row index={num} values={i} />

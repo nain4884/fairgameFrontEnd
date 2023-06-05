@@ -66,6 +66,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                 if (packet.data[0] === "session_bet") {
                     const data = packet.data[1];
                     try {
+                        // alert(JSON.stringify(data?.profitLoss))
                         let profitLoss = data?.profitLoss;
                         setProLoss(profitLoss);
                     } catch (err) {
@@ -187,6 +188,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                 id: betId ? betId : "",
                 betStatus: status,
                 sessionBet: true,
+                bet_condition: Detail?.bet_condition
             };
             const { data } = await axios.post("betting/addBetting", body);
 
