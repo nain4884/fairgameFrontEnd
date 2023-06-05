@@ -235,7 +235,7 @@ const ListSubHeaderT = ({ data }) => {
       </Box>
       <Box
         sx={{
-          width: { laptop: "8vw", tablet: "8vw", mobile: "42vw" },
+          width: { laptop: "10vw", tablet: "10vw", mobile: "42vw" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
