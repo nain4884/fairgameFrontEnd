@@ -13,6 +13,7 @@ import { GlobalStore } from "../context/globalStore";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setSessionAllBetRate, setSessionResults } from "../newStore/reducers/matchDetails";
+import { setSessionAllBet } from "../newStore/reducers/expertMatchDetails";
 
 
 export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent, betData, handleBetData, proLoss1 }) {
@@ -21,6 +22,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const { axios } = setRole();
     const dispatch = useDispatch();
     const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
+    const { sessionAllBet } = useSelector((state) => state?.expertMatchDetails);
     // const { globalStore, setGlobalStore } = useContext(GlobalStore);
     // const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
     const stateDetail = {
@@ -41,7 +43,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const [isConfirm, setIsConfirm] = useState(false)
     const [visible1, setVisible1] = useState(false)
     const [visible2, setVisible2] = useState(false)
-    const [betId, setBetId] = useState("")
+    const [betId, setBetId] = useState("");
     const [lock, setLock] = useState({
         isNo: true,
         isYes: true,
@@ -77,36 +79,39 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                     const data = packet.data[1];
                     try {
                         // alert(JSON.stringify(data?.profitLoss))
-                        let profitLoss = data?.profitLoss;
-                        setProLoss(profitLoss);
-                        // handleBetData(data?.data?.data || [], id)
-                        const body = {
-                            id: data?.betPlaceData?.id,
-                            isActive: true,
-                            createAt: data?.betPlaceData?.createdAt,
-                            updateAt: data?.betPlaceData?.createdAt,
-                            createdBy: null,
-                            deletedAt: null,
-                            user: { userName: data?.betPlaceData?.userName },
-                            user_id: null,
-                            match_id: data?.betPlaceData?.match_id,
-                            bet_id: data?.betPlaceData?.bet_id,
-                            result: "pending",
-                            team_bet: data?.betPlaceData?.team_bet,
-                            odds: data?.betPlaceData?.odds,
-                            win_amount: null,
-                            loss_amount: null,
-                            bet_type: data?.betPlaceData?.bet_type,
-                            country: null,
-                            ip_address: null,
-                            rate: data?.betPlaceData?.rate,
-                            marketType: data?.betPlaceData?.marketType,
-                            myStack: data?.betPlaceData?.myStack,
-                            amount:
-                                data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                        };
-                        const updatedData = [body, ...sessionAllBetRates]; // Combine new object with existing state data
-                        dispatch(setSessionAllBetRate(updatedData));
+                        // alert("vvvvv: " + data?.betPlaceData?.bet_id)
+                        if (betId === data?.betPlaceData?.bet_id) {
+                            let profitLoss = data?.profitLoss;
+                            setProLoss(profitLoss);
+                            const body = {
+                                id: data?.betPlaceData?.id,
+                                isActive: true,
+                                createAt: data?.betPlaceData?.createdAt,
+                                updateAt: data?.betPlaceData?.createdAt,
+                                createdBy: null,
+                                deletedAt: null,
+                                user: { userName: data?.betPlaceData?.userName },
+                                user_id: null,
+                                match_id: data?.betPlaceData?.match_id,
+                                bet_id: data?.betPlaceData?.bet_id,
+                                result: "pending",
+                                team_bet: data?.betPlaceData?.team_bet,
+                                odds: data?.betPlaceData?.odds,
+                                win_amount: null,
+                                loss_amount: null,
+                                bet_type: data?.betPlaceData?.bet_type,
+                                country: null,
+                                ip_address: null,
+                                rate: data?.betPlaceData?.rate,
+                                marketType: data?.betPlaceData?.marketType,
+                                myStack: data?.betPlaceData?.myStack,
+                                amount:
+                                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                            };
+                            const updatedData = [body, ...sessionAllBet]; // Combine new object with existing state data
+                            // alert(tempData.length);
+                            dispatch(setSessionAllBet(updatedData));
+                        }
                     } catch (err) {
                         console.log(err?.message);
                     }
@@ -114,7 +119,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                 }
             }
         }
-    }, [socket]);
+    }, [socket, betId]);
 
     useEffect(() => {
         // alert(JSON.stringify(globalStore.isSession))
@@ -173,7 +178,6 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             setBetId(data.id);
             getAllBetsData(data.id);
             setProLoss(data?.profitLoss);
-            // alert(data.suspended)
             if (data.suspended == "ACTIVE") {
                 setLock({ isNo: false, isYes: false, isNoPercent: false, isYesPercent: false, })
             } else {
@@ -207,7 +211,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             // setBetData(data?.data?.data || []);
             // alert(handleBetData)
             // handleBetData(data?.data?.data || [], id)
-            dispatch(setSessionAllBetRate(data?.data?.data || []));
+            dispatch(setSessionAllBet(data?.data?.data || []));
         } catch (e) {
             console.log(e);
         }

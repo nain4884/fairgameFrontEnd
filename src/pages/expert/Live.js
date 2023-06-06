@@ -14,7 +14,7 @@ export default function Live() {
     const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
+    const { sessionAllBet } = useSelector((state) => state?.expertMatchDetails);
     // const [betData, setBetData] = useState(sessionAllBetRates);
     const [proLoss1, setProLoss1] = useState({});
     const [betId, setBetId] = useState();
@@ -68,7 +68,7 @@ export default function Live() {
                     <SessionResult createSession={location?.state?.createSession} showDialogModal={showDialogModal} betId={betId} />
                 </Box>
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
-                    {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBetRates} />}
+                    {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />}
                 </Box>
             </Box>
             <DailogModal />

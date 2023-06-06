@@ -168,7 +168,7 @@ const BetsList = () => {
   }
 
   async function getBetList() {
-    const userId = currentUser.id;
+    const userId = currentUser?.id;
 
     var payload = {
       limit: pageLimit,
