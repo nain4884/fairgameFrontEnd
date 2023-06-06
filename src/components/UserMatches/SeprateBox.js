@@ -48,7 +48,7 @@ const SeprateBox = ({
   fastRate,
   setPlaceBetData,
   placeBetData,
-  setFastBetLoading
+  setFastBetLoading,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -179,7 +179,7 @@ const SeprateBox = ({
   };
   const handlePlaceBet = async (payload, match) => {
     setBetPlaceLoading(true);
-    setFastBetLoading(true)
+    setFastBetLoading(true);
     const res = await FetchIpAddress();
     let newPayload = {
       ...payload,
@@ -187,19 +187,19 @@ const SeprateBox = ({
       ip_address: res?.IPv4,
     };
 
-    let oddValue = selectedFastAmount ? Number(previousValue) : Number(value);
+    let oddValue = Number(value);
     // : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
     if (newPayload?.stake === 0) {
       toast.warn("Please enter amount to place a bet");
       setBetPlaceLoading(false);
-      setFastBetLoading(false)
+      setFastBetLoading(false);
       return false;
     } else {
       if (oddValue != newPayload.odds) {
         toast.warning("Odds value has been updated. You can not place bet.");
         setCanceled(true);
         setBetPlaceLoading(false);
-        setFastBetLoading(false)
+        setFastBetLoading(false);
         setTimeout(() => {
           setCanceled(false);
         }, 3000);
@@ -223,7 +223,7 @@ const SeprateBox = ({
     try {
       if (Number(payload?.odds) !== Number(value)) {
         setBetPlaceLoading(false);
-        setFastBetLoading(false)
+        setFastBetLoading(false);
         return toast.error("Rate changed ");
       }
       let response = await axios.post(`/betting/placeBet`, payload);
@@ -239,7 +239,7 @@ const SeprateBox = ({
       toast.success(response.data.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
-      setFastBetLoading(false)
+      setFastBetLoading(false);
       setBetPlaceLoading(false);
       setPreviousValue(0);
       setCanceled(true);
@@ -250,7 +250,7 @@ const SeprateBox = ({
       // navigate("/matchDetail")
     } catch (e) {
       setBetPlaceLoading(false);
-      setFastBetLoading(false)
+      setFastBetLoading(false);
       setCanceled(true);
       setTimeout(() => {
         setCanceled(false);
