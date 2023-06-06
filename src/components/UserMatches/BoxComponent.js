@@ -65,7 +65,7 @@ const BoxComponent = ({
           sx={{
             flexDirection: "row",
             display: "flex",
-            width: "100%",
+            width: { mobile: "70%", laptop: "100%",tablet:"100%" },
             alignItems: "center",
           }}
         >

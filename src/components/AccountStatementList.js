@@ -92,8 +92,11 @@ const AccountStatementList = ({ user }) => {
   }
 
   useEffect(() => {
-    getAccountStatement();
-  }, [currentPage, pageCount, pageLimit]);
+    if (transactionHistory.length === 0) {
+      getAccountStatement();
+    }
+  }, []);
+  // }, [currentPage, pageCount, pageLimit]);
 
   // const Footer = () => {
   //     return (

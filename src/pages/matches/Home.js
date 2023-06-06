@@ -1116,6 +1116,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         overflowX: "hidden",
         flexDirection: "column",
         flex: 1,
+        marginTop: "1%",
         justifyContent: "flex-start",
         overflowY: "auto",
         alignItems: "flex-start",
@@ -1136,6 +1137,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   alignItems: "center",
                   justifyContent: "center",
                   display: "flex",
+                  gap: "8px",
+                  marginTop: "2%",
                   flexDirection: "column",
                 }}
               >
@@ -1204,7 +1207,14 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             )}
           {!matchesMobile &&
             (selected === "CRICKET" || selected === "INPLAY") && (
-              <Box sx={{ display: "flex", width: "100%" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  gap: "8px",
+                  marginTop: "1%",
+                }}
+              >
                 <Box
                   sx={{
                     display: "flex",
@@ -1250,8 +1260,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   />
                   {(matchDetail?.manualSessionActive ||
                     matchDetail?.apiSessionActive) && (
-                      <SessionBetSeperate allBetsData={sessionBets} mark />
-                    )}
+                    <SessionBetSeperate allBetsData={sessionBets} mark />
+                  )}
                 </Box>
               </Box>
             )}
