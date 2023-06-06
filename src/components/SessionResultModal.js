@@ -200,7 +200,7 @@ const SessionResultModal = ({
 
   return (
     <Box
-      ref={innerRef}
+      // ref={innerRef}
       sx={{
         width: "250px",
         height: "180px",

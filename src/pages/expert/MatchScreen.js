@@ -335,7 +335,7 @@ const MatchScreen = () => {
 
   const handleMatchOdds = useCallback(
     (val) => {
-      if (val.length === 0) {
+      if (val?.length === 0 || val === null) {
         matchOddsCount += 1;
         if (matchOddsCount >= 3) {
           socketMicro.emit("disconnect_market", { id: state?.marketId });
@@ -347,7 +347,7 @@ const MatchScreen = () => {
         }
       }
     },
-    [state?.marketId]
+    [state?.marketId, socketMicro]
   );
 
   const handleBookmaker = useCallback(
