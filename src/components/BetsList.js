@@ -1,7 +1,13 @@
 import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import constants from "./helper/constants";
 import SearchInput from "./SearchInput";
 import SmallDropDown from "./smallDropDown";
-const Footer = () => {
+import { setRole } from "../newStore";
+import moment from "moment";
+
+const Footer = ({ currentPage, pages, callPage, currenLimit }) => {
   return (
     <Box
       sx={{
@@ -31,6 +37,11 @@ const Footer = () => {
             alignItems: "center",
             borderRadius: "5px",
           }}
+          onClick={() => {
+            callPage(
+              parseInt(currentPage) - 1 === -1 ? 0 : parseInt(currentPage) - 1
+            );
+          }}
         >
           <Typography
             sx={{
@@ -59,7 +70,7 @@ const Footer = () => {
               fontSize: { laptop: "14px", mobile: "12px" },
             }}
           >
-            1
+            {currentPage + 1}
           </Typography>
         </Box>
         <Box
@@ -71,6 +82,13 @@ const Footer = () => {
             borderRadius: "5px",
             justifyContent: "center",
             alignItems: "center",
+          }}
+          onClick={() => {
+            callPage(
+              parseInt(currentPage) === pages - 1
+                ? pages - 1
+                : parseInt(currentPage) + 1
+            );
           }}
         >
           <Typography
@@ -87,6 +105,7 @@ const Footer = () => {
   );
 };
 const BetsList = () => {
+  const { currentUser } = useSelector((state) => state?.currentUser);
   const data = [
     {
       eventType: "Cricket",
@@ -125,6 +144,56 @@ const BetsList = () => {
       type: "Back",
     },
   ];
+
+  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+  const [pageCount, setPageCount] = useState(constants.pageLimit);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currenLimit, setCurrenLimit] = useState(1);
+  const [betHistory, setBetHistory] = useState([]);
+
+  useEffect(() => {
+    getBetList();
+  }, [currentPage, pageCount, pageLimit]);
+
+  const getLimitEntries = (childLimitData) => {
+    setPageLimit(childLimitData);
+  };
+
+  function callPage(val) {
+    // dispatch(secallPagetCurrentStatementPage(parseInt(val)));
+    // setCurrentPage(parseInt(val * pageLimit));
+    setCurrentPage(parseInt(val));
+    setCurrenLimit(parseInt(val));
+    // setIsDated(true);
+  }
+
+  async function getBetList() {
+    const userId = currentUser.id;
+
+    var payload = {
+      limit: pageLimit,
+      skip: currentPage * pageLimit,
+    };
+    console.log(payload);
+    let { axios } = setRole();
+    try {
+      // const { data } = await axios.post(
+      //   `/betting/currentAllMatchBet/${userId}`,
+      //   payload
+      // );
+      const { data } = await axios.post(`/betting/currentAllMatchBet`, payload);
+      // console.log(data.data[0], 'datadatadatadata')
+      setBetHistory(data.data[0]);
+      setPageCount(
+        Math.ceil(parseInt(data.data[1] ? data.data[1] : 1) / pageLimit)
+      );
+
+      //   toast.success(data?.message);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <Box
       sx={[
@@ -148,16 +217,16 @@ const BetsList = () => {
         }),
       ]}
     >
-      <ListH />
+      <ListH getLimitEntries={getLimitEntries} />
       <Box sx={{ overflowX: "scroll" }}>
         <Box sx={{ overflowX: "scroll", minWidth: "900px" }}>
           <ListHeaderT />
 
-          {[...data, ...data].map((i, k) => {
+          {betHistory.map((item, index) => {
             return (
               <Row
-                data={i}
-                index={k}
+                data={item}
+                index={index}
                 containerStyle={{ background: "#FFE094" }}
                 profit={true}
                 fContainerStyle={{ background: "#0B4F26" }}
@@ -165,10 +234,19 @@ const BetsList = () => {
               />
             );
           })}
+          {betHistory.length === 0 && (
+            <EmptyRow containerStyle={{ background: "#FFE094" }} />
+          )}
         </Box>
       </Box>
       <Box sx={{ width: "100%", margin: 0, position: "absolute", left: 0 }}>
-        <Footer />
+        {/* <Footer /> */}
+        <Footer
+          currenLimit={currenLimit}
+          currentPage={currentPage}
+          pages={pageCount}
+          callPage={callPage}
+        />
       </Box>
     </Box>
   );
@@ -378,6 +456,27 @@ const ListHeaderT = () => {
   );
 };
 
+const EmptyRow = ({ containerStyle }) => {
+  return (
+    <Box
+      sx={[
+        {
+          display: "flex",
+          height: "45px",
+          background: "#0B4F26",
+          alignItems: "center",
+          overflow: "hidden",
+          borderBottom: "2px solid white",
+          justifyContent: "center",
+        },
+        containerStyle,
+      ]}
+    >
+      <Typography>No Results found</Typography>
+    </Box>
+  );
+};
+
 const Row = ({
   containerStyle,
   data,
@@ -442,7 +541,7 @@ const Row = ({
         ]}
       >
         <Typography sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}>
-          {data.eventType}
+          {data.EventType}
         </Typography>
       </Box>
       <Box
@@ -459,7 +558,7 @@ const Row = ({
         <Typography
           sx={{ fontSize: "12px", fontWeight: "600", color: "black" }}
         >
-          {data.eventName}
+          {data.EventName}
         </Typography>
       </Box>
       <Box
@@ -476,7 +575,7 @@ const Row = ({
         <Typography
           sx={{ fontSize: "12px", fontWeight: "600", color: "black" }}
         >
-          {"John"}
+          {data.userName}
         </Typography>
       </Box>
       <Box
@@ -491,7 +590,7 @@ const Row = ({
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-          {data.team}
+          {data.Team}
         </Typography>
       </Box>
       <Box
@@ -506,7 +605,7 @@ const Row = ({
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-          {data.betType}
+          {data.BetType}
         </Typography>
       </Box>
       <Box
@@ -521,7 +620,7 @@ const Row = ({
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
-          {data.userRate}
+          {data.UserRate}
         </Typography>
       </Box>
       <Box
@@ -536,7 +635,7 @@ const Row = ({
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
-          {data.type}
+          {data.bet_type}
         </Typography>
       </Box>
       <Box
@@ -551,7 +650,7 @@ const Row = ({
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
-          {data.amount}
+          {data.Amount}
         </Typography>
       </Box>
       <Box
@@ -567,10 +666,10 @@ const Row = ({
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
-          {data.placeDate}
+          {moment(data.PlaceDate).format("DD-MM-YYYY")}
         </Typography>
         <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
-          {"10:20 AM"}
+          {moment(data.PlaceDate).format("HH:mm A")}
         </Typography>
       </Box>
       <Box
@@ -586,10 +685,10 @@ const Row = ({
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
-          {data.matchDate}
+          {moment(data.MatchDate).format("DD-MM-YYYY")}
         </Typography>
         <Typography sx={{ fontSize: "12px", fontWeight: "700" }}>
-          {"10:20 AM"}
+          {moment(data.MatchDate).format("HH:mm A")}
         </Typography>
       </Box>
     </Box>
