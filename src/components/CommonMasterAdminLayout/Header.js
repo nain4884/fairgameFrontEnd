@@ -287,7 +287,7 @@ const CustomHeader = ({}) => {
       minHeight: {
         laptop: 60,
         mobile: ["admin", "wallet"].includes(nav) ? "113px" : 60 + 32 + 42,
-        tablet: ["admin", "wallet"].includes(nav) ? "113px" : 60 + 32 + 42,
+        tablet: ["admin", "wallet"].includes(nav) ? "75px" : 60 + 32 + 42,
       },
     },
   };

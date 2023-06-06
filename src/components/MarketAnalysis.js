@@ -174,7 +174,11 @@ const LiveMarketComponent = ({
               border: "1.5px solid white",
             }}
           >
-            <StockBox value={data?.teamA_rate ? data?.teamA_rate : 0} up={data?.teamA_rate >= 0 ? true : false} team={team} />
+            <StockBox
+              value={data?.teamA_rate ? data?.teamA_rate : 0}
+              up={data?.teamA_rate >= 0 ? true : false}
+              team={team}
+            />
           </Box>
           <Box
             sx={{
@@ -185,7 +189,11 @@ const LiveMarketComponent = ({
               border: "1.5px solid white",
             }}
           >
-            <StockBox value={data?.teamB_rate ? data?.teamB_rate : 0} up={data?.teamB_rate >= 0 ? true : false} team={team_2} />
+            <StockBox
+              value={data?.teamB_rate ? data?.teamB_rate : 0}
+              up={data?.teamB_rate >= 0 ? true : false}
+              team={team_2}
+            />
           </Box>
           <Box
             sx={{
@@ -220,7 +228,7 @@ const CustomBox = ({ title, onClick }) => {
     <Box onClick={onClick} sx={{ position: "relative" }}>
       <Box
         sx={{
-          width: "140px",
+          width: { mobile: "100px", laptop: "140px", tablet: "140px" },
           height: "35px",
           justifyContent: "center",
           border: "2px solid white",
@@ -231,7 +239,12 @@ const CustomBox = ({ title, onClick }) => {
           cursor: "pointer",
         }}
       >
-        <Typography sx={{ fontSize: "14px", fontWeight: "bold" }}>
+        <Typography
+          sx={{
+            fontSize: { mobile: "10px", laptop: "14px", tablet: "14px" },
+            fontWeight: "bold",
+          }}
+        >
           {title}
         </Typography>
       </Box>
@@ -261,7 +274,9 @@ const MarketAnalysis = () => {
     if (x.includes(index?.toString())) {
       // setMatchIds
       setMatchIds((prevIds) => prevIds.filter((matchId) => matchId !== i.id));
-      setMarketIds((prevIds) => prevIds.filter((marketId) => marketId !== i.marketId));
+      setMarketIds((prevIds) =>
+        prevIds.filter((marketId) => marketId !== i.marketId)
+      );
       x.splice(x.indexOf(index?.toString()), 1);
       setSelected([...x]);
     } else {
@@ -298,16 +313,20 @@ const MarketAnalysis = () => {
   }
 
   useEffect(() => {
-    getAllMatch();
+    if (matchData.length === 0) {
+      getAllMatch();
+    }
   }, [currentPage, pageCount, selected]);
 
   return (
-    <Box sx={{ display: "flex", width: "100vw", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           marginX: ".5%",
+          flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+          width: "100%",
           marginTop: ".5%",
         }}
       >
@@ -315,6 +334,7 @@ const MarketAnalysis = () => {
           sx={{
             fontSize: "16px",
             color: "white",
+            width: "100%",
             fontWeight: "700",
             marginY: "0.5%",
             alignSelf: "start",
@@ -323,7 +343,9 @@ const MarketAnalysis = () => {
           MARKET ANALYSIS
         </Typography>
         {mode == "0" && (
-          <Box sx={{ display: "flex" }}>
+          <Box
+            sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
+          >
             <CustomBox
               onClick={(e) => {
                 handleClick("2");
@@ -367,14 +389,22 @@ const MarketAnalysis = () => {
                 setSelected([]);
                 if (max == "3") {
                   navigate(`/${pathname.split("/")[1]}/match_submit`, {
-                    state: { match: Number(max), matchIds: matchIds, marketIds: marketIds },
+                    state: {
+                      match: Number(max),
+                      matchIds: matchIds,
+                      marketIds: marketIds,
+                    },
                   });
                   // navigate(`/${pathname.split("/")[1]}/match_submit1`, {
                   //   state: { matchIds: matchIds, marketIds: marketIds },
                   // });
                 } else {
                   navigate(`/${pathname.split("/")[1]}/match_submit`, {
-                    state: { match: Number(max), matchIds: matchIds, marketIds: marketIds },
+                    state: {
+                      match: Number(max),
+                      matchIds: matchIds,
+                      marketIds: marketIds,
+                    },
                   });
                 }
               }}
@@ -384,20 +414,32 @@ const MarketAnalysis = () => {
           </Box>
         )}
       </Box>
-      {matchData?.length > 0 &&
-        matchData?.map((i, k) => {
-          return (
-            <LiveMarketComponent
-              key={i?.id}
-              data={i}
-              setSelected={() => changeSelected(k, i)}
-              mode={mode}
-              selected={!selected.includes(k?.toString())}
-              team={i?.teamA}
-              team_2={i?.teamB}
-            />
-          );
-        })}
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          gap: "8px",
+          marginTop:{mobile:"5%",laptop:"0%",tablet:"0%",}
+        }}
+      >
+        {matchData?.length > 0 &&
+          matchData?.map((i, k) => {
+            return (
+              <LiveMarketComponent
+                key={i?.id}
+                data={i}
+                setSelected={() => changeSelected(k, i)}
+                mode={mode}
+                selected={!selected.includes(k?.toString())}
+                team={i?.teamA}
+                team_2={i?.teamB}
+              />
+            );
+          })}
+      </Box>
     </Box>
   );
 };
