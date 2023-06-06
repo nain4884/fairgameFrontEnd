@@ -1,9 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CusButton from "./CusButton";
-import { SearchInput } from "../../components";
+import SearchInput from "./SearchInput";
 
-const ListH = () => {
+
+const ListH = ({setAllMatch ,currentPage,pageLimit}) => {
   const navigate = useNavigate();
   return (
     <Box
@@ -14,7 +15,7 @@ const ListH = () => {
         Match List
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <SearchInput placeholder={"Search Match..."} />
+        <SearchInput show={true} setData={setAllMatch} currentPage={currentPage} pageLimit={pageLimit} placeholder={"Search Match..."} />
         <CusButton
           onClick={() => {
             navigate("/expert/add_match");

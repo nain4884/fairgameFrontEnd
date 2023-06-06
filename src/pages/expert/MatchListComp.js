@@ -52,7 +52,7 @@ const MatchListComp = () => {
         }),
       ]}
     >
-      <ListH />
+      <ListH  setAllMatch={setAllMatch} currentPage={currentPage} pageLimit={pageLimit}/>
       <ListHeaderT />
       {allMatch.map((element, i) => {
         return (

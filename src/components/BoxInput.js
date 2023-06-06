@@ -77,7 +77,7 @@ const BoxInput = ({
               setDefaultValue(value);
               getLatestBetAmount(value);
             }
-          }, 1000)}
+          }, 500)}
           sx={{ textAlign: "center", alignItems: "center" }}
         />
       </Box>
