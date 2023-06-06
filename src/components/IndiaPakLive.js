@@ -4,15 +4,14 @@ import { useState, useEffect, useContext } from "react";
 import StyledImage from "./StyledImage";
 import { LiveOff, LiveOn } from "../expert/assets";
 import SessionResultModal from "./SessionResultModal";
-import expertAxios from "../axios/expertAxios";
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { SocketContext } from "../context/socketContext";
 import { setRole } from "../newStore";
 import { Lock, BallStart } from '../assets';
-import { GlobalStore } from "../context/globalStore";
+// import { GlobalStore } from "../context/globalStore";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { setSessionAllBetRate, setSessionResults } from "../newStore/reducers/matchDetails";
+import { setSessionResults } from "../newStore/reducers/matchDetails";
 import { setSessionAllBet } from "../newStore/reducers/expertMatchDetails";
 
 
@@ -111,6 +110,10 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                             const updatedData = [body, ...sessionAllBet]; // Combine new object with existing state data
                             // alert(tempData.length);
                             dispatch(setSessionAllBet(updatedData));
+                            // setGlobalStore((prev) => ({
+                            //     ...prev,
+                            //     sessionBets: updatedData,
+                            // }));
                         }
                     } catch (err) {
                         console.log(err?.message);
@@ -119,7 +122,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                 }
             }
         }
-    }, [socket, betId]);
+    }, [socket, betId, sessionAllBet]);
 
     useEffect(() => {
         // alert(JSON.stringify(globalStore.isSession))
@@ -212,6 +215,10 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             // alert(handleBetData)
             // handleBetData(data?.data?.data || [], id)
             dispatch(setSessionAllBet(data?.data?.data || []));
+            // setGlobalStore((prev) => ({
+            //     ...prev,
+            //     sessionBets: data?.data?.data || [],
+            // }));
         } catch (e) {
             console.log(e);
         }
