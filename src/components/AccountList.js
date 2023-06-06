@@ -138,6 +138,7 @@ const AccountList = () => {
               if (i % 2 === 0) {
                 return (
                   <AccountListRow
+                    callProfile={true}
                     showOptions={true}
                     containerStyle={{ background: "#FFE094" }}
                     profit={element.profit_loss >= 0}
@@ -151,6 +152,7 @@ const AccountList = () => {
               } else {
                 return (
                   <AccountListRow
+                    callProfile={true}
                     showOptions={true}
                     containerStyle={{ background: "#ECECEC" }}
                     profit={element.profit_loss >= 0}

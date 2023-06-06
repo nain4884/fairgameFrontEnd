@@ -25,6 +25,7 @@ const AccountListRow = ({
   getListOfUser,
   showOptions,
   showChildModal,
+  callProfile
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -109,13 +110,16 @@ const AccountListRow = ({
   };
 
   useEffect(() => {
-    if (showUserModal === false && OLDUSERBALANCE === 0) {
+    if (
+      showUserModal === false &&
+      OLDUSERBALANCE === 0 && callProfile
+    ) {
       updatedUserProfile();
       OLDUSERBALANCE++;
     } else {
       OLDUSERBALANCE = 0;
     }
-  }, [showUserModal]);
+  }, [showUserModal ,callProfile]);
 
   const [elementToUDM, setElementToUDM] = useState(prevElement);
   function handleSetUDM(val) {

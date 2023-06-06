@@ -154,7 +154,8 @@ const AccountListModal = ({ id, show, setShow, title }) => {
             {data1?.map((element, i) => {
               if (i % 2 === 0) {
                 return (
-                  <AccountListRow
+                  <AccountListRow 
+                    callProfile={false}
                     showOptions={false}
                     showChildModal={true}
                     containerStyle={{ background: "#FFE094" }}
@@ -169,6 +170,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
               } else {
                 return (
                   <AccountListRow
+                  callProfile={false}
                     showOptions={false}
                     showChildModal={true}
                     containerStyle={{ background: "#ECECEC" }}
