@@ -15,7 +15,7 @@ export default function Live() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { sessionAllBet } = useSelector((state) => state?.expertMatchDetails);
-    // const [betData, setBetData] = useState(sessionAllBetRates);
+    // const [betData, setBetData] = useState();
     const [proLoss1, setProLoss1] = useState({});
     const [betId, setBetId] = useState();
 
@@ -27,9 +27,6 @@ export default function Live() {
             navigateTo && navigate(`/${window.location.pathname.split('/')[1]}/${navigateTo}`, state)
         }, [2000])
     }
-    // useEffect(() => {
-    //     setBetData(sessionAllBetRates)
-    // }, [betData]);
 
     // const handleBetData = async (data, id) => {
     //     // alert("call" + data.length)
