@@ -2225,7 +2225,6 @@ const UpdateLockUnlock = (body) => {
 };
 
 const UserDelete = (id) => {
-  console.log("first", axios);
   const { axios } = setRole();
   return new Promise(async (resolve, reject) => {
     try {

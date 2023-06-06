@@ -62,7 +62,6 @@ const Odds = ({ onClick, top, blur, match }) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
-          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
           dispatch(removeCurrentUser());
           dispatch(removeManualBookMarkerRates())
           dispatch(removeSelectedMatch());

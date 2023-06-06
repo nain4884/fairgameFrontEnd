@@ -26,7 +26,6 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
   // data = { data?.length > 0 ? data[1] : []
   // lock = { ex?.availableToBack?.length > 0 ? false : true
   const handleLock = (data) => {
-    console.log('data ddd :', data);
     // if (data?.length > 0) {
     return data?.ex?.availableToBack?.length > 0 ? false : true
     // return data?.ex?.availableToLay?.length > 0 ? false : true

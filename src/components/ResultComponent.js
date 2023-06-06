@@ -44,7 +44,6 @@ const ResultComponent = ({
         selectOption: selected,
       };
       setLoading({ id: "DR", value: true });
-      console.log("first", betId, body);
       const { data } = await axios.post("/game-match/declearResult", body);
       onClick();
       toast.success(data?.message);

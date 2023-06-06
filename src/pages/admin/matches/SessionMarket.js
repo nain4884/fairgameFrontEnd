@@ -27,7 +27,6 @@ const SessionMarket = ({ currentMatch, sessionOffline }) => {
     }
   }, [currentMatch]);
 
-  console.log("matchSessionData", matchSessionData);
   return (
     <>
       <Box

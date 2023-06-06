@@ -143,7 +143,6 @@ const ShowComponent = ({
             format="yyyy-MM-dd HH:mm"
             value={DetailError?.Detail[2]?.val} //(DetailError?.Detail[2]?.val)
             onChange={(e) => {
-              console.log("e?.toString()", e?.toString());
               DetailError.setDetail({
                 ...DetailError.Detail,
                 [place]: {

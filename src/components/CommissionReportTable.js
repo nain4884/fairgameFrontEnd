@@ -29,7 +29,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         `/game-match/getCommisionReport/${id}?&page=${currentPage}&limit=${pageLimit}`
       );
 
-      console.log("data", data);
       // data?.data?.data.map((element) => {
       //   let roleDetail = roles.find(findThisRole);
       //   function findThisRole(role) {
@@ -148,7 +147,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       commissionAmount: element.ComissionAmount,
       commissionType: element.ComissionType,
     };
-    console.log("element", element);
     const [elementToUDM, setElementToUDM] = useState(prevElement);
 
     function checkIfElementUpdated(val) {

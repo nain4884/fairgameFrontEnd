@@ -69,7 +69,6 @@ const DropDownSimple = ({
               eventDetail.Runners.map((runner) => {
                 allrunners.push(runner.RunnerName);
               });
-              console.log("eventDetail.eventDate", eventDetail?.EventDate);
               setDetail({
                 ...Detail,
                 [place]: {

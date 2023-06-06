@@ -92,11 +92,11 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
-        console.log(value);
+        // console.log(value);
       });
 
       socket.onevent = async (packet) => {
-        console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+        // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
 
         if (packet.data[0] === "resultDeclareForBet") {
           const value = packet.data[1];
@@ -208,7 +208,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
-          console.log("newBetAdded :", value);
           // matchId = value?.match_id;
           try {
             setCurrentMatch((currentMatch) => {
@@ -564,8 +563,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
               // Return the new array as the updated state
               return updatedMatches;
             });
-
-            console.log("manualBookmakerData 222:", manualBookmakerData);
           } catch (err) {
             console.log(err?.message);
           }
@@ -861,7 +858,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             };
           });
           setSessionLock(true);
-          console.log("WebSocket connection failed:", event);
         });
 
         socketMicro.emit("init", { id: marketId });
@@ -1017,12 +1013,10 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   async function getThisMatch(id) {
     try {
       const response = await axios.get(`/game-match/matchDetail/${id}`);
-      console.log("response.data :", response.data);
 
       let matchOddsDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
-      console.log("matchOddsDataTemp :", matchOddsDataTemp);
       setManualBookmakerData(matchOddsDataTemp);
       // console.log("manualBookmakerData:", manualBookmakerData);
 

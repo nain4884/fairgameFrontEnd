@@ -158,7 +158,6 @@ const AddAccount = () => {
   const [uplineP, setUplineP] = useState(0);
   // const { roleName } = allRole?.find((role) => role?.id === currentUser?.roleId);
   const setTypeForAccountType = () => {
-    console.log("roleNameAdmin", roleName);
     const typo =
       roleName === "fairGameWallet"
         ? types
@@ -350,7 +349,6 @@ const AddAccount = () => {
   }
   useEffect(() => {
     if (profile && roleName) {
-      console.log("roleName", roleName);
       const res = handleUpline(roleName);
       setUplineP(res);
       setDetail({
@@ -409,7 +407,6 @@ const AddAccount = () => {
   }
 
   function handleTransPass({ place, val, setError, error }) {
-    console.log("place,val", place, val);
     if (isNaN(val) || val === "") {
       setError({
         ...error,

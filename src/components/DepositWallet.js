@@ -22,8 +22,9 @@ export default function DepositWallet() {
     3: { field: "Transaction_Password", val: "" },
     4: { field: "Remark", val: "" },
   });
-  const [userId, setUserId] = useState("");
-  const [balance, setBalance] = useState("");
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const [userId, setUserId] = useState(currentUser?.id);
+  const [balance, setBalance] = useState(currentUser?.current_balance);
   let defaultError = {
     1: { field: "Previous_Balance", val: true },
     2: { field: "amount", val: true },

@@ -46,7 +46,6 @@ const OddsPlaceBet = ({
   const { axios } = setRole();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [visible, setVisible] = useState(false);
-  console.log("visible", visible);
   const [betPalaceError, setBetPalaceError] = useState(false);
   const [canceled, setCanceled] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -360,7 +359,6 @@ const OddsPlaceBet = ({
     }
   };
 
-  console.log("canclelled", canceled);
 
   const onSubmit = async (e) => {
     try {

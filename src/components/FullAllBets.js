@@ -55,7 +55,6 @@ const data = [
 
 ];
 const FullAllBets = ({ tag, mode, IObets }) => {
-  console.log('IObets', IObets)
   //   const [selected, setSelected] = useState([...data, ...data]);
   const [selectedData, setSelectedData] = useState([]);
 

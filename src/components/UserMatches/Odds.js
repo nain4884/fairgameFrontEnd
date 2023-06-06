@@ -176,7 +176,6 @@ const Odds = ({
       return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
     }
   })();
-  console.log("fastRate", fastRate);
 
   return (
     <>

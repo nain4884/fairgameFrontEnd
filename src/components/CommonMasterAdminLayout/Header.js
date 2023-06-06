@@ -100,7 +100,6 @@ const CustomHeader = ({}) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
-          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
 
           // const { data } = await axios.get("auth/logout");
           // if (data?.data === "success logout") {
@@ -140,7 +139,6 @@ const CustomHeader = ({}) => {
 
   async function getUserDetail(nav) {
     try {
-      console.log("nav", nav);
       if (nav === "admin") {
         localStorage.setItem("role1", "role1");
       }

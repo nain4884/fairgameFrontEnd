@@ -42,7 +42,6 @@ const AccountStatementList = ({ user }) => {
   const getLimitEntries = (childLimitData) => {
     setPageLimit(childLimitData);
   };
-  console.log(pageLimit, "pagelimit");
   function callPage(val) {
     // dispatch(secallPagetCurrentStatementPage(parseInt(val)));
     // setCurrentPage(parseInt(val * pageLimit));
@@ -72,7 +71,6 @@ const AccountStatementList = ({ user }) => {
         skip: currentPage * pageLimit,
       };
     }
-    console.log(payload);
     let { axios } = setRole();
     try {
       const { data } = await axios.post(

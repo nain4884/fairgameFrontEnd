@@ -474,7 +474,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 handleSuspend();
                 // let value = targetValue + 1
                 let value = targetValue ? targetValue + incGap : incGap
-                console.log("value :", value)
                 setPressEnter(false);
                 if (event.target.name === 'teamA_rate') {
                     let result = handleHunderedValue(targetValue, teamALayValue);

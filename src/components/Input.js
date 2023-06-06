@@ -314,7 +314,6 @@ const Input = ({
               // checkMesasge && errorHandle(Detail[place].val)
             }}
             onBlur={(e) => {
-              console.log("toFocus", toFoucs);
               toFoucs &&
                 onFocusOut({
                   place,

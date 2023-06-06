@@ -158,7 +158,6 @@ const SessionResultModal = ({
       };
       setLoading({ id: "NR", value: true });
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
-      console.log(data, "data");
       if (data?.statusCode !== 500) {
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
@@ -320,7 +319,6 @@ const SessionResultModal = ({
               loading={loading}
               id="NR"
               onClick={() => {
-                console.log("click");
                 if (loading?.value) {
                   return false;
                 }

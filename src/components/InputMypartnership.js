@@ -251,7 +251,6 @@ const InputMyPartnership = ({
               // checkMesasge && errorHandle(Detail[place].val)
             }}
             onBlur={() => {
-              console.log("toFocus", toFoucs);
               toFoucs &&
                 onFocusOut({
                   place,

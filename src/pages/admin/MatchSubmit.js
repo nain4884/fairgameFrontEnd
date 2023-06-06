@@ -554,7 +554,7 @@ const MatchSubmit = ({ }) => {
           // setMacthOddsLive([]);
           // setBookmakerLive([]);
           // setSessionLock(true)
-          console.log("WebSocket connection failed:", event);
+          // console.log("WebSocket connection failed:", event);
         });
         // for (var j = 0; j < matchIds.length; j++) {
         //   socketMicro.emit("init", { id: matchIds[j] });
@@ -921,7 +921,6 @@ const MatchSubmit = ({ }) => {
     try {
       let response = await axios.post(`/game-match/multipleMatchDetail`, payload);
       // alert(111)
-      console.log("response :www", response?.data?.data);
       setMatchData(response?.data?.data);
       // let matchOddsDataTemp = response.data?.bettings?.filter(
       //   (element) => element.sessionBet === false

@@ -51,7 +51,6 @@ const SearchInput = ({
       const { data } = await axios.get(
         `/fair-game-wallet/getAllUser?userName=${value}`
       );
-      console.log(data.data.data, "data");
       data?.data?.data.map((element) => {
         // let roleDetail = roles.find(findThisRole);
         // function findThisRole(role) {

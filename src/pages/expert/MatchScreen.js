@@ -96,9 +96,8 @@ const MatchScreen = () => {
   useEffect(() => {
     if (socket && socket.connected && currentMatch !== null) {
       socket.onevent = async (packet) => {
-        console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+        // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
-          console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
           dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
@@ -223,8 +222,6 @@ const MatchScreen = () => {
               ) {
                 updatedBettings.unshift(value);
               }
-              console.log("updatedBettings", updatedBettings, value);
-              console.log("updatedBettings", updatedBettings, value);
               return {
                 ...currentMatch,
                 bettings: updatedBettings,

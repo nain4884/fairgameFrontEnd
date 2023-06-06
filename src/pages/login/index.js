@@ -63,7 +63,6 @@ export default function Login(props) {
     }
   }, [location.pathname, localStorage]);
 
-  console.log("location", location, location.pathname.split("/")[0]);
 
   async function getToken(val) {
     try {

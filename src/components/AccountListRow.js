@@ -104,7 +104,7 @@ const AccountListRow = ({
       const { data } = await axios.get("users/profile");
       dispatch(setCurrentUser(data.data));
     } catch (e) {
-      console.log("e", e);
+      console.log("Error", e);
     }
   };
 

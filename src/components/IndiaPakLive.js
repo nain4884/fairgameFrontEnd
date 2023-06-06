@@ -204,7 +204,6 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
         // alert(JSON.stringify(payload))
         try {
             let { data } = await axios.post(`/betting/getPlacedBets`, payload);
-            console.log("data :", data.data);
             // setBetData(data?.data?.data || []);
             // alert(handleBetData)
             // handleBetData(data?.data?.data || [], id)

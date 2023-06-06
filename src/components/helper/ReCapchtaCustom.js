@@ -17,7 +17,7 @@ export default function ReCAPTCHACustom({containerStyle}){
         size="invisible"
         type="image"
         sitekey={REACT_APP_SITE_KEY}
-        onChange={(token)=>{console.log(token)}}
+        // onChange={(token)=>{console.log(token)}}
       />
       <Checkbox checked={checked} onChange={(e)=>{
         setChecked(e.target?.checked)
