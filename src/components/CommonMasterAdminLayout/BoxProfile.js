@@ -91,7 +91,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         dispatch(removeCurrentUser());
         dispatch(logout({ roleType: "role2" }));
         dispatch(removeManualBookMarkerRates());
-        dispatch(setUpdatedTransPasswords(false))
+        dispatch(setUpdatedTransPasswords(false));
         dispatch(removeSelectedMatch());
         setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
         if (nav === "admin") {
@@ -103,7 +103,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         handleClose();
         removeSocket();
         socket.disconnect();
-    socketMicro.disconnect()
+        socketMicro.disconnect();
       } else {
         toast.error("Something went wrong");
       }

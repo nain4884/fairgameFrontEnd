@@ -8,6 +8,7 @@ import { setRole } from "../../newStore";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ButtonWithSwitch from "./ButtonWithSwitch";
+import { toast } from "react-toastify";
 
 const Row = ({ index, containerStyle, data }) => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const Row = ({ index, containerStyle, data }) => {
 
   const { socket, socketMicro } = useContext(SocketContext);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const [loading, setLoading] = useState({ val: false, id: "" });
 
   useEffect(() => {
     if (socketMicro && socketMicro.connected) {
@@ -55,6 +57,7 @@ const Row = ({ index, containerStyle, data }) => {
   }, [socketMicro]);
 
   async function submitMatchUpdation() {
+    setLoading({ val: true, id: data.id });
     let defaultMatchStatus = {
       apiMatchActive: false,
       apiBookMakerActive: false,
@@ -85,12 +88,16 @@ const Row = ({ index, containerStyle, data }) => {
         payload
       );
       if (response.data.message === "Match update successfully.") {
+        setLoading({ val: false, id: "" });
+        toast.success(response.data.message);
         showDialogModal(true, true, response.data.message, "betodds", {
           state: { id: data.id, marketId: data.marketId },
         });
       }
     } catch (e) {
+      setLoading({ val: false, id: "" });
       console.log(e);
+      toast.error(e.response?.data?.message);
       showDialogModal(true, false, e.response.data.message);
     }
   }
@@ -174,7 +181,8 @@ const Row = ({ index, containerStyle, data }) => {
         {/* <CusButton onClick={() => {
                       navigateToAddBet()
                   }} title={"Add Bet"} /> */}
-        <CusButton
+        <CusButton 
+          loading={loading.id===data.id}
           onClick={() => {
             submitMatchUpdation();
           }}

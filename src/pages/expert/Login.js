@@ -187,7 +187,7 @@ export default function Login(props) {
               ...prev,
               expertJWT: data.data.access_token,
             }));
-            handleNavigate("/expert/home", "expert");
+            handleNavigate("/expert/match", "expert");
           } else {
             toast.error("User Unauthorized !");
           }

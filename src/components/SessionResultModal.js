@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { memo } from "react";
 import SessionResultCustomButton from "./SessionResultCustomButton";
 import { SocketContext } from "..//context/socketContext";
+import useOuterClick from "./helper/userOuterClick";
 
 const SessionResultModal = ({
   onClick,
@@ -23,6 +24,9 @@ const SessionResultModal = ({
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
+  const innerRef = useOuterClick((ev) => {
+    onClick();
+  });
 
   const myDivRef = useRef(null);
 
@@ -61,7 +65,10 @@ const SessionResultModal = ({
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         setLoading({ id: "", value: false });
-        socket.emit("resultDeclareForBet", { match_id: newData?.match_id, betId: newData?.id })
+        socket.emit("resultDeclareForBet", {
+          match_id: newData?.match_id,
+          betId: newData?.id,
+        });
         // const updatedData = {
         //   ...newData,
         //   betStatus: 2,
@@ -193,7 +200,7 @@ const SessionResultModal = ({
 
   return (
     <Box
-      ref={myDivRef}
+      ref={innerRef}
       sx={{
         width: "250px",
         height: "180px",
@@ -204,6 +211,7 @@ const SessionResultModal = ({
       }}
     >
       <Box
+        ref={myDivRef}
         sx={[
           {
             width: "100%",
@@ -247,7 +255,7 @@ const SessionResultModal = ({
           justifyContent: "center",
         }}
       >
-        {newData?.betStatus !== 3 ?
+        {newData?.betStatus !== 3 ? (
           <TextField
             placeholder="Enter score"
             variant="standard"
@@ -263,9 +271,22 @@ const SessionResultModal = ({
                 paddingX: "1vw",
               },
             }}
-          /> : <Typography sx={{ color: "#0B4F26", fontSize: "13px", fontWeight: "500", fontWeight: "600", textAlign: "center", paddingTop: "20px", paddingBottom: "20px" }} >
+          />
+        ) : (
+          <Typography
+            sx={{
+              color: "#0B4F26",
+              fontSize: "13px",
+              fontWeight: "500",
+              fontWeight: "600",
+              textAlign: "center",
+              paddingTop: "20px",
+              paddingBottom: "20px",
+            }}
+          >
             Are you sure to set no result
-          </Typography>}
+          </Typography>
+        )}
         <Box
           sx={{
             display: "flex",
@@ -292,8 +313,8 @@ const SessionResultModal = ({
             />
           ) : (
             <>
-              {newData?.betStatus !== 3 ?
-                < SessionResultCustomButton
+              {newData?.betStatus !== 3 ? (
+                <SessionResultCustomButton
                   color={"#0B4F26"}
                   id="DR"
                   title={"Declare"}
@@ -308,7 +329,8 @@ const SessionResultModal = ({
                       toast.warn("Please enter score");
                     }
                   }}
-                /> : null}
+                />
+              ) : null}
             </>
           )}
 

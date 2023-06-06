@@ -100,7 +100,6 @@ const CustomHeader = ({}) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
-
           // const { data } = await axios.get("auth/logout");
           // if (data?.data === "success logout") {
           dispatch(removeSelectedMatch());
@@ -140,7 +139,7 @@ const CustomHeader = ({}) => {
   async function getUserDetail(nav) {
     try {
       if (nav === "admin") {
-        localStorage.setItem("role1", "role1");
+        // localStorage.setItem("role1", "role1");
       }
       if (nav === "wallet") {
         localStorage.setItem("role2", "role2");

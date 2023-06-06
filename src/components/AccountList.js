@@ -35,7 +35,7 @@ const AccountList = () => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   // const {currentUser} = useSelector((state) => state?.currentUser);
   const { userWallet } = useSelector((state) => state?.auth);
-  console.log(userWallet, "userWallet");
+  // console.log(userWallet, "userWallet");
   // const [roles, setRoles] = useState([]);
   const { userData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole);
