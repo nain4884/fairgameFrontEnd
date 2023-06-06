@@ -2,7 +2,7 @@ import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { useSelector } from "react-redux";
-
+import { debounce } from "lodash";
 const BoxInput = ({
   title,
   defaultValue,
@@ -19,7 +19,7 @@ const BoxInput = ({
     <Box sx={[{ display: "flex", flexDirection: "column" }, containerStyle]}>
       <Box
         sx={{
-          background:  "#262626",
+          background: "#262626",
           border: "1px solid #C7B6B6",
           display: "flex",
           justifyContent: "center",
@@ -40,19 +40,19 @@ const BoxInput = ({
       <Box
         sx={[
           {
-            background: selectedColorBox ? selectedColorBox :"#0B4F26",
+            background: selectedColorBox ? selectedColorBox : "#0B4F26",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "32px",
             marginTop: "1px",
-            border:"1px solid #FFF"
+            border: "1px solid #FFF",
           },
           valueContainerStyle,
         ]}
       >
         <TextField
-          value={defaultValue}
+          // value={defaultValue}
           variant="standard"
           InputProps={{
             sx: {
@@ -61,9 +61,13 @@ const BoxInput = ({
               },
             },
             disableUnderline: true,
-            style: { fontSize: "16px", fontWeight: "600", color:!selectedColorBox && "white" },
+            style: {
+              fontSize: "16px",
+              fontWeight: "600",
+              color: !selectedColorBox && "white",
+            },
           }}
-          onChange={(e) => {
+          onChange={debounce((e) => {
             const value = e.target.value.trim(); // Remove leading/trailing spaces
 
             if (value === "") {
@@ -73,7 +77,7 @@ const BoxInput = ({
               setDefaultValue(value);
               getLatestBetAmount(value);
             }
-          }}
+          }, 1000)}
           sx={{ textAlign: "center", alignItems: "center" }}
         />
       </Box>
