@@ -101,6 +101,7 @@ export default function Login(props) {
     try {
       if (loginDetail[1].val === "" && loginDetail[2].val === "") {
         toast.warning("Username and password required");
+        setLoading(false);
         return false;
       } else {
         setLoading(true);
@@ -108,6 +109,7 @@ export default function Login(props) {
 
         if (["role4"].includes(token)) {
           toast.warn("Please logout from previous session");
+          setLoading(false);
           return false;
         }
         let { data } = await axios.post(`/auth/login`, {
