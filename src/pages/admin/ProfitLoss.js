@@ -76,7 +76,8 @@ const ProfitLoss = () => {
 
             <Box sx={{ width: '99%', marginX: '.5%' }}>
 
-                <ProfitLossComponent />
+                <ProfitLossComponent eventData={eventData} reportData={reportData} betData=
+                    {betData} sessionBetData={sessionBetData} handleReport={handleReport} handleBet={handleBet} />
             </Box>
             {/* <ExtraHeader /> */}
             {/* <ProfitLossList /> */}
