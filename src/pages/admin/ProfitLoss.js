@@ -40,6 +40,9 @@ const ProfitLoss = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [currenLimit, setCurrenLimit] = useState(1);
     const [eventData, setEventData] = useState([]);
+    const [reportData, setReportData] = useState([]);
+    const [betData, setBetData] = useState([]);
+    const [sessionBetData, setSessionBetData] = useState([]);
 
     useEffect(() => {
         // alert(1)
@@ -49,25 +52,53 @@ const ProfitLoss = () => {
     async function getEventList() {
 
         var payload = {};
-        // console.log(payload);
         let { axios } = setRole();
         try {
-            // const { data } = await axios.post(
-            //   `/betting/currentAllMatchBet/${userId}`,
-            //   payload
-            // );
             const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
-            // console.log(data.data[0], 'datadatadatadata');
-            setEventData(data.data[0]);
-            setPageCount(
-                Math.ceil(parseInt(data.data[1] ? data.data[1] : 1) / pageLimit)
-            );
-
-            //   toast.success(data?.message);
+            // console.log(data.data[0], 'datadatadatadata')
+            setEventData(data?.data);
         } catch (e) {
             console.log(e);
         }
     }
+
+    const handleReport = (eventType) => {
+        getReport(eventType);
+    };
+
+    const getReport = async (eventType) => {
+        var payload = {
+            gameType: eventType
+        };
+        let { axios } = setRole();
+        try {
+            const { data } = await axios.post(`/betting/profitLossReport`, payload);
+            // console.log(data.data[0], 'datadatadatadata')l
+            setReportData(data?.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const handleBet = (id) => {
+        // alert(id)
+        getBets(id);
+    };
+
+    async function getBets(id) {
+        var payload = {
+            match_id: id
+        };
+        let { axios } = setRole();
+        try {
+            const { data } = await axios.post(`/betting/getResultBetProfitLoss`, payload);
+            setBetData(data?.data?.filter((v) => v.sessionBet !== true));
+            setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     return (
         <Background>
             {/* <Header /> */}
