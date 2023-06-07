@@ -14,6 +14,7 @@ const ProfitLossComponent = ({ eventData, reportData, betData, sessionBetData, h
     // alert(JSON.stringify(eventData))
     const [visible, setVisible] = useState(false);
     const [show, setShow] = useState(false);
+    const [selectedId, setSelectedId] = useState("");
 
     const getHandleReport = (eventType) => {
         if (!visible) {
@@ -23,10 +24,11 @@ const ProfitLossComponent = ({ eventData, reportData, betData, sessionBetData, h
     };
 
     const getBetReport = (id) => {
-        if (!show) {
-            handleBet(id);
-        }
+        // if (!show) {
+        // }
+        handleBet(id);
         setShow(!show);
+        setSelectedId(id);
     };
 
     const RowHeader = ({ item, index }) => {
@@ -82,7 +84,7 @@ const ProfitLossComponent = ({ eventData, reportData, betData, sessionBetData, h
                             <Typography sx={{ fontSize: { mobile: '10px', laptop: '15px' }, color: 'white', fontWeight: '700' }} >{item.eventName}</Typography>
                             <Typography sx={{ fontSize: { laptop: '10px', mobile: '0' }, color: 'white', marginLeft: '5px', fontWeight: '600' }}>({moment(item.matchDate).format("DD-MM-YYYY")})</Typography>
                         </Box>
-                        <StyledImage src={ArrowDown} sx={{ width: { laptop: '20px', mobile: "10px" }, height: { laptop: '10px', mobile: '6px' }, transform: show ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+                        <StyledImage src={ArrowDown} sx={{ width: { laptop: '20px', mobile: "10px" }, height: { laptop: '10px', mobile: '6px' }, transform: selectedId === item?.matchId ? 'rotate(180deg)' : 'rotate(0deg)' }} />
 
                     </Box>
                     <Box sx={{ background: item.rateProfitLoss > 0 ? "#27AC1E" : "#E32A2A", paddingX: '2px', width: { mobile: "25%", laptop: "20%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
@@ -100,7 +102,7 @@ const ProfitLossComponent = ({ eventData, reportData, betData, sessionBetData, h
                         </Box>
                     </Box>
                 </Box >
-                {show && <Box sx={{ width: { mobile: '100%', laptop: '96%' }, marginTop: { mobile: '.25vh' }, marginLeft: { laptop: '4%' }, display: 'flex', flexDirection: { laptop: 'row', mobile: "column" } }}>
+                {selectedId === item?.matchId && <Box sx={{ width: { mobile: '100%', laptop: '96%' }, marginTop: { mobile: '.25vh' }, marginLeft: { laptop: '4%' }, display: 'flex', flexDirection: { laptop: 'row', mobile: "column" } }}>
                     <BetHistory betData={betData} admin profit />
 
                     <Box sx={{ width: { laptop: '1vw', mobile: 0 } }} ></Box>
