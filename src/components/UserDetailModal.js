@@ -60,6 +60,7 @@ export default function UserDetailModal({
   setElementToUDM,
   getListOfUser,
   showUserModal,
+  updatedUserProfile,
   prevElement,
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
@@ -68,6 +69,7 @@ export default function UserDetailModal({
   const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
   const [deleteModal, setDeleteModal] = useState(false);
+  const [settalementModal, setSettalmentModal] = useState(false);
   function showDialogModal(isModalOpen, showRight, message) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
     setTimeout(() => {
@@ -82,7 +84,7 @@ export default function UserDetailModal({
     mainBox: {
       background: backgroundColor ?? "#F8C851",
       display: "flex",
-      width: "100%",
+      width: { mobile: "90%", laptop: "100%", tablet: "100%" },
       justifyContent: {
         mobile: "flex-start",
         tablet: "center",
@@ -119,11 +121,13 @@ export default function UserDetailModal({
         userId: val,
       });
       if (data?.data?.data) {
+        setSettalmentModal(false);
         toast.success(data?.data?.message);
       }
     } catch (err) {
       toast.error(err?.response?.data?.message);
       console.log(err.message);
+      setSettalmentModal(false);
     }
   };
   return (
@@ -141,6 +145,7 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
+              updatedUserProfile={updatedUserProfile}
               getListOfUser={getListOfUser}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
@@ -158,6 +163,7 @@ export default function UserDetailModal({
               backgroundColor={backgroundColor}
               setShowUserModal={setShowUserModal}
               userModal={userModal}
+              updatedUserProfile={updatedUserProfile}
               setShowSuccessModal={setShowSuccessModal}
               setShowModalMessage={setShowModalMessage}
               activeWalletAmount={activeWalletAmount}
@@ -265,7 +271,7 @@ export default function UserDetailModal({
             <BoxButton
               onClick={(e) => {
                 e?.preventDefault();
-                handleSettlement(elementToUDM?.userId);
+                setSettalmentModal(true);
               }}
               title={"C_Settlement"}
               containerStyle={{ marginLeft: "10px", flex: 1 }}
@@ -319,6 +325,36 @@ export default function UserDetailModal({
           />
 
           <Dialog
+            open={settalementModal}
+            onClose={() => setSettalmentModal((prev) => !prev)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Are you sure want to settle this commission ?"}
+            </DialogTitle>
+            {/* <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent> */}
+            <DialogActions>
+              <Button onClick={() => setSettalmentModal((prev) => !prev)}>
+                No
+              </Button>
+              <Button
+                sx={{ color: "#E32A2A" }}
+                onClick={(e) => {
+                  handleSettlement(elementToUDM?.userId);
+                }}
+              >
+                Yes
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Dialog
             open={deleteModal}
             onClose={() => setDeleteModal((prev) => !prev)}
             aria-labelledby="alert-dialog-title"
@@ -347,14 +383,17 @@ export default function UserDetailModal({
                   ) {
                     UserDelete(userModal.id)
                       .then(({ bool, message }) => {
+                        setDeleteModal(false);
                         showDialogModal(true, true, message);
                       })
                       .catch(({ bool, message }) => {
+                        setDeleteModal(false);
                         showDialogModal(true, false, message);
                       });
                   } else {
                     let message = "First Settle Account to Delete The User";
                     toast.error(message);
+                    setDeleteModal(false);
                     showDialogModal(true, false, message);
                   }
                 }}
@@ -500,6 +539,7 @@ const DepositComponent = ({
   dispatch,
   showDialogModal,
   getListOfUser,
+  updatedUserProfile,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -800,6 +840,7 @@ const DepositComponent = ({
                 .then(({ bool, message }) => {
                   toast.success(message);
                   getListOfUser();
+                  updatedUserProfile();
                   showDialogModal(true, true, message);
                 })
                 .catch(({ bool, message }) => {
@@ -855,6 +896,7 @@ const WithDrawComponent = ({
   dispatch,
   showDialogModal,
   getListOfUser,
+  updatedUserProfile,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -915,7 +957,7 @@ const WithDrawComponent = ({
         current_balance: currentUser?.current_balance + Number(e.target.value),
       };
 
-        setInitialBalance(newUserbalance?.current_balance)
+      setInitialBalance(newUserbalance?.current_balance);
     } else {
       const newUserbalance = {
         ...currentUser,
@@ -923,7 +965,7 @@ const WithDrawComponent = ({
       };
 
       setTimeout(() => {
-        setInitialBalance(currentUser?.current_balance)
+        setInitialBalance(currentUser?.current_balance);
       }, 51);
     }
   }, 50);
@@ -1023,7 +1065,7 @@ const WithDrawComponent = ({
             }}
           >
             <TextField
-              value={initialBalance|| 0}
+              value={initialBalance || 0}
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
@@ -1152,6 +1194,7 @@ const WithDrawComponent = ({
               UpdateAvailableBalance(withDrawObj)
                 .then(({ bool, message }) => {
                   toast.success(message);
+                  updatedUserProfile();
                   getListOfUser();
                   showDialogModal(true, true, message);
                 })
@@ -1283,7 +1326,10 @@ const NewCreditComponent = ({
                 });
                 setElementToUDM({
                   ...elementToUDM,
-                  percent_profit_loss: calculatePercentProfitLoss(prevElement, e),
+                  percent_profit_loss: calculatePercentProfitLoss(
+                    prevElement,
+                    e
+                  ),
                   credit_refer: isNaN(Number(e.target.value))
                     ? 0
                     : Number(e.target.value),

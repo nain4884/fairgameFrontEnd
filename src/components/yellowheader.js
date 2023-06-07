@@ -60,7 +60,7 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
           marginLeft: "10px",
           fontWeight: "600",
           marginY: "2vh",
-          
+
           alignSelf: "start",
         }}
       >
@@ -68,50 +68,75 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
       </Typography>
       <Box
         sx={{
-          display: "flex",
           borderRadius: "5px",
-          width: "99%",
+          width: "100%",
           px: "10px",
           minHeight: "80px",
           background: "#F8C851",
-          gap: 1,
+          display: "flex",
           flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
+          
         }}
       >
-        <Calendar
-          pickerStyles={{ height: "40px" }}
-          containerStyle={{
-            width: matchesMobile ? "100%" : "19%",
-            height: "40px",
+        <Box
+          sx={{
+            width:"100%",
+            gap: 1,
+            display: "flex",
+            flexDirection: { mobile: "row", laptop: "row", tablet: "row" },
           }}
-          title={"From"}
-          selectedDate={fromDate}
-          onDateChange={handleFromDateChange}
-        />
-        <Calendar
-          pickerStyles={{ height: "40px" }}
-          containerStyle={{
-            width: matchesMobile ? "100%" : "19%",
-            height: "40px",
-          }}
-          title={"To"}
-          selectedDate={toDate}
-          onDateChange={handleToDateChange}
-        />
-
-        <CustomButton
-          btnStyle={{
-            height: "40px",
-            borderRadius: "5px",
-            width: matchesMobile ? "32%" : "20%",
-            marginRight: "0px",
-            marginTop:matchesMobile ? "25px" : 0,
-            marginLeft: matchesMobile ? "10px" : "20px",
-            marginBottom: matchesMobile ? "15px" : tab ? "28px" : "15px",
-          }}
-          onClick={sendDataToParent}
-          getAccountStatement={getAccountStatement}
-        />
+        >
+          <Calendar
+            pickerStyles={{ height: "40px" }}
+            containerStyle={{
+              width: matchesMobile ? "50%" : "19%",
+              height: "40px",
+            }}
+            title={"From"}
+            selectedDate={fromDate}
+            onDateChange={handleFromDateChange}
+          />
+          <Calendar
+            pickerStyles={{ height: "40px" }}
+            containerStyle={{
+              width: matchesMobile ? "50%" : "19%",
+              height: "40px",
+            }}
+            title={"To"}
+            selectedDate={toDate}
+            onDateChange={handleToDateChange}
+          />
+          {!matchesMobile && (
+            <CustomButton
+              btnStyle={{
+                height: "40px",
+                borderRadius: "5px",
+                width: "20%",
+                marginRight: "0px",
+                marginTop: matchesMobile ? "25px" : 0,
+                marginLeft: matchesMobile ? "10px" : "20px",
+                marginBottom: matchesMobile ? "15px" : tab ? "28px" : "15px",
+              }}
+              onClick={sendDataToParent}
+              getAccountStatement={getAccountStatement}
+            />
+          )}
+        </Box>
+        {matchesMobile && (
+          <CustomButton
+            btnStyle={{
+              height: "40px",
+              borderRadius: "5px",
+              width: "30%",
+              marginRight: "0px",
+              marginTop: matchesMobile ? "35px" : 0,
+              marginLeft: matchesMobile ? "10px" : "20px",
+              marginBottom: matchesMobile ? "15px" : tab ? "28px" : "15px",
+            }}
+            onClick={sendDataToParent}
+            getAccountStatement={getAccountStatement}
+          />
+        )}
 
         {/* {decodedTokenUser.role === "user" && (
                 <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} />

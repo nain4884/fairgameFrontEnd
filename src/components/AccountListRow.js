@@ -402,6 +402,7 @@ const AccountListRow = ({
       </Box>
       {showUserModal && (
         <UserDetailModal
+        updatedUserProfile={updatedUserProfile}
           getListOfUser={getListOfUser}
           setShowUserModal={setShowUserModal}
           backgroundColor={containerStyle?.background}
