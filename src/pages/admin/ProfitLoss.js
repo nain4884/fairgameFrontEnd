@@ -86,6 +86,8 @@ const ProfitLoss = () => {
     };
 
     async function getBets(id) {
+        setBetData([]);
+        setSessionBetData([]);
         var payload = {
             match_id: id
         };
