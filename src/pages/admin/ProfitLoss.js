@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography } from "@mui/material"
 import ProfitLossComponent from "../../components/ProfitLoss";
 import { ARROWDOWN, ARROWUP } from "../../admin/assets";
 import { Background, Header } from "../../components";
 import GeneralReportList from "../../components/GeneralReportList";
 import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
+import constants from "../../components/helper/constants";
+import { setRole } from "../../newStore";
 
 const ProfitLoss = () => {
     const ExtraHeader = () => {
@@ -29,6 +33,40 @@ const ProfitLoss = () => {
                 </Box>
             </Box >
         )
+    }
+
+    const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+    const [pageCount, setPageCount] = useState(constants.pageLimit);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [currenLimit, setCurrenLimit] = useState(1);
+    const [eventData, setEventData] = useState([]);
+
+    useEffect(() => {
+        // alert(1)
+        getEventList();
+    }, [currentPage, pageCount, pageLimit]);
+
+    async function getEventList() {
+
+        var payload = {};
+        // console.log(payload);
+        let { axios } = setRole();
+        try {
+            // const { data } = await axios.post(
+            //   `/betting/currentAllMatchBet/${userId}`,
+            //   payload
+            // );
+            const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
+            // console.log(data.data[0], 'datadatadatadata');
+            setEventData(data.data[0]);
+            setPageCount(
+                Math.ceil(parseInt(data.data[1] ? data.data[1] : 1) / pageLimit)
+            );
+
+            //   toast.success(data?.message);
+        } catch (e) {
+            console.log(e);
+        }
     }
     return (
         <Background>
