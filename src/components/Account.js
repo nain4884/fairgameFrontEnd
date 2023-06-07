@@ -31,6 +31,7 @@ const Account = () => {
           justifyContent: "center",
           alignItems: "center",
           paddingX: "5px",
+          cursor: "pointer",
         }}
       >
         <Typography sx={{ fontSize: "14px", fontWeight: "600" }}>

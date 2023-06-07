@@ -363,6 +363,7 @@ const NewBoxData = ({
             overflow: "hidden",
             paddingX: "3px",
             borderRadius: "5px",
+            cursor:"pointer",
           },
           containerStyle,
         ]}

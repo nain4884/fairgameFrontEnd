@@ -106,7 +106,7 @@ const AddAccount = () => {
     "Entry Wise",
   ];
 
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState(currentUser);
   const types = [
     { role: "fairGameAdmin", val: "Fairgame Admin", level: 1 },
     { role: "superAdmin", val: "Super Admin", level: 2 },

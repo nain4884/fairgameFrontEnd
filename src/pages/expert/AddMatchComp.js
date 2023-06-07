@@ -68,7 +68,6 @@ const AddMatchComp = () => {
     20: { field: "marketId", val: false },
     21: { field: "delaySecond", val: false },
   });
-
   const [matches, setMatches] = useState([
     { EventName: "No Matches Available", MarketId: defaultMarketId },
   ]);
@@ -771,6 +770,7 @@ const AddMatchComp = () => {
           <Box
             onClick={() => {
               setDetail(stateDetail);
+              navigate("/expert/home");
             }}
             sx={{
               background: "#E32A2A",

@@ -48,6 +48,7 @@ const BoxProfile = ({ image, value, containerStyle, value1 }) => {
                 overflow: "hidden",
                 paddingX: "2px",
                 borderRadius: "35px",
+                cursor:"pointer",
               },
               containerStyle,
             ]}

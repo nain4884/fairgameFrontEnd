@@ -46,6 +46,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
       display: "flex",
       position: "relative",
       justifyContent: "space-between",
+      cursor: "pointer",
       minWidth: { laptop: "150px" },
     },
     mainBoxSubsx: [
@@ -165,6 +166,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        cursor: "pointer",
       },
       mainBoxSubStyleImagesx: { width: "35%", height: "auto" },
     };
