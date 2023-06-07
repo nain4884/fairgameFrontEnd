@@ -34,6 +34,7 @@ export default function Login(props) {
   const activeUser = useSelector((state) => {
     return state?.activeUser?.activeUser;
   });
+  const [loading, setLoading] = useState(false);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loginDetail, setLoginDetail] = useState({
@@ -135,68 +136,81 @@ export default function Login(props) {
     getLocalToken(props.allowedRole);
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
+
     try {
-      if (["role1", "role2", "role3"].includes(newtoken)) {
-        toast.warn("Please logout from previous session");
+      if (loginDetail[1].val === "" && loginDetail[2].val === "") {
+        toast.warning("Username and password required");
         return false;
-      }
-      let { data } = await axios.post(`/auth/login`, {
-        username: loginDetail[1].val,
-        password: loginDetail[2].val,
-      });
-
-      if (props.allowedRole.includes(data.data.role)) {
-        let foundRoles = await axios.get(`/role`);
-        let roles = foundRoles.data;
-        dispatch(setAllRoles(roles));
-        let roleDetail = roles.find(findThisRole);
-        function findThisRole(role) {
-          return role.id === data.data.roleId;
-        }
-        if (roleDetail) data.data.role = roleDetail;
-        if (data.message === "User login successfully.") {
-          removeSocket();
-          // dispatch(setActiveRole(foundRoles.data));
-          // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
-          dispatch(setUpdatedTransPasswords(data.data.isTransPasswordCreated));
-
-          dispatch(signIn(data.data));
-          setRole(data.data.access_token);
-          if (
-            ["master", "admin", "superMaster", "superAdmin"].includes(
-              data.data.role.roleName
-            )
-          ) {
-            setGlobalStore((prev) => ({
-              ...prev,
-              adminWT: data.data.access_token,
-            }));
-            handleNavigate("/admin/list_of_clients", "admin");
-          } else if (
-            ["fairGameWallet", "fairGameAdmin"].includes(
-              data.data.role.roleName
-            )
-          ) {
-            setGlobalStore((prev) => ({
-              ...prev,
-              walletWT: data.data.access_token,
-            }));
-            handleNavigate("/wallet/list_of_clients", "wallet");
-          } else if (["expert"].includes(data.data.role.roleName)) {
-            setGlobalStore((prev) => ({
-              ...prev,
-              expertJWT: data.data.access_token,
-            }));
-            handleNavigate("/expert/match", "expert");
-          } else {
-            toast.error("User Unauthorized !");
-          }
-        }
       } else {
-        toast.error("User Unauthorized !");
+        setLoading(true);
+        if (["role1", "role2", "role3"].includes(newtoken)) {
+          toast.warn("Please logout from previous session");
+          return false;
+        }
+        let { data } = await axios.post(`/auth/login`, {
+          username: loginDetail[1].val,
+          password: loginDetail[2].val,
+        });
+
+        if (props.allowedRole.includes(data.data.role)) {
+          let foundRoles = await axios.get(`/role`);
+          let roles = foundRoles.data;
+          dispatch(setAllRoles(roles));
+          let roleDetail = roles.find(findThisRole);
+          function findThisRole(role) {
+            return role.id === data.data.roleId;
+          }
+          if (roleDetail) data.data.role = roleDetail;
+          if (data.message === "User login successfully.") {
+            removeSocket();
+            setLoading(false);
+            // dispatch(setActiveRole(foundRoles.data));
+            // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+            dispatch(
+              setUpdatedTransPasswords(data.data.isTransPasswordCreated)
+            );
+
+            dispatch(signIn(data.data));
+            setRole(data.data.access_token);
+            if (
+              ["master", "admin", "superMaster", "superAdmin"].includes(
+                data.data.role.roleName
+              )
+            ) {
+              setGlobalStore((prev) => ({
+                ...prev,
+                adminWT: data.data.access_token,
+              }));
+              handleNavigate("/admin/list_of_clients", "admin");
+            } else if (
+              ["fairGameWallet", "fairGameAdmin"].includes(
+                data.data.role.roleName
+              )
+            ) {
+              setGlobalStore((prev) => ({
+                ...prev,
+                walletWT: data.data.access_token,
+              }));
+              handleNavigate("/wallet/list_of_clients", "wallet");
+            } else if (["expert"].includes(data.data.role.roleName)) {
+              setGlobalStore((prev) => ({
+                ...prev,
+                expertJWT: data.data.access_token,
+              }));
+              handleNavigate("/expert/match", "expert");
+            } else {
+              toast.error("User Unauthorized !");
+              setLoading(false);
+            }
+          }
+        } else {
+          toast.error("User Unauthorized !");
+          setLoading(false);
+        }
       }
     } catch (e) {
       console.log(e?.message);
+      setLoading(false);
       toast.error(e?.response?.data?.message || "Something went wrong!");
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
@@ -287,8 +301,13 @@ export default function Login(props) {
             >
               <CustomButton
                 onClick={() => {
-                  loginToAccount();
+                  if (!loading) {
+                    loginToAccount();
+                  } else {
+                    return false;
+                  }
                 }}
+                loading={loading}
                 buttonStyle={{ background: theme.palette.button.main }}
                 title="Login"
               />

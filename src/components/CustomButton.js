@@ -1,9 +1,36 @@
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
-export default function CustomButton({ onClick, title, buttonStyle }) {
-    return (
-        <Button onClick={onClick} variant="contained" color="secondary" sx={[ { width: "62%",height:{mobile:"50px",laptop:"43px"}, borderRadius: "10px", fontWeight: "500", textTransform: "none", fontSize: { laptop: "14px", mobile: "14px" } },buttonStyle]} >
-            {title}
-        </Button>
-    )
+export default function CustomButton({ onClick, title, buttonStyle, loading }) {
+  return (
+    <Button
+      onClick={onClick}
+      variant="contained"
+      color="secondary"
+      sx={[
+        {
+          width: "62%",
+          cursor: "pointer",
+          height: { mobile: "50px", laptop: "43px" },
+          borderRadius: "10px",
+          fontWeight: "500",
+          textTransform: "none",
+          fontSize: { laptop: "14px", mobile: "14px" },
+        },
+        buttonStyle,
+      ]}
+    >
+      {loading ? (
+        <CircularProgress
+          sx={{
+            color: "#FFF",
+          }}
+          size={20}
+          thickness={4}
+          value={60}
+        />
+      ) : (
+        title
+      )}
+    </Button>
+  );
 }

@@ -66,7 +66,7 @@ const CustomHeader = ({}) => {
     (state) => state.auth
   );
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const nav =
+  var nav =
     roleName !== ""
       ? ["fairGameAdmin", "fairGameWallet"].includes(roleName)
         ? "wallet"
@@ -166,7 +166,7 @@ const CustomHeader = ({}) => {
       setBalance(data.data.current_balance);
       dispatch(setCurrentUser(data.data));
 
-      const value = allRole?.find((role) => role?.id === data?.data?.roleId);
+      var value = allRole?.find((role) => role?.id === data?.data?.roleId);
       roleName = value?.roleName;
     } catch (e) {
       console.log(e);
@@ -192,11 +192,13 @@ const CustomHeader = ({}) => {
     ) {
       dispatch(setActiveAdmin(2));
     }
+  }, [location, window.location.pathname, JWT]);
 
+  useEffect(() => {
     if (currentUser === null) {
       getUserDetail(nav);
     }
-  }, [location, window.location.pathname, JWT, nav]);
+  }, []);
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
   const [showSearch, setShowSearch] = useState(false);

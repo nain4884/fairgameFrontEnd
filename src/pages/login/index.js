@@ -31,6 +31,7 @@ export default function Login(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const [loading, setLoading] = useState(false);
   const [loginDetail, setLoginDetail] = useState({
     1: { field: "username", val: "" },
     2: { field: "password", val: "" },
@@ -62,7 +63,6 @@ export default function Login(props) {
       navigate(`/matches`);
     }
   }, [location.pathname, localStorage]);
-
 
   async function getToken(val) {
     try {
@@ -99,48 +99,58 @@ export default function Login(props) {
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
-      const token = await localStorage.getItem("role4");
-
-      if (["role4"].includes(token)) {
-        toast.warn("Please logout from previous session");
+      if (loginDetail[1].val === "" && loginDetail[2].val === "") {
+        toast.warning("Username and password required");
         return false;
-      }
-      let { data } = await axios.post(`/auth/login`, {
-        username: loginDetail[1].val,
-        password: loginDetail[2].val,
-      });
-
-      if (props.allowedRole.includes(data.data.role)) {
-        let foundRoles = await axios.get(`/role`);
-        let roles = foundRoles.data;
-        dispatch(setAllRoles(roles));
-        let roleDetail = roles.find(findThisRole);
-        function findThisRole(role) {
-          return role.id === data.data.roleId;
-        }
-        if (roleDetail) data.data.role = roleDetail;
-        if (data.message === "User login successfully.") {
-          // getUserDetail();
-          removeSocket();
-          // dispatch(setActiveRole(foundRoles.data));
-          // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
-          setRole(data.data.access_token);
-          dispatch(signIn(data.data));
-          if (["user"].includes(data.data.role.roleName)) {
-            setGlobalStore((prev) => ({
-              ...prev,
-              userJWT: data.data.access_token,
-            }));
-            handleNavigate("/matches", "user");
-          } else {
-            toast.error("User Unauthorized !");
-          }
-        }
       } else {
-        toast.error("User Unauthorized !");
+        setLoading(true);
+        const token = await localStorage.getItem("role4");
+
+        if (["role4"].includes(token)) {
+          toast.warn("Please logout from previous session");
+          return false;
+        }
+        let { data } = await axios.post(`/auth/login`, {
+          username: loginDetail[1].val,
+          password: loginDetail[2].val,
+        });
+
+        if (props.allowedRole.includes(data.data.role)) {
+          let foundRoles = await axios.get(`/role`);
+          let roles = foundRoles.data;
+          dispatch(setAllRoles(roles));
+          let roleDetail = roles.find(findThisRole);
+          function findThisRole(role) {
+            return role.id === data.data.roleId;
+          }
+          if (roleDetail) data.data.role = roleDetail;
+          if (data.message === "User login successfully.") {
+            // getUserDetail();
+            removeSocket();
+            // dispatch(setActiveRole(foundRoles.data));
+            // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+            setRole(data.data.access_token);
+            dispatch(signIn(data.data));
+            setLoading(false);
+            if (["user"].includes(data.data.role.roleName)) {
+              setGlobalStore((prev) => ({
+                ...prev,
+                userJWT: data.data.access_token,
+              }));
+              handleNavigate("/matches", "user");
+            } else {
+              toast.error("User Unauthorized !");
+              setLoading(false);
+            }
+          }
+        } else {
+          toast.error("User Unauthorized !");
+          setLoading(false);
+        }
       }
     } catch (e) {
       console.log(e?.message);
+      setLoading(false);
       toast.error(e?.response.data.message);
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
@@ -240,8 +250,13 @@ export default function Login(props) {
               }}
             >
               <CustomButton
+                loading={loading}
                 onClick={() => {
-                  loginToAccount();
+                  if (!loading) {
+                    loginToAccount();
+                  } else {
+                    return false;
+                  }
                 }}
                 buttonStyle={{ background: theme.palette.button.main }}
                 title="Login"

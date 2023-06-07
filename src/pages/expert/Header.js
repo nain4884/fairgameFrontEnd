@@ -112,6 +112,7 @@ const CustomHeader = ({}) => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+
   useEffect(() => {
     // Your existing code within the event handler
     let checkLoStorage = localStorage.getItem("role3");
@@ -199,7 +200,7 @@ const CustomHeader = ({}) => {
     if (currentUser === null) {
       getUserDetail();
     }
-  }, [currentUser]);
+  }, []);
   return (
     <>
       <SessionTimeOut />

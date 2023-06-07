@@ -1,6 +1,11 @@
 import { memo } from "react";
 import StyledImage from "../StyledImage";
-import { MenuItem, Typography, useMediaQuery } from "@mui/material";
+import {
+  CircularProgress,
+  MenuItem,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import { useTheme } from "@emotion/react";
 import { useState } from "react";
@@ -78,6 +83,8 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
 
   const DropdownMenu = ({ anchorEl, open, handleClose, nav }) => {
     const { globalStore, setGlobalStore } = useContext(GlobalStore);
+    const [loading, setLoading] = useState(false);
+
     const { axios } = setRole();
     const { socket, socketMicro } = useContext(SocketContext);
     const dispatch = useDispatch();
@@ -86,26 +93,32 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
       handleClose();
     });
     const logoutProcess = async () => {
-      const { data } = await axios.get("auth/logout");
-      if (data?.data === "success logout") {
-        dispatch(removeCurrentUser());
-        dispatch(logout({ roleType: "role2" }));
-        dispatch(removeManualBookMarkerRates());
-        dispatch(setUpdatedTransPasswords(false));
-        dispatch(removeSelectedMatch());
-        setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-        if (nav === "admin") {
-          navigate("/admin");
-          dispatch(logout({ roleType: "role1" }));
-          setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+      try {
+        setLoading(true);
+        const { data } = await axios.get("auth/logout");
+        if (data?.data === "success logout") {
+          if (nav === "admin") {
+            navigate("/admin");
+            dispatch(logout({ roleType: "role1" }));
+            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+          }
+          navigate(`/${nav}`);
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role2" }));
+          dispatch(removeManualBookMarkerRates());
+          dispatch(setUpdatedTransPasswords(false));
+          dispatch(removeSelectedMatch());
+          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+          handleClose();
+          removeSocket();
+          socket.disconnect();
+          socketMicro.disconnect();
+          setLoading(false);
         }
-        navigate(`/${nav}`);
-        handleClose();
-        removeSocket();
-        socket.disconnect();
-        socketMicro.disconnect();
-      } else {
-        toast.error("Something went wrong");
+      } catch (e) {
+        toast.error(e.response?.data?.message);
+        setLoading(false);
+        console.log("error", e.message);
       }
     };
     const menutItems = [
@@ -173,11 +186,26 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         ))}
         <Box
           onClick={() => {
-            logoutProcess();
+            if (!loading) {
+              logoutProcess();
+            } else {
+              return false;
+            }
           }}
           sx={classes.mainBoxSubsx}
         >
-          <StyledImage src={Logout} sx={classes.mainBoxSubStyleImagesx} />
+          {loading ? (
+            <CircularProgress
+              sx={{
+                color: "#FFF",
+              }}
+              size={20}
+              thickness={4}
+              value={60}
+            />
+          ) : (
+            <StyledImage src={Logout} sx={classes.mainBoxSubStyleImagesx} />
+          )}
         </Box>
       </Box>
     );

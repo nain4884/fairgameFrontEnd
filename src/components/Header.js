@@ -8,6 +8,7 @@ import {
   Drawer,
   AppBar,
   Toolbar,
+  CircularProgress,
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,6 +44,7 @@ import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
 } from "../newStore/reducers/matchDetails";
+import { toast } from "react-toastify";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -154,10 +156,13 @@ const CustomHeader = ({}) => {
     } else {
       setShowSideBarMobile(false);
     }
+  }, [location, bal, JWT]);
+
+  useEffect(() => {
     if (currentUser === null) {
       getUserDetail();
     }
-  }, [location, bal, JWT]);
+  }, []);
   return (
     <>
       <SessionTimeOut />
@@ -570,6 +575,7 @@ const menutItems = [
   { title: "Rules", link: "/rules" },
 ];
 const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
+  const [loading, setLoading] = useState(false);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
   const navigate = useNavigate();
@@ -577,19 +583,29 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
   const { socket, socketMicro } = useContext(SocketContext);
 
   const logoutProcess = async () => {
-    // dispatch(stateActions.logout("role4"));
-    // socketMicro.emit("logoutUserForce");
-    dispatch(logout({ roleType: "role4" }));
-    dispatch(removeManualBookMarkerRates());
-    dispatch(removeSelectedMatch());
-    setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-    await axios.get("auth/logout");
-    dispatch(removeCurrentUser());
-    navigate("/");
-    handleClose();
-    removeSocket();
-    socket.disconnect();
-    socketMicro.disconnect();
+    try {
+      // dispatch(stateActions.logout("role4"));
+      // socketMicro.emit("logoutUserForce");
+      setLoading(true);
+      setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+      const { data } = await axios.get("auth/logout");
+      if (data?.data == "success logout") {
+        navigate("/");
+        dispatch(removeCurrentUser());
+        handleClose();
+        removeSocket();
+        dispatch(logout({ roleType: "role4" }));
+        dispatch(removeManualBookMarkerRates());
+        dispatch(removeSelectedMatch());
+        socket.disconnect();
+        socketMicro.disconnect();
+        toast.success(data?.data);
+      }
+    } catch (e) {
+      toast.error(e.response?.data?.message);
+      setLoading(false);
+      console.log("error", e.message);
+    }
   };
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
@@ -643,8 +659,11 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
       ))}
       <Box
         onClick={() => {
-          // alert(1)
-          logoutProcess();
+          if (!loading) {
+            logoutProcess();
+          } else {
+            return false;
+          }
         }}
         sx={{
           borderRadius: "5px",
@@ -657,9 +676,21 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
           border: "2px solid #2626264D",
           justifyContent: "center",
           alignItems: "center",
+          cursor: "pointer",
         }}
       >
-        <StyledImage src={Logout} sx={{ width: "35%", height: "auto" }} />
+        {loading ? (
+          <CircularProgress
+            sx={{
+              color: "#FFF",
+            }}
+            size={20}
+            thickness={4}
+            value={60}
+          />
+        ) : (
+          <StyledImage src={Logout} sx={{ width: "35%", height: "auto" }} />
+        )}
       </Box>
     </Menu>
   );
