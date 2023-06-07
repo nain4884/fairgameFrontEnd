@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Typography } from "@mui/material"
 import ProfitLossComponent from "../../components/ProfitLoss";
 import { ARROWDOWN, ARROWUP } from "../../admin/assets";
 import { Background, Header } from "../../components";
 import GeneralReportList from "../../components/GeneralReportList";
 import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
+import constants from "../../components/helper/constants";
+import { setRole } from "../../newStore";
 
 const ProfitLoss = () => {
     const ExtraHeader = () => {
@@ -30,6 +34,71 @@ const ProfitLoss = () => {
             </Box >
         )
     }
+
+    const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+    const [pageCount, setPageCount] = useState(constants.pageLimit);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [currenLimit, setCurrenLimit] = useState(1);
+    const [eventData, setEventData] = useState([]);
+    const [reportData, setReportData] = useState([]);
+    const [betData, setBetData] = useState([]);
+    const [sessionBetData, setSessionBetData] = useState([]);
+
+    useEffect(() => {
+        // alert(1)
+        getEventList();
+    }, [currentPage, pageCount, pageLimit]);
+
+    async function getEventList() {
+
+        var payload = {};
+        let { axios } = setRole();
+        try {
+            const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
+            // console.log(data.data[0], 'datadatadatadata')
+            setEventData(data?.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const handleReport = (eventType) => {
+        getReport(eventType);
+    };
+
+    const getReport = async (eventType) => {
+        var payload = {
+            gameType: eventType
+        };
+        let { axios } = setRole();
+        try {
+            const { data } = await axios.post(`/betting/profitLossReport`, payload);
+            // console.log(data.data[0], 'datadatadatadata')l
+            setReportData(data?.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const handleBet = (id) => {
+        // alert(id)
+        getBets(id);
+    };
+
+    async function getBets(id) {
+        var payload = {
+            match_id: id
+        };
+        let { axios } = setRole();
+        try {
+            const { data } = await axios.post(`/betting/getResultBetProfitLoss`, payload);
+            setBetData(data?.data?.filter((v) => v.sessionBet !== true));
+            setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     return (
         <Background>
             {/* <Header /> */}
@@ -38,7 +107,8 @@ const ProfitLoss = () => {
 
             <Box sx={{ width: '99%', marginX: '.5%' }}>
 
-                <ProfitLossComponent />
+                <ProfitLossComponent eventData={eventData} reportData={reportData} betData=
+                    {betData} sessionBetData={sessionBetData} handleReport={handleReport} handleBet={handleBet} />
             </Box>
             {/* <ExtraHeader /> */}
             {/* <ProfitLossList /> */}
