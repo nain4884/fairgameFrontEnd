@@ -75,6 +75,15 @@ const CustomHeader = ({}) => {
   }, []);
 
   useEffect(() => {
+    // Your existing code within the event handler
+    let checkLoStorage = localStorage.getItem("role4");
+    let checkSeStorage = sessionStorage.getItem("JWTuser");
+    if (checkSeStorage && checkLoStorage === null) {
+      localStorage.setItem("role4", "role4");
+    }
+  }, [localStorage]);
+
+  useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {

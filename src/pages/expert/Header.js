@@ -112,6 +112,14 @@ const CustomHeader = ({}) => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+  useEffect(() => {
+    // Your existing code within the event handler
+    let checkLoStorage = localStorage.getItem("role3");
+    let checkSeStorage = sessionStorage.getItem("JWTexpert");
+    if (checkSeStorage && checkLoStorage === null) {
+      localStorage.setItem("role3", "role3");
+    }
+  }, [localStorage]);
 
   useEffect(() => {
     if (socket && socket.connected) {

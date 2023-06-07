@@ -243,7 +243,6 @@ export default function UserDetailModal({
             width: { mobile: "26%", laptop: "77%", tablet: "100%" },
           }}
         >
-        
           <BoxButton
             onClick={() => {
               setSelected(0);
@@ -262,7 +261,7 @@ export default function UserDetailModal({
             title={"Withdraw"}
             labelStyle={{}}
           />
-            {elementToUDM?.role?.roleName === "user" && (
+          {elementToUDM?.role?.roleName === "user" && (
             <BoxButton
               onClick={(e) => {
                 e?.preventDefault();
@@ -561,12 +560,10 @@ const DepositComponent = ({
     if (e.target.value) {
       const newUserbalance = {
         ...currentUser,
-        current_balance: initialBalance - e.target.value,
+        current_balance: currentUser?.current_balance - e.target.value,
       };
 
-      setTimeout(() => {
-        dispatch(setCurrentUser(newUserbalance));
-      }, 51);
+      setInitialBalance(newUserbalance?.current_balance);
     } else {
       const newUserbalance = {
         ...currentUser,
@@ -574,7 +571,8 @@ const DepositComponent = ({
       };
 
       setTimeout(() => {
-        dispatch(setCurrentUser(newUserbalance));
+        // dispatch(setCurrentUser(newUserbalance));
+        setInitialBalance(currentUser?.current_balance);
       }, 51);
     }
   }, 50);
@@ -673,7 +671,7 @@ const DepositComponent = ({
             }}
           >
             <TextField
-              value={currentUser?.current_balance || 0}
+              value={initialBalance || 0}
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
@@ -914,12 +912,10 @@ const WithDrawComponent = ({
     if (e.target.value) {
       const newUserbalance = {
         ...currentUser,
-        current_balance: initialBalance + Number(e.target.value),
+        current_balance: currentUser?.current_balance + Number(e.target.value),
       };
 
-      setTimeout(() => {
-        dispatch(setCurrentUser(newUserbalance));
-      }, 51);
+        setInitialBalance(newUserbalance?.current_balance)
     } else {
       const newUserbalance = {
         ...currentUser,
@@ -927,7 +923,7 @@ const WithDrawComponent = ({
       };
 
       setTimeout(() => {
-        dispatch(setCurrentUser(newUserbalance));
+        setInitialBalance(currentUser?.current_balance)
       }, 51);
     }
   }, 50);
@@ -1027,7 +1023,7 @@ const WithDrawComponent = ({
             }}
           >
             <TextField
-              value={currentUser?.current_balance || 0}
+              value={initialBalance|| 0}
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{
@@ -1222,6 +1218,23 @@ const NewCreditComponent = ({
     remark: "",
   };
   const [newCreditObj, setNewCreditObj] = useState(defaultNewCreditObj);
+  const calculatePercentProfitLoss = (val, e) => {
+    const rateToCalculatePercentage = val.rateToCalculatePercentage;
+    const inputValue = Number(
+      isNaN(Number(e.target.value)) ? 0 : e.target.value
+    );
+    const profitLoss = prevElement.profit_loss;
+
+    let percent_profit_loss;
+
+    if (rateToCalculatePercentage === 0) {
+      percent_profit_loss = profitLoss;
+    } else {
+      const newVal = profitLoss - inputValue;
+      percent_profit_loss = newVal * (rateToCalculatePercentage / 100);
+    }
+    return percent_profit_loss.toFixed(2);
+  };
   return (
     <Box
       sx={{
@@ -1270,6 +1283,7 @@ const NewCreditComponent = ({
                 });
                 setElementToUDM({
                   ...elementToUDM,
+                  percent_profit_loss: calculatePercentProfitLoss(prevElement, e),
                   credit_refer: isNaN(Number(e.target.value))
                     ? 0
                     : Number(e.target.value),

@@ -79,9 +79,13 @@ const AccountList = () => {
       const { data } = await axios.get(
         `/fair-game-wallet/getLogUserAggregateData`
       );
+      let profitLoss =
+        data?.data?.percent_profit_loss === null
+          ? 0
+          : Number(data?.data?.percent_profit_loss);
       setSumVal({
         ...data?.data,
-        percent_profit_loss: 0,
+        percent_profit_loss: profitLoss?.toFixed(2),
         totalCommissions: "",
         exposurelimit: "",
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,

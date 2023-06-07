@@ -109,17 +109,17 @@ const AccountListRow = ({
     }
   };
 
-  useEffect(() => {
-    if (
-      showUserModal === false &&
-      OLDUSERBALANCE === 0 && callProfile
-    ) {
-      updatedUserProfile();
-      OLDUSERBALANCE++;
-    } else {
-      OLDUSERBALANCE = 0;
-    }
-  }, [showUserModal ,callProfile]);
+  // useEffect(() => {
+  //   if (
+  //     showUserModal === false &&
+  //     OLDUSERBALANCE === 0 && callProfile
+  //   ) {
+  //     updatedUserProfile();
+  //     OLDUSERBALANCE++;
+  //   } else {
+  //     OLDUSERBALANCE = 0;
+  //   }
+  // }, [showUserModal ,callProfile]);
 
   const [elementToUDM, setElementToUDM] = useState(prevElement);
   function handleSetUDM(val) {

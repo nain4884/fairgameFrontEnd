@@ -97,6 +97,24 @@ const CustomHeader = ({}) => {
   }, [nav]);
 
   useEffect(() => {
+    if (nav === "admin") {
+      // Your existing code within the event handler
+      let checkLoStorage = localStorage.getItem("role1");
+      let checkSeStorage = sessionStorage.getItem("JWTadmin");
+      if (checkSeStorage && checkLoStorage === null) {
+        localStorage.setItem("role1", "role1");
+      }
+    } else {
+      // Your existing code within the event handler
+      let checkLoStorage = localStorage.getItem("role2");
+      let checkSeStorage = sessionStorage.getItem("JWTwallet");
+      if (checkSeStorage && checkLoStorage === null) {
+        localStorage.setItem("role2", "role2");
+      }
+    }
+  }, [localStorage, nav]);
+
+  useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {

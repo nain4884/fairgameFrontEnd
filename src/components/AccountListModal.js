@@ -48,7 +48,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
     percent_profit_loss: 0,
     availablebalancesum: 0.0,
     exposurelimit: "",
-    totalCommissions:"",
+    totalCommissions: "",
   });
 
   useEffect(() => {
@@ -84,10 +84,15 @@ const AccountListModal = ({ id, show, setShow, title }) => {
       const { data } = await axios.get(
         `/fair-game-wallet/getLogUserAggregateData?userId=${id}`
       );
+
+      let profitLoss =
+        data?.data?.percent_profit_loss === null
+          ? 0
+          : Number(data?.data?.percent_profit_loss);
       setSumVal({
         ...data?.data,
-        percent_profit_loss: 0,
-        totalCommissions:"",
+        percent_profit_loss: profitLoss?.toFixed(2),
+        totalCommissions: "",
         exposurelimit: "",
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
@@ -134,7 +139,12 @@ const AccountListModal = ({ id, show, setShow, title }) => {
         ]}
       >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <ListH id={id} title={title} setData={setData}  matchesMobile={matchesMobile}/>
+          <ListH
+            id={id}
+            title={title}
+            setData={setData}
+            matchesMobile={matchesMobile}
+          />
           <Button
             sx={{ color: "", fontSize: "30px" }}
             onClick={() => {
@@ -154,7 +164,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
             {data1?.map((element, i) => {
               if (i % 2 === 0) {
                 return (
-                  <AccountListRow 
+                  <AccountListRow
                     callProfile={false}
                     showOptions={false}
                     showChildModal={true}
@@ -170,7 +180,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
               } else {
                 return (
                   <AccountListRow
-                  callProfile={false}
+                    callProfile={false}
                     showOptions={false}
                     showChildModal={true}
                     containerStyle={{ background: "#ECECEC" }}
@@ -294,8 +304,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({ id, title, setData , matchesMobile}) => {
- 
+const ListH = ({ id, title, setData, matchesMobile }) => {
   return (
     <Box
       display={"flex"}
@@ -316,8 +325,51 @@ const ListH = ({ id, title, setData , matchesMobile}) => {
           }}
         >
           {title}
-          
-       {matchesMobile &&   <Box sx={{display:"flex",marginTop:"5px"}} >
+
+          {matchesMobile && (
+            <Box sx={{ display: "flex", marginTop: "5px" }}>
+              <Box
+                sx={{
+                  background: "white",
+                  height: { mobile: "25px", laptop: "30px", tablet: "30px" },
+                  borderRadius: "5px",
+                  width: { mobile: "25px", laptop: "45px", tablet: "45px" },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <StyledImage
+                  src={Excel}
+                  sx={{
+                    height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  background: "white",
+                  marginLeft: "10px",
+                  borderRadius: "5px",
+                  height: { mobile: "25px", laptop: "30px", tablet: "30px" },
+                  width: { mobile: "25px", laptop: "45px", tablet: "45px" },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <StyledImage
+                  src={Pdf}
+                  sx={{
+                    height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                  }}
+                />
+              </Box>
+            </Box>
+          )}
+        </Typography>
+        {!matchesMobile && (
+          <>
             <Box
               sx={{
                 background: "white",
@@ -355,52 +407,8 @@ const ListH = ({ id, title, setData , matchesMobile}) => {
                 }}
               />
             </Box>
-          </Box>}
-        
-        </Typography>
-    {
-      !matchesMobile && 
-      < >
-        <Box
-          sx={{
-            background: "white",
-            height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-            borderRadius: "5px",
-            width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <StyledImage
-            src={Excel}
-            sx={{
-              height: { mobile: "15px", laptop: "20px", tablet: "20px" },
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            background: "white",
-            marginLeft: "10px",
-            borderRadius: "5px",
-            height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-            width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <StyledImage
-            src={Pdf}
-            sx={{
-              height: { mobile: "15px", laptop: "20px", tablet: "20px" },
-            }}
-          />
-        </Box>
-      </>
-    
-    }
+          </>
+        )}
       </Box>
 
       <SearchInputModal
