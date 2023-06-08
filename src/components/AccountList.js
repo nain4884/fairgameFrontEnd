@@ -115,10 +115,14 @@ const AccountList = () => {
   };
   useEffect(() => {
     getUerLogged();
+    return ()=>{
+      dispatch(setPage(parseInt(1)));
+    }
   }, []);
 
   useEffect(() => {
     getListOfUser();
+
   }, [currentPageNo]);
 
   return (

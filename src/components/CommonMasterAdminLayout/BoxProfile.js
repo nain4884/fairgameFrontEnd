@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 import { setRole } from "../../newStore";
 import { useContext } from "react";
 import { GlobalStore } from "../../context/globalStore";
-import { logout, setUpdatedTransPasswords } from "../../newStore/reducers/auth";
+import { logout, setPage, setUpdatedTransPasswords } from "../../newStore/reducers/auth";
 import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
@@ -114,6 +114,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
           removeSocket();
           socket.disconnect();
           socketMicro.disconnect();
+          dispatch(setPage(parseInt(1)));
           setLoading(false);
         }
       } catch (e) {

@@ -34,7 +34,7 @@ import {
   removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
-import { logout, setUpdatedTransPasswords } from "../../newStore/reducers/auth";
+import { logout, setPage, setUpdatedTransPasswords } from "../../newStore/reducers/auth";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
@@ -127,6 +127,7 @@ const CustomHeader = ({}) => {
           dispatch(setUpdatedTransPasswords(false));
           socket.disconnect();
           socketMicro.disconnect();
+          dispatch(setPage(parseInt(1)));
           setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
           if (nav === "admin") {
             navigate("/admin");
