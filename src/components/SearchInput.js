@@ -117,7 +117,7 @@ const SearchInput = ({
           <TextField
             variant="standard"
             placeholder={placeholder}
-            value={searchValue}
+            // value={searchValue}
             onChange={handleInputChange}
             InputProps={{
               disableUnderline: true,
@@ -137,6 +137,9 @@ const SearchInput = ({
           />
         )}
         <Box
+          onClick={() => {
+            getListOfUser(searchValue);
+          }}
           sx={[
             {
               height: "30px",

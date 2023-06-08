@@ -128,6 +128,9 @@ const SearchInputModal = ({
           />
         )}
         <Box
+          onClick={() => {
+            getListOfUser(searchValue);
+          }}
           sx={[
             {
               height: "30px",
