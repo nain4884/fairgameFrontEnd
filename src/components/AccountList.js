@@ -211,6 +211,7 @@ const Footer = ({ currentPage, pages, callPage, getListOfUser }) => {
         <Box
           sx={{
             height: "35px",
+            cursor: "pointer",
             width: { mobile: "80px", laptop: "100px" },
             background: "#0B4F26",
             display: "flex",
@@ -261,6 +262,7 @@ const Footer = ({ currentPage, pages, callPage, getListOfUser }) => {
             background: "#0B4F26",
             display: "flex",
             borderRadius: "5px",
+            cursor: "pointer",
             justifyContent: "center",
             alignItems: "center",
           }}

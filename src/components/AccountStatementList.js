@@ -51,13 +51,13 @@ const AccountStatementList = ({ user }) => {
   }
   async function getAccountStatement(from, to) {
     const userId = currentUser.id;
-   console.log('from,to', from,to)
+
     if (from && to) {
       var payload = {
         limit: pageLimit,
         skip: currentPage * pageLimit,
-        fromDate: moment(from).format('YYYY-MM-DD'),
-        toDate: moment(to).format('YYYY-MM-DD'),
+        fromDate: moment(from).format("YYYY-MM-DD"),
+        toDate: moment(to).format("YYYY-MM-DD"),
       };
     } else {
       var payload = {
@@ -139,6 +139,7 @@ const AccountStatementList = ({ user }) => {
               justifyContent: "center",
               alignItems: "center",
               borderRadius: "5px",
+              cursor: "pointer",
             }}
             // onClick={() => {
             //     callPage(
@@ -190,6 +191,7 @@ const AccountStatementList = ({ user }) => {
               borderRadius: "5px",
               justifyContent: "center",
               alignItems: "center",
+              cursor: "pointer",
             }}
             onClick={() => {
               callPage(

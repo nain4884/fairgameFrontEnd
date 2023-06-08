@@ -93,8 +93,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
     });
   }
   return (
-    <>
-      {
+ 
         <Box
           sx={{
             width: { mobile: "100%", laptop: "100%" },
@@ -195,7 +194,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
           <Box
             sx={{
               maxHeight: { mobile: "200px", laptop: "420px" },
-              overflowY: "scroll",
+              overflowY: "auto",
             }}
           >
             {/* {console.warn("allBetsData :", allBetsData)} */}
@@ -310,16 +309,15 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
                 </Box>
               );
             })}
-            <Footer
+            {/* <Footer
               currentPage={currentPage}
               pages={pageCount}
               callPage={callPage}
               currentPageNo={allbetsPage}
-            />
+            /> */}
           </Box>
         </Box>
-      }
-    </>
+    
   );
 };
 

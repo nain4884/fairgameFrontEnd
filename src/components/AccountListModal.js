@@ -244,6 +244,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: "5px",
+            cursor: "pointer",
           }}
           onClick={() => {
             callPage(
@@ -290,6 +291,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
             borderRadius: "5px",
             justifyContent: "center",
             alignItems: "center",
+            cursor: "pointer",
           }}
           onClick={() => {
             callPage(

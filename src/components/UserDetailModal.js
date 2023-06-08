@@ -11,6 +11,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setModalOpen } from "../store/userdetail";
@@ -416,6 +417,7 @@ const BoxButton = ({
   isSelected,
   deleteBtn,
   titleStyle,
+  loading,
 }) => {
   const classes = {
     mainBox: [
@@ -427,6 +429,7 @@ const BoxButton = ({
         flex: 1,
         justifyContent: "center",
         height: "45px",
+        cursor: "pointer",
         alignItems: "center",
         borderRadius: "5px",
         padding: "5px",
@@ -445,7 +448,18 @@ const BoxButton = ({
   return (
     <Box onClick={onClick} sx={classes.mainBox}>
       <Typography sx={classes.mainBoxTypography}>
-        {title}
+        {loading ? (
+          <CircularProgress
+            sx={{
+              color: "#FFF",
+            }}
+            size={20}
+            thickness={4}
+            value={60}
+          />
+        ) : (
+          title
+        )}
         {icon}
       </Typography>
     </Box>
@@ -553,7 +567,7 @@ const DepositComponent = ({
     adminTransPassword: "",
     remark: "",
   };
-
+  const [loading, setLoading] = useState(false);
   const [depositObj, setDepositObj] = useState(defaultDepositObj);
   const activeWalletAmount = useSelector(
     (state) => state?.rootReducer?.user?.amount
@@ -833,20 +847,31 @@ const DepositComponent = ({
       >
         <Box sx={{ display: "flex", width: "150px" }}>
           <BoxButton
+            loading={loading}
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(depositObj)
-                .then(({ bool, message }) => {
-                  toast.success(message);
-                  getListOfUser();
-                  updatedUserProfile();
-                  showDialogModal(true, true, message);
-                })
-                .catch(({ bool, message }) => {
-                  toast.error(message);
-                  showDialogModal(true, false, message);
-                });
+              try {
+                if (!loading) {
+                  setLoading(true);
+                  UpdateAvailableBalance(depositObj)
+                    .then(({ bool, message }) => {
+                      toast.success(message);
+                      getListOfUser();
+                      updatedUserProfile();
+                      setLoading(false);
+                      showDialogModal(true, true, message);
+                    })
+                    .catch(({ bool, message }) => {
+                      toast.error(message);
+                      setLoading(false);
+                      showDialogModal(true, false, message);
+                    });
+                }
+              } catch (e) {
+                console.log(e?.message);
+                setLoading(false);
+              }
             }}
             title={"Submit"}
           />
@@ -900,6 +925,7 @@ const WithDrawComponent = ({
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
+  const [loading, setLoading] = useState(false);
   const [initialBalance, setInitialBalance] = useState(
     currentUser?.current_balance
   );
@@ -1188,20 +1214,31 @@ const WithDrawComponent = ({
       >
         <Box sx={{ display: "flex", width: "150px" }}>
           <BoxButton
+            loading={loading}
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(withDrawObj)
-                .then(({ bool, message }) => {
-                  toast.success(message);
-                  updatedUserProfile();
-                  getListOfUser();
-                  showDialogModal(true, true, message);
-                })
-                .catch(({ bool, message }) => {
-                  toast.error(message);
-                  showDialogModal(true, false, message);
-                });
+              try {
+                if (!loading) {
+                  setLoading(true);
+                  UpdateAvailableBalance(withDrawObj)
+                    .then(({ bool, message }) => {
+                      toast.success(message);
+                      updatedUserProfile();
+                      getListOfUser();
+                      setLoading(false);
+                      showDialogModal(true, true, message);
+                    })
+                    .catch(({ bool, message }) => {
+                      toast.error(message);
+                      setLoading(false);
+                      showDialogModal(true, false, message);
+                    });
+                }
+              } catch (e) {
+                setLoading(false);
+                console.log(e.message);
+              }
             }}
             title={"Submit"}
           />
@@ -1253,6 +1290,7 @@ const NewCreditComponent = ({
   getListOfUser,
 }) => {
   const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
   const defaultNewCreditObj = {
     userId: "",
     amount: null,
@@ -1461,19 +1499,30 @@ const NewCreditComponent = ({
       >
         <Box sx={{ display: "flex", width: "150px" }}>
           <BoxButton
+            loading={loading}
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(newCreditObj)
-                .then(({ bool, message }) => {
-                  toast.success(message);
-                  getListOfUser();
-                  showDialogModal(true, true, message);
-                })
-                .catch(({ bool, message }) => {
-                  toast.error(message);
-                  showDialogModal(true, false, message);
-                });
+              try {
+                if (!loading) {
+                  setLoading(true);
+                  UpdateAvailableBalance(newCreditObj)
+                    .then(({ bool, message }) => {
+                      toast.success(message);
+                      getListOfUser();
+                      showDialogModal(true, true, message);
+                      setLoading(false);
+                    })
+                    .catch(({ bool, message }) => {
+                      toast.error(message);
+                      showDialogModal(true, false, message);
+                      setLoading(false);
+                    });
+                }
+              } catch (e) {
+                setLoading(false);
+                console.log(e.message);
+              }
             }}
             title={"Submit"}
           />
@@ -1525,6 +1574,7 @@ const SetExposureComponent = ({
   getListOfUser,
 }) => {
   const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
   const defaultExposureObj = {
     userId: "",
     amount: null,
@@ -1704,19 +1754,30 @@ const SetExposureComponent = ({
       >
         <Box sx={{ display: "flex", width: "150px" }}>
           <BoxButton
+            loading={loading}
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
             onClick={(e) => {
-              UpdateAvailableBalance(exposureObj)
-                .then(({ bool, message }) => {
-                  toast.success(message);
-                  getListOfUser();
-                  showDialogModal(true, true, message);
-                })
-                .catch(({ bool, message }) => {
-                  toast.error(message);
-                  showDialogModal(true, false, message);
-                });
+              try {
+                if (!loading) {
+                  setLoading(true);
+                  UpdateAvailableBalance(exposureObj)
+                    .then(({ bool, message }) => {
+                      toast.success(message);
+                      getListOfUser();
+                      showDialogModal(true, true, message);
+                      setLoading(false);
+                    })
+                    .catch(({ bool, message }) => {
+                      toast.error(message);
+                      showDialogModal(true, false, message);
+                      setLoading(false);
+                    });
+                }
+              } catch (e) {
+                setLoading(false);
+                console.log(e.message);
+              }
             }}
             title={"Submit"}
           />
