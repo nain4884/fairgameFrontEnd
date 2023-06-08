@@ -15,7 +15,7 @@ import { setSessionResults } from "../newStore/reducers/matchDetails";
 import { setSessionAllBet } from "../newStore/reducers/expertMatchDetails";
 
 
-export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent, betData, handleBetData, proLoss1 }) {
+export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent, betData, handleBetData, proLoss1, setCheckBetId }) {
 
     const { socket } = useContext(SocketContext);
     const { axios } = setRole();
@@ -107,13 +107,17 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                                 amount:
                                     data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                             };
-                            const updatedData = [body, ...sessionAllBet]; // Combine new object with existing state data
-                            // alert(tempData.length);
-                            dispatch(setSessionAllBet(updatedData));
-                            // setGlobalStore((prev) => ({
-                            //     ...prev,
-                            //     sessionBets: updatedData,
-                            // }));
+                            // const updatedData = [body, ...sessionAllBet]; // Combine new object with existing state data
+                            // dispatch(setSessionAllBet(updatedData));
+                            if (sessionAllBet.length === 0) {
+                                const updatedData = [body];
+                                // handleBetData(updatedData);
+                                dispatch(setSessionAllBet(updatedData));
+                            } else {
+                                const updatedData = [body, ...sessionAllBet];
+                                // handleBetData(updatedData);
+                                dispatch(setSessionAllBet(updatedData));
+                            }
                         }
                     } catch (err) {
                         console.log(err?.message);
@@ -150,11 +154,13 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     }
 
     async function doSubmitSessionBet(rate_percent) {
+        dispatch(setSessionAllBet([]));
         const payload = { ...Detail, rate_percent }
         // return alert("ddd :" + betId)
         try {
             let response = await axios.post(`/betting/addBetting`, payload);
             setBetId(response?.data?.data?.id);
+            setCheckBetId(true);
             setIsCreateSession(false);
             // setGlobalStore((prev) => ({ ...prev, isSession: false }));
             setLock({
@@ -179,6 +185,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             let [firstValue, secondValue] = data.rate_percent ? data.rate_percent.split("-") : "";
             setDetail({ ...Detail, no_rate: data.no_rate, yes_rate: data.yes_rate, n_rate_percent: firstValue, y_rate_percent: secondValue, bet_condition: data.bet_condition })
             setBetId(data.id);
+            setCheckBetId(true);
             getAllBetsData(data.id);
             setProLoss(data?.profitLoss);
             if (data.suspended == "ACTIVE") {
@@ -214,6 +221,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             // setBetData(data?.data?.data || []);
             // alert(handleBetData)
             // handleBetData(data?.data?.data || [], id)
+            // handleBetData(data?.data?.data || []);
             dispatch(setSessionAllBet(data?.data?.data || []));
             // setGlobalStore((prev) => ({
             //     ...prev,
