@@ -51,10 +51,12 @@ const AccountList = () => {
     totalCommissions: "",
   });
   let { axios, JWT } = setRole();
-  async function getListOfUser() {
+  async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?&page=${currentPageNo}&limit=${pageLimit}`
+        `/fair-game-wallet/getAllUser?${
+          username ? `userName=${username}` : ""
+        }&page=${currentPageNo}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole);
@@ -75,6 +77,23 @@ const AccountList = () => {
       console.log(e);
     }
     // /fair-game-wallet/getLogUserAggregateData
+  }
+
+  const [pageCount, setPageCount] = useState(constants.pageLimit);
+  // const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(constants.pageCount);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const { currentPageNo } = useSelector((state) => state?.auth);
+  function callPage(val) {
+    dispatch(setPage(parseInt(val)));
+    // setCurrentPage(parseInt(val));
+  }
+
+  // async function getRoles() {
+  //   setRoles(JSON.parse(localStorage.getItem("allRoles")));
+  // }
+
+  const getUerLogged = async () => {
     try {
       const { data } = await axios.get(
         `/fair-game-wallet/getLogUserAggregateData`
@@ -93,26 +112,13 @@ const AccountList = () => {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  const [pageCount, setPageCount] = useState(constants.pageLimit);
-  // const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(constants.pageCount);
-  const { currentUser } = useSelector((state) => state?.currentUser);
-  const { currentPageNo } = useSelector((state) => state?.auth);
-  function callPage(val) {
-    dispatch(setPage(parseInt(val)));
-    // setCurrentPage(parseInt(val));
-  }
-
-  // async function getRoles() {
-  //   setRoles(JSON.parse(localStorage.getItem("allRoles")));
-  // }
+  };
+  useEffect(() => {
+    getUerLogged();
+  }, []);
 
   useEffect(() => {
-    if (data1.length === 0 && currentPageNo) {
-      getListOfUser();
-    }
+    getListOfUser();
   }, [currentPageNo]);
 
   return (
@@ -133,7 +139,7 @@ const AccountList = () => {
           }),
         ]}
       >
-        <ListH setData={setData} />
+        <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} />
         <Box sx={{ overflowX: "auto" }}>
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
@@ -173,6 +179,7 @@ const AccountList = () => {
         </Box>
       </Box>
       <Footer
+        getListOfUser={getListOfUser}
         currentPage={currentPageNo}
         pages={pageCount}
         callPage={callPage}
@@ -181,7 +188,7 @@ const AccountList = () => {
   );
 };
 
-const Footer = ({ currentPage, pages, callPage }) => {
+const Footer = ({ currentPage, pages, callPage, getListOfUser }) => {
   return (
     <Box
       sx={{
@@ -279,7 +286,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({ setData }) => {
+const ListH = ({ getListOfUser, setPageCount }) => {
   return (
     <Box
       display={"flex"}
@@ -317,7 +324,8 @@ const ListH = ({ setData }) => {
       <SearchInput
         placeholder={"Search User..."}
         show={true}
-        setData={setData}
+        setPageCount={setPageCount}
+        getListOfUser={getListOfUser}
       />
     </Box>
   );

@@ -17,7 +17,9 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { setRole } from "../newStore";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserData } from "../newStore/reducers/auth";
+import { setPage, setUserData } from "../newStore/reducers/auth";
+import { pageLimit } from "./helper/constants";
+import { debounce } from "lodash";
 // import InboxIcon from '@mui/icons-material/Inbox';
 // import DraftsIcon from '@mui/icons-material/Drafts';
 
@@ -32,6 +34,8 @@ const SearchInput = ({
   width,
   searchContainerStyle,
   onChange,
+  setPageCount,
+  getListOfUser,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -41,29 +45,18 @@ const SearchInput = ({
   const { userData } = useSelector((state) => state?.auth);
   const dispatch = useDispatch();
 
-  const handleInputChange = async (event) => {
+  const handleInputChange = debounce(async (event) => {
     const value = event.target.value;
     setSearchValue(value);
     if (onChange && typeof onChange === "function") {
       onChange(value);
     }
     try {
-      const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?userName=${value}`
-      );
-      data?.data?.data.map((element) => {
-        // let roleDetail = roles.find(findThisRole);
-        // function findThisRole(role) {
-        //   return role.id === element.roleId;
-        // }
-        // element.role = roleDetail?.roleName;
-      });
-      setData(data?.data?.data);
-      // dispatch(setUserData(data?.data?.data));
+      getListOfUser(value);
     } catch (e) {
       console.log(e);
     }
-  };
+  }, 500);
 
   return (
     <>
@@ -79,9 +72,13 @@ const SearchInput = ({
               laptop: header ? "10vw" : "17vw",
               mobile: "10vw",
             },
-            width:{mobile:width? width: "66%",laptop:"17vw",tablet:"17vw"},
+            width: {
+              mobile: width ? width : "66%",
+              laptop: "17vw",
+              tablet: "17vw",
+            },
             display: "flex",
-            justifyContent:"flex-end",
+            justifyContent: "flex-end",
             alignItems: "center",
             boxShadow: "0px 3px 10px #B7B7B726",
             height: { laptop: "35px", mobile: "35px" },
@@ -96,7 +93,7 @@ const SearchInput = ({
           <TextField
             variant="standard"
             placeholder={placeholder}
-            value={searchValue}
+            // value={searchValue}
             onChange={handleInputChange}
             InputProps={{
               disableUnderline: true,

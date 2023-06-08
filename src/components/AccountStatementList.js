@@ -49,21 +49,15 @@ const AccountStatementList = ({ user }) => {
     setCurrenLimit(parseInt(val));
     setIsDated(true);
   }
-  async function getAccountStatement() {
+  async function getAccountStatement(from, to) {
     const userId = currentUser.id;
-    const originalDatefrom = formatDate(data[0]);
-    const originalDateto = formatDate(data[1]);
-    if (
-      data !== "" &&
-      isDated === false &&
-      originalDatefrom !== "NaN-NaN-NaN" &&
-      originalDateto !== "NaN-NaN-NaN"
-    ) {
+   console.log('from,to', from,to)
+    if (from && to) {
       var payload = {
         limit: pageLimit,
         skip: currentPage * pageLimit,
-        fromDate: originalDatefrom,
-        toDate: originalDateto,
+        fromDate: moment(from).format('YYYY-MM-DD'),
+        toDate: moment(to).format('YYYY-MM-DD'),
       };
     } else {
       var payload = {
@@ -90,10 +84,8 @@ const AccountStatementList = ({ user }) => {
   }
 
   useEffect(() => {
-    if (transactionHistory.length === 0) {
-      getAccountStatement();
-    }
-  }, []);
+    getAccountStatement();
+  }, [currentPage, pageLimit]);
   // }, [currentPage, pageCount, pageLimit]);
 
   // const Footer = () => {

@@ -23,16 +23,9 @@ const CustomButton = ({ btnStyle, onClick, getAccountStatement }) => {
       fontWeight: "600",
     },
   };
-  const handleClick = () => {
-    // Call the onClick function provided by the parent component
-    if (onClick) {
-      // alert('hitted')
-      getAccountStatement();
-      // onClick();
-    }
-  };
+
   return (
-    <Box sx={classes.mainBox} onClick={handleClick}>
+    <Box sx={classes.mainBox} onClick={onClick}>
       <Typography sx={classes.mainBoxTypographysx}>Load</Typography>
     </Box>
   );

@@ -17,6 +17,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { setRole } from "../newStore";
 import { useDispatch, useSelector } from "react-redux";
+import { debounce } from "lodash";
 import { setSubUserData, setUserData } from "../newStore/reducers/auth";
 // import InboxIcon from '@mui/icons-material/Inbox';
 // import DraftsIcon from '@mui/icons-material/Drafts';
@@ -31,6 +32,8 @@ const SearchInputModal = ({
   onChange,
   id,
   setData,
+  getListOfUser,
+  setPageCount,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -40,29 +43,18 @@ const SearchInputModal = ({
   const { userData } = useSelector((state) => state?.auth);
   const dispatch = useDispatch();
 
-  const handleInputChange = async (event) => {
+  const handleInputChange = debounce(async (event) => {
     const value = event.target.value;
     setSearchValue(value);
     if (onChange && typeof onChange === "function") {
       onChange(value);
     }
     try {
-      const { data } = await axios.get(
-        `/fair-game-wallet/getAllUserById/${id}?userName=${value}`
-      );
-      data?.data?.data.map((element) => {
-        // let roleDetail = roles.find(findThisRole);
-        // function findThisRole(role) {
-        //   return role.id === element.roleId;
-        // }
-        // element.role = roleDetail?.roleName;
-      });
-      setData(data?.data?.data);
-      // dispatch(setSubUserData(data?.data?.data));
+      getListOfUser(value);
     } catch (e) {
       console.log(e);
     }
-  };
+  }, 500);
 
   return (
     <>
@@ -92,7 +84,7 @@ const SearchInputModal = ({
           <TextField
             variant="standard"
             placeholder={placeholder}
-            value={searchValue}
+            // value={searchValue}
             onChange={handleInputChange}
             InputProps={{
               disableUnderline: true,
@@ -116,7 +108,7 @@ const SearchInputModal = ({
           <TextField
             variant="standard"
             placeholder={placeholder}
-            value={searchValue}
+            // value={searchValue}
             onChange={handleInputChange}
             InputProps={{
               disableUnderline: true,

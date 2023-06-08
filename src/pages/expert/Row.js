@@ -36,7 +36,7 @@ const Row = ({ index, containerStyle, data }) => {
         `/${window.location.pathname.split("/")[1]}/${navigateTo}`,
         state
       );
-    }, [2000]);
+    }, [500]);
   }
 
   const { socket, socketMicro } = useContext(SocketContext);

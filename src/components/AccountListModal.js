@@ -36,10 +36,15 @@ const AccountListModal = ({ id, show, setShow, title }) => {
   // const {currentUser} = useSelector((state) => state?.currentUser);
   const { userWallet } = useSelector((state) => state?.auth);
   // const [roles, setRoles] = useState([]);
+  let { axios } = setRole();
   const { subUserData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [data1, setData] = useState([]);
+  const [pageCount, setPageCount] = useState(constants.pageLimit);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+  const { subCurrentPageNo } = useSelector((state) => state?.auth);
   const [sumValue, setSumVal] = useState({
     creditsum: 0.0,
     profitsum: 0.0,
@@ -53,13 +58,14 @@ const AccountListModal = ({ id, show, setShow, title }) => {
 
   useEffect(() => {
     getListOfUser();
-  }, [show]);
+  }, [currentPage]);
 
-  async function getListOfUser() {
-    let { axios } = setRole();
+  async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUserById/${id}?&page=${currentPage}&limit=${pageLimit}`
+        `/fair-game-wallet/getAllUserById/${id}?${
+          username ? `userName=${username}` : ""
+        }&page=${currentPage}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
         let roleDetail = roles.find(findThisRole);
@@ -80,6 +86,9 @@ const AccountListModal = ({ id, show, setShow, title }) => {
       console.log(e);
     }
     // /fair-game-wallet/getLogUserAggregateData
+  }
+
+  const getUerLogged = async () => {
     try {
       const { data } = await axios.get(
         `/fair-game-wallet/getLogUserAggregateData?userId=${id}`
@@ -99,12 +108,11 @@ const AccountListModal = ({ id, show, setShow, title }) => {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
+  useEffect(() => {
+    getUerLogged();
+  }, []);
 
-  const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-  const { subCurrentPageNo } = useSelector((state) => state?.auth);
   function callPage(val) {
     // dispatch(setSubPage(parseInt(val)));
     setCurrentPage(parseInt(val));
@@ -142,7 +150,8 @@ const AccountListModal = ({ id, show, setShow, title }) => {
           <ListH
             id={id}
             title={title}
-            setData={setData}
+            getListOfUser={getListOfUser}
+            setPageCount={setPageCount}
             matchesMobile={matchesMobile}
           />
           <Button
@@ -304,7 +313,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({ id, title, setData, matchesMobile }) => {
+const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile }) => {
   return (
     <Box
       display={"flex"}
@@ -412,7 +421,8 @@ const ListH = ({ id, title, setData, matchesMobile }) => {
       </Box>
 
       <SearchInputModal
-        setData={setData}
+        getListOfUser={getListOfUser}
+        setPageCount={setPageCount}
         id={id}
         show={true}
         placeholder={"Search User..."}

@@ -10,6 +10,7 @@ import constants from "./helper/constants";
 import { setRole } from "../newStore";
 import CustomButtonAdmin from "./CustomButtonAdmin";
 import jwtDecode from "jwt-decode";
+import { toast } from "react-toastify";
 
 const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
   const adminToken = sessionStorage.getItem("JWTadmin");
@@ -30,13 +31,6 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
   const handleToDateChange = (date) => {
     setToDate(date);
   };
-  const sendDataToParent = () => {
-    onChildData([fromDate, toDate]);
-  };
-
-  useEffect(() => {
-    sendDataToParent();
-  }, [fromDate, toDate]);
 
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -75,12 +69,11 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
           background: "#F8C851",
           display: "flex",
           flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
-          
         }}
       >
         <Box
           sx={{
-            width:"100%",
+            width: "100%",
             gap: 1,
             display: "flex",
             flexDirection: { mobile: "row", laptop: "row", tablet: "row" },
@@ -117,7 +110,14 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
                 marginLeft: matchesMobile ? "10px" : "20px",
                 marginBottom: matchesMobile ? "15px" : tab ? "28px" : "15px",
               }}
-              onClick={sendDataToParent}
+              onClick={() => {
+                if (fromDate === "" && toDate === "") {
+                  toast.warn("Please select From and To date");
+                  return false;
+                } else {
+                  getAccountStatement(fromDate, toDate);
+                }
+              }}
               getAccountStatement={getAccountStatement}
             />
           )}
@@ -133,7 +133,14 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
               marginLeft: matchesMobile ? "10px" : "20px",
               marginBottom: matchesMobile ? "15px" : tab ? "28px" : "15px",
             }}
-            onClick={sendDataToParent}
+            onClick={() => {
+              if (fromDate === "" && toDate === "") {
+                toast.warn("Please select From and To date");
+                return false;
+              } else {
+                getAccountStatement(fromDate, toDate);
+              }
+            }}
             getAccountStatement={getAccountStatement}
           />
         )}
