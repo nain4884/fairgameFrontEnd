@@ -29,7 +29,7 @@ const Odds = ({ onClick, top, blur, match }) => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { axios } = setRole()
 
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setTimeLeft(calculateTimeLeft());
@@ -273,7 +273,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               // '#262626'
             }}
           >
-            <div class="slanted"></div>
+            <div className="slanted"></div>
           </Box>
           <Box
             sx={{

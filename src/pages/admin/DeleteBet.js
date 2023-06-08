@@ -1,14 +1,9 @@
 import React from "react";
-import { useTheme } from "@emotion/react";
-import { Typography, useMediaQuery, Box, Menu, MenuItem } from "@mui/material";
-import { BallStart, INDIA, Lock, PAKISTAN, TIME, UD } from "../../assets/index";
+import { Typography, Box } from "@mui/material";
 import "../../components/index.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setColorValue } from "../../store/selectedColorBox";
 import { useState, useContext } from "react";
-import { StyledImage } from "../../components";
-import { Popover } from "react-tiny-popover";
-import { DeleteIcon, LOCKED, LOCKOPEN, LockSolid } from "../../admin/assets";
+import { DeleteIcon } from "../../admin/assets";
 import { Background, DailogModal } from "../../components/index";
 import { useLocation } from "react-router-dom";
 import FullAllBets from "../../components/FullAllBets";
@@ -970,7 +965,7 @@ const DeleteBet = ({ }) => {
               data={[]}
               sessionOffline={sessionOffline}
             />} */}
-          <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />
+          {IOSinglebets.length > 0 && <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />}
         </Box>
         <Box sx={{ width: "20px" }} />
         <Box

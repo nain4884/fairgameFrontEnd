@@ -37,7 +37,7 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -91,7 +91,7 @@ const CustomHeader = ({}) => {
     }
   }, []);
 
-  useEffect(() => {}, [currentSelected]);
+  useEffect(() => { }, [currentSelected]);
   useEffect(() => {
     if (!matchesMobile) {
       setMobileOpen(false);
@@ -233,7 +233,7 @@ const CustomHeader = ({}) => {
                       borderRadius: "3px",
                       marginLeft: "1.5%",
                       justifyContent: "center",
-                  
+
                     }}
                     titleStyle={{
                       color: currentSelected == 3 ? "green" : "white",
@@ -564,7 +564,7 @@ const BoxProfile = ({ image, value, containerStyle, balance }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  useEffect(() => {}, [anchorEl]);
+  useEffect(() => { }, [anchorEl]);
   const handleClose = () => {
     setOpen(false);
   };
@@ -774,6 +774,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
       <Box sx={{ minHeight: { laptop: 60, mobile: 60 + 32 } }} />
       <Box sx={{ height: "100vh" }}>
         <SideBarAdmin
+          key={1}
           handleDrawerToggle={handleDrawerToggle}
           mobileShow={true}
         />

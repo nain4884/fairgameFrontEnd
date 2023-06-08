@@ -90,7 +90,7 @@ const SessionMarketLive = ({
               marginLeft: "7px",
             }}
           >
-            {title} 
+            {title}
           </Typography>
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
@@ -102,7 +102,7 @@ const SessionMarketLive = ({
             // '#262626'
           }}
         >
-          <div class="slanted"></div>
+          <div className="slanted"></div>
         </Box>
         <Box
           sx={{
@@ -168,7 +168,7 @@ const SessionMarketLive = ({
               <Box
                 sx={{
                   background: "#FF9292",
-                  width: "28%" ,
+                  width: "28%",
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
@@ -185,7 +185,7 @@ const SessionMarketLive = ({
               <Box
                 sx={{
                   background: "#00C0F9",
-                  width: "28%" ,
+                  width: "28%",
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",

@@ -76,7 +76,7 @@ const MatchSubmit1 = ({ }) => {
                     </Box>
                 </Box>
                 <Box sx={{ display: 'flex', background: 'white', height: '40px', width: { laptop: '60%', mobile: '80%' }, justifyContent: { mobile: 'flex-end', laptop: 'flex-end' }, alignItems: 'center' }} >
-                <MoneyBox color={color} />
+                    <MoneyBox color={color} />
 
                     {!lock && <SeperateBox align={align} value={"1.71"} value2={" $23000"} color={matchesMobile ? "white" : "#A7DCFF"} />}
                     {lock && <Box sx={{ height: "94%", background: "#FDF21A", border: "1px solid #2626264D", width: "5vw", justifyContent: "center", alignItems: "center", display: "flex" }} >
@@ -113,7 +113,7 @@ const MatchSubmit1 = ({ }) => {
         return (
             <Box sx={{
                 width: '80px',
-                borderRadius: "5px", justifyContent: 'center', position: matchesMobile ? 'absolute' : 'relative', right:  '20px', alignItems: 'center', display: 'flex', height: '25px', borderRadius: '7px'
+                borderRadius: "5px", justifyContent: 'center', position: matchesMobile ? 'absolute' : 'relative', right: '20px', alignItems: 'center', display: 'flex', height: '25px', borderRadius: '7px'
             }}>
                 <Typography sx={{ fontSize: '13px', fontWeight: 'bold', color: color }} >+600,000,000</Typography>
 
@@ -133,7 +133,7 @@ const MatchSubmit1 = ({ }) => {
                     <Box sx={{
                         flex: .1, background: '#262626'
                     }}>
-                        <div class="slanted"></div>
+                        <div className="slanted"></div>
                     </Box>
                     <Box sx={{
                         flex: 1, background: '#262626',
@@ -361,7 +361,7 @@ const MatchSubmit1 = ({ }) => {
                         <Box sx={{
                             flex: .1, background: '#262626'
                         }}>
-                            <div class="slanted"></div>
+                            <div className="slanted"></div>
 
                         </Box>
                         <Box sx={{
@@ -439,7 +439,7 @@ const MatchSubmit1 = ({ }) => {
                     <Box sx={{
                         flex: .1, background: '#262626'
                     }}>
-                        <div class="slanted"></div>
+                        <div className="slanted"></div>
                     </Box>
                     <Box sx={{
                         flex: 1, background: '#262626',
@@ -569,7 +569,7 @@ const MatchSubmit1 = ({ }) => {
     }
     return (
         <Background>
-            <Typography sx={{ fontSize: '16px', color: 'white', fontWeight: '700',marginX:"0.5%", paddingTop: '0.7%', alignSelf: 'start', }} >INDIA V/S PAKISTAN</Typography>
+            <Typography sx={{ fontSize: '16px', color: 'white', fontWeight: '700', marginX: "0.5%", paddingTop: '0.7%', alignSelf: 'start', }} >INDIA V/S PAKISTAN</Typography>
             <MatchScreen submit={true} />
             <Box sx={{ display: 'flex', flexDirection: 'row', flex: 1, height: '100%', marginX: "0.5%" }}>
                 <Box sx={{ flex: 1, flexDirection: 'column', minHeight: "100px", display: 'flex' }}>
@@ -588,7 +588,7 @@ const MatchSubmit1 = ({ }) => {
                     <AllBets tag={true} />
                 </Box>
             </Box>
-           
+
         </Background>
     )
 }

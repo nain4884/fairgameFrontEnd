@@ -245,7 +245,7 @@ const MatchOdds = ({
               // '#262626'
             }}
           >
-            <div class="slanted"></div>
+            <div className="slanted"></div>
           </Box>
           <Box
             sx={{

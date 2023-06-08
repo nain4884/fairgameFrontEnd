@@ -9,7 +9,7 @@ import { useState } from "react"
 const LiveMatchComponent = ({ }) => {
     const [visible, setVisible] = useState(true)
     return (
-        <Box sx={[{ position: 'relative', width: { tablet: "55%", mobile: "98%", laptop: '100%' }, display: 'flex', flexDirection: 'column', alignSelf: 'center', marginX: { laptop: '0vw', mobile: '0px', tablet: '0px' }, marginTop:".5vh", borderRadius: '2px', background: 'white', alignSelf: { mobile: 'center', tablet: 'center', laptop: "flex-start" } }]}>
+        <Box sx={[{ position: 'relative', width: { tablet: "55%", mobile: "98%", laptop: '100%' }, display: 'flex', flexDirection: 'column', alignSelf: 'center', marginX: { laptop: '0vw', mobile: '0px', tablet: '0px' }, marginTop: ".5vh", borderRadius: '2px', background: 'white', alignSelf: { mobile: 'center', tablet: 'center', laptop: "flex-start" } }]}>
             <Box sx={{ display: 'flex', height: 38, marginTop: '2spx', flexDirection: 'row', width: '99.1%', alignSelf: 'center' }}>
                 <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                     <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Live Scoreboard</Typography>
@@ -18,7 +18,7 @@ const LiveMatchComponent = ({ }) => {
                     flex: .1, background: '#262626'
                     // '#262626' 
                 }}>
-                    <div class="slanted"></div>
+                    <div className="slanted"></div>
 
                 </Box>
                 <Box sx={{

@@ -31,6 +31,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
       <Box sx={classes.DrawerBox1sx} />
       <Box sx={classes.DrawerBox2sx}>
         <SideBarAdmin
+          key={2}
           handleDrawerToggle={handleDrawerToggle}
           mobileShow={true}
         />``

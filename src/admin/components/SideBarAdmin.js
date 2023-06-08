@@ -254,11 +254,12 @@ const RenderBets = ({ i, handleDrawerToggle }) => {
     </Box>
   );
 };
-const RenderEvents = ({ i, handleDrawerToggle }) => {
+const RenderEvents = ({ i, handleDrawerToggle, k }) => {
   const [selected, setSelected] = useState(false);
 
   return (
     <Box
+      key={k}
       onClick={(event) => {
         event.stopPropagation();
 
@@ -297,6 +298,7 @@ const RenderGames = ({ i, k, handleDrawerToggle }) => {
   const [selected, setSelected] = useState(false);
   return (
     <Box
+      key={k}
       onClick={(event) => {
         event.stopPropagation();
 
@@ -331,12 +333,13 @@ const RenderGames = ({ i, k, handleDrawerToggle }) => {
   );
 };
 
-const SideBarAdmin = ({ handleDrawerToggle }) => {
+const SideBarAdmin = ({ handleDrawerToggle, key }) => {
   return (
     <Box
+      key={key}
       sx={[
-        { 
-          marginTop:{mobile:"2.5vh",laptop:0,tablet:0},
+        {
+          marginTop: { mobile: "2.5vh", laptop: 0, tablet: 0 },
           minHeight: "100vh",
           width: "100%",
           display: "flex",
@@ -347,7 +350,7 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
           backgroundImage: `${theme.palette.primary.mainGradient}`,
         }),
       ]}
-      // headerGradient
+    // headerGradient
     >
       <Box
         sx={[

@@ -1620,7 +1620,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         flex: .1, background: '#262626'
                         // '#262626' 
                     }}>
-                        <div class="slanted"></div>
+                        <div className="slanted"></div>
                     </Box>
                     <Box sx={{
                         flex: 1, background: '#262626',

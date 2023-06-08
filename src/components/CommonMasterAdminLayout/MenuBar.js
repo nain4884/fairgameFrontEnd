@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const DropdownMenu1 = ({ anchorEl, open, handleClose,nav }) => {
+const DropdownMenu1 = ({ anchorEl, open, handleClose, nav }) => {
 
   const menutItems1 = [
     { title: "Account Statement", link: `/${nav}/account_statement` },
@@ -49,8 +49,9 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,nav }) => {
       MenuListProps={classes.MenuListProps}
       PaperProps={classes.MenuPaperProps}
     >
-      {menutItems1.map((x) => (
+      {menutItems1.map((x, index) => (
         <MenuItem
+          key={index}
           dense={true}
           sx={classes.MenuItemsx}
           onClick={() => {

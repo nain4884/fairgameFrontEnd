@@ -191,6 +191,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
           const num = k + 1
           return (
             <div
+              key={k}
               style={{ display: "flex", position: "relative" }}
               onClick={(e) => {
                 let x = [...selectedData];
@@ -452,10 +453,11 @@ const HeaderRow = ({ tag, mode }) => {
     </Box>
   );
 };
-const SmallBox = ({ item }) => {
+const SmallBox = ({ item, k }) => {
   // alert(JSON.stringify(item))
   return (
     <Box
+      key={k}
       sx={{
         width: "10%",
         border: "1px solid white",
@@ -477,6 +479,7 @@ const SmallBox = ({ item }) => {
 const LargeBox = ({ item, k }) => {
   return (
     <Box
+      key={k}
       sx={{
         width: k == 1 ? "20%" : "15%",
         border: "1px solid white",
@@ -512,7 +515,7 @@ const LargeBox = ({ item, k }) => {
 };
 const Row = ({ values, index }) => {
   return (
-    <Box sx={{ width: "100%", display: "flex" }}>
+    <Box key={index} sx={{ width: "100%", display: "flex" }}>
       {values.map((item, k) => {
         if (!item?.small) {
           return <LargeBox k={k} item={item} />;

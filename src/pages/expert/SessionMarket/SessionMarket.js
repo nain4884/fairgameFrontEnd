@@ -149,7 +149,7 @@ const SessionMarket = ({
               marginLeft: "7px",
             }}
           >
-            {title} 
+            {title}
           </Typography>
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
@@ -169,7 +169,7 @@ const SessionMarket = ({
             // '#262626'
           }}
         >
-          <div class="slanted"></div>
+          <div className="slanted"></div>
         </Box>
         <Box
           sx={{
@@ -282,7 +282,7 @@ const SessionMarket = ({
             matchSessionData?.map((match, index) => (
               <Box
                 key={index}
-                //  ref={messageRef}
+              //  ref={messageRef}
               >
                 <SessionMarketBox
                   liveOnly={liveOnly}

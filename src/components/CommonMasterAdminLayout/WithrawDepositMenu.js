@@ -42,8 +42,8 @@ const DropdownMenu2 = ({ anchorEl, open, handleClose }) => {
             MenuListProps={classes.MenuListProps}
             PaperProps={classes.MenuPaperProps}
         >
-            {menutItems2.map(x => <MenuItem
-
+            {menutItems2.map((x, index) => <MenuItem
+                key={index}
                 dense={true} sx={classes.MenuItemsx} onClick={() => {
                     navigate(x.link)
                     handleClose()
