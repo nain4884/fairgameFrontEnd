@@ -15,9 +15,10 @@ export default function Live() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { sessionAllBet } = useSelector((state) => state?.expertMatchDetails);
-    // const [betData, setBetData] = useState();
+    // const [betData, setBetData] = useState([]);
     const [proLoss1, setProLoss1] = useState({});
     const [betId, setBetId] = useState();
+    const [checkBetId, setCheckBetId] = useState(false);
 
 
     function showDialogModal(isModalOpen, showRight, message, navigateTo, state) {
@@ -61,11 +62,12 @@ export default function Live() {
             {/* <Header /> */}
             <Box display="flex">
                 <Box flex={1} sx={{ margin: "10px" }}>
-                    <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} proLoss1={proLoss1} />
+                    <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} proLoss1={proLoss1} setCheckBetId={setCheckBetId} />
                     <SessionResult createSession={location?.state?.createSession} showDialogModal={showDialogModal} betId={betId} />
                 </Box>
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
-                    {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />}
+                    {/* {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />} */}
+                    {checkBetId && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />}
                 </Box>
             </Box>
             <DailogModal />

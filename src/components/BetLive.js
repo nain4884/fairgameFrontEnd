@@ -6,7 +6,7 @@ export default function BetLive({ createSession, sessionEvent, betData }) {
             <Box sx={[{ height: "60px", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px" }, (theme) => ({
                 backgroundImage: `${theme.palette.primary.headerGradient}`
             })]}>
-                <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600" }}>{sessionEvent.bet_condition}</Typography>
+                <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600" }}>{sessionEvent?.bet_condition}</Typography>
                 <Box sx={{ height: "45px", width: "100px", background: "white", borderRadius: "5px", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
                     <Typography sx={{ color: "red", fontWeight: "700" }}>All Bet</Typography>
                     <Typography sx={{ color: "#0B4F26", fontWeight: "700", marginTop: "-5px" }}>{betData.length}</Typography>
