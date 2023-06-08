@@ -52,9 +52,7 @@ const PlaceBet = ({
     (state) => state.selectedColorBox
   )?.value;
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-
   const myDivRef = useRef(null);
-
   const getLatestBetAmount = async (value, newData) => {
     try {
       const title = season ? betType : isBack ? "back" : "lay";

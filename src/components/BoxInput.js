@@ -52,7 +52,7 @@ const BoxInput = ({
         ]}
       >
         <TextField
-          // value={defaultValue}
+          value={defaultValue}
           variant="standard"
           InputProps={{
             sx: {
@@ -67,9 +67,8 @@ const BoxInput = ({
               color: !selectedColorBox && "white",
             },
           }}
-          onChange={debounce((e) => {
+          onChange={(e) => {
             const value = e.target.value.trim(); // Remove leading/trailing spaces
-
             if (value === "") {
               setDefaultValue(" "); // Set your desired default value here
               getLatestBetAmount(" ");
@@ -77,7 +76,7 @@ const BoxInput = ({
               setDefaultValue(value);
               getLatestBetAmount(value);
             }
-          }, 500)}
+          }}
           sx={{ textAlign: "center", alignItems: "center" }}
         />
       </Box>
