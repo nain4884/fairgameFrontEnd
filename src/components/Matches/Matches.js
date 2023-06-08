@@ -27,8 +27,6 @@ const MatchesComponent = ({
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const totalPages = Math.ceil(matchData.length / constants.customPageLimit);
-
   // Calculate the start and end index for the current page
   const startIndex = (currentPage - 1) * constants.customPageLimit;
   const endIndex = startIndex + constants.customPageLimit;
@@ -57,14 +55,14 @@ const MatchesComponent = ({
       if (data.length > 0) {
         setLoader(false);
         setMatchData(data[0]);
-        setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
+        setPageCount(Math.ceil(parseInt(data[1]) / constants.customPageLimit));
       }
     } catch (e) {
       console.log(e);
     }
   }
 
-  function callPage(e,value) {
+  function callPage(e, value) {
     setCurrentPage(parseInt(value));
   }
 
@@ -91,7 +89,7 @@ const MatchesComponent = ({
         <Pagination
           page={currentPage}
           className="whiteTextPagination d-flex justify-content-center"
-          count={totalPages}
+          count={pageCount}
           color="primary"
           onChange={callPage}
         />
