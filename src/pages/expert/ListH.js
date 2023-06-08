@@ -4,7 +4,7 @@ import CusButton from "./CusButton";
 import SearchInput from "./SearchInput";
 
 
-const ListH = ({setAllMatch ,currentPage,pageLimit}) => {
+const ListH = ({getAllMatch}) => {
   const navigate = useNavigate();
   return (
     <Box
@@ -15,7 +15,7 @@ const ListH = ({setAllMatch ,currentPage,pageLimit}) => {
         Match List
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <SearchInput show={true} setData={setAllMatch} currentPage={currentPage} pageLimit={pageLimit} placeholder={"Search Match..."} />
+        <SearchInput show={true} getAllMatch={getAllMatch} placeholder={"Search Match..."} />
         <CusButton
           onClick={() => {
             navigate("/expert/add_match");

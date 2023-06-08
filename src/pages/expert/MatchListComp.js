@@ -13,16 +13,29 @@ const MatchListComp = () => {
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+  // const totalPages = Math.ceil(allMatch?.length / constants.customPageLimit);
+
+  // Calculate the start and end index for the current page
+  const startIndex = (currentPage - 1) * constants.customPageLimit;
+  const endIndex = startIndex + constants.customPageLimit;
   const { axios } = setRole();
-  const getAllMatch = async () => {
+  const getAllMatch = async (title) => {
     try {
+      if(title){
+        setCurrentPage(1)
+      }
       let response = await axios.get(
-        `/game-match/getAllMatch?&page=${currentPage}&limit=${pageLimit}`
+        `/game-match/getAllMatch?${
+          title ? `title=${title}` : ""
+        }&page=${currentPage}&limit=${pageLimit}`
       );
       setAllMatch(response.data[0]);
+      
       setPageCount(
         Math.ceil(
-          parseInt(response?.data[1] ? response.data[1] : 1) / pageLimit
+          parseInt(
+            response?.data[1] ? response.data[1]: 1
+          ) /  constants.customPageLimit 
         )
       );
     } catch (e) {
@@ -30,13 +43,13 @@ const MatchListComp = () => {
     }
   };
   useEffect(() => {
-    if (allMatch.length === 0) {
-      getAllMatch();
-    }
+    getAllMatch();
   }, [currentPage]);
-  const callPage = (e) => {
-    setCurrentPage(parseInt(e.target.outerText));
-  };
+  function callPage(e, value) {
+    setCurrentPage(parseInt(value));
+  }
+
+  const currentElements = allMatch.slice(startIndex, endIndex);
   return (
     <Box
       sx={[
@@ -52,9 +65,9 @@ const MatchListComp = () => {
         }),
       ]}
     >
-      <ListH  setAllMatch={setAllMatch} currentPage={currentPage} pageLimit={pageLimit}/>
+      <ListH getAllMatch={getAllMatch} />
       <ListHeaderT />
-      {allMatch.map((element, i) => {
+      {currentElements.map((element, i) => {
         return (
           <Row
             index={i + 1}
@@ -64,6 +77,7 @@ const MatchListComp = () => {
         );
       })}
       <Pagination
+         page={currentPage}
         className="whiteTextPagination d-flex justify-content-center"
         count={pageCount}
         color="primary"

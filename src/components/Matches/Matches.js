@@ -26,6 +26,12 @@ const MatchesComponent = ({
   const [matchData, setMatchData] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(matchData.length / constants.customPageLimit);
+
+  // Calculate the start and end index for the current page
+  const startIndex = (currentPage - 1) * constants.customPageLimit;
+  const endIndex = startIndex + constants.customPageLimit;
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const dispatch = useDispatch();
   const { axios } = setRole();
@@ -34,7 +40,7 @@ const MatchesComponent = ({
     if (matchData.length === 0 && currentPage) {
       getAllMatch();
     }
-  }, [currentPage, pageCount, selected]);
+  }, [currentPage, selected]);
 
   async function getAllMatch() {
     try {
@@ -58,13 +64,14 @@ const MatchesComponent = ({
     }
   }
 
-  function callPage(e) {
-    setCurrentPage(parseInt(e.target.outerText));
+  function callPage(e,value) {
+    setCurrentPage(parseInt(value));
   }
 
+  const currentElements = matchData.slice(startIndex, endIndex);
   return (
     <>
-      {matchData?.map((match) => {
+      {currentElements?.map((match) => {
         return (
           <Odds
             onClick={() => {
@@ -82,8 +89,9 @@ const MatchesComponent = ({
       })}
       {matchData.length != 0 && (
         <Pagination
+          page={currentPage}
           className="whiteTextPagination d-flex justify-content-center"
-          count={pageCount}
+          count={totalPages}
           color="primary"
           onChange={callPage}
         />

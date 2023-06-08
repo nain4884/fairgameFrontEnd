@@ -24,6 +24,7 @@ const SearchInput = ({
   onChange,
   currentPage,
   pageLimit,
+  getAllMatch
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -38,13 +39,8 @@ const SearchInput = ({
     }
     try {
     //   if (value !== "") {
-        const response = await axios.get(
-          `/game-match/getAllMatch?title=${value}&page=${currentPage}&limit=${pageLimit}`
-        );
-
-        setData(response.data[0]);
-    //   }
-      // dispatch(setUserData(data?.data?.data));
+      getAllMatch(value)
+     
     } catch (e) {
       console.log(e);
     }
