@@ -104,94 +104,14 @@ const Footer = ({ currentPage, pages, callPage, currenLimit }) => {
     </Box>
   );
 };
-const BetsList = () => {
-  const { currentUser } = useSelector((state) => state?.currentUser);
-  const data = [
-    {
-      eventType: "Cricket",
-      eventName: "India Vs Pakistan",
-      userName: "JohnDoe",
-      team: "Pakistan",
-      betType: "6 Over Pakistan",
-      userRate: "66",
-      amount: "1000",
-      placeDate: "04-11-2022",
-      matchDate: "04-11-2022",
-      type: "Yes",
-    },
-    {
-      eventType: "Cricket",
-      eventName: "India Vs Pakistan",
-      userName: "JohnDoe9110",
-      team: "India",
-      betType: "Bookmaker",
-      userRate: "66",
-      amount: "1000",
-      placeDate: "04-11-2022",
-      matchDate: "04-11-2022",
-      type: "Lay",
-    },
-    {
-      eventType: "Cricket",
-      eventName: "India Vs Pakistan",
-      userName: "JohnParker1234",
-      team: "India",
-      betType: "Match Odds",
-      userRate: "66",
-      amount: "1000",
-      placeDate: "04-11-2022",
-      matchDate: "04-11-2022",
-      type: "Back",
-    },
-  ];
-
-  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-  const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [currenLimit, setCurrenLimit] = useState(1);
-  const [betHistory, setBetHistory] = useState([]);
-
-  useEffect(() => {
-    getBetList();
-  }, [currentPage, pageCount, pageLimit]);
+const BetsList = ({ betHistory, pageCount, currentPage, currenLimit, handleGetLimitEntries, handlecallPage }) => {
 
   const getLimitEntries = (childLimitData) => {
-    setPageLimit(childLimitData);
+    handleGetLimitEntries(childLimitData);
   };
 
   function callPage(val) {
-    // dispatch(secallPagetCurrentStatementPage(parseInt(val)));
-    // setCurrentPage(parseInt(val * pageLimit));
-    setCurrentPage(parseInt(val));
-    setCurrenLimit(parseInt(val));
-    // setIsDated(true);
-  }
-
-  async function getBetList() {
-    const userId = currentUser?.id;
-
-    var payload = {
-      limit: pageLimit,
-      skip: currentPage * pageLimit,
-    };
-    console.log(payload);
-    let { axios } = setRole();
-    try {
-      // const { data } = await axios.post(
-      //   `/betting/currentAllMatchBet/${userId}`,
-      //   payload
-      // );
-      const { data } = await axios.post(`/betting/currentAllMatchBet`, payload);
-      // console.log(data.data[0], 'datadatadatadata')
-      setBetHistory(data.data[0]);
-      setPageCount(
-        Math.ceil(parseInt(data.data[1] ? data.data[1] : 1) / pageLimit)
-      );
-
-      //   toast.success(data?.message);
-    } catch (e) {
-      console.log(e);
-    }
+    handlecallPage(val);
   }
 
   return (
