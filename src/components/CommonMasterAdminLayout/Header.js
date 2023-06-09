@@ -503,6 +503,7 @@ const CustomHeader = ({}) => {
 
         {
           <MobileSideBar
+          
             mobileOpen={mobileOpen}
             setMobileOpen={setMobileOpen}
           />

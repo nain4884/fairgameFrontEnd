@@ -230,10 +230,11 @@ const RenderValues = ({ i, handleDrawerToggle }) => {
 };
 const RenderBets = ({ i, handleDrawerToggle }) => {
   const navigate = useNavigate();
+ const path= window.location.pathname.split("/")[1]
   return (
     <Box
       onClick={(event) => {
-        navigate("/fairgame_wallet/match");
+        navigate(`/${path}/match`);
         handleDrawerToggle();
         event.stopPropagation();
       }}

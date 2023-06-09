@@ -48,7 +48,7 @@ const Matches = () => {
       <Box
         flex={1}
         sx={[
-          { flex: 1, display: "flex", height: "98vh" },
+          { flex: 1, display: "flex",  },
           (theme) => ({
             backgroundImage: `${theme.palette.primary.homeBodyGradient}`,
           }),
