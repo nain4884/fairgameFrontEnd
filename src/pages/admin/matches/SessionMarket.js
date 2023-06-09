@@ -7,7 +7,7 @@ import { useTheme } from "@emotion/react";
 import { useEffect } from "react";
 import RunsBox from "../../expert/RunsBox";
 
-const SessionMarket = ({ currentMatch, sessionOffline }) => {
+const SessionMarket = ({ currentMatch, sessionOffline, sessionBets }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [showUnlock, setShowUnlock] = useState(false);
@@ -90,7 +90,7 @@ const SessionMarket = ({ currentMatch, sessionOffline }) => {
               justifyContent: "flex-end",
             }}
           >
-            <SmallBoxSeason total={matchSessionData?.length || 0} />
+            <SmallBoxSeason total={sessionBets?.length || 0} />
           </Box>
         </Box>
         <Box
