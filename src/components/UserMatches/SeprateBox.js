@@ -17,6 +17,7 @@ import { setAllBetRate } from "../../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import { setRole } from "../../newStore";
 import { height } from "@mui/system";
+import NotificationModal from "../NotificationModal";
 const PlaceBetType = {
   BackLay: "BackLay",
   YesNo: "YesNo",
@@ -61,7 +62,11 @@ const SeprateBox = ({
   const [placeBetType, setPlaceBetType] = React.useState(PlaceBetType.BackLay);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
-  const [canceled, setCanceled] = React.useState(false);
+  const [canceled, setCanceled] = useState({
+    value: false,
+    msg: "",
+    type: false,
+  });
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
@@ -190,19 +195,21 @@ const SeprateBox = ({
     let oddValue = Number(value);
     // : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
     if (newPayload?.stake === 0) {
-      toast.warn("Please enter amount to place a bet");
+      // toast.warn("Please enter amount to place a bet");
+      setCanceled({
+        value: true,
+        msg: "Please enter amount to place a bet",
+        type: false,
+      });
       setBetPlaceLoading(false);
       setFastBetLoading(false);
       return false;
     } else {
       if (oddValue != newPayload.odds) {
-        toast.warning("Odds value has been updated. You can not place bet.");
-        setCanceled(true);
+        // toast.warning("Odds value has been updated. You can not place bet.");
+        setCanceled({ value: true, msg: "Rate changed", type: false });
         setBetPlaceLoading(false);
         setFastBetLoading(false);
-        setTimeout(() => {
-          setCanceled(false);
-        }, 3000);
         setBetPalaceError(true);
         return;
       }
@@ -224,7 +231,7 @@ const SeprateBox = ({
       if (Number(payload?.odds) !== Number(value)) {
         setBetPlaceLoading(false);
         setFastBetLoading(false);
-        return toast.error("Rate changed ");
+        return setCanceled({ value: true, msg: "Rate changed", type: false });
       }
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
@@ -236,28 +243,23 @@ const SeprateBox = ({
       } else if (sessionMain === "bookmaker") {
         setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
       }
-      toast.success(response.data.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
       setFastBetLoading(false);
       setBetPlaceLoading(false);
       setPreviousValue(0);
-      setCanceled(true);
-      setTimeout(() => {
-        setCanceled(false);
-      }, 3000);
+      setCanceled({ value: true, msg: response.data.message, type: true });
+      // setTimeout(() => {
+      //   setCanceled(false);
+      // }, 3000);
       setIsPopoverOpen(false);
       // navigate("/matchDetail")
     } catch (e) {
       setBetPlaceLoading(false);
       setFastBetLoading(false);
-      setCanceled(true);
-      setTimeout(() => {
-        setCanceled(false);
-      }, 3000);
+      setCanceled({ value: true, msg: e.response.data.message, type: false });
       setBetPalaceError(true);
       console.log(e.response.data.message);
-      toast.error(e.response.data.message);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
@@ -482,6 +484,15 @@ const SeprateBox = ({
             }}
           />
         }
+
+        {canceled.value && (
+          <NotificationModal
+            open={canceled}
+            handleClose={() =>
+              setCanceled({ value: false, msg: "", type: false })
+            }
+          />
+        )}
       </Box>
 
       {/* <MUIModal

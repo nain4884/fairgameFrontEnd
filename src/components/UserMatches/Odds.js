@@ -17,6 +17,7 @@ import { setRole } from "../../newStore";
 import { useDispatch } from "react-redux";
 import { setDailogData } from "../../store/dailogModal";
 import Lottie from "lottie-react";
+import NotificationModal from "../NotificationModal";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
@@ -152,6 +153,11 @@ const Odds = ({
   const [placeBetData, setPlaceBetData] = useState(null);
   const [fastRate, setFastRate] = useState(null);
   const [fastBetLoading, setFastBetLoading] = useState(false);
+  const [canceled, setCanceled] = useState({
+    value: false,
+    msg: "",
+    type: false,
+  });
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const bookRatioB = (() => {
@@ -645,7 +651,8 @@ const Odds = ({
             }}
           ></Box>
           <Box sx={{ width: { mobile: "98%", laptop: "58%", tablet: "98%" } }}>
-            <OddsPlaceBet
+            <OddsPlaceBet 
+              setCanceled={setCanceled}
               setPlaceBetData={setPlaceBetData}
               placeBetData={placeBetData}
               handleClose={() => setPlaceBetData(null)}
@@ -662,6 +669,14 @@ const Odds = ({
               typeOfBet={typeOfBet}
             />
           </Box>
+          {canceled.value && (
+          <NotificationModal
+            open={canceled}
+            handleClose={() =>
+              setCanceled({ value: false, msg: "", type: false })
+            }
+          />
+        )}
         </Box>
       )}
     </>

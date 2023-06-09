@@ -9,7 +9,14 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, BETPLACED, CANCEL, CancelDark, HourGlass, NOT } from "../assets";
+import {
+  ArrowDown,
+  BETPLACED,
+  CANCEL,
+  CancelDark,
+  HourGlass,
+  NOT,
+} from "../assets";
 import "../components/index.css";
 import Lottie from "lottie-react";
 import StyledImage from "./StyledImage";
@@ -20,6 +27,7 @@ import { setRole } from "../newStore";
 import { setDailogData } from "../store/dailogModal";
 import BetPlaced from "./BetPlaced";
 import MUIModal from "@mui/material/Modal";
+import NotificationModal from "./NotificationModal";
 const OddsPlaceBet = ({
   open,
   refs,
@@ -38,6 +46,8 @@ const OddsPlaceBet = ({
   setPlaceBetData,
   setFastRate,
   fastRate,
+  isBack,
+  setCanceled,
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [betPlaceLoading, setBetPlaceLoading] = useState(false);
@@ -47,7 +57,7 @@ const OddsPlaceBet = ({
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [betPalaceError, setBetPalaceError] = useState(false);
-  const [canceled, setCanceled] = useState(false);
+
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
   const [newRates, setNewRates] = useState({
@@ -67,7 +77,7 @@ const OddsPlaceBet = ({
 
   const getLatestBetAmount = async (value, newData) => {
     try {
-      const title = placeBetData?.back ? "back" : "lay";
+      const title = placeBetData?.bet_type;
       const bet_type = title;
 
       var body = {
@@ -77,7 +87,11 @@ const OddsPlaceBet = ({
         stake: Number(value),
       };
       if (season) {
-        body = { ...body, marketType: typeOfBet, rate_percent: newData?.rate_percent };
+        body = {
+          ...body,
+          marketType: typeOfBet,
+          rate_percent: newData?.rate_percent,
+        };
       }
       const { data } = await axios.post("/betting/calculateBetAmount", body);
       if (data?.data) {
@@ -303,14 +317,11 @@ const OddsPlaceBet = ({
     let oddValue = fastRate !== null && fastRate;
     // console.log("oddValue", oddValue, payload.odds);
     if (oddValue != payload.odds) {
-      toast.warning("Odds value has been updated. You can not place bet.");
-      setCanceled(true);
+      // toast.warning("Odds value has been updated. You can not place bet.");
+      setCanceled({ value: true, msg: "Rate changed", type: false });
       setBetPlaceLoading(false);
       setBetPalaceError(true);
-      setTimeout(() => {
-        setCanceled(false);
-        setBetPalaceError(false);
-      }, 3000);
+
       return false;
     } else {
       PlaceBetSubmit(payload);
@@ -333,32 +344,31 @@ const OddsPlaceBet = ({
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
       setBetPalaceError(false);
-      setCanceled(true);
+      setCanceled({ value: true, msg: response?.data?.message, type: true });
       setTimeout(() => {
-        setCanceled(false);
-      }, 3000);
-      setPlaceBetData(null);
+        setPlaceBetData(null);
+      }, 1500);
       // dispatch(setAllBetRate(response?.data?.data[0]))
-      toast.success(response?.data?.message);
+      // toast.success(response?.data?.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
       setFastRate(0);
       setBetPlaceLoading(false);
     } catch (e) {
       console.log(e.response.data.message);
-      setCanceled(true);
-      setTimeout(() => {
-        setCanceled(false);
-      }, 3000);
+      setCanceled({
+        value: true,
+        msg: e?.response?.data?.message,
+        type: false,
+      });
       setBetPalaceError(true);
       setBetPlaceLoading(false);
-      toast.error(e.response.data.message);
+      // toast.error(e.response.data.message);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
     }
   };
-
 
   const onSubmit = async (e) => {
     try {
@@ -565,7 +575,12 @@ const OddsPlaceBet = ({
               } else {
                 setBetPlaceLoading(true);
                 if (defaultValue === " ") {
-                  toast.warn("Please enter amount to place a bet");
+                  // toast.warn("Please enter amount to place a bet");
+                  setCanceled({
+                    value: true,
+                    msg: "Please enter amount to place a bet",
+                    type: false,
+                  });
                   setBetPlaceLoading(false);
                   return false;
                 } else if (placeBetData.marketType == "MATCH ODDS") {
@@ -586,6 +601,7 @@ const OddsPlaceBet = ({
             Submit
           </button>
         </Box>
+
         {
           // <BetPlaced
           //   // time={5}
@@ -657,7 +673,7 @@ const OddsPlaceBet = ({
           </Box>
         </MUIModal> */}
       </Box>
-      {betPlaceLoading &&
+      {betPlaceLoading && (
         <Box
           sx={{
             position: "absolute",
@@ -679,7 +695,7 @@ const OddsPlaceBet = ({
             }}
           />
         </Box>
-      }
+      )}
     </Box>
   );
 };
