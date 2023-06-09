@@ -12,7 +12,7 @@ import { Lock, BallStart } from '../assets';
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setSessionResults } from "../newStore/reducers/matchDetails";
-import { setSessionAllBet } from "../newStore/reducers/expertMatchDetails";
+import { setSessionAllBet, setSessionBetId } from "../newStore/reducers/expertMatchDetails";
 
 
 export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent, betData, handleBetData, proLoss1, setCheckBetId }) {
@@ -21,7 +21,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const { axios } = setRole();
     const dispatch = useDispatch();
     const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
-    const { sessionAllBet } = useSelector((state) => state?.expertMatchDetails);
+    const { sessionAllBet, sessionBetId } = useSelector((state) => state?.expertMatchDetails);
     // const { globalStore, setGlobalStore } = useContext(GlobalStore);
     // const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
     const stateDetail = {
@@ -130,9 +130,13 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
 
     useEffect(() => {
         // alert(JSON.stringify(globalStore.isSession))
-        if (sessionEvent?.id) {
+        if (sessionEvent?.id || sessionBetId) {
             // alert(JSON.stringify(betData))
-            getManuallBookMaker(sessionEvent?.id);
+            if (sessionBetId) {
+                getManuallBookMaker(sessionBetId);
+            } else {
+                getManuallBookMaker(sessionEvent?.id);
+            }
         } else {
             setDetail(stateDetail);
             setLock({
@@ -144,6 +148,9 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
         }
         setIsCreateSession(createSession);
         getSessionResult(match?.id);
+        return () => {
+            dispatch(setSessionBetId(""));
+        };
     }, [sessionEvent?.id]);
 
     const getSessionResult = async (match_id) => {
@@ -162,6 +169,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
             setBetId(response?.data?.data?.id);
             setCheckBetId(true);
             setIsCreateSession(false);
+            dispatch(setSessionBetId(response?.data?.data?.id));
             // setGlobalStore((prev) => ({ ...prev, isSession: false }));
             setLock({
                 isNo: false,

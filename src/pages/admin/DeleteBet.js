@@ -378,6 +378,52 @@ const DeleteBet = ({ }) => {
             }
           }
         }
+
+        if (packet.data[0] === "updateSessionRate_user") {
+          const value = packet.data[1];
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id !== value?.match_id) {
+                // If the new bet doesn't belong to the current match, return the current state
+                return currentMatch;
+              }
+              // Update the bettings array in the current match object
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (betting.id === value.betId) {
+                  return {
+                    ...betting,
+                    ...value,
+                  };
+                } else if (
+                  betting?.id === value?.betId &&
+                  value.sessionBet === false
+                ) {
+                  return {
+                    ...betting,
+                    ...value,
+                  };
+                }
+                return betting;
+              });
+              var newUpdatedValue = updatedBettings;
+              const bettingsIds = updatedBettings?.map(
+                (betting) => betting?.id
+              );
+              if (!bettingsIds?.includes(value.betId)) {
+                newUpdatedValue = [...newUpdatedValue, value];
+              }
+
+              // Return the updated current match object
+              return {
+                ...currentMatch,
+                bettings: newUpdatedValue,
+              };
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
           // matchId = value?.match_id;
@@ -512,10 +558,19 @@ const DeleteBet = ({ }) => {
           } catch (err) {
             console.log(err?.message);
           }
+
+          setSingleIObtes((prev) => {
+            const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
+            return [data.betPlaceData, ...updatedPrev];
+          });
           // setCurrentMatch({
           //   ...currentMatch,
           //   matchSessionData: updatedBettings1
           // });
+          setSessionBets((prev) => {
+            const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
+            return [data.betPlaceData, ...updatedPrev];
+          });
         }
 
         if (packet.data[0] === "match_bet") {
@@ -565,6 +620,17 @@ const DeleteBet = ({ }) => {
 
                 // dispatch(setCurrentUser(user));
                 // dispatch(setManualBookMarkerRates(manualBookmaker));
+                setCurrentMatch((prev) => {
+                  if (prev?.id === data?.betPlaceData?.match_id) {
+                    return {
+                      ...prev,
+                      teamA_rate: data?.teamA_rate,
+                      teamB_rate: data?.teamB_rate,
+                      teamC_rate: data?.teamC_rate,
+                    };
+                  }
+                  return prev;
+                });
               }
             } catch (e) {
               console.log("error", e?.message);
@@ -762,13 +828,23 @@ const DeleteBet = ({ }) => {
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
 
-      setSingleIObtes(
-        data?.data?.data?.filter((b) =>
-          ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+      // setSingleIObtes(
+      //   data?.data?.data?.filter((b) =>
+      //     ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+      //       b?.marketType
+      //     )
+      //   )
+      // );
+      setSingleIObtes(data?.data?.data);
+      const bets = data?.data?.data?.filter(
+        (b) =>
+          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
             b?.marketType
           )
-        )
       );
+
+      // console.log("bets", bets, data?.data?.data);
+      setSessionBets(bets || []);
     } catch (e) {
       console.log(e);
     }
@@ -987,6 +1063,7 @@ const DeleteBet = ({ }) => {
           {(currentMatch?.apiSessionActive ||
             currentMatch?.manualSessionActive) && <SessionMarket
               currentMatch={currentMatch}
+              sessionBets={sessionBets}
               data={[]}
               sessionOffline={sessionOffline}
             />}
