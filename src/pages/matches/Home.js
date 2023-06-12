@@ -828,43 +828,33 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           try {
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id === value?.match_id) {
+                let updatedBlockMarket;
                 if (value?.marketType === "MANUAL BOOKMAKER") {
-                  const updatedBlockMarket = {
+                  updatedBlockMarket = {
                     ...currentMatch?.blockMarket,
-                    MANUALBOOKMAKER: value?.marketLock,
-                  };
-                  return {
-                    ...currentMatch,
-                    blockMarket: updatedBlockMarket,
+                    MANUALBOOKMAKER: { block: value?.marketLock },
                   };
                 } else if (value?.marketType === "BOOKMAKER") {
-                  const updatedBlockMarket = {
+                  updatedBlockMarket = {
                     ...currentMatch?.blockMarket,
-                    BOOKMAKER: value?.marketLock,
+                    BOOKMAKER: { block: value?.marketLock },
                   };
-                  return {
-                    ...currentMatch,
-                    blockMarket: updatedBlockMarket,
-                  };
-                } else if (value?.marketType === "MATCH_ODDS") {
-                  const updatedBlockMarket = {
+                } else if (value?.marketType === "MATCH ODDS") {
+                  updatedBlockMarket = {
                     ...currentMatch?.blockMarket,
-                    MATCH_ODDS: value?.marketLock,
-                  };
-                  return {
-                    ...currentMatch,
-                    blockMarket: updatedBlockMarket,
+                    MATCH_ODDS: { block: value?.marketLock },
                   };
                 } else if (value?.marketType === "SESSION") {
-                  const updatedBlockMarket = {
+                  updatedBlockMarket = {
                     ...currentMatch?.blockMarket,
-                    SESSION: value?.marketLock,
-                  };
-                  return {
-                    ...currentMatch,
-                    blockMarket: updatedBlockMarket,
+                    SESSION: { block: value?.marketLock },
                   };
                 }
+                console.log(updatedBlockMarket, "updatedBlockMarket ");
+                return {
+                  ...currentMatch,
+                  blockMarket: updatedBlockMarket,
+                };
               }
               return currentMatch;
             });
