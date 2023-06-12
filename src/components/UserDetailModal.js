@@ -2039,8 +2039,9 @@ const LockUnlockComponent = ({
   prevElement,
 }) => {
   const [showPass, setShowPass] = useState(false);
+  const { currentUser } = useSelector((state) => state?.currentUser);
   const defaultLockUnlockObj = {
-    userId: "",
+    userId: currentUser?.id,
     all_blocked: userModal.all_blocked,
     adminTransPassword: "",
     bet_blocked: userModal.bet_blocked,
@@ -2132,7 +2133,7 @@ const LockUnlockComponent = ({
                 setLockUnlockObj({
                   ...lockUnlockObj,
                   adminTransPassword: e.target.value,
-                  userId: userModal.id,
+                  userId: currentUser.id,
                 });
               }}
               sx={{ width: "100%", height: "45px" }}

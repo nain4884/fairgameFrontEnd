@@ -122,7 +122,6 @@ const AccountList = () => {
 
   useEffect(() => {
     getListOfUser();
-
   }, [currentPageNo]);
 
   return (

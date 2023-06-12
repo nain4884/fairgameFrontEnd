@@ -390,23 +390,25 @@ const Odds = ({
               background: "rgba(0, 0, 0, .6)",
             }}
           >
-            <Box sx={{  width:{mobile:"60%",laptop: "40%",tablet:"60%"}, }}></Box>
+            <Box
+              sx={{ width: { mobile: "60%", laptop: "40%", tablet: "60%" } }}
+            ></Box>
             <Box
               sx={{
-                width:{mobile:"40%",laptop: "60%",tablet:"40%"},
-                gap:1,
+                width: { mobile: "40%", laptop: "60%", tablet: "40%" },
+                gap: 1,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <img style={{ width: "35px", height: "35px" }} src={LockIcon} />
+              <img style={{ width: "35px", height: "40px" }} src={LockIcon} />
               <Typography
                 sx={{
-                  display: { mobile: "none", laptop: "block", tablet: "block" },
                   fontWeight: "600",
-                  marginTop:"2px",
-                  color:"#FFF"
+                  margin: "20px 0px 0px -25px",
+                  fontSize: "20px",
+                  color: "#FFF",
                 }}
               >
                 Locked

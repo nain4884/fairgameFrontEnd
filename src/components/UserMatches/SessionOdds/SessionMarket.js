@@ -27,7 +27,7 @@ const SessionMarket = ({
   setFastAmount,
   fastAmount,
   session,
-  betLock
+  betLock,
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
@@ -235,8 +235,8 @@ const SessionMarket = ({
             </Box>
           }
           {betLock && (
-          <Box
-                sx={{
+            <Box
+              sx={{
                 position: "absolute",
                 height: "86%",
                 top: "14%",
@@ -247,31 +247,34 @@ const SessionMarket = ({
                 alignItems: "center",
                 background: "rgba(0, 0, 0, .6)",
               }}
-          >
-            <Box sx={{  width:{mobile:"60%",laptop: "40%",tablet:"60%"}, }}></Box>
-            <Box
-              sx={{
-                width:{mobile:"40%",laptop: "60%",tablet:"40%"},
-                gap:1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
             >
-              <img style={{ width: "35px", height: "35px" }} src={LockIcon} />
-              <Typography
+              <Box
+                sx={{ width: { mobile: "60%", laptop: "40%", tablet: "60%" } }}
+              ></Box>
+              <Box
                 sx={{
-                  display: { mobile: "none", laptop: "block", tablet: "block" },
-                  fontWeight: "600",
-                  marginTop:"2px",
-                  color:"#FFF"
+                  width: { mobile: "40%", laptop: "60%", tablet: "40%" },
+                  gap: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                Locked
-              </Typography>
+                <img style={{ width: "35px", height: "40px" }} src={LockIcon} />
+                <Typography
+                  sx={{
+                   
+                    fontWeight: "600",
+                    margin: "20px 0px 0px -25px",
+                    fontSize: "20px",
+                    color: "#FFF",
+                  }}
+                >
+                  Locked
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
 
           {fastBetLoading && (
             <Box
@@ -306,7 +309,7 @@ const SessionMarket = ({
               width: "100%",
               position: "relative",
               maxHeight: "387px",
-              overflowY: "auto",
+              overflowY: "visible",
             }}
           >
             {matchSessionData?.length > 0 &&

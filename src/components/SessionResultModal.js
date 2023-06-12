@@ -64,6 +64,7 @@ const SessionResultModal = ({
       setLoading({ id: "UD", value: true });
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
+        onClick();
         setLoading({ id: "", value: false });
         socket.emit("resultDeclareForBet", {
           match_id: newData?.match_id,
@@ -117,6 +118,7 @@ const SessionResultModal = ({
       setLoading({ id: "DR", value: true });
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
+        onClick();
         // const updatedData = {
         //   ...newData,
         //   betStatus: 2,
@@ -166,6 +168,7 @@ const SessionResultModal = ({
       setLoading({ id: "NR", value: true });
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
       if (data?.statusCode !== 500) {
+        onClick();
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
             (betting, index) => {
