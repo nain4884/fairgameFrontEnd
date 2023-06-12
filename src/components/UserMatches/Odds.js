@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { setDailogData } from "../../store/dailogModal";
 import Lottie from "lottie-react";
 import NotificationModal from "../NotificationModal";
+import { LockIcon } from "../../admin/assets";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
@@ -144,6 +145,7 @@ const Odds = ({
   matchOddsData,
   setFastAmount,
   fastAmount,
+  betLock,
   showFast,
 }) => {
   // alert(teamCRates)
@@ -374,6 +376,45 @@ const Odds = ({
             </Box>
           </Box>
         </Box>
+        {betLock && (
+          <Box
+            sx={{
+              position: "absolute",
+              height: "65%",
+              top: "35%",
+              width: "100%",
+              display: "flex",
+              zIndex: "999",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "rgba(0, 0, 0, .6)",
+            }}
+          >
+            <Box sx={{  width:{mobile:"60%",laptop: "40%",tablet:"60%"}, }}></Box>
+            <Box
+              sx={{
+                width:{mobile:"40%",laptop: "60%",tablet:"40%"},
+                gap:1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img style={{ width: "35px", height: "35px" }} src={LockIcon} />
+              <Typography
+                sx={{
+                  display: { mobile: "none", laptop: "block", tablet: "block" },
+                  fontWeight: "600",
+                  marginTop:"2px",
+                  color:"#FFF"
+                }}
+              >
+                Locked
+              </Typography>
+            </Box>
+          </Box>
+        )}
+
         {fastBetLoading && (
           <Box
             sx={{
@@ -651,7 +692,7 @@ const Odds = ({
             }}
           ></Box>
           <Box sx={{ width: { mobile: "98%", laptop: "58%", tablet: "98%" } }}>
-            <OddsPlaceBet 
+            <OddsPlaceBet
               setCanceled={setCanceled}
               setPlaceBetData={setPlaceBetData}
               placeBetData={placeBetData}
@@ -670,13 +711,13 @@ const Odds = ({
             />
           </Box>
           {canceled.value && (
-          <NotificationModal
-            open={canceled}
-            handleClose={() =>
-              setCanceled({ value: false, msg: "", type: false })
-            }
-          />
-        )}
+            <NotificationModal
+              open={canceled}
+              handleClose={() =>
+                setCanceled({ value: false, msg: "", type: false })
+              }
+            />
+          )}
         </Box>
       )}
     </>

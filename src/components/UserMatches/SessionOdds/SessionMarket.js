@@ -11,6 +11,7 @@ import FastTimePlaceBet from "../../FastImePlaceBet";
 import FastTime from "../../FastTime";
 import { currencyFormatter, formatNumber } from "../../helper/helper";
 import Lottie from "lottie-react";
+import { LockIcon } from "../../../admin/assets";
 const SessionMarket = ({
   data,
   newData,
@@ -26,6 +27,7 @@ const SessionMarket = ({
   setFastAmount,
   fastAmount,
   session,
+  betLock
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
@@ -232,6 +234,45 @@ const SessionMarket = ({
               </Box>
             </Box>
           }
+          {betLock && (
+          <Box
+                sx={{
+                position: "absolute",
+                height: "84%",
+                top: "16%",
+                width: "100%",
+                display: "flex",
+                zIndex: "999",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "rgba(0, 0, 0, .6)",
+              }}
+          >
+            <Box sx={{  width:{mobile:"60%",laptop: "40%",tablet:"60%"}, }}></Box>
+            <Box
+              sx={{
+                width:{mobile:"40%",laptop: "60%",tablet:"40%"},
+                gap:1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img style={{ width: "35px", height: "35px" }} src={LockIcon} />
+              <Typography
+                sx={{
+                  display: { mobile: "none", laptop: "block", tablet: "block" },
+                  fontWeight: "600",
+                  marginTop:"2px",
+                  color:"#FFF"
+                }}
+              >
+                Locked
+              </Typography>
+            </Box>
+          </Box>
+        )}
+
           {fastBetLoading && (
             <Box
               sx={{

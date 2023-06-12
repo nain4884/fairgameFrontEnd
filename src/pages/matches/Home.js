@@ -822,6 +822,56 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             }
           }
         }
+
+        if (packet.data[0] === "marketBlock") {
+          const value = packet.data[1];
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id === value?.match_id) {
+                if (value?.marketType === "MANUAL BOOKMAKER") {
+                  const updatedBlockMarket = {
+                    ...currentMatch?.blockMarket,
+                    MANUALBOOKMAKER: value?.marketLock,
+                  };
+                  return {
+                    ...currentMatch,
+                    blockMarket: updatedBlockMarket,
+                  };
+                } else if (value?.marketType === "BOOKMAKER") {
+                  const updatedBlockMarket = {
+                    ...currentMatch?.blockMarket,
+                    BOOKMAKER: value?.marketLock,
+                  };
+                  return {
+                    ...currentMatch,
+                    blockMarket: updatedBlockMarket,
+                  };
+                } else if (value?.marketType === "MATCH_ODDS") {
+                  const updatedBlockMarket = {
+                    ...currentMatch?.blockMarket,
+                    MATCH_ODDS: value?.marketLock,
+                  };
+                  return {
+                    ...currentMatch,
+                    blockMarket: updatedBlockMarket,
+                  };
+                } else if (value?.marketType === "SESSION") {
+                  const updatedBlockMarket = {
+                    ...currentMatch?.blockMarket,
+                    SESSION: value?.marketLock,
+                  };
+                  return {
+                    ...currentMatch,
+                    blockMarket: updatedBlockMarket,
+                  };
+                }
+              }
+              return currentMatch;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
 

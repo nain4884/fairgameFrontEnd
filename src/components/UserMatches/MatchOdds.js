@@ -244,6 +244,7 @@ const MatchOdds = ({
 
       {data?.apiMatchActive && (
         <Odds
+          betLock={data?.blockMarket?.MATCH_ODDS?.block}
           showDely={true}
           showBox={!matchOddRateLive}
           newData={data}
@@ -267,13 +268,14 @@ const MatchOdds = ({
 
       {data?.apiBookMakerActive && (
         <Odds
+          betLock={data?.blockMarket?.BOOKMAKER?.block}
           showBox={!bookMakerRateLive}
           newData={data}
           showFast={true}
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-              data?.bookmakerLive[0]?.betStatus === 0
+            data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }
@@ -298,6 +300,7 @@ const MatchOdds = ({
       {/* Manual Bookmaker */}
       {data?.manualBookMakerActive && (
         <Odds
+          betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
           newData={data}
           lock={false}
           showDely={false}
@@ -322,6 +325,7 @@ const MatchOdds = ({
 
       {(data?.apiSessionActive || data?.manualSessionActive) && (
         <SessionMarket
+          betLock={data?.blockMarket?.SESSION?.block}
           showFast={true}
           session={"sessionOdds"}
           sessionBets={sessionBets}
@@ -336,7 +340,6 @@ const MatchOdds = ({
           allBetsData={allBetsData}
           setFastAmount={setFastAmount}
           fastAmount={fastAmount?.sessionOdds}
-
         />
       )}
     </Box>
