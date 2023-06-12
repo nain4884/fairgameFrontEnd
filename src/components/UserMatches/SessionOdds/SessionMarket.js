@@ -277,14 +277,14 @@ const SessionMarket = ({
             <Box
               sx={{
                 position: "absolute",
-                height: "84%",
-                top: "16%",
+                height: "86%",
+                top: "14%",
                 width: "100%",
                 display: "flex",
                 zIndex: "999",
                 justifyContent: "center",
                 alignItems: "center",
-                background: "rgba(0, 0, 0, .5)",
+                background: "rgba(0, 0, 0, .6)",
               }}
             >
               <Lottie
