@@ -6,8 +6,9 @@ import { useState } from "react";
 import { useTheme } from "@emotion/react";
 import { useEffect } from "react";
 import RunsBox from "../../expert/RunsBox";
+import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets"
 
-const SessionMarket = ({ currentMatch, sessionOffline, sessionBets }) => {
+const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [showUnlock, setShowUnlock] = useState(false);
@@ -72,6 +73,9 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets }) => {
             >
               Session Odds
             </Typography>
+            {blockMatch && <img onClick={() => {
+              // setShowUnlock(true)
+            }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
           </Box>
           <Box
             sx={{

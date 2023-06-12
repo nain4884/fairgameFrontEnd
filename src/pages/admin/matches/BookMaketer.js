@@ -4,8 +4,9 @@ import BoxComponent from "./BoxComponent";
 import SmallBox from "./SmallBox";
 import { useState } from "react";
 import { useTheme } from "@emotion/react";
+import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets"
 
-const BookMarketer = ({ currentMatch, data }) => {
+const BookMarketer = ({ currentMatch, data, blockMatch }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [showUnlock, setShowUnlock] = useState(false);
@@ -66,6 +67,9 @@ const BookMarketer = ({ currentMatch, data }) => {
           >
             Bookmaker Market
           </Typography>
+          {blockMatch && <img onClick={() => {
+            // setShowUnlock(true)
+          }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
         </Box>
         <Box
           sx={{
