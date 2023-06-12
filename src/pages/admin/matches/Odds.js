@@ -4,8 +4,10 @@ import BoxComponent from "./BoxComponent";
 import ManualBoxComponent from "./ManualBoxComponent";
 import SmallBox from "./SmallBox";
 import { useTheme } from "@emotion/react";
+import UnlockComponent from "../../../components/UnlockComponent";
+import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets"
 
-const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
+const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, locked, blockMatch, handleBlock, handleHide, handleShowLock }) => {
   const theme = useTheme();
   // alert(data.length)
   // console.log("currentMatch 22222", data);
@@ -80,6 +82,13 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
           >
             {typeOfBet}
           </Typography>
+          {/* {!submit && <img onClick={() => {
+            setShowUnlock(true)
+          }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />} */}
+          {blockMatch && <img onClick={() => handleShowLock(true, "match")
+            // setShowUnlock(true)
+
+          } src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
         </Box>
         <Box
           sx={{
@@ -288,6 +297,19 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData }) => {
           </>
         }
       </Box>
+      {showUnlock && <Box sx={{ position: 'absolute', width: '100%', background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left: '20%' }}>
+        <UnlockComponent
+          unlock={locked}
+          title={(locked ? "Unlock " : "Lock ") + "Match Odds Market"}
+          handleHide={handleHide}
+        // onSubmit={(i) => {
+        //   if (i) {
+        //     setLocked(!locked)
+        //   }
+        //   setShowUnlock(false)
+        // }} 
+        />
+      </Box>}
     </Box>
   );
 };

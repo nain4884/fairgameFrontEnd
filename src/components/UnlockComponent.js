@@ -3,12 +3,12 @@ import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system"
 import { useState } from "react";
 import { CANCEL, EYE, LockIcon, UnLockIcon } from '../admin/assets/index'
-const UnlockComponent = ({ onSubmit, title, unlock }) => {
+const UnlockComponent = ({ onSubmit, title, unlock, handleHide }) => {
     const [password, setPassword] = useState("")
     return (
         <Box sx={{ width: '60%', border: '2px solid #303030', position: 'relative', height: '110px', borderRadius: '10px', background: 'white' }}>
             <img onClick={() => {
-                onSubmit()
+                handleHide()
             }} src={CANCEL} style={{ width: '25px', height: '25px', top: '3px', position: 'absolute', right: '3px' }} />
             <Box sx={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', paddingY: '1vh' }}>
                 <img src={unlock ? UnLockIcon : LockIcon} style={{ width: '20px', height: '25px' }} />

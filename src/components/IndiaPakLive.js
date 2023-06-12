@@ -85,7 +85,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                             const body = {
                                 id: data?.betPlaceData?.id,
                                 isActive: true,
-                                createAt: data?.betPlaceData?.createdAt,
+                                createAt: data?.betPlaceData?.createAt,
                                 updateAt: data?.betPlaceData?.createdAt,
                                 createdBy: null,
                                 deletedAt: null,
