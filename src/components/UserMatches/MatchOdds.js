@@ -300,7 +300,7 @@ const MatchOdds = ({
       {/* Manual Bookmaker */}
       {data?.manualBookMakerActive && (
         <Odds
-          betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
+          betLock={!data?.blockMarket?.MANUALBOOKMAKER?.block}
           newData={data}
           lock={false}
           showDely={false}

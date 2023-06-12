@@ -18,10 +18,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [data1, setData] = useState([]);
 
-  useEffect(() => {
-    getListOfUser();
-  }, [show]);
-
   async function getListOfUser() {
     let { axios } = setRole();
     try {
@@ -38,12 +34,12 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       // });
       // // dispatch(setSubUserData(data?.data?.data));
       setData(data?.data);
-      // setPageCount(
-      //   Math.ceil(
-      //     parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-      //       pageLimit
-      //   )
-      // );
+      setPageCount(
+        Math.ceil(
+          parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
+            pageLimit
+        )
+      );
     } catch (e) {
       console.log(e);
     }
@@ -53,6 +49,11 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const { subCurrentPageNo } = useSelector((state) => state?.auth);
+
+  useEffect(() => {
+    getListOfUser();
+  }, [currentPage]);
+
   function callPage(val) {
     // dispatch(setSubPage(parseInt(val)));
     setCurrentPage(parseInt(val));
@@ -62,7 +63,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
     return (
       <Box
         sx={{
-          width: "100%",
+          width: {mobile:"218%" ,laptop:"100%",tablet:"100%"},
           display: "flex",
           height: "35px",
           background: "#262626",
@@ -73,7 +74,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       >
         <Box
           sx={{
-            width: { laptop: "11.5vw", tablet: "20.5vw", mobile: "42.5vw" },
+            width: { laptop: "12.5vw", tablet: "29.5vw", mobile: "42.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -92,7 +93,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "12.5vw", tablet: "12.5vw", mobile: "28.5vw" },
+            width: { laptop: "13.5vw", tablet: "17.5vw", mobile: "28.5vw" },
 
             display: "flex",
             paddingLeft: "10px",
@@ -112,7 +113,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "10.5vw", tablet: "10.5vw", mobile: "28.5vw" },
+            width: { laptop: "14.5vw", tablet: "15.2vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -127,6 +128,82 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             }}
           >
             Commission Amount
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { laptop: "14.5vw", tablet: "15.2vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "35px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px" },
+            }}
+          >
+            Bet Type
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { laptop: "14.5vw", tablet: "15.2vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "35px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px" },
+            }}
+          >
+            Stack
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { laptop: "14.5vw", tablet: "15.2vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "35px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px" },
+            }}
+          >
+            Odds
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { laptop: "14.5vw", tablet: "15.2vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "35px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px" },
+            }}
+          >
+            Team
           </Typography>
         </Box>
       </Box>
@@ -146,6 +223,10 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           : element?.match_id?.title,
       commissionAmount: element.ComissionAmount,
       commissionType: element.ComissionType,
+      betType: element?.bet_place_id?.bet_type,
+      stack:element?.bet_place_id?.amount,
+      odds:element?.bet_place_id?.odds,
+      teamBet:element?.bet_place_id?.team_bet,
     };
     const [elementToUDM, setElementToUDM] = useState(prevElement);
 
@@ -174,7 +255,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         <Box
           sx={[
             {
-              width: { laptop: "11.5vw", tablet: "20.5vw", mobile: "42.5vw" },
+              width: { laptop: "12.5vw", tablet: "23.5vw", mobile: "42.5vw" },
               display: "flex",
               paddingX: "10px",
               justifyContent: "space-between",
@@ -188,7 +269,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           <Typography
             sx={[
               {
-                fontSize: { mobile: "10px", laptop: "12px", tablet: "12px" },
+                fontSize: { mobile: "10px", laptop: "10px", tablet: "10px" },
                 fontWeight: "600",
                 cursor: "pointer",
               },
@@ -200,7 +281,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "12.5vw", tablet: "12.5vw", mobile: "28.5vw" },
+            width: { laptop: "13.5vw", tablet: "13.8vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -214,7 +295,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "10.5vw", tablet: "10.5vw", mobile: "28.5vw" },
+            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -226,6 +307,62 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             {elementToUDM.commissionAmount}
           </Typography>
         </Box>
+        <Box
+          sx={{
+            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "45px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+            {elementToUDM.betType}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "45px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+            {elementToUDM.stack}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "45px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+            {elementToUDM.odds}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "45px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+            {elementToUDM.teamBet}
+          </Typography>
+        </Box>
       </Box>
     );
   };
@@ -235,6 +372,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       <Box
         sx={[
           {
+            width:"100%",
             marginX: "0.5%",
             minHeight: "200px",
             display: "flex",
@@ -260,10 +398,11 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             matchesMobile={matchesMobile}
           />
 
-          <ListHeaderT />
+         
         </Box>
 
-        <Box sx={{ overflowX: "auto" }}>
+        <Box sx={{ overflowX: "auto" ,marginX:"0.5%" }}>
+        <ListHeaderT />
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             {data1?.map((element, i) => {
               if (i % 2 === 0) {
@@ -308,7 +447,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
   );
 };
 
-const Footer = ({ currentPage, pages, callPage, setShow }) => {
+const Footer = ({ currentPage, getListOfUser, pages, callPage, setShow }) => {
   return (
     <Box
       sx={{
@@ -337,6 +476,7 @@ const Footer = ({ currentPage, pages, callPage, setShow }) => {
             justifyContent: "center",
             alignItems: "center",
             borderRadius: "5px",
+            cursor: "pointer",
           }}
           onClick={() => {
             callPage(
@@ -383,6 +523,7 @@ const Footer = ({ currentPage, pages, callPage, setShow }) => {
             borderRadius: "5px",
             justifyContent: "center",
             alignItems: "center",
+            cursor: "pointer",
           }}
           onClick={() => {
             callPage(
