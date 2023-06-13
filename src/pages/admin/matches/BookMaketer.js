@@ -4,13 +4,14 @@ import BoxComponent from "./BoxComponent";
 import SmallBox from "./SmallBox";
 import { useState } from "react";
 import { useTheme } from "@emotion/react";
+import UnlockComponent from "../../../components/UnlockComponent";
 import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets"
 
-const BookMarketer = ({ currentMatch, data, blockMatch }) => {
+const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, handleBlock, handleHide, handleShowLock, selft }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [showUnlock, setShowUnlock] = useState(false);
-  const [locked, setLocked] = useState(false);
+  // const [showUnlock, setShowUnlock] = useState(false);
+  // const [locked, setLocked] = useState(false);
 
   const bookRatioB = (teamARates, teamBRates) => {
     const bookRatio = teamBRates != 0 ? teamARates / teamBRates || 0 : 0;
@@ -25,6 +26,10 @@ const BookMarketer = ({ currentMatch, data, blockMatch }) => {
   };
   const handleLock = (data) => {
     return data?.ex?.availableToLay?.length > 0 ? false : true
+  }
+
+  const onSubmit = (value) => {
+    handleBlock(value, !locked, "BOOKMAKER")
   }
 
   return (
@@ -67,9 +72,7 @@ const BookMarketer = ({ currentMatch, data, blockMatch }) => {
           >
             Bookmaker Market
           </Typography>
-          {blockMatch && <img onClick={() => {
-            // setShowUnlock(true)
-          }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
+          {blockMatch && <img onClick={() => selft || selft == undefined ? handleShowLock(true, 'BOOKMAKER') : ''} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
         </Box>
         <Box
           sx={{
@@ -204,7 +207,28 @@ const BookMarketer = ({ currentMatch, data, blockMatch }) => {
               align="end"
             />
           </> : null}
+        {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
+          <Box sx={{ width: '100%', alignSelf: 'flex-end', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', alignItems: 'center', justifyContent: 'center', display: 'flex' }} >
+            <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
+
+            <Typography sx={{ color: 'white', fontWeight: '600', marginLeft: '-25px', fontSize: '20px', marginTop: '20px' }}>Locked</Typography>
+          </Box>
+        </Box>}
       </Box>
+      {showUnlock && <Box sx={{ position: 'absolute', width: '100%', background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left: '20%', zIndex: 999 }}>
+        <UnlockComponent
+          unlock={locked}
+          title={(locked ? "Unlock " : "Lock ") + "Bookmaker Market"}
+          handleHide={handleHide}
+          onSubmit={onSubmit}
+        // onSubmit={(i) => {
+        //   if (i) {
+        //     setLocked(!locked)
+        //   }
+        //   setShowUnlock(false)
+        // }} 
+        />
+      </Box>}
     </Box>
   );
 };

@@ -26,7 +26,7 @@ import {
   removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
-import { setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
+import { setAllMatchs, setAllEventSession } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
@@ -42,7 +42,7 @@ import ActiveUsers from "./ActiveUsers";
 import BoxProfile from "./BoxProfile";
 import DropdownMenu1 from "./DropDownMenu1";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -56,11 +56,13 @@ const CustomHeader = ({}) => {
   const location = useLocation();
   const [active, setActiveAdmin] = useState(0);
   const [allMatch, setAllMatch] = useState([]);
-  const [allLiveEventSession, setAllLiveEventSession] = useState([]);
+  const { allEventSession } = useSelector((state) => state?.expertMatchDetails);
+  // const [allLiveEventSession, setAllLiveEventSession] = useState(allEventSession);
   const [balance, setBalance] = useState(0);
   const [onlineUser, setOnlineUser] = useState(0);
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
+
 
   let { transPass, axios, role, JWT } = setRole();
 
@@ -174,15 +176,16 @@ const CustomHeader = ({}) => {
     if (allMatch.length === 0) {
       getAllMatch();
     }
-    if (allLiveEventSession.length === 0) {
-      getMatchLiveSession();
-    }
+    // if (allEventSession?.length === 0) {
+    getMatchLiveSession();
+    // }
   }, []);
 
   const getMatchLiveSession = async () => {
     try {
       let response = await axios.get(`/game-match/getLiveMatchSession`);
-      setAllLiveEventSession(response.data.data[0]);
+      // setAllLiveEventSession(response.data.data[0]);
+      dispatch(setAllEventSession(response.data.data[0]));
     } catch (e) {
       console.log(e);
     }
@@ -455,8 +458,8 @@ const CustomHeader = ({}) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                    ? "Bookmaker"
-                    : "Betfair"
+                      ? "Bookmaker"
+                      : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />
@@ -480,7 +483,7 @@ const CustomHeader = ({}) => {
         handleClose={() => {
           setAnchor(null);
         }}
-        allLiveEventSession={allLiveEventSession}
+        allLiveEventSession={allEventSession}
       />
     </>
   );

@@ -956,6 +956,9 @@ const NewMatchScreen = () => {
         (state) => "a1ace110-5db0-4b1b-ac85-d6f9cb65a541"
     );
     const [isMatchLock, setIsMatchLock] = useState(false);
+    const [isBookmakerLock, setIsBookmakerLock] = useState(false);
+    const [isManualLock, setIsManualLock] = useState(false);
+    const [isSessionLock, setIsSessionLock] = useState(false);
 
 
     useEffect(() => {
@@ -1748,25 +1751,88 @@ const NewMatchScreen = () => {
     }
 
 
-    const handleBlock = async () => {
-        alert(1)
-        setCurrentMatch(prevState => ({
-            ...prevState,
-            blockMarket: {
-                ...prevState.blockMarket,
-                SESSION: {
-                    ...prevState.blockMarket.SESSION,
-                    block: false
-                }
+    const handleBlock = async (value, locked, typeOfBet) => {
+        try {
+            let type = typeOfBet.toUpperCase()
+            let payload = {
+                match_id: "a1ace110-5db0-4b1b-ac85-d6f9cb65a541",
+                marketType: type,
+                marketLock: locked,
+                adminTransPassword: value
             }
-        }));
+            // alert(JSON.stringify(payload))
+            let response = await axios.post(`/game-match/blockMatchMarket`, payload);
+            if (typeOfBet == "Match Odds") {
+                setCurrentMatch(prevState => ({
+                    ...prevState,
+                    blockMarket: {
+                        ...prevState.blockMarket,
+                        MATCH_ODDS: {
+                            ...prevState.blockMarket.MATCH_ODDS,
+                            block: locked
+                        }
+                    }
+                }));
+                setIsMatchLock(false);
+            } else if (typeOfBet == "MANUAL BOOKMAKER") {
+                setCurrentMatch(prevState => ({
+                    ...prevState,
+                    blockMarket: {
+                        ...prevState.blockMarket,
+                        MANUALBOOKMAKER: {
+                            ...prevState.blockMarket.MANUALBOOKMAKER,
+                            block: locked
+                        }
+                    }
+                }));
+                setIsManualLock(false);
+            } else if (typeOfBet == "BOOKMAKER") {
+                setCurrentMatch(prevState => ({
+                    ...prevState,
+                    blockMarket: {
+                        ...prevState.blockMarket,
+                        BOOKMAKER: {
+                            ...prevState.blockMarket.BOOKMAKER,
+                            block: locked
+                        }
+                    }
+                }));
+                setIsBookmakerLock(false);
+            } else if (typeOfBet == "SESSION") {
+                setCurrentMatch(prevState => ({
+                    ...prevState,
+                    blockMarket: {
+                        ...prevState.blockMarket,
+                        SESSION: {
+                            ...prevState.blockMarket.SESSION,
+                            block: locked
+                        }
+                    }
+                }));
+                setIsSessionLock(false);
+            }
+        } catch (e) {
+            console.log(e?.message, "message");
+        }
+
     }
 
-    const handleShowLock = async () => {
-        setIsMatchLock(true)
+    const handleShowLock = async (value, type) => {
+        if (type === 'Match Odds') {
+            setIsMatchLock(true);
+        } else if (type === 'MANUAL BOOKMAKER') {
+            setIsManualLock(true)
+        } else if (type === 'BOOKMAKER') {
+            setIsBookmakerLock(true)
+        } else if (type === 'SESSION') {
+            setIsSessionLock(true)
+        }
     }
     const handleHide = async () => {
-        setIsMatchLock(false)
+        setIsMatchLock(false);
+        setIsManualLock(false);
+        setIsBookmakerLock(false);
+        setIsSessionLock(false);
     }
 
     return (
@@ -1825,6 +1891,7 @@ const NewMatchScreen = () => {
                         typeOfBet={"Match Odds"}
                         blockMatch={true}
                         locked={currentMatch?.blockMarket?.MATCH_ODDS?.block}
+                        selft={currentMatch?.blockMarket?.MATCH_ODDS?.selft}
                         handleBlock={handleBlock}
                         handleHide={handleHide}
                         handleShowLock={handleShowLock}
@@ -1838,10 +1905,11 @@ const NewMatchScreen = () => {
                         }
                         blockMatch={true}
                         locked={currentMatch?.blockMarket?.BOOKMAKER?.block}
+                        selft={currentMatch?.blockMarket?.BOOKMAKER?.selft}
                         handleBlock={handleBlock}
                         handleHide={handleHide}
                         handleShowLock={handleShowLock}
-                        showUnlock={isMatchLock}
+                        showUnlock={isBookmakerLock}
                     />}
                     {currentMatch?.manualBookMakerActive && <Odds
                         currentMatch={currentMatch}
@@ -1850,9 +1918,11 @@ const NewMatchScreen = () => {
                         typeOfBet={"MANUAL BOOKMAKER"}
                         blockMatch={true}
                         locked={currentMatch?.blockMarket?.MANUALBOOKMAKER?.block}
+                        selft={currentMatch?.blockMarket?.MANUALBOOKMAKER?.selft}
                         handleBlock={handleBlock}
                         handleHide={handleHide}
                         handleShowLock={handleShowLock}
+                        mShowUnlock={isManualLock}
                     // showUnlock={isMatchLock}
                     // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                     />}
@@ -1864,10 +1934,11 @@ const NewMatchScreen = () => {
                             data={[]}
                             blockMatch={true}
                             locked={currentMatch?.blockMarket?.SESSION?.block}
+                            selft={currentMatch?.blockMarket?.SESSION?.selft}
                             handleBlock={handleBlock}
                             handleHide={handleHide}
                             handleShowLock={handleShowLock}
-                        // showUnlock={isMatchLock}
+                            showUnlock={isSessionLock}
                         // sessionOffline={sessionOffline}
                         />}
                     {/* {IOSinglebets.length > 0 && <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />} */}

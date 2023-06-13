@@ -43,7 +43,7 @@ const UnlockComponent = ({ onSubmit, title, unlock, handleHide }) => {
                 <Box sx={{ width: '30%', marginLeft: "10px" }}>
                     <Box onClick={() => {
                         if (password.trim() != "") {
-                            onSubmit(true)
+                            onSubmit(password)
                         }
 
                     }} sx={{ width: '80%', display: 'flex', justifyContent: 'center', alignItems: 'center', borderRadius: '5px', height: '35px', background: "#0B4F26" }}>

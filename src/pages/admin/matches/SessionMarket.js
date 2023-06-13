@@ -6,13 +6,14 @@ import { useState } from "react";
 import { useTheme } from "@emotion/react";
 import { useEffect } from "react";
 import RunsBox from "../../expert/RunsBox";
+import UnlockComponent from "../../../components/UnlockComponent";
 import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets"
 
-const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch }) => {
+const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, showUnlock, locked, handleBlock, handleHide, handleShowLock, selft }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [showUnlock, setShowUnlock] = useState(false);
-  const [locked, setLocked] = useState(false);
+  // const [showUnlock, setShowUnlock] = useState(false);
+  // const [locked, setLocked] = useState(false);
   const [matchSessionData, setMatchSessionData] = useState([]);
   const [data, setData] = useState([]);
 
@@ -28,6 +29,9 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch }
     }
   }, [currentMatch]);
 
+  const onSubmit = (value) => {
+    handleBlock(value, !locked, 'SESSION')
+  }
   return (
     <>
       <Box
@@ -73,9 +77,8 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch }
             >
               Session Odds
             </Typography>
-            {blockMatch && <img onClick={() => {
-              // setShowUnlock(true)
-            }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
+            {blockMatch && <img onClick={() => selft || selft == undefined ? handleShowLock(true, "SESSION") : ''
+            } src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
           </Box>
           <Box
             sx={{
@@ -183,7 +186,29 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch }
               </Box>
             </Box>
           }
-
+          {locked && (
+            <Box
+              sx={{
+                position: "absolute",
+                height: "86%",
+                top: "14%",
+                width: "100%",
+                display: "flex",
+                zIndex: "999",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "rgba(0, 0, 0, .6)",
+              }}
+            >
+              <Box
+                sx={{ width: { mobile: "60%", laptop: "20%", tablet: "60%" } }}
+              ></Box>
+              <Box sx={{ width: { mobile: "40%", laptop: "60%", tablet: "40%" }, gap: 1, display: "flex", justifyContent: "center", alignItems: "center", }} >
+                <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
+                <Typography sx={{ fontWeight: "600", margin: "20px 0px 0px -25px", fontSize: "20px", color: "#FFF", }} > Locked </Typography>
+              </Box>
+            </Box>
+          )}
           <Box
             sx={{
               display: "flex",
@@ -236,17 +261,22 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch }
                 </Box>
               ))} */}
           </Box>
+          {/* {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
+            <Box sx={{ width: '100%', alignSelf: 'flex-end', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', alignItems: 'center', justifyContent: 'center', display: 'flex' }} >
+              <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
+
+              <Typography sx={{ color: 'white', fontWeight: '600', marginLeft: '-25px', fontSize: '20px', marginTop: '20px' }}>Locked</Typography>
+            </Box>
+          </Box>} */}
+          {showUnlock && <Box sx={{ position: 'absolute', width: '100%', background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left: '20%', zIndex: 999 }}>
+            <UnlockComponent
+              unlock={locked}
+              title={(locked ? "Unlock " : "Lock ") + "Session Market"}
+              handleHide={handleHide}
+              onSubmit={onSubmit}
+            />
+          </Box>}
         </Box>
-        {/* {showUnlock && <Box sx={{ position: 'absolute', width: '100%', background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left: '20%' }}>
-                <UnlockComponent
-                    unlock={locked}
-                    title={(locked ? "Unlock " : "Lock ") + "Session Market"} onSubmit={(i) => {
-                        if (i) {
-                            setLocked(!locked)
-                        }
-                        setShowUnlock(false)
-                    }} />
-            </Box>} */}
       </Box>
       {data?.length > 0 && (
         <Box

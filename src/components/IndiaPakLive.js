@@ -12,7 +12,7 @@ import { Lock, BallStart } from '../assets';
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setSessionResults } from "../newStore/reducers/matchDetails";
-import { setSessionAllBet, setSessionBetId } from "../newStore/reducers/expertMatchDetails";
+import { setSessionAllBet, setSessionBetId, setAllEventSession } from "../newStore/reducers/expertMatchDetails";
 
 
 export default function IndiaPakLive({ createSession, match, showDialogModal, sessionEvent, betData, handleBetData, proLoss1, setCheckBetId }) {
@@ -21,7 +21,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
     const { axios } = setRole();
     const dispatch = useDispatch();
     const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
-    const { sessionAllBet, sessionBetId } = useSelector((state) => state?.expertMatchDetails);
+    const { sessionAllBet, sessionBetId, allEventSession } = useSelector((state) => state?.expertMatchDetails);
     // const { globalStore, setGlobalStore } = useContext(GlobalStore);
     // const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
     const stateDetail = {
@@ -123,6 +123,28 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                         console.log(err?.message);
                     }
 
+                }
+                if (packet.data[0] === "newBetAdded") {
+                    const value = packet.data[1];
+                    try {
+                        const updatedAllEventSession = allEventSession.map((currentMatch) => {
+                            if (currentMatch.id === value?.match_id) {
+                                const betObj = {
+                                    id: value.id,
+                                    bet_condition: value.bet_condition,
+                                };
+                                const newBettings = [...currentMatch.bettings, betObj];
+                                return {
+                                    ...currentMatch,
+                                    bettings: newBettings,
+                                };
+                            }
+                            return currentMatch;
+                        });
+                        dispatch(setAllEventSession(updatedAllEventSession));
+                    } catch (err) {
+                        console.log(err?.message);
+                    }
                 }
             }
         }
