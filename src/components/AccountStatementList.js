@@ -267,6 +267,7 @@ const AccountStatementList = ({ user }) => {
           {decodedTokenUser.role === "user"
             ? transactionHistory.map((item) => (
                 <Row
+                key={item.id}
                   index={item?.id}
                   containerStyle={{ background: "#FFE094" }}
                   profit={true}
@@ -294,6 +295,7 @@ const AccountStatementList = ({ user }) => {
               ))
             : transactionHistory.map((item) => (
                 <Row
+                 key={item.id}
                   index={item?.id}
                   containerStyle={{ background: "#FFE094" }}
                   profit={true}

@@ -13,6 +13,7 @@ import BetHistory from "./BetHistory";
 import AccountStatement from "./AccountStatement";
 import ChangeButtonValue from "./ChangeButtonValue";
 import { ChangePassword } from "../../components/ChangePassword";
+import SmoothScroll from "../../components/SmoothScoll";
 const USerRoutes = () => {
   const location = useLocation();
 
@@ -29,6 +30,7 @@ const USerRoutes = () => {
   return (
     <>
       {isLoginPage ? null : <CustomHeader />}
+ 
       <Routes>
         <Route path="/" element={<Login allowedRole={["user"]} />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />

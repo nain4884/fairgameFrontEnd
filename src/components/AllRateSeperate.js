@@ -31,7 +31,7 @@ const data = [
   },
 ];
 const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, count, callPage }) => {
-
+console.log('allBetsData', allBetsData)
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const { allbetsPage } = useSelector((state) => state?.auth);
@@ -203,6 +203,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
 
               return (
                 <Box
+                 key={k}
                   sx={{
                     display: "flex",
                     flexDirection: "row",
@@ -247,7 +248,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
                         width: "30%",
                         margin: { mobile: "1px", laptop: "1px" },
                         display: "flex",
-                        background: k % 2 === 0 ? "#E32A2A" : "#10DC61",
+                        background:i?.myProfitLoss >0 ?  "#10DC61" : "#E32A2A",
                         justifyContent: "center",
                         alignItems: "center",
                       }}
@@ -259,7 +260,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
                           fontWeight: "700",
                         }}
                       >
-                        {"100,000,00"}
+                       {Number(i?.myProfitLoss).toFixed(2) || ""}
                       </Typography>
 
                       <StyledImage
@@ -267,7 +268,7 @@ const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, 
                           width: { mobile: "15px", laptop: "25px" },
                           height: { laptop: "15px", mobile: "7px" },
                         }}
-                        src={k % 2 === 0 ? ARROWDOWN : ARROWUP}
+                        src={i?.myProfitLoss >0 ? ARROWUP: ARROWDOWN}
                       />
                     </Box>
                   )}

@@ -266,7 +266,7 @@ const CustomHeader = ({}) => {
                 letterSpacing: "1px",
                 overflow: "hidden",
                 whiteSpace: "nowrap",
-                "text-overflow:": "ellipsis",
+                textOverflow: "ellipsis",
               }}
             >
               This is a demo notification highlight. This is a demo notification
@@ -363,7 +363,7 @@ const NewBoxData = ({
             overflow: "hidden",
             paddingX: "3px",
             borderRadius: "5px",
-            cursor:"pointer",
+            cursor: "pointer",
           },
           containerStyle,
         ]}
@@ -628,8 +628,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
         horizontal: "left",
       }}
     >
-      {menutItems.map((x) => (
+      {menutItems.map((x,idx) => (
         <MenuItem
+        key={idx}
           dense={true}
           sx={{
             fontSize: { laptop: "12px", mobile: "10px" },

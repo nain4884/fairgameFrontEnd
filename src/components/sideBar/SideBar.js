@@ -146,8 +146,8 @@ const SideBar = ({ mobileShow }) => {
   };
 
   const RenderList = ({ data }) => {
-    return data.map((item) => {
-      return <ListItem item={item} />;
+    return data.map((item,idx) => {
+      return <ListItem key={idx} item={item} />;
     });
   };
   const RenderItem = ({ i }) => {
@@ -176,8 +176,8 @@ const SideBar = ({ mobileShow }) => {
         },
       ]}
     >
-      {data?.map((i) => {
-        return <RenderItem i={i} />;
+      {data?.map((i,idx) => {
+        return <RenderItem key={idx} i={i} />;
       })}
     </Box>
   );

@@ -72,6 +72,7 @@ const MatchesComponent = ({
       {currentElements?.map((match) => {
         return (
           <Odds
+            key={match.id}
             onClick={() => {
               dispatch(setSelectedMatch({}));
               dispatch(setMatchOddsLive([]));

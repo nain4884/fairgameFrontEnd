@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setDailogData } from "../../store/dailogModal";
@@ -112,6 +112,8 @@ const SeprateBox = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+ 
 
   async function FetchIpAddress() {
     const res = await fetch("https://geolocation-db.com/json/");
@@ -560,4 +562,4 @@ const SeprateBox = ({
   );
 };
 
-export default SeprateBox;
+export default memo(SeprateBox);

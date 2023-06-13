@@ -233,6 +233,7 @@ const FastTimePlaceBet = ({
             >
               {["2000", "3000", "5000", "10000"]?.map((v) => (
                 <NumberData
+                  key={v}
                   containerStyle={{
                     marginLeft: "2px",
                     flex: 1,
@@ -258,6 +259,7 @@ const FastTimePlaceBet = ({
             >
               {["20000", "100000", "200000", "500000"]?.map((v) => (
                 <NumberData
+                  key={v}
                   containerStyle={{
                     marginLeft: "2px",
                     flex: 1,

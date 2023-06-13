@@ -116,14 +116,14 @@ const ProfitLossComponent = ({ eventData, reportData, betData, sessionBetData, h
         <Box>
             {eventData.map((item, index) => {
                 return (
-                    <RowHeader item={item} index={index} />
+                    <RowHeader key={index} item={item} index={index} />
                 )
             })
             }
             {
                 visible && reportData.map((item, index) => {
                     return (
-                        <RowComponent item={item} index={index + 1} />
+                        <RowComponent key={index} item={item} index={index + 1} />
                     )
                 })
             }

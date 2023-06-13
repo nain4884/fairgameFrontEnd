@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { ArrowDown, CANCEL, CancelDark, HourGlass } from "../assets";
 import "../components/index.css";
 import StyledImage from "./StyledImage";
@@ -65,7 +65,11 @@ const PlaceBet = ({
         stake: Number(value),
       };
       if (season) {
-        body = { ...body, marketType: typeOfBet, rate_percent: newData?.rate_percent };
+        body = {
+          ...body,
+          marketType: typeOfBet,
+          rate_percent: newData?.rate_percent,
+        };
       }
       const { data } = await axios.post("/betting/calculateBetAmount", body);
       if (data?.data) {
@@ -204,12 +208,12 @@ const PlaceBet = ({
                   ? "Back"
                   : "Lay"
                 : title === "Team"
-                  ? name
-                  : bet_condition
-                    ? bet_condition
-                    : isSessionYes
-                      ? "Yes"
-                      : "No"}
+                ? name
+                : bet_condition
+                ? bet_condition
+                : isSessionYes
+                ? "Yes"
+                : "No"}
             </Typography>
           </Box>
         )}
@@ -526,8 +530,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                  ? "Lay"
-                  : "Back"
+                ? "Lay"
+                : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}
@@ -552,6 +556,7 @@ const PlaceBet = ({
             <Box sx={{ display: "flex", marginTop: "15px", marginX: "2px" }}>
               {["2000", "3000", "5000", "10000"]?.map((v) => (
                 <NumberData
+                  key={v}
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
                   value={v}
                   getLatestBetAmount={(value) =>
@@ -564,6 +569,7 @@ const PlaceBet = ({
             <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }}>
               {["20000", "100000", "200000", "500000"]?.map((v) => (
                 <NumberData
+                  key={v}
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
                   value={v}
                   getLatestBetAmount={(value) =>
@@ -685,4 +691,4 @@ const NumberData = ({
     </Box>
   );
 };
-export default PlaceBet;
+export default memo(PlaceBet);

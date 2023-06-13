@@ -698,8 +698,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         marginTop: "2px",
       }}
     >
-      {menutItems.map((x) => (
+      {menutItems.map((x,idx) => (
         <MenuItem
+         key={idx}
           dense={true}
           sx={{
             fontSize: { laptop: "12px", mobile: "10px" },
