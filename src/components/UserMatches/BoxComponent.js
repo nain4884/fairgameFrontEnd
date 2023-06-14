@@ -8,6 +8,7 @@ import Divider from "../helper/Divider";
 import { formatNumber } from "../helper/helper";
 import SeperateBox from "../../pages/expert/SeperateBox";
 import { apiBasePath } from "../helper/constants";
+import { useEffect } from "react";
 
 const BoxComponent = ({
   name,
@@ -38,7 +39,11 @@ const BoxComponent = ({
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { ex, status } = data;
-
+  useEffect(() => {
+    if (livestatus || status !== "ACTIVE" || showBox) {
+      setPlaceBetData(null);
+    }
+  }, [livestatus, status ,showBox]);
   return (
     <Box
       sx={{
@@ -65,7 +70,7 @@ const BoxComponent = ({
           sx={{
             flexDirection: "row",
             display: "flex",
-            width: { mobile: "70%", laptop: "100%",tablet:"100%" },
+            width: { mobile: "70%", laptop: "100%", tablet: "100%" },
             alignItems: "center",
           }}
         >
@@ -179,6 +184,11 @@ const BoxComponent = ({
           >
             {!matchesMobile && (
               <SeprateBox
+                closeModal={
+                  !["ACTIVE", "", undefined, null].includes(status) ||
+                  newData?.bettings?.length === 0 ||
+                  livestatus
+                }
                 setFastBetLoading={setFastBetLoading}
                 po={1}
                 placeBetData={placeBetData}
@@ -222,6 +232,11 @@ const BoxComponent = ({
             ></Box>
             {!matchesMobile && (
               <SeprateBox
+                closeModal={
+                  !["ACTIVE", "", undefined, null].includes(status) ||
+                  newData?.bettings?.length === 0 ||
+                  livestatus
+                }
                 setFastBetLoading={setFastBetLoading}
                 po={2}
                 placeBetData={placeBetData}
@@ -265,6 +280,11 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
+              closeModal={
+                !["ACTIVE", "", undefined, null].includes(status) ||
+                newData?.bettings?.length === 0 ||
+                livestatus
+              }
               setFastBetLoading={setFastBetLoading}
               po={3}
               placeBetData={placeBetData}
@@ -308,6 +328,11 @@ const BoxComponent = ({
             ></Box>
 
             <SeprateBox
+              closeModal={
+                !["ACTIVE", "", undefined, null].includes(status) ||
+                newData?.bettings?.length === 0 ||
+                livestatus
+              }
               setFastBetLoading={setFastBetLoading}
               po={4}
               placeBetData={placeBetData}
@@ -350,6 +375,11 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+                closeModal={
+                  !["ACTIVE", "", undefined, null].includes(status) ||
+                  newData?.bettings?.length === 0 ||
+                  livestatus
+                }
                 setFastBetLoading={setFastBetLoading}
                 po={5}
                 placeBetData={placeBetData}
@@ -393,6 +423,11 @@ const BoxComponent = ({
             ></Box> */}
             {!matchesMobile && (
               <SeprateBox
+                closeModal={
+                  !["ACTIVE", "", undefined, null].includes(status) ||
+                  newData?.bettings?.length === 0 ||
+                  livestatus
+                }
                 setFastBetLoading={setFastBetLoading}
                 po={6}
                 placeBetData={placeBetData}

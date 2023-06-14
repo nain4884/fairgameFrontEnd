@@ -315,7 +315,7 @@ const OddsPlaceBet = ({
 
   const handlePlaceBet = async (payload, match) => {
     let oddValue = fastRate !== null && fastRate;
-    // console.log("oddValue", oddValue, payload.odds);
+
     if (oddValue != payload.odds) {
       // toast.warning("Odds value has been updated. You can not place bet.");
       setCanceled({ value: true, msg: "Rate changed", type: false });

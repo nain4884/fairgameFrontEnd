@@ -19,6 +19,7 @@ import { setDailogData } from "../../store/dailogModal";
 import Lottie from "lottie-react";
 import NotificationModal from "../NotificationModal";
 import { LockIcon } from "../../admin/assets";
+import { useEffect } from "react";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
@@ -161,6 +162,11 @@ const Odds = ({
     type: false,
   });
 
+  useEffect(() => {
+    if (betLock) {
+      setPlaceBetData(null);
+    }
+  }, [betLock]);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const bookRatioB = (() => {
     if (teamARates === 0) {

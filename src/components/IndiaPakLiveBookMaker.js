@@ -150,6 +150,8 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     country: null,
                                     ip_address: null,
                                     rate: null,
+                                    userName: data?.betPlaceData?.userName,
+                                    myStack: data?.betPlaceData?.myStack,
                                     marketType: data?.betPlaceData?.marketType,
                                     amount:
                                         data?.betPlaceData?.stack || data?.betPlaceData?.stake,

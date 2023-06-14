@@ -18,6 +18,7 @@ const SessionMarketBox = ({
   allRates,
   sessionMain,
   setFastAmount,
+  closeModal,
   setFastBetLoading,
 }) => {
   const theme = useTheme();
@@ -143,6 +144,7 @@ const SessionMarketBox = ({
             ></Box>
             {!matchesMobile && <SeprateBox po={6} color={"white"} />}
             <SeprateBox
+              closeModal={closeModal}
               setFastBetLoading={setFastBetLoading}
               po={2}
               setFastAmount={setFastAmount}
@@ -164,6 +166,7 @@ const SessionMarketBox = ({
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
             <SeprateBox
+              closeModal={closeModal}
               setFastBetLoading={setFastBetLoading}
               po={1}
               sessionMain={sessionMain}

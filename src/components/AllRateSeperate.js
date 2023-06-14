@@ -31,7 +31,6 @@ const data = [
   },
 ];
 const AllRateSeperate = ({ profit, mark, setPageCountOuter, mark2, allBetsData, count, callPage }) => {
-console.log('allBetsData', allBetsData)
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const { allbetsPage } = useSelector((state) => state?.auth);
