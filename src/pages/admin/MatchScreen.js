@@ -952,9 +952,9 @@ const NewMatchScreen = () => {
     const { currentUser } = useSelector((state) => state?.currentUser);
     const [sessionLock, setSessionLock] = useState(false)
     const [isHandled, setIsHandled] = useState(false);
-    const checkMctchId = useSelector(
-        (state) => "a1ace110-5db0-4b1b-ac85-d6f9cb65a541"
-    );
+    // const checkMctchId = useSelector(
+    //     (state) => state
+    // );
     const [isMatchLock, setIsMatchLock] = useState(false);
     const [isBookmakerLock, setIsBookmakerLock] = useState(false);
     const [isManualLock, setIsManualLock] = useState(false);
@@ -1593,7 +1593,7 @@ const NewMatchScreen = () => {
                 socketMicro.on(`session${marketId}`, (val) => {
                     // console.log("currentMatchProfit 33:", val);
 
-                    if (val !== null && matchId === checkMctchId) {
+                    if (val !== null && matchId === matchId) {
                         // console.warn("updatedBettings1 ", updatedBettings1);
                         var newVal = val?.map((v) => ({
                             bet_condition: v?.RunnerName,
@@ -1695,10 +1695,11 @@ const NewMatchScreen = () => {
     }, [socketMicro, marketId]);
 
     useEffect(() => {
+        // alert(JSON.stringify(matchId))
         // if (state?.id) {
         // alert(1)
-        getSingleMatch("a1ace110-5db0-4b1b-ac85-d6f9cb65a541");
-        getAllBetsData("a1ace110-5db0-4b1b-ac85-d6f9cb65a541");
+        getSingleMatch(matchId);
+        getAllBetsData(matchId);
         // }
     }, []);
     const getSingleMatch = async (val) => {
@@ -1755,7 +1756,7 @@ const NewMatchScreen = () => {
         try {
             let type = typeOfBet.toUpperCase()
             let payload = {
-                match_id: "a1ace110-5db0-4b1b-ac85-d6f9cb65a541",
+                match_id: matchId,
                 marketType: type,
                 marketLock: locked,
                 adminTransPassword: value

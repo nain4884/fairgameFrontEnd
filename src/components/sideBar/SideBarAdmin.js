@@ -1,54 +1,40 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setRole } from "../../newStore";
+
 const colors = ["#F8C851", "#FFDA7D", "#FFE7AD", "#FFF1CF", "#FFF8E6"];
 const datas = [
   {
     title: "Cricket",
     values: [
       {
-        title: "T20 World Cup",
-        sub: "(Tournamnet name)",
+        title: "01, November, 2022",
         values: [
           {
-            title: "01, November, 2022",
+            title: "India vs Bangladesh",
             values: [
               {
-                title: "India vs Bangladesh",
-                values: [
-                  {
-                    title: "Match Odds",
-                    values: false,
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            title: "01, November, 2022",
-            values: [
-              {
-                title: "India vs Bangladesh",
-                values: [
-                  {
-                    title: "Match Odds",
-                    values: false,
-                  },
-                ],
+                title: "Match Odds 3",
+                values: false,
               },
             ],
           },
         ],
       },
       {
-        title: "Asia Cup",
-        sub: " (Tournamnet name)",
-        values: [],
-      },
-      {
-        title: "Women world Cup",
-        sub: " (Tournamnet name)",
-        values: [],
+        title: "01, November, 2022",
+        values: [
+          {
+            title: "India vs Bangladesh",
+            values: [
+              {
+                title: "Match Odds 3",
+                values: false,
+              },
+            ],
+          },
+        ],
       },
     ],
   },
@@ -180,7 +166,12 @@ const RenderDates = ({ i, handleDrawerToggle }) => {
       {selected &&
         i?.values?.map((value, index) => {
           return (
-            <RenderValues
+            // <RenderValues
+            //   handleDrawerToggle={handleDrawerToggle}
+            //   i={value}
+            //   k={index}
+            // />
+            <RenderBets
               handleDrawerToggle={handleDrawerToggle}
               i={value}
               k={index}
@@ -229,12 +220,20 @@ const RenderValues = ({ i, handleDrawerToggle }) => {
   );
 };
 const RenderBets = ({ i, handleDrawerToggle }) => {
+  // alert(JSON.stringify(i))
   const navigate = useNavigate();
- const path= window.location.pathname.split("/")[1]
+  const path = window.location.pathname.split("/")[1]
   return (
     <Box
       onClick={(event) => {
-        navigate(`/${path}/match`);
+        navigate(`/${path}/match`, { state: { matchId: i.matchId } });
+        // navigate("/expert/live", {
+        //   state: {
+        //     createSession: false,
+        //     match: x,
+        //     sessionEvent: element,
+        //   },
+        // });
         handleDrawerToggle();
         event.stopPropagation();
       }}
@@ -304,7 +303,7 @@ const RenderGames = ({ i, k, handleDrawerToggle }) => {
         setSelected(!selected);
       }}
       sx={{
-        
+
         width: "100%",
         display: "flex",
         alignSelf: "flex-end",
@@ -334,11 +333,70 @@ const RenderGames = ({ i, k, handleDrawerToggle }) => {
 };
 
 const SideBarAdmin = ({ handleDrawerToggle }) => {
+  const { axios } = setRole();
+  const [matchData, setMatchData] = useState([]);
+
+  useEffect(() => {
+    getSingleMatch();
+    // if (state?.id) {
+    // alert(1)
+    // getSingleMatch("10785cf8-4a64-40fa-9e16-e88f18071dea");
+    // getAllBetsData("10785cf8-4a64-40fa-9e16-e88f18071dea");
+    // }
+  }, []);
+
+  const getSingleMatch = async (val) => {
+    try {
+      // const { data } = await axios.get(`game-match/matchDetail/${val}`);
+      const response = await axios.get(`/game-match/getMatchListByDate`);
+      // alert(response?.data?.data.length)
+      let data = response?.data?.data;
+      const finalData = [{
+        title: "Cricket",
+        values: data.map(item => ({
+          title: new Date(item.start_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          values: [
+            {
+              title: item.titles[0],
+              values: [
+                {
+                  title: "Match Odds",
+                  values: false,
+                  matchId: item.ids[0],
+                },
+              ],
+            },
+          ],
+        })),
+      }, {
+        title: "Football",
+        values: [],
+      },
+      {
+        title: "Tennis",
+        values: [],
+      },
+      {
+        title: "Ice hockey",
+        values: [],
+      },];
+      // console.log("data 112:", JSON.stringify(finalData))
+      setMatchData(finalData);
+      // setManualBookmakerData(matchOddsDataTemp);
+      // // setCurrentMatch(newMatch);
+      // setCurrentMatch({
+      //   ...data.data,
+      // });
+    } catch (e) {
+      console.log(e?.message, "message");
+    }
+  };
+
   return (
     <Box
       sx={[
         {
-          marginTop:{mobile:"2.5vh",laptop:0,tablet:0},
+          marginTop: { mobile: "2.5vh", laptop: 0, tablet: 0 },
           minHeight: "100vh",
           width: "100%",
           display: "flex",
@@ -349,7 +407,7 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
           backgroundImage: `${theme.palette.primary.mainGradient}`,
         }),
       ]}
-      // headerGradient
+    // headerGradient
     >
       <Box
         sx={[
@@ -381,7 +439,7 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
         </Typography>
         <MinusBox />
       </Box>
-      {datas.map((i, k) => {
+      {matchData?.map((i, k) => {
         return (
           <RenderGames handleDrawerToggle={handleDrawerToggle} i={i} k={k} />
         );
