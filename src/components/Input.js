@@ -51,31 +51,31 @@ const Input = ({
     if (value < 0) {
       setDetail({
         ...Detail,
-        [11]: {
+        11: {
           ...Detail[11],
           val: value,
         },
       });
       setError({
         ...error,
-        [11]: {
+        11: {
           ...error[11],
           val: "value must be 0 or greater",
         },
       });
       return false;
     }
-    if (value >= 100) {
+    if (value > 100) {
       setDetail({
         ...Detail,
-        [12]: {
+        12: {
           ...Detail[12],
           val: 0,
         },
       });
       setError({
         ...error,
-        [11]: {
+        11: {
           ...error[11],
           val: "sum of upline , downline and  my partnership should be not exceeding 100.",
         },
@@ -87,7 +87,7 @@ const Input = ({
     if (subsum >= 100) {
       setDetail({
         ...Detail,
-        [12]: {
+        12: {
           ...Detail[12],
           val: 0,
         },
@@ -112,7 +112,7 @@ const Input = ({
       setDownlinePar(0);
       setDetail({
         ...Detail,
-        [12]: {
+        12: {
           ...Detail[12],
           val: 0,
         },
@@ -132,7 +132,7 @@ const Input = ({
       setDownlinePar(updatedDowwnline);
       setDetail({
         ...Detail,
-        [12]: {
+        12: {
           ...Detail[12],
           val: updatedDowwnline,
         },
