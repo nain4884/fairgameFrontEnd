@@ -11,17 +11,33 @@ import { setRole } from "../newStore";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setBookMakerBetRate } from "../newStore/reducers/matchDetails";
+import { setBookmakerTeamRates } from "../newStore/reducers/expertMatchDetails";
+
 
 
 export default function IndiaPakLiveBookMaker({ add, match }) {
     const [visible, setVisible] = useState(false)
     const [visible1, setVisible1] = useState(false)
+
+    const { bookmakerTeamRates } = useSelector((state) => state?.expertMatchDetails);
     // console.log('match', match)
     const { socket, socketMicro } = useContext(SocketContext);
 
     const { axios } = setRole();
     const dispatch = useDispatch();
 
+
+    const bookRatioB = (teamARates, teamBRates) => {
+        const bookRatio = teamBRates != 0 ? teamARates / teamBRates || 0 : 0;
+        const formattedRatio = Math.abs(bookRatio).toFixed(2);
+        return teamBRates < 0 ? `-${formattedRatio}` : formattedRatio;
+    };
+
+    const bookRatioA = (teamARates, teamBRates) => {
+        const bookRatio = teamARates != 0 ? teamBRates / teamARates || 0 : 0;
+        const formattedRatio = Math.abs(bookRatio).toFixed(2);
+        return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
+    };
 
     const AddSession = () => {
         // const id = location.state.match.id;
@@ -62,9 +78,16 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const innerRefTeamB = useRef();
         const innerRefTeamC = useRef();
 
+        const [teamRates, setteamRates] = useState({
+            teamA: bookmakerTeamRates?.teamA,
+            teamB: bookmakerTeamRates?.teamB,
+            teamC: bookmakerTeamRates?.teamC
+        })
+
         useEffect(() => {
-            // alert(JSON.stringify(location.state.match))
+            // alert(JSON.stringify(bookmakerTeamRates))
             getManuallBookMaker(match?.id);
+            // console.log("match :", JSON.stringify(match));
         }, []);
 
         async function getManuallBookMaker(id) {
@@ -82,7 +105,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamCLayValue(response?.data?.data[0].teamC_lay);
                     // alert(id)
                     getAllBetsData(response?.data?.data[0].id, id);
-
+                    setteamRates({
+                        teamA: response?.data?.data[0].teamA_rate ? response?.data?.data[0].teamA_rate : 0,
+                        teamB: response?.data?.data[0].teamB_rate ? response?.data?.data[0].teamB_rate : 0,
+                        teamC: response?.data?.data[0].teamC_rate ? response?.data?.data[0].teamC_rate : 0
+                    })
+                    // dispatch(setBookmakerTeamRates(teamRates));
                 }
             } catch (e) {
                 console.log(e.response.data.message);
@@ -156,7 +184,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     amount:
                                         data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                                 };
-                                // alert(11)
+                                setteamRates({
+                                    teamA: data?.teamA_rate ? data?.teamA_rate : 0,
+                                    teamB: data?.teamB_rate ? data?.teamB_rate : 0,
+                                    teamC: data?.teamC_rate ? data?.teamC_rate : 0
+                                })
+                                // dispatch(setBookmakerTeamRates(teamRates));
                                 if (data?.betPlaceData?.match_id === match?.id) {
                                     // dispatch(setBookMakerBetRate((prev) => [body, ...prev]));
                                     dispatch(setBookMakerBetRate((prev) => {
@@ -1242,6 +1275,25 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             </Box>}
                             <Box sx={{ borderWidth: 0, justifyContent: 'space-between', alignItems: 'center', display: 'flex', width: '100%', paddingLeft: '10px' }}>
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%", }}>{match?.teamA}</Typography>
+                                <Box
+                                    sx={{
+                                        width: "80px",
+                                        marginRight: "15px",
+                                        border: "1px solid #2626264D",
+                                        borderRadius: "5px",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        display: "flex",
+                                        height: "25px",
+                                        background: "#F6F6F6",
+                                        borderRadius: "7px",
+                                        zIndex: 100,
+                                    }}
+                                >
+                                    <Typography sx={{ fontSize: "9px", fontWeight: "bold", color: teamRates?.teamA <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                        {teamRates?.teamA}
+                                    </Typography>
+                                </Box>
                                 <Box sx={{ display: "flex", width: '30%', borderTop: "1px solid white" }}>
                                     <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                         <TextField
@@ -1303,6 +1355,25 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                             <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingLeft: '10px', borderLeftWidth: 0, width: '100%', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamB}</Typography>
+                                <Box
+                                    sx={{
+                                        width: "80px",
+                                        marginRight: "15px",
+                                        border: "1px solid #2626264D",
+                                        borderRadius: "5px",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        display: "flex",
+                                        height: "25px",
+                                        background: "#F6F6F6",
+                                        borderRadius: "7px",
+                                        zIndex: 100,
+                                    }}
+                                >
+                                    <Typography sx={{ fontSize: "9px", fontWeight: "bold", color: teamRates?.teamB <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                        {teamRates?.teamB}
+                                    </Typography>
+                                </Box>
                                 <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
                                     <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                         <TextField
@@ -1361,6 +1432,25 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             </Box>
                             {match?.teamC && <Box sx={{ border: '.2px solid #2626264D', borderBottomWidth: 0, alignItems: 'center', display: 'flex', paddingLeft: '10px', borderRightWidth: 0, paddingLeft: '10px', borderLeftWidth: 0, width: '100%', justifyContent: 'space-between' }}>
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamC}</Typography>
+                                <Box
+                                    sx={{
+                                        width: "80px",
+                                        marginRight: "15px",
+                                        border: "1px solid #2626264D",
+                                        borderRadius: "5px",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        display: "flex",
+                                        height: "25px",
+                                        background: "#F6F6F6",
+                                        borderRadius: "7px",
+                                        zIndex: 100,
+                                    }}
+                                >
+                                    <Typography sx={{ fontSize: "9px", fontWeight: "bold", color: teamRates?.teamC <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                        {teamRates?.teamC}
+                                    </Typography>
+                                </Box>
                                 <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
                                     <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                         <TextField
@@ -1403,7 +1493,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                                 alignSelf: 'flex-end',
                                                 textAlign: 'center',
                                                 alignItems: 'center',
-                                                paddingX: '10px',
+                                                paddingX: '5px',
                                                 color: "#319E5B",
                                                 fontWeight: '600',
                                                 backgroundColor: '#FFB5B5',
@@ -1599,13 +1689,43 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             </>
         )
     }
-    const BookButton = () => {
+    const BookButton = ({ rate }) => {
         // alert(match)
         return (
             <Box
-                sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '90px', height: '30px', background: 'white', marginRight: '2px', borderRadius: '2px' }}
+                sx={{
+                    width: { laptop: "70px", mobile: "50px", tablet: "70px" },
+                    // position: "absolute",
+                    marginRight: '5px',
+                    flexDirection: "column",
+                    paddingX: "5px",
+                    display: "flex",
+                    left: { mobile: "53%", laptop: "49vw", tablet: "53%" },
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "30px",
+                    background: "white",
+                    borderRadius: "3px",
+                }}
             >
-                <Typography sx={{ color: "#FF4D4D", fontSize: '12px', fontWeight: '600' }}>-Book 60</Typography>
+                <Typography
+                    sx={{
+                        color: "#FF4D4D",
+                        fontSize: "8px",
+                        fontWeight: "bold",
+                    }}
+                >
+                    Book
+                </Typography>
+                <Typography
+                    sx={{
+                        fontSize: "10px",
+                        fontWeight: "bold",
+                        color: rate < 0 ? `#FF9292` : `#46e080`,
+                    }}
+                >
+                    {rate < 0 ? ` ${rate}` : `${rate}`}
+                </Typography>
             </Box>
         )
     }
@@ -1631,7 +1751,9 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         alignItems: 'center',
                         justifyContent: 'flex-end'
                     }}>
-                        <BookButton />
+                        {/* <SmallBox valueA={bookRatioA(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} valueB={bookRatioB(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} /> */}
+                        <BookButton rate={bookRatioA(bookmakerTeamRates?.teamA, bookmakerTeamRates?.teamB)} />
+                        <BookButton rate={bookRatioB(bookmakerTeamRates?.teamA, bookmakerTeamRates?.teamB)} />
                     </Box>
                 </Box >
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>

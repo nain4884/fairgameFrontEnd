@@ -5,7 +5,8 @@ const initialState = {
   selectedMatch: {},
   sessionAllBet: [],
   sessionBetId: "",
-  allEventSession: []
+  allEventSession: [],
+  bookmakerTeamRates: {}
 };
 
 const expertMatchDetails = createSlice({
@@ -30,9 +31,13 @@ const expertMatchDetails = createSlice({
     setAllEventSession: (state, action) => {
       state.allEventSession = action.payload;
     },
+    setBookmakerTeamRates: (state, action) => {
+      // alert(action.payload)
+      state.bookmakerTeamRates = action.payload;
+    },
   },
 });
 
-export const { setAllMatchs, setSelectedMatch, removeSelectedMatch, setSessionAllBet, setSessionBetId, setAllEventSession } = expertMatchDetails.actions;
+export const { setAllMatchs, setSelectedMatch, removeSelectedMatch, setSessionAllBet, setSessionBetId, setAllEventSession, setBookmakerTeamRates } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;
