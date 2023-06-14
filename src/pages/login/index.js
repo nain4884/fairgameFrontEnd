@@ -49,8 +49,6 @@ export default function Login(props) {
   // useEffect(() => {
   // }, [error, loginDetail])
 
-
-
   useEffect(() => {
     if (socket && socket.connected) {
       socket.disconnect();
@@ -63,6 +61,22 @@ export default function Login(props) {
   useEffect(() => {
     let checkLocalStorage;
     let checkSessionStorage;
+    const mobileDevice =
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i) ||
+      navigator.userAgent.match(/iPod/i) ||
+      navigator.userAgent.match(/BlackBerry/i) ||
+      navigator.userAgent.match(/Windows Phone/i);
+
+    if (mobileDevice) {
+      checkSessionStorage = sessionStorage.getItem("JWTuser");
+      checkLocalStorage = localStorage.getItem("role4");
+      if (checkSessionStorage == null && checkLocalStorage !== null) {
+        localStorage.removeItem("role4", "role4");
+      }
+    }
 
     if (location.pathname === "/") {
       checkLocalStorage = localStorage.getItem("role4");

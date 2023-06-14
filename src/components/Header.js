@@ -89,6 +89,7 @@ const CustomHeader = ({}) => {
   }, []);
 
   useEffect(() => {
+  
     // Your existing code within the event handler
     let checkLoStorage = localStorage.getItem("role4");
     let checkSeStorage = sessionStorage.getItem("JWTuser");
@@ -640,9 +641,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
         horizontal: "left",
       }}
     >
-      {menutItems.map((x,idx) => (
+      {menutItems.map((x, idx) => (
         <MenuItem
-        key={idx}
+          key={idx}
           dense={true}
           sx={{
             fontSize: { laptop: "12px", mobile: "10px" },
