@@ -1557,6 +1557,117 @@ const NewMatchScreen = () => {
                         }
                     }
                 }
+                if (packet.data[0] === "marketBlock") {
+                    const value = packet.data[1];
+                    setCurrentMatch((currentMatch) => {
+                        if (currentMatch?.id !== value?.match_id) {
+                            // If the new bet doesn't belong to the current match, return the current state
+                            return currentMatch;
+                        }
+
+                        // Update the block value of BOOKMAKER
+                        var updatedBlockMarket = {};
+                        if (value?.marketType == "MATCH ODDS") {
+                            updatedBlockMarket = {
+                                ...currentMatch.blockMarket,
+                                MATCH_ODDS: {
+                                    ...currentMatch.blockMarket.MATCH_ODDS,
+                                    block: value?.marketLock,
+                                },
+                            };
+                        } else if (value?.marketType == "MANUAL BOOKMAKER") {
+                            updatedBlockMarket = {
+                                ...currentMatch.blockMarket,
+                                MANUALBOOKMAKER: {
+                                    ...currentMatch.blockMarket.MANUALBOOKMAKER,
+                                    block: value?.marketLock,
+                                },
+                            };
+
+                        } else if (value?.marketType == "BOOKMAKER") {
+                            updatedBlockMarket = {
+                                ...currentMatch.blockMarket,
+                                BOOKMAKER: {
+                                    ...currentMatch.blockMarket.BOOKMAKER,
+                                    block: value?.marketLock,
+                                },
+                            };
+
+                        } else if (value?.marketType == "SESSION") {
+                            updatedBlockMarket = {
+                                ...currentMatch.blockMarket,
+                                SESSION: {
+                                    ...currentMatch.blockMarket.SESSION,
+                                    block: value?.marketLock,
+                                },
+                            };
+                        }
+
+                        // Return the updated current match object
+                        return {
+                            ...currentMatch,
+                            blockMarket: updatedBlockMarket,
+                        };
+                    });
+                }
+                if (packet.data[0] === "changeOwnerForBlock") {
+                    const value = packet.data[1];
+                    // alert(value?.marketLock)
+                    setCurrentMatch((currentMatch) => {
+                        if (currentMatch?.id !== value?.match_id) {
+                            // If the new bet doesn't belong to the current match, return the current state
+                            return currentMatch;
+                        }
+
+                        // Update the block value of BOOKMAKER
+                        var updatedBlockMarket = {};
+                        if (value?.marketType == "MATCH ODDS") {
+                            updatedBlockMarket = {
+                                ...currentMatch.blockMarket,
+                                MATCH_ODDS: {
+                                    ...currentMatch.blockMarket.MATCH_ODDS,
+                                    // block: value?.marketLock,
+                                    self: value?.marketLock ? false : true
+                                },
+                            };
+                        } else if (value?.marketType == "MANUAL BOOKMAKER") {
+                            updatedBlockMarket = {
+                                ...currentMatch.blockMarket,
+                                MANUALBOOKMAKER: {
+                                    ...currentMatch.blockMarket.MANUALBOOKMAKER,
+                                    // block: value?.marketLock,
+                                    self: value?.marketLock ? false : true
+                                },
+                            };
+
+                        } else if (value?.marketType == "BOOKMAKER") {
+                            updatedBlockMarket = {
+                                ...currentMatch.blockMarket,
+                                BOOKMAKER: {
+                                    ...currentMatch.blockMarket.BOOKMAKER,
+                                    // block: value?.marketLock,
+                                    self: value?.marketLock ? false : true
+                                },
+                            };
+
+                        } else if (value?.marketType == "SESSION") {
+                            updatedBlockMarket = {
+                                ...currentMatch.blockMarket,
+                                SESSION: {
+                                    ...currentMatch.blockMarket.SESSION,
+                                    // block: value?.marketLock,
+                                    self: value?.marketLock ? false : true
+                                },
+                            };
+                        }
+
+                        // Return the updated current match object
+                        return {
+                            ...currentMatch,
+                            blockMarket: updatedBlockMarket,
+                        };
+                    });
+                }
             };
         }
     }, [socket]);
