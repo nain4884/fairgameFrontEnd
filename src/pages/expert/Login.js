@@ -23,6 +23,7 @@ import {
   LoginServerError,
   SuperMaster,
 } from "../../components/helper/constants";
+import { SocketContext } from "../../context/socketContext";
 var newtoken = "";
 export default function Login(props) {
   const theme = useTheme();
@@ -45,6 +46,16 @@ export default function Login(props) {
     1: { field: "username", val: false },
     2: { field: "password", val: false },
   });
+
+  const { socket, socketMicro } = useContext(SocketContext);
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.disconnect();
+    }
+    if (socketMicro && socketMicro.connected) {
+      socketMicro.disconnect();
+    }
+  }, [socket, socketMicro]);
 
   useEffect(() => {
     let checkLocalStorage;

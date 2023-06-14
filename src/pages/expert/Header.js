@@ -26,7 +26,10 @@ import {
   removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
-import { setAllMatchs, setAllEventSession } from "../../newStore/reducers/expertMatchDetails";
+import {
+  setAllMatchs,
+  setAllEventSession,
+} from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
@@ -42,7 +45,7 @@ import ActiveUsers from "./ActiveUsers";
 import BoxProfile from "./BoxProfile";
 import DropdownMenu1 from "./DropDownMenu1";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -56,14 +59,19 @@ const CustomHeader = ({ }) => {
   const location = useLocation();
   const [active, setActiveAdmin] = useState(0);
   const [allMatch, setAllMatch] = useState([]);
-  const { allEventSession } = useSelector((state) => state?.expertMatchDetails);
+  const { allEventSession, activeUsers } = useSelector(
+    (state) => state?.expertMatchDetails
+  );
   // const [allLiveEventSession, setAllLiveEventSession] = useState(allEventSession);
   const [balance, setBalance] = useState(0);
-  const [onlineUser, setOnlineUser] = useState(0);
+  const [onlineUser, setOnlineUser] = useState(activeUsers);
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
-
-
+  useEffect(() => {
+    if (activeUsers !== 0) {
+      setOnlineUser(activeUsers);
+    }
+  }, [activeUsers]);
   let { transPass, axios, role, JWT } = setRole();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -155,11 +163,13 @@ const CustomHeader = ({ }) => {
         }
         if (packet.data[0] === "loginUserCount") {
           const data = packet.data[1];
+          console.log(data, "count");
           setOnlineUser(data?.count);
         }
       };
     }
   }, [socket]);
+
   useEffect(() => {
     if (location.pathname.includes("home")) {
       dispatch(setSelected(0));
@@ -458,8 +468,8 @@ const CustomHeader = ({ }) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                      ? "Bookmaker"
-                      : "Betfair"
+                    ? "Bookmaker"
+                    : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />

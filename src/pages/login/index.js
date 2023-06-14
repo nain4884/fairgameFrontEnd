@@ -23,6 +23,7 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
 import { GlobalStore } from "../../context/globalStore";
+import { SocketContext } from "../../context/socketContext";
 
 export default function Login(props) {
   let { transPass, axios, role } = setRole();
@@ -31,6 +32,7 @@ export default function Login(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const { socket, socketMicro } = useContext(SocketContext);
   const [loading, setLoading] = useState(false);
   const [loginDetail, setLoginDetail] = useState({
     1: { field: "username", val: "" },
@@ -46,6 +48,17 @@ export default function Login(props) {
 
   // useEffect(() => {
   // }, [error, loginDetail])
+
+
+
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.disconnect();
+    }
+    if (socketMicro && socketMicro.connected) {
+      socketMicro.disconnect();
+    }
+  }, [socket, socketMicro]);
 
   useEffect(() => {
     let checkLocalStorage;
