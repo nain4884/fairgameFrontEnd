@@ -124,6 +124,18 @@ const CustomHeader = ({}) => {
   }, []);
 
   useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      localStorage.removeItem("role3");
+    };
+
+    window.addEventListener("unload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("unload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
     // Your existing code within the event handler
     let checkLoStorage = localStorage.getItem("role3");
     let checkSeStorage = sessionStorage.getItem("JWTexpert");

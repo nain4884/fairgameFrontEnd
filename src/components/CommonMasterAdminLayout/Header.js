@@ -34,7 +34,11 @@ import {
   removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
-import { logout, setPage, setUpdatedTransPasswords } from "../../newStore/reducers/auth";
+import {
+  logout,
+  setPage,
+  setUpdatedTransPasswords,
+} from "../../newStore/reducers/auth";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
@@ -93,6 +97,23 @@ const CustomHeader = ({}) => {
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [nav]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (nav === "admin") {
+        localStorage.removeItem("role1");
+      } else {
+        localStorage.removeItem("role2");
+      }
+      // Chrome requires the returnValue to be set for the event
+    };
+
+    window.addEventListener("unload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("unload", handleBeforeUnload);
     };
   }, [nav]);
 
@@ -503,7 +524,6 @@ const CustomHeader = ({}) => {
 
         {
           <MobileSideBar
-          
             mobileOpen={mobileOpen}
             setMobileOpen={setMobileOpen}
           />
