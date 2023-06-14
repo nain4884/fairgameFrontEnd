@@ -665,7 +665,7 @@ const Odds = ({
                   showBox={showBox}
                   newData={newData}
                   // lock={data?.length > 0 ? false : true}
-                  color={"#FF4D4D"}
+                  color={teamCRates <= 0 ? "#FF4D4D" : "#46e080"}
                   name={newData?.teamC}
                   data={data?.length > 0 ? data[2] : []}
                   suspendedData={data[2]?.status}

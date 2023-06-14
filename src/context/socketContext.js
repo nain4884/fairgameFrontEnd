@@ -7,10 +7,12 @@ import {
 } from "../components/helper/constants";
 import { setRole } from "../newStore";
 import { GlobalStore } from "./globalStore";
+import { useLocation } from "react-router-dom";
 
 export const SocketContext = createContext();
 
 export const SocketProvider = ({ children }) => {
+  const location = useLocation();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [socket, setSocket] = useState(null);
   const [socketMicro, setSocketMicro] = useState(null);
@@ -18,6 +20,7 @@ export const SocketProvider = ({ children }) => {
   const token = "Bearer " + JWT;
   const checkSocket = localStorage.getItem("socket");
   const checkMicroSocket = localStorage.getItem("microSocket");
+  console.log("nav", location);
   const getToken = (tk, rl) => {
     let token = "";
     if (rl === "role4") {
@@ -33,49 +36,54 @@ export const SocketProvider = ({ children }) => {
     return token;
   };
   useEffect(() => {
-    try{
-      const token = getToken(globalStore, role);
-    if (!["Bearer null", ""].includes(token)) {
-      // if (checkSocket != "true") {
-      const newSocket = io(`${apiBasePath}`, {
-        transports: ["websocket"],
-        headers: {
-          Authorization: `${token}`,
-        },
-        auth: {
-          token: `${token}`,
-        },
-      });
-      newSocket.on("connect", () => {
-        setSocket(newSocket);
-        // localStorage.setItem("socket", newSocket.connected)
-      });
-      // }
-      // if (checkSocket != "true") {
-      const newMicroSocket = io(`${microServiceApiPath}`, {
-        transports: ["websocket"],
-        headers: {
-          Authorization: `${token}`,
-        },
-        auth: {
-          token: `${token}`,
-        },
-      });
-      newMicroSocket.on("connect", () => {
-        setSocketMicro(newMicroSocket);
-        // localStorage.setItem("microSocket", newMicroSocket.connected)
-      });
+    try {
+      if (!["/", "/admin", "/wallet", "expert"].includes(location.pathname)) {
+        const token = getToken(globalStore, role);
+        if (!["Bearer null", ""].includes(token)) {
+          // if (checkSocket != "true") {
+          const newSocket = io(`${apiBasePath}`, {
+            transports: ["websocket"],
+            headers: {
+              Authorization: `${token}`,
+            },
+            auth: {
+              token: `${token}`,
+            },
+          });
+          newSocket.on("connect", () => {
+            setSocket(newSocket);
+            // localStorage.setItem("socket", newSocket.connected)
+          });
+          // }
+          // if (checkSocket != "true") {
+          const newMicroSocket = io(`${microServiceApiPath}`, {
+            transports: ["websocket"],
+            headers: {
+              Authorization: `${token}`,
+            },
+            auth: {
+              token: `${token}`,
+            },
+          });
+          newMicroSocket.on("connect", () => {
+            setSocketMicro(newMicroSocket);
+            // localStorage.setItem("microSocket", newMicroSocket.connected)
+          });
 
-      newMicroSocket.onerror = (event) => {
-        // Handle the WebSocket connection error here
-        console.error('WebSocket connection failed:', event);
-      };
-      // }
+          newMicroSocket.onerror = (event) => {
+            // Handle the WebSocket connection error here
+            console.error("WebSocket connection failed:", event);
+          };
+          // }
+        }
+      } else {
+        socket?.disconnect();
+        socketMicro?.disconnect();
+      }
+    } catch (e) {
+      console.log("Error: " + e);
     }
-    }catch(e){
-      console.log("Error: " + e)
-    }
-  }, [globalStore, role]);
+  }, [role, location]);
 
   return (
     <SocketContext.Provider value={{ socket, socketMicro }}>
