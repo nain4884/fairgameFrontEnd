@@ -50,6 +50,7 @@ const SeprateBox = ({
   setPlaceBetData,
   placeBetData,
   setFastBetLoading,
+  closeModal,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -76,6 +77,13 @@ const SeprateBox = ({
   const [showAtTop, setShowAtTop] = useState(false);
 
   const [previousValue, setPreviousValue] = useState(false);
+
+  useEffect(() => {
+    if (closeModal || lock) {
+      console.log("closeModal", closeModal);
+      setIsPopoverOpen(false);
+    }
+  }, [closeModal, lock]);
 
   useEffect(() => {
     setPreviousValue(value);
@@ -112,8 +120,6 @@ const SeprateBox = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
- 
 
   async function FetchIpAddress() {
     const res = await fetch("https://geolocation-db.com/json/");

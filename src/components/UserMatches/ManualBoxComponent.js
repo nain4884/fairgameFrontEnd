@@ -5,6 +5,7 @@ import MoneyBox from "./MoneyBox";
 import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
 import { BallStart } from "../../assets";
+import { useEffect } from "react";
 
 const BoxComponent = ({
   name,
@@ -38,6 +39,12 @@ const BoxComponent = ({
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   // console.log("check data :", matchOddsData)
   const { ex, status } = data;
+  useEffect(() => {
+    if (livestatus || status !== "ACTIVE" || showBox) {
+      setPlaceBetData(null);
+    }
+  }, [livestatus, status ,showBox]);
+
   const handleDecimal = (value, gap, type) => {
     // alert(type)
     let checkDecimal = value % 1; // get the decimal portion of the number
@@ -113,7 +120,7 @@ const BoxComponent = ({
           sx={{
             flexDirection: "row",
             display: "flex",
-            width: { mobile: "70%", laptop: "100%",tablet:"100%" },
+            width: { mobile: "70%", laptop: "100%", tablet: "100%" },
             alignItems: "center",
           }}
         >
@@ -251,6 +258,7 @@ const BoxComponent = ({
               >
                 {!matchesMobile && (
                   <SeprateBox
+                    closeModal={ballStatus}
                     setFastBetLoading={setFastBetLoading}
                     placeBetData={placeBetData}
                     po={1}
@@ -284,6 +292,7 @@ const BoxComponent = ({
                 ></Box>
                 {!matchesMobile && (
                   <SeprateBox
+                    closeModal={ballStatus}
                     setFastBetLoading={setFastBetLoading}
                     placeBetData={placeBetData}
                     po={2}
@@ -316,6 +325,7 @@ const BoxComponent = ({
                 ></Box>
 
                 <SeprateBox
+                  closeModal={ballStatus}
                   setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
                   po={3}
@@ -343,6 +353,7 @@ const BoxComponent = ({
                 ></Box>
 
                 <SeprateBox
+                  closeModal={ballStatus}
                   setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
                   po={4}
@@ -369,6 +380,7 @@ const BoxComponent = ({
             ></Box> */}
                 {!matchesMobile && (
                   <SeprateBox
+                    closeModal={ballStatus}
                     setFastBetLoading={setFastBetLoading}
                     placeBetData={placeBetData}
                     po={5}
@@ -401,6 +413,7 @@ const BoxComponent = ({
             ></Box> */}
                 {!matchesMobile && (
                   <SeprateBox
+                    closeModal={ballStatus}
                     setFastBetLoading={setFastBetLoading}
                     placeBetData={placeBetData}
                     po={6}

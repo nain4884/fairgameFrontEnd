@@ -37,7 +37,6 @@ const SessionMarket = ({
   const matchSessionData = newData?.bettings?.filter(
     (element) => element.sessionBet === true
   );
-
   return (
     <>
       <Box
@@ -263,7 +262,6 @@ const SessionMarket = ({
                 <img style={{ width: "35px", height: "40px" }} src={LockIcon} />
                 <Typography
                   sx={{
-                   
                     fontWeight: "600",
                     margin: "20px 0px 0px -25px",
                     fontSize: "20px",
@@ -325,6 +323,7 @@ const SessionMarket = ({
                     }}
                   >
                     <SessionMarketBox
+                      closeModal={sessionOffline?.includes(element.id)}
                       typeOfBet={"Session"}
                       setFastBetLoading={setFastBetLoading}
                       data={element}
