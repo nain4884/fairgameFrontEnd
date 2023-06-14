@@ -37,53 +37,48 @@ export const SocketProvider = ({ children }) => {
   };
   useEffect(() => {
     try {
-      if (!["/", "/admin", "/wallet", "expert"].includes(location.pathname)) {
-        const token = getToken(globalStore, role);
-        if (!["Bearer null", ""].includes(token)) {
-          // if (checkSocket != "true") {
-          const newSocket = io(`${apiBasePath}`, {
-            transports: ["websocket"],
-            headers: {
-              Authorization: `${token}`,
-            },
-            auth: {
-              token: `${token}`,
-            },
-          });
-          newSocket.on("connect", () => {
-            setSocket(newSocket);
-            // localStorage.setItem("socket", newSocket.connected)
-          });
-          // }
-          // if (checkSocket != "true") {
-          const newMicroSocket = io(`${microServiceApiPath}`, {
-            transports: ["websocket"],
-            headers: {
-              Authorization: `${token}`,
-            },
-            auth: {
-              token: `${token}`,
-            },
-          });
-          newMicroSocket.on("connect", () => {
-            setSocketMicro(newMicroSocket);
-            // localStorage.setItem("microSocket", newMicroSocket.connected)
-          });
+      const token = getToken(globalStore, role);
+      if (!["Bearer null", ""].includes(token)) {
+        // if (checkSocket != "true") {
+        const newSocket = io(`${apiBasePath}`, {
+          transports: ["websocket"],
+          headers: {
+            Authorization: `${token}`,
+          },
+          auth: {
+            token: `${token}`,
+          },
+        });
+        newSocket.on("connect", () => {
+          setSocket(newSocket);
+          // localStorage.setItem("socket", newSocket.connected)
+        });
+        // }
+        // if (checkSocket != "true") {
+        const newMicroSocket = io(`${microServiceApiPath}`, {
+          transports: ["websocket"],
+          headers: {
+            Authorization: `${token}`,
+          },
+          auth: {
+            token: `${token}`,
+          },
+        });
+        newMicroSocket.on("connect", () => {
+          setSocketMicro(newMicroSocket);
+          // localStorage.setItem("microSocket", newMicroSocket.connected)
+        });
 
-          newMicroSocket.onerror = (event) => {
-            // Handle the WebSocket connection error here
-            console.error("WebSocket connection failed:", event);
-          };
-          // }
-        }
-      } else {
-        socket?.disconnect();
-        socketMicro?.disconnect();
+        newMicroSocket.onerror = (event) => {
+          // Handle the WebSocket connection error here
+          console.error("WebSocket connection failed:", event);
+        };
+        // }
       }
     } catch (e) {
       console.log("Error: " + e);
     }
-  }, [role, location]);
+  }, [role, globalStore]);
 
   return (
     <SocketContext.Provider value={{ socket, socketMicro }}>

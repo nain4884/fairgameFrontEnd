@@ -588,7 +588,6 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
       // dispatch(stateActions.logout("role4"));
       // socketMicro.emit("logoutUserForce");
       setLoading(true);
-      setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
       const { data } = await axios.get("auth/logout");
       if (data?.data == "success logout") {
         navigate("/");
@@ -596,6 +595,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
         handleClose();
         removeSocket();
         dispatch(logout({ roleType: "role4" }));
+        setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
         dispatch(removeManualBookMarkerRates());
         dispatch(removeSelectedMatch());
         socket.disconnect();
