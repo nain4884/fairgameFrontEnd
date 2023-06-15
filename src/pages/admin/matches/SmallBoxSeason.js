@@ -1,6 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
 
-const SmallBoxSeason = ({ color ,total }) => {
+const SmallBoxSeason = ({ color, total }) => {
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
     <Box
       sx={{
@@ -17,12 +20,12 @@ const SmallBoxSeason = ({ color ,total }) => {
       }}
     >
       <Typography
-        sx={{ fontSize: "12px", fontWeight: "bold", color: "#FF4D4D" }}
+        sx={{ fontSize: matchesMobile ? "8px" : "12px", fontWeight: "bold", color: "#FF4D4D" }}
       >
         Session Bets
       </Typography>
       <Typography
-        sx={{ fontSize: "10px", fontWeight: "bold", color: "#0B4F26" }}
+        sx={{ fontSize: matchesMobile ? "8px" : "10px", fontWeight: "bold", color: "#0B4F26" }}
       >
         {total}
       </Typography>

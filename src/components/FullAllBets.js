@@ -130,7 +130,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
   return (
     <Box
       sx={{
-        width: { mobile: "98%", laptop: "100%" },
+        width: { mobile: "100%", laptop: "100%" },
         marginY: { laptop: ".25vh" },
         padding: 0.2,
         background: "white",

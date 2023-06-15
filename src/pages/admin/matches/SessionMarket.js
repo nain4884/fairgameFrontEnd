@@ -70,7 +70,7 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, 
           >
             <Typography
               sx={{
-                fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+                fontSize: { laptop: "13px", tablet: "12px", mobile: matchesMobile ? "12px" : "12px" },
                 fontWeight: "bold",
                 marginLeft: "7px",
               }}

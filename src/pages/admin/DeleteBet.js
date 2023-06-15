@@ -986,7 +986,7 @@ const DeleteBet = ({ }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: { mobile: "column", laptop: "row" },
+          flexDirection: { matchesMobile: "column", laptop: "row" },
           // marginY: { mobile: ".2vh", laptop: ".5vh" },
           flex: 1,
           height: "100%",
