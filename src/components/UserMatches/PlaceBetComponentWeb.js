@@ -21,7 +21,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
     setShow(false);
   });
 
-  
+  ///ddd
   useEffect(() => {
     if (profitLoss) {
       setProfitLoss(profitLoss?.profitLoss);
@@ -30,7 +30,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
   return (
     <>
       <Box
-      ref={innerRef}
+        ref={innerRef}
         onClick={(e) => setShow(!show)}
         sx={{
           background: "#0B4F26",
@@ -38,7 +38,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
           display: "flex",
           alignItems: "center",
           paddingX: ".2vw",
-          top:"3px",
+          top: "3px",
           width: { laptop: "10vw" },
           borderRadius: "5px",
           height: "32px",
@@ -90,14 +90,14 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
         >
           <Typography
             sx={{
-              fontSize: { laptop:!profitLoss?.profitLoss?.max_loss ? ".65vw" : ".65vw" },
+              fontSize: { laptop: !profitLoss?.profitLoss?.max_loss ? ".65vw" : ".65vw" },
               fontWeight: !profitLoss?.profitLoss?.max_loss ? "bold" : "bold",
               color: "white",
             }}
           >
-            {!profitLoss?.profitLoss?.max_loss ? "Profit/Loss" : profitLoss?.profitLoss?.max_loss }
-       
-      
+            {!profitLoss?.profitLoss?.max_loss ? "Profit/Loss" : profitLoss?.profitLoss?.max_loss}
+
+
           </Typography>
           <img
             src={UD}

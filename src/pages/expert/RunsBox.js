@@ -1,9 +1,12 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
+import { useTheme } from "@emotion/react";
 import { StyledImage } from "../../components";
 import { CANCEL } from "../../assets";
 
 const RunsBox = ({ item, setData }) => {
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
     <Box
       sx={{
@@ -29,7 +32,7 @@ const RunsBox = ({ item, setData }) => {
       >
         <Typography
           sx={{
-            fontSize: "12px",
+            fontSize: matchesMobile ? "8px" : "12px",
             color: "white",
             fontWeight: "600",
             lineHeight: "1",
@@ -59,7 +62,7 @@ const RunsBox = ({ item, setData }) => {
           }}
         >
           <Typography
-            sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
+            sx={{ color: "#306A47", fontWeight: "bold", fontSize: matchesMobile ? "8px" : "12px" }}
           >
             Runs
           </Typography>
@@ -74,7 +77,7 @@ const RunsBox = ({ item, setData }) => {
           }}
         >
           <Typography
-            sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
+            sx={{ color: "#306A47", fontWeight: "bold", fontSize: matchesMobile ? "8px" : "12px" }}
           >
             Amount
           </Typography>
@@ -126,7 +129,7 @@ const RunsBox = ({ item, setData }) => {
                     sx={{
                       color: "#306A47",
                       fontWeight: "bold",
-                      fontSize: "12px",
+                      fontSize: matchesMobile ? "8px" : "12px",
                     }}
                   >
                     {v?.odds}
@@ -146,7 +149,7 @@ const RunsBox = ({ item, setData }) => {
                   <Typography
                     sx={{
                       fontWeight: "500",
-                      fontSize: "12px",
+                      fontSize: matchesMobile ? "8px" : "12px",
                       color: "white",
                     }}
                   >

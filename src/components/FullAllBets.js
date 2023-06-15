@@ -1,8 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CHECK } from "../admin/assets";
 import moment from "moment";
+import { useTheme } from "@emotion/react";
 const data = [
   {
     values: [
@@ -293,6 +294,9 @@ const FullAllBets = ({ tag, mode, IObets }) => {
   );
 };
 const HeaderRow = ({ tag, mode }) => {
+
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
     <Box sx={{ width: "100%", display: "flex" }}>
       <Box
@@ -300,14 +304,14 @@ const HeaderRow = ({ tag, mode }) => {
           width: mode ? "8%" : "6%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white" }}
         >
           No
         </Typography>
@@ -317,7 +321,7 @@ const HeaderRow = ({ tag, mode }) => {
           width: "15%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: tag ? "flex-start" : "center",
           paddingLeft: tag ? "5px" : 0,
           alignItems: "center",
@@ -325,9 +329,9 @@ const HeaderRow = ({ tag, mode }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white" }}
         >
-          Username
+          User
         </Typography>
       </Box>
       <Box
@@ -335,7 +339,7 @@ const HeaderRow = ({ tag, mode }) => {
           width: "20%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: tag ? "flex-start" : "center",
           paddingLeft: tag ? "5px" : 0,
           alignItems: "center",
@@ -343,7 +347,7 @@ const HeaderRow = ({ tag, mode }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white" }}
         >
           Market
         </Typography>
@@ -353,14 +357,14 @@ const HeaderRow = ({ tag, mode }) => {
           width: "15%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white" }}
         >
           Favourite
         </Typography>
@@ -370,14 +374,14 @@ const HeaderRow = ({ tag, mode }) => {
           width: "10%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white" }}
         >
           Odds
         </Typography>
@@ -387,14 +391,14 @@ const HeaderRow = ({ tag, mode }) => {
           width: "10%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white" }}
         >
           Type
         </Typography>
@@ -404,14 +408,14 @@ const HeaderRow = ({ tag, mode }) => {
           width: "15%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white" }}
         >
           Stake
         </Typography>
@@ -421,14 +425,14 @@ const HeaderRow = ({ tag, mode }) => {
           width: "15%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white", lineHeight: 1 }}
         >
           My Stake
         </Typography>
@@ -438,14 +442,14 @@ const HeaderRow = ({ tag, mode }) => {
           width: "15%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
-          height: "20px",
+          height: "30px",
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: matchesMobile ? "10px" : ".8vw", fontWeight: "500", color: "white" }}
         >
           Time
         </Typography>
@@ -454,6 +458,9 @@ const HeaderRow = ({ tag, mode }) => {
   );
 };
 const SmallBox = ({ item, k }) => {
+
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   // alert(JSON.stringify(item))
   return (
     <Box
@@ -469,7 +476,7 @@ const SmallBox = ({ item, k }) => {
       }}
     >
       <Typography
-        sx={{ fontSize: "10px", fontWeight: "600", color: item?.color }}
+        sx={{ fontSize: matchesMobile ? "8px" : ".8vw", fontWeight: "600", color: item?.color }}
       >
         {item?.name}
       </Typography>
@@ -477,6 +484,9 @@ const SmallBox = ({ item, k }) => {
   );
 };
 const LargeBox = ({ item, k }) => {
+
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
     <Box
       key={k}
@@ -494,7 +504,7 @@ const LargeBox = ({ item, k }) => {
     >
       <Typography
         sx={{
-          fontSize: ".8vw",
+          fontSize: matchesMobile ? "8px" : ".8vw",
           fontWeight: "600",
           color: item?.color,
           wordWrap: "break-word",
@@ -505,7 +515,7 @@ const LargeBox = ({ item, k }) => {
       </Typography>
       {item?.time && (
         <Typography
-          sx={{ fontSize: "10px", fontWeight: "600", color: item?.color }}
+          sx={{ fontSize: matchesMobile ? "8px" : ".8vw", fontWeight: "600", color: item?.color }}
         >
           {item?.date}
         </Typography>

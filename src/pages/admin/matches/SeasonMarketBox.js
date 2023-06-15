@@ -4,6 +4,7 @@ import { BallStart } from "../../../assets";
 import Divider from "../../../components/helper/Divider";
 import { useTheme } from "@emotion/react";
 import PlaceBetComponentWeb from "./PlaceBetComponentWeb";
+import PlaceBetComponent from "./PlaceBetComponent";
 import { formatNumber } from "../../../components/helper/helper";
 
 const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
@@ -51,11 +52,16 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
           }}
         >
           {
-            <PlaceBetComponentWeb
+            matchesMobile ? <PlaceBetComponent
               // amount={index == 2}
               newData={newData}
               setData={setData}
-            />
+            /> :
+              <PlaceBetComponentWeb
+                // amount={index == 2}
+                newData={newData}
+                setData={setData}
+              />
           }
           <SeperateBox color={"white"} />
           <Box

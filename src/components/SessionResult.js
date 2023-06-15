@@ -63,11 +63,10 @@ const Overs = ({ createSession, sessionData }) => {
             {sessionData?.length > 0 &&
                 sessionData?.map((item, index) => {
                     let profit_loss = parseInt(item.profit_loss)
-                    // alert(typeof profit_loss)
                     return (
-                        <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                        <Box key={index} display={"flex"} sx={{ borderTop: "2px solid white" }}>
                             <Box sx={{ background: "#FFFFFF", width: "60%" }}>
-                                <Typography sx={{ fontWeight: "600", fontSize: "14px", px: "5px" }}>{"6 Over runs INDIA..."}</Typography>
+                                <Typography sx={{ fontWeight: "600", fontSize: "14px", px: "5px" }}>{item?.bet_id?.bet_condition}</Typography>
                             </Box>
                             <Box sx={{ background: "#ECECEC", width: "20%", display: "flex", height: "30px", justifyContent: "center", alignItems: "center" }}>
                                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{item.score}</Typography>

@@ -90,7 +90,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
             // background: "rgba(0,0,0,1)",
             height: "40px",
             display: "flex",
-            // width: { laptop: "60%", mobile: "80%" },
+            width: { laptop: "60%", mobile: "80%" },
             // // width: { mobile: "60%", laptop: "10.2vw" },
             justifyContent: { mobile: "flex-end", laptop: "flex-end" },
             alignItems: "center",
@@ -102,7 +102,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
               // background: "rgba(0,0,0,1)",
               height: "40px",
               display: "flex",
-              // width: { mobile: "60%", laptop: "10.2vw" },
+              width: { mobile: "60%", laptop: "10.2vw" },
               justifyContent: { mobile: "flex-end", laptop: "flex-end" },
               alignItems: "center",
             }}
@@ -112,7 +112,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
                 background: "rgba(0,0,0,1)",
                 height: "40px",
                 display: "flex",
-                width: { mobile: "60%", laptop: "10.2vw" },
+                width: { mobile: "100%", laptop: "10.2vw" },
                 justifyContent: { mobile: "flex-end", laptop: "flex-end" },
                 alignItems: "center",
               }}
@@ -148,7 +148,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
                   ? ex?.availableToBack[0]?.size
                   : 0, false
               )}
-              color={matchesMobile ? "white" : "#A7DCFF"}
+              color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
             /> :
             <Box
               sx={{
@@ -216,7 +216,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
               value2={formatNumber(
                 ex?.availableToLay?.length > 0 ? ex?.availableToLay[0]?.size : 0, false
               )}
-              color={matchesMobile ? "white" : "#FFB5B5"}
+              color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
             /> :
             <Box
               sx={{

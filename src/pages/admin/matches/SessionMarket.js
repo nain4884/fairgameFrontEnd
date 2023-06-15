@@ -42,7 +42,7 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, 
           padding: 0.3,
           flexDirection: "column",
           marginBottom: "10px",
-          width: { laptop: "100%" },
+          width: "100%",
           alignSelf: {
             mobile: "center",
             tablet: "center",

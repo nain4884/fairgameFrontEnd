@@ -1,5 +1,6 @@
 import React from "react";
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
 import "../../components/index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useContext } from "react";
@@ -20,6 +21,9 @@ import { SocketContext } from "../../context/socketContext";
 let matchOddsCount = 0;
 let sessionOffline = [];
 const DeleteBet = ({ }) => {
+
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { socket, socketMicro } = useContext(SocketContext);
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState("");
@@ -982,7 +986,8 @@ const DeleteBet = ({ }) => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: { mobile: "column", laptop: "row" },
+          // marginY: { mobile: ".2vh", laptop: ".5vh" },
           flex: 1,
           height: "100%",
           marginX: "0.5%",
@@ -1035,16 +1040,17 @@ const DeleteBet = ({ }) => {
           // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
           />
           }
-          {/* {(currentMatch?.apiSessionActive ||
-            currentMatch?.manualSessionActive) && <SessionMarket
+          {(currentMatch?.apiSessionActive ||
+            currentMatch?.manualSessionActive) && matchesMobile && <SessionMarket
               currentMatch={currentMatch}
+              sessionBets={sessionBets}
               data={[]}
               sessionOffline={sessionOffline}
-            />} */}
+            />}
           {IOSinglebets.length > 0 && <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />}
         </Box>
         <Box sx={{ width: "20px" }} />
-        <Box
+        {!matchesMobile && <Box
           sx={{
             flex: 1,
             flexDirection: "column",
@@ -1057,7 +1063,6 @@ const DeleteBet = ({ }) => {
           >
             {mode && <CancelButton />}
             <Box sx={{ width: "2%" }}></Box>
-            {/* <CustomButton /> */}
             <Box sx={{ width: "150px", marginY: ".75%", height: "35px", }} ></Box>
           </Box>
           {(currentMatch?.apiSessionActive ||
@@ -1067,8 +1072,7 @@ const DeleteBet = ({ }) => {
               data={[]}
               sessionOffline={sessionOffline}
             />}
-          {/* <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} /> */}
-        </Box>
+        </Box>}
       </Box>
       <DailogModal />
     </Background >
