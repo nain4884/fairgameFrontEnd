@@ -1510,7 +1510,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 sx={{
                                     borderTop: "2px solid white",
                                     background: "rgba(0,0,0,1)",
-                                    height: "92px",
+                                    height: match?.teamC ? "140px" : "92px",
                                     right: 0,
                                     // position: "absolute",
                                     width: "100%",

@@ -489,6 +489,7 @@ const Odds = ({
                 lay: matchOddsData?.[0]?.teamA_lay,
               }}
               isBall={true}
+              isTeamC={newData?.teamC}
             />
             <Divider />
             <ManualBoxComponent
@@ -530,6 +531,7 @@ const Odds = ({
                 lay: matchOddsData?.[0]?.teamB_lay,
               }}
               isBall={false}
+              isTeamC={newData?.teamC}
             />
             {newData?.teamC && (
               <>
@@ -576,6 +578,7 @@ const Odds = ({
                     lay: matchOddsData?.[0]?.teamC_lay,
                   }}
                   isBall={false}
+                  isTeamC={newData?.teamC}
                 />
               </>
             )}
