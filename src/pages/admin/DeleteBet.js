@@ -1049,7 +1049,7 @@ const DeleteBet = ({ }) => {
             />}
           {IOSinglebets.length > 0 && <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />}
         </Box>
-        <Box sx={{ width: "20px" }} />
+        {!matchesMobile && <Box sx={{ width: "20px" }} />}
         {!matchesMobile && <Box
           sx={{
             flex: 1,
