@@ -89,23 +89,37 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [sessionLock, setSessionLock] = useState(false);
   const { geoLocation } = useSelector((state) => state.auth);
+
   async function FetchIpAddress() {
-    try {
-      const res = await fetch("https://geolocation-db.com/json/");
-      return res.json();
-    } catch (err) {
-      console.log(err?.message);
+    const maxRetries = 3; // Maximum number of retries
+    let retryCount = 0;
+
+    while (retryCount < maxRetries) {
+      try {
+        const res = await fetch("https://geolocation-db.com/json/");
+        if (res.ok) {
+          return await res.json();
+        } else {
+          throw new Error(`Request failed with status ${res.status}`);
+        }
+      } catch (err) {
+        console.log(err?.message);
+        retryCount++;
+      }
     }
+
+    console.log("Max retries exceeded. Unable to fetch IP address.");
+    return null;
   }
 
   useEffect(() => {
     if (geoLocation === null) {
       FetchIpAddress().then((res) => {
-        // dispatch(setGeoLocation(res));
+        dispatch(setGeoLocation(res));
       });
     }
   }, []);
-  console.log('geoLocation', geoLocation)
+  console.log("geoLocation", geoLocation);
 
   useEffect(() => {
     if (socket && socket.connected) {
