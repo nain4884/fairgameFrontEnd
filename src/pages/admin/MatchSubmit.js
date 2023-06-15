@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react"
-import { Typography, Box, Grid } from "@mui/material";
+import { Typography, Box, Grid, useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
 import "../../components/index.css";
 import { Background } from "../../components/index";
 import AllBets from "../../components/AllBets";
@@ -14,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 let matchOddsCount = 0;
 const MatchSubmit = ({ }) => {
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { socket, socketMicro } = useContext(SocketContext);
   const { axios } = setRole();
   const location = useLocation();
@@ -1088,7 +1091,8 @@ const MatchSubmit = ({ }) => {
       {location?.state?.match == 3 && (<Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          // flexDirection: "row",
+          flexDirection: { matchesMobile: "column", laptop: "row" },
           flex: 1,
           height: "100%",
           marginLeft: "0.5%",
@@ -1197,8 +1201,8 @@ const MatchSubmit = ({ }) => {
                 </Box>
               </> :
                 <Box sx={{
-                  maxWidth: "49.5%",
-                  flex: "0 0 49.5%",
+                  maxWidth: matchesMobile ? "99%" : "49.5%",
+                  flex: matchesMobile ? "0 0 99%" : "0 0 49.5%",
                   marginRight: "0.5%"
 
                 }}>
@@ -1256,7 +1260,7 @@ const MatchSubmit = ({ }) => {
       {(location?.state?.match === 4 || location?.state?.match === 2) && (<Box
         sx={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: { matchesMobile: "column", laptop: "row" },
           flex: 1,
           height: "100%",
           // marginX: "0.5%",
@@ -1282,9 +1286,9 @@ const MatchSubmit = ({ }) => {
             );
             return <>
               <Box sx={{
-                maxWidth: "49.5%",
-                flex: "0 0 49.5%",
-                marginRight: "0.5%"
+                maxWidth: matchesMobile ? "99%" : "49.5%",
+                flex: matchesMobile ? "0 0 99%" : "0 0 49.5%",
+                marginRight: matchesMobile ? "0%" : "0.5%"
               }}>
                 <Typography
                   sx={{
