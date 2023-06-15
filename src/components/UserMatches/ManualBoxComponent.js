@@ -34,6 +34,7 @@ const BoxComponent = ({
   setPlaceBetData,
   placeBetData,
   setFastBetLoading,
+  isTeamC
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -43,7 +44,7 @@ const BoxComponent = ({
     if (livestatus || status !== "ACTIVE" || showBox) {
       setPlaceBetData(null);
     }
-  }, [livestatus, status ,showBox]);
+  }, [livestatus, status, showBox]);
 
   const handleDecimal = (value, gap, type) => {
     // alert(type)
@@ -58,8 +59,8 @@ const BoxComponent = ({
             ? 0
             : Math.round(getValue)
           : getValue >= 100
-          ? 100
-          : Math.round(getValue);
+            ? 100
+            : Math.round(getValue);
       let returnValue;
       if (type == "back") {
         let check = value % 1;
@@ -81,8 +82,8 @@ const BoxComponent = ({
             ? 0
             : Math.round(getValue)
           : getValue >= 100
-          ? 100
-          : Math.round(getValue);
+            ? 100
+            : Math.round(getValue);
       let returnValue;
       if (type == "back") {
         let check = value % 1;
@@ -180,7 +181,7 @@ const BoxComponent = ({
             <Box
               sx={{
                 background: "#000",
-                height: "82px",
+                height: isTeamC ? "125px" : "82px",
                 position: "absolute",
                 right: 0,
                 top: 0,
@@ -213,8 +214,8 @@ const BoxComponent = ({
             ></Box>
           )}
           {!["ACTIVE", "", undefined, null].includes(status) ||
-          newData?.bettings?.length === 0 ||
-          livestatus ? (
+            newData?.bettings?.length === 0 ||
+            livestatus ? (
             <Box
               sx={{
                 background: "rgba(0,0,0,1)",

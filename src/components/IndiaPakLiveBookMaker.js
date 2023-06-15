@@ -184,13 +184,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     amount:
                                         data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                                 };
-                                setteamRates({
-                                    teamA: data?.teamA_rate ? data?.teamA_rate : 0,
-                                    teamB: data?.teamB_rate ? data?.teamB_rate : 0,
-                                    teamC: data?.teamC_rate ? data?.teamC_rate : 0
-                                })
                                 // dispatch(setBookmakerTeamRates(teamRates));
                                 if (data?.betPlaceData?.match_id === match?.id) {
+                                    setteamRates({
+                                        teamA: data?.teamA_rate ? data?.teamA_rate : 0,
+                                        teamB: data?.teamB_rate ? data?.teamB_rate : 0,
+                                        teamC: data?.teamC_rate ? data?.teamC_rate : 0
+                                    })
                                     // dispatch(setBookMakerBetRate((prev) => [body, ...prev]));
                                     dispatch(setBookMakerBetRate((prev) => {
                                         // Create a new array by adding `body` at the beginning and spreading the previous values
@@ -1290,7 +1290,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         zIndex: 100,
                                     }}
                                 >
-                                    <Typography sx={{ fontSize: "9px", fontWeight: "bold", color: teamRates?.teamA <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                    <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: teamRates?.teamA <= 0 ? "#FF4D4D" : "#46e080" }}>
                                         {teamRates?.teamA}
                                     </Typography>
                                 </Box>
@@ -1370,7 +1370,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         zIndex: 100,
                                     }}
                                 >
-                                    <Typography sx={{ fontSize: "9px", fontWeight: "bold", color: teamRates?.teamB <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                    <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: teamRates?.teamB <= 0 ? "#FF4D4D" : "#46e080" }}>
                                         {teamRates?.teamB}
                                     </Typography>
                                 </Box>
@@ -1447,7 +1447,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         zIndex: 100,
                                     }}
                                 >
-                                    <Typography sx={{ fontSize: "9px", fontWeight: "bold", color: teamRates?.teamC <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                    <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: teamRates?.teamC <= 0 ? "#FF4D4D" : "#46e080" }}>
                                         {teamRates?.teamC}
                                     </Typography>
                                 </Box>
@@ -1510,7 +1510,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 sx={{
                                     borderTop: "2px solid white",
                                     background: "rgba(0,0,0,1)",
-                                    height: "92px",
+                                    height: match?.teamC ? "140px" : "92px",
                                     right: 0,
                                     // position: "absolute",
                                     width: "100%",

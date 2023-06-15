@@ -355,18 +355,16 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
         title: "Cricket",
         values: data.map(item => ({
           title: new Date(item.start_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-          values: [
-            {
-              title: item.titles[0],
-              values: [
-                {
-                  title: "Match Odds",
-                  values: false,
-                  matchId: item.ids[0],
-                },
-              ],
-            },
-          ],
+          values: item.titles.map((title, index) => ({
+            title: title,
+            values: [
+              {
+                title: "Match Odds",
+                values: false,
+                matchId: item.ids[index],
+              },
+            ],
+          })),
         })),
       }, {
         title: "Football",
