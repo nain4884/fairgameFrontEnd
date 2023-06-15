@@ -267,35 +267,24 @@ const AccountStatementList = ({ user }) => {
           {decodedTokenUser.role === "user"
             ? transactionHistory.map((item) => (
                 <Row
-                key={item.id}
+                  key={item.id}
                   index={item?.id}
                   containerStyle={{ background: "#FFE094" }}
                   profit={true}
                   fContainerStyle={{ background: "#0B4F26" }}
                   fTextStyle={{ color: "white" }}
                   date={item?.createAt}
+                  description={item?.description}
                   closing={item?.current_amount}
                   trans_type={item?.trans_type}
                   amount={item?.amount}
-                  touserName={item?.action_by.userName}
-                  fromuserName={item?.user.userName}
-                  {...(item.trans_type === "withdraw"
-                    ? { debit: item.amount }
-                    : { credit: item.amount })}
-                  {...(item.trans_type === "add"
-                    ? {
-                        fromuserName: item.action_by.userName,
-                        touserName: item.user.userName,
-                      }
-                    : {
-                        fromuserName: item.user.userName,
-                        touserName: item.action_by.userName,
-                      })}
+                  fromuserName={item?.action_by.userName}
+                  touserName={item?.user.userName}
                 />
               ))
             : transactionHistory.map((item) => (
                 <Row
-                 key={item.id}
+                  key={item.id}
                   index={item?.id}
                   containerStyle={{ background: "#FFE094" }}
                   profit={true}
@@ -305,20 +294,9 @@ const AccountStatementList = ({ user }) => {
                   closing={item?.current_amount}
                   trans_type={item?.trans_type}
                   amount={item?.amount}
-                  touserName={item?.action_by.userName}
-                  fromuserName={item?.user.userName}
-                  {...(item.trans_type === "win" || item.trans_type === "add"
-                    ? { credit: item.amount }
-                    : { debit: item.amount })}
-                  {...(item.trans_type === "add" || item.trans_type === "win"
-                    ? {
-                        fromuserName: item.action_by.userName,
-                        touserName: item.user.userName,
-                      }
-                    : {
-                        fromuserName: item.user.userName,
-                        touserName: item.action_by.userName,
-                      })}
+                  description={item?.description}
+                  fromuserName={item?.action_by.userName}
+                  touserName={item?.user.userName}
                 />
               ))}
 
@@ -596,7 +574,7 @@ const Row = ({
         <Typography
           sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
         >
-          {credit}
+          {amount > 0 ? amount : ""}
         </Typography>
       </Box>
       <Box
@@ -613,7 +591,7 @@ const Row = ({
         <Typography
           sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
         >
-          {debit}
+          {amount < 0 ? amount : ""}
         </Typography>
       </Box>
       <Box
@@ -643,7 +621,7 @@ const Row = ({
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "500" }}>
-          {trans_type}
+          {description}
         </Typography>
       </Box>
       <Box
