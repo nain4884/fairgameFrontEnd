@@ -70,11 +70,14 @@ const OddsPlaceBet = ({
     (state) => state.selectedColorBox
   )?.value;
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  async function FetchIpAddress() {
-    const res = await fetch("https://geolocation-db.com/json/");
-    return res.json();
-  }
 
+  const { geoLocation } = useSelector((state) => state.auth);
+  const [ip, setIP] = useState(geoLocation);
+  useEffect(() => {
+    if (geoLocation) {
+      setIP(geoLocation);
+    }
+  }, [geoLocation]);
   const getLatestBetAmount = async (value, newData) => {
     try {
       const title = placeBetData?.bet_type;
@@ -372,7 +375,6 @@ const OddsPlaceBet = ({
 
   const onSubmit = async (e) => {
     try {
-      const res = await FetchIpAddress();
       let payload = {
         id: placeBetData?.id,
         matchType: placeBetData?.matchType,
@@ -383,8 +385,8 @@ const OddsPlaceBet = ({
         betOn: placeBetData?.betOn,
         stack: Number(defaultValue),
         team_bet: name,
-        country: res?.country_name,
-        ip_address: res?.IPv4,
+        country: ip?.country_name || null,
+        ip_address: ip?.IPv4 || null,
         stake: Number(defaultValue),
         teamA_name: placeBetData?.teamA_name,
         teamB_name: placeBetData?.teamB_name,

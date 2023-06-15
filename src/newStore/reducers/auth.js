@@ -13,8 +13,9 @@ const initialState = {
   userData: [],
   subCurrentPageNo: 1,
   subUserData: [],
-  currentStatementPage:1,
-  allbetsPage:0
+  currentStatementPage: 1,
+  allbetsPage: 0,
+  geoLocation: null,
 };
 
 export const auth = createSlice({
@@ -56,11 +57,11 @@ export const auth = createSlice({
     setSubUserData: (state, action) => {
       state.subUserData = action.payload;
     },
-    setCurrentStatementPage:(state,action) => {
-      state.currentStatementPage = action.payload
+    setCurrentStatementPage: (state, action) => {
+      state.currentStatementPage = action.payload;
     },
-    setallbetsPage:(state,action) => {
-      state.allbetsPage = action.payload
+    setallbetsPage: (state, action) => {
+      state.allbetsPage = action.payload;
     },
     logout: (state, action) => {
       switch (action?.payload?.roleType) {
@@ -103,6 +104,9 @@ export const auth = createSlice({
     setUpdatedTransPasswords: (state, action) => {
       state.isTransPasswordCreated = action.payload;
     },
+    setGeoLocation: (state, action) => {
+      state.geoLocation = action.payload;
+    },
   },
 });
 
@@ -116,7 +120,8 @@ export const {
   setUserData,
   setSubUserData,
   setCurrentStatementPage,
-  setallbetsPage
+  setallbetsPage,
+  setGeoLocation,
 } = auth.actions;
 
 // export const selectCount = state => state.counter;

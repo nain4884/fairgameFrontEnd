@@ -89,7 +89,6 @@ const CustomHeader = ({}) => {
   }, []);
 
   useEffect(() => {
-  
     // Your existing code within the event handler
     let checkLoStorage = localStorage.getItem("role4");
     let checkSeStorage = sessionStorage.getItem("JWTuser");
@@ -601,18 +600,18 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
       // dispatch(stateActions.logout("role4"));
       // socketMicro.emit("logoutUserForce");
       setLoading(true);
+      navigate("/");
+      dispatch(removeCurrentUser());
+      handleClose();
+      removeSocket();
+      dispatch(logout({ roleType: "role4" }));
+      setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+      dispatch(removeManualBookMarkerRates());
+      dispatch(removeSelectedMatch());
+      socket.disconnect();
+      socketMicro.disconnect();
       const { data } = await axios.get("auth/logout");
       if (data?.data == "success logout") {
-        navigate("/");
-        dispatch(removeCurrentUser());
-        handleClose();
-        removeSocket();
-        dispatch(logout({ roleType: "role4" }));
-        setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-        dispatch(removeManualBookMarkerRates());
-        dispatch(removeSelectedMatch());
-        socket.disconnect();
-        socketMicro.disconnect();
         toast.success(data?.data);
       }
     } catch (e) {

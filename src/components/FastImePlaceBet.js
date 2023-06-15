@@ -67,22 +67,6 @@ const FastTimePlaceBet = ({
     }
   }, [selectedValue, fromOdds]);
 
-  const [ip, setIP] = useState("");
-  useEffect(() => {
-    FetchIpAddress();
-  }, []);
-
-  async function FetchIpAddress() {
-    const response = await fetch("https://geolocation-db.com/json/")
-      .then((response) => {
-        return response.json();
-      }, "jsonp")
-      .then((res) => {
-        setIP(res);
-      })
-      .catch((err) => console.log(err));
-  }
-
   const scrollToFullDiv = () => {
     if (myDivRef.current) {
       const { scrollTop, offsetHeight, scrollHeight } = myDivRef.current;

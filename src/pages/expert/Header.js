@@ -148,6 +148,7 @@ const CustomHeader = ({}) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
+          navigate("/expert");
           dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
@@ -161,7 +162,6 @@ const CustomHeader = ({}) => {
           }));
           // await axios.get("auth/logout");
           removeSocket();
-          navigate("/expert");
         }
         if (packet.data[0] === "userBalanceUpdate") {
           const data = packet.data[1];

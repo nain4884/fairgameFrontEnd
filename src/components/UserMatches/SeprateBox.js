@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import React, { memo, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setDailogData } from "../../store/dailogModal";
 import useOuterClick from "../helper/userOuterClick";
@@ -73,10 +73,17 @@ const SeprateBox = ({
   const [selectedValue, setSelectedValue] = useState("");
   const [betPalaceError, setBetPalaceError] = useState(false);
   const [betPlaceLoading, setBetPlaceLoading] = useState(false);
-
+  const { geoLocation } = useSelector((state) => state.auth);
   const [showAtTop, setShowAtTop] = useState(false);
 
   const [previousValue, setPreviousValue] = useState(false);
+
+  const [ip, setIP] = useState(geoLocation);
+  useEffect(() => {
+    if (geoLocation) {
+      setIP(geoLocation);
+    }
+  }, [geoLocation]);
 
   useEffect(() => {
     if (closeModal || lock) {
@@ -120,11 +127,6 @@ const SeprateBox = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  async function FetchIpAddress() {
-    const res = await fetch("https://geolocation-db.com/json/");
-    return res.json();
-  }
 
   function showDialogModal(isModalOpen, showRight, message) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -193,14 +195,15 @@ const SeprateBox = ({
   const handlePlaceBet = async (payload, match) => {
     setBetPlaceLoading(true);
     setFastBetLoading(true);
-    const res = await FetchIpAddress();
+
     let newPayload = {
       ...payload,
-      country: res?.country_name,
-      ip_address: res?.IPv4,
+      country: ip?.country_name || null,
+      ip_address: ip?.IPv4 ||null,
     };
 
     let oddValue = Number(value);
+
     // : Number(document.getElementsByClassName("OddValue")?.[0]?.textContent);
     if (newPayload?.stake === 0) {
       // toast.warn("Please enter amount to place a bet");
@@ -213,7 +216,7 @@ const SeprateBox = ({
       setFastBetLoading(false);
       return false;
     } else {
-      if (oddValue != newPayload.odds) {
+      if (oddValue !== newPayload.odds) {
         // toast.warning("Odds value has been updated. You can not place bet.");
         setCanceled({ value: true, msg: "Rate changed", type: false });
         setBetPlaceLoading(false);
@@ -239,7 +242,8 @@ const SeprateBox = ({
       if (Number(payload?.odds) !== Number(value)) {
         setBetPlaceLoading(false);
         setFastBetLoading(false);
-        return setCanceled({ value: true, msg: "Rate changed", type: false });
+        setCanceled({ value: true, msg: "Rate changed", type: false });
+        return false;
       }
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])

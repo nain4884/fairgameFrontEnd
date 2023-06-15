@@ -33,7 +33,7 @@ import { HourGlass } from "../../assets";
 import BetPlaced from "../../components/BetPlaced";
 import EventListing from "../../components/EventListing";
 import { memo } from "react";
-import { logout } from "../../newStore/reducers/auth";
+import { logout, setGeoLocation } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import CustomLoader from "../../components/helper/CustomLoader";
@@ -88,6 +88,24 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   const [sessionExposer, setSessionExposure] = useState(0);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [sessionLock, setSessionLock] = useState(false);
+  const { geoLocation } = useSelector((state) => state.auth);
+  async function FetchIpAddress() {
+    try {
+      const res = await fetch("https://geolocation-db.com/json/");
+      return res.json();
+    } catch (err) {
+      console.log(err?.message);
+    }
+  }
+
+  useEffect(() => {
+    if (geoLocation === null) {
+      FetchIpAddress().then((res) => {
+        // dispatch(setGeoLocation(res));
+      });
+    }
+  }, []);
+  console.log('geoLocation', geoLocation)
 
   useEffect(() => {
     if (socket && socket.connected) {

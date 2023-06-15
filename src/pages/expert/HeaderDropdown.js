@@ -34,19 +34,19 @@ const HeaderDropdown = ({ anchorEl, open, handleClose }) => {
   const logoutProcess = async () => {
     try {
       setLoading(true);
+      setLoading(false);
+      dispatch(removeManualBookMarkerRates());
+      dispatch(logout({ roleType: "role3" }));
+      dispatch(removeSelectedMatch());
+      setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
+      dispatch(removeCurrentUser());
+      navigate("/expert");
+      handleClose();
+      removeSocket();
+      socket.disconnect();
+      socketMicro.disconnect();
       const { data } = await axios.get("auth/logout");
       if (data?.data == "success logout") {
-        setLoading(false);
-        dispatch(removeManualBookMarkerRates());
-        dispatch(logout({ roleType: "role3" }));
-        dispatch(removeSelectedMatch());
-        setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
-        dispatch(removeCurrentUser());
-        navigate("/expert");
-        handleClose();
-        removeSocket();
-        socket.disconnect();
-        socketMicro.disconnect();
         toast.success(data?.data);
       }
     } catch (e) {

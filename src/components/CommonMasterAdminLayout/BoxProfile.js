@@ -96,26 +96,27 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
     const logoutProcess = async () => {
       try {
         setLoading(true);
+        if (nav === "admin") {
+          navigate("/admin");
+          dispatch(logout({ roleType: "role1" }));
+          setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+        }
+        navigate(`/${nav}`);
+        dispatch(removeCurrentUser());
+        dispatch(logout({ roleType: "role2" }));
+        dispatch(removeManualBookMarkerRates());
+        dispatch(setUpdatedTransPasswords(false));
+        dispatch(removeSelectedMatch());
+        setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+        handleClose();
+        removeSocket();
+        socket.disconnect();
+        socketMicro.disconnect();
+        dispatch(setPage(parseInt(1)));
+        setLoading(false);
         const { data } = await axios.get("auth/logout");
         if (data?.data === "success logout") {
-          if (nav === "admin") {
-            navigate("/admin");
-            dispatch(logout({ roleType: "role1" }));
-            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-          }
-          navigate(`/${nav}`);
-          dispatch(removeCurrentUser());
-          dispatch(logout({ roleType: "role2" }));
-          dispatch(removeManualBookMarkerRates());
-          dispatch(setUpdatedTransPasswords(false));
-          dispatch(removeSelectedMatch());
-          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-          handleClose();
-          removeSocket();
-          socket.disconnect();
-          socketMicro.disconnect();
-          dispatch(setPage(parseInt(1)));
-          setLoading(false);
+          toast.success(data?.data);
         }
       } catch (e) {
         toast.error(e.response?.data?.message);
