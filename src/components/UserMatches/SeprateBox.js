@@ -199,7 +199,7 @@ const SeprateBox = ({
     let newPayload = {
       ...payload,
       country: ip?.country_name || null,
-      ip_address: ip?.IPv4 ||null,
+      ip_address: ip?.IPv4 || null,
     };
 
     let oddValue = Number(value);
@@ -334,6 +334,7 @@ const SeprateBox = ({
                   payload.teamA_name = mainData?.teamA;
                   payload.teamB_name = mainData?.teamB;
                   payload.id = data?.match_id;
+                  payload.selectionId = data?.selectionId;
                   payload.betId = data?.id;
                   payload.bet_type = type?.color === "#A7DCFF" ? "yes" : "no";
                   payload.bet_condition = data?.bet_condition;

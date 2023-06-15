@@ -399,6 +399,7 @@ const PlaceBet = ({
       payload.marketType = currentMatch?.bet_condition;
       payload.odds = Number(selectedValue);
       payload.sessionBet = true;
+      payload.selectionId = data?.selectionId;
     }
     return payload;
   }
