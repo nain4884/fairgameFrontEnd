@@ -39,7 +39,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
             <Typography
               sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
             >
-              Runs
+              1Runs
             </Typography>
           </Box>
           <Box

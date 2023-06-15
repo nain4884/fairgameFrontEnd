@@ -136,7 +136,7 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
             <Box
               sx={{
                 background: "#00C0F9",
-                width: { laptop: "5vw", mobile: "25%" },
+                width: { laptop: "5vw", mobile: "30%" },
                 height: "100%",
                 display: "flex",
                 justifyContent: "center",
@@ -155,7 +155,7 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
             <Box
               sx={{
                 background: "#FF9292",
-                width: { laptop: "5vw", mobile: "25%" },
+                width: { laptop: "5vw", mobile: "30%" },
                 height: "100%",
                 display: "flex",
                 justifyContent: "center",

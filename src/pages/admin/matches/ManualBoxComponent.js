@@ -109,7 +109,7 @@ const BoxComponent = ({
                             // background: "rgba(0,0,0,1)",
                             height: "40px",
                             display: "flex",
-                            // width: { laptop: "60%", mobile: "80%" },
+                            width: { laptop: "60%", mobile: "80%" },
                             // width: { mobile: "60%", laptop: "10.2vw" },
                             justifyContent: { mobile: "flex-end", laptop: "flex-end" },
                             alignItems: "center",
@@ -151,7 +151,7 @@ const BoxComponent = ({
                                 value2={0}
                                 // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") : 0}
                                 // value2={0}
-                                color={matchesMobile ? "white" : "#A7DCFF"}
+                                color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
                             />
                         )}
                         {lock && (
@@ -181,7 +181,7 @@ const BoxComponent = ({
                                 align={align}
                                 value={matchOddsData?.lay ? matchOddsData?.lay : 0}
                                 value2={0}
-                                color={matchesMobile ? "white" : "#FFB5B5"}
+                                color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
                             />
                         )}
                         {lock && (

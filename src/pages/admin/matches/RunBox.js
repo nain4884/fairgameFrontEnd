@@ -45,7 +45,7 @@ const RunsBox = ({ margin }) => {
             <Typography
               sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
             >
-              Runs
+              1Runs
             </Typography>
           </Box>
           <Box
