@@ -63,7 +63,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
     return (
       <Box
         sx={{
-          width: {mobile:"218%" ,laptop:"100%",tablet:"100%"},
+          width: { mobile: "218%", laptop: "100%", tablet: "100%" },
           display: "flex",
           height: "35px",
           background: "#262626",
@@ -224,9 +224,9 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       commissionAmount: element.ComissionAmount,
       commissionType: element.ComissionType,
       betType: element?.bet_place_id?.bet_type,
-      stack:element?.bet_place_id?.amount,
-      odds:element?.bet_place_id?.odds,
-      teamBet:element?.bet_place_id?.team_bet,
+      stack: element?.bet_place_id?.amount,
+      odds: element?.bet_place_id?.odds,
+      teamBet: element?.bet_place_id?.team_bet,
     };
     const [elementToUDM, setElementToUDM] = useState(prevElement);
 
@@ -295,7 +295,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            width: { laptop: "14.5vw", tablet: "12.2vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -309,7 +309,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            width: { laptop: "14.5vw", tablet: "12.2vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -323,7 +323,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            width: { laptop: "14.5vw", tablet: "12.2vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -337,7 +337,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            width: { laptop: "14.5vw", tablet: "12.2vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -351,7 +351,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "14.5vw", tablet:  "12.2vw", mobile: "28.5vw" },
+            width: { laptop: "14.5vw", tablet: "12.2vw", mobile: "28.5vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -372,7 +372,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       <Box
         sx={[
           {
-            width:"100%",
+            width: "100%",
             marginX: "0.5%",
             minHeight: "200px",
             display: "flex",
@@ -397,12 +397,10 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             setShow={setShow}
             matchesMobile={matchesMobile}
           />
-
-         
         </Box>
 
-        <Box sx={{ overflowX: "auto" ,marginX:"0.5%" }}>
-        <ListHeaderT />
+        <Box sx={{ overflowX: "auto", marginX: "0.5%" }}>
+          <ListHeaderT />
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             {data1?.map((element, i) => {
               if (i % 2 === 0) {
@@ -410,7 +408,17 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                   <AccountListRow
                     showOptions={false}
                     showChildModal={true}
-                    containerStyle={{ background: "#FFE094" }}
+                    containerStyle={{
+                      background: ["back", "yes"].includes(
+                        element?.bet_place_id?.bet_type
+                      )
+                        ? "#B3E0FF"
+                        : ["lay", "no"].includes(
+                            element?.bet_place_id?.bet_type
+                          )
+                        ? "#F6D0CB"
+                        : "#FFE094 ",
+                    }}
                     profit={element.profit_loss >= 0}
                     fContainerStyle={{ background: "#0B4F26" }}
                     fTextStyle={{ color: "white" }}
@@ -424,7 +432,17 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                   <AccountListRow
                     showOptions={false}
                     showChildModal={true}
-                    containerStyle={{ background: "#ECECEC" }}
+                    containerStyle={{
+                      background: ["back", "yes"].includes(
+                        element?.bet_place_id?.bet_type
+                      )
+                        ? "#B3E0FF"
+                        : ["lay", "no"].includes(
+                            element?.bet_place_id?.bet_type
+                          )
+                        ? "#F6D0CB"
+                        : "#FFE094 ",
+                    }}
                     profit={element.profit_loss >= 0}
                     fContainerStyle={{ background: "#F8C851" }}
                     fTextStyle={{ color: "#0B4F26" }}
