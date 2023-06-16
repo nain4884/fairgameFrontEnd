@@ -402,57 +402,33 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         <Box sx={{ overflowX: "auto", marginX: "0.5%" }}>
           <ListHeaderT />
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
-            {data1?.map((element, i) => {
-              if (i % 2 === 0) {
-                return (
-                  <AccountListRow
-                    showOptions={false}
-                    showChildModal={true}
-                    containerStyle={{
-                      background: ["back", "yes"].includes(
-                        element?.bet_place_id?.bet_type
-                      )
-                        ? "#B3E0FF"
-                        : ["lay", "no"].includes(
-                            element?.bet_place_id?.bet_type
-                          )
-                        ? "#F6D0CB"
-                        : "#FFE094 ",
-                    }}
-                    profit={element.profit_loss >= 0}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    element={element}
-                    getListOfUser={getListOfUser}
-                    currentPage={currentPage}
-                  />
-                );
-              } else {
-                return (
-                  <AccountListRow
-                    showOptions={false}
-                    showChildModal={true}
-                    containerStyle={{
-                      background: ["back", "yes"].includes(
-                        element?.bet_place_id?.bet_type
-                      )
-                        ? "#B3E0FF"
-                        : ["lay", "no"].includes(
-                            element?.bet_place_id?.bet_type
-                          )
-                        ? "#F6D0CB"
-                        : "#FFE094 ",
-                    }}
-                    profit={element.profit_loss >= 0}
-                    fContainerStyle={{ background: "#F8C851" }}
-                    fTextStyle={{ color: "#0B4F26" }}
-                    element={element}
-                    getListOfUser={getListOfUser}
-                    currentPage={currentPage}
-                  />
-                );
-              }
-            })}
+            {data1?.map((element, i) => (
+              <AccountListRow
+                key={i}
+                showOptions={false}
+                showChildModal={true}
+                containerStyle={{
+                  background: ["back", "yes"].includes(
+                    element?.bet_place_id?.bet_type
+                  )
+                    ? "#B3E0FF"
+                    : ["lay", "no"].includes(element?.bet_place_id?.bet_type)
+                    ? "#F6D0CB"
+                    : "#FFE094 ",
+                }}
+                profit={element.profit_loss >= 0}
+                fContainerStyle={{
+                  background:
+                    element?.ComissionType === "session"
+                      ? "#0B4F26"
+                      : "#F8C851",
+                }}
+                fTextStyle={{ color: "white" }}
+                element={element}
+                getListOfUser={getListOfUser}
+                currentPage={currentPage}
+              />
+            ))}
           </Box>
         </Box>
         <Footer

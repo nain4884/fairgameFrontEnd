@@ -45,6 +45,7 @@ import {
   removeSelectedMatch,
 } from "../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
+import jwtDecode from "jwt-decode";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -67,12 +68,50 @@ const CustomHeader = ({}) => {
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       localStorage.removeItem("role4");
+      localStorage.removeItem("JWTuser");
+    };
+    
+    const handleLoad = (event) => {
+      let jwtS = sessionStorage.getItem("JWTuser");
+      let jwtL = localStorage.getItem("JWTuser");
+      if (jwtS && jwtL) {
+        const jwtSDecoded = jwtDecode(jwtS);
+        const jwtLDecoded = jwtDecode(jwtL);
+        function getLatestJWT(jwt1, jwt2) {
+          if (jwt1.iat > jwt2.iat) {
+            return jwt1;
+          } else {
+            return jwt2;
+          }
+        }
+        const latestJWT = getLatestJWT(jwtSDecoded, jwtLDecoded);
+        function checkSubMatch(resultObj, jwt1, jwt2) {
+          return resultObj.sub === jwt1.sub || resultObj.sub === jwt2.sub;
+        }
+        const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
+        if (result) {
+          dispatch(removeCurrentUser());
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeSelectedMatch());
+          dispatch(logout({ roleType: "role4" }));
+          socket?.disconnect();
+          socketMicro?.disconnect();
+          setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+          // await axios.get("auth/logout");
+          removeSocket();
+          localStorage.setItem("role4", "role4");
+        }
+
+        console.log("jwtSDecoded,jwtLDecoded", jwtSDecoded, jwtLDecoded);
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("load", handleLoad);
 
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      window.addEventListener("load", handleLoad);
     };
   }, []);
 
@@ -143,6 +182,18 @@ const CustomHeader = ({}) => {
       // setFullName(data.data.fullName);
     } catch (e) {
       console.log(e);
+      if (e.response.status === 401) {
+        navigate("/");
+        dispatch(removeCurrentUser());
+        dispatch(removeManualBookMarkerRates());
+        dispatch(removeSelectedMatch());
+        dispatch(logout({ roleType: "role4" }));
+        socket.disconnect();
+        socketMicro.disconnect();
+        setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+        // await axios.get("auth/logout");
+        removeSocket();
+      }
     }
   }
 

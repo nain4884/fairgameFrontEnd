@@ -44,6 +44,7 @@ import ButtonHead from "./ButtonHead";
 import ActiveUsers from "./ActiveUsers";
 import BoxProfile from "./BoxProfile";
 import DropdownMenu1 from "./DropDownMenu1";
+import jwtDecode from "jwt-decode";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -113,13 +114,62 @@ const CustomHeader = ({}) => {
   const { userExpert } = useSelector((state) => state.auth);
   const { socket, socketMicro } = useContext(SocketContext);
 
+
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       localStorage.removeItem("role3");
+      localStorage.removeItem("JWTexpert");
     };
+
+    const handleLoad = (event) => {
+      let jwtS = sessionStorage.getItem("JWTexpert");
+      let jwtL = localStorage.getItem("JWTexpert");
+      if (jwtS && jwtL) {
+        const jwtSDecoded = jwtDecode(jwtS);
+        const jwtLDecoded = jwtDecode(jwtL);
+        function getLatestJWT(jwt1, jwt2) {
+          if (jwt1.iat > jwt2.iat) {
+            return jwt1;
+          } else {
+            return jwt2;
+          }
+        }
+
+        const latestJWT = getLatestJWT(jwtSDecoded, jwtLDecoded);
+
+        function checkSubMatch(resultObj, jwt1, jwt2) {
+          return resultObj.sub === jwt1.sub || resultObj.sub === jwt2.sub;
+        }
+
+        const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
+        if (result) {
+          navigate("/expert");
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role3" }));
+          socketMicro?.disconnect();
+          socket?.disconnect();
+          dispatch(removeSelectedMatch());
+          setGlobalStore((prev) => ({
+            ...prev,
+            expertJWT: "",
+            isSession: true,
+          }));
+          // await axios.get("auth/logout");
+          removeSocket();
+          localStorage.setItem("role3", "role3");
+        }
+
+        console.log("jwtSDecoded,jwtLDecoded", jwtSDecoded, jwtLDecoded);
+      }
+    };
+
     window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("load", handleLoad);
+
     return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      window.addEventListener("load", handleLoad);
     };
   }, []);
 

@@ -100,6 +100,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                                 loss_amount: null,
                                 bet_type: data?.betPlaceData?.bet_type,
                                 country: null,
+                                deleted_reason: data?.betPlaceData?.deleted_reason || null,
                                 ip_address: null,
                                 rate: data?.betPlaceData?.rate,
                                 marketType: data?.betPlaceData?.marketType,

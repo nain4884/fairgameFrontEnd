@@ -531,7 +531,7 @@ const MatchSubmit = ({ }) => {
               if (data?.betPlaceData?.match_id === matchIds[i]) {
                 setSessionBets((prev) => {
                   const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                  return [data.betPlaceData, ...updatedPrev];
+                  return [{...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null,}, ...updatedPrev];
                 });
               }
             }

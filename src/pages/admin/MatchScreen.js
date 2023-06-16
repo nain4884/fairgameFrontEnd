@@ -1479,7 +1479,7 @@ const NewMatchScreen = () => {
 
                     setSingleIObtes((prev) => {
                         const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                        return [data.betPlaceData, ...updatedPrev];
+                        return [{...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null}, ...updatedPrev];
                     });
                     // setCurrentMatch({
                     //   ...currentMatch,
@@ -1487,7 +1487,7 @@ const NewMatchScreen = () => {
                     // });
                     setSessionBets((prev) => {
                         const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                        return [data.betPlaceData, ...updatedPrev];
+                        return [{...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null}, ...updatedPrev];
                     });
                 }
 
@@ -1521,6 +1521,7 @@ const NewMatchScreen = () => {
                                     team_bet: data?.betPlaceData?.team_bet,
                                     odds: data?.betPlaceData?.odds,
                                     win_amount: null,
+                                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
                                     loss_amount: null,
                                     bet_type: data?.betPlaceData?.bet_type,
                                     myStack: data?.betPlaceData?.myStack,

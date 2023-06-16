@@ -146,6 +146,7 @@ const MatchScreen = () => {
                     country: null,
                     ip_address: null,
                     rate: data?.betPlaceData?.rate,
+                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
                     marketType: data?.betPlaceData?.marketType,
                     myStack: data?.betPlaceData?.myStack,
                     myStack: data?.betPlaceData?.myStack,
@@ -266,8 +267,9 @@ const MatchScreen = () => {
                     bet_type: data?.betPlaceData?.bet_type,
                     country: null,
                     ip_address: null,
+                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
                     rate: data?.betPlaceData?.rate,
-                    marketType: data?.betPlaceData?.marketType,
+                    marketType: data?.betPlaceData?.marketType,                  
                     myStack: data?.betPlaceData?.myStack,
                     amount:
                       data?.betPlaceData?.stack || data?.betPlaceData?.stake,

@@ -331,7 +331,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                 teamC_suspend: value?.teamC_suspend,
                 updateAt: value?.updateAt,
                 yes_rate: null,
-              }
+              };
               setManualBookmakerData((prevData) => [...prevData, betData]);
             }
           } catch (err) {
@@ -421,6 +421,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   bet_type: data?.betPlaceData?.bet_type,
                   country: null,
                   ip_address: null,
+                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
                   rate: null,
                   marketType: data?.betPlaceData?.marketType,
                   amount:
@@ -452,6 +453,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   let profitLoss = data?.profitLoss;
                   return {
                     ...betting,
+
                     profitLoss: profitLoss,
                   };
                 }
@@ -483,7 +485,13 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
           setSessionBets((prev) => {
             const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-            return [data.betPlaceData, ...updatedPrev];
+            return [
+              {
+                ...data.betPlaceData,
+                deleted_reason: data.betPlaceData?.deleted_reason || null,
+              },
+              ...updatedPrev,
+            ];
           });
 
           // dispatch(setAllSessionBets([data.betPlaceData, ...session]));
@@ -1362,8 +1370,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   />
                   {(matchDetail?.manualSessionActive ||
                     matchDetail?.apiSessionActive) && (
-                      <SessionBetSeperate allBetsData={sessionBets} mark />
-                    )}
+                    <SessionBetSeperate allBetsData={sessionBets} mark />
+                  )}
                 </Box>
               </Box>
             )}

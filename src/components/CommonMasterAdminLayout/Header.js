@@ -51,6 +51,7 @@ import { toast } from "react-toastify";
 import { memo } from "react";
 import MobileSideBar from "./MobileSideBar";
 import BoxProfile from "./BoxProfile";
+import jwtDecode from "jwt-decode";
 var roleName = "";
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -97,6 +98,99 @@ const CustomHeader = ({}) => {
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [nav]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (nav === "admin") {
+        localStorage.removeItem("role1");
+        localStorage.removeItem("JWTadmin");
+      } else {
+        localStorage.removeItem("role2");
+        localStorage.removeItem("JWTwallet");
+      }
+    };
+
+    const handleLoad = (event) => {
+      if (nav === "admin") {
+        let jwtS = sessionStorage.getItem("JWTadmin");
+        let jwtL = localStorage.getItem("JWTadmin");
+        if (jwtS && jwtL) {
+          const jwtSDecoded = jwtDecode(jwtS);
+          const jwtLDecoded = jwtDecode(jwtL);
+          function getLatestJWT(jwt1, jwt2) {
+            if (jwt1.iat > jwt2.iat) {
+              return jwt1;
+            } else {
+              return jwt2;
+            }
+          }
+
+          const latestJWT = getLatestJWT(jwtSDecoded, jwtLDecoded);
+
+          function checkSubMatch(resultObj, jwt1, jwt2) {
+            return resultObj.sub === jwt1.sub || resultObj.sub === jwt2.sub;
+          }
+
+          const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
+          if (result) {
+            navigate("/admin");
+            dispatch(removeManualBookMarkerRates());
+            dispatch(removeCurrentUser());
+            dispatch(logout({ roleType: "role1" }));
+            socketMicro?.disconnect();
+            socket?.disconnect();
+            dispatch(removeSelectedMatch());
+            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+            // await axios.get("auth/logout");
+            removeSocket();
+            localStorage.setItem("role1", "role1");
+          }
+        }
+      } else {
+        let jwtS = sessionStorage.getItem("JWTwallet");
+        let jwtL = localStorage.getItem("JWTwallet");
+        if (jwtS && jwtL) {
+          const jwtSDecoded = jwtDecode(jwtS);
+          const jwtLDecoded = jwtDecode(jwtL);
+          function getLatestJWT(jwt1, jwt2) {
+            if (jwt1.iat > jwt2.iat) {
+              return jwt1;
+            } else {
+              return jwt2;
+            }
+          }
+
+          const latestJWT = getLatestJWT(jwtSDecoded, jwtLDecoded);
+
+          function checkSubMatch(resultObj, jwt1, jwt2) {
+            return resultObj.sub === jwt1.sub || resultObj.sub === jwt2.sub;
+          }
+
+          const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
+          if (result) {
+            navigate("/wallet");
+            dispatch(removeManualBookMarkerRates());
+            dispatch(removeCurrentUser());
+            dispatch(logout({ roleType: "role2" }));
+            socketMicro?.disconnect();
+            socket?.disconnect();
+            dispatch(removeSelectedMatch());
+            setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+            // await axios.get("auth/logout");
+            removeSocket();
+            localStorage.setItem("role2", "role2");
+          }
+        }
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("load", handleLoad);
+
+    return () => {
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      window.addEventListener("load", handleLoad);
     };
   }, [nav]);
 

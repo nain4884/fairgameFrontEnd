@@ -24,7 +24,7 @@ const data = [
     country: "INDIA",
   },
 ];
-const SessionBetSeperate = ({ profit, mark, mark2, allBetsData, }) => {
+const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
   //  {console.warn("allBetsData qq:",allBetsData)}
   return (
     <Box
@@ -133,8 +133,8 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData, }) => {
       >
         {allBetsData?.map((i, k) => {
           return (
-            <Box 
-               key={k}
+            <Box
+              key={k}
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -159,15 +159,48 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData, }) => {
                 </Typography>
               </Box>
               <RowComponent header={false} data={i} />
-              {/* {
-                                k == 2 && <Box sx={{ width: { mobile: profit ? '100%' : '100%', alignItems: 'flex-end', justifyContent: 'center', display: 'flex', laptop: profit ? '100 % ' : '100% ' }, background: 'rgba(0, 0, 0, 0.5)', height: '42px', position: 'absolute' }}>
-                                    <Box sx={{ width: mark2 ? '35%' : '35%' }} >
-                                    </Box>
-                                    <Box sx={{ width: mark2 ? '65%' : '65%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', alignSelf: 'flex-end' }}>
-                                        {mark && <Typography sx={{ fontSize: '10px', fontWeight: '700', color: 'white', textTransform: "uppercase" }}>Bet <span style={{ color: '#e41b23' }} >deleted</span> due to no ball</Typography>}
-                                    </Box>
-                                </Box>
-                            } */}
+              {i?.deleted_reason !== null && (
+                <Box
+                  sx={{
+                    width: {
+                      mobile: profit ? "100%" : "100%",
+                      alignItems: "flex-end",
+                      justifyContent: "center",
+                      display: "flex",
+                      laptop: profit ? "100 % " : "100% ",
+                    },
+                    background: "rgba(0, 0, 0, 0.5)",
+                    height: "42px",
+                    position: "absolute",
+                  }}
+                >
+                  <Box sx={{ width: mark2 ? "35%" : "35%" }}></Box>
+                  <Box
+                    sx={{
+                      width: mark2 ? "65%" : "65%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "flex-end",
+                      alignSelf: "flex-end",
+                    }}
+                  >
+                    {mark && (
+                      <Typography
+                        sx={{
+                          fontSize: "10px",
+                          fontWeight: "700",
+                          color: "white",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
+                        due to ${i?.deleted_reason}
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+              )}
               {profit && k !== 2 && (
                 <Box
                   sx={{
@@ -175,7 +208,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData, }) => {
                     width: "30%",
                     margin: { mobile: "1px", laptop: "1px" },
                     display: "flex",
-                    background: i.myProfitLoss  > 0 ? "#10DC61": "#E32A2A" ,
+                    background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
@@ -187,14 +220,14 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData, }) => {
                       fontWeight: "700",
                     }}
                   >
-                   {Number(i.myProfitLoss).toFixed(2)}
+                    {Number(i.myProfitLoss).toFixed(2)}
                   </Typography>
                   <StyledImage
                     sx={{
                       width: { mobile: "15px", laptop: "25px" },
                       height: { laptop: "15px", mobile: "7px" },
                     }}
-                    src={ i.myProfitLoss  > 0 ? ARROWUP : ARROWDOWN }
+                    src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
                   />
                 </Box>
               )}

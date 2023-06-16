@@ -565,7 +565,7 @@ const DeleteBet = ({ }) => {
 
           setSingleIObtes((prev) => {
             const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-            return [data.betPlaceData, ...updatedPrev];
+            return [{...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null,}, ...updatedPrev];
           });
           // setCurrentMatch({
           //   ...currentMatch,
@@ -573,7 +573,7 @@ const DeleteBet = ({ }) => {
           // });
           setSessionBets((prev) => {
             const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-            return [data.betPlaceData, ...updatedPrev];
+            return [{...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null,}, ...updatedPrev];
           });
         }
 
@@ -611,6 +611,7 @@ const DeleteBet = ({ }) => {
                   bet_type: data?.betPlaceData?.bet_type,
                   myStack: data?.betPlaceData?.myStack,
                   userName: data?.betPlaceData?.userName,
+                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
                   country: null,
                   ip_address: null,
                   rate: null,

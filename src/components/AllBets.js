@@ -18,11 +18,13 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               name: v?.user?.userName,
               color: "black",
               background: "#F1C550",
+              deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.marketType,
               color: "black",
               background: "#F1C550",
+              deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.team_bet,
@@ -30,6 +32,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               background: ["yes", "back"].includes(v?.bet_type)
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
+              deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.odds,
@@ -41,6 +44,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               small: true,
+              deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.bet_type,
@@ -49,6 +53,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               small: true,
+              deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.amount,
@@ -56,11 +61,13 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               background: ["yes", "back"].includes(v?.bet_type)
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
+              deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.myStack,
               color: "white",
               background: "#0B4F26",
+              deleted_reason: v?.deleted_reason,
             },
             {
               name: moment(v?.createAt).format("LT"),
@@ -70,6 +77,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 : "rgb(255, 146, 146)",
               time: true,
               date: moment(v?.createAt).format("L"),
+              deleted_reason: v?.deleted_reason,
             },
           ],
         };
@@ -168,44 +176,45 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                   </Typography>
                 </Box>
                 <Row index={k} values={i.values} />
-                {/* {!tag && k == 1 && (
-                <Box
-                  sx={{
-                    background: "rgba(0,0,0,0.5)",
-                    width: "100%",
-                    height: "50px",
-                    position: "absolute",
-                    display: "flex",
-                  }}
-                >
-                  <Box sx={{ flex: 1, display: "flex" }}>
-                    <Box sx={{ width: "34%", height: "50px" }}></Box>
-                    <Box
-                      sx={{
-                        width: "66%",
-                        height: "50px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "flex-end",
-                      }}
-                    >
-                      {
-                        <Typography
-                          sx={{
-                            fontSize: "10px",
-                            fontWeight: "700",
-                            color: "white",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
-                          due to no ball
-                        </Typography>
-                      }
+                {i?.deleted_reason && (
+                  <Box
+                    sx={{
+                      background: "rgba(0,0,0,0.5)",
+                      width: "100%",
+                      height: "50px",
+                      position: "absolute",
+                      display: "flex",
+                    }}
+                  >
+                    <Box sx={{ flex: 1, display: "flex" }}>
+                      <Box sx={{ width: "34%", height: "50px" }}></Box>
+                      <Box
+                        sx={{
+                          width: "66%",
+                          height: "50px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "flex-end",
+                        }}
+                      >
+                        {
+                          <Typography
+                            sx={{
+                              fontSize: "10px",
+                              fontWeight: "700",
+                              color: "white",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Bet{" "}
+                            <span style={{ color: "#e41b23" }}>deleted</span>{" "}
+                            due to {i?.deleted_reason}
+                          </Typography>
+                        }
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
-              )} */}
+                )}
               </div>
             );
           })}
