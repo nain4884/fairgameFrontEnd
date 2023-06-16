@@ -110,7 +110,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         teamB: response?.data?.data[0].teamB_rate ? response?.data?.data[0].teamB_rate : 0,
                         teamC: response?.data?.data[0].teamC_rate ? response?.data?.data[0].teamC_rate : 0
                     })
-                    // dispatch(setBookmakerTeamRates(teamRates));
+                    // dispatch(setBookmakerTeamRates({
+                    //     teamA: response?.data?.data[0].teamA_rate ? response?.data?.data[0].teamA_rate : 0,
+                    //     teamB: response?.data?.data[0].teamB_rate ? response?.data?.data[0].teamB_rate : 0,
+                    //     teamC: response?.data?.data[0].teamC_rate ? response?.data?.data[0].teamC_rate : 0
+                    // }));
                 }
             } catch (e) {
                 console.log(e.response.data.message);
@@ -1256,6 +1260,25 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
         return (
             <>
+                <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '100%', alignSelf: 'center', paddingX: .2, paddingTop: .2, background: 'white' }}>
+                    <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market</Typography>
+                    </Box>
+                    <Box sx={{
+                        flex: .1, background: '#262626'
+                    }}>
+                        <div className="slanted"></div>
+                    </Box>
+                    <Box sx={{
+                        flex: 1, background: '#262626',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end'
+                    }}>
+                        <BookButton rate={bookRatioA(teamRates?.teamA, teamRates?.teamB)} />
+                        <BookButton rate={bookRatioB(teamRates?.teamA, teamRates?.teamB)} />
+                    </Box>
+                </Box >
                 <Box sx={{ border: "2px solid #FFFFFF" }}>
                     <Box sx={{ display: "flex" }}>
                         <Box sx={{ background: "#319E5B", width: "60%", px: "5px" }}>
@@ -1734,28 +1757,25 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             {!add && <Box sx={{ width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', position: 'absolute', left: '0px', top: 0, zIndex: 1 }} ></Box>}
             <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600", zIndex: 2, position: 'relative' }}>{match?.title}</Typography>
             <Box sx={{ display: "flex", marginTop: "20px", flexDirection: 'column' }}>
-                <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '100%', alignSelf: 'center', paddingX: .2, paddingTop: .2, background: 'white' }}>
+                {/* <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '100%', alignSelf: 'center', paddingX: .2, paddingTop: .2, background: 'white' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market</Typography>
                     </Box>
                     <Box sx={{
                         flex: .1, background: '#262626'
-                        // '#262626' 
                     }}>
                         <div className="slanted"></div>
                     </Box>
                     <Box sx={{
                         flex: 1, background: '#262626',
-                        // '#262626' ,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'flex-end'
                     }}>
-                        {/* <SmallBox valueA={bookRatioA(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} valueB={bookRatioB(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} /> */}
                         <BookButton rate={bookRatioA(bookmakerTeamRates?.teamA, bookmakerTeamRates?.teamB)} />
                         <BookButton rate={bookRatioB(bookmakerTeamRates?.teamA, bookmakerTeamRates?.teamB)} />
                     </Box>
-                </Box >
+                </Box > */}
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
                     <AddSession />
                     {/* <Box sx={{ display: "flex", zIndex: 2, position: 'relative', justifyContent: "center", width: '100%', marginTop: '5%', alignSelf: 'center' }}>

@@ -653,9 +653,10 @@ const MatchSubmit = ({ }) => {
     try {
       if (socketMicro && socketMicro.connected && marketIds) {
         socketMicro.on("connect", () => {
-          // for (var index = 0; index < matchIds.length; index++) {
-          //   socketMicro.emit("init", { id: matchIds[index] });
-          // }
+
+          for (var index = 0; index < marketIds.length; index++) {
+            socketMicro.emit("init", { id: marketIds[index] });
+          }
           // socketMicro.emit("init", { id: marketId });
           // activateLiveMatchMarket();
           // setSessionLock(false)
@@ -685,6 +686,14 @@ const MatchSubmit = ({ }) => {
 
         for (var i = 0; i < marketIds?.length; i++) {
           (function (i) {
+
+            socketMicro.emit("init", { id: marketIds[i] });
+
+            socketMicro.on("reconnect", () => {
+              socketMicro.emit("init", { id: marketIds[i] });
+              // activateLiveMatchMarket();
+              // setSessionLock(false)
+            });
             socketMicro.on(`session${marketIds[i]}`, (val) => {
               // console.log("currentMatchProfit 33:", val);
 
@@ -1242,7 +1251,7 @@ const MatchSubmit = ({ }) => {
                   // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                   />
                   }
-                  {item?.apiSessionActive &&
+                  {(item?.apiSessionActive || item?.manualSessionActive) &&
                     <SessionMarket
                       currentMatch={item}
                       sessionOffline={item.sessionOffline}
@@ -1325,7 +1334,7 @@ const MatchSubmit = ({ }) => {
                 // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                 />
                 }
-                {item?.apiSessionActive &&
+                {(item?.apiSessionActive || item?.manualSessionActive) &&
                   <SessionMarket
                     currentMatch={item}
                     sessionOffline={item.sessionOffline}

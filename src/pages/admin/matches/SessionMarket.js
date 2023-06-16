@@ -213,7 +213,7 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, 
             sx={{
               display: "flex",
               flexDirection: "column",
-              height: "200px",
+              maxHeight: "160px",
               width: "100%",
               position: "relative",
             }}

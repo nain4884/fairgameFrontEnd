@@ -291,7 +291,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
                     <AddSession createSession={createSession} betId={betId} Detail={{ Detail, setDetail }} incGap={{ incGap, setIncGap }} socket={socket} sessionEvent={sessionEvent} lock={lock} setLock={setLock} isBall={{ isBall, setIsBall }} isCreateSession={isCreateSession} match={match} isPercent={{ isPercent, setIsPercent }} live={live} />
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        {!isCreateSession ? <>
+                        {!isCreateSession || sessionBetId ? <>
                             <Box
                                 onClick={(e) => {
                                     handleLive(live ? 0 : 1)
@@ -357,7 +357,7 @@ export default function IndiaPakLive({ createSession, match, showDialogModal, se
                     </Box>
                 </Box>
                 <Box sx={{ marginLeft: "15px" }}>
-                    {isCreateSession ? <Box sx={{ width: "162px", minHeight: "182px" }} /> : <RunsAmountBox proLoss={proLoss} />}
+                    {isCreateSession || sessionBetId ? <Box sx={{ width: "162px", minHeight: "182px" }} /> : <RunsAmountBox proLoss={proLoss} />}
                 </Box>
             </Box>
         </Box>

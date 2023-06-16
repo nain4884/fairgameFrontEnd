@@ -97,7 +97,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
               small: true,
             },
             {
-              name: v?.amount,
+              name: v?.amount || v?.stake,
               color: "black",
               background: ["yes", "back"].includes(v?.bet_type) ? "#B3E0FF" : "rgb(255, 146, 146)",
             },
