@@ -59,7 +59,6 @@ const FullAllBets = ({ tag, mode, IObets }) => {
   const [selectedData, setSelectedData] = useState([]);
 
   const [newData, setNewBets] = useState([]);
-
   useEffect(() => {
     if (IObets) {
       const body = IObets?.map((v) => {
@@ -88,9 +87,10 @@ const FullAllBets = ({ tag, mode, IObets }) => {
             {
               name: v?.odds,
               color: "black",
-              rate:
-                (v?.bet_type === "no" && v?.rate?.split("-")[0]) ||
-                (v?.bet_type === "yes" && v?.rate?.split("-")[1]),
+              rate:v.rate ?   
+              v?.bet_type === "no" ? v?.rate?.split("-")[0] :
+               v?.rate?.split("-")[1] : null
+                ,
               background: ["yes", "back"].includes(v?.bet_type)
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
@@ -511,6 +511,7 @@ const SmallBox = ({ item, k }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   // alert(JSON.stringify(item))
+  console.log(item, "item");
   return (
     <Box
       key={k}
@@ -522,16 +523,22 @@ const SmallBox = ({ item, k }) => {
         justifyContent: "center",
         alignItems: "center",
         display: "flex",
+        flexDirection: "column",
       }}
     >
       <Typography
         sx={{
-          fontSize: matchesMobile ? "8px" : ".8vw",
+          fontSize: matchesMobile ? "12px" : ".8vw",
           fontWeight: "600",
           color: item?.color,
         }}
       >
-        {item?.name} {item.rate_percent}
+        {item?.name}
+      </Typography>
+      <Typography
+        sx={{ fontSize: "8px", fontWeight: "600", color: item?.color }}
+      >
+        {item?.rate && item?.rate}
       </Typography>
     </Box>
   );
