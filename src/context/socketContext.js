@@ -8,6 +8,7 @@ import {
 import { setRole } from "../newStore";
 import { GlobalStore } from "./globalStore";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const SocketContext = createContext();
 
@@ -51,7 +52,11 @@ export const SocketProvider = ({ children }) => {
         });
         newSocket.on("connect", () => {
           setSocket(newSocket);
+          toast.success("Socket connect !", { autoClose: 2000 });
           // localStorage.setItem("socket", newSocket.connected)
+        });
+        newSocket.on("disconnect", () => {
+          toast.error("Socket disconnect !", { autoClose: 1000 });
         });
         // }
         // if (checkSocket != "true") {
@@ -66,7 +71,12 @@ export const SocketProvider = ({ children }) => {
         });
         newMicroSocket.on("connect", () => {
           setSocketMicro(newMicroSocket);
+          toast.success("Third party socket connect !", { autoClose: 2000 });
           // localStorage.setItem("microSocket", newMicroSocket.connected)
+        });
+
+        newMicroSocket.on("disconnect", () => {
+          toast.error("Third party socket disconnect !", { autoClose: 1000 });
         });
 
         newMicroSocket.onerror = (event) => {
