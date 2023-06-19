@@ -14,7 +14,7 @@ import { SocketContext } from "../../context/socketContext";
 import { useDispatch, useSelector } from "react-redux";
 
 let matchOddsCount = 0;
-const MatchSubmit = ({}) => {
+const MatchSubmit = ({ }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { socket, socketMicro } = useContext(SocketContext);
@@ -561,6 +561,7 @@ const MatchSubmit = ({}) => {
                     ...updatedPrev,
                   ];
                 });
+                setIObtes((prev) => [data.betPlaceData, ...prev]);
               }
             }
             if (packet.data[0] === "match_bet") {
@@ -1193,7 +1194,7 @@ const MatchSubmit = ({}) => {
                                   : []
                               }
                               typeOfBet={"Match Odds"}
-                              // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                            // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                             />
                           )}
                           {item?.apiBookMakerActive && (
@@ -1217,19 +1218,19 @@ const MatchSubmit = ({}) => {
                               data={item}
                               manualBookmakerData={matchOddsDataTemp}
                               typeOfBet={"MANUAL BOOKMAKER"}
-                              // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                            // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                             />
                           )}
                           {(item?.apiSessionActive ||
                             item?.manualSessionActive) && (
-                            <SessionMarket
-                              currentOdds={currentOdds}
-                              currentMatch={item}
-                              data={[]}
-                              sessionOffline={item.sessionOffline}
-                              sessionBets={sessionBetsData}
-                            />
-                          )}
+                              <SessionMarket
+                                currentOdds={currentOdds}
+                                currentMatch={item}
+                                data={[]}
+                                sessionOffline={item.sessionOffline}
+                                sessionBets={sessionBetsData}
+                              />
+                            )}
                         </Box>
                         {/* <Box sx={{ width: "20px" }} /> */}
                         <Box
@@ -1311,18 +1312,18 @@ const MatchSubmit = ({}) => {
                           data={item}
                           manualBookmakerData={matchOddsDataTemp}
                           typeOfBet={"MANUAL BOOKMAKER"}
-                          // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                        // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                         />
                       )}
                       {(item?.apiSessionActive ||
                         item?.manualSessionActive) && (
-                        <SessionMarket
-                          currentOdds={currentOdds}
-                          currentMatch={item}
-                          sessionOffline={item.sessionOffline}
-                          sessionBets={sessionBetsData}
-                        />
-                      )}
+                          <SessionMarket
+                            currentOdds={currentOdds}
+                            currentMatch={item}
+                            sessionOffline={item.sessionOffline}
+                            sessionBets={sessionBetsData}
+                          />
+                        )}
                       <FullAllBets tag={true} IObets={IObetsData} />
                     </Box>
                   )}
@@ -1407,7 +1408,7 @@ const MatchSubmit = ({}) => {
                         data={item}
                         manualBookmakerData={matchOddsDataTemp}
                         typeOfBet={"MANUAL BOOKMAKER"}
-                        // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                      // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                       />
                     )}
                     {(item?.apiSessionActive || item?.manualSessionActive) && (

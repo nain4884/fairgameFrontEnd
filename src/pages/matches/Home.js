@@ -714,33 +714,94 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         if (packet.data[0] === "updateRate_user") {
           const value = packet.data[1];
           try {
-            setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0]?.id != value.betId) {
-                return currentMatches;
+
+            alert(JSON.stringify(value));
+            if (!value?.lock) {
+              if (value?.isTab) {
+                setManualBookmakerData((currentMatches) => {
+                  if (currentMatches[0]?.id != value.betId) {
+                    return currentMatches;
+                  }
+                  const updatedMatch = {
+                    ...currentMatches[0],
+                    teamA_Back: value?.teamA_Back,
+                    teamA_lay: "",
+                    teamB_Back: value?.teamB_Back,
+                    teamB_lay: "",
+                    teamC_Back: value?.teamC_Back,
+                    teamC_lay: "",
+                    teamA_suspend: "live",
+                    teamB_suspend: "live",
+                    teamC_suspend: "live",
+                  };
+
+                  // Create a new array with the updated match object
+                  const updatedMatches = [
+                    ...currentMatches.slice(0, 0),
+                    updatedMatch,
+                    ...currentMatches.slice(0 + 1),
+                  ];
+
+                  // Return the new array as the updated state
+                  return updatedMatches;
+                });
               }
-              const updatedMatch = {
-                ...currentMatches[0],
-                teamA_Back: value?.teamA_Back,
-                teamA_lay: "",
-                teamB_Back: value?.teamB_Back,
-                teamB_lay: "",
-                teamC_Back: value?.teamC_Back,
-                teamC_lay: "",
-                teamA_suspend: "live",
-                teamB_suspend: "live",
-                teamC_suspend: "live",
-              };
-
-              // Create a new array with the updated match object
-              const updatedMatches = [
-                ...currentMatches.slice(0, 0),
-                updatedMatch,
-                ...currentMatches.slice(0 + 1),
-              ];
-
-              // Return the new array as the updated state
-              return updatedMatches;
-            });
+            } else {
+              if (value.teamA_suspend == "Ball Started") {
+                try {
+                  setManualBookmakerData((currentMatches) => {
+                    // alert(JSON.stringify(currentMatches))
+                    if (currentMatches[0]?.id != value.betId) {
+                      return currentMatches;
+                    }
+                    const updatedMatch = {
+                      ...currentMatches[0],
+                      teamA_suspend: value?.teamA_suspend ? "suspended" : value?.teamA_suspend,
+                      teamB_suspend: value?.teamB_suspend ? "suspended" : value?.teamB_suspend,
+                      teamC_suspend: value?.teamC_suspend ? "suspended" : value?.teamC_suspend,
+                      teamA_Ball: "ball",
+                      teamB_Ball: "ball",
+                      teamC_Ball: "ball",
+                    };
+                    const updatedMatches = [
+                      ...currentMatches.slice(0, 0),
+                      updatedMatch,
+                      ...currentMatches.slice(0 + 1),
+                    ];
+                    return updatedMatches;
+                  });
+                } catch (err) {
+                  console.log(err?.message);
+                }
+              } else {
+                try {
+                  setManualBookmakerData((currentMatches) => {
+                    // alert(JSON.stringify(currentMatches[0]));
+                    if (currentMatches[0]?.id != value.betId) {
+                      return currentMatches;
+                    }
+                    alert(JSON.stringify(value));
+                    const updatedMatch = {
+                      ...currentMatches[0],
+                      teamA_suspend: value?.teamA_suspend ? "suspended" : value?.teamA_suspend,
+                      teamB_suspend: value?.teamB_suspend ? "suspended" : value?.teamB_suspend,
+                      teamC_suspend: value?.teamC_suspend ? "suspended" : value?.teamC_suspend,
+                      teamA_Ball: null,
+                      teamB_Ball: null,
+                      teamC_Ball: null,
+                    };
+                    const updatedMatches = [
+                      ...currentMatches.slice(0, 0),
+                      updatedMatch,
+                      ...currentMatches.slice(0 + 1),
+                    ];
+                    return updatedMatches;
+                  });
+                } catch (err) {
+                  console.log(err?.message);
+                }
+              }
+            }
           } catch (err) {
             console.log(err?.message);
           }
@@ -1370,8 +1431,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   />
                   {(matchDetail?.manualSessionActive ||
                     matchDetail?.apiSessionActive) && (
-                    <SessionBetSeperate allBetsData={sessionBets} mark />
-                  )}
+                      <SessionBetSeperate allBetsData={sessionBets} mark />
+                    )}
                 </Box>
               </Box>
             )}
