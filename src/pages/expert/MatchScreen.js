@@ -56,7 +56,7 @@ const MatchScreen = () => {
   const [localState, setLocalState] = useState(null);
   const [liveData, setLiveData] = useState([]);
   const { currentUser } = useSelector((state) => state?.currentUser);
-
+  const [currentOdds, setCurrentOdds] = useState(null);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
   const getSingleMatch = async (val) => {
@@ -244,6 +244,11 @@ const MatchScreen = () => {
             //   "MATCHH_BET"
             // );
             if (data) {
+              setCurrentOdds({
+                bet_id: data?.betPlaceData?.bet_id,
+                odds: data?.betPlaceData?.odds,
+                match_id: data?.betPlaceData?.match_id,
+              });
               setIObtes((IObets) => {
                 const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
 
@@ -269,7 +274,7 @@ const MatchScreen = () => {
                     ip_address: null,
                     deleted_reason: data?.betPlaceData?.deleted_reason || null,
                     rate: data?.betPlaceData?.rate,
-                    marketType: data?.betPlaceData?.marketType,                  
+                    marketType: data?.betPlaceData?.marketType,
                     myStack: data?.betPlaceData?.myStack,
                     amount:
                       data?.betPlaceData?.stack || data?.betPlaceData?.stake,
@@ -576,7 +581,16 @@ const MatchScreen = () => {
                   }}
                 >
                   {data?.map((v) => {
-                    return <RunsBox key={v?.id} item={v} setData={setData} />;
+                    return (
+                      <RunsBox
+                        currentOdds={
+                          currentOdds?.bet_id === v?.id ? currentOdds : null
+                        }
+                        key={v?.id}
+                        item={v}
+                        setData={setData}
+                      />
+                    );
                   })}
                 </Box>
               )}

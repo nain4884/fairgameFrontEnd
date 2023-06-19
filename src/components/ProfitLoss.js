@@ -49,9 +49,9 @@ const ProfitLossComponent = ({ eventData, reportData, betData, sessionBetData, h
                     <StyledImage src={ArrowDown} sx={{ width: { laptop: '20px', mobile: "10px" }, transform: visible ? 'rotate(180deg)' : 'rotate(0deg)', height: { laptop: '10px', mobile: '6px' } }} />
                 </Box>
                 <Box sx={{ background: item?.totalLoss > 0 ? "#27AC1E" : "#E32A2A", paddingX: '2px', width: { mobile: "25%", laptop: "20%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
-                    <Typography sx={{ fontSize: { laptop: '16px', mobile: '12px' }, fontWeight: '700', color: 'white' }} >Loss</Typography>
+                    <Typography sx={{ fontSize: { laptop: '16px', mobile: '12px' }, fontWeight: '700', color: 'white' }} >{item?.totalLoss > 0 ? "Profit" :"Loss" }</Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography sx={{ fontSize: { laptop: '16px', mobile: "12px" }, fontWeight: '700', color: 'white' }}>{item?.totalLoss}</Typography>
+                        <Typography sx={{ fontSize: { laptop: '16px', mobile: "12px" }, fontWeight: '700', color: 'white' }}>{Number(item?.totalLoss).toFixed(2)}</Typography>
                         <StyledImage src={item?.totalLoss > 0 ? ARROWUP : ARROWDOWN} sx={{ width: { laptop: '25px', mobile: "15px" }, height: { laptop: '12px', mobile: "8px" }, }} />
                     </Box>
                 </Box>
@@ -90,23 +90,23 @@ const ProfitLossComponent = ({ eventData, reportData, betData, sessionBetData, h
                     <Box sx={{ background: item.rateProfitLoss > 0 ? "#27AC1E" : "#E32A2A", paddingX: '2px', width: { mobile: "25%", laptop: "20%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
                         <Typography sx={{ fontSize: { laptop: '12px', mobile: '8px' }, fontWeight: '500', color: 'white' }} >Rate Profit/Loss</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography sx={{ fontSize: '15px', fontWeight: '700', color: 'white' }}>{item.rateProfitLoss}</Typography>
+                            <Typography sx={{ fontSize: '15px', fontWeight: '700', color: 'white' }}>{Number(item.rateProfitLoss).toFixed(2)}</Typography>
                             <StyledImage src={item.rateProfitLoss > 0 ? ARROWUP : ARROWDOWN} sx={{ width: { laptop: '25px', mobile: "15px" }, height: { laptop: '12px', mobile: "8px" }, }} />
                         </Box>
                     </Box>
                     <Box sx={{ background: item.sessionProfitLoss > 0 ? "#27AC1E" : "#E32A2A", paddingX: '2px', width: { mobile: "25%", laptop: "20%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
                         <Typography sx={{ fontSize: { laptop: '12px', mobile: '8px' }, fontWeight: '500', color: 'white' }} >Session Profit/Loss</Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography sx={{ fontSize: '15px', fontWeight: '700', color: 'white' }}>{item.sessionProfitLoss}</Typography>
+                            <Typography sx={{ fontSize: '15px', fontWeight: '700', color: 'white' }}>{Number(item.sessionProfitLoss).toFixed(2)}</Typography>
                             <StyledImage src={item.sessionProfitLoss > 0 ? ARROWUP : ARROWDOWN} sx={{ width: { laptop: '25px', mobile: "15px" }, height: { laptop: '12px', mobile: "8px" }, }} />
                         </Box>
                     </Box>
                 </Box >
                 {selectedId === item?.matchId && <Box sx={{ width: { mobile: '100%', laptop: '96%' }, marginTop: { mobile: '.25vh' }, marginLeft: { laptop: '4%' }, display: 'flex', flexDirection: { laptop: 'row', mobile: "column" } }}>
-                    <BetHistory betData={betData} admin profit />
+                    <BetHistory betHistory={true} betData={betData} admin profit />
 
                     <Box sx={{ width: { laptop: '1vw', mobile: 0 } }} ></Box>
-                    <SessionBetHistory betData={sessionBetData} admin profit />
+                    <SessionBetHistory mark mark2 betHistory={true} betData={sessionBetData} admin profit />
 
                 </Box>}
             </Box>

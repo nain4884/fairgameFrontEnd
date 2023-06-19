@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState, useContext } from "react";
 import { Typography, Box, Grid, useMediaQuery } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import "../../components/index.css";
@@ -14,7 +14,7 @@ import { SocketContext } from "../../context/socketContext";
 import { useDispatch, useSelector } from "react-redux";
 
 let matchOddsCount = 0;
-const MatchSubmit = ({ }) => {
+const MatchSubmit = ({}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { socket, socketMicro } = useContext(SocketContext);
@@ -22,12 +22,13 @@ const MatchSubmit = ({ }) => {
   const location = useLocation();
   const { currentUser } = useSelector((state) => state?.currentUser);
   const matchIds = location?.state?.matchIds;
-  const marketIds = location?.state?.marketIds
+  const marketIds = location?.state?.marketIds;
   // const [marketIds, setMarketIds] = useState([]);
   const [matchData, setMatchData] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
   const [IObets, setIObtes] = useState([]);
   const [mode, setMode] = useState(false);
+  const [currentOdds, setCurrentOdds] = useState(null);
   const [isHandled, setIsHandled] = useState(false);
   // matchIds
   useEffect(() => {
@@ -50,8 +51,8 @@ const MatchSubmit = ({ }) => {
           (function (i) {
             if (packet.data[0] === "updateMatchActiveStatus") {
               const value = packet.data[1];
-              setMatchData(prevMatchData => {
-                return prevMatchData.map(item => {
+              setMatchData((prevMatchData) => {
+                return prevMatchData.map((item) => {
                   if (item?.id === matchIds[i]) {
                     return {
                       ...item,
@@ -71,9 +72,9 @@ const MatchSubmit = ({ }) => {
             if (packet.data[0] === "teamA_rate_user") {
               const value = packet.data[1];
               try {
-                setMatchData(prevMatchData => {
-                  return prevMatchData.map(item => {
-                    const updatedBettings = item.bettings.map(betting => {
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
+                    const updatedBettings = item.bettings.map((betting) => {
                       // Check if the betting object has the specified ID
                       if (betting.id === value.betId) {
                         // Update the bet_condition value
@@ -81,7 +82,8 @@ const MatchSubmit = ({ }) => {
                           ...betting,
                           teamA_Back: value?.teamA_Back,
                           teamA_lay: value?.teamA_lay,
-                          teamA_suspend: value?.teamA_suspend === false ? null : "suspended",
+                          teamA_suspend:
+                            value?.teamA_suspend === false ? null : "suspended",
                           teamA_Ball: null,
                           teamB_Ball: null,
                           teamC_Ball: null,
@@ -92,7 +94,7 @@ const MatchSubmit = ({ }) => {
 
                     return {
                       ...item,
-                      bettings: updatedBettings
+                      bettings: updatedBettings,
                     };
                   });
                 });
@@ -106,10 +108,9 @@ const MatchSubmit = ({ }) => {
             if (packet.data[0] === "teamB_rate_user") {
               const value = packet.data[1];
               try {
-
-                setMatchData(prevMatchData => {
-                  return prevMatchData.map(item => {
-                    const updatedBettings = item.bettings.map(betting => {
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
+                    const updatedBettings = item.bettings.map((betting) => {
                       // Check if the betting object has the specified ID
                       if (betting.id === value.betId) {
                         // Update the bet_condition value
@@ -117,7 +118,8 @@ const MatchSubmit = ({ }) => {
                           ...betting,
                           teamB_Back: value?.teamB_Back, // Update the teamA_Back value
                           teamB_lay: value?.teamB_lay, // Update the teamA_lay value
-                          teamB_suspend: value?.teamB_suspend == false ? null : "suspended",
+                          teamB_suspend:
+                            value?.teamB_suspend == false ? null : "suspended",
                           teamA_Ball: null,
                           teamB_Ball: null,
                           teamC_Ball: null,
@@ -128,7 +130,7 @@ const MatchSubmit = ({ }) => {
 
                     return {
                       ...item,
-                      bettings: updatedBettings
+                      bettings: updatedBettings,
                     };
                   });
                 });
@@ -140,10 +142,9 @@ const MatchSubmit = ({ }) => {
             if (packet.data[0] === "teamC_rate_user") {
               const value = packet.data[1];
               try {
-
-                setMatchData(prevMatchData => {
-                  return prevMatchData.map(item => {
-                    const updatedBettings = item.bettings.map(betting => {
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
+                    const updatedBettings = item.bettings.map((betting) => {
                       // Check if the betting object has the specified ID
                       if (betting.id === value.betId) {
                         // Update the bet_condition value
@@ -163,7 +164,7 @@ const MatchSubmit = ({ }) => {
 
                     return {
                       ...item,
-                      bettings: updatedBettings
+                      bettings: updatedBettings,
                     };
                   });
                 });
@@ -175,9 +176,9 @@ const MatchSubmit = ({ }) => {
             if (packet.data[0] === "updateRate_user") {
               const value = packet.data[1];
               try {
-                setMatchData(prevMatchData => {
-                  return prevMatchData.map(item => {
-                    const updatedBettings = item.bettings.map(betting => {
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
+                    const updatedBettings = item.bettings.map((betting) => {
                       // Check if the betting object has the specified ID
                       if (betting.id === value.betId) {
                         // Update the bet_condition value
@@ -202,7 +203,7 @@ const MatchSubmit = ({ }) => {
 
                     return {
                       ...item,
-                      bettings: updatedBettings
+                      bettings: updatedBettings,
                     };
                   });
                 });
@@ -215,9 +216,9 @@ const MatchSubmit = ({ }) => {
               const value = packet.data[1];
               if (value.teamA_suspend == "Ball Started") {
                 try {
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
-                      const updatedBettings = item.bettings.map(betting => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
+                      const updatedBettings = item.bettings.map((betting) => {
                         // Check if the betting object has the specified ID
                         if (betting.id === value.betId) {
                           // Update the bet_condition value
@@ -234,7 +235,7 @@ const MatchSubmit = ({ }) => {
 
                       return {
                         ...item,
-                        bettings: updatedBettings
+                        bettings: updatedBettings,
                       };
                     });
                   });
@@ -243,9 +244,9 @@ const MatchSubmit = ({ }) => {
                 }
               } else {
                 try {
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
-                      const updatedBettings = item.bettings.map(betting => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
+                      const updatedBettings = item.bettings.map((betting) => {
                         // Check if the betting object has the specified ID
                         if (betting.id === value.betId) {
                           // Update the bet_condition value
@@ -262,7 +263,7 @@ const MatchSubmit = ({ }) => {
 
                       return {
                         ...item,
-                        bettings: updatedBettings
+                        bettings: updatedBettings,
                       };
                     });
                   });
@@ -276,9 +277,9 @@ const MatchSubmit = ({ }) => {
               const value = packet.data[1];
               if (value.teamB_suspend == "Ball Started") {
                 try {
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
-                      const updatedBettings = item.bettings.map(betting => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
+                      const updatedBettings = item.bettings.map((betting) => {
                         // Check if the betting object has the specified ID
                         if (betting.id === value.betId) {
                           // Update the bet_condition value
@@ -295,7 +296,7 @@ const MatchSubmit = ({ }) => {
 
                       return {
                         ...item,
-                        bettings: updatedBettings
+                        bettings: updatedBettings,
                       };
                     });
                   });
@@ -304,9 +305,9 @@ const MatchSubmit = ({ }) => {
                 }
               } else {
                 try {
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
-                      const updatedBettings = item.bettings.map(betting => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
+                      const updatedBettings = item.bettings.map((betting) => {
                         // Check if the betting object has the specified ID
                         if (betting.id === value.betId) {
                           // Update the bet_condition value
@@ -323,7 +324,7 @@ const MatchSubmit = ({ }) => {
 
                       return {
                         ...item,
-                        bettings: updatedBettings
+                        bettings: updatedBettings,
                       };
                     });
                   });
@@ -337,9 +338,9 @@ const MatchSubmit = ({ }) => {
               const value = packet.data[1];
               if (value.teamC_suspend == "Ball Started") {
                 try {
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
-                      const updatedBettings = item.bettings.map(betting => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
+                      const updatedBettings = item.bettings.map((betting) => {
                         // Check if the betting object has the specified ID
                         if (betting.id === value.betId) {
                           // Update the bet_condition value
@@ -356,7 +357,7 @@ const MatchSubmit = ({ }) => {
 
                       return {
                         ...item,
-                        bettings: updatedBettings
+                        bettings: updatedBettings,
                       };
                     });
                   });
@@ -365,9 +366,9 @@ const MatchSubmit = ({ }) => {
                 }
               } else {
                 try {
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
-                      const updatedBettings = item.bettings.map(betting => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
+                      const updatedBettings = item.bettings.map((betting) => {
                         // Check if the betting object has the specified ID
                         if (betting.id === value.betId) {
                           // Update the bet_condition value
@@ -384,7 +385,7 @@ const MatchSubmit = ({ }) => {
 
                       return {
                         ...item,
-                        bettings: updatedBettings
+                        bettings: updatedBettings,
                       };
                     });
                   });
@@ -404,25 +405,29 @@ const MatchSubmit = ({ }) => {
                       return currentMatch;
                     }
                     // Update the bettings array in the current match object
-                    const updatedBettings = currentMatch?.bettings?.map((betting) => {
-                      if (betting.id === value.betId) {
-                        return {
-                          ...betting,
-                          ...value,
-                        };
-                      } else if (
-                        betting?.id === value?.betId &&
-                        value.sessionBet === false
-                      ) {
-                        return {
-                          ...betting,
-                          ...value,
-                        };
+                    const updatedBettings = currentMatch?.bettings?.map(
+                      (betting) => {
+                        if (betting.id === value.betId) {
+                          return {
+                            ...betting,
+                            ...value,
+                          };
+                        } else if (
+                          betting?.id === value?.betId &&
+                          value.sessionBet === false
+                        ) {
+                          return {
+                            ...betting,
+                            ...value,
+                          };
+                        }
+                        return betting;
                       }
-                      return betting;
-                    });
+                    );
                     var newUpdatedValue = updatedBettings;
-                    const bettingsIds = updatedBettings?.map((betting) => betting?.id);
+                    const bettingsIds = updatedBettings?.map(
+                      (betting) => betting?.id
+                    );
                     if (!bettingsIds?.includes(value.betId)) {
                       newUpdatedValue = [...newUpdatedValue, value];
                     }
@@ -442,27 +447,32 @@ const MatchSubmit = ({ }) => {
               const value = packet.data[1];
               // matchId = value?.match_id;
               try {
-                setMatchData(prevMatchData => {
-                  return prevMatchData.map(item => {
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
                     if (item?.id === value?.match_id) {
                       // Update the bettings array in the current match object
-                      const updatedBettings = item?.bettings?.map(betting => {
+                      const updatedBettings = item?.bettings?.map((betting) => {
                         if (betting.id === value.id && value.sessionBet) {
                           // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                           return {
                             ...betting,
-                            ...value
+                            ...value,
                           };
-                        } else if (betting?.id === value?.id && value.sessionBet === false) {
+                        } else if (
+                          betting?.id === value?.id &&
+                          value.sessionBet === false
+                        ) {
                           return {
                             ...betting,
-                            ...value
+                            ...value,
                           };
                         }
                         return betting;
                       });
                       var newUpdatedValue = updatedBettings;
-                      const bettingsIds = updatedBettings?.map(betting => betting?.id);
+                      const bettingsIds = updatedBettings?.map(
+                        (betting) => betting?.id
+                      );
 
                       if (!bettingsIds?.includes(value.id)) {
                         // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
@@ -471,8 +481,14 @@ const MatchSubmit = ({ }) => {
                         if (!item.sessionOffline) {
                           item.sessionOffline = [];
                         }
-                        if (item?.sessionOffline && item?.sessionOffline.includes(value.id) && value.betStatus === 1) {
-                          const newres = item?.sessionOffline.filter(id => id !== value.id);
+                        if (
+                          item?.sessionOffline &&
+                          item?.sessionOffline.includes(value.id) &&
+                          value.betStatus === 1
+                        ) {
+                          const newres = item?.sessionOffline.filter(
+                            (id) => id !== value.id
+                          );
                           item.sessionOffline = newres;
                         }
                         if (value?.betStatus === 0) {
@@ -486,7 +502,7 @@ const MatchSubmit = ({ }) => {
                       return {
                         ...item,
                         bettings: newUpdatedValue,
-                        sessionOffline: item.sessionOffline
+                        sessionOffline: item.sessionOffline,
                       };
                     }
                     return item;
@@ -500,9 +516,14 @@ const MatchSubmit = ({ }) => {
               const data = packet.data[1];
 
               try {
-                setMatchData(prevMatchData => {
-                  return prevMatchData.map(item => {
-                    const updatedBettings = item.bettings.map(betting => {
+                setCurrentOdds({
+                  bet_id: data?.betPlaceData?.bet_id,
+                  odds: data?.betPlaceData?.odds,
+                  match_id: data?.betPlaceData?.match_id,
+                });
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
+                    const updatedBettings = item.bettings.map((betting) => {
                       // Check if the betting object has the specified ID
                       if (betting.id === data?.betPlaceData?.bet_id) {
                         // Update the properties of the betting object
@@ -517,7 +538,7 @@ const MatchSubmit = ({ }) => {
 
                     return {
                       ...item,
-                      bettings: updatedBettings
+                      bettings: updatedBettings,
                     };
                   });
                 });
@@ -531,7 +552,14 @@ const MatchSubmit = ({ }) => {
               if (data?.betPlaceData?.match_id === matchIds[i]) {
                 setSessionBets((prev) => {
                   const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                  return [{...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null,}, ...updatedPrev];
+                  return [
+                    {
+                      ...data.betPlaceData,
+                      deleted_reason:
+                        data?.betPlaceData?.deleted_reason || null,
+                    },
+                    ...updatedPrev,
+                  ];
                 });
               }
             }
@@ -569,8 +597,8 @@ const MatchSubmit = ({ }) => {
                     };
                     if (data?.betPlaceData?.match_id === matchIds[i]) {
                       setIObtes((prev) => [body, ...prev]);
-                      setMatchData(prevMatchData => {
-                        return prevMatchData.map(item => {
+                      setMatchData((prevMatchData) => {
+                        return prevMatchData.map((item) => {
                           if (item?.id === matchIds[i]) {
                             return {
                               ...item,
@@ -596,7 +624,6 @@ const MatchSubmit = ({ }) => {
             }
           })(i);
         }
-
 
         // if (packet.data[0] === "match_bet") {
         //   const data = packet.data[1];
@@ -653,7 +680,6 @@ const MatchSubmit = ({ }) => {
     try {
       if (socketMicro && socketMicro.connected && marketIds) {
         socketMicro.on("connect", () => {
-
           for (var index = 0; index < marketIds.length; index++) {
             socketMicro.emit("init", { id: marketIds[index] });
           }
@@ -664,7 +690,6 @@ const MatchSubmit = ({ }) => {
 
         socketMicro.on("connect_error", (event) => {
           // Handle the WebSocket connection error here
-
           // setMacthOddsLive([]);
           // setBookmakerLive([]);
           // setSessionLock(true)
@@ -686,7 +711,6 @@ const MatchSubmit = ({ }) => {
 
         for (var i = 0; i < marketIds?.length; i++) {
           (function (i) {
-
             socketMicro.emit("init", { id: marketIds[i] });
 
             socketMicro.on("reconnect", () => {
@@ -709,8 +733,8 @@ const MatchSubmit = ({ }) => {
                   selectionId: v?.SelectionId,
                 }));
 
-                setMatchData(prevMatchData => {
-                  return prevMatchData.map(item => {
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
                     if (item.marketId === marketIds[i]) {
                       // Merge the filteredNewVal with the currentMatch bettings array
                       const data = item.bettings?.map((betting) => {
@@ -745,7 +769,6 @@ const MatchSubmit = ({ }) => {
             });
 
             socketMicro.on(`matchOdds${marketIds[i]}`, (val) => {
-
               // matchodds Market live and stop disable condition
               if (val !== null) {
                 if (val.length === 0) {
@@ -755,12 +778,12 @@ const MatchSubmit = ({ }) => {
                     id: marketIds[i],
                   });
                   // setMacthOddsLive([]);
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
                       if (item.marketId === marketIds[i]) {
                         return {
                           ...item,
-                          matchOddsLive: []  // Add the new array property with an empty array
+                          matchOddsLive: [], // Add the new array property with an empty array
                         };
                       }
                       return item;
@@ -769,12 +792,12 @@ const MatchSubmit = ({ }) => {
                   // }
                 } else {
                   // dispatch(setMatchOddsLive(val[0]));
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
                       if (item.marketId === marketIds[i]) {
                         return {
                           ...item,
-                          matchOddsLive: val[0]  // Add the new array property with array
+                          matchOddsLive: val[0], // Add the new array property with array
                         };
                       }
                       return item;
@@ -797,12 +820,12 @@ const MatchSubmit = ({ }) => {
                     // });
                     // setMatchData(updatedData)
                     // setMacthOddsLive([]);
-                    setMatchData(prevMatchData => {
-                      return prevMatchData.map(item => {
+                    setMatchData((prevMatchData) => {
+                      return prevMatchData.map((item) => {
                         if (item.marketId === marketIds[i]) {
                           return {
                             ...item,
-                            matchOddsLive: []  // Add the new array property with an empty array
+                            matchOddsLive: [], // Add the new array property with an empty array
                           };
                         }
                         return item;
@@ -813,19 +836,18 @@ const MatchSubmit = ({ }) => {
               }
             });
 
-
             socketMicro.on(`bookmaker${marketIds[i]}`, (val) => {
               if (val !== null) {
                 // console.log("val 222:", val);
                 if (val.length > 0) {
                   // dispatch(setBookMakerLive(val[0]));
                   // setBookmakerLive(val[0]);
-                  setMatchData(prevMatchData => {
-                    return prevMatchData.map(item => {
+                  setMatchData((prevMatchData) => {
+                    return prevMatchData.map((item) => {
                       if (item.marketId === marketIds[i]) {
                         return {
                           ...item,
-                          bookmakerLive: val[0]  // Add the new array property with an empty array
+                          bookmakerLive: val[0], // Add the new array property with an empty array
                         };
                       }
                       return item;
@@ -833,7 +855,6 @@ const MatchSubmit = ({ }) => {
                   });
                 }
                 // setBookmakerLive([]);
-
               }
             });
           })(i);
@@ -959,7 +980,6 @@ const MatchSubmit = ({ }) => {
         //     }
         //   });
 
-
         //   socketMicro.on(`bookmaker${matchIds[i]}`, (val) => {
         //     if (val !== null) {
         //       // console.log("val 222:", val);
@@ -986,13 +1006,13 @@ const MatchSubmit = ({ }) => {
       } else {
         for (var k = 0; k < marketIds.length; k++) {
           (function (k) {
-            setMatchData(prevMatchData => {
-              return prevMatchData.map(item => {
+            setMatchData((prevMatchData) => {
+              return prevMatchData.map((item) => {
                 if (item.marketId === marketIds[k]) {
                   return {
                     ...item,
-                    matchOddsLive: [],  // Add the new array property with an empty array
-                    bookmakerLive: []
+                    matchOddsLive: [], // Add the new array property with an empty array
+                    bookmakerLive: [],
                   };
                 }
                 return item;
@@ -1016,13 +1036,13 @@ const MatchSubmit = ({ }) => {
           socketMicro?.emit("disconnect_market", {
             id: marketIds[j],
           });
-          setMatchData(prevMatchData => {
-            return prevMatchData.map(item => {
+          setMatchData((prevMatchData) => {
+            return prevMatchData.map((item) => {
               if (item.marketId === marketIds[j]) {
                 return {
                   ...item,
-                  matchOddsLive: [],  // Add the new array property with an empty array
-                  bookmakerLive: []
+                  matchOddsLive: [], // Add the new array property with an empty array
+                  bookmakerLive: [],
                 };
               }
               return item;
@@ -1039,9 +1059,12 @@ const MatchSubmit = ({ }) => {
   async function getThisMatch() {
     let payload = {
       idArray: matchIds,
-    }
+    };
     try {
-      let response = await axios.post(`/game-match/multipleMatchDetail`, payload);
+      let response = await axios.post(
+        `/game-match/multipleMatchDetail`,
+        payload
+      );
       // alert(111)
       setMatchData(response?.data?.data);
       // let matchOddsDataTemp = response.data?.bettings?.filter(
@@ -1073,7 +1096,7 @@ const MatchSubmit = ({ }) => {
   async function getAllBetsData() {
     let payload = {
       match_id: matchIds,
-      user_id: currentUser?.id
+      user_id: currentUser?.id,
     };
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
@@ -1087,7 +1110,12 @@ const MatchSubmit = ({ }) => {
       // );
       setIObtes(data?.data?.data);
       // alert(IObets.length)
-      const bets = data?.data?.data?.filter((b) => !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(b?.marketType));
+      const bets = data?.data?.data?.filter(
+        (b) =>
+          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+            b?.marketType
+          )
+      );
       setSessionBets(bets || []);
     } catch (e) {
       console.log(e);
@@ -1096,48 +1124,250 @@ const MatchSubmit = ({ }) => {
 
   return (
     <Background>
-
-      {location?.state?.match == 3 && (<Box
-        sx={{
-          display: "flex",
-          // flexDirection: "row",
-          flexDirection: { matchesMobile: "column", laptop: "row" },
-          flex: 1,
-          height: "100%",
-          marginLeft: "0.5%",
-        }}
-      >
-        <Box sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          width: "100%",
-
-        }}
+      {location?.state?.match == 3 && (
+        <Box
+          sx={{
+            display: "flex",
+            // flexDirection: "row",
+            flexDirection: { matchesMobile: "column", laptop: "row" },
+            flex: 1,
+            height: "100%",
+            marginLeft: "0.5%",
+          }}
         >
-          {matchData.map((item, index) => {
-            let matchOddsDataTemp = item?.bettings?.filter(
-              (element) => element.sessionBet === false
-            );
-            let IObetsData = IObets?.filter(
-              (element) => element.match_id === item.id
-            );
-            let sessionBetsData = sessionBets?.filter(
-              (element) => element.match_id === item.id
-            );
-            return <>
-              {index === 0 ? <>
-                <Box sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  width: "100%",
-                }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              width: "100%",
+            }}
+          >
+            {matchData.map((item, index) => {
+              let matchOddsDataTemp = item?.bettings?.filter(
+                (element) => element.sessionBet === false
+              );
+              let IObetsData = IObets?.filter(
+                (element) => element.match_id === item.id
+              );
+              let sessionBetsData = sessionBets?.filter(
+                (element) => element.match_id === item.id
+              );
+              return (
+                <>
+                  {index === 0 ? (
+                    <>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          width: "100%",
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            flex: 1,
+                            flexDirection: "column",
+                            minHeight: "100px",
+                            display: "flex",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "16px",
+                              color: "white",
+                              fontWeight: "700",
+                              paddingTop: "2%",
+                              alignSelf: "start",
+                            }}
+                          >
+                            {item?.teamA} V/S {item?.teamB}
+                            {index}
+                          </Typography>
+                          {item?.apiMatchActive && (
+                            <Odds
+                              currentMatch={item}
+                              matchOddsLive={item.matchOddsLive}
+                              data={
+                                item.matchOddsLive?.runners?.length > 0
+                                  ? item.matchOddsLive?.runners
+                                  : []
+                              }
+                              typeOfBet={"Match Odds"}
+                              // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                            />
+                          )}
+                          {item?.apiBookMakerActive && (
+                            <BookMarketer
+                              currentMatch={item}
+                              bookmakerLive={item.bookmakerLive}
+                              data={
+                                item.bookmakerLive?.runners?.length > 0
+                                  ? item.bookmakerLive?.runners
+                                  : []
+                              }
+                            />
+                          )}
+                          {item?.manualBookMakerActive && (
+                            <Odds
+                              currentMatch={item}
+                              // matchOddsLive={matchOddsLive}
+                              // data={
+                              //   matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
+                              // }
+                              data={item}
+                              manualBookmakerData={matchOddsDataTemp}
+                              typeOfBet={"MANUAL BOOKMAKER"}
+                              // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                            />
+                          )}
+                          {(item?.apiSessionActive ||
+                            item?.manualSessionActive) && (
+                            <SessionMarket
+                              currentOdds={currentOdds}
+                              currentMatch={item}
+                              data={[]}
+                              sessionOffline={item.sessionOffline}
+                              sessionBets={sessionBetsData}
+                            />
+                          )}
+                        </Box>
+                        {/* <Box sx={{ width: "20px" }} /> */}
+                        <Box
+                          sx={{
+                            flex: 1,
+                            flexDirection: "column",
+                            display: "flex",
+                            minHeight: "100px",
+                            marginX: "0.5%",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "flex-end",
+                              width: "100%",
+                            }}
+                          >
+                            {/* <Box sx={{ width: "2%" }}></Box> */}
+                            <Box
+                              sx={{
+                                width: "150px",
+                                marginY: ".75%",
+                                height: "35px",
+                              }}
+                            ></Box>
+                          </Box>
+                          <FullAllBets
+                            IObets={IObets}
+                            mode={mode}
+                            tag={false}
+                          />
+                        </Box>
+                      </Box>
+                    </>
+                  ) : (
+                    <Box
+                      sx={{
+                        maxWidth: matchesMobile ? "99%" : "49.5%",
+                        flex: matchesMobile ? "0 0 99%" : "0 0 49.5%",
+                        marginRight: "0.5%",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "16px",
+                          color: "white",
+                          fontWeight: "700",
+                          paddingTop: "0.7%",
+                          alignSelf: "start",
+                        }}
+                      >
+                        {item?.teamA} V/S {item?.teamB}
+                      </Typography>
+                      <Odds
+                        currentMatch={item}
+                        // matchOddsLive={matchOddsLive}
+                        matchOddsLive={item.matchOddsLive}
+                        // data={[]}
+                        data={
+                          item.matchOddsLive?.runners?.length > 0
+                            ? item.matchOddsLive?.runners
+                            : []
+                        }
+                        typeOfBet={"Match Odds"}
+                      />
+                      <BookMarketer
+                        currentMatch={item}
+                        bookmakerLive={item.bookmakerLive}
+                        data={
+                          item.bookmakerLive?.runners?.length > 0
+                            ? item.bookmakerLive?.runners
+                            : []
+                        }
+                      />
+                      {item?.manualBookMakerActive && (
+                        <Odds
+                          currentMatch={item}
+                          data={item}
+                          manualBookmakerData={matchOddsDataTemp}
+                          typeOfBet={"MANUAL BOOKMAKER"}
+                          // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                        />
+                      )}
+                      {(item?.apiSessionActive ||
+                        item?.manualSessionActive) && (
+                        <SessionMarket
+                          currentOdds={currentOdds}
+                          currentMatch={item}
+                          sessionOffline={item.sessionOffline}
+                          sessionBets={sessionBetsData}
+                        />
+                      )}
+                      <FullAllBets tag={true} IObets={IObetsData} />
+                    </Box>
+                  )}
+                </>
+              );
+            })}
+          </Box>
+        </Box>
+      )}
+
+      {(location?.state?.match === 4 || location?.state?.match === 2) && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { matchesMobile: "column", laptop: "row" },
+            flex: 1,
+            height: "100%",
+            // marginX: "0.5%",
+            marginLeft: "0.5%",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              width: "100%",
+            }}
+          >
+            {matchData.map((item, index) => {
+              let matchOddsDataTemp = item?.bettings?.filter(
+                (element) => element.sessionBet === false
+              );
+              let IObetsData = IObets?.filter(
+                (element) => element.match_id === item.id
+              );
+              let sessionBetsData = sessionBets?.filter(
+                (element) => element.match_id === item.id
+              );
+              return (
+                <>
                   <Box
                     sx={{
-                      flex: 1,
-                      flexDirection: "column",
-                      minHeight: "100px",
-                      display: "flex",
-
+                      maxWidth: matchesMobile ? "99%" : "49.5%",
+                      flex: matchesMobile ? "0 0 99%" : "0 0 49.5%",
+                      marginRight: matchesMobile ? "0%" : "0.5%",
                     }}
                   >
                     <Typography
@@ -1145,208 +1375,57 @@ const MatchSubmit = ({ }) => {
                         fontSize: "16px",
                         color: "white",
                         fontWeight: "700",
-                        paddingTop: "2%",
+                        paddingTop: "0.7%",
                         alignSelf: "start",
                       }}
                     >
-                      {item?.teamA} V/S {item?.teamB}{index}
+                      {item?.teamA} V/S {item?.teamB}
                     </Typography>
-                    {item?.apiMatchActive && <Odds
+                    <Odds
                       currentMatch={item}
+                      // matchOddsLive={matchOddsLive}
                       matchOddsLive={item.matchOddsLive}
                       data={
-                        item.matchOddsLive?.runners?.length > 0 ? item.matchOddsLive?.runners : []
+                        item.matchOddsLive?.runners?.length > 0
+                          ? item.matchOddsLive?.runners
+                          : []
                       }
                       typeOfBet={"Match Odds"}
-                    // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                     />
-                    }
-                    {item?.apiBookMakerActive && <BookMarketer
+                    <BookMarketer
                       currentMatch={item}
                       bookmakerLive={item.bookmakerLive}
                       data={
-                        item.bookmakerLive?.runners?.length > 0 ? item.bookmakerLive?.runners : []
+                        item.bookmakerLive?.runners?.length > 0
+                          ? item.bookmakerLive?.runners
+                          : []
                       }
-                    />}
-                    {item?.manualBookMakerActive && <Odds
-                      currentMatch={item}
-                      // matchOddsLive={matchOddsLive}
-                      // data={
-                      //   matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
-                      // }
-                      data={item}
-                      manualBookmakerData={matchOddsDataTemp}
-                      typeOfBet={"MANUAL BOOKMAKER"}
-                    // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                     />
-                    }
-                    {(item?.apiSessionActive ||
-                      item?.manualSessionActive) && <SessionMarket
+                    {item?.manualBookMakerActive && (
+                      <Odds
                         currentMatch={item}
-                        data={[]}
+                        data={item}
+                        manualBookmakerData={matchOddsDataTemp}
+                        typeOfBet={"MANUAL BOOKMAKER"}
+                        // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                      />
+                    )}
+                    {(item?.apiSessionActive || item?.manualSessionActive) && (
+                      <SessionMarket
+                        currentMatch={item}
+                        currentOdds={currentOdds}
                         sessionOffline={item.sessionOffline}
                         sessionBets={sessionBetsData}
-                      />}
+                      />
+                    )}
+                    <FullAllBets tag={true} IObets={IObetsData} />
                   </Box>
-                  {/* <Box sx={{ width: "20px" }} /> */}
-                  <Box
-                    sx={{
-                      flex: 1,
-                      flexDirection: "column",
-                      display: "flex",
-                      minHeight: "100px",
-                      marginX: "0.5%",
-
-                    }}
-                  >
-                    <Box
-                      sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
-                    >
-                      {/* <Box sx={{ width: "2%" }}></Box> */}
-                      <Box sx={{ width: "150px", marginY: ".75%", height: "35px", }} ></Box>
-                    </Box>
-                    <FullAllBets IObets={IObets} mode={mode} tag={false} />
-                  </Box>
-                </Box>
-              </> :
-                <Box sx={{
-                  maxWidth: matchesMobile ? "99%" : "49.5%",
-                  flex: matchesMobile ? "0 0 99%" : "0 0 49.5%",
-                  marginRight: "0.5%"
-
-                }}>
-                  <Typography
-                    sx={{
-                      fontSize: "16px",
-                      color: "white",
-                      fontWeight: "700",
-                      paddingTop: "0.7%",
-                      alignSelf: "start",
-                    }}
-                  >
-                    {item?.teamA} V/S {item?.teamB}
-                  </Typography>
-                  <Odds
-                    currentMatch={item}
-                    // matchOddsLive={matchOddsLive}
-                    matchOddsLive={item.matchOddsLive}
-                    // data={[]}
-                    data={
-                      item.matchOddsLive?.runners?.length > 0 ? item.matchOddsLive?.runners : []
-                    }
-                    typeOfBet={"Match Odds"}
-                  />
-                  <BookMarketer
-                    currentMatch={item}
-                    bookmakerLive={item.bookmakerLive}
-                    data={
-                      item.bookmakerLive?.runners?.length > 0 ? item.bookmakerLive?.runners : []
-                    }
-                  />
-                  {item?.manualBookMakerActive && <Odds
-                    currentMatch={item}
-                    data={item}
-                    manualBookmakerData={matchOddsDataTemp}
-                    typeOfBet={"MANUAL BOOKMAKER"}
-                  // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
-                  />
-                  }
-                  {(item?.apiSessionActive || item?.manualSessionActive) &&
-                    <SessionMarket
-                      currentMatch={item}
-                      sessionOffline={item.sessionOffline}
-                      sessionBets={sessionBetsData}
-                    />
-                  }
-                  <FullAllBets tag={true} IObets={IObetsData} />
-                </Box>
-              }
-            </>
-          })}
+                </>
+              );
+            })}
+          </Box>
         </Box>
-      </Box>)}
-
-      {(location?.state?.match === 4 || location?.state?.match === 2) && (<Box
-        sx={{
-          display: "flex",
-          flexDirection: { matchesMobile: "column", laptop: "row" },
-          flex: 1,
-          height: "100%",
-          // marginX: "0.5%",
-          marginLeft: "0.5%",
-        }}
-      >
-        <Box sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          width: "100%",
-
-        }}
-        >
-          {matchData.map((item, index) => {
-            let matchOddsDataTemp = item?.bettings?.filter(
-              (element) => element.sessionBet === false
-            );
-            let IObetsData = IObets?.filter(
-              (element) => element.match_id === item.id
-            );
-            let sessionBetsData = sessionBets?.filter(
-              (element) => element.match_id === item.id
-            );
-            return <>
-              <Box sx={{
-                maxWidth: matchesMobile ? "99%" : "49.5%",
-                flex: matchesMobile ? "0 0 99%" : "0 0 49.5%",
-                marginRight: matchesMobile ? "0%" : "0.5%"
-              }}>
-                <Typography
-                  sx={{
-                    fontSize: "16px",
-                    color: "white",
-                    fontWeight: "700",
-                    paddingTop: "0.7%",
-                    alignSelf: "start",
-                  }}
-                >
-                  {item?.teamA} V/S {item?.teamB}
-                </Typography>
-                <Odds
-                  currentMatch={item}
-                  // matchOddsLive={matchOddsLive}
-                  matchOddsLive={item.matchOddsLive}
-                  data={
-                    item.matchOddsLive?.runners?.length > 0 ? item.matchOddsLive?.runners : []
-                  }
-                  typeOfBet={"Match Odds"}
-                />
-                <BookMarketer
-                  currentMatch={item}
-                  bookmakerLive={item.bookmakerLive}
-                  data={
-                    item.bookmakerLive?.runners?.length > 0 ? item.bookmakerLive?.runners : []
-                  }
-                />
-                {item?.manualBookMakerActive && <Odds
-                  currentMatch={item}
-                  data={item}
-                  manualBookmakerData={matchOddsDataTemp}
-                  typeOfBet={"MANUAL BOOKMAKER"}
-                // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
-                />
-                }
-                {(item?.apiSessionActive || item?.manualSessionActive) &&
-                  <SessionMarket
-                    currentMatch={item}
-                    sessionOffline={item.sessionOffline}
-                    sessionBets={sessionBetsData}
-                  />
-                }
-                <FullAllBets tag={true} IObets={IObetsData} />
-              </Box>
-            </>
-          })}
-        </Box>
-      </Box>)}
+      )}
     </Background>
   );
 };

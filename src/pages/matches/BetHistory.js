@@ -64,67 +64,67 @@ const BetHistory = () => {
   }, [currentPage]);
 
   return (
+    <Background>
+      <Typography
+        sx={{
+          fontSize: { mobile: "12px", laptop: "15px" },
+          marginLeft: { laptop: "5px", mobile: "3px" },
 
-     <Background>
-        <Typography
-          sx={{
-            fontSize: { mobile: "12px", laptop: "15px" },
-            marginLeft: { laptop: "5px", mobile: "3px" },
-          
-            color: "white",
-            fontWeight: "bold",
-          }}
-        >
-          {"BET HISTORY"}
-        </Typography>
+          color: "white",
+          fontWeight: "bold",
+        }}
+      >
+        {"BET HISTORY"}
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { laptop: "row", mobile: "column" },
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Box
           sx={{
+            width: "99%",
             display: "flex",
             flexDirection: { laptop: "row", mobile: "column" },
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
           }}
         >
-          <Box
-            sx={{
-              width: "99%",
-              display: "flex",
-              flexDirection: { laptop: "row", mobile: "column" },
-            }}
-          >
-            <AllRateSeperate
-              mark2
-              mark
-              allBetsData={allBets?.filter((b) =>
+          <AllRateSeperate
+            betHistory={true}
+            mark2
+            mark
+            allBetsData={allBets?.filter((b) =>
+              ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+                b?.marketType
+              )
+            )}
+            count={
+              allBets?.filter((b) =>
                 ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
                   b?.marketType
                 )
-              )}
-              count={
-                allBets?.filter((b) =>
-                  ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                    b?.marketType
-                  )
-                ).length || 0
-              }
-              setPageCountOuter={setPageCount}
-              callPage={callPage}
-            />
-            <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
-            <SessionBetSeperate
-              allBetsData={allBets?.filter(
-                (b) =>
-                  !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                    b?.marketType
-                  )
-              )}
-              mark
-            />
-          </Box>
+              ).length || 0
+            }
+            setPageCountOuter={setPageCount}
+            callPage={callPage}
+          />
+          <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
+          <SessionBetSeperate
+            betHistory={true}
+            allBetsData={allBets?.filter(
+              (b) =>
+                !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+                  b?.marketType
+                )
+            )}
+            mark
+          />
         </Box>
-        </Background>
-
+      </Box>
+    </Background>
   );
 };
 

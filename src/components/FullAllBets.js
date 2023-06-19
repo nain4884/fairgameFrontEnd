@@ -63,7 +63,6 @@ const FullAllBets = ({ tag, mode, IObets }) => {
   useEffect(() => {
     if (IObets) {
       const body = IObets?.map((v) => {
-        console.log("ddddd :", v);
         const values = {
           values: [
             {
@@ -532,7 +531,7 @@ const SmallBox = ({ item, k }) => {
           color: item?.color,
         }}
       >
-        {item?.name}
+        {item?.name} {item.rate_percent}
       </Typography>
     </Box>
   );

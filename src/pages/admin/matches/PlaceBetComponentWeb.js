@@ -8,7 +8,6 @@ import { useCallback } from "react";
 const PlaceBetComponentWeb = ({ onClick, amount, setData, newData, width }) => {
   const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
 
-
   useEffect(() => {
     setData((prev) => {
       if (Array.isArray(prev)) {

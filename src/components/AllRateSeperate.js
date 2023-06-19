@@ -38,6 +38,7 @@ const AllRateSeperate = ({
   allBetsData,
   count,
   callPage,
+  betHistory,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
@@ -240,7 +241,25 @@ const AllRateSeperate = ({
                 </Typography>
               </Box>
               <RowComponent header={false} data={i} />
-              {i?.deleted_reason !== null && (
+              {i?.deleted_reason && betHistory && (
+                <Box
+                  sx={{
+                    width: {
+                      mobile: profit ? "100%" : "100%",
+                      alignItems: "flex-end",
+                      justifyContent: "center",
+                      display: "flex",
+                      laptop: profit ? "100 % " : "100% ",
+                    },
+                    background: "rgba(0, 0, 0, 0.5)",
+                    height: "42px",
+                    position: "absolute",
+                  }}
+                >
+                  <Box sx={{ width: mark2 ? "20%" : "35%" }}></Box>
+                </Box>
+              )}
+              {i?.deleted_reason && betHistory === undefined && (
                 <Box
                   sx={{
                     width: {
@@ -283,7 +302,7 @@ const AllRateSeperate = ({
                 </Box>
               )}
 
-              {profit && k !== 2 && (
+              {profit && !i?.deleted_reason && (
                 <Box
                   sx={{
                     height: "40px",
@@ -314,7 +333,7 @@ const AllRateSeperate = ({
                   />
                 </Box>
               )}
-              {profit && k === 2 && (
+              {profit && i?.deleted_reason && (
                 <Box
                   sx={{
                     height: "40px",
@@ -337,7 +356,7 @@ const AllRateSeperate = ({
                   />
                   <Typography
                     sx={{
-                      fontSize: { mobile: "7px", laptop: ".8vw" },
+                      fontSize: { mobile: "7px", laptop: ".5vw" },
                       color: "white",
                       fontWeight: "700",
                       width: { laptop: "65%", mobile: "55%" },
@@ -345,7 +364,7 @@ const AllRateSeperate = ({
                     }}
                   >
                     Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
-                    {"\n"} to No Ball
+                    {"\n"} {i?.deleted_reason}
                   </Typography>
                 </Box>
               )}

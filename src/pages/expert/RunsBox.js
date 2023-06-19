@@ -1,12 +1,38 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useTheme } from "@emotion/react";
 import { StyledImage } from "../../components";
 import { CANCEL } from "../../assets";
 
-const RunsBox = ({ item, setData }) => {
+const RunsBox = ({ item, setData, currentOdds }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const containerRef = useRef(null);
+
+  const scrollToElement = (id) => {
+    const element = document.getElementById(id);
+    console.log(`Scroll to`, element, id);
+    if (element) {
+      if (element && containerRef.current) {
+        containerRef.current.scrollTop =
+          element.offsetTop - containerRef.current.offsetTop;
+      }
+      // element.scrollIntoView({
+      //   behavior: "smooth",
+      //   block: "center",
+      //   inline: "center",
+      // });
+    }
+  };
+
+  useEffect(() => {
+    if (currentOdds && currentOdds?.bet_id === item?.id) {
+      setTimeout(() => {
+        scrollToElement(`${item?.id}_${currentOdds?.odds}`);
+      }, 500);
+    }
+  }, [currentOdds, item]);
+
   return (
     <Box
       sx={{
@@ -62,7 +88,11 @@ const RunsBox = ({ item, setData }) => {
           }}
         >
           <Typography
-            sx={{ color: "#306A47", fontWeight: "bold", fontSize: matchesMobile ? "8px" : "12px" }}
+            sx={{
+              color: "#306A47",
+              fontWeight: "bold",
+              fontSize: matchesMobile ? "8px" : "12px",
+            }}
           >
             Runs
           </Typography>
@@ -77,13 +107,17 @@ const RunsBox = ({ item, setData }) => {
           }}
         >
           <Typography
-            sx={{ color: "#306A47", fontWeight: "bold", fontSize: matchesMobile ? "8px" : "12px" }}
+            sx={{
+              color: "#306A47",
+              fontWeight: "bold",
+              fontSize: matchesMobile ? "8px" : "12px",
+            }}
           >
             Amount
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ height: "350px", overflowY: "scroll" }}>
+      <Box ref={containerRef} sx={{ height: "350px", overflowY: "scroll" }}>
         {item?.profitLoss?.betData?.length > 0 ? (
           item?.profitLoss?.betData?.map((v) => {
             const getColor = (value) => {
@@ -110,6 +144,7 @@ const RunsBox = ({ item, setData }) => {
             };
             return (
               <Box
+                id={`${item?.id}_${v?.odds}`}
                 key={v?.odds}
                 sx={{
                   display: "flex",

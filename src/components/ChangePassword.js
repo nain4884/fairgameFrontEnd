@@ -23,6 +23,8 @@ export const ChangePasswordComponent = () => {
     2: { field: "newPassword", val: false },
     3: { field: "confirmPassword", val: false },
   });
+
+  
   return (
     <Box
       sx={{

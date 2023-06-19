@@ -7,9 +7,21 @@ import { useTheme } from "@emotion/react";
 import { useEffect } from "react";
 import RunsBox from "../../expert/RunsBox";
 import UnlockComponent from "../../../components/UnlockComponent";
-import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets"
+import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets";
 
-const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, showUnlock, locked, handleBlock, handleHide, handleShowLock, selft }) => {
+const SessionMarket = ({
+  currentMatch,
+  sessionOffline,
+  sessionBets,
+  currentOdds,
+  blockMatch,
+  showUnlock,
+  locked,
+  handleBlock,
+  handleHide,
+  handleShowLock,
+  selft,
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   // const [showUnlock, setShowUnlock] = useState(false);
@@ -22,16 +34,16 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, 
       const sessionData =
         currentMatch?.bettings?.length > 0
           ? currentMatch?.bettings?.filter(
-            (element) => element?.sessionBet && element?.id
-          )
+              (element) => element?.sessionBet && element?.id
+            )
           : 0;
       setMatchSessionData(sessionData.reverse());
     }
   }, [currentMatch]);
 
   const onSubmit = (value) => {
-    handleBlock(value, !locked, 'SESSION')
-  }
+    handleBlock(value, !locked, "SESSION");
+  };
   return (
     <>
       <Box
@@ -70,15 +82,28 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, 
           >
             <Typography
               sx={{
-                fontSize: { laptop: "13px", tablet: "12px", mobile: matchesMobile ? "12px" : "12px" },
+                fontSize: {
+                  laptop: "13px",
+                  tablet: "12px",
+                  mobile: matchesMobile ? "12px" : "12px",
+                },
                 fontWeight: "bold",
                 marginLeft: "7px",
               }}
             >
               Session Odds
             </Typography>
-            {blockMatch && <img onClick={() => selft || selft == undefined ? handleShowLock(true, "SESSION") : ''
-            } src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
+            {blockMatch && (
+              <img
+                onClick={() =>
+                  selft || selft == undefined
+                    ? handleShowLock(true, "SESSION")
+                    : ""
+                }
+                src={locked ? LOCKED : LOCKOPEN}
+                style={{ width: "14px", height: "20px" }}
+              />
+            )}
           </Box>
           <Box
             sx={{
@@ -203,9 +228,27 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, 
               <Box
                 sx={{ width: { mobile: "60%", laptop: "20%", tablet: "60%" } }}
               ></Box>
-              <Box sx={{ width: { mobile: "40%", laptop: "60%", tablet: "40%" }, gap: 1, display: "flex", justifyContent: "center", alignItems: "center", }} >
-                <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
-                <Typography sx={{ fontWeight: "600", margin: "20px 0px 0px -25px", fontSize: "20px", color: "#FFF", }} > Locked </Typography>
+              <Box
+                sx={{
+                  width: { mobile: "40%", laptop: "60%", tablet: "40%" },
+                  gap: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <img src={LOCKED} style={{ width: "35px", height: "40px" }} />
+                <Typography
+                  sx={{
+                    fontWeight: "600",
+                    margin: "20px 0px 0px -25px",
+                    fontSize: "20px",
+                    color: "#FFF",
+                  }}
+                >
+                  {" "}
+                  Locked{" "}
+                </Typography>
               </Box>
             </Box>
           )}
@@ -268,14 +311,27 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, 
               <Typography sx={{ color: 'white', fontWeight: '600', marginLeft: '-25px', fontSize: '20px', marginTop: '20px' }}>Locked</Typography>
             </Box>
           </Box>} */}
-          {showUnlock && <Box sx={{ position: 'absolute', width: '100%', background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left: '20%', zIndex: 999 }}>
-            <UnlockComponent
-              unlock={locked}
-              title={(locked ? "Unlock " : "Lock ") + "Session Market"}
-              handleHide={handleHide}
-              onSubmit={onSubmit}
-            />
-          </Box>}
+          {showUnlock && (
+            <Box
+              sx={{
+                position: "absolute",
+                width: "100%",
+                background: "transparent",
+                alignSelf: "center",
+                position: "absolute",
+                marginTop: "38px",
+                left: "20%",
+                zIndex: 999,
+              }}
+            >
+              <UnlockComponent
+                unlock={locked}
+                title={(locked ? "Unlock " : "Lock ") + "Session Market"}
+                handleHide={handleHide}
+                onSubmit={onSubmit}
+              />
+            </Box>
+          )}
         </Box>
       </Box>
       {data?.length > 0 && (
@@ -287,12 +343,23 @@ const SessionMarket = ({ currentMatch, sessionOffline, sessionBets, blockMatch, 
             gap: "1px",
             // height: "524px",
             height: "360",
-            overflow: "scroll",
+            overflow: "auto",
             marginTop: ".25vw",
           }}
         >
           {data?.map((v) => {
-            return <RunsBox key={v?.id} item={v} setData={setData} />;
+            console.log(
+              "currentOdds?.bet_id === v?.id ? currentOdds : null",
+            v, 
+            );
+            return (
+              <RunsBox
+                currentOdds={currentOdds?.bet_id === v?.id ? currentOdds : null}
+                key={v?.id}
+                item={v}
+                setData={setData}
+              />
+            );
           })}
         </Box>
       )}

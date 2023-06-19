@@ -77,7 +77,7 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
             color: "#FF4D4D",
           }}
         >
-          -{totalAmount}
+          {totalAmount > 0 ? `-`+totalAmount : totalAmount}
         </Typography>
       </Box>
     </Box>

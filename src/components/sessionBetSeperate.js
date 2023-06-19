@@ -24,8 +24,15 @@ const data = [
     country: "INDIA",
   },
 ];
-const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
+const SessionBetSeperate = ({
+  profit,
+  mark,
+  mark2,
+  allBetsData,
+  betHistory,
+}) => {
   //  {console.warn("allBetsData qq:",allBetsData)}
+  console.log("betHistory", betHistory);
   return (
     <Box
       sx={{
@@ -159,7 +166,25 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                 </Typography>
               </Box>
               <RowComponent header={false} data={i} />
-              {i?.deleted_reason !== null && (
+              {betHistory && i?.deleted_reason && (
+                <Box
+                  sx={{
+                    width: {
+                      mobile: profit ? "100%" : "100%",
+                      alignItems: "flex-end",
+                      justifyContent: "center",
+                      display: "flex",
+                      laptop: profit ? "100 % " : "100% ",
+                    },
+                    background: "rgba(0, 0, 0, 0.5)",
+                    height: "42px",
+                    position: "absolute",
+                  }}
+                >
+                  <Box sx={{ width: mark2 ? "35%" : "35%" }}></Box>
+                </Box>
+              )}
+              {i?.deleted_reason && betHistory === undefined && (
                 <Box
                   sx={{
                     width: {
@@ -201,7 +226,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                   </Box>
                 </Box>
               )}
-              {profit && k !== 2 && (
+              {profit && !i?.deleted_reason && (
                 <Box
                   sx={{
                     height: "40px",
@@ -231,7 +256,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                   />
                 </Box>
               )}
-              {profit && k == 2 && (
+              {profit && i?.deleted_reason && (
                 <Box
                   sx={{
                     height: "40px",
@@ -255,7 +280,7 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                   />
                   <Typography
                     sx={{
-                      fontSize: { mobile: "7px", laptop: ".8vw" },
+                      fontSize: { mobile: "7px", laptop: ".5vw" },
                       color: "white",
                       fontWeight: "700",
                       width: { laptop: "65%", mobile: "55%" },
@@ -263,7 +288,8 @@ const SessionBetSeperate = ({ profit, mark, mark2, allBetsData }) => {
                     }}
                   >
                     Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
-                    {"\n"} to No Ball
+                    {"\n"}
+                    {i?.deleted_reason}
                   </Typography>
                 </Box>
               )}
