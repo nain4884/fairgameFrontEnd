@@ -66,14 +66,14 @@ const FullAllBets = ({ tag, mode, IObets }) => {
           values: [
             {
               name: v?.user?.userName || v?.userName,
-              color: "black",
-              background: "#F1C550",
+              color:["no","yes"].includes(v?.bet_type) ? "#FFF" : "black",
+              background: ["no","yes"].includes(v?.bet_type) ? "#319E5B": "#F1C550",
               deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.marketType,
-              color: "black",
-              background: "#F1C550",
+              color:["no","yes"].includes(v?.bet_type) ? "#FFF" : "black",
+              background: ["no","yes"].includes(v?.bet_type) ? "#319E5B": "#F1C550",
               deleted_reason: v?.deleted_reason,
             },
             {
@@ -511,7 +511,6 @@ const SmallBox = ({ item, k }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   // alert(JSON.stringify(item))
-  console.log(item, "item");
   return (
     <Box
       key={k}
@@ -527,6 +526,7 @@ const SmallBox = ({ item, k }) => {
       }}
     >
       <Typography
+
         sx={{
           fontSize: matchesMobile ? "12px" : ".8vw",
           fontWeight: "600",
@@ -563,9 +563,10 @@ const LargeBox = ({ item, k }) => {
     >
       <Typography
         sx={{
-          fontSize: matchesMobile ? "8px" : ".8vw",
+          fontSize: matchesMobile ? "8px" : ".7vw",
           fontWeight: "600",
           color: item?.color,
+          textTransform: 'capitalize',
           wordWrap: "break-word",
           textAlign: "center",
         }}

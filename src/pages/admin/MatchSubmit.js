@@ -1168,7 +1168,7 @@ const MatchSubmit = ({}) => {
                             flex: 1,
                             flexDirection: "column",
                             minHeight: "100px",
-                            display: "flex",
+                          display: "flex",
                           }}
                         >
                           <Typography

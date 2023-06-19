@@ -16,14 +16,18 @@ const AllBets = ({ tag, submit, allBetRates }) => {
           values: [
             {
               name: v?.user?.userName,
-              color: "black",
-              background: "#F1C550",
+              color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
+              background: ["no", "yes"].includes(v?.bet_type)
+                ? "#319E5B"
+                : "#F1C550",
               deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.marketType,
-              color: "black",
-              background: "#F1C550",
+              color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
+              background: ["no", "yes"].includes(v?.bet_type)
+                ? "#319E5B"
+                : "#F1C550",
               deleted_reason: v?.deleted_reason,
             },
             {
@@ -431,6 +435,7 @@ const LargeBox = ({ item, k }) => {
           fontWeight: "600",
           color: item?.color,
           wordWrap: "break-word",
+          textTransform: "capitalize",
           textAlign: "left",
         }}
       >
