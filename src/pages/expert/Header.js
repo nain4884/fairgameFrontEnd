@@ -283,7 +283,7 @@ const CustomHeader = ({}) => {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <AddNotificationModal setVisible={setVisible} visible={visible} />
+        <AddNotificationModal setVisible={setVisible} visible={visible} onClick={()=>{}} onDone={()=>{}}  />
         <Box
           sx={[
             {

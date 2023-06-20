@@ -23,7 +23,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
     let { axios } = setRole();
     try {
       const { data } = await axios.get(
-        `/game-match/getCommisionReport/${id}?&page=${currentPage}&limit=${pageLimit}`
+        `/game-match/getCommisionReport/${id}?&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
 
       // data?.data?.data.map((element) => {
@@ -259,7 +259,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
     useEffect(() => {
       checkIfElementUpdated(prevElement);
     }, [element.ComissionType]);
-console.log("containerStyle", fContainerStyle);
     return (
       <>
         {!elementToUDM?.isActive && (
@@ -308,9 +307,11 @@ console.log("containerStyle", fContainerStyle);
                   fontSize: { mobile: "10px", laptop: "10px", tablet: "10px" },
                   fontWeight: "600",
                   cursor: "pointer",
-                  color:["#319E5B","#303030"].includes(fContainerStyle.background) && "white"
+                  color:
+                    ["#319E5B", "#303030"].includes(
+                      fContainerStyle.background
+                    ) && "white",
                 },
-                
               ]}
             >
               {elementToUDM.title}
@@ -326,7 +327,9 @@ console.log("containerStyle", fContainerStyle);
               borderRight: "2px solid white",
             }}
           >
-            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+            <Typography
+              sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
+            >
               {/* {elementToUDM.teamBet} */}
               {elementToUDM.createAt
                 ? `${moment(elementToUDM?.createAt).format("L")}  ${moment(
@@ -345,7 +348,9 @@ console.log("containerStyle", fContainerStyle);
               borderRight: "2px solid white",
             }}
           >
-            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+            <Typography
+              sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
+            >
               {elementToUDM.teamBet}
             </Typography>
           </Box>
@@ -361,7 +366,13 @@ console.log("containerStyle", fContainerStyle);
             }}
           >
             <Typography
-              sx={{ fontSize: "12px", fontWeight: "600",    color:["#319E5B","#303030"].includes(fContainerStyle.background) && "white" }}
+              sx={{
+                fontSize: "12px",
+                fontWeight: "600",
+                color:
+                  ["#319E5B", "#303030"].includes(fContainerStyle.background) &&
+                  "white",
+              }}
             >
               {elementToUDM.commissionType}
             </Typography>
@@ -376,7 +387,9 @@ console.log("containerStyle", fContainerStyle);
               borderRight: "2px solid white",
             }}
           >
-            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+            <Typography
+              sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
+            >
               {elementToUDM.odds}
             </Typography>
           </Box>
@@ -390,7 +403,9 @@ console.log("containerStyle", fContainerStyle);
               borderRight: "2px solid white",
             }}
           >
-            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+            <Typography
+              sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
+            >
               {elementToUDM.betType}
             </Typography>
           </Box>
@@ -404,7 +419,9 @@ console.log("containerStyle", fContainerStyle);
               borderRight: "2px solid white",
             }}
           >
-            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+            <Typography
+              sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
+            >
               {elementToUDM.stack}
             </Typography>
           </Box>
@@ -419,7 +436,9 @@ console.log("containerStyle", fContainerStyle);
               borderRight: "2px solid white",
             }}
           >
-            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+            <Typography
+              sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
+            >
               {elementToUDM.commissionAmount}
             </Typography>
           </Box>
@@ -488,7 +507,7 @@ console.log("containerStyle", fContainerStyle);
                         )
                       ? "#B3E0FF"
                       : ["lay", "no"].includes(element?.bet_place_id?.bet_type)
-                      ? "#F6D0CB"
+                      ? "#FF9292"
                       : "#FFE094 ",
                 }}
                 profit={element.profit_loss >= 0}
@@ -500,7 +519,13 @@ console.log("containerStyle", fContainerStyle);
                       ? "#303030"
                       : "#F1C550",
                 }}
-                fTextStyle={{ color: ["commission setteled" ].includes(element?.ComissionType) && "white" }}
+                fTextStyle={{
+                  color: ["commission setteled"].includes(
+                    element?.ComissionType
+                  )
+                    ? "white"
+                    : "black",
+                }}
                 element={element}
                 getListOfUser={getListOfUser}
                 currentPage={currentPage}
