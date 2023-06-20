@@ -266,7 +266,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             sx={{
               background: "rgba(0,0,0,0.5)",
               width: { mobile: "218%", laptop: "100%", tablet: "100%" },
-              height: "50px",
+              height: "45px",
               position: "absolute",
               display: "flex",
             }}
