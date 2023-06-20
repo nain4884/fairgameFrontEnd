@@ -1310,7 +1310,7 @@ const MatchSubmit = ({ }) => {
                             flex: 1,
                             flexDirection: "column",
                             minHeight: "100px",
-                          display: "flex",
+                            display: "flex",
                           }}
                         >
                           <Typography
@@ -1400,7 +1400,7 @@ const MatchSubmit = ({ }) => {
                             ></Box>
                           </Box>
                           <FullAllBets
-                            IObets={IObets}
+                            IObets={IObetsData}
                             mode={mode}
                             tag={false}
                           />
