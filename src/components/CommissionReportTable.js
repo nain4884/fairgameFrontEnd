@@ -9,6 +9,7 @@ import constants from "./helper/constants";
 import SearchInputModal from "./SearchInputModal";
 
 import { useTheme } from "@emotion/react";
+import moment from "moment";
 
 const CommissionReportTable = ({ id, show, setShow, title }) => {
   const dispatch = useDispatch();
@@ -170,7 +171,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
+            width: { laptop: "15%", tablet: "15%", mobile: "15%" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -189,7 +190,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         </Box>
         <Box
           sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
+            width: { laptop: "15%", tablet: "15%", mobile: "15%" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -246,8 +247,9 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       betType: element?.bet_place_id?.bet_type,
       stack: element?.bet_place_id?.amount,
       odds: element?.bet_place_id?.odds,
+      isActive: element?.isActive,
       teamBet: element?.bet_place_id?.team_bet,
-      // date: element?.bet_place_id?.
+      createAt: element?.createAt,
     };
     const [elementToUDM, setElementToUDM] = useState(prevElement);
 
@@ -257,153 +259,172 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
     useEffect(() => {
       checkIfElementUpdated(prevElement);
     }, [element.ComissionType]);
-
+console.log("containerStyle", fContainerStyle);
     return (
-      <Box
-        sx={[
-          {
-            width: { mobile: "218%", laptop: "100%", tablet: "100%" },
-            display: "flex",
-            height: "45px",
-            background: "#0B4F26",
-            alignItems: "center",
-            overflow: "hidden",
-            borderBottom: "2px solid white",
-          },
-          containerStyle,
-        ]}
-      >
+      <>
+        {!elementToUDM?.isActive && (
+          <Box
+            sx={{
+              background: "rgba(0,0,0,0.5)",
+              width: { mobile: "218%", laptop: "100%", tablet: "100%" },
+              height: "50px",
+              position: "absolute",
+              display: "flex",
+            }}
+          />
+        )}
+
         <Box
           sx={[
             {
+              width: { mobile: "218%", laptop: "100%", tablet: "100%" },
+              display: "flex",
+              height: "45px",
+              background: "#0B4F26",
+              alignItems: "center",
+              overflow: "hidden",
+              borderBottom: "2px solid white",
+            },
+            containerStyle,
+          ]}
+        >
+          <Box
+            sx={[
+              {
+                width: { laptop: "20%", tablet: "20%", mobile: "20%" },
+                display: "flex",
+                paddingX: "10px",
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: "45px",
+                borderRight: "2px solid white",
+              },
+              fContainerStyle,
+            ]}
+          >
+            <Typography
+              sx={[
+                {
+                  fontSize: { mobile: "10px", laptop: "10px", tablet: "10px" },
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  color:["#319E5B","#303030"].includes(fContainerStyle.background) && "white"
+                },
+                
+              ]}
+            >
+              {elementToUDM.title}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
               width: { laptop: "20%", tablet: "20%", mobile: "20%" },
               display: "flex",
-              paddingX: "10px",
-              justifyContent: "space-between",
+              paddingLeft: "10px",
               alignItems: "center",
               height: "45px",
               borderRight: "2px solid white",
-            },
-            fContainerStyle,
-          ]}
-        >
-          <Typography
-            sx={[
-              {
-                fontSize: { mobile: "10px", laptop: "10px", tablet: "10px" },
-                fontWeight: "600",
-                cursor: "pointer",
-              },
-              fTextStyle,
-            ]}
+            }}
           >
-            {elementToUDM.title}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
-            display: "flex",
-            paddingLeft: "10px",
-            alignItems: "center",
-            height: "45px",
-            borderRight: "2px solid white",
-          }}
-        >
-          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {/* {elementToUDM.teamBet} */} 
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
-            display: "flex",
-            paddingLeft: "10px",
-            alignItems: "center",
-            height: "45px",
-            borderRight: "2px solid white",
-          }}
-        >
-          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.teamBet}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
-            display: "flex",
-            paddingLeft: "10px",
-            alignItems: "center",
-            height: "45px",
-            borderRight: "2px solid white",
-            ...fContainerStyle,
-          }}
-        >
-          <Typography
-            sx={{ fontSize: "12px", fontWeight: "600", ...fTextStyle }}
+            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+              {/* {elementToUDM.teamBet} */}
+              {elementToUDM.createAt
+                ? `${moment(elementToUDM?.createAt).format("L")}  ${moment(
+                    elementToUDM?.createAt
+                  ).format("LT")}`
+                : ""}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: { laptop: "20%", tablet: "20%", mobile: "20%" },
+              display: "flex",
+              paddingLeft: "10px",
+              alignItems: "center",
+              height: "45px",
+              borderRight: "2px solid white",
+            }}
           >
-            {elementToUDM.commissionType}
-          </Typography>
+            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+              {elementToUDM.teamBet}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: { laptop: "20%", tablet: "20%", mobile: "20%" },
+              display: "flex",
+              paddingLeft: "10px",
+              alignItems: "center",
+              height: "45px",
+              borderRight: "2px solid white",
+              ...fContainerStyle,
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "12px", fontWeight: "600",    color:["#319E5B","#303030"].includes(fContainerStyle.background) && "white" }}
+            >
+              {elementToUDM.commissionType}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: { laptop: "20%", tablet: "20%", mobile: "20%" },
+              display: "flex",
+              paddingLeft: "10px",
+              alignItems: "center",
+              height: "45px",
+              borderRight: "2px solid white",
+            }}
+          >
+            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+              {elementToUDM.odds}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: { laptop: "15%", tablet: "15%", mobile: "15%" },
+              display: "flex",
+              paddingLeft: "10px",
+              alignItems: "center",
+              height: "45px",
+              borderRight: "2px solid white",
+            }}
+          >
+            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+              {elementToUDM.betType}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: { laptop: "15%", tablet: "15%", mobile: "15%" },
+              display: "flex",
+              paddingLeft: "10px",
+              alignItems: "center",
+              height: "45px",
+              borderRight: "2px solid white",
+            }}
+          >
+            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+              {elementToUDM.stack}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              width: { laptop: "20%", tablet: "20%", mobile: "20%" },
+              display: "flex",
+              paddingLeft: "10px",
+              alignItems: "center",
+              height: "45px",
+              borderRight: "2px solid white",
+            }}
+          >
+            <Typography sx={[{ fontSize: "12px", fontWeight: "600" },fTextStyle]}>
+              {elementToUDM.commissionAmount}
+            </Typography>
+          </Box>
         </Box>
-        <Box
-          sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
-            display: "flex",
-            paddingLeft: "10px",
-            alignItems: "center",
-            height: "45px",
-            borderRight: "2px solid white",
-          }}
-        >
-          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.odds}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
-            display: "flex",
-            paddingLeft: "10px",
-            alignItems: "center",
-            height: "45px",
-            borderRight: "2px solid white",
-          }}
-        >
-          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.betType}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
-            display: "flex",
-            paddingLeft: "10px",
-            alignItems: "center",
-            height: "45px",
-            borderRight: "2px solid white",
-          }}
-        >
-          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.stack}
-          </Typography>
-        </Box>
-        
-   
-        <Box
-          sx={{
-            width: { laptop: "20%", tablet: "20%", mobile: "20%" },
-            display: "flex",
-            paddingLeft: "10px",
-            alignItems: "center",
-            height: "45px",
-            borderRight: "2px solid white",
-          }}
-        >
-          <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.commissionAmount}
-          </Typography>
-        </Box>
-      </Box>
+      </>
     );
   };
 
@@ -446,29 +467,40 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           }}
         >
           <ListHeaderT />
-          <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" ,width:"100%" }}>
+          <Box
+            sx={{
+              display: matchesBreakPoint ? "inline-block" : "block",
+              width: "100%",
+              position: "relative",
+            }}
+          >
             {data1?.map((element, i) => (
               <AccountListRow
                 key={i}
                 showOptions={false}
                 showChildModal={true}
                 containerStyle={{
-                  background: ["back", "yes"].includes(
-                    element?.bet_place_id?.bet_type
-                  )
-                    ? "#B3E0FF"
-                    : ["lay", "no"].includes(element?.bet_place_id?.bet_type)
-                    ? "#F6D0CB"
-                    : "#FFE094 ",
+                  background:
+                    element?.ComissionType === "commission setteled"
+                      ? "#303030"
+                      : ["back", "yes"].includes(
+                          element?.bet_place_id?.bet_type
+                        )
+                      ? "#B3E0FF"
+                      : ["lay", "no"].includes(element?.bet_place_id?.bet_type)
+                      ? "#F6D0CB"
+                      : "#FFE094 ",
                 }}
                 profit={element.profit_loss >= 0}
                 fContainerStyle={{
                   background:
                     element?.ComissionType === "session"
                       ? "#319E5B"
+                      : element?.ComissionType === "commission setteled"
+                      ? "#303030"
                       : "#F1C550",
                 }}
-                fTextStyle={{ color: "white" }}
+                fTextStyle={{ color: ["commission setteled" ].includes(element?.ComissionType) && "white" }}
                 element={element}
                 getListOfUser={getListOfUser}
                 currentPage={currentPage}

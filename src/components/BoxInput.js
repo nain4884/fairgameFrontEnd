@@ -15,6 +15,26 @@ const BoxInput = ({
   setDefaultValue,
   selectedColorBox,
 }) => {
+  const handleInputChange = (e) => {
+    let value = e.target.value.trim();
+
+    // Remove non-numeric and non-decimal characters
+    value = value.replace(/[^0-9.]/g, "");
+
+    // Only allow one decimal point
+    const decimalCount = value.split(".").length - 1;
+    if (decimalCount > 1) {
+      return;
+    }
+
+    if (value === "") {
+      setDefaultValue(" "); // Set your desired default value here
+      getLatestBetAmount(" ");
+    } else {
+      setDefaultValue(value);
+      getLatestBetAmount(value);
+    }
+  };
   return (
     <Box sx={[{ display: "flex", flexDirection: "column" }, containerStyle]}>
       <Box
@@ -67,16 +87,7 @@ const BoxInput = ({
               color: !selectedColorBox && "white",
             },
           }}
-          onChange={(e) => {
-            const value = e.target.value.trim(); // Remove leading/trailing spaces
-            if (value === "") {
-              setDefaultValue(" "); // Set your desired default value here
-              getLatestBetAmount(" ");
-            } else {
-              setDefaultValue(value);
-              getLatestBetAmount(value);
-            }
-          }}
+          onChange={handleInputChange}
           sx={{ textAlign: "center", alignItems: "center" }}
         />
       </Box>

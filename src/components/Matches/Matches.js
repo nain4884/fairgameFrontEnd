@@ -27,17 +27,13 @@ const MatchesComponent = ({
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Calculate the start and end index for the current page
-  const startIndex = (currentPage - 1) * constants.customPageLimit;
-  const endIndex = startIndex + constants.customPageLimit;
-  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+
+  const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const dispatch = useDispatch();
   const { axios } = setRole();
 
   useEffect(() => {
-    if (matchData.length === 0 && currentPage) {
-      getAllMatch();
-    }
+    getAllMatch();
   }, [currentPage, selected]);
 
   async function getAllMatch() {
@@ -66,7 +62,7 @@ const MatchesComponent = ({
     setCurrentPage(parseInt(value));
   }
 
-  const currentElements = matchData.slice(startIndex, endIndex);
+  const currentElements = matchData
   return (
     <>
       {currentElements?.map((match) => {
