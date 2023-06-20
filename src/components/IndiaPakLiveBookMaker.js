@@ -377,14 +377,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 setIsTeamCSuspend(data.teamC_suspend);
                                 setTeamCRate(data.teamC_Back);
                                 setTeamCLayValue(data.teamC_lay);
-
-                                setTeamSuspend((prevState) => ({
-                                    ...prevState,
-                                    teamA_suspend: data?.teamA_suspend,
-                                    teamB_suspend: data?.teamB_suspend,
-                                    teamC_suspend: data?.teamC_suspend,
-                                }));
                             }
+
+                            setTeamSuspend((prevState) => ({
+                                ...prevState,
+                                teamA_suspend: data?.teamA_suspend,
+                                teamB_suspend: data?.teamB_suspend,
+                                teamC_suspend: data?.teamC_suspend,
+                            }));
                         } else {
                             if (data.teamA_suspend == 'Ball Started') {
                                 // setIsABall(true)
