@@ -4,15 +4,21 @@ import React, { useContext, useEffect, useState } from "react";
 import SeparateBox from "./SeparateBox";
 import { TEAMLOGO, TEAMLOGO1 } from "../../assets";
 import Divider from "../helper/Divider";
-import { apiBasePath, microServiceApiPath } from "../helper/constants";
+import constants, { apiBasePath, microServiceApiPath } from "../helper/constants";
 import MatchOdds from "../../pages/expert/MatchOdds/MatchOdds";
 import { SocketContext } from "../../context/socketContext";
 import Axios from "axios";
 import { formatNumber } from "../helper/helper";
 import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
-import { removeCurrentUser, setCurrentUser } from "../../newStore/reducers/currentUser";
-import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
+import {
+  removeCurrentUser,
+  setCurrentUser,
+} from "../../newStore/reducers/currentUser";
+import {
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
+} from "../../newStore/reducers/matchDetails";
 import { logout } from "../../newStore/reducers/auth";
 import { GlobalStore } from "../../context/globalStore";
 import { setRole } from "../../newStore";
@@ -27,8 +33,7 @@ const Odds = ({ onClick, top, blur, match }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const { axios } = setRole()
-
+  const { axios } = setRole();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -45,7 +50,9 @@ const Odds = ({ onClick, top, blur, match }) => {
     if (difference > 0) {
       timeLeft = {
         days: ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2),
-        hours: ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(-2),
+        hours: ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(
+          -2
+        ),
         minutes: ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2),
         seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2),
       };
@@ -54,16 +61,18 @@ const Odds = ({ onClick, top, blur, match }) => {
     return timeLeft;
   }
 
-  const upcoming = (Number(timeLeft?.hours) || Number(timeLeft?.days)) > 1 ? true : false;
-  // const upcoming = false;
-  
+  const upcoming =
+    (Number(timeLeft?.hours) >= constants.timeRemaining && Number(timeLeft?.minutes) >= 0) ||
+    Number(timeLeft?.days) > 1
+      ? true
+      : false;
 
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
           dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates())
+          dispatch(removeManualBookMarkerRates());
           dispatch(removeSelectedMatch());
           dispatch(logout({ roleType: "role4" }));
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
@@ -527,7 +536,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                  matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                     ? matchOddsLive?.runners[0]?.ex?.availableToBack[2]?.price
                     : 0
                 }
@@ -547,7 +556,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                  matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                     ? matchOddsLive?.runners[0]?.ex?.availableToBack[1]?.price
                     : 0
                 }
@@ -566,7 +575,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             <SeparateBox
               value={
                 matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                   ? matchOddsLive?.runners[0]?.ex?.availableToBack[0]?.price
                   : 0
               }
@@ -584,7 +593,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             <SeparateBox
               value={
                 matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                   ? matchOddsLive?.runners[0]?.ex?.availableToLay[0]?.price
                   : 0
               }
@@ -603,7 +612,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                  matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                     ? matchOddsLive?.runners[0]?.ex?.availableToLay[1]?.price
                     : 0
                 }
@@ -623,7 +632,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                  matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                     ? matchOddsLive?.runners[0]?.ex?.availableToLay[2]?.price
                     : 0
                 }
@@ -692,7 +701,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                  matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                     ? matchOddsLive?.runners[1]?.ex?.availableToBack[2]?.price
                     : 0
                 }
@@ -712,7 +721,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                  matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                     ? matchOddsLive?.runners[1]?.ex?.availableToBack[1]?.price
                     : 0
                 }
@@ -731,7 +740,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             <SeparateBox
               value={
                 matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                   ? matchOddsLive?.runners[1]?.ex?.availableToBack[0]?.price
                   : 0
               }
@@ -749,7 +758,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             <SeparateBox
               value={
                 matchOddsLive?.runners?.length &&
-                  matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                   ? matchOddsLive?.runners[1]?.ex?.availableToLay[0]?.price
                   : 0
               }
@@ -768,7 +777,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                  matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                     ? matchOddsLive?.runners[1]?.ex?.availableToLay[1]?.price
                     : 0
                 }
@@ -788,7 +797,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                  matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                     ? matchOddsLive?.runners[1]?.ex?.availableToLay[2]?.price
                     : 0
                 }
@@ -852,18 +861,18 @@ const Odds = ({ onClick, top, blur, match }) => {
                   <SeparateBox
                     value={
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[12]?.ex?.availableToBack?.length >
+                      matchOddsLive?.runners[12]?.ex?.availableToBack?.length >
                         0
                         ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]
-                          ?.price
+                            ?.price
                         : 0
                     }
                     value2={formatNumber(
                       matchOddsLive?.runners?.length &&
                         matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
-                        0
+                          0
                         ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]
-                          ?.size
+                            ?.size
                         : 0
                     )}
                     color={matchesMobile ? "white" : "#CEEBFF"}
@@ -876,17 +885,17 @@ const Odds = ({ onClick, top, blur, match }) => {
                   <SeparateBox
                     value={
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
+                      matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
                         ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]
-                          ?.price
+                            ?.price
                         : 0
                     }
                     value2={formatNumber(
                       matchOddsLive?.runners?.length &&
                         matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
-                        0
+                          0
                         ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]
-                          ?.size
+                            ?.size
                         : 0
                     )}
                     color={matchesMobile ? "white" : "#C2E6FF"}
@@ -898,7 +907,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]?.price
                       : 0
                   }
@@ -916,7 +925,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]?.price
                       : 0
                   }
@@ -935,15 +944,15 @@ const Odds = ({ onClick, top, blur, match }) => {
                   <SeparateBox
                     value={
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                      matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
                         ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]
-                          ?.price
+                            ?.price
                         : 0
                     }
                     value2={formatNumber(
                       matchOddsLive?.runners?.length &&
                         matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
-                        0
+                          0
                         ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]?.size
                         : 0
                     )}
@@ -957,15 +966,15 @@ const Odds = ({ onClick, top, blur, match }) => {
                   <SeparateBox
                     value={
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                      matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
                         ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]
-                          ?.price
+                            ?.price
                         : 0
                     }
                     value2={formatNumber(
                       matchOddsLive?.runners?.length &&
                         matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
-                        0
+                          0
                         ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]?.size
                         : 0
                     )}
