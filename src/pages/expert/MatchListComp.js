@@ -75,6 +75,7 @@ const MatchListComp = () => {
       })}
       <Pagination
         page={currentPage}
+        
         className="whiteTextPagination d-flex justify-content-center"
         count={pageCount}
         color="primary"
