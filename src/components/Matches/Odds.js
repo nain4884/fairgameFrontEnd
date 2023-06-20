@@ -54,8 +54,8 @@ const Odds = ({ onClick, top, blur, match }) => {
     return timeLeft;
   }
 
-  // const upcoming = (timeLeft?.hours || timeLeft?.days) > 1 ? true : false;
-  const upcoming = false;
+  const upcoming = (timeLeft?.hours || timeLeft?.days) > 1 ? true : false;
+  // const upcoming = false;
 
 
   useEffect(() => {

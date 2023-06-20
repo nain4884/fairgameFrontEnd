@@ -45,7 +45,6 @@ const MatchListComp = () => {
   function callPage(e, value) {
     setCurrentPage(parseInt(value));
   }
-
   const currentElements = allMatch;
   return (
     <Box
@@ -67,6 +66,7 @@ const MatchListComp = () => {
       {currentElements.map((element, i) => {
         return (
           <Row
+            key={i}
             index={i + 1}
             containerStyle={{ background: (i + 1) % 2 === 0 ? "#ECECEC" : "" }}
             data={element}
@@ -74,8 +74,12 @@ const MatchListComp = () => {
         );
       })}
       <Pagination
+        sx={{
+          background: "#073c25",
+          overflow: "hidden",
+          borderRadius: "0px 0px 10px 10px",
+        }}
         page={currentPage}
-        
         className="whiteTextPagination d-flex justify-content-center"
         count={pageCount}
         color="primary"

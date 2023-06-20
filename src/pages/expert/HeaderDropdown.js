@@ -90,8 +90,9 @@ const HeaderDropdown = ({ anchorEl, open, handleClose }) => {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      {menutItems.map((x) => (
+      {menutItems.map((x,i) => (
         <MenuItem
+          key={i}
           dense={true}
           sx={{
             fontSize: { laptop: "12px", mobile: "10px" },
