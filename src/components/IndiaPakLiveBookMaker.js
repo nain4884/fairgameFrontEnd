@@ -377,6 +377,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 setIsTeamCSuspend(data.teamC_suspend);
                                 setTeamCRate(data.teamC_Back);
                                 setTeamCLayValue(data.teamC_lay);
+
+                                setTeamSuspend((prevState) => ({
+                                    ...prevState,
+                                    teamA_suspend: data?.teamA_suspend,
+                                    teamB_suspend: data?.teamB_suspend,
+                                    teamC_suspend: data?.teamC_suspend,
+                                }));
                             }
                         } else {
                             if (data.teamA_suspend == 'Ball Started') {
@@ -400,6 +407,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     isCBall: false,
                                 }));
                             }
+                            setTeamSuspend((prevState) => ({
+                                ...prevState,
+                                teamA_suspend: data?.teamA_suspend,
+                                teamB_suspend: data?.teamB_suspend,
+                                teamC_suspend: data?.teamC_suspend,
+                            }));
                         }
                         // alert(1)
                     }
@@ -453,7 +466,8 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             //         lock: true
             //     });
             // }
-            if (!teamSuspend.teamA_suspend) {
+            // alert(JSON.stringify(teamSuspend))
+            if (!teamSuspend.teamA_suspend || !teamSuspend.teamB_suspend || !teamSuspend.teamC_suspend) {
                 socket.emit("updateRate", {
                     betId: betId,
                     teamA_lay: "",
@@ -1423,7 +1437,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         zIndex: 100,
                                     }}
                                 >
-                                    <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: teamRates?.teamA <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                    <Typography sx={{ fontSize: "14px", fontWeight: "bold", color: teamRates?.teamA <= 0 ? "#FF4D4D" : "#46e080" }}>
                                         {teamRates?.teamA}
                                     </Typography>
                                 </Box>
@@ -1503,7 +1517,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         zIndex: 100,
                                     }}
                                 >
-                                    <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: teamRates?.teamB <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                    <Typography sx={{ fontSize: "14px", fontWeight: "bold", color: teamRates?.teamB <= 0 ? "#FF4D4D" : "#46e080" }}>
                                         {teamRates?.teamB}
                                     </Typography>
                                 </Box>
@@ -1580,7 +1594,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         zIndex: 100,
                                     }}
                                 >
-                                    <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: teamRates?.teamC <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                    <Typography sx={{ fontSize: "14px", fontWeight: "bold", color: teamRates?.teamC <= 0 ? "#FF4D4D" : "#46e080" }}>
                                         {teamRates?.teamC}
                                     </Typography>
                                 </Box>
