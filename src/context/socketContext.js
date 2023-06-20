@@ -52,7 +52,7 @@ export const SocketProvider = ({ children }) => {
         });
         newSocket.on("connect", () => {
           setSocket(newSocket);
-          toast.success("Socket connect !", { autoClose: 2000 });
+          // toast.success("Socket connect !", { autoClose: 2000 });
           // localStorage.setItem("socket", newSocket.connected)
         });
         newSocket.on("disconnect", () => {
@@ -71,7 +71,7 @@ export const SocketProvider = ({ children }) => {
         });
         newMicroSocket.on("connect", () => {
           setSocketMicro(newMicroSocket);
-          toast.success("Third party socket connect !", { autoClose: 2000 });
+          // toast.success("Third party socket connect !", { autoClose: 2000 });
           // localStorage.setItem("microSocket", newMicroSocket.connected)
         });
 
