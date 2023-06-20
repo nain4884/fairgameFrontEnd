@@ -431,6 +431,7 @@ export default function IndiaPakLive({
                                                 undeclare={true}
                                                 onClick={() => {
                                                     setVisible1(false);
+                                                    getSessionResult(match?.id);
                                                 }}
                                             />
                                         )}
@@ -476,6 +477,7 @@ export default function IndiaPakLive({
                                                 }}
                                                 onClick={() => {
                                                     setVisible(false);
+                                                    getSessionResult(match?.id);
                                                 }}
                                             />
                                         )}
@@ -521,6 +523,7 @@ export default function IndiaPakLive({
                                                 }}
                                                 onClick={() => {
                                                     setVisible2(false);
+                                                    getSessionResult(match?.id);
                                                 }}
                                             />
                                         )}
