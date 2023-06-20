@@ -9,7 +9,7 @@ import { apiBasePath } from "../../../components/helper/constants";
 import { formatNumber } from "../../../components/helper/helper";
 
 const BoxComponent = ({
-    name, color, align, lock, teamImage, rates, data, matchOddsData, ballStatus, status
+    name, color, align, lock, teamImage, rates, data, matchOddsData, ballStatus, status, isTeamC
 }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -90,7 +90,7 @@ const BoxComponent = ({
             {ballStatus ? <Box
                 sx={{
                     background: "#000",
-                    height: "82px",
+                    height: isTeamC ? "125px" : "82px",
                     position: "absolute",
                     right: 0,
                     top: 0,
