@@ -119,7 +119,6 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       });
     }
   }, []);
-  console.log("geoLocation", geoLocation);
 
   useEffect(() => {
     if (socket && socket.connected) {

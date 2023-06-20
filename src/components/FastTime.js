@@ -12,6 +12,7 @@ const FastTime = ({
 }) => {
   return (
     <Box
+    title="Faster Bet"
       sx={{
         display: "flex",
         alignItems: "center",
