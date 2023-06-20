@@ -69,331 +69,472 @@ const MatchSubmit = ({ }) => {
             }
 
             // manual bookmaker
-            if (packet.data[0] === "teamA_rate_user") {
-              const value = packet.data[1];
-              try {
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    const updatedBettings = item.bettings.map((betting) => {
-                      // Check if the betting object has the specified ID
-                      if (betting.id === value.betId) {
-                        // Update the bet_condition value
-                        return {
-                          ...betting,
-                          teamA_Back: value?.teamA_Back,
-                          teamA_lay: value?.teamA_lay,
-                          teamA_suspend:
-                            value?.teamA_suspend === false ? null : "suspended",
-                          teamA_Ball: null,
-                          teamB_Ball: null,
-                          teamC_Ball: null,
-                        };
-                      }
-                      return betting;
-                    });
+            // if (packet.data[0] === "teamA_rate_user") {
+            //   const value = packet.data[1];
+            //   try {
+            //     setMatchData((prevMatchData) => {
+            //       return prevMatchData.map((item) => {
+            //         const updatedBettings = item.bettings.map((betting) => {
+            //           // Check if the betting object has the specified ID
+            //           if (betting.id === value.betId) {
+            //             // Update the bet_condition value
+            //             return {
+            //               ...betting,
+            //               teamA_Back: value?.teamA_Back,
+            //               teamA_lay: value?.teamA_lay,
+            //               teamA_suspend:
+            //                 value?.teamA_suspend === false ? null : "suspended",
+            //               teamA_Ball: null,
+            //               teamB_Ball: null,
+            //               teamC_Ball: null,
+            //             };
+            //           }
+            //           return betting;
+            //         });
 
-                    return {
-                      ...item,
-                      bettings: updatedBettings,
-                    };
-                  });
-                });
+            //         return {
+            //           ...item,
+            //           bettings: updatedBettings,
+            //         };
+            //       });
+            //     });
 
-                // console.log("manualBookmakerData 222:", manualBookmakerData);
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
+            //     // console.log("manualBookmakerData 222:", manualBookmakerData);
+            //   } catch (err) {
+            //     console.log(err?.message);
+            //   }
+            // }
 
-            if (packet.data[0] === "teamB_rate_user") {
-              const value = packet.data[1];
-              try {
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    const updatedBettings = item.bettings.map((betting) => {
-                      // Check if the betting object has the specified ID
-                      if (betting.id === value.betId) {
-                        // Update the bet_condition value
-                        return {
-                          ...betting,
-                          teamB_Back: value?.teamB_Back, // Update the teamA_Back value
-                          teamB_lay: value?.teamB_lay, // Update the teamA_lay value
-                          teamB_suspend:
-                            value?.teamB_suspend == false ? null : "suspended",
-                          teamA_Ball: null,
-                          teamB_Ball: null,
-                          teamC_Ball: null,
-                        };
-                      }
-                      return betting;
-                    });
+            // if (packet.data[0] === "teamB_rate_user") {
+            //   const value = packet.data[1];
+            //   try {
+            //     setMatchData((prevMatchData) => {
+            //       return prevMatchData.map((item) => {
+            //         const updatedBettings = item.bettings.map((betting) => {
+            //           // Check if the betting object has the specified ID
+            //           if (betting.id === value.betId) {
+            //             // Update the bet_condition value
+            //             return {
+            //               ...betting,
+            //               teamB_Back: value?.teamB_Back, // Update the teamA_Back value
+            //               teamB_lay: value?.teamB_lay, // Update the teamA_lay value
+            //               teamB_suspend:
+            //                 value?.teamB_suspend == false ? null : "suspended",
+            //               teamA_Ball: null,
+            //               teamB_Ball: null,
+            //               teamC_Ball: null,
+            //             };
+            //           }
+            //           return betting;
+            //         });
 
-                    return {
-                      ...item,
-                      bettings: updatedBettings,
-                    };
-                  });
-                });
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
+            //         return {
+            //           ...item,
+            //           bettings: updatedBettings,
+            //         };
+            //       });
+            //     });
+            //   } catch (err) {
+            //     console.log(err?.message);
+            //   }
+            // }
 
-            if (packet.data[0] === "teamC_rate_user") {
-              const value = packet.data[1];
-              try {
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    const updatedBettings = item.bettings.map((betting) => {
-                      // Check if the betting object has the specified ID
-                      if (betting.id === value.betId) {
-                        // Update the bet_condition value
-                        return {
-                          ...betting,
-                          teamC_Back: value?.teamC_Back, // Update the teamA_Back value
-                          teamC_lay: value?.teamC_lay, // Update the teamA_lay value
-                          teamC_suspend:
-                            value?.teamC_suspend == false ? null : "suspended", // Update the teamA_susp
-                          teamA_Ball: null,
-                          teamB_Ball: null,
-                          teamC_Ball: null,
-                        };
-                      }
-                      return betting;
-                    });
+            // if (packet.data[0] === "teamC_rate_user") {
+            //   const value = packet.data[1];
+            //   try {
+            //     setMatchData((prevMatchData) => {
+            //       return prevMatchData.map((item) => {
+            //         const updatedBettings = item.bettings.map((betting) => {
+            //           // Check if the betting object has the specified ID
+            //           if (betting.id === value.betId) {
+            //             // Update the bet_condition value
+            //             return {
+            //               ...betting,
+            //               teamC_Back: value?.teamC_Back, // Update the teamA_Back value
+            //               teamC_lay: value?.teamC_lay, // Update the teamA_lay value
+            //               teamC_suspend:
+            //                 value?.teamC_suspend == false ? null : "suspended", // Update the teamA_susp
+            //               teamA_Ball: null,
+            //               teamB_Ball: null,
+            //               teamC_Ball: null,
+            //             };
+            //           }
+            //           return betting;
+            //         });
 
-                    return {
-                      ...item,
-                      bettings: updatedBettings,
-                    };
-                  });
-                });
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
+            //         return {
+            //           ...item,
+            //           bettings: updatedBettings,
+            //         };
+            //       });
+            //     });
+            //   } catch (err) {
+            //     console.log(err?.message);
+            //   }
+            // }
+
+            // if (packet.data[0] === "updateRate_user") {
+            //   const value = packet.data[1];
+            //   try {
+            //     setMatchData((prevMatchData) => {
+            //       return prevMatchData.map((item) => {
+            //         const updatedBettings = item.bettings.map((betting) => {
+            //           // Check if the betting object has the specified ID
+            //           if (betting.id === value.betId) {
+            //             // Update the bet_condition value
+            //             return {
+            //               ...betting,
+            //               teamA_Back: value?.teamA_Back,
+            //               teamA_lay: "",
+            //               teamB_Back: value?.teamB_Back,
+            //               teamB_lay: "",
+            //               teamC_Back: value?.teamC_Back,
+            //               teamC_lay: "",
+            //               // teamA_suspend: "live",
+            //               // teamB_suspend: "live",
+            //               // teamC_suspend: "live",
+            //               teamA_suspend: null,
+            //               teamB_suspend: null,
+            //               teamC_suspend: null,
+            //             };
+            //           }
+            //           return betting;
+            //         });
+
+            //         return {
+            //           ...item,
+            //           bettings: updatedBettings,
+            //         };
+            //       });
+            //     });
+            //   } catch (err) {
+            //     console.log(err?.message);
+            //   }
+            // }
 
             if (packet.data[0] === "updateRate_user") {
               const value = packet.data[1];
               try {
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    const updatedBettings = item.bettings.map((betting) => {
-                      // Check if the betting object has the specified ID
-                      if (betting.id === value.betId) {
-                        // Update the bet_condition value
-                        return {
-                          ...betting,
-                          teamA_Back: value?.teamA_Back,
-                          teamA_lay: "",
-                          teamB_Back: value?.teamB_Back,
-                          teamB_lay: "",
-                          teamC_Back: value?.teamC_Back,
-                          teamC_lay: "",
-                          // teamA_suspend: "live",
-                          // teamB_suspend: "live",
-                          // teamC_suspend: "live",
-                          teamA_suspend: null,
-                          teamB_suspend: null,
-                          teamC_suspend: null,
-                        };
-                      }
-                      return betting;
-                    });
+                if (!value?.lock) {
+                  if (value?.isTab) {
+                    setMatchData((prevMatchData) => {
+                      return prevMatchData.map((item) => {
+                        const updatedBettings = item.bettings.map((betting) => {
+                          // Check if the betting object has the specified ID
+                          if (betting.id === value.betId) {
+                            // Update the bet_condition value
+                            return {
+                              ...betting,
+                              teamA_Back: value?.teamA_Back,
+                              teamA_lay: "",
+                              teamB_Back: value?.teamB_Back,
+                              teamB_lay: "",
+                              teamC_Back: value?.teamC_Back,
+                              teamC_lay: "",
+                              // teamA_suspend: "live",
+                              // teamB_suspend: "live",
+                              // teamC_suspend: "live",
+                              teamA_suspend: null,
+                              teamB_suspend: null,
+                              teamC_suspend: null,
+                            };
+                          }
+                          return betting;
+                        });
 
-                    return {
-                      ...item,
-                      bettings: updatedBettings,
-                    };
-                  });
-                });
+                        return {
+                          ...item,
+                          bettings: updatedBettings,
+                        };
+                      });
+                    });
+                  } else {
+                    setMatchData((prevMatchData) => {
+                      return prevMatchData.map((item) => {
+                        const updatedBettings = item.bettings.map((betting) => {
+                          // Check if the betting object has the specified ID
+                          if (betting.id === value.betId) {
+                            // Update the bet_condition value
+                            return {
+                              ...betting,
+                              teamA_Back: value?.teamA_Back ? value?.teamA_Back : "",
+                              teamA_lay: value?.teamA_lay ? value?.teamA_lay : "",
+                              teamA_suspend:
+                                value?.teamA_suspend === false ? null : "suspended",
+                              teamB_Back: value?.teamB_Back ? value?.teamB_Back : "",
+                              teamB_lay: value?.teamB_lay ? value?.teamB_lay : "",
+                              teamB_suspend:
+                                value?.teamB_suspend === false ? null : "suspended",
+                              teamC_Back: value?.teamC_Back ? value?.teamC_Back : "",
+                              teamC_lay: value?.teamC_lay ? value?.teamC_lay : "",
+                              teamC_suspend:
+                                value?.teamC_suspend === false ? null : "suspended",
+                              teamA_Ball: null,
+                              teamB_Ball: null,
+                              teamC_Ball: null,
+                            };
+                          }
+                          return betting;
+                        });
+
+                        return {
+                          ...item,
+                          bettings: updatedBettings,
+                        };
+                      });
+                    });
+                  }
+                } else {
+                  if (value.teamA_suspend == "Ball Started") {
+                    try {
+                      setMatchData((prevMatchData) => {
+                        return prevMatchData.map((item) => {
+                          const updatedBettings = item.bettings.map((betting) => {
+                            // Check if the betting object has the specified ID
+                            if (betting.id === value.betId) {
+                              // Update the bet_condition value
+                              return {
+                                ...betting,
+                                teamA_suspend: value?.teamA_suspend ? "suspended" : value?.teamA_suspend,
+                                teamB_suspend: value?.teamB_suspend ? "suspended" : value?.teamB_suspend,
+                                teamC_suspend: value?.teamC_suspend ? "suspended" : value?.teamC_suspend,
+                                teamA_Ball: "ball",
+                                teamB_Ball: "ball",
+                                teamC_Ball: "ball",
+                              };
+                            }
+                            return betting;
+                          });
+
+                          return {
+                            ...item,
+                            bettings: updatedBettings,
+                          };
+                        });
+                      });
+                    } catch (err) {
+                      console.log(err?.message);
+                    }
+                  } else {
+                    try {
+                      setMatchData((prevMatchData) => {
+                        return prevMatchData.map((item) => {
+                          const updatedBettings = item.bettings.map((betting) => {
+                            // Check if the betting object has the specified ID
+                            if (betting.id === value.betId) {
+                              // Update the bet_condition value
+                              return {
+                                ...betting,
+                                teamA_suspend: value?.teamA_suspend ? "suspended" : value?.teamA_suspend,
+                                teamB_suspend: value?.teamB_suspend ? "suspended" : value?.teamB_suspend,
+                                teamC_suspend: value?.teamC_suspend ? "suspended" : value?.teamC_suspend,
+
+                                teamA_Ball: null,
+                                teamB_Ball: null,
+                                teamC_Ball: null,
+                              };
+                            }
+                            return betting;
+                          });
+
+                          return {
+                            ...item,
+                            bettings: updatedBettings,
+                          };
+                        });
+                      });
+                    } catch (err) {
+                      console.log(err?.message);
+                    }
+                  }
+                }
               } catch (err) {
                 console.log(err?.message);
               }
             }
 
-            if (packet.data[0] === "teamA_suspend_user") {
-              const value = packet.data[1];
-              if (value.teamA_suspend == "Ball Started") {
-                try {
-                  setMatchData((prevMatchData) => {
-                    return prevMatchData.map((item) => {
-                      const updatedBettings = item.bettings.map((betting) => {
-                        // Check if the betting object has the specified ID
-                        if (betting.id === value.betId) {
-                          // Update the bet_condition value
-                          return {
-                            ...betting,
-                            teamA_suspend: "suspended",
-                            teamA_Ball: "ball",
-                            teamB_Ball: "ball",
-                            teamC_Ball: "ball",
-                          };
-                        }
-                        return betting;
-                      });
+            // if (packet.data[0] === "teamA_suspend_user") {
+            //   const value = packet.data[1];
+            //   if (value.teamA_suspend == "Ball Started") {
+            //     try {
+            //       setMatchData((prevMatchData) => {
+            //         return prevMatchData.map((item) => {
+            //           const updatedBettings = item.bettings.map((betting) => {
+            //             // Check if the betting object has the specified ID
+            //             if (betting.id === value.betId) {
+            //               // Update the bet_condition value
+            //               return {
+            //                 ...betting,
+            //                 teamA_suspend: "suspended",
+            //                 teamA_Ball: "ball",
+            //                 teamB_Ball: "ball",
+            //                 teamC_Ball: "ball",
+            //               };
+            //             }
+            //             return betting;
+            //           });
 
-                      return {
-                        ...item,
-                        bettings: updatedBettings,
-                      };
-                    });
-                  });
-                } catch (err) {
-                  console.log(err?.message);
-                }
-              } else {
-                try {
-                  setMatchData((prevMatchData) => {
-                    return prevMatchData.map((item) => {
-                      const updatedBettings = item.bettings.map((betting) => {
-                        // Check if the betting object has the specified ID
-                        if (betting.id === value.betId) {
-                          // Update the bet_condition value
-                          return {
-                            ...betting,
-                            teamA_suspend: "suspended",
-                            teamA_Ball: null,
-                            teamB_Ball: null,
-                            teamC_Ball: null,
-                          };
-                        }
-                        return betting;
-                      });
+            //           return {
+            //             ...item,
+            //             bettings: updatedBettings,
+            //           };
+            //         });
+            //       });
+            //     } catch (err) {
+            //       console.log(err?.message);
+            //     }
+            //   } else {
+            //     try {
+            //       setMatchData((prevMatchData) => {
+            //         return prevMatchData.map((item) => {
+            //           const updatedBettings = item.bettings.map((betting) => {
+            //             // Check if the betting object has the specified ID
+            //             if (betting.id === value.betId) {
+            //               // Update the bet_condition value
+            //               return {
+            //                 ...betting,
+            //                 teamA_suspend: "suspended",
+            //                 teamA_Ball: null,
+            //                 teamB_Ball: null,
+            //                 teamC_Ball: null,
+            //               };
+            //             }
+            //             return betting;
+            //           });
 
-                      return {
-                        ...item,
-                        bettings: updatedBettings,
-                      };
-                    });
-                  });
-                } catch (err) {
-                  console.log(err?.message);
-                }
-              }
-            }
+            //           return {
+            //             ...item,
+            //             bettings: updatedBettings,
+            //           };
+            //         });
+            //       });
+            //     } catch (err) {
+            //       console.log(err?.message);
+            //     }
+            //   }
+            // }
 
-            if (packet.data[0] === "teamB_suspend_user") {
-              const value = packet.data[1];
-              if (value.teamB_suspend == "Ball Started") {
-                try {
-                  setMatchData((prevMatchData) => {
-                    return prevMatchData.map((item) => {
-                      const updatedBettings = item.bettings.map((betting) => {
-                        // Check if the betting object has the specified ID
-                        if (betting.id === value.betId) {
-                          // Update the bet_condition value
-                          return {
-                            ...betting,
-                            teamB_suspend: "suspended",
-                            teamA_Ball: "ball",
-                            teamB_Ball: "ball",
-                            teamC_Ball: "ball",
-                          };
-                        }
-                        return betting;
-                      });
+            // if (packet.data[0] === "teamB_suspend_user") {
+            //   const value = packet.data[1];
+            //   if (value.teamB_suspend == "Ball Started") {
+            //     try {
+            //       setMatchData((prevMatchData) => {
+            //         return prevMatchData.map((item) => {
+            //           const updatedBettings = item.bettings.map((betting) => {
+            //             // Check if the betting object has the specified ID
+            //             if (betting.id === value.betId) {
+            //               // Update the bet_condition value
+            //               return {
+            //                 ...betting,
+            //                 teamB_suspend: "suspended",
+            //                 teamA_Ball: "ball",
+            //                 teamB_Ball: "ball",
+            //                 teamC_Ball: "ball",
+            //               };
+            //             }
+            //             return betting;
+            //           });
 
-                      return {
-                        ...item,
-                        bettings: updatedBettings,
-                      };
-                    });
-                  });
-                } catch (err) {
-                  console.log(err?.message);
-                }
-              } else {
-                try {
-                  setMatchData((prevMatchData) => {
-                    return prevMatchData.map((item) => {
-                      const updatedBettings = item.bettings.map((betting) => {
-                        // Check if the betting object has the specified ID
-                        if (betting.id === value.betId) {
-                          // Update the bet_condition value
-                          return {
-                            ...betting,
-                            teamB_suspend: "suspended",
-                            teamA_Ball: null,
-                            teamB_Ball: null,
-                            teamC_Ball: null,
-                          };
-                        }
-                        return betting;
-                      });
+            //           return {
+            //             ...item,
+            //             bettings: updatedBettings,
+            //           };
+            //         });
+            //       });
+            //     } catch (err) {
+            //       console.log(err?.message);
+            //     }
+            //   } else {
+            //     try {
+            //       setMatchData((prevMatchData) => {
+            //         return prevMatchData.map((item) => {
+            //           const updatedBettings = item.bettings.map((betting) => {
+            //             // Check if the betting object has the specified ID
+            //             if (betting.id === value.betId) {
+            //               // Update the bet_condition value
+            //               return {
+            //                 ...betting,
+            //                 teamB_suspend: "suspended",
+            //                 teamA_Ball: null,
+            //                 teamB_Ball: null,
+            //                 teamC_Ball: null,
+            //               };
+            //             }
+            //             return betting;
+            //           });
 
-                      return {
-                        ...item,
-                        bettings: updatedBettings,
-                      };
-                    });
-                  });
-                } catch (err) {
-                  console.log(err?.message);
-                }
-              }
-            }
+            //           return {
+            //             ...item,
+            //             bettings: updatedBettings,
+            //           };
+            //         });
+            //       });
+            //     } catch (err) {
+            //       console.log(err?.message);
+            //     }
+            //   }
+            // }
 
-            if (packet.data[0] === "teamC_suspend_user") {
-              const value = packet.data[1];
-              if (value.teamC_suspend == "Ball Started") {
-                try {
-                  setMatchData((prevMatchData) => {
-                    return prevMatchData.map((item) => {
-                      const updatedBettings = item.bettings.map((betting) => {
-                        // Check if the betting object has the specified ID
-                        if (betting.id === value.betId) {
-                          // Update the bet_condition value
-                          return {
-                            ...betting,
-                            teamC_suspend: "suspended",
-                            teamA_Ball: "ball",
-                            teamB_Ball: "ball",
-                            teamC_Ball: "ball",
-                          };
-                        }
-                        return betting;
-                      });
+            // if (packet.data[0] === "teamC_suspend_user") {
+            //   const value = packet.data[1];
+            //   if (value.teamC_suspend == "Ball Started") {
+            //     try {
+            //       setMatchData((prevMatchData) => {
+            //         return prevMatchData.map((item) => {
+            //           const updatedBettings = item.bettings.map((betting) => {
+            //             // Check if the betting object has the specified ID
+            //             if (betting.id === value.betId) {
+            //               // Update the bet_condition value
+            //               return {
+            //                 ...betting,
+            //                 teamC_suspend: "suspended",
+            //                 teamA_Ball: "ball",
+            //                 teamB_Ball: "ball",
+            //                 teamC_Ball: "ball",
+            //               };
+            //             }
+            //             return betting;
+            //           });
 
-                      return {
-                        ...item,
-                        bettings: updatedBettings,
-                      };
-                    });
-                  });
-                } catch (err) {
-                  console.log(err?.message);
-                }
-              } else {
-                try {
-                  setMatchData((prevMatchData) => {
-                    return prevMatchData.map((item) => {
-                      const updatedBettings = item.bettings.map((betting) => {
-                        // Check if the betting object has the specified ID
-                        if (betting.id === value.betId) {
-                          // Update the bet_condition value
-                          return {
-                            ...betting,
-                            teamC_suspend: "suspended",
-                            teamA_Ball: null,
-                            teamB_Ball: null,
-                            teamC_Ball: null,
-                          };
-                        }
-                        return betting;
-                      });
+            //           return {
+            //             ...item,
+            //             bettings: updatedBettings,
+            //           };
+            //         });
+            //       });
+            //     } catch (err) {
+            //       console.log(err?.message);
+            //     }
+            //   } else {
+            //     try {
+            //       setMatchData((prevMatchData) => {
+            //         return prevMatchData.map((item) => {
+            //           const updatedBettings = item.bettings.map((betting) => {
+            //             // Check if the betting object has the specified ID
+            //             if (betting.id === value.betId) {
+            //               // Update the bet_condition value
+            //               return {
+            //                 ...betting,
+            //                 teamC_suspend: "suspended",
+            //                 teamA_Ball: null,
+            //                 teamB_Ball: null,
+            //                 teamC_Ball: null,
+            //               };
+            //             }
+            //             return betting;
+            //           });
 
-                      return {
-                        ...item,
-                        bettings: updatedBettings,
-                      };
-                    });
-                  });
-                } catch (err) {
-                  console.log(err?.message);
-                }
-              }
-            }
+            //           return {
+            //             ...item,
+            //             bettings: updatedBettings,
+            //           };
+            //         });
+            //       });
+            //     } catch (err) {
+            //       console.log(err?.message);
+            //     }
+            //   }
+            // }
 
             if (packet.data[0] === "updateSessionRate_user") {
               const value = packet.data[1];

@@ -214,6 +214,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
               }}
               ballStatus={manualBookmakerData?.[0]?.teamA_Ball === "ball" ? true : false}
               status={manualBookmakerData?.[0]?.teamA_suspend ? true : false}
+              isTeamC={currentMatch?.teamC}
             // livestatus={
             //   matchOddsData?.[0]?.teamA_suspend === "suspended"
             //     ? true
@@ -238,6 +239,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
               }}
               ballStatus={manualBookmakerData?.[0]?.teamB_Ball === "ball" ? true : false}
               status={manualBookmakerData?.[0]?.teamB_suspend ? true : false}
+              isTeamC={currentMatch?.teamC}
             />
             {currentMatch?.teamC ?
               <>
@@ -256,6 +258,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
                   }}
                   ballStatus={manualBookmakerData?.[0]?.teamC_Ball === "ball" ? true : false}
                   status={manualBookmakerData?.[0]?.teamC_suspend ? true : false}
+                  isTeamC={currentMatch?.teamC}
                 />
               </> : null}
             {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
