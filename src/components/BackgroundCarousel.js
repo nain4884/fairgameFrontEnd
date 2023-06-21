@@ -9,7 +9,11 @@ function BackgroundCarousel() {
         <Box style={{ height: "100vh", width: "100vw", position: "absolute", zIndex: 0, top: 0, left: 0 }}>
             <Carousel pause={false} controls={false} indicators={false} interval={4000}>
                 <Carousel.Item >
-                    <Box style={{ height: "100vh", width: "100vw", backgroundImage: `url(${matchesMobile?MobileBackground:loginBackground})`, backgroundRepeat: "no-repeat", backgroundSize: "100vw 100vh" }} />
+                    <Box style={{ 
+                        height: "100vh", width: "100vw", backgroundImage: `url(${matchesMobile?MobileBackground:loginBackground})`, backgroundRepeat: "no-repeat", 
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'bottom'
+                    }} />
                 </Carousel.Item>
             </Carousel>
         </Box>

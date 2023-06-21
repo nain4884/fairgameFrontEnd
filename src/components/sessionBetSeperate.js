@@ -1,8 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { DELETE, MyBet } from "../assets";
+import { DELETE, MyBet, ARROWUP } from "../assets";
 import userAxios from "../axios/userAxios";
-import { ARROWDOWN, ARROWUP } from "../expert/assets";
+import {
+  ARROWDOWN,
+  // ARROWUP 
+} from "../expert/assets";
 import StyledImage from "./StyledImage";
 import { useSelector } from "react-redux";
 import { formatNumber } from "./helper/helper";
@@ -33,8 +36,319 @@ const SessionBetSeperate = ({
 }) => {
   //  {console.warn("allBetsData qq:",allBetsData)}
   console.log("betHistory", betHistory);
+  const [visible, setVisible] = useState(true);
   return (
-    <Box
+    <>
+
+      <Box
+        sx={[
+          {
+            width: { tablet: "98%", mobile: "98%", laptop: "100%" },
+            display: "flex",
+            flexDirection: "column",
+            alignSelf: "center",
+            marginX: { laptop: "0vw", mobile: "0px", tablet: "0px" },
+            marginY: { laptop: ".5vh", mobile: "0px" },
+            borderRadius: "2px",
+            background: "white",
+            alignSelf: {
+              mobile: "center",
+              tablet: "center",
+              laptop: "flex-start",
+            },
+          },
+        ]}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            height: 38,
+            flexDirection: "row",
+            width: "100%",
+            alignSelf: "center",
+          }}
+        >
+          <Box
+            sx={{
+              flex: 1,
+              background: "#f1c550",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+                fontWeight: "bold",
+                marginLeft: "7px",
+              }}
+            >
+              Session Bets &#40;{allBetsData?.length || 0}&#41;
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              flex: 0.1,
+              background: "#262626",
+              // '#262626'
+            }}
+          >
+            <div className="slanted"></div>
+          </Box>
+
+
+          <Box
+            sx={{
+              flex: 1,
+              background: "#262626",
+              // '#262626' ,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <img
+              onClick={() => {
+                setVisible(!visible);
+              }}
+              src={ARROWUP}
+              style={{
+                transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+                width: "15px",
+                height: "15px",
+                marginRight: "5px",
+                marginLeft: "5px",
+              }}
+            />
+            {/* <Typography
+              sx={{ fontSize: "12px", fontWeight: "700", color: "#FF1111" }}
+            >
+              All Bet
+            </Typography>
+            <Typography
+              sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
+            >
+              {count || 0}
+            </Typography> */}
+          </Box>
+        </Box>
+        {visible && (
+          <>
+        <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <Box
+            sx={{
+              margin: { mobile: "1px", laptop: "0.5px" },
+              height: "30px",
+              width: "30px",
+              display: "flex",
+              background: "black",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+            >
+              {"No"}
+            </Typography>
+          </Box>
+          <RowComponent
+            header={true}
+            data={["Matched Bet", "Odds", "Yes/No", "Stake"]}
+          />
+          {profit && (
+            <Box
+              sx={{
+                height: "30px",
+                width: "30%",
+                display: "flex",
+                background: "black",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: { mobile: "1px", laptop: "1px" },
+              }}
+            >
+              <Typography
+                sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+              >
+                {"Profit/Loss"}
+              </Typography>
+            </Box>
+          )}
+        </Box>
+       
+        <Box
+          sx={{
+            maxHeight: { mobile: "200px", laptop: "420px" },
+            overflowY: "auto",
+          }}
+        >
+          {allBetsData?.map((i, k) => {
+            return (
+              <Box
+                key={k}
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  position: "relative",
+                }}
+              >
+                <Box
+                  sx={{
+                    height: "40px",
+                    margin: { mobile: "1px", laptop: "1px" },
+                    width: "30px",
+                    display: "flex",
+                    background: "black",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{ color: "white", fontSize: "10px", fontWeight: "500" }}
+                  >
+                    {"0" + (k + 1)}
+                  </Typography>
+                </Box>
+                <RowComponent header={false} data={i} />
+                {betHistory && i?.deleted_reason && (
+                  <Box
+                    sx={{
+                      width: {
+                        mobile: profit ? "100%" : "100%",
+                        alignItems: "flex-end",
+                        justifyContent: "center",
+                        display: "flex",
+                        laptop: profit ? "100 % " : "100% ",
+                      },
+                      background: "rgba(0, 0, 0, 0.5)",
+                      height: "42px",
+                      position: "absolute",
+                    }}
+                  >
+                    <Box sx={{ width: mark2 ? "35%" : "35%" }}></Box>
+                  </Box>
+                )}
+                {i?.deleted_reason && betHistory === undefined && (
+                  <Box
+                    sx={{
+                      width: {
+                        mobile: profit ? "100%" : "100%",
+                        alignItems: "flex-end",
+                        justifyContent: "center",
+                        display: "flex",
+                        laptop: profit ? "100 % " : "100% ",
+                      },
+                      background: "rgba(0, 0, 0, 0.5)",
+                      height: "42px",
+                      position: "absolute",
+                    }}
+                  >
+                    <Box sx={{ width: mark2 ? "35%" : "35%" }}></Box>
+                    <Box
+                      sx={{
+                        width: mark2 ? "65%" : "65%",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "flex-end",
+                        alignSelf: "flex-end",
+                      }}
+                    >
+                      {mark && (
+                        <Typography
+                          sx={{
+                            fontSize: "10px",
+                            fontWeight: "700",
+                            color: "white",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
+                          due to ${i?.deleted_reason}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Box>
+                )}
+                {profit && !i?.deleted_reason && (
+                  <Box
+                    sx={{
+                      height: "40px",
+                      width: "30%",
+                      margin: { mobile: "1px", laptop: "1px" },
+                      display: "flex",
+                      background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: { mobile: "11px", laptop: "14px" },
+                        color: "white",
+                        fontWeight: "700",
+                      }}
+                    >
+                      {Number(i.myProfitLoss).toFixed(2)}
+                    </Typography>
+                    <StyledImage
+                      sx={{
+                        width: { mobile: "15px", laptop: "25px" },
+                        height: { laptop: "15px", mobile: "7px" },
+                      }}
+                      src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                    />
+                  </Box>
+                )}
+                {profit && i?.deleted_reason && (
+                  <Box
+                    sx={{
+                      height: "40px",
+                      width: "30%",
+                      margin: { mobile: "1px", laptop: "1px" },
+                      display: "flex",
+                      background: "black",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      paddingX: "2px",
+                      zIndex: 999,
+                    }}
+                  >
+                    <StyledImage
+                      sx={{
+                        width: { mobile: "15px", laptop: "20px" },
+                        height: { laptop: "20px", mobile: "14px" },
+                        marginRight: "5px",
+                      }}
+                      src={DELETE}
+                    />
+                    <Typography
+                      sx={{
+                        fontSize: { mobile: "7px", laptop: ".5vw" },
+                        color: "white",
+                        fontWeight: "700",
+                        width: { laptop: "65%", mobile: "55%" },
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
+                      {"\n"}
+                      {i?.deleted_reason}
+                    </Typography>
+                  </Box>
+                )}
+              </Box>
+            );
+          })}
+        </Box>
+        </>
+          )}
+      </Box>
+
+      {/* <Box
       sx={{
         width: { mobile: "100%", laptop: "100%" },
         marginY: { mobile: ".2vh", laptop: "1vh" },
@@ -63,7 +377,7 @@ const SessionBetSeperate = ({
         <Typography
           sx={{ fontWeight: "12px", color: "white", fontWeight: "700" }}
         >
-          Session Bets
+          Session Bets 
         </Typography>
 
         <Box
@@ -297,7 +611,8 @@ const SessionBetSeperate = ({
           );
         })}
       </Box>
-    </Box>
+    </Box> */}
+    </>
   );
 };
 // value2 = { formatNumber(newData?.rate_percent?.split("-")[0])}

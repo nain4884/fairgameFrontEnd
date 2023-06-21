@@ -324,23 +324,25 @@ const MatchOdds = ({
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
       {(data?.apiSessionActive || data?.manualSessionActive) && (
-        <SessionMarket
-          betLock={data?.blockMarket?.SESSION?.block}
-          showFast={true}
-          session={"sessionOdds"}
-          sessionBets={sessionBets}
-          data={sessionOddsLive}
-          newData={data}
-          sessionOffline={sessionOffline}
-          sessionExposer={sessionExposer}
-          // dataProfit={dataProfit}
-          teamARates={teamRates?.teamA}
-          teamBRates={teamRates?.teamB}
-          teamCRates={teamRates?.teamC}
-          allBetsData={allBetsData}
-          setFastAmount={setFastAmount}
-          fastAmount={fastAmount?.sessionOdds}
-        />
+        <>
+          <SessionMarket
+            betLock={data?.blockMarket?.SESSION?.block}
+            showFast={true}
+            session={"sessionOdds"}
+            sessionBets={sessionBets}
+            data={sessionOddsLive}
+            newData={data}
+            sessionOffline={sessionOffline}
+            sessionExposer={sessionExposer}
+            // dataProfit={dataProfit}
+            teamARates={teamRates?.teamA}
+            teamBRates={teamRates?.teamB}
+            teamCRates={teamRates?.teamC}
+            allBetsData={allBetsData}
+            setFastAmount={setFastAmount}
+            fastAmount={fastAmount?.sessionOdds}
+          />          
+        </>
       )}
     </Box>
   );
