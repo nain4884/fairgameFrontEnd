@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import Divider from "../../helper/Divider";
 import SessionMarketBox from "./SessionMarketBox";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import { FASTTIME, HourGlass, Info } from "../../../assets";
+import { FASTTIME, HourGlass, Info, ARROWUP } from "../../../assets";
+
 import { useTheme } from "@emotion/react";
 import SmallBoxSeason from "../SmallBoxSeason";
 import { memo } from "react";
@@ -37,6 +38,7 @@ const SessionMarket = ({
   const matchSessionData = newData?.bettings?.filter(
     (element) => element.sessionBet === true
   );
+  const [visible, setVisible] = useState(true);
   return (
     <>
       <Box
@@ -78,7 +80,7 @@ const SessionMarket = ({
             <Typography
               sx={{
                 width: "100%",
-                fontSize: { laptop: "13px", tablet: "12px", mobile: "10px" },
+                fontSize: { laptop: "13px", tablet: "10px", mobile: "10px" },
                 fontWeight: "bold",
                 marginLeft: "7px",
               }}
@@ -123,6 +125,32 @@ const SessionMarket = ({
               sessionBets={sessionBets}
               totalAmount={sessionExposer}
             />
+            <Box
+          sx={{
+            flex: 1,
+            background: {laptop: "#262626", mobile: 'none'},
+                position: {laptop: "static", mobile: 'absolute'},
+            // '#262626' ,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <img
+            onClick={() => {
+              setVisible(!visible);
+            }}
+            src={ARROWUP}
+            style={{
+              transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+              width: "15px",
+              height: "15px",
+              marginRight: "5px",
+              marginLeft: "5px",
+              cursor: 'pointer'
+            }}
+          />
+        </Box>
             {/* <Typography
               sx={{
                 color: "white",
@@ -156,6 +184,7 @@ const SessionMarket = ({
             />
           </Box>
         )}
+        {visible && (
         <Box sx={{ width: "100%" }}>
           {
             <Box
@@ -344,6 +373,7 @@ const SessionMarket = ({
               })}
           </Box>
         </Box>
+        )}
       </Box>
       {/* <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} /> */}
     </>

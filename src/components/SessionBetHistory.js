@@ -38,7 +38,7 @@ const SessionBetHistory = ({ profit, betData ,mark,mark2,betHistory}) => {
         <Typography
           sx={{ fontWeight: "12px", color: "white", fontWeight: "700" }}
         >
-          Session Bets
+          Session Bets 
         </Typography>
 
         <Box

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import BoxComponent from "./BoxComponent";
 import ManualBoxComponent from "./ManualBoxComponent";
 import Divider from "../helper/Divider";
-import { BallStart, FASTTIME, HourGlass, Info, TIME } from "../../assets";
+import { BallStart, FASTTIME, HourGlass, Info, TIME, ARROWUP } from "../../assets";
 import { memo } from "react";
 import FastTimePlaceBet from "../FastImePlaceBet";
 import LiveMarket from "../CommonMasterAdminLayout/LiveMarket";
@@ -25,7 +25,7 @@ const SmallBox = ({ valueA, valueB }) => {
   return (
     <Box
       sx={{
-        marginLeft: { mobile: 0, laptop: "-26%", tablet: 0 },
+        marginLeft: { mobile: 0, laptop: "-15px", tablet: 0 },
         justifyContent: {
           mobile: "center",
           laptop: "center",
@@ -62,9 +62,9 @@ const SmallBox = ({ valueA, valueB }) => {
         </Typography>
         <Typography
           sx={{
-            fontSize: "10px",
+            fontSize: "12px",
             fontWeight: "bold",
-            color: valueA < 0 ? `#FF9292` : `#46e080`,
+            color: valueA < 0 ? `#FF9292` : `#319E5B`,
           }}
         >
           {valueA < 0 ? ` ${valueA}` : `${valueA}`}
@@ -97,9 +97,9 @@ const SmallBox = ({ valueA, valueB }) => {
 
         <Typography
           sx={{
-            fontSize: "10px",
+            fontSize: "12px",
             fontWeight: "bold",
-            color: valueB < 0 ? `#FF9292` : `#46e080`,
+            color: valueB < 0 ? `#FF9292` : `#319E5B`,
           }}
         >
           {valueB < 0 ? ` ${valueB}` : `${valueB}`}
@@ -191,8 +191,11 @@ const Odds = ({
     }
   })();
 
+  const [visible, setVisible] = useState(true);
+
   return (
     <>
+    
       <Box
         key="odds"
         sx={{
@@ -276,6 +279,34 @@ const Odds = ({
             }}
           >
             <SmallBox valueA={bookRatioA} valueB={bookRatioB} />
+            <Box
+             className='arrowUpCollapse'
+              sx={{
+                flex: 1,
+                background: {laptop: "#262626", mobile: 'none'},
+                position: {laptop: "static", mobile: 'absolute'},
+                // '#262626' ,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <img
+                onClick={() => {
+                  setVisible(!visible);
+                }}
+                src={ARROWUP}
+                style={{
+                  transform: !visible ? "rotate(180deg)" : "rotate(0deg)",
+                  width: "16px",
+                  height: "16px",
+                  marginRight: "3px",
+                  marginLeft: "5px",
+                  cursor: 'pointer'
+                }}
+                alt={"Banner"}
+              />
+            </Box>
             {/* <Typography
             sx={{
               color: "white",
@@ -299,16 +330,21 @@ const Odds = ({
           /> */}
           </Box>
         </Box>
-        {showFastTimeBox && (
+        
+        {visible && showFastTimeBox && (
           <Box>
             <FastTimePlaceBet
               session={session}
               setFastAmount={setFastAmount}
               selectedFastAmount={fastAmount}
               setShowFastTimeBox={setShowFastTimeBox}
-            />
-          </Box>
+            /> 
+           </Box>
         )}
+        {visible && (
+         <Box sx={{color: 'black'}}>
+              
+         
         <Box
           sx={{
             display: "flex",
@@ -347,6 +383,7 @@ const Odds = ({
               justifyContent: { laptop: "center", mobile: "flex-end" },
             }}
           >
+             {/* <Box sx={{ width: ".50%", display: "flex" }}></Box> */}
             <Box
               sx={{
                 background: "#00C0F9",
@@ -355,10 +392,11 @@ const Odds = ({
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                borderLeft: {laptop: '4px solid #319e5b', mobile: '2px solid #319e5b' }
               }}
             >
               <Typography
-                sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                sx={{ fontSize: "12px", color: "black", fontWeight: "600", }}
               >
                 Back
               </Typography>
@@ -380,6 +418,7 @@ const Odds = ({
                 Lay
               </Typography>
             </Box>
+            {/* <Box sx={{ width: ".50%", display: "flex" }}></Box> */}
           </Box>
         </Box>
         {betLock && (
@@ -448,7 +487,7 @@ const Odds = ({
             />
           </Box>
         )}
-
+ 
         {typeOfBet == "MANUAL BOOKMAKER" ? (
           <>
             <ManualBoxComponent
@@ -686,7 +725,10 @@ const Odds = ({
             )}
           </>
         )}
+          </Box>
+        )}
       </Box>
+   
       {placeBetData && (
         <Box
           sx={{
@@ -731,6 +773,19 @@ const Odds = ({
           )}
         </Box>
       )}
+
+      <style jsx scope>
+            {`
+            @media only screen and (max-width: 600px) {
+              body .arrowUpCollapse img{
+                  width: 14px !important;
+                  height: 14px !important;
+              }
+            }
+
+              
+            `}
+      </style>
     </>
   );
 };
