@@ -186,6 +186,8 @@ const SessionBetSeperate = ({
           }}
         >
           {allBetsData?.map((i, k) => {
+            const num = allBetsData.length - k;
+            const formattedNum = num < 10 ? "0" + num : num.toString();
             return (
               <Box
                 key={k}
@@ -209,7 +211,7 @@ const SessionBetSeperate = ({
                   <Typography
                     sx={{ color: "white", fontSize: "10px", fontWeight: "500" }}
                   >
-                    {"0" + (k + 1)}
+                    {formattedNum}
                   </Typography>
                 </Box>
                 <RowComponent header={false} data={i} />

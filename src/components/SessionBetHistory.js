@@ -6,7 +6,7 @@ import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import StyledImage from "./StyledImage";
 import { useSelector } from "react-redux";
 import { formatNumber } from "./helper/helper";
-const SessionBetHistory = ({ profit, betData ,mark,mark2,betHistory}) => {
+const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
   //  {console.warn("allBetsData qq:",allBetsData)}
   return (
     <Box
@@ -38,7 +38,7 @@ const SessionBetHistory = ({ profit, betData ,mark,mark2,betHistory}) => {
         <Typography
           sx={{ fontWeight: "12px", color: "white", fontWeight: "700" }}
         >
-          Session Bets 
+          Session Bets
         </Typography>
 
         <Box
@@ -117,6 +117,8 @@ const SessionBetHistory = ({ profit, betData ,mark,mark2,betHistory}) => {
         {betData
           ?.filter((v) => v.sessionBet === true)
           ?.map((i, k) => {
+            const num = betData.length - k;
+            const formattedNum = num < 10 ? "0" + num : num.toString();
             return (
               <Box
                 key={k}
@@ -140,30 +142,30 @@ const SessionBetHistory = ({ profit, betData ,mark,mark2,betHistory}) => {
                   <Typography
                     sx={{ color: "white", fontSize: "10px", fontWeight: "500" }}
                   >
-                    {"0" + (k + 1)}
+                    {formattedNum}
                   </Typography>
                 </Box>
                 <RowComponent header={false} data={i} />
                 {i?.deleted_reason && betHistory && (
-                <Box
-                  sx={{
-                    width: {
-                      mobile: profit ? "100%" : "100%",
-                      alignItems: "flex-end",
-                      justifyContent: "center",
-                      display: "flex",
-                      laptop: profit ? "100 % " : "100% ",
-                    },
-                    background: "rgba(0, 0, 0, 0.5)",
-                    height: "42px",
-                    position: "absolute",
-                  }}
-                >
-                  <Box sx={{ width: mark2 ? "20%" : "35%" }}></Box>
-                </Box>
-              )}
-             
-                {profit && !i?.deleted_reason&& (
+                  <Box
+                    sx={{
+                      width: {
+                        mobile: profit ? "100%" : "100%",
+                        alignItems: "flex-end",
+                        justifyContent: "center",
+                        display: "flex",
+                        laptop: profit ? "100 % " : "100% ",
+                      },
+                      background: "rgba(0, 0, 0, 0.5)",
+                      height: "42px",
+                      position: "absolute",
+                    }}
+                  >
+                    <Box sx={{ width: mark2 ? "20%" : "35%" }}></Box>
+                  </Box>
+                )}
+
+                {profit && !i?.deleted_reason && (
                   <Box
                     sx={{
                       height: "40px",

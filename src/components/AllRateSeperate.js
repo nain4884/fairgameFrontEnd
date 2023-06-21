@@ -5,7 +5,7 @@ import userAxios from "../axios/userAxios";
 
 import {
   ARROWDOWN,
-  // ARROWUP 
+  // ARROWUP
 } from "../expert/assets";
 import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
@@ -98,7 +98,6 @@ const AllRateSeperate = ({
   const [visible, setVisible] = useState(true);
   return (
     <>
-
       <Box
         sx={[
           {
@@ -202,49 +201,49 @@ const AllRateSeperate = ({
           </Box>
         </Box>
         {visible && (
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-          <Box
-            sx={{
-              height: "30px",
-              margin: { mobile: "1px", laptop: "0.5px" },
-              width: "30px",
-              display: "flex",
-              background: "black",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
-            >
-              {"No"}
-            </Typography>
-          </Box>
-          <RowComponent
-            header={true}
-            data={["Market", "Favourite", "Back/Lay", "Odds", "Stake"]}
-          />
-
-          {profit && (
+          <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Box
               sx={{
                 height: "30px",
-                width: "30%",
+                margin: { mobile: "1px", laptop: "0.5px" },
+                width: "30px",
                 display: "flex",
                 background: "black",
                 justifyContent: "center",
                 alignItems: "center",
-                margin: { mobile: "1px", laptop: "1px" },
               }}
             >
               <Typography
                 sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
               >
-                {"Profit/Loss"}
+                {"No"}
               </Typography>
             </Box>
-          )}
-        </Box>
+            <RowComponent
+              header={true}
+              data={["Market", "Favourite", "Back/Lay", "Odds", "Stake"]}
+            />
+
+            {profit && (
+              <Box
+                sx={{
+                  height: "30px",
+                  width: "30%",
+                  display: "flex",
+                  background: "black",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  margin: { mobile: "1px", laptop: "1px" },
+                }}
+              >
+                <Typography
+                  sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+                >
+                  {"Profit/Loss"}
+                </Typography>
+              </Box>
+            )}
+          </Box>
         )}
         <Box
           sx={{
@@ -264,7 +263,8 @@ const AllRateSeperate = ({
               )
             ),
           ]?.map((i, k) => {
-            const num = k + 1;
+            const num = allBetsData.length - k;
+            const formattedNum = num < 10 ? "0" + num : num.toString();
 
             return (
               <Box
@@ -293,7 +293,7 @@ const AllRateSeperate = ({
                       fontWeight: "500",
                     }}
                   >
-                    {num < 10 ? "0" + num : num.toString()}
+                    {formattedNum}
                   </Typography>
                 </Box>
                 <RowComponent header={false} data={i} />
@@ -437,7 +437,6 @@ const AllRateSeperate = ({
       </Box>
 
       {/* --------- */}
-
     </>
   );
 };
