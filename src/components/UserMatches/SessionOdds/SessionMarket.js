@@ -34,9 +34,24 @@ const SessionMarket = ({
   const [fastBetLoading, setFastBetLoading] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  const matchSessionData = newData?.bettings?.filter(
-    (element) => element.sessionBet === true
-  );
+  // const matchSessionData = newData?.bettings?.filter(
+  //   (element) => element.sessionBet === true
+  // );
+  const matchSessionData = newData?.bettings?.filter((element) => {
+    if (newData.apiSessionActive && newData.manualSessionActive && element.sessionBet === true ) {
+      return true; // Return all elements when both apiSessionActive and manualSessionActive are true
+    }
+
+    if (newData.apiSessionActive) {
+      return element.sessionBet === true &&  element.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
+    }
+
+    if (newData.manualSessionActive) {
+      return element.sessionBet === true && element.selectionId === null; // Show elements where selectionId is null when manualSessionActive is true
+    }
+
+    return false; // Default case: no active session types
+  });
   return (
     <>
       <Box
