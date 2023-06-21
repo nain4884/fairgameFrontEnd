@@ -80,34 +80,37 @@ export default function Login(props) {
         var value = await localStorage.getItem("role4");
         let token = await localStorage.getItem("JWTuser");
         // let confirmAuth = await localStorage.getItem("confirmAuth");
-        // alert(value)
         // alert("pop 111:" + confirmAuth)
-        if (value && !confirmAuth) {
-          try {
-            const config = {
-              headers: {
-                'Authorization': `Bearer ${token}`
-              }
-            };
-            const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
-            const data = response.data;
-            loginToAccountAuth(data?.data?.username, "pass");
-            console.log(data);
-          } catch (error) {
-            // Handle any errors
-            console.error('Error fetching data:', error);
-          }
-          // setConfirmPop(true)
-          // user--role4
-          // expert---role3
-          // wallet---role2
-          // admin---role1
-        } else {
-          let checkSessionStorage = sessionStorage.getItem("JWTuser");
-          if (checkSessionStorage) {
-            setConfirmPop(true);
+        const currentURL = window.location.href;
+        if (currentURL !== 'http://localhost:3000/') {
+          if (value && !confirmAuth) {
+            try {
+              const config = {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              };
+              const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+              const data = response.data;
+              loginToAccountAuth(data?.data?.username, "pass");
+              console.log(data);
+            } catch (error) {
+              // Handle any errors
+              console.error('Error fetching data:', error);
+            }
+            // setConfirmPop(true)
+            // user--role4
+            // expert---role3
+            // wallet---role2
+            // admin---role1
           } else {
-            setConfirmPop(false);
+            let checkSessionStorage = sessionStorage.getItem("JWTuser");
+            if (checkSessionStorage) {
+              navigate("/login");
+              setConfirmPop(true);
+            } else {
+              setConfirmPop(false);
+            }
           }
         }
         //  else {
@@ -116,18 +119,6 @@ export default function Login(props) {
       } catch (error) { }
     });
   }, []);
-
-  // useEffect(() => {
-  //   function onlineHandler() {
-  //     alert(1111)
-  //   }
-
-  //   window.addEventListener("blur", onlineHandler);
-
-  //   return () => {
-  //     window.removeEventListener("blur", onlineHandler);
-  //   };
-  // }, []);
 
   const useHereHandle = async () => {
     let token = await localStorage.getItem("JWTuser");

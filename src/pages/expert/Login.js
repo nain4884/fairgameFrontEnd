@@ -1,4 +1,8 @@
-import { Card, Typography, Box, useTheme, useMediaQuery } from "@mui/material";
+import {
+  Card, Typography, Box, useTheme, useMediaQuery, Dialog,
+  DialogTitle, DialogActions,
+  Button,
+} from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { eye, logo, mail } from "../../assets";
@@ -22,8 +26,11 @@ import { toast } from "react-toastify";
 import {
   LoginServerError,
   SuperMaster,
+  apiBasePath
 } from "../../components/helper/constants";
 import { SocketContext } from "../../context/socketContext";
+import { setEConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
+
 var newtoken = "";
 export default function Login(props) {
   const theme = useTheme();
@@ -35,6 +42,7 @@ export default function Login(props) {
   const activeUser = useSelector((state) => {
     return state?.activeUser?.activeUser;
   });
+  const { eConfirmAuth } = useSelector((state) => state?.expertMatchDetails);
   const [loading, setLoading] = useState(false);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -46,6 +54,7 @@ export default function Login(props) {
     1: { field: "username", val: false },
     2: { field: "password", val: false },
   });
+  const [confirmPop, setConfirmPop] = useState(false);
 
   const { socket, socketMicro } = useContext(SocketContext);
   useEffect(() => {
@@ -56,6 +65,53 @@ export default function Login(props) {
       socketMicro.disconnect();
     }
   }, [socket, socketMicro]);
+
+  useEffect(() => {
+    // alert(eConfirmAuth)
+    if (!eConfirmAuth) {
+    }
+  }, [eConfirmAuth]);
+
+  useEffect(() => {
+    setTimeout(async () => {
+      try {
+        var value = await localStorage.getItem("role3");
+        let token = await localStorage.getItem("JWTexpert");
+        // let confirmAuth = await localStorage.getItem("confirmAuth");
+        // alert("pop 111:" + confirmAuth)
+        const currentURL = window.location.href;
+        if (currentURL !== 'http://localhost:3000/') {
+          console.log("role :" + value + "eConfirmAuth :" + eConfirmAuth)
+          if (value && !eConfirmAuth) {
+            try {
+              const config = {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              };
+              const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+              const data = response.data;
+              // alert(JSON.stringify(data))
+              loginToAccountAuth(data?.data?.username, "pass");
+              console.log(data);
+            } catch (error) {
+              // Handle any errors
+              console.error('Error fetching data:', error);
+            }
+          } else {
+            let checkSessionStorage = sessionStorage.getItem("JWTexpert");
+            if (checkSessionStorage) {
+              navigate("/expert");
+              // console.log("popwwwww");
+              setConfirmPop(true);
+            } else {
+              setConfirmPop(false);
+            }
+          }
+        }
+      } catch (error) { }
+    });
+  }, [eConfirmAuth]);
 
   useEffect(() => {
     let checkLocalStorage;
@@ -175,6 +231,98 @@ export default function Login(props) {
     }
   };
 
+  async function loginToAccountAuth(user, pass) {
+    // alert(2222)
+    getLocalToken(props.allowedRole);
+    // changeErrors()
+    // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
+
+    try {
+      if (user === "" && pass === "") {
+        toast.warning("Username and password required");
+        setLoading(false);
+        return false;
+      } else {
+        setLoading(true);
+        // if (["role1", "role2", "role3"].includes(newtoken)) {
+        //   toast.warn("Please logout from previous session");
+        //   setLoading(false);
+        //   return false;
+        // }
+        let { data } = await axios.post(`/auth/login`, {
+          username: user,
+          password: pass,
+        });
+
+        if (props.allowedRole.includes(data.data.role)) {
+          let foundRoles = await axios.get(`/role`);
+          let roles = foundRoles.data;
+          dispatch(setAllRoles(roles));
+          let roleDetail = roles.find(findThisRole);
+          function findThisRole(role) {
+            return role.id === data.data.roleId;
+          }
+          if (roleDetail) data.data.role = roleDetail;
+          if (data.message === "User login successfully.") {
+            removeSocket();
+            setLoading(false);
+            // dispatch(setActiveRole(foundRoles.data));
+            // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+            dispatch(
+              setUpdatedTransPasswords(data.data.isTransPasswordCreated)
+            );
+
+            dispatch(signIn(data.data));
+            setRole(data.data.access_token);
+            if (
+              ["master", "admin", "superMaster", "superAdmin"].includes(
+                data.data.role.roleName
+              )
+            ) {
+              setGlobalStore((prev) => ({
+                ...prev,
+                adminWT: data.data.access_token,
+              }));
+              handleNavigate("/admin/list_of_clients", "admin");
+            } else if (
+              ["fairGameWallet", "fairGameAdmin"].includes(
+                data.data.role.roleName
+              )
+            ) {
+              setGlobalStore((prev) => ({
+                ...prev,
+                walletWT: data.data.access_token,
+              }));
+              handleNavigate("/wallet/list_of_clients", "wallet");
+            } else if (["expert"].includes(data.data.role.roleName)) {
+              setGlobalStore((prev) => ({
+                ...prev,
+                expertJWT: data.data.access_token,
+              }));
+              // alert(data.data.access_token)
+              localStorage.setItem("JWTexpert", data.data.access_token);
+              dispatch(setEConfirmAuth(false));
+              handleNavigate("/expert/match", "expert");
+            } else {
+              toast.error("User Unauthorized !");
+              setLoading(false);
+            }
+          }
+        } else {
+          toast.error("User Unauthorized !");
+          setLoading(false);
+        }
+      }
+    } catch (e) {
+      console.log(e?.message);
+      setLoading(false);
+      toast.error(e?.response?.data?.message || "Something went wrong!");
+      if (!e?.response) return setLoginError(LoginServerError);
+      setLoginError(e.response.data.message);
+    }
+    // }
+  }
+
   async function loginToAccount() {
     // alert(2222)
     getLocalToken(props.allowedRole);
@@ -188,11 +336,11 @@ export default function Login(props) {
         return false;
       } else {
         setLoading(true);
-        if (["role1", "role2", "role3"].includes(newtoken)) {
-          toast.warn("Please logout from previous session");
-          setLoading(false);
-          return false;
-        }
+        // if (["role1", "role2", "role3"].includes(newtoken)) {
+        //   toast.warn("Please logout from previous session");
+        //   setLoading(false);
+        //   return false;
+        // }
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
@@ -243,6 +391,8 @@ export default function Login(props) {
                 ...prev,
                 expertJWT: data.data.access_token,
               }));
+              localStorage.setItem("JWTexpert", data.data.access_token);
+              dispatch(setEConfirmAuth(false));
               handleNavigate("/expert/match", "expert");
             } else {
               toast.error("User Unauthorized !");
@@ -263,6 +413,26 @@ export default function Login(props) {
     }
     // }
   }
+
+  const useHereHandle = async () => {
+    let token = await localStorage.getItem("JWTexpert");
+    try {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+      const data = response.data;
+      loginToAccountAuth(data?.data?.username, "pass");
+      console.log(data);
+    } catch (error) {
+      // Handle any errors
+      console.error('Error fetching data:', error);
+    }
+    setConfirmPop(false);
+  }
+
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
@@ -361,6 +531,30 @@ export default function Login(props) {
           </Box>
         </Box>
       </Box>
+      <Dialog
+        open={confirmPop}
+        // onClose={() => setConfirmPop((prev) => !prev)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {'User is open in another window. Click "Use Here" to use User in this window.'}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setConfirmPop((prev) => !prev)}>
+            Close
+          </Button>
+          <Button
+            sx={{
+              color: "#201f08", backgroundColor: "#fdf21b"
+            }}
+            // onClick={useHereHandle}
+            onClick={useHereHandle}
+          >
+            User Here
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

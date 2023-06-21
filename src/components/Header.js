@@ -151,16 +151,16 @@ const CustomHeader = ({ }) => {
           // // await axios.get("auth/logout");
           // removeSocket();
         }
-        if (packet.data[0] === "userBalanceUpdate") {
-          const data = packet.data[1];
-          const user = {
-            ...currentUser,
-            current_balance: data?.currentBalacne,
-          };
-          dispatch(setCurrentUser(user));
+        // if (packet.data[0] === "userBalanceUpdate") {
+        //   const data = packet.data[1];
+        //   const user = {
+        //     ...currentUser,
+        //     current_balance: data?.currentBalacne,
+        //   };
+        //   dispatch(setCurrentUser(user));
 
-          //currentBalacne
-        }
+        //   //currentBalacne
+        // }
       };
     }
   }, [socket]);
@@ -184,7 +184,7 @@ const CustomHeader = ({ }) => {
     } catch (e) {
       console.log(e);
       if (e.response.status === 401) {
-        navigate("/");
+        navigate("/login");
         dispatch(removeCurrentUser());
         dispatch(removeManualBookMarkerRates());
         dispatch(removeSelectedMatch());
@@ -651,11 +651,10 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     try {
       // dispatch(stateActions.logout("role4"));
       // socketMicro.emit("logoutUserForce");
-      alert(7777)
       dispatch(setConfirmAuth(false));
       sessionStorage.setItem("JWTuser", null);
       setLoading(true);
-      navigate("/");
+      navigate("/login");
       dispatch(removeCurrentUser());
       handleClose();
       removeSocket();

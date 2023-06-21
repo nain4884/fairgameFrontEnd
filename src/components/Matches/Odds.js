@@ -12,7 +12,7 @@ import { formatNumber } from "../helper/helper";
 import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
 import { removeCurrentUser, setCurrentUser } from "../../newStore/reducers/currentUser";
-import { removeManualBookMarkerRates, removeSelectedMatch, setConfirmAuth } from "../../newStore/reducers/matchDetails";
+import { setConfirmAuth } from "../../newStore/reducers/matchDetails";
 import { logout } from "../../newStore/reducers/auth";
 import { GlobalStore } from "../../context/globalStore";
 import { setRole } from "../../newStore";
@@ -71,7 +71,7 @@ const Odds = ({ onClick, top, blur, match }) => {
           if (token) {
             sessionStorage.setItem("JWTuser", token);
           }
-          navigate(`/`);
+          navigate(`/login`);
           // dispatch(removeCurrentUser());
           // dispatch(removeManualBookMarkerRates())
           // dispatch(removeSelectedMatch());
