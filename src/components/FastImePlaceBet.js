@@ -211,8 +211,8 @@ const FastTimePlaceBet = ({
               src={CancelDark}
               sx={{
                 padding: "10px",
-                height: "50px",
-                width: "50px",
+                height: { mobile: "50px", laptop: "50px", tablet: "50px" },
+                width: { mobile: "50px", laptop: "50px", tablet: "50px" },
                 cursor: "pointer",
               }}
             />

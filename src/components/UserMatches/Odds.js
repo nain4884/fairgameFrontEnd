@@ -25,7 +25,7 @@ const SmallBox = ({ valueA, valueB }) => {
   return (
     <Box
       sx={{
-        marginLeft: { mobile: 0, laptop: "-15px", tablet: 0 },
+        marginLeft: { mobile: 0, laptop: "-11px", tablet: 0 },
         justifyContent: {
           mobile: "center",
           laptop: "center",
@@ -392,7 +392,7 @@ const Odds = ({
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                borderLeft: {laptop: '3.5px solid #319e5b', mobile: '2px solid #319e5b' }
+                borderLeft: {laptop: '5px solid #319e5b', mobile: '2px solid #319e5b' }
               }}
             >
               <Typography
@@ -405,7 +405,7 @@ const Odds = ({
             <Box
               sx={{
                 background: "#FF9292",
-                width: { laptop: "16.5%", mobile: "30%" },
+                width: { laptop: "16.6%", mobile: "30%" },
                 height: "100%",
                 display: "flex",
                 justifyContent: "center",
