@@ -57,6 +57,7 @@ const CustomHeader = ({}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [balance, setBalance] = useState(0);
   const [exposure, setExposure] = useState(0);
+  const [notificationData, setNotificationData] = useState(null);
   let { axios, role, JWT } = setRole();
 
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -70,7 +71,7 @@ const CustomHeader = ({}) => {
       localStorage.removeItem("role4");
       localStorage.removeItem("JWTuser");
     };
-    
+
     const handleLoad = (event) => {
       let jwtS = sessionStorage.getItem("JWTuser");
       let jwtL = localStorage.getItem("JWTuser");
@@ -164,6 +165,28 @@ const CustomHeader = ({}) => {
     }
   }, [socket]);
 
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  const [showOfflineStatus, setShowOfflineStatus] = useState(false);
+
+  useEffect(() => {
+    function onlineHandler() {
+      setIsOnline(true);
+    }
+
+    function offlineHandler() {
+      setIsOnline(false);
+    }
+
+    window.addEventListener("online", onlineHandler);
+    window.addEventListener("offline", offlineHandler);
+
+    return () => {
+      window.removeEventListener("online", onlineHandler);
+      window.removeEventListener("offline", offlineHandler);
+    };
+  }, []);
+
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
@@ -221,7 +244,21 @@ const CustomHeader = ({}) => {
     }
   }, [location, bal, JWT]);
 
+  const handleGetNotification = async () => {
+    try {
+      const { data } = await axios.get(`/users/getNotification`);
+      console.log(data, "data");
+      if (data?.data?.id) {
+        setNotificationData(data.data.typeValue);
+      }
+    } catch (err) {
+      console.log(err?.response.data.message);
+      console.log(err.message);
+    }
+  };
+
   useEffect(() => {
+    handleGetNotification();
     if (currentUser === null) {
       getUserDetail();
     }
@@ -233,6 +270,28 @@ const CustomHeader = ({}) => {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
+        {!isOnline && (
+          <Box
+            sx={{
+              height: "32px",
+              display: "flex",
+              background: !isOnline && "red",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "text.white",
+                fontSize: "13px",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              {!isOnline && "Your are currently offline"}
+            </Typography>
+          </Box>
+        )}
         <Box
           sx={[
             {
@@ -312,34 +371,33 @@ const CustomHeader = ({}) => {
             </Box>
           </Box>
         </Box>
-        <Box
-          sx={{
-            height: "32px",
-            display: "flex",
-            background: "#202020",
-            alignItems: "center",
-          }}
-        >
-          <marquee loop={true}>
-            <Typography
-              sx={{
-                color: "text.white",
-                fontSize: "10px",
-                fontStyle: "italic",
-                letterSpacing: "1px",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-              }}
-            >
-              This is a demo notification highlight. This is a demo notification
-              highlight.This is a demo notification highlight. This is a demo
-              notification highlight.This is a demo notification highlight. This
-              is a demo notification highlight.This is a demo notification
-              highlight.
-            </Typography>
-          </marquee>
-        </Box>
+
+          <Box
+            sx={{
+              height: "32px",
+              display: "flex",
+              background: "#202020",
+              alignItems: "center",
+            }}
+          >
+            <marquee loop={true}>
+              <Typography
+                sx={{
+                  color: "text.white",
+                  fontSize: "10px",
+                  fontStyle: "italic",
+                  letterSpacing: "1px",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textTransform:"capitalize",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                {notificationData}
+              </Typography>
+            </marquee>
+          </Box>
+        
         {(matchesMobile || showSideBarMobile) && (
           <MobileSideBar
             showSideBarMobile={showSideBarMobile}
