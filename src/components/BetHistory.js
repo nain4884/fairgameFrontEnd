@@ -145,8 +145,8 @@ const BetHistory = ({
                 {
                   /* {betData?.map((i, k) => { */
                 }
-                const num = k + 1;
-
+                const num = betData.length - k;
+          const formattedNum = num < 10 ? "0" + num : num.toString();
                 return (
                   <Box
                     sx={{
@@ -173,7 +173,7 @@ const BetHistory = ({
                           fontWeight: "500",
                         }}
                       >
-                        {num < 10 ? "0" + num : num.toString()}
+                        {formattedNum}
                       </Typography>
                     </Box>
                     <RowComponent header={false} data={i} />

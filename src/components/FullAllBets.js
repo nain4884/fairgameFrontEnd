@@ -205,7 +205,8 @@ const FullAllBets = ({ tag, mode, IObets }) => {
       <HeaderRow mode={mode} tag={tag} />
       <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
         {newData?.map((i, k) => {
-          const num = k + 1;
+          const num = newData.length - k;
+            const formattedNum = num < 10 ? "0" + num : num.toString();
           return (
             <div
               key={k}
@@ -241,7 +242,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
                       color: "white",
                     }}
                   >
-                    {num < 10 ? "0" + num : num.toString()}
+                    {formattedNum}
                   </Typography>
                 )}
                 {mode && !selectedData.includes(k) && (

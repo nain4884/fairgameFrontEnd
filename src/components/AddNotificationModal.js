@@ -1,7 +1,8 @@
 import { Box, Modal, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { CancelDark } from "../assets";
-
+import { setRole } from "../newStore";
+import { toast } from "react-toastify";
 const AddNotificationModal = ({
   onClick,
   visible,
@@ -10,12 +11,13 @@ const AddNotificationModal = ({
   onDone,
 }) => {
   const [selected, setSelected] = useState("");
-  const [value, setValue] = useState("Lorem ipsum dolor sit amet");
+
+  const [value, setValue] = useState("Add notification text test change");
   const CustomButton = ({ title, color }) => {
     return (
       <Box
         onClick={(e) => {
-          onDone();
+          onDone(value);
           e.stopPropagation();
           setVisible(false);
 
@@ -39,6 +41,7 @@ const AddNotificationModal = ({
       </Box>
     );
   };
+
   return (
     <Modal
       open={visible}

@@ -45,6 +45,7 @@ import ActiveUsers from "./ActiveUsers";
 import BoxProfile from "./BoxProfile";
 import DropdownMenu1 from "./DropDownMenu1";
 import jwtDecode from "jwt-decode";
+import { toast } from "react-toastify";
 
 const CustomHeader = ({}) => {
   const theme = useTheme();
@@ -113,7 +114,6 @@ const CustomHeader = ({}) => {
 
   const { userExpert } = useSelector((state) => state.auth);
   const { socket, socketMicro } = useContext(SocketContext);
-
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -225,7 +225,6 @@ const CustomHeader = ({}) => {
         }
         if (packet.data[0] === "loginUserCount") {
           const data = packet.data[1];
-          console.log(data, "count");
           setOnlineUser(data?.count);
         }
       };
@@ -276,6 +275,21 @@ const CustomHeader = ({}) => {
       getUserDetail();
     }
   }, []);
+
+  const handleAddNotification = async (val) => {
+    try {
+      const { data } = await axios.post(`/users/addNotification`, {
+        typeValue: val,
+      });
+      if (data?.data?.id) {
+        toast.success("Updated successfully");
+      }
+    } catch (err) {
+      toast.error(err.response.data.message);
+      console.log(err?.response.data.message);
+      console.log(err.message);
+    }
+  };
   return (
     <>
       <SessionTimeOut />
@@ -283,7 +297,14 @@ const CustomHeader = ({}) => {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
-        <AddNotificationModal setVisible={setVisible} visible={visible} onClick={()=>{}} onDone={()=>{}}  />
+        <AddNotificationModal
+          setVisible={setVisible}
+          visible={visible}
+          onClick={() => {}}
+          onDone={(value) => {
+            handleAddNotification(value);
+          }}
+        />
         <Box
           sx={[
             {
