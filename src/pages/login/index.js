@@ -1,4 +1,8 @@
-import { Card, Typography, Box, useTheme, useMediaQuery } from "@mui/material";
+import {
+  Card, Typography, Box, useTheme, useMediaQuery, Dialog,
+  DialogTitle, DialogActions,
+  Button,
+} from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { eye, logo, mail } from "../../assets";
@@ -24,6 +28,9 @@ import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
+import axios from "axios";
+import { setConfirmAuth } from "../../newStore/reducers/matchDetails";
+
 
 export default function Login(props) {
   let { transPass, axios, role } = setRole();
@@ -33,6 +40,7 @@ export default function Login(props) {
   const navigate = useNavigate();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { socket, socketMicro } = useContext(SocketContext);
+  const { confirmAuth } = useSelector((state) => state?.matchDetails);
   const [loading, setLoading] = useState(false);
   const [loginDetail, setLoginDetail] = useState({
     1: { field: "username", val: "" },
@@ -45,9 +53,17 @@ export default function Login(props) {
   const [OTP, setOTP] = useState("");
 
   const [loginError, setLoginError] = useState();
+  const [confirmPop, setConfirmPop] = useState(false);
 
   // useEffect(() => {
   // }, [error, loginDetail])
+
+  useEffect(() => {
+    if (!confirmAuth) {
+      // setConfirmPop(false);
+      // alert("pop :" + confirmAuth)
+    }
+  }, [confirmAuth]);
 
   useEffect(() => {
     if (socket && socket.connected) {
@@ -57,6 +73,81 @@ export default function Login(props) {
       socketMicro.disconnect();
     }
   }, [socket, socketMicro]);
+
+  useEffect(() => {
+    setTimeout(async () => {
+      try {
+        var value = await localStorage.getItem("role4");
+        let token = await localStorage.getItem("JWTuser");
+        // let confirmAuth = await localStorage.getItem("confirmAuth");
+        // alert(value)
+        // alert("pop 111:" + confirmAuth)
+        if (value && !confirmAuth) {
+          try {
+            const config = {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            };
+            const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+            const data = response.data;
+            loginToAccountAuth(data?.data?.username, "pass");
+            console.log(data);
+          } catch (error) {
+            // Handle any errors
+            console.error('Error fetching data:', error);
+          }
+          // setConfirmPop(true)
+          // user--role4
+          // expert---role3
+          // wallet---role2
+          // admin---role1
+        } else {
+          let checkSessionStorage = sessionStorage.getItem("JWTuser");
+          if (checkSessionStorage) {
+            setConfirmPop(true);
+          } else {
+            setConfirmPop(false);
+          }
+        }
+        //  else {
+        //   navigate(`/matches`);
+        // }
+      } catch (error) { }
+    });
+  }, []);
+
+  // useEffect(() => {
+  //   function onlineHandler() {
+  //     alert(1111)
+  //   }
+
+  //   window.addEventListener("blur", onlineHandler);
+
+  //   return () => {
+  //     window.removeEventListener("blur", onlineHandler);
+  //   };
+  // }, []);
+
+  const useHereHandle = async () => {
+    let token = await localStorage.getItem("JWTuser");
+    try {
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      };
+      const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+      const data = response.data;
+      loginToAccountAuth(data?.data?.username, "pass");
+      console.log(data);
+    } catch (error) {
+      // Handle any errors
+      console.error('Error fetching data:', error);
+    }
+    setConfirmPop(false);
+    // loginToAccountAuth(data?.data?.username, "pass");
+  }
 
   useEffect(() => {
     let checkLocalStorage;
@@ -84,13 +175,19 @@ export default function Login(props) {
       if (checkSessionStorage && checkLocalStorage === null) {
         localStorage.setItem("role4", "role4");
       }
+      let token = localStorage.getItem("JWTuser");
+      // alert("ssss :" + token)
+      localStorage.setItem("JWTuser", token);
     }
-
-    if (checkLocalStorage && checkSessionStorage) {
-      navigate(`/matches`);
-    }
+    // alert(confirmPop)
+    // if (checkLocalStorage && checkSessionStorage && confirmPop) {
+    //   navigate(`/matches`);
+    // }
   }, [location.pathname, localStorage]);
 
+  // const getUseEffect = async () => {
+  //   alert(checkLocalStorage)
+  // }
   async function getToken(val) {
     try {
       const token = await sessionStorage.getItem(val);
@@ -122,26 +219,26 @@ export default function Login(props) {
     }
   };
 
-  async function loginToAccount() {
+  async function loginToAccountAuth(user, pass) {
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
-      if (loginDetail[1].val === "" && loginDetail[2].val === "") {
+      if (user === "" && pass === "") {
         toast.warning("Username and password required");
         setLoading(false);
         return false;
       } else {
         setLoading(true);
-        const token = await localStorage.getItem("role4");
+        // const token = await localStorage.getItem("role4");
 
-        if (["role4"].includes(token)) {
-          toast.warn("Please logout from previous session");
-          setLoading(false);
-          return false;
-        }
+        // if (["role4"].includes(token)) {
+        //   toast.warn("Please logout from previous session");
+        //   setLoading(false);
+        //   return false;
+        // }
         let { data } = await axios.post(`/auth/login`, {
-          username: loginDetail[1].val,
-          password: loginDetail[2].val,
+          username: user,
+          password: pass,
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -162,6 +259,9 @@ export default function Login(props) {
             dispatch(signIn(data.data));
             setLoading(false);
             if (["user"].includes(data.data.role.roleName)) {
+              // localStorage.setItem("confirmAuth", true);
+              localStorage.setItem("JWTuser", data.data.access_token);
+              dispatch(setConfirmAuth(false));
               setGlobalStore((prev) => ({
                 ...prev,
                 userJWT: data.data.access_token,
@@ -187,6 +287,73 @@ export default function Login(props) {
     // }
   }
 
+  async function loginToAccount() {
+    // changeErrors()
+    // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
+    try {
+      if (loginDetail[1].val === "" && loginDetail[2].val === "") {
+        toast.warning("Username and password required");
+        setLoading(false);
+        return false;
+      } else {
+        setLoading(true);
+        const token = await localStorage.getItem("role4");
+
+        // if (["role4"].includes(token)) {
+        //   toast.warn("Please logout from previous session");
+        //   setLoading(false);
+        //   return false;
+        // }
+        let { data } = await axios.post(`/auth/login`, {
+          username: loginDetail[1].val,
+          password: loginDetail[2].val,
+        });
+
+        if (props.allowedRole.includes(data.data.role)) {
+          let foundRoles = await axios.get(`/role`);
+          let roles = foundRoles.data;
+          dispatch(setAllRoles(roles));
+          let roleDetail = roles.find(findThisRole);
+          function findThisRole(role) {
+            return role.id === data.data.roleId;
+          }
+          if (roleDetail) data.data.role = roleDetail;
+          if (data.message === "User login successfully.") {
+            // getUserDetail();
+            removeSocket();
+            // dispatch(setActiveRole(foundRoles.data));
+            // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
+            setRole(data.data.access_token);
+            dispatch(signIn(data.data));
+            setLoading(false);
+            if (["user"].includes(data.data.role.roleName)) {
+              // localStorage.setItem("confirmAuth", true);
+              localStorage.setItem("JWTuser", data.data.access_token);
+              dispatch(setConfirmAuth(false));
+              setGlobalStore((prev) => ({
+                ...prev,
+                userJWT: data.data.access_token,
+              }));
+              handleNavigate("/matches", "user");
+            } else {
+              toast.error("User Unauthorized !");
+              setLoading(false);
+            }
+          }
+        } else {
+          toast.error("User Unauthorized !");
+          setLoading(false);
+        }
+      }
+    } catch (e) {
+      console.log(e?.message);
+      setLoading(false);
+      toast.error(e?.response.data.message);
+      if (!e?.response) return setLoginError(LoginServerError);
+      setLoginError(e.response.data.message);
+    }
+    // }
+  }
   const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));
 
   return (
@@ -299,6 +466,29 @@ export default function Login(props) {
           </Box>
         </Card>
       </Box>
+      <Dialog
+        open={confirmPop}
+        // onClose={() => setConfirmPop((prev) => !prev)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {'User is open in another window. Click "Use Here" to use User in this window.'}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setConfirmPop((prev) => !prev)}>
+            Close
+          </Button>
+          <Button
+            sx={{
+              color: "#201f08", backgroundColor: "#fdf21b"
+            }}
+            onClick={useHereHandle}
+          >
+            User Here
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

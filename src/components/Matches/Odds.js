@@ -12,14 +12,16 @@ import { formatNumber } from "../helper/helper";
 import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
 import { removeCurrentUser, setCurrentUser } from "../../newStore/reducers/currentUser";
-import { removeManualBookMarkerRates, removeSelectedMatch } from "../../newStore/reducers/matchDetails";
+import { removeManualBookMarkerRates, removeSelectedMatch, setConfirmAuth } from "../../newStore/reducers/matchDetails";
 import { logout } from "../../newStore/reducers/auth";
 import { GlobalStore } from "../../context/globalStore";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../helper/removeSocket";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 let matchOddsCount = 0;
 const Odds = ({ onClick, top, blur, match }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [matchOddsLive, setMatchOddsLive] = useState([]);
   const { socketMicro, socket } = useContext(SocketContext);
@@ -62,16 +64,24 @@ const Odds = ({ onClick, top, blur, match }) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
-          dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates())
-          dispatch(removeSelectedMatch());
-          dispatch(logout({ roleType: "role4" }));
-          setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-          // await axios.get("auth/logout");
-          removeSocket();
+          dispatch(setConfirmAuth(true));
+          // alert(4)
+          // localStorage.setItem("confirmAuth", true);
+          let token = localStorage.getItem("JWTuser");
+          if (token) {
+            sessionStorage.setItem("JWTuser", token);
+          }
+          navigate(`/`);
+          // dispatch(removeCurrentUser());
+          // dispatch(removeManualBookMarkerRates())
+          // dispatch(removeSelectedMatch());
+          // dispatch(logout({ roleType: "role4" }));
+          // setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+          // // await axios.get("auth/logout");
+          // removeSocket();
 
-          socket.disconnect();
-          socketMicro.disconnect();
+          // socket.disconnect();
+          // socketMicro.disconnect();
         }
         if (packet.data[0] === "userBalanceUpdate") {
           const data = packet.data[1];

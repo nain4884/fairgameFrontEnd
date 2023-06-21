@@ -55,9 +55,9 @@ export const SocketProvider = ({ children }) => {
           // toast.success("Socket connect !", { autoClose: 2000 });
           // localStorage.setItem("socket", newSocket.connected)
         });
-        newSocket.on("disconnect", () => {
-          toast.error("Socket disconnect !", { autoClose: 1000 });
-        });
+        // newSocket.on("disconnect", () => {
+        //   toast.error("Socket disconnect !", { autoClose: 1000 });
+        // });
         // }
         // if (checkSocket != "true") {
         const newMicroSocket = io(`${microServiceApiPath}`, {
@@ -75,9 +75,9 @@ export const SocketProvider = ({ children }) => {
           // localStorage.setItem("microSocket", newMicroSocket.connected)
         });
 
-        newMicroSocket.on("disconnect", () => {
-          toast.error("Third party socket disconnect !", { autoClose: 1000 });
-        });
+        // newMicroSocket.on("disconnect", () => {
+        //   toast.error("Third party socket disconnect !", { autoClose: 1000 });
+        // });
 
         newMicroSocket.onerror = (event) => {
           // Handle the WebSocket connection error here

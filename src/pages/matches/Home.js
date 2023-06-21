@@ -180,15 +180,15 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           });
         }
         if (packet.data[0] === "logoutUserForce") {
-          dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates());
-          dispatch(removeSelectedMatch());
-          dispatch(logout({ roleType: "role4" }));
-          setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-          // await axios.get("auth/logout");
-          removeSocket();
-          socket.disconnect();
-          socketMicro.disconnect();
+          // dispatch(removeCurrentUser());
+          // dispatch(removeManualBookMarkerRates());
+          // dispatch(removeSelectedMatch());
+          // dispatch(logout({ roleType: "role4" }));
+          // setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+          // // await axios.get("auth/logout");
+          // removeSocket();
+          // socket.disconnect();
+          // socketMicro.disconnect();
         }
         if (packet.data[0] === "updateSessionRate_user") {
           const value = packet.data[1];

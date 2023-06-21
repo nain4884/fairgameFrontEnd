@@ -21,16 +21,16 @@ const USerRoutes = () => {
   const isLoginPage = ["/"].includes(location.pathname);
   function UserPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTuser");
-    if (!token) {
-      return <Navigate to="/" />;
-    }
+    // if (!token) {
+    //   return <Navigate to="/" />;
+    // }
     return children;
   }
 
   return (
     <>
       {isLoginPage ? null : <CustomHeader />}
- 
+
       <Routes>
         <Route path="/" element={<Login allowedRole={["user"]} />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />

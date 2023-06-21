@@ -176,6 +176,7 @@ export default function Login(props) {
   };
 
   async function loginToAccount() {
+    // alert(2222)
     getLocalToken(props.allowedRole);
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")

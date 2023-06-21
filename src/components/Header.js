@@ -43,11 +43,12 @@ import { GlobalStore } from "../context/globalStore";
 import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
+  setConfirmAuth
 } from "../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const location = useLocation();
@@ -70,7 +71,7 @@ const CustomHeader = ({}) => {
       localStorage.removeItem("role4");
       localStorage.removeItem("JWTuser");
     };
-    
+
     const handleLoad = (event) => {
       let jwtS = sessionStorage.getItem("JWTuser");
       let jwtL = localStorage.getItem("JWTuser");
@@ -140,15 +141,15 @@ const CustomHeader = ({}) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
-          dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates());
-          dispatch(removeSelectedMatch());
-          dispatch(logout({ roleType: "role4" }));
-          socket.disconnect();
-          socketMicro.disconnect();
-          setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-          // await axios.get("auth/logout");
-          removeSocket();
+          // dispatch(removeCurrentUser());
+          // dispatch(removeManualBookMarkerRates());
+          // dispatch(removeSelectedMatch());
+          // dispatch(logout({ roleType: "role4" }));
+          // socket.disconnect();
+          // socketMicro.disconnect();
+          // setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+          // // await axios.get("auth/logout");
+          // removeSocket();
         }
         if (packet.data[0] === "userBalanceUpdate") {
           const data = packet.data[1];
@@ -650,6 +651,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
     try {
       // dispatch(stateActions.logout("role4"));
       // socketMicro.emit("logoutUserForce");
+      alert(7777)
+      dispatch(setConfirmAuth(false));
+      sessionStorage.setItem("JWTuser", null);
       setLoading(true);
       navigate("/");
       dispatch(removeCurrentUser());
@@ -662,6 +666,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
       socket.disconnect();
       socketMicro.disconnect();
       const { data } = await axios.get("auth/logout");
+      localStorage.setItem("confirmAuth", false);
       if (data?.data == "success logout") {
         toast.success(data?.data);
       }
