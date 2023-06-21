@@ -53,7 +53,7 @@ import MobileSideBar from "./MobileSideBar";
 import BoxProfile from "./BoxProfile";
 import jwtDecode from "jwt-decode";
 var roleName = "";
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -235,22 +235,22 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "logoutUserForce") {
           // const { data } = await axios.get("auth/logout");
           // if (data?.data === "success logout") {
-          dispatch(removeSelectedMatch());
-          dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates());
-          dispatch(logout({ roleType: "role2" }));
-          dispatch(setUpdatedTransPasswords(false));
-          socket.disconnect();
-          socketMicro.disconnect();
-          dispatch(setPage(parseInt(1)));
-          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-          if (nav === "admin") {
-            navigate("/admin");
-            dispatch(logout({ roleType: "role1" }));
-            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-          }
-          navigate(`/${nav}`);
-          removeSocket();
+          // dispatch(removeSelectedMatch());
+          // dispatch(removeCurrentUser());
+          // dispatch(removeManualBookMarkerRates());
+          // dispatch(logout({ roleType: "role2" }));
+          // dispatch(setUpdatedTransPasswords(false));
+          // socket.disconnect();
+          // socketMicro.disconnect();
+          // dispatch(setPage(parseInt(1)));
+          // setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+          // if (nav === "admin") {
+          //   navigate("/admin");
+          //   dispatch(logout({ roleType: "role1" }));
+          //   setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+          // }
+          // navigate(`/${nav}`);
+          // removeSocket();
           // } else {
           //   toast.error("Something went wrong");
           // }

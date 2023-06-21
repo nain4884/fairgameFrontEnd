@@ -14,6 +14,7 @@ const initialState = {
   sessionAllBetRates: [],
   bookMakerBetRates: [],
   sessionResults: [],
+  confirmAuth: false,
 };
 
 const matchDetails = createSlice({
@@ -135,7 +136,10 @@ const matchDetails = createSlice({
     },
     removeSelectedMatch: (state, action) => {
       state.selectedMatch = {}
-    }
+    },
+    setConfirmAuth: (state, action) => {
+      state.confirmAuth = action.payload;
+    },
   },
 });
 
@@ -161,6 +165,7 @@ export const {
   setMatchOddsLive,
   setBookMakerLive,
   setSessionOddsLive,
+  setConfirmAuth
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

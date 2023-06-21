@@ -29,6 +29,7 @@ import {
 import {
   setAllMatchs,
   setAllEventSession,
+  setEConfirmAuth
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -47,7 +48,7 @@ import DropdownMenu1 from "./DropDownMenu1";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -117,8 +118,8 @@ const CustomHeader = ({}) => {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      localStorage.removeItem("role3");
-      localStorage.removeItem("JWTexpert");
+      // localStorage.removeItem("role3");
+      // localStorage.removeItem("JWTexpert");
     };
 
     const handleLoad = (event) => {
@@ -198,20 +199,27 @@ const CustomHeader = ({}) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
+          // alert(4)
+          dispatch(setEConfirmAuth(true));
+          // localStorage.setItem("confirmAuth", true);
+          let token = localStorage.getItem("JWTexpert");
+          if (token) {
+            sessionStorage.setItem("JWTexpert", token);
+          }
           navigate("/expert");
-          dispatch(removeManualBookMarkerRates());
-          dispatch(removeCurrentUser());
-          dispatch(logout({ roleType: "role3" }));
-          socketMicro.disconnect();
-          socket.disconnect();
-          dispatch(removeSelectedMatch());
-          setGlobalStore((prev) => ({
-            ...prev,
-            expertJWT: "",
-            isSession: true,
-          }));
+          // dispatch(removeManualBookMarkerRates());
+          // dispatch(removeCurrentUser());
+          // dispatch(logout({ roleType: "role3" }));
+          // socketMicro.disconnect();
+          // socket.disconnect();
+          // dispatch(removeSelectedMatch());
+          // setGlobalStore((prev) => ({
+          //   ...prev,
+          //   expertJWT: "",
+          //   isSession: true,
+          // }));
           // await axios.get("auth/logout");
-          removeSocket();
+          // removeSocket();
         }
         if (packet.data[0] === "userBalanceUpdate") {
           const data = packet.data[1];
@@ -551,8 +559,8 @@ const CustomHeader = ({}) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                    ? "Bookmaker"
-                    : "Betfair"
+                      ? "Bookmaker"
+                      : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />

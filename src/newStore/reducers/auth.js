@@ -84,10 +84,10 @@ export const auth = createSlice({
           break;
         case "role3":
           state.userExpert = {};
-          localStorage.removeItem("role3");
-          sessionStorage.removeItem("JWTexpert", action.payload.access_token);
-          localStorage.removeItem("JWTexpert", action.payload.access_token);
-          sessionStorage.clear();
+          // localStorage.removeItem("role3");
+          // sessionStorage.removeItem("JWTexpert", action.payload.access_token);
+          // localStorage.removeItem("JWTexpert", action.payload.access_token);
+          // sessionStorage.clear();
           break;
         case "role4":
           state.user = {};

@@ -23,7 +23,7 @@ function SessionTimeOut() {
 
     const logout = () => {
         dispatch(stateActions.logout());
-        navigate("/");
+        navigate("/login");
         Swal.fire("Your Session is timed out, You are logged out");
     };
 
