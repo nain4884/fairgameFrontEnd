@@ -65,5 +65,5 @@ module.exports = {
 	pageCount:10,
     
 	customPageLimit:5,
-	timeRemaining:1,
+	timeRemaining:59,
 }

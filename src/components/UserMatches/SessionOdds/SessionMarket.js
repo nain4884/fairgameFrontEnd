@@ -29,6 +29,7 @@ const SessionMarket = ({
   fastAmount,
   session,
   betLock,
+  upcoming
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
@@ -197,7 +198,7 @@ const SessionMarket = ({
           </Box>
         )}
         {visible && (
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ width: "100%" ,   position: "relative",}}>
           {
             <Box
               sx={{
@@ -340,7 +341,24 @@ const SessionMarket = ({
               />
             </Box>
           )}
-
+          {upcoming && matchSessionData?.length > 0 
+             && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  height: "90%",
+                  // top: "29%",
+                  width: "100%",
+                  display: "flex",
+                  zIndex: "999",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "rgba(0, 0, 0, .5)",
+                }}
+              >
+                
+              </Box>
+            )}
           <Box
             sx={{
               display: "flex",
