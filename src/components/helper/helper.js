@@ -11,11 +11,11 @@ export const  formatNumber=(value, isRound) =>{
 
   export const currencyFormatter = (amount) => {
     if (amount >= 10000000) {
-      return (amount / 10000000) + ' cr';
+      return (amount / 10000000) + 'cr';
     } else if (amount >= 100000) {
-      return (amount / 100000) + ' lac';
+      return (amount / 100000) + 'lac';
     } else if (amount >= 1000) {
-      return (amount / 1000) + ' k';
+      return (amount / 1000) + 'k';
     } else {
       return amount;
     }

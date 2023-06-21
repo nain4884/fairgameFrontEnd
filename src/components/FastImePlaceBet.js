@@ -201,9 +201,22 @@ const FastTimePlaceBet = ({
                 fontSize: { mobile: "11px", laptop: "14px", tablet: "14px" },
               }}
             >
-              Submit{" "}
+              Submit
             </Typography>
           </button>
+          <StyledImage
+               onClick={() => {
+                setShowFastTimeBox(false);
+              }}
+              src={CancelDark}
+              sx={{
+                padding: "10px",
+                height: "50px",
+                width: "50px",
+                cursor: "pointer",
+              }}
+            />
+          
         </Box>
         {
           <>

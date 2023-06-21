@@ -48,7 +48,7 @@ const SessionBetSeperate = ({
             flexDirection: "column",
             alignSelf: "center",
             marginX: { laptop: "0vw", mobile: "0px", tablet: "0px" },
-            marginY: { laptop: ".5vh", mobile: "0px" },
+            marginY: { laptop: ".5vh", mobile: "3px" },
             borderRadius: "2px",
             background: "white",
             alignSelf: {
@@ -728,7 +728,7 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "6px", laptop: "11px" },
+            fontSize: { mobile: "9px", laptop: "11px" },
             color: "black",
             textAlign: "center",
           }}
@@ -802,7 +802,7 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "11px", laptop: "13px" },
+            fontSize: { mobile: "11px", laptop: "13px" ,textTransform: 'capitalize'},
             color: "black",
           }}
         >

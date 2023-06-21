@@ -107,7 +107,7 @@ const AllRateSeperate = ({
             flexDirection: "column",
             alignSelf: "center",
             marginX: { laptop: "0vw", mobile: "0px", tablet: "0px" },
-            marginY: { laptop: ".5vh", mobile: "0px" },
+            marginY: { laptop: ".5vh", mobile: "3px" },
             borderRadius: "2px",
             background: "white",
             alignSelf: {
@@ -705,7 +705,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "p8x", tablet: "10px", laptop: "12px" },
+            fontSize: { mobile: "10px", tablet: "10px", laptop: "12px" },
             color: "black",
           }}
         >

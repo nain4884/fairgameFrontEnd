@@ -64,7 +64,7 @@ const SmallBox = ({ valueA, valueB }) => {
           sx={{
             fontSize: "12px",
             fontWeight: "bold",
-            color: valueA < 0 ? `#FF9292` : `#319E5B`,
+            color: valueA < 0 ? `#FF4D4D` : `#319E5B`,
           }}
         >
           {valueA < 0 ? ` ${valueA}` : `${valueA}`}
@@ -114,10 +114,10 @@ const Time = (data) => {
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Typography
         sx={{
-          fontSize: { mobile: "10px", laptop: "12px" },
+          fontSize: { mobile: "8px", laptop: "12px" },
           fontWeight: "bold",
           color: "#black",
-          width: { mobile: "40px", laptop: "80px" },
+          width: { mobile: "50px", laptop: "80px" },
         }}
       >
         {data.time} sec Delay
@@ -300,7 +300,7 @@ const Odds = ({
                   transform: !visible ? "rotate(180deg)" : "rotate(0deg)",
                   width: "16px",
                   height: "16px",
-                  marginRight: "3px",
+                  marginRight: "5px",
                   marginLeft: "5px",
                   cursor: 'pointer'
                 }}
@@ -392,7 +392,7 @@ const Odds = ({
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                borderLeft: {laptop: '4px solid #319e5b', mobile: '2px solid #319e5b' }
+                borderLeft: {laptop: '3.5px solid #319e5b', mobile: '2px solid #319e5b' }
               }}
             >
               <Typography
@@ -410,6 +410,7 @@ const Odds = ({
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                // borderRight: {laptop: '1.5px solid #319e5b', mobile: '2px solid #319e5b' }
               }}
             >
               <Typography
@@ -552,7 +553,7 @@ const Odds = ({
               ballStatus={
                 matchOddsData?.[0]?.teamB_Ball === "ball" ? true : false
               }
-              color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
+              color={teamBRates <= 0 ? "#FF4D4D" : "#319E5B"}
               name={newData?.teamB}
               data={data?.length > 0 ? data[1] : []}
               suspendedData={data[1]?.status}
@@ -640,7 +641,7 @@ const Odds = ({
               teamImage={newData?.teamA_Image}
               newData={newData}
               // lock={data?.length > 0 ? false : true}
-              color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
+              color={teamARates <= 0 ? "#FF4D4D" : "#319E5B"}
               allRates={{
                 teamA: teamARates,
                 teamB: teamBRates,
@@ -674,7 +675,7 @@ const Odds = ({
               newData={newData}
               livestatus={newData?.status === "SUSPENDED" ? true : false}
               // lock={data?.length > 0 ? false : true}
-              color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
+              color={teamBRates <= 0 ? "#FF4D4D" : "#319E5B"}
               name={newData?.teamB}
               data={data?.length > 0 ? data[1] : []}
               suspendedData={data[1]?.status}
@@ -707,7 +708,7 @@ const Odds = ({
                   showBox={showBox}
                   newData={newData}
                   // lock={data?.length > 0 ? false : true}
-                  color={teamCRates <= 0 ? "#FF4D4D" : "#46e080"}
+                  color={teamCRates <= 0 ? "#FF4D4D" : "#319E5B"}
                   name={newData?.teamC}
                   data={data?.length > 0 ? data[2] : []}
                   suspendedData={data[2]?.status}
@@ -780,6 +781,7 @@ const Odds = ({
               body .arrowUpCollapse img{
                   width: 14px !important;
                   height: 14px !important;
+                  margin-right: 3px !important;
               }
             }
 
