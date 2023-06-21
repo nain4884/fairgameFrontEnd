@@ -82,7 +82,7 @@ export default function Login(props) {
         // let confirmAuth = await localStorage.getItem("confirmAuth");
         // alert("pop 111:" + confirmAuth)
         const currentURL = window.location.href;
-        if (currentURL !== 'http://localhost:3000/') {
+        if (currentURL !== 'http://localhost:3000/' || currentURL !== 'http://159.65.154.97:3000/' || currentURL !== 'http://143.244.138.15:3000/') {
           if (value && !confirmAuth) {
             try {
               const config = {

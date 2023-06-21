@@ -52,6 +52,7 @@ import { memo } from "react";
 import MobileSideBar from "./MobileSideBar";
 import BoxProfile from "./BoxProfile";
 import jwtDecode from "jwt-decode";
+import { setWConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
 var roleName = "";
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -233,6 +234,15 @@ const CustomHeader = ({ }) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
+          // alert(8888888)
+          dispatch(setWConfirmAuth(true));
+          // alert(4)
+          // localStorage.setItem("confirmAuth", true);
+          let token = localStorage.getItem("JWTwallet");
+          if (token) {
+            sessionStorage.setItem("JWTwallet", token);
+          }
+          navigate(`/wallet`);
           // const { data } = await axios.get("auth/logout");
           // if (data?.data === "success logout") {
           // dispatch(removeSelectedMatch());

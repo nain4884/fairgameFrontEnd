@@ -9,6 +9,7 @@ const initialState = {
   activeUsers: 0,
   bookmakerTeamRates: {},
   eConfirmAuth: false,
+  wConfirmAuth: false,
 };
 
 const expertMatchDetails = createSlice({
@@ -43,9 +44,12 @@ const expertMatchDetails = createSlice({
     setEConfirmAuth: (state, action) => {
       state.eConfirmAuth = action.payload;
     },
+    setWConfirmAuth: (state, action) => {
+      state.wConfirmAuth = action.payload;
+    },
   }
 });
 
-export const { setAllMatchs, setSelectedMatch, removeSelectedMatch, setSessionAllBet, setSessionBetId, setAllEventSession, setBookmakerTeamRates, setActiveUsers, setEConfirmAuth } = expertMatchDetails.actions;
+export const { setAllMatchs, setSelectedMatch, removeSelectedMatch, setSessionAllBet, setSessionBetId, setAllEventSession, setBookmakerTeamRates, setActiveUsers, setEConfirmAuth, setWConfirmAuth } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

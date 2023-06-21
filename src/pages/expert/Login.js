@@ -29,7 +29,7 @@ import {
   apiBasePath
 } from "../../components/helper/constants";
 import { SocketContext } from "../../context/socketContext";
-import { setEConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
+import { setEConfirmAuth, setWConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
 
 var newtoken = "";
 export default function Login(props) {
@@ -42,7 +42,7 @@ export default function Login(props) {
   const activeUser = useSelector((state) => {
     return state?.activeUser?.activeUser;
   });
-  const { eConfirmAuth } = useSelector((state) => state?.expertMatchDetails);
+  const { eConfirmAuth, wConfirmAuth } = useSelector((state) => state?.expertMatchDetails);
   const [loading, setLoading] = useState(false);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -75,13 +75,31 @@ export default function Login(props) {
   useEffect(() => {
     setTimeout(async () => {
       try {
-        var value = await localStorage.getItem("role3");
-        let token = await localStorage.getItem("JWTexpert");
-        // let confirmAuth = await localStorage.getItem("confirmAuth");
-        // alert("pop 111:" + confirmAuth)
-        const currentURL = window.location.href;
-        if (currentURL !== 'http://localhost:3000/') {
-          console.log("role :" + value + "eConfirmAuth :" + eConfirmAuth)
+        const url = window.location.href;
+        // if (http://localhost:3000/wallet)
+        // alert(apiBasePath + 'expert')
+        // const checkExpert = "http://localhost:3000/expert";
+        // const validLoginURLs = [
+        //   'http://localhost:3000/expert',
+        //   'http://localhost:3000/expert/',
+        //   'http://159.65.154.97:3000/expert',
+        //   'http://159.65.154.97:3000/expert/'
+        // ];
+
+        // const validWalletURLs = [
+        //   'http://localhost:3000/wallet/',
+        //   'http://localhost:3000/wallet/',
+        //   'http://159.65.154.97:3000/wallet/',
+        //   'http://159.65.154.97:3000/wallet/'
+        // ];
+
+        let value = "";
+        let token = "";
+        // alert("ddd :" + validLoginURLs.includes(url))
+        // if (validLoginURLs.includes(url)) {
+        if (url.includes("expert")) {
+          value = await localStorage.getItem("role3");
+          token = await localStorage.getItem("JWTexpert");
           if (value && !eConfirmAuth) {
             try {
               const config = {
@@ -108,11 +126,103 @@ export default function Login(props) {
               setConfirmPop(false);
             }
           }
+        } else if (url.includes("wallet")) {
+
+          value = await localStorage.getItem("role2");
+          token = await localStorage.getItem("JWTwallet");
+          if (value && !wConfirmAuth) {
+            try {
+              const config = {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              };
+              const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+              const data = response.data;
+              // alert(JSON.stringify(data))
+              loginToAccountAuth(data?.data?.username, "pass");
+              console.log(data);
+            } catch (error) {
+              // Handle any errors
+              console.error('Error fetching data:', error);
+            }
+          } else {
+            let checkSessionStorage = sessionStorage.getItem("JWTwallet");
+            if (checkSessionStorage) {
+              navigate("/wallet");
+              // console.log("popwwwww");
+              setConfirmPop(true);
+            } else {
+              setConfirmPop(false);
+            }
+          }
         }
+        // let confirmAuth = await localStorage.getItem("confirmAuth");
+        // alert("pop 111:" + value)
+        // const currentURL = window.location.href;
+        // if (currentURL !== 'http://localhost:3000/' || currentURL !== 'http://159.65.154.97:3000/' || currentURL !== 'http://143.244.138.15:3000/') {
+        //   if (value && !eConfirmAuth) {
+        //     try {
+        //       const config = {
+        //         headers: {
+        //           'Authorization': `Bearer ${token}`
+        //         }
+        //       };
+        //       const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+        //       const data = response.data;
+        //       // alert(JSON.stringify(data))
+        //       loginToAccountAuth(data?.data?.username, "pass");
+        //       console.log(data);
+        //     } catch (error) {
+        //       // Handle any errors
+        //       console.error('Error fetching data:', error);
+        //     }
+        //   } else {
+        //     let checkSessionStorage = sessionStorage.getItem("JWTexpert");
+        //     if (checkSessionStorage) {
+        //       navigate("/expert");
+        //       // console.log("popwwwww");
+        //       setConfirmPop(true);
+        //     } else {
+        //       setConfirmPop(false);
+        //     }
+        //   }
+        // }
       } catch (error) { }
     });
   }, [eConfirmAuth]);
 
+  const checkLogin = async (value, token) => {
+    const currentURL = window.location.href;
+    // if (currentURL !== 'http://localhost:3000/' || currentURL !== 'http://159.65.154.97:3000/' || currentURL !== 'http://143.244.138.15:3000/') {
+    // if (value && !eConfirmAuth) {
+    //   try {
+    //     const config = {
+    //       headers: {
+    //         'Authorization': `Bearer ${token}`
+    //       }
+    //     };
+    //     const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+    //     const data = response.data;
+    //     // alert(JSON.stringify(data))
+    //     loginToAccountAuth(data?.data?.username, "pass");
+    //     console.log(data);
+    //   } catch (error) {
+    //     // Handle any errors
+    //     console.error('Error fetching data:', error);
+    //   }
+    // } else {
+    //   let checkSessionStorage = sessionStorage.getItem("JWTexpert");
+    //   if (checkSessionStorage) {
+    //     navigate("/expert");
+    //     // console.log("popwwwww");
+    //     setConfirmPop(true);
+    //   } else {
+    //     setConfirmPop(false);
+    //   }
+    // }
+    // }
+  }
   useEffect(() => {
     let checkLocalStorage;
     let checkSessionStorage;
@@ -293,6 +403,8 @@ export default function Login(props) {
                 ...prev,
                 walletWT: data.data.access_token,
               }));
+              localStorage.setItem("JWTwallet", data.data.access_token);
+              dispatch(setWConfirmAuth(false));
               handleNavigate("/wallet/list_of_clients", "wallet");
             } else if (["expert"].includes(data.data.role.roleName)) {
               setGlobalStore((prev) => ({
@@ -324,7 +436,6 @@ export default function Login(props) {
   }
 
   async function loginToAccount() {
-    // alert(2222)
     getLocalToken(props.allowedRole);
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
@@ -385,6 +496,8 @@ export default function Login(props) {
                 ...prev,
                 walletWT: data.data.access_token,
               }));
+              localStorage.setItem("JWTwallet", data.data.access_token);
+              dispatch(setWConfirmAuth(false));
               handleNavigate("/wallet/list_of_clients", "wallet");
             } else if (["expert"].includes(data.data.role.roleName)) {
               setGlobalStore((prev) => ({
@@ -415,7 +528,13 @@ export default function Login(props) {
   }
 
   const useHereHandle = async () => {
-    let token = await localStorage.getItem("JWTexpert");
+    const checkUrl = window.location.href;
+    let token = "";
+    if (checkUrl.includes("expert")) {
+      token = await localStorage.getItem("JWTexpert");
+    } else if (checkUrl.includes("wallet")) {
+      token = await localStorage.getItem("JWTwallet");
+    }
     try {
       const config = {
         headers: {

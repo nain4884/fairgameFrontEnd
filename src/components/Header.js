@@ -373,32 +373,32 @@ const CustomHeader = ({ }) => {
           </Box>
         </Box>
 
-          <Box
-            sx={{
-              height: "32px",
-              display: "flex",
-              background: "#202020",
-              alignItems: "center",
-            }}
-          >
-            <marquee loop={true}>
-              <Typography
-                sx={{
-                  color: "text.white",
-                  fontSize: "10px",
-                  fontStyle: "italic",
-                  letterSpacing: "1px",
-                  overflow: "hidden",
-                  whiteSpace: "nowrap",
-                  textTransform:"capitalize",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {notificationData}
-              </Typography>
-            </marquee>
-          </Box>
-        
+        <Box
+          sx={{
+            height: "32px",
+            display: "flex",
+            background: "#202020",
+            alignItems: "center",
+          }}
+        >
+          <marquee loop={true}>
+            <Typography
+              sx={{
+                color: "text.white",
+                fontSize: "10px",
+                fontStyle: "italic",
+                letterSpacing: "1px",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textTransform: "capitalize",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {notificationData}
+            </Typography>
+          </marquee>
+        </Box>
+
         {(matchesMobile || showSideBarMobile) && (
           <MobileSideBar
             showSideBarMobile={showSideBarMobile}
