@@ -203,7 +203,7 @@ const Odds = ({
 
   const [visible, setVisible] = useState(true);
 
- 
+
   return (
     <>
       <Box
@@ -352,7 +352,7 @@ const Odds = ({
           </Box>
         )}
         {visible && (
-          <Box sx={{ color: "black",  position: "relative", }}>
+          <Box sx={{ color: "black", position: "relative", }}>
             <Box
               sx={{
                 display: "flex",
@@ -504,23 +504,23 @@ const Odds = ({
               </Box>
             )}
             {upcoming
-             && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  height: "83%",
-                  // top: "18%",
-                  width: "100%",
-                  display: "flex",
-                  zIndex: "999",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "rgba(0, 0, 0, .5)",
-                }}
-              >
-                
-              </Box>
-            )}
+              && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    height: "83%",
+                    // top: "18%",
+                    width: "100%",
+                    display: "flex",
+                    zIndex: "999",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    background: "rgba(0, 0, 0, .5)",
+                  }}
+                >
+
+                </Box>
+              )}
             {typeOfBet == "MANUAL BOOKMAKER" ? (
               <>
                 <ManualBoxComponent

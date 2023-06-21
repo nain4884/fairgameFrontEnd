@@ -18,10 +18,7 @@ import {
   removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
-import {
-  removeManualBookMarkerRates,
-  removeSelectedMatch,
-} from "../../newStore/reducers/matchDetails";
+import { setConfirmAuth } from "../../newStore/reducers/matchDetails";
 import { logout } from "../../newStore/reducers/auth";
 import { GlobalStore } from "../../context/globalStore";
 import { setRole } from "../../newStore";
