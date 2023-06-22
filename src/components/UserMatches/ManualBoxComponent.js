@@ -192,7 +192,7 @@ const BoxComponent = ({
                 display: "flex",
               }}
             >
-              <img src={BallStart} style={{ width: "113px", height: "32px" }} />
+              <img src={BallStart} style={{ width: "108px", height: "30px" }} />
             </Box>
           ) : null}
         </>
@@ -229,13 +229,13 @@ const BoxComponent = ({
               {ballStatus ? null : (
                 // <img src={BallStart} style={{ width: '113px', height: "32px" }} />
                 <Typography
-                  style={{
+                  sx={{
                     fontSize: { mobile: "12px", laptop: "22px" },
                     textTransform: "uppercase",
                     textAlign: "center",
                     width: "100%",
                     color: "white",
-                    fontWeight: "600",
+                    fontWeight: "400",
                   }}
                 >
                   {newData?.bettings?.length === 0 || livestatus

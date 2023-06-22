@@ -254,7 +254,7 @@ const SessionMarketBoxLive = ({
                 textAlign: "center",
                 width: "100%",
                 color: "white",
-                fontWeight: "600",
+                fontWeight: "400",
               }}
             >
               {newData?.betStatus === 2

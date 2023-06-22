@@ -155,13 +155,13 @@ const BoxComponent = ({
         >
           {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
           <Typography
-            style={{
+            sx={{
               fontSize: { mobile: "12px", laptop: "22px" },
               textTransform: "uppercase",
               width: "100%",
               textAlign: "center",
               color: "white",
-              fontWeight: "600",
+              fontWeight: "400",
             }}
           >
             {newData?.bettings?.length === 0 || livestatus

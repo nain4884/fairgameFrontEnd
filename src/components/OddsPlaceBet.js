@@ -167,11 +167,12 @@ const OddsPlaceBet = ({
                   color: "#262626",
                   padding: "1px",
                   fontSize: {
-                    mobile: "10px",
-                    tablet: "10px",
+                    mobile: "12px",
+                    tablet: "12px",
                     laptop: "12px",
                   },
-                  fontWeight: "600",
+                  fontWeight: { mobile: "700", laptop: "600" },
+                  textTransform: 'capitalize'
                 },
                 valueTextStyle,
               ]}
@@ -435,7 +436,7 @@ const OddsPlaceBet = ({
               color: "text.white",
             }}
           >
-            Place Bet
+            Place Bet 
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <MoneyBox

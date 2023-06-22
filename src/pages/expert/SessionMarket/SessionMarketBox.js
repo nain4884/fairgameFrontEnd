@@ -257,10 +257,11 @@ const SessionMarketBox = ({
             <h6
               style={{
                 textTransform: "uppercase",
-                fontSize: "12px",
+                fontSize: { mobile: "12px", laptop: "22px" },
                 textAlign: "center",
                 lineHeight: "11px",
                 color: "#FFF",
+                fontWeight: '400'
               }}
             >
               {newData?.betStatus === 2

@@ -117,7 +117,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
                 alignItems: "center",
               }}
             >
-              <Typography style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase", width: "100%", textAlign: "center", color: "white", fontWeight: "600" }}>
+              <Typography style={{ fontSize: { mobile: "12px", laptop: "22px" }, textTransform: "uppercase", width: "100%", textAlign: "center", color: "white", fontWeight: "400" }}>
                 suspended
               </Typography>
             </Box>
