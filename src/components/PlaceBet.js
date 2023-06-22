@@ -180,8 +180,8 @@ const PlaceBet = ({
                   fontSize: {
                     mobile:
                       title == "Back/Lay" || title == "Yes/No"
-                        ? "10px"
-                        : "10px",
+                        ? "12px"
+                        : "12px",
                     tablet:
                       title == "Back/Lay" || title == "Yes/No"
                         ? "10px"
