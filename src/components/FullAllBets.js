@@ -66,14 +66,14 @@ const FullAllBets = ({ tag, mode, IObets }) => {
           values: [
             {
               name: v?.user?.userName || v?.userName,
-              color:["no","yes"].includes(v?.bet_type) ? "#FFF" : "black",
-              background: ["no","yes"].includes(v?.bet_type) ? "#319E5B": "#F1C550",
+              color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
+              background: ["no", "yes"].includes(v?.bet_type) ? "#319E5B" : "#F1C550",
               deleted_reason: v?.deleted_reason,
             },
             {
               name: v?.marketType,
-              color:["no","yes"].includes(v?.bet_type) ? "#FFF" : "black",
-              background: ["no","yes"].includes(v?.bet_type) ? "#319E5B": "#F1C550",
+              color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
+              background: ["no", "yes"].includes(v?.bet_type) ? "#319E5B" : "#F1C550",
               deleted_reason: v?.deleted_reason,
             },
             {
@@ -87,10 +87,10 @@ const FullAllBets = ({ tag, mode, IObets }) => {
             {
               name: v?.odds,
               color: "black",
-              rate:v.rate ?   
-              v?.bet_type === "no" ? v?.rate?.split("-")[0] :
-               v?.rate?.split("-")[1] : null
-                ,
+              rate: v.rate ?
+                v?.bet_type === "no" ? v?.rate?.split("-")[0] :
+                  v?.rate?.split("-")[1] : null
+              ,
               background: ["yes", "back"].includes(v?.bet_type)
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
@@ -206,7 +206,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
       <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
         {newData?.map((i, k) => {
           const num = newData.length - k;
-            const formattedNum = num < 10 ? "0" + num : num.toString();
+          const formattedNum = num < 10 ? "0" + num : num.toString();
           return (
             <div
               key={k}
@@ -228,7 +228,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
                   width: mode ? "7%" : "5.3%",
                   border: "1px solid white",
                   background: "black",
-                  height: "50px",
+                  height: "35px",
                   justifyContent: "center",
                   alignItems: "center",
                   display: "flex",
@@ -326,7 +326,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -348,7 +348,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -370,7 +370,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -391,7 +391,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -412,7 +412,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -433,7 +433,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -454,7 +454,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -475,7 +475,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
             lineHeight: 1,
@@ -497,7 +497,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".8vw",
+            fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -519,7 +519,7 @@ const SmallBox = ({ item, k }) => {
         width: "10%",
         border: "1px solid white",
         background: item?.background,
-        height: "50px",
+        height: "35px",
         justifyContent: "center",
         alignItems: "center",
         display: "flex",
@@ -529,7 +529,7 @@ const SmallBox = ({ item, k }) => {
       <Typography
 
         sx={{
-          fontSize: matchesMobile ? "12px" : ".8vw",
+          fontSize: matchesMobile ? "12px" : ".7vw",
           fontWeight: "600",
           color: item?.color,
         }}
@@ -554,7 +554,7 @@ const LargeBox = ({ item, k }) => {
         width: k == 1 ? "20%" : "15%",
         border: "1px solid white",
         background: item?.background,
-        height: "50px",
+        height: "35px",
         justifyContent: "center",
         alignItems: k == 1 || k == 0 ? "flex-start" : "center",
         paddingLeft: k == 1 || k == 0 ? "5px" : 0,
@@ -577,7 +577,7 @@ const LargeBox = ({ item, k }) => {
       {item?.time && (
         <Typography
           sx={{
-            fontSize: matchesMobile ? "8px" : ".8vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "600",
             color: item?.color,
           }}
