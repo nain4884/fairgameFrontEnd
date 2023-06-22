@@ -102,7 +102,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
               // background: "rgba(0,0,0,1)",
               height: "40px",
               display: "flex",
-              width: { mobile: "60%", laptop: "10.2vw" },
+              width: { mobile: "39vw", laptop: "10.17vw", desktop: '10.17vw', desktop2XL: '10.12vw' },
               justifyContent: { mobile: "flex-end", laptop: "flex-end" },
               alignItems: "center",
             }}
@@ -112,7 +112,8 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
                 background: "rgba(0,0,0,1)",
                 height: "40px",
                 display: "flex",
-                width: { mobile: "100%", laptop: "10.2vw" },
+                // width: { mobile: "100%", laptop: "10.2vw" },
+                width: { mobile: "39vw", laptop: "10.17vw", desktop: '10.17vw', desktop2XL: '10.12vw' },
                 justifyContent: { mobile: "flex-end", laptop: "flex-end" },
                 alignItems: "center",
               }}

@@ -160,21 +160,25 @@ const FullAllBets = ({ tag, mode, IObets }) => {
         sx={[
           {
             width: "100%",
-            height: "42px",
+            height: "38px",
             justifyContent: "space-between",
             alignItems: "center",
             paddingLeft: "10px",
             paddingRight: "4px",
             marginBottom: ".1vh",
             display: "flex",
+            background: '#f1c550'
           },
-          (theme) => ({
-            backgroundImage: `${theme.palette.primary.headerGradient}`,
-          }),
+          // (theme) => ({
+          //   backgroundImage: `${theme.palette.primary.headerGradient}`,
+          // }),
         ]}
       >
         <Typography
-          sx={{ fontWeight: "12px", color: "white", fontWeight: "700" }}
+          sx={{ 
+            fontWeight: "12px", color: "#575757", fontWeight: "700" ,
+            fontSize: { laptop: "14px", tablet: "12px", mobile: "12px" },
+          }}
         >
           All Bets
         </Typography>
