@@ -67,7 +67,7 @@ const ButtonWithSwitch = ({
         {
           height: "35px",
           minWidth: "100px",
-          width: "14%",
+          // width: "14%",
           marginLeft: "10px",
           borderRadius: "5px",
           border: notSwitch && "1px solid #0B4F26",
@@ -82,7 +82,7 @@ const ButtonWithSwitch = ({
       <Typography
         sx={[
           {
-            color: notSwitch ? "#FF4D4D" : "white",
+            color: notSwitch ? "#575757" : "white",
             fontWeight: notSwitch ? "700" : "500",
             fontSize: "13px",
             marginLeft: "1vw",
@@ -97,7 +97,7 @@ const ButtonWithSwitch = ({
         <Typography
           sx={{
             marginRight: "10px",
-            color: notSwitch ? "#46E080" : "white",
+            color: notSwitch ?  Number(updateMatchStatus) > 0 ? "#46E080" :"#FF4D4D" : "white",
             fontWeight: notSwitch ? "700" : "500",
             fontSize: "13px",
             marginLeft: "1vw",

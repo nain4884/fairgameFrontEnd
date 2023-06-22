@@ -789,6 +789,7 @@ const AddMatchComp = () => {
             }}
             sx={{
               background: "#10DC61",
+              cursor:"pointer",
               height: "40px",
               width: { mobile: "50%", laptop: "15%", tablet: "15%" },
               display: "flex",
@@ -808,6 +809,7 @@ const AddMatchComp = () => {
             sx={{
               background: "#E32A2A",
               height: "40px",
+              cursor:"pointer",
               marginLeft: "20px",
               display: "flex",
               width: { mobile: "50%", laptop: "15%", tablet: "15%" },
