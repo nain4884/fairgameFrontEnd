@@ -37,6 +37,7 @@ const MatchComponent = ({ currentMatch }) => {
           marginY: { laptop: ".5vh", mobile: "0px" },
           borderRadius: "2px",
           background: "white",
+          padding: '1px',
           alignSelf: {
             mobile: "center",
             tablet: "center",

@@ -5,12 +5,12 @@ const LiveMarket = ({ title, boxStyle, titleStyle, onClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const colors = [
     "#ff0000",
-    "#ffa500",
-    "#ffff00",
-    "orange",
+    "#117378",
+    "#00a83a",
+    "#913800",
     "#0000ff",
     "#4b0082",
-    "#ee82ee",
+    "#880088",
   ];
   useEffect(() => {
     let i = setInterval(() => {

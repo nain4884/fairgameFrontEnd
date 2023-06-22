@@ -169,7 +169,7 @@ const OddsPlaceBet = ({
                   fontSize: {
                     mobile: "10px",
                     tablet: "10px",
-                    laptop: "10px",
+                    laptop: "12px",
                   },
                   fontWeight: "600",
                 },
@@ -233,7 +233,7 @@ const OddsPlaceBet = ({
                 className="OddValue"
                 sx={{
                   color: "black",
-                  fontSize: { mobile: "12px", laptop: "16px" },
+                  fontSize: { mobile: "12px", laptop: "12px" },
                   fontWeight: { mobile: "700", laptop: "600" },
                 }}
               >
@@ -503,7 +503,7 @@ const OddsPlaceBet = ({
         )}
         {
           <>
-            <Box sx={{ display: "flex", marginTop: "15px", marginX: "2px" }}>
+            <Box sx={{ display: "flex", marginTop: "15px", marginX: "2px", border: '2px solid white' }}>
               {["2000", "3000", "5000", "10000"]?.map((v) => (
                 <NumberData
                   key={v}
@@ -602,7 +602,7 @@ const OddsPlaceBet = ({
               }
             }}
           >
-            Submit
+            Submit 
           </button>
         </Box>
 

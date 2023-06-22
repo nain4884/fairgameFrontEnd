@@ -4,14 +4,7 @@ import React, { useState } from "react";
 import BoxComponent from "./BoxComponent";
 import ManualBoxComponent from "./ManualBoxComponent";
 import Divider from "../helper/Divider";
-import {
-  BallStart,
-  FASTTIME,
-  HourGlass,
-  Info,
-  TIME,
-  ARROWUP,
-} from "../../assets";
+import { BallStart, FASTTIME, HourGlass, Info, TIME, ARROWUP } from "../../assets";
 import { memo } from "react";
 import FastTimePlaceBet from "../FastImePlaceBet";
 import LiveMarket from "../CommonMasterAdminLayout/LiveMarket";
@@ -27,14 +20,12 @@ import Lottie from "lottie-react";
 import NotificationModal from "../NotificationModal";
 import { LockIcon } from "../../admin/assets";
 import { useEffect } from "react";
-import moment from "moment";
-import constants from "../helper/constants";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
     <Box
       sx={{
-        marginLeft: { mobile: 0, laptop: "-15px", tablet: 0 },
+        marginLeft: { mobile: 0, laptop: "-11px", tablet: 0 },
         justifyContent: {
           mobile: "center",
           laptop: "center",
@@ -73,7 +64,7 @@ const SmallBox = ({ valueA, valueB }) => {
           sx={{
             fontSize: "12px",
             fontWeight: "bold",
-            color: valueA < 0 ? `#FF9292` : `#319E5B`,
+            color: valueA < 0 ? `#FF4D4D` : `#319E5B`,
           }}
         >
           {valueA < 0 ? ` ${valueA}` : `${valueA}`}
@@ -123,10 +114,10 @@ const Time = (data) => {
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Typography
         sx={{
-          fontSize: { mobile: "10px", laptop: "12px" },
+          fontSize: { mobile: "8px", laptop: "12px" },
           fontWeight: "bold",
           color: "#black",
-          width: { mobile: "40px", laptop: "80px" },
+          width: { mobile: "50px", laptop: "80px" },
         }}
       >
         {data.time} sec Delay
@@ -157,7 +148,6 @@ const Odds = ({
   fastAmount,
   betLock,
   showFast,
-  upcoming
 }) => {
   // alert(teamCRates)
   // console.log("matchOddsData 11:", matchOddsData);
@@ -203,9 +193,9 @@ const Odds = ({
 
   const [visible, setVisible] = useState(true);
 
-
   return (
     <>
+    
       <Box
         key="odds"
         sx={{
@@ -290,11 +280,11 @@ const Odds = ({
           >
             <SmallBox valueA={bookRatioA} valueB={bookRatioB} />
             <Box
-              className="arrowUpCollapse"
+             className='arrowUpCollapse'
               sx={{
                 flex: 1,
-                background: { laptop: "#262626", mobile: "none" },
-                position: { laptop: "static", mobile: "absolute" },
+                background: {laptop: "#262626", mobile: 'none'},
+                position: {laptop: "static", mobile: 'absolute'},
                 // '#262626' ,
                 display: "flex",
                 alignItems: "center",
@@ -310,9 +300,9 @@ const Odds = ({
                   transform: !visible ? "rotate(180deg)" : "rotate(0deg)",
                   width: "16px",
                   height: "16px",
-                  marginRight: "3px",
+                  marginRight: "5px",
                   marginLeft: "5px",
-                  cursor: "pointer",
+                  cursor: 'pointer'
                 }}
                 alt={"Banner"}
               />
@@ -340,7 +330,7 @@ const Odds = ({
           /> */}
           </Box>
         </Box>
-
+        
         {visible && showFastTimeBox && (
           <Box>
             <FastTimePlaceBet
@@ -348,223 +338,243 @@ const Odds = ({
               setFastAmount={setFastAmount}
               selectedFastAmount={fastAmount}
               setShowFastTimeBox={setShowFastTimeBox}
+            /> 
+           </Box>
+        )}
+        {visible && (
+         <Box sx={{color: 'black'}}>
+              
+         
+        <Box
+          sx={{
+            display: "flex",
+            background: "#319E5B",
+            height: "25px",
+            width: "99.7%",
+            alignSelf: "center",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              background: "'#319E5B'",
+              height: "25px",
+              width: "40%",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "white",
+                fontSize: { laptop: "11px", mobile: "9px" },
+                marginLeft: "7px",
+              }}
+            >
+              MIN: {min} MAX:{max}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              background: "#319E5B",
+              height: "25px",
+              gap: { mobile: "0px", laptop: "1px", tablet: "1px" },
+              width: { laptop: "60%", mobile: "80%" },
+              justifyContent: { laptop: "center", mobile: "flex-end" },
+            }}
+          >
+             {/* <Box sx={{ width: ".50%", display: "flex" }}></Box> */}
+            <Box
+              sx={{
+                background: "#00C0F9",
+                width: { laptop: "16.5%", mobile: "30%" },
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderLeft: {laptop: '5px solid #319e5b', mobile: '2px solid #319e5b' }
+              }}
+            >
+              <Typography
+                sx={{ fontSize: "12px", color: "black", fontWeight: "600", }}
+              >
+                Back
+              </Typography>
+            </Box>
+            <Box sx={{ width: ".35%", display: "flex" }}></Box>
+            <Box
+              sx={{
+                background: "#FF9292",
+                width: { laptop: "16.6%", mobile: "30%" },
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                // borderRight: {laptop: '1.5px solid #319e5b', mobile: '2px solid #319e5b' }
+              }}
+            >
+              <Typography
+                sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+              >
+                Lay
+              </Typography>
+            </Box>
+            {/* <Box sx={{ width: ".50%", display: "flex" }}></Box> */}
+          </Box>
+        </Box>
+        {betLock && (
+          <Box
+            sx={{
+              position: "absolute",
+              height: "65%",
+              top: "35%",
+              width: "100%",
+              display: "flex",
+              zIndex: "999",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "rgba(0, 0, 0, .6)",
+            }}
+          >
+            <Box
+              sx={{ width: { mobile: "60%", laptop: "40%", tablet: "60%" } }}
+            ></Box>
+            <Box
+              sx={{
+                width: { mobile: "40%", laptop: "60%", tablet: "40%" },
+                gap: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <img style={{ width: "35px", height: "40px" }} src={LockIcon} />
+              <Typography
+                sx={{
+                  fontWeight: "600",
+                  margin: "20px 0px 0px -25px",
+                  fontSize: "20px",
+                  color: "#FFF",
+                }}
+              >
+                Locked
+              </Typography>
+            </Box>
+          </Box>
+        )}
+
+        {fastBetLoading && (
+          <Box
+            sx={{
+              position: "absolute",
+              height: "65%",
+              top: "35%",
+              width: "100%",
+              display: "flex",
+              zIndex: "999",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "rgba(0, 0, 0, .5)",
+            }}
+          >
+            <Lottie
+              animationData={HourGlass}
+              style={{
+                display: "flex",
+                alignSelf: "center",
+                width: "50px",
+                height: "50px",
+              }}
             />
           </Box>
         )}
-        {visible && (
-          <Box sx={{ color: "black", position: "relative", }}>
-            <Box
-              sx={{
-                display: "flex",
-                background: "#319E5B",
-                height: "25px",
-                width: "99.7%",
-                alignSelf: "center",
+ 
+        {typeOfBet == "MANUAL BOOKMAKER" ? (
+          <>
+            <ManualBoxComponent
+              setFastBetLoading={setFastBetLoading}
+              placeBetData={placeBetData}
+              setFastRate={(val) => setFastRate(val)}
+              fastRate={fastRate}
+              setPlaceBetData={setPlaceBetData}
+              setFastAmount={setFastAmount}
+              time={true}
+              sessionMain={session}
+              fromOdds={true}
+              showBox={showBox}
+              selectedFastAmount={fastAmount}
+              livestatus={
+                matchOddsData?.[0]?.teamA_suspend === "suspended" ? true : false
+              }
+              ballStatus={
+                matchOddsData?.[0]?.teamA_Ball === "ball" ? true : false
+              }
+              teamImage={newData?.teamA_Image}
+              newData={newData}
+              color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
+              allRates={{
+                teamA: teamARates,
+                teamB: teamBRates,
+                teamC: teamCRates,
               }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  background: "'#319E5B'",
-                  height: "25px",
-                  width: "40%",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: { laptop: "11px", mobile: "9px" },
-                    marginLeft: "7px",
-                  }}
-                >
-                  MIN: {min} MAX:{max}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  background: "#319E5B",
-                  height: "25px",
-                  gap: { mobile: "0px", laptop: "1px", tablet: "1px" },
-                  width: { laptop: "60%", mobile: "80%" },
-                  justifyContent: { laptop: "center", mobile: "flex-end" },
-                }}
-              >
-                {/* <Box sx={{ width: ".50%", display: "flex" }}></Box> */}
-                <Box
-                  sx={{
-                    background: "#00C0F9",
-                    width: { laptop: "16.5%", mobile: "30%" },
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderLeft: {
-                      laptop: "4px solid #319e5b",
-                      mobile: "2px solid #319e5b",
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
-                  >
-                    Back
-                  </Typography>
-                </Box>
-                <Box sx={{ width: ".35%", display: "flex" }}></Box>
-                <Box
-                  sx={{
-                    background: "#FF9292",
-                    width: { laptop: "16.5%", mobile: "30%" },
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
-                  >
-                    Lay
-                  </Typography>
-                </Box>
-                {/* <Box sx={{ width: ".50%", display: "flex" }}></Box> */}
-              </Box>
-            </Box>
-            {betLock && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  height: "65%",
-                  top: "35%",
-                  width: "100%",
-                  display: "flex",
-                  zIndex: "999",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "rgba(0, 0, 0, .6)",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: { mobile: "60%", laptop: "40%", tablet: "60%" },
-                  }}
-                ></Box>
-                <Box
-                  sx={{
-                    width: { mobile: "40%", laptop: "60%", tablet: "40%" },
-                    gap: 1,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <img
-                    style={{ width: "35px", height: "40px" }}
-                    src={LockIcon}
-                  />
-                  <Typography
-                    sx={{
-                      fontWeight: "600",
-                      margin: "20px 0px 0px -25px",
-                      fontSize: "20px",
-                      color: "#FFF",
-                    }}
-                  >
-                    Locked
-                  </Typography>
-                </Box>
-              </Box>
-            )}
-
-            {fastBetLoading && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  height: "65%",
-                  top: "35%",
-                  width: "100%",
-                  display: "flex",
-                  zIndex: "999",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "rgba(0, 0, 0, .5)",
-                }}
-              >
-                <Lottie
-                  animationData={HourGlass}
-                  style={{
-                    display: "flex",
-                    alignSelf: "center",
-                    width: "50px",
-                    height: "50px",
-                  }}
-                />
-              </Box>
-            )}
-            {upcoming
-              && (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    height: "83%",
-                    // top: "18%",
-                    width: "100%",
-                    display: "flex",
-                    zIndex: "999",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "rgba(0, 0, 0, .5)",
-                  }}
-                >
-
-                </Box>
-              )}
-            {typeOfBet == "MANUAL BOOKMAKER" ? (
+              rate={teamARates}
+              name={newData?.teamA}
+              data={data?.length > 0 ? data[0] : []}
+              team={"teamA"}
+              suspendedData={data[0]?.status}
+              typeOfBet={typeOfBet}
+              isRound={isRound}
+              matchOddsData={{
+                back: matchOddsData?.[0]?.teamA_Back,
+                lay: matchOddsData?.[0]?.teamA_lay,
+              }}
+              isBall={true}
+              isTeamC={newData?.teamC}
+            />
+            <Divider />
+            <ManualBoxComponent
+              setFastBetLoading={setFastBetLoading}
+              placeBetData={placeBetData}
+              setFastRate={(val) => setFastRate(val)}
+              fastRate={fastRate}
+              setPlaceBetData={setPlaceBetData}
+              sessionMain={session}
+              setFastAmount={setFastAmount}
+              teamImage={newData?.teamB_Image}
+              time={true}
+              fromOdds={true}
+              showBox={showBox}
+              newData={newData}
+              selectedFastAmount={fastAmount}
+              // livestatus={newData?.status === "SUSPENDED" ? true : false}
+              livestatus={
+                matchOddsData?.[0]?.teamB_suspend === "suspended" ? true : false
+              }
+              ballStatus={
+                matchOddsData?.[0]?.teamB_Ball === "ball" ? true : false
+              }
+              color={teamBRates <= 0 ? "#FF4D4D" : "#319E5B"}
+              name={newData?.teamB}
+              data={data?.length > 0 ? data[1] : []}
+              suspendedData={data[1]?.status}
+              rate={teamBRates}
+              allRates={{
+                teamA: teamARates,
+                teamB: teamBRates,
+                teamC: teamCRates,
+              }}
+              team={"teamB"}
+              typeOfBet={typeOfBet}
+              isRound={isRound}
+              matchOddsData={{
+                back: matchOddsData?.[0]?.teamB_Back,
+                lay: matchOddsData?.[0]?.teamB_lay,
+              }}
+              isBall={false}
+              isTeamC={newData?.teamC}
+            />
+            {newData?.teamC && (
               <>
-                <ManualBoxComponent
-                  setFastBetLoading={setFastBetLoading}
-                  placeBetData={placeBetData}
-                  setFastRate={(val) => setFastRate(val)}
-                  fastRate={fastRate}
-                  setPlaceBetData={setPlaceBetData}
-                  setFastAmount={setFastAmount}
-                  time={true}
-                  sessionMain={session}
-                  fromOdds={true}
-                  showBox={showBox}
-                  selectedFastAmount={fastAmount}
-                  livestatus={
-                    matchOddsData?.[0]?.teamA_suspend === "suspended"
-                      ? true
-                      : false
-                  }
-                  ballStatus={
-                    matchOddsData?.[0]?.teamA_Ball === "ball" ? true : false
-                  }
-                  teamImage={newData?.teamA_Image}
-                  newData={newData}
-                  color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
-                  allRates={{
-                    teamA: teamARates,
-                    teamB: teamBRates,
-                    teamC: teamCRates,
-                  }}
-                  rate={teamARates}
-                  name={newData?.teamA}
-                  data={data?.length > 0 ? data[0] : []}
-                  team={"teamA"}
-                  suspendedData={data[0]?.status}
-                  typeOfBet={typeOfBet}
-                  isRound={isRound}
-                  matchOddsData={{
-                    back: matchOddsData?.[0]?.teamA_Back,
-                    lay: matchOddsData?.[0]?.teamA_lay,
-                  }}
-                  isBall={true}
-                  isTeamC={newData?.teamC}
-                />
                 <Divider />
                 <ManualBoxComponent
                   setFastBetLoading={setFastBetLoading}
@@ -574,93 +584,114 @@ const Odds = ({
                   setPlaceBetData={setPlaceBetData}
                   sessionMain={session}
                   setFastAmount={setFastAmount}
-                  teamImage={newData?.teamB_Image}
-                  time={true}
-                  fromOdds={true}
-                  showBox={showBox}
-                  newData={newData}
+                  teamImage={null}
                   selectedFastAmount={fastAmount}
+                  fromOdds={true}
+                  time={true}
                   // livestatus={newData?.status === "SUSPENDED" ? true : false}
                   livestatus={
-                    matchOddsData?.[0]?.teamB_suspend === "suspended"
+                    matchOddsData?.[0]?.teamC_suspend === "suspended"
                       ? true
                       : false
                   }
                   ballStatus={
-                    matchOddsData?.[0]?.teamB_Ball === "ball" ? true : false
+                    matchOddsData?.[0]?.teamC_Ball === "ball" ? true : false
                   }
-                  color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
-                  name={newData?.teamB}
-                  data={data?.length > 0 ? data[1] : []}
-                  suspendedData={data[1]?.status}
-                  rate={teamBRates}
+                  showBox={showBox}
+                  newData={newData}
+                  // color={"#FF4D4D"}
+                  color={teamCRates <= 0 ? "#FF4D4D" : "#46e080"}
+                  name={newData?.teamC}
+                  data={data?.length > 0 ? data[2] : []}
+                  suspendedData={data[2]?.status}
+                  rate={teamCRates}
                   allRates={{
                     teamA: teamARates,
                     teamB: teamBRates,
                     teamC: teamCRates,
                   }}
-                  team={"teamB"}
+                  team={"teamC"}
                   typeOfBet={typeOfBet}
                   isRound={isRound}
                   matchOddsData={{
-                    back: matchOddsData?.[0]?.teamB_Back,
-                    lay: matchOddsData?.[0]?.teamB_lay,
+                    back: matchOddsData?.[0]?.teamC_Back,
+                    lay: matchOddsData?.[0]?.teamC_lay,
                   }}
                   isBall={false}
                   isTeamC={newData?.teamC}
                 />
-                {newData?.teamC && (
-                  <>
-                    <Divider />
-                    <ManualBoxComponent
-                      setFastBetLoading={setFastBetLoading}
-                      placeBetData={placeBetData}
-                      setFastRate={(val) => setFastRate(val)}
-                      fastRate={fastRate}
-                      setPlaceBetData={setPlaceBetData}
-                      sessionMain={session}
-                      setFastAmount={setFastAmount}
-                      teamImage={null}
-                      selectedFastAmount={fastAmount}
-                      fromOdds={true}
-                      time={true}
-                      // livestatus={newData?.status === "SUSPENDED" ? true : false}
-                      livestatus={
-                        matchOddsData?.[0]?.teamC_suspend === "suspended"
-                          ? true
-                          : false
-                      }
-                      ballStatus={
-                        matchOddsData?.[0]?.teamC_Ball === "ball" ? true : false
-                      }
-                      showBox={showBox}
-                      newData={newData}
-                      // color={"#FF4D4D"}
-                      color={teamCRates <= 0 ? "#FF4D4D" : "#46e080"}
-                      name={newData?.teamC}
-                      data={data?.length > 0 ? data[2] : []}
-                      suspendedData={data[2]?.status}
-                      rate={teamCRates}
-                      allRates={{
-                        teamA: teamARates,
-                        teamB: teamBRates,
-                        teamC: teamCRates,
-                      }}
-                      team={"teamC"}
-                      typeOfBet={typeOfBet}
-                      isRound={isRound}
-                      matchOddsData={{
-                        back: matchOddsData?.[0]?.teamC_Back,
-                        lay: matchOddsData?.[0]?.teamC_lay,
-                      }}
-                      isBall={false}
-                      isTeamC={newData?.teamC}
-                    />
-                  </>
-                )}
               </>
-            ) : (
+            )}
+          </>
+        ) : (
+          <>
+            <BoxComponent
+              setFastBetLoading={setFastBetLoading}
+              placeBetData={placeBetData}
+              setFastRate={(val) => setFastRate(val)}
+              fastRate={fastRate}
+              setPlaceBetData={setPlaceBetData}
+              sessionMain={session}
+              setFastAmount={setFastAmount}
+              time={true}
+              fromOdds={true}
+              selectedFastAmount={fastAmount}
+              showBox={showBox}
+              livestatus={newData?.status === "SUSPENDED" ? true : false}
+              teamImage={newData?.teamA_Image}
+              newData={newData}
+              // lock={data?.length > 0 ? false : true}
+              color={teamARates <= 0 ? "#FF4D4D" : "#319E5B"}
+              allRates={{
+                teamA: teamARates,
+                teamB: teamBRates,
+                teamC: teamCRates,
+              }}
+              rate={teamARates}
+              name={newData?.teamA}
+              data={data?.length > 0 ? data[0] : []}
+              team={"teamA"}
+              suspendedData={data[0]?.status}
+              typeOfBet={typeOfBet}
+              isRound={isRound}
+            />
+            <Divider />
+            {/* {console.log("newData :",newData)} */}
+            <BoxComponent
+              setFastBetLoading={setFastBetLoading}
+              placeBetData={placeBetData}
+              setFastRate={(val) => {
+                setFastRate(val);
+              }}
+              fastRate={fastRate}
+              setPlaceBetData={setPlaceBetData}
+              sessionMain={session}
+              setFastAmount={setFastAmount}
+              teamImage={newData?.teamB_Image}
+              time={true}
+              showBox={showBox}
+              fromOdds={true}
+              selectedFastAmount={fastAmount}
+              newData={newData}
+              livestatus={newData?.status === "SUSPENDED" ? true : false}
+              // lock={data?.length > 0 ? false : true}
+              color={teamBRates <= 0 ? "#FF4D4D" : "#319E5B"}
+              name={newData?.teamB}
+              data={data?.length > 0 ? data[1] : []}
+              suspendedData={data[1]?.status}
+              rate={teamBRates}
+              allRates={{
+                teamA: teamARates,
+                teamB: teamBRates,
+                teamC: teamCRates,
+              }}
+              team={"teamB"}
+              typeOfBet={typeOfBet}
+              isRound={isRound}
+            />
+            {newData?.teamC && (
               <>
+                <Divider />
                 <BoxComponent
                   setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
@@ -669,105 +700,36 @@ const Odds = ({
                   setPlaceBetData={setPlaceBetData}
                   sessionMain={session}
                   setFastAmount={setFastAmount}
-                  time={true}
                   fromOdds={true}
+                  teamImage={null}
                   selectedFastAmount={fastAmount}
-                  showBox={showBox}
+                  time={true}
                   livestatus={newData?.status === "SUSPENDED" ? true : false}
-                  teamImage={newData?.teamA_Image}
+                  showBox={showBox}
                   newData={newData}
                   // lock={data?.length > 0 ? false : true}
-                  color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
+                  color={teamCRates <= 0 ? "#FF4D4D" : "#319E5B"}
+                  name={newData?.teamC}
+                  data={data?.length > 0 ? data[2] : []}
+                  suspendedData={data[2]?.status}
+                  rate={teamCRates}
                   allRates={{
                     teamA: teamARates,
                     teamB: teamBRates,
                     teamC: teamCRates,
                   }}
-                  rate={teamARates}
-                  name={newData?.teamA}
-                  data={data?.length > 0 ? data[0] : []}
-                  team={"teamA"}
-                  suspendedData={data[0]?.status}
+                  team={"teamC"}
                   typeOfBet={typeOfBet}
                   isRound={isRound}
                 />
-                <Divider />
-                {/* {console.log("newData :",newData)} */}
-                <BoxComponent
-                  setFastBetLoading={setFastBetLoading}
-                  placeBetData={placeBetData}
-                  setFastRate={(val) => {
-                    setFastRate(val);
-                  }}
-                  fastRate={fastRate}
-                  setPlaceBetData={setPlaceBetData}
-                  sessionMain={session}
-                  setFastAmount={setFastAmount}
-                  teamImage={newData?.teamB_Image}
-                  time={true}
-                  showBox={showBox}
-                  fromOdds={true}
-                  selectedFastAmount={fastAmount}
-                  newData={newData}
-                  livestatus={newData?.status === "SUSPENDED" ? true : false}
-                  // lock={data?.length > 0 ? false : true}
-                  color={teamBRates <= 0 ? "#FF4D4D" : "#46e080"}
-                  name={newData?.teamB}
-                  data={data?.length > 0 ? data[1] : []}
-                  suspendedData={data[1]?.status}
-                  rate={teamBRates}
-                  allRates={{
-                    teamA: teamARates,
-                    teamB: teamBRates,
-                    teamC: teamCRates,
-                  }}
-                  team={"teamB"}
-                  typeOfBet={typeOfBet}
-                  isRound={isRound}
-                />
-                {newData?.teamC && (
-                  <>
-                    <Divider />
-                    <BoxComponent
-                      setFastBetLoading={setFastBetLoading}
-                      placeBetData={placeBetData}
-                      setFastRate={(val) => setFastRate(val)}
-                      fastRate={fastRate}
-                      setPlaceBetData={setPlaceBetData}
-                      sessionMain={session}
-                      setFastAmount={setFastAmount}
-                      fromOdds={true}
-                      teamImage={null}
-                      selectedFastAmount={fastAmount}
-                      time={true}
-                      livestatus={
-                        newData?.status === "SUSPENDED" ? true : false
-                      }
-                      showBox={showBox}
-                      newData={newData}
-                      // lock={data?.length > 0 ? false : true}
-                      color={teamCRates <= 0 ? "#FF4D4D" : "#46e080"}
-                      name={newData?.teamC}
-                      data={data?.length > 0 ? data[2] : []}
-                      suspendedData={data[2]?.status}
-                      rate={teamCRates}
-                      allRates={{
-                        teamA: teamARates,
-                        teamB: teamBRates,
-                        teamC: teamCRates,
-                      }}
-                      team={"teamC"}
-                      typeOfBet={typeOfBet}
-                      isRound={isRound}
-                    />
-                  </>
-                )}
               </>
             )}
+          </>
+        )}
           </Box>
         )}
       </Box>
-
+   
       {placeBetData && (
         <Box
           sx={{
@@ -814,14 +776,17 @@ const Odds = ({
       )}
 
       <style jsx scope>
-        {`
-          @media only screen and (max-width: 600px) {
-            body .arrowUpCollapse img {
-              width: 14px !important;
-              height: 14px !important;
+            {`
+            @media only screen and (max-width: 600px) {
+              body .arrowUpCollapse img{
+                  width: 14px !important;
+                  height: 14px !important;
+                  margin-right: 3px !important;
+              }
             }
-          }
-        `}
+
+              
+            `}
       </style>
     </>
   );

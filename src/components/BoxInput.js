@@ -82,7 +82,7 @@ const BoxInput = ({
             },
             disableUnderline: true,
             style: {
-              fontSize: "16px",
+              fontSize: "12px",
               fontWeight: "600",
               color: !selectedColorBox && "white",
             },

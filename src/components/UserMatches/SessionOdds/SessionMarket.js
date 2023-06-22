@@ -29,7 +29,6 @@ const SessionMarket = ({
   fastAmount,
   session,
   betLock,
-  upcoming
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
@@ -139,31 +138,32 @@ const SessionMarket = ({
               totalAmount={sessionExposer}
             />
             <Box
-          sx={{
-            flex: 1,
-            background: {laptop: "#262626", mobile: 'none'},
-                position: {laptop: "static", mobile: 'absolute'},
-            // '#262626' ,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <img
-            onClick={() => {
-              setVisible(!visible);
-            }}
-            src={ARROWUP}
-            style={{
-              transform: visible ? "rotate(180deg)" : "rotate(0deg)",
-              width: "15px",
-              height: "15px",
-              marginRight: "5px",
-              marginLeft: "5px",
-              cursor: 'pointer'
-            }}
-          />
-        </Box>
+              className='arrowUpCollaps'
+              sx={{
+                flex: 1,
+                background: { laptop: "#262626", mobile: 'none' },
+                position: { laptop: "static", mobile: 'absolute' },
+                // '#262626' ,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <img
+                onClick={() => {
+                  setVisible(!visible);
+                }}
+                src={ARROWUP}
+                style={{
+                  transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+                  width: "15px",
+                  height: "15px",
+                  marginRight: "5px",
+                  marginLeft: "5px",
+                  cursor: 'pointer'
+                }}
+              />
+            </Box>
             {/* <Typography
               sx={{
                 color: "white",
@@ -198,214 +198,210 @@ const SessionMarket = ({
           </Box>
         )}
         {visible && (
-        <Box sx={{ width: "100%" ,   position: "relative",}}>
-          {
-            <Box
-              sx={{
-                display: "flex",
-                background: "#319E5B",
-                height: "25px",
-                width: "99.7%",
-                alignSelf: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  background: "'#319E5B'",
-                  height: "25px",
-                  width: "40%",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: { laptop: "11px", mobile: "9px" },
-                    marginLeft: "7px",
-                  }}
-                >
-                  MIN:{newData?.manaual_session_min_bet} MAX:
-                  {newData?.manaual_session_max_bet}
-                </Typography>
-              </Box>
+          <Box sx={{ width: "100%" }}>
+            {
               <Box
                 sx={{
                   display: "flex",
                   background: "#319E5B",
                   height: "25px",
-                  gap: { mobile: "0px", laptop: "1px", tablet: "1px" },
-                  width: { laptop: "60%", mobile: "80%" },
-                  justifyContent: { laptop: "center", mobile: "flex-end" },
-                }}
-              >
-                <Box
-                  sx={{
-                    background: "#FF9292",
-                    width: { laptop: "16.5%", mobile: "30%" },
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
-                  >
-                    NO
-                  </Typography>
-                </Box>
-                <Box sx={{ width: ".35%", display: "flex" }}></Box>
-                <Box
-                  sx={{
-                    background: "#00C0F9",
-                    width: { laptop: "16.5%", mobile: "30%" },
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
-                  >
-                    YES
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          }
-          {betLock && (
-            <Box
-              sx={{
-                position: "absolute",
-                height: "86%",
-                top: "14%",
-                width: "100%",
-                display: "flex",
-                zIndex: "999",
-                justifyContent: "center",
-                alignItems: "center",
-                background: "rgba(0, 0, 0, .6)",
-              }}
-            >
-              <Box
-                sx={{ width: { mobile: "60%", laptop: "40%", tablet: "60%" } }}
-              ></Box>
-              <Box
-                sx={{
-                  width: { mobile: "40%", laptop: "60%", tablet: "40%" },
-                  gap: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img style={{ width: "35px", height: "40px" }} src={LockIcon} />
-                <Typography
-                  sx={{
-                    fontWeight: "600",
-                    margin: "20px 0px 0px -25px",
-                    fontSize: "20px",
-                    color: "#FFF",
-                  }}
-                >
-                  Locked
-                </Typography>
-              </Box>
-            </Box>
-          )}
-
-          {fastBetLoading && (
-            <Box
-              sx={{
-                position: "absolute",
-                height: "86%",
-                top: "14%",
-                width: "100%",
-                display: "flex",
-                zIndex: "999",
-                justifyContent: "center",
-                alignItems: "center",
-                background: "rgba(0, 0, 0, .6)",
-              }}
-            >
-              <Lottie
-                animationData={HourGlass}
-                style={{
-                  display: "flex",
+                  width: "99.7%",
                   alignSelf: "center",
-                  width: "50px",
-                  height: "50px",
                 }}
-              />
-            </Box>
-          )}
-          {upcoming && matchSessionData?.length > 0 
-             && (
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    background: "'#319E5B'",
+                    height: "25px",
+                    width: "40%",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "white",
+                      fontSize: { laptop: "11px", mobile: "9px" },
+                      marginLeft: "7px",
+                    }}
+                  >
+                    MIN:{newData?.manaual_session_min_bet} MAX:
+                    {newData?.manaual_session_max_bet}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    background: "#319E5B",
+                    height: "25px",
+                    gap: { mobile: "0px", laptop: "1px", tablet: "1px" },
+                    width: { laptop: "60%", mobile: "80%" },
+                    justifyContent: { laptop: "center", mobile: "flex-end" },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      background: "#FF9292",
+                      width: { laptop: "16.5%", mobile: "30%" },
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{ fontSize: "12px", color: "black", fontWeight: "600",  }}
+                    >
+                      NO
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: ".35%", display: "flex" }}></Box>
+                  <Box
+                    sx={{
+                      background: "#00C0F9",
+                      width: { laptop: "16.5%", mobile: "30%" },
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    >
+                      YES
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            }
+            {betLock && (
               <Box
                 sx={{
                   position: "absolute",
-                  height: "90%",
-                  // top: "29%",
+                  height: "86%",
+                  top: "14%",
                   width: "100%",
                   display: "flex",
                   zIndex: "999",
                   justifyContent: "center",
                   alignItems: "center",
-                  background: "rgba(0, 0, 0, .5)",
+                  background: "rgba(0, 0, 0, .6)",
                 }}
               >
-                
-              </Box>
-            )}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              width: "100%",
-              position: "relative",
-              maxHeight: "387px",
-              overflowY: "visible",
-            }}
-          >
-            {matchSessionData?.length > 0 &&
-              matchSessionData?.reverse()?.map((element) => {
-                return (
-                  <Box
-                    key={element?.id}
+                <Box
+                  sx={{ width: { mobile: "60%", laptop: "40%", tablet: "60%" } }}
+                ></Box>
+                <Box
+                  sx={{
+                    width: { mobile: "40%", laptop: "60%", tablet: "40%" },
+                    gap: 1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <img style={{ width: "35px", height: "40px" }} src={LockIcon} />
+                  <Typography
                     sx={{
-                      width: "100%",
-                      display: sessionOffline?.includes(element.id)
-                        ? "none"
-                        : "block",
+                      fontWeight: "600",
+                      margin: "20px 0px 0px -25px",
+                      fontSize: "20px",
+                      color: "#FFF",
                     }}
                   >
-                    <SessionMarketBox
-                      closeModal={sessionOffline?.includes(element.id)}
-                      typeOfBet={"Session"}
-                      setFastBetLoading={setFastBetLoading}
-                      data={element}
-                      sessionMain={session}
-                      selectedFastAmount={fastAmount}
-                      setFastAmount={setFastAmount}
-                      mainData={data}
-                      newData={newData}
-                      allRates={{
-                        teamA: teamARates,
-                        teamB: teamBRates,
-                        teamC: teamCRates,
+                    Locked
+                  </Typography>
+                </Box>
+              </Box>
+            )}
+
+            {fastBetLoading && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  height: "86%",
+                  top: "14%",
+                  width: "100%",
+                  display: "flex",
+                  zIndex: "999",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "rgba(0, 0, 0, .6)",
+                }}
+              >
+                <Lottie
+                  animationData={HourGlass}
+                  style={{
+                    display: "flex",
+                    alignSelf: "center",
+                    width: "50px",
+                    height: "50px",
+                  }}
+                />
+              </Box>
+            )}
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "100%",
+                position: "relative",
+                maxHeight: "387px",
+                overflowY: "visible",
+              }}
+            >
+              {matchSessionData?.length > 0 &&
+                matchSessionData?.reverse()?.map((element) => {
+                  return (
+                    <Box
+                      key={element?.id}
+                      sx={{
+                        width: "100%",
+                        display: sessionOffline?.includes(element.id)
+                          ? "none"
+                          : "block",
                       }}
-                    />
-                    <Divider />
-                  </Box>
-                );
-              })}
+                    >
+                      <SessionMarketBox
+                        closeModal={sessionOffline?.includes(element.id)}
+                        typeOfBet={"Session"}
+                        setFastBetLoading={setFastBetLoading}
+                        data={element}
+                        sessionMain={session}
+                        selectedFastAmount={fastAmount}
+                        setFastAmount={setFastAmount}
+                        mainData={data}
+                        newData={newData}
+                        allRates={{
+                          teamA: teamARates,
+                          teamB: teamBRates,
+                          teamC: teamCRates,
+                        }}
+                      />
+                      <Divider />
+                    </Box>
+                  );
+                })}
+            </Box>
           </Box>
-        </Box>
         )}
       </Box>
       {/* <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} /> */}
+
+      <style jsx scope>
+        {`
+            @media only screen and (max-width: 600px) {
+              body .arrowUpCollaps img{
+                  width: 14px !important;
+                  height: 14px !important;
+                  margin-right: 3px !important;
+              }
+            }
+
+            `}
+      </style>
     </>
   );
 };

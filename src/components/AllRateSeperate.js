@@ -106,9 +106,12 @@ const AllRateSeperate = ({
             flexDirection: "column",
             alignSelf: "center",
             marginX: { laptop: "0vw", mobile: "0px", tablet: "0px" },
-            marginY: { laptop: ".5vh", mobile: "0px" },
+            marginY: { laptop: ".5vh", mobile: "3px" },
+            marginBottom: { laptop: ".5vh", mobile: "6px" },
             borderRadius: "2px",
             background: "white",
+            padding: '1px',
+            
             alignSelf: {
               mobile: "center",
               tablet: "center",
@@ -201,11 +204,11 @@ const AllRateSeperate = ({
           </Box>
         </Box>
         {visible && (
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
+          <Box sx={{ display: "flex", flexDirection: "row" , gap: '1px' }}>
             <Box
               sx={{
-                height: "30px",
-                margin: { mobile: "1px", laptop: "0.5px" },
+                height: "32px",
+                // margin: { mobile: "1px", laptop: "0.5px" },
                 width: "30px",
                 display: "flex",
                 background: "black",
@@ -227,7 +230,7 @@ const AllRateSeperate = ({
             {profit && (
               <Box
                 sx={{
-                  height: "30px",
+                  height: "32px",
                   width: "30%",
                   display: "flex",
                   background: "black",
@@ -273,15 +276,16 @@ const AllRateSeperate = ({
                   display: "flex",
                   flexDirection: "row",
                   position: "relative",
+                  gap: '1px'
                 }}
               >
                 <Box
                   sx={{
-                    height: "40px",
+                    height: "32px",
                     width: "30px",
                     display: "flex",
                     background: "black",
-                    margin: { mobile: "1px", laptop: "1px" },
+                    marginBottom: { mobile: "1px", laptop: "1px" },
                     justifyContent: "center",
                     alignItems: "center",
                   }}
@@ -308,7 +312,7 @@ const AllRateSeperate = ({
                         laptop: profit ? "100 % " : "100% ",
                       },
                       background: "rgba(0, 0, 0, 0.5)",
-                      height: "42px",
+                      height: "30px",
                       position: "absolute",
                     }}
                   >
@@ -392,7 +396,7 @@ const AllRateSeperate = ({
                 {profit && i?.deleted_reason && (
                   <Box
                     sx={{
-                      height: "40px",
+                      height: "32px",
                       width: "30%",
                       margin: { mobile: "1px", laptop: "1px" },
                       display: "flex",
@@ -468,11 +472,14 @@ const RowComponent = ({ header, data }) => {
     <Box
       sx={{
         width: "100%",
-        height: header ? "30px" : "42px",
+        height: header ? "32px" : "32px",
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
         display: "flex",
+        gap: '1px',
+        marginBottom: { mobile: "1px", laptop: "1px" },
+       
       }}
     >
       {!header && (
@@ -616,10 +623,11 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
       <Box
         sx={{
           width: width ? width : "100%",
-          height: "40px",
+          height: "32px",
           background: "#F1C550",
-          marginX: { mobile: "1px", laptop: "1px" },
+          // marginX: { mobile: "0.5px", laptop: "0.5px" },
           display: "flex",
+          // gap: '0.5px',
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -655,10 +663,10 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
       <Box
         sx={{
           width: "100%",
-          height: "40px",
+          height: "32px",
           flexDirection: "column",
           background: color,
-          marginX: { mobile: "1px", laptop: "1px" },
+          // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
         }}
@@ -673,7 +681,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
         >
           {time}
         </Typography>
-        <Box sx={{ height: ".4vh" }}></Box>
+        {/* <Box sx={{ height: ".4vh" }}></Box> */}
         <Typography
           sx={{
             fontWeight: "600",
@@ -693,9 +701,9 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
       <Box
         sx={{
           width: "100%",
-          height: "40px",
+          height: "32px",
           background: color,
-          marginX: { mobile: "1px", laptop: "1px" },
+          // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -704,7 +712,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "p8x", tablet: "10px", laptop: "12px" },
+            fontSize: { mobile: "10px", tablet: "10px", laptop: "12px", textTransform: 'capitalize' },
             color: "black",
           }}
         >
@@ -717,9 +725,10 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
       <Box
         sx={{
           width: "100%",
-          height: "30px",
+          height: "32px",
           background: "black",
-          marginX: { mobile: "1px", laptop: "1px" },
+          // gap: '0.5px',
+          // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

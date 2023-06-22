@@ -48,9 +48,10 @@ const SessionBetSeperate = ({
             flexDirection: "column",
             alignSelf: "center",
             marginX: { laptop: "0vw", mobile: "0px", tablet: "0px" },
-            marginY: { laptop: ".5vh", mobile: "0px" },
+            marginY: { laptop: ".5vh", mobile: "3px" },
             borderRadius: "2px",
             background: "white",
+            padding: '1px',
             alignSelf: {
               mobile: "center",
               tablet: "center",
@@ -136,11 +137,11 @@ const SessionBetSeperate = ({
         </Box>
         {visible && (
           <>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: '1px' }}>
           <Box
             sx={{
-              margin: { mobile: "1px", laptop: "0.5px" },
-              height: "30px",
+              // margin: { mobile: "1px", laptop: "0.5px" },
+              height: "32px",
               width: "30px",
               display: "flex",
               background: "black",
@@ -195,12 +196,14 @@ const SessionBetSeperate = ({
                   display: "flex",
                   flexDirection: "row",
                   position: "relative",
+                  gap: '1px'
                 }}
               >
                 <Box
                   sx={{
-                    height: "40px",
-                    margin: { mobile: "1px", laptop: "1px" },
+                    height: "32px",
+                    // margin: { mobile: "1px", laptop: "1px" },
+                    marginBottom: { mobile: "1px", laptop: "1px" },
                     width: "30px",
                     display: "flex",
                     background: "black",
@@ -226,7 +229,7 @@ const SessionBetSeperate = ({
                         laptop: profit ? "100 % " : "100% ",
                       },
                       background: "rgba(0, 0, 0, 0.5)",
-                      height: "42px",
+                      height: "32px",
                       position: "absolute",
                     }}
                   >
@@ -652,11 +655,13 @@ const RowComponent = ({ header, data }) => {
     <Box
       sx={{
         width: "100%",
-        height: header ? "30px" : "42px",
+        height: header ? "32px" : "32px",
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
         display: "flex",
+        gap: '1px',
+        marginBottom: { mobile: "1px", laptop: "1px" },
       }}
     >
       {!header && (
@@ -719,10 +724,10 @@ const SingleBox = ({
       <Box
         sx={{
           width: "140%",
-          height: "40px",
+          height: "32px",
           flexDirection: "column",
           background: "#F8C851",
-          marginX: { mobile: "1px", laptop: "1px" },
+          // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
         }}
@@ -730,7 +735,7 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "6px", laptop: "11px" },
+            fontSize: { mobile: "9px", laptop: "11px" },
             color: "black",
             textAlign: "center",
           }}
@@ -743,7 +748,7 @@ const SingleBox = ({
             maxHeight: "1em",
             overflow: "hidden",
             lineHeight: 1,
-            fontWeight: "800",
+            fontWeight: "600",
             fontSize: { laptop: "12px", mobile: "10px" },
             color: "black",
             textAlign: "center",
@@ -792,9 +797,9 @@ const SingleBox = ({
       <Box
         sx={{
           width: "100%",
-          height: "40px",
+          height: "32px",
           background: color,
-          marginX: { mobile: "1px", laptop: "1px" },
+          // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -804,7 +809,7 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "11px", laptop: "13px" },
+            fontSize: { mobile: "11px", laptop: "13px" ,textTransform: 'capitalize'},
             color: "black",
           }}
         >
@@ -813,7 +818,7 @@ const SingleBox = ({
         {isPercent && (
           <Typography
             sx={{
-              fontSize: "8px",
+              fontSize: "9px",
               marginTop: -0.4,
               color: color == "white" ? "white" : "black",
               textAlign: "center",
@@ -829,9 +834,9 @@ const SingleBox = ({
     <Box
       sx={{
         width: "140%",
-        height: "30px",
+        height: "32px",
         background: "#319E5B",
-        marginX: { mobile: "1px", laptop: "1px" },
+        // marginX: { mobile: "1px", laptop: "1px" },
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -852,7 +857,7 @@ const SingleBox = ({
     <Box
       sx={{
         width: "100%",
-        height: "30px",
+        height: "32px",
         background: "black",
         marginX: { mobile: "1px", laptop: "1px" },
         display: "flex",

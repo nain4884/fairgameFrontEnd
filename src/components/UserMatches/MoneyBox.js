@@ -8,7 +8,7 @@ const MoneyBox = ({ color, rates }) => {
   return (
     <Box
       sx={{
-        width: "80px",
+        width: "90px",
         marginRight: "15px",
         border: "1px solid #2626264D",
         borderRadius: "5px",
@@ -23,7 +23,7 @@ const MoneyBox = ({ color, rates }) => {
         zIndex: 100,
       }}
     >
-      <Typography sx={{ fontSize: "12px", fontWeight: "bold", color: color }}>
+      <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: color }}>
         {rates}
       </Typography>
     </Box>

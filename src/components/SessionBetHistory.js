@@ -346,7 +346,7 @@ const SingleBox = ({
       <Box
         sx={{
           width: "140%",
-          height: "40px",
+          height: "30px",
           flexDirection: "column",
           background: "#F8C851",
           marginX: { mobile: "1px", laptop: "1px" },

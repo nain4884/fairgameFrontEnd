@@ -188,11 +188,11 @@ const PlaceBet = ({
                         : "10px",
                     laptop:
                       title == "Back/Lay" || title == "Yes/No"
-                        ? "10px"
-                        : "10px",
+                        ? "12px"
+                        : "12px",
                   },
                   fontWeight:
-                    title === "Back/Lay" || title === "Yes/No" ? "800" : "600",
+                    title === "Back/Lay" || title === "Yes/No" ? "600" : "600",
                 },
                 valueTextStyle,
               ]}
@@ -265,7 +265,7 @@ const PlaceBet = ({
                 className="OddValue"
                 sx={{
                   color: "black",
-                  fontSize: { mobile: "12px", laptop: "16px" },
+                  fontSize: { mobile: "12px", laptop: "12px" },
                   fontWeight: { mobile: "700", laptop: "600" },
                 }}
               >
@@ -670,6 +670,7 @@ const NumberData = ({
           height: "35px",
           minWidth: "18%",
           background: "#0B4F26",
+          border: '2px solid white'
         },
         containerStyle,
       ]}

@@ -42,7 +42,7 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
           Session Bet
         </Typography>
         <Typography
-          sx={{ fontSize: { mobile: "8px", tablet: "10px", laptop: "10px" }, fontWeight: "bold", color: "#319E5B" }}
+          sx={{ fontSize: { mobile: "12px", tablet: "12px", laptop: "12px" }, fontWeight: "bold", color: "#319E5B" }}
         >
           {sessionBets?.length || 0}
         </Typography>
@@ -74,7 +74,7 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
         </Typography>
         <Typography
           sx={{
-            fontSize: { mobile: "7px", tablet: "10px", laptop: "10px" },
+            fontSize: { mobile: "12px", tablet: "12px", laptop: "12px" },
             fontWeight: "bold",
             color: "#FF4D4D",
           }}
