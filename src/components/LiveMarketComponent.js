@@ -5,73 +5,78 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { memo } from "react";
 
 const LiveMarketComponent = ({
-    team,
-    team_2,
-    selected,
-    mode,
-    setSelected,
-    data,
-  }) => {
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
-    const StockBox = ({ team, value, up }) => {
-      return (
-        <Box
+  team,
+  team_2,
+  selected,
+  mode,
+  setSelected,
+  data,
+}) => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const StockBox = ({ team, value, up }) => {
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          marginLeft: { mobile: "2px", laptop: "10px" },
+        }}
+      >
+        <Typography
           sx={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            marginLeft: "10px",
+            color: "white",
+            fontSize: { mobile: "12px", laptop: "14px" },
+            fontWeight: "700",
+
+            overflow: 'hidden',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
           }}
         >
+          {team}
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography
             sx={{
               color: "white",
-              fontSize: { mobile: "13px", laptop: "14px" },
+              fontSize: { mobile: "13px", laptop: "16px" },
+              marginRight: "5px",
               fontWeight: "700",
             }}
           >
-            {team}
+            {value}
           </Typography>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography
+          {(up == true || up == false) && (
+            <StyledImage
+              src={
+                up
+                  ? "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
+                  : "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
+              }
               sx={{
-                color: "white",
-                fontSize: { mobile: "13px", laptop: "16px" },
-                marginRight: "5px",
-                fontWeight: "700",
+                height: "25px",
+                marginLeft: "5px",
+                filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                width: "25px",
               }}
-            >
-              {value}
-            </Typography>
-            {(up == true || up == false) && (
-              <StyledImage
-                src={
-                  up
-                    ? "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-                    : "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
-                }
-                sx={{
-                  height: "25px",
-                  marginLeft: "5px",
-                  filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                  width: "25px",
-                }}
-              />
-            )}
-            {!team && (
-              <img style={{ width: "20px", height: "12px" }} src={ARROWUP} />
-            )}
-          </Box>
+            />
+          )}
+          {!team && (
+            <img style={{ width: "20px", height: "12px" }} src={ARROWUP} />
+          )}
         </Box>
-      );
-    };
-  
-    return (
-      <>
-        <style jsx scoped>
+      </Box>
+    );
+  };
+
+  return (
+    <>
+      <style jsx scoped>
         {`
           @keyframes gradient {
             0% {
@@ -211,7 +216,7 @@ const LiveMarketComponent = ({
             sx={{
               background: "#F8C851",
               paddingY: { mobile: 0.5, laptop: 0 },
-              width: { mobile: "99%", laptop: "45%" },
+              width: { mobile: "55%", laptop: "45%" },
               height: "100%",
               display: "flex",
               alignItems: "center",
@@ -221,9 +226,14 @@ const LiveMarketComponent = ({
           >
             <Typography
               sx={{
-                fontSize: { laptop: "16px", mobile: "17px" },
+                fontSize: { laptop: "16px", mobile: "12px" },
                 fontWeight: "bold",
                 marginLeft: "5px",
+
+                overflow: 'hidden',
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
               }}
             >
               {team} Vs {team_2}
@@ -293,8 +303,8 @@ const LiveMarketComponent = ({
           )}
         </Box>
       </Box>
-      </>
-    );
-  };
+    </>
+  );
+};
 
-  export default memo(LiveMarketComponent)
+export default memo(LiveMarketComponent)
