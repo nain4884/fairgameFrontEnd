@@ -144,45 +144,53 @@ const Row = ({ index, containerStyle, data }) => {
         <Box sx={{ display: "flex", flex: 1, alignItems: "center" }}>
           <ButtonWithSwitch
             title={data.title}
-            containerStyle={{ width: "30%" }}
+            containerStyle={{ width: "20%" }}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={1}
           />
           <ButtonWithSwitch
             title="Bookmaker"
-            containerStyle={{}}
+            containerStyle={{ width: "14%"}}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={2}
           />
           <ButtonWithSwitch
             title="Session"
-            containerStyle={{}}
+            containerStyle={{ width: "14%"}}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={3}
           />
           <ButtonWithSwitch
             title={`Manual\nBookmaker`}
-            containerStyle={{ width: "13%" }}
+            containerStyle={{ width: "14%"}}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={4}
           />
           <ButtonWithSwitch
             title={`Manual\nSession`}
-            containerStyle={{}}
+            containerStyle={{ width: "14%"}}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={5}
           />
+          {data.stopAt && (
+            <ButtonWithSwitch 
+              notSwitch={true}
+              title={`Match Profit/Loss`}
+              containerStyle={{ width: "14%"}}
+              updateMatchStatus={data?.matchProfitLoss}          
+            />
+          )}
         </Box>
         {/* <CusButton onClick={() => {
                       navigateToAddBet()
                   }} title={"Add Bet"} /> */}
-        <CusButton 
-          loading={loading.id===data.id}
+        <CusButton
+          loading={loading.id === data.id}
           onClick={() => {
             submitMatchUpdation();
           }}
