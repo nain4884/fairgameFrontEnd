@@ -40,7 +40,7 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
         backgroundColor: "white",
         padding: 0.2,
         flexDirection: "column",
-        marginY: "10px",
+        marginY: "3px",
         width: "100%",
         alignSelf: { mobile: "center", tablet: "center", laptop: "flex-start" },
       }}
