@@ -35,7 +35,7 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import SessionMarketLive from "../expert/SessionMarket/LiveSessionMarket/SessionMarketLive";
 import CustomLoader from "../../components/helper/CustomLoader";
-import { setActiveUsers } from "../../newStore/reducers/expertMatchDetails";
+import { setActiveUsers, setEConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
 let matchOddsCount = 0;
 let marketId = "";
 let profitLoss;
@@ -99,7 +99,12 @@ const MatchScreen = () => {
       socket.onevent = async (packet) => {
         // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
-          alert(666666)
+          dispatch(setEConfirmAuth(true));
+          let token = localStorage.getItem("JWTexpert");
+          if (token) {
+            sessionStorage.setItem("JWTexpert", token);
+          }
+          navigate("/expert");
           // dispatch(removeManualBookMarkerRates());
           // dispatch(removeCurrentUser());
           // dispatch(logout({ roleType: "role3" }));

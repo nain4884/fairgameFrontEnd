@@ -20,6 +20,7 @@ import {
   setManualBookMarkerRates,
   setSelectedMatch,
   setSessionRates,
+  setConfirmAuth
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -179,6 +180,12 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           });
         }
         if (packet.data[0] === "logoutUserForce") {
+          dispatch(setConfirmAuth(true));
+          let token = localStorage.getItem("JWTuser");
+          if (token) {
+            sessionStorage.setItem("JWTuser", token);
+          }
+          navigate(`/login`);
           // dispatch(removeCurrentUser());
           // dispatch(removeManualBookMarkerRates());
           // dispatch(removeSelectedMatch());
