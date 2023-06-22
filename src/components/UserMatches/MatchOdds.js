@@ -12,6 +12,8 @@ import SessionMarket from "./SessionOdds/SessionMarket";
 import { memo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import moment from "moment";
+import constants from "../helper/constants";
 
 // const BookMarketer = ({ manual, data }) => {
 //   const theme = useTheme();
@@ -230,6 +232,43 @@ const MatchOdds = ({
     }
   }, [data]);
 
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 0);
+    return () => clearTimeout(timer);
+  });
+
+  function calculateTimeLeft() {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const targetDate = moment(data?.startAt).tz(timezone);
+    const difference = targetDate.diff(moment().tz(timezone), "milliseconds");
+    let timeLeft = {};
+    if (difference > 0) {
+      timeLeft = {
+        days: ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2),
+        hours: ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(
+          -2
+        ),
+        minutes: ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2),
+        seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2),
+      };
+    }
+
+    return timeLeft;
+  }
+
+  const upcoming =
+    (!isNaN(parseInt(timeLeft?.hours, 10)) &&
+      parseInt(timeLeft?.hours, 10) === 0) ||
+    (!isNaN(parseInt(timeLeft?.days, 10)) &&
+      parseInt(timeLeft?.days, 10) === 0) ||
+    (!isNaN(parseInt(timeLeft?.minutes, 10)) &&
+      parseInt(timeLeft?.minutes, 10) <= constants.timeRemaining);
+
+
   const teamRates =
     manualBookMarkerRates?.length > 0
       ? manualBookMarkerRates?.find((v) => v?.matchId === data?.id)
@@ -244,6 +283,7 @@ const MatchOdds = ({
 
       {data?.apiMatchActive && (
         <Odds
+        upcoming={upcoming}
           betLock={data?.blockMarket?.MATCH_ODDS?.block}
           showDely={true}
           showBox={!matchOddRateLive}
@@ -268,6 +308,7 @@ const MatchOdds = ({
 
       {data?.apiBookMakerActive && (
         <Odds
+         upcoming={upcoming}
           betLock={data?.blockMarket?.BOOKMAKER?.block}
           showBox={!bookMakerRateLive}
           newData={data}
@@ -300,6 +341,7 @@ const MatchOdds = ({
       {/* Manual Bookmaker */}
       {data?.manualBookMakerActive && (
         <Odds
+         upcoming={upcoming}
           betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
           newData={data}
           lock={false}
@@ -326,6 +368,7 @@ const MatchOdds = ({
       {(data?.apiSessionActive || data?.manualSessionActive) && (
         <>
           <SessionMarket
+           upcoming={upcoming}
             betLock={data?.blockMarket?.SESSION?.block}
             showFast={true}
             session={"sessionOdds"}

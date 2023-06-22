@@ -4,7 +4,10 @@ import React, { useContext, useEffect, useState } from "react";
 import SeparateBox from "./SeparateBox";
 import { TEAMLOGO, TEAMLOGO1 } from "../../assets";
 import Divider from "../helper/Divider";
-import constants, { apiBasePath, microServiceApiPath } from "../helper/constants";
+import constants, {
+  apiBasePath,
+  microServiceApiPath,
+} from "../helper/constants";
 import MatchOdds from "../../pages/expert/MatchOdds/MatchOdds";
 import { SocketContext } from "../../context/socketContext";
 import Axios from "axios";
@@ -62,10 +65,12 @@ const Odds = ({ onClick, top, blur, match }) => {
   }
 
   const upcoming =
-    (Number(timeLeft?.hours) >= constants.timeRemaining && Number(timeLeft?.minutes) >= 0) ||
-    Number(timeLeft?.days) > 1
-      ? true
-      : false;
+    (!isNaN(parseInt(timeLeft?.hours, 10)) &&
+      parseInt(timeLeft?.hours, 10) === 0) ||
+    (!isNaN(parseInt(timeLeft?.days, 10)) &&
+      parseInt(timeLeft?.days, 10) === 0) ||
+    (!isNaN(parseInt(timeLeft?.minutes, 10)) &&
+      parseInt(timeLeft?.minutes, 10) <= constants.timeRemaining);
 
   useEffect(() => {
     if (socket && socket.connected) {
@@ -141,66 +146,74 @@ const Odds = ({ onClick, top, blur, match }) => {
     <>
       <style jsx scoped>
         {`
-         @keyframes gradient {
-          0% {
+          @keyframes gradient {
+            0% {
               background-position: 0% 0%;
-          }
-          50% {
+            }
+            50% {
               background-position: 100% 100%;
-          }
-          100% {
+            }
+            100% {
               background-position: 0% 0%;
+            }
           }
-      }
-            
-          
-           
-          
-        .liveAnimation{
-          overflow: hidden;
-          background: linear-gradient(315deg, rgb(117 255 0) 3%, rgb(177 60 206) 38%, rgb(255 0 233) 68%, rgba(255,25,25,1) 98%);
-          animation: gradient 5s ease infinite;
-          background-size: 400% 400%;
-          background-attachment: fixed;
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-        .wave {
-          border-radius: 1000% 1000% 0 0;
-          
-          height: 12em;
-          animation: wave 10s -3s linear infinite;
-          transform: translate3d(0, 0, 0);
-          opacity: 0.8;
-          bottom: 0;
-          left: 0;
-          z-index: -1;
-          background: linear-gradient(315deg, rgba(101,0,94,1) 3%, rgba(60,132,206,1) 38%, rgba(48,238,226,1) 68%, rgba(255,25,25,1) 98%);
-      } 
-      @keyframes wave {
-        2% {
-            transform: translateX(1);
-        }
-    
-        25% {
-            transform: translateX(-25%);
-        }
-    
-        50% {
-            transform: translateX(-50%);
-        }
-    
-        75% {
-            transform: translateX(-25%);
-        }
-    
-        100% {
-            transform: translateX(1);
-        }
-    }
-        
-      `}
+
+          .liveAnimation {
+            overflow: hidden;
+            background: linear-gradient(
+              315deg,
+              rgb(117 255 0) 3%,
+              rgb(177 60 206) 38%,
+              rgb(255 0 233) 68%,
+              rgba(255, 25, 25, 1) 98%
+            );
+            animation: gradient 5s ease infinite;
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+          .wave {
+            border-radius: 1000% 1000% 0 0;
+
+            height: 12em;
+            animation: wave 10s -3s linear infinite;
+            transform: translate3d(0, 0, 0);
+            opacity: 0.8;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(
+              315deg,
+              rgba(101, 0, 94, 1) 3%,
+              rgba(60, 132, 206, 1) 38%,
+              rgba(48, 238, 226, 1) 68%,
+              rgba(255, 25, 25, 1) 98%
+            );
+          }
+          @keyframes wave {
+            2% {
+              transform: translateX(1);
+            }
+
+            25% {
+              transform: translateX(-25%);
+            }
+
+            50% {
+              transform: translateX(-50%);
+            }
+
+            75% {
+              transform: translateX(-25%);
+            }
+
+            100% {
+              transform: translateX(1);
+            }
+          }
+        `}
       </style>
       <Box
         sx={{
@@ -219,8 +232,10 @@ const Odds = ({ onClick, top, blur, match }) => {
       >
         {upcoming && (
           <Box
+           onClick={onClick}
             sx={{
               position: "absolute",
+              cursor: "pointer",
               zIndex: 2,
               background: "rgba(0,0,0,0.5)",
               width: "100%",
@@ -293,19 +308,18 @@ const Odds = ({ onClick, top, blur, match }) => {
                 marginLeft: 1,
               }}
             >
-              <Box className='wave'> </Box>
-                <Typography
-                  sx={{
-                    fontStyle: "italic",
-                    fontSize: { laptop: "10px", mobile: "10px" },
-                    fontWeight: "600",
-                    color: "white",
-                    // border: '1px solid linear-gradient(90deg, rgba(233,254,234,1) 1%, rgba(206,255,209,1) 100%)'
-                  }}
-                >
-                  LIVE
-                </Typography>
-             
+              <Box className="wave"> </Box>
+              <Typography
+                sx={{
+                  fontStyle: "italic",
+                  fontSize: { laptop: "10px", mobile: "10px" },
+                  fontWeight: "600",
+                  color: "white",
+                  // border: '1px solid linear-gradient(90deg, rgba(233,254,234,1) 1%, rgba(206,255,209,1) 100%)'
+                }}
+              >
+                LIVE
+              </Typography>
             </Box>
           )}
           <Box
@@ -391,7 +405,11 @@ const Odds = ({ onClick, top, blur, match }) => {
                     {timeLeft?.days || 0}
                   </Typography>
                   <Typography
-                    sx={{ fontSize: "8px", fontWeight: "400", color: "#0B4F26" }}
+                    sx={{
+                      fontSize: "8px",
+                      fontWeight: "400",
+                      color: "#0B4F26",
+                    }}
                   >
                     Days
                   </Typography>
@@ -430,7 +448,11 @@ const Odds = ({ onClick, top, blur, match }) => {
                     {timeLeft?.hours || 0}
                   </Typography>
                   <Typography
-                    sx={{ fontSize: "8px", fontWeight: "400", color: "#0B4F26" }}
+                    sx={{
+                      fontSize: "8px",
+                      fontWeight: "400",
+                      color: "#0B4F26",
+                    }}
                   >
                     Hrs
                   </Typography>
@@ -469,7 +491,11 @@ const Odds = ({ onClick, top, blur, match }) => {
                     {timeLeft?.minutes || 0}
                   </Typography>
                   <Typography
-                    sx={{ fontSize: "8px", fontWeight: "400", color: "#0B4F26" }}
+                    sx={{
+                      fontSize: "8px",
+                      fontWeight: "400",
+                      color: "#0B4F26",
+                    }}
                   >
                     Min
                   </Typography>
@@ -578,7 +604,6 @@ const Odds = ({ onClick, top, blur, match }) => {
                   style={{ width: "25px", height: "25px", marginLeft: "10px" }}
                   alt={match?.teamA}
                 />
-                
               )}
               <Typography
                 sx={{
@@ -605,7 +630,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[0]?.ex?.availableToBack[2]?.price
                       : 0
                   }
@@ -625,7 +650,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[0]?.ex?.availableToBack[1]?.price
                       : 0
                   }
@@ -644,7 +669,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                  matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                     ? matchOddsLive?.runners[0]?.ex?.availableToBack[0]?.price
                     : 0
                 }
@@ -662,7 +687,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                  matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                     ? matchOddsLive?.runners[0]?.ex?.availableToLay[0]?.price
                     : 0
                 }
@@ -681,7 +706,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[0]?.ex?.availableToLay[1]?.price
                       : 0
                   }
@@ -701,7 +726,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[0]?.ex?.availableToLay[2]?.price
                       : 0
                   }
@@ -770,7 +795,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[1]?.ex?.availableToBack[2]?.price
                       : 0
                   }
@@ -790,7 +815,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[1]?.ex?.availableToBack[1]?.price
                       : 0
                   }
@@ -809,7 +834,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                  matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                     ? matchOddsLive?.runners[1]?.ex?.availableToBack[0]?.price
                     : 0
                 }
@@ -827,7 +852,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                  matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                     ? matchOddsLive?.runners[1]?.ex?.availableToLay[0]?.price
                     : 0
                 }
@@ -846,7 +871,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[1]?.ex?.availableToLay[1]?.price
                       : 0
                   }
@@ -866,7 +891,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[1]?.ex?.availableToLay[2]?.price
                       : 0
                   }
@@ -930,18 +955,18 @@ const Odds = ({ onClick, top, blur, match }) => {
                     <SeparateBox
                       value={
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[12]?.ex?.availableToBack?.length >
-                          0
+                        matchOddsLive?.runners[12]?.ex?.availableToBack
+                          ?.length > 0
                           ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]
-                            ?.price
+                              ?.price
                           : 0
                       }
                       value2={formatNumber(
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
-                          0
+                          matchOddsLive?.runners[2]?.ex?.availableToBack
+                            ?.length > 0
                           ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]
-                            ?.size
+                              ?.size
                           : 0
                       )}
                       color={matchesMobile ? "white" : "#CEEBFF"}
@@ -954,17 +979,18 @@ const Odds = ({ onClick, top, blur, match }) => {
                     <SeparateBox
                       value={
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
+                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
+                          0
                           ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]
-                            ?.price
+                              ?.price
                           : 0
                       }
                       value2={formatNumber(
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
-                          0
+                          matchOddsLive?.runners[2]?.ex?.availableToBack
+                            ?.length > 0
                           ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]
-                            ?.size
+                              ?.size
                           : 0
                       )}
                       color={matchesMobile ? "white" : "#C2E6FF"}
@@ -976,14 +1002,17 @@ const Odds = ({ onClick, top, blur, match }) => {
                   <SeparateBox
                     value={
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
-                        ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]?.price
+                      matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]
+                            ?.price
                         : 0
                     }
                     value2={formatNumber(
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
-                        ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]?.size
+                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
+                          0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]
+                            ?.size
                         : 0
                     )}
                     color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
@@ -994,13 +1023,15 @@ const Odds = ({ onClick, top, blur, match }) => {
                   <SeparateBox
                     value={
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
-                        ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]?.price
+                      matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                        ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]
+                            ?.price
                         : 0
                     }
                     value2={formatNumber(
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
+                          0
                         ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]?.size
                         : 0
                     )}
@@ -1013,16 +1044,18 @@ const Odds = ({ onClick, top, blur, match }) => {
                     <SeparateBox
                       value={
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
+                          0
                           ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]
-                            ?.price
+                              ?.price
                           : 0
                       }
                       value2={formatNumber(
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
-                          0
-                          ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]?.size
+                          matchOddsLive?.runners[2]?.ex?.availableToLay
+                            ?.length > 0
+                          ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]
+                              ?.size
                           : 0
                       )}
                       color={matchesMobile ? "white" : "#F2CBCB"}
@@ -1035,16 +1068,18 @@ const Odds = ({ onClick, top, blur, match }) => {
                     <SeparateBox
                       value={
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
+                          0
                           ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]
-                            ?.price
+                              ?.price
                           : 0
                       }
                       value2={formatNumber(
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
-                          0
-                          ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]?.size
+                          matchOddsLive?.runners[2]?.ex?.availableToLay
+                            ?.length > 0
+                          ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]
+                              ?.size
                           : 0
                       )}
                       color={matchesMobile ? "white" : "#ECD6D6"}
