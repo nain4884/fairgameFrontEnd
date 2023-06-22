@@ -34,8 +34,8 @@ const SessionMarket = ({
       const sessionData =
         currentMatch?.bettings?.length > 0
           ? currentMatch?.bettings?.filter(
-              (element) => element?.sessionBet && element?.id
-            )
+            (element) => element?.sessionBet && element?.id
+          )
           : 0;
       setMatchSessionData(sessionData.reverse());
     }
@@ -53,7 +53,7 @@ const SessionMarket = ({
           background: "white",
           padding: 0.3,
           flexDirection: "column",
-          marginBottom: "10px",
+          marginBottom: "3px",
           width: "100%",
           alignSelf: {
             mobile: "center",
@@ -350,7 +350,7 @@ const SessionMarket = ({
           {data?.map((v) => {
             console.log(
               "currentOdds?.bet_id === v?.id ? currentOdds : null",
-            v, 
+              v,
             );
             return (
               <RunsBox
