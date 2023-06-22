@@ -58,7 +58,7 @@ const DropDownSimple = ({
     setOpen(false);
   });
 
-  const Item = ({ item, mId, matchesSelect, eventDetail }) => {
+  const Item = ({ item, mId, matchesSelect, eventDetail, CompetitionName }) => {
     return (
       <>
         <Typography
@@ -86,6 +86,10 @@ const DropDownSimple = ({
                 13: {
                   ...Detail[13],
                   val: allrunners[1],
+                },
+                22: {
+                  ...Detail[22],
+                  val: CompetitionName,
                 },
                 17: {
                   ...Detail[17],
@@ -133,9 +137,10 @@ const DropDownSimple = ({
       </>
     );
   };
-  const Block = ({ i, mId, matchesSelect, eventDetail }) => {
+  const Block = ({ i, mId, matchesSelect, eventDetail, CompetitionName }) => {
     return (
       <Item
+        CompetitionName={CompetitionName}
         item={i}
         mId={mId}
         matchesSelect={matchesSelect}
@@ -214,6 +219,7 @@ const DropDownSimple = ({
                     i={i.EventName}
                     mId={i.MarketId}
                     matchesSelect={matchesSelect}
+                    CompetitionName={i.CompetitionName}
                     eventDetail={i.EventDetail}
                   />
                 );

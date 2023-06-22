@@ -177,12 +177,20 @@ const Row = ({ index, containerStyle, data }) => {
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={5}
           />
+          {data.stopAt && (
+            <ButtonWithSwitch 
+              notSwitch={true}
+              title={`Total Placed Bet`}
+              containerStyle={{}}
+              updateMatchStatus={data?.totalPlacedBet}          
+            />
+          )}
         </Box>
         {/* <CusButton onClick={() => {
                       navigateToAddBet()
                   }} title={"Add Bet"} /> */}
-        <CusButton 
-          loading={loading.id===data.id}
+        <CusButton
+          loading={loading.id === data.id}
           onClick={() => {
             submitMatchUpdation();
           }}

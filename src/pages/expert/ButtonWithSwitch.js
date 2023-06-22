@@ -8,9 +8,10 @@ const ButtonWithSwitch = ({
   updateMatchStatus,
   setUpdateMatchStatus,
   place,
+  notSwitch,
 }) => {
   const [background, setBackground] = useState("#0B4F26");
-  const [checked, setChecked] = useState(updateMatchStatus[place].val);
+  const [checked, setChecked] = useState(updateMatchStatus[place]?.val);
   useEffect(() => {
     if (checked) {
       setBackground("#0B4F26");
@@ -69,7 +70,8 @@ const ButtonWithSwitch = ({
           width: "14%",
           marginLeft: "10px",
           borderRadius: "5px",
-          background: background,
+          border: notSwitch && "1px solid #0B4F26",
+          background: notSwitch ? "#FFF" : background,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -80,8 +82,8 @@ const ButtonWithSwitch = ({
       <Typography
         sx={[
           {
-            color: "white",
-            fontWeight: "500",
+            color: notSwitch ? "#FF4D4D" : "white",
+            fontWeight: notSwitch ? "700" : "500",
             fontSize: "13px",
             marginLeft: "1vw",
             lineHeight: "14px",
@@ -91,19 +93,34 @@ const ButtonWithSwitch = ({
       >
         {title}
       </Typography>
-      <MaterialUISwitch
-        checked={checked}
-        onChange={(e) => {
-          setChecked(!checked);
-          setUpdateMatchStatus({
-            ...updateMatchStatus,
-            [place]: {
-              ...updateMatchStatus[place],
-              val: !checked,
-            },
-          });
-        }}
-      />
+      {notSwitch ? (
+        <Typography
+          sx={{
+            marginRight: "10px",
+            color: notSwitch ? "#46E080" : "white",
+            fontWeight: notSwitch ? "700" : "500",
+            fontSize: "13px",
+            marginLeft: "1vw",
+            lineHeight: "14px",
+          }}
+        >
+          {updateMatchStatus}
+        </Typography>
+      ) : (
+        <MaterialUISwitch
+          checked={checked}
+          onChange={(e) => {
+            setChecked(!checked);
+            setUpdateMatchStatus({
+              ...updateMatchStatus,
+              [place]: {
+                ...updateMatchStatus[place],
+                val: !checked,
+              },
+            });
+          }}
+        />
+      )}
     </Box>
   );
 };

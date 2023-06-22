@@ -38,6 +38,7 @@ const stateDetail = {
   19: { field: "manaual_session_max_bet", val: "" },
   20: { field: "marketId", val: "" },
   21: { field: "delaySecond", val: "" },
+  22: { field: "CompetitionName", val: "" },
 };
 
 const AddMatchComp = () => {
@@ -67,37 +68,30 @@ const AddMatchComp = () => {
     19: { field: "manaual_session_max_bet", val: false },
     20: { field: "marketId", val: false },
     21: { field: "delaySecond", val: false },
+    22: { field: "CompetitionName", val: false },
   });
   const [matches, setMatches] = useState([
     { EventName: "No Matches Available", MarketId: defaultMarketId },
   ]);
   const [marketId, setMarketId] = useState(defaultMarketId);
-
+  console.log("Detail", matches);
   const createMatch = async () => {
     try {
-      console.log(
-        "Detail",
-        Detail[1].val,
-        Detail[2].val,
-        Detail[9].val,
-        Detail[13].val
-      );
-
       if (
         (Detail[1].val === "") & (Detail[9].val === "") &&
         Detail[13].val === ""
       ) {
         setError({
           ...Error,
-          [9]: {
+          9: {
             ...Error[9],
             val: true,
           },
-          [1]: {
+          1: {
             ...Error[1],
             val: true,
           },
-          [13]: {
+          13: {
             ...Error[13],
             val: true,
           },
@@ -109,7 +103,7 @@ const AddMatchComp = () => {
         setError({
           ...Error,
 
-          [1]: {
+          1: {
             ...Error[1],
             val: true,
           },
@@ -121,7 +115,7 @@ const AddMatchComp = () => {
         setError({
           ...Error,
 
-          [9]: {
+          9: {
             ...Error[9],
             val: true,
           },
@@ -132,7 +126,7 @@ const AddMatchComp = () => {
         setError({
           ...Error,
 
-          [13]: {
+          13: {
             ...Error[13],
             val: true,
           },
@@ -167,6 +161,8 @@ const AddMatchComp = () => {
         matchesList.push({
           EventName: match.EventName,
           MarketId: match.MarketId,
+          CompetitionId: match.CompetitionId,
+          CompetitionName: match.CompetitionName,
           EventDetail: {
             EventDate: match.EventDate,
             Runners: match.Runners,
@@ -186,7 +182,7 @@ const AddMatchComp = () => {
       setError({
         ...Error,
 
-        [1]: {
+        1: {
           ...Error[1],
           val: false,
         },
@@ -196,7 +192,7 @@ const AddMatchComp = () => {
       setError({
         ...Error,
 
-        [9]: {
+        9: {
           ...Error[9],
           val: false,
         },
@@ -206,7 +202,7 @@ const AddMatchComp = () => {
       setError({
         ...Error,
 
-        [13]: {
+        13: {
           ...Error[13],
           val: false,
         },
@@ -313,6 +309,7 @@ const AddMatchComp = () => {
               )}
               {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Game'} data={["Cricket", "Football", "Tennis", "Football", "Ice", "Hockey", "Volleyball", "Politics", "Basketball", "Table Tennis", "Darts"]} place={1} /> */}
             </Box>
+
             <Box
               sx={{
                 position: "relative",
@@ -320,7 +317,7 @@ const AddMatchComp = () => {
               }}
             >
               <DropDownSimple
-                valued="Select Account Type..."
+                valued="Select match"
                 dropStyle={{
                   filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
                 }}
@@ -347,6 +344,8 @@ const AddMatchComp = () => {
                   marginLeft: "0px",
                   marginTop: "0px",
                   position: "absolute",
+                  maxHeight:"400px",
+                  overflow:"auto"
                 }}
                 dropDownTextStyle={imputStyle}
                 Detail={Detail}
@@ -355,6 +354,40 @@ const AddMatchComp = () => {
               />
               {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Match Name'} data={["India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England"]} place={2} /> */}
             </Box>
+         {Detail[22].val!=="" &&  <Box
+              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+            >
+              <LabelValueComponent
+                containerStyle={{ flex: 1, width: "100%" }}
+                title={"Competition Name"}
+                type={"text"}
+                required={true}
+                value={Detail[22].val}
+                InputValType={""}
+                place={22}
+                DetailError={{
+                  Error,
+                  setDetail,
+                  Detail,
+                  setError,
+                  type: "String",
+                }}
+              />
+              {Error[22]?.val && (
+                <Typography
+                  color="red"
+                  sx={{
+                    fontSize: {
+                      mobile: "10px",
+                      laptop: "12px",
+                      tablet: "12px",
+                    },
+                  }}
+                >
+                  Competition Name Required
+                </Typography>
+              )}
+            </Box>}
             {/* <LabelValueComponent icon={ArrowDownBlack} containerStyle={{ flex: 1,  }} title={"Match Name"} value="Enter Name of the Match..." /> */}
             <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
