@@ -13,16 +13,21 @@ import { setRole } from "../../../newStore";
 import { memo } from "react";
 import { useSelector } from "react-redux";
 
-
-
-
 const SmallBox2 = ({ valueA, valueB }) => {
   return (
-    <Box sx={{ display: "flex", width: "33%", gap: "3px", margin: "0px", justifyContent: "flex-end" }}>
+    <Box
+      sx={{
+        display: "flex",
+        width: "33%",
+        gap: "3px",
+        margin: "0px",
+        justifyContent: "flex-end",
+      }}
+    >
       <Box
         sx={{
           width: { laptop: "70px", mobile: "10vw" },
-          // position: "absolute", 
+          // position: "absolute",
           flexDirection: "column",
           paddingX: "5px",
           display: "flex",
@@ -32,7 +37,6 @@ const SmallBox2 = ({ valueA, valueB }) => {
           height: "30px",
           background: "white",
           borderRadius: "3px",
-
         }}
       >
         <Typography
@@ -113,8 +117,8 @@ const MatchOdds = ({
       ? manualBookMarkerRates?.find((v) => v?.matchId === currentMatch?.id)
       : { teamA: 0, teamB: 0, teamC: 0 };
 
-  const valueA = teamRates?.teamA
-  const valueB = teamRates?.teamB
+  const valueA = teamRates?.teamA;
+  const valueB = teamRates?.teamB;
   const bookRatioB = (() => {
     if (valueA === 0) {
       return 0;
@@ -124,7 +128,6 @@ const MatchOdds = ({
       return valueB < 0 ? `-${formattedRatio}` : formattedRatio;
     }
   })();
-
 
   const bookRatioA = (() => {
     if (valueA === 0) {
@@ -172,7 +175,6 @@ const MatchOdds = ({
       console.log(err?.response?.data?.message, "err");
     }
   };
-
 
   return (
     <>
@@ -235,7 +237,6 @@ const MatchOdds = ({
           teamBRates={teamRates?.teamB} */}
 
             <SmallBox2 valueA={bookRatioA} valueB={bookRatioB} />
-
           </Box>
 
           <Box
@@ -395,57 +396,68 @@ const MatchOdds = ({
             </Box>
           </Box>
         }
-        <BoxComponent
-          data={
-            matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[0] : []
-          }
-          teamImage={currentMatch?.teamA_Image}
-          lock={matchOddsLive?.runners?.length > 0 ? false : true}
-          name={currentMatch?.teamA}
-          currentMatch={currentMatch}
-          teamRates={teamRates?.teamA}
-        />
-        <Divider />
-        <BoxComponent
-          teamRates={teamRates?.teamB}
-          lock={matchOddsLive?.runners?.length > 0 ? false : true}
-          teamImage={currentMatch?.teamB_Image}
-          data={
-            matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners[1] : []
-          }
-          name={currentMatch?.teamB}
-          currentMatch={currentMatch}
-        />
-        {currentMatch?.teamC && (
-          <>
-            <Divider />
-            <BoxComponent
-              teamRates={teamRates?.teamC}
-              lock={matchOddsLive?.runners?.length > 0 ? false : true}
-              color={"#FF4D4D"}
-              teamImage={null}
-              data={
-                matchOddsLive?.runners?.length > 0
-                  ? matchOddsLive?.runners[2]
-                  : []
-              }
-              name={currentMatch?.teamC}
-              currentMatch={currentMatch}
-            />
-          </>
-        )}
 
-        {!stlive && (
-          <Box
-            sx={{
-              width: "100%",
-              position: "absolute",
-              height: "57%",
-              bottom: 0,
-              background: "rgba(0,0,0,0.5)",
-            }}
-          ></Box>
-        )}
+        <Box
+          sx={{
+            width: "100%",
+            position: "relative",
+          }}
+        >
+          <BoxComponent
+            data={
+              matchOddsLive?.runners?.length > 0
+                ? matchOddsLive?.runners[0]
+                : []
+            }
+            teamImage={currentMatch?.teamA_Image}
+            lock={matchOddsLive?.runners?.length > 0 ? false : true}
+            name={currentMatch?.teamA}
+            currentMatch={currentMatch}
+            teamRates={teamRates?.teamA}
+          />
+          <Divider />
+          <BoxComponent
+            teamRates={teamRates?.teamB}
+            lock={matchOddsLive?.runners?.length > 0 ? false : true}
+            teamImage={currentMatch?.teamB_Image}
+            data={
+              matchOddsLive?.runners?.length > 0
+                ? matchOddsLive?.runners[1]
+                : []
+            }
+            name={currentMatch?.teamB}
+            currentMatch={currentMatch}
+          />
+          {currentMatch?.teamC && (
+            <>
+              <Divider />
+              <BoxComponent
+                teamRates={teamRates?.teamC}
+                lock={matchOddsLive?.runners?.length > 0 ? false : true}
+                color={"#FF4D4D"}
+                teamImage={null}
+                data={
+                  matchOddsLive?.runners?.length > 0
+                    ? matchOddsLive?.runners[2]
+                    : []
+                }
+                name={currentMatch?.teamC}
+                currentMatch={currentMatch}
+              />
+            </>
+          )}
+          {!stlive && (
+            <Box
+              sx={{
+                width: "100%",
+                position: "absolute",
+                height: "100%",
+                bottom: 0,
+                background: "rgba(0,0,0,0.5)",
+              }}
+            ></Box>
+          )}
+        </Box>
       </Box>
     </>
   );
