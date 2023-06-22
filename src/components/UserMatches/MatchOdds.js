@@ -248,12 +248,20 @@ const MatchOdds = ({
     let timeLeft = {};
     if (difference > 0) {
       timeLeft = {
-        days: ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2),
-        hours: ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(
-          -2
-        ),
-        minutes: ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2),
-        seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2),
+        days:
+          ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2) || 0,
+        hours:
+          ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(-2) ||
+          0,
+        minutes:
+          ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2) || 0,
+        seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2) || 0,
+      };
+    } else {
+      timeLeft = {
+        days: "00",
+        hours: "00",
+        minutes: "00   ",
       };
     }
 
@@ -261,13 +269,9 @@ const MatchOdds = ({
   }
 
   const upcoming =
-    (!isNaN(parseInt(timeLeft?.hours, 10)) &&
-      parseInt(timeLeft?.hours, 10) === 0) ||
-    (!isNaN(parseInt(timeLeft?.days, 10)) &&
-      parseInt(timeLeft?.days, 10) === 0) ||
-    (!isNaN(parseInt(timeLeft?.minutes, 10)) &&
-      parseInt(timeLeft?.minutes, 10) <= constants.timeRemaining);
-
+    timeLeft.days === "00" &&
+    timeLeft.hours === "00" &&
+    timeLeft.minutes !== "00";
 
   const teamRates =
     manualBookMarkerRates?.length > 0
@@ -283,7 +287,7 @@ const MatchOdds = ({
 
       {data?.apiMatchActive && (
         <Odds
-        upcoming={upcoming}
+          upcoming={!upcoming}
           betLock={data?.blockMarket?.MATCH_ODDS?.block}
           showDely={true}
           showBox={!matchOddRateLive}
@@ -308,7 +312,7 @@ const MatchOdds = ({
 
       {data?.apiBookMakerActive && (
         <Odds
-         upcoming={upcoming}
+          upcoming={!upcoming}
           betLock={data?.blockMarket?.BOOKMAKER?.block}
           showBox={!bookMakerRateLive}
           newData={data}
@@ -341,7 +345,7 @@ const MatchOdds = ({
       {/* Manual Bookmaker */}
       {data?.manualBookMakerActive && (
         <Odds
-         upcoming={upcoming}
+          upcoming={!upcoming}
           betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
           newData={data}
           lock={false}
@@ -368,7 +372,7 @@ const MatchOdds = ({
       {(data?.apiSessionActive || data?.manualSessionActive) && (
         <>
           <SessionMarket
-           upcoming={upcoming}
+            upcoming={!upcoming}
             betLock={data?.blockMarket?.SESSION?.block}
             showFast={true}
             session={"sessionOdds"}
@@ -384,7 +388,7 @@ const MatchOdds = ({
             allBetsData={allBetsData}
             setFastAmount={setFastAmount}
             fastAmount={fastAmount?.sessionOdds}
-          />          
+          />
         </>
       )}
     </Box>

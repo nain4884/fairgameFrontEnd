@@ -51,12 +51,20 @@ const Odds = ({ onClick, top, blur, match }) => {
     let timeLeft = {};
     if (difference > 0) {
       timeLeft = {
-        days: ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2),
-        hours: ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(
-          -2
-        ),
-        minutes: ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2),
-        seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2),
+        days:
+          ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2) || 0,
+        hours:
+          ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(-2) ||
+          0,
+        minutes:
+          ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2) || 0,
+        seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2) || 0,
+      };
+    } else {
+      timeLeft = {
+        days: "00",
+        hours: "00",
+        minutes: "00   ",
       };
     }
 
@@ -64,13 +72,11 @@ const Odds = ({ onClick, top, blur, match }) => {
   }
 
   const upcoming =
-    (!isNaN(parseInt(timeLeft?.hours, 10)) &&
-      parseInt(timeLeft?.hours, 10) === 0) ||
-    (!isNaN(parseInt(timeLeft?.days, 10)) &&
-      parseInt(timeLeft?.days, 10) === 0) ||
-    (!isNaN(parseInt(timeLeft?.minutes, 10)) &&
-      parseInt(timeLeft?.minutes, 10) <= constants.timeRemaining);
+    timeLeft.days === "00" &&
+    timeLeft.hours === "00" &&
+    timeLeft.minutes !== "00";
 
+  
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
@@ -237,7 +243,7 @@ const Odds = ({ onClick, top, blur, match }) => {
           background: "white",
         }}
       >
-        {upcoming && (
+        {!upcoming && (
           <Box
             onClick={onClick}
             sx={{
@@ -252,7 +258,7 @@ const Odds = ({ onClick, top, blur, match }) => {
           ></Box>
         )}
 
-        {upcoming && (
+        {!upcoming && (
           <Box
             sx={{
               width: "70px",
@@ -298,7 +304,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             cursor: "pointer",
           }}
         >
-          {!upcoming && (
+          {upcoming && (
             <Box
               className="liveAnimation"
               sx={{
