@@ -69,8 +69,8 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      localStorage.removeItem("role4");
-      localStorage.removeItem("JWTuser");
+      // localStorage.removeItem("role4");//add
+      // localStorage.removeItem("JWTuser");//add
     };
 
     const handleLoad = (event) => {
@@ -95,7 +95,7 @@ const CustomHeader = ({ }) => {
           dispatch(removeCurrentUser());
           dispatch(removeManualBookMarkerRates());
           dispatch(removeSelectedMatch());
-          dispatch(logout({ roleType: "role4" }));
+          // dispatch(logout({ roleType: "role4" }));//add
           socket?.disconnect();
           socketMicro?.disconnect();
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));

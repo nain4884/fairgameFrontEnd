@@ -376,6 +376,8 @@ export default function Login(props) {
                 ...prev,
                 adminWT: data.data.access_token,
               }));
+              localStorage.setItem("JWTadmin", data.data.access_token);
+              // dispatch(setAConfirmAuth(false));
               handleNavigate("/admin/list_of_clients", "admin");
             } else if (
               ["fairGameWallet", "fairGameAdmin"].includes(
@@ -387,7 +389,7 @@ export default function Login(props) {
                 walletWT: data.data.access_token,
               }));
               localStorage.setItem("JWTwallet", data.data.access_token);
-              dispatch(setWConfirmAuth(false));
+              // dispatch(setWConfirmAuth(false));
               handleNavigate("/wallet/list_of_clients", "wallet");
             } else if (["expert"].includes(data.data.role.roleName)) {
               setGlobalStore((prev) => ({
@@ -396,7 +398,7 @@ export default function Login(props) {
               }));
               // alert(data.data.access_token)
               localStorage.setItem("JWTexpert", data.data.access_token);
-              dispatch(setEConfirmAuth(false));
+              // dispatch(setEConfirmAuth(false));
               handleNavigate("/expert/match", "expert");
             } else {
               toast.error("User Unauthorized !");
@@ -470,7 +472,7 @@ export default function Login(props) {
                 adminWT: data.data.access_token,
               }));
               localStorage.setItem("JWTadmin", data.data.access_token);
-              dispatch(setAConfirmAuth(false));
+              // dispatch(setAConfirmAuth(false));
               handleNavigate("/admin/list_of_clients", "admin");
             } else if (
               ["fairGameWallet", "fairGameAdmin"].includes(
@@ -482,7 +484,7 @@ export default function Login(props) {
                 walletWT: data.data.access_token,
               }));
               localStorage.setItem("JWTwallet", data.data.access_token);
-              dispatch(setWConfirmAuth(false));
+              // dispatch(setWConfirmAuth(false));
               handleNavigate("/wallet/list_of_clients", "wallet");
             } else if (["expert"].includes(data.data.role.roleName)) {
               setGlobalStore((prev) => ({
@@ -490,7 +492,7 @@ export default function Login(props) {
                 expertJWT: data.data.access_token,
               }));
               localStorage.setItem("JWTexpert", data.data.access_token);
-              dispatch(setEConfirmAuth(false));
+              // dispatch(setEConfirmAuth(false));
               handleNavigate("/expert/match", "expert");
             } else {
               toast.error("User Unauthorized !");

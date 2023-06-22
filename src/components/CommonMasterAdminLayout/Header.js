@@ -105,11 +105,11 @@ const CustomHeader = ({ }) => {
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       if (nav === "admin") {
-        localStorage.removeItem("role1");
-        localStorage.removeItem("JWTadmin");
+        // localStorage.removeItem("role1");//add
+        // localStorage.removeItem("JWTadmin");//add
       } else {
-        localStorage.removeItem("role2");
-        localStorage.removeItem("JWTwallet");
+        // localStorage.removeItem("role2");//add
+        // localStorage.removeItem("JWTwallet");//add
       }
     };
 
@@ -136,10 +136,10 @@ const CustomHeader = ({ }) => {
 
           const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
           if (result) {
-            navigate("/admin");
+            // navigate("/admin");//add
             dispatch(removeManualBookMarkerRates());
             dispatch(removeCurrentUser());
-            dispatch(logout({ roleType: "role1" }));
+            // dispatch(logout({ roleType: "role1" }));//add
             socketMicro?.disconnect();
             socket?.disconnect();
             dispatch(removeSelectedMatch());
@@ -171,10 +171,10 @@ const CustomHeader = ({ }) => {
 
           const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
           if (result) {
-            navigate("/wallet");
+            // navigate("/wallet");
             dispatch(removeManualBookMarkerRates());
             dispatch(removeCurrentUser());
-            dispatch(logout({ roleType: "role2" }));
+            // dispatch(logout({ roleType: "role2" }));//add
             socketMicro?.disconnect();
             socket?.disconnect();
             dispatch(removeSelectedMatch());

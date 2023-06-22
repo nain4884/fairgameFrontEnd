@@ -252,7 +252,7 @@ export default function Login(props) {
             if (["user"].includes(data.data.role.roleName)) {
               // localStorage.setItem("confirmAuth", true);
               localStorage.setItem("JWTuser", data.data.access_token);
-              dispatch(setConfirmAuth(false));
+              // dispatch(setConfirmAuth(false));
               setGlobalStore((prev) => ({
                 ...prev,
                 userJWT: data.data.access_token,
@@ -320,7 +320,7 @@ export default function Login(props) {
             if (["user"].includes(data.data.role.roleName)) {
               // localStorage.setItem("confirmAuth", true);
               localStorage.setItem("JWTuser", data.data.access_token);
-              dispatch(setConfirmAuth(false));
+              // dispatch(setConfirmAuth(false));
               setGlobalStore((prev) => ({
                 ...prev,
                 userJWT: data.data.access_token,

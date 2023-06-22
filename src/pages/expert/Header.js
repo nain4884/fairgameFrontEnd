@@ -144,10 +144,10 @@ const CustomHeader = ({ }) => {
 
         const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
         if (result) {
-          navigate("/expert");
+          // navigate("/expert");//add
           dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
-          dispatch(logout({ roleType: "role3" }));
+          // dispatch(logout({ roleType: "role3" }));//add
           socketMicro?.disconnect();
           socket?.disconnect();
           dispatch(removeSelectedMatch());
@@ -176,7 +176,7 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      localStorage.removeItem("role3");
+      // localStorage.removeItem("role3");//add
     };
 
     window.addEventListener("unload", handleBeforeUnload);
@@ -308,7 +308,7 @@ const CustomHeader = ({ }) => {
         <AddNotificationModal
           setVisible={setVisible}
           visible={visible}
-          onClick={() => {}}
+          onClick={() => { }}
           onDone={(value) => {
             handleAddNotification(value);
           }}
