@@ -70,6 +70,78 @@ const LiveMarketComponent = ({
     };
   
     return (
+      <>
+        <style jsx scoped>
+        {`
+          @keyframes gradient {
+            0% {
+              background-position: 0% 0%;
+            }
+            50% {
+              background-position: 100% 100%;
+            }
+            100% {
+              background-position: 0% 0%;
+            }
+          }
+
+          .liveAnimation {
+            overflow: hidden;
+            background: linear-gradient(
+              315deg,
+              rgb(117 255 0) 3%,
+              rgb(177 60 206) 38%,
+              rgb(255 0 233) 68%,
+              rgba(255, 25, 25, 1) 98%
+            );
+            animation: gradient 5s ease infinite;
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+          .wave {
+            border-radius: 1000% 1000% 0 0;
+
+            height: 12em;
+            animation: wave 10s -3s linear infinite;
+            transform: translate3d(0, 0, 0);
+            opacity: 0.8;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(
+              315deg,
+              rgba(101, 0, 94, 1) 3%,
+              rgba(60, 132, 206, 1) 38%,
+              rgba(48, 238, 226, 1) 68%,
+              rgba(255, 25, 25, 1) 98%
+            );
+          }
+          @keyframes wave {
+            2% {
+              transform: translateX(1);
+            }
+
+            25% {
+              transform: translateX(-25%);
+            }
+
+            50% {
+              transform: translateX(-50%);
+            }
+
+            75% {
+              transform: translateX(-25%);
+            }
+
+            100% {
+              transform: translateX(1);
+            }
+          }
+        `}
+      </style>
       <Box
         onClick={() => {
           if (mode == "0") {
@@ -93,6 +165,7 @@ const LiveMarketComponent = ({
         }}
       >
         <Box
+          className="liveAnimation"
           sx={{
             position: "absolute",
             zIndex: 11,
@@ -107,6 +180,7 @@ const LiveMarketComponent = ({
             border: "1px solid white",
           }}
         >
+          <Box className="wave"> </Box>
           <Typography
             sx={{
               fontSize: { laptop: "8px", mobile: "8px" },
@@ -219,6 +293,7 @@ const LiveMarketComponent = ({
           )}
         </Box>
       </Box>
+      </>
     );
   };
 

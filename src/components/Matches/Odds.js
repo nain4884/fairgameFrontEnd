@@ -331,7 +331,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                   // border: '1px solid linear-gradient(90deg, rgba(233,254,234,1) 1%, rgba(206,255,209,1) 100%)'
                 }}
               >
-                LIVE
+                LIVE 22
               </Typography>
             </Box>
           )}
