@@ -102,7 +102,7 @@ const SessionMarketBox = ({
                 textAlign: "center",
                 width: "100%",
                 color: "white",
-                fontWeight: "600",
+                fontWeight: "400",
               }}
             >
               {data?.suspended}
