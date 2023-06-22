@@ -14,7 +14,7 @@ import { debounce } from "lodash";
 import InputMyPartnership from "./InputMypartnership";
 
 const containerStyles = {
-  marginTop: "10px",
+  marginTop: { mobile: "2px", laptop: "10px" },
 };
 
 const titleStyles = {
@@ -496,11 +496,11 @@ const AddAccount = () => {
               borderRadius: "5px",
               padding: "20px",
               paddingTop: "10px",
-              marginTop: "10px",
+              marginTop: "2px",
               display: "flex",
               flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
               width: "100%",
-              gap: 5,
+              gap: { mobile: 0, laptop: 5, tablet: 4 },
               // flexWrap:"wrap",
             }}
           >
@@ -897,15 +897,18 @@ const AddAccount = () => {
                 </>
               )}
             </Box>
-            <Box sx={{ flex: 2 }}>
+            <Box sx={{ flex: 2 }} className='addAccountRemark'>
               <Input
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
-                inputProps={{ multiline: true, rows: 10 }}
+                inputProps={{ multiline: true, 
+                  rows: 10 
+                  // rows: { laptop: 10, mobile: 2 },
+                }}
                 placeholder={"Remark (Optional)"}
                 inputContainerStyle={{
                   ...inputContainerStyle,
-                  height: { laptop: "205px", mobile: "205px" },
+                  height: { laptop: "205px", mobile: "75px" },
                   width: "100%",
                 }}
                 title={"Remark"}
@@ -997,6 +1000,16 @@ const AddAccount = () => {
           navigateTo={"list_of_clients"}
         />
       )}
+
+      <style jsx scoped>
+          {`
+          @media only screen and (max-width: 575px) {
+            .addAccountRemark textarea{
+              height: 70px !important;
+            }
+          }
+          `}
+      </style>
     </>
   );
 };

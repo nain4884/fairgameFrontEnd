@@ -301,6 +301,7 @@ const AccountListRow = ({
           sx={{
             width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
             display: "flex",
+            justifyContent: 'space-between',
             paddingLeft: "10px",
             alignItems: "center",
             cursor: elementToUDM.totalCommissions !== null && "pointer",
@@ -309,8 +310,15 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.totalCommissions}
+            {elementToUDM.totalCommissions}  
           </Typography>
+            <StyledImage
+            
+              src={
+                DownGIcon
+              }
+              style={{ height: "10px", cursor: "pointer", width: "15px", marginRight: '5px' }}
+            />
         </Box>
         <Box
           sx={{
