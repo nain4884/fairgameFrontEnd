@@ -77,6 +77,8 @@ let theme = createTheme({
       tablet: 640,
       laptop: 1024,
       desktop: 1200,
+      desktopXL: 1400,
+      desktop2XL: 1450,
     },
   },
 });
