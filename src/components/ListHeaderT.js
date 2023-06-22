@@ -38,7 +38,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: "12px", lineHeight: '1.1' }}>
             Credit Referance
           </Typography>
         </Box>

@@ -295,15 +295,15 @@ const ListH = ({ getListOfUser, setPageCount }) => {
   return (
     <Box
       display={"flex"}
-      sx={{ justifyContent: "space-between", px: "10px", py: "6px", gap: 2 }}
+      sx={{ justifyContent: "space-between", px: "10px", py: "6px", gap: 2, background: '#ffe094' }}
     >
       <Box display={"flex"} alignItems="center">
         <Box
           sx={{
             background: "white",
-            height: "30px",
+            height: "32px",
             borderRadius: "5px",
-            width: "45px",
+            width: "32px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -315,9 +315,9 @@ const ListH = ({ getListOfUser, setPageCount }) => {
           sx={{
             background: "white",
             marginLeft: "10px",
-            height: "30px",
+            height: "32px",
             borderRadius: "5px",
-            width: "45px",
+            width: "32px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
