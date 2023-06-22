@@ -1146,7 +1146,7 @@ const DeleteBet = ({ }) => {
               fontSize: "16px",
               color: "white",
               fontWeight: "700",
-              paddingTop: "2%",
+              // paddingTop: "2%",
               alignSelf: "start",
             }}
           >
@@ -1218,7 +1218,7 @@ const DeleteBet = ({ }) => {
               {mode && <CancelButton />}
               <Box sx={{ width: "2%" }}></Box>
               <Box
-                sx={{ width: "150px", marginY: ".75%", height: "35px" }}
+                sx={{ width: "150px", marginY: ".75%", height: "15px" }}
               ></Box>
             </Box>
             {(currentMatch?.apiSessionActive ||

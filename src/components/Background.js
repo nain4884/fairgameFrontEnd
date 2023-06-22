@@ -5,7 +5,8 @@ export default function Background({ children }) {
     <Box
       sx={{
         minHeight: "100vh",
-        padding: "1%",
+        // padding: "1%",
+        padding: "0.2% 1% 1% 1%",
         width: "100%",
         backgroundImage: `url(${Back})`,
         backgroundRepeat: "no-repeat",
