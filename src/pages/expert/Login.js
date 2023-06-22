@@ -29,7 +29,7 @@ import {
   apiBasePath
 } from "../../components/helper/constants";
 import { SocketContext } from "../../context/socketContext";
-import { setEConfirmAuth, setWConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
+import { setEConfirmAuth, setWConfirmAuth, setAConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
 
 var newtoken = "";
 export default function Login(props) {
@@ -42,7 +42,7 @@ export default function Login(props) {
   const activeUser = useSelector((state) => {
     return state?.activeUser?.activeUser;
   });
-  const { eConfirmAuth, wConfirmAuth } = useSelector((state) => state?.expertMatchDetails);
+  const { eConfirmAuth, wConfirmAuth, aConfirmAuth } = useSelector((state) => state?.expertMatchDetails);
   const [loading, setLoading] = useState(false);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -55,6 +55,7 @@ export default function Login(props) {
     2: { field: "password", val: false },
   });
   const [confirmPop, setConfirmPop] = useState(false);
+  const [userType, setUserType] = useState("");
 
   const { socket, socketMicro } = useContext(SocketContext);
   useEffect(() => {
@@ -76,23 +77,6 @@ export default function Login(props) {
     setTimeout(async () => {
       try {
         const url = window.location.href;
-        // if (http://localhost:3000/wallet)
-        // alert(apiBasePath + 'expert')
-        // const checkExpert = "http://localhost:3000/expert";
-        // const validLoginURLs = [
-        //   'http://localhost:3000/expert',
-        //   'http://localhost:3000/expert/',
-        //   'http://159.65.154.97:3000/expert',
-        //   'http://159.65.154.97:3000/expert/'
-        // ];
-
-        // const validWalletURLs = [
-        //   'http://localhost:3000/wallet/',
-        //   'http://localhost:3000/wallet/',
-        //   'http://159.65.154.97:3000/wallet/',
-        //   'http://159.65.154.97:3000/wallet/'
-        // ];
-
         let value = "";
         let token = "";
         // alert("ddd :" + validLoginURLs.includes(url))
@@ -120,7 +104,7 @@ export default function Login(props) {
             let checkSessionStorage = sessionStorage.getItem("JWTexpert");
             if (checkSessionStorage) {
               navigate("/expert");
-              // console.log("popwwwww");
+              setUserType("Expert")
               setConfirmPop(true);
             } else {
               setConfirmPop(false);
@@ -150,6 +134,37 @@ export default function Login(props) {
             let checkSessionStorage = sessionStorage.getItem("JWTwallet");
             if (checkSessionStorage) {
               navigate("/wallet");
+              setUserType("Wallet user")
+              setConfirmPop(true);
+            } else {
+              setConfirmPop(false);
+            }
+          }
+        } else if (url.includes("admin")) {
+
+          value = await localStorage.getItem("role1");
+          token = await localStorage.getItem("JWTadmin");
+          if (value && !aConfirmAuth) {
+            try {
+              const config = {
+                headers: {
+                  'Authorization': `Bearer ${token}`
+                }
+              };
+              const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+              const data = response.data;
+              // alert(JSON.stringify(data))
+              loginToAccountAuth(data?.data?.username, "pass");
+              console.log(data);
+            } catch (error) {
+              // Handle any errors
+              console.error('Error fetching data:', error);
+            }
+          } else {
+            let checkSessionStorage = sessionStorage.getItem("JWTadmin");
+            if (checkSessionStorage) {
+              navigate("/admin");
+              setUserType("Admin")
               // console.log("popwwwww");
               setConfirmPop(true);
             } else {
@@ -192,37 +207,6 @@ export default function Login(props) {
     });
   }, [eConfirmAuth]);
 
-  const checkLogin = async (value, token) => {
-    const currentURL = window.location.href;
-    // if (currentURL !== 'http://localhost:3000/' || currentURL !== 'http://159.65.154.97:3000/' || currentURL !== 'http://143.244.138.15:3000/') {
-    // if (value && !eConfirmAuth) {
-    //   try {
-    //     const config = {
-    //       headers: {
-    //         'Authorization': `Bearer ${token}`
-    //       }
-    //     };
-    //     const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
-    //     const data = response.data;
-    //     // alert(JSON.stringify(data))
-    //     loginToAccountAuth(data?.data?.username, "pass");
-    //     console.log(data);
-    //   } catch (error) {
-    //     // Handle any errors
-    //     console.error('Error fetching data:', error);
-    //   }
-    // } else {
-    //   let checkSessionStorage = sessionStorage.getItem("JWTexpert");
-    //   if (checkSessionStorage) {
-    //     navigate("/expert");
-    //     // console.log("popwwwww");
-    //     setConfirmPop(true);
-    //   } else {
-    //     setConfirmPop(false);
-    //   }
-    // }
-    // }
-  }
   useEffect(() => {
     let checkLocalStorage;
     let checkSessionStorage;
@@ -342,7 +326,6 @@ export default function Login(props) {
   };
 
   async function loginToAccountAuth(user, pass) {
-    // alert(2222)
     getLocalToken(props.allowedRole);
     // changeErrors()
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
@@ -486,6 +469,8 @@ export default function Login(props) {
                 ...prev,
                 adminWT: data.data.access_token,
               }));
+              localStorage.setItem("JWTadmin", data.data.access_token);
+              dispatch(setAConfirmAuth(false));
               handleNavigate("/admin/list_of_clients", "admin");
             } else if (
               ["fairGameWallet", "fairGameAdmin"].includes(
@@ -534,6 +519,8 @@ export default function Login(props) {
       token = await localStorage.getItem("JWTexpert");
     } else if (checkUrl.includes("wallet")) {
       token = await localStorage.getItem("JWTwallet");
+    } else if (checkUrl.includes("admin")) {
+      token = await localStorage.getItem("JWTadmin");
     }
     try {
       const config = {
@@ -657,7 +644,7 @@ export default function Login(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {'User is open in another window. Click "Use Here" to use User in this window.'}
+          {`${userType} is open in another window. Click "Use Here" to use ${userType} in this window.`}
         </DialogTitle>
         <DialogActions>
           <Button onClick={() => setConfirmPop((prev) => !prev)}>
