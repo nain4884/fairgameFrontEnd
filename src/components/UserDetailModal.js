@@ -438,9 +438,11 @@ const BoxButton = ({
     ],
     mainBoxTypography: [
       {
-        fontSize: { mobile: "3.5vw", laptop: "0.6vw", tablet: "0.9vw" },
+        fontSize: { mobile: "3.5vw", laptop: "11px", tablet: "0.9vw", desktop2XL: '12px' },
         fontWeight: "600",
         color: isSelected || deleteBtn ? "white" : "white",
+        textAlign: 'center', 
+       
       },
       titleStyle,
     ],

@@ -73,7 +73,7 @@ const SearchInput = ({
               mobile: "10vw",
             },
             width: {
-              mobile: width ? width : "66%",
+              mobile: width ? width : "40%",
               laptop: "17vw",
               tablet: "17vw",
             },

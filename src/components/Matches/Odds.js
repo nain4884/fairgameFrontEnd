@@ -186,6 +186,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             position: absolute;
             top: 0;
             left: 0;
+            width: 68px;
           }
           .wave {
             border-radius: 1000% 1000% 0 0;
@@ -331,7 +332,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                   // border: '1px solid linear-gradient(90deg, rgba(233,254,234,1) 1%, rgba(206,255,209,1) 100%)'
                 }}
               >
-                LIVE 22
+                LIVE NOW
               </Typography>
             </Box>
           )}
@@ -626,7 +627,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                   fontWeight: "600",
                 }}
               >
-                {match.teamA} 4645
+                {match.teamA}
               </Typography>
             </Box>
             <Box
