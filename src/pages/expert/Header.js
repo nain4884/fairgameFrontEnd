@@ -29,7 +29,7 @@ import {
 import {
   setAllMatchs,
   setAllEventSession,
-  setEConfirmAuth
+  setEConfirmAuth,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -48,7 +48,7 @@ import DropdownMenu1 from "./DropDownMenu1";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -257,11 +257,11 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     getUserCount();
+    getMatchLiveSession();
     if (allMatchData.length === 0) {
       getAllMatch();
     }
     // if (allEventSession?.length === 0) {
-    getMatchLiveSession();
     // }
   }, []);
 
@@ -313,7 +313,7 @@ const CustomHeader = ({ }) => {
         <AddNotificationModal
           setVisible={setVisible}
           visible={visible}
-          onClick={() => { }}
+          onClick={() => {}}
           onDone={(value) => {
             handleAddNotification(value);
           }}
@@ -564,8 +564,8 @@ const CustomHeader = ({ }) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                      ? "Bookmaker"
-                      : "Betfair"
+                    ? "Bookmaker"
+                    : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />

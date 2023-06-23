@@ -1,6 +1,12 @@
 import {
-  Card, Typography, Box, useTheme, useMediaQuery, Dialog,
-  DialogTitle, DialogActions,
+  Card,
+  Typography,
+  Box,
+  useTheme,
+  useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogActions,
   Button,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
@@ -20,7 +26,6 @@ import {
 } from "../../components/helper/constants";
 import OTPInput from "otp-input-react";
 import { setAllRoles, signIn } from "../../newStore/reducers/auth";
-import { setCurrentUser } from "../../newStore/reducers/currentUser";
 import UseTokenUpdate from "../../useTokenUpdate";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -30,7 +35,6 @@ import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 import axios from "axios";
 import { setConfirmAuth } from "../../newStore/reducers/matchDetails";
-
 
 export default function Login(props) {
   let { transPass, axios, role } = setRole();
@@ -42,6 +46,7 @@ export default function Login(props) {
   const { socket, socketMicro } = useContext(SocketContext);
   const { confirmAuth } = useSelector((state) => state?.matchDetails);
   const [loading, setLoading] = useState(false);
+  const currroles = useSelector((state) => state?.auth?.allRole);
   const [loginDetail, setLoginDetail] = useState({
     1: { field: "username", val: "" },
     2: { field: "password", val: "" },
@@ -54,7 +59,7 @@ export default function Login(props) {
 
   const [loginError, setLoginError] = useState();
   const [confirmPop, setConfirmPop] = useState(false);
-
+  const { currentUser } = useSelector((state) => state?.currentUser);
   // useEffect(() => {
   // }, [error, loginDetail])
 
@@ -75,6 +80,28 @@ export default function Login(props) {
   }, [socket, socketMicro]);
 
   useEffect(() => {
+    //handled if user already exists and tries open other role login page
+    if (currentUser) {
+      let roleDetail = currroles.find(findThisRole);
+      function findThisRole(role) {
+        return role.id === currentUser.roleId;
+      }
+      if (["user"].includes(roleDetail.roleName)) {
+        navigate("/matches");
+      } else if (
+        ["admin", "master", "superAdmin", "supperMaster"].includes(
+          roleDetail.roleName
+        )
+      ) {
+        navigate("/admin/list_of_clients");
+      } else if (
+        ["fairGameWallet", "fairGameAdmin"].includes(roleDetail.roleName)
+      ) {
+        navigate("/wallet/list_of_clients");
+      } else if (["expert"].includes(roleDetail.roleName)) {
+        navigate("/expert/match");
+      }
+    }
     setTimeout(async () => {
       try {
         var value = await localStorage.getItem("role4");
@@ -87,16 +114,19 @@ export default function Login(props) {
           try {
             const config = {
               headers: {
-                'Authorization': `Bearer ${token}`
-              }
+                Authorization: `Bearer ${token}`,
+              },
             };
-            const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+            const response = await axios.get(
+              `${apiBasePath}fair-game-wallet/changeAuth`,
+              config
+            );
             const data = response.data;
             loginToAccountAuth(data?.data?.username, "pass");
             console.log(data);
           } catch (error) {
             // Handle any errors
-            console.error('Error fetching data:', error);
+            console.error("Error fetching data:", error);
           }
           // setConfirmPop(true)
           // user--role4
@@ -116,7 +146,7 @@ export default function Login(props) {
         //  else {
         //   navigate(`/matches`);
         // }
-      } catch (error) { }
+      } catch (error) {}
     });
   }, []);
 
@@ -125,20 +155,23 @@ export default function Login(props) {
     try {
       const config = {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       };
-      const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+      const response = await axios.get(
+        `${apiBasePath}fair-game-wallet/changeAuth`,
+        config
+      );
       const data = response.data;
       loginToAccountAuth(data?.data?.username, "pass");
       console.log(data);
     } catch (error) {
       // Handle any errors
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
     setConfirmPop(false);
     // loginToAccountAuth(data?.data?.username, "pass");
-  }
+  };
 
   useEffect(() => {
     let checkLocalStorage;
@@ -464,15 +497,16 @@ export default function Login(props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {'User is open in another window. Click "Use Here" to use User in this window.'}
+          {
+            'User is open in another window. Click "Use Here" to use User in this window.'
+          }
         </DialogTitle>
         <DialogActions>
-          <Button onClick={() => setConfirmPop((prev) => !prev)}>
-            Close
-          </Button>
+          <Button onClick={() => setConfirmPop((prev) => !prev)}>Close</Button>
           <Button
             sx={{
-              color: "#201f08", backgroundColor: "#fdf21b"
+              color: "#201f08",
+              backgroundColor: "#fdf21b",
             }}
             onClick={useHereHandle}
           >

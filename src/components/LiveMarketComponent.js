@@ -23,19 +23,20 @@ const LiveMarketComponent = ({
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          marginLeft: { mobile: "2px", laptop: "10px" },
+          marginLeft: { mobile: mode == "1"  ? "2px" : 0, laptop: "10px" },
+          padding:{mobile:"3px",tablet:"5px",laptop:"5px"}
         }}
       >
         <Typography
           sx={{
             color: "white",
-            fontSize: { mobile: "12px", laptop: "14px" },
+            fontSize: { mobile: "9px",tablet:"12px", laptop: "14px" },
             fontWeight: "700",
 
-            overflow: 'hidden',
-            display: '-webkit-box',
+            overflow: "hidden",
+            display: "-webkit-box",
             WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
+            WebkitBoxOrient: "vertical",
           }}
         >
           {team}
@@ -59,10 +60,10 @@ const LiveMarketComponent = ({
                   : "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
               }
               sx={{
-                height: "25px",
+                height: { mobile: "20px", laptop: "25px" },
                 marginLeft: "5px",
                 filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: "25px",
+                width: { mobile: "20px", laptop: "25px" },
               }}
             />
           )}
@@ -103,8 +104,8 @@ const LiveMarketComponent = ({
             background-size: 400% 400%;
             background-attachment: fixed;
             position: absolute;
-            top: 0;
-            left: 0;
+            top: -6px;
+            left: 8px;
           }
           .wave {
             border-radius: 1000% 1000% 0 0;
@@ -145,14 +146,9 @@ const LiveMarketComponent = ({
               transform: translateX(1);
             }
           }
-
-          @media only screen and (max-width: 575px) {
-            .liveAnimation {
-              top: -7px;
-            }
-          }
-
-
+       
+         
+        
         `}
       </style>
       <Box
@@ -169,7 +165,7 @@ const LiveMarketComponent = ({
           width: "99%",
           display: "flex",
           position: "relative",
-          marginY: "6px",
+          margin: {mobile:"5px",tablet:"6px",laptop:"6px"},
           alignSelf: "center",
           justifyContent: "space-evenly",
           height: "55px",
@@ -177,7 +173,55 @@ const LiveMarketComponent = ({
           marginX: ".5%",
         }}
       >
-        <Box
+       
+   
+        <Box sx={{ display: "flex", width: "100%", position: "relative" }}>
+        {mode == "1" && (
+          <Box
+            sx={{
+              // position: { mobile: "absolute", laptop: "relative" },
+              // left: { mobile: "2px", laptop: 0 },
+              // zIndex: 1,
+              width:  "55px" ,
+              height:  "55px" ,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              border: "1.5px solid white",
+              background: !selected ? "#46CF4D" : "rgba(0,0,0,.5)",
+            }}
+          >
+            <img src={CHECK} style={{ width: "40px", height: "40px" }} />
+          </Box>
+        )}
+          <Box
+            sx={{
+              position:"relative",
+              background: "#F8C851",
+              paddingY: { mobile: 0.5, laptop: 0 },
+              width: { mobile: "40%", laptop: "45%" },
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              marginX: "2px",
+              border: "1.5px solid white",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: { laptop: "16px", mobile: "10px" },
+                fontWeight: "bold",
+                marginLeft: "5px",
+
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {team} Vs {team_2}
+            </Typography>
+            <Box
           className="liveAnimation"
           sx={{
             position: "absolute",
@@ -204,62 +248,19 @@ const LiveMarketComponent = ({
             LIVE NOW
           </Typography>
         </Box>
-        {mode == "1" && (
-          <Box
-            sx={{
-              width: "55px",
-              height: "55px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              border: "1.5px solid white",
-              background: !selected ? "#46CF4D" : "rgba(0,0,0,.5)",
-            }}
-          >
-            <img src={CHECK} style={{ width: "40px", height: "40px" }} />
-          </Box>
-        )}
-        <Box sx={{ display: "flex", width: "100%", position: "relative" }}>
-          <Box
-            sx={{
-              background: "#F8C851",
-              paddingY: { mobile: 0.5, laptop: 0 },
-              width: { mobile: "55%", laptop: "45%" },
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              marginX: "2px",
-              border: "1.5px solid white",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: { laptop: "16px", mobile: "12px" },
-                fontWeight: "bold",
-                marginLeft: "5px",
-
-                overflow: 'hidden',
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-              }}
-            >
-              {team} Vs {team_2}
-            </Typography>
           </Box>
           <Box
             sx={{
-              width: "55%",
+              width: "60%",
               alignSelf: "center",
               display: "flex",
               height: "100%",
-              marginTop: { mobile: "2px", laptop: 0 },
             }}
           >
             <Box
               sx={{
                 background: data?.teamA_rate >= 0 ? "#27AC1E" : "#E32A2A",
-                width: "34%",
+                width: "40%",
                 height: "100%",
                 border: "1.5px solid white",
               }}
@@ -273,7 +274,7 @@ const LiveMarketComponent = ({
             <Box
               sx={{
                 background: data?.teamB_rate >= 0 ? "#27AC1E" : "#E32A2A",
-                width: "33%",
+                width: "30%",
                 height: "100%",
                 marginX: "2px",
                 border: "1.5px solid white",
@@ -288,7 +289,7 @@ const LiveMarketComponent = ({
             <Box
               sx={{
                 background: "#0B4F26",
-                width: "33%",
+                width: "30%",
                 height: "100%",
                 border: "1.5px solid white",
               }}
@@ -315,4 +316,4 @@ const LiveMarketComponent = ({
   );
 };
 
-export default memo(LiveMarketComponent)
+export default memo(LiveMarketComponent);

@@ -79,14 +79,26 @@ const MarketAnalysis = () => {
   }
   return (
     <Box sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
+   
       <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+       
+        }}
+      >
+         <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
           marginX: ".5%",
+          padding:{mobile:"5px", laptop:"0px 8px"},
           flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           width: "100%",
-          marginTop: ".5%",
+          marginY: "1%",
         }}
       >
         <Typography
@@ -103,7 +115,7 @@ const MarketAnalysis = () => {
         </Typography>
         {mode == "0" && (
           <Box
-            sx={{ display: "flex", width: "100%", justifyContent: "flex-end" }}
+            sx={{ display: "flex", width: "100%", justifyContent: {mobile: "flex-start",tablet:"flex-end",laptop:"flex-end"} }}
           >
             <CustomBox
               onClick={(e) => {
@@ -128,7 +140,7 @@ const MarketAnalysis = () => {
           </Box>
         )}
         {mode == "1" && (
-          <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: 1 ,justifyContent: "flex-end"}}>
             <CustomBox
               bg={"#E32A2A"}
               onClick={(e) => {
@@ -181,17 +193,6 @@ const MarketAnalysis = () => {
           </Box>
         )}
       </Box>
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          gap: "8px",
-          marginTop: { mobile: "5%", laptop: "0%", tablet: "0%" },
-        }}
-      >
         {matchData?.length > 0 &&
           matchData?.map((i, k) => {
             return (
