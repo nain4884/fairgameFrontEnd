@@ -185,7 +185,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
           if (token) {
             sessionStorage.setItem("JWTuser", token);
           }
-          navigate(`/login`);
+          navigate(`/`);
           // dispatch(removeCurrentUser());
           // dispatch(removeManualBookMarkerRates());
           // dispatch(removeSelectedMatch());

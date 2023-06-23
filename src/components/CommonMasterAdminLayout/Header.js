@@ -138,7 +138,7 @@ const CustomHeader = ({ }) => {
           if (result) {
             // navigate("/admin");//add
             dispatch(removeManualBookMarkerRates());
-            dispatch(removeCurrentUser());
+            // dispatch(removeCurrentUser());// add
             // dispatch(logout({ roleType: "role1" }));//add
             socketMicro?.disconnect();
             socket?.disconnect();
@@ -173,7 +173,7 @@ const CustomHeader = ({ }) => {
           if (result) {
             // navigate("/wallet");
             dispatch(removeManualBookMarkerRates());
-            dispatch(removeCurrentUser());
+            // dispatch(removeCurrentUser());//add
             // dispatch(logout({ roleType: "role2" }));//add
             socketMicro?.disconnect();
             socket?.disconnect();

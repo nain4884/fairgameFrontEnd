@@ -84,7 +84,7 @@ const CustomHeader = ({ }) => {
       const { data } = await axios.get("users/profile");
       localStorage.setItem("role3", "role3");
       dispatch(setCurrentUser(data.data));
-
+      // alert(111)
       // setBalance(data.data.current_balance)
       // dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
       // setFullName(data.data.fullName)
@@ -146,7 +146,7 @@ const CustomHeader = ({ }) => {
         if (result) {
           // navigate("/expert");//add
           dispatch(removeManualBookMarkerRates());
-          dispatch(removeCurrentUser());
+          // dispatch(removeCurrentUser());
           // dispatch(logout({ roleType: "role3" }));//add
           socketMicro?.disconnect();
           socket?.disconnect();
