@@ -32,7 +32,7 @@ const SmallBox = ({ valueA, valueB }) => {
   return (
     <Box
       sx={{
-        marginLeft: { mobile: 0, laptop: "-11px", tablet: 0 },
+        marginLeft: { mobile: 0, laptop: "-14px", tablet: 0 },
         justifyContent: {
           mobile: "center",
           laptop: "center",
@@ -69,7 +69,7 @@ const SmallBox = ({ valueA, valueB }) => {
         </Typography>
         <Typography
           sx={{
-            fontSize: "12px",
+            fontSize: { laptop: "12px", mobile: "10px", tablet: "10px" },
             fontWeight: "bold",
             color: valueA < 0 ? `#FF4D4D` : `#319E5B`,
           }}
@@ -104,9 +104,9 @@ const SmallBox = ({ valueA, valueB }) => {
 
         <Typography
           sx={{
-            fontSize: "12px",
+            fontSize: { laptop: "12px", mobile: "10px", tablet: "10px" },
             fontWeight: "bold",
-            color: valueB < 0 ? `#FF9292` : `#319E5B`,
+            color: valueB < 0 ? `#FF4D4D` : `#319E5B`,
           }}
         >
           {valueB < 0 ? ` ${valueB}` : `${valueB}`}
@@ -357,7 +357,7 @@ const Odds = ({
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                width: "99.9%",
+                width: { laptop: "100%", mobile: "99.9%" },
                 alignSelf: "center",
               }}
             >
@@ -400,7 +400,7 @@ const Odds = ({
                     justifyContent: "center",
                     alignItems: "center",
                     borderLeft: {
-                      laptop: "5px solid #319e5b",
+                      laptop: "3px solid #319e5b",
                       mobile: "1px solid #319e5b",
                     },
                   }}
@@ -415,7 +415,7 @@ const Odds = ({
                 <Box
                   sx={{
                     background: "#FF9292",
-                    width: { laptop: "16.6%", mobile: "29.9%" },
+                    width: { laptop: "16.4%", mobile: "29.9%" },
                     height: "100%",
                     display: "flex",
                     justifyContent: "center",
@@ -543,7 +543,7 @@ const Odds = ({
                   }
                   teamImage={newData?.teamA_Image}
                   newData={newData}
-                  color={teamARates <= 0 ? "#FF4D4D" : "#46e080"}
+                  color={teamARates <= 0 ? "#FF4D4D" : "#319E5B"}
                   allRates={{
                     teamA: teamARates,
                     teamB: teamBRates,

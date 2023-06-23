@@ -76,7 +76,7 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
               color: "#0B4F26",
             }}
           >
-            {proLoss?.total_bet || 0}
+            {proLoss?.total_bet < 10 ? 0 : ""}{proLoss?.total_bet || 0}
             {/* {profitLoss?.total_bet || 0} */}
           </Typography>
         </Box>

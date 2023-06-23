@@ -96,7 +96,7 @@ const SessionMarketBox = ({
             <img src={BallStart} style={{ width: "113px", height: "32px" }} />
           ) : (
             <Typography
-              style={{
+              sx={{
                 fontSize: { mobile: "12px", laptop: "22px" },
                 textTransform: "uppercase",
                 textAlign: "center",
