@@ -11,6 +11,9 @@ import { DatePicker } from "rsuite";
 import DropDownSimple from "../../components/DropdownSimple";
 import { ArrowDownBlack, Upload } from "../../expert/assets";
 import LabelValueComponent from "./LabelValueComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
+
 const imputStyle = {
   fontSize: { mobile: "14px", laptop: "14px", fontWeight: "600" },
   textTransform: "capitalize",
@@ -45,6 +48,7 @@ const stateDetail = {
 const AddMatchComp = () => {
   const [Detail, setDetail] = useState(stateDetail);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { axios } = setRole();
   const [Error, setError] = useState({
@@ -144,11 +148,22 @@ const AddMatchComp = () => {
       }
       request.append("EventId", Detail[23].val);
       const { data } = await axios.post(`/game-match/addmatch`, request);
-      if (data.message === "Match added successfully.")
+      if (data.message === "Match added successfully.") {
+        getAllMatch();
         toast.success(data.message);
-      navigate("/expert/match");
+        navigate("/expert/match");
+      }
     } catch (e) {
       toast.error(e.response.data.message);
+      console.log(e);
+    }
+  };
+
+  const getAllMatch = async () => {
+    try {
+      let response = await axios.get(`/game-match/getAllMatch`);
+      dispatch(setAllMatchs(response.data[0]));
+    } catch (e) {
       console.log(e);
     }
   };

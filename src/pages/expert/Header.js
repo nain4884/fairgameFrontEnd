@@ -61,10 +61,10 @@ const CustomHeader = ({ }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [active, setActiveAdmin] = useState(0);
-  const [allMatch, setAllMatch] = useState([]);
-  const { allEventSession, activeUsers } = useSelector(
+  const { allEventSession, activeUsers, allMatch } = useSelector(
     (state) => state?.expertMatchDetails
   );
+  const [allMatchData, setAllMatchData] = useState([]);
   // const [allLiveEventSession, setAllLiveEventSession] = useState(allEventSession);
   const [balance, setBalance] = useState(0);
   const [onlineUser, setOnlineUser] = useState(activeUsers);
@@ -75,6 +75,11 @@ const CustomHeader = ({ }) => {
       setOnlineUser(activeUsers);
     }
   }, [activeUsers]);
+
+  useEffect(() => {
+    setAllMatchData(allMatch);
+  }, [allMatch]);
+
   let { transPass, axios, role, JWT } = setRole();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -252,7 +257,7 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     getUserCount();
-    if (allMatch.length === 0) {
+    if (allMatchData.length === 0) {
       getAllMatch();
     }
     // if (allEventSession?.length === 0) {
@@ -272,7 +277,7 @@ const CustomHeader = ({ }) => {
   const getAllMatch = async () => {
     try {
       let response = await axios.get(`/game-match/getAllMatch`);
-      setAllMatch(response.data[0]);
+      setAllMatchData(response.data[0]);
       dispatch(setAllMatchs(response.data[0]));
     } catch (e) {
       console.log(e);
@@ -580,7 +585,7 @@ const CustomHeader = ({ }) => {
       <DropdownMenu1
         anchorEl={anchor}
         open={Boolean(anchor)}
-        allMatch={allMatch}
+        allMatch={allMatchData}
         handleClose={() => {
           setAnchor(null);
         }}
