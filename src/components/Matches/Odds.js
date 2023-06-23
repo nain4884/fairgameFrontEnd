@@ -76,7 +76,7 @@ const Odds = ({ onClick, top, blur, match }) => {
     timeLeft.hours === "00" &&
     timeLeft.minutes !== "00";
 
-  
+
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
@@ -88,7 +88,7 @@ const Odds = ({ onClick, top, blur, match }) => {
           if (token) {
             sessionStorage.setItem("JWTuser", token);
           }
-          navigate(`/login`);
+          navigate(`/`);
           // dispatch(removeCurrentUser());
           // dispatch(removeManualBookMarkerRates())
           // dispatch(removeSelectedMatch());

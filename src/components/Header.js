@@ -92,7 +92,7 @@ const CustomHeader = ({ }) => {
         }
         const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
         if (result) {
-          dispatch(removeCurrentUser());
+          // dispatch(removeCurrentUser());
           dispatch(removeManualBookMarkerRates());
           dispatch(removeSelectedMatch());
           // dispatch(logout({ roleType: "role4" }));//add
@@ -193,7 +193,6 @@ const CustomHeader = ({ }) => {
       const { data } = await axios.get("users/profile");
 
       localStorage.setItem("role4", "role4");
-
       // dispatch(
       //   stateActions.setBalance(
       //     data.data.current_balance || 0,
@@ -207,7 +206,7 @@ const CustomHeader = ({ }) => {
     } catch (e) {
       console.log(e);
       if (e.response.status === 401) {
-        navigate("/login");
+        navigate("/");
         dispatch(removeCurrentUser());
         dispatch(removeManualBookMarkerRates());
         dispatch(removeSelectedMatch());
@@ -712,7 +711,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
       dispatch(setConfirmAuth(false));
       sessionStorage.setItem("JWTuser", null);
       setLoading(true);
-      navigate("/login");
+      navigate("/");
       dispatch(removeCurrentUser());
       handleClose();
       removeSocket();

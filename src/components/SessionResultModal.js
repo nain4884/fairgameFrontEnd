@@ -32,12 +32,17 @@ const SessionResultModal = ({
 
   const scrollToBottom = () => {
     myDivRef.current?.scrollIntoView({
+<<<<<<< HEAD
          behavior: "smooth",
         block: "center",
         inline: "center",
+=======
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+>>>>>>> 78a511a9a46863e636303f6cfe353daf023bfbad
     });
   };
-
   // useEffect(() => {
   //   if (socket && socket.connected) {
   //     socket.onevent = async (packet) => {

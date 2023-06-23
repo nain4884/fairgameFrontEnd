@@ -58,90 +58,94 @@ const DropDownSimple = ({
     setOpen(false);
   });
 
-  const Item = ({ item, mId, matchesSelect, eventDetail, CompetitionName }) => {
+  const Item = ({ item, mId, matchesSelect, eventDetail, CompetitionName ,EventId}) => {
     return (
-      <>
-        <Typography
-          onClick={() => {
-            setValue(item);
-            function setDetailWithRunners() {
-              let allrunners = [];
-              eventDetail.Runners.map((runner) => {
-                allrunners.push(runner.RunnerName);
-              });
-              setDetail({
-                ...Detail,
-                [place]: {
-                  ...Detail[place],
-                  val: item,
-                },
-                2: {
-                  ...Detail[2],
-                  val: new Date(eventDetail?.EventDate),
-                },
-                9: {
-                  ...Detail[9],
-                  val: allrunners[0],
-                },
-                13: {
-                  ...Detail[13],
-                  val: allrunners[1],
-                },
-                22: {
-                  ...Detail[22],
-                  val: CompetitionName,
-                },
-                17: {
-                  ...Detail[17],
-                  val: allrunners[2] ? allrunners[2] : "",
-                },
-              });
-            }
-            {
-              eventDetail
-                ? setDetailWithRunners()
-                : setDetail({
-                    ...Detail,
-                    [place]: {
-                      ...Detail[place],
-                      val:
-                        item === "Total Loss"
-                          ? "totalLoss"
-                          : item === "Entry Wise"
-                          ? "BetLoss"
-                          : item,
-                    },
-                  });
-            }
-            matchesSelect && setMarketId(mId);
-            setOpen(false);
-          }}
-          sx={[
-            {
-              paddingY: "4px",
-              paddingLeft: "7px",
-              fontSize: "10px",
-              fontWeight: "500",
-              color: "black",
-              "&:hover": {
-                cursor: "pointer",
-                background: item !== Detail[place].val && "#3498ff33",
+      <Box
+        onClick={() => {
+          setValue(item);
+          function setDetailWithRunners() {
+            let allrunners = [];
+            eventDetail.Runners.map((runner) => {
+              allrunners.push(runner.RunnerName);
+            });
+            setDetail({
+              ...Detail,
+              [place]: {
+                ...Detail[place],
+                val: item,
               },
-              background: item == Detail[place].val && "#DEDEDE",
+              2: {
+                ...Detail[2],
+                val: new Date(eventDetail?.EventDate),
+              },
+              9: {
+                ...Detail[9],
+                val: allrunners[0],
+              },
+              13: {
+                ...Detail[13],
+                val: allrunners[1],
+              },
+              22: {
+                ...Detail[22],
+                val: CompetitionName,
+              },
+              23: {
+                ...Detail[23],
+                val: EventId,
+              },
+              17: {
+                ...Detail[17],
+                val: allrunners[2] ? allrunners[2] : "",
+              },
+            });
+          }
+          {
+            eventDetail
+              ? setDetailWithRunners()
+              : setDetail({
+                  ...Detail,
+                  [place]: {
+                    ...Detail[place],
+                    val:
+                      item === "Total Loss"
+                        ? "totalLoss"
+                        : item === "Entry Wise"
+                        ? "BetLoss"
+                        : item,
+                  },
+                });
+          }
+          matchesSelect && setMarketId(mId);
+          setOpen(false);
+        }}
+        sx={[
+          {
+            paddingY: "4px",
+            paddingLeft: "7px",
+            fontSize: "10px",
+            fontWeight: "500",
+            color: "black",
+            "&:hover": {
+              cursor: "pointer",
+              background: item !== Detail[place].val && "#3498ff33",
             },
-            dropDownTextStyle,
-          ]}
-        >
-          {item}
-        </Typography>
-      </>
+            background: item == Detail[place].val && "#DEDEDE",
+          },
+          dropDownTextStyle,
+        ]}
+      >
+        <Typography>{item}</Typography>
+        <Typography sx={{ fontSize: "12px" }}>{CompetitionName}</Typography>
+      </Box>
     );
   };
-  const Block = ({ i, mId, matchesSelect, eventDetail, CompetitionName }) => {
+  const Block = ({ i, mId, matchesSelect, eventDetail, CompetitionName ,EventId}) => {
     return (
       <Item
         CompetitionName={CompetitionName}
         item={i}
+        EventId={EventId}
         mId={mId}
         matchesSelect={matchesSelect}
         eventDetail={eventDetail}
@@ -177,9 +181,24 @@ const DropDownSimple = ({
           valueContainerStyle,
         ]}
       >
-        <Typography sx={[{ fontSize: "11px", fontWeight: "500" }, valueStyle]}>
-          {value}
-        </Typography>
+        <Box
+          sx={[
+            {
+              paddingY: "4px",
+              paddingLeft: "7px",
+              fontSize: "10px",
+              fontWeight: "500",
+              color: "white",
+            },
+          ]}
+        >
+          <Typography  sx={{ fontSize: "14px !important" }}>{value}</Typography>
+          {place === 5 && (
+            <Typography sx={{ fontSize: "10px !important" }}>
+              {Detail[22].val}
+            </Typography>
+          )}
+        </Box>
         <StyledImage
           src={ARROWDROPDOWN}
           sx={[
@@ -218,6 +237,7 @@ const DropDownSimple = ({
                   <Block
                     i={i.EventName}
                     mId={i.MarketId}
+                    EventId={i.EventId}
                     matchesSelect={matchesSelect}
                     CompetitionName={i.CompetitionName}
                     eventDetail={i.EventDetail}
