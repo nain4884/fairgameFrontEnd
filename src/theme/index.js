@@ -7,7 +7,7 @@ let theme = createTheme({
       main: '#004A25',
       // main:"#FF8E53",
       contrastText: '#ffffff',
-      mainGradient: `linear-gradient(136deg,rgba(0, 74, 37,0.8) 20%, rgba(0,0,0,0.8) 100%)`,
+      // mainGradient: `linear-gradient(136deg,rgba(0, 74, 37,0.8) 20%, rgba(0,0,0,0.8) 100%)`,
       cardGradient: `linear-gradient(360deg,#fde3a2 5%,#fde3a2 100% )`,
       headerGradient: `linear-gradient(90deg,#004A25 5%,#FDCB52 100% )`,
       headerGradientAdmin: `linear-gradient(50deg,#004A25 40%,#FDCB52 100% )`,

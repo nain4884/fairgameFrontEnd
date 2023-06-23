@@ -145,6 +145,14 @@ const LiveMarketComponent = ({
               transform: translateX(1);
             }
           }
+
+          @media only screen and (max-width: 575px) {
+            .liveAnimation {
+              top: -7px;
+            }
+          }
+
+
         `}
       </style>
       <Box
