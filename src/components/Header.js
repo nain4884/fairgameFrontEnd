@@ -92,7 +92,7 @@ const CustomHeader = ({ }) => {
         }
         const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
         if (result) {
-          dispatch(removeCurrentUser());
+          // dispatch(removeCurrentUser());
           dispatch(removeManualBookMarkerRates());
           dispatch(removeSelectedMatch());
           // dispatch(logout({ roleType: "role4" }));//add
@@ -193,7 +193,6 @@ const CustomHeader = ({ }) => {
       const { data } = await axios.get("users/profile");
 
       localStorage.setItem("role4", "role4");
-
       // dispatch(
       //   stateActions.setBalance(
       //     data.data.current_balance || 0,
@@ -202,6 +201,7 @@ const CustomHeader = ({ }) => {
       //     data.data.id
       //   )
       // );
+      alert(JSON.stringify(data.data));
       dispatch(setCurrentUser(data.data));
       // setFullName(data.data.fullName);
     } catch (e) {
