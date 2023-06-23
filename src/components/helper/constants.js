@@ -70,5 +70,5 @@ module.exports = {
   pageLimit: 10,
   pageCount: 10,
 
-  customPageLimit: 5,
+  customPageLimit: 10,
 };

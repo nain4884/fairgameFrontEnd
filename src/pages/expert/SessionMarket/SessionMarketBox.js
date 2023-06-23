@@ -14,6 +14,7 @@ import SessionResultModal from "../../../components/SessionResultModal";
 import { formatNumber } from "../../../components/helper/helper";
 import { useDispatch } from "react-redux";
 import { setSelectedMatch } from "../../../newStore/reducers/expertMatchDetails";
+import CustomSessionResult from "../../../components/CustomSessionResult";
 
 const SessionMarketBox = ({
   index,
@@ -214,7 +215,7 @@ const SessionMarketBox = ({
           )}
         </Box>
 
-        {visible && (
+        {/* {visible && (
           <Box
             sx={{
               position: "absolute",
@@ -236,8 +237,33 @@ const SessionMarketBox = ({
               }}
             />
           </Box>
+        )} */}
+     {visible && (
+          <Box
+            sx={{
+              position: "absolute",
+              zIndex: 105,
+              top: 0,
+              right: 0,
+              width: "100%",
+              display: "flex",
+              justifyContent: "end",
+            }}
+          >
+            <CustomSessionResult
+              newData={newData}
+              visible={visible}
+              setIObtes={setIObtes}
+              setLocalState={setLocalState}
+              currentMatch={currentMatch}
+              setLive={setLive}
+              updateSessionData={updateSessionData}
+              onClick={() => {
+                setVisible(false);
+              }}
+            />
+          </Box>
         )}
-
         {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
         newData?.betStatus === 2 ? (
           <Box

@@ -10,7 +10,7 @@ import SessionResultCustomButton from "./SessionResultCustomButton";
 import { SocketContext } from "..//context/socketContext";
 import useOuterClick from "./helper/userOuterClick";
 
-const SessionResultModal = ({
+const CustomSessionResult = ({
   onClick,
   newData,
   updateSessionData,
@@ -24,38 +24,11 @@ const SessionResultModal = ({
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
+  const [confirmNoResult, setConfirmNoResults] = useState(false);
   const innerRef = useOuterClick((ev) => {
     onClick();
   });
 
-  const myDivRef = useRef(null);
-
-  const scrollToBottom = () => {
-    myDivRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "center",
-    });
-  };
-  // useEffect(() => {
-  //   if (socket && socket.connected) {
-  //     socket.onevent = async (packet) => {
-  //       if (packet.data[0] === "resultDeclareForBet") {
-  //         const data = packet.data[1];
-  //         try {
-  //           let profitLoss = data?.profitLoss;
-  //           setProLoss(profitLoss);
-  //         } catch (err) {
-  //           console.log(err?.message);
-  //         }
-  //       }
-  //     }
-  //   }
-  // }, [socket]);
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [visible]);
   const undeclareResult = async () => {
     try {
       const body = {
@@ -172,6 +145,7 @@ const SessionResultModal = ({
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
       if (data?.statusCode !== 500) {
         onClick();
+        setConfirmNoResults(false);
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
             (betting, index) => {
@@ -198,6 +172,7 @@ const SessionResultModal = ({
       setLoading({ id: "", value: false });
       toast.success(data?.message);
     } catch (e) {
+      setConfirmNoResults(false);
       toast.error(e?.response?.data?.message);
       setLoading({ id: "", value: false });
       console.log("error", e?.message);
@@ -208,63 +183,25 @@ const SessionResultModal = ({
     <Box
       // ref={innerRef}
       sx={{
-        width: "250px",
-        height: "180px",
-        padding: 0.2,
-        borderRadius: 2,
-        boxShadow: "0px 5px 10px #1A568414",
+        width: "38%",
+
+        marginRight: "8px",
+        // height: "180px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "4px",
+        border: "1px solid",
+        // borderRadius: 2,
+        // boxShadow: "0px 5px 10px #1A568414",
         background: "white",
+        gap: 1,
       }}
     >
-      <Box
-        sx={[
-          {
-            width: "100%",
-            justifyContent: "space-between",
-            paddingX: "20px",
-            display: "flex",
-            alignItems: "center",
-            height: "40px",
-            background: "white",
-            borderRadius: 2,
-          },
-          (theme) => ({
-            backgroundImage: theme.palette.primary.headerGradient,
-          }),
-        ]}
-      >
-        <Typography
-          sx={{ fontWeight: "bold", color: "white", fontSize: "14px" }}
-        >
-          Session Result
-        </Typography>
-        <img
-          onClick={(e) => {
-            e.stopPropagation();
-            onClick();
-          }}
-          src={CancelDark}
-          style={{ width: "25px", height: "25px",cursor: "pointer" }}
-        />
-      </Box>
-
-      <Box
-        sx={{
-          width: "100%",
-          flexWrap: "wrap",
-          padding: "8px",
-          flexDirection: "row",
-          display: "flex",
-          alignSelf: "center",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        ref={myDivRef}
-      >
-        {newData?.betStatus !== 3 ? (
+      {!confirmNoResult ? (
+        <>
           <TextField
-
-            placeholder="Enter score"
+            placeholder="Score"
             variant="standard"
             value={selected}
             onChange={(e) => setSelected(e?.target.value)}
@@ -275,42 +212,18 @@ const SessionResultModal = ({
                 border: "1px solid #303030",
                 borderRadius: "5px",
                 paddingY: "5px",
-                paddingX: "1vw",
+                paddingX: "0.5vw",
+                height: "28px",
               },
             }}
           />
-        ) : (
-          <Typography
-            sx={{
-              color: "#0B4F26",
-              fontSize: "13px",
-              fontWeight: "500",
-              fontWeight: "600",
-              textAlign: "center",
-              paddingTop: "20px",
-              paddingBottom: "20px",
-            }}
-          >
-            Are you sure to set No Result ?
-          </Typography>
-        )}
-        <Box
-
-          sx={{
-            display: "flex",
-            paddingY: "5px",
-            width: "100%",
-            gap: 1,
-            marginTop: 2,
-            marginBottom: 2,
-          }}
-        >
           {newData?.betStatus === 2 ? (
             <SessionResultCustomButton
               color={"#FF4D4D"}
               title={"Un Declare"}
               loading={loading}
               id="UD"
+              session={true}
               onClick={() => {
                 if (loading?.value) {
                   return false;
@@ -325,6 +238,7 @@ const SessionResultModal = ({
                 <SessionResultCustomButton
                   color={"#0B4F26"}
                   id="DR"
+                  session={true}
                   title={"Declare"}
                   loading={loading}
                   onClick={() => {
@@ -345,21 +259,57 @@ const SessionResultModal = ({
           {newData?.betStatus !== 2 && (
             <SessionResultCustomButton
               color={"rgb(106 90 90)"}
-              title={newData?.betStatus !== 3 ? "No Result" : "Yes"}
+              title={"No Result" }
               loading={loading}
               id="NR"
+              session={true}
+              onClick={() => {
+                setConfirmNoResults(true);
+              }}
+            />
+          )}
+        </>
+      ) : (
+        <>
+          <Typography
+            sx={{
+              color: "#0B4F26",
+              fontSize: "12px",
+              fontWeight: "500",
+              height: "28px",
+              lineHeight: 1.2,
+              textAlign: "center",
+            }}
+          >
+            Are you sure to set No Result ?
+          </Typography>
+          {newData?.betStatus !== 2 && (
+            <SessionResultCustomButton
+              color={"rgb(106 90 90)"}
+              title={"Yes"}
+              loading={loading}
+              id="NR"
+              session={true}
               onClick={() => {
                 if (loading?.value) {
                   return false;
                 }
-
-                noResultDeclare();
+                noResultDeclare()
               }}
             />
           )}
-        </Box>
-      </Box>
+        </>
+      )}
+
+      <img
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+        src={CancelDark}
+        style={{ width: "25px", height: "25px", cursor: "pointer" }}
+      />
     </Box>
   );
 };
-export default memo(SessionResultModal);
+export default memo(CustomSessionResult);
