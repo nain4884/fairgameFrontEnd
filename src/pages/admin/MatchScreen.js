@@ -1479,7 +1479,7 @@ const NewMatchScreen = () => {
 
                     setSingleIObtes((prev) => {
                         const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                        return [{...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null}, ...updatedPrev];
+                        return [{ ...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null }, ...updatedPrev];
                     });
                     // setCurrentMatch({
                     //   ...currentMatch,
@@ -1487,7 +1487,7 @@ const NewMatchScreen = () => {
                     // });
                     setSessionBets((prev) => {
                         const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                        return [{...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null}, ...updatedPrev];
+                        return [{ ...data.betPlaceData, deleted_reason: data?.betPlaceData?.deleted_reason || null }, ...updatedPrev];
                     });
                 }
 
@@ -1933,7 +1933,7 @@ const NewMatchScreen = () => {
     const handleShowLock = async (value, type) => {
         if (type === 'Match Odds') {
             setIsMatchLock(true);
-        } else if (type === 'MANUAL BOOKMAKER') {
+        } else if (type === 'Quick Bookmaker') {
             setIsManualLock(true)
         } else if (type === 'BOOKMAKER') {
             setIsBookmakerLock(true)
@@ -2028,7 +2028,7 @@ const NewMatchScreen = () => {
                         currentMatch={currentMatch}
                         data={currentMatch}
                         manualBookmakerData={manualBookmakerData}
-                        typeOfBet={"MANUAL BOOKMAKER"}
+                        typeOfBet={"Quick Bookmaker"}
                         blockMatch={true}
                         locked={currentMatch?.blockMarket?.MANUALBOOKMAKER?.block}
                         selft={currentMatch?.blockMarket?.MANUALBOOKMAKER?.selft}

@@ -320,7 +320,7 @@ const MatchOdds = ({
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-            data?.bookmakerLive[0]?.betStatus === 0
+              data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }
@@ -359,7 +359,7 @@ const MatchOdds = ({
           teamCRates={teamRates?.teamC}
           min={data?.bookmaker_manual_min_bet || 0}
           max={data?.bookmaker_manual_max_bet || 0}
-          title={"Manual Bookmaker"}
+          title={"Quick Bookmaker"}
           typeOfBet={"MANUAL BOOKMAKER"}
           matchOddsData={manualBookmakerData}
           setFastAmount={setFastAmount}

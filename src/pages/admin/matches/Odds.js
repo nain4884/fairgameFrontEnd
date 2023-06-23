@@ -49,8 +49,8 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
         padding: 0.2,
         flexDirection: "column",
         width: "100%",
-        marginTop: typeOfBet == "MANUAL BOOKMAKER" ? "0" : "3px",
-        marginBottom: typeOfBet == "MANUAL BOOKMAKER" ? "3px" : "0",
+        marginTop: typeOfBet == "Quick Bookmaker" ? "0" : "3px",
+        marginBottom: typeOfBet == "Quick Bookmaker" ? "3px" : "0",
         alignSelf: {
           mobile: "center",
           tablet: "center",
@@ -198,7 +198,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
       </Box>
 
       <Box sx={{ position: "relative", width: "99.8%", background: "red" }}>
-        {typeOfBet == "MANUAL BOOKMAKER" ?
+        {typeOfBet == "Quick Bookmaker" ?
           <>
             <ManualBoxComponent
               teamImage={currentMatch?.teamA_Image}
