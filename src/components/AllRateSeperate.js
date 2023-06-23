@@ -146,7 +146,7 @@ const AllRateSeperate = ({
                 marginLeft: "7px",
               }}
             >
-              All Rate Bets &#40;{count || 0}&#41;
+              All Rate Bets: {count < 10 ? 0 : ""}{count || 0}
             </Typography>
           </Box>
           <Box
@@ -209,7 +209,7 @@ const AllRateSeperate = ({
           <Box sx={{ display: "flex", flexDirection: "row" , gap: '1px' }}>
             <Box
               sx={{
-                height: "32px",
+                height: "25px",
                 // margin: { mobile: "1px", laptop: "0.5px" },
                 width: "30px",
                 display: "flex",
@@ -221,7 +221,7 @@ const AllRateSeperate = ({
               <Typography
                 sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
               >
-                {"No"}
+                {"32"}
               </Typography>
             </Box>
             <RowComponent
@@ -465,9 +465,9 @@ const RowComponent = ({ header, data }) => {
     } else if (data?.bet_type === "back" || data?.bet_type === "yes") {
       // return "#FF9292";
       // return "#00C0F9";
-      return "rgb(179, 224, 255)";
+      return "#CEEBFF";
     } else if (data?.bet_type === "lay" || data?.bet_type === "no") {
-      return "rgb(255, 146, 146)";
+      return "#F2CBCB";
       // return "#FF9292";
       // return "#B3E0FF";
     }
@@ -476,7 +476,7 @@ const RowComponent = ({ header, data }) => {
     <Box
       sx={{
         width: "100%",
-        height: header ? "32px" : "32px",
+        height: header ? "25px" : "32px",
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
@@ -729,8 +729,8 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
       <Box
         sx={{
           width: "100%",
-          height: "32px",
-          background: "black",
+          height: "25px",
+          background: "#319E5B",
           // gap: '0.5px',
           // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",

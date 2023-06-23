@@ -316,7 +316,7 @@ const BoxComponent = ({
                   : 0,
                 isRound
               )}
-              color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
+              color={matchesMobile ? "#B3E0FF" : "#A7DCFF"}
               type={{ color: "#A7DCFF", type: "BL" }}
               name={name}
               data={data}
@@ -364,7 +364,7 @@ const BoxComponent = ({
                   : 0,
                 isRound
               )}
-              color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
+              color={matchesMobile ? "#F6D0CB" : "#FFB5B5"}
               type={{ color: "#FFB5B5", type: "BL" }}
               name={name}
               data={data}

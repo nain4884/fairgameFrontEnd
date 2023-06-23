@@ -86,7 +86,7 @@ const SessionBetSeperate = ({
                 marginLeft: "7px",
               }}
             >
-              Session Bets &#40;{allBetsData?.length || 0}&#41;
+              Session Bets:  {allBetsData?.length < 10 ? 0 : ""}{allBetsData?.length || 0}
             </Typography>
           </Box>
 
@@ -142,7 +142,7 @@ const SessionBetSeperate = ({
           <Box
             sx={{
               // margin: { mobile: "1px", laptop: "0.5px" },
-              height: "32px",
+              height: "25px",
               width: "30px",
               display: "flex",
               background: "black",
@@ -646,17 +646,17 @@ const RowComponent = ({ header, data }) => {
       return "black";
     } else if (data?.bet_type === "back" || data?.bet_type == "yes") {
       // return "#00C0F9";
-      return "rgb(179, 224, 255)";
+      return "#CEEBFF";
     } else if (data?.bet_type === "lay" || data?.bet_type == "no") {
       // return "#FF9292";
-      return "rgb(255, 146, 146)";
+      return "#F2CBCB";
     }
   };
   return (
     <Box
       sx={{
         width: "100%",
-        height: header ? "32px" : "32px",
+        height: header ? "25px" : "32px",
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
@@ -835,7 +835,7 @@ const SingleBox = ({
     <Box
       sx={{
         width: "140%",
-        height: "32px",
+        height: "25px",
         background: "#319E5B",
         // marginX: { mobile: "1px", laptop: "1px" },
         display: "flex",
@@ -858,9 +858,9 @@ const SingleBox = ({
     <Box
       sx={{
         width: "100%",
-        height: "32px",
-        background: "black",
-        marginX: { mobile: "1px", laptop: "1px" },
+        height: "25px",
+        background: "#319E5B",
+        marginX: { mobile: "1px", laptop: "0px" },
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
