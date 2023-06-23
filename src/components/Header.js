@@ -201,7 +201,6 @@ const CustomHeader = ({ }) => {
       //     data.data.id
       //   )
       // );
-      alert(JSON.stringify(data.data));
       dispatch(setCurrentUser(data.data));
       // setFullName(data.data.fullName);
     } catch (e) {
