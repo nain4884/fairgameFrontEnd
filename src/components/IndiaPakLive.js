@@ -1,6 +1,7 @@
 import { Box, TextField, Typography, useTheme } from "@mui/material";
 import { borderTop } from "@mui/system";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef, useImperativeHandle, forwardRef } from "react";
+import React, { } from 'react';
 import StyledImage from "./StyledImage";
 import { LiveOff, LiveOn } from "../expert/assets";
 import SessionResultModal from "./SessionResultModal";
@@ -18,7 +19,36 @@ import {
     setAllEventSession,
 } from "../newStore/reducers/expertMatchDetails";
 
-export default function IndiaPakLive({
+// const IndiaPakLive = React.forwardRef(({ match }, ref) => {
+//     alert(match?.id)
+//     const childRef = useRef(null);
+
+//     useImperativeHandle(ref, () => ({
+//         childFunction() {
+//             alert("Child function called from parent component");
+//             // Perform any desired actions in the child component
+//         }
+//     }));
+
+//     // Rest of the child component code
+
+//     return (
+//         <Box
+//             sx={{
+//                 flex: 1,
+//                 background: "#F8C851",
+//                 borderRadius: "5px",
+//                 minHeight: "300px",
+//                 py: "30px",
+//                 px: "20px",
+//             }}
+//         >
+//             {/* Child component JSX */}
+//         </Box>
+//     );
+// });
+// export default IndiaPakLive;
+const IndiaPakLive = React.forwardRef(({
     createSession,
     match,
     showDialogModal,
@@ -27,7 +57,8 @@ export default function IndiaPakLive({
     handleBetData,
     proLoss1,
     setCheckBetId,
-}) {
+    childFunction, }, ref) => {
+    const childRef = useRef(null);
     const { socket } = useContext(SocketContext);
     const { axios } = setRole();
     const dispatch = useDispatch();
@@ -82,6 +113,19 @@ export default function IndiaPakLive({
     //         temp = done.data
     //     }
     // }
+
+    // useEffect(() => {
+    //     alert(sessionBetId)
+    // }, [sessionBetId]);
+
+    useImperativeHandle(ref, () => ({
+        childFunction(item) {
+            // alert(JSON.stringify(item));
+            getManuallBookMaker(item?.bet_id?.id);
+            // alert("Child function called from parent component");
+            // Perform any desired actions in the child component
+        }
+    }));
 
     // console.log('Session', temp)
     useEffect(() => {
@@ -170,7 +214,7 @@ export default function IndiaPakLive({
     }, [socket, betId, sessionAllBet]);
 
     useEffect(() => {
-        // alert(JSON.stringify(globalStore.isSession))
+        // alert(JSON.stringify(sessionEvent?.id))
         if (sessionEvent?.id || sessionBetId) {
             // alert(JSON.stringify(betData))
             if (sessionBetId) {
@@ -589,7 +633,8 @@ export default function IndiaPakLive({
             </Box>
         </Box>
     );
-}
+});
+export default IndiaPakLive;
 
 const AddSession = ({
     createSession,

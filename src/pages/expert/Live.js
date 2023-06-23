@@ -1,6 +1,6 @@
 import { IndiaPakLive, SessionResult, BetLive, DailogModal } from "../../components";
 import { Box } from "@mui/material";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from './Header'
 import Background from './Background'
@@ -10,6 +10,7 @@ import { setDailogData } from "../../store/dailogModal";
 import { SocketContext } from "../../context/socketContext";
 
 export default function Live() {
+    const childRef = useRef(null);
     const { socket } = useContext(SocketContext);
     const location = useLocation()
     const navigate = useNavigate()
@@ -56,14 +57,18 @@ export default function Live() {
 
     //     }
     // }, [socket]);
-
+    const handleSession = (item) => {
+        if (childRef.current) {
+            childRef.current.childFunction(item); // Call the child function through the ref
+        }
+    };
     return (
         <Background>
             {/* <Header /> */}
             <Box display="flex">
                 <Box flex={1} sx={{ margin: "10px" }}>
-                    <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} proLoss1={proLoss1} setCheckBetId={setCheckBetId} />
-                    <SessionResult createSession={location?.state?.createSession} showDialogModal={showDialogModal} betId={betId} />
+                    <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} proLoss1={proLoss1} setCheckBetId={setCheckBetId} ref={childRef} />
+                    <SessionResult createSession={location?.state?.createSession} showDialogModal={showDialogModal} betId={betId} handleSession={handleSession} sessionEvent={location?.state?.sessionEvent} />
                 </Box>
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
                     {/* {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />} */}
