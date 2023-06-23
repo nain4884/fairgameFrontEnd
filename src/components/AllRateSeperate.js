@@ -101,13 +101,14 @@ const AllRateSeperate = ({
       <Box
         sx={[
           {
-            width: { tablet: "98%", mobile: "98%", laptop: "100%" },
+            width: { tablet: "100%", mobile: "100%", laptop: "100%" },
             display: "flex",
             flexDirection: "column",
             alignSelf: "center",
             marginX: { laptop: "0vw", mobile: "0px", tablet: "0px" },
-            marginY: { laptop: ".5vh", mobile: "3px" },
-            marginBottom: { laptop: ".5vh", mobile: "6px" },
+            marginY: { laptop: ".5vh", mobile: "2px" },
+            marginTop: { mobile: "0" },
+            marginBottom: { laptop: ".5vh", mobile: "2px" },
             borderRadius: "2px",
             background: "white",
             padding: '1px',
@@ -140,7 +141,7 @@ const AllRateSeperate = ({
           >
             <Typography
               sx={{
-                fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+                fontSize: { laptop: "13px", tablet: "10px", mobile: "10px" },
                 fontWeight: "bold",
                 marginLeft: "7px",
               }}
@@ -204,6 +205,7 @@ const AllRateSeperate = ({
           </Box>
         </Box>
         {visible && (
+          <>
           <Box sx={{ display: "flex", flexDirection: "row" , gap: '1px' }}>
             <Box
               sx={{
@@ -247,7 +249,7 @@ const AllRateSeperate = ({
               </Box>
             )}
           </Box>
-        )}
+       
         <Box
           sx={{
             maxHeight: { mobile: "200px", laptop: "420px" },
@@ -438,6 +440,8 @@ const AllRateSeperate = ({
                 currentPageNo={allbetsPage}
               /> */}
         </Box>
+        </>
+         )}
       </Box>
 
       {/* --------- */}

@@ -60,9 +60,10 @@ const SessionMarket = ({
           display: "flex",
           position: "relative",
           background: "white",
-          padding: 0.3,
+          padding: '1px',
           flexDirection: "column",
-          marginY: { mobile: ".2vh", laptop: ".5vh" },
+          marginY: { mobile: "2px", laptop: ".5vh" },
+          marginTop: { mobile: "0" },
           width: { mobile: "98%", laptop: "97%" },
           marginX: "1vw",
           alignSelf: {
@@ -77,7 +78,7 @@ const SessionMarket = ({
             display: "flex",
             height: 38,
             flexDirection: "row",
-            width: "99.7%",
+            width: "99.9%",
             alignSelf: "center",
           }}
         >
@@ -206,7 +207,7 @@ const SessionMarket = ({
                   display: "flex",
                   background: "#319E5B",
                   height: "25px",
-                  width: "99.7%",
+                  width: "99.9%",
                   alignSelf: "center",
                 }}
               >
@@ -248,6 +249,10 @@ const SessionMarket = ({
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
+                      borderLeft: {
+                        laptop: "5px solid #319e5b",
+                        mobile: "1px solid #319e5b",
+                      },
                     }}
                   >
                     <Typography
@@ -260,7 +265,7 @@ const SessionMarket = ({
                   <Box
                     sx={{
                       background: "#00C0F9",
-                      width: { laptop: "16.5%", mobile: "30%" },
+                      width: { laptop: "16.5%", mobile: "29.9%" },
                       height: "100%",
                       display: "flex",
                       justifyContent: "center",

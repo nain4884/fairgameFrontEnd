@@ -18,6 +18,7 @@ const LiveMatchHome = ({ currentMatch }) => {
           alignSelf: "center",
           marginX: { laptop: "0vw", mobile: "0px", tablet: "0px" },
           marginY: { laptop: ".5vh", mobile: "0px" },
+          marginTop: { mobile: "0px" },
           borderRadius: "2px",
           background: "white",
           padding: '1px',
@@ -49,7 +50,7 @@ const LiveMatchHome = ({ currentMatch }) => {
         >
           <Typography 
              sx={{
-              fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+              fontSize: { laptop: "13px", tablet: "10px", mobile: "10px" },
               fontWeight: "bold",
               marginLeft: "7px",
             }}

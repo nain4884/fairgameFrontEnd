@@ -1344,7 +1344,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   alignItems: "center",
                   justifyContent: "center",
                   display: "flex",
-                  gap: "8px",
+                  gap: { laptop: "8px", mobile: "0px", tablet: "0px" },
                   marginTop: "2%",
                   flexDirection: "column",
                 }}

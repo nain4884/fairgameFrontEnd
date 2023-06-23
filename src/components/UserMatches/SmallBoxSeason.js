@@ -3,7 +3,7 @@ import React from "react";
 
 const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
   // const totalAmount = sessionBets?.reduce((acc, obj) => acc + obj?.amount || Number(obj?.stake), 0);
-
+// alert(totalAmount)
   return (
     <Box
       sx={{
@@ -54,7 +54,7 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
           // position: "absolute",
           display: "flex",
           left: { mobile: "60%", laptop: "55vw", tablet: "65%" },
-          justifyContent: "center",
+          justifyContent: "space-around",
           alignItems: "center",
           height: "30px",
           background: "white",
@@ -70,16 +70,17 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
             lineHeight: '1'
           }}
         >
-          Total Amount
+          Total Amount 
         </Typography>
         <Typography
           sx={{
             fontSize: { mobile: "12px", tablet: "12px", laptop: "12px" },
             fontWeight: "bold",
             color: "#FF4D4D",
+            lineHeight: '1.5',
           }}
         >
-          {totalAmount > 0 ? `-`+totalAmount : totalAmount}
+          {totalAmount > 0 ? `-`+totalAmount :totalAmount == undefined?0: totalAmount}
         </Typography>
       </Box>
     </Box>

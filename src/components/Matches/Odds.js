@@ -185,8 +185,9 @@ const Odds = ({ onClick, top, blur, match }) => {
             background-attachment: fixed;
             position: absolute;
             top: 0;
-            left: 0;
-            width: 68px;
+            left: -9px;
+            width: 60px;
+            
           }
           .wave {
             border-radius: 1000% 1000% 0 0;
@@ -227,13 +228,20 @@ const Odds = ({ onClick, top, blur, match }) => {
               transform: translateX(1);
             }
           }
+          @media only screen and (max-width: 575px) {
+            .liveAnimation {
+              top: -2px;
+              left: -8px;
+              height: 18px;
+            }
+          }
         `}
       </style>
       <Box
         sx={{
           position: "relative",
           width: "100%",
-          marginY: { mobile: ".8vh", laptop: "3px" },
+          marginY: { mobile: "3vh", laptop: "3px" },
           marginTop: {
             mobile: top ? "10px" : "1.2vh",
             laptop: top ? "10px" : "1vh",

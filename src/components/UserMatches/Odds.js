@@ -210,9 +210,10 @@ const Odds = ({
           position: "relative",
           display: "flex",
           backgroundColor: "white",
-          padding: 0.2,
+          padding: { mobile: "1px", laptop: ".1vh" },
           flexDirection: "column",
-          marginY: { mobile: ".2vh", laptop: ".5vh" },
+          marginY: { mobile: "2px", laptop: ".5vh" },
+          marginTop: { mobile: "0" },
           width: { mobile: "98%", laptop: "97%" },
           marginX: "1vw",
           alignSelf: {
@@ -356,7 +357,7 @@ const Odds = ({
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                width: "99.7%",
+                width: "99.9%",
                 alignSelf: "center",
               }}
             >
@@ -400,7 +401,7 @@ const Odds = ({
                     alignItems: "center",
                     borderLeft: {
                       laptop: "5px solid #319e5b",
-                      mobile: "2px solid #319e5b",
+                      mobile: "1px solid #319e5b",
                     },
                   }}
                 >
@@ -414,7 +415,7 @@ const Odds = ({
                 <Box
                   sx={{
                     background: "#FF9292",
-                    width: { laptop: "16.6%", mobile: "30%" },
+                    width: { laptop: "16.6%", mobile: "29.9%" },
                     height: "100%",
                     display: "flex",
                     justifyContent: "center",
