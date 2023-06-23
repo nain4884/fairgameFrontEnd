@@ -31,9 +31,12 @@ const SessionResultModal = ({
   const myDivRef = useRef(null);
 
   const scrollToBottom = () => {
-    myDivRef.current?.scrollIntoView({});
+    myDivRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
   };
-
   // useEffect(() => {
   //   if (socket && socket.connected) {
   //     socket.onevent = async (packet) => {
@@ -214,7 +217,6 @@ const SessionResultModal = ({
       }}
     >
       <Box
-        ref={myDivRef}
         sx={[
           {
             width: "100%",
@@ -257,6 +259,7 @@ const SessionResultModal = ({
           alignItems: "center",
           justifyContent: "center",
         }}
+        ref={myDivRef}
       >
         {newData?.betStatus !== 3 ? (
           <TextField

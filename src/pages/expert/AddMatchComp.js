@@ -39,6 +39,7 @@ const stateDetail = {
   20: { field: "marketId", val: "" },
   21: { field: "delaySecond", val: "" },
   22: { field: "CompetitionName", val: "" },
+  23: { field: "EventId", val: null },
 };
 
 const AddMatchComp = () => {
@@ -141,6 +142,7 @@ const AddMatchComp = () => {
           request.append(`${Detail[i + 1].field}`, Detail[i + 1].val);
         if (i === 19) request.append(`${Detail[i + 1].field}`, marketId);
       }
+      request.append("EventId", Detail[23].val);
       const { data } = await axios.post(`/game-match/addmatch`, request);
       if (data.message === "Match added successfully.")
         toast.success(data.message);
@@ -160,6 +162,7 @@ const AddMatchComp = () => {
       data.forEach((match) => {
         matchesList.push({
           EventName: match.EventName,
+          EventId: match.EventId,
           MarketId: match.MarketId,
           CompetitionId: match.CompetitionId,
           CompetitionName: match.CompetitionName,
@@ -344,8 +347,8 @@ const AddMatchComp = () => {
                   marginLeft: "0px",
                   marginTop: "0px",
                   position: "absolute",
-                  maxHeight:"400px",
-                  overflow:"auto"
+                  maxHeight: "400px",
+                  overflow: "auto",
                 }}
                 dropDownTextStyle={imputStyle}
                 Detail={Detail}
@@ -354,40 +357,7 @@ const AddMatchComp = () => {
               />
               {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Match Name'} data={["India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England"]} place={2} /> */}
             </Box>
-         {Detail[22].val!=="" &&  <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Competition Name"}
-                type={"text"}
-                required={true}
-                value={Detail[22].val}
-                InputValType={""}
-                place={22}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-              {Error[22]?.val && (
-                <Typography
-                  color="red"
-                  sx={{
-                    fontSize: {
-                      mobile: "10px",
-                      laptop: "12px",
-                      tablet: "12px",
-                    },
-                  }}
-                >
-                  Competition Name Required
-                </Typography>
-              )}
-            </Box>}
+
             {/* <LabelValueComponent icon={ArrowDownBlack} containerStyle={{ flex: 1,  }} title={"Match Name"} value="Enter Name of the Match..." /> */}
             <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
@@ -789,7 +759,7 @@ const AddMatchComp = () => {
             }}
             sx={{
               background: "#10DC61",
-              cursor:"pointer",
+              cursor: "pointer",
               height: "40px",
               width: { mobile: "50%", laptop: "15%", tablet: "15%" },
               display: "flex",
@@ -809,7 +779,7 @@ const AddMatchComp = () => {
             sx={{
               background: "#E32A2A",
               height: "40px",
-              cursor:"pointer",
+              cursor: "pointer",
               marginLeft: "20px",
               display: "flex",
               width: { mobile: "50%", laptop: "15%", tablet: "15%" },
