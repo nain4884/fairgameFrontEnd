@@ -82,37 +82,37 @@ export default function Login(props) {
         // let confirmAuth = await localStorage.getItem("confirmAuth");
         // alert("pop 111:" + confirmAuth)
         const currentURL = window.location.href;
-        if (currentURL !== 'http://localhost:3000/' || currentURL !== 'http://159.65.154.97:3000/' || currentURL !== 'http://143.244.138.15:3000/') {
-          if (value && !confirmAuth) {
-            try {
-              const config = {
-                headers: {
-                  'Authorization': `Bearer ${token}`
-                }
-              };
-              const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
-              const data = response.data;
-              loginToAccountAuth(data?.data?.username, "pass");
-              console.log(data);
-            } catch (error) {
-              // Handle any errors
-              console.error('Error fetching data:', error);
-            }
-            // setConfirmPop(true)
-            // user--role4
-            // expert---role3
-            // wallet---role2
-            // admin---role1
+        // if (currentURL !== 'http://localhost:3000/' || currentURL !== 'http://159.65.154.97:3000/' || currentURL !== 'http://143.244.138.15:3000/') {
+        if (value && !confirmAuth) {
+          try {
+            const config = {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            };
+            const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+            const data = response.data;
+            loginToAccountAuth(data?.data?.username, "pass");
+            console.log(data);
+          } catch (error) {
+            // Handle any errors
+            console.error('Error fetching data:', error);
+          }
+          // setConfirmPop(true)
+          // user--role4
+          // expert---role3
+          // wallet---role2
+          // admin---role1
+        } else {
+          let checkSessionStorage = sessionStorage.getItem("JWTuser");
+          if (checkSessionStorage) {
+            navigate("/");
+            setConfirmPop(true);
           } else {
-            let checkSessionStorage = sessionStorage.getItem("JWTuser");
-            if (checkSessionStorage) {
-              navigate("/login");
-              setConfirmPop(true);
-            } else {
-              setConfirmPop(false);
-            }
+            setConfirmPop(false);
           }
         }
+        // }
         //  else {
         //   navigate(`/matches`);
         // }
