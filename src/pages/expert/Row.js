@@ -151,38 +151,38 @@ const Row = ({ index, containerStyle, data }) => {
           />
           <ButtonWithSwitch
             title="Bookmaker"
-            containerStyle={{ width: "14%"}}
+            containerStyle={{ width: "14%" }}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={2}
           />
           <ButtonWithSwitch
             title="Session"
-            containerStyle={{ width: "14%"}}
+            containerStyle={{ width: "14%" }}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={3}
           />
           <ButtonWithSwitch
-            title={`Manual\nBookmaker`}
-            containerStyle={{ width: "14%"}}
+            title={`Quick\nBookmaker`}
+            containerStyle={{ width: "14%" }}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={4}
           />
           <ButtonWithSwitch
             title={`Manual\nSession`}
-            containerStyle={{ width: "14%"}}
+            containerStyle={{ width: "14%" }}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={5}
           />
           {data.stopAt && (
-            <ButtonWithSwitch 
+            <ButtonWithSwitch
               notSwitch={true}
               title={`Match Profit/Loss`}
-              containerStyle={{ width: "14%"}}
-              updateMatchStatus={data?.matchProfitLoss}          
+              containerStyle={{ width: "14%" }}
+              updateMatchStatus={data?.matchProfitLoss}
             />
           )}
         </Box>

@@ -320,7 +320,7 @@ const MatchOdds = ({
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-            data?.bookmakerLive[0]?.betStatus === 0
+              data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }

@@ -1180,7 +1180,7 @@ const DeleteBet = ({ }) => {
               // }
               data={currentMatch}
               manualBookmakerData={manualBookmakerData}
-              typeOfBet={"MANUAL BOOKMAKER"}
+              typeOfBet={"Quick Bookmaker"}
             // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
             />
           )}

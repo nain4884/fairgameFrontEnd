@@ -1,15 +1,15 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
 import { memo } from "react";
 
-const CustomButton = ({ id, title, color, loading, onClick }) => {
+const CustomButton = ({ id, title, color, loading, onClick,session }) => {
     return (
       <Box
         onClick={onClick}
         sx={{
-          width: "100%",
+          width:session? "40%": "100%",
           cursor: "pointer",
-          height: "30px",
-          marginTop: "-14px",
+          height: session ? "28px":"30px",
+          marginTop: session ? 0 :"-14px",
           borderRadius: "5px",
           background: color,
           justifyContent: "center",

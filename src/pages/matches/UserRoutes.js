@@ -18,7 +18,7 @@ const USerRoutes = () => {
   const location = useLocation();
 
   // Check if the current route is the login page
-  const isLoginPage = ["/"].includes(location.pathname);
+  const isLoginPage = ["/",].includes(location.pathname);
   function UserPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTuser");
     if (!token) {
