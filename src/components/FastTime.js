@@ -48,7 +48,7 @@ const FastTime = ({
           boxStyle={{
             backgroundColor: "transparent",
             borderRadius: "3px",
-            fontSize: "20px",
+            fontSize: "22px",
             justifyContent: "center",
             cursor: "pointer",
             alignItems: "center",

@@ -156,7 +156,7 @@ const DropDownSimple = ({
     <Box sx={[{ width: "19%" }, containerStyle]} ref={innerRef}>
       <Typography
         sx={[
-          { fontSize: "12px", fontWeight: "600", marginBottom: ".3vh" },
+          { fontSize: "12px", fontWeight: "600", marginBottom: ".3vh", color: '#202020' },
           titleStyle,
         ]}
       >

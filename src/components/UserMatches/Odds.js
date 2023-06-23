@@ -351,7 +351,7 @@ const Odds = ({
           </Box>
         )}
         {visible && (
-          <Box sx={{ color: "black", position: "relative" }}>
+          <Box sx={{ color: "black", position: "relative",  overflow: 'hidden' }}>
             <Box
               sx={{
                 display: "flex",
@@ -516,6 +516,7 @@ const Odds = ({
                   justifyContent: "center",
                   alignItems: "center",
                   background: "rgba(0, 0, 0, .5)",
+                 
                 }}
               ></Box>
             )}

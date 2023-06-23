@@ -860,7 +860,7 @@ const SingleBox = ({
         width: "100%",
         height: "25px",
         background: "#319E5B",
-        marginX: { mobile: "1px", laptop: "0px" },
+        marginX: { mobile: "0px", laptop: "0px" },
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

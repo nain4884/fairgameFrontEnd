@@ -221,7 +221,7 @@ const AllRateSeperate = ({
               <Typography
                 sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
               >
-                {"32"}
+                {"No"}
               </Typography>
             </Box>
             <RowComponent
