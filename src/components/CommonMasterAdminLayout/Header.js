@@ -353,9 +353,9 @@ const CustomHeader = ({ }) => {
         flexDirection: matchesMobile ? "column" : "row",
         alignItems: !matchesMobile ? "center" : "flex-start",
         justifyContent: "space-between",
-        paddingX: { laptop: "0.5%", mobile: "1%" },
-        paddingY: matchesMobile ? "15px" : "0px",
-        paddingBottom: matchesMobile ? "10px" : "0px",
+        paddingX: { laptop: "2%", mobile: "2%" },
+        paddingY: matchesMobile ? "8px" : "0px",
+        paddingBottom: matchesMobile ? "5px" : "0px",
       },
       (theme) => ({
         backgroundImage: `${theme.palette.primary.headerGradient}`,
@@ -426,7 +426,7 @@ const CustomHeader = ({ }) => {
       justifyContent: "flex-end",
       // minWidth: matchesMobile ? "100%" : "0px",
       alignItems: "center",
-      marginTop: matchesMobile ? "15px" : "0px",
+      marginTop: matchesMobile ? "0" : "0px",
     },
     BoxCont1sub2SearchInputContStyle: {
       height: "30px",
@@ -437,7 +437,7 @@ const CustomHeader = ({ }) => {
     BoxEnd: {
       minHeight: {
         laptop: 60,
-        mobile: ["admin", "wallet"].includes(nav) ? "113px" : 60 + 32 + 42,
+        mobile: ["admin", "wallet"].includes(nav) ? "83px" : 60 + 32 + 42,
         tablet: ["admin", "wallet"].includes(nav) ? "75px" : 60 + 32 + 42,
       },
     },
@@ -565,7 +565,7 @@ const CustomHeader = ({ }) => {
                 display: "flex",
                 alignItems: "center",
                 width: "100%",
-                marginTop: "10px",
+                marginTop: "0",
               }}
             >
               <ButtonHead

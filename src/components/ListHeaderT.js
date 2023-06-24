@@ -23,7 +23,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }, }}>
             User Details
           </Typography>
         </Box>
@@ -38,7 +38,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px", lineHeight: '1.1' }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }, lineHeight: '1.1' }}>
             Credit Referance
           </Typography>
         </Box>
@@ -52,7 +52,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
             Balance
           </Typography>
         </Box>
@@ -66,7 +66,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }}}>
             Client Profit/Loss
           </Typography>
         </Box>
@@ -80,7 +80,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
           % Profit/Loss
           </Typography>
         </Box>
@@ -94,7 +94,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
             Commission
           </Typography>
         </Box>
@@ -108,7 +108,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
             Exposure
           </Typography>
         </Box>
@@ -122,7 +122,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
             Available Balance
           </Typography>
         </Box>
@@ -136,7 +136,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
             Bet Lock
           </Typography>
         </Box>
@@ -150,7 +150,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
             User Lock
           </Typography>
         </Box>
@@ -164,7 +164,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
             Exposure Limit
           </Typography>
         </Box>
@@ -178,7 +178,7 @@ const ListHeaderT = () => {
             borderRight: "2px solid white",
           }}
         >
-          <Typography sx={{ color: "white", fontSize: "12px" }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }  }}>
             Account Type
           </Typography>
         </Box>

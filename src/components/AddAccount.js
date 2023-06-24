@@ -15,11 +15,12 @@ import InputMyPartnership from "./InputMypartnership";
 
 const containerStyles = {
   marginTop: { mobile: "2px", laptop: "10px" },
+  
 };
 
 const titleStyles = {
   color: "#202020",
-  fontSize: { mobile: "12px", laptop: "12px" },
+  fontSize: { mobile: "10px", laptop: "12px" },
   fontWeight: "600",
   marginLeft: "0px",
 };
@@ -101,7 +102,7 @@ const AddAccount = () => {
   ]);
 
   const matchComissionTypes = [
-    "Select Match Commission Type",
+    "Commission Type ",
     "Total Loss",
     "Entry Wise",
   ];
@@ -477,7 +478,7 @@ const AddAccount = () => {
 
   return (
     <>
-      <Box sx={{ paddingY: "20px", paddingTop: "10px", marginX: "1%" }}>
+      <Box sx={{ paddingY: "20px", paddingTop: "0", marginX: "1%" }}>
         <Typography
           sx={{ color: "white", fontSize: "18px", fontWeight: "600", marginLeft: '4px' }}
         >
@@ -495,7 +496,7 @@ const AddAccount = () => {
               minHeight: "60vh",
               borderRadius: "5px",
               padding: "20px",
-              paddingTop: "10px",
+              paddingTop: "3px",
               marginTop: "2px",
               display: "flex",
               flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
@@ -689,96 +690,103 @@ const AddAccount = () => {
                   )}
                 </div>
               </Box>
-              <Input
-                containerStyle={{
-                  ...containerStyles,
-                  display: Detail[9].val === "user" ? "none" : "block",
-                }}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputContainerStyle={{
-                  ...inputContainerStyle,
-                  backgroundColor: "#DEDEDE",
-                }}
-                title={"Upline Partnership"}
-                setDetail={setDetail}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                disabled={true}
-                place={10}
-                autoMaticFillValue={`${Detail[10]?.val}`}
-              />
-              {error[10].val && (
-                <p style={{ color: "#fa1e1e" }}>Field Required</p>
-              )}
-
-              {Detail[9].val === "user" ? (
-                <InputMyPartnership
-                  inputContainerStyle={{
-                    ...inputContainerStyle,
-                  }}
-                  containerStyle={{
-                    ...containerStyles,
-                    display: Detail[9].val === "user" ? "none" : "block",
-                  }}
-                  titleStyle={titleStyles}
-                  inputStyle={imputStyle}
-                  title={"My Partnership"}
-                  setDetail={setDetail}
-                  onFocusOut={CheckThisPosition}
-                  toFoucs={true}
-                  min={0}
-                  max={100}
-                  disabled={Detail[9].val === "user"}
-                  setDownlinePar={setDownlinePar}
-                  Detail={Detail}
-                  value={Detail[11].val}
-                  placeholder={Detail[11].val}
-                  setError={setError}
-                  error={error}
-                  place={11}
-                  type={"Number"}
-                />
-              ) : (
+              <Box sx={{
+                display: { laptop: "block", tablet: "grid", mobile: "grid" },
+                // grid-template-columns: auto auto auto;
+                gridTemplateColumns: '50% 47%',
+                gridColumnGap: '10px'
+              }}>
                 <Input
-                  inputContainerStyle={{
-                    ...inputContainerStyle,
-                    backgroundColor: Detail[9].val === "user" && "#DEDEDE",
-                  }}
                   containerStyle={{
                     ...containerStyles,
                     display: Detail[9].val === "user" ? "none" : "block",
                   }}
                   titleStyle={titleStyles}
                   inputStyle={imputStyle}
-                  title={"My Partnership"}
+                  inputContainerStyle={{
+                    ...inputContainerStyle,
+                    backgroundColor: "#DEDEDE",
+                  }}
+                  title={"Upline Partnership"}
                   setDetail={setDetail}
-                  onFocusOut={CheckThisPosition}
-                  toFoucs={true}
-                  min={0}
-                  setMypar={(val) => setMypar(val)}
-                  max={100}
-                  setDownlinePar={setDownlinePar}
                   Detail={Detail}
-                  placeholder={Detail[11].val}
                   setError={setError}
                   error={error}
-                  place={11}
-                  type={"Number"}
+                  disabled={true}
+                  place={10}
+                  autoMaticFillValue={`${Detail[10]?.val}`}
                 />
-              )}
+                {error[10].val && (
+                  <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                )}
 
-              {myPartnershipsError && (
-                <p style={{ color: "#fa1e1e" }}>
-                  sum of upline , downline and my partnership should be not
-                  exceeding 100.
-                </p>
-              )}
+                {Detail[9].val === "user" ? (
+                  <InputMyPartnership
+                    inputContainerStyle={{
+                      ...inputContainerStyle,
+                    }}
+                    containerStyle={{
+                      ...containerStyles,
+                      display: Detail[9].val === "user" ? "none" : "block",
+                    }}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    title={"My Partnership"}
+                    setDetail={setDetail}
+                    onFocusOut={CheckThisPosition}
+                    toFoucs={true}
+                    min={0}
+                    max={100}
+                    disabled={Detail[9].val === "user"}
+                    setDownlinePar={setDownlinePar}
+                    Detail={Detail}
+                    value={Detail[11].val}
+                    placeholder={Detail[11].val}
+                    setError={setError}
+                    error={error}
+                    place={11}
+                    type={"Number"}
+                  />
+                ) : (
+                  <Input
+                    inputContainerStyle={{
+                      ...inputContainerStyle,
+                      backgroundColor: Detail[9].val === "user" && "#DEDEDE",
+                    }}
+                    containerStyle={{
+                      ...containerStyles,
+                      display: Detail[9].val === "user" ? "none" : "block",
+                    }}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    title={"My Partnership"}
+                    setDetail={setDetail}
+                    onFocusOut={CheckThisPosition}
+                    toFoucs={true}
+                    min={0}
+                    setMypar={(val) => setMypar(val)}
+                    max={100}
+                    setDownlinePar={setDownlinePar}
+                    Detail={Detail}
+                    placeholder={Detail[11].val}
+                    setError={setError}
+                    error={error}
+                    place={11}
+                    type={"Number"}
+                  />
+                )}
 
-              {error[11]?.val !== "" && (
-                <p style={{ color: "#fa1e1e" }}>{error[11]?.val}</p>
-              )}
+                {myPartnershipsError && (
+                  <p style={{ color: "#fa1e1e" }}>
+                    sum of upline , downline and my partnership should be not
+                    exceeding 100.
+                  </p>
+                )}
+
+                {error[11]?.val !== "" && (
+                  <p style={{ color: "#fa1e1e" }}>{error[11]?.val}</p>
+                )}
+              </Box>
               <Input
                 containerStyle={{
                   ...containerStyles,
@@ -807,6 +815,12 @@ const AddAccount = () => {
 
               {Detail[9].val === "user" && (
                 <>
+                <Box sx={{
+                display: { laptop: "block", tablet: "grid", mobile: "grid" },
+                // grid-template-columns: auto auto auto;
+                gridTemplateColumns: '50% 47%',
+                gridColumnGap: '10px'
+              }}>
                   <DropDownSimple
                     dropStyle={{
                       filter:
@@ -851,7 +865,7 @@ const AddAccount = () => {
                       filter:
                         "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
                     }}
-                    valueStyle={{ ...imputStyle, color: "white" }}
+                    valueStyle={{ ...imputStyle, color: "white",   }}
                     title={"Match Commission Type"}
                     valueContainerStyle={{
                       height: "45px",
@@ -859,13 +873,16 @@ const AddAccount = () => {
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
+                      
                     }}
                     containerStyle={{
                       width: "100%",
                       position: "relative",
                       marginTop: "10px",
+                      
+                      
                     }}
-                    titleStyle={{ marginLeft: "0px" }}
+                    titleStyle={{ marginLeft: "0px", }}
                     data={matchComissionTypes}
                     dropDownStyle={{
                       width: "100%",
@@ -873,10 +890,11 @@ const AddAccount = () => {
                       marginTop: "0px",
                       position: "absolute",
                     }}
-                    dropDownTextStyle={imputStyle}
+                    dropDownTextStyle={{...imputStyle, lineHeight: 1 }}
                     Detail={Detail}
                     setDetail={setDetail}
                     place={17}
+                    
                   />
                   {error[17]?.val && (
                     <p style={{ color: "#fa1e1e" }}>Field Required</p>
@@ -926,10 +944,17 @@ const AddAccount = () => {
                         )}
                       </>
                     )}
+                    </Box>
                 </>
               )}
             </Box>
             <Box sx={{ flex: 2 }} className='addAccountRemark'>
+            <Box sx={{
+                display: { laptop: "block", tablet: "grid", mobile: "grid" },
+                // grid-template-columns: auto auto auto;
+                gridTemplateColumns: '50% 47%',
+                gridColumnGap: '10px'
+              }}>
               <Input
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
@@ -941,7 +966,7 @@ const AddAccount = () => {
                 placeholder={"Remark (Optional)"}
                 inputContainerStyle={{
                   ...inputContainerStyle,
-                  height: { laptop: "205px", mobile: "75px" },
+                  height: { laptop: "205px", mobile: "90px" },
                   width: "100%",
                 }}
                 title={"Remark"}
@@ -951,11 +976,12 @@ const AddAccount = () => {
                 error={error}
                 place={13}
               />
+              <div>
               <Input
                 containerStyle={{ ...containerStyles, width: "100%" }}
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
-                inputContainerStyle={{ ...inputContainerStyle }}
+                inputContainerStyle={{ ...inputContainerStyle  }}
                 title={"Admin Transaction Password*"}
                 required={true}
                 setDetail={setDetail}
@@ -967,22 +993,26 @@ const AddAccount = () => {
                 toFoucs={true}
               />
               {error[14]?.val !== "" && (
-                <p style={{ color: "#fa1e1e" }}>
+                <Typography style={{ color: "#fa1e1e" }}>
                   Admin Transaction Password Required
-                </p>
+                </Typography>
               )}
+              
+             
+              </div>
+              </Box>
               <Button
                 className="cursor-pointer"
                 sx={{
                   background: "#0B4F26",
-                  width: "50%",
+                  width: "100%",
                   display: "flex",
                   justifyContent: "center",
                   border: "2px solid black",
                   alignItems: "center",
                   borderRadius: "5px",
                   height: "45px",
-                  marginTop: "35px",
+                  marginTop: { mobile: "12px", laptop: "35px" },
                   color: "white",
                   fontSize: "18px",
                 }}
@@ -990,6 +1020,7 @@ const AddAccount = () => {
               >
                 Create
               </Button>
+             
               {errorShow && !successShow && (
                 <p style={{ color: "#fa1e1e" }}>{errorShow}</p>
               )}

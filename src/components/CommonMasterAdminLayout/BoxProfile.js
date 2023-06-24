@@ -54,6 +54,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         backgroundColor: "primary.main",
         minWidth: { laptop: "150px", mobile: "90px" },
         marginLeft: "1vw",
+        // marginRight: "1vw",
         display: "flex",
         alignItems: "center",
         boxShadow: "0px 3px 10px #B7B7B726",

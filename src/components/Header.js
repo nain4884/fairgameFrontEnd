@@ -319,6 +319,7 @@ const CustomHeader = ({ }) => {
               justifyContent: "space-between",
               width: "100%",
               flex: 1,
+              
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>
