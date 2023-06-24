@@ -295,7 +295,7 @@ const ListH = ({ getListOfUser, setPageCount }) => {
   return (
     <Box
       display={"flex"}
-      sx={{ justifyContent: "space-between", px: "10px", py: "6px", gap: 2, background: '#F8C851' }}
+      sx={{ justifyContent: "space-between", px: "10px", py: "3px", gap: 2, background: '#F8C851' }}
     >
       <Box display={"flex"} alignItems="center">
         <Box

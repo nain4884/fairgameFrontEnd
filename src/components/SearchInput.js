@@ -73,7 +73,7 @@ const SearchInput = ({
               mobile: "10vw",
             },
             width: {
-              mobile: width ? width : "40%",
+              mobile: width ? width : "32%",
               laptop: "17vw",
               tablet: "17vw",
             },
@@ -139,9 +139,9 @@ const SearchInput = ({
           />
         )}
         <Box
-          onClick={() => {
-            getListOfUser(searchValue);
-          }}
+          // onClick={() => {
+          //   getListOfUser(searchValue);
+          // }}
           sx={[
             {
               height: "30px",
