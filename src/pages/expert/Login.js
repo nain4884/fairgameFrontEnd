@@ -59,7 +59,7 @@ export default function Login(props) {
 
   const { socket, socketMicro } = useContext(SocketContext);
 
-//handled if user already exists and tries open other role login page
+  //handled if user already exists and tries open other role login page
   const { currentUser } = useSelector((state) => state?.currentUser);
   const currroles = useSelector((state) => state?.auth?.allRole);
 
@@ -67,25 +67,25 @@ export default function Login(props) {
     if (currentUser) {
       let roleDetail = currroles.find(findThisRole);
       function findThisRole(role) {
-        return role.id === currentUser.roleId;
+        return role.id === currentUser?.roleId;
       }
-      if (["user"].includes(roleDetail.roleName)) {
+      if (["user"].includes(roleDetail?.roleName)) {
         navigate("/matches");
       } else if (
         ["admin", "master", "superAdmin", "supperMaster"].includes(
-          roleDetail.roleName
+          roleDetail?.roleName
         )
       ) {
         navigate("/admin/list_of_clients");
       } else if (
-        ["fairGameWallet", "fairGameAdmin"].includes(roleDetail.roleName)
+        ["fairGameWallet", "fairGameAdmin"].includes(roleDetail?.roleName)
       ) {
         navigate("/wallet/list_of_clients");
-      } else if (["expert"].includes(roleDetail.roleName)) {
+      } else if (["expert"].includes(roleDetail?.roleName)) {
         navigate("/expert/match");
       }
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     if (socket && socket.connected) {

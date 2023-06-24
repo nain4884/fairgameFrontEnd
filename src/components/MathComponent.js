@@ -21,13 +21,32 @@ import {
     TIME,
     UD,
 } from "../assets";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { apiBasePath } from "./helper/constants";
 
-const MatchComponent = ({ currentMatch }) => {
+const MatchComponent = ({ currentMatch, liveScoreData }) => {
+    console.log("liveScoreData :", liveScoreData)
     const [visible, setVisible] = useState(true);
     const [overscore, setOverscore] = useState('23');
-    const [ballOutcomes, setBallOutcomes] = useState(['W', '2', '6', '4', 'w', '6', '1', '4']);
+    const [ballOutcomes, setBallOutcomes] = useState([]);
+    const [ballLastOutcomes, setBallLastOutcomes] = useState([]);
+    const [lastOverRun, setLastOverRun] = useState("");
+    const [currentOverRun, setCurrentOverRun] = useState("");
+    const [innings, setInnings] = useState([]);
+
+
+    useEffect(() => {
+        if (liveScoreData) {
+            setBallOutcomes(liveScoreData?.CurrentOver?.Balls);
+            setCurrentOverRun(liveScoreData?.CurrentOver?.Runs)
+            setBallLastOutcomes(liveScoreData?.LastOver?.Balls);
+            setLastOverRun(liveScoreData?.LastOver?.Runs);
+            setInnings(liveScoreData?.Innings);
+        }
+
+    }, [liveScoreData]);
+
+
     return (
         <Box
             sx={[
@@ -142,7 +161,7 @@ const MatchComponent = ({ currentMatch }) => {
                                     fontWeight: "bold",
                                 }}
                             >
-                                CRR: 30
+                                CRR: {innings?.[0]?.CRR}
                             </Typography>
                             <Typography
                                 sx={{
@@ -151,7 +170,7 @@ const MatchComponent = ({ currentMatch }) => {
                                     fontWeight: "bold",
                                 }}
                             >
-                                RRR: 32
+                                RRR: {innings?.[0]?.RRR ? innings?.[0]?.RRR : 0}
                             </Typography>
                         </Box>
                         <Box
@@ -164,15 +183,15 @@ const MatchComponent = ({ currentMatch }) => {
                             }}
                         >
 
-                            <Typography
+                            {innings?.[0]?.Runs && <Typography
                                 sx={{
                                     fontSize: { mobile: "8px", table: "10px", laptop: "12px" },
                                     marginTop: "1vh",
                                     fontWeight: "bold",
                                 }}
                             >
-                                171-3 (35.3)
-                            </Typography>
+                                {innings?.[0]?.Runs}/{innings?.[0]?.Wickets} ({innings?.[0]?.Overs})
+                            </Typography>}
                             {currentMatch?.teamA_Image && (
                                 <img
                                     style={{
@@ -192,7 +211,8 @@ const MatchComponent = ({ currentMatch }) => {
                                     fontWeight: "600",
                                 }}
                             >
-                                {currentMatch?.teamA}
+                                {innings[0]?.Team}
+                                {/* {currentMatch?.teamA} */}
                             </Typography>
                         </Box>
                         <Box
@@ -226,15 +246,16 @@ const MatchComponent = ({ currentMatch }) => {
                             }}
                         >
 
-                            <Typography
+                            {innings?.[1]?.Runs && <Typography
                                 sx={{
                                     fontSize: { mobile: "8px", table: "10px", laptop: "12px" },
                                     marginTop: "1vh",
                                     fontWeight: "bold",
                                 }}
                             >
-                                282-8 (50)
-                            </Typography>
+                                {/* 282-8 (50) */}
+                                {innings?.[1]?.Runs}/{innings?.[1]?.Wickets} ({innings?.[1]?.Overs})
+                            </Typography>}
                             {currentMatch?.teamB_Image && (
                                 <img
                                     style={{
@@ -254,7 +275,8 @@ const MatchComponent = ({ currentMatch }) => {
                                     fontWeight: "600",
                                 }}
                             >
-                                {currentMatch?.teamB}
+                                {innings[1]?.Team}
+                                {/* {currentMatch?.teamB} */}
                             </Typography>
                         </Box>
                     </Box>
@@ -266,7 +288,10 @@ const MatchComponent = ({ currentMatch }) => {
                                 // marginTop: "1vh",
                                 fontWeight: "bold",
                             }}>
-                                Last Overs: {overscore}
+                                Last Overs: {ballLastOutcomes.reduce((acc, curr) => {
+                                    const parsedValue = parseInt(curr);
+                                    return isNaN(parsedValue) ? acc : acc + parsedValue;
+                                }, 0)}
                             </Typography>
                             <List
                                 style={{
@@ -276,7 +301,7 @@ const MatchComponent = ({ currentMatch }) => {
                                     paddingBottom: 0
                                 }}
                             >
-                                {ballOutcomes.map((outcome, index) => (
+                                {ballLastOutcomes?.map((outcome, index) => (
                                     <ListItem key={index} style={{ padding: 0, width: 'auto', paddingLeft: '0px', paddingRight: '5px', }}>
                                         <ListItemText primary={<Typography sx={{ fontSize: { mobile: "8px", table: "10px", laptop: "12px" }, fontWeight: 'bold' }}>{outcome}</Typography>} />
                                     </ListItem>
@@ -290,7 +315,7 @@ const MatchComponent = ({ currentMatch }) => {
                                 // marginTop: "1vh",
                                 fontWeight: "bold",
                             }}>
-                                Current Over: {overscore}
+                                Current Over: {currentOverRun}
                             </Typography>
                             <List
                                 style={{
@@ -300,7 +325,7 @@ const MatchComponent = ({ currentMatch }) => {
                                     paddingBottom: 0
                                 }}
                             >
-                                {ballOutcomes.map((outcome, index) => (
+                                {ballOutcomes?.map((outcome, index) => (
                                     <ListItem key={index} style={{ padding: 0, width: 'auto', paddingLeft: '0px', paddingRight: '5px', }}>
                                         <ListItemText primary={<Typography sx={{ fontSize: { mobile: "8px", table: "10px", laptop: "12px" }, fontWeight: 'bold' }}>{outcome}</Typography>} />
                                     </ListItem>
