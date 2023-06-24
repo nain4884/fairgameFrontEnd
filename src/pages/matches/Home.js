@@ -79,6 +79,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
+  const [liveScoreData, setLiveScoreData] = useState();
   const [isHandled, setIsHandled] = useState(false);
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
@@ -1051,6 +1052,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       if (socketMicro && socketMicro.connected && marketId) {
         socketMicro.on("connect", () => {
           socketMicro.emit("init", { id: marketId });
+          socketMicro.emit("score", { id: eventId });
           activateLiveMatchMarket();
           setSessionLock(false);
         });
@@ -1076,6 +1078,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
         });
 
         socketMicro.emit("init", { id: marketId });
+
+        socketMicro.emit("score", { id: eventId });
         activateLiveMatchMarket();
         // socketMicro.on("bookMakerRateLive", (e) => {
         //   console.log("BookMaker", e);
@@ -1083,6 +1087,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
 
         socketMicro.on("reconnect", () => {
           socketMicro.emit("init", { id: marketId });
+          socketMicro.emit("score", { id: eventId });
           activateLiveMatchMarket();
           setSessionLock(false);
         });
@@ -1170,15 +1175,17 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             }
           }
         });
-        socketMicro.on(`score${eventId}`, (val) => {
+        socketMicro.on(`liveScore${eventId}`, (val) => {
+          // alert(11111)
           if (val !== null) {
-            console.log("val 333:", val);
-            // if (val.length > 0) {
-            //   // dispatch(setBookMakerLive(val[0]));
-            //   setBookmakerLive(val[0]);
-            // } else {
-            //   setBookmakerLive([]);
-            // }
+            // console.log("val 333:", JSON.str val);
+            setLiveScoreData(val)
+            if (val) {
+              // dispatch(setBookMakerLive(val[0]));
+              setLiveScoreData(val)
+            } else {
+              setLiveScoreData();
+            }
           }
         });
       } else {
@@ -1372,7 +1379,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   flexDirection: "column",
                 }}
               >
-                <MatchComponent currentMatch={currentMatch} />
+                <MatchComponent currentMatch={currentMatch} liveScoreData={liveScoreData} />
                 <div style={{ width: "100%" }}>
                   <MatchOdds
                     sessionBets={sessionBets}
@@ -1468,7 +1475,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                   />
                 </Box>
                 <Box sx={{ width: "30%", paddingRight: "1%" }}>
-                  <MatchComponent currentMatch={currentMatch} />{" "}
+                  <MatchComponent currentMatch={currentMatch} liveScoreData={liveScoreData} />{" "}
                   {/** Live scoreBoard */}
                   <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
                   <AllRateSeperate
