@@ -23,34 +23,25 @@ const LiveMarketComponent = ({
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          marginLeft: { mobile: mode == "1"  ? "2px" : 0, laptop: "10px" },
-          padding:{mobile:"3px",tablet:"5px",laptop:"5px"}
+          marginLeft: { mobile: mode == "1" ? "2px" : 0, laptop: "10px" },
+          
+          padding: { mobile: "3px", tablet: "5px", laptop: "5px" }
         }}
       >
-        <Typography
-          sx={{
-            color: "white",
-            fontSize: { mobile: "9px",tablet:"12px", laptop: "14px" },
-            fontWeight: "700",
-
-            overflow: "hidden",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {team}
-        </Typography>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'space-between', marginRight: { mobile: "0", tablet: "0", laptop: "10px" } , }}>
           <Typography
             sx={{
               color: "white",
-              fontSize: { mobile: "13px", laptop: "16px" },
-              marginRight: "5px",
+              fontSize: { mobile: "9px", tablet: "12px", laptop: "14px" },
               fontWeight: "700",
+
+              overflow: "hidden",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
             }}
           >
-            {value}
+            {team}
           </Typography>
           {(up == true || up == false) && (
             <StyledImage
@@ -67,10 +58,24 @@ const LiveMarketComponent = ({
               }}
             />
           )}
-          {!team && (
-            <img style={{ width: "20px", height: "12px" }} src={ARROWUP} />
-          )}
+
         </Box>
+        <Typography
+          sx={{
+            color: "white",
+            fontSize: { mobile: "13px", laptop: "16px" },
+            marginRight: { mobile: "0", laptop: "5px" },
+            fontWeight: "700",
+            display: 'inline',
+            textAlign: { mobile: "center", laptop: "left" },
+          }}
+        >
+          {value}
+        </Typography>
+
+        {!team && (
+          <img style={{ width: "20px", height: "12px" }} src={ARROWUP} />
+        )}
       </Box>
     );
   };
@@ -104,8 +109,10 @@ const LiveMarketComponent = ({
             background-size: 400% 400%;
             background-attachment: fixed;
             position: absolute;
-            top: -6px;
-            left: 8px;
+            top: -10px;
+            left: -1px;
+            width: 60px;
+            
           }
           .wave {
             border-radius: 1000% 1000% 0 0;
@@ -146,8 +153,13 @@ const LiveMarketComponent = ({
               transform: translateX(1);
             }
           }
-       
-         
+          @media only screen and (max-width: 575px) {
+            .liveAnimation {
+              top: -10px;
+              left: -1px;
+              height: 18px;
+            }
+          }
         
         `}
       </style>
@@ -165,7 +177,7 @@ const LiveMarketComponent = ({
           width: "99%",
           display: "flex",
           position: "relative",
-          margin: {mobile:"5px",tablet:"6px",laptop:"6px"},
+          margin: { mobile: "5px", tablet: "6px", laptop: "6px" },
           alignSelf: "center",
           justifyContent: "space-evenly",
           height: "55px",
@@ -173,33 +185,33 @@ const LiveMarketComponent = ({
           marginX: ".5%",
         }}
       >
-       
-   
+
+
         <Box sx={{ display: "flex", width: "100%", position: "relative" }}>
-        {mode == "1" && (
+          {mode == "1" && (
+            <Box
+              sx={{
+                // position: { mobile: "absolute", laptop: "relative" },
+                // left: { mobile: "2px", laptop: 0 },
+                // zIndex: 1,
+                width: "55px",
+                height: "55px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "1.5px solid white",
+                background: !selected ? "#46CF4D" : "rgba(0,0,0,.5)",
+              }}
+            >
+              <img src={CHECK} style={{ width: "40px", height: "40px" }} />
+            </Box>
+          )}
           <Box
             sx={{
-              // position: { mobile: "absolute", laptop: "relative" },
-              // left: { mobile: "2px", laptop: 0 },
-              // zIndex: 1,
-              width:  "55px" ,
-              height:  "55px" ,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              border: "1.5px solid white",
-              background: !selected ? "#46CF4D" : "rgba(0,0,0,.5)",
-            }}
-          >
-            <img src={CHECK} style={{ width: "40px", height: "40px" }} />
-          </Box>
-        )}
-          <Box
-            sx={{
-              position:"relative",
+              position: "relative",
               background: "#F8C851",
               paddingY: { mobile: 0.5, laptop: 0 },
-              width: { mobile: "40%", laptop: "45%" },
+              width: { mobile: "36%", laptop: "45%" },
               height: "100%",
               display: "flex",
               alignItems: "center",
@@ -222,36 +234,37 @@ const LiveMarketComponent = ({
               {team} Vs {team_2}
             </Typography>
             <Box
-          className="liveAnimation"
-          sx={{
-            position: "absolute",
-            zIndex: 11,
-            width: "50px",
-            height: "15px",
-            top: "-8px",
-            left: mode == "1" ? "65px" : "10px",
-            background: "#46CF4D",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            border: "1px solid white",
-          }}
-        >
-          <Box className="wave"> </Box>
-          <Typography
-            sx={{
-              fontSize: { laptop: "8px", mobile: "8px" },
-              color: "white",
-              fontStyle: "italic",
-            }}
-          >
-            LIVE NOW
-          </Typography>
-        </Box>
+              className="liveAnimation"
+              sx={{
+                position: "absolute",
+                zIndex: 11,
+                width: "50px",
+                height: "15px",
+                top: "-8px",
+                left: mode == "1" ? "65px" : "10px",
+                background: "#46CF4D",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "1px solid white",
+                borderRadius: "3px",
+              }}
+            >
+              <Box className="wave"> </Box>
+              <Typography
+                sx={{
+                  fontSize: { laptop: "10px", mobile: "10px" },
+                  color: "white",
+                  fontStyle: "italic",
+                }}
+              >
+                LIVE NOW
+              </Typography>
+            </Box>
           </Box>
           <Box
             sx={{
-              width: "60%",
+              width: "64%",
               alignSelf: "center",
               display: "flex",
               height: "100%",
@@ -260,7 +273,7 @@ const LiveMarketComponent = ({
             <Box
               sx={{
                 background: data?.teamA_rate >= 0 ? "#27AC1E" : "#E32A2A",
-                width: "40%",
+                width: "38%",
                 height: "100%",
                 border: "1.5px solid white",
               }}
@@ -274,7 +287,7 @@ const LiveMarketComponent = ({
             <Box
               sx={{
                 background: data?.teamB_rate >= 0 ? "#27AC1E" : "#E32A2A",
-                width: "30%",
+                width: "38%",
                 height: "100%",
                 marginX: "2px",
                 border: "1.5px solid white",
@@ -289,12 +302,13 @@ const LiveMarketComponent = ({
             <Box
               sx={{
                 background: "#0B4F26",
-                width: "30%",
+                width: "24%",
                 height: "100%",
                 border: "1.5px solid white",
+
               }}
             >
-              <StockBox value={data?.totalPlacedBet} team={"Total Bet"} />
+              <StockBox value={data?.totalPlacedBet < 10 && data?.totalPlacedBet > 0 ? '0' + data?.totalPlacedBet : data?.totalPlacedBet} team={"Total Bet"} />
             </Box>
           </Box>
           {selected && mode == "1" && (

@@ -8,7 +8,7 @@ const SmallBox = ({ color, valueA, valueB }) => {
         <Box sx={{ marginLeft: { mobile: "34px", laptop: "12px", tablet: "12px" }, display: "flex", gap: "4px", }}>
             <Box
                 sx={{
-                    width: { laptop: "70px", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "5vw", mobile: "50px", tablet: "70px" },
                     // position: "absolute",
                     flexDirection: "column",
                     paddingX: "5px",
@@ -22,11 +22,11 @@ const SmallBox = ({ color, valueA, valueB }) => {
                 }}
             >
                 <Typography sx={{ color: "#FF4D4D", fontSize: "8px", fontWeight: "bold", }} > Book </Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: valueA < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueA < 0 ? ` ${valueA}` : `${valueA}`} </Typography>
+                <Typography sx={{ fontSize: "14px", lineHeight: 1, fontWeight: "bold", color: valueA < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueA < 0 ? ` ${valueA}` : `${valueA}`} </Typography>
             </Box>
             <Box
                 sx={{
-                    width: { laptop: "70px", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "5vw", mobile: "50px", tablet: "70px" },
                     // position: "absolute",
                     paddingX: "5px",
                     display: "flex",
@@ -37,11 +37,12 @@ const SmallBox = ({ color, valueA, valueB }) => {
                     height: "30px",
                     background: "white",
                     borderRadius: "3px",
+                    borderRight: { mobile: "0", laptop: "2px solid #000", tablet: "0" },
                 }}
             >
                 <Typography sx={{ color: "#FF4D4D", fontSize: "8px", fontWeight: "bold", }} > Book </Typography>
 
-                <Typography sx={{ fontSize: "10px", fontWeight: "bold", color: valueB < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueB < 0 ? ` ${valueB}` : `${valueB}`} </Typography>
+                <Typography sx={{ fontSize: "14px", lineHeight: 1, fontWeight: "bold", color: valueB < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueB < 0 ? ` ${valueB}` : `${valueB}`} </Typography>
             </Box>
         </Box>
     )

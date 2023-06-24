@@ -88,7 +88,8 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
             background: "#262626",
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-end",
+            justifyContent: { laptop: "flex-end", mobile: "center" },
+            padding: { laptop: '0', mobile: '1.5%' },
           }}
         >
           <SmallBox color={"#FF4D4D"} valueA={bookRatioA(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} valueB={bookRatioB(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} />

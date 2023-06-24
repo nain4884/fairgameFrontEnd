@@ -17,7 +17,9 @@ const containerStyles = {
   marginTop: { mobile: "2px", laptop: "10px" },
   
 };
-
+const selectValueStyle = {
+  fontSize: { mobile: "2px", laptop: "10px" },
+};
 const titleStyles = {
   color: "#202020",
   fontSize: { mobile: "10px", laptop: "12px" },
@@ -25,7 +27,7 @@ const titleStyles = {
   marginLeft: "0px",
 };
 const imputStyle = {
-  fontSize: { mobile: "14px", laptop: "14px", fontWeight: "600" },
+  fontSize: { mobile: "10px", laptop: "14px", fontWeight: "600" },
 };
 const inputContainerStyle = {
   borderRadius: "5px",
@@ -92,7 +94,7 @@ const AddAccount = () => {
   const [downLinePar, setDownlinePar] = useState(0);
 
   const [typeToShow, setTypeToShow] = useState([
-    "Select your account type",
+    "Select account type",
     "Fairgame Admin",
     "Super Admin",
     "Admin",
@@ -517,7 +519,7 @@ const AddAccount = () => {
                   <Input
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={inputContainerStyle}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
                     placeholder={"Username (Required)"}
                     title={"Username*"}
                     setDetail={setDetail}
@@ -533,7 +535,7 @@ const AddAccount = () => {
                     toFoucs={true}
                   />
                   {error[1].val && (
-                    <p style={{ color: "#fa1e1e" }}>
+                    <p className="validCommon" style={{ color: "#fa1e1e"  }}>
                       {userAlreadyExist ? userAlreadyExist : "Field Required"}
                     </p>
                   )}
@@ -544,7 +546,7 @@ const AddAccount = () => {
                     img={EyeIcon}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={inputContainerStyle}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
                     title={"User Password*"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -564,7 +566,7 @@ const AddAccount = () => {
                     img={EyeIcon}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={inputContainerStyle}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
                     title={"Confirm User Password*"}
                     setDetail={setDetail}
                     required={true}
@@ -574,7 +576,7 @@ const AddAccount = () => {
                     place={3}
                   />
                   {Detail[2]?.val !== Detail[3]?.val && (
-                    <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>
+                    <p className="validCommon" style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>
                   )}
                 </div>
                 <div style={{ order: 2 }}>
@@ -583,7 +585,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"Fullname (Optional)"}
-                    inputContainerStyle={inputContainerStyle}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
                     title={"Fullname"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -598,7 +600,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"City (Optional)"}
-                    inputContainerStyle={inputContainerStyle}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
                     title={"City"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -613,7 +615,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"Mobile (Optional)"}
-                    inputContainerStyle={inputContainerStyle}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
                     title={"Mobile Number"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -645,6 +647,8 @@ const AddAccount = () => {
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
+                      height:{ laptop: "45px", mobile: "38px" },
+                     
 
                     }}
                     containerStyle={{
@@ -667,7 +671,7 @@ const AddAccount = () => {
                   />
                   {error[9]?.val ||
                     (Detail[9]?.val === "" && (
-                      <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                      <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
                     ))}
                 </div>
                 <div style={{ order: 1 }}>
@@ -675,7 +679,7 @@ const AddAccount = () => {
                     containerStyle={containerStyles}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={inputContainerStyle}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px"}}}
                     title={"Credit Reference*"}
                     setDetail={setDetail}
                     required={true}
@@ -706,6 +710,7 @@ const AddAccount = () => {
                   inputContainerStyle={{
                     ...inputContainerStyle,
                     backgroundColor: "#DEDEDE",
+                    height:{ laptop: "45px", mobile: "38px" }
                   }}
                   title={"Upline Partnership"}
                   setDetail={setDetail}
@@ -724,6 +729,7 @@ const AddAccount = () => {
                   <InputMyPartnership
                     inputContainerStyle={{
                       ...inputContainerStyle,
+                      height:{ laptop: "45px", mobile: "38px" }
                     }}
                     containerStyle={{
                       ...containerStyles,
@@ -752,6 +758,7 @@ const AddAccount = () => {
                     inputContainerStyle={{
                       ...inputContainerStyle,
                       backgroundColor: Detail[9].val === "user" && "#DEDEDE",
+                      height:{ laptop: "45px", mobile: "38px" }
                     }}
                     containerStyle={{
                       ...containerStyles,
@@ -798,6 +805,7 @@ const AddAccount = () => {
                 inputContainerStyle={{
                   backgroundColor: "#DEDEDE",
                   ...inputContainerStyle,
+                  height:{ laptop: "45px", mobile: "38px" }
                 }}
                 title={"Downline partnership"}
                 setDetail={setDetail}
@@ -810,7 +818,7 @@ const AddAccount = () => {
               // autoMaticFillValue={Detail[12].val}
               />
               {error[12]?.val && (
-                <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
               )}
 
               {Detail[9].val === "user" && (
@@ -835,11 +843,13 @@ const AddAccount = () => {
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
+                      height:{ laptop: "45px", mobile: "38px" },
                     }}
                     containerStyle={{
                       width: "100%",
                       position: "relative",
                       marginTop: "10px",
+
                     }}
                     titleStyle={{ marginLeft: "0px" }}
                     data={sessionComissionArray}
@@ -851,14 +861,17 @@ const AddAccount = () => {
                       maxHeight: "210px",
                       overflow: "scroll",
                     }}
-                    dropDownTextStyle={imputStyle}
+                    dropDownTextStyle={{...imputStyle, }}
                     Detail={Detail}
                     setDetail={setDetail}
                     place={16}
+                    selectValueStyle={{
+                      selectValueStyle,
+                    }}
                   />
 
                   {error[16]?.val && (
-                    <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                    <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
                   )}
                   <DropDownSimple
                     dropStyle={{
@@ -873,6 +886,7 @@ const AddAccount = () => {
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
+                      height:{ laptop: "45px", mobile: "38px" },
                       
                     }}
                     containerStyle={{
@@ -897,7 +911,7 @@ const AddAccount = () => {
                     
                   />
                   {error[17]?.val && (
-                    <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                    <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
                   )}
                   {Detail[17].val !== null &&
                     Detail[17].val !== "Select Match Commission Type" && (
@@ -934,13 +948,13 @@ const AddAccount = () => {
                             maxHeight: "210px",
                             overflow: "scroll",
                           }}
-                          dropDownTextStyle={imputStyle}
+                          // dropDownTextStyle={{...imputStyle,  fontSize:{ laptop: "14px", mobile: "12px" },}}
                           Detail={Detail}
                           setDetail={setDetail}
                           place={18}
                         />
                         {error[18].val && (
-                          <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                          <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
                         )}
                       </>
                     )}
@@ -966,7 +980,7 @@ const AddAccount = () => {
                 placeholder={"Remark (Optional)"}
                 inputContainerStyle={{
                   ...inputContainerStyle,
-                  height: { laptop: "205px", mobile: "90px" },
+                  height: { laptop: "205px", mobile: "70px" },
                   width: "100%",
                 }}
                 title={"Remark"}
@@ -992,11 +1006,11 @@ const AddAccount = () => {
                 onFocusOut={handleTransPass}
                 toFoucs={true}
               />
-              {error[14]?.val !== "" && (
-                <Typography style={{ color: "#fa1e1e" }}>
+              {/* {error[14]?.val !== "" && (
+                <Typography className="validCommon" style={{ color: "#fa1e1e" }}>
                   Admin Transaction Password Required
                 </Typography>
-              )}
+              )} */}
               
              
               </div>
@@ -1069,7 +1083,11 @@ const AddAccount = () => {
         {`
           @media only screen and (max-width: 575px) {
             .addAccountRemark textarea{
-              height: 70px !important;
+              height: 60px !important;
+            }
+            .validCommon{
+              font-size: 12px;  
+              line-height: 16px;
             }
           }
           `}

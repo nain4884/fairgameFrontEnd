@@ -354,7 +354,7 @@ const CustomHeader = ({ }) => {
         alignItems: !matchesMobile ? "center" : "flex-start",
         justifyContent: "space-between",
         paddingX: { laptop: "2%", mobile: "2%" },
-        paddingY: matchesMobile ? "8px" : "0px",
+        paddingY: matchesMobile ? "9px" : "0px",
         paddingBottom: matchesMobile ? "5px" : "0px",
       },
       (theme) => ({
