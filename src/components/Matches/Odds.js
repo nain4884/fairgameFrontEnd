@@ -279,9 +279,9 @@ const Odds = ({ onClick, top, blur, match }) => {
               alignItems: "center",
               background: "#129FFE",
               position: "absolute",
-              marginTop: -1,
+              marginTop: { mobile: "-10px", laptop: -1 } ,
               borderRadius: "3px",
-              marginLeft: 1,
+              marginLeft: { mobile: "0", laptop: "0" },
             }}
           >
             <Typography

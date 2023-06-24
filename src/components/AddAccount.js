@@ -162,9 +162,9 @@ const AddAccount = () => {
       roleName === "fairGameWallet"
         ? types
         : types?.filter((type) => {
-            const roleLevel = types?.find((t) => t?.role === roleName)?.level;
-            return roleLevel && type?.level > roleLevel;
-          });
+          const roleLevel = types?.find((t) => t?.role === roleName)?.level;
+          return roleLevel && type?.level > roleLevel;
+        });
 
     if (roleName === "fairGameAdmin") {
       typo.push({ role: "expert", val: "Expert", level: 6 });
@@ -479,7 +479,7 @@ const AddAccount = () => {
     <>
       <Box sx={{ paddingY: "20px", paddingTop: "10px", marginX: "1%" }}>
         <Typography
-          sx={{ color: "white", fontSize: "18px", fontWeight: "600" }}
+          sx={{ color: "white", fontSize: "18px", fontWeight: "600", marginLeft: '4px' }}
         >
           Add Account
         </Typography>
@@ -505,158 +505,190 @@ const AddAccount = () => {
             }}
           >
             <Box sx={{ flex: 2 }}>
-              <Input
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputContainerStyle={inputContainerStyle}
-                placeholder={"Username (Required)"}
-                title={"Username*"}
-                setDetail={setDetail}
-                onKeyDown={(event) => {
-                  if (event.code === "Space") event.preventDefault();
-                }}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={1}
-                required={true}
-                onFocusOut={checkUserName}
-                toFoucs={true}
-              />
-              {error[1].val && (
-                <p style={{ color: "#fa1e1e" }}>
-                  {userAlreadyExist ? userAlreadyExist : "Field Required"}
-                </p>
-              )}
-              <Input
-                containerStyle={containerStyles}
-                img={EyeIcon}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputContainerStyle={inputContainerStyle}
-                title={"User Password*"}
-                setDetail={setDetail}
-                Detail={Detail}
-                required={true}
-                setError={setError}
-                error={error}
-                place={2}
-                onFocusOut={doSendErrorForPassword}
-                toFoucs={true}
-              />{" "}
-              {/** handleError={handleError} checkMesasge={true} */}
-              {/* {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>} */}
-              <Input
-                containerStyle={containerStyles}
-                img={EyeIcon}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputContainerStyle={inputContainerStyle}
-                title={"Confirm User Password*"}
-                setDetail={setDetail}
-                required={true}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={3}
-              />
-              {Detail[2]?.val !== Detail[3]?.val && (
-                <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>
-              )}
-              <Input
-                containerStyle={containerStyles}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                placeholder={"Fullname (Optional)"}
-                inputContainerStyle={inputContainerStyle}
-                title={"Fullname"}
-                setDetail={setDetail}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={4}
-              />
-              <Input
-                containerStyle={containerStyles}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                placeholder={"City (Optional)"}
-                inputContainerStyle={inputContainerStyle}
-                title={"City"}
-                setDetail={setDetail}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={5}
-              />
-              <Input
-                containerStyle={containerStyles}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                placeholder={"Mobile (Optional)"}
-                inputContainerStyle={inputContainerStyle}
-                title={"Mobile Number"}
-                setDetail={setDetail}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={6}
-                type={"Number"}
-              />
+              <Box sx={{
+                display: { laptop: "block", tablet: "grid", mobile: "grid" },
+                // grid-template-columns: auto auto auto;
+                gridTemplateColumns: 'auto auto',
+                gridColumnGap: '10px'
+
+              }}>
+                <div style={{ order: 1 }}>
+                  <Input
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    inputContainerStyle={inputContainerStyle}
+                    placeholder={"Username (Required)"}
+                    title={"Username*"}
+                    setDetail={setDetail}
+                    onKeyDown={(event) => {
+                      if (event.code === "Space") event.preventDefault();
+                    }}
+                    Detail={Detail}
+                    setError={setError}
+                    error={error}
+                    place={1}
+                    required={true}
+                    onFocusOut={checkUserName}
+                    toFoucs={true}
+                  />
+                  {error[1].val && (
+                    <p style={{ color: "#fa1e1e" }}>
+                      {userAlreadyExist ? userAlreadyExist : "Field Required"}
+                    </p>
+                  )}
+                </div>
+                <div style={{ order: 3 }}>
+                  <Input
+                    containerStyle={containerStyles}
+                    img={EyeIcon}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    inputContainerStyle={inputContainerStyle}
+                    title={"User Password*"}
+                    setDetail={setDetail}
+                    Detail={Detail}
+                    required={true}
+                    setError={setError}
+                    error={error}
+                    place={2}
+                    onFocusOut={doSendErrorForPassword}
+                    toFoucs={true}
+                  />{" "}
+                </div>
+                {/** handleError={handleError} checkMesasge={true} */}
+                {/* {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>} */}
+                <div style={{ order: 5 }}>
+                  <Input
+                    containerStyle={containerStyles}
+                    img={EyeIcon}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    inputContainerStyle={inputContainerStyle}
+                    title={"Confirm User Password*"}
+                    setDetail={setDetail}
+                    required={true}
+                    Detail={Detail}
+                    setError={setError}
+                    error={error}
+                    place={3}
+                  />
+                  {Detail[2]?.val !== Detail[3]?.val && (
+                    <p style={{ color: "#fa1e1e" }}>Password Doesn't Match</p>
+                  )}
+                </div>
+                <div style={{ order: 2 }}>
+                  <Input
+                    containerStyle={containerStyles}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    placeholder={"Fullname (Optional)"}
+                    inputContainerStyle={inputContainerStyle}
+                    title={"Fullname"}
+                    setDetail={setDetail}
+                    Detail={Detail}
+                    setError={setError}
+                    error={error}
+                    place={4}
+                  />
+                </div>
+                <div style={{ order: 4 }}>
+                  <Input
+                    containerStyle={containerStyles}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    placeholder={"City (Optional)"}
+                    inputContainerStyle={inputContainerStyle}
+                    title={"City"}
+                    setDetail={setDetail}
+                    Detail={Detail}
+                    setError={setError}
+                    error={error}
+                    place={5}
+                  />
+                </div>
+                <div style={{ order: 6 }}>
+                  <Input
+                    containerStyle={containerStyles}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    placeholder={"Mobile (Optional)"}
+                    inputContainerStyle={inputContainerStyle}
+                    title={"Mobile Number"}
+                    setDetail={setDetail}
+                    Detail={Detail}
+                    setError={setError}
+                    error={error}
+                    place={6}
+                    type={"Number"}
+                  />
+                </div>
+              </Box>
             </Box>
             <Box sx={{ flex: 2 }}>
-              <DropDownSimple
-                dropStyle={{
-                  filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                }}
-                valueStyle={{ ...imputStyle, color: "white" }}
-                title={"Account Type*"}
-                valueContainerStyle={{
-                  height: "45px",
-                  marginX: "0px",
-                  background: "#0B4F26",
-                  border: "1px solid #DEDEDE",
-                  borderRadius: "5px",
-                }}
-                containerStyle={{
-                  width: "100%",
-                  position: "relative",
-                  marginTop: "5px",
-                }}
-                titleStyle={{ marginLeft: "0px" }}
-                data={typeToShow}
-                dropDownStyle={{
-                  width: "100%",
-                  marginLeft: "0px",
-                  marginTop: "0px",
-                  position: "absolute",
-                }}
-                dropDownTextStyle={imputStyle}
-                Detail={Detail}
-                setDetail={setDetail}
-                place={9}
-              />
-              {error[9]?.val ||
-                (Detail[9]?.val === "" && (
-                  <p style={{ color: "#fa1e1e" }}>Field Required</p>
-                ))}
-              <Input
-                containerStyle={containerStyles}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputContainerStyle={inputContainerStyle}
-                title={"Credit Reference*"}
-                setDetail={setDetail}
-                required={true}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={8}
-                type={"Number"}
-              />
-              {error[9]?.val && (
-                <p style={{ color: "#fa1e1e" }}>Field Required</p>
-              )}
+              <Box sx={{
+                display: { laptop: "block", tablet: "grid", mobile: "grid" },
+                // grid-template-columns: auto auto auto;
+                gridTemplateColumns: '50% 47%',
+                gridColumnGap: '10px'
+              }}>
+                <div style={{ order: 2 }}>
+                  <DropDownSimple
+                    dropStyle={{
+                      filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                    }}
+                    valueStyle={{ ...imputStyle, color: "white" }}
+                    title={"Account Type*"}
+                    valueContainerStyle={{
+                      height: "45px",
+                      marginX: "0px",
+                      background: "#0B4F26",
+                      border: "1px solid #DEDEDE",
+                      borderRadius: "5px",
+
+                    }}
+                    containerStyle={{
+                      width: "100%",
+                      position: "relative",
+                      marginTop: "5px",
+                    }}
+                    titleStyle={{ marginLeft: "0px" }}
+                    data={typeToShow}
+                    dropDownStyle={{
+                      width: "100%",
+                      marginLeft: "0px",
+                      marginTop: "0px",
+                      position: "absolute",
+                    }}
+                    dropDownTextStyle={imputStyle}
+                    Detail={Detail}
+                    setDetail={setDetail}
+                    place={9}
+                  />
+                  {error[9]?.val ||
+                    (Detail[9]?.val === "" && (
+                      <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                    ))}
+                </div>
+                <div style={{ order: 1 }}>
+                  <Input
+                    containerStyle={containerStyles}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    inputContainerStyle={inputContainerStyle}
+                    title={"Credit Reference*"}
+                    setDetail={setDetail}
+                    required={true}
+                    Detail={Detail}
+                    setError={setError}
+                    error={error}
+                    place={8}
+                    type={"Number"}
+                  />
+                  {error[9]?.val && (
+                    <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                  )}
+                </div>
+              </Box>
               <Input
                 containerStyle={{
                   ...containerStyles,
@@ -767,7 +799,7 @@ const AddAccount = () => {
                 place={12}
                 type={"Number"}
                 placeholder={Detail[12].val}
-                // autoMaticFillValue={Detail[12].val}
+              // autoMaticFillValue={Detail[12].val}
               />
               {error[12]?.val && (
                 <p style={{ color: "#fa1e1e" }}>Field Required</p>
@@ -901,8 +933,9 @@ const AddAccount = () => {
               <Input
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
-                inputProps={{ multiline: true, 
-                  rows: 10 
+                inputProps={{
+                  multiline: true,
+                  rows: 10
                   // rows: { laptop: 10, mobile: 2 },
                 }}
                 placeholder={"Remark (Optional)"}
@@ -966,30 +999,30 @@ const AddAccount = () => {
         </form>
         {errorShow ===
           "User need to first create the transaction password." && (
-          <Button
-            className="cursor-pointer"
-            sx={{
-              background: "#0B4F26",
-              width: "50%",
-              display: "flex",
-              justifyContent: "center",
-              border: "2px solid black",
-              alignItems: "center",
-              borderRadius: "5px",
-              height: "45px",
-              marginTop: "35px",
-              color: "white",
-              fontSize: "18px",
-            }}
-            onClick={(e) => {
-              navigate(
-                `/${window.location.pathname.split("/")[1]}/createTransPassword`
-              );
-            }}
-          >
-            Create Trans Password
-          </Button>
-        )}
+            <Button
+              className="cursor-pointer"
+              sx={{
+                background: "#0B4F26",
+                width: "50%",
+                display: "flex",
+                justifyContent: "center",
+                border: "2px solid black",
+                alignItems: "center",
+                borderRadius: "5px",
+                height: "45px",
+                marginTop: "35px",
+                color: "white",
+                fontSize: "18px",
+              }}
+              onClick={(e) => {
+                navigate(
+                  `/${window.location.pathname.split("/")[1]}/createTransPassword`
+                );
+              }}
+            >
+              Create Trans Password
+            </Button>
+          )}
       </Box>
       {showSuccessModal && (
         <Modal
@@ -1002,7 +1035,7 @@ const AddAccount = () => {
       )}
 
       <style jsx scoped>
-          {`
+        {`
           @media only screen and (max-width: 575px) {
             .addAccountRemark textarea{
               height: 70px !important;
