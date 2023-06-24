@@ -38,6 +38,7 @@ import { logout, setGeoLocation } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import CustomLoader from "../../components/helper/CustomLoader";
+
 let sessionOffline = [];
 let matchOddsCount = 0;
 const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
@@ -63,6 +64,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [matchSessionData, setMatchSessionData] = useState([]);
   const [marketId, setMarketId] = useState("");
+  const [eventId, setEventId] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { selectedMatch } = useSelector((state) => state?.matchDetails);
   const [currentMatch, setCurrentMatch] = useState(selectedMatch);
@@ -1168,6 +1170,17 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
             }
           }
         });
+        socketMicro.on(`score${eventId}`, (val) => {
+          if (val !== null) {
+            console.log("val 333:", val);
+            // if (val.length > 0) {
+            //   // dispatch(setBookMakerLive(val[0]));
+            //   setBookmakerLive(val[0]);
+            // } else {
+            //   setBookmakerLive([]);
+            // }
+          }
+        });
       } else {
         setMacthOddsLive([]);
         setBookmakerLive([]);
@@ -1223,6 +1236,14 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
     }
   };
 
+  const activateLiveMatchEvent = async (eventId) => {
+    try {
+      await Axios.get(`${microServiceApiPath}/event/${eventId}`);
+    } catch (e) {
+      console.log("error", e?.message);
+    }
+  };
+
   async function getThisMatch(id) {
     try {
       const response = await axios.get(`/game-match/matchDetail/${id}`);
@@ -1268,6 +1289,8 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       // dispatch(
       // console.warn("response.dat :",response.data)
       setMarketId(response.data.marketId);
+      setEventId(response.data.EventId);
+      activateLiveMatchEvent(response?.data?.EventId);
       setMatchDetail(response.data);
       dispatch(
         setAllSessionBets(
