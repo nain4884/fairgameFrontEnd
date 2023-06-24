@@ -98,7 +98,7 @@ const MarketAnalysis = () => {
           padding:{mobile:"5px", laptop:"0px 8px"},
           flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
           width: "100%",
-          marginY: "1%",
+          marginY: { mobile: "1%", tablet: "1%", laptop: "0" },
         }}
       >
         <Typography
@@ -115,7 +115,7 @@ const MarketAnalysis = () => {
         </Typography>
         {mode == "0" && (
           <Box
-            sx={{ display: "flex", width: "100%", justifyContent: {mobile: "flex-start",tablet:"flex-end",laptop:"flex-end"} }}
+            sx={{ display: "flex", width: "100%", justifyContent: {mobile: "center",tablet:"flex-end",laptop:"flex-end"} }}
           >
             <CustomBox
               onClick={(e) => {

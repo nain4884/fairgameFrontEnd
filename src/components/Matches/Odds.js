@@ -241,9 +241,9 @@ const Odds = ({ onClick, top, blur, match }) => {
         sx={{
           position: "relative",
           width: "100%",
-          marginY: { mobile: "3vh", laptop: "3px" },
+          marginY: { mobile: "13px", laptop: "3px" },
           marginTop: {
-            mobile: top ? "10px" : "1.2vh",
+            mobile: top ? "13px" : "1.2vh",
             laptop: top ? "10px" : "1vh",
           },
           width: { mobile: "98%", laptop: "97.8%" },

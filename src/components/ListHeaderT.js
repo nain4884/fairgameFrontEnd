@@ -6,7 +6,7 @@ const ListHeaderT = () => {
         sx={{
           width: '100%',
           display: "flex",
-          height: "35px",
+          height: "30px",
           background: "#262626",
           alignItems: "center",
           borderTop: "2px solid white",

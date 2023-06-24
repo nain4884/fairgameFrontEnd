@@ -29,6 +29,7 @@ const DropDownSimple = ({
   place,
   setMarketId,
   openDrop,
+  selectValueStyle,
 
   defaultValue,
   matchesSelect,
@@ -192,7 +193,10 @@ const DropDownSimple = ({
             },
           ]}
         >
-          <Typography  sx={{ fontSize: "14px !important" }}>{value}</Typography>
+          <Typography  
+          sx={{
+            fontSize:{ laptop: "14px !important", mobile: "12px !important" },
+          }}>{value}</Typography>
           {place === 5 && (
             <Typography sx={{ fontSize: "10px !important" }}>
               {Detail[22].val}
