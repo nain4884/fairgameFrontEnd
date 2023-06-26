@@ -211,7 +211,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                                     fontWeight: "600",
                                 }}
                             >
-                                {innings[0]?.Team}
+                                {innings?.[0]?.Team || currentMatch?.teamA}
                                 {/* {currentMatch?.teamA} */}
                             </Typography>
                         </Box>
@@ -275,7 +275,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                                     fontWeight: "600",
                                 }}
                             >
-                                {innings[1]?.Team}
+                                {innings?.[1]?.Team || currentMatch?.teamB}
                                 {/* {currentMatch?.teamB} */}
                             </Typography>
                         </Box>
@@ -288,7 +288,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                                 // marginTop: "1vh",
                                 fontWeight: "bold",
                             }}>
-                                Last Overs: {ballLastOutcomes.reduce((acc, curr) => {
+                                Last Overs: {ballLastOutcomes?.reduce((acc, curr) => {
                                     const parsedValue = parseInt(curr);
                                     return isNaN(parsedValue) ? acc : acc + parsedValue;
                                 }, 0)}
