@@ -28,7 +28,7 @@ const LiveMarketComponent = ({
           padding: { mobile: "3px", tablet: "5px", laptop: "5px" }
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'space-between', marginRight: { mobile: "0", tablet: "0", laptop: "10px" } , }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'center', marginRight: { mobile: "0", tablet: "0", laptop: "10px" } ,minHeight: "30px" }}>
           <Typography
             sx={{
               color: "white",
@@ -177,7 +177,7 @@ const LiveMarketComponent = ({
           width: "99%",
           display: "flex",
           position: "relative",
-          margin: { mobile: "5px", tablet: "6px", laptop: "6px" },
+          margin: { mobile: "7px", tablet: "6px", laptop: "6px" },
           alignSelf: "center",
           justifyContent: "space-evenly",
           height: "55px",
@@ -217,6 +217,7 @@ const LiveMarketComponent = ({
               alignItems: "center",
               marginX: "2px",
               border: "1.5px solid white",
+              minHeight: "30px"
             }}
           >
             <Typography
@@ -229,6 +230,7 @@ const LiveMarketComponent = ({
                 display: "-webkit-box",
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
+                
               }}
             >
               {team} Vs {team_2}
@@ -256,6 +258,7 @@ const LiveMarketComponent = ({
                   fontSize: { laptop: "10px", mobile: "10px" },
                   color: "white",
                   fontStyle: "italic",
+                  
                 }}
               >
                 LIVE NOW
@@ -302,7 +305,7 @@ const LiveMarketComponent = ({
             <Box
               sx={{
                 background: "#0B4F26",
-                width: "24%",
+                width: "23%",
                 height: "100%",
                 border: "1.5px solid white",
 

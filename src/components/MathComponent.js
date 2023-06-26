@@ -135,12 +135,13 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                 <Box
                     sx={{
                         display: "flex",
-                        padding: "1vh",
+                        padding: "8px",
                         flexDirection: "column",
                         flex: 1,
                         justifyContent: "flex-end",
                         borderBottom: "0px solid",
                         borderColor: "gray",
+                        
                     }}
                 >
                     <Box sx={{ display: "flex" }}>
@@ -148,6 +149,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                             sx={{
                                 display: "flex",
                                 flex: 1,
+                                maxWidth: "20%",
                                 // alignItems: "center",
                                 justifyContent: "flex-end",
                                 flexDirection: "column",
@@ -157,7 +159,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                             <Typography
                                 sx={{
                                     fontSize: { mobile: "8px", table: "10px", laptop: "12px" },
-                                    marginTop: "1vh",
+                                    marginTop: "0px",
                                     fontWeight: "bold",
                                 }}
                             >
@@ -166,7 +168,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                             <Typography
                                 sx={{
                                     fontSize: { mobile: "8px", table: "10px", laptop: "12px" },
-                                    marginTop: "1vh",
+                                    marginTop: "10px",
                                     fontWeight: "bold",
                                 }}
                             >
@@ -186,7 +188,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                             {innings?.[0]?.Runs && <Typography
                                 sx={{
                                     fontSize: { mobile: "8px", table: "10px", laptop: "12px" },
-                                    marginTop: "1vh",
+                                    marginTop: "0",
                                     fontWeight: "bold",
                                 }}
                             >
@@ -284,9 +286,10 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Box>
                             <Typography sx={{
-                                fontSize: { mobile: "8px", table: "10px", laptop: "12px" },
+                                fontSize: { mobile: "8px", table: "10px", laptop: "14px" },
                                 // marginTop: "1vh",
                                 fontWeight: "bold",
+                                color: "#319e5b"
                             }}>
                                 Last Overs: {ballLastOutcomes?.reduce((acc, curr) => {
                                     const parsedValue = parseInt(curr);
@@ -300,20 +303,26 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                                     paddingTop: 0,
                                     paddingBottom: 0
                                 }}
-                            >
-                                {ballLastOutcomes?.map((outcome, index) => (
+                            >   
+                                {ballOutcomes?.map((outcome, index) => (
+                                    <ListItem key={index} style={{ padding: 0, width: 'auto', paddingLeft: '0px', paddingRight: '5px', }}>
+                                        <ListItemText primary={<Typography sx={{ fontSize: { mobile: "8px", table: "10px", laptop: "12px" }, fontWeight: 'bold', color: outcome.includes('w') ? '#FF4D4D' : 'inherit' }}>{outcome}</Typography>} />
+                                    </ListItem>
+                                ))}
+                                {/* {ballLastOutcomes?.map((outcome, index) => (
                                     <ListItem key={index} style={{ padding: 0, width: 'auto', paddingLeft: '0px', paddingRight: '5px', }}>
                                         <ListItemText primary={<Typography sx={{ fontSize: { mobile: "8px", table: "10px", laptop: "12px" }, fontWeight: 'bold' }}>{outcome}</Typography>} />
                                     </ListItem>
-                                ))}
+                                ))} */}
                             </List>
                         </Box>
                         <Divider />
                         <Box>
                             <Typography sx={{
-                                fontSize: { mobile: "8px", table: "10px", laptop: "12px" },
+                                fontSize: { mobile: "8px", table: "10px", laptop: "14px" },
                                 // marginTop: "1vh",
                                 fontWeight: "bold",
+                                color: "#319e5b"
                             }}>
                                 Current Over: {currentOverRun}
                             </Typography>
@@ -327,9 +336,14 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                             >
                                 {ballOutcomes?.map((outcome, index) => (
                                     <ListItem key={index} style={{ padding: 0, width: 'auto', paddingLeft: '0px', paddingRight: '5px', }}>
-                                        <ListItemText primary={<Typography sx={{ fontSize: { mobile: "8px", table: "10px", laptop: "12px" }, fontWeight: 'bold' }}>{outcome}</Typography>} />
+                                        <ListItemText primary={<Typography sx={{ fontSize: { mobile: "8px", table: "10px", laptop: "12px" }, fontWeight: 'bold', color: outcome.includes('w') ? '#FF4D4D' : 'inherit' }}>{outcome}</Typography>} />
                                     </ListItem>
                                 ))}
+                                {/* {ballOutcomes?.map((outcome, index) => (
+                                    <ListItem key={index} style={{ padding: 0, width: 'auto', paddingLeft: '0px', paddingRight: '5px', }}>
+                                        <ListItemText primary={<Typography sx={{ fontSize: { mobile: "8px", table: "10px", laptop: "12px" }, fontWeight: 'bold' }}>{outcome}</Typography>} />
+                                    </ListItem>
+                                ))} */}
                             </List>
                         </Box>
                         {/* <Divider />
