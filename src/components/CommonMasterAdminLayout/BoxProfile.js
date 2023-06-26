@@ -180,7 +180,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
     };
     return (
       <Box ref={innerRef} sx={classes.mainBoxsx}>
-        {menutItems.map((x) => (
+        {menutItems?.map((x) => (
           <MenuItem
             dense={true}
             sx={classes.mainBoxMenuItem}

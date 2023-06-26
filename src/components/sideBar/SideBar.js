@@ -1,4 +1,4 @@
-import { TextField, Typography } from "@mui/material";
+import { TextField, Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -117,6 +117,7 @@ const SideBar = ({ mobileShow }) => {
     );
   };
   const ListItem = ({ item }) => {
+    const theme = useTheme();
     return (
       <Box
         sx={{
@@ -125,9 +126,21 @@ const SideBar = ({ mobileShow }) => {
           alignItems: "center",
           height: "5vh",
           minHeight: "20px",
-          width: { mobile: "100%", laptop: "60%" },
+          width: { mobile: "100%", laptop: "100%" },
+          "&:hover": {
+            borderBottomRightRadius: ".5vh",
+            borderTopRightRadius: ".5vh",
+            cursor: "pointer",
+            backgroundImage: `${theme.palette.primary.headerGradient}`,
+          },
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            width: { mobile: "5%", laptop: "40%", tablet: "8%" },
+          }}
+        ></Box>
         <Typography
           variant="menuListItem"
           sx={{
@@ -135,8 +148,8 @@ const SideBar = ({ mobileShow }) => {
               laptop: showSideBarMobile ? "15px" : "13px",
               mobile: "20px",
             },
-            marginLeft: { mobile: "35px", laptop: "0px" }, 
-            cursor:'pointer'
+            marginLeft: { mobile: "35px", laptop: "0px" },
+            cursor: "pointer",
           }}
         >
           {item}
@@ -146,7 +159,7 @@ const SideBar = ({ mobileShow }) => {
   };
 
   const RenderList = ({ data }) => {
-    return data.map((item,idx) => {
+    return data.map((item, idx) => {
       return <ListItem key={idx} item={item} />;
     });
   };
@@ -176,7 +189,7 @@ const SideBar = ({ mobileShow }) => {
         },
       ]}
     >
-      {data?.map((i,idx) => {
+      {data?.map((i, idx) => {
         return <RenderItem key={idx} i={i} />;
       })}
     </Box>

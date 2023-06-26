@@ -1346,6 +1346,12 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
     getAllBetsData1();
   }, [matchId]);
 
+  const handleRateChange = async () => {
+    // alert("cheeeee")
+    // setManualBookmakerData([])
+    getThisMatch(matchId);
+  }
+
   return (
     <Box
       sx={{
@@ -1395,6 +1401,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                     // dataProfit={currentMatchProfit}
                     allBetsData={sessionBets}
                     manualBookmakerData={manualBookmakerData}
+                    handleRateChange={handleRateChange}
                   />
                 </div>
                 <Box
@@ -1472,6 +1479,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
                     // dataProfit={currentMatchProfit}
                     allBetsData={allSessionBets}
                     manualBookmakerData={manualBookmakerData}
+                    handleRateChange={handleRateChange}
                   />
                 </Box>
                 <Box sx={{ width: "30%", paddingRight: "1%" }}>

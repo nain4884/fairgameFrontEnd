@@ -51,6 +51,7 @@ const SeprateBox = ({
   placeBetData,
   setFastBetLoading,
   closeModal,
+  handleRateChange
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -275,6 +276,11 @@ const SeprateBox = ({
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
+      setTimeout(() => {
+        handleRateChange()//add
+        setVisible(true);
+        setIsPopoverOpen(false);
+      }, 1500);
     }
   };
 

@@ -20,6 +20,7 @@ const SessionMarketBox = ({
   setFastAmount,
   closeModal,
   setFastBetLoading,
+  handleRateChange
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -161,6 +162,7 @@ const SessionMarketBox = ({
               typeOfBet={typeOfBet}
               data={data}
               mainData={mainData}
+              handleRateChange={handleRateChange}
             />
             <Box
               sx={{ width: ".45%", display: "flex", background: "pink" }}
@@ -183,6 +185,7 @@ const SessionMarketBox = ({
               typeOfBet={typeOfBet}
               data={data}
               mainData={mainData}
+              handleRateChange={handleRateChange}
             />
             <Box
               sx={{ width: ".45%", display: "flex", background: "pink" }}

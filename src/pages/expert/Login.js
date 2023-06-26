@@ -1,6 +1,12 @@
 import {
-  Card, Typography, Box, useTheme, useMediaQuery, Dialog,
-  DialogTitle, DialogActions,
+  Card,
+  Typography,
+  Box,
+  useTheme,
+  useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogActions,
   Button,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
@@ -26,10 +32,14 @@ import { toast } from "react-toastify";
 import {
   LoginServerError,
   SuperMaster,
-  apiBasePath
+  apiBasePath,
 } from "../../components/helper/constants";
 import { SocketContext } from "../../context/socketContext";
-import { setEConfirmAuth, setWConfirmAuth, setAConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
+import {
+  setEConfirmAuth,
+  setWConfirmAuth,
+  setAConfirmAuth,
+} from "../../newStore/reducers/expertMatchDetails";
 
 var newtoken = "";
 export default function Login(props) {
@@ -42,7 +52,9 @@ export default function Login(props) {
   const activeUser = useSelector((state) => {
     return state?.activeUser?.activeUser;
   });
-  const { eConfirmAuth, wConfirmAuth, aConfirmAuth } = useSelector((state) => state?.expertMatchDetails);
+  const { eConfirmAuth, wConfirmAuth, aConfirmAuth } = useSelector(
+    (state) => state?.expertMatchDetails
+  );
   const [loading, setLoading] = useState(false);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -64,28 +76,32 @@ export default function Login(props) {
   const currroles = useSelector((state) => state?.auth?.allRole);
 
   useEffect(() => {
-    if (currentUser) {
-      let roleDetail = currroles.find(findThisRole);
-      function findThisRole(role) {
-        return role.id === currentUser?.roleId;
+    try {
+      if (currentUser) {
+        let roleDetail = currroles?.find(findThisRole);
+        function findThisRole(role) {
+          return role?.id === currentUser?.roleId;
+        }
+        if (["user"]?.includes(roleDetail?.roleName)) {
+          navigate("/matches");
+        } else if (
+          ["admin", "master", "superAdmin", "supperMaster"]?.includes(
+            roleDetail?.roleName
+          )
+        ) {
+          navigate("/admin/list_of_clients");
+        } else if (
+          ["fairGameWallet", "fairGameAdmin"]?.includes(roleDetail?.roleName)
+        ) {
+          navigate("/wallet/list_of_clients");
+        } else if (["expert"]?.includes(roleDetail?.roleName)) {
+          navigate("/expert/match");
+        }
       }
-      if (["user"].includes(roleDetail?.roleName)) {
-        navigate("/matches");
-      } else if (
-        ["admin", "master", "superAdmin", "supperMaster"].includes(
-          roleDetail?.roleName
-        )
-      ) {
-        navigate("/admin/list_of_clients");
-      } else if (
-        ["fairGameWallet", "fairGameAdmin"].includes(roleDetail?.roleName)
-      ) {
-        navigate("/wallet/list_of_clients");
-      } else if (["expert"].includes(roleDetail?.roleName)) {
-        navigate("/expert/match");
-      }
+    } catch (err) {
+      console.log(err?.message);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (socket && socket.connected) {
@@ -117,83 +133,90 @@ export default function Login(props) {
             try {
               const config = {
                 headers: {
-                  'Authorization': `Bearer ${token}`
-                }
+                  Authorization: `Bearer ${token}`,
+                },
               };
-              const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+              const response = await axios.get(
+                `${apiBasePath}fair-game-wallet/changeAuth`,
+                config
+              );
               const data = response.data;
               // alert(JSON.stringify(data))
               loginToAccountAuth(data?.data?.username, "pass");
               console.log(data);
             } catch (error) {
               // Handle any errors
-              console.error('Error fetching data:', error);
+              console.error("Error fetching data:", error);
             }
           } else {
             let checkSessionStorage = sessionStorage.getItem("JWTexpert");
             if (checkSessionStorage) {
               navigate("/expert");
-              setUserType("Expert")
+              setUserType("Expert");
               setConfirmPop(true);
             } else {
               setConfirmPop(false);
             }
           }
         } else if (url.includes("wallet")) {
-
           value = await localStorage.getItem("role2");
           token = await localStorage.getItem("JWTwallet");
           if (value && !wConfirmAuth) {
             try {
               const config = {
                 headers: {
-                  'Authorization': `Bearer ${token}`
-                }
+                  Authorization: `Bearer ${token}`,
+                },
               };
-              const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+              const response = await axios.get(
+                `${apiBasePath}fair-game-wallet/changeAuth`,
+                config
+              );
               const data = response.data;
               // alert(JSON.stringify(data))
               loginToAccountAuth(data?.data?.username, "pass");
               console.log(data);
             } catch (error) {
               // Handle any errors
-              console.error('Error fetching data:', error);
+              console.error("Error fetching data:", error);
             }
           } else {
             let checkSessionStorage = sessionStorage.getItem("JWTwallet");
             if (checkSessionStorage) {
               navigate("/wallet");
-              setUserType("Wallet user")
+              setUserType("Wallet user");
               setConfirmPop(true);
             } else {
               setConfirmPop(false);
             }
           }
         } else if (url.includes("admin")) {
-
           value = await localStorage.getItem("role1");
           token = await localStorage.getItem("JWTadmin");
           if (value && !aConfirmAuth) {
             try {
               const config = {
                 headers: {
-                  'Authorization': `Bearer ${token}`
-                }
+                  Authorization: `Bearer ${token}`,
+                },
               };
-              const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+              const response = await axios.get(
+                `${apiBasePath}fair-game-wallet/changeAuth`,
+                config
+              );
               const data = response.data;
               // alert(JSON.stringify(data))
               loginToAccountAuth(data?.data?.username, "pass");
               console.log(data);
             } catch (error) {
               // Handle any errors
-              console.error('Error fetching data:', error);
+              console.error("Error fetching data:", error);
             }
           } else {
             let checkSessionStorage = sessionStorage.getItem("JWTadmin");
             if (checkSessionStorage) {
               navigate("/admin");
-              setUserType("Admin")
+              setUserType("Admin");
               // console.log("popwwwww");
               setConfirmPop(true);
             } else {
@@ -232,7 +255,7 @@ export default function Login(props) {
         //     }
         //   }
         // }
-      } catch (error) { }
+      } catch (error) {}
     });
   }, [eConfirmAuth]);
 
@@ -555,19 +578,22 @@ export default function Login(props) {
     try {
       const config = {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       };
-      const response = await axios.get(`${apiBasePath}fair-game-wallet/changeAuth`, config);
+      const response = await axios.get(
+        `${apiBasePath}fair-game-wallet/changeAuth`,
+        config
+      );
       const data = response.data;
       loginToAccountAuth(data?.data?.username, "pass");
       console.log(data);
     } catch (error) {
       // Handle any errors
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
     setConfirmPop(false);
-  }
+  };
 
   return (
     <Box style={{ position: "relative" }}>
@@ -677,12 +703,11 @@ export default function Login(props) {
           {`${userType} is open in another window. Click "Use Here" to use ${userType} in this window.`}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={() => setConfirmPop((prev) => !prev)}>
-            Close
-          </Button>
+          <Button onClick={() => setConfirmPop((prev) => !prev)}>Close</Button>
           <Button
             sx={{
-              color: "#201f08", backgroundColor: "#fdf21b"
+              color: "#201f08",
+              backgroundColor: "#fdf21b",
             }}
             // onClick={useHereHandle}
             onClick={useHereHandle}
