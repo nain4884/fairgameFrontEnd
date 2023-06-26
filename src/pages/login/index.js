@@ -81,26 +81,30 @@ export default function Login(props) {
 
   useEffect(() => {
     //handled if user already exists and tries open other role login page
-    if (currentUser) {
-      let roleDetail = currroles.find(findThisRole);
-      function findThisRole(role) {
-        return role.id === currentUser.roleId;
+    try {
+      if (currentUser) {
+        let roleDetail = currroles?.find(findThisRole);
+        function findThisRole(role) {
+          return role?.id === currentUser?.roleId;
+        }
+        if (["user"].includes(roleDetail?.roleName)) {
+          navigate("/matches");
+        } else if (
+          ["admin", "master", "superAdmin", "supperMaster"]?.includes(
+            roleDetail?.roleName
+          )
+        ) {
+          navigate("/admin/list_of_clients");
+        } else if (
+          ["fairGameWallet", "fairGameAdmin"]?.includes(roleDetail?.roleName)
+        ) {
+          navigate("/wallet/list_of_clients");
+        } else if (["expert"]?.includes(roleDetail?.roleName)) {
+          navigate("/expert/match");
+        }
       }
-      if (["user"].includes(roleDetail.roleName)) {
-        navigate("/matches");
-      } else if (
-        ["admin", "master", "superAdmin", "supperMaster"].includes(
-          roleDetail.roleName
-        )
-      ) {
-        navigate("/admin/list_of_clients");
-      } else if (
-        ["fairGameWallet", "fairGameAdmin"].includes(roleDetail.roleName)
-      ) {
-        navigate("/wallet/list_of_clients");
-      } else if (["expert"].includes(roleDetail.roleName)) {
-        navigate("/expert/match");
-      }
+    } catch (err) {
+      console.log(err.message);
     }
     setTimeout(async () => {
       try {

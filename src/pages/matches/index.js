@@ -55,6 +55,7 @@ const Matches = () => {
         ]}
       >
         <SideBar />
+      
         {window.location.pathname === "/matches" && (
           <Match
             setLoader={setLoader}

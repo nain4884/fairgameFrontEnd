@@ -772,7 +772,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
         "& .MuiDrawer-paper": { boxSizing: "border-box", width: "300px" },
       }}
     >
-      <Box sx={{ minHeight: { laptop: 60, mobile: 60 + 32 } }} />
+      <Box sx={{ minHeight: { laptop: 50 + 32 + 40, mobile: 60 + 32 } }} />
       <Box sx={{ height: "100vh" }}>
         <SideBarAdmin
           key={1}

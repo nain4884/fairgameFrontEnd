@@ -1,7 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setRole } from "../../newStore";
+import { ArrowDown, drawerBackground } from "../../assets";
+import { ARROWDROPDOWN } from "../../admin/assets";
 
 const colors = ["#F8C851", "#FFDA7D", "#FFE7AD", "#FFF1CF", "#FFF8E6"];
 const datas = [
@@ -95,23 +97,44 @@ const PlusBox = () => {
   );
 };
 const MainBox = ({ title, width, color, under, selected, sub }) => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
         display: "flex",
         width: width + "%",
-        height: "40px",
+        height: "6vh",
         paddingX: "3%",
         background: color,
-        borderRadius: "3px",
         justifyContent: "space-between",
+        borderRadius: "3px",
         alignItems: "center",
         marginTop: "1px",
         alignSelf: "flex-end",
+        marginBottom: ".5vh",
         marginRight: "3px",
+        opacity: selected && under ? 1 : 0.8,
+        // borderBottomRightRadius: selected && under && ".5vh",
+        // borderTopRightRadius: selected && under && ".5vh",
+        // backgroundImage:
+        //   selected && under && `${theme.palette.primary.headerGradient}`,
+        "&:hover": {
+          cursor: "pointer",
+          // backgroundImage: `${theme.palette.primary.headerGradient}`,
+          background: color,
+          opacity: 1,
+        },
       }}
     >
-      <Box sx={{ display: "flex", width: "100%", alignItems: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+
+          width: "100%",
+          alignItems: "center",
+        }}
+      >
+        <Box sx={{ display: "flex", flex: 0.1 }}></Box>
         <Typography
           sx={{
             fontSize: "12px",
@@ -133,9 +156,25 @@ const MainBox = ({ title, width, color, under, selected, sub }) => {
           {sub}
         </Typography>
       </Box>
-
-      {selected && under && <MinusBox />}
-      {!selected && under && <PlusBox />}
+    {under && <Box
+        sx={{
+          display: "flex",
+          flex: 0.3,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <img
+          style={{
+            width: "15px",
+            height: "8px",
+            transform: selected && under ? "rotate(0deg)" : "rotate(180deg)",
+          }}
+          src={ARROWDROPDOWN}
+        />
+      </Box> }
+      {/* {selected && under && <MinusBox />}
+      {!selected && under && <PlusBox />} */}
     </Box>
   );
 };
@@ -222,7 +261,7 @@ const RenderValues = ({ i, handleDrawerToggle }) => {
 const RenderBets = ({ i, handleDrawerToggle }) => {
   // alert(JSON.stringify(i))
   const navigate = useNavigate();
-  const path = window.location.pathname.split("/")[1]
+  const path = window.location.pathname.split("/")[1];
   return (
     <Box
       onClick={(event) => {
@@ -240,6 +279,7 @@ const RenderBets = ({ i, handleDrawerToggle }) => {
       sx={{
         width: "100%",
         display: "flex",
+        marginLeft: "7%",
         alignSelf: "flex-end",
         flexDirection: "column",
       }}
@@ -303,7 +343,6 @@ const RenderGames = ({ i, k, handleDrawerToggle }) => {
         setSelected(!selected);
       }}
       sx={{
-
         width: "100%",
         display: "flex",
         alignSelf: "flex-end",
@@ -351,33 +390,40 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
       const response = await axios.get(`/game-match/getMatchListByDate`);
       // alert(response?.data?.data.length)
       let data = response?.data?.data;
-      const finalData = [{
-        title: "Cricket",
-        values: data.map(item => ({
-          title: new Date(item.start_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-          values: item.titles.map((title, index) => ({
-            title: title,
-            values: [
-              {
-                title: "Match Odds",
-                values: false,
-                matchId: item.ids[index],
-              },
-            ],
+      const finalData = [
+        {
+          title: "Cricket",
+          values: data.map((item) => ({
+            title: new Date(item.start_date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }),
+            values: item.titles.map((title, index) => ({
+              title: title,
+              values: [
+                {
+                  title: "Match Odds",
+                  values: false,
+                  matchId: item.ids[index],
+                },
+              ],
+            })),
           })),
-        })),
-      }, {
-        title: "Football",
-        values: [],
-      },
-      {
-        title: "Tennis",
-        values: [],
-      },
-      {
-        title: "Ice hockey",
-        values: [],
-      },];
+        },
+        {
+          title: "Football",
+          values: [],
+        },
+        {
+          title: "Tennis",
+          values: [],
+        },
+        {
+          title: "Ice hockey",
+          values: [],
+        },
+      ];
       // console.log("data 112:", JSON.stringify(finalData))
       setMatchData(finalData);
       // setManualBookmakerData(matchOddsDataTemp);
@@ -392,50 +438,77 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
 
   return (
     <Box
-      sx={[
-        {
-          marginTop: { mobile: "2.5vh", laptop: 0, tablet: 0 },
-          minHeight: "100vh",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        },
-        (theme) => ({
-          backgroundImage: `${theme.palette.primary.mainGradient}`,
-        }),
-      ]}
+
     // headerGradient
     >
       <Box
         sx={[
           {
-            width: "98%",
-            marginTop: "3px",
+            width: "100%",
+            marginTop: "5px",
             paddingX: "3%",
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
-            alignSelf: "center",
-            height: "40px",
-            borderRadius: "2px",
+            justifyContent: "space-between",
+            minHeight: "20px",
+            height: "6vh",
+            marginBottom: ".5vh",
+            borderBottomRightRadius: ".5vh",
+            borderTopRightRadius: ".5vh",
           },
           (theme) => ({
-            backgroundImage: `${theme.palette.primary.headerGradientAdmin}`,
+            backgroundImage: `${theme.palette.primary.headerGradient}`,
           }),
         ]}
       >
-        <Typography
+        <Box
           sx={{
-            fontSize: "14px",
-            color: "white",
-            fontWeight: "600",
-            marginLeft: "1.5%",
+            display: "flex",
+            height: "100%",
+            flex: 1,
+            alignItems: "center",
           }}
         >
-          All Sports
-        </Typography>
-        <MinusBox />
+          <Box sx={{ display: "flex", flex: 0.1 }}></Box>
+          <Box
+            sx={{
+              display: "flex",
+              flex: 1,
+              height: "100%",
+              justifyContent: "flex-start",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="menuListHeader"
+              sx={{
+                fontSize: "14px",
+                marginLeft: "1.8%",
+                fontWeight: { mobile: "500", laptop: "600" },
+              }}
+            >
+              All Sports
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding:"5px",
+            }}
+          >
+            <img
+              style={{
+                width: "15px",
+                height: "8px",
+                // transform: "rotate(0deg)" : "rotate(180deg)",
+              }}
+              src={ARROWDROPDOWN}
+            />
+          </Box>
+          {/* <MinusBox /> */}
+        </Box>
       </Box>
       {matchData?.map((i, k) => {
         return (
