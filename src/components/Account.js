@@ -9,15 +9,13 @@ const Account = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        marginY: "10px",
-        marginTop: "-5px",
-        marginX: "1%",
+        margin: "1%",
       }}
     >
       <Typography sx={{ color: "white", fontSize: "18px", fontWeight: "600", marginLeft: { laptop: "0.5%", mobile: "0.5%" }, }}>
         Account List
       </Typography>
-      <Box
+      {/* <Box
         onClick={() => {
           navigate(`/${window.location.pathname.split("/")[1].trim()}/add_account`);
         }}
@@ -37,7 +35,7 @@ const Account = () => {
         <Typography sx={{ fontSize: "14px", fontWeight: "600" }}>
           Add Account
         </Typography>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

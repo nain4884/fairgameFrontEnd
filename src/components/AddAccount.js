@@ -209,7 +209,7 @@ const AddAccount = () => {
       if (Detail[11].val === "") {
         setError({
           ...error,
-          [11]: {
+          11: {
             ...error[11],
             val: "Field is required",
           },
@@ -220,7 +220,7 @@ const AddAccount = () => {
       if (Detail[14].val === "") {
         setError({
           ...error,
-          [14]: {
+          14: {
             ...error[14],
             val: "error",
           },
@@ -241,7 +241,7 @@ const AddAccount = () => {
       ) {
         setError({
           ...error,
-          [18]: {
+          18: {
             ...error[18],
             val: "Field is required",
           },
@@ -480,13 +480,14 @@ const AddAccount = () => {
 
   return (
     <>
-      <Box sx={{ paddingY: "20px", paddingTop: "0", marginX: "1%" }}>
+      <Box sx={{  margin: "1%" }}>
         <Typography
           sx={{ color: "white", fontSize: "18px", fontWeight: "600", marginLeft: '4px' }}
         >
           Add Account
         </Typography>
-        <form
+        <form 
+         style={{ marginTop: "1%"}}
           onSubmit={(e) => {
             e?.preventDefault();
             addAccount();
@@ -499,6 +500,7 @@ const AddAccount = () => {
               borderRadius: "5px",
               padding: "20px",
               paddingTop: "3px",
+              
               marginTop: "2px",
               display: "flex",
               flexDirection: { mobile: "column", laptop: "row", tablet: "row" },

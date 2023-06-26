@@ -51,5 +51,12 @@ export { default as FASTTIME } from './homeScreen/fastTime.png'
 export { default as HourGlass } from './hourglass.json'
 export { default as CancelDark } from './drawer/cancel.png'
 export {default as DownIcon} from './header/down.svg'
+export { default as ADDACCOUNT } from './homeScreen/add-user.png'
+export { default as WALLET } from './homeScreen/wallet.png'
+export { default as MYACCOUNT } from './homeScreen/my-account.png'
+export { default as TREND } from './homeScreen/trend.png'
+export { default as CHECKLIST } from './homeScreen/checklist.png'
+export { default as LIVEMARKET } from './homeScreen/live-sports.png'
+export { default as TEAM } from './homeScreen/team.png'
 
 
