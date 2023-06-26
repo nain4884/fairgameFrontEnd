@@ -48,6 +48,7 @@ const OddsPlaceBet = ({
   fastRate,
   isBack,
   setCanceled,
+  handleRateChange
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [betPlaceLoading, setBetPlaceLoading] = useState(false);
@@ -370,6 +371,10 @@ const OddsPlaceBet = ({
       // toast.error(e.response.data.message);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
+      setTimeout(() => {
+        setPlaceBetData(null);
+        handleRateChange();//add 
+      }, 1500);
       setShowSuccessModal(true);
     }
   };
@@ -436,7 +441,7 @@ const OddsPlaceBet = ({
               color: "text.white",
             }}
           >
-            Place Bet 
+            Place Bet
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <MoneyBox
@@ -603,7 +608,7 @@ const OddsPlaceBet = ({
               }
             }}
           >
-            Submit 
+            Submit
           </button>
         </Box>
 

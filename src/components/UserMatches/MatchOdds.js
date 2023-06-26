@@ -216,6 +216,7 @@ const MatchOdds = ({
   manualBookmakerData,
   setFastAmount,
   fastAmount,
+  handleRateChange
 }) => {
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [matchOddsData, setMatchOddsData] = useState([]);
@@ -364,6 +365,7 @@ const MatchOdds = ({
           matchOddsData={manualBookmakerData}
           setFastAmount={setFastAmount}
           fastAmount={fastAmount?.mannualBookMaker}
+          handleRateChange={handleRateChange}
         />
       )}
 
@@ -388,6 +390,7 @@ const MatchOdds = ({
             allBetsData={allBetsData}
             setFastAmount={setFastAmount}
             fastAmount={fastAmount?.sessionOdds}
+            handleRateChange={handleRateChange}
           />
         </>
       )}

@@ -29,7 +29,8 @@ const SessionMarket = ({
   fastAmount,
   session,
   betLock,
-  upcoming
+  upcoming,
+  handleRateChange
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
@@ -37,12 +38,12 @@ const SessionMarket = ({
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const matchSessionData = newData?.bettings?.filter((element) => {
-    if (newData.apiSessionActive && newData.manualSessionActive && element.sessionBet === true ) {
+    if (newData.apiSessionActive && newData.manualSessionActive && element.sessionBet === true) {
       return true; // Return all elements when both apiSessionActive and manualSessionActive are true
     }
 
     if (newData.apiSessionActive) {
-      return element.sessionBet === true &&  element.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
+      return element.sessionBet === true && element.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
     }
 
     if (newData.manualSessionActive) {
@@ -200,7 +201,7 @@ const SessionMarket = ({
           </Box>
         )}
         {visible && (
-          <Box sx={{ width: "100%" ,   position: "relative",}}>
+          <Box sx={{ width: "100%", position: "relative", }}>
             {
               <Box
                 sx={{
@@ -249,7 +250,7 @@ const SessionMarket = ({
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                    
+
                       borderLeft: {
                         laptop: "0 solid #319e5b",
                         mobile: "1px solid #319e5b",
@@ -257,7 +258,7 @@ const SessionMarket = ({
                     }}
                   >
                     <Typography
-                      sx={{ fontSize: "12px", color: "black", fontWeight: "600",  }}
+                      sx={{ fontSize: "12px", color: "black", fontWeight: "600", }}
                     >
                       NO
                     </Typography>
@@ -354,24 +355,24 @@ const SessionMarket = ({
               </Box>
             )}
 
-            {upcoming && matchSessionData?.length > 0 
-             && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  height: "90%",
-                  // top: "29%",
-                  width: "100%",
-                  display: "flex",
-                  zIndex: "999",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "rgba(0, 0, 0, .5)",
-                }}
-              >
+            {upcoming && matchSessionData?.length > 0
+              && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    height: "90%",
+                    // top: "29%",
+                    width: "100%",
+                    display: "flex",
+                    zIndex: "999",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    background: "rgba(0, 0, 0, .5)",
+                  }}
+                >
 
-              </Box>
-            )}
+                </Box>
+              )}
 
             <Box
               sx={{
@@ -410,6 +411,7 @@ const SessionMarket = ({
                           teamB: teamBRates,
                           teamC: teamCRates,
                         }}
+                        handleRateChange={handleRateChange}
                       />
                       <Divider />
                     </Box>
