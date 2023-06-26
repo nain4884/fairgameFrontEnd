@@ -1200,6 +1200,7 @@ const Home = ({ selected, setSelected, setVisible, visible, handleClose }) => {
       socketMicro?.emit("disconnect_market", {
         id: marketId,
       });
+      socketMicro?.emit("leaveScore", { id: eventId });
       setMacthOddsLive([]);
       setBookmakerLive([]);
       setSessionLock(false);
