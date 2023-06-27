@@ -20,7 +20,7 @@ const AdminEventComponent = ({
       onClick={(e) => {
         const pathname = location.pathname.split("/")[1];
         const url = data?.url && `/${pathname}/${data?.url}`;
-        if (selected === data?.title) {
+        if (selected === data?.title && !["Reports","wallet"].includes(data?.title) ) {
           const href = `/${pathname}/list_of_clients`;
           // setShow(false);
           navigate(href, {

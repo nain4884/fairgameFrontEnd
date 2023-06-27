@@ -51,7 +51,7 @@ const SeprateBox = ({
   placeBetData,
   setFastBetLoading,
   closeModal,
-  handleRateChange
+  handleRateChange,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -195,7 +195,6 @@ const SeprateBox = ({
   };
   const handlePlaceBet = async (payload, match) => {
     setBetPlaceLoading(true);
-    setFastBetLoading(true);
 
     let newPayload = {
       ...payload,
@@ -277,7 +276,7 @@ const SeprateBox = ({
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
       setTimeout(() => {
-        handleRateChange()//add
+        handleRateChange(); //add
         setVisible(true);
         setIsPopoverOpen(false);
       }, 1500);
@@ -313,6 +312,8 @@ const SeprateBox = ({
               return false;
             } else {
               if (selectedFastAmount) {
+                setFastBetLoading(true);
+
                 let payload = {
                   id: currentMatch?.id,
                   matchType: currentMatch?.gameType,
@@ -351,36 +352,39 @@ const SeprateBox = ({
                 }
 
                 handlePlaceBet(payload, currentMatch);
-              } else if (sessionMain !== "sessionOdds") {
-                let payload = {
-                  id: currentMatch?.id,
-                  matchType: currentMatch?.gameType,
-                  // betId: currentMatch?.matchOddsData?.[0]?.id,
-                  betId: findBetId(currentMatch),
-                  bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
-                  odds: Number(value),
-                  betOn: name,
-                  stack: Number(selectedFastAmount),
-                  team_bet: name,
-                  stake: Number(selectedFastAmount),
-                  teamA_name: currentMatch?.teamA,
-                  teamB_name: currentMatch?.teamB,
-                  teamC_name: currentMatch?.teamC,
-                  marketType:
-                    typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
-                  name,
-                  rates,
-                  back,
-                  currentMatch,
-                  selectedValue,
-                  type,
-                  data,
-                  betOn: name,
-                  typeOfBet: typeOfBet,
-                  po: po,
-                };
-                setPlaceBetData(payload);
-              } else {
+              }
+
+              // if (sessionMain !== "sessionOdds") {
+              //   let payload = {
+              //     id: currentMatch?.id,
+              //     matchType: currentMatch?.gameType,
+              //     // betId: currentMatch?.matchOddsData?.[0]?.id,
+              //     betId: findBetId(currentMatch),
+              //     bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
+              //     odds: Number(value),
+              //     betOn: name,
+              //     stack: Number(selectedFastAmount),
+              //     team_bet: name,
+              //     stake: Number(selectedFastAmount),
+              //     teamA_name: currentMatch?.teamA,
+              //     teamB_name: currentMatch?.teamB,
+              //     teamC_name: currentMatch?.teamC,
+              //     marketType:
+              //       typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
+              //     name,
+              //     rates,
+              //     back,
+              //     currentMatch,
+              //     selectedValue,
+              //     type,
+              //     data,
+              //     betOn: name,
+              //     typeOfBet: typeOfBet,
+              //     po: po,
+              //   };
+              //   setPlaceBetData(payload);
+              // } else
+              else {
                 setIsPopoverOpen(true);
                 setSelectedValue(value);
                 type?.type === "BL"
@@ -487,7 +491,7 @@ const SeprateBox = ({
             />
           </Box>
         </MUIModal>
-        {
+        {/* {
           <BetPlaced
             // time={5}
             time={
@@ -502,7 +506,7 @@ const SeprateBox = ({
               setVisible(i);
             }}
           />
-        }
+        } */}
 
         {canceled.value && (
           <NotificationModal
