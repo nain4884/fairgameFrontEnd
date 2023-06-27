@@ -31,7 +31,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
           background: "white",
           position: "relative",
           height: "40px",
-          width: "40%",
+          width: { mobile: "40%", laptop: "40%" },
           alignItems: "center",
         }}
       >
@@ -78,6 +78,10 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
               fontSize: { laptop: "14px", mobile: "13px" },
               fontWeight: "600",
               marginLeft: "10px",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              maxWidth: "88px"
             }}
           >
             {name}
