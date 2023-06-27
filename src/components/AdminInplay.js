@@ -9,6 +9,7 @@ import { setRole } from "../newStore";
 import CustomLoader from "./helper/CustomLoader";
 import Odds from "./Matches/Odds";
 import Background from "./Background";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AdminInPlay = () => {
   // const classes=useStyle()
@@ -54,6 +55,8 @@ const AdminInPlay = () => {
   }
 
   const currentElements = matchData;
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   return (
     <Background>
       {currentElements?.map((match) => {
@@ -66,6 +69,13 @@ const AdminInPlay = () => {
               //   dispatch(setSessionOddsLive([]));
               //   dispatch(setAllBetRate([]));
               //   doNavigateWithState(match.id);
+              navigate(`/${pathname.split("/")[1]}/matches`, {
+                state: {
+                  submit: true,
+                  matchId: match?.id,
+                  activeTab: "INPLAY",
+                },
+              });
             }}
             top={true}
             blur={false}

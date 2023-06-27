@@ -4,7 +4,9 @@ import StyledImage from "./StyledImage";
 import { DropDown } from "../admin/assets";
 import adminAxios from "../axios/adminAxios";
 import { setRole } from "../newStore";
-export default function HomeSlide({ show, setShow }) {
+import useOuterClick from "./helper/userOuterClick";
+import Background from "./Background";
+export default function HomeSlide({}) {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -35,184 +37,199 @@ export default function HomeSlide({ show, setShow }) {
   };
 
   const classes = {
-    mainBoxsx: { position: "relative" },
+    mainBoxsx: { position: "relative", margin: "1%" },
   };
 
   return (
-    <Box sx={classes.mainBoxsx}>
+    <Background>
       <Box
         sx={{
-          background: "#FFE094",
-          padding: show && matchesMobile ? "10px" : "20px",
-          paddingY: show && "8px",
-          borderBottomLeftRadius: show && "5px",
-          width: "99%",
-          marginX: show && "0.5%",
-          borderBottomRightRadius: "5px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: "1%",
         }}
       >
-        {show && (
-          <>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: { laptop: "row", mobile: "column" },
-                justifyContent: "space-between",
-              }}
-            >
-              <DataShow
-                title={"Upper Level Credit Referance"}
-                value={userBalanceDetails?.ul_credit_refer}
-                containerStyle={{ flex: 1 }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.ul_credit_refer) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-              <DataShow
-                title={"Down level Occupy Balance"}
-                value={userBalanceDetails?.dl_balance}
-                containerStyle={{
-                  flex: 1,
-                  marginTop: matchesMobile ? "10px" : "0px",
-                  marginX: matchesMobile ? "0px" : "20px",
-                }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.dl_balance) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-              <DataShow
-                title={"Down Level Credit Referance"}
-                value={userBalanceDetails?.dl_credit_refer}
-                containerStyle={{
-                  flex: 1,
-                  marginTop: matchesMobile ? "10px" : "0px",
-                }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.dl_credit_refer) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                marginTop: "10px",
-                flexDirection: { laptop: "row", mobile: "column" },
-                justifyContent: "space-between",
-              }}
-            >
-              <DataShow
-                title={"Total Master Balance"}
-                value={userBalanceDetails?.master_balance}
-                containerStyle={{ flex: 1 }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.master_balance) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-              <DataShow
-                title={"Upper Level"}
-                value={userBalanceDetails?.upper_level}
-                containerStyle={{
-                  flex: 1,
-                  marginTop: matchesMobile ? "10px" : "0px",
-                  marginX: matchesMobile ? "0px" : "20px",
-                }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.upper_level) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-              <DataShow
-                title={"Down Level Profit/Loss"}
-                value={userBalanceDetails?.dl_profit_loss}
-                containerStyle={{
-                  flex: 1,
-                  marginTop: matchesMobile ? "10px" : "0px",
-                }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.dl_profit_loss) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                marginTop: "10px",
-                flexDirection: { laptop: "row", mobile: "column" },
-                justifyContent: "space-between",
-                marginBottom: "15px",
-              }}
-            >
-              <DataShow
-                title={"Available Balance"}
-                value={userBalanceDetails?.available_balance}
-                containerStyle={{ flex: 1 }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.available_balance) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-              <DataShow
-                title={"Available Balance With Profit/Loss"}
-                value={userBalanceDetails?.available_balance_pl}
-                containerStyle={{
-                  flex: 1,
-                  marginTop: matchesMobile ? "10px" : "0px",
-                  marginX: matchesMobile ? "0px" : "20px",
-                }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.available_balance_pl) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-              <DataShow
-                title={"My Profit/Loss"}
-                value={userBalanceDetails?.profit_loss}
-                containerStyle={{
-                  flex: 1,
-                  marginTop: matchesMobile ? "10px" : "0px",
-                }}
-                valueContainerStyle={{
-                  background: `${
-                    parseInt(userBalanceDetails?.profit_loss) >= 0
-                      ? "#0B4F26"
-                      : "#FF4848"
-                  }`,
-                }}
-              />
-            </Box>
-          </>
-        )}
+        <Typography
+          sx={{
+            color: "white",
+            fontSize: "18px",
+            fontWeight: "600",
+            marginLeft: { laptop: "0.5%", mobile: "0.5%" },
+          }}
+        >
+          My Account
+        </Typography>
       </Box>
-      {show && (
+      <Box sx={classes.mainBoxsx}>
+        <Box
+          sx={{
+            background: "#FFE094",
+            padding: matchesMobile ? "10px" : "20px",
+            paddingBottom: "8px",
+            borderRadius: "5px",
+            width: "100%",
+            margin: "10px 0px",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { laptop: "row", mobile: "column" },
+              justifyContent: "space-between",
+            }}
+          >
+            <DataShow
+              title={"Upper Level Credit Referance"}
+              value={userBalanceDetails?.ul_credit_refer}
+              containerStyle={{ flex: 1 }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.ul_credit_refer) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+            <DataShow
+              title={"Down level Occupy Balance"}
+              value={userBalanceDetails?.dl_balance}
+              containerStyle={{
+                flex: 1,
+                marginTop: matchesMobile ? "10px" : "0px",
+                marginX: matchesMobile ? "0px" : "20px",
+              }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.dl_balance) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+            <DataShow
+              title={"Down Level Credit Referance"}
+              value={userBalanceDetails?.dl_credit_refer}
+              containerStyle={{
+                flex: 1,
+                marginTop: matchesMobile ? "10px" : "0px",
+              }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.dl_credit_refer) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              marginTop: "10px",
+              flexDirection: { laptop: "row", mobile: "column" },
+              justifyContent: "space-between",
+            }}
+          >
+            <DataShow
+              title={"Total Master Balance"}
+              value={userBalanceDetails?.master_balance}
+              containerStyle={{ flex: 1 }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.master_balance) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+            <DataShow
+              title={"Upper Level"}
+              value={userBalanceDetails?.upper_level}
+              containerStyle={{
+                flex: 1,
+                marginTop: matchesMobile ? "10px" : "0px",
+                marginX: matchesMobile ? "0px" : "20px",
+              }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.upper_level) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+            <DataShow
+              title={"Down Level Profit/Loss"}
+              value={userBalanceDetails?.dl_profit_loss}
+              containerStyle={{
+                flex: 1,
+                marginTop: matchesMobile ? "10px" : "0px",
+              }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.dl_profit_loss) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              marginTop: "10px",
+              flexDirection: { laptop: "row", mobile: "column" },
+              justifyContent: "space-between",
+              marginBottom: "15px",
+            }}
+          >
+            <DataShow
+              title={"Available Balance"}
+              value={userBalanceDetails?.available_balance}
+              containerStyle={{ flex: 1 }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.available_balance) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+            <DataShow
+              title={"Available Balance With Profit/Loss"}
+              value={userBalanceDetails?.available_balance_pl}
+              containerStyle={{
+                flex: 1,
+                marginTop: matchesMobile ? "10px" : "0px",
+                marginX: matchesMobile ? "0px" : "20px",
+              }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.available_balance_pl) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+            <DataShow
+              title={"My Profit/Loss"}
+              value={userBalanceDetails?.profit_loss}
+              containerStyle={{
+                flex: 1,
+                marginTop: matchesMobile ? "10px" : "0px",
+              }}
+              valueContainerStyle={{
+                background: `${
+                  parseInt(userBalanceDetails?.profit_loss) >= 0
+                    ? "#0B4F26"
+                    : "#FF4848"
+                }`,
+              }}
+            />
+          </Box>
+        </Box>
+        {/* {show && (
         <Box
           onClick={() => {
             setShow(!show);
@@ -238,8 +255,9 @@ export default function HomeSlide({ show, setShow }) {
             }}
           />
         </Box>
-      )}
-    </Box>
+      )} */}
+      </Box>
+    </Background>
   );
 }
 

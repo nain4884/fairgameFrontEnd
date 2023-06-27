@@ -669,11 +669,13 @@ const CustomHeader = ({}) => {
         nav={nav}
         open={Boolean(anchor)}
         anchorEl={anchor}
+        // setShow={setShow}
         handleClose={() => setAnchor(null)}
       />
       <DropdownMenu2
         open={Boolean(anchor1)}
         anchorEl={anchor1}
+        // setShow={setShow}
         handleClose={() => setAnchor1(null)}
       />
       <Box sx={classes.BoxEnd} />
@@ -686,14 +688,14 @@ const CustomHeader = ({}) => {
           }),
         ]}
       >
-        <HomeSlide show={show} setShow={setShow} />
         <AdminEventListing
           selected={selected}
-          show={show}
-          setShow={(e) => setShow((prev) => !prev)}
+          // show={show}
+          // setShow={setShow}
           setAnchor={(e) => setAnchor(e.currentTarget)}
           setAnchor1={(e) => setAnchor1(e.currentTarget)}
         />
+        {/* {show && <HomeSlide show={show} setShow={setShow} />} */}
       </Box>
     </>
   );
