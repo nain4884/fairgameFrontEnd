@@ -23,6 +23,7 @@ import Verification from "../Varification";
 import NewPassword from "../NewPassword";
 import jwtDecode from "jwt-decode";
 import PageNotFound from "../../components/PageNotFound";
+import AdminInPlay from "../../components/AdminInplay";
 const AdminRoutes = () => {
   const location = useLocation();
 
@@ -71,7 +72,7 @@ const AdminRoutes = () => {
           path="/live_market"
           element={
             <AdminPrivateRoute>
-              <Home />
+              <AdminInPlay />
             </AdminPrivateRoute>
           }
         />

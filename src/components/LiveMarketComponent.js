@@ -24,8 +24,8 @@ const LiveMarketComponent = ({
           flexDirection: "column",
           justifyContent: "center",
           marginLeft: { mobile: mode == "1" ? "2px" : 0, laptop: "10px" },
-          
-          padding: { mobile: "3px", tablet: "5px", laptop: "5px" }
+
+          padding: { mobile: "3px", tablet: "5px", laptop: "5px" },
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'center', marginRight: { mobile: "0", tablet: "0", laptop: "10px" } ,minHeight: "30px" }}>
@@ -58,7 +58,6 @@ const LiveMarketComponent = ({
               }}
             />
           )}
-
         </Box>
         <Typography
           sx={{
@@ -66,7 +65,7 @@ const LiveMarketComponent = ({
             fontSize: { mobile: "13px", laptop: "16px" },
             marginRight: { mobile: "0", laptop: "5px" },
             fontWeight: "700",
-            display: 'inline',
+            display: "inline",
             textAlign: { mobile: "center", laptop: "left" },
           }}
         >
@@ -112,7 +111,6 @@ const LiveMarketComponent = ({
             top: -10px;
             left: -1px;
             width: 60px;
-            
           }
           .wave {
             border-radius: 1000% 1000% 0 0;
@@ -160,14 +158,13 @@ const LiveMarketComponent = ({
               height: 18px;
             }
           }
-        
         `}
       </style>
       <Box
         onClick={() => {
           if (mode == "0") {
             navigate(`/${pathname.split("/")[1]}/matches`, {
-              state: { submit: true, matchId: data?.id },
+              state: { submit: true, matchId: data?.id, activeTab: "Analysis" },
             });
           }
           setSelected();
@@ -185,8 +182,6 @@ const LiveMarketComponent = ({
           marginX: ".5%",
         }}
       >
-
-
         <Box sx={{ display: "flex", width: "100%", position: "relative" }}>
           {mode == "1" && (
             <Box
@@ -308,10 +303,16 @@ const LiveMarketComponent = ({
                 width: "23%",
                 height: "100%",
                 border: "1.5px solid white",
-
               }}
             >
-              <StockBox value={data?.totalPlacedBet < 10 && data?.totalPlacedBet > 0 ? '0' + data?.totalPlacedBet : data?.totalPlacedBet} team={"Total Bet"} />
+              <StockBox
+                value={
+                  data?.totalPlacedBet < 10 && data?.totalPlacedBet > 0
+                    ? "0" + data?.totalPlacedBet
+                    : data?.totalPlacedBet
+                }
+                team={"Total Bet"}
+              />
             </Box>
           </Box>
           {selected && mode == "1" && (

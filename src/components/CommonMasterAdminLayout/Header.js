@@ -343,21 +343,21 @@ const CustomHeader = ({}) => {
   const [fullName, setFullName] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [show, setShow] = useState(false);
-  const [selected, setSelected] = useState(
-    location.state?.activeTab || "Clients"
-  );
+  const [selected, setSelected] = useState("Client list");
   useEffect(() => {
     if (location?.state) {
       setSelected(location?.state?.activeTab);
     }
-  }, [location?.state]);
+    if (show) {
+      setSelected("My Account");
+    }
+  }, [location?.state, show]);
   useEffect(() => {
     if (!matchesMobile) {
       setMobileOpen(false);
     }
   }, [matchesMobile]);
 
-  console.log(location, "location");
   const classes = {
     AppBarVal: { zIndex: (theme) => theme.zIndex.drawer + 1 },
     BoxCont1: [

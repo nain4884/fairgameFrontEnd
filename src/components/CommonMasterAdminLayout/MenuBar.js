@@ -55,7 +55,9 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose, nav }) => {
           dense={true}
           sx={classes.MenuItemsx}
           onClick={() => {
-            navigate(x.link);
+            navigate(x.link,  {state: {
+              activeTab: "Reports",
+            },});
             handleClose();
           }}
         >

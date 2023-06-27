@@ -27,25 +27,13 @@ const AdminEventComponent = ({
             },
           });
         } else if (data?.title === "Reports") {
-          navigate(url, {
-            state: {
-              activeTab: data?.title,
-            },
-          });
+         
           setAnchor(e);
         } else if (data?.title === "wallet") {
-          navigate(url, {
-            state: {
-              activeTab: data?.title,
-            },
-          });
+         
           setAnchor1(e);
         } else if (data?.title === "My Account") {
-          navigate(url, {
-            state: {
-              activeTab: data?.title,
-            },
-          });
+       
           setShow(e);
         }
       }}
@@ -64,10 +52,10 @@ const AdminEventComponent = ({
           background: "white",
           cursor: "pointer",
         },
-        selected === data.title
+        selected === data.title 
           ? { background: "#F8C851" }
           : { background: "white" },
-        selected === data.title
+        selected === data.title 
           ? { border: "2px solid white" }
           : { border: "2px solid white" },
       ]}

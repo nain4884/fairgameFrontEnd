@@ -75,7 +75,7 @@ const AdminEventListing = ({
       });
     }
   }, [roleDetail]);
-  console.log("newData", newData);
+ 
   return (
     <Box
       sx={[
