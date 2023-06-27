@@ -194,7 +194,8 @@ const BoxComponent = ({
                 updateRate={{
                   key: 1,
                   match: "back",
-                  value: isRound
+                  team: name,
+                  value: typeOfBet == "MATCH ODDS" ? isRound
                     ? Math.round(
                       ex?.availableToBack?.length > 0
                         ? ex?.availableToBack[2]?.price
@@ -202,7 +203,7 @@ const BoxComponent = ({
                     )
                     : ex?.availableToBack?.length > 0
                       ? ex?.availableToBack[2]?.price
-                      : 0
+                      : 0 : null
                 }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
@@ -255,7 +256,8 @@ const BoxComponent = ({
                 updateRate={{
                   key: 2,
                   match: "back",
-                  value: isRound
+                  team: name,
+                  value: typeOfBet == "MATCH ODDS" ? isRound
                     ? Math.round(
                       ex?.availableToBack?.length > 0
                         ? ex?.availableToBack[1]?.price
@@ -263,7 +265,7 @@ const BoxComponent = ({
                     )
                     : ex?.availableToBack?.length > 0
                       ? ex?.availableToBack[1]?.price
-                      : 0
+                      : 0 : null
                 }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
@@ -316,7 +318,8 @@ const BoxComponent = ({
               updateRate={{
                 key: 3,
                 match: "back",
-                value: isRound
+                team: name,
+                value: typeOfBet == "MATCH ODDS" ? isRound
                   ? Math.round(
                     ex?.availableToBack?.length > 0
                       ? ex?.availableToBack[0]?.price
@@ -324,7 +327,7 @@ const BoxComponent = ({
                   )
                   : ex?.availableToBack?.length > 0
                     ? ex?.availableToBack[0]?.price
-                    : 0
+                    : 0 : null
               }}
               placeBetData={placeBetData}
               setFastRate={setFastRate}
@@ -377,7 +380,8 @@ const BoxComponent = ({
               updateRate={{
                 key: 4,
                 match: "lay",
-                value: isRound
+                team: name,
+                value: typeOfBet == "MATCH ODDS" ? isRound
                   ? Math.round(
                     ex?.availableToLay?.length > 0
                       ? ex?.availableToLay[0]?.price
@@ -385,7 +389,7 @@ const BoxComponent = ({
                   )
                   : ex?.availableToLay?.length > 0
                     ? ex?.availableToLay[0]?.price
-                    : 0
+                    : 0 : null
               }}
               placeBetData={placeBetData}
               setFastRate={setFastRate}
@@ -437,7 +441,8 @@ const BoxComponent = ({
                 updateRate={{
                   key: 5,
                   match: "lay",
-                  value: isRound
+                  team: name,
+                  value: typeOfBet == "MATCH ODDS" ? isRound
                     ? Math.round(
                       ex?.availableToLay?.length > 0
                         ? ex?.availableToLay[1]?.price
@@ -445,7 +450,7 @@ const BoxComponent = ({
                     )
                     : ex?.availableToLay?.length > 0
                       ? ex?.availableToLay[1]?.price
-                      : 0
+                      : 0 : null
                 }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
@@ -498,7 +503,8 @@ const BoxComponent = ({
                 updateRate={{
                   key: 6,
                   match: "lay",
-                  value: isRound
+                  team: name,
+                  value: typeOfBet == "MATCH ODDS" ? isRound
                     ? Math.round(
                       ex?.availableToLay?.length > 0
                         ? ex?.availableToLay[2]?.price
@@ -506,7 +512,7 @@ const BoxComponent = ({
                     )
                     : ex?.availableToLay?.length > 0
                       ? ex?.availableToLay[2]?.price
-                      : 0
+                      : 0 : null
                 }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
