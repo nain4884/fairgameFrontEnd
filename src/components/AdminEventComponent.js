@@ -20,21 +20,30 @@ const AdminEventComponent = ({
       onClick={(e) => {
         const pathname = location.pathname.split("/")[1];
         const url = data?.url && `/${pathname}/${data?.url}`;
-        if (data.url) {
-          navigate(url, {
+        if (selected === data?.title && !["Reports","wallet"].includes(data?.title) ) {
+          const href = `/${pathname}/list_of_clients`;
+          // setShow(false);
+          navigate(href, {
             state: {
-              activeTab: data?.title,
+              activeTab: "Client list",
             },
           });
-        } else if (data?.title === "Reports") {
-         
-          setAnchor(e);
-        } else if (data?.title === "wallet") {
-         
-          setAnchor1(e);
-        } else if (data?.title === "My Account") {
-       
-          setShow(e);
+        } else {
+          if (data.url) {
+            // setShow(false);
+            navigate(url, {
+              state: {
+                activeTab: data?.title,
+              },
+            });
+          } else if (data?.title === "Reports") {
+            setAnchor(e);
+          } else if (data?.title === "wallet") {
+            setAnchor1(e);
+          } 
+          // else if (data?.title === "My Account") {
+          //   setShow((prev) => !prev);
+          // }
         }
       }}
       sx={[
@@ -52,10 +61,10 @@ const AdminEventComponent = ({
           background: "white",
           cursor: "pointer",
         },
-        selected === data.title 
+        selected === data.title
           ? { background: "#F8C851" }
           : { background: "white" },
-        selected === data.title 
+        selected === data.title
           ? { border: "2px solid white" }
           : { border: "2px solid white" },
       ]}
@@ -64,17 +73,17 @@ const AdminEventComponent = ({
         src={data.image}
         style={{ width: "40px", height: "40px", alignSelf: "center" }}
       />
-         <Typography
-          noWrap
-          sx={{
-            marginTop: { mobile: "5px", laptop: ".8vh" },
-            textTransform: "uppercase",
-            fontSize: { laptop: "10px", mobile: "10px" },
-            fontWeight: { mobile: "500", tablet: "500" },
-          }}
-        >
-          {data.title}
-        </Typography>
+      <Typography
+        noWrap
+        sx={{
+          marginTop: { mobile: "5px", laptop: ".8vh" },
+          textTransform: "uppercase",
+          fontSize: { laptop: "10px", mobile: "10px" },
+          fontWeight: { mobile: "500", tablet: "500" },
+        }}
+      >
+        {data.title}
+      </Typography>
       {/* <Box
         sx={{
           display: "flex",
@@ -83,8 +92,8 @@ const AdminEventComponent = ({
           marginTop: { mobile: "5px", laptop: ".8vh" },
         }}
       > */}
-     
-        {/* {["wallet", "Reports", "Details"].includes(data?.title) && (
+
+      {/* {["wallet", "Reports", "Details"].includes(data?.title) && (
           <StyledImage
             src={DropDown}
             sx={{

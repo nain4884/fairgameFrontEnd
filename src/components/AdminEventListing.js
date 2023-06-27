@@ -29,16 +29,16 @@ const AdminEventListing = ({
   selected,
   setAnchor,
   setAnchor1,
-  setShow,
-  show,
+  // setShow,
+  // show,
 }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const currroles = useSelector((state) => state?.auth?.allRole);
   const data = [
+    { id: 3, title: "INPLAY", image: Play, url: "live_market" },
     { id: 1, title: "Add Account", image: ADDACCOUNT, url: "add_account" },
     { id: 2, title: "Client list", image: TEAM, url: "list_of_clients" },
 
-    { id: 3, title: "INPLAY", image: Play, url: "live_market" },
 
     { id: 4, title: "Analysis", image: TREND, url: "market_analysis" },
     {
@@ -48,7 +48,7 @@ const AdminEventListing = ({
       url: null,
     },
 
-    { id: 6, title: "My Account", image: MYACCOUNT, url: null },
+    { id: 6, title: "My Account", image: MYACCOUNT, url: "my-account" },
   ];
   let roleDetail = currroles?.find(findThisRole);
   function findThisRole(role) {
@@ -96,10 +96,10 @@ const AdminEventListing = ({
           <AdminEventComponent
             key={idx}
             data={i}
-            setShow={setShow}
+            // setShow={setShow}
             selected={selected}
             setAnchor={setAnchor}
-            show={show}
+            // show={show}
             setAnchor1={setAnchor1}
           />
         );

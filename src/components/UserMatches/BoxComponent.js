@@ -35,6 +35,7 @@ const BoxComponent = ({
   fastRate,
   placeBetData,
   setFastBetLoading,
+  handleRateChange
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -191,11 +192,24 @@ const BoxComponent = ({
                 }
                 setFastBetLoading={setFastBetLoading}
                 po={1}
+                updateRate={{
+                  key: 1,
+                  match: "back",
+                  value: isRound
+                    ? Math.round(
+                      ex?.availableToBack?.length > 0
+                        ? ex?.availableToBack[2]?.price
+                        : 0
+                    )
+                    : ex?.availableToBack?.length > 0
+                      ? ex?.availableToBack[2]?.price
+                      : 0
+                }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
                 sessionMain={sessionMain}
-                setPlaceBetData={setPlaceBetData}
+                // setPlaceBetData={setPlaceBetData}
                 setFastAmount={setFastAmount}
                 selectedFastAmount={selectedFastAmount}
                 fromOdds={fromOdds}
@@ -225,6 +239,7 @@ const BoxComponent = ({
                 name={name}
                 data={data}
                 typeOfBet={typeOfBet}
+                handleRateChange={handleRateChange}
               />
             )}
             <Box
@@ -239,10 +254,23 @@ const BoxComponent = ({
                 }
                 setFastBetLoading={setFastBetLoading}
                 po={2}
+                updateRate={{
+                  key: 2,
+                  match: "back",
+                  value: isRound
+                    ? Math.round(
+                      ex?.availableToBack?.length > 0
+                        ? ex?.availableToBack[1]?.price
+                        : 0
+                    )
+                    : ex?.availableToBack?.length > 0
+                      ? ex?.availableToBack[1]?.price
+                      : 0
+                }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
-                setPlaceBetData={setPlaceBetData}
+                // setPlaceBetData={setPlaceBetData}
                 sessionMain={sessionMain}
                 setFastAmount={setFastAmount}
                 selectedFastAmount={selectedFastAmount}
@@ -273,6 +301,7 @@ const BoxComponent = ({
                 name={name}
                 data={data}
                 typeOfBet={typeOfBet}
+                handleRateChange={handleRateChange}
               />
             )}
             <Box
@@ -287,10 +316,23 @@ const BoxComponent = ({
               }
               setFastBetLoading={setFastBetLoading}
               po={3}
+              updateRate={{
+                key: 3,
+                match: "back",
+                value: isRound
+                  ? Math.round(
+                    ex?.availableToBack?.length > 0
+                      ? ex?.availableToBack[0]?.price
+                      : 0
+                  )
+                  : ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[0]?.price
+                    : 0
+              }}
               placeBetData={placeBetData}
               setFastRate={setFastRate}
               fastRate={fastRate}
-              setPlaceBetData={setPlaceBetData}
+              // setPlaceBetData={setPlaceBetData}
               sessionMain={sessionMain}
               setFastAmount={setFastAmount}
               back={true}
@@ -321,6 +363,7 @@ const BoxComponent = ({
               name={name}
               data={data}
               typeOfBet={typeOfBet}
+              handleRateChange={handleRateChange}
             />
 
             <Box
@@ -335,10 +378,23 @@ const BoxComponent = ({
               }
               setFastBetLoading={setFastBetLoading}
               po={4}
+              updateRate={{
+                key: 4,
+                match: "lay",
+                value: isRound
+                  ? Math.round(
+                    ex?.availableToLay?.length > 0
+                      ? ex?.availableToLay[0]?.price
+                      : 0
+                  )
+                  : ex?.availableToLay?.length > 0
+                    ? ex?.availableToLay[0]?.price
+                    : 0
+              }}
               placeBetData={placeBetData}
               setFastRate={setFastRate}
               fastRate={fastRate}
-              setPlaceBetData={setPlaceBetData}
+              // setPlaceBetData={setPlaceBetData}
               setFastAmount={setFastAmount}
               selectedFastAmount={selectedFastAmount}
               back={true}
@@ -369,6 +425,7 @@ const BoxComponent = ({
               name={name}
               data={data}
               typeOfBet={typeOfBet}
+              handleRateChange={handleRateChange}
             />
             {/* <Box
               sx={{ width: ".25%", display: "flex", background: "pink" }}
@@ -382,10 +439,23 @@ const BoxComponent = ({
                 }
                 setFastBetLoading={setFastBetLoading}
                 po={5}
+                updateRate={{
+                  key: 5,
+                  match: "lay",
+                  value: isRound
+                    ? Math.round(
+                      ex?.availableToLay?.length > 0
+                        ? ex?.availableToLay[1]?.price
+                        : 0
+                    )
+                    : ex?.availableToLay?.length > 0
+                      ? ex?.availableToLay[1]?.price
+                      : 0
+                }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
-                setPlaceBetData={setPlaceBetData}
+                // setPlaceBetData={setPlaceBetData}
                 sessionMain={sessionMain}
                 setFastAmount={setFastAmount}
                 selectedFastAmount={selectedFastAmount}
@@ -416,6 +486,7 @@ const BoxComponent = ({
                 name={name}
                 data={data}
                 typeOfBet={typeOfBet}
+                handleRateChange={handleRateChange}
               />
             )}
             {/* <Box
@@ -430,10 +501,23 @@ const BoxComponent = ({
                 }
                 setFastBetLoading={setFastBetLoading}
                 po={6}
+                updateRate={{
+                  key: 6,
+                  match: "lay",
+                  value: isRound
+                    ? Math.round(
+                      ex?.availableToLay?.length > 0
+                        ? ex?.availableToLay[2]?.price
+                        : 0
+                    )
+                    : ex?.availableToLay?.length > 0
+                      ? ex?.availableToLay[2]?.price
+                      : 0
+                }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
-                setPlaceBetData={setPlaceBetData}
+                // setPlaceBetData={setPlaceBetData}
                 sessionMain={sessionMain}
                 setFastAmount={setFastAmount}
                 selectedFastAmount={selectedFastAmount}
@@ -464,6 +548,7 @@ const BoxComponent = ({
                 name={name}
                 data={data}
                 typeOfBet={typeOfBet}
+                handleRateChange={handleRateChange}
               />
             )}
             <Box

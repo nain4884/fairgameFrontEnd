@@ -10,14 +10,15 @@ const menutItems2 = [
 const DropdownMenu2 = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
   const classes = {
-    Menusx: { marginTop: "2px", paddingY: "0px", padding: "0px" },
+    Menusx: { marginTop: {mobile:"15px" ,laptop:"30px",tablet:"18px"},marginLeft:{mobile:"5px",laptop:"0",tablet:"0"}, paddingY: "0px", padding: "0px",width:{mobile:"105%",laptop:"100%",tablet:"100%"}},
     MenuListProps: { "aria-labelledby": "basic-button" },
-    MenuPaperProps: { sx: { paddingY: "0px", padding: "0px" } },
+    MenuPaperProps: { sx: { paddingY: "0px", padding: "0px",width:"100%" } },
     MenuItemsx: {
       fontSize: { laptop: "11px", mobile: "10px" },
       fontWeight: "600",
       marginX: "0px",
-      width: { laptop: "100px", mobile: "170px" },
+      width: "100%",
+      // width: { laptop: "100px", mobile: "170px" },
       borderBottomWidth: 0,
       borderColor: "#EAEFEC",
       paddingY: "-10px",
@@ -31,7 +32,7 @@ const DropdownMenu2 = ({ anchorEl, open, handleClose }) => {
         color: "white",
         borderColor: "white",
         borderRadius: "5px",
-        transform: "scale(1.02)",
+        // transform: "scale(1.02)",
       },
     },
   };

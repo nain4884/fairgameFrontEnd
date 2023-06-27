@@ -47,6 +47,7 @@ import {
 } from "../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
+import IdleTimer from "./IdleTimer";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -270,6 +271,7 @@ const CustomHeader = ({ }) => {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
+        <IdleTimer role="user" />
         {!isOnline && (
           <Box
             sx={{
@@ -319,7 +321,7 @@ const CustomHeader = ({ }) => {
               justifyContent: "space-between",
               width: "100%",
               flex: 1,
-              
+
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center" }}>

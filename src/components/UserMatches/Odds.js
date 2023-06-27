@@ -564,6 +564,7 @@ const Odds = ({
                                     }}
                                     isBall={true}
                                     isTeamC={newData?.teamC}
+                                    handleRateChange={handleRateChange}
                                 />
                                 <Divider />
                                 <ManualBoxComponent
@@ -608,6 +609,7 @@ const Odds = ({
                                     }}
                                     isBall={false}
                                     isTeamC={newData?.teamC}
+                                    handleRateChange={handleRateChange}
                                 />
                                 {newData?.teamC && (
                                     <>
@@ -655,6 +657,7 @@ const Odds = ({
                                             }}
                                             isBall={false}
                                             isTeamC={newData?.teamC}
+                                            handleRateChange={handleRateChange}
                                         />
                                     </>
                                 )}
@@ -690,6 +693,7 @@ const Odds = ({
                                     suspendedData={data[0]?.status}
                                     typeOfBet={typeOfBet}
                                     isRound={isRound}
+                                    handleRateChange={handleRateChange}
                                 />
                                 <Divider />
                                 {/* {console.log("newData :",newData)} */}
@@ -724,6 +728,7 @@ const Odds = ({
                                     team={"teamB"}
                                     typeOfBet={typeOfBet}
                                     isRound={isRound}
+                                    handleRateChange={handleRateChange}
                                 />
                                 {newData?.teamC && (
                                     <>
@@ -759,6 +764,7 @@ const Odds = ({
                                             team={"teamC"}
                                             typeOfBet={typeOfBet}
                                             isRound={isRound}
+                                            handleRateChange={handleRateChange}
                                         />
                                     </>
                                 )}

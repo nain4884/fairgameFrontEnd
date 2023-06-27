@@ -24,6 +24,7 @@ import NewPassword from "../NewPassword";
 import jwtDecode from "jwt-decode";
 import PageNotFound from "../../components/PageNotFound";
 import AdminInPlay from "../../components/AdminInplay";
+import { HomeSlide } from "../../components";
 const AdminRoutes = () => {
   const location = useLocation();
 
@@ -115,6 +116,7 @@ const AdminRoutes = () => {
             </AdminPrivateRoute>
           }
         />
+          <Route exact path="/my-account" element={<HomeSlide />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

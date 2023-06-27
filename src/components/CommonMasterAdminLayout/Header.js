@@ -59,8 +59,10 @@ import {
 import EventListing from "../EventListing";
 import AdminEventListing from "../AdminEventListing";
 import HomeSlide from "../HomeSlide";
+import IdleTimer from "../../components/IdleTimer";
+
 var roleName = "";
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -90,6 +92,7 @@ const CustomHeader = ({}) => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
   const { socket, socketMicro } = useContext(SocketContext);
+  const [notificationData, setNotificationData] = useState(null);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -334,7 +337,21 @@ const CustomHeader = ({}) => {
     }
   }, [location, window.location.pathname, JWT]);
 
+  const handleGetNotification = async () => {
+    try {
+      const { data } = await axios.get(`/users/getNotification`);
+      console.log(data, "data");
+      if (data?.data?.id) {
+        setNotificationData(data.data.typeValue);
+      }
+    } catch (err) {
+      console.log(err?.response.data.message);
+      console.log(err.message);
+    }
+  };
+
   useEffect(() => {
+    handleGetNotification();
     if (currentUser === null) {
       getUserDetail(nav);
     }
@@ -473,6 +490,7 @@ const CustomHeader = ({}) => {
   return (
     <>
       <SessionTimeOut />
+      <IdleTimer role="" />
       <AppBar position="fixed" sx={classes.AppBarVal}>
         <Box sx={classes.BoxCont1}>
           <Box sx={classes.BoxCont1sub1}>
@@ -648,7 +666,6 @@ const CustomHeader = ({}) => {
             </Box>
           )} */}
         </Box>
-
         {
           <MobileSideBar
             mobileOpen={mobileOpen}
@@ -669,15 +686,42 @@ const CustomHeader = ({}) => {
         nav={nav}
         open={Boolean(anchor)}
         anchorEl={anchor}
+        // setShow={setShow}
         handleClose={() => setAnchor(null)}
       />
       <DropdownMenu2
         open={Boolean(anchor1)}
         anchorEl={anchor1}
+        // setShow={setShow}
         handleClose={() => setAnchor1(null)}
       />
       <Box sx={classes.BoxEnd} />
 
+      <Box
+        sx={{
+          height: "32px",
+          display: "flex",
+          background: "#202020",
+          alignItems: "center",
+        }}
+      >
+        <marquee loop={true}>
+          <Typography
+            sx={{
+              color: "text.white",
+              fontSize: "10px",
+              fontStyle: "italic",
+              letterSpacing: "1px",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textTransform: "capitalize",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {notificationData}
+          </Typography>
+        </marquee>
+      </Box>
       <Box
         sx={[
           { flex: 1, padding: "1%" },
@@ -686,14 +730,14 @@ const CustomHeader = ({}) => {
           }),
         ]}
       >
-        <HomeSlide show={show} setShow={setShow} />
         <AdminEventListing
           selected={selected}
-          show={show}
-          setShow={(e) => setShow((prev) => !prev)}
+          // show={show}
+          // setShow={setShow}
           setAnchor={(e) => setAnchor(e.currentTarget)}
           setAnchor1={(e) => setAnchor1(e.currentTarget)}
         />
+        {/* {show && <HomeSlide show={show} setShow={setShow} />} */}
       </Box>
     </>
   );

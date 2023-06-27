@@ -39,6 +39,7 @@ const PlaceBet = ({
   betType,
   rates,
   fromOdds,
+  po
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
@@ -202,12 +203,12 @@ const PlaceBet = ({
                   ? "Back"
                   : "Lay"
                 : title === "Team"
-                ? name
-                : bet_condition
-                ? bet_condition
-                : isSessionYes
-                ? "Yes"
-                : "No"}
+                  ? name
+                  : bet_condition
+                    ? bet_condition
+                    : isSessionYes
+                      ? "Yes"
+                      : "No"}
             </Typography>
           </Box>
         )}
@@ -361,6 +362,7 @@ const PlaceBet = ({
   }
 
   function SubmitPayloadForPlaceBet(
+
     betOn = "teamA_back",
     marketType = "BOOKMAKER"
   ) {
@@ -377,12 +379,13 @@ const PlaceBet = ({
       stack: Number(defaultValue),
       team_bet: name,
       country: ip?.country_name || null,
-      ip_address: ip?.IPv4|| null,
+      ip_address: ip?.IPv4 || null,
       stake: Number(defaultValue),
       teamA_name: currentMatch?.teamA,
       teamB_name: currentMatch?.teamB,
       teamC_name: currentMatch?.teamC,
       marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : marketType,
+      po: po
     };
     if (marketType == "Session") {
       delete payload.betOn;
@@ -525,8 +528,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                ? "Lay"
-                : "Back"
+                  ? "Lay"
+                  : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}

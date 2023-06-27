@@ -23,6 +23,8 @@ import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
 import PageNotFound from "../../components/PageNotFound";
+import { HomeSlide } from "../../components";
+import AdminInPlay from "../../components/AdminInplay";
 const MasterRoutes = () => {
   const location = useLocation();
 
@@ -75,7 +77,7 @@ const MasterRoutes = () => {
           path="/live_market"
           element={
             <MasterPrivateRoute>
-              <Home />
+              <AdminInPlay />
             </MasterPrivateRoute>
           }
         />
@@ -207,6 +209,7 @@ const MasterRoutes = () => {
             </MasterPrivateRoute>
           }
         />
+          <Route exact path="/my-account" element={<HomeSlide />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

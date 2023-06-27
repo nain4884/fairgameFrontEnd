@@ -16,7 +16,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
       "& .MuiDrawer-paper": { boxSizing: "border-box", width:"300px" },
     },
     DrawerBox1sx: {
-      minHeight: { laptop: "60px", mobile: "84px", tablet: "60px" },
+      minHeight: { laptop: "60px", mobile: "60px", tablet: "60px" },
     },
     DrawerBox2sx: { minHeight: "100vh" },
   };
