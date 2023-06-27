@@ -47,8 +47,9 @@ import BoxProfile from "./BoxProfile";
 import DropdownMenu1 from "./DropDownMenu1";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
+import IdleTimer from "../../components/IdleTimer";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -310,10 +311,11 @@ const CustomHeader = ({}) => {
         position="fixed"
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
+        <IdleTimer role="" />
         <AddNotificationModal
           setVisible={setVisible}
           visible={visible}
-          onClick={() => {}}
+          onClick={() => { }}
           onDone={(value) => {
             handleAddNotification(value);
           }}
@@ -564,8 +566,8 @@ const CustomHeader = ({}) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                    ? "Bookmaker"
-                    : "Betfair"
+                      ? "Bookmaker"
+                      : "Betfair"
                 }
                 value1={currentUser?.userName || ""}
               />
