@@ -308,6 +308,7 @@ const MatchOdds = ({
           max={data?.betfair_match_max_bet || 0}
           title={"Match Odds"}
           typeOfBet={"MATCH ODDS"}
+          handleRateChange={handleRateChange}
         />
       )}
 

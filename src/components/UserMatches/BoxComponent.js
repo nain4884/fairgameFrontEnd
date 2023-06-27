@@ -35,6 +35,7 @@ const BoxComponent = ({
   fastRate,
   placeBetData,
   setFastBetLoading,
+  handleRateChange
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -238,6 +239,7 @@ const BoxComponent = ({
                 name={name}
                 data={data}
                 typeOfBet={typeOfBet}
+                handleRateChange={handleRateChange}
               />
             )}
             <Box
@@ -299,6 +301,7 @@ const BoxComponent = ({
                 name={name}
                 data={data}
                 typeOfBet={typeOfBet}
+                handleRateChange={handleRateChange}
               />
             )}
             <Box
@@ -360,6 +363,7 @@ const BoxComponent = ({
               name={name}
               data={data}
               typeOfBet={typeOfBet}
+              handleRateChange={handleRateChange}
             />
 
             <Box
@@ -421,6 +425,7 @@ const BoxComponent = ({
               name={name}
               data={data}
               typeOfBet={typeOfBet}
+              handleRateChange={handleRateChange}
             />
             {/* <Box
               sx={{ width: ".25%", display: "flex", background: "pink" }}
@@ -481,6 +486,7 @@ const BoxComponent = ({
                 name={name}
                 data={data}
                 typeOfBet={typeOfBet}
+                handleRateChange={handleRateChange}
               />
             )}
             {/* <Box
@@ -542,6 +548,7 @@ const BoxComponent = ({
                 name={name}
                 data={data}
                 typeOfBet={typeOfBet}
+                handleRateChange={handleRateChange}
               />
             )}
             <Box
