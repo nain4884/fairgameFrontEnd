@@ -59,8 +59,10 @@ import {
 import EventListing from "../EventListing";
 import AdminEventListing from "../AdminEventListing";
 import HomeSlide from "../HomeSlide";
+import IdleTimer from "../../components/IdleTimer";
+
 var roleName = "";
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -473,6 +475,7 @@ const CustomHeader = ({}) => {
   return (
     <>
       <SessionTimeOut />
+      <IdleTimer role="" />
       <AppBar position="fixed" sx={classes.AppBarVal}>
         <Box sx={classes.BoxCont1}>
           <Box sx={classes.BoxCont1sub1}>
