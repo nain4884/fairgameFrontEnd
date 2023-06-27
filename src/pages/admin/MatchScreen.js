@@ -1967,10 +1967,23 @@ const NewMatchScreen = () => {
         //     </Box>
         // </Background>
         <Background>
+            <Box sx={{paddingLeft: "0.7% "}}>
+                <Typography
+                    sx={{
+                        fontSize: "16px",
+                        color: "white",
+                        fontWeight: "700",
+                        paddingTop: "2%",
+                        alignSelf: "start",
+                    }}
+                >
+                    {currentMatch?.teamA} V/S {currentMatch?.teamB}
+                </Typography>
+            </Box>
             <Box
                 sx={{
                     display: "flex",
-                    flexDirection: "row",
+                    flexDirection: { mobile: 'column-reverse', laptop: 'row' },
                     flex: 1,
                     height: "100%",
                     marginX: "0.5%",
@@ -1984,17 +1997,7 @@ const NewMatchScreen = () => {
                         display: "flex",
                     }}
                 >
-                    <Typography
-                        sx={{
-                            fontSize: "16px",
-                            color: "white",
-                            fontWeight: "700",
-                            paddingTop: "2%",
-                            alignSelf: "start",
-                        }}
-                    >
-                        {currentMatch?.teamA} V/S {currentMatch?.teamB}
-                    </Typography>
+
                     {currentMatch?.apiMatchActive && <Odds
                         currentMatch={currentMatch}
                         matchOddsLive={matchOddsLive}
@@ -2065,12 +2068,12 @@ const NewMatchScreen = () => {
                         minHeight: "100px",
                     }}
                 >
-                    <Box
+                    {/* <Box
                         sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
                     >
                         <Box sx={{ width: "2%" }}></Box>
                         <Box sx={{ width: "150px", marginY: ".75%", height: "35px", }} ></Box>
-                    </Box>
+                    </Box> */}
                     <LiveMatchComponent submit={true} />
                     <LiveMatchAdmin submit={true} />
                     <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />

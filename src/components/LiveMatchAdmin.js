@@ -7,7 +7,7 @@ const LiveMatchAdmin = ({submit}) => {
     const [visible, setVisible] = useState(true)
 
     return (
-        <Box sx={{ minWidth: "10%", background: "white", padding: .2, marginTop:  submit?"10px":'.25vh' , width: { mobile: "98%", laptop: '100%' } }} >
+        <Box sx={{ minWidth: "10%", background: "white", padding: .2, marginTop:  submit?{ mobile: "3px", laptop: '10px' }:'.25vh' ,marginBottom: "3px", width: { mobile: "100%", laptop: '100%' } }} >
             <Box sx={{ background: "#F1C550" }}>
                 <Box sx={{ height: "35px", display: "flex", alignItems: "center", paddingLeft: "5px", paddingRight: '0px', width: { mobile: "100%", laptop: '100%' }, justifyContent: 'space-between' }}>
                     <Typography sx={{ fontWeight: "bold", fontSize: "12px" }}>Live Match</Typography>
