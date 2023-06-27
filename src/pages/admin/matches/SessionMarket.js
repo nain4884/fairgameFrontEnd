@@ -169,14 +169,14 @@ const SessionMarket = ({
                   display: "flex",
                   background: "#319E5B",
                   height: "25px",
-                  width: { laptop: "60%", mobile: "80%" },
+                  width: { laptop: "60%", mobile: "81%" },
                   justifyContent: { laptop: "flex-end", mobile: "flex-end" },
                 }}
               >
                 <Box
                   sx={{
                     background: "#FF9292",
-                    width: { laptop: "5vw", mobile: "25%" },
+                    width: { laptop: "5.02vw", mobile: "30.06%" },
                     height: "100%",
                     display: "flex",
                     justifyContent: "center",
@@ -195,7 +195,7 @@ const SessionMarket = ({
                 <Box
                   sx={{
                     background: "#00C0F9",
-                    width: { laptop: "5vw", mobile: "25%" },
+                    width: { laptop: "5.05vw", mobile: "30%" },
                     height: "100%",
                     display: "flex",
                     justifyContent: "center",

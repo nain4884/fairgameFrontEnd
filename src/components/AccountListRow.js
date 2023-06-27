@@ -154,7 +154,7 @@ const AccountListRow = ({
         <Box
           sx={[
             {
-              width: { laptop: "11.5vw", tablet: "20.5vw", mobile: "42.5vw" },
+              width: { laptop: "11.5vw", tablet: "20.5vw", mobile: "24vw" },
               display: "flex",
               paddingX: "10px",
               justifyContent: "space-between",
@@ -178,7 +178,7 @@ const AccountListRow = ({
               }
             }}
             sx={[
-              { fontSize: "12px", fontWeight: "600", cursor: "pointer" },
+              { fontSize: "12px", fontWeight: "600", cursor: "pointer", textTransform: "capitalize" },
               fTextStyle,
             ]}
           >
@@ -204,7 +204,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "10.5vw", tablet: "10.5vw", mobile: "28.5vw" },
+            width: { laptop: "10.5vw", tablet: "10.5vw", mobile: "24vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -218,7 +218,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "24vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -232,7 +232,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "42.5vw" },
+            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "24vw" },
             display: "flex",
             paddingLeft: "10px",
             background: Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
@@ -262,7 +262,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "42.5vw" },
+            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "24vw" },
             display: "flex",
             paddingLeft: "10px",
             background: Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
@@ -299,7 +299,7 @@ const AccountListRow = ({
             }
           }}
           sx={{
-            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "24vw" },
             display: "flex",
             justifyContent: 'space-between',
             paddingLeft: "10px",
@@ -322,7 +322,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "24vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -336,7 +336,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "28.5vw" },
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "24vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",
@@ -346,6 +346,7 @@ const AccountListRow = ({
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
             {elementToUDM.available_balance}
+            {/* Math.abs(bookRatio).toFixed(2) */}
           </Typography>
         </Box>
         <Box
@@ -380,7 +381,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "8vw", tablet: "8vw", mobile: "42vw" },
+            width: { laptop: "8vw", tablet: "8vw", mobile: "24vw" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -394,7 +395,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "10vw", tablet: "10vw", mobile: "42vw" },
+            width: { laptop: "10vw", tablet: "10vw", mobile: "24vw" },
             display: "flex",
             paddingLeft: "10px",
             alignItems: "center",

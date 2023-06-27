@@ -85,7 +85,7 @@ export default function UserDetailModal({
     mainBox: {
       background: backgroundColor ?? "#F8C851",
       display: "flex",
-      width: { mobile: "90%", laptop: "100%", tablet: "100%" },
+      width: { mobile: "100%", laptop: "100%", tablet: "100%" },
       justifyContent: {
         mobile: "flex-start",
         tablet: "center",
@@ -137,7 +137,7 @@ export default function UserDetailModal({
       {selected != null && (
         <Box
           sx={{
-            width: { mobile: "26%", tablet: "90%", laptop: "70%" },
+            width: { mobile: "auto", tablet: "90%", laptop: "70%" },
             padding: "5px",
           }}
         >
@@ -243,11 +243,12 @@ export default function UserDetailModal({
         <Box
           sx={{
             // flex: 1,
-            display: "flex",
-            flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
+            display:"flex",
+            flexDirection: { mobile: "row", laptop: "row", tablet: "row" },
             gap: { mobile: 1 },
+            flexWrap: "wrap",
 
-            width: { mobile: "26%", laptop: "77%", tablet: "100%" },
+            width: { mobile: "100vw", laptop: "77%", tablet: "100%" },
           }}
         >
           <BoxButton
@@ -433,6 +434,9 @@ const BoxButton = ({
         alignItems: "center",
         borderRadius: "5px",
         padding: "5px",
+        flex: {mobile: " 0 0 43% !important", laptop: "1 !important"},
+        maxWidth: "46% !important",
+        textTransform: "capitalize"
       },
       containerStyle,
     ],
@@ -441,8 +445,8 @@ const BoxButton = ({
         fontSize: { mobile: "3.5vw", laptop: "11px", tablet: "0.9vw", desktop2XL: '12px' },
         fontWeight: "600",
         color: isSelected || deleteBtn ? "white" : "white",
-        textAlign: 'center', 
-       
+        textAlign: 'center',
+
       },
       titleStyle,
     ],
@@ -642,33 +646,66 @@ const DepositComponent = ({
         borderRadius: "5px",
       }}
     >
-      <Box sx={{ width: { mobile: "100%", laptop: "100%", tablet: "100%" } }}>
+      <Box sx={{ width: { mobile: "100%", laptop: "100%", tablet: "100%" }, gap:"1%", display: {mobile: "flex", laptop: "block"}, flexDirection: "row-reverse", justifyContent: "flex-end" }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            width: "100%",
+            width: { mobile: "41%", laptop: "100%"},
             flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
             justifyContent: "flex-end",
           }}
         >
-          <Typography
+          <Box
             sx={{
-              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
-              fontWeight: "600",
-              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+              display: "flex",
+              alignItems: "center",
+              width: "80%",
+              flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+              justifyContent: "space-between",
+              position: {mobile: "relative", laptop: "static"},
+              marginTop: { mobile: "0", laptop: "0" },
             }}
           >
-            Deposit Amount
-          </Typography>
+            <Typography
+              sx={{
+                fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+                width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+                fontWeight: "600",
+                marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+              }}
+            >
+              Deposit Amount
+            </Typography>
+            {/* <Typography
+              sx={{
+                fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+                width: { mobile: "24vw", laptop: "100%", tablet: "40%" },
+                fontWeight: "600",
+                marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+                textAlign: "center",
+                background: "red",
+                position: "absolute",
+                right: "-11px",
+                // marginRight: "-16px",
+                height: "45px",
+                display: { mobile:"flex", laptop: "none"},
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#fff"
+              }}
+            >
+             100000
+            </Typography> */}
+          </Box>
           <Box
             sx={{
               background: "#004A25",
-              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+              width: { mobile: "100%", laptop: "100%", tablet: "60%" },
               height: "45px",
               borderRadius: "5px",
               paddingX: "20px",
+              marginTop: {mobile: "0", laptop: "0"}
             }}
           >
             <TextField
@@ -695,7 +732,7 @@ const DepositComponent = ({
         </Box>
         <Box
           sx={{
-            width: "100%",
+           width: { mobile: "41%", laptop: "100%"},
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
@@ -707,16 +744,16 @@ const DepositComponent = ({
           <Typography
             sx={{
               fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              width: { mobile: "100%", laptop: "40%", tablet: "50%" },
               fontWeight: "600",
               marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
             }}
           >
-            Wallet Balance
+            Wallet Balanceee
           </Typography>
           <Box
             sx={{
-              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+              width: { mobile: "100%", laptop: "60%", tablet: "50%" },
               height: "45px",
               background: "white",
               display: "flex",
@@ -741,17 +778,29 @@ const DepositComponent = ({
           </Box>
         </Box>
       </Box>
-      <Box sx={{ overflow: "hidden", width: "100%" }}>
+      <Box sx={{ overflow: "hidden", width: "100%", gap:"1%", display: {mobile: "flex", laptop: "block"}, justifyContent: "flex-end", flexDirection: "row-reverse" }}>
         <Box
           sx={{
-            width: "100%",
+            width: { mobile: "41%", laptop: "100%"},
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
             justifyContent: "flex-end",
             flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+            
           }}
         >
+           <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+              justifyContent: "space-between",
+              position: {mobile: "relative", laptop: "static"},
+              marginTop: { mobile: "0", laptop: "0" },
+            }}
+          >
           <Typography
             sx={{
               fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
@@ -762,6 +811,7 @@ const DepositComponent = ({
           >
             Transaction Password
           </Typography>
+          </Box>
           <Box
             sx={{
               width: { mobile: "100%", laptop: "60%", tablet: "60%" },
@@ -820,6 +870,7 @@ const DepositComponent = ({
             maxHeight: "115px",
             marginTop: "10px",
             paddingX: "10px",
+            width: { mobile: "41%", laptop: "100%"},
           }}
         >
           <TextField

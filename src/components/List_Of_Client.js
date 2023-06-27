@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { Background, HomeSlide, Account, AccountList, DailogModal } from ".";
 import CustomHeader from "./CommonMasterAdminLayout/Header";
+import { useState } from "react";
 
 export default function Home() {
   function CondiionCheck(path) {
@@ -9,7 +10,7 @@ export default function Home() {
     success *= path.split("/")[2] === "list_of_clients";
     return success;
   }
-
+  // const [clientProfitLossDrilling, setClientProfitLossDrilling] = useState("")
   return (
     <Background>
       {CondiionCheck(window.location.pathname) ? (

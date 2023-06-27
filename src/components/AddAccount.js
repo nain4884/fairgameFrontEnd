@@ -498,9 +498,8 @@ const AddAccount = () => {
               background: "#F8C851",
               minHeight: "60vh",
               borderRadius: "5px",
-              padding: "20px",
+              padding: "16px",
               paddingTop: "3px",
-              
               marginTop: "2px",
               display: "flex",
               flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
@@ -521,7 +520,7 @@ const AddAccount = () => {
                   <Input
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "36px" }}}
                     placeholder={"Username (Required)"}
                     title={"Username*"}
                     setDetail={setDetail}
@@ -548,7 +547,7 @@ const AddAccount = () => {
                     img={EyeIcon}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "36px" }}}
                     title={"User Password*"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -568,7 +567,7 @@ const AddAccount = () => {
                     img={EyeIcon}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "36px" }}}
                     title={"Confirm User Password*"}
                     setDetail={setDetail}
                     required={true}
@@ -587,7 +586,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"Fullname (Optional)"}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "36px" }}}
                     title={"Fullname"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -602,7 +601,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"City (Optional)"}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "36px" }}}
                     title={"City"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -617,7 +616,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"Mobile (Optional)"}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "36px" }}}
                     title={"Mobile Number"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -649,7 +648,7 @@ const AddAccount = () => {
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
-                      height:{ laptop: "45px", mobile: "38px" },
+                      height:{ laptop: "45px", mobile: "36px" },
                      
 
                     }}
@@ -681,7 +680,7 @@ const AddAccount = () => {
                     containerStyle={containerStyles}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px"}}}
+                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "36px"}}}
                     title={"Credit Reference*"}
                     setDetail={setDetail}
                     required={true}
@@ -712,7 +711,7 @@ const AddAccount = () => {
                   inputContainerStyle={{
                     ...inputContainerStyle,
                     backgroundColor: "#DEDEDE",
-                    height:{ laptop: "45px", mobile: "38px" }
+                    height:{ laptop: "45px", mobile: "36px" }
                   }}
                   title={"Upline Partnership"}
                   setDetail={setDetail}
@@ -731,7 +730,7 @@ const AddAccount = () => {
                   <InputMyPartnership
                     inputContainerStyle={{
                       ...inputContainerStyle,
-                      height:{ laptop: "45px", mobile: "38px" }
+                      height:{ laptop: "45px", mobile: "36px" }
                     }}
                     containerStyle={{
                       ...containerStyles,
@@ -760,7 +759,7 @@ const AddAccount = () => {
                     inputContainerStyle={{
                       ...inputContainerStyle,
                       backgroundColor: Detail[9].val === "user" && "#DEDEDE",
-                      height:{ laptop: "45px", mobile: "38px" }
+                      height:{ laptop: "45px", mobile: "36px" }
                     }}
                     containerStyle={{
                       ...containerStyles,
@@ -807,7 +806,7 @@ const AddAccount = () => {
                 inputContainerStyle={{
                   backgroundColor: "#DEDEDE",
                   ...inputContainerStyle,
-                  height:{ laptop: "45px", mobile: "38px" }
+                  height:{ laptop: "45px", mobile: "36px" }
                 }}
                 title={"Downline partnership"}
                 setDetail={setDetail}
@@ -845,7 +844,7 @@ const AddAccount = () => {
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
-                      height:{ laptop: "45px", mobile: "38px" },
+                      height:{ laptop: "45px", mobile: "36px" },
                     }}
                     containerStyle={{
                       width: "100%",
@@ -888,7 +887,7 @@ const AddAccount = () => {
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
-                      height:{ laptop: "45px", mobile: "38px" },
+                      height:{ laptop: "45px", mobile: "36px" },
                       
                     }}
                     containerStyle={{
@@ -982,7 +981,7 @@ const AddAccount = () => {
                 placeholder={"Remark (Optional)"}
                 inputContainerStyle={{
                   ...inputContainerStyle,
-                  height: { laptop: "205px", mobile: "70px" },
+                  height: { laptop: "205px", mobile: "65px" },
                   width: "100%",
                 }}
                 title={"Remark"}

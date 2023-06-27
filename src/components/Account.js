@@ -9,10 +9,10 @@ const Account = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        margin: "1%",
+        margin: "0.5%",
       }}
     >
-      <Typography sx={{ color: "white", fontSize: "18px", fontWeight: "600", marginLeft: { laptop: "0.5%", mobile: "0.5%" }, }}>
+      <Typography sx={{ color: "white", fontSize: "16px", fontWeight: "600", marginLeft: { laptop: "0.5%", mobile: "0.5%" }, }}>
         Account List
       </Typography>
       {/* <Box
