@@ -15,7 +15,7 @@ import InputMyPartnership from "./InputMypartnership";
 
 const containerStyles = {
   marginTop: { mobile: "2px", laptop: "10px" },
-  
+
 };
 const selectValueStyle = {
   fontSize: { mobile: "2px", laptop: "10px" },
@@ -104,7 +104,7 @@ const AddAccount = () => {
   ]);
 
   const matchComissionTypes = [
-    "Commission Type ",
+    "0",
     "Total Loss",
     "Entry Wise",
   ];
@@ -137,7 +137,7 @@ const AddAccount = () => {
     }
     if (
       Detail[17].val !== null &&
-      Detail[17].val !== "Select Match Commission Type"
+      Detail[17].val !== "0"
     ) {
       setShowMatchCommision(false);
       setTimeout(() => {
@@ -236,7 +236,7 @@ const AddAccount = () => {
       }
       if (
         Detail[17].val !== null &&
-        Detail[17].val !== "Select Match Commission Type" &&
+        Detail[17].val !== "0" &&
         Detail[18].val === null
       ) {
         setError({
@@ -278,7 +278,7 @@ const AddAccount = () => {
               ? null
               : parseFloat(Detail[16].val),
           matchTypeComission:
-            Detail[17].val === "Select Match Commission Type"
+            Detail[17].val === "0"
               ? null
               : Detail[17].val,
           matchComission: Detail[18].val,
@@ -480,14 +480,14 @@ const AddAccount = () => {
 
   return (
     <>
-      <Box sx={{  margin: "1%" }}>
+      <Box sx={{ margin: "1%" }}>
         <Typography
           sx={{ color: "white", fontSize: "18px", fontWeight: "600", marginLeft: '4px' }}
         >
           Add Account
         </Typography>
-        <form 
-         style={{ marginTop: "1%"}}
+        <form
+          style={{ marginTop: "1%" }}
           onSubmit={(e) => {
             e?.preventDefault();
             addAccount();
@@ -500,7 +500,7 @@ const AddAccount = () => {
               borderRadius: "5px",
               padding: "20px",
               paddingTop: "3px",
-              
+
               marginTop: "2px",
               display: "flex",
               flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
@@ -521,7 +521,7 @@ const AddAccount = () => {
                   <Input
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "45px", mobile: "38px" } }}
                     placeholder={"Username (Required)"}
                     title={"Username*"}
                     setDetail={setDetail}
@@ -537,7 +537,7 @@ const AddAccount = () => {
                     toFoucs={true}
                   />
                   {error[1].val && (
-                    <p className="validCommon" style={{ color: "#fa1e1e"  }}>
+                    <p className="validCommon" style={{ color: "#fa1e1e" }}>
                       {userAlreadyExist ? userAlreadyExist : "Field Required"}
                     </p>
                   )}
@@ -548,7 +548,7 @@ const AddAccount = () => {
                     img={EyeIcon}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "45px", mobile: "38px" } }}
                     title={"User Password*"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -568,7 +568,7 @@ const AddAccount = () => {
                     img={EyeIcon}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "45px", mobile: "38px" } }}
                     title={"Confirm User Password*"}
                     setDetail={setDetail}
                     required={true}
@@ -587,7 +587,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"Fullname (Optional)"}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "45px", mobile: "38px" } }}
                     title={"Fullname"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -602,7 +602,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"City (Optional)"}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "45px", mobile: "38px" } }}
                     title={"City"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -617,7 +617,7 @@ const AddAccount = () => {
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     placeholder={"Mobile (Optional)"}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px" }}}
+                    inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "45px", mobile: "38px" } }}
                     title={"Mobile Number"}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -649,8 +649,8 @@ const AddAccount = () => {
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
                       borderRadius: "5px",
-                      height:{ laptop: "45px", mobile: "38px" },
-                     
+                      height: { laptop: "45px", mobile: "38px" },
+
 
                     }}
                     containerStyle={{
@@ -681,7 +681,7 @@ const AddAccount = () => {
                     containerStyle={containerStyles}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    inputContainerStyle={{...inputContainerStyle,height:{ laptop: "45px", mobile: "38px"}}}
+                    inputContainerStyle={{ ...inputContainerStyle, height: { laptop: "45px", mobile: "38px" } }}
                     title={"Credit Reference*"}
                     setDetail={setDetail}
                     required={true}
@@ -712,7 +712,7 @@ const AddAccount = () => {
                   inputContainerStyle={{
                     ...inputContainerStyle,
                     backgroundColor: "#DEDEDE",
-                    height:{ laptop: "45px", mobile: "38px" }
+                    height: { laptop: "45px", mobile: "38px" }
                   }}
                   title={"Upline Partnership"}
                   setDetail={setDetail}
@@ -731,7 +731,7 @@ const AddAccount = () => {
                   <InputMyPartnership
                     inputContainerStyle={{
                       ...inputContainerStyle,
-                      height:{ laptop: "45px", mobile: "38px" }
+                      height: { laptop: "45px", mobile: "38px" }
                     }}
                     containerStyle={{
                       ...containerStyles,
@@ -760,7 +760,7 @@ const AddAccount = () => {
                     inputContainerStyle={{
                       ...inputContainerStyle,
                       backgroundColor: Detail[9].val === "user" && "#DEDEDE",
-                      height:{ laptop: "45px", mobile: "38px" }
+                      height: { laptop: "45px", mobile: "38px" }
                     }}
                     containerStyle={{
                       ...containerStyles,
@@ -807,7 +807,7 @@ const AddAccount = () => {
                 inputContainerStyle={{
                   backgroundColor: "#DEDEDE",
                   ...inputContainerStyle,
-                  height:{ laptop: "45px", mobile: "38px" }
+                  height: { laptop: "45px", mobile: "38px" }
                 }}
                 title={"Downline partnership"}
                 setDetail={setDetail}
@@ -825,197 +825,198 @@ const AddAccount = () => {
 
               {Detail[9].val === "user" && (
                 <>
-                <Box sx={{
-                display: { laptop: "block", tablet: "grid", mobile: "grid" },
-                // grid-template-columns: auto auto auto;
-                gridTemplateColumns: '50% 47%',
-                gridColumnGap: '10px'
-              }}>
-                  <DropDownSimple
-                    dropStyle={{
-                      filter:
-                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                    }}
-                    valueStyle={{ ...imputStyle, color: "white" }}
-                    title={"Session Commission (%)"}
-                    valueContainerStyle={{
-                      height: "45px",
-                      marginX: "0px",
+                  <Box sx={{
+                    display: { laptop: "block", tablet: "grid", mobile: "grid" },
+                    // grid-template-columns: auto auto auto;
+                    gridTemplateColumns: '50% 47%',
+                    gridColumnGap: '10px'
+                  }}>
+                    <DropDownSimple
+                      dropStyle={{
+                        filter:
+                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      }}
+                      valueStyle={{ ...imputStyle, color: "white", }}
+                      title={"Match Commission Type"}
+                      valueContainerStyle={{
+                        height: "45px",
+                        marginX: "0px",
+                        background: "#0B4F26",
+                        border: "1px solid #DEDEDE",
+                        borderRadius: "5px",
+                        height: { laptop: "45px", mobile: "38px" },
 
-                      background: "#0B4F26",
-                      border: "1px solid #DEDEDE",
-                      borderRadius: "5px",
-                      height:{ laptop: "45px", mobile: "38px" },
-                    }}
-                    containerStyle={{
-                      width: "100%",
-                      position: "relative",
-                      marginTop: "10px",
+                      }}
+                      containerStyle={{
+                        width: "100%",
+                        position: "relative",
+                        marginTop: "10px",
 
-                    }}
-                    titleStyle={{ marginLeft: "0px" }}
-                    data={sessionComissionArray}
-                    dropDownStyle={{
-                      width: "100%",
-                      marginLeft: "0px",
-                      marginTop: "0px",
-                      position: "absolute",
-                      maxHeight: "210px",
-                      overflow: "scroll",
-                    }}
-                    dropDownTextStyle={{...imputStyle, }}
-                    Detail={Detail}
-                    setDetail={setDetail}
-                    place={16}
-                    selectValueStyle={{
-                      selectValueStyle,
-                    }}
-                  />
 
-                  {error[16]?.val && (
-                    <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
-                  )}
-                  <DropDownSimple
-                    dropStyle={{
-                      filter:
-                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                    }}
-                    valueStyle={{ ...imputStyle, color: "white",   }}
-                    title={"Match Commission Type"}
-                    valueContainerStyle={{
-                      height: "45px",
-                      marginX: "0px",
-                      background: "#0B4F26",
-                      border: "1px solid #DEDEDE",
-                      borderRadius: "5px",
-                      height:{ laptop: "45px", mobile: "38px" },
-                      
-                    }}
-                    containerStyle={{
-                      width: "100%",
-                      position: "relative",
-                      marginTop: "10px",
-                      
-                      
-                    }}
-                    titleStyle={{ marginLeft: "0px", }}
-                    data={matchComissionTypes}
-                    dropDownStyle={{
-                      width: "100%",
-                      marginLeft: "0px",
-                      marginTop: "0px",
-                      position: "absolute",
-                    }}
-                    dropDownTextStyle={{...imputStyle, lineHeight: 1 }}
-                    Detail={Detail}
-                    setDetail={setDetail}
-                    place={17}
-                    
-                  />
-                  {error[17]?.val && (
-                    <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
-                  )}
-                  {Detail[17].val !== null &&
-                    Detail[17].val !== "Select Match Commission Type" && (
-                      <>
-                        <DropDownSimple
-                          openDrop={showMatchCommision}
-                          defaultValue={Detail[18].val}
-                          dropStyle={{
-                            filter:
-                              "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                          }}
-                          valueStyle={{ ...imputStyle, color: "white" }}
-                          title={"Match Commission (%)*"}
-                          valueContainerStyle={{
-                            height: "45px",
-                            marginX: "0px",
+                      }}
+                      titleStyle={{ marginLeft: "0px", }}
+                      data={matchComissionTypes}
+                      dropDownStyle={{
+                        width: "100%",
+                        marginLeft: "0px",
+                        marginTop: "0px",
+                        position: "absolute",
+                      }}
+                      dropDownTextStyle={{ ...imputStyle, lineHeight: 1 }}
+                      Detail={Detail}
+                      setDetail={setDetail}
+                      place={17}
 
-                            background: "#0B4F26",
-                            border: "1px solid #DEDEDE",
-                            borderRadius: "5px",
-                          }}
-                          containerStyle={{
-                            width: "100%",
-                            position: "relative",
-                            marginTop: "10px",
-                          }}
-                          titleStyle={{ marginLeft: "0px" }}
-                          data={matchComissionArray}
-                          dropDownStyle={{
-                            width: "100%",
-                            marginLeft: "0px",
-                            marginTop: "0px",
-                            position: "absolute",
-                            maxHeight: "210px",
-                            overflow: "scroll",
-                          }}
-                          // dropDownTextStyle={{...imputStyle,  fontSize:{ laptop: "14px", mobile: "12px" },}}
-                          Detail={Detail}
-                          setDetail={setDetail}
-                          place={18}
-                        />
-                        {error[18].val && (
-                          <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
-                        )}
-                      </>
+                    />
+                    {error[17]?.val && (
+                      <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
                     )}
-                    </Box>
+                    {Detail[17].val !== null &&
+                      Detail[17].val !== "0" && (
+                        <>
+                          <DropDownSimple
+                            openDrop={showMatchCommision}
+                            defaultValue={Detail[18].val}
+                            dropStyle={{
+                              filter:
+                                "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                            }}
+                            valueStyle={{ ...imputStyle, color: "white" }}
+                            title={"Match Commission (%)*"}
+                            valueContainerStyle={{
+                              height: "45px",
+                              marginX: "0px",
+
+                              background: "#0B4F26",
+                              border: "1px solid #DEDEDE",
+                              borderRadius: "5px",
+                            }}
+                            containerStyle={{
+                              width: "100%",
+                              position: "relative",
+                              marginTop: "10px",
+                            }}
+                            titleStyle={{ marginLeft: "0px" }}
+                            data={matchComissionArray}
+                            dropDownStyle={{
+                              width: "100%",
+                              marginLeft: "0px",
+                              marginTop: "0px",
+                              position: "absolute",
+                              maxHeight: "210px",
+                              overflow: "scroll",
+                            }}
+                            // dropDownTextStyle={{...imputStyle,  fontSize:{ laptop: "14px", mobile: "12px" },}}
+                            Detail={Detail}
+                            setDetail={setDetail}
+                            place={18}
+                          />
+                          {error[18].val && (
+                            <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
+                          )}
+                        </>
+                      )}
+
+                    <DropDownSimple
+                      dropStyle={{
+                        filter:
+                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                      }}
+                      valueStyle={{ ...imputStyle, color: "white" }}
+                      title={"Session Commission (%)"}
+                      valueContainerStyle={{
+                        height: "45px",
+                        marginX: "0px",
+
+                        background: "#0B4F26",
+                        border: "1px solid #DEDEDE",
+                        borderRadius: "5px",
+                        height: { laptop: "45px", mobile: "38px" },
+                      }}
+                      containerStyle={{
+                        width: "100%",
+                        position: "relative",
+                        marginTop: "10px",
+
+                      }}
+                      titleStyle={{ marginLeft: "0px" }}
+                      data={sessionComissionArray}
+                      dropDownStyle={{
+                        width: "100%",
+                        marginLeft: "0px",
+                        marginTop: "0px",
+                        position: "absolute",
+                        maxHeight: "210px",
+                        overflow: "scroll",
+                      }}
+                      dropDownTextStyle={{ ...imputStyle, }}
+                      Detail={Detail}
+                      setDetail={setDetail}
+                      place={16}
+                      selectValueStyle={{
+                        selectValueStyle,
+                      }}
+                    />
+
+                    {error[16]?.val && (
+                      <p className="validCommon" style={{ color: "#fa1e1e" }}>Field Required</p>
+                    )}
+                  </Box>
                 </>
               )}
             </Box>
             <Box sx={{ flex: 2 }} className='addAccountRemark'>
-            <Box sx={{
+              <Box sx={{
                 display: { laptop: "block", tablet: "grid", mobile: "grid" },
                 // grid-template-columns: auto auto auto;
                 gridTemplateColumns: '50% 47%',
                 gridColumnGap: '10px'
               }}>
-              <Input
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputProps={{
-                  multiline: true,
-                  rows: 10
-                  // rows: { laptop: 10, mobile: 2 },
-                }}
-                placeholder={"Remark (Optional)"}
-                inputContainerStyle={{
-                  ...inputContainerStyle,
-                  height: { laptop: "205px", mobile: "70px" },
-                  width: "100%",
-                }}
-                title={"Remark"}
-                setDetail={setDetail}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={13}
-              />
-              <div>
-              <Input
-                containerStyle={{ ...containerStyles, width: "100%" }}
-                titleStyle={titleStyles}
-                inputStyle={imputStyle}
-                inputContainerStyle={{ ...inputContainerStyle  }}
-                title={"Admin Transaction Password*"}
-                required={true}
-                setDetail={setDetail}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={14}
-                onFocusOut={handleTransPass}
-                toFoucs={true}
-              />
-              {/* {error[14]?.val !== "" && (
+                <Input
+                  titleStyle={titleStyles}
+                  inputStyle={imputStyle}
+                  inputProps={{
+                    multiline: true,
+                    rows: 10
+                    // rows: { laptop: 10, mobile: 2 },
+                  }}
+                  placeholder={"Remark (Optional)"}
+                  inputContainerStyle={{
+                    ...inputContainerStyle,
+                    height: { laptop: "205px", mobile: "70px" },
+                    width: "100%",
+                  }}
+                  title={"Remark"}
+                  setDetail={setDetail}
+                  Detail={Detail}
+                  setError={setError}
+                  error={error}
+                  place={13}
+                />
+                <div>
+                  <Input
+                    containerStyle={{ ...containerStyles, width: "100%" }}
+                    titleStyle={titleStyles}
+                    inputStyle={imputStyle}
+                    inputContainerStyle={{ ...inputContainerStyle }}
+                    title={"Admin Transaction Password*"}
+                    required={true}
+                    setDetail={setDetail}
+                    Detail={Detail}
+                    setError={setError}
+                    error={error}
+                    place={14}
+                    onFocusOut={handleTransPass}
+                    toFoucs={true}
+                  />
+                  {/* {error[14]?.val !== "" && (
                 <Typography className="validCommon" style={{ color: "#fa1e1e" }}>
                   Admin Transaction Password Required
                 </Typography>
               )} */}
-              
-             
-              </div>
+
+
+                </div>
               </Box>
               <Button
                 className="cursor-pointer"
@@ -1036,7 +1037,7 @@ const AddAccount = () => {
               >
                 Create
               </Button>
-             
+
               {errorShow && !successShow && (
                 <p style={{ color: "#fa1e1e" }}>{errorShow}</p>
               )}

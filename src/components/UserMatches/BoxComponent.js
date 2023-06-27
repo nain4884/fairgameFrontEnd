@@ -191,6 +191,19 @@ const BoxComponent = ({
                 }
                 setFastBetLoading={setFastBetLoading}
                 po={1}
+                updateRate={{
+                  key: 1,
+                  match: "back",
+                  value: isRound
+                    ? Math.round(
+                      ex?.availableToBack?.length > 0
+                        ? ex?.availableToBack[2]?.price
+                        : 0
+                    )
+                    : ex?.availableToBack?.length > 0
+                      ? ex?.availableToBack[2]?.price
+                      : 0
+                }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
@@ -239,6 +252,19 @@ const BoxComponent = ({
                 }
                 setFastBetLoading={setFastBetLoading}
                 po={2}
+                updateRate={{
+                  key: 2,
+                  match: "back",
+                  value: isRound
+                    ? Math.round(
+                      ex?.availableToBack?.length > 0
+                        ? ex?.availableToBack[1]?.price
+                        : 0
+                    )
+                    : ex?.availableToBack?.length > 0
+                      ? ex?.availableToBack[1]?.price
+                      : 0
+                }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
@@ -287,6 +313,19 @@ const BoxComponent = ({
               }
               setFastBetLoading={setFastBetLoading}
               po={3}
+              updateRate={{
+                key: 3,
+                match: "back",
+                value: isRound
+                  ? Math.round(
+                    ex?.availableToBack?.length > 0
+                      ? ex?.availableToBack[0]?.price
+                      : 0
+                  )
+                  : ex?.availableToBack?.length > 0
+                    ? ex?.availableToBack[0]?.price
+                    : 0
+              }}
               placeBetData={placeBetData}
               setFastRate={setFastRate}
               fastRate={fastRate}
@@ -335,6 +374,19 @@ const BoxComponent = ({
               }
               setFastBetLoading={setFastBetLoading}
               po={4}
+              updateRate={{
+                key: 4,
+                match: "lay",
+                value: isRound
+                  ? Math.round(
+                    ex?.availableToLay?.length > 0
+                      ? ex?.availableToLay[0]?.price
+                      : 0
+                  )
+                  : ex?.availableToLay?.length > 0
+                    ? ex?.availableToLay[0]?.price
+                    : 0
+              }}
               placeBetData={placeBetData}
               setFastRate={setFastRate}
               fastRate={fastRate}
@@ -382,6 +434,19 @@ const BoxComponent = ({
                 }
                 setFastBetLoading={setFastBetLoading}
                 po={5}
+                updateRate={{
+                  key: 5,
+                  match: "lay",
+                  value: isRound
+                    ? Math.round(
+                      ex?.availableToLay?.length > 0
+                        ? ex?.availableToLay[1]?.price
+                        : 0
+                    )
+                    : ex?.availableToLay?.length > 0
+                      ? ex?.availableToLay[1]?.price
+                      : 0
+                }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}
@@ -430,6 +495,19 @@ const BoxComponent = ({
                 }
                 setFastBetLoading={setFastBetLoading}
                 po={6}
+                updateRate={{
+                  key: 6,
+                  match: "lay",
+                  value: isRound
+                    ? Math.round(
+                      ex?.availableToLay?.length > 0
+                        ? ex?.availableToLay[2]?.price
+                        : 0
+                    )
+                    : ex?.availableToLay?.length > 0
+                      ? ex?.availableToLay[2]?.price
+                      : 0
+                }}
                 placeBetData={placeBetData}
                 setFastRate={setFastRate}
                 fastRate={fastRate}

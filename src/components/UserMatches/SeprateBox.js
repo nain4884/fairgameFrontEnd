@@ -13,7 +13,7 @@ import MUIModal from "@mui/material/Modal";
 
 import { BETPLACED, Lock, NOT } from "../../assets";
 import { useState } from "react";
-import { setAllBetRate } from "../../newStore/reducers/matchDetails";
+import { setAllBetRate, setBetData } from "../../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import { setRole } from "../../newStore";
 import { height } from "@mui/system";
@@ -52,6 +52,7 @@ const SeprateBox = ({
   setFastBetLoading,
   closeModal,
   handleRateChange,
+  updateRate
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -76,6 +77,12 @@ const SeprateBox = ({
   const [betPlaceLoading, setBetPlaceLoading] = useState(false);
   const { geoLocation } = useSelector((state) => state.auth);
   const [showAtTop, setShowAtTop] = useState(false);
+  const [checkBet, setCheckBet] = useState({
+    type: "",
+    po: "",
+    value: ""
+  });
+  const { betData } = useSelector((state) => state?.matchDetails);
 
   const [previousValue, setPreviousValue] = useState(false);
 
@@ -86,6 +93,19 @@ const SeprateBox = ({
     }
   }, [geoLocation]);
 
+  // useEffect(() => {
+  //   // console.log('updateRate wwwwww:', updateRate)
+  //   // console.log('checkBet wwwwww:', checkBet)
+  //   if (updateRate?.key == betData?.po && updateRate?.match == betData?.type) {
+  //     // alert(JSON.stringify(updateRate))
+  //     console.log('updateRate :', updateRate)
+  //     console.log('updateRate 1 :', betData)
+  //     // setCheckBet(prevState => ({
+  //     //   ...prevState,
+  //     //   value: newValue
+  //     // }));
+  //   }
+  // }, [updateRate])
   useEffect(() => {
     if (closeModal || lock) {
       console.log("closeModal", closeModal);
@@ -193,7 +213,13 @@ const SeprateBox = ({
     }
     return { right: 0 };
   };
-  const handlePlaceBet = async (payload, match) => {
+  const handlePlaceBet = async (payload, match, po) => {
+    // let data = {
+    //   type: payload?.bet_type,
+    //   po: po,
+    // }
+    // // alert(JSON.stringify(data));
+    // dispatch(setBetData({ ...data, }));
     setBetPlaceLoading(true);
 
     let newPayload = {
@@ -229,15 +255,17 @@ const SeprateBox = ({
         let delay = match?.delaySecond ? match?.delaySecond : 0;
         delay = delay * 1000;
         setTimeout(() => {
-          PlaceBetSubmit(newPayload);
+          PlaceBetSubmit(newPayload, po);
         }, delay);
       } else {
-        PlaceBetSubmit(newPayload);
+        PlaceBetSubmit(newPayload, po);
       }
     }
   };
 
-  const PlaceBetSubmit = async (payload) => {
+  const PlaceBetSubmit = async (payload, po) => {
+    // alert(po)
+    console.log("placeBetData :", updateRate);
     try {
       if (Number(payload?.odds) !== Number(value)) {
         setBetPlaceLoading(false);
@@ -350,8 +378,7 @@ const SeprateBox = ({
                   payload.odds = Number(value);
                   payload.sessionBet = true;
                 }
-
-                handlePlaceBet(payload, currentMatch);
+                handlePlaceBet(payload, currentMatch, po);
               }
 
               // if (sessionMain !== "sessionOdds") {
@@ -466,7 +493,7 @@ const SeprateBox = ({
               name={name}
               rates={rates}
               onSubmit={async (payload) => {
-                handlePlaceBet(payload, currentMatch);
+                handlePlaceBet(payload, currentMatch, payload?.po);
               }}
               onCancel={() => {
                 setVisible(true);
@@ -477,6 +504,7 @@ const SeprateBox = ({
               }}
               season={session}
               back={back}
+              po={po}
               currentMatch={currentMatch}
               isBack={isBack}
               betType={betType}
