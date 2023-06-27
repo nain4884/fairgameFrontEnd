@@ -91,7 +91,8 @@ const MatchesComponent = ({
           onChange={callPage}
         />
       )}
-      {loader && <CustomLoader text="" />}
+      {/* {loader && <CustomLoader text="" />} */}
+        {loader && <CustomLoader text="" />}
       {/* <Odds onClick={onClick} top={false} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} /> */}

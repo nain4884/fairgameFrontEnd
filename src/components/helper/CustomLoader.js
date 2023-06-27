@@ -2,7 +2,7 @@ import Lottie from "lottie-react";
 import React from "react";
 import { HourGlass } from "../../assets";
 import { Box, Typography } from "@mui/material";
-
+import "./styles.css";
 const CustomLoader = ({ text }) => {
   return (
     <Box
@@ -17,26 +17,17 @@ const CustomLoader = ({ text }) => {
         flexDirection: "column",
       }}
     >
-      <Box
-        sx={{
-          width: "50px",
-          height: "50px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Lottie
-          animationData={HourGlass}
-          style={{
-            display: "flex",
-            alignSelf: "center",
-            width: 100,
-            height: 100,
-          }}
-        />
-      </Box>
-      <Typography sx={{ color: "text.white" }}>{text}</Typography>
+ 
+      <div className="loading-wrap">
+        <div className="loading">
+          <div></div>
+          <div></div>
+        </div>
+        
+      </div>
+     <Typography sx={{marginTop:"-40px"}} >{text}</Typography>
+  
+      {/* <Typography sx={{ color: "text.white" }}>{text}</Typography> */}
     </Box>
   );
 };
