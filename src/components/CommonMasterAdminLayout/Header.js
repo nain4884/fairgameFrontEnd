@@ -52,9 +52,15 @@ import { memo } from "react";
 import MobileSideBar from "./MobileSideBar";
 import BoxProfile from "./BoxProfile";
 import jwtDecode from "jwt-decode";
-import { setWConfirmAuth, setAConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
+import {
+  setWConfirmAuth,
+  setAConfirmAuth,
+} from "../../newStore/reducers/expertMatchDetails";
+import EventListing from "../EventListing";
+import AdminEventListing from "../AdminEventListing";
+import HomeSlide from "../HomeSlide";
 var roleName = "";
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -336,13 +342,22 @@ const CustomHeader = ({ }) => {
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-
+  const [show, setShow] = useState(false);
+  const [selected, setSelected] = useState(
+    location.state?.activeTab || "Clients"
+  );
+  useEffect(() => {
+    if (location?.state) {
+      setSelected(location?.state?.activeTab);
+    }
+  }, [location?.state]);
   useEffect(() => {
     if (!matchesMobile) {
       setMobileOpen(false);
     }
   }, [matchesMobile]);
 
+  console.log(location, "location");
   const classes = {
     AppBarVal: { zIndex: (theme) => theme.zIndex.drawer + 1 },
     BoxCont1: [
@@ -437,8 +452,8 @@ const CustomHeader = ({ }) => {
     BoxEnd: {
       minHeight: {
         laptop: 60,
-        mobile: ["admin", "wallet"].includes(nav) ? "83px" : 60 + 32 + 42,
-        tablet: ["admin", "wallet"].includes(nav) ? "75px" : 60 + 32 + 42,
+        mobile: ["admin", "wallet"].includes(nav) ? "60px" : 60 + 32 + 42,
+        tablet: ["admin", "wallet"].includes(nav) ? "60px" : 60 + 32 + 42,
       },
     },
   };
@@ -471,7 +486,7 @@ const CustomHeader = ({ }) => {
               />
               <RenderLogo />
             </Box>
-            {!matchesTablet && (
+            {/* {!matchesTablet && (
               <Box
                 sx={{ display: "flex", alignItems: "center", width: "100%" }}
               >
@@ -538,7 +553,7 @@ const CustomHeader = ({ }) => {
                   />
                 )}
               </Box>
-            )}
+            )} */}
             <Box sx={classes.BoxCont1sub2}>
               <SearchInput
                 show={showSearch}
@@ -559,7 +574,7 @@ const CustomHeader = ({ }) => {
             </Box>
           </Box>
 
-          {matchesTablet && (
+          {/* {matchesTablet && (
             <Box
               sx={{
                 display: "flex",
@@ -631,7 +646,7 @@ const CustomHeader = ({ }) => {
                 />
               )}
             </Box>
-          )}
+          )} */}
         </Box>
 
         {
@@ -649,6 +664,7 @@ const CustomHeader = ({ }) => {
           />
         )}
       </AppBar>
+
       <DropdownMenu1
         nav={nav}
         open={Boolean(anchor)}
@@ -661,6 +677,24 @@ const CustomHeader = ({ }) => {
         handleClose={() => setAnchor1(null)}
       />
       <Box sx={classes.BoxEnd} />
+
+      <Box
+        sx={[
+          { flex: 1, padding: "1%" },
+          (theme) => ({
+            backgroundImage: `${theme.palette.primary.homeBodyGradient}`,
+          }),
+        ]}
+      >
+        <HomeSlide show={show} setShow={setShow} />
+        <AdminEventListing
+          selected={selected}
+          show={show}
+          setShow={(e) => setShow((prev) => !prev)}
+          setAnchor={(e) => setAnchor(e.currentTarget)}
+          setAnchor1={(e) => setAnchor1(e.currentTarget)}
+        />
+      </Box>
     </>
   );
 };
