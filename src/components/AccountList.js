@@ -142,41 +142,43 @@ const AccountList = () => {
         ]}
       >
         <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} />
-        <Box sx={{ overflowX: "auto" }}>
-          <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
-            <ListHeaderT />
-            <ListSubHeaderT data={sumValue} />
-            {data1.map((element, i) => {
-              if (i % 2 === 0) {
-                return (
-                  <AccountListRow
-                    callProfile={true}
-                    showOptions={true}
-                    containerStyle={{ background: "#FFE094" }}
-                    profit={element.profit_loss >= 0}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    element={element}
-                    getListOfUser={getListOfUser}
-                    currentPage={currentPageNo}
-                  />
-                );
-              } else {
-                return (
-                  <AccountListRow
-                    callProfile={true}
-                    showOptions={true}
-                    containerStyle={{ background: "#ECECEC" }}
-                    profit={element.profit_loss >= 0}
-                    fContainerStyle={{ background: "#F8C851" }}
-                    fTextStyle={{ color: "#0B4F26" }}
-                    element={element}
-                    getListOfUser={getListOfUser}
-                    currentPage={currentPageNo}
-                  />
-                );
-              }
-            })}
+        <Box sx={{ }}>
+          <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block", position: {mobile: "relative", laptop: "static"},  }}>
+            <Box sx={{  }}>
+              <ListHeaderT />
+              <ListSubHeaderT data={sumValue} />
+              {data1.map((element, i) => {
+                if (i % 2 === 0) {
+                  return (
+                    <AccountListRow
+                      callProfile={true}
+                      showOptions={true}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={element.profit_loss >= 0}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      element={element}
+                      getListOfUser={getListOfUser}
+                      currentPage={currentPageNo}
+                    />
+                  );
+                } else {
+                  return (
+                    <AccountListRow
+                      callProfile={true}
+                      showOptions={true}
+                      containerStyle={{ background: "#ECECEC" }}
+                      profit={element.profit_loss >= 0}
+                      fContainerStyle={{ background: "#F8C851" }}
+                      fTextStyle={{ color: "#0B4F26" }}
+                      element={element}
+                      getListOfUser={getListOfUser}
+                      currentPage={currentPageNo}
+                    />
+                  );
+                }
+              })}
+            </Box>
           </Box>
         </Box>
       </Box>}

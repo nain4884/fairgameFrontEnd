@@ -63,11 +63,11 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
                 setData={setData}
               />
           }
-          <SeperateBox color={"white"} />
+          {/* <SeperateBox color={"white"} />
           <Box
             sx={{ width: ".45%", display: "flex", background: "pink" }}
           ></Box>
-          <SeperateBox color={"white"} />
+          <SeperateBox color={"white"} /> */}
           <SeperateBox
             session={true}
             back={true}
@@ -77,7 +77,7 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
             color={"#F6D0CB"}
           />
           <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
+            sx={{ width: "3px", display: "flex", background: "pink" }}
           ></Box>
           <SeperateBox
             session={true}

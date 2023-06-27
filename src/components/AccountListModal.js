@@ -166,7 +166,9 @@ const AccountListModal = ({ id, show, setShow, title }) => {
           </Button>
         </Box>
 
-        <Box sx={{ overflowX: "auto" }}>
+        <Box 
+        // sx={{ overflowX: "auto" }}
+        >
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
             <ListSubHeaderT data={sumValue} />
