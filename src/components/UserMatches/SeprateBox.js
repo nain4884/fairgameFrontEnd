@@ -51,7 +51,7 @@ const SeprateBox = ({
   placeBetData,
   setFastBetLoading,
   closeModal,
-  handleRateChange
+  handleRateChange,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -195,7 +195,6 @@ const SeprateBox = ({
   };
   const handlePlaceBet = async (payload, match) => {
     setBetPlaceLoading(true);
-    setFastBetLoading(true);
 
     let newPayload = {
       ...payload,
@@ -277,7 +276,7 @@ const SeprateBox = ({
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
       setTimeout(() => {
-        handleRateChange()//add
+        handleRateChange(); //add
         setVisible(true);
         setIsPopoverOpen(false);
       }, 1500);
@@ -313,6 +312,8 @@ const SeprateBox = ({
               return false;
             } else {
               if (selectedFastAmount) {
+                setFastBetLoading(true);
+
                 let payload = {
                   id: currentMatch?.id,
                   matchType: currentMatch?.gameType,
@@ -351,8 +352,8 @@ const SeprateBox = ({
                 }
 
                 handlePlaceBet(payload, currentMatch);
-              } else 
-              
+              }
+
               // if (sessionMain !== "sessionOdds") {
               //   let payload = {
               //     id: currentMatch?.id,
@@ -383,8 +384,7 @@ const SeprateBox = ({
               //   };
               //   setPlaceBetData(payload);
               // } else
-              
-               {
+              else {
                 setIsPopoverOpen(true);
                 setSelectedValue(value);
                 type?.type === "BL"
@@ -491,7 +491,7 @@ const SeprateBox = ({
             />
           </Box>
         </MUIModal>
-        {
+        {/* {
           <BetPlaced
             // time={5}
             time={
@@ -506,7 +506,7 @@ const SeprateBox = ({
               setVisible(i);
             }}
           />
-        }
+        } */}
 
         {canceled.value && (
           <NotificationModal
