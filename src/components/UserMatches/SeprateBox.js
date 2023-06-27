@@ -351,36 +351,40 @@ const SeprateBox = ({
                 }
 
                 handlePlaceBet(payload, currentMatch);
-              } else if (sessionMain !== "sessionOdds") {
-                let payload = {
-                  id: currentMatch?.id,
-                  matchType: currentMatch?.gameType,
-                  // betId: currentMatch?.matchOddsData?.[0]?.id,
-                  betId: findBetId(currentMatch),
-                  bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
-                  odds: Number(value),
-                  betOn: name,
-                  stack: Number(selectedFastAmount),
-                  team_bet: name,
-                  stake: Number(selectedFastAmount),
-                  teamA_name: currentMatch?.teamA,
-                  teamB_name: currentMatch?.teamB,
-                  teamC_name: currentMatch?.teamC,
-                  marketType:
-                    typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
-                  name,
-                  rates,
-                  back,
-                  currentMatch,
-                  selectedValue,
-                  type,
-                  data,
-                  betOn: name,
-                  typeOfBet: typeOfBet,
-                  po: po,
-                };
-                setPlaceBetData(payload);
-              } else {
+              } else 
+              
+              // if (sessionMain !== "sessionOdds") {
+              //   let payload = {
+              //     id: currentMatch?.id,
+              //     matchType: currentMatch?.gameType,
+              //     // betId: currentMatch?.matchOddsData?.[0]?.id,
+              //     betId: findBetId(currentMatch),
+              //     bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
+              //     odds: Number(value),
+              //     betOn: name,
+              //     stack: Number(selectedFastAmount),
+              //     team_bet: name,
+              //     stake: Number(selectedFastAmount),
+              //     teamA_name: currentMatch?.teamA,
+              //     teamB_name: currentMatch?.teamB,
+              //     teamC_name: currentMatch?.teamC,
+              //     marketType:
+              //       typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
+              //     name,
+              //     rates,
+              //     back,
+              //     currentMatch,
+              //     selectedValue,
+              //     type,
+              //     data,
+              //     betOn: name,
+              //     typeOfBet: typeOfBet,
+              //     po: po,
+              //   };
+              //   setPlaceBetData(payload);
+              // } else
+              
+               {
                 setIsPopoverOpen(true);
                 setSelectedValue(value);
                 type?.type === "BL"

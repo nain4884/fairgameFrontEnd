@@ -10,7 +10,7 @@ const menutItems2 = [
 const DropdownMenu2 = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
   const classes = {
-    Menusx: { marginTop: {mobile:"12px" ,laptop:"20px",tablet:"14px"},marginLeft:{mobile:"5px",laptop:"0",tablet:"0"}, paddingY: "0px", padding: "0px",width:{mobile:"105%",laptop:"100%",tablet:"100%"}},
+    Menusx: { marginTop: {mobile:"15px" ,laptop:"30px",tablet:"18px"},marginLeft:{mobile:"5px",laptop:"0",tablet:"0"}, paddingY: "0px", padding: "0px",width:{mobile:"105%",laptop:"100%",tablet:"100%"}},
     MenuListProps: { "aria-labelledby": "basic-button" },
     MenuPaperProps: { sx: { paddingY: "0px", padding: "0px",width:"100%" } },
     MenuItemsx: {
