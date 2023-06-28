@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import { Background, HomeSlide, Account, AccountList, DailogModal } from ".";
 import CustomHeader from "./CommonMasterAdminLayout/Header";
 import { useState } from "react";
+import { Box } from "@mui/material";
 
 export default function Home() {
   function CondiionCheck(path) {
@@ -15,6 +16,7 @@ export default function Home() {
     <Background>
       {CondiionCheck(window.location.pathname) ? (
         <>
+        <Box sx={{ margin:" 1%"}}>
           {/* <HomeSlide /> */}
           <Account />
           <AccountList />
@@ -25,6 +27,8 @@ export default function Home() {
             <SetExposureModal />
             <ChangePasswordModal />*/}
           <DailogModal />
+
+        </Box>
         </>
       ) : (
         <></>

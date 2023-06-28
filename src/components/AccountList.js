@@ -132,7 +132,7 @@ const AccountList = () => {
         <Box
           sx={[
             {
-              marginX: "0.5%",
+              // marginX: "0.5%",
               minHeight: "200px",
               borderRadius: "10px",
               borderBottomRightRadius: "0px",
@@ -209,7 +209,7 @@ const Footer = ({ currentPage, pages, callPage, getListOfUser }) => {
         px: { mobile: "5px", laptop: "10px" },
         justifyContent: "space-between",
         background: "#FAFAFA",
-        marginX: "0.5%",
+        // marginX: "0.5%",
         marginBottom: "20px",
       }}
     >

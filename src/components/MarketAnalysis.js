@@ -83,7 +83,7 @@ const MarketAnalysis = () => {
     setCurrentPage(parseInt(value));
   }
   return (
-    <Box sx={{ display: "flex", width: "100%", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", width: "100%", flexDirection: "column", margin: "0.5%" }}>
       <Box
         sx={{
           width: "100%",
@@ -111,6 +111,7 @@ const MarketAnalysis = () => {
               width: "100%",
               fontWeight: "700",
               marginY: "0.5%",
+              marginLeft: "5px",
               alignSelf: "start",
             }}
           >
@@ -125,6 +126,7 @@ const MarketAnalysis = () => {
                   mobile: "center",
                   tablet: "flex-end",
                   laptop: "flex-end",
+                  marginRight: "0.5%"
                 },
               }}
             >
