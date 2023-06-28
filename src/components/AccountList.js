@@ -147,7 +147,7 @@ const AccountList = () => {
       <Box
         sx={[
           {
-            marginX: "0.5%",
+            // marginX: "0.5%",
             minHeight: "200px",
             borderRadius: "10px",
             borderBottomRightRadius: "0px",
