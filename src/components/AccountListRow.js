@@ -25,8 +25,7 @@ const AccountListRow = ({
   getListOfUser,
   showOptions,
   showChildModal,
-  callProfile
-  
+  callProfile,
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -311,15 +310,17 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.totalCommissions}  
+            {elementToUDM.totalCommissions}
           </Typography>
-            <StyledImage
-            
-              src={
-                DownGIcon
-              }
-              style={{ height: "10px", cursor: "pointer", width: "15px", marginRight: '5px' }}
-            />
+          <StyledImage
+            src={DownGIcon}
+            style={{
+              height: "10px",
+              cursor: "pointer",
+              width: "15px",
+              marginRight: "5px",
+            }}
+          />
         </Box>
         <Box
           sx={{
@@ -346,8 +347,10 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM?.available_balance ? elementToUDM?.available_balance.toFixed(2): "00"}
-            {console.log(elementToUDM, 'elementToUDM')}
+            {elementToUDM?.available_balance
+              ? elementToUDM?.available_balance.toFixed(2)
+              : "00"}
+            {console.log(elementToUDM, "elementToUDM")}
             {/* Math.abs(bookRatio).toFixed(2) */}
           </Typography>
         </Box>
@@ -416,7 +419,7 @@ const AccountListRow = ({
       </Box>
       {showUserModal && (
         <UserDetailModal
-        updatedUserProfile={updatedUserProfile}
+          updatedUserProfile={updatedUserProfile}
           getListOfUser={getListOfUser}
           setShowUserModal={setShowUserModal}
           backgroundColor={containerStyle?.background}

@@ -51,10 +51,19 @@ const AccountList = () => {
     totalCommissions: "",
   });
   let { axios, JWT } = setRole();
+ 
+
+  const [pageCount, setPageCount] = useState(constants.pageLimit);
+  // const [currentPage, setCurrentPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(constants.listOfClientCountLimit);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const { currentPageNo } = useSelector((state) => state?.auth);
+  
   async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?${username ? `userName=${username}` : ""
+        `/fair-game-wallet/getAllUser?${
+          username ? `userName=${username}` : ""
         }&page=${currentPageNo}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
@@ -69,7 +78,7 @@ const AccountList = () => {
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-          pageLimit
+            pageLimit
         )
       );
     } catch (e) {
@@ -77,13 +86,6 @@ const AccountList = () => {
     }
     // /fair-game-wallet/getLogUserAggregateData
   }
-
-  const [pageCount, setPageCount] = useState(constants.pageLimit);
-  // const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(constants.pageCount);
-  const { currentUser } = useSelector((state) => state?.currentUser);
-  const { currentPageNo } = useSelector((state) => state?.auth);
-  const [valuetoshow, setElementToUDM] = useState(null);
   function callPage(val) {
     dispatch(setPage(parseInt(val)));
     // setCurrentPage(parseInt(val));
@@ -117,7 +119,7 @@ const AccountList = () => {
     getUerLogged();
     return () => {
       dispatch(setPage(parseInt(1)));
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -126,70 +128,73 @@ const AccountList = () => {
 
   return (
     <>
-      {data1.length > 0 && <Box
-        sx={[
-          {
-            marginX: "0.5%",
-            minHeight: "200px",
-            borderRadius: "10px",
-            borderBottomRightRadius: "0px",
-            borderBottomLeftRadius: "0px",
-            overflow: "hidden",
-            border: "2px solid white",
-          },
-          (theme) => ({
-            backgroundImage: `${theme.palette.primary.headerGradient}`,
-          }),
-        ]}
-      >
-        <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} />
-        <Box sx={{overflowX: "auto" }}>
+
+        <Box
+          sx={[
+            {
+              marginX: "0.5%",
+              minHeight: "200px",
+              borderRadius: "10px",
+              borderBottomRightRadius: "0px",
+              borderBottomLeftRadius: "0px",
+              overflow: "hidden",
+              border: "2px solid white",
+            },
+            (theme) => ({
+              backgroundImage: `${theme.palette.primary.headerGradient}`,
+            }),
+          ]}
+        >
+          <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} />
+          <Box sx={{overflowX: "auto" }}>
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block", position: {mobile: "relative", laptop: "static"},  }}>
-            <Box sx={{}}>
-              <ListHeaderT />
-              <ListSubHeaderT data={sumValue} />
-              {data1.map((element, i) => {
-                if (i % 2 === 0) {
-                  return (
-                    <AccountListRow
-                   
-                      callProfile={true}
-                      showOptions={true}
-                      containerStyle={{ background: "#FFE094" }}
-                      profit={element.profit_loss >= 0}
-                      fContainerStyle={{ background: "#0B4F26" }}
-                      fTextStyle={{ color: "white" }}
-                      element={element}
-                      getListOfUser={getListOfUser}
-                      currentPage={currentPageNo}
-                    />
-                  );
-                } else {
-                  return (
-                    <AccountListRow
-                      callProfile={true}
-                      showOptions={true}
-                      containerStyle={{ background: "#ECECEC" }}
-                      profit={element.profit_loss >= 0}
-                      fContainerStyle={{ background: "#F8C851" }}
-                      fTextStyle={{ color: "#0B4F26" }}
-                      element={element}
-                      getListOfUser={getListOfUser}
-                      currentPage={currentPageNo}
-                    />
-                  );
-                }
-              })}
+              <Box sx={{}}>
+                <ListHeaderT />
+                <ListSubHeaderT data={sumValue} />
+                {data1.map((element, i) => {
+                  if (i % 2 === 0) {
+                    return (
+                      <AccountListRow
+                        callProfile={true}
+                        showOptions={true}
+                        containerStyle={{ background: "#FFE094" }}
+                        profit={element.profit_loss >= 0}
+                        fContainerStyle={{ background: "#0B4F26" }}
+                        fTextStyle={{ color: "white" }}
+                        element={element}
+                        getListOfUser={getListOfUser}
+                        currentPage={currentPageNo}
+                      />
+                    );
+                  } else {
+                    return (
+                      <AccountListRow
+                        callProfile={true}
+                        showOptions={true}
+                        containerStyle={{ background: "#ECECEC" }}
+                        profit={element.profit_loss >= 0}
+                        fContainerStyle={{ background: "#F8C851" }}
+                        fTextStyle={{ color: "#0B4F26" }}
+                        element={element}
+                        getListOfUser={getListOfUser}
+                        currentPage={currentPageNo}
+                      />
+                    );
+                  }
+                })}
+              </Box>
             </Box>
           </Box>
         </Box>
-      </Box>}
-      {data1.length > 0 && <Footer
-        getListOfUser={getListOfUser}
-        currentPage={currentPageNo}
-        pages={pageCount}
-        callPage={callPage}
-      />}
+      
+     
+        <Footer
+          getListOfUser={getListOfUser}
+          currentPage={currentPageNo}
+          pages={pageCount}
+          callPage={callPage}
+        />
+      
     </>
   );
 };
@@ -298,7 +303,13 @@ const ListH = ({ getListOfUser, setPageCount }) => {
   return (
     <Box
       display={"flex"}
-      sx={{ justifyContent: "space-between", px: "10px", py: "3px", gap: 2, background: '#F8C851' }}
+      sx={{
+        justifyContent: "space-between",
+        px: "10px",
+        py: "3px",
+        gap: 2,
+        background: "#F8C851",
+      }}
     >
       <Box display={"flex"} alignItems="center">
         <Box

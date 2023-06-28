@@ -69,6 +69,7 @@ module.exports = {
 
   pageLimit: 10,
   pageCount: 10,
+  listOfClientCountLimit:15,
 
   customPageLimit: 10,
 };
