@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useTheme } from "@emotion/react";
 import UnlockComponent from "../../../components/UnlockComponent";
 import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets"
+import {  ARROWUP } from "../../../assets";
 
 const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, handleBlock, handleHide, handleShowLock, selft }) => {
   const theme = useTheme();
@@ -31,6 +32,7 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
   const onSubmit = (value) => {
     handleBlock(value, !locked, "BOOKMAKER")
   }
+  const [visible, setVisible] = useState(true);
 
   return (
     <Box
@@ -93,129 +95,150 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
           }}
         >
           <SmallBox color={"#FF4D4D"} valueA={bookRatioA(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} valueB={bookRatioB(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} />
+          <img
+              onClick={() => {
+                setVisible(!visible);
+              }}
+              src={ARROWUP}
+              style={{
+                transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+                width: "15px",
+                height: "15px",
+                marginRight: "5px",
+                marginLeft: "5px",
+                cursor: 'pointer'
+              }}
+            />
         </Box>
       </Box>
       <Divider />
-      {
-        <Box
-          sx={{
-            display: "flex",
-            background: "#319E5B",
-            height: "25px",
-            width: "99.7%",
-            alignSelf: "center",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              background: "'#319E5B'",
-              height: "25px",
-              width: "40%",
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: { laptop: "11px", mobile: "9px" },
-                marginLeft: "7px",
-              }}
-            >
-              MIN: {currentMatch?.betfair_bookmaker_min_bet} MAX:{currentMatch?.betfair_bookmaker_max_bet}
-            </Typography>
-          </Box>
+      {visible && (
+      <>
+        
+          <>
           <Box
             sx={{
               display: "flex",
               background: "#319E5B",
               height: "25px",
-              width: { laptop: "60%", mobile: "80%" },
-              justifyContent: { laptop: "flex-end", mobile: "flex-end" },
+              width: "99.7%",
+              alignSelf: "center",
             }}
           >
             <Box
               sx={{
-                background: "#00C0F9",
-                width: { laptop: "5vw", mobile: "30%" },
-                height: "100%",
                 display: "flex",
-                justifyContent: "center",
+                background: "'#319E5B'",
+                height: "25px",
+                width: "40%",
                 alignItems: "center",
               }}
             >
               <Typography
-                sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                sx={{
+                  color: "white",
+                  fontSize: { laptop: "11px", mobile: "9px" },
+                  marginLeft: "7px",
+                }}
               >
-                Back
+                MIN: {currentMatch?.betfair_bookmaker_min_bet} MAX:{currentMatch?.betfair_bookmaker_max_bet}
               </Typography>
             </Box>
-            <Box
-              sx={{ width: "3px", display: "flex", background: "white" }}
-            ></Box>
             <Box
               sx={{
-                background: "#FF9292",
-                width: { laptop: "5vw", mobile: "30%" },
-                height: "100%",
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                background: "#319E5B",
+                height: "25px",
+                width: { laptop: "60%", mobile: "80%" },
+                justifyContent: { laptop: "flex-end", mobile: "flex-end" },
               }}
             >
-              <Typography
-                sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+              <Box
+                sx={{
+                  background: "#00C0F9",
+                  width: { laptop: "5vw", mobile: "30%" },
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
-                Lay
-              </Typography>
+                <Typography
+                  sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                >
+                  Back
+                </Typography>
+              </Box>
+              <Box
+                sx={{ width: "3px", display: "flex", background: "white" }}
+              ></Box>
+              <Box
+                sx={{
+                  background: "#FF9292",
+                  width: { laptop: "5vw", mobile: "30%" },
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                >
+                  Lay
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      }
-      <Box sx={{ position: "relative", width: "99.8%" }}>
-        <BoxComponent
-          // color={"#46e080"}
-          teamImage={currentMatch?.teamA_Image}
-          name={currentMatch?.teamA}
-          rates={currentMatch?.teamA_rate ? currentMatch?.teamA_rate : 0}
-          color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#319E5B"}
-          data={data?.length > 0 ? data[0] : []}
-          lock={handleLock(data?.length > 0 ? data[0] : [])}
-        />
-        <Divider />
-        <BoxComponent
-          // color={"#FF4D4D"}
-          // lock={true}
-          teamImage={currentMatch?.teamB_Image}
-          name={currentMatch?.teamB}
-          rates={currentMatch?.teamB_rate ? currentMatch?.teamB_rate : 0}
-          color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#319E5B"}
-          data={data?.length > 0 ? data[1] : []}
-          lock={handleLock(data?.length > 0 ? data[1] : [])}
-          align="end"
-        />
-        {currentMatch?.teamC ?
-          <>
-            <Divider />
-            <BoxComponent
-              teamImage={currentMatch?.teamC_Image ? currentMatch?.teamC_Image : null}
-              // color={"#FF4D4D"}
-              color={currentMatch?.teamC_rate <= 0 ? "#FF4D4D" : "#46e080"}
-              name={currentMatch?.teamC}
-              rates={currentMatch?.teamC_rate ? currentMatch?.teamC_rate : 0}
-              data={data?.length > 0 ? data[2] : []}
-              lock={handleLock(data?.length > 0 ? data[2] : [])}
-              align="end"
-            />
-          </> : null}
-        {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
-          <Box sx={{ width: '100%', alignSelf: 'flex-end', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', alignItems: 'center', justifyContent: 'center', display: 'flex' }} >
-            <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
+          </>
+        
+        
+        <Box sx={{ position: "relative", width: "99.8%" }}>
+          <BoxComponent
+            // color={"#46e080"}
+            teamImage={currentMatch?.teamA_Image}
+            name={currentMatch?.teamA}
+            rates={currentMatch?.teamA_rate ? currentMatch?.teamA_rate : 0}
+            color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#319E5B"}
+            data={data?.length > 0 ? data[0] : []}
+            lock={handleLock(data?.length > 0 ? data[0] : [])}
+          />
+          <Divider />
+          <BoxComponent
+            // color={"#FF4D4D"}
+            // lock={true}
+            teamImage={currentMatch?.teamB_Image}
+            name={currentMatch?.teamB}
+            rates={currentMatch?.teamB_rate ? currentMatch?.teamB_rate : 0}
+            color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#319E5B"}
+            data={data?.length > 0 ? data[1] : []}
+            lock={handleLock(data?.length > 0 ? data[1] : [])}
+            align="end"
+          />
+          {currentMatch?.teamC ?
+            <>
+              <Divider />
+              <BoxComponent
+                teamImage={currentMatch?.teamC_Image ? currentMatch?.teamC_Image : null}
+                // color={"#FF4D4D"}
+                color={currentMatch?.teamC_rate <= 0 ? "#FF4D4D" : "#46e080"}
+                name={currentMatch?.teamC}
+                rates={currentMatch?.teamC_rate ? currentMatch?.teamC_rate : 0}
+                data={data?.length > 0 ? data[2] : []}
+                lock={handleLock(data?.length > 0 ? data[2] : [])}
+                align="end"
+              />
+            </> : null}
+          {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
+            <Box sx={{ width: '100%', alignSelf: 'flex-end', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', alignItems: 'center', justifyContent: 'center', display: 'flex' }} >
+              <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
 
-            <Typography sx={{ color: 'white', fontWeight: '600', marginLeft: '-25px', fontSize: '20px', marginTop: '20px' }}>Locked</Typography>
-          </Box>
-        </Box>}
-      </Box>
+              <Typography sx={{ color: 'white', fontWeight: '600', marginLeft: '-25px', fontSize: '20px', marginTop: '20px' }}>Locked</Typography>
+            </Box>
+          </Box>}
+        </Box>
+      </>
+      )}
       {showUnlock && <Box sx={{ position: 'absolute', width: '100%', background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left: '20%', zIndex: 999 }}>
         <UnlockComponent
           unlock={locked}
