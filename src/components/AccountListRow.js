@@ -371,6 +371,7 @@ const AccountListRow = ({
           sx={{
             width: { laptop: "5vw", tablet: "5vw", mobile: "26.5vw" },
             display: "flex",
+            paddingX: "10px",
             justifyContent: "center",
             alignItems: "center",
             height: "45px",

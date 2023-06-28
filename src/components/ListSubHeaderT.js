@@ -42,12 +42,12 @@ const ListSubHeaderT = ({ data }) => {
     <Box
       sx={{
         width: "100%",
-        display: "flex",
-        height: "45px",
-        background: "#0B4F26",
-        alignItems: "center",
-        borderBottom: "2px solid white",
-        overflow: "hidden",
+            display: "flex",
+            height: "45px",
+            background: "#0B4F26",
+            alignItems: "center",
+            overflow: "hidden",
+            borderBottom: "2px solid white",
       }}
     >
       <Box
