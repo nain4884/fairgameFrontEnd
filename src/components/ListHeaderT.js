@@ -21,6 +21,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }, }}>
@@ -35,6 +36,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }, lineHeight: '1.1' }}>
@@ -49,6 +51,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -63,6 +66,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }, lineHeight: '1.1'}}>
@@ -77,6 +81,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -91,6 +96,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -105,6 +111,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -119,6 +126,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px", lineHeight: "1.1" } }}>
@@ -134,6 +142,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -149,6 +158,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -163,6 +173,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -177,6 +188,7 @@ const ListHeaderT = () => {
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }  }}>
