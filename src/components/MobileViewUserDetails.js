@@ -98,7 +98,7 @@ const MobileViewUserDetails = ({
             flexDirection: "row-reverse",
           }}
         >
-          <Box
+          {/* <Box
             sx={{
               display: "flex",
               alignItems: "center",
@@ -155,7 +155,7 @@ const MobileViewUserDetails = ({
                 {percent_profit_loss}
               </Typography>
             </Box>
-          </Box>
+          </Box> */}
           <Box
             sx={{
               display: "flex",

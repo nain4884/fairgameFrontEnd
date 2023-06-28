@@ -9,7 +9,7 @@ const Account = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        margin: "0.5%",
+        marginY: "0.5%",
       }}
     >
       <Typography sx={{ color: "white", fontSize: "16px", fontWeight: "600", marginLeft: { laptop: "0.5%", mobile: "0.5%" }, }}>

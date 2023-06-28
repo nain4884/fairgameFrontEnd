@@ -26,9 +26,10 @@ const LiveMarketComponent = ({
           marginLeft: { mobile: mode == "1" ? "2px" : 0, laptop: "10px" },
 
           padding: { mobile: "3px", tablet: "5px", laptop: "5px" },
+          paddingTop: { mobile: "1px", tablet: "5px", laptop: "5px" },
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'center', marginRight: { mobile: "0", tablet: "0", laptop: "10px" } ,minHeight: "24px" }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'space-between', marginRight: { mobile: "0", tablet: "0", laptop: "10px" } ,minHeight: "24px" }}>
           <Typography
             sx={{
               color: "white",
@@ -66,7 +67,7 @@ const LiveMarketComponent = ({
             marginRight: { mobile: "0", laptop: "5px" },
             fontWeight: "700",
             display: "inline",
-            textAlign: { mobile: "center", laptop: "left" },
+            textAlign: { mobile: "center", laptop: "center" },
           }}
         >
           {value}
@@ -174,7 +175,7 @@ const LiveMarketComponent = ({
           width: "99%",
           display: "flex",
           position: "relative",
-          margin: { mobile: "4px", tablet: "6px", laptop: "6px" },
+          margin: { mobile: "4px", tablet: "6px", laptop: "6px 0" },
           alignSelf: "center",
           justifyContent: "space-evenly",
           height: "55px",
