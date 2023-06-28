@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import React, { lazy, Suspense } from 'react';
 import Matches from "./pages/matches";
 import MasterRoutes from "./pages/master";
 import ExpertRoutes from "./pages/expert";
@@ -11,29 +12,34 @@ import AdminRoutes from "./pages/fairGameAdmin";
 import PageNotFound from "./components/PageNotFound";
 import USerRoutes from "./pages/matches/UserRoutes";
 import SmoothScroll from "./components/SmoothScoll";
+import CustomLoader from "./components/helper/CustomLoader";
+
+const LazyUserRoutes = lazy(() => import("./pages/matches/UserRoutes"));
+const LazyMasterRoutes = lazy(() => import("./pages/master"));
+const LazyExpertRoutes = lazy(() => import("./pages/expert"));
+const LazyAdminRoutes = lazy(() => import("./pages/fairGameAdmin"));
 
 const Main = () => {
   return (
     <AuthProvider>
       <SmoothScroll />
-      <Routes>
-        {/* User Routes */}
-        {<Route exact path="/*" element={<USerRoutes />} />}
-        {/* Master Routes */}
-        <Route exact path="/admin/*" element={<MasterRoutes />} />
+      <Suspense fallback={<CustomLoader text="" />}>
+        <Routes>
+          {/* User Routes */}
+          <Route exact path="/*" element={<LazyUserRoutes />} />
 
-        {/* Expert Routes */}
-        <Route exact path="/expert/*" element={<ExpertRoutes />} />
+          {/* Master Routes */}
+          <Route exact path="/admin/*" element={<LazyMasterRoutes />} />
 
-        {/* admin Routes */}
-        <Route exact path="/wallet/*" element={<AdminRoutes />} />
+          {/* Expert Routes */}
+          <Route exact path="/expert/*" element={<LazyExpertRoutes />} />
 
-        {/* <Route exact path="/fairgame_wallet/*" element={<FairGameWalletRoutes />} /> */}
-        {/* <Route path="/master/*" element={<MasterRoutes />} /> */}
-        {/* <Route path="/super_master/*" element={<SuperMasterRoutes />} /> */}
-        {/* <Route path="/super_admin/*" element={<SuperAdminRoutes />} /> */}
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+          {/* Admin Routes */}
+          <Route exact path="/wallet/*" element={<LazyAdminRoutes />} />
+
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Suspense>
     </AuthProvider>
   );
 };

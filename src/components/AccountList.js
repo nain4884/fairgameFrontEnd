@@ -29,6 +29,7 @@ import { useRef } from "react";
 import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
+import { saveAs } from 'file-saver';
 
 const AccountList = () => {
   const dispatch = useDispatch();
@@ -51,19 +52,18 @@ const AccountList = () => {
     totalCommissions: "",
   });
   let { axios, JWT } = setRole();
- 
+
 
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   // const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.listOfClientCountLimit);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { currentPageNo } = useSelector((state) => state?.auth);
-  
+
   async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?${
-          username ? `userName=${username}` : ""
+        `/fair-game-wallet/getAllUser?${username ? `userName=${username}` : ""
         }&page=${currentPageNo}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
@@ -78,7 +78,7 @@ const AccountList = () => {
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-            pageLimit
+          pageLimit
         )
       );
     } catch (e) {
@@ -126,75 +126,92 @@ const AccountList = () => {
     getListOfUser();
   }, [currentPageNo]);
 
+  const handleExport = async (type, id) => {
+    let url = `/fair-game-wallet/exportUser?exportType=${type}`;
+    if (id) {
+      url = `/fair-game-wallet/exportUser?exportType=${type}&userId=${id}`
+    }
+    if (type == "xlsx") {
+      try {
+        const response = await axios.get(url, { responseType: 'blob', });
+        saveAs(response.data, "file.xlsx");
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
   return (
     <>
 
-        <Box
-          sx={[
-            {
-              marginX: "0.5%",
-              minHeight: "200px",
-              borderRadius: "10px",
-              borderBottomRightRadius: "0px",
-              borderBottomLeftRadius: "0px",
-              overflow: "hidden",
-              border: "2px solid white",
-            },
-            (theme) => ({
-              backgroundImage: `${theme.palette.primary.headerGradient}`,
-            }),
-          ]}
-        >
-          <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} />
-          <Box sx={{overflowX: "auto" }}>
-          <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block", position: {mobile: "relative", laptop: "static"},  }}>
-              <Box sx={{}}>
-                <ListHeaderT />
-                <ListSubHeaderT data={sumValue} />
-                {data1.map((element, i) => {
-                  if (i % 2 === 0) {
-                    return (
-                      <AccountListRow
-                        callProfile={true}
-                        showOptions={true}
-                        containerStyle={{ background: "#FFE094" }}
-                        profit={element.profit_loss >= 0}
-                        fContainerStyle={{ background: "#0B4F26" }}
-                        fTextStyle={{ color: "white" }}
-                        element={element}
-                        getListOfUser={getListOfUser}
-                        currentPage={currentPageNo}
-                      />
-                    );
-                  } else {
-                    return (
-                      <AccountListRow
-                        callProfile={true}
-                        showOptions={true}
-                        containerStyle={{ background: "#ECECEC" }}
-                        profit={element.profit_loss >= 0}
-                        fContainerStyle={{ background: "#F8C851" }}
-                        fTextStyle={{ color: "#0B4F26" }}
-                        element={element}
-                        getListOfUser={getListOfUser}
-                        currentPage={currentPageNo}
-                      />
-                    );
-                  }
-                })}
-              </Box>
+      <Box
+        sx={[
+          {
+            marginX: "0.5%",
+            minHeight: "200px",
+            borderRadius: "10px",
+            borderBottomRightRadius: "0px",
+            borderBottomLeftRadius: "0px",
+            overflow: "hidden",
+            border: "2px solid white",
+          },
+          (theme) => ({
+            backgroundImage: `${theme.palette.primary.headerGradient}`,
+          }),
+        ]}
+      >
+        <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} handleExport={handleExport} />
+        <Box sx={{ overflowX: "auto" }}>
+          <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block", position: { mobile: "relative", laptop: "static" }, }}>
+            <Box sx={{}}>
+              <ListHeaderT />
+              <ListSubHeaderT data={sumValue} />
+              {data1.map((element, i) => {
+                if (i % 2 === 0) {
+                  return (
+                    <AccountListRow
+                      callProfile={true}
+                      showOptions={true}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={element.profit_loss >= 0}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      element={element}
+                      getListOfUser={getListOfUser}
+                      currentPage={currentPageNo}
+                      handleExport={handleExport}
+                    />
+                  );
+                } else {
+                  return (
+                    <AccountListRow
+                      callProfile={true}
+                      showOptions={true}
+                      containerStyle={{ background: "#ECECEC" }}
+                      profit={element.profit_loss >= 0}
+                      fContainerStyle={{ background: "#F8C851" }}
+                      fTextStyle={{ color: "#0B4F26" }}
+                      element={element}
+                      getListOfUser={getListOfUser}
+                      currentPage={currentPageNo}
+                      handleExport={handleExport}
+                    />
+                  );
+                }
+              })}
             </Box>
           </Box>
         </Box>
-      
-     
-        <Footer
-          getListOfUser={getListOfUser}
-          currentPage={currentPageNo}
-          pages={pageCount}
-          callPage={callPage}
-        />
-      
+      </Box>
+
+
+      <Footer
+        getListOfUser={getListOfUser}
+        currentPage={currentPageNo}
+        pages={pageCount}
+        callPage={callPage}
+      />
+
     </>
   );
 };
@@ -299,7 +316,7 @@ const Footer = ({ currentPage, pages, callPage, getListOfUser }) => {
   );
 };
 
-const ListH = ({ getListOfUser, setPageCount }) => {
+const ListH = ({ getListOfUser, setPageCount, handleExport }) => {
   return (
     <Box
       display={"flex"}
@@ -323,7 +340,7 @@ const ListH = ({ getListOfUser, setPageCount }) => {
             alignItems: "center",
           }}
         >
-          <StyledImage src={Excel} sx={{ height: "25px" }} />
+          <StyledImage src={Excel} sx={{ height: "25px" }} onClick={() => handleExport('xlsx')} />
         </Box>
         <Box
           sx={{
@@ -337,7 +354,7 @@ const ListH = ({ getListOfUser, setPageCount }) => {
             alignItems: "center",
           }}
         >
-          <StyledImage src={Pdf} sx={{ height: "25px" }} />
+          <StyledImage src={Pdf} sx={{ height: "25px" }} onClick={() => handleExport('pdf')} />
         </Box>
       </Box>
       <SearchInput
