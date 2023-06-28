@@ -29,7 +29,7 @@ import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
 import { useTheme } from "@emotion/react";
 
-const AccountListModal = ({ id, show, setShow, title }) => {
+const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
@@ -63,8 +63,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
   async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUserById/${id}?${
-          username ? `userName=${username}` : ""
+        `/fair-game-wallet/getAllUserById/${id}?${username ? `userName=${username}` : ""
         }&page=${currentPage}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
@@ -79,7 +78,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-            pageLimit
+          pageLimit
         )
       );
     } catch (e) {
@@ -153,6 +152,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
             getListOfUser={getListOfUser}
             setPageCount={setPageCount}
             matchesMobile={matchesMobile}
+            handleExport={handleExport}
           />
           <Button
             sx={{ color: "", fontSize: "30px" }}
@@ -166,7 +166,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
           </Button>
         </Box>
 
-        <Box 
+        <Box
         // sx={{ overflowX: "auto" }}
         >
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
@@ -317,7 +317,7 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile }) => {
+const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleExport }) => {
   return (
     <Box
       display={"flex"}
@@ -357,6 +357,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile }) => {
                   sx={{
                     height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                   }}
+                  onClick={() => handleExport('xlsx', id)}
                 />
               </Box>
               <Box
@@ -376,6 +377,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile }) => {
                   sx={{
                     height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                   }}
+                  onClick={() => handleExport('pdf', id)}
                 />
               </Box>
             </Box>
@@ -399,6 +401,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile }) => {
                 sx={{
                   height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                 }}
+                onClick={() => handleExport('xlsx', id)}
               />
             </Box>
             <Box
@@ -418,6 +421,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile }) => {
                 sx={{
                   height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                 }}
+                onClick={() => handleExport('pdf', id)}
               />
             </Box>
           </>

@@ -29,6 +29,7 @@ import { useRef } from "react";
 import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
+import { saveAs } from 'file-saver';
 
 const AccountList = () => {
   const dispatch = useDispatch();
@@ -123,6 +124,21 @@ const AccountList = () => {
     getListOfUser();
   }, [currentPageNo]);
 
+  const handleExport = async (type, id) => {
+    let url = `/fair-game-wallet/exportUser?exportType=${type}`;
+    if (id) {
+      url = `/fair-game-wallet/exportUser?exportType=${type}&userId=${id}`
+    }
+    if (type == "xlsx") {
+      try {
+        const response = await axios.get(url, { responseType: 'blob', });
+        saveAs(response.data, "file.xlsx");
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
   return (
     <>
       {data1.length > 0 && <Box
@@ -141,10 +157,10 @@ const AccountList = () => {
           }),
         ]}
       >
-        <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} />
-        <Box sx={{ }}>
-          <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block", position: {mobile: "relative", laptop: "static"},  }}>
-            <Box sx={{  }}>
+        <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} handleExport={handleExport} />
+        <Box sx={{}}>
+          <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block", position: { mobile: "relative", laptop: "static" }, }}>
+            <Box sx={{}}>
               <ListHeaderT />
               <ListSubHeaderT data={sumValue} />
               {data1.map((element, i) => {
@@ -160,6 +176,7 @@ const AccountList = () => {
                       element={element}
                       getListOfUser={getListOfUser}
                       currentPage={currentPageNo}
+                      handleExport={handleExport}
                     />
                   );
                 } else {
@@ -174,6 +191,7 @@ const AccountList = () => {
                       element={element}
                       getListOfUser={getListOfUser}
                       currentPage={currentPageNo}
+                      handleExport={handleExport}
                     />
                   );
                 }
@@ -292,7 +310,7 @@ const Footer = ({ currentPage, pages, callPage, getListOfUser }) => {
   );
 };
 
-const ListH = ({ getListOfUser, setPageCount }) => {
+const ListH = ({ getListOfUser, setPageCount, handleExport }) => {
   return (
     <Box
       display={"flex"}
@@ -310,7 +328,7 @@ const ListH = ({ getListOfUser, setPageCount }) => {
             alignItems: "center",
           }}
         >
-          <StyledImage src={Excel} sx={{ height: "25px" }} />
+          <StyledImage src={Excel} sx={{ height: "25px" }} onClick={() => handleExport('xlsx')} />
         </Box>
         <Box
           sx={{
@@ -324,7 +342,7 @@ const ListH = ({ getListOfUser, setPageCount }) => {
             alignItems: "center",
           }}
         >
-          <StyledImage src={Pdf} sx={{ height: "25px" }} />
+          <StyledImage src={Pdf} sx={{ height: "25px" }} onClick={() => handleExport('pdf')} />
         </Box>
       </Box>
       <SearchInput

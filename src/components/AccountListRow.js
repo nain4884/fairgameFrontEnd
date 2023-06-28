@@ -25,7 +25,8 @@ const AccountListRow = ({
   getListOfUser,
   showOptions,
   showChildModal,
-  callProfile
+  callProfile,
+  handleExport
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -310,15 +311,15 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.totalCommissions}  
+            {elementToUDM.totalCommissions}
           </Typography>
-            <StyledImage
-            
-              src={
-                DownGIcon
-              }
-              style={{ height: "10px", cursor: "pointer", width: "15px", marginRight: '5px' }}
-            />
+          <StyledImage
+
+            src={
+              DownGIcon
+            }
+            style={{ height: "10px", cursor: "pointer", width: "15px", marginRight: '5px' }}
+          />
         </Box>
         <Box
           sx={{
@@ -411,7 +412,7 @@ const AccountListRow = ({
       </Box>
       {showUserModal && (
         <UserDetailModal
-        updatedUserProfile={updatedUserProfile}
+          updatedUserProfile={updatedUserProfile}
           getListOfUser={getListOfUser}
           setShowUserModal={setShowUserModal}
           backgroundColor={containerStyle?.background}
@@ -449,6 +450,7 @@ const AccountListRow = ({
             show={showSubUsers?.value}
             setShow={setSubSusers}
             title={showSubUsers?.title}
+            handleExport={handleExport}
           />
         </Box>
       </ModalMUI>
