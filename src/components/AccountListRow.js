@@ -26,6 +26,7 @@ const AccountListRow = ({
   showOptions,
   showChildModal,
   callProfile
+  
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -345,7 +346,8 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.available_balance}
+            {elementToUDM?.available_balance ? elementToUDM?.available_balance.toFixed(2): "00"}
+            {console.log(elementToUDM, 'elementToUDM')}
             {/* Math.abs(bookRatio).toFixed(2) */}
           </Typography>
         </Box>
