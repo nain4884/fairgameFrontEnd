@@ -83,6 +83,7 @@ const AccountList = () => {
   const [pageLimit, setPageLimit] = useState(constants.pageCount);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { currentPageNo } = useSelector((state) => state?.auth);
+  const [valuetoshow, setElementToUDM] = useState(null);
   function callPage(val) {
     dispatch(setPage(parseInt(val)));
     // setCurrentPage(parseInt(val));
@@ -142,15 +143,16 @@ const AccountList = () => {
         ]}
       >
         <ListH getListOfUser={getListOfUser} setPageCount={setPageCount} />
-        <Box sx={{ }}>
+        <Box sx={{overflowX: "auto" }}>
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block", position: {mobile: "relative", laptop: "static"},  }}>
-            <Box sx={{  }}>
+            <Box sx={{}}>
               <ListHeaderT />
               <ListSubHeaderT data={sumValue} />
               {data1.map((element, i) => {
                 if (i % 2 === 0) {
                   return (
                     <AccountListRow
+                   
                       callProfile={true}
                       showOptions={true}
                       containerStyle={{ background: "#FFE094" }}

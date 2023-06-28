@@ -167,7 +167,7 @@ const AccountListModal = ({ id, show, setShow, title }) => {
         </Box>
 
         <Box 
-        // sx={{ overflowX: "auto" }}
+        sx={{ overflowX: "auto" }}
         >
           <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
             <ListHeaderT />
