@@ -155,7 +155,7 @@ const AccountListRow = ({
         <Box
           sx={[
             {
-              width: { laptop: "11.5vw", tablet: "20.5vw", mobile: "24vw" },
+              width: { laptop: "11.5vw", tablet: "20.5vw", mobile: "26.5vw" },
               display: "flex",
               paddingX: "10px",
               justifyContent: "space-between",
@@ -179,7 +179,7 @@ const AccountListRow = ({
               }
             }}
             sx={[
-              { fontSize: "12px", fontWeight: "600", cursor: "pointer", textTransform: "capitalize" },
+              { fontSize: "12px", fontWeight: "600", cursor: "pointer", textTransform: "capitalize",  wordBreak: "break-all" },
               fTextStyle,
             ]}
           >
@@ -205,9 +205,9 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "10.5vw", tablet: "10.5vw", mobile: "24vw" },
+            width: { laptop: "10.5vw", tablet: "10.5vw", mobile: "26.5vw" },
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -219,9 +219,9 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "24vw" },
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "26.5vw" },
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -233,9 +233,9 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "24vw" },
+            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "26.5vw" },
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             background: Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
             height: "45px",
@@ -263,9 +263,9 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "24vw" },
+            width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "26.5vw" },
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             background: Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
             height: "45px",
@@ -300,10 +300,10 @@ const AccountListRow = ({
             }
           }}
           sx={{
-            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "24vw" },
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "26.5vw" },
             display: "flex",
             justifyContent: 'space-between',
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             cursor: elementToUDM.totalCommissions !== null && "pointer",
             height: "45px",
@@ -323,9 +323,9 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "24vw" },
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "26.5vw" },
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -337,9 +337,9 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "24vw" },
+            width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "26.5vw" },
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -353,12 +353,13 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "5vw", tablet: "5vw", mobile: "24vw" },
+            width: { laptop: "5vw", tablet: "5vw", mobile: "26.5vw" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
+            paddingX: "10px",
           }}
         >
           <StyledImage
@@ -368,8 +369,9 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "5vw", tablet: "5vw", mobile: "24vw" },
+            width: { laptop: "5vw", tablet: "5vw", mobile: "26.5vw" },
             display: "flex",
+            paddingX: "10px",
             justifyContent: "center",
             alignItems: "center",
             height: "45px",
@@ -383,12 +385,13 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "8vw", tablet: "8vw", mobile: "24vw" },
+            width: { laptop: "8vw", tablet: "8vw", mobile: "26.5vw" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
+            paddingX: "10px",
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
@@ -397,9 +400,9 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "10vw", tablet: "10vw", mobile: "24vw" },
+            width: { laptop: "10vw", tablet: "10vw", mobile: "26.5vw" },
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",

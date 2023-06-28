@@ -15,12 +15,13 @@ const ListHeaderT = () => {
       >
         <Box
           sx={{
-            width: {laptop:"11.5vw",tablet:"20.5vw",mobile:"24vw"},
+            width: {laptop:"11.5vw",tablet:"20.5vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }, }}>
@@ -29,13 +30,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"10.5vw",tablet:"10.5vw",mobile:"24vw"},
-          
+            width: {laptop:"10.5vw",tablet:"10.5vw",mobile:"26.5vw"},          
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }, lineHeight: '1.1' }}>
@@ -44,12 +45,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"24vw"},
+            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -58,12 +60,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"11.5vw",tablet:"11.5vw",mobile:"24vw"},
+            width: {laptop:"11.5vw",tablet:"11.5vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }, lineHeight: '1.1'}}>
@@ -72,12 +75,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"11.5vw",tablet:"11.5vw",mobile:"24vw"},
+            width: {laptop:"11.5vw",tablet:"11.5vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -86,12 +90,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"24vw"},
+            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -100,12 +105,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"24vw"},
+            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -114,12 +120,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"24vw"},
+            width: {laptop:"9.5vw",tablet:"9.5vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px", lineHeight: "1.1" } }}>
@@ -128,12 +135,14 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-           width: {laptop:"5vw",tablet:"5vw",mobile:"24vw"},
+           width: {laptop:"5vw",tablet:"5vw",mobile:"26.5vw"},
             display: "flex",
+            paddingX: "10px",
             justifyContent: "center",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -142,12 +151,14 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-           width: {laptop:"5vw",tablet:"5vw",mobile:"24vw"},
+           width: {laptop:"5vw",tablet:"5vw",mobile:"26.5vw"},
             display: "flex",
+            paddingX: "10px",
             justifyContent: "center",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -156,12 +167,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"8vw",tablet:"8vw",mobile:"24vw"},
+            width: {laptop:"8vw",tablet:"8vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" } }}>
@@ -170,12 +182,13 @@ const ListHeaderT = () => {
         </Box>
         <Box
           sx={{
-            width: {laptop:"10vw",tablet:"10vw",mobile:"24vw"},
+            width: {laptop:"10vw",tablet:"10vw",mobile:"26.5vw"},
             display: "flex",
-            paddingLeft: "10px",
+            paddingX: "10px",
             alignItems: "center",
             height: "35px",
             borderRight: "2px solid white",
+            lineHeight: "1.1"
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "10px" }  }}>

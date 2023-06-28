@@ -245,10 +245,11 @@ export default function UserDetailModal({
             // flex: 1,
             display:"flex",
             flexDirection: { mobile: "row", laptop: "row", tablet: "row" },
-            gap: { mobile: 1 },
+            gap: { mobile: 0.5 },
             flexWrap: "wrap",
-
+            justifyContent: "center",
             width: { mobile: "100vw", laptop: "77%", tablet: "100%" },
+            marginTop: "9px"
           }}
         >
           <BoxButton
@@ -257,14 +258,16 @@ export default function UserDetailModal({
             }}
             title={"Deposit"}
             isSelected={selected == 0}
-            containerStyle={{ marginLeft: "10px", flex: 1 }}
+            containerStyle={{ marginLeft:{laptop: "10px", mobile: "0"}, 
+              flex: 1, 
+            }}
             labelStyle={{}}
           />
           <BoxButton
             onClick={() => {
               setSelected(1);
             }}
-            containerStyle={{ marginLeft: "10px", flex: 1 }}
+            containerStyle={{ marginLeft: {laptop: "10px", mobile: "0"}, flex: 1 }}
             isSelected={selected == 1}
             title={"Withdraw"}
             labelStyle={{}}
@@ -276,7 +279,7 @@ export default function UserDetailModal({
                 setSettalmentModal(true);
               }}
               title={"C_Settlement"}
-              containerStyle={{ marginLeft: "10px", flex: 1 }}
+              containerStyle={{ marginLeft:{laptop: "10px", mobile: "0"}, flex: 1 }}
               labelStyle={{}}
             />
           )}
@@ -286,14 +289,14 @@ export default function UserDetailModal({
             }}
             title={"Change Password"}
             isSelected={selected == 3}
-            containerStyle={{ marginLeft: "10px", flex: 1 }}
+            containerStyle={{ marginLeft: {laptop: "10px", mobile: "0"}, flex: 1 }}
           />
           <BoxButton
             onClick={() => {
               setSelected(4);
             }}
             title={"Lock/Unlock"}
-            containerStyle={{ marginLeft: "10px", flex: 1 }}
+            containerStyle={{ marginLeft:{laptop: "10px", mobile: "0"}, flex: 1 }}
             isSelected={selected == 4}
           />
           <BoxButton
@@ -303,13 +306,13 @@ export default function UserDetailModal({
             title={"set Credit Reference"}
             isSelected={selected == 2}
             labelStyle={{}}
-            containerStyle={{ marginLeft: "10px", flex: 1 }}
+            containerStyle={{ marginLeft: {laptop: "10px", mobile: "0"}, flex: 1 }}
           />
           <BoxButton
             onClick={() => {
               setSelected(5);
             }}
-            containerStyle={{ marginLeft: "10px", flex: 1 }}
+            containerStyle={{ marginLeft: {laptop: "10px", mobile: "0"}, flex: 1 }}
             title={"Set Exposure Limit"}
             labelStyle={{}}
             isSelected={selected == 5}
@@ -429,20 +432,20 @@ const BoxButton = ({
         display: "flex",
         flex: 1,
         justifyContent: "center",
-        height: "45px",
+        height: "37px",
         cursor: "pointer",
         alignItems: "center",
         borderRadius: "5px",
         padding: "5px",
-        flex: {mobile: " 0 0 43% !important", laptop: "1 !important"},
-        maxWidth: "46% !important",
+        flex: {mobile: " 0 0 38% !important", laptop: "1 !important"},
+        maxWidth: "38% !important",
         textTransform: "capitalize"
       },
       containerStyle,
     ],
     mainBoxTypography: [
       {
-        fontSize: { mobile: "3.5vw", laptop: "11px", tablet: "0.9vw", desktop2XL: '12px' },
+        fontSize: { mobile: "3.1vw", laptop: "11px", tablet: "0.9vw", desktop2XL: '12px' },
         fontWeight: "600",
         color: isSelected || deleteBtn ? "white" : "white",
         textAlign: 'center',

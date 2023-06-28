@@ -28,7 +28,7 @@ const LiveMarketComponent = ({
           padding: { mobile: "3px", tablet: "5px", laptop: "5px" },
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'center', marginRight: { mobile: "0", tablet: "0", laptop: "10px" } ,minHeight: "30px" }}>
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'center', marginRight: { mobile: "0", tablet: "0", laptop: "10px" } ,minHeight: "24px" }}>
           <Typography
             sx={{
               color: "white",
@@ -37,7 +37,7 @@ const LiveMarketComponent = ({
 
               overflow: "hidden",
               display: "-webkit-box",
-              WebkitLineClamp: 2,
+              WebkitLineClamp: 1,
               WebkitBoxOrient: "vertical",
             }}
           >
@@ -51,10 +51,10 @@ const LiveMarketComponent = ({
                   : "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
               }
               sx={{
-                height: { mobile: "20px", laptop: "25px" },
+                height: { mobile: "17px", laptop: "25px" },
                 marginLeft: "5px",
                 filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                width: { mobile: "20px", laptop: "25px" },
+                width: { mobile: "17px", laptop: "25px" },
               }}
             />
           )}
@@ -174,7 +174,7 @@ const LiveMarketComponent = ({
           width: "99%",
           display: "flex",
           position: "relative",
-          margin: { mobile: "7px", tablet: "6px", laptop: "6px" },
+          margin: { mobile: "4px", tablet: "6px", laptop: "6px" },
           alignSelf: "center",
           justifyContent: "space-evenly",
           height: "55px",
