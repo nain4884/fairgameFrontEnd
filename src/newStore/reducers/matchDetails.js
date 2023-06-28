@@ -15,7 +15,8 @@ const initialState = {
   bookMakerBetRates: [],
   sessionResults: [],
   confirmAuth: false,
-  betData: {}
+  betData: {},
+  updateDetData: ""
 };
 
 const matchDetails = createSlice({
@@ -144,6 +145,9 @@ const matchDetails = createSlice({
     setBetData: (state, action) => {
       state.betData = action.payload;
     },
+    setUpdateBetData: (state, action) => {
+      state.updateDetData = action.payload;
+    },
   },
 });
 
@@ -170,7 +174,8 @@ export const {
   setBookMakerLive,
   setSessionOddsLive,
   setConfirmAuth,
-  setBetData
+  setBetData,
+  setUpdateBetData
 } = matchDetails.actions;
 
 export default matchDetails.reducer;
