@@ -73,6 +73,7 @@ const SeprateBox = ({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
   const [betPalaceError, setBetPalaceError] = useState(false);
   const [betPlaceLoading, setBetPlaceLoading] = useState(false);
   const { geoLocation } = useSelector((state) => state.auth);
@@ -93,19 +94,19 @@ const SeprateBox = ({
     }
   }, [geoLocation]);
 
-  // useEffect(() => {
-  //   // console.log('updateRate wwwwww:', updateRate)
-  //   // console.log('checkBet wwwwww:', checkBet)
-  //   if (updateRate?.key == betData?.po && updateRate?.match == betData?.type) {
-  //     // alert(JSON.stringify(updateRate))
-  //     console.log('updateRate :', updateRate)
-  //     console.log('updateRate 1 :', betData)
-  //     // setCheckBet(prevState => ({
-  //     //   ...prevState,
-  //     //   value: newValue
-  //     // }));
-  //   }
-  // }, [updateRate])
+  useEffect(() => {
+    // console.log('updateRate wwwwww:', updateRate)
+    // console.log('checkBet wwwwww:', checkBet)
+    if (updateRate?.key == betData?.po && updateRate?.match == betData?.type && updateRate?.team == selectedCountry) {
+      // alert(JSON.stringify(selectedValue))
+      console.log('updateRate :', updateRate)
+      console.log('updateRate 1 :', betData)
+      setCheckBet(prevState => ({
+        ...prevState,
+        value: 22
+      }));
+    }
+  }, [updateRate])
   useEffect(() => {
     if (closeModal || lock) {
       console.log("closeModal", closeModal);
@@ -214,12 +215,12 @@ const SeprateBox = ({
     return { right: 0 };
   };
   const handlePlaceBet = async (payload, match, po) => {
-    // let data = {
-    //   type: payload?.bet_type,
-    //   po: po,
-    // }
+    let data = {
+      type: payload?.bet_type,
+      po: po,
+    }
     // // alert(JSON.stringify(data));
-    // dispatch(setBetData({ ...data, }));
+    dispatch(setBetData({ ...data, }));
     setBetPlaceLoading(true);
 
     let newPayload = {
@@ -253,7 +254,7 @@ const SeprateBox = ({
       if (newPayload.marketType == "MATCH ODDS") {
         setVisible(true);
         let delay = match?.delaySecond ? match?.delaySecond : 0;
-        delay = delay * 1000;
+        delay = delay * 3000;
         setTimeout(() => {
           PlaceBetSubmit(newPayload, po);
         }, delay);
@@ -264,9 +265,14 @@ const SeprateBox = ({
   };
 
   const PlaceBetSubmit = async (payload, po) => {
-    // alert(po)
-    console.log("placeBetData :", updateRate);
+    console.log("updateRate 333 :", checkBet)
     try {
+      // if (payload?.odds !== checkBet?.value) {
+      //   setBetPlaceLoading(false);
+      //   setFastBetLoading(false);
+      //   setCanceled({ value: true, msg: "Rate changed", type: false });
+      //   return false;
+      // }
       if (Number(payload?.odds) !== Number(value)) {
         setBetPlaceLoading(false);
         setFastBetLoading(false);
@@ -413,6 +419,7 @@ const SeprateBox = ({
               // } else
               else {
                 setIsPopoverOpen(true);
+                setSelectedCountry(name)
                 setSelectedValue(value);
                 type?.type === "BL"
                   ? setIsBack(type?.color === "#A7DCFF")
