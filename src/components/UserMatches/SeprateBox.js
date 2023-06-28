@@ -13,7 +13,7 @@ import MUIModal from "@mui/material/Modal";
 
 import { BETPLACED, Lock, NOT } from "../../assets";
 import { useState } from "react";
-import { setAllBetRate, setBetData } from "../../newStore/reducers/matchDetails";
+import { setAllBetRate, setBetData, setUpdateBetData } from "../../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import { setRole } from "../../newStore";
 import { height } from "@mui/system";
@@ -83,7 +83,7 @@ const SeprateBox = ({
     po: "",
     value: ""
   });
-  const { betData } = useSelector((state) => state?.matchDetails);
+  const { betData, updateDetData } = useSelector((state) => state?.matchDetails);
 
   const [previousValue, setPreviousValue] = useState(false);
 
@@ -97,14 +97,8 @@ const SeprateBox = ({
   useEffect(() => {
     // console.log('updateRate wwwwww:', updateRate)
     // console.log('checkBet wwwwww:', checkBet)
-    if (updateRate?.key == betData?.po && updateRate?.match == betData?.type && updateRate?.team == selectedCountry) {
-      // alert(JSON.stringify(selectedValue))
-      console.log('updateRate :', updateRate)
-      console.log('updateRate 1 :', betData)
-      setCheckBet(prevState => ({
-        ...prevState,
-        value: 22
-      }));
+    if (updateRate?.key == betData?.po && updateRate?.match == betData?.type && updateRate?.team == selectedCountry && selectedValue != updateRate?.value) {
+      dispatch(setUpdateBetData(updateRate?.value));
     }
   }, [updateRate])
   useEffect(() => {
@@ -254,7 +248,7 @@ const SeprateBox = ({
       if (newPayload.marketType == "MATCH ODDS") {
         setVisible(true);
         let delay = match?.delaySecond ? match?.delaySecond : 0;
-        delay = delay * 3000;
+        delay = delay * 1000;
         setTimeout(() => {
           PlaceBetSubmit(newPayload, po);
         }, delay);
@@ -265,14 +259,13 @@ const SeprateBox = ({
   };
 
   const PlaceBetSubmit = async (payload, po) => {
-    console.log("updateRate 333 :", checkBet)
     try {
-      // if (payload?.odds !== checkBet?.value) {
-      //   setBetPlaceLoading(false);
-      //   setFastBetLoading(false);
-      //   setCanceled({ value: true, msg: "Rate changed", type: false });
-      //   return false;
-      // }
+      if (payload.marketType == "MATCH ODDS" && payload?.odds !== updateDetData) {
+        setBetPlaceLoading(false);
+        setFastBetLoading(false);
+        setCanceled({ value: true, msg: "Rate changed", type: false });
+        return false;
+      }
       if (Number(payload?.odds) !== Number(value)) {
         setBetPlaceLoading(false);
         setFastBetLoading(false);
@@ -421,6 +414,7 @@ const SeprateBox = ({
                 setIsPopoverOpen(true);
                 setSelectedCountry(name)
                 setSelectedValue(value);
+                dispatch(setUpdateBetData(value));
                 type?.type === "BL"
                   ? setIsBack(type?.color === "#A7DCFF")
                   : setIsSessionYes(type?.color === "#A7DCFF");
