@@ -68,11 +68,12 @@ export default function UserDetailModal({
   showUserModal,
   updatedUserProfile,
   prevElement,
+  selected,
+  setSelected,
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
   const { axios } = setRole();
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState(null);
   const navigate = useNavigate();
   const [deleteModal, setDeleteModal] = useState(false);
   const [settalementModal, setSettalmentModal] = useState(false);
@@ -284,7 +285,7 @@ export default function UserDetailModal({
             flexWrap: "wrap",
             justifyContent: "center",
             width: { mobile: "100vw", laptop: "77%", tablet: "100%" },
-            marginTop: "9px"
+            marginTop: "9px",
           }}
         >
           <BoxButton
@@ -293,8 +294,9 @@ export default function UserDetailModal({
             }}
             title={"Deposit"}
             isSelected={selected == 0}
-            containerStyle={{ marginLeft:{laptop: "10px", mobile: "0"}, 
-              flex: 1, 
+            containerStyle={{
+              marginLeft: { laptop: "10px", mobile: "0" },
+              flex: 1,
             }}
             labelStyle={{}}
           />
@@ -302,7 +304,10 @@ export default function UserDetailModal({
             onClick={() => {
               setSelected(1);
             }}
-            containerStyle={{ marginLeft: {laptop: "10px", mobile: "0"}, flex: 1 }}
+            containerStyle={{
+              marginLeft: { laptop: "10px", mobile: "0" },
+              flex: 1,
+            }}
             isSelected={selected == 1}
             title={"Withdraw"}
             labelStyle={{}}
@@ -314,7 +319,10 @@ export default function UserDetailModal({
                 setSettalmentModal(true);
               }}
               title={"C_Settlement"}
-              containerStyle={{ marginLeft:{laptop: "10px", mobile: "0"}, flex: 1 }}
+              containerStyle={{
+                marginLeft: { laptop: "10px", mobile: "0" },
+                flex: 1,
+              }}
               labelStyle={{}}
             />
           )}
@@ -324,14 +332,20 @@ export default function UserDetailModal({
             }}
             title={"Change Password"}
             isSelected={selected == 3}
-            containerStyle={{ marginLeft: {laptop: "10px", mobile: "0"}, flex: 1 }}
+            containerStyle={{
+              marginLeft: { laptop: "10px", mobile: "0" },
+              flex: 1,
+            }}
           />
           <BoxButton
             onClick={() => {
               setSelected(4);
             }}
             title={"Lock/Unlock"}
-            containerStyle={{ marginLeft:{laptop: "10px", mobile: "0"}, flex: 1 }}
+            containerStyle={{
+              marginLeft: { laptop: "10px", mobile: "0" },
+              flex: 1,
+            }}
             isSelected={selected == 4}
           />
           <BoxButton
@@ -341,13 +355,19 @@ export default function UserDetailModal({
             title={"set Credit Reference"}
             isSelected={selected == 2}
             labelStyle={{}}
-            containerStyle={{ marginLeft: {laptop: "10px", mobile: "0"}, flex: 1 }}
+            containerStyle={{
+              marginLeft: { laptop: "10px", mobile: "0" },
+              flex: 1,
+            }}
           />
           <BoxButton
             onClick={() => {
               setSelected(5);
             }}
-            containerStyle={{ marginLeft: {laptop: "10px", mobile: "0"}, flex: 1 }}
+            containerStyle={{
+              marginLeft: { laptop: "10px", mobile: "0" },
+              flex: 1,
+            }}
             title={"Set Exposure Limit"}
             labelStyle={{}}
             isSelected={selected == 5}
@@ -633,8 +653,9 @@ const DepositComponent = ({
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <MobileViewUserDetails 
-           title={"Deposit Amount"}
+          <MobileViewUserDetails
+            userName={elementToUDM?.userName}
+            title={"Deposit Amount"}
             setSelected={setSelected}
             selected={selected}
             handleAdminPass={(e) => {
@@ -1057,7 +1078,7 @@ const DepositComponent = ({
                     balance: prevElement.balance,
                     available_balance: prevElement.available_balances,
                   });
-                  setShowUserModal(false);
+                  setSelected(e);
                 }}
                 title={"Cancel"}
               />
@@ -1175,7 +1196,8 @@ const WithDrawComponent = ({
           aria-describedby="modal-modal-description"
         >
           <MobileViewUserDetails
-          title={"Withdraw Amount"}
+            userName={elementToUDM?.userName}
+            title={"Withdraw Amount"}
             setSelected={setSelected}
             selected={selected}
             handleAdminPass={(e) => {
@@ -1532,7 +1554,7 @@ const WithDrawComponent = ({
                     balance: prevElement.balance,
                     available_balance: prevElement.available_balance,
                   });
-                  setShowUserModal(false);
+                  setSelected(e);
                 }}
                 title={"Cancel"}
               />
@@ -1556,6 +1578,7 @@ const NewCreditComponent = ({
   dispatch,
   showDialogModal,
   getListOfUser,
+  setSelected,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -1817,7 +1840,7 @@ const NewCreditComponent = ({
                 credit_refer: prevElement.credit_refer,
                 profit_loss: prevElement.profit_loss,
               });
-              setShowUserModal(false);
+              setSelected(e);
             }}
             title={"Cancel"}
           />
@@ -1840,6 +1863,7 @@ const SetExposureComponent = ({
   dispatch,
   showDialogModal,
   getListOfUser,
+  setSelected,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -2067,7 +2091,7 @@ const SetExposureComponent = ({
             isSelected={true}
             onClick={(e) => {
               setExposureObj(defaultExposureObj);
-              setShowUserModal(false);
+              setSelected(e);
               setElementToUDM({
                 ...elementToUDM,
                 exposure_limit: elementToUDM.exposure_limit,
@@ -2089,6 +2113,7 @@ const ChangePasswordComponent = ({
   navigate,
   dispatch,
   showDialogModal,
+  setSelected,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [showPass1, setShowPass1] = useState(false);
@@ -2288,7 +2313,7 @@ const ChangePasswordComponent = ({
             isSelected={true}
             onClick={(e) => {
               setChangePasswordObj(defaultChangePasswordObj);
-              setShowUserModal(false);
+              setSelected(e);
             }}
             title={"Cancel"}
           />
@@ -2305,6 +2330,7 @@ const LockUnlockComponent = ({
   elementToUDM,
   setElementToUDM,
   prevElement,
+  setSelected,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -2469,7 +2495,7 @@ const LockUnlockComponent = ({
             }}
             isSelected={true}
             onClick={(e) => {
-              setShowUserModal(false);
+              setSelected(e);
               console.log(
                 "elementToUDM.bet_blocked, elementToUDM.all_blocked",
                 elementToUDM.bet_blocked,

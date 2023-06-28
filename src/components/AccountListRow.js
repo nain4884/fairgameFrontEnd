@@ -33,6 +33,8 @@ const AccountListRow = ({
   const [showUserModal, setShowUserModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [selected, setSelected] = useState(null);
+
   const { axios } = setRole();
   const hasUpdatedUserProfile = useRef(false);
   const { allRole } = useSelector((state) => state.auth);
@@ -84,6 +86,8 @@ const AccountListRow = ({
 
     return thisUplinePertnerShip;
   }
+
+  console.log(selected, "selected");
   const prevElement = {
     credit_refer: element.credit_refer,
     balance: element.balance,
@@ -99,6 +103,8 @@ const AccountListRow = ({
     totalCommissions: element.TotalComission,
     role: allRole?.find((role) => role?.id === element?.roleId),
     userId: element?.id,
+    matchTypeComission: element?.matchTypeComission,
+    sessionComisssion: element?.sessionComisssion,
   };
 
   const updatedUserProfile = async () => {
@@ -179,7 +185,13 @@ const AccountListRow = ({
               }
             }}
             sx={[
-              { fontSize: "12px", fontWeight: "600", cursor: "pointer", textTransform: "capitalize", wordBreak: "break-all" },
+              {
+                fontSize: "12px",
+                fontWeight: "600",
+                cursor: "pointer",
+                textTransform: "capitalize",
+                wordBreak: "break-all",
+              },
               fTextStyle,
             ]}
           >
@@ -191,6 +203,7 @@ const AccountListRow = ({
                 if (!showUserModal) {
                   setUserModal(element);
                 } else {
+                  setSelected(null);
                   setUserModal();
                   handleSetUDM(prevElement);
                 }
@@ -236,7 +249,8 @@ const AccountListRow = ({
             width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "26.5vw" },
             display: "flex",
             paddingX: "10px",
-            background: Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
+            background:
+              Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -266,7 +280,8 @@ const AccountListRow = ({
             width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "26.5vw" },
             display: "flex",
             paddingX: "10px",
-            background: Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
+            background:
+              Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -292,20 +307,13 @@ const AccountListRow = ({
           />
         </Box>
         <Box
-          onClick={() => {
-            if (elementToUDM.totalCommissions !== null) {
-              setShowCommissionReport({ value: true, id: elementToUDM.userId });
-            } else {
-              return false;
-            }
-          }}
           sx={{
             width: { laptop: "9.5vw", tablet: "9.5vw", mobile: "26.5vw" },
             display: "flex",
-            justifyContent: 'space-between',
+            justifyContent: "space-between",
             paddingX: "10px",
             alignItems: "center",
-            cursor: elementToUDM.totalCommissions !== null && "pointer",
+
             height: "45px",
             borderRight: "2px solid white",
           }}
@@ -313,12 +321,15 @@ const AccountListRow = ({
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
             {elementToUDM.totalCommissions}
           </Typography>
-          <StyledImage
-            src={
-              DownGIcon
-            }
-            style={{ height: "10px", cursor: "pointer", width: "15px", marginRight: '5px' }}
-          />
+          {/* <StyledImage
+            src={DownGIcon}
+            style={{
+              height: "10px",
+              cursor: "pointer",
+              width: "15px",
+              marginRight: "5px",
+            }}
+          /> */}
         </Box>
         <Box
           sx={{
@@ -415,8 +426,201 @@ const AccountListRow = ({
           {/** {element.role} */}
         </Box>
       </Box>
-      {showUserModal && (
+
+      {showUserModal && element.role === "user" && (
+        <>
+          <Box
+            sx={[
+              {
+                width: "100%",
+                display: "flex",
+                height: "100%",
+                background: "#0B4F26",
+                alignItems: "center",
+                overflow: "hidden",
+              },
+              containerStyle,
+            ]}
+          >
+            <Box
+              sx={[
+                {
+                  width: {
+                    laptop: "11vw",
+                    tablet: "25vw",
+                    mobile: "29.5vw",
+                  },
+                  // display: "flex",
+                  alignSelf: "stretch",
+                  // height: "auto",
+                  justifyContent: "space-between",
+                  // alignItems: "center" ,
+                  borderRight: "2px solid white",
+                },
+                fContainerStyle,
+              ]}
+            >
+              <Box
+                sx={{
+                  width: "100% ",
+                  height: "100%",
+                  padding: "10px",
+                  // display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: selected === null && "center",
+                  overflow: "hidden",
+                  borderBottom: "2px solid white",
+                }}
+              >
+                <Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {elementToUDM?.matchTypeComission ? (
+                      <Typography
+                        sx={[
+                          {
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            color: "white",
+                            textAlign: "center",
+                          },
+                          fTextStyle,
+                        ]}
+                      >
+                        {elementToUDM?.matchTypeComission} :
+                      </Typography>
+                    ) : (
+                      <Typography
+                        sx={[
+                          {
+                            fontSize: "12px",
+
+                            fontWeight: "600",
+                            color: "white",
+                            textAlign: "center",
+                          },
+                          fTextStyle,
+                        ]}
+                      >
+                        Match Com : 0
+                      </Typography>
+                    )}
+                  </Box>
+
+                  <Box sx={{ display: "flex" }}>
+                    <Typography
+                      sx={[
+                        {
+                          fontSize: "12px",
+
+                          fontWeight: "600",
+                          color: "white",
+                          textAlign: "center",
+                        },
+                        fTextStyle,
+                      ]}
+                    >
+                      Session :
+                    </Typography>
+                    <Typography
+                      sx={[
+                        {
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          color: "white",
+                          textAlign: "center",
+                        },
+                        fTextStyle,
+                      ]}
+                    >
+                      {elementToUDM?.sessionComisssion}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    marginTop: "10px",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    if (elementToUDM.totalCommissions !== null) {
+                      setShowCommissionReport({
+                        value: true,
+                        id: elementToUDM.userId,
+                      });
+                    } else {
+                      return false;
+                    }
+                  }}
+                >
+                  <Typography
+                    sx={[
+                      {
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        color: "white",
+                        textAlign: "center",
+                        alignItems: "center",
+                      },
+                      fTextStyle,
+                    ]}
+                  >
+                    Com Details
+                  </Typography>
+                  <StyledImage
+                    src={
+                      fContainerStyle.background == "#F8C851"
+                        ? DownGIcon
+                        : DownIcon
+                    }
+                    style={{ height: "10px", cursor: "pointer", width: "15px" }}
+                  />
+                </Box>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                width: "100%",
+                display: "flex",
+                paddingX: "10px",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <UserDetailModal
+                selected={selected}
+                setSelected={setSelected}
+                updatedUserProfile={updatedUserProfile}
+                getListOfUser={getListOfUser}
+                setShowUserModal={setShowUserModal}
+                backgroundColor={containerStyle?.background}
+                userModal={userModal}
+                setShowSuccessModal={handleChangeShowModalSuccess}
+                setShowModalMessage={setShowModalMessage}
+                elementToUDM={elementToUDM}
+                setElementToUDM={handleSetUDM}
+                prevElement={prevElement}
+              />
+            </Box>
+          </Box>
+          {/*  */}
+        </>
+      )}
+
+      {showUserModal && element?.role !== "user" && (
         <UserDetailModal
+          selected={selected}
+          setSelected={setSelected}
           updatedUserProfile={updatedUserProfile}
           getListOfUser={getListOfUser}
           setShowUserModal={setShowUserModal}

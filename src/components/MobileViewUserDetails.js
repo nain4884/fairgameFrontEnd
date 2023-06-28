@@ -3,6 +3,7 @@ import React from "react";
 import { EyeIcon, EyeSlash } from "../admin/assets";
 import StyledImage from "./StyledImage";
 import BoxButton from "./BoxButton";
+import { useSelector } from "react-redux";
 
 const MobileViewUserDetails = ({
   setSelected,
@@ -20,10 +21,10 @@ const MobileViewUserDetails = ({
   initialBalance,
   backgroundColor,
   loading,
-  title
+  title,
+  userName,
 }) => {
-
-    console.log(profit_loss,"ProfitLOSS")
+  const { currentUser } = useSelector((state) => state?.currentUser);
   return (
     <Box
       sx={[
@@ -87,6 +88,9 @@ const MobileViewUserDetails = ({
           borderBottom: "2px solid white",
           borderTop: "2px solid white",
           padding: "1%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
         }}
       >
         <Box
@@ -95,73 +99,14 @@ const MobileViewUserDetails = ({
             gap: 1,
             display: "flex",
             justifyContent: "flex-end",
-            flexDirection: "row-reverse",
           }}
         >
-          {/* <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              width: "100%",
-              flexDirection: "column",
-
-              justifyContent: "flex-end",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                flexDirection: "row",
-
-                justifyContent: "space-between",
-                position: "relative",
-                marginTop: "0",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "3vw",
-
-                  width: "100%",
-                  fontWeight: "600",
-                  color: "white",
-                  marginRight: 0,
-                }}
-              >
-                % Profit/Loss
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                background: Number(profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
-                width: "100%",
-                height: "45px",
-                borderRadius: "5px",
-                paddingX: "10px",
-                marginTop: "0",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: "15px",
-                  height: "45px",
-                  fontWeight: "600",
-                  color: "white",
-                }}
-              >
-                {" "}
-                {percent_profit_loss}
-              </Typography>
-            </Box>
-          </Box> */}
           <Box
             sx={{
               display: "flex",
+              gap: 1,
               alignItems: "center",
               width: "100%",
-              flexDirection: "column",
 
               justifyContent: "flex-end",
             }}
@@ -170,7 +115,7 @@ const MobileViewUserDetails = ({
               sx={{
                 display: "flex",
                 alignItems: "center",
-                width: "100%",
+                width: "40%",
                 flexDirection: "row",
 
                 justifyContent: "space-between",
@@ -188,13 +133,13 @@ const MobileViewUserDetails = ({
                   marginRight: 0,
                 }}
               >
-                Client Profit/Loss
+                {currentUser?.userName}
               </Typography>
             </Box>
             <Box
               sx={{
                 background: Number(profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
-                width: "100%",
+                width: "30%",
                 height: "45px",
                 borderRadius: "5px",
                 paddingX: "10px",
@@ -207,20 +152,51 @@ const MobileViewUserDetails = ({
                   height: "45px",
                   fontWeight: "600",
                   color: "white",
+                  display: "flex",
+                  alignItems: "center",
                 }}
               >
-                {" "}
-                {profit_loss}
+                {currentUser?.current_balance}
               </Typography>
             </Box>
+
+            <Box
+              sx={{
+                width: "30%",
+                height: "45px",
+                background: "white",
+                display: "flex",
+                alignItems: "center",
+                borderRadius: "5px",
+                border: "2px solid #26262633",
+                paddingX: "10px",
+              }}
+            >
+              <TextField
+                value={initialBalance || 0}
+                sx={{ width: "100%", height: "45px" }}
+                variant="standard"
+                InputProps={{
+                  disabled: true,
+                  placeholder: "",
+                  disableUnderline: true,
+                  type: "text",
+                  style: {
+                    fontSize: "13px",
+                    height: "45px",
+
+                    fontWeight: "600",
+                  },
+                }}
+              />
+            </Box>
           </Box>
-        </Box>
+        </Box>{" "}
         <Box
           sx={{
             width: "100%",
             gap: 1,
             display: "flex",
-            flexDirection: "row-reverse",
             justifyContent: "flex-end",
           }}
         >
@@ -229,8 +205,7 @@ const MobileViewUserDetails = ({
               display: "flex",
               alignItems: "center",
               width: "100%",
-              flexDirection: "column",
-
+              gap: 1,
               justifyContent: "flex-end",
             }}
           >
@@ -238,7 +213,7 @@ const MobileViewUserDetails = ({
               sx={{
                 display: "flex",
                 alignItems: "center",
-                width: "100%",
+                width: "40%",
                 flexDirection: "row",
 
                 justifyContent: "space-between",
@@ -256,63 +231,36 @@ const MobileViewUserDetails = ({
                   marginRight: 0,
                 }}
               >
-                {title}
+                {userName}
               </Typography>
             </Box>
             <Box
               sx={{
-                background: "#004A25",
-                width: "100%",
+                background: Number(profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
+                width: "30%",
                 height: "45px",
                 borderRadius: "5px",
                 paddingX: "10px",
                 marginTop: "0",
               }}
             >
-              <TextField
-                value={amount}
-                onChange={handleChange}
-                variant="standard"
-                InputProps={{
-                  placeholder: "Type Amount...",
-                  disableUnderline: true,
-                  style: {
-                    fontSize: "15px",
-                    height: "45px",
-                    fontWeight: "600",
-                    color: "white",
-                  },
+              <Typography
+                sx={{
+                  fontSize: "15px",
+                  height: "45px",
+                  fontWeight: "600",
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
                 }}
-                type={"Number"}
-              />
+              >
+                {percent_profit_loss}
+              </Typography>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              overflow: "hidden",
-              flexDirection: "column",
 
-              justifyContent: "flex-end",
-              marginTop: "10px",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "3vw",
-                width: "100%",
-                fontWeight: "600",
-                color: "white",
-                marginRight: 0,
-              }}
-            >
-              Wallet Balance
-            </Typography>
             <Box
               sx={{
-                width: "100%",
+                width: "30%",
                 height: "45px",
                 background: "white",
                 display: "flex",
@@ -341,7 +289,154 @@ const MobileViewUserDetails = ({
             </Box>
           </Box>
         </Box>
+        <Box
+          sx={{
+            width: "100%",
+            gap: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "40%",
+              flexDirection: "row",
 
+              justifyContent: "space-between",
+              position: "relative",
+              marginTop: "0",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "3vw",
+
+                width: "100%",
+                fontWeight: "600",
+                color: "white",
+                marginRight: 0,
+              }}
+            >
+              Client Profit/Loss
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              background: Number(profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
+              width: "30%",
+              height: "45px",
+              borderRadius: "5px",
+              paddingX: "10px",
+              marginTop: "0",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "15px",
+                height: "45px",
+                fontWeight: "600",
+                color: "white",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {" "}
+              {profit_loss}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: "30%",
+              height: "45px",
+              background: "white",
+              display: "flex",
+              alignItems: "center",
+              borderRadius: "5px",
+              border: "2px solid #26262633",
+              paddingX: "10px",
+            }}
+          >
+            <TextField
+              value={initialBalance || 0}
+              sx={{ width: "100%", height: "45px" }}
+              variant="standard"
+              InputProps={{
+                disabled: true,
+                placeholder: "",
+                disableUnderline: true,
+                type: "text",
+                style: {
+                  fontSize: "13px",
+                  height: "45px",
+                  fontWeight: "600",
+                },
+              }}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            gap: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "40%",
+              flexDirection: "row",
+
+              justifyContent: "space-between",
+              position: "relative",
+              marginTop: "0",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "3vw",
+
+                width: "100%",
+                fontWeight: "600",
+                color: "white",
+                marginRight: 0,
+              }}
+            >
+              {title}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              background: "#004A25",
+              width: "60%",
+              height: "45px",
+              borderRadius: "5px",
+              paddingX: "10px",
+              marginTop: "0",
+            }}
+          >
+            <TextField
+              value={amount}
+              onChange={handleChange}
+              variant="standard"
+              InputProps={{
+                placeholder: "Type Amount...",
+                disableUnderline: true,
+                style: {
+                  fontSize: "15px",
+                  height: "45px",
+                  fontWeight: "600",
+                  color: "white",
+                },
+              }}
+              type={"Number"}
+            />
+          </Box>
+        </Box>
         <Box
           sx={{
             overflow: "hidden",
@@ -349,85 +444,34 @@ const MobileViewUserDetails = ({
             gap: 1,
             display: "flex",
             justifyContent: "flex-end",
-            flexDirection: "row-reverse",
           }}
         >
           <Box
             sx={{
-              width: "100%",
               display: "flex",
               alignItems: "center",
-              overflow: "hidden",
-              marginTop: "10px",
-              // justifyContent: "flex-end",
-              flexDirection: "column",
+              width: "40%",
+              flexDirection: "row",
+
+              justifyContent: "space-between",
+              position: "relative",
+              marginTop: "0",
             }}
           >
-            <Box
+            <Typography
               sx={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                flexDirection: "row",
+                fontSize: "3vw",
 
-                justifyContent: "space-between",
-                position: "relative",
-                marginTop: "0",
+                width: "100%",
+                fontWeight: "600",
+                color: "white",
+                marginRight: 0,
               }}
             >
-              <Typography
-                sx={{
-                  fontSize: "3vw",
-
-                  width: "100%",
-                  fontWeight: "600",
-                  color: "white",
-                  marginRight: 0,
-                }}
-              >
-                Transaction Password
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                width: "100%",
-                height: "45px",
-                paddingLeft: "10px",
-                paddingRight: "10px",
-                background: "white",
-                display: "flex",
-                alignItems: "center",
-                borderRadius: "5px",
-                border: "2px solid #26262633",
-              }}
-            >
-              <TextField
-                onChange={handleAdminPass}
-                sx={{ width: "100%", height: "45px" }}
-                variant="standard"
-                InputProps={{
-                  placeholder: "",
-                  disableUnderline: true,
-                  type: !showPass ? "password" : "text",
-                  style: {
-                    fontSize: "13px",
-                    height: "45px",
-                    fontWeight: "600",
-                  },
-                }}
-              />
-              <Box
-                onClick={() => {
-                  setShowPass(!showPass);
-                }}
-              >
-                <StyledImage
-                  src={showPass ? EyeIcon : EyeSlash}
-                  sx={{ height: "14px", width: "20px" }}
-                />
-              </Box>
-            </Box>
+              Remarks
+            </Typography>
           </Box>
+
           <Box
             sx={{
               borderRadius: "5px",
@@ -437,7 +481,7 @@ const MobileViewUserDetails = ({
               minHeight: "80px",
               maxHeight: "115px",
               marginTop: "10px",
-              width: "100%",
+              width: "60%",
               paddingX: "2px",
             }}
           >
@@ -458,6 +502,81 @@ const MobileViewUserDetails = ({
                 },
               }}
             />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            overflow: "hidden",
+            width: "100%",
+            gap: 1,
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              width: "40%",
+              flexDirection: "row",
+
+              justifyContent: "space-between",
+              position: "relative",
+              marginTop: "0",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: "3vw",
+
+                width: "100%",
+                fontWeight: "600",
+                color: "white",
+                marginRight: 0,
+              }}
+            >
+              Transaction
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              width: "60%",
+              height: "45px",
+              paddingLeft: "10px",
+              paddingRight: "10px",
+              background: "white",
+              display: "flex",
+              alignItems: "center",
+              borderRadius: "5px",
+              border: "2px solid #26262633",
+            }}
+          >
+            <TextField
+              onChange={handleAdminPass}
+              sx={{ width: "100%", height: "45px" }}
+              variant="standard"
+              InputProps={{
+                placeholder: "",
+                disableUnderline: true,
+                type: !showPass ? "password" : "text",
+                style: {
+                  fontSize: "13px",
+                  height: "45px",
+                  fontWeight: "600",
+                },
+              }}
+            />
+            <Box
+              onClick={() => {
+                setShowPass(!showPass);
+              }}
+            >
+              <StyledImage
+                src={showPass ? EyeIcon : EyeSlash}
+                sx={{ height: "14px", width: "20px" }}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
