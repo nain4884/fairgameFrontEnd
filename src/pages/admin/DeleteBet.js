@@ -787,6 +787,45 @@ const DeleteBet = ({ }) => {
             }
           }
         }
+        if (packet.data[0] === "sessionNoResult") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            const user = {
+              ...currentUser,
+              current_balance: value.current_balance,
+              exposure: value.exposure,
+            };
+
+            // dispatch(setCurrentUser(user));
+            setCurrentMatch((currentMatch) => {
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (
+                  betting?.id === value?.betId &&
+                  currentMatch?.id === value?.match_id
+                ) {
+                  return {
+                    ...betting,
+                    profitLoss: null,
+                  };
+                }
+                return betting;
+              });
+
+              return {
+                ...currentMatch,
+                bettings: updatedBettings,
+              };
+            });
+
+            // setSessionExposure(value?.sessionExposure);
+            setSingleIObtes((sessionBets) =>
+              sessionBets?.filter((v) => v?.bet_id !== value?.betId)
+            );
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
   }, [socket]);
