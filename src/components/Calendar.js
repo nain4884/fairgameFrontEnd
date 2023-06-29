@@ -11,7 +11,7 @@ const Calendar = ({ title, containerStyle, DatePickerProps, pickerStyles }) => {
     const [open, setOpen] = useState(false)
     return (
         <Box sx={[{
-            zIndex: 100, width: '19%',
+            zIndex: 100, width: {laptop: '50%', mobile: "50%"},
             position: 'relative',
             height: "35px",
         }, containerStyle]} onClick={() => {
