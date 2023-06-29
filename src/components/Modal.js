@@ -14,7 +14,7 @@ export function ThisUseModal() {
   return (
     <>
       {open && <Box p={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, left: 0, backgroundColor: '#00000069', borderRadius: '15px', height: '100vh', width: '100vw', zIndex:9999 }}>
-        <Box p={2} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #707070', backgroundColor: '#000', borderRadius: '15px', position: 'relative' }}>
+        <Box p={2} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #707070', backgroundColor: '#000', borderRadius: '15px', position: 'relative', top: "20px" }}>
           <Button sx={{ color: '#F8C851', position: 'absolute', right: 0, top: 0, fontSize: '30px' }} onClick={handleClose}>&times;</Button>
           <TransPassComp onCancel={handleClose} />
         </Box>

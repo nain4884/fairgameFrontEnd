@@ -195,7 +195,7 @@ const AccountListRow = ({
               fTextStyle,
             ]}
           >
-            {element.userName}
+            {element.userName}dd
           </Typography>
           {showOptions && (
             <StyledImage
@@ -427,7 +427,7 @@ const AccountListRow = ({
         </Box>
       </Box>
 
-      {showUserModal && element.role === "user" && (
+      {showUserModal && element.role === "user" &&
         <>
           <Box
             sx={[
@@ -497,7 +497,7 @@ const AccountListRow = ({
                             fTextStyle,
                           ]}
                         >
-                          {elementToUDM?.matchTypeComission} Com
+                          {elementToUDM?.matchTypeComission} Com 
                         </Typography>
                         <Typography
                           sx={[
@@ -653,7 +653,7 @@ const AccountListRow = ({
               sx={{
                 width: "100%",
                 display: "flex",
-                paddingX: "10px",
+                // paddingX: "10px",
                 alignItems: "center",
                 height: "100%",
               }}
@@ -677,9 +677,54 @@ const AccountListRow = ({
           </Box>
           {/*  */}
         </>
-      )}
+        
+      }
 
       {showUserModal && element?.role !== "user" && (
+        <Box
+        sx={[
+          {
+            width: "100%",
+            display: "flex",
+            height: "100%",
+            background: "#0B4F26",
+            alignItems: "center",
+            overflow: "hidden",
+            flexDirection: { mobile: "column", laptop: "row" }
+          },
+          containerStyle,
+        ]}
+      >
+        <Box
+          sx={[
+            {
+              width: {
+                laptop: "11vw",
+                tablet: "25vw",
+                mobile: "96vw",
+              },
+              visibility: "hidden",
+              // display: "flex",
+              alignSelf: "stretch",
+              // height: "auto",
+              justifyContent: "space-between",
+              // alignItems: "center" ,
+              borderRight: "2px solid white",
+            },
+            // fContainerStyle,
+          ]}
+        >
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            // paddingX: "10px",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          
         <UserDetailModal
           selected={selected}
           setSelected={setSelected}
@@ -695,6 +740,8 @@ const AccountListRow = ({
           setElementToUDM={handleSetUDM}
           prevElement={prevElement}
         />
+        </Box>
+      </Box>
       )}
 
       <ModalMUI

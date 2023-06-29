@@ -38,6 +38,7 @@ export const TransPasswordComponent = () => {
         minWidth: { laptop: "350px", tablet: "350px", mobile: "0px" },
         marginTop: "10px",
         marginX: { mobile: "2vw", laptop: "5vw" },
+        
       }}
     >
       <TransPassComp />
@@ -104,7 +105,7 @@ export const TransPassComp = ({ onCancel }) => {
       <Box
         sx={{
           width: {laptop:"400px", mobile: "300px",tablet: "400px"},
-          height: "460px",
+          height: "450px",
           minHeight: "200px",
           background: "#F8C851",
           borderRadius: "5px",
@@ -143,7 +144,7 @@ export const TransPassComp = ({ onCancel }) => {
             fontWeight: "600",
           }}
           inputContainerStyle={{ borderRadius: "5px" }}
-          containerStyle={{ marginTop: "30px" }}
+          containerStyle={{ marginTop: "20px" }}
           img={eye}
           setDetail={setPasswordDetail}
           Detail={passwordDetail}
@@ -164,8 +165,8 @@ export const TransPassComp = ({ onCancel }) => {
             justifyContent: "center",
             alignItems: "center",
             mx: "auto",
-            marginTop: "60px",
-            marginBottom: "30px",
+            marginTop: "30px",
+            marginBottom: "20px",
             width: "80%",
             background: "#0B4F26",
             borderRadius: "5px",
