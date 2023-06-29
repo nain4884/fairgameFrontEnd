@@ -113,13 +113,13 @@ export default function UserDetailModal({
         borderRight: "2px solid #0000",
       },
     ],
-    BoxButtonStyledImage: { height: "18px", width: "17px", marginLeft: "5px" },
+    BoxButtonStyledImage: { height: {mobile: "15px", laptop: "18px"}, width:{mobile: "15px", laptop: "17px"}, marginLeft: "5px" },
     BoxButtonContStyle: {
       background: "#E32A2A",
       flex: 1,
-      marginLeft: "10px",
-      marginRight: "10px",
+      marginX: {laptop: "10px", mobile: "0"},     
       alignSelf: "center",
+      borderColor: "white",
     },
   };
 
@@ -287,7 +287,7 @@ export default function UserDetailModal({
             gap: { mobile: 0.5 },
             flexWrap: "wrap",
             justifyContent: "center",
-            width: { mobile: "100vw", laptop: "77%", tablet: "100%" },
+            width: { mobile: "90vw", laptop: "77%", tablet: "100%" },
             marginTop: "9px",
           }}
         >
@@ -300,6 +300,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: {mobile: "12px"}
             }}
             labelStyle={{}}
           />
@@ -310,6 +314,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: {mobile: "12px"}
             }}
             isSelected={selected == 1}
             title={"Withdraw"}
@@ -325,6 +333,10 @@ export default function UserDetailModal({
               containerStyle={{
                 marginLeft: { laptop: "10px", mobile: "0" },
                 flex: 1,
+                borderColor: "white",
+              }}
+              titleStyle={{
+                fontSize: {mobile: "12px"}
               }}
               labelStyle={{}}
             />
@@ -338,6 +350,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: {mobile: "12px"}
             }}
           />
           <BoxButton
@@ -348,6 +364,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: {mobile: "12px"}
             }}
             isSelected={selected == 4}
           />
@@ -361,6 +381,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: {mobile: "12px"}
             }}
           />
           <BoxButton
@@ -370,6 +394,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: {mobile: "12px"}
             }}
             title={"Set Exposure Limit"}
             labelStyle={{}}
@@ -381,6 +409,11 @@ export default function UserDetailModal({
               setDeleteModal((prev) => !prev);
             }}
             title={"Delete User"}
+            titleStyle={{
+              fontSize: {mobile: "12px"}
+            }}
+          
+
             icon={
               <StyledImage src={DeleteIcon} sx={classes.BoxButtonStyledImage} />
             }
@@ -2436,7 +2469,7 @@ const LockUnlockComponent = ({
                 setLockUnlockObj({
                   ...lockUnlockObj,
                   adminTransPassword: e.target.value,
-                  userId: currentUser.id,
+                  userId: prevElement?.userId,
                 });
               }}
               sx={{ width: "100%", height: "45px" }}
