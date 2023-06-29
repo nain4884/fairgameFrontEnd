@@ -112,8 +112,8 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
             background: "#262626",
             display: "flex",
             alignItems: "center",
-            justifyContent: { laptop: "flex-end", mobile: "center" },
-            paddingRight:  { laptop: '0', mobile: '1.5%' },
+            justifyContent: { laptop: "flex-end", mobile: "flex-end" },
+            paddingRight:  { laptop: '0', mobile: '0' },
           }}
         >
           <SmallBox valueA={bookRatioA(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} valueB={bookRatioB(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} />

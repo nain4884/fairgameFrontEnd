@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import RunsBox from "../../expert/RunsBox";
 import UnlockComponent from "../../../components/UnlockComponent";
 import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets";
+import { ARROWUP } from "../../../assets";
 
 const SessionMarket = ({
   currentMatch,
@@ -44,6 +45,7 @@ const SessionMarket = ({
   const onSubmit = (value) => {
     handleBlock(value, !locked, "SESSION");
   };
+  const [visible, setVisible] = useState(true);
   return (
     <>
       <Box
@@ -120,11 +122,55 @@ const SessionMarket = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-end",
+             
             }}
           >
+            <Box sx={{ gap: "4px", display: "flex"}}>
             <SmallBoxSeason total={sessionBets?.length || 0} />
+            {/* static code */}
+            <Box
+              sx={{
+                width: { laptop: "85px", mobile: "50px" },
+                flexDirection: "column",
+                // position: "absolute",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "30px",
+                background: "white",
+                borderRadius: "3px",
+              }}
+            >
+              <Typography
+                sx={{ fontSize:  {mobile:"8px", laptop: "12px"}, fontWeight: "bold", color: "#FF4D4D" }}
+              >
+                Amount
+              </Typography>
+              <Typography
+                sx={{ fontSize:  {mobile:"8px", laptop: "10px"}, fontWeight: "bold", color: "#0B4F26" }}
+              >
+                0
+              </Typography>
+            </Box>
+
+            </Box>
+            <img
+              onClick={() => {
+                setVisible(!visible);
+              }}
+              src={ARROWUP}
+              style={{
+                transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+                width: "15px",
+                height: "15px",
+                marginRight: "5px",
+                marginLeft: "5px",
+                cursor: 'pointer'
+              }}
+            />
           </Box>
         </Box>
+        {visible && (
         <Box
           sx={{
             width: "100%",
@@ -333,6 +379,7 @@ const SessionMarket = ({
             </Box>
           )}
         </Box>
+        )}
       </Box>
       {data?.length > 0 && (
         <Box

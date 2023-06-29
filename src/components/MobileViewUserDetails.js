@@ -24,7 +24,8 @@ const MobileViewUserDetails = ({
   title,
   userName,
   element,
-  elementToUDM
+  elementToUDM,
+  titleBackgroundColor
 }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   return (
@@ -39,13 +40,14 @@ const MobileViewUserDetails = ({
           borderBottomLeftRadius: "0px",
           overflow: "hidden",
           border: "2px solid white",
+          
         },
         (theme) => ({
           backgroundImage: `${theme.palette.primary.headerGradient}`,
         }),
       ]}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", background: titleBackgroundColor ? titleBackgroundColor: "#ff0000"}}>
         <Box
           display={"flex"}
           sx={{
@@ -64,7 +66,7 @@ const MobileViewUserDetails = ({
             <Typography
               sx={{
                 fontSize: {
-                  mobile: "14px",
+                  mobile: "16px",
                   laptop: "18px",
                   tablet: "18px",
                 },
@@ -80,7 +82,7 @@ const MobileViewUserDetails = ({
             </Typography>
           </Box>
         </Box>
-        <Button sx={{ color: "", fontSize: "30px" }} onClick={setSelected}>
+        <Button sx={{ color: "", fontSize: "30px", color: "#fff" }} onClick={setSelected}>
           &times;
         </Button>
       </Box>
@@ -93,6 +95,7 @@ const MobileViewUserDetails = ({
           display: "flex",
           flexDirection: "column",
           gap: 1,
+          background: "#F8C851"
         }}
       >
         <Box
@@ -127,12 +130,16 @@ const MobileViewUserDetails = ({
             >
               <Typography
                 sx={{
-                  fontSize: "3vw",
+                  fontSize: "3.2vw",
 
                   width: "100%",
                   fontWeight: "600",
                   color: "white",
                   marginRight: 0,
+                  color: "#000",
+                  textTransform: "capitalize",
+                  marginLeft: "5px"
+
                 }}
               >
                 {currentUser?.userName}
@@ -156,6 +163,9 @@ const MobileViewUserDetails = ({
                   color: "white",
                   display: "flex",
                   alignItems: "center",
+                  // color: "#000",
+                  // textTransform: "capitalize",
+                  // marginLeft: "5px"
                 }}
               >
                 {currentUser?.current_balance}
@@ -172,6 +182,7 @@ const MobileViewUserDetails = ({
                 borderRadius: "5px",
                 border: "2px solid #26262633",
                 paddingX: "10px",
+               
               }}
             >
               <TextField
@@ -225,12 +236,15 @@ const MobileViewUserDetails = ({
             >
               <Typography
                 sx={{
-                  fontSize: "3vw",
+                  fontSize: "3.2vw",
 
                   width: "100%",
                   fontWeight: "600",
                   color: "white",
                   marginRight: 0,
+                  color: "#000",
+                  textTransform: "capitalize",
+                  marginLeft: "5px"
                 }}
               >
                 {userName}
@@ -254,6 +268,7 @@ const MobileViewUserDetails = ({
                   color: "white",
                   display: "flex",
                   alignItems: "center",
+                  
                 }}
               >
                 {element?.available_balance ? element?.available_balance.toFixed(2) : "00"}
@@ -315,12 +330,15 @@ const MobileViewUserDetails = ({
           >
             <Typography
               sx={{
-                fontSize: "3vw",
+                fontSize: "3.2vw",
 
                 width: "100%",
                 fontWeight: "600",
                 color: "white",
                 marginRight: 0,
+                color: "#000",
+                textTransform: "capitalize",
+                marginLeft: "5px"
               }}
             >
               Client Profit/Loss
@@ -402,12 +420,15 @@ const MobileViewUserDetails = ({
           >
             <Typography
               sx={{
-                fontSize: "3vw",
+                fontSize: "3.2vw",
 
                 width: "100%",
                 fontWeight: "600",
                 color: "white",
                 marginRight: 0,
+                color: "#000",
+                textTransform: "capitalize",
+                marginLeft: "5px"
               }}
             >
               {title}
@@ -464,12 +485,15 @@ const MobileViewUserDetails = ({
           >
             <Typography
               sx={{
-                fontSize: "3vw",
+                fontSize: "3.2vw",
 
                 width: "100%",
                 fontWeight: "600",
                 color: "white",
                 marginRight: 0,
+                color: "#000",
+                textTransform: "capitalize",
+                marginLeft: "5px"
               }}
             >
               Remarks
@@ -537,6 +561,9 @@ const MobileViewUserDetails = ({
                 fontWeight: "600",
                 color: "white",
                 marginRight: 0,
+                color: "#000",
+                textTransform: "capitalize",
+                marginLeft: "5px"
               }}
             >
               Transaction
@@ -587,10 +614,11 @@ const MobileViewUserDetails = ({
       <Box
         sx={{
           display: "flex",
-          padding: "1%",
+          padding: "4% 1%",
           width: "100%",
           justifyContent: "space-around",
           gap: 1,
+          background: "#fff"
         }}
       >
         <BoxButton
@@ -598,7 +626,7 @@ const MobileViewUserDetails = ({
             width: "150px",
             background: "#E32A2A",
             border: "0px",
-            height: "35px",
+            height: "45px",
           }}
           isSelected={true}
           onClick={onCancel}
@@ -606,7 +634,7 @@ const MobileViewUserDetails = ({
         />
         <BoxButton
           loading={loading}
-          containerStyle={{ width: "150px", height: "35px" }}
+          containerStyle={{ width: "150px", height: "45px" }}
           isSelected={true}
           onClick={onSubmit}
           title={"Submit"}

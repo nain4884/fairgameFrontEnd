@@ -5,7 +5,7 @@ const SmallBox = ({ color, valueA, valueB }) => {
         // <Box sx={{ width: { laptop: '70px', mobile: '17vw' }, display: 'flex', marginRight: "5px", justifyContent: 'center', alignItems: 'center', height: '30px', background: 'white', borderRadius: '3px', flexDirection: 'column' }}>
         //     <Typography sx={{ fontSize: { laptop: '12px', mobile: '10px' }, fontWeight: 'bold', color: color ? color : '#46e080' }} >+Book.60</Typography>
         // </Box>
-        <Box sx={{ marginLeft: { mobile: "34px", laptop: "12px", tablet: "12px" }, display: "flex", gap: "4px", }}>
+        <Box sx={{ marginLeft: { mobile: "0", laptop: "12px", tablet: "12px" }, display: "flex", gap: "4px", }}>
             <Box
                 sx={{
                     width: { laptop: "3.68vw", mobile: "50px", tablet: "70px" },
