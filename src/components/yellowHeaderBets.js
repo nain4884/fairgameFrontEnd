@@ -31,7 +31,7 @@ const YellowHeaderBets = () => {
 
       <Box
         sx={{
-          display: "flex",
+          display: "none",
           borderRadius: "5px",
           flexDirection: "column",
           width: "99%",

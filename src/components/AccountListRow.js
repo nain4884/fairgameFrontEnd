@@ -438,6 +438,7 @@ const AccountListRow = ({
                 background: "#0B4F26",
                 alignItems: "center",
                 overflow: "hidden",
+                flexDirection: { mobile: "column", laptop: "row" }
               },
               containerStyle,
             ]}
@@ -448,7 +449,7 @@ const AccountListRow = ({
                   width: {
                     laptop: "11vw",
                     tablet: "25vw",
-                    mobile: "29.5vw",
+                    mobile: "96vw",
                   },
                   // display: "flex",
                   alignSelf: "stretch",
@@ -465,76 +466,132 @@ const AccountListRow = ({
                   width: "100% ",
                   height: "100%",
                   padding: "10px",
-                  // display: "flex",
+                  display: { laptop: "block", mobile: "flex" },
                   justifyContent: "space-between",
                   alignItems: selected === null && "center",
                   overflow: "hidden",
                   borderBottom: "2px solid white",
                 }}
               >
-                <Box>
+                <Box sx={{width: {laptop:"100%", mobile: "50%"}}}>
                   <Box
                     sx={{
                       display: "flex",
                       width: "100%",
                       alignItems: "center",
-                      justifyContent: "space-between",
+                      justifyContent: {laptop: "flex-start", mobile: "flex-start"},
+                      
                     }}
                   >
                     {elementToUDM?.matchTypeComission ? (
-                      <Typography
-                        sx={[
-                          {
-                            fontSize: "12px",
-                            fontWeight: "600",
-                            color: "white",
-                            textAlign: "center",
-                          },
-                          fTextStyle,
-                        ]}
-                      >
-                        {elementToUDM?.matchTypeComission} :
-                      </Typography>
-                    ) : (
-                      <Typography
-                        sx={[
-                          {
-                            fontSize: "12px",
+                      <>
+                        <Typography
+                          sx={[
+                            {
+                              fontSize: "12px",
+                              fontWeight: "600",
+                              color: "white",
+                              textAlign: {laptop: "left", mobile: "left"},
+                              width: {laptop: "100px", mobile: "100px"}
+                            },
+                            fTextStyle,
+                          ]}
+                        >
+                          {elementToUDM?.matchTypeComission} Com
+                        </Typography>
+                        <Typography
+                          sx={[
+                            {
+                              fontSize: "12px",
+                              fontWeight: "600",
+                              color: "white",
+                              textAlign: "center",
+                              marginRight: "1px"
+                            },
+                            fTextStyle,
+                          ]}
+                        >
+                          {":"}
+                        </Typography>
+                       
 
-                            fontWeight: "600",
-                            color: "white",
-                            textAlign: "center",
-                          },
-                          fTextStyle,
-                        ]}
-                      >
-                        Match Com : 0
-                      </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <Typography
+                          sx={[
+                            {
+                              fontSize: "12px",
+
+                              fontWeight: "600",
+                              color: "white",
+                              textAlign: {laptop: "left", mobile: "left"},
+                              width: {laptop: "100px", mobile: "100px"}
+                            },
+                            fTextStyle,
+                          ]}
+                        >
+                          Match Com 
+                        </Typography>
+                        <Typography
+                          sx={[
+                            {
+                              fontSize: "12px",
+
+                              fontWeight: "600",
+                              color: "white",
+                              textAlign: "left",
+                            },
+                            fTextStyle,
+                          ]}
+                        >
+                          : 0
+                        </Typography>
+                      </>
                     )}
                   </Box>
 
                   <Box sx={{ display: "flex" }}>
-                    <Typography
-                      sx={[
-                        {
-                          fontSize: "12px",
+                    <Box sx={{ display: "flex" }}>
+                      <Typography
+                        sx={[
+                          {
+                            fontSize: "12px",
 
-                          fontWeight: "600",
-                          color: "white",
-                          textAlign: "center",
-                        },
-                        fTextStyle,
-                      ]}
-                    >
-                      Session :
-                    </Typography>
+                            fontWeight: "600",
+                            color: "white",
+                            textAlign: {laptop: "left", mobile: "left"},
+                            width: {laptop: "100px", mobile: "100px"}
+                          },
+                          fTextStyle,
+                        ]}
+                      >
+                        Session Com
+                      </Typography>
+                      <Typography
+                        sx={[
+                          {
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            color: "white",
+                            textAlign: "center",
+                            marginRight: "1px"
+                          },
+                          fTextStyle,
+                        ]}
+                      >
+                        {": "}
+                      </Typography>
+                    </Box>
                     <Typography
                       sx={[
                         {
                           fontSize: "12px",
                           fontWeight: "600",
                           color: "white",
-                          textAlign: "center",
+                          textAlign: "left",
+                          marginLeft: "3px"
+
                         },
                         fTextStyle,
                       ]}
@@ -546,10 +603,13 @@ const AccountListRow = ({
                 <Box
                   sx={{
                     display: "flex",
-                    marginTop: "10px",
+                    marginTop: { laptop: "10px", mobile: "0" },
                     justifyContent: "space-between",
                     alignItems: "center",
                     cursor: "pointer",
+                    marginRight: {laptop: "0", mobile: "5px"},
+                    width: {desktop: "100%", mobile: "33%"}
+
                   }}
                   onClick={() => {
                     if (elementToUDM.totalCommissions !== null) {
@@ -570,11 +630,12 @@ const AccountListRow = ({
                         color: "white",
                         textAlign: "center",
                         alignItems: "center",
+                        marginRight: { desktop: "0", mobile: "3px" }
                       },
                       fTextStyle,
                     ]}
                   >
-                    Com Details
+                    Commission Details
                   </Typography>
                   <StyledImage
                     src={
@@ -582,7 +643,7 @@ const AccountListRow = ({
                         ? DownGIcon
                         : DownIcon
                     }
-                    style={{ height: "10px", cursor: "pointer", width: "15px" }}
+                    sx={{ height: {laptop: "10px", mobile: "14px" }, cursor: "pointer", width: {laptop: "15px", mobile: "23px" } }}
                   />
                 </Box>
               </Box>

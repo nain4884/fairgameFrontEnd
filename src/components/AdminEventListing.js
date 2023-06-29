@@ -83,7 +83,7 @@ const AdminEventListing = ({
           width: { mobile: "98%", laptop: "100%" },
           msOverflowStyle: "none",
           overflowY: "hidden",
-          minHeight: { mobile: 60, laptop: 80 },
+          minHeight: { mobile: 95, laptop: 80 },
           marginLeft: { mobile: "0", laptop: ".5vw" },
           overflowX: "auto",
           alignSelf: { mobile: "center", laptop: "flex-start" },
@@ -91,6 +91,7 @@ const AdminEventListing = ({
         },
       ]}
     >
+      
       {newData?.map((i, idx) => {
         return (
           <AdminEventComponent
