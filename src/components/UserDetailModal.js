@@ -70,6 +70,7 @@ export default function UserDetailModal({
   prevElement,
   selected,
   setSelected,
+  element
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
   const { axios } = setRole();
@@ -149,6 +150,7 @@ export default function UserDetailModal({
         >
           {selected == 0 && (
             <DepositComponent
+            element={element}
               backgroundColor={backgroundColor}
               selected={selected == 0}
               setSelected={(e) => {
@@ -172,6 +174,7 @@ export default function UserDetailModal({
           )}
           {selected == 1 && (
             <WithDrawComponent
+            element={element}
               selected={selected == 1}
               setSelected={(e) => {
                 setSelected(null);
@@ -559,6 +562,7 @@ const DepositComponent = ({
   setSelected,
   selected,
   percent_profit_loss,
+  element
 }) => {
   const [showPass, setShowPass] = useState(false);
   const theme = useTheme();
@@ -654,6 +658,8 @@ const DepositComponent = ({
           aria-describedby="modal-modal-description"
         >
           <MobileViewUserDetails
+            elementToUDM={elementToUDM}
+           element={element}
             userName={elementToUDM?.userName}
             title={"Deposit Amount"}
             setSelected={setSelected}
@@ -1105,6 +1111,7 @@ const WithDrawComponent = ({
   updatedUserProfile,
   selected,
   setSelected,
+  element
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -1196,6 +1203,8 @@ const WithDrawComponent = ({
           aria-describedby="modal-modal-description"
         >
           <MobileViewUserDetails
+          elementToUDM={elementToUDM}
+           element={element}
             userName={elementToUDM?.userName}
             title={"Withdraw Amount"}
             setSelected={setSelected}

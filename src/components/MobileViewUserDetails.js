@@ -23,6 +23,8 @@ const MobileViewUserDetails = ({
   loading,
   title,
   userName,
+  element,
+  elementToUDM
 }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   return (
@@ -254,7 +256,7 @@ const MobileViewUserDetails = ({
                   alignItems: "center",
                 }}
               >
-                {percent_profit_loss}
+                {element?.available_balance ? element?.available_balance.toFixed(2) : "00"}
               </Typography>
             </Box>
 
@@ -271,7 +273,9 @@ const MobileViewUserDetails = ({
               }}
             >
               <TextField
-                value={initialBalance || 0}
+                value=  {elementToUDM?.available_balance
+                  ? elementToUDM?.available_balance.toFixed(2)
+                  : "00"}
                 sx={{ width: "100%", height: "45px" }}
                 variant="standard"
                 InputProps={{
@@ -343,7 +347,7 @@ const MobileViewUserDetails = ({
               }}
             >
               {" "}
-              {profit_loss}
+              {element?.profit_loss}
             </Typography>
           </Box>
           <Box
@@ -359,7 +363,7 @@ const MobileViewUserDetails = ({
             }}
           >
             <TextField
-              value={initialBalance || 0}
+              value={profit_loss || 0}
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
               InputProps={{

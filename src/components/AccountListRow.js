@@ -599,6 +599,7 @@ const AccountListRow = ({
             >
               <UserDetailModal
                 selected={selected}
+                element={element}
                 setSelected={setSelected}
                 updatedUserProfile={updatedUserProfile}
                 getListOfUser={getListOfUser}
@@ -621,6 +622,7 @@ const AccountListRow = ({
         <UserDetailModal
           selected={selected}
           setSelected={setSelected}
+          element={element}
           updatedUserProfile={updatedUserProfile}
           getListOfUser={getListOfUser}
           setShowUserModal={setShowUserModal}
