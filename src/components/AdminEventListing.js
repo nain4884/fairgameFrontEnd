@@ -45,7 +45,7 @@ const AdminEventListing = ({
       id: 5,
       title: "Reports",
       image: CHECKLIST,
-      url: null,
+      url: "reports",
     },
 
     { id: 6, title: "My Account", image: MYACCOUNT, url: "my-account" },
@@ -65,7 +65,7 @@ const AdminEventListing = ({
           id: 7,
           title: "wallet",
           image: WALLET,
-          url: null,
+          url: "walletsettings",
         };
         if (prev?.id !== body?.id) {
           newData.splice(secondLastIndex, 0, body);

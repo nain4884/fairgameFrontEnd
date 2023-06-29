@@ -5,7 +5,7 @@ import { setRole } from "../../newStore";
 import { useEffect, useState } from "react";
 import constants from "../../components/helper/constants";
 
-const ProfitLoss = () => {
+const ProfitLoss = ({userPadding}) => {
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(0);
@@ -111,6 +111,7 @@ const ProfitLoss = () => {
           marginBottom: "5px",
           color: "white",
           fontWeight: "bold",
+          paddingTop:userPadding,
         }}
       >
         {"PROFIT/LOSS REPORT"}

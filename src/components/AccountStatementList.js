@@ -14,8 +14,9 @@ import YellowHeaderAdmin from "./YellowHeaderAdmin";
 import { useTheme } from "@emotion/react";
 import { setCurrentStatementPage } from "../newStore/reducers/auth";
 import moment from "moment";
+import EventListing from "./EventListing";
 
-const AccountStatementList = ({ user }) => {
+const AccountStatementList = ({ user,visible ,selected}) => {
   const theme = useTheme();
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -216,13 +217,28 @@ const AccountStatementList = ({ user }) => {
   };
 
   return (
-    <>
+    <Box>
+       {visible && (
+        <Box
+          sx={{
+            display: "flex",
+            overflowX: "hidden",
+            flexDirection: "column",
+            flex: 1,
+            justifyContent: "flex-start",
+            overflowY: "auto",
+            alignItems: "flex-start",
+          }}
+        >
+          <EventListing selected={selected} />
+        </Box>
+      )}
       <YellowHeader
         onChildData={handleChildData}
         getAccountStatement={getAccountStatement}
       />
 
-      {/* {decodedTokenUser.role === "user" && (
+      {/* {decodedTokenUser.role === "user,visible" && (
         <YellowHeader
           onChildData={handleChildData}
           getAccountStatement={getAccountStatement}
@@ -264,7 +280,7 @@ const AccountStatementList = ({ user }) => {
         <ListH getLimitEntries={getLimitEntries} />
         <Box sx={{ overflowX: "scroll", width: "100%" }}>
           <ListHeaderT />
-          {decodedTokenUser.role === "user"
+          {decodedTokenUser.role === "user,visible"
             ? transactionHistory.map((item) => (
                 <Row
                   key={item.id}
@@ -330,7 +346,7 @@ const AccountStatementList = ({ user }) => {
           callPage={callPage}
         />
       </Box>
-    </>
+    </Box>
   );
 };
 

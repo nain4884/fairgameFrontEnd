@@ -3,7 +3,7 @@ import React from "react";
 import { HourGlass } from "../../assets";
 import { Box, Typography } from "@mui/material";
 import "./styles.css";
-const CustomLoader = ({ text }) => {
+const CustomLoader = ({ text ,height }) => {
   return (
     <Box
       style={{
@@ -11,7 +11,7 @@ const CustomLoader = ({ text }) => {
         justifyContent: "center",
         width: "100%",
         flex: 1,
-        height: "74%",
+        height: height? height :"74%",
         // height: { mobile: "74%", tablet: "74%" },
         alignItems: "center",
         flexDirection: "column",

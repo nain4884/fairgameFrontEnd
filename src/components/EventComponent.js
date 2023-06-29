@@ -2,12 +2,22 @@ import { Box, Typography } from "@mui/material";
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 
-const EventComponent = ({ data, selected }) => {
+const EventComponent = ({ data, selected, setAnchor }) => {
   const navigate = useNavigate();
   return (
     <Box
-      onClick={() => {
-        navigate("/matches", { state: { activeTab: data?.title } });
+      onClick={(e) => {
+        if (selected === data.title) {
+          navigate(`/matches`, { state: { activeTab: "EmptyComponent" } });
+        } else {
+          console.log("sddd")
+          if (data?.url) {
+            if (data.title === "MY ACCOUNT") {
+              setAnchor(e);
+            }
+            navigate(`/${data?.url}`, { state: { activeTab: data?.title } });
+          }
+        }
       }}
       sx={[
         {
@@ -40,9 +50,10 @@ const EventComponent = ({ data, selected }) => {
       <Typography
         noWrap
         sx={{
-          fontSize: { laptop: "12px", mobile: "12px" },
+          fontSize: { laptop: "11px", mobile: "11px" },
           fontWeight: { mobile: "500", tablet: "500" },
           marginTop: { mobile: "5px", laptop: ".8vh" },
+          color: "black",
         }}
       >
         {data.title}

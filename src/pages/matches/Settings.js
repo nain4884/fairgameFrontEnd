@@ -1,12 +1,9 @@
 import { Box, Menu, MenuItem, Typography } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import EventListing from "../../components/EventListing";
 import { useNavigate } from "react-router-dom";
 
-const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title ,activeTab}) => {
-
-
-
+const MyAccount = ({ selected }) => {
   const navigate = useNavigate();
   const classes = {
     Menusx: { marginTop: { mobile: "15px", laptop: "30px", tablet: "18px" }, marginLeft: { mobile: "5px", laptop: "0", tablet: "0" }, paddingY: "0px", padding: "0px", width: { mobile: "105%", laptop: "100%", tablet: "100%" } ,  top:{mobile:"-260px"},tablet:"-460px",laptop:"-460px"},
@@ -48,18 +45,39 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
       },
     },
   };
+
+  const menutItems1 = [
+    { title: "Account Statement", link: "/account_statement" },
+    { title: "Profile/Loss Report", link: "/profit_loss" },
+    { title: "Bet History", link: "/bet_history" },
+    { title: "Set Button Values", link: "/change_button_value" },
+    { title: "Security Auth Verification" },
+    { title: "Change Password", link: "/change_password" },
+  ];
+
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        overflowX: "hidden",
+        flexDirection: "column",
+        flex: 1,
+        justifyContent: "flex-start",
+        overflowY: "auto",
+        alignItems: "flex-start",
+      }}
+    >
+      <EventListing selected={selected} top={"190px"}/>
       <Box sx={{width: "80%"}}>
-        <Menu
+        {/* <Menu
           id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
+          // anchorEl={anchorEl}
+          open={true}
+          // onClose={handleClose}
           sx={classes.Menusx}
           MenuListProps={classes.MenuListProps}
           PaperProps={classes.MenuPaperProps}
-        >
+        > */}
           <Box sx={{}}>
             <Typography
               sx={[
@@ -75,7 +93,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
 
               ]}
             >
-              {title}
+              My Account
             </Typography>
             {/* <Box sx={{ height: "1px", background: "#ddd" }}></Box> */}
           </Box>
@@ -89,21 +107,20 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
                 onClick={() => {
                   navigate(x.link, {
                     state: {
-                      activeTab: activeTab,
+                      activeTab: "MY ACCOUNT",
                     },
                   });
-                  handleClose();
+                  // handleClose();
                 }}
               >
                 {x.title}
               </MenuItem>
             ))}
           </Box>
-        </Menu>
+        {/* </Menu> */}
       </Box>
-
-    </>
+    </Box>
   );
 };
 
-export default DropdownMenu1;
+export default MyAccount;

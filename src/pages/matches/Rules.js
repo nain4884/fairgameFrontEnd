@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { Background } from "../../components";
 
-const Rules = () => {
+const Rules = ({userPadding}) => {
   const ListHeader = () => {
     return (
       <Box
@@ -118,6 +118,7 @@ const Rules = () => {
           marginBottom: "5px",
           color: "white",
           fontWeight: "bold",
+          paddingTop:userPadding,
         }}
       >
         {"RULES"}

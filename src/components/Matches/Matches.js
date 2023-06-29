@@ -27,7 +27,6 @@ const MatchesComponent = ({
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
 
-
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const dispatch = useDispatch();
   const { axios } = setRole();
@@ -62,7 +61,7 @@ const MatchesComponent = ({
     setCurrentPage(parseInt(value));
   }
 
-  const currentElements = matchData
+  const currentElements = matchData;
   return (
     <>
       {currentElements?.map((match) => {
@@ -92,7 +91,18 @@ const MatchesComponent = ({
         />
       )}
       {/* {loader && <CustomLoader text="" />} */}
-        {loader && <CustomLoader text="" />}
+      {loader && (
+        <Box
+          sx={{
+            minHeight: "90vh",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CustomLoader height={"70vh"} text={""} />
+        </Box>
+      )}
       {/* <Odds onClick={onClick} top={false} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
             <Odds onClick={onClick} top={false} blur={true} upcoming={true} /> */}

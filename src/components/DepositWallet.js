@@ -149,7 +149,7 @@ export default function DepositWallet() {
             alignSelf: "start",
           }}
         >
-          Deposit in Wallet
+          Withdraw from Wallet
         </Typography>
         <Box
           sx={{

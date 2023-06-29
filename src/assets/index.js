@@ -58,5 +58,6 @@ export { default as TREND } from './homeScreen/trend.png'
 export { default as CHECKLIST } from './homeScreen/checklist.png'
 export { default as LIVEMARKET } from './homeScreen/live-sports.png'
 export { default as TEAM } from './homeScreen/team.png'
+export { default as SETTINGS } from './homeScreen/settings.png'
 
 

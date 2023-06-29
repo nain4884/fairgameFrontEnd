@@ -43,11 +43,13 @@ import { GlobalStore } from "../context/globalStore";
 import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
-  setConfirmAuth
+  setConfirmAuth,
 } from "../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
 import IdleTimer from "./IdleTimer";
+import DropdownMenu1 from "./CommonMasterAdminLayout/MenuBar";
+import EventListing from "./EventListing";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -168,6 +170,11 @@ const CustomHeader = ({ }) => {
   }, [socket]);
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [anchor, setAnchor] = useState(null);
+
+  const [selected, setSelected] = useState(
+    location.state?.activeTab || "CRICKET"
+  );
 
   const [showOfflineStatus, setShowOfflineStatus] = useState(false);
 
@@ -229,21 +236,21 @@ const CustomHeader = ({ }) => {
 
   const bal = window.localStorage.getItem("Balance4");
   const exp = window.localStorage.getItem("exposure4");
-  useEffect(() => {
-    // setBalance(user?.amount || bal);
-    // setExposure(user?.exposure || exp);
-    if (
-      location?.pathname.includes("change_password") ||
-      location?.pathname?.includes("change_button_value") ||
-      location?.pathname?.includes("account_statement") ||
-      location?.pathname?.includes("profit_loss") ||
-      location?.pathname?.includes("bet_history")
-    ) {
-      setShowSideBarMobile(true);
-    } else {
-      setShowSideBarMobile(false);
-    }
-  }, [location, bal, JWT]);
+  // useEffect(() => {
+  //   // setBalance(user?.amount || bal);
+  //   // setExposure(user?.exposure || exp);
+  //   if (
+  //     location?.pathname.includes("change_password") ||
+  //     location?.pathname?.includes("change_button_value") ||
+  //     location?.pathname?.includes("account_statement") ||
+  //     location?.pathname?.includes("profit_loss") ||
+  //     location?.pathname?.includes("bet_history")
+  //   ) {
+  //     setShowSideBarMobile(true);
+  //   } else {
+  //     setShowSideBarMobile(false);
+  //   }
+  // }, [location, bal, JWT]);
 
   const handleGetNotification = async () => {
     try {
@@ -267,10 +274,7 @@ const CustomHeader = ({ }) => {
   return (
     <>
       <SessionTimeOut />
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer }}>
         <IdleTimer role="user" />
         {!isOnline && (
           <Box
@@ -321,10 +325,11 @@ const CustomHeader = ({ }) => {
               justifyContent: "space-between",
               width: "100%",
               flex: 1,
-
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+            >
               <StyledImage
                 onClick={() => {
                   if (matchesMobile || showSideBarMobile) {
@@ -339,7 +344,7 @@ const CustomHeader = ({ }) => {
               />
               <StyledImage
                 onClick={(e) => {
-                  navigate("/matches");
+                  navigate("/matches", { state: { activeTab: "CRICKET" } });
                   e.stopPropagation();
                 }}
                 src={logo}
@@ -690,13 +695,13 @@ const BoxProfile = ({ image, value, containerStyle }) => {
 };
 
 const menutItems = [
-  { title: "Account Statement", link: "/account_statement" },
-  { title: "Profile/Loss Report", link: "/profit_loss" },
-  { title: "Bet History", link: "/bet_history" },
-  { title: "Casino Report History" },
-  { title: "Set Button Values", link: "/change_button_value" },
-  { title: "Security Auth Verification" },
-  { title: "Change Password", link: "/change_password" },
+  // { title: "Account Statement", link: "/account_statement" },
+  // { title: "Profile/Loss Report", link: "/profit_loss" },
+  // { title: "Bet History", link: "/bet_history" },
+  // { title: "Casino Report History" },
+  // { title: "Set Button Values", link: "/change_button_value" },
+  // { title: "Security Auth Verification" },
+  // { title: "Change Password", link: "/change_password" },
   { title: "Rules", link: "/rules" },
 ];
 const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
