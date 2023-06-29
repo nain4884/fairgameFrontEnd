@@ -129,7 +129,7 @@ const SessionMarketBoxLive = ({
         sx={{
           display: "flex",
           background: "white",
-          height: "38px",
+          height: "30px",
           width: "100%",
         }}
       >
@@ -137,7 +137,7 @@ const SessionMarketBoxLive = ({
           sx={{
             display: "flex",
             background: "white",
-            height: "38px",
+            height: "30px",
             width: "55%",
             alignItems: "center",
           }}
@@ -196,7 +196,7 @@ const SessionMarketBoxLive = ({
               }}
               textSize={"8px"}
               width={"33px"}
-              // title={"Live"}
+            // title={"Live"}
             />
           )}
           {!hideResult && (
@@ -231,7 +231,7 @@ const SessionMarketBoxLive = ({
         )}
 
         {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
-        newData?.betStatus === 2 ? (
+          newData?.betStatus === 2 ? (
           <Box
             sx={{
               margin: "1px",
@@ -246,7 +246,7 @@ const SessionMarketBoxLive = ({
             }}
           >
             {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
-        
+
             <Typography
               style={{
                 fontSize: { mobile: "10px", laptop: "10px" },
@@ -306,7 +306,7 @@ const SessionMarketBoxLive = ({
                                 <img src={BallStart} style={{ width: '60px', height: '19px' }} />
                             </Box>
                         } */}
-        
+
           </Box>
         )}
       </Box>
