@@ -1179,7 +1179,20 @@ const DeleteBet = ({ }) => {
   const dispatch = useDispatch();
   return (
     <Background>
-      <AddNotificationModal
+     {loading ? (
+        <Box
+          sx={{
+            minHeight: "60vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CustomLoader text="" />
+        </Box>
+      ) : (
+     <>
+     <AddNotificationModal
         value={value}
         title={"Add Remark"}
         visible={visible}
@@ -1331,6 +1344,7 @@ const DeleteBet = ({ }) => {
         )}
       </Box>
       <DailogModal />
+     </>)}
     </Background>
   );
 };
