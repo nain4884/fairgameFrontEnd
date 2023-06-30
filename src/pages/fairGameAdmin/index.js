@@ -100,6 +100,7 @@ const AdminRoutes = () => {
         <Route exact path="/add_account" element={<AddAccountScreen />} />
         <Route exact path="/current_bet" element={<CurrentBets />} />
         <Route exact path="/reports" element={<Reports />} />
+        <Route exact path="/walletsettings" element={<Reports />} />
         <Route exact path="/game_report" element={<Reports />} />
         <Route exact path="/total_bets" element={<TotalBets />} />
         <Route exact path="/change_password" element={<ChangePassword />} />

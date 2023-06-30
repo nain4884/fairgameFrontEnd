@@ -1,7 +1,7 @@
-import { TextField, Typography, useTheme } from "@mui/material";
+import { Drawer, TextField, Typography, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, drawerBackground } from "../../assets";
 
 const SideBar = ({ mobileShow }) => {
@@ -13,20 +13,21 @@ const SideBar = ({ mobileShow }) => {
     {
       title: "All Sports",
       data: [
-        "In Play",
-        "Live Casino",
-        "Live Card",
-        "Cricket",
-        "Soccer",
-        "Tennis",
-        "Football",
-        "Ice Hockey",
-        "Volleyball",
-        "Politics",
-        "Basketball",
-        "Table",
-        "Tennis",
-        "Darts",
+        { title: "In Play", url: "/inplay", activeTab: "INPLAY" },
+        { title: "Cricket", url: "/matches", activeTab: "CRICKET" },
+        { title: "Live Casino", url: "/comingsoon", activeTab: "LIVE CASINO" },
+        { title: "Live Card", url: "/comingsoon", activeTab: "LIVE CARD" },
+        { title: "soccer", url: "/comingsoon", activeTab: "SOCCER" },
+        { title: "Tennis", url: "/comingsoon", activeTab: "TENNIS" },
+        { title: "Ice Hockey", url: "/comingsoon", activeTab: "ICE HOCKEY" },
+        { title: "Volleyball", url: "/comingsoon" },
+        { title: "Politics", url: "/comingsoon" },
+        { title: "Table", url: "/comingsoon" ,},
+        { title: "Darts", url: "/comingsoon" },
+        { title: "Snooker", url: "/comingsoon", activeTab: "SNOOKER" },
+        { title: "Golf", url: "/comingsoon", activeTab: "GOLF" },
+        { title: "Chess", url: "/comingsoon", activeTab: "CHESS" },
+        { title: "Basketball", url: "/comingsoon", activeTab: "BASKETBALL" },
       ],
     },
     {
@@ -34,19 +35,19 @@ const SideBar = ({ mobileShow }) => {
       data: [],
     },
   ];
-  useEffect(() => {
-    if (
-      location?.pathname.includes("change_password") ||
-      location?.pathname?.includes("change_button_value") ||
-      location?.pathname?.includes("account_statement") ||
-      location?.pathname?.includes("profit_loss") ||
-      location?.pathname?.includes("bet_history")
-    ) {
-      setShowSideBarMobile(true);
-    } else {
-      setShowSideBarMobile(false);
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   if (
+  //     location?.pathname.includes("change_password") ||
+  //     location?.pathname?.includes("change_button_value") ||
+  //     location?.pathname?.includes("account_statement") ||
+  //     location?.pathname?.includes("profit_loss") ||
+  //     location?.pathname?.includes("bet_history")
+  //   ) {
+  //     setShowSideBarMobile(true);
+  //   } else {
+  //     setShowSideBarMobile(false);
+  //   }
+  // }, [location]);
   const ListHeader = ({ title }) => {
     return (
       <Box
@@ -152,7 +153,7 @@ const SideBar = ({ mobileShow }) => {
             cursor: "pointer",
           }}
         >
-          {item}
+          {item.title}
         </Typography>
       </Box>
     );
@@ -160,7 +161,13 @@ const SideBar = ({ mobileShow }) => {
 
   const RenderList = ({ data }) => {
     return data.map((item, idx) => {
-      return <ListItem key={idx} item={item} />;
+      return (
+        <ListItem
+          key={idx}
+          item={item}
+          setShowSideBarMobile={setShowSideBarMobile}
+        />
+      );
     });
   };
   const RenderItem = ({ i }) => {
@@ -171,6 +178,7 @@ const SideBar = ({ mobileShow }) => {
       </>
     );
   };
+
   return (
     <Box
       sx={[

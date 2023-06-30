@@ -31,20 +31,19 @@ const AdminEventComponent = ({
         } else {
           if (data.url) {
             // setShow(false);
+            if (data?.title === "Reports") {
+              setAnchor(e);
+            } else if (data?.title === "wallet") {
+              setAnchor1(e);
+            }
             navigate(url, {
               state: {
                 activeTab: data?.title,
               },
             });
-          } else if (data?.title === "Reports") {
-            setAnchor(e);
-          } else if (data?.title === "wallet") {
-            setAnchor1(e);
-          } 
-          // else if (data?.title === "My Account") {
-          //   setShow((prev) => !prev);
-          // }
+          }
         }
+        
       }}
       sx={[
         {

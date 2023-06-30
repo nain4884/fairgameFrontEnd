@@ -62,7 +62,7 @@ import HomeSlide from "../HomeSlide";
 import IdleTimer from "../../components/IdleTimer";
 
 var roleName = "";
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -487,6 +487,18 @@ const CustomHeader = ({ }) => {
     );
   }, [classes.RenderLogoCompStyleImg, nav, navigate]);
 
+  const menutItems1 = [
+    { title: "Account Statement", link: `/${nav}/account_statement` },
+    { title: "Current Bet", link: `/${nav}/current_bet` },
+    { title: "General Report", link: `/${nav}/general_report` },
+    { title: "Profit/Loss", link: `/${nav}/profit_loss` },
+  ];
+
+  const menutItems2 = [
+    { title: "Deposit", link: "/wallet/deposit" },
+    { title: "Withdraw", link: "/wallet/withdraw" },
+  ];
+
   return (
     <>
       <SessionTimeOut />
@@ -686,14 +698,37 @@ const CustomHeader = ({ }) => {
         nav={nav}
         open={Boolean(anchor)}
         anchorEl={anchor}
+        menutItems1={menutItems1}
+        title={"Report"}
+        activeTab={"Report"}
         // setShow={setShow}
-        handleClose={() => setAnchor(null)}
+        handleClose={() => {
+          setAnchor(null);
+          // const pathname = location.pathname.split("/")[1];
+          // const url = `/${pathname}/list_of_clients`;
+          // navigate(url, {
+          //   state: {
+          //     activeTab: "Client list",
+          //   },
+          // });
+        }}
       />
       <DropdownMenu2
         open={Boolean(anchor1)}
         anchorEl={anchor1}
+        menutItems2={menutItems2}
         // setShow={setShow}
-        handleClose={() => setAnchor1(null)}
+        title={"Wallet"}
+        handleClose={() => {
+          setAnchor1(null);
+          // const pathname = location.pathname.split("/")[1];
+          // const url = `/${pathname}/list_of_clients`;
+          // navigate(url, {
+          //   state: {
+          //     activeTab: "Client list",
+          //   },
+          // });
+        }}
       />
       <Box sx={classes.BoxEnd} />
 

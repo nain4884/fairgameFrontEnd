@@ -19,7 +19,7 @@ const Match = ({ selected, setLoader, loader }) => {
     setId(k);
   };
   const doNavigateWithState = (e) => {
-    navigate("/matchDetail", { state: e });
+    navigate("/matchDetail", { state: { matchId: e, activeTab: "CRICKET" } });
     sessionStorage.setItem("matchId", e);
   };
 
@@ -39,27 +39,23 @@ const Match = ({ selected, setLoader, loader }) => {
         >
           <EventListing selected={selected} />
           <div style={{ height: "1vh" }} />
-          {selected === "CRICKET" || selected === "INPLAY" ? (
-            <MatchesComponent
-              setLoader={setLoader}
-              loader={loader}
-              selected={selected}
-              // onClick={() => {
-              //   dispatch(setActive("CRICKET"));
-              //   navigate("/home",{state:id});
-              // }}
-              // matches={matches}
-              setMatchId={setId}
-              doNavigateWithState={doNavigateWithState}
-            />
-          ) : (
-            <CustomLoader text={"Coming Soon"} />
-          )}
+          {/* {selected === "CRICKET" || selected === "INPLAY" ? ( */}
+          <MatchesComponent
+            setLoader={setLoader}
+            loader={loader}
+            selected={selected}
+            // onClick={() => {
+            //   dispatch(setActive("CRICKET"));
+            //   navigate("/home",{state:id});
+            // }}
+            // matches={matches}
+            setMatchId={setId}
+            doNavigateWithState={doNavigateWithState}
+          />
         </Box>
       ) : (
         <Box sx={{ overflowX: "hidden", minHeight: "100vh" }}>
           <EventListing selected={selected} />
-          {selected === "CRICKET" || selected === "INPLAY" ? (
             <MatchesComponent
               setLoader={setLoader}
               loader={loader}
@@ -68,12 +64,10 @@ const Match = ({ selected, setLoader, loader }) => {
               selected={selected}
               macthId={id}
             />
-          ) : (
-            <CustomLoader text={"Coming Soon"} />
-          )}
-        </Box>
-      )}
+       
+    </Box>)}
     </>
   );
 };
 export default memo(Match);
+

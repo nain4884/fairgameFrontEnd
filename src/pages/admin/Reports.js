@@ -5,7 +5,7 @@ export default function Reports() {
     return (
         <Background>
             {/* <Header /> */}
-            <Typography sx={{ m: "15px", color: "white" }}>REPORTS</Typography>
+            {/* <Typography sx={{ m: "15px", color: "white" }}>REPORTS</Typography> */}
         </Background>
     )
 }

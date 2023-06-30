@@ -1,15 +1,12 @@
 import { Box, Menu, MenuItem, Typography } from "@mui/material";
 import React from "react";
-import { useSelector } from "react-redux";
+import EventListing from "../../components/EventListing";
 import { useNavigate } from "react-router-dom";
 
-const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title ,activeTab}) => {
-
-
-
+const MyAccount = ({ selected }) => {
   const navigate = useNavigate();
   const classes = {
-    Menusx: { marginTop: { mobile: "15px", laptop: "30px", tablet: "18px" }, marginLeft: { mobile: "5px", laptop: "0", tablet: "0" }, paddingY: "0px", padding: "0px", width: { mobile: "105%", laptop: "100%", tablet: "100%" }},
+    Menusx: { marginTop: { mobile: "15px", laptop: "30px", tablet: "18px" }, marginLeft: { mobile: "5px", laptop: "0", tablet: "0" }, paddingY: "0px", padding: "0px", width: { mobile: "105%", laptop: "100%", tablet: "100%" } ,  top:{mobile:"-260px"},tablet:"-460px",laptop:"-460px"},
     MenuListProps: { "aria-labelledby": "basic-button" },
     MenuPaperProps: { sx: {
       // border: "1px solid #fff", 
@@ -17,8 +14,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
     
       // width: "96.25%", 
       width: "100%", 
-      left: "1px !important", 
-      top: {laptop: "191px !important", mobile: "170px !important"}, 
+      left: "1px !important",  
       minHeight: "220px", 
       background: "url(/static/media/back.00d2deda3616019e96ee.png)",
       boxShadow: "none",
@@ -27,7 +23,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
   } },
     MenuItemsx: {
       width: "100%",
-      fontSize: { laptop: "16px", mobile: "12px" },
+      fontSize: { laptop: "16px", mobile: "10px" },
       fontWeight: "600",
       marginX: "0px",
       // width: { laptop: "140px", mobile: "170px" },
@@ -37,7 +33,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
       marginTop: "0px",
       borderStyle: "solid",
       // marginLeft: "-10px",
-      minHeight: {mobile: "30px", laptop: "40px"},
+      minHeight: "40px",
       lineHeight: "18px",
       color: "black",
       "&:hover": {        
@@ -49,26 +45,47 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
       },
     },
   };
+
+  const menutItems1 = [
+    { title: "Account Statement", link: "/account_statement" },
+    { title: "Profile/Loss Report", link: "/profit_loss" },
+    { title: "Bet History", link: "/bet_history" },
+    { title: "Set Button Values", link: "/change_button_value" },
+    { title: "Security Auth Verification" ,link:"/comingsoon"},
+    { title: "Change Password", link: "/change_password" },
+  ];
+
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        overflowX: "hidden",
+        flexDirection: "column",
+        flex: 1,
+        justifyContent: "flex-start",
+        overflowY: "auto",
+        alignItems: "flex-start",
+      }}
+    >
+      <EventListing selected={selected} top={"190px"}/>
       <Box sx={{width: "80%"}}>
-        <Menu
+        {/* <Menu
           id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
+          // anchorEl={anchorEl}
+          open={true}
+          // onClose={handleClose}
           sx={classes.Menusx}
           MenuListProps={classes.MenuListProps}
           PaperProps={classes.MenuPaperProps}
-        >
+        > */}
           <Box sx={{}}>
             <Typography
               sx={[
                 {
-                  fontSize: { laptop: "18px", mobile: "16px" },
+                  fontSize: { laptop: "18px", mobile: "10px" },
                   fontWeight: "600",
                   fontFamily: "Montserrat",
-                  padding: {laptop: "10px 37px", mobile: "10px 20px"},
+                  padding: "10px 37px",
                   paddingBottom: "15px",
                   color: "#fff",
                   textTransform: "uppercase"
@@ -76,11 +93,11 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
 
               ]}
             >
-              {title}
+              My Account
             </Typography>
             {/* <Box sx={{ height: "1px", background: "#ddd" }}></Box> */}
           </Box>
-          <Box sx={{background: "#F8C851", marginLeft: {mobile:"20px",laptop: "37px"},marginRight: "20px", padding: "10px", borderRadius: "5px"}}>
+          <Box sx={{background: "#F8C851", marginLeft: "37px",marginRight: "20px", padding: "10px", borderRadius: "5px"}}>
 
             {menutItems1.map((x, index) => (
               <MenuItem
@@ -90,21 +107,20 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
                 onClick={() => {
                   navigate(x.link, {
                     state: {
-                      activeTab: activeTab,
+                      activeTab: "MY ACCOUNT",
                     },
                   });
-                  handleClose();
+                  // handleClose();
                 }}
               >
                 {x.title}
               </MenuItem>
             ))}
           </Box>
-        </Menu>
+        {/* </Menu> */}
       </Box>
-
-    </>
+    </Box>
   );
 };
 
-export default DropdownMenu1;
+export default MyAccount;

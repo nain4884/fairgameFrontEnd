@@ -14,6 +14,10 @@ import AccountStatement from "./AccountStatement";
 import ChangeButtonValue from "./ChangeButtonValue";
 import { ChangePassword } from "../../components/ChangePassword";
 import SmoothScroll from "../../components/SmoothScoll";
+import Settings from "./Settings";
+import MyAccount from "./Settings";
+import Home from "./Home";
+import Soccer from "./Soccer";
 const USerRoutes = () => {
   const location = useLocation();
 
@@ -44,6 +48,22 @@ const USerRoutes = () => {
             </UserPrivateRoute>
           }
         />
+         <Route
+          path="/inplay"
+          element={
+            <UserPrivateRoute>
+              <Matches />
+            </UserPrivateRoute>
+          }
+        />
+        <Route
+          path="/comingsoon"
+          element={
+            <UserPrivateRoute>
+              <Matches />
+            </UserPrivateRoute>
+          }
+        />
         <Route
           path="/matchDetail"
           element={
@@ -52,13 +72,13 @@ const USerRoutes = () => {
             </UserPrivateRoute>
           }
         />
-        <Route path="/change_button_value" element={<ChangeButtonValue />} />
-        <Route path="/change_password" element={<ChangePassword />} />
-        <Route path="/account_statement" element={<AccountStatement />} />
-        <Route path="/bet_history" element={<BetHistory />} />
-        <Route path="/profit_loss" element={<ProfitLoss />} />
+        <Route path="/change_button_value" element={<Matches  />} />
+        <Route path="/change_password" element={<Matches  />} />
+        <Route path="/account_statement" element={<Matches  />} />
+        <Route path="/bet_history" element={<Matches />} />
+        <Route path="/profit_loss" element={<Matches  />} />
         <Route path="/rules" element={<Rules />} />
-
+        <Route path="/my-account" element={<Matches />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
