@@ -38,12 +38,19 @@ export default function SessionResult({ createSession, betId, handleSession, ses
     };
 
     return (
-        <Box sx={{ flex: 1, background: "#F8C851", marginTop: "5px", borderRadius: "5px", minHeight: "300px", py: "30px", px: "20px" }}>
+        <Box sx={{ 
+            flex: 1, background: "#F8C851", marginTop: "5px", borderRadius: "5px", 
+            minHeight: "300px", 
+            py: "30px", 
+            px: "20px", 
+            pt: "5px" 
+        }}
+        >
             <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>Session Result</Typography>
-            <Box sx={{ display: "flex", marginTop: "20px" }}>
+            <Box sx={{ display: "flex", marginTop: "8px" }}>
                 <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
                     <Overs createSession={createSession} sessionData={sessionData} mode={mode} changeSelected={changeSelected} selected={selected} />
-                    <Box sx={{ display: "flex", justifyContent: "center", marginTop: "30px" }}>
+                    <Box sx={{ display: "flex", justifyContent: "flex-start", marginTop: "14px" }}>
                         <Box onClick={(e) => {
                             setMode("1")
                             // setVisible1(true)

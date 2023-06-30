@@ -11,7 +11,8 @@ const ButtonWithSwitch = ({
   notSwitch,
 }) => {
   const [background, setBackground] = useState("#0B4F26");
-  const [checked, setChecked] = useState(updateMatchStatus[place]?.val);
+
+  const [checked, setChecked] = useState(notSwitch ? false : updateMatchStatus[place]?.val);
   useEffect(() => {
     if (checked) {
       setBackground("#0B4F26");

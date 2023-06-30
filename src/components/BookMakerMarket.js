@@ -14,12 +14,12 @@ export default function BetMakerMarketComponent({ add, match }) {
 
     return (
         <Box sx={{ flex: 1, background: "white", borderRadius: "5px", minHeight: "640px", border: "2px solid white" }}>
-            <Box sx={[{ height: "60px", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px" }, (theme) => ({
+            <Box sx={[{ height: "45px", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px" }, (theme) => ({
                 backgroundImage: `${theme.palette.primary.headerGradient}`
             })]}>
                 <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600" }}>Bookmaker Bets</Typography>
-                <Box sx={{ height: "45px", width: "100px", background: "white", borderRadius: "5px", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
-                    <Typography sx={{ color: "red", fontWeight: "700" }}>All Bets</Typography>
+                <Box sx={{ height: "35px", width: "100px", background: "white", borderRadius: "5px", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
+                    <Typography sx={{ color: "red", fontWeight: "700", fontSize: "14px" }}>All Bets</Typography>
                     <Typography sx={{ color: "#0B4F26", fontWeight: "700", marginTop: "-5px" }}>{bookMakerBetRates?.length}</Typography>
 
                 </Box>
@@ -106,7 +106,7 @@ const Row = ({ index, values }) => {
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "14px", lineHeight: 1 }}>{values.team_bet}</Typography>
             </Box>
             <Box sx={{ background: values.bet_type == "back" ? "#B3E0FF" : "#FFB5B5", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", position: 'relative', }}>
-                <Typography sx={{ fontWeight: "600", fontSize: { mobile: "6px", laptop: "8px" }, color: "black", position: 'absolute', top: 5, right: 5 }} >{getTime(values.createAt)}</Typography>
+                <Typography sx={{ fontWeight: "600", fontSize: { mobile: "6px", laptop: "9px" }, color: "black", position: 'absolute', top: 5, right: 5 }} >{getTime(values.createAt)}</Typography>
                 <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>{values.odds}</Typography>
             </Box>
             <Box sx={{ background: values.bet_type == "back" ? "#B3E0FF" : "#FFB5B5", width: "15%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>

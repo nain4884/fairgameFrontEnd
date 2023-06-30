@@ -399,6 +399,7 @@ const IndiaPakLive = React.forwardRef(({
         borderRadius: "5px",
         minHeight: "300px",
         py: "30px",
+        pt: "5px",
         px: "20px",
       }}
     >
@@ -407,11 +408,11 @@ const IndiaPakLive = React.forwardRef(({
       >
         {match?.title ? match.title : "India vs Pakistan"}
       </Typography>
-      <Box sx={{ display: "flex", marginTop: "20px" }}>
+      <Box sx={{ display: "flex", marginTop: "8px" }}>
         <Box
           sx={{
             flex: 1,
-            justifyContent: "space-between",
+            justifyContent: "flex-start",
             display: "flex",
             flexDirection: "column",
           }}
@@ -431,7 +432,7 @@ const IndiaPakLive = React.forwardRef(({
             isPercent={{ isPercent, setIsPercent }}
             live={live}
           />
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: "14px" }}>
             {!isCreateSession || sessionBetId ? (
               <>
                 <Box
@@ -958,7 +959,7 @@ const AddSession = ({
         <Box
           sx={{
             background: "#FF9292",
-            width: "15%",
+            width: "19.5%",
             borderLeft: "2px solid white",
             display: "flex",
             justifyContent: "center",
@@ -972,7 +973,7 @@ const AddSession = ({
         <Box
           sx={{
             background: "#00C0F9",
-            width: "15%",
+            width: "19.5%",
             borderLeft: "2px solid white",
             display: "flex",
             justifyContent: "center",
@@ -1109,7 +1110,7 @@ const AddSession = ({
           display={"flex"}
           sx={{ borderLeft: "2px solid white", width: "60%" }}
         >
-          <Box sx={{ width: "50%" }}>
+          <Box sx={{ width: "40%" }}>
             <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
               <Box
                 sx={{
@@ -1288,7 +1289,7 @@ const AddSession = ({
               </Box>
             </Box>
           </Box>
-          <Box sx={{ width: "50%" }}>
+          <Box sx={{ width: "60%" }}>
             {!isBall?.isBall ? (
               <>
                 <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
@@ -1306,7 +1307,7 @@ const AddSession = ({
                       <Typography
                         sx={{
                           fontWeight: "600",
-                          fontSize: "14px",
+                          fontSize: "18px",
                           color: "black",
                         }}
                       >
@@ -1335,7 +1336,7 @@ const AddSession = ({
                       <Typography
                         sx={{
                           fontWeight: "600",
-                          fontSize: "14px",
+                          fontSize: "18px",
                           color: "black",
                         }}
                       >
@@ -1364,7 +1365,7 @@ const AddSession = ({
                       <Typography
                         sx={{
                           fontWeight: "600",
-                          fontSize: "14px",
+                          fontSize: "18px",
                           color: "black",
                         }}
                       >
@@ -1392,7 +1393,7 @@ const AddSession = ({
                       <Typography
                         sx={{
                           fontWeight: "600",
-                          fontSize: "14px",
+                          fontSize: "18px",
                           color: "black",
                         }}
                       >
@@ -1608,7 +1609,7 @@ const RunsAmountBox = ({
                     <Typography
                       sx={{
                         fontWeight: "500",
-                        fontSize: "12px",
+                        fontSize: "16px",
                         color: "white",
                       }}
                     >
