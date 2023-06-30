@@ -2,6 +2,7 @@ import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CHECK } from "../admin/assets";
+import {  ARROWUP } from "../assets";
 import moment from "moment";
 import { useTheme } from "@emotion/react";
 const data = [
@@ -57,6 +58,8 @@ const data = [
 const FullAllBets = ({ tag, mode, IObets }) => {
   //   const [selected, setSelected] = useState([...data, ...data]);
   const [selectedData, setSelectedData] = useState([]);
+
+  const [visible, setVisible] = useState(true);
 
   const [newData, setNewBets] = useState([]);
   useEffect(() => {
@@ -145,16 +148,16 @@ const FullAllBets = ({ tag, mode, IObets }) => {
   const navigate = useNavigate();
   return (
     <Box
-    sx={{
-      display: "flex",
-      position: "relative",
-      backgroundColor: "white",
-      padding: 0.2,
-      flexDirection: "column",
-      marginY: "3px",
-      width: "100%",
-      alignSelf: { mobile: "center", tablet: "center", laptop: "flex-start" },
-    }}
+      sx={{
+        display: "flex",
+        position: "relative",
+        backgroundColor: "white",
+        padding: 0.2,
+        flexDirection: "column",
+        marginY: "0",
+        width: "100%",
+        alignSelf: { mobile: "center", tablet: "center", laptop: "flex-start" },
+      }}
     >
       <Box
         // onClick={(e) => {
@@ -169,7 +172,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
           alignSelf: "center",
         }}
       >
-         <Box
+        <Box
           sx={{
             flex: 1,
             background: "#f1c550",
@@ -178,15 +181,15 @@ const FullAllBets = ({ tag, mode, IObets }) => {
             justifyContent: "space-between",
           }}
         >
-        <Typography
-          sx={{ 
-            fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+          <Typography
+            sx={{
+              fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
               fontWeight: "bold",
               marginLeft: "7px",
-          }}
-        >
-          All Bets
-        </Typography>
+            }}
+          >
+            All Bets
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -208,7 +211,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
         >
           <Box
             sx={{
-              width: "100px",
+              width: "70px",
               height: "80%",
               background: "white",
               justifyContent: "center",
@@ -216,126 +219,144 @@ const FullAllBets = ({ tag, mode, IObets }) => {
               alignItems: "center",
               display: "flex",
               flexDirection: "column",
-              marginRight: "8px",
+              marginRight: "2px",
             }}
           >
             <Typography
-              sx={{ fontSize: "12px", fontWeight: "700", color: "#FF1111" }}
+              sx={{ fontSize: {laptop: "8px", mobile: "8px"}, fontWeight: "700", color: "#FF1111" }}
             >
               Total Bet
             </Typography>
 
             <Typography
-              sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
+              sx={{ fontSize: "14px", fontWeight: "700", color: "#0B4F26", lineHeight: 1 }}
             >
               {IObets?.length || 0}
             </Typography>
           </Box>
+          <img
+            onClick={() => {
+              setVisible(!visible);
+            }}
+            src={ARROWUP}
+            style={{
+              transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+              width: "15px",
+              height: "15px",
+              marginRight: "5px",
+              marginLeft: "5px",
+              cursor: 'pointer'
+            }}
+          />
         </Box>
       </Box>
-      <HeaderRow mode={mode} tag={tag} />
-      <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
-        {newData?.map((i, k) => {
-          const num = newData.length - k;
-          const formattedNum = num < 10 ? "0" + num : num.toString();
-          return (
-            <div
-              key={k}
-              style={{ display: "flex", position: "relative" }}
-              onClick={(e) => {
-                let x = [...selectedData];
-                if (x.includes(k)) {
-                  x.splice(x.indexOf(k), 1);
-                  setSelectedData([...x]);
-                  e.stopPropagation();
-                } else {
-                  x.push(k);
-                  setSelectedData([...x]);
-                }
-              }}
-            >
-              <Box
-                sx={{
-                  width: mode ? "7%" : "5.3%",
-                  border: "1px solid white",
-                  background: "black",
-                  height: "35px",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
-                }}
-              >
-                {!mode && (
-                  <Typography
-                    sx={{
-                      fontSize: !tag ? "10px" : "13px",
-                      fontWeight: tag ? "bold" : "600",
-                      color: "white",
-                    }}
-                  >
-                    {formattedNum}
-                  </Typography>
-                )}
-                {mode && !selectedData.includes(k) && (
-                  <Box
-                    sx={{
-                      width: "15px",
-                      height: "15px",
-                      border: "1px solid white",
-                      borderRadius: "10px",
-                    }}
-                  ></Box>
-                )}
-                {mode && selectedData.includes(k) && (
-                  <Box sx={{}}>
-                    <img
-                      src={CHECK}
-                      style={{ width: "20px", height: "20px" }}
-                    />
-                  </Box>
-                )}
-              </Box>
-              <Row index={k} values={i.values} />
-              {i?.deleted_reason && (
-                <Box
-                  sx={{
-                    background: "rgba(0,0,0,0.5)",
-                    width: "100%",
-                    height: "50px",
-                    position: "absolute",
-                    display: "flex",
+      {visible && (
+        <>
+          <HeaderRow mode={mode} tag={tag} />
+          <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
+            {newData?.map((i, k) => {
+              const num = newData.length - k;
+              const formattedNum = num < 10 ? "0" + num : num.toString();
+              return (
+                <div
+                  key={k}
+                  style={{ display: "flex", position: "relative" }}
+                  onClick={(e) => {
+                    let x = [...selectedData];
+                    if (x.includes(k)) {
+                      x.splice(x.indexOf(k), 1);
+                      setSelectedData([...x]);
+                      e.stopPropagation();
+                    } else {
+                      x.push(k);
+                      setSelectedData([...x]);
+                    }
                   }}
                 >
-                  <Box sx={{ flex: 1, display: "flex" }}>
-                    <Box sx={{ width: "34%", height: "50px" }}></Box>
-                    <Box
-                      sx={{
-                        width: "66%",
-                        height: "50px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "flex-end",
-                      }}
-                    >
+                  <Box
+                    sx={{
+                      width: mode ? "7%" : "5.3%",
+                      border: "1px solid white",
+                      background: "black",
+                      height: "35px",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      display: "flex",
+                    }}
+                  >
+                    {!mode && (
                       <Typography
                         sx={{
-                          fontSize: "10px",
-                          fontWeight: "700",
+                          fontSize: !tag ? "10px" : "13px",
+                          fontWeight: tag ? "bold" : "600",
                           color: "white",
-                          textTransform: "uppercase",
                         }}
                       >
-                        Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
-                        due to {i?.deleted_reason}
+                        {formattedNum}
                       </Typography>
-                    </Box>
+                    )}
+                    {mode && !selectedData.includes(k) && (
+                      <Box
+                        sx={{
+                          width: "15px",
+                          height: "15px",
+                          border: "1px solid white",
+                          borderRadius: "10px",
+                        }}
+                      ></Box>
+                    )}
+                    {mode && selectedData.includes(k) && (
+                      <Box sx={{}}>
+                        <img
+                          src={CHECK}
+                          style={{ width: "20px", height: "20px" }}
+                        />
+                      </Box>
+                    )}
                   </Box>
-                </Box>
-              )}
-            </div>
-          );
-        })}
-      </div>
+                  <Row index={k} values={i.values} />
+                  {i?.deleted_reason && (
+                    <Box
+                      sx={{
+                        background: "rgba(0,0,0,0.5)",
+                        width: "100%",
+                        height: "50px",
+                        position: "absolute",
+                        display: "flex",
+                      }}
+                    >
+                      <Box sx={{ flex: 1, display: "flex" }}>
+                        <Box sx={{ width: "34%", height: "50px" }}></Box>
+                        <Box
+                          sx={{
+                            width: "66%",
+                            height: "50px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "flex-end",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontSize: "10px",
+                              fontWeight: "700",
+                              color: "white",
+                              textTransform: "uppercase",
+                            }}
+                          >
+                            Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
+                            due to {i?.deleted_reason}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </Box>
   );
 };
