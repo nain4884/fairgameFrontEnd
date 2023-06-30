@@ -9,6 +9,7 @@ import AllRateSeperate from "../../components/AllRateSeperate";
 import SessionBetSeperate from "../../components/sessionBetSeperate";
 import { Background } from "../../components";
 import EventListing from "../../components/EventListing";
+import CustomLoader from "../../components/helper/CustomLoader";
 
 const BetHistory = ({ selected, visible }) => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const BetHistory = ({ selected, visible }) => {
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(0);
   const [currenLimit, setCurrenLimit] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   function callPage(val) {
     dispatch(setallbetsPage(parseInt(val)));
@@ -39,8 +41,12 @@ const BetHistory = ({ selected, visible }) => {
       skip: currentPage * pageLimit,
     };
     try {
+      setLoading(true);
       const { data } = await axios.post(`/betting/getBetHisory`, payload);
       SetAllBets(data.data[0]);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
       setCount(
         data?.data[0]?.filter((b) =>
           ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
@@ -54,157 +60,112 @@ const BetHistory = ({ selected, visible }) => {
 
       //   toast.success(data?.message);
     } catch (e) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
       console.log(e);
     }
   }
 
   useEffect(() => {
-    if (allBets.length === 0) {
-      getBetHisory();
-    }
+    getBetHisory();
   }, [currentPage]);
 
   return (
-    <Box>
-      {visible ? (
-        <>
-          <Box
-            sx={{
-              display: "flex",
-              overflowX: "hidden",
-              flexDirection: "column",
-              flex: 1,
-              justifyContent: "flex-start",
-              overflowY: "auto",
-              alignItems: "flex-start",
-            }}
-          >
-            <EventListing selected={selected} />
-          </Box>
-          <Typography
-            sx={{
-              fontSize: { mobile: "12px", laptop: "15px" },
-              marginLeft: { laptop: "5px", mobile: "3px" },
-
-              color: "white",
-              fontWeight: "bold",
-            }}
-          >
-            {"BET HISTORY"}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { laptop: "row", mobile: "column" },
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Box
-              sx={{
-                width: "99%",
-                display: "flex",
-                flexDirection: { laptop: "row", mobile: "column" },
-              }}
-            >
-              <AllRateSeperate
-                betHistory={true}
-                mark2
-                mark
-                allBetsData={allBets?.filter((b) =>
-                  ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                    b?.marketType
-                  )
-                )}
-                count={
-                  allBets?.filter((b) =>
-                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                      b?.marketType
-                    )
-                  ).length || 0
-                }
-                setPageCountOuter={setPageCount}
-                callPage={callPage}
-              />
-              <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
-              <SessionBetSeperate
-                betHistory={true}
-                allBetsData={allBets?.filter(
-                  (b) =>
-                    !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                      b?.marketType
-                    )
-                )}
-                mark
-              />
-            </Box>
-          </Box>
-        </>
-      ) : (
-        <Background>
-          <Typography
-            sx={{
-              fontSize: { mobile: "12px", laptop: "15px" },
-              marginLeft: { laptop: "5px", mobile: "3px" },
-
-              color: "white",
-              fontWeight: "bold",
-            }}
-          >
-            {"BET HISTORY"}
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { laptop: "row", mobile: "column" },
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Box
-              sx={{
-                width: "99%",
-                display: "flex",
-                flexDirection: { laptop: "row", mobile: "column" },
-              }}
-            >
-              <AllRateSeperate
-                betHistory={true}
-                mark2
-                mark
-                allBetsData={allBets?.filter((b) =>
-                  ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                    b?.marketType
-                  )
-                )}
-                count={
-                  allBets?.filter((b) =>
-                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                      b?.marketType
-                    )
-                  ).length || 0
-                }
-                setPageCountOuter={setPageCount}
-                callPage={callPage}
-              />
-              <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
-              <SessionBetSeperate
-                betHistory={true}
-                allBetsData={allBets?.filter(
-                  (b) =>
-                    !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                      b?.marketType
-                    )
-                )}
-                mark
-              />
-            </Box>
-          </Box>
-        </Background>
+    <>
+      {visible && (
+        <Box
+          sx={{
+            display: "flex",
+            overflowX: "hidden",
+            flexDirection: "column",
+            flex: 1,
+            justifyContent: "flex-start",
+            overflowY: "auto",
+            alignItems: "flex-start",
+          }}
+        >
+          <EventListing selected={selected} />
+        </Box>
       )}
-    </Box>
+
+      <Background>
+        {loading ? (
+          <Box
+            sx={{
+              minHeight: "60vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CustomLoader text="" />
+          </Box>
+        ) : (
+          <>
+            <Typography
+              sx={{
+                fontSize: { mobile: "12px", laptop: "15px" },
+                marginLeft: { laptop: "5px", mobile: "3px" },
+
+                color: "white",
+                fontWeight: "bold",
+              }}
+            >
+              {"BET HISTORY"}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { laptop: "row", mobile: "column" },
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  width: "99%",
+                  display: "flex",
+                  flexDirection: { laptop: "row", mobile: "column" },
+                }}
+              >
+                <AllRateSeperate
+                  betHistory={true}
+                  mark2
+                  mark
+                  allBetsData={allBets?.filter((b) =>
+                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+                      b?.marketType
+                    )
+                  )}
+                  count={
+                    allBets?.filter((b) =>
+                      ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+                        b?.marketType
+                      )
+                    ).length || 0
+                  }
+                  setPageCountOuter={setPageCount}
+                  callPage={callPage}
+                />
+                <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
+                <SessionBetSeperate
+                  betHistory={true}
+                  allBetsData={allBets?.filter(
+                    (b) =>
+                      !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+                        b?.marketType
+                      )
+                  )}
+                  mark
+                />
+              </Box>
+            </Box>
+          </>
+        )}
+      </Background>
+    </>
   );
 };
 

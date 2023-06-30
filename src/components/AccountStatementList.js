@@ -15,8 +15,9 @@ import { useTheme } from "@emotion/react";
 import { setCurrentStatementPage } from "../newStore/reducers/auth";
 import moment from "moment";
 import EventListing from "./EventListing";
+import CustomLoader from "./helper/CustomLoader";
 
-const AccountStatementList = ({ user,visible ,selected}) => {
+const AccountStatementList = ({ user, visible, selected }) => {
   const theme = useTheme();
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -37,6 +38,7 @@ const AccountStatementList = ({ user,visible ,selected}) => {
   const [transactionHistory, setTransactionHistory] = useState([]);
   const [data, setData] = useState("");
   const [isDated, setIsDated] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleChildData = (childData) => {
     setData(childData);
   };
@@ -68,18 +70,27 @@ const AccountStatementList = ({ user,visible ,selected}) => {
     }
     let { axios } = setRole();
     try {
+      setLoading(true);
       const { data } = await axios.post(
         `/fair-game-wallet/transactionHistory/${userId}`,
         payload
       );
       // console.log(data.data[0], 'datadatadatadata')
-      setTransactionHistory(data.data[0]);
-      setPageCount(
-        Math.ceil(parseInt(data.data[1] ? data.data[1] : 1) / pageLimit)
-      );
+      if (data) {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+        setTransactionHistory(data.data[0]);
+        setPageCount(
+          Math.ceil(parseInt(data.data[1] ? data.data[1] : 1) / pageLimit)
+        );
+      }
 
       //   toast.success(data?.message);
     } catch (e) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
       console.log(e);
     }
   }
@@ -217,112 +228,126 @@ const AccountStatementList = ({ user,visible ,selected}) => {
   };
 
   return (
-    <Box>
-       {visible && (
+    <>
+        {visible && (
+            <Box
+              sx={{
+                display: "flex",
+                overflowX: "hidden",
+                flexDirection: "column",
+                flex: 1,
+                justifyContent: "flex-start",
+                overflowY: "auto",
+                alignItems: "flex-start",
+              }}
+            >
+              <EventListing selected={selected} />
+            </Box>
+          )}
+      {loading ? (
         <Box
           sx={{
+            minHeight: "60vh",
             display: "flex",
-            overflowX: "hidden",
-            flexDirection: "column",
-            flex: 1,
-            justifyContent: "flex-start",
-            overflowY: "auto",
-            alignItems: "flex-start",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <EventListing selected={selected} />
+          <CustomLoader text="" />
         </Box>
-      )}
-     <Box sx={{ marginX: { mobile: "2vw", laptop: "1vw" },}}>
-     <YellowHeader
-        onChildData={handleChildData}
-        getAccountStatement={getAccountStatement}
-      />
-     </Box>
+      ) : (
+        <Box>
+      
+          <Box sx={{ marginX: { mobile: "2vw", laptop: "1vw" } }}>
+            <YellowHeader
+              onChildData={handleChildData}
+              getAccountStatement={getAccountStatement}
+            />
+          </Box>
 
-      {/* {decodedTokenUser.role === "user,visible" && (
+          {/* {decodedTokenUser.role === "user,visible" && (
         <YellowHeader
           onChildData={handleChildData}
           getAccountStatement={getAccountStatement}
         />
       )} */}
-      {/* {decodedTokenAdmin.role === "admin" && ( */}
-      {/* <YellowHeader
+          {/* {decodedTokenAdmin.role === "admin" && ( */}
+          {/* <YellowHeader
           onChildData={handleChildData}
           getAccountStatement={getAccountStatement}
         /> */}
-      {/* // <YellowHeaderAdmin onChildData={handleChildData} getAccountStatement={getAccountStatement} /> */}
-      {/* )} */}
-      {/* <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} /> */}
+          {/* // <YellowHeaderAdmin onChildData={handleChildData} getAccountStatement={getAccountStatement} /> */}
+          {/* )} */}
+          {/* <YellowHeader onChildData={handleChildData} getAccountStatement={getAccountStatement} /> */}
 
-      <Box
-        sx={[
-          { 
-            marginX: { mobile: "2vw", laptop: "1vw" },
-            minHeight: "100px",
-            borderRadius: "2px",
-            border: "2px solid white",
-            width: "97.5%",
-            borderTopRightRadius: {
-              mobile: "10px",
-              laptop: "0px",
-              tablet: "10px",
-            },
-            borderTopLeftRadius: {
-              mobile: "10px",
-              laptop: "0px",
-              tablet: "10px",
-            },
-          },
-          (theme) => ({
-            backgroundImage: `${theme.palette.primary.headerGradient}`,
-          }),
-        ]}
-      >
-        <ListH getLimitEntries={getLimitEntries} />
-        <Box sx={{ overflowX: "scroll", width: "100%" }}>
-          <ListHeaderT />
-          {decodedTokenUser.role === "user,visible"
-            ? transactionHistory.map((item) => (
-                <Row
-                  key={item.id}
-                  index={item?.id}
-                  containerStyle={{ background: "#FFE094" }}
-                  profit={true}
-                  fContainerStyle={{ background: "#0B4F26" }}
-                  fTextStyle={{ color: "white" }}
-                  date={item?.createAt}
-                  description={item?.description}
-                  closing={item?.current_amount}
-                  trans_type={item?.trans_type}
-                  amount={item?.amount}
-                  fromuserName={item?.action_by.userName}
-                  touserName={item?.user.userName}
-                />
-              ))
-            : transactionHistory.map((item) => (
-                <Row
-                  key={item.id}
-                  index={item?.id}
-                  containerStyle={{ background: "#FFE094" }}
-                  profit={true}
-                  fContainerStyle={{ background: "#0B4F26" }}
-                  fTextStyle={{ color: "white" }}
-                  date={item?.createAt}
-                  closing={item?.current_amount}
-                  trans_type={item?.trans_type}
-                  amount={item?.amount}
-                  description={item?.description}
-                  fromuserName={item?.action_by.userName}
-                  touserName={item?.user.userName}
-                />
-              ))}
+          <Box
+            sx={[
+              {
+                marginX: { mobile: "2vw", laptop: "1vw" },
+                minHeight: "100px",
+                borderRadius: "2px",
+                border: "2px solid white",
+                width: "97.5%",
+                borderTopRightRadius: {
+                  mobile: "10px",
+                  laptop: "0px",
+                  tablet: "10px",
+                },
+                borderTopLeftRadius: {
+                  mobile: "10px",
+                  laptop: "0px",
+                  tablet: "10px",
+                },
+              },
+              (theme) => ({
+                backgroundImage: `${theme.palette.primary.headerGradient}`,
+              }),
+            ]}
+          >
+            <ListH getLimitEntries={getLimitEntries} />
+            <Box sx={{ overflowX: "scroll", width: "100%" }}>
+              <ListHeaderT />
+              {decodedTokenUser?.role === "user,visible"
+                ? transactionHistory?.map((item) => (
+                    <Row
+                      key={item?.id}
+                      index={item?.id}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={true}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      date={item?.createAt}
+                      description={item?.description}
+                      closing={item?.current_amount}
+                      trans_type={item?.trans_type}
+                      amount={item?.amount}
+                      fromuserName={item?.action_by?.userName}
+                      touserName={item?.user?.userName}
+                    />
+                  ))
+                : transactionHistory.map((item) => (
+                    <Row
+                      key={item?.id}
+                      index={item?.id}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={true}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      date={item?.createAt}
+                      closing={item?.current_amount}
+                      trans_type={item?.trans_type}
+                      amount={item?.amount}
+                      description={item?.description}
+                      fromuserName={item?.action_by?.userName}
+                      touserName={item?.user?.userName}
+                    />
+                  ))}
 
-          {transactionHistory.length === 0 && (
-            <EmptyRow containerStyle={{ background: "#FFE094" }} />
-          )}
+              {transactionHistory?.length === 0 && (
+                <EmptyRow containerStyle={{ background: "#FFE094" }} />
+              )}
 
-          {/* {transactionHistory.map((item) => (
+              {/* {transactionHistory.map((item) => (
                             <Row
                                 index={item?.id}
                                 containerStyle={{ background: "#FFE094" }}
@@ -340,15 +365,17 @@ const AccountStatementList = ({ user,visible ,selected}) => {
                                 {...(item.trans_type === "add" ? { fromuserName: item.action_by.userName, touserName: item.user.userName } : { fromuserName: item.user.userName, touserName: item.action_by.userName })}
                             />
                         ))} */}
+            </Box>
+            <Footer
+              currenLimit={currenLimit}
+              currentPage={currentPage}
+              pages={pageCount}
+              callPage={callPage}
+            />
+          </Box>
         </Box>
-        <Footer
-          currenLimit={currenLimit}
-          currentPage={currentPage}
-          pages={pageCount}
-          callPage={callPage}
-        />
-      </Box>
-    </Box>
+      )}
+    </>
   );
 };
 
