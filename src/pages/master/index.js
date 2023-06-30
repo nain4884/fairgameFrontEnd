@@ -25,6 +25,7 @@ import NewPassword from "../NewPassword";
 import PageNotFound from "../../components/PageNotFound";
 import { HomeSlide } from "../../components";
 import AdminInPlay from "../../components/AdminInplay";
+import EmptyComponent from "../../components/EmptyComponent";
 const MasterRoutes = () => {
   const location = useLocation();
 
@@ -209,7 +210,24 @@ const MasterRoutes = () => {
             </MasterPrivateRoute>
           }
         />
-          <Route exact path="/my-account" element={<HomeSlide />} />
+         <Route
+          exact
+          path="/nav"
+          element={
+            <MasterPrivateRoute>
+              <EmptyComponent admin={true} />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/my-account"
+          element={
+            <MasterPrivateRoute>
+              <HomeSlide />
+            </MasterPrivateRoute>
+          }
+        />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>
