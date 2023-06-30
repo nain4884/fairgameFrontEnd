@@ -574,7 +574,7 @@ const BoxButtonWithSwitch = ({
     ],
     mainBoxTypography: [
       {
-        fontSize: { mobile: "3vw", laptop: "0.9vw", tablet: "0.9vw" },
+        fontSize: { mobile: "3vw", laptop: "0.7vw", tablet: "0.7vw" },
         fontWeight: "600",
         textAlign: "right",
         color: "white",
@@ -840,7 +840,7 @@ const DepositComponent = ({
               >
                 <Typography
                   sx={{
-                    fontSize: { mobile: "3vw", laptop: "20px", tablet: "20px" },
+                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
                     width: { mobile: "100%", laptop: "100%", tablet: "100%" },
                     fontWeight: "600",
                     marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
@@ -920,13 +920,13 @@ const DepositComponent = ({
             >
               <Typography
                 sx={{
-                  fontSize: { mobile: "3vw", laptop: "20px", tablet: "20px" },
+                  fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
                   width: { mobile: "100%", laptop: "60%", tablet: "60%" },
                   fontWeight: "600",
                   marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
                 }}
               >
-                Wallet Balance
+                Wallet Balance 1
               </Typography>
               <Box
                 sx={{
@@ -990,7 +990,7 @@ const DepositComponent = ({
               >
                 <Typography
                   sx={{
-                    fontSize: { mobile: "3vw", laptop: "20px", tablet: "20px" },
+                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
                     width: { mobile: "100%", laptop: "100%", tablet: "100%" },
                     fontWeight: "600",
                     marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
@@ -999,6 +999,7 @@ const DepositComponent = ({
                   Transaction Password
                 </Typography>
               </Box>
+
               <Box
                 sx={{
                   width: { mobile: "100%", laptop: "43%", tablet: "43%" },
@@ -1049,6 +1050,8 @@ const DepositComponent = ({
           </Box> */}
             </Box>
           </Box>
+
+
           <Box
             sx={{
               overflow: "hidden",
@@ -1059,6 +1062,8 @@ const DepositComponent = ({
               flexDirection: "row-reverse",
             }}
           >
+
+            {/* Remark */}
 
             <Box
               sx={{
@@ -1095,7 +1100,16 @@ const DepositComponent = ({
                 }}
               />
             </Box>
-            <Box sx={{ display: "flex", width: "100%", marginTop: "21px", gap: 1, flexDirection: "row-reverse", justifyContent: "flex-end" }}>
+
+            <Box sx={{
+              display: "flex",
+              width: "100%",
+              marginTop: "21px",
+              gap: 1,
+              flexDirection: "row-reverse",
+              justifyContent: "flex-end"
+            }}
+            >
               <BoxButton
                 loading={loading}
                 containerStyle={{
@@ -1153,7 +1167,7 @@ const DepositComponent = ({
 
           </Box>
 
-
+          {/* V hidden */}
           <Box
             sx={{
               display: "flex",
@@ -1407,39 +1421,65 @@ const WithDrawComponent = ({
         <Box
           sx={{
             display: "flex",
-            borderRadius: "5px",
             flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-            borderRadius: "5px",
             gap: 2,
+            borderRadius: "5px",
           }}
         >
-          <Box sx={{ width: "100%" }}>
+
+          <Box
+            sx={{
+              width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+              gap: "1%",
+              display: { mobile: "flex", laptop: "block" },
+              flexDirection: "row-reverse",
+              justifyContent: "flex-end",
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "flex-end",
+                width: { mobile: "41%", laptop: "100%" },
                 flexDirection: {
                   mobile: "column",
                   tablet: "row",
                   laptop: "row",
                 },
+                justifyContent: "flex-end",
               }}
             >
-              <Typography
+              <Box
                 sx={{
-                  fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                  width: { mobile: "100%", laptop: "40%", tablet: "40%" },
-                  fontWeight: "600",
-                  marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+                  display: "flex",
+                  alignItems: "center",
+                  width: "60%",
+                  flexDirection: {
+                    mobile: "row",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                  justifyContent: "space-between",
+                  position: { mobile: "relative", laptop: "static" },
+                  marginTop: { mobile: "0", laptop: "0" },
                 }}
               >
-                Withdraw Amount
-              </Typography>
+                <Typography
+                  sx={{
+                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
+                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                    fontWeight: "600",
+                    marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+                  }}
+                >
+                  Withdraw Amount
+                </Typography>
+              </Box>
+
               <Box
                 sx={{
                   background: "#E32A2A",
-                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
                   height: "45px",
                   display: "flex",
                   gap: 2,
@@ -1470,35 +1510,39 @@ const WithDrawComponent = ({
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount+ Number(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
           </Box> */}
             </Box>
+
+            {/* wallet */}
             <Box
               sx={{
-                width: "100%",
-                marginTop: "10px",
+                width: { mobile: "41%", laptop: "100%" },
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "flex-end",
+                overflow: "hidden",
                 flexDirection: {
                   mobile: "column",
                   tablet: "row",
                   laptop: "row",
                 },
+                justifyContent: "flex-end",
+                marginTop: "10px",
               }}
             >
               <Typography
                 sx={{
-                  fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                  width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+                  fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
+                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
                   fontWeight: "600",
-                  marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+                  marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
                 }}
               >
-                Wallet Balance
+                Wallet Balance W
               </Typography>
               <Box
                 sx={{
-                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
                   height: "45px",
-                  background: "white",
+                  // background: "#FFECBC",
+                  background: "#ECECEC",
                   display: "flex",
                   alignItems: "center",
                   borderRadius: "5px",
@@ -1524,35 +1568,54 @@ const WithDrawComponent = ({
                 />
               </Box>
             </Box>
-          </Box>
-          <Box sx={{ overflow: "hidden", width: "100%" }}>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                overflow: "hidden",
-                justifyContent: "flex-end",
-                flexDirection: {
-                  mobile: "column",
-                  tablet: "row",
-                  laptop: "row",
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                  width: { mobile: "100%", laptop: "40%", tablet: "40%" },
-                  fontWeight: "600",
-                  marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-                }}
-              >
-                Transaction Password
-              </Typography>
+
+
+
+
+
+            <Box sx={{
+              width: { mobile: "41%", laptop: "100%" },
+              display: "flex",
+              alignItems: "center",
+              overflow: "hidden",
+              justifyContent: "flex-end",
+              flexDirection: {
+                mobile: "column",
+                tablet: "row",
+                laptop: "row",
+              },
+              marginTop: "10px"
+            }}>
               <Box
                 sx={{
-                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                  display: "flex",
+                  alignItems: "center",
+                  width: "60%",
+                  flexDirection: {
+                    mobile: "row",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                  justifyContent: "space-between",
+                  position: { mobile: "relative", laptop: "static" },
+                  marginTop: { mobile: "0", laptop: "0" },
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
+                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                    fontWeight: "600",
+                    marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+                  }}
+                >
+                  Transaction Password
+                </Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
                   height: "45px",
                   paddingLeft: "20px",
                   paddingRight: "20px",
@@ -1599,19 +1662,35 @@ const WithDrawComponent = ({
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss - Number(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
           </Box> */}
             </Box>
+          </Box>
+
+
+          <Box
+            sx={{
+              overflow: "hidden",
+              width: "100%",
+              gap: "1%",
+              display: { mobile: "flex", laptop: "block" },
+              justifyContent: "flex-end",
+              flexDirection: "row-reverse",
+            }}
+          >
+            {/* Remark */}
+
             <Box
               sx={{
                 borderRadius: "5px",
                 flex: 1,
-                background: backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
+                background: backgroundColor == "#ECECEC" ? "#ECECEC" : "#FFECBC",
                 display: "flex",
                 alignItems: "center",
                 borderRadius: "5px",
                 border: "2px solid #26262633",
                 minHeight: "80px",
                 maxHeight: "115px",
-                marginTop: "10px",
+                marginTop: "0",
                 paddingX: "10px",
+                width: { mobile: "41%", laptop: "55%" },
               }}
             >
               <TextField
@@ -1633,7 +1712,78 @@ const WithDrawComponent = ({
                 }}
               />
             </Box>
+
+
+
+            <Box sx={{
+              display: "flex",
+              width: "100%",
+              marginTop: "21px",
+              gap: 1,
+              flexDirection: "row-reverse",
+              justifyContent: "flex-end"
+            }}>
+              <BoxButton
+                loading={loading}
+                containerStyle={{
+                  maxWidth: "150px !important",
+                  height: "44px"
+                }}
+                isSelected={true}
+                onClick={(e) => {
+                  try {
+                    if (!loading) {
+                      setLoading(true);
+                      UpdateAvailableBalance(withDrawObj)
+                        .then(({ bool, message }) => {
+                          toast.success(message);
+                          updatedUserProfile();
+                          getListOfUser();
+
+                          setLoading(false);
+                          showDialogModal(true, true, message);
+                        })
+                        .catch(({ bool, message }) => {
+                          toast.error(message);
+                          setLoading(false);
+                          showDialogModal(true, false, message);
+                        });
+                    }
+                  } catch (e) {
+                    setLoading(false);
+                    console.log(e.message);
+                  }
+                }}
+                title={"Submit"}
+              />
+              <BoxButton
+                containerStyle={{
+                  maxWidth: "150px !important",
+                  background: "#E32A2A",
+                  border: "0px",
+                  height: "44px",
+                }}
+                isSelected={true}
+                onClick={(e) => {
+                  setWithDrawObj(defaultWithDrawObj);
+                  setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    available_balance: prevElement.available_balance,
+                  });
+                  setSelected(e);
+                }}
+                title={"Cancel"}
+              />
+            </Box>
+
           </Box>
+
+
+
+
+
 
           <Box
             sx={{
@@ -1643,6 +1793,7 @@ const WithDrawComponent = ({
                 tablet: "column",
                 laptop: "column",
               },
+              visibility: "hidden",
               justifyContent: "center",
               gap: 1,
               alignItems: "center",
@@ -1709,6 +1860,7 @@ const WithDrawComponent = ({
               />
             </Box>
           </Box>
+
         </Box>
       )}
     </>
@@ -2290,7 +2442,7 @@ const ChangePasswordComponent = ({
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
-            justifyContent: {mobile: "flex-start", laptop: "center"},
+            justifyContent: { mobile: "flex-start", laptop: "center" },
             flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
 
           }}
@@ -2374,7 +2526,7 @@ const ChangePasswordComponent = ({
                 height: "45px",
                 marginLeft: "10px",
                 maxWidth: { mobile: "91% !important", laptop: "100% !important" },
-                flex: {laptop: "0 0 60%!important", mobile: "0 0 100%!important"}
+                flex: { laptop: "0 0 60%!important", mobile: "0 0 100%!important" }
               }}
               isSelected={true}
               onClick={(e) => {
@@ -2384,7 +2536,7 @@ const ChangePasswordComponent = ({
               title={"Cancel"}
             />
           </Box>
-         
+
 
         </Box>
         <p style={{ color: "#fa1e1e" }}>
@@ -2397,7 +2549,7 @@ const ChangePasswordComponent = ({
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
-            justifyContent: {mobile: "flex-start", laptop: "center"},
+            justifyContent: { mobile: "flex-start", laptop: "center" },
             flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
             marginTop: "20px"
           }}
@@ -2410,63 +2562,63 @@ const ChangePasswordComponent = ({
 
           }}>
             <Typography
-             sx={{
-              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-              width: { mobile: "100%", laptop: "32.5%", tablet: "32.5%" },
-              fontWeight: "600",
-              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-            }}
+              sx={{
+                fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+                width: { mobile: "100%", laptop: "32.5%", tablet: "32.5%" },
+                fontWeight: "600",
+                marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+              }}
             >
               Transaction Password
             </Typography>
-        
-          <Box
-            sx={{
-              borderRadius: "px",
-              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
-              height: "45px",
-              background: "white",
-              display: "flex",
-              alignItems: "center",
-              borderRadius: "5px",
-              border: "2px solid #26262633",
-              paddingX: "20px",
-            }}
-          >
-            <TextField
-              onChange={(e) => {
-                setChangePasswordObj({
-                  ...changePasswordObj,
-                  adminTransPassword: e.target.value,
-                });
-              }}
-              sx={{ width: "100%", height: "45px" }}
-              variant="standard"
-              InputProps={{
-                placeholder: "",
-                disableUnderline: true,
-                type: !showPass ? "password" : "text",
-                style: { fontSize: "13px", height: "45px", fontWeight: "600" },
-              }}
-            />
+
             <Box
-              onClick={() => {
-                setShowPass(!showPass);
+              sx={{
+                borderRadius: "px",
+                width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                height: "45px",
+                background: "white",
+                display: "flex",
+                alignItems: "center",
+                borderRadius: "5px",
+                border: "2px solid #26262633",
+                paddingX: "20px",
               }}
             >
-              <StyledImage
-                src={showPass ? EyeIcon : EyeSlash}
-                sx={{ height: "14px", width: "20px" }}
+              <TextField
+                onChange={(e) => {
+                  setChangePasswordObj({
+                    ...changePasswordObj,
+                    adminTransPassword: e.target.value,
+                  });
+                }}
+                sx={{ width: "100%", height: "45px" }}
+                variant="standard"
+                InputProps={{
+                  placeholder: "",
+                  disableUnderline: true,
+                  type: !showPass ? "password" : "text",
+                  style: { fontSize: "13px", height: "45px", fontWeight: "600" },
+                }}
               />
+              <Box
+                onClick={() => {
+                  setShowPass(!showPass);
+                }}
+              >
+                <StyledImage
+                  src={showPass ? EyeIcon : EyeSlash}
+                  sx={{ height: "14px", width: "20px" }}
+                />
+              </Box>
             </Box>
           </Box>
-          </Box>
-          
-          <Box sx={{ 
-             display: "flex",
-             width: { mobile: "40%", laptop: "250px" },
-             marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
-            }}>
+
+          <Box sx={{
+            display: "flex",
+            width: { mobile: "40%", laptop: "250px" },
+            marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
+          }}>
 
             <BoxButton
               containerStyle={{
@@ -2474,7 +2626,7 @@ const ChangePasswordComponent = ({
                 height: "45px",
                 marginLeft: "10px",
                 maxWidth: { mobile: "91% !important", laptop: "100% !important" },
-                flex: {laptop: "0 0 60%!important", mobile: "0 0 100%!important"}
+                flex: { laptop: "0 0 60%!important", mobile: "0 0 100%!important" }
               }}
               isSelected={true}
               onClick={(e) => {
@@ -2493,7 +2645,7 @@ const ChangePasswordComponent = ({
           </Box>
 
 
-        
+
 
         </Box>
 
@@ -2510,9 +2662,10 @@ const ChangePasswordComponent = ({
         >
           <Box sx={{ display: "flex", width: "150px" }}>
             <BoxButton
-              containerStyle={{ width: "100%", height: "35px" ,
+              containerStyle={{
+                width: "100%", height: "35px",
 
-            }}
+              }}
               isSelected={true}
               onClick={(e) => {
                 UpdatePassword(changePasswordObj)
@@ -2559,9 +2712,10 @@ const LockUnlockComponent = ({
       sx={{
         display: "flex",
         borderRadius: "5px",
-        paddingRight: "10px",
+        paddingRight: {mobile: "0", laptop: "10px"},
         flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
         gap: 2,
+        width: { mobile: "92vw", tablet: "80%", laptop: "80%" },
       }}
     >
       <Box sx={{ width: "100%" }}>
@@ -2570,35 +2724,63 @@ const LockUnlockComponent = ({
             display: "flex",
             justifyContent: {
               mobile: "center",
-              tablet: "flex-end",
-              laptop: "flex-end",
+              tablet: "flex-start ",
+              laptop: "flex-start ",
             },
             height: "45px",
             alignItems: "center",
             overflow: "hidden",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <BoxButtonWithSwitch
-              title={"User"}
-              val={lockUnlockObj.all_blocked}
-              setLockUnlockObj={setLockUnlockObj}
-              lockUnlockObj={lockUnlockObj}
-              elementToUDM={elementToUDM}
-              setElementToUDM={setElementToUDM}
-            />
-          </Box>
-          <Box
-            sx={{ display: "flex", alignItems: "center", marginLeft: "20px" }}
+          <Typography
+            sx={{
+              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+              width: { mobile: "100%", laptop: "35%", tablet: "35%" },
+              fontWeight: "600",
+              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+
+              visibility: "hidden",
+              display: { mobile: "none", laptop: "block" }
+
+            }}
           >
-            <BoxButtonWithSwitch
-              title={"Bet"}
-              val={lockUnlockObj.bet_blocked}
-              setLockUnlockObj={setLockUnlockObj}
-              lockUnlockObj={lockUnlockObj}
-              elementToUDM={elementToUDM}
-              setElementToUDM={setElementToUDM}
-            />
+            Dummy
+          </Typography>
+          <Box
+            sx={{
+              borderRadius: "px",
+              width: { mobile: "100%", laptop: "65%", tablet: "65%" },
+              height: "45px",
+              // background: "white",
+              display: "flex",
+              alignItems: "center",
+              borderRadius: "5px",
+              // border: "2px solid #26262633",
+              // paddingX: "20px",
+            }}
+          >
+            <Box sx={{ width: "48%", display: "flex", alignItems: "center" }}>
+              <BoxButtonWithSwitch
+                title={"User"}
+                val={lockUnlockObj.all_blocked}
+                setLockUnlockObj={setLockUnlockObj}
+                lockUnlockObj={lockUnlockObj}
+                elementToUDM={elementToUDM}
+                setElementToUDM={setElementToUDM}
+              />
+            </Box>
+            <Box
+              sx={{ width: "48%", display: "flex", alignItems: "center", marginLeft: "20px" }}
+            >
+              <BoxButtonWithSwitch
+                title={"Bet"}
+                val={lockUnlockObj.bet_blocked}
+                setLockUnlockObj={setLockUnlockObj}
+                lockUnlockObj={lockUnlockObj}
+                elementToUDM={elementToUDM}
+                setElementToUDM={setElementToUDM}
+              />
+            </Box>
           </Box>
         </Box>
         <Box
@@ -2607,7 +2789,7 @@ const LockUnlockComponent = ({
             alignItems: "center",
             overflow: "hidden",
             flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-            justifyContent: "flex-end",
+            justifyContent: "flex-start",
             marginTop: "10px",
             width: "100%",
           }}
@@ -2615,7 +2797,7 @@ const LockUnlockComponent = ({
           <Typography
             sx={{
               fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              width: { mobile: "100%", laptop: "35%", tablet: "35%" },
               fontWeight: "600",
               marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
             }}
@@ -2625,7 +2807,7 @@ const LockUnlockComponent = ({
           <Box
             sx={{
               borderRadius: "px",
-              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+              width: { mobile: "100%", laptop: "65%", tablet: "65%" },
               height: "45px",
               background: "white",
               display: "flex",
@@ -2668,15 +2850,23 @@ const LockUnlockComponent = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
-          justifyContent: "center",
+          flexDirection: { mobile: "row-reverse", tablet: "column-reverse", laptop: "column-reverse" },
+          justifyContent: { mobile: "space-between", tablet: "center", laptop: "center" },
           gap: 1,
           alignItems: "center",
+
         }}
       >
-        <Box sx={{ display: "flex", width: "150px" }}>
+        <Box sx={{
+          display: "flex",
+          width: { mobile: "48%", tablet: "150px", laptop: "150px" }
+        }}
+        >
           <BoxButton
-            containerStyle={{ width: "150px", height: "35px" }}
+            containerStyle={{ 
+              maxWidth: "100%!important", height: "44px" ,
+              flex: { mobile: "0 0 100%", tablet: "0 0 100%", laptop: "0 0 100%" }
+            }}
             isSelected={true}
             onClick={(e) => {
               UpdateLockUnlock(lockUnlockObj)
@@ -2695,16 +2885,17 @@ const LockUnlockComponent = ({
         <Box
           sx={{
             display: "flex",
-            width: "150px",
-            marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+            width: { mobile: "48%", tablet: "150px", laptop: "150px" },
+            marginTop: { mobile: 0, tablet: "0", laptop: "0" },
           }}
         >
           <BoxButton
             containerStyle={{
-              width: "150px",
+              maxWidth: "100%!important", height: "44px",
               background: "#E32A2A",
               border: "0px",
-              height: "35px",
+              flex: { mobile: "0 0 100%", tablet: "0 0 100%", laptop: "0 0 100%" }
+
             }}
             isSelected={true}
             onClick={(e) => {
