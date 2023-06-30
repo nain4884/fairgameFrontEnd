@@ -147,7 +147,7 @@ const SessionMarket = ({
                 Amount
               </Typography>
               <Typography
-                sx={{ fontSize:  {mobile:"8px", laptop: "14px"}, fontWeight: "bold", color: "#0B4F26", lineHeight: 1 }}
+                sx={{ fontSize:  {mobile:"14px", laptop: "14px"}, fontWeight: "bold", color: "#0B4F26", lineHeight: 1 }}
               >
                 0
               </Typography>
