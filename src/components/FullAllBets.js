@@ -145,7 +145,9 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
 
   useEffect(() => {
     setSelectedData([]);
+   if(setSelectedBetData!==undefined){
     setSelectedBetData([]);
+   }
   }, [mode]);
   const navigate = useNavigate();
   return (
@@ -538,6 +540,7 @@ const HeaderRow = ({ tag, mode }) => {
             fontWeight: "500",
             color: "white",
             lineHeight: 1,
+            textAlign: "center",
           }}
         >
           My Stake
@@ -588,7 +591,7 @@ const SmallBox = ({ item, k }) => {
       <Typography
 
         sx={{
-          fontSize: matchesMobile ? "12px" : ".7vw",
+          fontSize: matchesMobile ? "10px" : ".7vw",
           fontWeight: "600",
           color: item?.color,
         }}
@@ -615,20 +618,21 @@ const LargeBox = ({ item, k }) => {
         background: item?.background,
         height: "35px",
         justifyContent: "center",
-        alignItems: k == 1 || k == 0 ? "flex-start" : "center",
-        paddingLeft: k == 1 || k == 0 ? "5px" : 0,
+        alignItems: k == 1 || k == 0 ? "center" : "center",
+        paddingLeft: k == 1 || k == 0 ? { mobile: "0", tablet: "5px", laptop: "5px" } : 0,
         display: "flex",
         flexDirection: "column",
       }}
     >
       <Typography
         sx={{
-          fontSize: matchesMobile ? "8px" : ".7vw",
+          fontSize: matchesMobile ? "8px" : ".6vw",
           fontWeight: "600",
           color: item?.color,
           textTransform: 'capitalize',
           wordWrap: "break-word",
           textAlign: "center",
+          lineHeight: 1,
         }}
       >
         {item?.name}
@@ -636,7 +640,7 @@ const LargeBox = ({ item, k }) => {
       {item?.time && (
         <Typography
           sx={{
-            fontSize: matchesMobile ? "8px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".6vw",
             fontWeight: "600",
             color: item?.color,
           }}

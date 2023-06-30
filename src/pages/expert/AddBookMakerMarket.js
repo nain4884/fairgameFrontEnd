@@ -10,10 +10,10 @@ export default function AddBookMakerMarket() {
         <Background>
             {/* <Header /> */}
             <Box display="flex">
-                <Box flex={1} sx={{ margin: "10px" }}>
+                <Box flex={1} sx={{ margin: "10px", marginTop: 0 }}>
                     <IndiaPakLiveBookMaker add={true} match={location?.state?.match} />
                 </Box>
-                <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
+                <Box sx={{ margin: "10px", marginTop: 0, flex: 1, marginLeft: "0px" }}>
                     <BetMakerMarket add={true} match={location?.state?.match} />
                 </Box>
             </Box>

@@ -158,7 +158,7 @@ const SessionMarketBoxLive = ({
           sx={{
             position: "absolute",
             top: "5px",
-            right: { laptop: "7vh", tablet: "7vh" },
+            right: { laptop: "27%", tablet: "7vh" },
             display: "flex",
             zIndex: 100,
           }}

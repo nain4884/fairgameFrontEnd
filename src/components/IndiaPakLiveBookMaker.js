@@ -1384,6 +1384,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
         return (
             <>
+             <style jsx scoped>
+                {`
+                
+                    .InputChild input{
+                        text-align: center;
+                    }
+                `}
+            </style>
                 <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '100%', alignSelf: 'center', paddingX: .2, paddingTop: .2, background: 'white' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market</Typography>
@@ -1420,30 +1428,32 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             {!add && <Box sx={{ width: '35%', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', left: '30%', top: '1px', background: 'black' }} >
                                 <img src={BALLSTART} style={{ width: '80%', height: '30%', position: 'absolute', zIndex: 3 }} />
                             </Box>}
-                            <Box sx={{ borderWidth: 0, justifyContent: 'space-between', alignItems: 'center', display: 'flex', width: '100%', paddingLeft: '10px' }}>
+                            <Box sx={{ borderWidth: 0, justifyContent: 'space-between', alignItems: 'center', display: 'flex', width: '100%', paddingLeft: '10px', }}>
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%", }}>{match?.teamA}</Typography>
                                 <Box
                                     sx={{
-                                        width: "80px",
+                                        width: "230px",
+                                        // my: "5px",
                                         marginRight: "15px",
                                         border: "1px solid #2626264D",
                                         borderRadius: "5px",
                                         justifyContent: "center",
                                         alignItems: "center",
                                         display: "flex",
-                                        height: "25px",
+                                        height: "50px",
                                         background: "#F6F6F6",
                                         borderRadius: "7px",
                                         zIndex: 100,
                                     }}
                                 >
-                                    <Typography sx={{ fontSize: "14px", fontWeight: "bold", color: teamRates?.teamA <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                    <Typography sx={{ fontSize: "16px", fontWeight: "bold", color: teamRates?.teamA <= 0 ? "#FF4D4D" : "#46e080" }}>
                                         {teamRates?.teamA}
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", width: '30%', borderTop: "1px solid white" }}>
                                     <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                         <TextField
+                                            className="InputChild"
                                             onChange={
                                                 (e) => handleChange(e)
                                                 // (i) => setValue1(i.target.value)
@@ -1457,7 +1467,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             InputProps={{
                                                 disableUnderline: true,
                                                 sx: {
-                                                    height: '45px', width: '98%',
+                                                    height: '55px', width: '98%',
                                                     background: '#F6F6F6',
                                                     // border: '1px solid #2626264D',
                                                     // borderRadius: '4px',
@@ -1474,6 +1484,8 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         />
                                     </KeyboardEventHandler>
                                     <TextField
+                                            className="InputChild"
+
                                         disabled
                                         // onChange={(e) => handleChange(e)}
                                         variant="standard"
@@ -1481,7 +1493,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         InputProps={{
                                             disableUnderline: true,
                                             sx: {
-                                                height: '45px', width: '97%',
+                                                height: '55px', width: '97%',
                                                 background: '#F6F6F6',
                                                 // border: '1px solid #2626264D',
                                                 // borderRadius: '4px',
@@ -1504,26 +1516,27 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamB}</Typography>
                                 <Box
                                     sx={{
-                                        width: "80px",
+                                        width: "230px",
                                         marginRight: "15px",
                                         border: "1px solid #2626264D",
                                         borderRadius: "5px",
                                         justifyContent: "center",
                                         alignItems: "center",
                                         display: "flex",
-                                        height: "25px",
+                                        height: "50px",
                                         background: "#F6F6F6",
                                         borderRadius: "7px",
                                         zIndex: 100,
                                     }}
                                 >
-                                    <Typography sx={{ fontSize: "14px", fontWeight: "bold", color: teamRates?.teamB <= 0 ? "#FF4D4D" : "#46e080" }}>
+                                    <Typography sx={{ fontSize: "16px", fontWeight: "bold", color: teamRates?.teamB <= 0 ? "#FF4D4D" : "#319E5B" }}>
                                         {teamRates?.teamB}
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
                                     <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                         <TextField
+                                            className="InputChild"
                                             variant="standard"
                                             value={teamBRate}
                                             onChange={(e) => handleChange(e)}
@@ -1535,7 +1548,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             InputProps={{
                                                 disableUnderline: true,
                                                 sx: {
-                                                    height: '45px', width: '98%',
+                                                    height: '55px', width: '98%',
                                                     background: '#F6F6F6',
                                                     // border: '1px solid #2626264D',
                                                     // borderRadius: '4px',
@@ -1552,6 +1565,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         />
                                     </KeyboardEventHandler>
                                     <TextField
+                                        className="InputChild"
                                         variant="standard"
                                         disabled
                                         value={teamBLayValue}
@@ -1559,7 +1573,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         InputProps={{
                                             disableUnderline: true,
                                             sx: {
-                                                height: '45px', width: '97%',
+                                                height: '55px', width: '97%',
                                                 background: '#F6F6F6',
                                                 // border: '1px solid #2626264D',
                                                 // borderRadius: '4px',
@@ -1673,17 +1687,17 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <>
                                     {/* {!teamBall?.isABall ?  */}
                                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                                        {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                        {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
                                             {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
                                             {!isTeamBackUnlock ?
-                                                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamBackUnlock ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box> :
-                                            <Box sx={{ background: isTeamASuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                            <Box sx={{ background: isTeamASuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
                                                 {!isTeamASuspend ?
-                                                    <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                    <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamASuspend ? 0 : teamARate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                             </Box>}
-                                        <Box sx={{ background: isTeamASuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamASuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamALayValue}</Typography> :
+                                        <Box sx={{ background: isTeamASuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamASuspend ? <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamASuspend ? 0 : teamALayValue}</Typography> :
                                                 <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box>
                                     </Box>
@@ -1708,13 +1722,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                                     {/* {!teamBall?.isBBall ? */}
                                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                                        {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                        </Box> : <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        </Box> : <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamBSuspend ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box>}
-                                        <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBLayValue}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                        <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
+                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamBSuspend ? 0 : teamBLayValue}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box>
 
                                     </Box>
@@ -1777,7 +1791,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         </Box>
                     </Box>
                 </Box>
-                <Box sx={{ display: "flex", zIndex: 2, position: 'relative', justifyContent: "center", width: '100%', marginTop: '5%', alignSelf: 'center' }}>
+                <Box sx={{ display: "flex", zIndex: 2, position: 'relative', justifyContent: "center", width: '100%', marginTop: '2%', alignSelf: 'center' }}>
                     {/* <Box sx={{ width: "30%", display: "flex", maxWidth: "120px", background: "#10DC61", justifyContent: 'space-between', paddingX: '10px', alignItems: "center", height: "35px", borderRadius: "5px" }}>
                             <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Live</Typography>
                             <img style={{ width: '23px', height: '18px', marginLeft: '5px' }} src={BroadCast} />
@@ -1788,7 +1802,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             setVisible1(true)
                             setVisible(false)
                             e.stopPropagation()
-                        }} sx={{ position: 'relative', width: "30%", display: "flex", background: "#FF4D4D", maxWidth: "120px", marginLeft: "5px", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
+                        }} sx={{ position: 'relative', width: "100%", display: "flex", background: "#FF4D4D", maxWidth: "150px", marginLeft: "5px", justifyContent: "center", alignItems: "center", height: "45px", borderRadius: "5px" }}>
                         <Typography sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}>Un Declare</Typography>
                         <Box sx={{ position: "absolute", zIndex: 999, top: '40px', left: '-120%' }}>
                             {visible1 && <ResultComponent
@@ -1816,7 +1830,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setVisible(true)
                         setVisible1(false)
                         e.stopPropagation()
-                    }} sx={{ width: "30%", position: 'relative', display: "flex", background: "white", marginLeft: "5px", maxWidth: "120px", justifyContent: "center", alignItems: "center", height: "35px", borderRadius: "5px" }}>
+                    }} sx={{ width: "100%", position: 'relative', display: "flex", background: "white", marginLeft: "5px", maxWidth: "150px", justifyContent: "center", alignItems: "center", height: "45px", borderRadius: "5px" }}>
                         <Typography sx={{ color: "#0B4F26", fontWeight: "500", fontSize: "12px" }}>Declare</Typography>
                         <Box sx={{ position: "absolute", zIndex: 999, top: '40px', right: 0 }}>
                             {visible && <ResultComponent onClick={() => {
@@ -1841,7 +1855,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         return (
             <Box
                 sx={{
-                    width: { laptop: "70px", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "40%", mobile: "50px", tablet: "40%" },
                     // position: "absolute",
                     marginRight: '5px',
                     flexDirection: "column",
@@ -1853,9 +1867,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     height: "30px",
                     background: "white",
                     borderRadius: "3px",
+                    border: "2px solid transparent"
                 }}
             >
-                <Typography
+                {/* <Typography
                     sx={{
                         color: "#FF4D4D",
                         fontSize: "8px",
@@ -1863,12 +1878,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }}
                 >
                     Book
-                </Typography>
+                </Typography> */}
                 <Typography
                     sx={{
-                        fontSize: "10px",
+                        fontSize: "14px",
                         fontWeight: "bold",
-                        color: rate < 0 ? `#FF9292` : `#46e080`,
+                        color: rate < 0 ? `#FF4D4D` : `#319E5B`,
                     }}
                 >
                     {rate < 0 ? ` ${rate}` : `${rate}`}
@@ -1877,10 +1892,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         )
     }
     return (
-        <Box sx={{ flex: 1, background: "#0B4F26", borderRadius: "5px", position: 'relative', minHeight: "300px", py: "20px", px: "10px" }}>
+        <Box sx={{ flex: 1, background: "#0B4F26", borderRadius: "5px", position: 'relative', minHeight: "300px", py: "20px", px: "10px", pt: "5px" }}>
             {!add && <Box sx={{ width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', position: 'absolute', left: '0px', top: 0, zIndex: 1 }} ></Box>}
             <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600", zIndex: 2, position: 'relative' }}>{match?.title}</Typography>
-            <Box sx={{ display: "flex", marginTop: "20px", flexDirection: 'column' }}>
+            <Box sx={{ display: "flex", marginTop: "2px", flexDirection: 'column' }}>
                 {/* <Box sx={{ display: 'flex', height: 38, flexDirection: 'row', width: '100%', alignSelf: 'center', paddingX: .2, paddingTop: .2, background: 'white' }}>
                     <Box sx={{ flex: 1, background: '#f1c550', alignItems: 'center', display: 'flex', justifyContent: 'space-between' }}>
                         <Typography sx={{ fontSize: { laptop: '13px', tablet: '12px', mobile: "12px" }, fontWeight: 'bold', marginLeft: '7px' }} >Bookmaker Market</Typography>
@@ -1958,68 +1973,71 @@ const RunsAmountBox = ({ anchorEl, open, handleClose }) => {
     const theme = useTheme()
 
     return (
-        <Box
-            sx={{
-                borderRadius: "5px",
-                border: "1px solid #306A47",
-                overflow: "hidden",
-            }}
-        >
-            <Box sx={{ minHeight: "120px", flexDirection: "column", backgroundColor: "white", display: "flex" }}>
-                <Box sx={{ display: "flex", height: "30px" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>Runs</Typography>
+        <>
+           
+            <Box
+                sx={{
+                    borderRadius: "5px",
+                    border: "1px solid #306A47",
+                    overflow: "hidden",
+                }}
+            >
+                <Box sx={{ minHeight: "120px", flexDirection: "column", backgroundColor: "white", display: "flex" }}>
+                    <Box sx={{ display: "flex", height: "30px" }}>
+                        <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>Runs</Typography>
+                        </Box>
+                        <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>Amount</Typography>
+                        </Box>
                     </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>Amount</Typography>
+                    <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
+                        <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>40</Typography>
+                        </Box>
+                        <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#10DC61", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
+                            <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
+                        </Box>
                     </Box>
-                </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>40</Typography>
+                    <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
+                        <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>41</Typography>
+                        </Box>
+                        <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#10DC61", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
+                            <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
+                        </Box>
                     </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#10DC61", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
+                    <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
+                        <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>42</Typography>
+                        </Box>
+                        <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#F8C851", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
+                            <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
+                        </Box>
                     </Box>
-                </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>41</Typography>
+                    <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
+                        <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>43</Typography>
+                        </Box>
+                        <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#F8C851", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
+                            <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
+                        </Box>
                     </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#10DC61", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
-                    </Box>
-                </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>42</Typography>
-                    </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#F8C851", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
-                    </Box>
-                </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>43</Typography>
-                    </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#F8C851", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
-                    </Box>
-                </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>44</Typography>
-                    </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#DC3545", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
+                    <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
+                        <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>44</Typography>
+                        </Box>
+                        <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#DC3545", justifyContent: "center", alignItems: "center" }}>
+                            <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
+                            <StyledImage src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
+                        </Box>
                     </Box>
                 </Box>
             </Box>
-        </Box>
+        </>
     )
 }

@@ -324,7 +324,7 @@ const CustomHeader = ({ }) => {
           sx={[
             {
               width: "100%",
-              minHeight: { laptop: 90, tablet: 80, mobile: 60 },
+              minHeight: { laptop: 66, tablet: 80, mobile: 60 },
               display: "flex",
               flexDirection: matchesMobile ? "column" : "row",
               alignItems: !matchesMobile ? "center" : "flex-start",
@@ -539,8 +539,8 @@ const CustomHeader = ({ }) => {
                 setVisible(true);
               }}
               sx={{
-                height: "50px",
-                width: "50px",
+                height: "45px",
+                width: "45px",
                 borderRadius: "35px",
                 display: "flex",
                 justifyContent: "center",
@@ -553,14 +553,14 @@ const CustomHeader = ({ }) => {
                 sx={{ height: "25px", width: "25px" }}
               />
             </Box>
-            <Box>
+            <Box sx={{display: "flex", alignItems: "center"}}>
               <ActiveUsers
                 containerStyle={{}}
                 image={Users}
                 value={onlineUser}
               />
               <BoxProfile
-                containerStyle={{ marginTop: "5px" }}
+                containerStyle={{ marginTop: "0" }}
                 image={"https://picsum.photos/200/300"}
                 value={
                   activeUser == 1
@@ -583,7 +583,7 @@ const CustomHeader = ({ }) => {
             navigateTo="createTransPassword"
           />
         )}
-      <Box sx={{ minHeight: { laptop: 90, mobile: 60 + 32 + 42 } }} />
+      <Box sx={{ minHeight: { laptop: 66, mobile: 60 + 32 + 42 } }} />
       <DropdownMenu1
         anchorEl={anchor}
         open={Boolean(anchor)}

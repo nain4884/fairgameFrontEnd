@@ -177,7 +177,7 @@ const Row = ({ index, containerStyle, data }) => {
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={5}
           />
-          {data.stopAt && (
+          {data?.stopAt && (
             <ButtonWithSwitch
               notSwitch={true}
               title={`Match Profit/Loss`}
