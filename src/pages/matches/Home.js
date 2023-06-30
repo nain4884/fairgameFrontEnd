@@ -1374,6 +1374,7 @@ const Home = ({ setVisible, visible, handleClose,selected }) => {
         // overflowX: "hidden",
         flexDirection: "column",
         flex: 1,
+        width:"80%",
         justifyContent: "flex-start",
         // overflowY: "auto",
         alignItems: "flex-start",

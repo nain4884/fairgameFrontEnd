@@ -92,7 +92,7 @@ const EventListing = ({ selected ,top}) => {
       <Box
         sx={[
           {
-            width: { mobile: "98%", laptop: "100%" },
+            width: { mobile: "98%", laptop: "98%" },
             msOverflowStyle: "none",
             overflowY: "hidden",
             minHeight: { mobile: 80, laptop: 80 },
