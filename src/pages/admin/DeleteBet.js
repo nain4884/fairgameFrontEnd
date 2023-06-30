@@ -1186,9 +1186,9 @@ const DeleteBet = ({ }) => {
               fontSize: "16px",
               color: "white",
               fontWeight: "700",
-              paddingTop: "2%",
+              // paddingTop: "2%",
               alignSelf: "start",
-              paddingBottom: "5px"
+              // paddingBottom: "5px"
             }}
           >
             {currentMatch?.teamA} V/S {currentMatch?.teamB}
@@ -1235,21 +1235,21 @@ const DeleteBet = ({ }) => {
                 sessionOffline={sessionOffline}
               />
             )}
-          {matchesMobile &&
-            <>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  width: "100%",
-                }}
-              >
-                {mode && <CancelButton />}
-                <Box sx={{ width: "2%" }}></Box>
-                <CustomButton />
-              </Box>
-            </>
-          }
+          {/* {matchesMobile && */}
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                width: "100%",
+              }}
+            >
+              {mode && <CancelButton />}
+              <Box sx={{ width: "2%" }}></Box>
+              <CustomButton />
+            </Box>
+          </>
+          {/* } */}
           {IOSinglebets.length > 0 && (
             <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />
           )}
@@ -1272,13 +1272,10 @@ const DeleteBet = ({ }) => {
               }}
             >
               {/* {mode && <CancelButton />} */}
-              {/* <Box sx={{ width: "2%" }}></Box> */}
-              {mode && <CancelButton />}
               <Box sx={{ width: "2%" }}></Box>
-              <CustomButton />
-              {/* <Box
+              <Box
                 sx={{ width: "150px", marginY: ".75%", height: "15px" }}
-              ></Box> */}
+              ></Box>
             </Box>
             {(currentMatch?.apiSessionActive ||
               currentMatch?.manualSessionActive) && (
