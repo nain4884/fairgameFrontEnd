@@ -217,7 +217,8 @@ const AccountListRow = ({
               src={
                 fContainerStyle.background == "#F8C851" ? DownGIcon : DownIcon
               }
-              style={{ height: "10px", cursor: "pointer", width: "15px" }}
+              style={{ height: "15px", cursor: "pointer", width: "20px" }}
+              // {{ height: {mobile: "10px", laptop: "15px"}, cursor: "pointer", width: {mobile: "15px", laptop: "20px"} }}
             />
           )}
         </Box>
@@ -277,6 +278,7 @@ const AccountListRow = ({
               marginLeft: "5px",
               filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
               width: "15px",
+              
             }}
           />
         </Box>
