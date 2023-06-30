@@ -9,7 +9,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
 
   const navigate = useNavigate();
   const classes = {
-    Menusx: { marginTop: { mobile: "15px", laptop: "30px", tablet: "18px" }, marginLeft: { mobile: "5px", laptop: "0", tablet: "0" }, paddingY: "0px", padding: "0px", width: { mobile: "105%", laptop: "100%", tablet: "100%" } ,  top:{mobile:"-260px"},tablet:"-460px",laptop:"-460px"},
+    Menusx: { marginTop: { mobile: "15px", laptop: "30px", tablet: "18px" }, marginLeft: { mobile: "5px", laptop: "0", tablet: "0" }, paddingY: "0px", padding: "0px", width: { mobile: "105%", laptop: "100%", tablet: "100%" }},
     MenuListProps: { "aria-labelledby": "basic-button" },
     MenuPaperProps: { sx: {
       // border: "1px solid #fff", 
