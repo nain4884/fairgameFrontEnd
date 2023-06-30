@@ -836,7 +836,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen, showSideBarMobile }) => {
   };
   const container =
     window !== undefined ? () => window.document.body : undefined;
-
+ 
   return (
     <Drawer
       container={container}
@@ -866,7 +866,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen, showSideBarMobile }) => {
         }}
       />
       <Box sx={{ height: "100vh" }}>
-        <SideBar mobileShow={true} />
+        <SideBar mobileShow={true}  handleDrawerToggle={handleDrawerToggle}/>
       </Box>
     </Drawer>
   );

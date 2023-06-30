@@ -12,7 +12,7 @@ const AddNotificationModal = ({
 }) => {
   const [selected, setSelected] = useState("");
 
-  const [value, setValue] = useState("Add notification text test change");
+  const [value, setValue] = useState("");
   const CustomButton = ({ title, color }) => {
     return (
       <Box
@@ -20,7 +20,6 @@ const AddNotificationModal = ({
           onDone(value);
           e.stopPropagation();
           setVisible(false);
-
           onClick();
         }}
         sx={{
@@ -119,6 +118,7 @@ const AddNotificationModal = ({
               onChange={(e) => {
                 setValue(e.target?.value);
               }}
+              placeholder="Enter a valid reason to delete bet"
               multiline={true}
               InputProps={{
                 disableUnderline: true,

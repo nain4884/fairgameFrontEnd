@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, drawerBackground } from "../../assets";
 
-const SideBar = ({ mobileShow }) => {
+const SideBar = ({ mobileShow ,handleDrawerToggle }) => {
   const [showSideBarMobile, setShowSideBarMobile] = useState(false);
   const location = useLocation();
-
+const navigate=useNavigate()
   const [selected, setSelected] = useState("All Sports");
   const data = [
     {
@@ -120,7 +120,11 @@ const SideBar = ({ mobileShow }) => {
   const ListItem = ({ item }) => {
     const theme = useTheme();
     return (
-      <Box
+      <Box 
+        onClick={()=>{
+          navigate(item?.url,{state:{activeTab:item?.activeTab}})
+          handleDrawerToggle()
+        }}
         sx={{
           display: "flex",
           justifyContent: "flex-start",

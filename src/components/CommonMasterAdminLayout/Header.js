@@ -454,7 +454,7 @@ const CustomHeader = ({}) => {
     BoxCont1sub2: {
       width: "100%",
       display: "flex",
-      marginLeft: { mobile: "-143px", laptop: 0, tablet: 0 },
+      marginLeft: { mobile: showSearch ?"-143px" :0, laptop: 0, tablet: 0 },
       justifyContent: "flex-end",
       // minWidth: matchesMobile ? "100%" : "0px",
       alignItems: "center",
@@ -474,18 +474,11 @@ const CustomHeader = ({}) => {
       },
     },
   };
-  const RenderLogo = useCallback(() => {
-    return (
-      <StyledImage
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/${nav}/list_of_clients`);
-        }}
-        src={logo}
-        sx={classes.RenderLogoCompStyleImg}
-      />
-    );
-  }, [classes.RenderLogoCompStyleImg, nav, navigate]);
+  // const RenderLogo = useCallback(() => {
+  //   return (
+
+  //   );
+  // }, [classes.RenderLogoCompStyleImg, nav, navigate]);
 
   const menutItems1 = [
     { title: "Account Statement", link: `/${nav}/account_statement` },
@@ -514,7 +507,16 @@ const CustomHeader = ({}) => {
                 src={Draw}
                 sx={classes.BoxCont1sub1sub1StyleImg}
               />
-              <RenderLogo />
+              <StyledImage
+                onClick={(e) => {
+                  navigate(`/${nav}/list_of_clients`,{
+                    state:{activeTab:"Client list"}
+                  });
+                  e.stopPropagation();
+                }}
+                src={logo}
+                sx={classes.RenderLogoCompStyleImg}
+              />
             </Box>
             {/* {!matchesTablet && (
               <Box
@@ -700,7 +702,7 @@ const CustomHeader = ({}) => {
         anchorEl={anchor}
         menutItems1={menutItems1}
         title={"Report"}
-        activeTab={"Report"}
+        activeTab={"Reports"}
         // setShow={setShow}
         handleClose={() => {
           setAnchor(null);

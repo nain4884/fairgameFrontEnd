@@ -77,6 +77,7 @@ export default function UserDetailModal({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [deleteModal, setDeleteModal] = useState(false);
+  const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
   const [settalementModal, setSettalmentModal] = useState(false);
   function showDialogModal(isModalOpen, showRight, message) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -475,8 +476,6 @@ export default function UserDetailModal({
                 sx={{ color: "#E32A2A" }}
                 onClick={(e) => {
                   if (
-                    prevElement.credit_refer == 0 &&
-                    prevElement.profit_loss == 0 &&
                     prevElement.available_balance == 0
                   ) {
                     UserDelete(userModal.id)
@@ -489,14 +488,53 @@ export default function UserDetailModal({
                         showDialogModal(true, false, message);
                       });
                   } else {
-                    let message = "First Settle Account to Delete The User";
-                    toast.error(message);
+
+                    setConfirmDeleteModal((prev) => !prev)
+                    // let message = "First Settle Account to Delete The User";
+                    // toast.error(message);
                     setDeleteModal(false);
-                    showDialogModal(true, false, message);
+                    // showDialogModal(true, false, message);
                   }
                 }}
               >
                 Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <Dialog
+            open={confirmDeleteModal}
+            onClose={() => setConfirmDeleteModal((prev) => !prev)}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Your available balance is not zero. Are you sure want to delete this user?"}
+            </DialogTitle>
+            {/* <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent> */}
+            <DialogActions>
+              <Button onClick={() => setConfirmDeleteModal((prev) => !prev)}>
+                Cancel
+              </Button>
+              <Button
+                sx={{ color: "#E32A2A" }}
+                onClick={(e) => {
+                  UserDelete(userModal.id)
+                    .then(({ bool, message }) => {
+                      setConfirmDeleteModal(false);
+                      showDialogModal(true, true, message);
+                    })
+                    .catch(({ bool, message }) => {
+                      setConfirmDeleteModal(false);
+                      showDialogModal(true, false, message);
+                    });
+                }}
+              >
+                Yes
               </Button>
             </DialogActions>
           </Dialog>

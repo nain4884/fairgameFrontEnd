@@ -478,14 +478,14 @@ const AccountListRow = ({
                   borderBottom: "2px solid white",
                 }}
               >
-                <Box sx={{width: {laptop:"100%", mobile: "50%"}}}>
+                <Box sx={{ width: { laptop: "100%", mobile: "50%" } }}>
                   <Box
                     sx={{
                       display: "flex",
                       width: "100%",
                       alignItems: "center",
-                      justifyContent: {laptop: "flex-start", mobile: "flex-start"},
-                      
+                      justifyContent: { laptop: "flex-start", mobile: "flex-start" },
+
                     }}
                   >
                     {elementToUDM?.matchTypeComission ? (
@@ -496,13 +496,13 @@ const AccountListRow = ({
                               fontSize: "12px",
                               fontWeight: "600",
                               color: "white",
-                              textAlign: {laptop: "left", mobile: "left"},
-                              width: {laptop: "100px", mobile: "100px"}
+                              textAlign: { laptop: "left", mobile: "left" },
+                              width: { laptop: "100px", mobile: "100px" }
                             },
                             fTextStyle,
                           ]}
                         >
-                          {elementToUDM?.matchTypeComission} Com 
+                          {elementToUDM?.matchTypeComission} Com
                         </Typography>
                         <Typography
                           sx={[
@@ -518,7 +518,7 @@ const AccountListRow = ({
                         >
                           {":"} {elementToUDM?.matchComission}
                         </Typography>
-                       
+
 
                       </>
                     ) : (
@@ -530,13 +530,13 @@ const AccountListRow = ({
 
                               fontWeight: "600",
                               color: "white",
-                              textAlign: {laptop: "left", mobile: "left"},
-                              width: {laptop: "100px", mobile: "100px"}
+                              textAlign: { laptop: "left", mobile: "left" },
+                              width: { laptop: "100px", mobile: "100px" }
                             },
                             fTextStyle,
                           ]}
                         >
-                          Match Com 
+                          Match Com
                         </Typography>
                         <Typography
                           sx={[
@@ -565,8 +565,8 @@ const AccountListRow = ({
 
                             fontWeight: "600",
                             color: "white",
-                            textAlign: {laptop: "left", mobile: "left"},
-                            width: {laptop: "100px", mobile: "100px"}
+                            textAlign: { laptop: "left", mobile: "left" },
+                            width: { laptop: "100px", mobile: "100px" }
                           },
                           fTextStyle,
                         ]}
@@ -612,8 +612,8 @@ const AccountListRow = ({
                     justifyContent: "space-between",
                     alignItems: "center",
                     cursor: "pointer",
-                    marginRight: {laptop: "0", mobile: "5px"},
-                    width: {desktop: "100%", mobile: "33%"}
+                    marginRight: { laptop: "0", mobile: "5px" },
+                    width: { desktop: "100%", mobile: "33%" }
 
                   }}
                   onClick={() => {
@@ -648,7 +648,7 @@ const AccountListRow = ({
                         ? DownGIcon
                         : DownIcon
                     }
-                    sx={{ height: {laptop: "10px", mobile: "14px" }, cursor: "pointer", width: {laptop: "15px", mobile: "23px" } }}
+                    sx={{ height: { laptop: "10px", mobile: "14px" }, cursor: "pointer", width: { laptop: "15px", mobile: "23px" } }}
                   />
                 </Box>
               </Box>
@@ -682,71 +682,71 @@ const AccountListRow = ({
           </Box>
           {/*  */}
         </>
-        
+
       }
 
       {showUserModal && element?.role !== "user" && (
         <Box
-        sx={[
-          {
-            width: "100%",
-            display: "flex",
-            height: "100%",
-            background: "#0B4F26",
-            alignItems: "center",
-            overflow: "hidden",
-            flexDirection: { mobile: "column", laptop: "row" }
-          },
-          containerStyle,
-        ]}
-      >
-        <Box
           sx={[
             {
-              width: {
-                laptop: "11vw",
-                tablet: "25vw",
-                mobile: "96vw",
-              },
-              visibility: "hidden",
-              // display: "flex",
-              alignSelf: "stretch",
-              // height: "auto",
-              justifyContent: "space-between",
-              // alignItems: "center" ,
-              borderRight: "2px solid white",
+              width: "100%",
+              display: "flex",
+              height: "100%",
+              background: "#0B4F26",
+              alignItems: "center",
+              overflow: "hidden",
+              flexDirection: { mobile: "column", laptop: "row" }
             },
-            // fContainerStyle,
+            containerStyle,
           ]}
         >
+          <Box
+            sx={[
+              {
+                width: {
+                  laptop: "11vw",
+                  tablet: "25vw",
+                  mobile: "96vw",
+                },
+                visibility: "hidden",
+                // display: "flex",
+                alignSelf: "stretch",
+                // height: "auto",
+                justifyContent: "space-between",
+                // alignItems: "center" ,
+                borderRight: "2px solid white",
+              },
+              // fContainerStyle,
+            ]}
+          >
+          </Box>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              // paddingX: "10px",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+
+            <UserDetailModal
+              selected={selected}
+              setSelected={setSelected}
+              element={element}
+              updatedUserProfile={updatedUserProfile}
+              getListOfUser={getListOfUser}
+              setShowUserModal={setShowUserModal}
+              backgroundColor={containerStyle?.background}
+              userModal={userModal}
+              setShowSuccessModal={handleChangeShowModalSuccess}
+              setShowModalMessage={setShowModalMessage}
+              elementToUDM={elementToUDM}
+              setElementToUDM={handleSetUDM}
+              prevElement={prevElement}
+            />
+          </Box>
         </Box>
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            // paddingX: "10px",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          
-        <UserDetailModal
-          selected={selected}
-          setSelected={setSelected}
-          element={element}
-          updatedUserProfile={updatedUserProfile}
-          getListOfUser={getListOfUser}
-          setShowUserModal={setShowUserModal}
-          backgroundColor={containerStyle?.background}
-          userModal={userModal}
-          setShowSuccessModal={handleChangeShowModalSuccess}
-          setShowModalMessage={setShowModalMessage}
-          elementToUDM={elementToUDM}
-          setElementToUDM={handleSetUDM}
-          prevElement={prevElement}
-        />
-        </Box>
-      </Box>
       )}
 
       <ModalMUI
