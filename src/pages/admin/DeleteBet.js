@@ -1043,6 +1043,14 @@ const DeleteBet = ({ }) => {
     }
   }, [matchId]);
 
+  const handleDeleteBet = async (value) => {
+    let data = {
+      value: value,
+      ids: selectedBetData
+    }
+    setMode(!mode);
+    // alert(JSON.stringify(data));
+  }
   //TODO
   // const PlaceBetComponent = () => {
   //     const [anchorEl, setAnchorEl] = useState(null);
@@ -1072,6 +1080,7 @@ const DeleteBet = ({ }) => {
   // const menutItems = [{ title: "Account Statement" }, { title: "Profile Loss Report" }, { title: "Bet History" }, { title: "Unsetteled Bet" }, { title: "Casino Report History" }, { title: "Set Button Values" }, { title: "Security Auth Verfication" }, { title: "Change Password" }]
 
   const [mode, setMode] = useState(false);
+  const [selectedBetData, setSelectedBetData] = useState([]);
   const CustomButton = () => {
     return (
       <Box
@@ -1079,6 +1088,7 @@ const DeleteBet = ({ }) => {
           if (mode) {
             setVisible(true);
           } else {
+            // alert(JSON.stringify(selectedBetData));
             setMode(!mode);
           }
         }}
@@ -1149,19 +1159,24 @@ const DeleteBet = ({ }) => {
         title={"Add Remark"}
         visible={visible}
         setVisible={setVisible}
-        onDone={() => {
-          dispatch(
-            setDailogData({
-              isModalOpen: true,
-              showRight: true,
-              bodyText: "Deleted Sucessfully",
-            })
-          );
-        }}
-        onClick={() => {
-          // setVisible(false);
-          setMode(!mode);
-        }}
+        // onDone={() => {
+        //   // dispatch(
+        //   //   setDailogData({
+        //   //     isModalOpen: true,
+        //   //     showRight: true,
+        //   //     bodyText: "Deleted Sucessfully",
+        //   //   })
+        //   // );
+        //   alert(value)
+        //   // setMode(!mode);
+        //   // handleDeleteBet();
+        // }}
+        onDone={handleDeleteBet}
+      // onClick={() => {
+      //   // setVisible(false);
+      //   setMode(!mode);
+      //   handleDeleteBet();
+      // }}
       />
       <Box
         sx={{
@@ -1236,7 +1251,7 @@ const DeleteBet = ({ }) => {
               />
             )}
           {/* {matchesMobile && */}
-          <>
+          {IOSinglebets.length > 0 &&
             <Box
               sx={{
                 display: "flex",
@@ -1248,10 +1263,10 @@ const DeleteBet = ({ }) => {
               <Box sx={{ width: "2%" }}></Box>
               <CustomButton />
             </Box>
-          </>
+          }
           {/* } */}
           {IOSinglebets.length > 0 && (
-            <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />
+            <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} setSelectedBetData={setSelectedBetData} selectedBetData={selectedBetData} />
           )}
         </Box>
         {!matchesMobile && <Box sx={{ width: "20px" }} />}

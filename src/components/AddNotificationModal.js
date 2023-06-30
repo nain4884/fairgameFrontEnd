@@ -18,9 +18,10 @@ const AddNotificationModal = ({
       <Box
         onClick={(e) => {
           onDone(value);
+          setValue("")
           e.stopPropagation();
           setVisible(false);
-          onClick();
+          // onClick();
         }}
         sx={{
           width: "35%",
