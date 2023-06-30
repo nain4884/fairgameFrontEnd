@@ -334,8 +334,8 @@ const SessionMarket = ({
               <Box
                 sx={{
                   position: "absolute",
-                  height: "86%",
-                  top: "14%",
+                  height: "100%",
+                  top: "0%",
                   width: "100%",
                   display: "flex",
                   zIndex: "999",

@@ -484,8 +484,8 @@ const Odds = ({
                             <Box
                                 sx={{
                                     position: "absolute",
-                                    height: {mobile:"78%",laptop:"80%",tablet:"80%"},
-                                    top: "25%",
+                                    height: "100%",
+                                    top: "0%",
                                     width: "100%",
                                     display: "flex",
                                     zIndex: "999",
