@@ -200,7 +200,7 @@ const ListSubHeaderT = ({ data }) => {
       </Box>
       <Box
         sx={{
-          width: { laptop: "5vw", tablet: "5vw", mobile: "26.5vw" },
+          width: { laptop: "5vw", tablet: "5vw", mobile: "14vw" },
           display: "flex",
           paddingX: "10px",
           justifyContent: "center",
@@ -211,7 +211,7 @@ const ListSubHeaderT = ({ data }) => {
       ></Box>
       <Box
         sx={{
-          width: { laptop: "5vw", tablet: "5vw", mobile: "26.5vw" },
+          width: { laptop: "5vw", tablet: "5vw", mobile: "14vw" },
           display: "flex",
           paddingX: "10px",
           justifyContent: "center",

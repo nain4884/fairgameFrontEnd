@@ -1057,12 +1057,13 @@ const DepositComponent = ({
                 }}
               />
             </Box>
-            <Box sx={{ display: "flex", width: "100%" , marginTop: "21px", gap: 1, flexDirection: "row-reverse", justifyContent: "flex-end"}}>
+            <Box sx={{ display: "flex", width: "100%", marginTop: "21px", gap: 1, flexDirection: "row-reverse", justifyContent: "flex-end" }}>
               <BoxButton
                 loading={loading}
-                containerStyle={{ 
-                  height: "44px",  
-                  maxWidth: "150px !important"  }}
+                containerStyle={{
+                  height: "44px",
+                  maxWidth: "150px !important"
+                }}
                 isSelected={true}
                 onClick={(e) => {
                   try {
@@ -1091,11 +1092,11 @@ const DepositComponent = ({
               />
               <BoxButton
                 containerStyle={{
-                 
+
                   background: "#E32A2A",
                   border: "0px",
                   height: "44px",
-                  maxWidth: "150px !important" 
+                  maxWidth: "150px !important"
                 }}
                 isSelected={true}
                 onClick={(e) => {
@@ -1111,7 +1112,7 @@ const DepositComponent = ({
                 title={"Cancel"}
               />
             </Box>
-           
+
           </Box>
 
 
@@ -2240,77 +2241,113 @@ const ChangePasswordComponent = ({
       sx={{
         display: "flex",
         borderRadius: "5px",
-        paddingRight: "10px",
+        paddingX: "10px",
         flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
         gap: 2,
       }}
     >
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: { laptop: "100%", mobile: "88vw" } }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
-            justifyContent: "flex-end",
-            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+            justifyContent: {mobile: "flex-start", laptop: "center"},
+            flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+
           }}
         >
-          <Typography
-            sx={{
-              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
-              fontWeight: "600",
-              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-            }}
-          >
-            New Password
-          </Typography>
-          <Box
-            sx={{
-              borderRadius: "px",
-              width: { mobile: "100%", laptop: "60%", tablet: "60%" },
-              height: "45px",
-              background: "#0B4F26",
-              display: "flex",
-              alignItems: "center",
-              borderRadius: "5px",
-              border: "2px solid #26262633",
-              paddingX: "20px",
-            }}
-          >
-            <TextField
-              onChange={(e) => {
-                setChangePasswordObj({
-                  ...changePasswordObj,
-                  password: e.target.value,
-                  userId: userModal.id,
-                });
-              }}
-              sx={{ width: "100%", height: "45px", color: "white" }}
-              variant="standard"
-              InputProps={{
-                placeholder: "",
-                disableUnderline: true,
-                type: !showPass1 ? "password" : "text",
-                style: {
-                  fontSize: "13px",
-                  height: "45px",
-                  fontWeight: "600",
-                  color: "white",
-                },
-              }}
-            />
-            <Box
-              onClick={() => {
-                setShowPass1(!showPass1);
+          <Box sx={{
+            display: "flex",
+            flexDirection: { mobile: "column", laptop: "row" },
+            width: { mobile: "60%", laptop: "70%", tablet: "70%" },
+            justifyContent: "center"
+
+          }}>
+            <Typography
+              sx={{
+                fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+                width: { mobile: "100%", laptop: "32.5%", tablet: "32.5%" },
+                fontWeight: "600",
+                marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
               }}
             >
-              <StyledImage
-                src={showPass1 ? EyeIconWhite : EyeSlashWhite}
-                sx={{ height: "14px", width: "20px", fill: "white" }}
+              New Password
+            </Typography>
+            <Box
+              sx={{
+                borderRadius: "px",
+                width: { mobile: "100%", laptop: "32.5", tablet: "60%" },
+                height: "45px",
+                background: "#0B4F26",
+                display: "flex",
+                alignItems: "center",
+                borderRadius: "5px",
+                border: "2px solid #26262633",
+                paddingX: "20px",
+              }}
+            >
+              <TextField
+                onChange={(e) => {
+                  setChangePasswordObj({
+                    ...changePasswordObj,
+                    password: e.target.value,
+                    userId: userModal.id,
+                  });
+                }}
+                sx={{ width: "100%", height: "45px", color: "white" }}
+                variant="standard"
+                InputProps={{
+                  placeholder: "",
+                  disableUnderline: true,
+                  type: !showPass1 ? "password" : "text",
+                  style: {
+                    fontSize: "13px",
+                    height: "45px",
+                    fontWeight: "600",
+                    color: "white",
+                  },
+                }}
               />
+              <Box
+                onClick={() => {
+                  setShowPass1(!showPass1);
+                }}
+              >
+                <StyledImage
+                  src={showPass1 ? EyeIconWhite : EyeSlashWhite}
+                  sx={{ height: "14px", width: "20px", fill: "white" }}
+                />
+              </Box>
             </Box>
           </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: { mobile: "40%", laptop: "250px" },
+              marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
+            }}
+          >
+            <BoxButton
+              containerStyle={{
+                width: "100%",
+                background: "#E32A2A",
+                border: "0px",
+                height: "45px",
+                marginLeft: "10px",
+                maxWidth: { mobile: "91% !important", laptop: "100% !important" },
+                flex: {laptop: "0 0 60%!important", mobile: "0 0 100%!important"}
+              }}
+              isSelected={true}
+              onClick={(e) => {
+                setChangePasswordObj(defaultChangePasswordObj);
+                setSelected(e);
+              }}
+              title={"Cancel"}
+            />
+          </Box>
+         
+
         </Box>
         <p style={{ color: "#fa1e1e" }}>
           {changePasswordObj.password &&
@@ -2322,21 +2359,29 @@ const ChangePasswordComponent = ({
             display: "flex",
             alignItems: "center",
             overflow: "hidden",
-            justifyContent: "flex-end",
-            marginTop: "10px",
-            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+            justifyContent: {mobile: "flex-start", laptop: "center"},
+            flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+            marginTop: "20px"
           }}
         >
-          <Typography
-            sx={{
+          <Box sx={{
+            display: "flex",
+            flexDirection: { mobile: "column", laptop: "row" },
+            width: { mobile: "60%", laptop: "70%", tablet: "70%" },
+            justifyContent: "center"
+
+          }}>
+            <Typography
+             sx={{
               fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-              width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+              width: { mobile: "100%", laptop: "32.5%", tablet: "32.5%" },
               fontWeight: "600",
               marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
             }}
-          >
-            Transaction Password
-          </Typography>
+            >
+              Transaction Password
+            </Typography>
+        
           <Box
             sx={{
               borderRadius: "px",
@@ -2377,58 +2422,78 @@ const ChangePasswordComponent = ({
               />
             </Box>
           </Box>
+          </Box>
+          
+          <Box sx={{ 
+             display: "flex",
+             width: { mobile: "40%", laptop: "250px" },
+             marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
+            }}>
+
+            <BoxButton
+              containerStyle={{
+                width: "100%",
+                height: "45px",
+                marginLeft: "10px",
+                maxWidth: { mobile: "91% !important", laptop: "100% !important" },
+                flex: {laptop: "0 0 60%!important", mobile: "0 0 100%!important"}
+              }}
+              isSelected={true}
+              onClick={(e) => {
+                UpdatePassword(changePasswordObj)
+                  .then(({ bool, message }) => {
+                    toast.success(message);
+                    showDialogModal(true, true, message);
+                  })
+                  .catch(({ bool, message }) => {
+                    toast.error(message);
+                    showDialogModal(true, false, message);
+                  });
+              }}
+              title={"Submit"}
+            />
+          </Box>
+
+
+        
+
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
-          justifyContent: "center",
-          gap: 1,
-          alignItems: "center",
-        }}
-      >
-        <Box sx={{ display: "flex", width: "150px" }}>
-          <BoxButton
-            containerStyle={{ width: "150px", height: "35px" }}
-            isSelected={true}
-            onClick={(e) => {
-              UpdatePassword(changePasswordObj)
-                .then(({ bool, message }) => {
-                  toast.success(message);
-                  showDialogModal(true, true, message);
-                })
-                .catch(({ bool, message }) => {
-                  toast.error(message);
-                  showDialogModal(true, false, message);
-                });
-            }}
-            title={"Submit"}
-          />
-        </Box>
+
+        {/* cancel submit buttons  */}
+
         <Box
           sx={{
-            display: "flex",
-            width: "150px",
-            marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+            display: "none",
+            flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+            justifyContent: "flex-start",
+            gap: 1,
+            alignItems: "center",
           }}
         >
-          <BoxButton
-            containerStyle={{
-              width: "150px",
-              background: "#E32A2A",
-              border: "0px",
-              height: "35px",
+          <Box sx={{ display: "flex", width: "150px" }}>
+            <BoxButton
+              containerStyle={{ width: "100%", height: "35px" ,
+
             }}
-            isSelected={true}
-            onClick={(e) => {
-              setChangePasswordObj(defaultChangePasswordObj);
-              setSelected(e);
-            }}
-            title={"Cancel"}
-          />
+              isSelected={true}
+              onClick={(e) => {
+                UpdatePassword(changePasswordObj)
+                  .then(({ bool, message }) => {
+                    toast.success(message);
+                    showDialogModal(true, true, message);
+                  })
+                  .catch(({ bool, message }) => {
+                    toast.error(message);
+                    showDialogModal(true, false, message);
+                  });
+              }}
+              title={"Submit"}
+            />
+          </Box>
+
         </Box>
       </Box>
+
     </Box>
   );
 };
