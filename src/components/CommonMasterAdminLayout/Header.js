@@ -454,7 +454,7 @@ const CustomHeader = ({}) => {
     BoxCont1sub2: {
       width: "100%",
       display: "flex",
-      marginLeft: { mobile: "-143px", laptop: 0, tablet: 0 },
+      marginLeft: { mobile: showSearch ?"-143px" :0, laptop: 0, tablet: 0 },
       justifyContent: "flex-end",
       // minWidth: matchesMobile ? "100%" : "0px",
       alignItems: "center",
@@ -476,7 +476,7 @@ const CustomHeader = ({}) => {
   };
   // const RenderLogo = useCallback(() => {
   //   return (
-      
+
   //   );
   // }, [classes.RenderLogoCompStyleImg, nav, navigate]);
 
@@ -507,14 +507,16 @@ const CustomHeader = ({}) => {
                 src={Draw}
                 sx={classes.BoxCont1sub1sub1StyleImg}
               />
-            <StyledImage
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/${nav}/list_of_clients`);
-        }}
-        src={logo}
-        sx={classes.RenderLogoCompStyleImg}
-      />
+              <StyledImage
+                onClick={(e) => {
+                  navigate(`/${nav}/list_of_clients`,{
+                    state:{activeTab:"Client list"}
+                  });
+                  e.stopPropagation();
+                }}
+                src={logo}
+                sx={classes.RenderLogoCompStyleImg}
+              />
             </Box>
             {/* {!matchesTablet && (
               <Box
