@@ -105,6 +105,7 @@ const AccountListRow = ({
     userId: element?.id,
     matchTypeComission: element?.matchTypeComission,
     sessionComisssion: element?.sessionComisssion,
+    matchComission:element?.matchComission
   };
 
   const updatedUserProfile = async () => {
@@ -191,6 +192,10 @@ const AccountListRow = ({
                 cursor: "pointer",
                 textTransform: "capitalize",
                 wordBreak: "break-all",
+                textTransform: "capitalize",
+                // whiteSpace: "nowrap",
+                // textOverflow: "ellipsis",
+                // maxWidth: "54px"
               },
               fTextStyle,
             ]}
@@ -365,7 +370,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "5vw", tablet: "5vw", mobile: "26.5vw" },
+            width: { laptop: "5vw", tablet: "5vw", mobile: "14vw" },
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -381,7 +386,7 @@ const AccountListRow = ({
         </Box>
         <Box
           sx={{
-            width: { laptop: "5vw", tablet: "5vw", mobile: "26.5vw" },
+            width: { laptop: "5vw", tablet: "5vw", mobile: "14vw" },
             display: "flex",
             paddingX: "10px",
             justifyContent: "center",
@@ -511,7 +516,7 @@ const AccountListRow = ({
                             fTextStyle,
                           ]}
                         >
-                          {":"}
+                          {":"} {elementToUDM?.matchComission}
                         </Typography>
 
 

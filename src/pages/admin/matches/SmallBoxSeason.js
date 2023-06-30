@@ -7,7 +7,7 @@ const SmallBoxSeason = ({ color, total }) => {
   return (
     <Box
       sx={{
-        width: { laptop: "85px", mobile: "50px" },
+        width: { laptop: "72px", mobile: "50px" },
         flexDirection: "column",
         // position: "absolute",
         display: "flex",
@@ -20,12 +20,12 @@ const SmallBoxSeason = ({ color, total }) => {
       }}
     >
       <Typography
-        sx={{ fontSize: matchesMobile ? "8px" : "12px", fontWeight: "bold", color: "#FF4D4D" }}
+        sx={{ fontSize: matchesMobile ? "8px" : "8px", fontWeight: "bold", color: "#FF4D4D" }}
       >
         S Bets
       </Typography>
       <Typography
-        sx={{ fontSize: matchesMobile ? "8px" : "10px", fontWeight: "bold", color: "#0B4F26" }}
+        sx={{ fontSize: matchesMobile ? "14px" : "14px", fontWeight: "bold", color: "#0B4F26", lineHeight: 1 }}
       >
         {total}
       </Typography>

@@ -130,7 +130,7 @@ const SessionMarket = ({
             {/* static code */}
             <Box
               sx={{
-                width: { laptop: "85px", mobile: "50px" },
+                width: { laptop: "72px", mobile: "50px" },
                 flexDirection: "column",
                 // position: "absolute",
                 display: "flex",
@@ -142,12 +142,12 @@ const SessionMarket = ({
               }}
             >
               <Typography
-                sx={{ fontSize:  {mobile:"8px", laptop: "12px"}, fontWeight: "bold", color: "#FF4D4D" }}
+                sx={{ fontSize:  {mobile:"8px", laptop: "8px"}, fontWeight: "bold", color: "#FF4D4D" }}
               >
                 Amount
               </Typography>
               <Typography
-                sx={{ fontSize:  {mobile:"8px", laptop: "10px"}, fontWeight: "bold", color: "#0B4F26" }}
+                sx={{ fontSize:  {mobile:"14px", laptop: "14px"}, fontWeight: "bold", color: "#0B4F26", lineHeight: 1 }}
               >
                 0
               </Typography>
