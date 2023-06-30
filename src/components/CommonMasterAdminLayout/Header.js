@@ -700,7 +700,7 @@ const CustomHeader = ({}) => {
         anchorEl={anchor}
         menutItems1={menutItems1}
         title={"Report"}
-        activeTab={"Report"}
+        activeTab={"Reports"}
         // setShow={setShow}
         handleClose={() => {
           setAnchor(null);

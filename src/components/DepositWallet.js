@@ -149,7 +149,7 @@ export default function DepositWallet() {
             alignSelf: "start",
           }}
         >
-          Withdraw from Wallet
+          {window.location.pathname.split("/")[2]==="deposit" ? "Deposit to" : "Withdraw from"} Wallet
         </Typography>
         <Box
           sx={{

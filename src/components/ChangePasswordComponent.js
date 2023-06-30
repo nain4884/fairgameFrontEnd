@@ -39,7 +39,7 @@ export const ChangePasswordComponent = ({ visible, selected }) => {
           width: { mobile: "96vw", laptop: "22vw", tablet: "22vw" },
           minWidth: { laptop: "350px", tablet: "350px", mobile: "0px" },
           marginTop: "10px",
-          marginX: { mobile: "2vw", laptop: "5vw" },
+          marginX: { mobile: "2vw", laptop: "1vw" },
         }}
       >
         <Typography

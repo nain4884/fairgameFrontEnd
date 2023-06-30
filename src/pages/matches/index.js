@@ -67,63 +67,64 @@ const Matches = () => {
       >
         <SideBar />
 
-        {["INPLAY", "CRICKET"].includes(selected) &&
-          window.location.pathname !== "/matchDetail" && (
-            <Match
-              setLoader={setLoader}
-              loader={loader}
-              selected={selected}
-              setVisible={setVisible}
-              // handleClose={handleClose}
-            />
-          )}
-        {window.location.pathname === "/matchDetail" && (
-          <Home
-            selected={selected}
-            setVisible={setVisible}
-            visible={visible}
-            // handleClose={handleClose}
-          />
-        )}
-        {["MY ACCOUNT"].includes(selected) &&
-          window.location.pathname === "/my-account" && (
-            <Settings
+        <Box sx={{ width: "100%" }}>
+          {["INPLAY", "CRICKET"].includes(selected) &&
+            window.location.pathname !== "/matchDetail" && (
+              <Match
+                setLoader={setLoader}
+                loader={loader}
+                selected={selected}
+                setVisible={setVisible}
+                // handleClose={handleClose}
+              />
+            )}
+          {window.location.pathname === "/matchDetail" && (
+            <Home
               selected={selected}
               setVisible={setVisible}
               visible={visible}
               // handleClose={handleClose}
             />
           )}
-        {["MY ACCOUNT"].includes(selected) &&
-          window.location.pathname === "/change_password" && (
-            <ChangePasswordComponent selected={selected} visible={true} />
-          )}
+          {["MY ACCOUNT"].includes(selected) &&
+            window.location.pathname === "/my-account" && (
+              <Settings
+                selected={selected}
+                setVisible={setVisible}
+                visible={visible}
+                // handleClose={handleClose}
+              />
+            )}
+          {["MY ACCOUNT"].includes(selected) &&
+            window.location.pathname === "/change_password" && (
+              <ChangePasswordComponent selected={selected} visible={true} />
+            )}
 
-        {["EmptyComponent"].includes(selected) &&
-          window.location.pathname === "/matches" && (
-            <EmptyComponent selected={selected} visible={true} />
-          )}
-        {["MY ACCOUNT"].includes(selected) &&
-          window.location.pathname === "/account_statement" && (
-            <AccountStatementList selected={selected} visible={true} />
-          )}
-        {["MY ACCOUNT"].includes(selected) &&
-          window.location.pathname === "/profit_loss" && (
-            <ProfitLoss selected={selected} visible={true} />
-          )}
+          {["EmptyComponent"].includes(selected) &&
+            window.location.pathname === "/matches" && (
+              <EmptyComponent selected={selected} visible={true} />
+            )}
+          {["MY ACCOUNT"].includes(selected) &&
+            window.location.pathname === "/account_statement" && (
+              <AccountStatementList selected={selected} visible={true} />
+            )}
+          {["MY ACCOUNT"].includes(selected) &&
+            window.location.pathname === "/profit_loss" && (
+              <ProfitLoss selected={selected} visible={true} />
+            )}
 
           {["MY ACCOUNT"].includes(selected) &&
-          window.location.pathname === "/bet_history" && (
-            <BetHistory selected={selected} visible={true} />
-          )}
+            window.location.pathname === "/bet_history" && (
+              <BetHistory selected={selected} visible={true} />
+            )}
           {["MY ACCOUNT"].includes(selected) &&
-          window.location.pathname === "/change_button_value" && (
-            <ChangeButtonValue selected={selected} visible={true} />
-          )}
-        {
-          window.location.pathname === "/comingsoon" && (
+            window.location.pathname === "/change_button_value" && (
+              <ChangeButtonValue selected={selected} visible={true} />
+            )}
+          {window.location.pathname === "/comingsoon" && (
             <Soccer selected={selected} visible={true} />
           )}
+        </Box>
       </Box>
     </div>
   );

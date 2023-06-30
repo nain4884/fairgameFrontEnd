@@ -25,6 +25,7 @@ import jwtDecode from "jwt-decode";
 import PageNotFound from "../../components/PageNotFound";
 import AdminInPlay from "../../components/AdminInplay";
 import { HomeSlide } from "../../components";
+import EmptyComponent from "../../components/EmptyComponent";
 const AdminRoutes = () => {
   const location = useLocation();
 
@@ -117,7 +118,25 @@ const AdminRoutes = () => {
             </AdminPrivateRoute>
           }
         />
-          <Route exact path="/my-account" element={<HomeSlide />} />
+
+        <Route
+          exact
+          path="/nav"
+          element={
+            <AdminPrivateRoute>
+              <EmptyComponent admin={true} />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/my-account"
+          element={
+            <AdminPrivateRoute>
+              <HomeSlide />
+            </AdminPrivateRoute>
+          }
+        />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </>

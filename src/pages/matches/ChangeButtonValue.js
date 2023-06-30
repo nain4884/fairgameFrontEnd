@@ -45,7 +45,7 @@ const ChangeButtonValue = ({selected,visible}) => {
           width: { mobile: "96vw", laptop: "35vw", tablet: "35vw" },
           minWidth: { laptop: "450px", tablet: "450px", mobile: "0px" },
           marginTop: "10px",
-          marginX: { mobile: "2vw", laptop: "5vw" },
+          marginX: { mobile: "2vw", laptop: "1vw" },
         }}
       >
         <Typography

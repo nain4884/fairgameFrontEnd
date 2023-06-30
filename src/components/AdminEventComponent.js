@@ -20,12 +20,15 @@ const AdminEventComponent = ({
       onClick={(e) => {
         const pathname = location.pathname.split("/")[1];
         const url = data?.url && `/${pathname}/${data?.url}`;
-        if (selected === data?.title && !["Reports","wallet"].includes(data?.title) ) {
-          const href = `/${pathname}/list_of_clients`;
+        if (
+          selected === data?.title &&
+          !["Reports", "wallet"].includes(data?.title)
+        ) {
+          const href = `/${pathname}/nav`;
           // setShow(false);
           navigate(href, {
             state: {
-              activeTab: "Client list",
+              activeTab: "",
             },
           });
         } else {
@@ -43,7 +46,6 @@ const AdminEventComponent = ({
             });
           }
         }
-        
       }}
       sx={[
         {

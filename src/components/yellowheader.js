@@ -12,7 +12,7 @@ import CustomButtonAdmin from "./CustomButtonAdmin";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
 
-const YellowHeader = ({ admin, onChildData, getAccountStatement,userPadding }) => {
+const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
   const adminToken = sessionStorage.getItem("JWTadmin");
   const userToken = sessionStorage.getItem("JWTuser");
 
@@ -44,7 +44,6 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement,userPadding }) =
         alignSelf: "center",
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: userPadding ,
         paddingBottom: "1vh",
       }}
     >
