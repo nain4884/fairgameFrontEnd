@@ -17,6 +17,7 @@ import Lottie from "lottie-react";
 import BoxInput from "./BoxInput";
 import { toast } from "react-toastify";
 import { setRole } from "../newStore";
+import SmallCustomLoader from "./helper/SmallCustomLoader";
 const PlaceBet = ({
   open,
   refs,
@@ -636,7 +637,7 @@ const PlaceBet = ({
             background: "rgba(0, 0, 0, .5)",
           }}
         >
-          <Lottie
+          {/* <Lottie
             animationData={HourGlass}
             style={{
               display: "flex",
@@ -644,7 +645,8 @@ const PlaceBet = ({
               width: "50px",
               height: "50px",
             }}
-          />
+          /> */}
+          <SmallCustomLoader />
         </Box>
       )}
     </Box>

@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { setRole } from "../../newStore";
 import { setSelectedMatch } from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
+import CustomLoader from "../../components/helper/CustomLoader";
 
 let matchOddsCount = 0;
 let sessionOffline = [];
@@ -43,6 +44,7 @@ const DeleteBet = ({ }) => {
   const [sessionLock, setSessionLock] = useState(false);
   const [isHandled, setIsHandled] = useState(false);
   const [currentOdds, setCurrentOdds] = useState(null);
+  const [loading, setLoading] = useState(false);
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
   );
@@ -276,10 +278,14 @@ const DeleteBet = ({ }) => {
                       value?.teamA_suspend == false ? null : "suspended", // Update the teamA_susp
                     teamB_Back: value?.teamB_Back ? value?.teamB_Back : "",
                     teamB_lay: value?.teamB_lay ? value?.teamB_lay : "",
-                    teamB_suspend: value?.teamB_suspend ? value?.teamB_suspend : "",
+                    teamB_suspend: value?.teamB_suspend
+                      ? value?.teamB_suspend
+                      : "",
                     teamC_Back: value?.teamC_Back ? value?.teamC_Back : "",
                     teamC_lay: value?.teamC_lay ? value?.teamC_lay : "",
-                    teamC_suspend: value?.teamC_suspend ? value?.teamC_suspend : "",
+                    teamC_suspend: value?.teamC_suspend
+                      ? value?.teamC_suspend
+                      : "",
                     teamA_Ball: null,
                     teamB_Ball: null,
                     teamC_Ball: null,
@@ -306,9 +312,15 @@ const DeleteBet = ({ }) => {
                     }
                     const updatedMatch = {
                       ...currentMatches[0],
-                      teamA_suspend: value?.teamA_suspend ? "suspended" : value?.teamA_suspend,
-                      teamB_suspend: value?.teamB_suspend ? "suspended" : value?.teamB_suspend,
-                      teamC_suspend: value?.teamC_suspend ? "suspended" : value?.teamC_suspend,
+                      teamA_suspend: value?.teamA_suspend
+                        ? "suspended"
+                        : value?.teamA_suspend,
+                      teamB_suspend: value?.teamB_suspend
+                        ? "suspended"
+                        : value?.teamB_suspend,
+                      teamC_suspend: value?.teamC_suspend
+                        ? "suspended"
+                        : value?.teamC_suspend,
                       teamA_Ball: "ball",
                       teamB_Ball: "ball",
                       teamC_Ball: "ball",
@@ -332,9 +344,15 @@ const DeleteBet = ({ }) => {
                     }
                     const updatedMatch = {
                       ...currentMatches[0],
-                      teamA_suspend: value?.teamA_suspend ? "suspended" : value?.teamA_suspend,
-                      teamB_suspend: value?.teamB_suspend ? "suspended" : value?.teamB_suspend,
-                      teamC_suspend: value?.teamC_suspend ? "suspended" : value?.teamC_suspend,
+                      teamA_suspend: value?.teamA_suspend
+                        ? "suspended"
+                        : value?.teamA_suspend,
+                      teamB_suspend: value?.teamB_suspend
+                        ? "suspended"
+                        : value?.teamB_suspend,
+                      teamC_suspend: value?.teamC_suspend
+                        ? "suspended"
+                        : value?.teamC_suspend,
                       teamA_Ball: null,
                       teamB_Ball: null,
                       teamC_Ball: null,
@@ -964,6 +982,7 @@ const DeleteBet = ({ }) => {
 
   async function getThisMatch(id) {
     try {
+      setLoading(true);
       const response = await axios.get(`/game-match/matchDetail/${id}`);
 
       let matchOddsDataTemp = response.data?.bettings?.filter(
@@ -993,6 +1012,9 @@ const DeleteBet = ({ }) => {
 
       setMarketId(response.data.marketId);
       setMatchDetail(response.data);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
 
       //TODO
       //   dispatch(
@@ -1001,6 +1023,9 @@ const DeleteBet = ({ }) => {
       //     )
       //   );
     } catch (e) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
       console.log("response", e.response.data);
     }
   }
@@ -1043,6 +1068,14 @@ const DeleteBet = ({ }) => {
     }
   }, [matchId]);
 
+  const handleDeleteBet = async (value) => {
+    let data = {
+      value: value,
+      ids: selectedBetData
+    }
+    setMode(!mode);
+    // alert(JSON.stringify(data));
+  }
   //TODO
   // const PlaceBetComponent = () => {
   //     const [anchorEl, setAnchorEl] = useState(null);
@@ -1072,6 +1105,7 @@ const DeleteBet = ({ }) => {
   // const menutItems = [{ title: "Account Statement" }, { title: "Profile Loss Report" }, { title: "Bet History" }, { title: "Unsetteled Bet" }, { title: "Casino Report History" }, { title: "Set Button Values" }, { title: "Security Auth Verfication" }, { title: "Change Password" }]
 
   const [mode, setMode] = useState(false);
+  const [selectedBetData, setSelectedBetData] = useState([]);
   const CustomButton = () => {
     return (
       <Box
@@ -1079,6 +1113,7 @@ const DeleteBet = ({ }) => {
           if (mode) {
             setVisible(true);
           } else {
+            // alert(JSON.stringify(selectedBetData));
             setMode(!mode);
           }
         }}
@@ -1144,24 +1179,42 @@ const DeleteBet = ({ }) => {
   const dispatch = useDispatch();
   return (
     <Background>
-      <AddNotificationModal
+     {loading ? (
+        <Box
+          sx={{
+            minHeight: "60vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CustomLoader text="" />
+        </Box>
+      ) : (
+     <>
+     <AddNotificationModal
         value={value}
         title={"Add Remark"}
         visible={visible}
         setVisible={setVisible}
-        onDone={() => {
-          dispatch(
-            setDailogData({
-              isModalOpen: true,
-              showRight: true,
-              bodyText: "Deleted Sucessfully",
-            })
-          );
-        }}
-        onClick={() => {
-          // setVisible(false);
-          setMode(!mode);
-        }}
+        // onDone={() => {
+        //   // dispatch(
+        //   //   setDailogData({
+        //   //     isModalOpen: true,
+        //   //     showRight: true,
+        //   //     bodyText: "Deleted Sucessfully",
+        //   //   })
+        //   // );
+        //   alert(value)
+        //   // setMode(!mode);
+        //   // handleDeleteBet();
+        // }}
+        onDone={handleDeleteBet}
+      // onClick={() => {
+      //   // setVisible(false);
+      //   setMode(!mode);
+      //   handleDeleteBet();
+      // }}
       />
       <Box
         sx={{
@@ -1186,9 +1239,9 @@ const DeleteBet = ({ }) => {
               fontSize: "16px",
               color: "white",
               fontWeight: "700",
-              paddingTop: "2%",
+              // paddingTop: "2%",
               alignSelf: "start",
-              paddingBottom: "5px"
+              // paddingBottom: "5px"
             }}
           >
             {currentMatch?.teamA} V/S {currentMatch?.teamB}
@@ -1235,23 +1288,23 @@ const DeleteBet = ({ }) => {
                 sessionOffline={sessionOffline}
               />
             )}
-          {matchesMobile &&
-            <>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  width: "100%",
-                }}
-              >
-                {mode && <CancelButton />}
-                <Box sx={{ width: "2%" }}></Box>
-                <CustomButton />
-              </Box>
-            </>
+          {/* {matchesMobile && */}
+          {IOSinglebets.length > 0 &&
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                width: "100%",
+              }}
+            >
+              {mode && <CancelButton />}
+              <Box sx={{ width: "2%" }}></Box>
+              <CustomButton />
+            </Box>
           }
+          {/* } */}
           {IOSinglebets.length > 0 && (
-            <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />
+            <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} setSelectedBetData={setSelectedBetData} selectedBetData={selectedBetData} />
           )}
         </Box>
         {!matchesMobile && <Box sx={{ width: "20px" }} />}
@@ -1272,13 +1325,10 @@ const DeleteBet = ({ }) => {
               }}
             >
               {/* {mode && <CancelButton />} */}
-              {/* <Box sx={{ width: "2%" }}></Box> */}
-              {mode && <CancelButton />}
               <Box sx={{ width: "2%" }}></Box>
-              <CustomButton />
-              {/* <Box
+              <Box
                 sx={{ width: "150px", marginY: ".75%", height: "15px" }}
-              ></Box> */}
+              ></Box>
             </Box>
             {(currentMatch?.apiSessionActive ||
               currentMatch?.manualSessionActive) && (
@@ -1294,6 +1344,7 @@ const DeleteBet = ({ }) => {
         )}
       </Box>
       <DailogModal />
+     </>)}
     </Background>
   );
 };

@@ -27,6 +27,7 @@ import Lottie from "lottie-react";
 import NotificationModal from "../NotificationModal";
 import { LockIcon } from "../../admin/assets";
 import { useEffect } from "react";
+import SmallCustomLoader from "../helper/SmallCustomLoader";
 
 const SmallBox = ({ valueA, valueB }) => {
     return (
@@ -156,7 +157,7 @@ const Odds = ({
     betLock,
     showFast,
     upcoming,
-    handleRateChange
+    handleRateChange,
 }) => {
     // alert(teamCRates)
     // console.log("matchOddsData 11:", matchOddsData);
@@ -483,8 +484,8 @@ const Odds = ({
                             <Box
                                 sx={{
                                     position: "absolute",
-                                    height: "65%",
-                                    top: "35%",
+                                    height: "100%",
+                                    top: "0%",
                                     width: "100%",
                                     display: "flex",
                                     zIndex: "999",
@@ -493,7 +494,7 @@ const Odds = ({
                                     background: "rgba(0, 0, 0, .5)",
                                 }}
                             >
-                                <Lottie
+                                {/* <Lottie
                                     animationData={HourGlass}
                                     style={{
                                         display: "flex",
@@ -501,7 +502,8 @@ const Odds = ({
                                         width: "50px",
                                         height: "50px",
                                     }}
-                                />
+                                /> */}
+                                <SmallCustomLoader />
                             </Box>
                         )}
 
