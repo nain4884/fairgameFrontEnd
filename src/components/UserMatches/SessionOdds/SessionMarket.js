@@ -330,7 +330,7 @@ const SessionMarket = ({
               </Box>
             )}
 
-            {fastBetLoading && (
+            {/* {fastBetLoading && (
               <Box
                 sx={{
                   position: "absolute",
@@ -344,7 +344,7 @@ const SessionMarket = ({
                   background: "rgba(0, 0, 0, .6)",
                 }}
               >
-                {/* <Lottie
+                <Lottie
                   animationData={HourGlass}
                   style={{
                     display: "flex",
@@ -352,10 +352,10 @@ const SessionMarket = ({
                     width: "50px",
                     height: "50px",
                   }}
-                /> */}
+                />
                 <SmallCustomLoader />
               </Box>
-            )}
+            )} */}
 
             {upcoming && matchSessionData?.length > 0
               && (

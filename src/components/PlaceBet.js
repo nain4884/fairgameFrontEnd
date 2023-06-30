@@ -625,7 +625,7 @@ const PlaceBet = ({
           </button>
         </Box>
       </Box>
-      {betPlaceLoading && (
+      {/* {betPlaceLoading && (
         <Box
           sx={{
             position: "absolute",
@@ -637,7 +637,7 @@ const PlaceBet = ({
             background: "rgba(0, 0, 0, .5)",
           }}
         >
-          {/* <Lottie
+          <Lottie
             animationData={HourGlass}
             style={{
               display: "flex",
@@ -645,10 +645,10 @@ const PlaceBet = ({
               width: "50px",
               height: "50px",
             }}
-          /> */}
+          />
           <SmallCustomLoader />
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };

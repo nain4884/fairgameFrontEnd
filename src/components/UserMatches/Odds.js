@@ -480,7 +480,7 @@ const Odds = ({
                             </Box>
                         )}
 
-                        {fastBetLoading && (
+                        {/* {fastBetLoading && (
                             <Box
                                 sx={{
                                     position: "absolute",
@@ -494,7 +494,7 @@ const Odds = ({
                                     background: "rgba(0, 0, 0, .5)",
                                 }}
                             >
-                                {/* <Lottie
+                                <Lottie
                                     animationData={HourGlass}
                                     style={{
                                         display: "flex",
@@ -502,10 +502,10 @@ const Odds = ({
                                         width: "50px",
                                         height: "50px",
                                     }}
-                                /> */}
+                                />
                                 <SmallCustomLoader />
                             </Box>
-                        )}
+                        )} */}
 
                         {upcoming && (
                             <Box

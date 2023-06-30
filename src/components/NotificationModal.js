@@ -2,17 +2,19 @@ import { Box, Typography } from "@mui/material";
 import MUIModal from "@mui/material/Modal";
 import React, { useEffect } from "react";
 import { BETPLACED, NOT } from "../assets";
+import CustomLoader from "./helper/CustomLoader";
+import SmallCustomLoader from "./helper/SmallCustomLoader";
 
 const NotificationModal = ({ open, handleClose }) => {
   try {
     useEffect(() => {
-      if (open.value) {
+      if (open.value ) {
         setTimeout(() => {
           handleClose();
-        }, 1000);
+        }, 2000);
       }
     }, [open.value]);
-    console.log('open', open)
+    console.log("open", open);
     return (
       <MUIModal
         sx={{
@@ -29,6 +31,7 @@ const NotificationModal = ({ open, handleClose }) => {
         <Box
           sx={{
             width: "190px",
+            minHeight:"150px",
             borderRadius: "6px",
             paddingY: "10px",
             flexDirection: "column",
@@ -42,23 +45,29 @@ const NotificationModal = ({ open, handleClose }) => {
             zIndex: 999,
           }}
         >
-          <img
-            src={open.type ? BETPLACED : NOT}
-            style={{ width: "60px", height: "60px", marginTop: "3px" }}
-          />
+          {open?.loading ? (
+            <SmallCustomLoader />
+          ) : (
+            <>
+              <img
+                src={open.type ? BETPLACED : NOT}
+                style={{ width: "60px", height: "60px", marginTop: "3px" }}
+              />
 
-          <Typography
-            sx={{
-              fontSize: { mobile: "10px", laptop: "14px", tablet: "14px" },
-              fontWeight: "500",
-              marginY: ".7vh",
-              width: "70%",
-              alignSelf: "center",
-              textAlign: "center",
-            }}
-          >
-            {open.msg}
-          </Typography>
+              <Typography
+                sx={{
+                  fontSize: { mobile: "10px", laptop: "14px", tablet: "14px" },
+                  fontWeight: "500",
+                  marginY: ".7vh",
+                  width: "70%",
+                  alignSelf: "center",
+                  textAlign: "center",
+                }}
+              >
+                {open.msg}
+              </Typography>
+            </>
+          )}
         </Box>
       </MUIModal>
     );
