@@ -132,7 +132,7 @@ const SessionMarketBox = ({
         sx={{
           display: "flex",
           background: "white",
-          height: "38px",
+          height: "30px",
           width: "100%",
         }}
       >
@@ -140,7 +140,7 @@ const SessionMarketBox = ({
           sx={{
             display: "flex",
             background: "white",
-            height: "38px",
+            height: "30px",
             width: "40%",
             alignItems: "center",
           }}
@@ -160,7 +160,7 @@ const SessionMarketBox = ({
         <Box
           sx={{
             position: "absolute",
-            top: "5px",
+            top: "2px",
             width: "30%",
             justifyContent: "flex-end",
             left: { laptop: "24vh", tablet: "24vh" },
@@ -202,7 +202,7 @@ const SessionMarketBox = ({
               textSize={"8px"}
               // width={"80px"}
               width={"33px"}
-              // title={"Live"}
+            // title={"Live"}
             />
           )}
           {!hideResult && (
@@ -238,7 +238,7 @@ const SessionMarketBox = ({
             />
           </Box>
         )} */}
-     {visible && (
+        {visible && (
           <Box
             sx={{
               position: "absolute",
@@ -265,7 +265,7 @@ const SessionMarketBox = ({
           </Box>
         )}
         {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
-        newData?.betStatus === 2 ? (
+          newData?.betStatus === 2 ? (
           <Box
             sx={{
               margin: "1px",
@@ -301,7 +301,7 @@ const SessionMarketBox = ({
               display: "flex",
               position: "relative",
               background: "white",
-              height: "38px",
+              height: "30px",
               marginLeft: "4vh",
               width: { laptop: "43%", mobile: "60%" },
               justifyContent: "center",

@@ -145,65 +145,92 @@ const FullAllBets = ({ tag, mode, IObets }) => {
   const navigate = useNavigate();
   return (
     <Box
-      sx={{
-        width: { mobile: "100%", laptop: "100%" },
-        marginY: { laptop: ".25vh" },
-        padding: 0.2,
-        background: "white",
-      }}
+    sx={{
+      display: "flex",
+      position: "relative",
+      backgroundColor: "white",
+      padding: 0.2,
+      flexDirection: "column",
+      marginY: "3px",
+      width: "100%",
+      alignSelf: { mobile: "center", tablet: "center", laptop: "flex-start" },
+    }}
     >
       <Box
         // onClick={(e) => {
         //   e.stopPropagation();
         //   navigate("/admin/total_bets");
         // }}
-        sx={[
-          {
-            width: "100%",
-            height: "38px",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingLeft: "10px",
-            paddingRight: "4px",
-            marginBottom: ".1vh",
-            display: "flex",
-            background: '#f1c550'
-          },
-          // (theme) => ({
-          //   backgroundImage: `${theme.palette.primary.headerGradient}`,
-          // }),
-        ]}
+        sx={{
+          display: "flex",
+          height: 38,
+          flexDirection: "row",
+          width: "99.7%",
+          alignSelf: "center",
+        }}
       >
+         <Box
+          sx={{
+            flex: 1,
+            background: "#f1c550",
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
         <Typography
           sx={{ 
-            fontWeight: "12px", color: "#575757", fontWeight: "700" ,
-            fontSize: { laptop: "14px", tablet: "12px", mobile: "12px" },
+            fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+              fontWeight: "bold",
+              marginLeft: "7px",
           }}
         >
           All Bets
         </Typography>
+        </Box>
         <Box
           sx={{
-            width: "100px",
-            height: "90%",
-            background: "white",
-            justifyContent: "center",
-            borderRadius: "3px",
-            alignItems: "center",
-            display: "flex",
-            flexDirection: "column",
+            flex: 0.1,
+            background: "#262626",
           }}
         >
-          <Typography
-            sx={{ fontSize: "12px", fontWeight: "700", color: "#FF1111" }}
+          <div className="slanted"></div>
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            background: "#262626",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: { laptop: "flex-end", mobile: "flex-end" },
+            padding: { laptop: '0', mobile: '0' },
+          }}
+        >
+          <Box
+            sx={{
+              width: "100px",
+              height: "80%",
+              background: "white",
+              justifyContent: "center",
+              borderRadius: "3px",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+              marginRight: "8px",
+            }}
           >
-            Total Bet
-          </Typography>
-          <Typography
-            sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
-          >
-            {IObets?.length || 0}
-          </Typography>
+            <Typography
+              sx={{ fontSize: "12px", fontWeight: "700", color: "#FF1111" }}
+            >
+              Total Bet
+            </Typography>
+
+            <Typography
+              sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
+            >
+              {IObets?.length || 0}
+            </Typography>
+          </Box>
         </Box>
       </Box>
       <HeaderRow mode={mode} tag={tag} />

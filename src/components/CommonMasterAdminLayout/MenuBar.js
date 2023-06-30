@@ -17,7 +17,8 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
     
       // width: "96.25%", 
       width: "100%", 
-      left: "1px !important",  
+      left: "1px !important", 
+      top: {laptop: "191px !important", mobile: "170px !important"}, 
       minHeight: "220px", 
       background: "url(/static/media/back.00d2deda3616019e96ee.png)",
       boxShadow: "none",
@@ -26,7 +27,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
   } },
     MenuItemsx: {
       width: "100%",
-      fontSize: { laptop: "16px", mobile: "10px" },
+      fontSize: { laptop: "16px", mobile: "12px" },
       fontWeight: "600",
       marginX: "0px",
       // width: { laptop: "140px", mobile: "170px" },
@@ -36,7 +37,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
       marginTop: "0px",
       borderStyle: "solid",
       // marginLeft: "-10px",
-      minHeight: "40px",
+      minHeight: {mobile: "30px", laptop: "40px"},
       lineHeight: "18px",
       color: "black",
       "&:hover": {        
@@ -64,10 +65,10 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
             <Typography
               sx={[
                 {
-                  fontSize: { laptop: "18px", mobile: "10px" },
+                  fontSize: { laptop: "18px", mobile: "16px" },
                   fontWeight: "600",
                   fontFamily: "Montserrat",
-                  padding: "10px 37px",
+                  padding: {laptop: "10px 37px", mobile: "10px 20px"},
                   paddingBottom: "15px",
                   color: "#fff",
                   textTransform: "uppercase"
@@ -79,7 +80,7 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
             </Typography>
             {/* <Box sx={{ height: "1px", background: "#ddd" }}></Box> */}
           </Box>
-          <Box sx={{background: "#F8C851", marginLeft: "37px",marginRight: "20px", padding: "10px", borderRadius: "5px"}}>
+          <Box sx={{background: "#F8C851", marginLeft: {mobile:"20px",laptop: "37px"},marginRight: "20px", padding: "10px", borderRadius: "5px"}}>
 
             {menutItems1.map((x, index) => (
               <MenuItem

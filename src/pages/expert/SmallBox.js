@@ -3,7 +3,7 @@ import React from 'react'
 import { BroadCast } from '../../expert/assets';
 import { Button } from "@mui/material";
 
-const SmallBox = ({ color, title, width, textSize, onClick,hide }) => {
+const SmallBox = ({ color, title, width, textSize, onClick, hide }) => {
   return (
     <>
       <Box
@@ -15,7 +15,7 @@ const SmallBox = ({ color, title, width, textSize, onClick,hide }) => {
           justifyContent: "space-between",
           paddingX: 1,
           alignItems: "center",
-          height: "30px",
+          height: "25px",
           background: color ? color : "#46e080",
           borderRadius: "3px",
           cursor: "pointer",
@@ -25,12 +25,12 @@ const SmallBox = ({ color, title, width, textSize, onClick,hide }) => {
           sx={{
             fontSize: { laptop: textSize ? textSize : "11px", mobile: "10px" },
             fontWeight: "600",
-            color: color!=="#FFF" && "white",
+            color: color !== "#FFF" && "white",
           }}
         >
           {title}
         </Typography>
-      {hide &&  <img src={BroadCast} style={{ height: "15px", width: "15px" }} />}
+        {hide && <img src={BroadCast} style={{ height: "15px", width: "15px" }} />}
       </Box>
       {/* <Button
         onClick={onClick}

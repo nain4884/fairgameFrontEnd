@@ -49,23 +49,23 @@ import {
 // });
 // export default IndiaPakLive;
 const IndiaPakLive = React.forwardRef(({
-    createSession,
-    match,
-    showDialogModal,
-    sessionEvent,
-    betData,
-    handleBetData,
-    proLoss1,
-    setCheckBetId,
-    childFunction, }, ref) => {
-    const childRef = useRef(null);
-    const { socket } = useContext(SocketContext);
-    const { axios } = setRole();
-    const dispatch = useDispatch();
-    const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
-    const { sessionAllBet, sessionBetId, allEventSession } = useSelector(
-        (state) => state?.expertMatchDetails
-    );
+  createSession,
+  match,
+  showDialogModal,
+  sessionEvent,
+  betData,
+  handleBetData,
+  proLoss1,
+  setCheckBetId,
+  childFunction, }, ref) => {
+  const childRef = useRef(null);
+  const { socket } = useContext(SocketContext);
+  const { axios } = setRole();
+  const dispatch = useDispatch();
+  const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
+  const { sessionAllBet, sessionBetId, allEventSession } = useSelector(
+    (state) => state?.expertMatchDetails
+  );
 
   const [currentOdds, setCurrentOdds] = useState(null);
   // const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -114,155 +114,157 @@ const IndiaPakLive = React.forwardRef(({
   //     }
   // }
 
-    // useEffect(() => {
-    //     alert(sessionBetId)
-    // }, [sessionBetId]);
+  // useEffect(() => {
+  //     alert(sessionBetId)
+  // }, [sessionBetId]);
 
-    useImperativeHandle(ref, () => ({
-        childFunction(item) {
-            // alert(JSON.stringify(item));
-            getManuallBookMaker(item?.bet_id?.id);
-            // alert("Child function called from parent component");
-            // Perform any desired actions in the child component
-        }
-    }));
+  useImperativeHandle(ref, () => ({
+    childFunction(item) {
+      // alert(JSON.stringify(item));
+      getManuallBookMaker(item?.bet_id?.id);
+      // alert("Child function called from parent component");
+      // Perform any desired actions in the child component
+    }
+  }));
 
-    // console.log('Session', temp)
-    useEffect(() => {
-        if (socket && socket.connected) {
-            socket.onevent = async (packet) => {
-                if (packet.data[0] === "session_bet") {
-                    const data = packet.data[1];
-                    try {
-                        // alert(JSON.stringify(data?.profitLoss))
-                        // alert("vvvvv: " + data?.betPlaceData?.bet_id)
-                        setCurrentOdds({
-                            bet_id: data?.betPlaceData?.bet_id,
-                            odds: data?.betPlaceData?.odds,
-                            match_id: data?.betPlaceData?.match_id,
-                        });
-                        if (betId === data?.betPlaceData?.bet_id) {
-                            let profitLoss = data?.profitLoss;
-                            setProLoss(profitLoss);
-                            const body = {
-                                id: data?.betPlaceData?.id,
-                                isActive: true,
-                                createAt: data?.betPlaceData?.createAt,
-                                updateAt: data?.betPlaceData?.createdAt,
-                                createdBy: null,
-                                deletedAt: null,
-                                user: { userName: data?.betPlaceData?.userName },
-                                user_id: null,
-                                match_id: data?.betPlaceData?.match_id,
-                                bet_id: data?.betPlaceData?.bet_id,
-                                result: "pending",
-                                team_bet: data?.betPlaceData?.team_bet,
-                                odds: data?.betPlaceData?.odds,
-                                win_amount: null,
-                                loss_amount: null,
-                                bet_type: data?.betPlaceData?.bet_type,
-                                country: null,
-                                deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                                ip_address: null,
-                                rate: data?.betPlaceData?.rate,
-                                marketType: data?.betPlaceData?.marketType,
-                                myStack: data?.betPlaceData?.myStack,
-                                amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                            };
-                            // const updatedData = [body, ...sessionAllBet]; // Combine new object with existing state data
-                            // dispatch(setSessionAllBet(updatedData));
-                            if (sessionAllBet.length === 0) {
-                                const updatedData = [body];
-                                // handleBetData(updatedData);
-                                dispatch(setSessionAllBet(updatedData));
-                            } else {
-                                const updatedData = [body, ...sessionAllBet];
-                                // handleBetData(updatedData);
-                                dispatch(setSessionAllBet(updatedData));
-                            }
-                        }
-                    } catch (err) {
-                        console.log(err?.message);
-                    }
-                }
-                if (packet.data[0] === "newBetAdded") {
-                    const value = packet.data[1];
-                    try {
-                        const updatedAllEventSession = allEventSession.map(
-                            (currentMatch) => {
-                                if (currentMatch.id === value?.match_id) {
-                                    const betObj = {
-                                        id: value.id,
-                                        bet_condition: value.bet_condition,
-                                    };
-                                    const newBettings = [...currentMatch.bettings, betObj];
-                                    return {
-                                        ...currentMatch,
-                                        bettings: newBettings,
-                                    };
-                                }
-                                return currentMatch;
-                            }
-                        );
-                        dispatch(setAllEventSession(updatedAllEventSession));
-                    } catch (err) {
-                        console.log(err?.message);
-                    }
-                }
-                if (packet.data[0] === "resultDeclareForBet") {
-                  const value = packet.data[1];
-        
-                  try {
-                    const updatedAllEventSession = allEventSession.map(
-                      (currentMatch) => {
-                        if (currentMatch.id === value?.match_id) {
-                          const filteredBettings = currentMatch.bettings.filter(
-                            (bet) => bet.id !== value?.betId
-                          );
-                          return {
-                            ...currentMatch,
-                            bettings: filteredBettings,
-                          };
-                        }
-                        return currentMatch;
-                      }
-                    );
-        
-                    dispatch(setAllEventSession(updatedAllEventSession));
-                  } catch (err) {
-                    console.log(err?.message);
-                  }
-                }
-            };
-        }
-    }, [socket, betId, sessionAllBet]);
-
-    useEffect(() => {
-        // alert(JSON.stringify(sessionEvent?.id))
-        if (sessionEvent?.id || sessionBetId) {
-            // alert(JSON.stringify(betData))
-            if (sessionBetId) {
-                getManuallBookMaker(sessionBetId);
-            } else {
-                getManuallBookMaker(sessionEvent?.id);
-            }
-        } else {
-            setDetail(stateDetail);
-            setLock({
-                isNo: true,
-                isYes: true,
-                isNoPercent: true,
-                isYesPercent: true,
+  // console.log('Session', temp)
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        if (packet.data[0] === "session_bet") {
+          const data = packet.data[1];
+          try {
+            // alert(JSON.stringify(data?.profitLoss))
+            // alert("vvvvv: " + data?.betPlaceData?.bet_id)
+            setCurrentOdds({
+              bet_id: data?.betPlaceData?.bet_id,
+              odds: data?.betPlaceData?.odds,
+              match_id: data?.betPlaceData?.match_id,
             });
+            if (betId === data?.betPlaceData?.bet_id) {
+              let profitLoss = data?.profitLoss;
+              setProLoss(profitLoss);
+              const body = {
+                id: data?.betPlaceData?.id,
+                isActive: true,
+                createAt: data?.betPlaceData?.createAt,
+                updateAt: data?.betPlaceData?.createdAt,
+                createdBy: null,
+                deletedAt: null,
+                user: { userName: data?.betPlaceData?.userName },
+                user_id: null,
+                match_id: data?.betPlaceData?.match_id,
+                bet_id: data?.betPlaceData?.bet_id,
+                result: "pending",
+                team_bet: data?.betPlaceData?.team_bet,
+                odds: data?.betPlaceData?.odds,
+                win_amount: null,
+                loss_amount: null,
+                bet_type: data?.betPlaceData?.bet_type,
+                country: null,
+                deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                ip_address: null,
+                rate: data?.betPlaceData?.rate,
+                marketType: data?.betPlaceData?.marketType,
+                myStack: data?.betPlaceData?.myStack,
+                amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+              };
+              // const updatedData = [body, ...sessionAllBet]; // Combine new object with existing state data
+              // dispatch(setSessionAllBet(updatedData));
+              if (sessionAllBet.length === 0) {
+                const updatedData = [body];
+                // handleBetData(updatedData);
+                dispatch(setSessionAllBet(updatedData));
+              } else {
+                const updatedData = [body, ...sessionAllBet];
+                // handleBetData(updatedData);
+                dispatch(setSessionAllBet(updatedData));
+              }
+            }
+          } catch (err) {
+            console.log(err?.message);
+          }
         }
-        setIsCreateSession(createSession);
-        getSessionResult(match?.id);
-        return () => {
-            dispatch(setSessionBetId(""));
-        };
-    }, [sessionEvent?.id]);
+        if (packet.data[0] === "newBetAdded") {
+          const value = packet.data[1];
+          try {
+            const updatedAllEventSession = allEventSession.map(
+              (currentMatch) => {
+                if (currentMatch.id === value?.match_id) {
+                  const betObj = {
+                    id: value.id,
+                    bet_condition: value.bet_condition,
+                  };
+                  const newBettings = [...currentMatch.bettings, betObj];
+                  return {
+                    ...currentMatch,
+                    bettings: newBettings,
+                  };
+                }
+                return currentMatch;
+              }
+            );
+            dispatch(setAllEventSession(updatedAllEventSession));
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+        if (packet.data[0] === "resultDeclareForBet") {
+          const value = packet.data[1];
+
+          try {
+            const updatedAllEventSession = allEventSession.map(
+              (currentMatch) => {
+                if (currentMatch.id === value?.match_id) {
+                  const filteredBettings = currentMatch.bettings.filter(
+                    (bet) => bet.id !== value?.betId
+                  );
+                  return {
+                    ...currentMatch,
+                    bettings: filteredBettings,
+                  };
+                }
+                return currentMatch;
+              }
+            );
+
+            dispatch(setAllEventSession(updatedAllEventSession));
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+      };
+    }
+  }, [socket, betId, sessionAllBet]);
+
+  useEffect(() => {
+    // alert(JSON.stringify(sessionEvent?.id))
+    if (sessionEvent?.id || sessionBetId) {
+      // alert(JSON.stringify(betData))
+      if (sessionBetId) {
+        getManuallBookMaker(sessionBetId);
+      } else {
+        getManuallBookMaker(sessionEvent?.id);
+      }
+    } else {
+      setDetail(stateDetail);
+      setLock({
+        isNo: true,
+        isYes: true,
+        isNoPercent: true,
+        isYesPercent: true,
+      });
+    }
+    setIsCreateSession(createSession);
+    getSessionResult(match?.id);
+    return () => {
+      dispatch(setSessionBetId(""));
+    };
+  }, [sessionEvent?.id]);
 
   const getSessionResult = async (match_id) => {
+    setProLoss(null);
+    dispatch(setSessionAllBet([]));
     let response = await axios.get(`/game-match/getResults/${match_id}`);
     // alert(JSON.stringify(response?.data?.data.length))
     dispatch(setSessionResults(response?.data?.data || []));
@@ -389,274 +391,274 @@ const IndiaPakLive = React.forwardRef(({
     }
   };
 
-    return (
+  return (
+    <Box
+      sx={{
+        flex: 1,
+        background: "#F8C851",
+        borderRadius: "5px",
+        minHeight: "300px",
+        py: "30px",
+        px: "20px",
+      }}
+    >
+      <Typography
+        sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}
+      >
+        {match?.title ? match.title : "India vs Pakistan"}
+      </Typography>
+      <Box sx={{ display: "flex", marginTop: "20px" }}>
         <Box
-            sx={{
-                flex: 1,
-                background: "#F8C851",
-                borderRadius: "5px",
-                minHeight: "300px",
-                py: "30px",
-                px: "20px",
-            }}
+          sx={{
+            flex: 1,
+            justifyContent: "space-between",
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-            <Typography
-                sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}
-            >
-                {match?.title ? match.title : "India vs Pakistan"}
-            </Typography>
-            <Box sx={{ display: "flex", marginTop: "20px" }}>
+          <AddSession
+            createSession={createSession}
+            betId={betId}
+            Detail={{ Detail, setDetail }}
+            incGap={{ incGap, setIncGap }}
+            socket={socket}
+            sessionEvent={sessionEvent}
+            lock={lock}
+            setLock={setLock}
+            isBall={{ isBall, setIsBall }}
+            isCreateSession={isCreateSession}
+            match={match}
+            isPercent={{ isPercent, setIsPercent }}
+            live={live}
+          />
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            {!isCreateSession || sessionBetId ? (
+              <>
                 <Box
-                    sx={{
-                        flex: 1,
-                        justifyContent: "space-between",
-                        display: "flex",
-                        flexDirection: "column",
-                    }}
+                  onClick={(e) => {
+                    handleLive(live ? 0 : 1);
+                    // setLive(!live);
+                  }}
+                  sx={{
+                    width: "30%",
+                    display: "flex",
+                    maxWidth: "120px",
+                    background: live ? "#10DC61" : "#FF4D4D",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "35px",
+                    borderRadius: "5px",
+                  }}
                 >
-                    <AddSession
-                        createSession={createSession}
-                        betId={betId}
-                        Detail={{ Detail, setDetail }}
-                        incGap={{ incGap, setIncGap }}
-                        socket={socket}
-                        sessionEvent={sessionEvent}
-                        lock={lock}
-                        setLock={setLock}
-                        isBall={{ isBall, setIsBall }}
-                        isCreateSession={isCreateSession}
-                        match={match}
-                        isPercent={{ isPercent, setIsPercent }}
-                        live={live}
-                    />
-                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        {!isCreateSession || sessionBetId ? (
-                            <>
-                                <Box
-                                    onClick={(e) => {
-                                        handleLive(live ? 0 : 1);
-                                        // setLive(!live);
-                                    }}
-                                    sx={{
-                                        width: "30%",
-                                        display: "flex",
-                                        maxWidth: "120px",
-                                        background: live ? "#10DC61" : "#FF4D4D",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        height: "35px",
-                                        borderRadius: "5px",
-                                    }}
-                                >
-                                    <Typography
-                                        sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
-                                    >
-                                        {live ? "Go Live" : "Stop"}
-                                    </Typography>
-                                    <StyledImage
-                                        src={LiveOn}
-                                        sx={{ marginLeft: "5px", height: "15px", width: "15px" }}
-                                    />
-                                </Box>
-                                <Box
-                                    onClick={(e) => {
-                                        setVisible1(true);
-                                        e.stopPropagation();
-                                    }}
-                                    sx={{
-                                        position: "relative",
-                                        width: "30%",
-                                        display: "flex",
-                                        background: "#FF4D4D",
-                                        maxWidth: "120px",
-                                        marginLeft: "5px",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        height: "35px",
-                                        borderRadius: "5px",
-                                    }}
-                                >
-                                    <Typography
-                                        sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
-                                    >
-                                        Un Declare
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            position: "absolute",
-                                            zIndex: 999,
-                                            top: "40px",
-                                            left: 0,
-                                        }}
-                                    >
-                                        {visible1 && (
-                                            <SessionResultModal
-                                                newData={{
-                                                    id: betId,
-                                                    match_id: match?.id,
-                                                    betStatus: 2,
-                                                }}
-                                                undeclare={true}
-                                                onClick={() => {
-                                                    setVisible1(false);
-                                                    getSessionResult(match?.id);
-                                                }}
-                                            />
-                                        )}
-                                    </Box>
-                                </Box>
-                                <Box
-                                    onClick={(e) => {
-                                        setVisible(true);
-                                        e.stopPropagation();
-                                    }}
-                                    sx={{
-                                        width: "30%",
-                                        position: "relative",
-                                        display: "flex",
-                                        background: "#0B4F26",
-                                        marginLeft: "5px",
-                                        maxWidth: "120px",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        height: "35px",
-                                        borderRadius: "5px",
-                                    }}
-                                >
-                                    <Typography
-                                        sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
-                                    >
-                                        Declare
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            position: "absolute",
-                                            zIndex: 999,
-                                            top: "40px",
-                                            left: 0,
-                                        }}
-                                    >
-                                        {visible && (
-                                            <SessionResultModal
-                                                newData={{
-                                                    id: betId,
-                                                    match_id: match?.id,
-                                                    betStatus: 0,
-                                                }}
-                                                onClick={() => {
-                                                    setVisible(false);
-                                                    getSessionResult(match?.id);
-                                                }}
-                                            />
-                                        )}
-                                    </Box>
-                                </Box>
-                                <Box
-                                    onClick={(e) => {
-                                        setVisible2(true);
-                                        e.stopPropagation();
-                                    }}
-                                    sx={{
-                                        width: "30%",
-                                        position: "relative",
-                                        display: "flex",
-                                        background: "#303030",
-                                        marginLeft: "5px",
-                                        justifyContent: "center",
-                                        maxWidth: "120px",
-                                        alignItems: "center",
-                                        height: "35px",
-                                        borderRadius: "5px",
-                                    }}
-                                >
-                                    <Typography
-                                        sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
-                                    >
-                                        No Result
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            position: "absolute",
-                                            zIndex: 999,
-                                            top: "40px",
-                                            left: 0,
-                                        }}
-                                    >
-                                        {visible2 && (
-                                            <SessionResultModal
-                                                newData={{
-                                                    id: betId,
-                                                    match_id: match?.id,
-                                                    betStatus: 3,
-                                                }}
-                                                onClick={() => {
-                                                    setVisible2(false);
-                                                    getSessionResult(match?.id);
-                                                }}
-                                            />
-                                        )}
-                                    </Box>
-                                </Box>
-                            </>
-                        ) : (
-                            <Box
-                                onClick={(e) => {
-                                    doSubmitSessionBet(
-                                        Detail.n_rate_percent + "-" + Detail.y_rate_percent
-                                    );
-                                }}
-                                sx={{
-                                    width: "30%",
-                                    position: "relative",
-                                    display: "flex",
-                                    background: "#0B4F26",
-                                    marginLeft: "5px",
-                                    maxWidth: "120px",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    height: "35px",
-                                    borderRadius: "5px",
-                                }}
-                            >
-                                <Typography
-                                    sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
-                                >
-                                    Submit
-                                </Typography>
-                                <Box
-                                    sx={{
-                                        position: "absolute",
-                                        zIndex: 999,
-                                        top: "40px",
-                                        left: 0,
-                                    }}
-                                >
-                                    {visible && (
-                                        <SessionResultModal
-                                            onClick={() => {
-                                                setVisible(false);
-                                            }}
-                                        />
-                                    )}
-                                </Box>
-                            </Box>
-                        )}
-                    </Box>
+                  <Typography
+                    sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
+                  >
+                    {live ? "Go Live" : "Stop"}
+                  </Typography>
+                  <StyledImage
+                    src={LiveOn}
+                    sx={{ marginLeft: "5px", height: "15px", width: "15px" }}
+                  />
                 </Box>
-                <Box sx={{ marginLeft: "15px", width: "30%" }}>
-                    {!isCreateSession || sessionBetId ? (
-                        <RunsAmountBox
-                            betId={betId}
-                            currentOdds={currentOdds?.bet_id === betId ? currentOdds : null}
-                            proLoss={proLoss}
-                        />
-                    ) : (
-                        <Box sx={{ width: "162px", minHeight: "182px" }} />
+                <Box
+                  onClick={(e) => {
+                    setVisible1(true);
+                    e.stopPropagation();
+                  }}
+                  sx={{
+                    position: "relative",
+                    width: "30%",
+                    display: "flex",
+                    background: "#FF4D4D",
+                    maxWidth: "120px",
+                    marginLeft: "5px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "35px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
+                  >
+                    Un Declare
+                  </Typography>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      zIndex: 999,
+                      top: "40px",
+                      left: 0,
+                    }}
+                  >
+                    {visible1 && (
+                      <SessionResultModal
+                        newData={{
+                          id: betId,
+                          match_id: match?.id,
+                          betStatus: 2,
+                        }}
+                        undeclare={true}
+                        onClick={() => {
+                          setVisible1(false);
+                          getSessionResult(match?.id);
+                        }}
+                      />
                     )}
+                  </Box>
                 </Box>
-            </Box>
+                <Box
+                  onClick={(e) => {
+                    setVisible(true);
+                    e.stopPropagation();
+                  }}
+                  sx={{
+                    width: "30%",
+                    position: "relative",
+                    display: "flex",
+                    background: "#0B4F26",
+                    marginLeft: "5px",
+                    maxWidth: "120px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "35px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
+                  >
+                    Declare
+                  </Typography>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      zIndex: 999,
+                      top: "40px",
+                      left: 0,
+                    }}
+                  >
+                    {visible && (
+                      <SessionResultModal
+                        newData={{
+                          id: betId,
+                          match_id: match?.id,
+                          betStatus: 0,
+                        }}
+                        onClick={() => {
+                          setVisible(false);
+                          getSessionResult(match?.id);
+                        }}
+                      />
+                    )}
+                  </Box>
+                </Box>
+                <Box
+                  onClick={(e) => {
+                    setVisible2(true);
+                    e.stopPropagation();
+                  }}
+                  sx={{
+                    width: "30%",
+                    position: "relative",
+                    display: "flex",
+                    background: "#303030",
+                    marginLeft: "5px",
+                    justifyContent: "center",
+                    maxWidth: "120px",
+                    alignItems: "center",
+                    height: "35px",
+                    borderRadius: "5px",
+                  }}
+                >
+                  <Typography
+                    sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
+                  >
+                    No Result
+                  </Typography>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      zIndex: 999,
+                      top: "40px",
+                      left: 0,
+                    }}
+                  >
+                    {visible2 && (
+                      <SessionResultModal
+                        newData={{
+                          id: betId,
+                          match_id: match?.id,
+                          betStatus: 3,
+                        }}
+                        onClick={() => {
+                          setVisible2(false);
+                          getSessionResult(match?.id);
+                        }}
+                      />
+                    )}
+                  </Box>
+                </Box>
+              </>
+            ) : (
+              <Box
+                onClick={(e) => {
+                  doSubmitSessionBet(
+                    Detail.n_rate_percent + "-" + Detail.y_rate_percent
+                  );
+                }}
+                sx={{
+                  width: "30%",
+                  position: "relative",
+                  display: "flex",
+                  background: "#0B4F26",
+                  marginLeft: "5px",
+                  maxWidth: "120px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "35px",
+                  borderRadius: "5px",
+                }}
+              >
+                <Typography
+                  sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
+                >
+                  Submit
+                </Typography>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    zIndex: 999,
+                    top: "40px",
+                    left: 0,
+                  }}
+                >
+                  {visible && (
+                    <SessionResultModal
+                      onClick={() => {
+                        setVisible(false);
+                      }}
+                    />
+                  )}
+                </Box>
+              </Box>
+            )}
+          </Box>
         </Box>
-    );
+        <Box sx={{ marginLeft: "15px", width: "30%" }}>
+          {!isCreateSession || sessionBetId ? (
+            <RunsAmountBox
+              betId={betId}
+              currentOdds={currentOdds?.bet_id === betId ? currentOdds : null}
+              proLoss={proLoss}
+            />
+          ) : (
+            <Box sx={{ width: "162px", minHeight: "182px" }} />
+          )}
+        </Box>
+      </Box>
+    </Box>
+  );
 });
 export default IndiaPakLive;
 
@@ -1546,86 +1548,86 @@ const RunsAmountBox = ({
         <Box ref={containerRef} sx={{ maxHeight: "300px", overflowY: "auto" }}>
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
-                const getColor = (value) => {
-                  if (value > 1) {
-                    return "#10DC61";
-                  } else if (value === v?.profit_loss && value > 1) {
-                    return "#F8C851";
-                  } else {
-                    return "#DC3545";
-                  }
-                };
-                const getSVG = (value) => {
-                  if (value > 1) {
-                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                  } else if (value === v?.profit_loss && value > 1) {
-                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                  } else {
-                    return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
-                  }
-                };
-                return (
+              const getColor = (value) => {
+                if (value > 1) {
+                  return "#10DC61";
+                } else if (value === v?.profit_loss && value > 1) {
+                  return "#F8C851";
+                } else {
+                  return "#DC3545";
+                }
+              };
+              const getSVG = (value) => {
+                if (value > 1) {
+                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                } else if (value === v?.profit_loss && value > 1) {
+                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                } else {
+                  return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+                }
+              };
+              return (
+                <Box
+                  id={`${betId}_${v?.odds}`}
+                  key={v?.odds}
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    height: "25px",
+                    borderTop: "1px solid #306A47",
+                  }}
+                >
                   <Box
-                    id={`${betId}_${v?.odds}`}
-                    key={v?.odds}
                     sx={{
+                      width: "35%",
                       display: "flex",
-                      width: "100%",
-                      height: "25px",
-                      borderTop: "1px solid #306A47",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    <Box
+                    <Typography
                       sx={{
-                        width: "35%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        color: "#306A47",
+                        fontWeight: "bold",
+                        fontSize: "12px",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          color: "#306A47",
-                          fontWeight: "bold",
-                          fontSize: "12px",
-                        }}
-                      >
-                        {v?.odds}
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        width: "65%",
-                        display: "flex",
-                        borderLeft: `1px solid #306A47`,
-                        background: getColor(v?.profit_loss),
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          fontWeight: "500",
-                          fontSize: "12px",
-                          color: "white",
-                        }}
-                      >
-                        {v?.profit_loss}
-                      </Typography>
-                      <StyledImage
-                        src={getSVG(v?.profit_loss)}
-                        sx={{
-                          height: "15px",
-                          marginLeft: "5px",
-                          filter:
-                            "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                          width: "15px",
-                        }}
-                      />
-                    </Box>
+                      {v?.odds}
+                    </Typography>
                   </Box>
-                );
-              })
+                  <Box
+                    sx={{
+                      width: "65%",
+                      display: "flex",
+                      borderLeft: `1px solid #306A47`,
+                      background: getColor(v?.profit_loss),
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "12px",
+                        color: "white",
+                      }}
+                    >
+                      {v?.profit_loss}
+                    </Typography>
+                    <StyledImage
+                      src={getSVG(v?.profit_loss)}
+                      sx={{
+                        height: "15px",
+                        marginLeft: "5px",
+                        filter:
+                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                        width: "15px",
+                      }}
+                    />
+                  </Box>
+                </Box>
+              );
+            })
             : null}
         </Box>
         {/* <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>

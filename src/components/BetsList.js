@@ -17,14 +17,14 @@ const Footer = ({ currentPage, pages, callPage, currenLimit }) => {
         px: { mobile: "5px", laptop: "10px" },
         justifyContent: "space-between",
         background: "#FAFAFA",
-        marginX: "0.5%",
+        // marginX: "1.5%",
         marginBottom: "20px",
       }}
     >
       <Typography
         sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}
       >
-        Showing 1 to 10
+        Showing 1 to 15
       </Typography>
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <Box
@@ -125,10 +125,11 @@ const BetsList = ({ betHistory, pageCount, currentPage, currenLimit, handleGetLi
             laptop: "0px",
             tablet: "10px",
           },
-          borderTopLeftRadius: {
-            mobile: "10px",
-            laptop: "0px",
-            tablet: "10px",
+          position: "relative",
+          borderRadius: {
+            mobile: "10px 10px 0 0",
+            laptop: "10px 10px 0 0",
+            tablet: "10px 10px 0 0",
           },
           border: "2px solid white",
         },
@@ -159,7 +160,7 @@ const BetsList = ({ betHistory, pageCount, currentPage, currenLimit, handleGetLi
           )}
         </Box>
       </Box>
-      <Box sx={{ width: "100%", margin: 0, position: "absolute", left: 0 }}>
+      <Box sx={{ width: {laptop: "100.25%", mobile: "101%"},  position: "absolute", left: "-2px" }}>
         {/* <Footer /> */}
         <Footer
           currenLimit={currenLimit}
@@ -178,9 +179,11 @@ const ListH = ({ getLimitEntries }) => {
       sx={{
         display: "flex",
         flexDirection: {
-          mobile: "column-reverse",
+          mobile: "row",
           laptop: "row",
           tablet: "row",
+          background: "#F8C851",
+          borderRadius: "10px 10px 0 0",
         },
         justifyContent: "space-between",
         px: "10px",

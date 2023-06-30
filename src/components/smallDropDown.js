@@ -7,7 +7,7 @@ const SmallDropDown = ({ handleChange ,getLimitEntries}) => {
   const { currentStatementPage } = useSelector((state) => state?.auth);
 //   alert(currentStatementPage)
   const dispatch = useDispatch()
-    const [value, setValue] = useState(10)
+    const [value, setValue] = useState(15)
     const [open, setOpen] = useState(false)
     const Divider = () => {
         return (
@@ -33,9 +33,9 @@ const SmallDropDown = ({ handleChange ,getLimitEntries}) => {
                 <Typography sx={{ fontSize: '12px' }} >{value}</Typography>
                 <img src={ARROWDROPDOWN} style={{ width: '12px', height: '7px', zIndex: 5, transform: open ? 'rotate(0deg)' : 'rotate(180deg)' }} />
             </Box>
-            {open && <Box sx={{ display: 'flex', flexDirection: 'column', background: 'white', width: '47px', alignSelf: 'center', marginX: '5px', borderRadius: '2px', marginTop: '2px', position: 'absolute' }} >
+            {open && <Box sx={{ display: 'flex', flexDirection: 'column', background: 'white', width: '47px', alignSelf: 'center', marginX: '5px', borderRadius: '2px', marginTop: '2px', position: 'absolute', zIndex: 22 }} >
 
-                {['1', '2', '3', '4', '5','6','7','8','9','10'].map((i) => {
+                {['1', '2', '3', '4', '5','6','7','8','9','10',"11","12","13","14", "15"].map((i) => {
                     return (<Item item={i} getLimitEntries={getLimitEntries} />)
                 })}
             </Box>}

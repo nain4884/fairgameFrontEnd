@@ -95,12 +95,12 @@ export default function UserDetailModal({
       width: { mobile: "100%", laptop: "100%", tablet: "100%" },
       justifyContent: {
         mobile: "flex-start",
-        tablet: "center",
-        laptop: "center",
+        tablet: "flex-start",
+        laptop: "flex-start",
       },
       overflow: "hidden",
-      paddingY: "15px",
-      paddingTop: "5px",
+      paddingY: "20px",
+      paddingTop: "10px",
       borderBottom: "2px solid white",
     },
     mainBoxSubsx: [
@@ -113,13 +113,13 @@ export default function UserDetailModal({
         borderRight: "2px solid #0000",
       },
     ],
-    BoxButtonStyledImage: { height: "18px", width: "17px", marginLeft: "5px" },
+    BoxButtonStyledImage: { height: { mobile: "15px", laptop: "18px" }, width: { mobile: "15px", laptop: "17px" }, marginLeft: "5px" },
     BoxButtonContStyle: {
       background: "#E32A2A",
       flex: 1,
-      marginLeft: "10px",
-      marginRight: "10px",
+      marginX: { laptop: "10px", mobile: "0" },
       alignSelf: "center",
+      borderColor: "white",
     },
   };
 
@@ -144,13 +144,13 @@ export default function UserDetailModal({
       {selected != null && (
         <Box
           sx={{
-            width: { mobile: "auto", tablet: "90%", laptop: "70%" },
+            width: { mobile: "auto", tablet: "90%", laptop: "80%", marginLeft: "0" },
             padding: "5px",
           }}
         >
           {selected == 0 && (
             <DepositComponent
-            element={element}
+              element={element}
               backgroundColor={backgroundColor}
               selected={selected == 0}
               setSelected={(e) => {
@@ -170,11 +170,12 @@ export default function UserDetailModal({
               setElementToUDM={setElementToUDM}
               dispatch={dispatch}
               showDialogModal={showDialogModal}
+              titleBackgroundColor="#27AC1E"
             />
           )}
           {selected == 1 && (
             <WithDrawComponent
-            element={element}
+              element={element}
               selected={selected == 1}
               setSelected={(e) => {
                 setSelected(null);
@@ -194,6 +195,7 @@ export default function UserDetailModal({
               setElementToUDM={setElementToUDM}
               dispatch={dispatch}
               showDialogModal={showDialogModal}
+              titleBackgroundColor="#ff0000"
             />
           )}
           {selected == 2 && (
@@ -287,7 +289,7 @@ export default function UserDetailModal({
             gap: { mobile: 0.5 },
             flexWrap: "wrap",
             justifyContent: "center",
-            width: { mobile: "100vw", laptop: "77%", tablet: "100%" },
+            width: { mobile: "90vw", laptop: "77%", tablet: "100%" },
             marginTop: "9px",
           }}
         >
@@ -300,6 +302,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: { mobile: "12px" }
             }}
             labelStyle={{}}
           />
@@ -310,6 +316,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: { mobile: "12px" }
             }}
             isSelected={selected == 1}
             title={"Withdraw"}
@@ -325,6 +335,10 @@ export default function UserDetailModal({
               containerStyle={{
                 marginLeft: { laptop: "10px", mobile: "0" },
                 flex: 1,
+                borderColor: "white",
+              }}
+              titleStyle={{
+                fontSize: { mobile: "12px" }
               }}
               labelStyle={{}}
             />
@@ -338,6 +352,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: { mobile: "12px" }
             }}
           />
           <BoxButton
@@ -348,6 +366,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: { mobile: "12px" }
             }}
             isSelected={selected == 4}
           />
@@ -361,6 +383,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: { mobile: "12px" }
             }}
           />
           <BoxButton
@@ -370,6 +396,10 @@ export default function UserDetailModal({
             containerStyle={{
               marginLeft: { laptop: "10px", mobile: "0" },
               flex: 1,
+              borderColor: "white",
+            }}
+            titleStyle={{
+              fontSize: { mobile: "12px" }
             }}
             title={"Set Exposure Limit"}
             labelStyle={{}}
@@ -381,6 +411,11 @@ export default function UserDetailModal({
               setDeleteModal((prev) => !prev);
             }}
             title={"Delete User"}
+            titleStyle={{
+              fontSize: { mobile: "12px" }
+            }}
+
+
             icon={
               <StyledImage src={DeleteIcon} sx={classes.BoxButtonStyledImage} />
             }
@@ -562,7 +597,8 @@ const DepositComponent = ({
   setSelected,
   selected,
   percent_profit_loss,
-  element
+  element,
+  titleBackgroundColor
 }) => {
   const [showPass, setShowPass] = useState(false);
   const theme = useTheme();
@@ -659,7 +695,7 @@ const DepositComponent = ({
         >
           <MobileViewUserDetails
             elementToUDM={elementToUDM}
-           element={element}
+            element={element}
             userName={elementToUDM?.userName}
             title={"Deposit Amount"}
             setSelected={setSelected}
@@ -715,6 +751,7 @@ const DepositComponent = ({
             initialBalance={initialBalance}
             backgroundColor={backgroundColor}
             loading={loading}
+            titleBackgroundColor={titleBackgroundColor}
           />
         </ModalMUI>
       ) : (
@@ -752,7 +789,7 @@ const DepositComponent = ({
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  width: "80%",
+                  width: "60%",
                   flexDirection: {
                     mobile: "row",
                     tablet: "row",
@@ -765,8 +802,8 @@ const DepositComponent = ({
               >
                 <Typography
                   sx={{
-                    fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                    width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+                    fontSize: { mobile: "3vw", laptop: "20px", tablet: "20px" },
+                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
                     fontWeight: "600",
                     marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
                   }}
@@ -797,7 +834,7 @@ const DepositComponent = ({
               <Box
                 sx={{
                   background: "#004A25",
-                  width: { mobile: "100%", laptop: "100%", tablet: "60%" },
+                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
                   height: "45px",
                   borderRadius: "5px",
                   paddingX: "20px",
@@ -826,6 +863,8 @@ const DepositComponent = ({
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount- Number(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
           </Box> */}
             </Box>
+
+
             <Box
               sx={{
                 width: { mobile: "41%", laptop: "100%" },
@@ -843,19 +882,19 @@ const DepositComponent = ({
             >
               <Typography
                 sx={{
-                  fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                  width: { mobile: "100%", laptop: "40%", tablet: "50%" },
+                  fontSize: { mobile: "3vw", laptop: "20px", tablet: "20px" },
+                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
                   fontWeight: "600",
-                  marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+                  marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
                 }}
               >
                 Wallet Balance
               </Typography>
               <Box
                 sx={{
-                  width: { mobile: "100%", laptop: "60%", tablet: "50%" },
+                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
                   height: "45px",
-                  background: "white",
+                  background: "#FFECBC",
                   display: "flex",
                   alignItems: "center",
                   borderRadius: "5px",
@@ -881,17 +920,6 @@ const DepositComponent = ({
                 />
               </Box>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              overflow: "hidden",
-              width: "100%",
-              gap: "1%",
-              display: { mobile: "flex", laptop: "block" },
-              justifyContent: "flex-end",
-              flexDirection: "row-reverse",
-            }}
-          >
             <Box
               sx={{
                 width: { mobile: "41%", laptop: "100%" },
@@ -904,13 +932,14 @@ const DepositComponent = ({
                   tablet: "row",
                   laptop: "row",
                 },
+                marginTop: "10px"
               }}
             >
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  width: "100%",
+                  width: "60%",
                   flexDirection: {
                     mobile: "row",
                     tablet: "row",
@@ -923,8 +952,8 @@ const DepositComponent = ({
               >
                 <Typography
                   sx={{
-                    fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                    width: { mobile: "100%", laptop: "40%", tablet: "40%" },
+                    fontSize: { mobile: "3vw", laptop: "20px", tablet: "20px" },
+                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
                     fontWeight: "600",
                     marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
                   }}
@@ -934,7 +963,7 @@ const DepositComponent = ({
               </Box>
               <Box
                 sx={{
-                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
                   height: "45px",
                   paddingLeft: "20px",
                   paddingRight: "20px",
@@ -981,6 +1010,18 @@ const DepositComponent = ({
             <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss + Number(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
           </Box> */}
             </Box>
+          </Box>
+          <Box
+            sx={{
+              overflow: "hidden",
+              width: "100%",
+              gap: "1%",
+              display: { mobile: "flex", laptop: "block" },
+              justifyContent: "flex-end",
+              flexDirection: "row-reverse",
+            }}
+          >
+
             <Box
               sx={{
                 borderRadius: "5px",
@@ -992,9 +1033,9 @@ const DepositComponent = ({
                 border: "2px solid #26262633",
                 minHeight: "80px",
                 maxHeight: "115px",
-                marginTop: "10px",
+                marginTop: "0",
                 paddingX: "10px",
-                width: { mobile: "41%", laptop: "100%" },
+                width: { mobile: "41%", laptop: "55%" },
               }}
             >
               <TextField
@@ -1016,10 +1057,68 @@ const DepositComponent = ({
                 }}
               />
             </Box>
+            <Box sx={{ display: "flex", width: "100%" , marginTop: "21px", gap: 1, flexDirection: "row-reverse", justifyContent: "flex-end"}}>
+              <BoxButton
+                loading={loading}
+                containerStyle={{ 
+                  height: "44px",  
+                  maxWidth: "150px !important"  }}
+                isSelected={true}
+                onClick={(e) => {
+                  try {
+                    if (!loading) {
+                      setLoading(true);
+                      UpdateAvailableBalance(depositObj)
+                        .then(({ bool, message }) => {
+                          toast.success(message);
+                          getListOfUser();
+                          updatedUserProfile();
+                          setLoading(false);
+                          showDialogModal(true, true, message);
+                        })
+                        .catch(({ bool, message }) => {
+                          toast.error(message);
+                          setLoading(false);
+                          showDialogModal(true, false, message);
+                        });
+                    }
+                  } catch (e) {
+                    console.log(e?.message);
+                    setLoading(false);
+                  }
+                }}
+                title={"Submit"}
+              />
+              <BoxButton
+                containerStyle={{
+                 
+                  background: "#E32A2A",
+                  border: "0px",
+                  height: "44px",
+                  maxWidth: "150px !important" 
+                }}
+                isSelected={true}
+                onClick={(e) => {
+                  setDepositObj(defaultDepositObj);
+                  setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    available_balance: prevElement.available_balances,
+                  });
+                  setSelected(e);
+                }}
+                title={"Cancel"}
+              />
+            </Box>
+           
           </Box>
+
+
           <Box
             sx={{
               display: "flex",
+              visibility: "hidden",
               flexDirection: {
                 mobile: "row",
                 tablet: "column",
@@ -1111,7 +1210,8 @@ const WithDrawComponent = ({
   updatedUserProfile,
   selected,
   setSelected,
-  element
+  element,
+  titleBackgroundColor
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -1203,8 +1303,8 @@ const WithDrawComponent = ({
           aria-describedby="modal-modal-description"
         >
           <MobileViewUserDetails
-          elementToUDM={elementToUDM}
-           element={element}
+            elementToUDM={elementToUDM}
+            element={element}
             userName={elementToUDM?.userName}
             title={"Withdraw Amount"}
             setSelected={setSelected}
@@ -1261,6 +1361,7 @@ const WithDrawComponent = ({
             initialBalance={initialBalance}
             backgroundColor={backgroundColor}
             loading={loading}
+            titleBackgroundColor={titleBackgroundColor}
           />
         </ModalMUI>
       ) : (
@@ -2436,7 +2537,7 @@ const LockUnlockComponent = ({
                 setLockUnlockObj({
                   ...lockUnlockObj,
                   adminTransPassword: e.target.value,
-                  userId: currentUser.id,
+                  userId: prevElement?.userId,
                 });
               }}
               sx={{ width: "100%", height: "45px" }}

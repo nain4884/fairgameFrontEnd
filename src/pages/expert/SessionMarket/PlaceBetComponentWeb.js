@@ -5,10 +5,10 @@ import { useState } from "react";
 import useOuterClick from "../../../components/helper/userOuterClick";
 import { UD } from "../../../assets";
 
-const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
+const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
   const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
- 
+
   const [show, setShow] = useState(false);
   const innerRef = useOuterClick((ev) => {
     setShow(false);
@@ -38,7 +38,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
     setProfitLoss(newData?.profitLoss);
 
   }, [newData]);
-  
+
   const handleClick = useCallback(
     (e) => {
       setData((prev) => {
@@ -51,7 +51,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
             return updatedArray;
           } else {
             // if (prev.length < 4) {
-              return [...prev, newData];
+            return [...prev, newData];
             // }
             // return prev;
           }
@@ -60,7 +60,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
           return prev;
         }
       });
-      
+
     },
     [setData, newData]
   );
@@ -74,14 +74,15 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
           flexDirection: "row",
           display: "flex",
           alignItems: "center",
-          top: "4px",
+          // top: "4px",
+          top: '2px',
           // '@media screen and (max-width: 1300px)': {
           //   width: '9vw',
           // },
           // width: { laptop: "7vw" },
           width: boxWidth,
           borderRadius: "5px",
-          height: "32px",
+          height: "26px",
           right: "8px",
           position: "absolute",
           cursor: "pointer",
@@ -133,15 +134,15 @@ const PlaceBetComponentWeb = ({ amount, setData, newData,width,height }) => {
           }}
         >
           <Typography
-              sx={{
-                fontSize: { laptop:!newData?.profitLoss?.max_loss ? ".60vw" : ".60vw" },
-                fontWeight: !newData?.profitLoss?.max_loss ? "bold" : "bold",
-                color: "white",
+            sx={{
+              fontSize: { laptop: !newData?.profitLoss?.max_loss ? ".60vw" : ".60vw" },
+              fontWeight: !newData?.profitLoss?.max_loss ? "bold" : "bold",
+              color: "white",
             }}
           >
-           
-           {!newData?.profitLoss?.max_loss ? "Profit/Loss" : newData?.profitLoss?.max_loss }
-  
+
+            {!newData?.profitLoss?.max_loss ? "Profit/Loss" : newData?.profitLoss?.max_loss}
+
           </Typography>
           <img
             src={UD}

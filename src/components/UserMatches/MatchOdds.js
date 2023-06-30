@@ -341,6 +341,7 @@ const MatchOdds = ({
           typeOfBet={"BOOKMAKER"}
           setFastAmount={setFastAmount}
           fastAmount={fastAmount?.bookMaker}
+          handleRateChange={handleRateChange}
         />
       )}
 

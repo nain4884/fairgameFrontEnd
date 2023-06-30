@@ -109,7 +109,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
         sx={[
           {
             width: "100%",
-            height: "42px",
+            height: "40px",
             justifyContent: "space-between",
             alignItems: "center",
             paddingLeft: "10px",
@@ -163,7 +163,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                     width: "5.3%",
                     border: "1px solid white",
                     background: "black",
-                    height: "50px",
+                    height: "30px",
                     justifyContent: "center",
                     alignItems: "center",
                     display: "flex",
@@ -185,17 +185,17 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                     sx={{
                       background: "rgba(0,0,0,0.5)",
                       width: "100%",
-                      height: "50px",
+                      height: "30px",
                       position: "absolute",
                       display: "flex",
                     }}
                   >
                     <Box sx={{ flex: 1, display: "flex" }}>
-                      <Box sx={{ width: "34%", height: "50px" }}></Box>
+                      <Box sx={{ width: "34%", height: "30px" }}></Box>
                       <Box
                         sx={{
                           width: "66%",
-                          height: "50px",
+                          height: "30px",
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "flex-end",
@@ -394,7 +394,7 @@ const SmallBox = ({ item }) => {
         width: "10%",
         border: "1px solid white",
         background: item?.background,
-        height: "50px",
+        height: "30px",
         justifyContent: "center",
         alignItems: "center",
         display: "flex",
@@ -421,7 +421,7 @@ const LargeBox = ({ item, k }) => {
         width: k == 1 ? "20%" : "15%",
         border: "1px solid white",
         background: item?.background,
-        height: "50px",
+        height: "30px",
         justifyContent: "center",
         alignItems: k == 1 || k == 0 ? "flex-start" : "center",
         paddingLeft: k == 1 || k == 0 ? "5px" : 0,

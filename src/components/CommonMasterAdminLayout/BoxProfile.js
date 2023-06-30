@@ -71,10 +71,10 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
       color: "text.white",
       fontWeight: "600",
       textTransform: "capitalize",
-      overflow: "hidden",
+      overflow: {mobile: "hidden" , laptop: "visible"},
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
-      maxWidth: "50px"
+      maxWidth: "54px"
     },
     mainBoxSubSubTypography2sx: {
       fontSize: { laptop: "13px", mobile: "10px" },

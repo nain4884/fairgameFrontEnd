@@ -23,7 +23,7 @@ const SearchInput = ({ handleChange, title, data, containerStyle, inputContainer
         )
     }
     return (
-        <Box sx={[{ width: '19%' }, containerStyle]} >
+        <Box sx={[{ width: {laptop: '30%', mobile: "100%"} }, containerStyle]} >
             <Typography sx={{ fontSize: '12px', fontWeight: '600', marginBottom: '.3vh' }}>{title}</Typography>
             <Box onClick={() => {
                 setOpen(!open)
