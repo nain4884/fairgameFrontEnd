@@ -170,6 +170,7 @@ const AccountList = () => {
                                 if (i % 2 === 0) {
                                     return (
                                         <AccountListRow
+                                           key={i}
                                             callProfile={true}
                                             showOptions={true}
                                             containerStyle={{ background: "#FFE094" }}
@@ -185,6 +186,7 @@ const AccountList = () => {
                                 } else {
                                     return (
                                         <AccountListRow
+                                         key={i}
                                             callProfile={true}
                                             showOptions={true}
                                             containerStyle={{ background: "#ECECEC" }}

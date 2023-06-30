@@ -13,6 +13,7 @@ import FastTime from "../../FastTime";
 import { currencyFormatter, formatNumber } from "../../helper/helper";
 import Lottie from "lottie-react";
 import { LockIcon } from "../../../admin/assets";
+import SmallCustomLoader from "../../helper/SmallCustomLoader";
 const SessionMarket = ({
   data,
   newData,
@@ -343,7 +344,7 @@ const SessionMarket = ({
                   background: "rgba(0, 0, 0, .6)",
                 }}
               >
-                <Lottie
+                {/* <Lottie
                   animationData={HourGlass}
                   style={{
                     display: "flex",
@@ -351,7 +352,8 @@ const SessionMarket = ({
                     width: "50px",
                     height: "50px",
                   }}
-                />
+                /> */}
+                <SmallCustomLoader />
               </Box>
             )}
 

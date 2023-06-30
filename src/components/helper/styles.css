@@ -12,6 +12,20 @@
     padding-bottom: 70px;
 
   }
+
+  .small-loading-wrap {
+    background-color: #fff;
+    background: "#FFF";
+    display: flex;
+    width: 60px;
+    height:60px;
+    align-items: center;
+    border-radius: 10px;
+    justify-content: center;
+    padding-right: 21px;
+    padding-bottom: 17px;
+
+  }
   .loading {
     position: relative;
 
@@ -36,6 +50,33 @@
     flex: 0 0 100%;
     padding-left: 74px;
   }
+
+  .small-loading {
+    position: relative;
+
+  }
+  .small-loading > div:nth-of-type(1) {
+    left: 0;
+    background: #ffb80c;
+    animation: loading-1 1s ease infinite;
+    z-index: 5;
+  }
+  .small-loading > div:nth-of-type(2) {
+    background: #004a25;
+    animation: loading-2 1s ease infinite;
+  }
+  .small-loading > div {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+ 
+  .small-loading-wrap p {
+    flex: 0 0 100%;
+    padding-left: 74px;
+  }
+
 
   @keyframes loading-1 {
     0% {
