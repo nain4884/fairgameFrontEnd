@@ -474,18 +474,11 @@ const CustomHeader = ({}) => {
       },
     },
   };
-  const RenderLogo = useCallback(() => {
-    return (
-      <StyledImage
-        onClick={(e) => {
-          e.stopPropagation();
-          navigate(`/${nav}/list_of_clients`);
-        }}
-        src={logo}
-        sx={classes.RenderLogoCompStyleImg}
-      />
-    );
-  }, [classes.RenderLogoCompStyleImg, nav, navigate]);
+  // const RenderLogo = useCallback(() => {
+  //   return (
+      
+  //   );
+  // }, [classes.RenderLogoCompStyleImg, nav, navigate]);
 
   const menutItems1 = [
     { title: "Account Statement", link: `/${nav}/account_statement` },
@@ -514,7 +507,14 @@ const CustomHeader = ({}) => {
                 src={Draw}
                 sx={classes.BoxCont1sub1sub1StyleImg}
               />
-              <RenderLogo />
+            <StyledImage
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(`/${nav}/list_of_clients`);
+        }}
+        src={logo}
+        sx={classes.RenderLogoCompStyleImg}
+      />
             </Box>
             {/* {!matchesTablet && (
               <Box
