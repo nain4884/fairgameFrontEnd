@@ -4,8 +4,9 @@ import { Background } from "../../components";
 import { setRole } from "../../newStore";
 import { useEffect, useState } from "react";
 import constants from "../../components/helper/constants";
+import EventListing from "../../components/EventListing";
 
-const ProfitLoss = ({userPadding}) => {
+const ProfitLoss = ({ selected, visible }) => {
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(0);
@@ -102,29 +103,68 @@ const ProfitLoss = ({userPadding}) => {
     }
   }
   return (
-    <Background>
-      <Typography
-        sx={{
-          fontSize: { mobile: "12px", laptop: "15px" },
-          marginLeft: { laptop: "2px", mobile: "6px" },
-          marginTop: "10px",
-          marginBottom: "5px",
-          color: "white",
-          fontWeight: "bold",
-          paddingTop:userPadding,
-        }}
-      >
-        {"PROFIT/LOSS REPORT"}
-      </Typography>
-      <ProfitLossComponent
-        eventData={eventData}
-        reportData={reportData}
-        betData={betData}
-        sessionBetData={sessionBetData}
-        handleReport={handleReport}
-        handleBet={handleBet}
-      />
-    </Background>
+    <Box>
+      {visible ? (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              overflowX: "hidden",
+              flexDirection: "column",
+              flex: 1,
+              justifyContent: "flex-start",
+              overflowY: "auto",
+              alignItems: "flex-start",
+            }}
+          >
+            <EventListing selected={selected} />
+          </Box>
+          <Typography
+            sx={{
+              fontSize: { mobile: "12px", laptop: "15px" },
+              marginLeft: { laptop: "2px", mobile: "6px" },
+              marginTop: "10px",
+              marginBottom: "5px",
+              color: "white",
+              fontWeight: "bold",
+            }}
+          >
+            {"PROFIT/LOSS REPORT"}
+          </Typography>
+          <ProfitLossComponent
+            eventData={eventData}
+            reportData={reportData}
+            betData={betData}
+            sessionBetData={sessionBetData}
+            handleReport={handleReport}
+            handleBet={handleBet}
+          />
+        </>
+      ) : (
+        <Background>
+          <Typography
+            sx={{
+              fontSize: { mobile: "12px", laptop: "15px" },
+              marginLeft: { laptop: "2px", mobile: "6px" },
+              marginTop: "10px",
+              marginBottom: "5px",
+              color: "white",
+              fontWeight: "bold",
+            }}
+          >
+            {"PROFIT/LOSS REPORT"}
+          </Typography>
+          <ProfitLossComponent
+            eventData={eventData}
+            reportData={reportData}
+            betData={betData}
+            sessionBetData={sessionBetData}
+            handleReport={handleReport}
+            handleBet={handleBet}
+          />
+        </Background>
+      )}
+    </Box>
   );
 };
 

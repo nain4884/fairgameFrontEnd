@@ -843,6 +843,9 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen, showSideBarMobile }) => {
       variant="temporary"
       open={mobileOpen}
       onClose={handleDrawerToggle}
+      PaperProps={{sx:{
+              top:"114px"
+      }}}
       ModalProps={{
         keepMounted: true, // Better open performance on mobile.
       }}
@@ -858,7 +861,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen, showSideBarMobile }) => {
         sx={{
           minHeight: {
             laptop: showSideBarMobile ? 50 + 32 + 40 : 90 + 32 + 40,
-            mobile: 60 + 32 + 21,
+            // mobile: 60 + 32 + 21,
           },
         }}
       />
@@ -868,5 +871,4 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen, showSideBarMobile }) => {
     </Drawer>
   );
 };
-
 export default CustomHeader;

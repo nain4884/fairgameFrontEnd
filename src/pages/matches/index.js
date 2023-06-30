@@ -29,6 +29,9 @@ import MyAccount from "./Settings";
 import ChangePasswordComponent from "../../components/ChangePasswordComponent";
 import EmptyComponent from "../../components/EmptyComponent";
 import Soccer from "./Soccer";
+import ProfitLoss from "./ProfitLoss";
+import BetHistory from "./BetHistory";
+import ChangeButtonValue from "./ChangeButtonValue";
 
 const Matches = () => {
   const [visible, setVisible] = useState(false);
@@ -106,11 +109,18 @@ const Matches = () => {
           )}
         {["MY ACCOUNT"].includes(selected) &&
           window.location.pathname === "/profit_loss" && (
-            <AccountStatementList selected={selected} visible={true} />
+            <ProfitLoss selected={selected} visible={true} />
           )}
-        {!["EmptyComponent", "MY ACCOUNT", "INPLAY", "CRICKET"].includes(
-          selected
-        ) &&
+
+          {["MY ACCOUNT"].includes(selected) &&
+          window.location.pathname === "/bet_history" && (
+            <BetHistory selected={selected} visible={true} />
+          )}
+          {["MY ACCOUNT"].includes(selected) &&
+          window.location.pathname === "/change_button_value" && (
+            <ChangeButtonValue selected={selected} visible={true} />
+          )}
+        {
           window.location.pathname === "/comingsoon" && (
             <Soccer selected={selected} visible={true} />
           )}

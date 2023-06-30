@@ -51,7 +51,7 @@ const MyAccount = ({ selected }) => {
     { title: "Profile/Loss Report", link: "/profit_loss" },
     { title: "Bet History", link: "/bet_history" },
     { title: "Set Button Values", link: "/change_button_value" },
-    { title: "Security Auth Verification" },
+    { title: "Security Auth Verification" ,link:"/comingsoon"},
     { title: "Change Password", link: "/change_password" },
   ];
 
