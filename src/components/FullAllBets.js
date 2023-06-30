@@ -2,7 +2,7 @@ import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CHECK } from "../admin/assets";
-import {  ARROWUP } from "../assets";
+import { ARROWUP } from "../assets";
 import moment from "moment";
 import { useTheme } from "@emotion/react";
 const data = [
@@ -55,7 +55,7 @@ const data = [
     ],
   },
 ];
-const FullAllBets = ({ tag, mode, IObets }) => {
+const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData }) => {
   //   const [selected, setSelected] = useState([...data, ...data]);
   const [selectedData, setSelectedData] = useState([]);
 
@@ -72,6 +72,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
               color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
               background: ["no", "yes"].includes(v?.bet_type) ? "#319E5B" : "#F1C550",
               deleted_reason: v?.deleted_reason,
+              bet_id: v?.bet_id
             },
             {
               name: v?.marketType,
@@ -144,6 +145,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
 
   useEffect(() => {
     setSelectedData([]);
+    setSelectedBetData([]);
   }, [mode]);
   const navigate = useNavigate();
   return (
@@ -223,7 +225,7 @@ const FullAllBets = ({ tag, mode, IObets }) => {
             }}
           >
             <Typography
-              sx={{ fontSize: {laptop: "8px", mobile: "8px"}, fontWeight: "700", color: "#FF1111" }}
+              sx={{ fontSize: { laptop: "8px", mobile: "8px" }, fontWeight: "700", color: "#FF1111" }}
             >
               Total Bet
             </Typography>
@@ -264,10 +266,15 @@ const FullAllBets = ({ tag, mode, IObets }) => {
                   onClick={(e) => {
                     let x = [...selectedData];
                     if (x.includes(k)) {
+                      const updatedSelectedBetData = selectedBetData.filter((id) => id !== i?.values[0].bet_id);
+                      setSelectedBetData(updatedSelectedBetData);
                       x.splice(x.indexOf(k), 1);
                       setSelectedData([...x]);
                       e.stopPropagation();
                     } else {
+                      // alert(JSON.stringify(i?.values[0].bet_id));
+                      setSelectedBetData(i?.values[0].bet_id)
+                      setSelectedBetData([...selectedBetData, i?.values[0].bet_id]);
                       x.push(k);
                       setSelectedData([...x]);
                     }

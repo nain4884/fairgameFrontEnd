@@ -21,7 +21,7 @@ import CustomLoader from "../../components/helper/CustomLoader";
 
 let matchOddsCount = 0;
 let sessionOffline = [];
-const DeleteBet = ({}) => {
+const DeleteBet = ({ }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { socket, socketMicro } = useContext(SocketContext);
@@ -1068,6 +1068,14 @@ const DeleteBet = ({}) => {
     }
   }, [matchId]);
 
+  const handleDeleteBet = async (value) => {
+    let data = {
+      value: value,
+      ids: selectedBetData
+    }
+    setMode(!mode);
+    // alert(JSON.stringify(data));
+  }
   //TODO
   // const PlaceBetComponent = () => {
   //     const [anchorEl, setAnchorEl] = useState(null);
@@ -1097,6 +1105,7 @@ const DeleteBet = ({}) => {
   // const menutItems = [{ title: "Account Statement" }, { title: "Profile Loss Report" }, { title: "Bet History" }, { title: "Unsetteled Bet" }, { title: "Casino Report History" }, { title: "Set Button Values" }, { title: "Security Auth Verfication" }, { title: "Change Password" }]
 
   const [mode, setMode] = useState(false);
+  const [selectedBetData, setSelectedBetData] = useState([]);
   const CustomButton = () => {
     return (
       <Box
@@ -1104,6 +1113,7 @@ const DeleteBet = ({}) => {
           if (mode) {
             setVisible(true);
           } else {
+            // alert(JSON.stringify(selectedBetData));
             setMode(!mode);
           }
         }}
@@ -1169,173 +1179,158 @@ const DeleteBet = ({}) => {
   const dispatch = useDispatch();
   return (
     <Background>
-      {loading ? (
+      <AddNotificationModal
+        value={value}
+        title={"Add Remark"}
+        visible={visible}
+        setVisible={setVisible}
+        // onDone={() => {
+        //   // dispatch(
+        //   //   setDailogData({
+        //   //     isModalOpen: true,
+        //   //     showRight: true,
+        //   //     bodyText: "Deleted Sucessfully",
+        //   //   })
+        //   // );
+        //   alert(value)
+        //   // setMode(!mode);
+        //   // handleDeleteBet();
+        // }}
+        onDone={handleDeleteBet}
+      // onClick={() => {
+      //   // setVisible(false);
+      //   setMode(!mode);
+      //   handleDeleteBet();
+      // }}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { matchesMobile: "column", laptop: "row" },
+          // marginY: { mobile: ".2vh", laptop: ".5vh" },
+          flex: 1,
+          height: "100%",
+          marginX: "0.5%",
+        }}
+      >
         <Box
           sx={{
-            minHeight: "60vh",
+            flex: 1,
+            flexDirection: "column",
+            minHeight: "100px",
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
           }}
         >
-          <CustomLoader text="" />
+          <Typography
+            sx={{
+              fontSize: "16px",
+              color: "white",
+              fontWeight: "700",
+              // paddingTop: "2%",
+              alignSelf: "start",
+              // paddingBottom: "5px"
+            }}
+          >
+            {currentMatch?.teamA} V/S {currentMatch?.teamB}
+          </Typography>
+          {currentMatch?.apiMatchActive && (
+            <Odds
+              currentMatch={currentMatch}
+              matchOddsLive={matchOddsLive}
+              data={
+                matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
+              }
+              typeOfBet={"Match Odds"}
+            // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+            />
+          )}
+          {currentMatch?.apiBookMakerActive && (
+            <BookMarketer
+              currentMatch={currentMatch}
+              data={
+                bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
+              }
+            />
+          )}
+          {currentMatch?.manualBookMakerActive && (
+            <Odds
+              currentMatch={currentMatch}
+              // matchOddsLive={matchOddsLive}
+              // data={
+              //   matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
+              // }
+              data={currentMatch}
+              manualBookmakerData={manualBookmakerData}
+              typeOfBet={"Quick Bookmaker"}
+            // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+            />
+          )}
+          {(currentMatch?.apiSessionActive ||
+            currentMatch?.manualSessionActive) &&
+            matchesMobile && (
+              <SessionMarket
+                currentMatch={currentMatch}
+                sessionBets={sessionBets}
+                data={[]}
+                sessionOffline={sessionOffline}
+              />
+            )}
+          {/* {matchesMobile && */}
+          {IOSinglebets.length > 0 &&
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                width: "100%",
+              }}
+            >
+              {mode && <CancelButton />}
+              <Box sx={{ width: "2%" }}></Box>
+              <CustomButton />
+            </Box>
+          }
+          {/* } */}
+          {IOSinglebets.length > 0 && (
+            <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} setSelectedBetData={setSelectedBetData} selectedBetData={selectedBetData} />
+          )}
         </Box>
-      ) : (
-        <>
-          {" "}
-          <AddNotificationModal
-            value={value}
-            title={"Add Remark"}
-            visible={visible}
-            setVisible={setVisible}
-            onDone={() => {
-              dispatch(
-                setDailogData({
-                  isModalOpen: true,
-                  showRight: true,
-                  bodyText: "Deleted Sucessfully",
-                })
-              );
-            }}
-            onClick={() => {
-              // setVisible(false);
-              setMode(!mode);
-            }}
-          />
+        {!matchesMobile && <Box sx={{ width: "20px" }} />}
+        {!matchesMobile && (
           <Box
             sx={{
-              display: "flex",
-              flexDirection: { matchesMobile: "column", laptop: "row" },
-              // marginY: { mobile: ".2vh", laptop: ".5vh" },
               flex: 1,
-              height: "100%",
-              marginX: "0.5%",
+              flexDirection: "column",
+              display: "flex",
+              minHeight: "100px",
             }}
           >
             <Box
               sx={{
-                flex: 1,
-                flexDirection: "column",
-                minHeight: "100px",
                 display: "flex",
+                justifyContent: "flex-end",
+                width: "100%",
               }}
             >
-              <Typography
-                sx={{
-                  fontSize: "16px",
-                  color: "white",
-                  fontWeight: "700",
-                  // paddingTop: "2%",
-                  alignSelf: "start",
-                  // paddingBottom: "5px"
-                }}
-              >
-                {currentMatch?.teamA} V/S {currentMatch?.teamB}
-              </Typography>
-              {currentMatch?.apiMatchActive && (
-                <Odds
-                  currentMatch={currentMatch}
-                  matchOddsLive={matchOddsLive}
-                  data={
-                    matchOddsLive?.runners?.length > 0
-                      ? matchOddsLive?.runners
-                      : []
-                  }
-                  typeOfBet={"Match Odds"}
-                  // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
-                />
-              )}
-              {currentMatch?.apiBookMakerActive && (
-                <BookMarketer
-                  currentMatch={currentMatch}
-                  data={
-                    bookmakerLive?.runners?.length > 0
-                      ? bookmakerLive?.runners
-                      : []
-                  }
-                />
-              )}
-              {currentMatch?.manualBookMakerActive && (
-                <Odds
-                  currentMatch={currentMatch}
-                  // matchOddsLive={matchOddsLive}
-                  // data={
-                  //   matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
-                  // }
-                  data={currentMatch}
-                  manualBookmakerData={manualBookmakerData}
-                  typeOfBet={"Quick Bookmaker"}
-                  // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
-                />
-              )}
-              {(currentMatch?.apiSessionActive ||
-                currentMatch?.manualSessionActive) &&
-                matchesMobile && (
-                  <SessionMarket
-                    currentMatch={currentMatch}
-                    sessionBets={sessionBets}
-                    data={[]}
-                    sessionOffline={sessionOffline}
-                  />
-                )}
-              {/* {matchesMobile && */}
-              <>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    width: "100%",
-                  }}
-                >
-                  {mode && <CancelButton />}
-                  <Box sx={{ width: "2%" }}></Box>
-                  <CustomButton />
-                </Box>
-              </>
-              {/* } */}
-              {IOSinglebets.length > 0 && (
-                <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />
-              )}
-            </Box>
-            {!matchesMobile && <Box sx={{ width: "20px" }} />}
-            {!matchesMobile && (
+              {/* {mode && <CancelButton />} */}
+              <Box sx={{ width: "2%" }}></Box>
               <Box
-                sx={{
-                  flex: 1,
-                  flexDirection: "column",
-                  display: "flex",
-                  minHeight: "100px",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    width: "100%",
-                  }}
-                >
-                  {/* {mode && <CancelButton />} */}
-                  <Box sx={{ width: "2%" }}></Box>
-                  <Box
-                    sx={{ width: "150px", marginY: ".75%", height: "15px" }}
-                  ></Box>
-                </Box>
-                {(currentMatch?.apiSessionActive ||
-                  currentMatch?.manualSessionActive) && (
-                  <SessionMarket
-                    currentOdds={currentOdds}
-                    currentMatch={currentMatch}
-                    sessionBets={sessionBets}
-                    data={[]}
-                    sessionOffline={sessionOffline}
-                  />
-                )}
-              </Box>
-            )}
+                sx={{ width: "150px", marginY: ".75%", height: "15px" }}
+              ></Box>
+            </Box>
+            {(currentMatch?.apiSessionActive ||
+              currentMatch?.manualSessionActive) && (
+                <SessionMarket
+                  currentOdds={currentOdds}
+                  currentMatch={currentMatch}
+                  sessionBets={sessionBets}
+                  data={[]}
+                  sessionOffline={sessionOffline}
+                />
+              )}
           </Box>
-          <DailogModal />
-        </>
-      )}
+        )}
+      </Box>
+      <DailogModal />
     </Background>
   );
 };
