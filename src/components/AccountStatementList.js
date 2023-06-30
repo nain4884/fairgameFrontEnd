@@ -233,10 +233,12 @@ const AccountStatementList = ({ user,visible ,selected}) => {
           <EventListing selected={selected} />
         </Box>
       )}
-      <YellowHeader
+     <Box sx={{ marginX: { mobile: "2vw", laptop: "1vw" },}}>
+     <YellowHeader
         onChildData={handleChildData}
         getAccountStatement={getAccountStatement}
       />
+     </Box>
 
       {/* {decodedTokenUser.role === "user,visible" && (
         <YellowHeader
@@ -255,12 +257,12 @@ const AccountStatementList = ({ user,visible ,selected}) => {
 
       <Box
         sx={[
-          {
-            marginX: "0.5%",
+          { 
+            marginX: { mobile: "2vw", laptop: "1vw" },
             minHeight: "100px",
             borderRadius: "2px",
             border: "2px solid white",
-            width: "99%",
+            width: "97.5%",
             borderTopRightRadius: {
               mobile: "10px",
               laptop: "0px",
