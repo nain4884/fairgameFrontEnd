@@ -191,7 +191,7 @@ const BoxComponent = ({
                   livestatus
                 }
                 setFastBetLoading={setFastBetLoading}
-                po={1}
+                po={2}
                 updateRate={{
                   key: 1,
                   match: "back",
@@ -254,7 +254,7 @@ const BoxComponent = ({
                   livestatus
                 }
                 setFastBetLoading={setFastBetLoading}
-                po={2}
+                po={1}
                 updateRate={{
                   key: 2,
                   match: "back",
@@ -317,7 +317,7 @@ const BoxComponent = ({
                 livestatus
               }
               setFastBetLoading={setFastBetLoading}
-              po={3}
+              po={0}
               updateRate={{
                 key: 3,
                 match: "back",
@@ -380,7 +380,7 @@ const BoxComponent = ({
                 livestatus
               }
               setFastBetLoading={setFastBetLoading}
-              po={4}
+              po={0}
               updateRate={{
                 key: 4,
                 match: "lay",
@@ -442,7 +442,7 @@ const BoxComponent = ({
                   livestatus
                 }
                 setFastBetLoading={setFastBetLoading}
-                po={5}
+                po={1}
                 updateRate={{
                   key: 5,
                   match: "lay",
@@ -505,7 +505,7 @@ const BoxComponent = ({
                   livestatus
                 }
                 setFastBetLoading={setFastBetLoading}
-                po={6}
+                po={2}
                 updateRate={{
                   key: 6,
                   match: "lay",
