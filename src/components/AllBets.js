@@ -152,7 +152,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
         </Box>
       </Box>
       <HeaderRow tag={tag} />
-      <Box sx={{ maxHeight: submit ? "200px" : "400px", overflowY: "auto" }}>
+      <Box className="myScroll" sx={{ maxHeight: submit ? "200px" : "400px", overflowY: "auto" }}>
         {newData?.length > 0 &&
           newData?.map((i, k) => {
             const num = newData?.length - k;
@@ -160,7 +160,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               <div style={{ display: "flex", position: "relative" }}>
                 <Box
                   sx={{
-                    width: "5.3%",
+                    width: "6%",
                     border: "1px solid white",
                     background: "black",
                     height: "30px",
@@ -228,10 +228,10 @@ const AllBets = ({ tag, submit, allBetRates }) => {
 };
 const HeaderRow = ({ tag }) => {
   return (
-    <Box sx={{ width: "100%", display: "flex" }}>
+    <Box  sx={{ width: "100%", display: "flex" }}>
       <Box
         sx={{
-          width: "6%",
+          width: "5.7%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -241,14 +241,14 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
-          No
+          No 
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: "10%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -259,14 +259,14 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
           Username
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "20%",
+          width: "24%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -277,14 +277,14 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
           Market
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: "10%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -294,7 +294,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
           Favourite
         </Typography>
@@ -311,7 +311,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
           Odds
         </Typography>
@@ -328,14 +328,14 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
           Type
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: "10%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -345,14 +345,14 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
           Stake
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: "10%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -362,14 +362,14 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
           My Stake
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "15%",
+          width: "12%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -379,7 +379,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: ".8vw", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
         >
           Time
         </Typography>
@@ -418,7 +418,8 @@ const LargeBox = ({ item, k }) => {
   return (
     <Box
       sx={{
-        width: k == 1 ? "20%" : "15%",
+        width: k == 1 ? "24%" : "10%",
+        // width: "10%",
         border: "1px solid white",
         background: item?.background,
         height: "30px",
@@ -431,12 +432,22 @@ const LargeBox = ({ item, k }) => {
     >
       <Typography
         sx={{
-          fontSize: "0.6vw",
+          fontSize: "0.5vw",
           fontWeight: "600",
           color: item?.color,
           wordWrap: "break-word",
           textTransform: "capitalize",
           textAlign: "left",
+          lineHeight: 1,
+          px: "2px",
+          textTransform: "capitalize",
+          // whiteSpace: "nowrap",
+          // textOverflow: "ellipsis",
+          // maxWidth: "50px",
+          overflow: "hidden",
+          display:" -webkit-box",
+          WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
         }}
       >
         {item?.name}

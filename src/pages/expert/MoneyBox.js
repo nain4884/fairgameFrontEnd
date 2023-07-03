@@ -23,7 +23,7 @@ const MoneyBox = ({ color, value }) => {
     >
       <Typography
         sx={{
-          fontSize: "1.1vw",
+          fontSize: "0.6vw",
           fontWeight: "bold",
           color: Number(value) > 0 ? "#46e080" : "#FF4D4D",
         }}

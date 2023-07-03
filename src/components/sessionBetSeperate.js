@@ -166,14 +166,14 @@ const SessionBetSeperate = ({
                     height: "25px",
                     width: "30%",
                     display: "flex",
-                    background: "black",
+                    background: "#319E5B",
                     justifyContent: "center",
                     alignItems: "center",
                     // margin: { mobile: "1px", laptop: "1px" },
                   }}
                 >
                   <Typography
-                    sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+                    sx={{ fontWeight: "400", fontSize: ".7vw", color: "white" }}
                   >
                     {"Profit/Loss"}
                   </Typography>

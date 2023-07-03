@@ -123,3 +123,23 @@
       z-index: 5;
     }
   }
+
+
+  .myScroll::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  /* Track */
+  .myScroll::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  .myScroll::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  /* Handle on hover */
+  .myScroll::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }

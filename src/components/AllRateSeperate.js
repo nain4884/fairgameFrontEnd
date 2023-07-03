@@ -235,14 +235,14 @@ const AllRateSeperate = ({
                     height: "25px",
                     width: "30%",
                     display: "flex",
-                    background: "black",
+                    background: "#319E5B",
                     justifyContent: "center",
                     alignItems: "center",
                     margin: { mobile: "1px", laptop: "0" },
                   }}
                 >
                   <Typography
-                    sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+                    sx={{ fontWeight: "400", fontSize: ".7vw", color: "white" }}
                   >
                     {"Profit/Loss"}
                   </Typography>
@@ -458,7 +458,7 @@ const AllRateSeperate = ({
       </Box>
 
       {/* --------- */}
-      <style jsx scoped>
+      <style >
               {`
                 /* width */
                 .myScroll::-webkit-scrollbar {
@@ -518,7 +518,7 @@ const RowComponent = ({ header, data }) => {
         alignItems: "center",
         display: "flex",
         gap: '1px',
-        marginBottom: { mobile: "1px", laptop: "1px" },
+        // marginBottom: { mobile: "1px", laptop: "1px" },
 
       }}
     >
