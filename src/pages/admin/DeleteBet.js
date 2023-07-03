@@ -1070,11 +1070,17 @@ const DeleteBet = ({ }) => {
 
   const handleDeleteBet = async (value) => {
     let data = {
-      value: value,
-      ids: selectedBetData
+      deleteReason: value,
+      placeBetId: selectedBetData,
+      matchId: matchId
     }
     setMode(!mode);
     // alert(JSON.stringify(data));
+    try {
+      let response = await axios.post(`/betting/deleteMultipleBet`, data);
+    } catch (e) {
+      console.log(e);
+    }
   }
   //TODO
   // const PlaceBetComponent = () => {
