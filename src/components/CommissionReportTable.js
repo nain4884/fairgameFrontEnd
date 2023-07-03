@@ -706,7 +706,7 @@ const ListH = ({ id, title, setData, matchesMobile, setShow }) => {
       <Box display={"flex"} alignItems="center">
         <Typography
           sx={{
-            fontSize: { mobile: "14px", laptop: "18px", tablet: "18px" },
+            fontSize: { mobile: "13px", laptop: "18px", tablet: "18px" },
             color: "#FFF",
             marginRight: { mobile: "10px", laptop: "20px", tablet: "20px" },
           }}

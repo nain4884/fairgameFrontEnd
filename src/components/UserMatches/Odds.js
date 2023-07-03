@@ -46,7 +46,7 @@ const SmallBox = ({ valueA, valueB }) => {
         >
             <Box
                 sx={{
-                    width: { laptop: "70px", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "70px", mobile: "45px", tablet: "70px" },
                     // position: "absolute",
                     flexDirection: "column",
                     paddingX: "5px",
@@ -80,7 +80,7 @@ const SmallBox = ({ valueA, valueB }) => {
             </Box>
             <Box
                 sx={{
-                    width: { laptop: "70px", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "70px", mobile: "45px", tablet: "70px" },
                     // position: "absolute",
                     paddingX: "5px",
                     display: "flex",

@@ -24,9 +24,14 @@ const ProfitLossComponent = ({eventData, reportData, betData, sessionBetData, ha
     const getBetReport = (id) => {
         // if (!show) {
         // }
-        handleBet(id);
+        if(selectedId!==""){
+            setSelectedId("");
+        }
+        else {
+            handleBet(id);
         setShow(!show);
         setSelectedId(id);
+        }
     };
 
     const RowHeader = ({item,index}) => {
@@ -53,7 +58,7 @@ const ProfitLossComponent = ({eventData, reportData, betData, sessionBetData, ha
                 <Box sx={{ background: "#0B4F26", paddingX: '2px', width: { mobile: "25%", laptop: "30%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>
                     <Typography sx={{ fontSize: { laptop: '14px', mobile: '12px' }, fontWeight: '700', color: 'white' }} >Total Bet</Typography>
                     <Box sx={{ display: 'flex' }} >
-                        <Typography sx={{ fontSize: { laptop: '14px', mobile: "10px" }, fontWeight: '700', color: 'white' }}>{item?.totalBet}</Typography>
+                        <Typography sx={{ fontSize: { laptop: '14px', mobile: "10px" }, fontWeight: '700', color: 'white', textAlign: "center" }}>{item?.totalBet}</Typography>
                     </Box>
                 </Box>
             </Box >
@@ -62,19 +67,19 @@ const ProfitLossComponent = ({eventData, reportData, betData, sessionBetData, ha
     const RowComponent = ({ item,index }) => {
         return (
             <Box sx={{ width: '100%' }}>
-                <Box  onClick={() => getBetReport(item?.matchId)} sx={{ width: '100%', height: '40px', background: 'white', display: 'flex', padding: .1 }}>
+                <Box  onClick={() => getBetReport(item?.matchId)} sx={{ width: '100%', height: '50px', background: 'white', display: 'flex', padding: .1 }}>
                     <Box sx={{ width: { mobile: '10%', laptop: '5%' }, height: '100%', justifyContent: 'center', alignItems: 'center', display: 'flex', background: 'black' }}>
                         <Typography sx={{ fontSize: '14px', color: 'white', fontWeight: '600' }} >{0 + index}</Typography>
 
                     </Box>
-                    <Box sx={{ width: { mobile: '40%', laptop: "60%" }, position: 'relative', height: '100%', paddingY: '4px', alignItems: { laptop: 'center', mobile: "flex-end" }, display: 'flex', paddingX: '10px', background: '#0B4F26', marginLeft: .1, justifyContent: 'space-between' }}>
+                    <Box sx={{ width: { mobile: '40%', laptop: "60%" }, position: 'relative', height: '100%', paddingY: '4px', alignItems: { laptop: 'center', mobile: "center" }, display: 'flex', paddingX: '10px', background: '#0B4F26', marginLeft: .1, justifyContent: 'space-between' }}>
                         <Typography sx={{ fontSize: { laptop: '0px', mobile: '10px' }, color: 'white', marginLeft: '5px', fontWeight: '500', position: 'absolute', top: 0, right: 5 }}>(04-11-2022)</Typography>
 
-                        <Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center' }} >
-                            <Typography sx={{ fontSize: { mobile: '10px', laptop: '15px' }, color: 'white', fontWeight: '600' }} >{item.eventName}</Typography>
+                        <Box sx={{ flexDirection: 'row', display: 'flex', alignItems: 'center', marginTop: { mobile: '5px', laptop: '0' } }} >
+                            <Typography sx={{ fontSize: { mobile: '10px', laptop: '15px' }, color: 'white', fontWeight: '600',  }} >{item.eventName}</Typography>
                             <Typography sx={{ fontSize: { laptop: '10px', mobile: '0' }, color: 'white', marginLeft: '5px', fontWeight: '500' }}>({moment(item.matchDate).format("DD-MM-YYYY")})</Typography>
                         </Box>
-                        <StyledImage src={ArrowDown} sx={{ width: { laptop: '20px', mobile: "10px" }, height: { laptop: '10px', mobile: '6px' }, transform: selectedId === item?.matchId  ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+                        <StyledImage src={ArrowDown} sx={{ marginTop: { mobile: '5px', laptop: '0' },  width: { laptop: '20px', mobile: "10px" }, height: { laptop: '10px', mobile: '6px' }, transform: selectedId === item?.matchId  ? 'rotate(180deg)' : 'rotate(0deg)' }} />
 
                     </Box>
                     <Box sx={{ background: item.rateProfitLoss > 0 ? "#27AC1E" : "#E32A2A", paddingX: '2px', width: { mobile: "25%", laptop: "30%" }, height: '100%', marginLeft: .1, justifyContent: 'center', display: 'flex', flexDirection: 'column', paddingLeft: '10px' }}>

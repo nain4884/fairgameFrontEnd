@@ -163,7 +163,7 @@ const SessionMarketBox = ({
             top: "2px",
             width: "30%",
             justifyContent: "flex-end",
-            left: { laptop: "24vh", tablet: "24vh" },
+            left: { laptop: "23vh", tablet: "24vh" },
             display: "flex",
             zIndex: 100,
           }}
@@ -283,7 +283,7 @@ const SessionMarketBox = ({
             <h6
               style={{
                 textTransform: "uppercase",
-                fontSize: { mobile: "12px", laptop: "22px" },
+                fontSize: "12px",
                 textAlign: "center",
                 lineHeight: "11px",
                 color: "#FFF",
