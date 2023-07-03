@@ -506,7 +506,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             minHeight: "200px",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            // justifyContent: "space-between",
             borderRadius: "10px",
             borderBottomRightRadius: "0px",
             borderBottomLeftRadius: "0px",
@@ -518,7 +518,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           }),
         ]}
       >
-        <Box sx={{ marginX: "0.5%" }}>
+        <Box sx={{ marginX: "0", background: "#F8C851", height: "50px" }}>
           <ListH
             id={id}
             title={"Commission Report"}
@@ -701,13 +701,15 @@ const ListH = ({ id, title, setData, matchesMobile, setShow }) => {
         alignItems: "center",
         width: "100%",
         px: "10px",
+        height: "100%"
       }}
     >
       <Box display={"flex"} alignItems="center">
         <Typography
           sx={{
-            fontSize: { mobile: "13px", laptop: "18px", tablet: "18px" },
-            color: "#FFF",
+            fontSize: { mobile: "14px", laptop: "18px", tablet: "18px" },
+            fontWeight: "500",
+            color: "#000",
             marginRight: { mobile: "10px", laptop: "20px", tablet: "20px" },
           }}
         >
