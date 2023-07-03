@@ -55,7 +55,7 @@ const Matches = () => {
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   return (
-    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ height: "120vh", display: "flex", flexDirection: "column" }}>
       <Box
         flex={1}
         sx={[
@@ -70,12 +70,12 @@ const Matches = () => {
           <Box
             sx={{
               display: "flex",
-              overflowX: "hidden",
+              // overflowX: "hidden",
               flexDirection: "column",
               flex: 1,
               width: "100%",
               justifyContent: "flex-start",
-              overflowY: "auto",
+              // overflowY: "auto",
               alignItems: "flex-start",
             }}
           >
