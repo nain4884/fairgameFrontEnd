@@ -103,7 +103,7 @@ const ProfitLoss = ({ selected, visible }) => {
     }
   }
   return (
-    <Box>
+    <Box sx={{width: "100%", paddingX: "1vw"}}>
       {visible ? (
         <>
        
