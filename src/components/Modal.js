@@ -23,7 +23,7 @@ export function ThisUseModal() {
   )
 }
 
-export function Modal({ message, buttonMessage, navigateTo, setShowSuccessModal, showSuccessModal, userPG }) {
+export function Modal({ message, buttonMessage, navigateTo, setShowSuccessModal, showSuccessModal, userPG,activeTab }) {
   const navigate = useNavigate()
   return (
     <>
@@ -62,7 +62,7 @@ export function Modal({ message, buttonMessage, navigateTo, setShowSuccessModal,
                 <Typography mb={2} color={'#000'}>{message}</Typography>
                 <Button sx={{ backgroundColor: '#fff', ':hover': { backgroundColor: '#43ff5f' }, display: 'flex', justifyContent: 'center' }} onClick={() => {
                   setShowSuccessModal(!showSuccessModal)
-                  navigateTo && navigate(`/${window.location.pathname.split("/")[1]}/${navigateTo}`)
+                  navigateTo && navigate(`/${window.location.pathname.split("/")[1]}/${navigateTo}`,{state:{activeTab:activeTab}})
                   userPG && navigate(`/${navigateTo}`)
                 }}>{buttonMessage}</Button>
               </Box>
