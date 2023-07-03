@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogActions,
   Button,
+  Alert,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
@@ -341,7 +342,7 @@ export default function Login(props) {
     }
   };
 
-  const [loginError, setLoginError] = useState();
+  const [loginError, setLoginError] = useState("");
   useEffect(() => {
     getLocalToken(props.allowedRole);
   }, [props.allowedRole, localStorage]);
@@ -384,7 +385,8 @@ export default function Login(props) {
 
     try {
       if (user === "" && pass === "") {
-        toast.warning("Username and password required");
+        // toast.warning("Username and password required");
+        setLoginError("Username and password required!")
         setLoading(false);
         return false;
       } else {
@@ -453,7 +455,8 @@ export default function Login(props) {
               // dispatch(setEConfirmAuth(false));
               handleNavigate("/expert/match", "expert");
             } else {
-              toast.error("User Unauthorized !");
+              // toast.error("User Unauthorized !");
+              setLoginError("Incorrect username and password!")
               setLoading(false);
             }
           }
@@ -464,7 +467,7 @@ export default function Login(props) {
     } catch (e) {
       console.log(e?.message);
       setLoading(false);
-      toast.error(e?.response?.data?.message || "Something went wrong!");
+      // toast.error(e?.response?.data?.message || "Something went wrong!");
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
     }
@@ -478,7 +481,8 @@ export default function Login(props) {
 
     try {
       if (loginDetail[1].val === "" && loginDetail[2].val === "") {
-        toast.warning("Username and password required");
+        // toast.warning("Username and password required");
+        setLoginError("Username and password required!")
         setLoading(false);
         return false;
       } else {
@@ -546,19 +550,21 @@ export default function Login(props) {
               // dispatch(setEConfirmAuth(false));
               handleNavigate("/expert/match", "expert");
             } else {
-              toast.error("User Unauthorized !");
+              // toast.error("User Unauthorized !");
+              setLoginError("Incorrect username and password!")
               setLoading(false);
             }
           }
         } else {
-          toast.error("User Unauthorized !");
+          // toast.error("User Unauthorized !");
+          setLoginError("Incorrect username and password!")
           setLoading(false);
         }
       }
     } catch (e) {
       console.log(e?.message);
       setLoading(false);
-      toast.error(e?.response?.data?.message || "Something went wrong!");
+      // toast.error(e?.response?.data?.message || "Something went wrong!");
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
     }
@@ -690,6 +696,7 @@ export default function Login(props) {
                 title="Login"
               />
             </Box>
+            {loginError!=="" && <Alert severity="warning">{loginError}</Alert>}
           </Box>
         </Box>
       </Box>
