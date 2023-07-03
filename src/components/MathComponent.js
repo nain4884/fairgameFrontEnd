@@ -141,7 +141,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                         justifyContent: "flex-end",
                         borderBottom: "0px solid",
                         borderColor: "gray",
-                        
+
                     }}
                 >
                     <Box sx={{ display: "flex" }}>
@@ -303,8 +303,8 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
                                     paddingTop: 0,
                                     paddingBottom: 0
                                 }}
-                            >   
-                                {ballOutcomes?.map((outcome, index) => (
+                            >
+                                {ballLastOutcomes?.map((outcome, index) => (
                                     <ListItem key={index} style={{ padding: 0, width: 'auto', paddingLeft: '0px', paddingRight: '5px', }}>
                                         <ListItemText primary={<Typography sx={{ fontSize: { mobile: "8px", table: "10px", laptop: "12px" }, fontWeight: 'bold', color: outcome.includes('w') ? '#FF4D4D' : 'inherit' }}>{outcome}</Typography>} />
                                     </ListItem>

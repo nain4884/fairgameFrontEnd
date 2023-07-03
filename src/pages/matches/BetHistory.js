@@ -36,9 +36,9 @@ const BetHistory = ({ selected, visible }) => {
     let { axios } = setRole();
     const payload = {
       userId: userId,
-      limit: pageLimit,
-      // skip: 0 ,
-      skip: currentPage * pageLimit,
+      // limit: pageLimit,
+      // // skip: 0 ,
+      // skip: currentPage * pageLimit,
     };
     try {
       setLoading(true);
@@ -73,7 +73,7 @@ const BetHistory = ({ selected, visible }) => {
 
   return (
     <>
-      
+
 
       <Background>
         {loading ? (

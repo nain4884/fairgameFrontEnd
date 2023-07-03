@@ -34,7 +34,7 @@ export { default as NotiBadge } from './noti_badge.png'
 
 export { default as Upload } from './upload.svg'
 export { default as Upload2 } from './upload2.svg'
-export { default as LoginBg } from './loginBg.png'
+export { default as LoginBg } from './loginBg_webp.webp'
 export { default as ArrowDownWhite } from './arrowDownWhite.svg'
 export { default as ArrowDownBlack } from './arrowDownBlack.svg'
 export { default as ArrowLeft } from './arrow-left.svg'
