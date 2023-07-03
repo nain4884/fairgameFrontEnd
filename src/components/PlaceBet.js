@@ -18,6 +18,10 @@ import BoxInput from "./BoxInput";
 import { toast } from "react-toastify";
 import { setRole } from "../newStore";
 import SmallCustomLoader from "./helper/SmallCustomLoader";
+import NumberData from "./NumberData";
+import TeamsOdssData from "./TeamsOdssData";
+import PlaceBetCustomButton from "./PlaceBetCustomButton";
+import PlaceBetMoneyBox from "./PlaceBetMoneyBox";
 const PlaceBet = ({
   open,
   refs,
@@ -40,7 +44,7 @@ const PlaceBet = ({
   betType,
   rates,
   fromOdds,
-  po
+  po,
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
@@ -92,265 +96,6 @@ const PlaceBet = ({
     }
   };
 
-  const CustomButton = ({ color, title, onClick }) => {
-    return (
-      <Box
-        onClick={onClick}
-        sx={{
-          width: { laptop: "150px", mobile: "130px" },
-          height: { laptop: "35px", mobile: "38px" },
-          borderRadius: { mobile: "7px", laptop: "5px" },
-          border: "2px solid white",
-          alignItems: "center",
-          justifyContent: "center",
-          background: color,
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ color: "white", fontWeight: "500", fontSize: "13px" }}
-        >
-          {title}
-        </Typography>
-      </Box>
-    );
-  };
-
-  const TeamsOdssData = ({
-    input,
-    title,
-    value,
-    containerStyle,
-    valueContainerStyle,
-    valueTextStyle,
-    bet_condition,
-  }) => {
-    const [oddValue, setOddValue] = useState(currentOdds || "0");
-    const selectedColorBox = useSelector(
-      (state) => state.selectedColorBox
-    )?.value;
-    // console.log(selectedColorBox, "selectedColorBox");
-    return (
-      <Box sx={[{ display: "flex", flexDirection: "column" }, containerStyle]}>
-        <Box
-          sx={{
-            background: "#262626",
-            border: "2px solid #C7B6B6",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "25px",
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { mobile: "10px", tablet: "11px", laptop: "11px" },
-              fontWeight: "600",
-            }}
-          >
-            {title}
-          </Typography>
-        </Box>
-        {!input && (
-          <Box
-            sx={[
-              {
-                background: "white",
-                border: "1px solid #FFF",
-                // border: "0px solid #C7B6B6",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "32px",
-                marginTop: "1px",
-              },
-              valueContainerStyle,
-            ]}
-          >
-            <Typography
-              sx={[
-                {
-                  overflow: bet_condition && "hidden",
-                  textOverflow: bet_condition && "ellipsis",
-                  whiteSpace: bet_condition && "nowrap",
-                  width: bet_condition && { laptop: "140px", mobile: "100px" },
-                  margin: bet_condition && "auto",
-                  marginTop: bet_condition && "5px",
-                  color: "#262626",
-                  padding: "1px",
-                  fontSize: {
-                    mobile:
-                      title == "Back/Lay" || title == "Yes/No"
-                        ? "12px"
-                        : "12px",
-                    tablet:
-                      title == "Back/Lay" || title == "Yes/No"
-                        ? "10px"
-                        : "10px",
-                    laptop:
-                      title == "Back/Lay" || title == "Yes/No"
-                        ? "12px"
-                        : "12px",
-                  },
-                  fontWeight:
-                    title === "Back/Lay" || title === "Yes/No" ? "600" : "600",
-                },
-                valueTextStyle,
-              ]}
-            >
-              {title === "Back/Lay"
-                ? isBack
-                  ? "Back"
-                  : "Lay"
-                : title === "Team"
-                  ? name
-                  : bet_condition
-                    ? bet_condition
-                    : isSessionYes
-                      ? "Yes"
-                      : "No"}
-            </Typography>
-          </Box>
-        )}
-        {input && (
-          <Box
-            sx={[
-              {
-                // background: selectedColorBox,
-                border: "1px solid #FFF",
-                // border: "0px solid #C7B6B6",
-                display: "flex",
-                justifyContent: season ? "center" : "space-between",
-                paddingX: "4px",
-                alignItems: "center",
-                height: "32px",
-                marginTop: "1px",
-              },
-              valueContainerStyle,
-            ]}
-          >
-            {!season && (
-              <Box
-                onClick={() => {
-                  setOddValue((i) => Number(i) - 1);
-                  setCurrentOdds((prev) => Number(prev) - 1);
-                }}
-                sx={{
-                  width: "18px",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
-                  borderRadius: "3px",
-                  height: "18px",
-                  background: "#319E5B",
-                }}
-              >
-                <Typography
-                  sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
-                >
-                  -
-                </Typography>
-              </Box>
-            )}
-            <Box
-              sx={{
-                width: "30px",
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
-                borderRadius: "3px",
-                height: "15px",
-              }}
-            >
-              <Typography
-                className="OddValue"
-                sx={{
-                  color: "black",
-                  fontSize: { mobile: "12px", laptop: "12px" },
-                  fontWeight: { mobile: "700", laptop: "600" },
-                }}
-              >
-                {oddValue}
-              </Typography>
-            </Box>
-            {!season && (
-              <Box
-                onClick={() => {
-                  setOddValue((i) => Number(i) + 1);
-                  setCurrentOdds((prev) => Number(prev) + 1);
-                }}
-                sx={{
-                  width: "18px",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
-                  borderRadius: "3px",
-                  height: "18px",
-                  background: "#319E5B",
-                }}
-              >
-                <Typography
-                  sx={{ color: "white", fontSize: "14px", fontWeight: "bold" }}
-                >
-                  +
-                </Typography>
-              </Box>
-            )}
-          </Box>
-        )}
-      </Box>
-    );
-  };
-
-  const MoneyBox = ({ color, trendingDown, rate, trendingUp }) => {
-    return (
-      <Box
-        sx={{
-          width: { mobile: "70px", tablet: "100px", laptop: "100px" },
-          height: "25px",
-          alignItems: "center",
-          justifyContent: "center",
-          background: color,
-          borderRadius: "4px",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: { mobile: "10px", tablet: "13px", laptop: "13px" },
-            fontWeight: "700",
-            color: "white",
-          }}
-        >
-          {rate}
-        </Typography>
-        {trendingUp && (
-          <StyledImage
-            src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
-            sx={{
-              height: "20px",
-              marginLeft: "5px",
-              filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-              width: "20px",
-            }}
-          />
-        )}
-        {trendingDown && (
-          <StyledImage
-            src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg"
-            sx={{
-              height: "20px",
-              marginLeft: "5px",
-              filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-              width: "20px",
-            }}
-          />
-        )}
-      </Box>
-    );
-  };
-
   function setDValue(e) {
     e.preventDefault();
     setDefaultValue("");
@@ -363,7 +108,6 @@ const PlaceBet = ({
   }
 
   function SubmitPayloadForPlaceBet(
-
     betOn = "teamA_back",
     marketType = "BOOKMAKER"
   ) {
@@ -386,7 +130,7 @@ const PlaceBet = ({
       teamB_name: currentMatch?.teamB,
       teamC_name: currentMatch?.teamC,
       marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : marketType,
-      po: po
+      po: po,
     };
     if (marketType == "Session") {
       delete payload.betOn;
@@ -478,13 +222,13 @@ const PlaceBet = ({
             Place Bet
           </Typography>
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <MoneyBox
+            <PlaceBetMoneyBox
               trendingUp={false}
               rate={Number(newRates?.win_amount)?.toFixed(2)}
               color={"#10DC61"}
             />
             <Box sx={{ width: "5px" }}></Box>
-            <MoneyBox
+            <PlaceBetMoneyBox
               trendingDown={false}
               rate={Number(newRates?.loss_amount).toFixed(2)}
               color={"#FF4D4D"}
@@ -504,6 +248,12 @@ const PlaceBet = ({
         </Box>
         <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }}>
           <TeamsOdssData
+            currentOdds={currentOdds}
+            season={season}
+            setCurrentOdds={setCurrentOdds}
+            isBack={isBack}
+            isSessionYes={isSessionYes}
+            name={name}
             title={season ? "Session" : "Team"}
             value={season ? "6 OVER RUNS INDIA" : "INDIA"}
             valueContainerStyle={{
@@ -514,6 +264,12 @@ const PlaceBet = ({
           />
           <TeamsOdssData
             input={true}
+            currentOdds={currentOdds}
+            season={season}
+            setCurrentOdds={setCurrentOdds}
+            isBack={isBack}
+            isSessionYes={isSessionYes}
+            name={name}
             title={"Odds"}
             valueContainerStyle={{
               background: type?.color ? type?.color : "#F8C851",
@@ -522,6 +278,12 @@ const PlaceBet = ({
             containerStyle={{ marginLeft: "2px", flex: 1 }}
           />
           <TeamsOdssData
+            currentOdds={currentOdds}
+            season={season}
+            setCurrentOdds={setCurrentOdds}
+            isBack={isBack}
+            isSessionYes={isSessionYes}
+            name={name}
             title={season ? "Yes/No" : "Back/Lay"}
             value={
               season
@@ -529,8 +291,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                  ? "Lay"
-                  : "Back"
+                ? "Lay"
+                : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}
@@ -588,7 +350,7 @@ const PlaceBet = ({
             justifyContent: "space-evenly",
           }}
         >
-          <CustomButton
+          <PlaceBetCustomButton
             onClick={(e) => {
               if (defaultValue !== "") {
                 setDValue(e);
@@ -653,43 +415,4 @@ const PlaceBet = ({
   );
 };
 
-const NumberData = ({
-  value,
-  containerStyle,
-  setDefaultValue,
-  getLatestBetAmount,
-}) => {
-  return (
-    <Box
-      onClick={() => {
-        setDefaultValue(value);
-        getLatestBetAmount(value);
-      }}
-      sx={[
-        {
-          display: "flex",
-          cursor: "pointer",
-          borderRadius: "3px",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "35px",
-          minWidth: "18%",
-          background: "#0B4F26",
-          border: '2px solid white'
-        },
-        containerStyle,
-      ]}
-    >
-      <Typography
-        sx={{
-          color: "white",
-          fontSize: "13px",
-          fontWeight: "600",
-        }}
-      >
-        {value}
-      </Typography>
-    </Box>
-  );
-};
 export default memo(PlaceBet);

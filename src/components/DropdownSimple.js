@@ -136,7 +136,7 @@ const DropDownSimple = ({
           dropDownTextStyle,
         ]}
       >
-        <Typography>{item}</Typography>
+        <Typography>{item==="0" ? "0.00":item}</Typography>
         <Typography sx={{ fontSize: "12px" }}>{CompetitionName}</Typography>
       </Box>
     );
@@ -196,7 +196,7 @@ const DropDownSimple = ({
           <Typography  
           sx={{
             fontSize:{ laptop: "14px !important", mobile: "12px !important" },
-          }}>{value}</Typography>
+          }}>{value==="0"? "0.00":value}</Typography>
           {place === 5 && (
             <Typography sx={{ fontSize: "10px !important" }}>
               {Detail[22].val}

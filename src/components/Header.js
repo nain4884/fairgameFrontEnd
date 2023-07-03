@@ -51,7 +51,7 @@ import IdleTimer from "./IdleTimer";
 import DropdownMenu1 from "./CommonMasterAdminLayout/MenuBar";
 import EventListing from "./EventListing";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const location = useLocation();
@@ -510,6 +510,11 @@ const NewBoxData = ({
               {
                 fontSize: { laptop: "8px", mobile: "8px" },
                 fontWeight: { mobile: "bold", laptop: "500px" },
+                textTransform: showDropDown && "capitalize",
+                whiteSpace: showDropDown && "nowrap",
+                textOverflow: showDropDown && "ellipsis",
+                maxWidth:showDropDown && "54px",
+                overflow:showDropDown && "hidden",
                 marginLeft: 0.5,
                 color: "black",
               },
@@ -836,16 +841,18 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen, showSideBarMobile }) => {
   };
   const container =
     window !== undefined ? () => window.document.body : undefined;
- 
+
   return (
     <Drawer
       container={container}
       variant="temporary"
       open={mobileOpen}
       onClose={handleDrawerToggle}
-      PaperProps={{sx:{
-              top:"114px"
-      }}}
+      PaperProps={{
+        sx: {
+          top: "114px",
+        },
+      }}
       ModalProps={{
         keepMounted: true, // Better open performance on mobile.
       }}
@@ -866,7 +873,7 @@ const MobileSideBar = ({ mobileOpen, setMobileOpen, showSideBarMobile }) => {
         }}
       />
       <Box sx={{ height: "100vh" }}>
-        <SideBar mobileShow={true}  handleDrawerToggle={handleDrawerToggle}/>
+        <SideBar mobileShow={true} handleDrawerToggle={handleDrawerToggle} />
       </Box>
     </Drawer>
   );
