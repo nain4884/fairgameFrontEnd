@@ -41,7 +41,7 @@ import CustomLoader from "../../components/helper/CustomLoader";
 
 let sessionOffline = [];
 let matchOddsCount = 0;
-const Home = ({ setVisible, visible, handleClose,selected }) => {
+const Home = ({ setVisible, visible, handleClose, selected }) => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -1374,13 +1374,12 @@ const Home = ({ setVisible, visible, handleClose,selected }) => {
         // overflowX: "hidden",
         flexDirection: "column",
         flex: 1,
-        width:"100%",
+        width: "100%",
         justifyContent: "flex-start",
         // overflowY: "auto",
         alignItems: "flex-start",
       }}
     >
-      <EventListing selected={selected} />
       <BetPlaced visible={visible} setVisible={setVisible} />
       {/* {console.warn("currentMatch :", currentMatch)} */}
       {loading ? (

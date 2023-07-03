@@ -106,19 +106,7 @@ const ProfitLoss = ({ selected, visible }) => {
     <Box>
       {visible ? (
         <>
-          <Box
-            sx={{
-              display: "flex",
-              overflowX: "hidden",
-              flexDirection: "column",
-              flex: 1,
-              justifyContent: "flex-start",
-              overflowY: "auto",
-              alignItems: "flex-start",
-            }}
-          >
-            <EventListing selected={selected} />
-          </Box>
+       
           <Typography
             sx={{
               fontSize: { mobile: "12px", laptop: "15px" },

@@ -46,12 +46,12 @@ const Soccer = ({selected}) => {
         overflowX: "hidden",
         flexDirection: "column",
         flex: 1,
+        width: "100%",
         justifyContent: "flex-start",
         overflowY: "auto",
         alignItems: "flex-start",
       }}
     >
-      <EventListing selected={selected} />
       <Box
         sx={{
           minHeight: "90vh",

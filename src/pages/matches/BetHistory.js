@@ -73,21 +73,7 @@ const BetHistory = ({ selected, visible }) => {
 
   return (
     <>
-      {visible && (
-        <Box
-          sx={{
-            display: "flex",
-            overflowX: "hidden",
-            flexDirection: "column",
-            flex: 1,
-            justifyContent: "flex-start",
-            overflowY: "auto",
-            alignItems: "flex-start",
-          }}
-        >
-          <EventListing selected={selected} />
-        </Box>
-      )}
+      
 
       <Background>
         {loading ? (

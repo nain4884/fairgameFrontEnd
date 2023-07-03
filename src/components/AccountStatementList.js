@@ -228,22 +228,7 @@ const AccountStatementList = ({ user, visible, selected }) => {
   };
 
   return (
-    <>
-        {visible && (
-            <Box
-              sx={{
-                display: "flex",
-                overflowX: "hidden",
-                flexDirection: "column",
-                flex: 1,
-                justifyContent: "flex-start",
-                overflowY: "auto",
-                alignItems: "flex-start",
-              }}
-            >
-              <EventListing selected={selected} />
-            </Box>
-          )}
+    <Box sx={{ width: "100%" }}>
       {loading ? (
         <Box
           sx={{
@@ -256,8 +241,7 @@ const AccountStatementList = ({ user, visible, selected }) => {
           <CustomLoader text="" />
         </Box>
       ) : (
-        <Box>
-      
+        <>
           <Box sx={{ marginX: { mobile: "2vw", laptop: "1vw" } }}>
             <YellowHeader
               onChildData={handleChildData}
@@ -373,9 +357,9 @@ const AccountStatementList = ({ user, visible, selected }) => {
               callPage={callPage}
             />
           </Box>
-        </Box>
+        </>
       )}
-    </>
+    </Box>
   );
 };
 

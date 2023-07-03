@@ -62,13 +62,13 @@ const MyAccount = ({ selected }) => {
         overflowX: "hidden",
         flexDirection: "column",
         flex: 1,
+        width: "100%",
         justifyContent: "flex-start",
         overflowY: "auto",
         alignItems: "flex-start",
       }}
     >
-      <EventListing selected={selected} top={"190px"}/>
-      <Box sx={{width: "80%"}}>
+      <Box sx={{width: "100%"}}>
         {/* <Menu
           id="basic-menu"
           // anchorEl={anchorEl}
@@ -85,7 +85,7 @@ const MyAccount = ({ selected }) => {
                   fontSize: { laptop: "18px", mobile: "10px" },
                   fontWeight: "600",
                   fontFamily: "Montserrat",
-                  padding: "10px 37px",
+                  padding: "10px 13px",
                   paddingBottom: "15px",
                   color: "#fff",
                   textTransform: "uppercase"
@@ -97,7 +97,7 @@ const MyAccount = ({ selected }) => {
             </Typography>
             {/* <Box sx={{ height: "1px", background: "#ddd" }}></Box> */}
           </Box>
-          <Box sx={{background: "#F8C851", marginLeft: "37px",marginRight: "20px", padding: "10px", borderRadius: "5px"}}>
+          <Box sx={{background: "#F8C851", marginLeft: "13px",marginRight: "20px", padding: "10px", borderRadius: "5px"}}>
 
             {menutItems1.map((x, index) => (
               <MenuItem

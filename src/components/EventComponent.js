@@ -10,7 +10,7 @@ const EventComponent = ({ data, selected, setAnchor }) => {
         if (selected === data.title) {
           navigate(`/matches`, { state: { activeTab: "EmptyComponent" } });
         } else {
-          console.log("sddd")
+          console.log("sddd");
           if (data?.url) {
             if (data.title === "MY ACCOUNT") {
               setAnchor(e);
@@ -30,6 +30,7 @@ const EventComponent = ({ data, selected, setAnchor }) => {
           borderRadius: ".6vh",
           display: "flex",
           flexDirection: "column",
+          border: "2px solid white",
           alignItems: "center",
           justifyContent: { laptop: "center", mobile: "center" },
           background: "white",
@@ -38,9 +39,6 @@ const EventComponent = ({ data, selected, setAnchor }) => {
         selected === data.title
           ? { background: "#F8C851" }
           : { background: "white" },
-        selected === data.title
-          ? { border: "2px solid white" }
-          : { border: "2px solid white" },
       ]}
     >
       <img

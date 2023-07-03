@@ -217,7 +217,7 @@ const SeprateBox = ({
     }
     // // alert(JSON.stringify(data));
     dispatch(setBetData({ ...data, }));
-    setBetPlaceLoading(true);
+ 
 
     let newPayload = {
       ...payload,
@@ -498,14 +498,17 @@ const SeprateBox = ({
               name={name}
               rates={rates}
               onSubmit={async (payload) => {
+                setBetPlaceLoading(true);
                 handlePlaceBet(payload, currentMatch, payload?.po);
               }}
               onCancel={() => {
                 setVisible(true);
                 setIsPopoverOpen(false);
+                setBetPlaceLoading(false);
               }}
               handleClose={() => {
                 setIsPopoverOpen(false);
+                setBetPlaceLoading(false);
               }}
               season={session}
               back={back}

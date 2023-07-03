@@ -7,7 +7,7 @@ import { ArrowDown, drawerBackground } from "../../assets";
 const SideBar = ({ mobileShow , }) => {
   const [showSideBarMobile, setShowSideBarMobile] = useState(false);
   const location = useLocation();
-const navigate=useNavigate()
+  const navigate=useNavigate()
   const [selected, setSelected] = useState("All Sports");
   const data = [
     {

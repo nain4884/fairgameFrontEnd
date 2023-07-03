@@ -32,12 +32,12 @@ const Match = ({ selected, setLoader, loader }) => {
             overflowX: "hidden",
             flexDirection: "column",
             flex: 1,
+            width: "100%",
             justifyContent: "flex-start",
             overflowY: "auto",
             alignItems: "flex-start",
           }}
         >
-          <EventListing selected={selected} />
           <div style={{ height: "1vh" }} />
           {/* {selected === "CRICKET" || selected === "INPLAY" ? ( */}
           <MatchesComponent
@@ -54,8 +54,7 @@ const Match = ({ selected, setLoader, loader }) => {
           />
         </Box>
       ) : (
-        <Box sx={{ overflowX: "hidden", minHeight: "100vh" }}>
-          <EventListing selected={selected} />
+        <Box sx={{ overflowX: "hidden", minHeight: "100vh" ,width:"100%"}}>
             <MatchesComponent
               setLoader={setLoader}
               loader={loader}

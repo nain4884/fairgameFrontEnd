@@ -27,19 +27,7 @@ const ChangeButtonValue = ({selected,visible}) => {
   return (
     <Box>
       {visible ? <>
-        <Box
-            sx={{
-              display: "flex",
-              overflowX: "hidden",
-              flexDirection: "column",
-              flex: 1,
-              justifyContent: "flex-start",
-              overflowY: "auto",
-              alignItems: "flex-start",
-            }}
-          >
-            <EventListing selected={selected} />
-          </Box>
+       
         <Box
         sx={{
           width: { mobile: "96vw", laptop: "35vw", tablet: "35vw" },
