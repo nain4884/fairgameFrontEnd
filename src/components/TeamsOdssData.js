@@ -65,10 +65,13 @@ const TeamsOdssData = ({
           <Typography
             sx={[
               {
-                overflow: bet_condition && "hidden",
-                textOverflow: bet_condition && "ellipsis",
-                whiteSpace: bet_condition && "nowrap",
-                width: bet_condition && { laptop: "140px", mobile: "100px" },
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                width: { laptop: "140px", mobile: "100px" },
+                textTransform: "capitalize",
+
+                maxWidth: "100px",
                 margin: bet_condition && "auto",
                 marginTop: bet_condition && "5px",
                 color: "#262626",
