@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogActions,
   Button,
+  Alert,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -35,6 +36,7 @@ import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 import axios from "axios";
 import { setConfirmAuth } from "../../newStore/reducers/matchDetails";
+import NotificationModal from "../../components/NotificationModal";
 
 export default function Login(props) {
   let { transPass, axios, role } = setRole();
@@ -57,7 +59,7 @@ export default function Login(props) {
   });
   const [OTP, setOTP] = useState("");
 
-  const [loginError, setLoginError] = useState();
+  const [loginError, setLoginError] = useState("");
   const [confirmPop, setConfirmPop] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
   // useEffect(() => {
@@ -252,7 +254,8 @@ export default function Login(props) {
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
       if (user === "" && pass === "") {
-        toast.warning("Username and password required");
+        // toast.warning("Username and password required");
+        setLoginError("Username and password required")
         setLoading(false);
         return false;
       } else {
@@ -296,19 +299,21 @@ export default function Login(props) {
               }));
               handleNavigate("/matches", "user");
             } else {
-              toast.error("User Unauthorized !");
+              // toast.error("Incorrect username and password !");
+              setLoginError("Incorrect username and password !")
               setLoading(false);
             }
           }
         } else {
-          toast.error("User Unauthorized !");
+          // toast.error("Incorrect username and password !");
+          setLoginError("Incorrect username and password !")
           setLoading(false);
         }
       }
     } catch (e) {
       console.log(e?.message);
       setLoading(false);
-      toast.error(e?.response.data.message);
+      // toast.error(e?.response.data.message);
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
     }
@@ -320,7 +325,8 @@ export default function Login(props) {
     // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
       if (loginDetail[1].val === "" && loginDetail[2].val === "") {
-        toast.warning("Username and password required");
+        // toast.warning("Username and password required");
+        setLoginError("Username and password required")
         setLoading(false);
         return false;
       } else {
@@ -364,19 +370,19 @@ export default function Login(props) {
               }));
               handleNavigate("/matches", "user");
             } else {
-              toast.error("User Unauthorized !");
+            setLoginError("Incorrect username and password !")
               setLoading(false);
             }
           }
         } else {
-          toast.error("User Unauthorized !");
+        setLoginError("Incorrect username and password !")
           setLoading(false);
         }
       }
     } catch (e) {
       console.log(e?.message);
       setLoading(false);
-      toast.error(e?.response.data.message);
+      // toast.error(e?.response.data.message);
       if (!e?.response) return setLoginError(LoginServerError);
       setLoginError(e.response.data.message);
     }
@@ -387,6 +393,12 @@ export default function Login(props) {
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
+      {/* <NotificationModal
+        open={{ value: true, msg: "Error", loading: false, type: false }}
+        handleClose={() =>
+          setCanceled({ value: false, msg: "", loading: false, type: false })
+        }
+      /> */}
       <Box
         style={{
           height: "100vh",
@@ -486,11 +498,7 @@ export default function Login(props) {
                 title="Login"
               />
             </Box>
-            {loginError && (
-              <p style={{ color: "#f50c0c" }} className={"text-center"}>
-                {loginError}
-              </p>
-            )}
+           {loginError!=="" && <Alert severity="warning">{loginError}</Alert>}
           </Box>
         </Card>
       </Box>

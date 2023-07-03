@@ -23,14 +23,25 @@ function App() {
     walletJWT: "",
   });
 
-  if (process.env.ENV !== "production") console.log = () => { };
+  if (process.env.ENV !== "production") console.log = () => {};
   return (
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <GlobalStore.Provider value={{ globalStore, setGlobalStore }}>
             <SocketProvider>
-              <ToastContainer />
+              <ToastContainer
+                position="top-center"
+                autoClose={1000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />
               <div className="App">
                 <Main />
               </div>

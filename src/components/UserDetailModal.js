@@ -131,6 +131,7 @@ export default function UserDetailModal({
       });
       if (data?.data?.data) {
         setSettalmentModal(false);
+        getListOfUser()
         toast.success(data?.data?.message);
       }
     } catch (err) {
@@ -481,6 +482,7 @@ export default function UserDetailModal({
                     UserDelete(userModal.id)
                       .then(({ bool, message }) => {
                         setDeleteModal(false);
+                        getListOfUser()
                         showDialogModal(true, true, message);
                       })
                       .catch(({ bool, message }) => {
