@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, drawerBackground } from "../../assets";
 
-const SideBar = ({ mobileShow ,handleDrawerToggle }) => {
+const SideBar = ({ mobileShow , }) => {
   const [showSideBarMobile, setShowSideBarMobile] = useState(false);
   const location = useLocation();
 const navigate=useNavigate()
@@ -123,7 +123,7 @@ const navigate=useNavigate()
       <Box 
         onClick={()=>{
           navigate(item?.url,{state:{activeTab:item?.activeTab}})
-          handleDrawerToggle()
+          // handleDrawerToggle()
         }}
         sx={{
           display: "flex",
