@@ -163,7 +163,7 @@ const SessionMarketBox = ({
             top: "2px",
             width: "30%",
             justifyContent: "flex-end",
-            left: { laptop: "38vh", tablet: "24vh" },
+            left: { laptop: "23vh", tablet: "24vh" },
             display: "flex",
             zIndex: 100,
           }}

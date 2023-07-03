@@ -418,7 +418,7 @@ const LargeBox = ({ item, k }) => {
   return (
     <Box
       sx={{
-        width: k == 1 ? "24%" : "10%",
+        width: k == 1 ? "24%" : "12%",
         // width: "10%",
         border: "1px solid white",
         background: item?.background,
