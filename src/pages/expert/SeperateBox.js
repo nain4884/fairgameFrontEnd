@@ -48,7 +48,7 @@ const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, s
               background: lock ? "#FDF21A" : color,
               border:
                 color != "white" ? "1px solid #2626264D" : "0px solid white",
-              width: { mobile: "30%", laptop: width ? width : "20%"},
+              width: { mobile: "30%", laptop: width ? width : "50%"},
               height: "94%",
               display: "flex",
               justifyContent: "center",

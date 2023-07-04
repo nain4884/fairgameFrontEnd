@@ -64,7 +64,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
     },
     [setData, newData]
   );
-  const boxWidth = width ? { laptop: "7vw" } : { "@media screen and (max-width: 1300px)": { width: "9vw" } };
+  const boxWidth = width ? { laptop: "9vw" } : { "@media screen and (max-width: 1300px)": { width: "9vw" } };
   return (
     <>
       <Box
@@ -100,6 +100,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
             display: "flex",
 
             flexDirection: "column",
+            marginLeft: "2px"
           }}
         >
           <Typography
@@ -118,6 +119,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
               fontSize: { laptop: ".5vw" },
               fontWeight: "bold",
               color: "#0B4F26",
+              lineHeight: 1
             }}
           >
             {proLoss?.total_bet || 0}
@@ -135,7 +137,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
         >
           <Typography
             sx={{
-              fontSize: { laptop: !newData?.profitLoss?.max_loss ? ".60vw" : ".60vw" },
+              fontSize: { laptop: !newData?.profitLoss?.max_loss ? "10px" : "10px" },
               fontWeight: !newData?.profitLoss?.max_loss ? "bold" : "bold",
               color: "white",
             }}
