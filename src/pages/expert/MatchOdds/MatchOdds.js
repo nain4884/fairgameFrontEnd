@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Divider from "../../../components/helper/Divider";
 import BoxComponent from "../BoxComponent";
 import { Box, Typography, useMediaQuery } from "@mui/material";
@@ -7,11 +7,13 @@ import Result from "../Result";
 import Stop from "../Stop";
 import { toast } from "react-toastify";
 import { useTheme } from "@emotion/react";
-import { useState } from "react";
 import ResultComponent from "../../../components/ResultComponent";
 import { setRole } from "../../../newStore";
 import { memo } from "react";
 import { useSelector } from "react-redux";
+import {  ARROWUP } from "../../../assets";
+
+
 
 const SmallBox2 = ({ valueA, valueB }) => {
   return (
@@ -107,10 +109,11 @@ const MatchOdds = ({
   const { axios } = setRole();
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [visible, setVisible] = useState(false);
+  
   const [newMatchOdds, setNewMatchOdds] = useState(matchOdds);
   const [stlive, setLive] = useState(currentMatch?.matchOddRateLive);
-
+  const [visible, setVisible] = useState(true);
+  const [visibleImg, setVisibleImg] = useState(true);
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const teamRates =
     manualBookMarkerRates?.length > 0
@@ -185,7 +188,7 @@ const MatchOdds = ({
           backgroundColor: "white",
           flexDirection: "column",
           width: "100%",
-          margin: ".5vw",
+          marginTop: ".5vh",
           alignSelf: {
             mobile: "center",
             tablet: "center",
@@ -200,7 +203,7 @@ const MatchOdds = ({
             display: "flex",
             height: 38,
             flexDirection: "row",
-            width: "99.7%",
+            width: "100%",
             alignSelf: "center",
           }}
         >
@@ -294,8 +297,23 @@ const MatchOdds = ({
                 title={"Live"}
               />
             )}
+          <img
+              onClick={() => {
+                setVisibleImg(!visibleImg);
+              }}
+              src={ARROWUP}
+              style={{
+                transform: visibleImg ? "rotate(180deg)" : "rotate(0deg)",
+                width: "15px",
+                height: "15px",
+                marginRight: "5px",
+                marginLeft: "5px",
+                cursor: 'pointer'
+              }}
+            />
           </Box>
         </Box>
+        
         <Box
           sx={{
             position: "absolute",
@@ -320,144 +338,147 @@ const MatchOdds = ({
             />
           )}
         </Box>
-        {
-          <Box
-            sx={{
-              display: "flex",
-              background: "#319E5B",
-              height: "25px",
-              width: "99.7%",
-              alignSelf: "center",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                background: "'#319E5B'",
-                height: "25px",
-                width: "35%",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                sx={{
-                  color: "white",
-                  fontSize: { laptop: "11px", mobile: "9px" },
-                  marginLeft: "7px",
-                }}
-              >
-                MIN: {currentMatch?.betfair_match_min_bet} MAX:
-                {currentMatch?.betfair_match_max_bet}
-              </Typography>
-            </Box>
+       
+        {visibleImg && (
+          <>
             <Box
               sx={{
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                width: { laptop: "65%", mobile: "80%" },
-                justifyContent: { laptop: "center", mobile: "flex-end" },
+                width: "100%",
+                alignSelf: "center",
               }}
             >
               <Box
                 sx={{
-                  background: "#00C0F9",
-                  width: { laptop: "16.5%", mobile: "25%" },
-                  height: "100%",
                   display: "flex",
-                  justifyContent: "center",
+                  background: "'#319E5B'",
+                  height: "25px",
+                  width: "35%",
                   alignItems: "center",
                 }}
               >
                 <Typography
-                  sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                  sx={{
+                    color: "white",
+                    fontSize: { laptop: "11px", mobile: "9px" },
+                    marginLeft: "7px",
+                  }}
                 >
-                  Back
+                  MIN: {currentMatch?.betfair_match_min_bet} MAX:
+                  {currentMatch?.betfair_match_max_bet}
                 </Typography>
               </Box>
-              <Box sx={{ width: ".35%", display: "flex" }}></Box>
-
               <Box
                 sx={{
-                  background: "#FF9292",
-                  width: { laptop: "16.5%", mobile: "25%" },
-                  height: "100%",
                   display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  background: "#319E5B",
+                  height: "25px",
+                  width: { laptop: "65%", mobile: "80%" },
+                  justifyContent: { laptop: "center", mobile: "flex-end" },
                 }}
               >
-                <Typography
-                  sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                <Box
+                  sx={{
+                    background: "#00C0F9",
+                    width: { laptop: "16.5%", mobile: "25%" },
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
                 >
-                  Lay
-                </Typography>
+                  <Typography
+                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                  >
+                    Back
+                  </Typography>
+                </Box>
+                <Box sx={{ width: ".35%", display: "flex" }}></Box>
+
+                <Box
+                  sx={{
+                    background: "#FF9292",
+                    width: { laptop: "16.5%", mobile: "25%" },
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                  >
+                    Lay
+                  </Typography>
+                </Box>
               </Box>
             </Box>
+          <Box
+            sx={{
+              width: "100%",
+              position: "relative",
+            }}
+          >
+            <BoxComponent
+              data={
+                matchOddsLive?.runners?.length > 0
+                  ? matchOddsLive?.runners[0]
+                  : []
+              }
+              teamImage={currentMatch?.teamA_Image}
+              lock={matchOddsLive?.runners?.length > 0 ? false : true}
+              name={currentMatch?.teamA}
+              currentMatch={currentMatch}
+              teamRates={teamRates?.teamA}
+            />
+            <Divider />
+            <BoxComponent
+              teamRates={teamRates?.teamB}
+              lock={matchOddsLive?.runners?.length > 0 ? false : true}
+              teamImage={currentMatch?.teamB_Image}
+              data={
+                matchOddsLive?.runners?.length > 0
+                  ? matchOddsLive?.runners[1]
+                  : []
+              }
+              name={currentMatch?.teamB}
+              currentMatch={currentMatch}
+            />
+            {currentMatch?.teamC && (
+              <>
+                <Divider />
+                <BoxComponent
+                  teamRates={teamRates?.teamC}
+                  lock={matchOddsLive?.runners?.length > 0 ? false : true}
+                  color={"#FF4D4D"}
+                  teamImage={null}
+                  data={
+                    matchOddsLive?.runners?.length > 0
+                      ? matchOddsLive?.runners[2]
+                      : []
+                  }
+                  name={currentMatch?.teamC}
+                  currentMatch={currentMatch}
+                />
+              </>
+            )}
+            {!stlive && (
+              <Box
+                sx={{
+                  width: "100%",
+                  position: "absolute",
+                  height: "100%",
+                  bottom: 0,
+                  background: "rgba(0,0,0,0.5)",
+                }}
+              ></Box>
+            )}
           </Box>
-        }
-
-        <Box
-          sx={{
-            width: "100%",
-            position: "relative",
-          }}
-        >
-          <BoxComponent
-            data={
-              matchOddsLive?.runners?.length > 0
-                ? matchOddsLive?.runners[0]
-                : []
-            }
-            teamImage={currentMatch?.teamA_Image}
-            lock={matchOddsLive?.runners?.length > 0 ? false : true}
-            name={currentMatch?.teamA}
-            currentMatch={currentMatch}
-            teamRates={teamRates?.teamA}
-          />
-          <Divider />
-          <BoxComponent
-            teamRates={teamRates?.teamB}
-            lock={matchOddsLive?.runners?.length > 0 ? false : true}
-            teamImage={currentMatch?.teamB_Image}
-            data={
-              matchOddsLive?.runners?.length > 0
-                ? matchOddsLive?.runners[1]
-                : []
-            }
-            name={currentMatch?.teamB}
-            currentMatch={currentMatch}
-          />
-          {currentMatch?.teamC && (
-            <>
-              <Divider />
-              <BoxComponent
-                teamRates={teamRates?.teamC}
-                lock={matchOddsLive?.runners?.length > 0 ? false : true}
-                color={"#FF4D4D"}
-                teamImage={null}
-                data={
-                  matchOddsLive?.runners?.length > 0
-                    ? matchOddsLive?.runners[2]
-                    : []
-                }
-                name={currentMatch?.teamC}
-                currentMatch={currentMatch}
-              />
-            </>
-          )}
-          {!stlive && (
-            <Box
-              sx={{
-                width: "100%",
-                position: "absolute",
-                height: "100%",
-                bottom: 0,
-                background: "rgba(0,0,0,0.5)",
-              }}
-            ></Box>
-          )}
-        </Box>
+          
+          </>
+        )}
       </Box>
     </>
   );

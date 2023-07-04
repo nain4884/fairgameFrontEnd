@@ -280,13 +280,13 @@ const AllRateSeperate = ({
                       flexDirection: "row",
                       position: "relative",
                       gap: '1px',
-                      marginBottom: { mobile: "1px", laptop: "1px" },
+                      // marginBottom: { mobile: "1px", laptop: "1px" },
 
                     }}
                   >
                     <Box
                       sx={{
-                        height: "45px",
+                        height: "40px",
                         width: "30px",
                         display: "flex",
                         background: "black",
@@ -370,7 +370,7 @@ const AllRateSeperate = ({
                     {profit && !i?.deleted_reason && (
                       <Box
                         sx={{
-                          height: "45px",
+                          height: "40px",
                           width: "30%",
                           // margin: { mobile: "1px", laptop: "1px" },
                           // display: "flex",
@@ -411,7 +411,7 @@ const AllRateSeperate = ({
                     {profit && i?.deleted_reason && (
                       <Box
                         sx={{
-                          height: "45px",
+                          height: "40px",
                           width: "30%",
                           // margin: { mobile: "1px", laptop: "1px" },
                           display: "flex",
@@ -512,13 +512,13 @@ const RowComponent = ({ header, data }) => {
     <Box
       sx={{
         width: "100%",
-        height: header ? "25px" : "45px",
+        height: header ? "25px" : "40px",
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
         display: "flex",
         gap: '1px',
-        // marginBottom: { mobile: "1px", laptop: "1px" },
+        marginBottom: { mobile: "1px", laptop: "1px" },
 
       }}
     >
@@ -663,7 +663,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
       <Box
         sx={{
           width: width ? width : "100%",
-          height: "45px",
+          height: "40px",
           background: "#F1C550",
           // marginX: { mobile: "0.5px", laptop: "0.5px" },
           display: "flex",
@@ -703,7 +703,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
       <Box
         sx={{
           width: "100%",
-          height: "45px",
+          height: "40px",
           flexDirection: "column",
           background: color,
           // marginX: { mobile: "1px", laptop: "1px" },
@@ -741,7 +741,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
       <Box
         sx={{
           width: "100%",
-          height: "45px",
+          height: "40px",
           background: color,
           // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",

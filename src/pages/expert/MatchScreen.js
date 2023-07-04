@@ -494,7 +494,7 @@ const MatchScreen = () => {
           <>
             <Box
               sx={{
-                width: { laptop: "60%", mobile: "100%", tablet: "100%" },
+                width: { laptop: "50%", mobile: "100%", tablet: "100%" },
               }}
             >
               {(currentMatch?.apiSessionActive ||
@@ -504,12 +504,12 @@ const MatchScreen = () => {
                       width: { laptop: "100%", mobile: "100%", tablet: "100%" },
                       display: "flex",
                       gap: 1,
-                      flexDirection: { tablet: "column", laptop: "row" },
+                      flexDirection: { tablet: "column", laptop: "coulmn" },
                     }}
                   >
                     <Box
                       sx={{
-                        width: { laptop: "35%", mobile: "100%", tablet: "100%" },
+                        width: { laptop: "100%", mobile: "100%", tablet: "100%" },
                         flexDirection: "column",
                         display: "flex",
                       }}
@@ -536,7 +536,7 @@ const MatchScreen = () => {
                     </Box>
                     <Box
                       sx={{
-                        width: { laptop: "65%", mobile: "100%", tablet: "100%" },
+                        width: { laptop: "100%", mobile: "100%", tablet: "100%" },
                         flexDirection: "column",
                         display: "flex",
                       }}
@@ -603,9 +603,10 @@ const MatchScreen = () => {
             </Box>
             <Box
               sx={{
-                width: { laptop: "40%", mobile: "100%", tablet: "100%" },
+                width: { laptop: "50%", mobile: "100%", tablet: "100%" },
                 flexDirection: "column",
                 display: "flex",
+                paddingLeft: "5px" 
               }}
             >
               {currentMatch?.apiMatchActive && (

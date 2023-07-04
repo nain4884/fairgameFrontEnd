@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setRole } from "../../../newStore";
 import { useRef } from "react";
+import {  ARROWUP } from "../../../assets";
 const SessionMarket = ({
   currentMatch,
   liveOnly,
@@ -62,6 +63,7 @@ const SessionMarket = ({
   //     messageRef.current.scrollIntoView({});
   //   }
   // };
+const [visible, setVisible] = useState(true);
 
   const handleLive = async () => {
     try {
@@ -182,129 +184,146 @@ const SessionMarket = ({
           }}
         >
           {/* <SmallBoxSeason /> */}
+           <img
+              onClick={() => {
+                setVisible(!visible);
+              }}
+              src={ARROWUP}
+              style={{
+                transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+                width: "15px",
+                height: "15px",
+                marginRight: "5px",
+                marginLeft: "5px",
+                cursor: 'pointer'
+              }}
+            />
         </Box>
       </Box>
-      <Box
-        sx={{
-          width: "100%",
-          alignItems: "center",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        {
+        {visible && (
           <Box
             sx={{
+              width: "100%",
+              alignItems: "center",
               display: "flex",
-              background: "#319E5B",
-              height: "25px",
-              width: "99.7%",
-              alignSelf: "center",
+              flexDirection: "column",
             }}
           >
+            {
+              <Box
+                sx={{
+                  display: "flex",
+                  background: "#319E5B",
+                  height: "25px",
+                  width: "99.7%",
+                  alignSelf: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    background: "'#319E5B'",
+                    height: "25px",
+                    width: "60%",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: "white",
+                      fontSize: { laptop: "11px", mobile: "9px" },
+                      marginLeft: "7px",
+                    }}
+                  >
+                    MIN: {currentMatch?.betfair_session_min_bet} MAX:
+                    {currentMatch?.betfair_session_max_bet}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    background: "#319E5B",
+                    height: "25px",
+                    // marginLeft: "0vw",          
+                    width: { laptop: "40%", mobile: "80%", marginLeft: "8px" },
+                    justifyContent: { laptop: "flex-start", mobile: "flex-end" },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      background: "#FF9292",
+                      width: { laptop: "22%", mobile: "26.5%" },
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    >
+                      No
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: ".45%", display: "flex" }}></Box>
+                  <Box
+                    sx={{
+                      background: "#00C0F9",
+                      width: { laptop: "21.9%", mobile: "26.5%" },
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    >
+                      Yes
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            }
             <Box
               sx={{
                 display: "flex",
-                background: "'#319E5B'",
-                height: "25px",
-                width: "60%",
-                alignItems: "center",
+                flexDirection: "column",
+                width: "100%",
+                position: "relative",
+                height: "auto",
+                maxHeight: "200px",
+                overflowY: "scroll",
               }}
             >
-              <Typography
-                sx={{
-                  color: "white",
-                  fontSize: { laptop: "11px", mobile: "9px" },
-                  marginLeft: "7px",
-                }}
-              >
-                MIN: {currentMatch?.betfair_session_min_bet} MAX:
-                {currentMatch?.betfair_session_max_bet}
-              </Typography>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                background: "#319E5B",
-                height: "25px",
-                // marginLeft: "0vw",          
-                width: { laptop: "40%", mobile: "80%" },
-                justifyContent: { laptop: "flex-start", mobile: "flex-end" },
-              }}
-            >
-              <Box
-                sx={{
-                  background: "#FF9292",
-                  width: { laptop: "23%", mobile: "26.5%" },
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
-                  sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
-                >
-                  No
-                </Typography>
-              </Box>
-              <Box sx={{ width: ".45%", display: "flex" }}></Box>
-              <Box
-                sx={{
-                  background: "#00C0F9",
-                  width: { laptop: "23%", mobile: "26.5%" },
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
-                  sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
-                >
-                  Yes
-                </Typography>
-              </Box>
+              {matchSessionData?.length > 0 &&
+                matchSessionData?.map((match, index) => (
+                  <Box
+                    key={index}
+                  //  ref={messageRef}
+                  >
+                    <SessionMarketBox
+                      liveOnly={liveOnly}
+                      setIObtes={setIObtes}
+                      setData={setData}
+                      hideResult={hideResult}
+                      hideTotalBet={hideTotalBet}
+                      // updateSessionData={updateSessionData}
+                      setMatchSessionData={setMatchSessionData}
+                      setLocalState={(val) => setLocalState(val)}
+                      currentMatch={currentMatch}
+                      setCurrentMatch={setCurrentMatch}
+                      newData={match}
+                      setStop={setStop}
+                      stop={stop}
+                      index={index}
+                    />
+                    <Divider />
+                  </Box>
+                ))}
             </Box>
           </Box>
-        }
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            position: "relative",
-            height: "200px",
-            overflowY: "scroll",
-          }}
-        >
-          {matchSessionData?.length > 0 &&
-            matchSessionData?.map((match, index) => (
-              <Box
-                key={index}
-              //  ref={messageRef}
-              >
-                <SessionMarketBox
-                  liveOnly={liveOnly}
-                  setIObtes={setIObtes}
-                  setData={setData}
-                  hideResult={hideResult}
-                  hideTotalBet={hideTotalBet}
-                  // updateSessionData={updateSessionData}
-                  setMatchSessionData={setMatchSessionData}
-                  setLocalState={(val) => setLocalState(val)}
-                  currentMatch={currentMatch}
-                  setCurrentMatch={setCurrentMatch}
-                  newData={match}
-                  setStop={setStop}
-                  stop={stop}
-                  index={index}
-                />
-                <Divider />
-              </Box>
-            ))}
-        </Box>
-      </Box>
+        )}
     </Box>
   );
 };

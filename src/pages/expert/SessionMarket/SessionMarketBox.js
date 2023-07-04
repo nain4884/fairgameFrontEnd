@@ -160,10 +160,10 @@ const SessionMarketBox = ({
         <Box
           sx={{
             position: "absolute",
-            top: "2px",
+            top: "4px",
             width: "30%",
             justifyContent: "flex-end",
-            left: { laptop: "23vh", tablet: "24vh" },
+            left: { laptop: "14vw", tablet: "24vw" },
             display: "flex",
             zIndex: 100,
           }}
@@ -270,7 +270,7 @@ const SessionMarketBox = ({
             sx={{
               margin: "1px",
               background: "rgba(0,0,0,1)",
-              height: "40px",
+              height: "32px",
               right: "20.5%",
               position: "absolute",
               width: { laptop: "18%", mobile: "18%" },
@@ -303,7 +303,7 @@ const SessionMarketBox = ({
               background: "white",
               height: "30px",
               marginLeft: "4vh",
-              width: { laptop: "43%", mobile: "60%" },
+              width: { laptop: "18.6%", mobile: "60%", paddingLeft: "6px" },
               justifyContent: "center",
               alignItems: "center",
               margin: "auto",

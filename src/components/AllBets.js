@@ -3,11 +3,13 @@ import moment from "moment/moment";
 import { memo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { ARROWUP } from "../assets";
 
 const AllBets = ({ tag, submit, allBetRates }) => {
   const navigate = useNavigate();
 
   const [newData, setNewBets] = useState([]);
+  const [visibleImg, setVisibleImg] = useState(true);
 
   useEffect(() => {
     if (allBetRates) {
@@ -21,6 +23,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#319E5B"
                 : "#F1C550",
               deleted_reason: v?.deleted_reason,
+              width: "11%"
             },
             {
               name: v?.marketType,
@@ -29,6 +32,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#319E5B"
                 : "#F1C550",
               deleted_reason: v?.deleted_reason,
+              width: "25.4%"
             },
             {
               name: v?.team_bet,
@@ -37,6 +41,8 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               deleted_reason: v?.deleted_reason,
+              width: "10.6%"
+              
             },
             {
               name: v?.odds,
@@ -49,6 +55,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 : "rgb(255, 146, 146)",
               small: true,
               deleted_reason: v?.deleted_reason,
+              width: "10.6%"
             },
             {
               name: v?.bet_type,
@@ -58,6 +65,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 : "rgb(255, 146, 146)",
               small: true,
               deleted_reason: v?.deleted_reason,
+              width: "10.6%"
             },
             {
               name: v?.amount,
@@ -66,12 +74,14 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               deleted_reason: v?.deleted_reason,
+              width: "10.6%"
             },
             {
               name: v?.myStack,
               color: "white",
               background: "#0B4F26",
               deleted_reason: v?.deleted_reason,
+              width: "10.6%"
             },
             {
               name: moment(v?.createAt).format("LT"),
@@ -82,6 +92,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               time: true,
               date: moment(v?.createAt).format("L"),
               deleted_reason: v?.deleted_reason,
+              width: "10.6%"
             },
           ],
         };
@@ -96,9 +107,19 @@ const AllBets = ({ tag, submit, allBetRates }) => {
     <Box
       sx={{
         width: "100%",
+        margin: "0",
         marginTop: submit ? "10px" : ".25vh",
-        padding: 0.2,
+       
         background: "white",
+      }}
+    >
+    <Box
+      sx={{
+         display: "flex",
+          height: 38,
+          flexDirection: "row",
+          width: "100%",
+          alignSelf: "center",
       }}
     >
       <Box
@@ -108,130 +129,169 @@ const AllBets = ({ tag, submit, allBetRates }) => {
         // }}
         sx={[
           {
-            width: "100%",
-            height: "40px",
-            justifyContent: "space-between",
+            flex: 1,
+            background: "#f1c550",
             alignItems: "center",
-            paddingLeft: "10px",
-            paddingRight: "4px",
-            marginBottom: ".1vh",
             display: "flex",
+            justifyContent: "space-between",
           },
-          (theme) => ({
-            backgroundImage: `${theme.palette.primary.headerGradient}`,
-          }),
         ]}
       >
         <Typography
-          sx={{ fontWeight: "12px", color: "white", fontWeight: "700" }}
+           sx={{
+            fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+            fontWeight: "bold",
+            marginLeft: "7px",
+          }}
         >
           All Bets
         </Typography>
+        </Box>
+        <Box
+          sx={{
+            flex: 0.1,
+            background: "#262626",
+            // '#262626'
+          }}
+        >
+          <div className="slanted"></div>
+        </Box>
         <Box
           sx={{
             width: "100px",
-            height: "90%",
-            background: "white",
-            justifyContent: "center",
-            borderRadius: "3px",
-            alignItems: "center",
+            flex: 1,
+            background: "#262626",
+            // '#262626' ,
             display: "flex",
-            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "flex-end",
           }}
         >
-          <Typography
-            sx={{ fontSize: "12px", fontWeight: "700", color: "#FF1111" }}
+          <Box
+            sx={{
+              width: "100px",
+              height: "90%",
+              background: "white",
+              justifyContent: "center",
+              borderRadius: "3px",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
           >
-            Total Bet
-          </Typography>
-          <Typography
-            sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
-          >
-            {newData?.length || 0}
-          </Typography>
+            <Typography
+              sx={{ fontSize: "12px", fontWeight: "700", color: "#FF1111" }}
+            >
+              Total Bet
+            </Typography>
+            <Typography
+              sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
+            >
+              {newData?.length || 0}
+            </Typography>
+          </Box>
+          <img
+            onClick={() => {
+              setVisibleImg(!visibleImg);
+            }}
+            src={ARROWUP}
+            style={{
+              transform: visibleImg ? "rotate(180deg)" : "rotate(0deg)",
+              width: "15px",
+              height: "15px",
+              marginRight: "5px",
+              marginLeft: "5px",
+              cursor: 'pointer'
+            }}
+          />
         </Box>
       </Box>
-      <HeaderRow tag={tag} />
-      <Box className="myScroll" sx={{ maxHeight: submit ? "200px" : "400px", overflowY: "auto" }}>
-        {newData?.length > 0 &&
-          newData?.map((i, k) => {
-            const num = newData?.length - k;
-            return (
-              <div style={{ display: "flex", position: "relative" }}>
-                <Box
-                  sx={{
-                    width: "6%",
-                    border: "1px solid white",
-                    background: "black",
-                    height: "30px",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: !tag ? "10px" : "13px",
-                      fontWeight: tag ? "bold" : "600",
-                      color: "white",
-                    }}
-                  >
-                    {num < 10 ? "0" + num : num.toString()}
-                  </Typography>
-                </Box>
-                <Row index={k} values={i.values} />
-                {i?.deleted_reason && (
-                  <Box
-                    sx={{
-                      background: "rgba(0,0,0,0.5)",
-                      width: "100%",
-                      height: "30px",
-                      position: "absolute",
-                      display: "flex",
-                    }}
-                  >
-                    <Box sx={{ flex: 1, display: "flex" }}>
-                      <Box sx={{ width: "34%", height: "30px" }}></Box>
-                      <Box
+      
+      {visibleImg && (
+        <>
+          <HeaderRow tag={tag} />
+          <Box className="myScroll" sx={{ maxHeight: submit ? "200px" : "400px", overflowY: "auto" }}>
+            {newData?.length > 0 &&
+              newData?.map((i, k) => {
+                const num = newData?.length - k;
+                return (
+                  <div style={{ display: "flex", position: "relative" }}>
+                    <Box
+                      sx={{
+                        width: "6%",
+                        border: "1px solid white",
+                        background: "black",
+                        height: "30px",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        display: "flex",
+                      }}
+                    >
+                      <Typography
                         sx={{
-                          width: "66%",
-                          height: "30px",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "flex-end",
+                          fontSize: !tag ? "10px" : "13px",
+                          fontWeight: tag ? "bold" : "600",
+                          color: "white",
                         }}
                       >
-                        {
-                          <Typography
+                        {num < 10 ? "0" + num : num.toString()}
+                      </Typography>
+                    </Box>
+                    <Row index={k} values={i.values} />
+                    {i?.deleted_reason && (
+                      <Box
+                        sx={{
+                          background: "rgba(0,0,0,0.5)",
+                          width: "100%",
+                          height: "30px",
+                          position: "absolute",
+                          display: "flex",
+                        }}
+                      >
+                        <Box sx={{ flex: 1, display: "flex" }}>
+                          <Box sx={{ width: "34%", height: "30px" }}></Box>
+                          <Box
                             sx={{
-                              fontSize: "10px",
-                              fontWeight: "700",
-                              color: "white",
-                              textTransform: "uppercase",
+                              width: "66%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "flex-end",
                             }}
                           >
-                            Bet{" "}
-                            <span style={{ color: "#e41b23" }}>deleted</span>{" "}
-                            due to {i?.deleted_reason}
-                          </Typography>
-                        }
+                            {
+                              <Typography
+                                sx={{
+                                  fontSize: "10px",
+                                  fontWeight: "700",
+                                  color: "white",
+                                  textTransform: "uppercase",
+                                }}
+                              >
+                                Bet{" "}
+                                <span style={{ color: "#e41b23" }}>deleted</span>{" "}
+                                due to {i?.deleted_reason}
+                              </Typography>
+                            }
+                          </Box>
+                        </Box>
                       </Box>
-                    </Box>
-                  </Box>
-                )}
-              </div>
-            );
-          })}
-      </Box>
+                    )}
+                  </div>
+                );
+              })}
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
 const HeaderRow = ({ tag }) => {
   return (
-    <Box  sx={{ width: "100%", display: "flex" }}>
+    <Box sx={{ width: "100%", display: "flex" }}>
       <Box
         sx={{
-          width: "5.7%",
+          width: "6%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -241,9 +301,9 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
-          No 
+          No
         </Typography>
       </Box>
       <Box
@@ -259,7 +319,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
           Username
         </Typography>
@@ -277,7 +337,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
           Market
         </Typography>
@@ -294,7 +354,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
           Favourite
         </Typography>
@@ -311,7 +371,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
           Odds
         </Typography>
@@ -328,7 +388,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
           Type
         </Typography>
@@ -345,7 +405,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
           Stake
         </Typography>
@@ -362,15 +422,16 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
           My Stake
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "12%",
+          width: "10%",
           border: "1px solid white",
+          borderRight: "0",
           background: "rgba(0,0,0)",
           height: "20px",
           justifyContent: "center",
@@ -379,7 +440,7 @@ const HeaderRow = ({ tag }) => {
         }}
       >
         <Typography
-          sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}
+          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
         >
           Time
         </Typography>
@@ -391,7 +452,7 @@ const SmallBox = ({ item }) => {
   return (
     <Box
       sx={{
-        width: "10%",
+        width: item?.width? item?.width:"50px",
         border: "1px solid white",
         background: item?.background,
         height: "30px",
@@ -399,6 +460,7 @@ const SmallBox = ({ item }) => {
         alignItems: "center",
         display: "flex",
         flexDirection: "column",
+        width: item?.width? item?.width:"auto"
       }}
     >
       <Typography
@@ -418,8 +480,8 @@ const LargeBox = ({ item, k }) => {
   return (
     <Box
       sx={{
-        width: k == 1 ? "24%" : "12%",
-        // width: "10%",
+        // width: k == 1 ? "24%" : "12%",
+     
         border: "1px solid white",
         background: item?.background,
         height: "30px",
@@ -428,6 +490,7 @@ const LargeBox = ({ item, k }) => {
         paddingLeft: k == 1 || k == 0 ? "5px" : 0,
         display: "flex",
         flexDirection: "column",
+        width: item?.width? item?.width:"50px"
       }}
     >
       <Typography
@@ -445,9 +508,9 @@ const LargeBox = ({ item, k }) => {
           // textOverflow: "ellipsis",
           // maxWidth: "50px",
           overflow: "hidden",
-          display:" -webkit-box",
+          display: " -webkit-box",
           WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
+          WebkitBoxOrient: "vertical",
         }}
       >
         {item?.name}

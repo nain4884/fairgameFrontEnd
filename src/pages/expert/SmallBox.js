@@ -26,6 +26,7 @@ const SmallBox = ({ color, title, width, textSize, onClick, hide }) => {
             fontSize: { laptop: textSize ? textSize : "11px", mobile: "10px" },
             fontWeight: "600",
             color: color !== "#FFF" && "white",
+            lineHeight: 1
           }}
         >
           {title}

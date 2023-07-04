@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import SessionMarketBoxLive from "./SessionMarketBoxLive";
 import { setRole } from "../../../../newStore";
 import Divider from "../../../../components/helper/Divider";
+import {  ARROWUP } from "../../../../assets";
 const SessionMarketLive = ({
   currentMatch,
   liveOnly,
@@ -48,6 +49,7 @@ const SessionMarketLive = ({
   //   },
   //   [setMatchSessionData]
   // );
+  const [visible, setVisible] = useState(true);
 
   return (
     <Box
@@ -95,6 +97,7 @@ const SessionMarketLive = ({
           {/* <img src={LOCKED} style={{ width: '14px', height: '20px' }} />
            */}
         </Box>
+        
         <Box
           sx={{
             flex: 0.1,
@@ -115,8 +118,23 @@ const SessionMarketLive = ({
           }}
         >
           {/* <SmallBoxSeason /> */}
+          <img
+              onClick={() => {
+                setVisible(!visible);
+              }}
+              src={ARROWUP}
+              style={{
+                transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+                width: "15px",
+                height: "15px",
+                marginRight: "5px",
+                marginLeft: "5px",
+                cursor: 'pointer'
+              }}
+            />
         </Box>
       </Box>
+      {visible && (
       <Box
         sx={{
           width: "100%",
@@ -207,7 +225,8 @@ const SessionMarketLive = ({
             flexDirection: "column",
             width: "100%",
             position: "relative",
-            height: "200px",
+            height: "auto",
+            maxHeight: "200px",
             overflowY: "auto",
           }}
         >
@@ -233,6 +252,7 @@ const SessionMarketLive = ({
             ))}
         </Box>
       </Box>
+      )}
     </Box>
   );
 };
