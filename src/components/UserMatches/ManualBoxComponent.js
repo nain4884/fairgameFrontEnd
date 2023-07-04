@@ -169,6 +169,7 @@ const BoxComponent = ({
               marginLeft: "10px",
               marginRight: "10px",
               width: { mobile: "113px", table: "100%", laptop: "100%" },
+              textTransform: "capitalize"
             }}
           >
             {name}

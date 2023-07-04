@@ -282,7 +282,7 @@ const SessionBetSeperate = ({
                     {profit && !i?.deleted_reason && (
                       <Box
                         sx={{
-                          height: "45px",
+                          height: "40px",
                           width: "30%",
                           // margin: { mobile: "1px", laptop: "1px", my: 0 },
                           background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
