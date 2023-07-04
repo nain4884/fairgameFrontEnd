@@ -33,6 +33,8 @@ export function ThisUseModal() {
             height: "100vh",
             width: "100vw",
             zIndex: 9999,
+            transition: "transform 1s ease-in-out", 
+           
           }}
         >
           <Box
@@ -47,6 +49,7 @@ export function ThisUseModal() {
               borderRadius: "15px",
               position: "relative",
               top: "20px",
+              transition: "transform 1s ease-in-out", 
             }}
           >
             <Button

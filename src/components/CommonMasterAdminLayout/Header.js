@@ -454,7 +454,7 @@ const CustomHeader = ({}) => {
     BoxCont1sub2: {
       width: "100%",
       display: "flex",
-      marginLeft: { mobile: showSearch ?"-143px" :0, laptop: 0, tablet: 0 },
+      marginLeft: { mobile: showSearch ? "-143px" : 0, laptop: 0, tablet: 0 },
       justifyContent: "flex-end",
       // minWidth: matchesMobile ? "100%" : "0px",
       alignItems: "center",
@@ -509,8 +509,8 @@ const CustomHeader = ({}) => {
               />
               <StyledImage
                 onClick={(e) => {
-                  navigate(`/${nav}/list_of_clients`,{
-                    state:{activeTab:"Client list"}
+                  navigate(`/${nav}/list_of_clients`, {
+                    state: { activeTab: "Client list" },
                   });
                   e.stopPropagation();
                 }}

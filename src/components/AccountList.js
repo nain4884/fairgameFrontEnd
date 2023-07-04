@@ -62,7 +62,6 @@ const AccountList = () => {
   const [loading, setLoading] = useState(false);
   async function getListOfUser(username) {
     try {
-      setLoading(true);
       const { data } = await axios.get(
         `/fair-game-wallet/getAllUser?${
           username ? `userName=${username}` : ""
@@ -133,6 +132,7 @@ const AccountList = () => {
   }, []);
 
   useEffect(() => {
+    setLoading(true);
     getListOfUser();
   }, [currentPageNo]);
 
