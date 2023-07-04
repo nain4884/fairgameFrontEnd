@@ -13,16 +13,27 @@ const AddNotificationModal = ({
   const [selected, setSelected] = useState("");
 
   const [value, setValue] = useState("");
+  const [error, setError] = useState(false);
+
+  const handleDone = () => {
+    if (value == "") {
+      return setError(true);
+    }
+    onDone(value);
+    setValue("");
+    setVisible(false);
+  }
   const CustomButton = ({ title, color }) => {
     return (
       <Box
-        onClick={(e) => {
-          onDone(value);
-          setValue("")
-          e.stopPropagation();
-          setVisible(false);
-          // onClick();
-        }}
+        // onClick={(e) => {
+        //   onDone(value);
+        //   setValue("")
+        //  
+        //   setVisible(false);
+        //   // onClick();
+        // }}
+        onClick={handleDone}
         sx={{
           width: "35%",
           height: "35px",
@@ -141,6 +152,13 @@ const AddNotificationModal = ({
                 marginTop: "10px",
               }}
             />
+          </Box>
+          <Box
+            sx={{
+              marginX: "2%",
+            }}
+          >
+            {error && <Typography sx={{ fontSize: "12px", color: '#ff0000' }} >Field Required !</Typography>}
           </Box>
           <Box
             sx={{

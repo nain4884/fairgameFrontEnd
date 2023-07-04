@@ -72,7 +72,7 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
               color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
               background: ["no", "yes"].includes(v?.bet_type) ? "#319E5B" : "#F1C550",
               deleted_reason: v?.deleted_reason,
-              bet_id: v?.bet_id
+              id: v?.id
             },
             {
               name: v?.marketType,
@@ -145,9 +145,9 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
 
   useEffect(() => {
     setSelectedData([]);
-   if(setSelectedBetData!==undefined){
-    setSelectedBetData([]);
-   }
+    if (setSelectedBetData !== undefined) {
+      setSelectedBetData([]);
+    }
   }, [mode]);
   const navigate = useNavigate();
   return (
@@ -268,17 +268,18 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
                   onClick={(e) => {
                     let x = [...selectedData];
                     if (x.includes(k)) {
-                      const updatedSelectedBetData = selectedBetData.filter((id) => id !== i?.values[0].bet_id);
+                      const updatedSelectedBetData = selectedBetData.filter((id) => id !== i?.values[0].id);
                       setSelectedBetData(updatedSelectedBetData);
                       x.splice(x.indexOf(k), 1);
                       setSelectedData([...x]);
                       e.stopPropagation();
                     } else {
-                      // alert(JSON.stringify(i?.values[0].bet_id));
-                      setSelectedBetData(i?.values[0].bet_id)
-                      setSelectedBetData([...selectedBetData, i?.values[0].bet_id]);
-                      x.push(k);
-                      setSelectedData([...x]);
+                      if (!i?.values[0].deleted_reason) {
+                        setSelectedBetData(i?.values[0].id)
+                        setSelectedBetData([...selectedBetData, i?.values[0].id]);
+                        x.push(k);
+                        setSelectedData([...x]);
+                      }
                     }
                   }}
                 >
@@ -324,22 +325,23 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
                     )}
                   </Box>
                   <Row index={k} values={i.values} />
-                  {i?.deleted_reason && (
+                  {/* i?.values[0].id */}
+                  {i?.values[0]?.deleted_reason && (
                     <Box
                       sx={{
                         background: "rgba(0,0,0,0.5)",
                         width: "100%",
-                        height: "50px",
+                        // height: "350px",
                         position: "absolute",
                         display: "flex",
                       }}
                     >
                       <Box sx={{ flex: 1, display: "flex" }}>
-                        <Box sx={{ width: "34%", height: "50px" }}></Box>
+                        <Box sx={{ width: "34%", height: "35px" }}></Box>
                         <Box
                           sx={{
                             width: "66%",
-                            height: "50px",
+                            height: "35px",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "flex-end",
@@ -354,7 +356,7 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
                             }}
                           >
                             Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
-                            due to {i?.deleted_reason}
+                            due to {i?.values[0]?.deleted_reason}
                           </Typography>
                         </Box>
                       </Box>

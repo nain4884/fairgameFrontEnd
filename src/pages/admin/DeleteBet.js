@@ -844,6 +844,27 @@ const DeleteBet = ({ }) => {
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "matchDeleteBet") {
+          const value = packet.data[1];
+          try {
+            setSingleIObtes((IOSinglebets) => {
+              const updatedBettings = IOSinglebets?.map((betting) => {
+                if (value?.betPlaceIds.includes(betting.id)) {
+                  return {
+                    ...betting,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+                return betting;
+              });
+
+              return updatedBettings;
+            });
+
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
   }, [socket]);
@@ -1045,6 +1066,7 @@ const DeleteBet = ({ }) => {
       //     )
       //   )
       // );
+      console.log("response 1111", data?.data?.data);
       setSingleIObtes(data?.data?.data);
       const bets = data?.data?.data?.filter(
         (b) =>
@@ -1216,6 +1238,9 @@ const DeleteBet = ({ }) => {
             //   // handleDeleteBet();
             // }}
             onDone={handleDeleteBet}
+            onClick={() => {
+              setMode(!mode);
+            }}
           // onClick={() => {
           //   // setVisible(false);
           //   setMode(!mode);
