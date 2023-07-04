@@ -86,7 +86,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           <Typography
             sx={{
               color: "white",
-              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px" },
+              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px", lineHeight: 1 },
             }}
           >
             Commission Type
@@ -240,7 +240,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           <Typography
             sx={{
               color: "white",
-              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px" },
+              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px", lineHeight: 1 },
             }}
           >
             Commission Amount
@@ -323,7 +323,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             <Typography
               sx={[
                 {
-                  fontSize: { mobile: "10px", laptop: "10px", tablet: "10px" },
+                  fontSize: { mobile: "10px", laptop: "12px", tablet: "10px" },
                   fontWeight: "600",
                   cursor: "pointer",
                   color:
@@ -353,7 +353,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             <Typography
               sx={[
                 {
-                  fontSize: { mobile: "10px", laptop: "10px", tablet: "10px" },
+                  fontSize: { mobile: "10px", laptop: "12px", tablet: "10px" },
                   fontWeight: "600",
                   cursor: "pointer",
                   color:
@@ -450,6 +450,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
               alignItems: "center",
               height: "45px",
               borderRight: "2px solid white",
+              textTransform: "capitalize"
             }}
           >
             <Typography
@@ -501,8 +502,8 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       <Box
         sx={[
           {
-            width: { mobile: "100%", laptop: "96%", tablet: "96%" },
-            marginX: "0.5%",
+            width: { mobile: "96%", laptop: "85%", tablet: "96%" },
+            // marginX: "0.5%",
             minHeight: "200px",
             display: "flex",
             flexDirection: "column",
@@ -531,7 +532,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         <Box
           sx={{
             overflowX: "auto",
-            width: { mobile: "99%", laptop: "103%", tablet: "103%" },
+            width: { mobile: "100%", laptop: "100%", tablet: "100%" },
           }}
         >
           <ListHeaderT />
@@ -550,7 +551,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                 containerStyle={{
                   background:
                     element?.ComissionType === "commission setteled"
-                      ? "#303030"
+                      ? "#319E5B"
                       : ["back", "yes"].includes(
                           element?.bet_place_id?.bet_type
                         )
@@ -565,7 +566,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                     element?.ComissionType === "session"
                       ? "#319E5B"
                       : element?.ComissionType === "commission setteled"
-                      ? "#303030"
+                      ? "#319E5B"
                       : "#F1C550",
                 }}
                 fTextStyle={{
