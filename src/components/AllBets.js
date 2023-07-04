@@ -464,7 +464,7 @@ const SmallBox = ({ item }) => {
       }}
     >
       <Typography
-        sx={{ fontSize: "12px", fontWeight: "600", color: item?.color }}
+        sx={{ fontSize: "12px", fontWeight: "600", color: item?.color, textTransform: "capitalize" }}
       >
         {item?.name}
       </Typography>
