@@ -1127,6 +1127,58 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "sessionDeleteBet") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            const user = {
+              ...currentUser,
+              current_balance: value.newBalance,
+              exposure: value.exposure,
+            };
+            const manualBookmaker = {
+              matchId: value?.matchId,
+              teamA: value.teamA_rate,
+              teamB: value.teamB_rate,
+              teamC: value.teamC_rate,
+            };
+            dispatch(setCurrentUser(user));
+            dispatch(setManualBookMarkerRates(manualBookmaker));
+
+            setSessionBets((sessionBets) => {
+              const updatedBettings = sessionBets?.map((betting) => {
+                if (value?.betPlaceIds.includes(betting.id)) {
+                  return {
+                    ...betting,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+                return betting;
+              });
+
+              return updatedBettings;
+            });
+            setCurrentMatch((currentMatch) => {
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (betting?.id === value?.betId) {
+                  let profitLoss = value?.profitLoss;
+                  return {
+                    ...betting,
+                    profitLoss: profitLoss,
+                  };
+                }
+                return betting;
+              });
+              // Return the updated current match object
+              return {
+                ...currentMatch,
+                bettings: updatedBettings,
+              };
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
 
