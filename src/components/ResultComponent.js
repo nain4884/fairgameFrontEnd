@@ -59,8 +59,7 @@ const ResultComponent = ({
     <Box
       sx={{
         width: "400px",
-        height: "300px",
-        padding: 0.2,
+        // height: "300px",
         borderRadius: 2,
         boxShadow: "0px 5px 10px #1A568414",
         background: "white",
@@ -76,11 +75,12 @@ const ResultComponent = ({
             alignItems: "center",
             height: "50px",
             background: "white",
-            borderRadius: 2,
+            borderRadius: "10px 10px 0 0",
+            background: "#ff4d4d"
           },
-          (theme) => ({
-            backgroundImage: theme.palette.primary.headerGradient,
-          }),
+          // (theme) => ({
+          //   backgroundImage: theme.palette.primary.headerGradient,
+          // }),
         ]}
       >
         <Typography
@@ -97,84 +97,95 @@ const ResultComponent = ({
           style={{ width: "25px", height: "25px" }}
         />
       </Box>
-      <Box
-        sx={{
-          width: "100%",
-          flexWrap: "wrap",
-          flexDirection: "row",
-          display: "flex",
-          alignSelf: "center",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
+      <Box sx={{ padding: 0,}}>
+        <Box
+          sx={{
+            width: "100%",
+            flexWrap: "wrap",
+            flexDirection: "row",
+            display: "flex",
+            alignSelf: "center",
+            alignItems: "center",
+            justifyContent: "center",
+            px: "10px",
+            py: "5px"
+           
+          }}
+        >
 
-        {teamData.map((i, k) => {
-          return (
-            <Box
-              onClick={() => {
-                setSelected(i);
-              }}
-              sx={{
-                width: "49%",
-                marginY: "5px",
-                borderRadius: "3px",
-                border: "2px solid #2626261A",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "60px",
-                background: selected === i ? "#0B4F26" : "#F8C851",
-              }}
-            >
-              <Typography
+          {teamData.map((i, k) => {
+            return (
+              <Box
+                onClick={() => {
+                  setSelected(i);
+                }}
                 sx={{
-                  fontSize: "20px",
-                  fontWeight: "700",
-                  color: selected === i ? "white" : "black",
+                  width: "40%",
+                  marginY: "5px",
+                  marginX: "5px",
+                  borderRadius: "3px",
+                  border: "2px solid #2626261A",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "50px",
+                  cursor: "pointer",
+                  background: selected === i ? "#0B4F26" : "#F8C851",
                 }}
               >
-                {i}
-              </Typography>
-            </Box>
-          );
-        })}
-      </Box>
-      <Box
-        sx={{
-          width: "100%",
-          height: "100px",
-          justifyContent: "space-evenly",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <MatchOddsResultCustomButton
-          color={"#FF4D4D"}
-          loading={loading}
-          id="UD"
-          title={"Un Declare"}
-          onClick={() => {
-            if (loading?.value) {
-              return false;
-            }
-            undeclareResult();
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: "700",
+                    color: selected === i ? "white" : "black",
+                  }}
+                >
+                  {i}
+                </Typography>
+              </Box>
+            );
+          })}
+        </Box>
+        <Box
+          sx={{
+            width: "100%",
+            // height: "60px",
+            paddingY: "10px",
+            justifyContent: "space-evenly",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            background: "#000"
           }}
-        />
-        <MatchOddsResultCustomButton
-          id="DR"
-          color={"#0B4F26"}
-          loading={loading}
-          title={"Declare"}
-          onClick={() => {
-            if (loading?.value) {
-              return false;
-            }
+        >
+          <MatchOddsResultCustomButton
+            color={"#FF4D4D"}
+           
+            loading={loading}
+            id="UD"
+            title={"Un Declare"}
+            onClick={() => {
+              if (loading?.value) {
+                return false;
+              }
+              undeclareResult();
+            }}
+          />
+          <MatchOddsResultCustomButton
+            id="DR"
+            color={"#0B4F26"}
+            loading={loading}
+            title={"Declare"}
+            onClick={() => {
+              if (loading?.value) {
+                return false;
+              }
 
-            declareResult();
-          }}
-        />
+              declareResult();
+            }}
+          />
+        </Box>
+
       </Box>
     </Box>
   );

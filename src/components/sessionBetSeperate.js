@@ -202,7 +202,7 @@ const SessionBetSeperate = ({
                   >
                     <Box
                       sx={{
-                        height: "45px",
+                        height: "40px",
                         // margin: { mobile: "1px", laptop: "1px" },
                         marginBottom: { mobile: "1px", laptop: "1px" },
                         width: "30px",
@@ -663,13 +663,14 @@ const RowComponent = ({ header, data }) => {
     <Box
       sx={{
         width: "100%",
-        height: header ? "25px" : "45px",
+        height: header ? "25px" : "40px",
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
         display: "flex",
         gap: '1px',
-        // marginBottom: { mobile: "1px", laptop: "1px" },
+        // marginTop: "1px" 
+        marginBottom: { mobile: "1px", laptop: "1px" },
       }}
     >
       {!header && (
@@ -732,7 +733,7 @@ const SingleBox = ({
       <Box
         sx={{
           width: "140%",
-          height: "45px",
+          height: "40px",
           flexDirection: "column",
           background: "#F8C851",
           // marginX: { mobile: "1px", laptop: "1px" },
@@ -806,7 +807,7 @@ const SingleBox = ({
       <Box
         sx={{
           width: "100%",
-          height: "45px",
+          height: "40px",
           background: color,
           // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",

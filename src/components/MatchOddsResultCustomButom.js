@@ -7,20 +7,24 @@ const MatchOddsResultCustomButton = ({
   id,
   loading,
   onClick,
+  customStyle
 }) => {
   return (
     <Box
       onClick={onClick}
-      sx={{
+      sx={[
+        {
         width: "45%",
         height: "40px",
-        borderRadius: "10px",
+        borderRadius: "5px",
         background: color,
         cursor: "pointer",
         justifyContent: "center",
         alignItems: "center",
         display: "flex",
-      }}
+        },
+        customStyle
+      ]}
     >
       <Typography sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}>
         {loading?.id === id ? (
