@@ -163,7 +163,7 @@ const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
                                     fontWeight: "bold",
                                 }}
                             >
-                                CRR: {innings?.[0]?.CRR}
+                                CRR: {isNaN(innings?.[0]?.CRR) ?  0 :innings?.[0]?.CRR }
                             </Typography>
                             <Typography
                                 sx={{
