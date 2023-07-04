@@ -42,7 +42,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 : "rgb(255, 146, 146)",
               deleted_reason: v?.deleted_reason,
               width: "10.6%"
-              
+
             },
             {
               name: v?.odds,
@@ -109,43 +109,43 @@ const AllBets = ({ tag, submit, allBetRates }) => {
         width: "100%",
         margin: "0",
         marginTop: submit ? "10px" : ".25vh",
-       
+
         background: "white",
       }}
     >
-    <Box
-      sx={{
-         display: "flex",
+      <Box
+        sx={{
+          display: "flex",
           height: 38,
           flexDirection: "row",
           width: "100%",
           alignSelf: "center",
-      }}
-    >
-      <Box
-        // onClick={(e) => {
-        //   e.stopPropagation();
-        //   navigate("/admin/total_bets");
-        // }}
-        sx={[
-          {
-            flex: 1,
-            background: "#f1c550",
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "space-between",
-          },
-        ]}
+        }}
       >
-        <Typography
-           sx={{
-            fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
-            fontWeight: "bold",
-            marginLeft: "7px",
-          }}
+        <Box
+          // onClick={(e) => {
+          //   e.stopPropagation();
+          //   navigate("/admin/total_bets");
+          // }}
+          sx={[
+            {
+              flex: 1,
+              background: "#f1c550",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "space-between",
+            },
+          ]}
         >
-          All Bets
-        </Typography>
+          <Typography
+            sx={{
+              fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
+              fontWeight: "bold",
+              marginLeft: "7px",
+            }}
+          >
+            All Bets
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -206,7 +206,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
           />
         </Box>
       </Box>
-      
+
       {visibleImg && (
         <>
           <HeaderRow tag={tag} />
@@ -238,7 +238,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                       </Typography>
                     </Box>
                     <Row index={k} values={i.values} />
-                    {i?.deleted_reason && (
+                    {i?.values[0]?.deleted_reason && (
                       <Box
                         sx={{
                           background: "rgba(0,0,0,0.5)",
@@ -270,7 +270,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                               >
                                 Bet{" "}
                                 <span style={{ color: "#e41b23" }}>deleted</span>{" "}
-                                due to {i?.deleted_reason}
+                                due to {i?.values[0]?.deleted_reason}
                               </Typography>
                             }
                           </Box>
@@ -452,7 +452,7 @@ const SmallBox = ({ item }) => {
   return (
     <Box
       sx={{
-        width: item?.width? item?.width:"50px",
+        width: item?.width ? item?.width : "50px",
         border: "1px solid white",
         background: item?.background,
         height: "30px",
@@ -460,11 +460,11 @@ const SmallBox = ({ item }) => {
         alignItems: "center",
         display: "flex",
         flexDirection: "column",
-        width: item?.width? item?.width:"auto"
+        width: item?.width ? item?.width : "auto"
       }}
     >
       <Typography
-        sx={{ fontSize: "12px", fontWeight: "600", color: item?.color }}
+        sx={{ fontSize: "12px", fontWeight: "600", color: item?.color, textTransform: "capitalize" }}
       >
         {item?.name}
       </Typography>
@@ -481,7 +481,7 @@ const LargeBox = ({ item, k }) => {
     <Box
       sx={{
         // width: k == 1 ? "24%" : "12%",
-     
+
         border: "1px solid white",
         background: item?.background,
         height: "30px",
@@ -490,7 +490,7 @@ const LargeBox = ({ item, k }) => {
         paddingLeft: k == 1 || k == 0 ? "5px" : 0,
         display: "flex",
         flexDirection: "column",
-        width: item?.width? item?.width:"50px"
+        width: item?.width ? item?.width : "50px"
       }}
     >
       <Typography

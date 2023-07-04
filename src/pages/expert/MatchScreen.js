@@ -337,6 +337,48 @@ const MatchScreen = () => {
           console.log(data, "user");
           dispatch(setActiveUsers(data?.count));
         }
+        if (packet.data[0] === "matchDeleteBet") {
+          const value = packet.data[1];
+          try {
+            setIObtes((IObets) => {
+              const updatedBettings = IObets?.map((betting) => {
+                if (value?.betPlaceIds.includes(betting.id)) {
+                  return {
+                    ...betting,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+                return betting;
+              });
+
+              return updatedBettings;
+            });
+
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+        if (packet.data[0] === "sessionDeleteBet") {
+          const value = packet.data[1];
+          try {
+            setIObtes((IObets) => {
+              const updatedBettings = IObets?.map((betting) => {
+                if (value?.betPlaceData.includes(betting.id)) {
+                  return {
+                    ...betting,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+                return betting;
+              });
+
+              return updatedBettings;
+            });
+
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
 
       // socket.emit("init", { id: currentMatch?.marketId });
@@ -606,7 +648,7 @@ const MatchScreen = () => {
                 width: { laptop: "50%", mobile: "100%", tablet: "100%" },
                 flexDirection: "column",
                 display: "flex",
-                paddingLeft: "5px" 
+                paddingLeft: "5px"
               }}
             >
               {currentMatch?.apiMatchActive && (

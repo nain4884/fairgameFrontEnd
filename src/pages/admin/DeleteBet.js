@@ -865,6 +865,28 @@ const DeleteBet = ({ }) => {
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "sessionDeleteBet") {
+          const value = packet.data[1];
+          try {
+            setSingleIObtes((IOSinglebets) => {
+              const updatedBettings = IOSinglebets?.map((betting) => {
+                if (value?.betPlaceIds.includes(betting.id)) {
+                  return {
+                    ...betting,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+                return betting;
+              });
+
+              return updatedBettings;
+            });
+
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
       };
     }
   }, [socket]);
