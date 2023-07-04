@@ -1052,6 +1052,81 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "matchDeleteBet") {
+          const value = packet.data[1];
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id === value?.match_id) {
+                let updatedBlockMarket;
+                if (value?.marketType === "MANUAL BOOKMAKER") {
+                  updatedBlockMarket = {
+                    ...currentMatch?.blockMarket,
+                    MANUALBOOKMAKER: { block: value?.marketLock },
+                  };
+                } else if (value?.marketType === "BOOKMAKER") {
+                  updatedBlockMarket = {
+                    ...currentMatch?.blockMarket,
+                    BOOKMAKER: { block: value?.marketLock },
+                  };
+                } else if (value?.marketType === "MATCH ODDS") {
+                  updatedBlockMarket = {
+                    ...currentMatch?.blockMarket,
+                    MATCH_ODDS: { block: value?.marketLock },
+                  };
+                } else if (value?.marketType === "SESSION") {
+                  updatedBlockMarket = {
+                    ...currentMatch?.blockMarket,
+                    SESSION: { block: value?.marketLock },
+                  };
+                }
+                console.log(updatedBlockMarket, "updatedBlockMarket ");
+                return {
+                  ...currentMatch,
+                  blockMarket: updatedBlockMarket,
+                };
+              }
+              return currentMatch;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
+        if (packet.data[0] === "matchDeleteBet") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            const user = {
+              ...currentUser,
+              current_balance: value.newBalance,
+              exposure: value.exposure,
+            };
+            const manualBookmaker = {
+              matchId: value?.matchId,
+              teamA: value.teamA_rate,
+              teamB: value.teamB_rate,
+              teamC: value.teamC_rate,
+            };
+            dispatch(setCurrentUser(user));
+            dispatch(setManualBookMarkerRates(manualBookmaker));
+
+            setIObtes((IObets) => {
+              const updatedBettings = IObets?.map((betting) => {
+                if (value?.betPlaceIds.includes(betting.id)) {
+                  return {
+                    ...betting,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+                return betting;
+              });
+
+              return updatedBettings;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
 
@@ -1530,8 +1605,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 />
                 {(matchDetail?.manualSessionActive ||
                   matchDetail?.apiSessionActive) && (
-                  <SessionBetSeperate allBetsData={sessionBets} mark />
-                )}
+                    <SessionBetSeperate allBetsData={sessionBets} mark />
+                  )}
               </Box>
             </Box>
           )}
