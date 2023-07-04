@@ -87,7 +87,6 @@ const AccountListRow = ({
     return thisUplinePertnerShip;
   }
 
-  console.log(selected, "selected");
   const prevElement = {
     credit_refer: element.credit_refer,
     balance: element.balance,
