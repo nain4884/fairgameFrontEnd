@@ -13,7 +13,11 @@ import MUIModal from "@mui/material/Modal";
 
 import { BETPLACED, Lock, NOT } from "../../assets";
 import { useState } from "react";
-import { setAllBetRate, setBetData, setUpdateBetData } from "../../newStore/reducers/matchDetails";
+import {
+  setAllBetRate,
+  setBetData,
+  setUpdateBetData,
+} from "../../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import { setRole } from "../../newStore";
 import { height } from "@mui/system";
@@ -52,7 +56,7 @@ const SeprateBox = ({
   setFastBetLoading,
   closeModal,
   handleRateChange,
-  updateRate
+  updateRate,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
@@ -83,9 +87,11 @@ const SeprateBox = ({
   const [checkBet, setCheckBet] = useState({
     type: "",
     po: "",
-    value: ""
+    value: "",
   });
-  const { betData, updateDetData } = useSelector((state) => state?.matchDetails);
+  const { betData, updateDetData } = useSelector(
+    (state) => state?.matchDetails
+  );
 
   const [previousValue, setPreviousValue] = useState(false);
 
@@ -99,10 +105,15 @@ const SeprateBox = ({
   useEffect(() => {
     // console.log('updateRate wwwwww:', updateRate)
     // console.log('checkBet wwwwww:', checkBet)
-    if (updateRate?.key == betData?.po && updateRate?.match == betData?.type && updateRate?.team == selectedCountry && selectedValue != updateRate?.value) {
+    if (
+      updateRate?.key == betData?.po &&
+      updateRate?.match == betData?.type &&
+      updateRate?.team == selectedCountry &&
+      selectedValue != updateRate?.value
+    ) {
       dispatch(setUpdateBetData(updateRate?.value));
     }
-  }, [updateRate])
+  }, [updateRate]);
   useEffect(() => {
     if (closeModal || lock) {
       console.log("closeModal", closeModal);
@@ -214,16 +225,15 @@ const SeprateBox = ({
     let data = {
       type: payload?.bet_type,
       po: po,
-    }
+    };
     // // alert(JSON.stringify(data));
-    dispatch(setBetData({ ...data, }));
-
+    dispatch(setBetData({ ...data }));
 
     let newPayload = {
       ...payload,
       country: ip?.country_name || null,
       ip_address: ip?.IPv4 || null,
-      place_index: po
+      place_index: po,
     };
 
     let oddValue = Number(value);
@@ -243,7 +253,12 @@ const SeprateBox = ({
     } else {
       if (oddValue !== newPayload.odds) {
         // toast.warning("Odds value has been updated. You can not place bet.");
-        setCanceled({ value: true, msg: "Rate changed", loading: false, type: false });
+        setCanceled({
+          value: true,
+          msg: "Rate changed",
+          loading: false,
+          type: false,
+        });
         setBetPlaceLoading(false);
         setFastBetLoading(false);
         setBetPalaceError(true);
@@ -264,19 +279,37 @@ const SeprateBox = ({
 
   const PlaceBetSubmit = async (payload, po) => {
     try {
-      if (payload.marketType == "MATCH ODDS" && payload?.odds !== updateDetData) {
+      if (
+        payload.marketType == "MATCH ODDS" &&
+        payload?.odds !== updateDetData
+      ) {
         setBetPlaceLoading(false);
         setFastBetLoading(false);
-        setCanceled({ value: true, msg: "Rate changed", loading: false, type: false });
+        setCanceled({
+          value: true,
+          msg: "Rate changed",
+          loading: false,
+          type: false,
+        });
         return false;
       }
       if (Number(payload?.odds) !== Number(value)) {
         setBetPlaceLoading(false);
         setFastBetLoading(false);
-        setCanceled({ value: true, msg: "Rate changed", loading: false, type: false });
+        setCanceled({
+          value: true,
+          msg: "Rate changed",
+          loading: false,
+          type: false,
+        });
         return false;
       }
-      setCanceled({ value: true, msg: "Rate changed", loading: true, type: false });
+      setCanceled({
+        value: true,
+        msg: "Rate changed",
+        loading: true,
+        type: false,
+      });
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
       // dispatch(setAllBetRate(response?.data?.data[0]))
@@ -292,7 +325,12 @@ const SeprateBox = ({
       setFastBetLoading(false);
       setBetPlaceLoading(false);
       setPreviousValue(0);
-      setCanceled({ value: true, msg: response.data.message, loading: false, type: true });
+      setCanceled({
+        value: true,
+        msg: response.data.message,
+        loading: false,
+        type: true,
+      });
       // setTimeout(() => {sss
       //   setCanceled(false);
       // }, 3000);
@@ -301,7 +339,12 @@ const SeprateBox = ({
     } catch (e) {
       setBetPlaceLoading(false);
       setFastBetLoading(false);
-      setCanceled({ value: true, msg: e.response.data.message, loading: false, type: false });
+      setCanceled({
+        value: true,
+        msg: e.response.data.message,
+        loading: false,
+        type: false,
+      });
       setBetPalaceError(true);
       console.log(e.response.data.message);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
@@ -417,7 +460,7 @@ const SeprateBox = ({
               // } else
               else {
                 setIsPopoverOpen(true);
-                setSelectedCountry(name)
+                setSelectedCountry(name);
                 setSelectedValue(value);
                 dispatch(setUpdateBetData(value));
                 type?.type === "BL"
@@ -499,8 +542,12 @@ const SeprateBox = ({
               name={name}
               rates={rates}
               onSubmit={async (payload) => {
-                setBetPlaceLoading(true);
-                handlePlaceBet(payload, currentMatch, payload?.po);
+                if (betPlaceLoading) {
+                  return false;
+                } else {
+                  setBetPlaceLoading(true);
+                  handlePlaceBet(payload, currentMatch, payload?.po);
+                }
               }}
               onCancel={() => {
                 setVisible(true);
@@ -549,7 +596,12 @@ const SeprateBox = ({
           <NotificationModal
             open={canceled}
             handleClose={() =>
-              setCanceled({ value: false, msg: "", loading: false, type: false })
+              setCanceled({
+                value: false,
+                msg: "",
+                loading: false,
+                type: false,
+              })
             }
           />
         )}
