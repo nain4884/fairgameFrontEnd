@@ -156,7 +156,7 @@ const FastTimePlaceBet = ({
         >
           <Box
             sx={{
-              width: { mobile: "50%", laptop: "80%", tablet: "50%" },
+              width: { mobile: "50%", laptop: "60%", tablet: "50%" },
               height: "45px",
 
               paddingLeft: "20px",
@@ -181,12 +181,22 @@ const FastTimePlaceBet = ({
               }}
             />
           </Box>
+          <Box
+            sx={{
+              width: { mobile: "50%", laptop: "40%", tablet: "50%" },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "5px",
+              flexDirection: "row-reverse"
+            }}
+          >
           <button
             // style={classes.CustomButton_Btn("#262626")}
             style={{
               color: "#fff",
               backgroundColor: "rgb(49 158 91)",
-              width: "20%",
+              width: "50%",
               // width: { laptop: "150px", mobile: "130px" },
               height: "45px",
               borderRadius: "5px",
@@ -209,7 +219,7 @@ const FastTimePlaceBet = ({
             style={{
               color: "#fff",
               backgroundColor: "#FF4D4D",
-              width: "20%",
+              width: "50%",
               // width: { laptop: "150px", mobile: "130px" },
               height: "45px",
               borderRadius: "5px",
@@ -227,6 +237,7 @@ const FastTimePlaceBet = ({
               Cancel
             </Typography>
           </button>
+          </Box>
           {/* <StyledImage
                onClick={() => {
                 setShowFastTimeBox(false);
