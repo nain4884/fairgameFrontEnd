@@ -24,7 +24,7 @@ import {
 import { useState, useEffect } from "react";
 import { apiBasePath } from "./helper/constants";
 
-const MatchComponent = ({ currentMatch, liveScoreData }) => {
+const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
     console.log("liveScoreData :", liveScoreData)
     const [visible, setVisible] = useState(true);
     const [overscore, setOverscore] = useState('23');
@@ -51,7 +51,7 @@ const MatchComponent = ({ currentMatch, liveScoreData }) => {
         <Box
             sx={[
                 {
-                    width: { tablet: "98%", mobile: "98%", laptop: "100%" },
+                    width: {  tablet:submit? "100%" :"98%", mobile: submit ? "100%" :"98%", laptop: "100%" },
                     display: "flex",
                     flexDirection: "column",
                     alignSelf: "center",

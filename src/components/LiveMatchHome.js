@@ -4,7 +4,7 @@ import { ArrowDown, DownArrow, ARROWUP } from "../assets";
 import { apiBasePath } from "./helper/constants";
 import StyledImage from "./StyledImage";
 
-const LiveMatchHome = ({ currentMatch }) => {
+const LiveMatchHome = ({ currentMatch ,submit }) => {
   const [visible, setVisible] = useState(true);
 
   return (
@@ -12,7 +12,7 @@ const LiveMatchHome = ({ currentMatch }) => {
     <Box
        sx={[
         {
-          width: { tablet: "98%", mobile: "98%", laptop: "100%" },
+          width: { tablet:submit? "100%" :"98%", mobile: submit ? "100%" :"98%", laptop: "100%" },
           display: "flex",
           flexDirection: "column",
           alignSelf: "center",
