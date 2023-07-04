@@ -76,7 +76,6 @@ const Odds = ({ onClick, top, blur, match }) => {
     timeLeft.hours === "00" &&
     timeLeft.minutes !== "00";
 
-
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
@@ -187,7 +186,6 @@ const Odds = ({ onClick, top, blur, match }) => {
             top: 0;
             left: -9px;
             width: 60px;
-            
           }
           .wave {
             border-radius: 1000% 1000% 0 0;
@@ -279,7 +277,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               alignItems: "center",
               background: "#129FFE",
               position: "absolute",
-              marginTop: { mobile: "-10px", laptop: -1 } ,
+              marginTop: { mobile: "-10px", laptop: -1 },
               borderRadius: "3px",
               marginLeft: { mobile: "0", laptop: "0" },
             }}
@@ -388,142 +386,146 @@ const Odds = ({ onClick, top, blur, match }) => {
             >
               <div className="slanted"></div>
             </Box>
-            <Box
-              sx={{
-                flex: 1,
-                background: "#262626",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  height: "80%",
-                  marginRight: "3px",
-                  borderRadius: "4px",
-                  width: "110px",
-                  background: "white",
-                  justifyContent: "space-evenly",
-                  display: "flex",
-                  alignSelf: "flex-end",
-                }}
-              >
+            {timeLeft.days !== "00" &&
+              timeLeft.hours !== "00" &&
+              timeLeft.minutes !== "00" && (
                 <Box
                   sx={{
+                    flex: 1,
+                    background: "#262626",
                     display: "flex",
-                    justifyContent: "center",
                     flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  <Typography
+                  <Box
                     sx={{
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      color: "#0B4F26",
+                      height: "80%",
+                      marginRight: "3px",
+                      borderRadius: "4px",
+                      width: "110px",
+                      background: "white",
+                      justifyContent: "space-evenly",
+                      display: "flex",
+                      alignSelf: "flex-end",
                     }}
                   >
-                    {timeLeft?.days || 0}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: "8px",
-                      fontWeight: "400",
-                      color: "#0B4F26",
-                    }}
-                  >
-                    Days
-                  </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          color: "#0B4F26",
+                        }}
+                      >
+                        {timeLeft?.days || 0}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "8px",
+                          fontWeight: "400",
+                          color: "#0B4F26",
+                        }}
+                      >
+                        Days
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "25px",
+                          fontWeight: "bold",
+                          color: "#0B4F26",
+                        }}
+                      >
+                        :
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          color: "#0B4F26",
+                        }}
+                      >
+                        {timeLeft?.hours || 0}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "8px",
+                          fontWeight: "400",
+                          color: "#0B4F26",
+                        }}
+                      >
+                        Hrs
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "25px",
+                          fontWeight: "bold",
+                          color: "#0B4F26",
+                        }}
+                      >
+                        :
+                      </Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          color: "#0B4F26",
+                        }}
+                      >
+                        {timeLeft?.minutes || 0}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: "8px",
+                          fontWeight: "400",
+                          color: "#0B4F26",
+                        }}
+                      >
+                        Min
+                      </Typography>
+                    </Box>
+                  </Box>
                 </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "25px",
-                      fontWeight: "bold",
-                      color: "#0B4F26",
-                    }}
-                  >
-                    :
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      color: "#0B4F26",
-                    }}
-                  >
-                    {timeLeft?.hours || 0}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: "8px",
-                      fontWeight: "400",
-                      color: "#0B4F26",
-                    }}
-                  >
-                    Hrs
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "25px",
-                      fontWeight: "bold",
-                      color: "#0B4F26",
-                    }}
-                  >
-                    :
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      color: "#0B4F26",
-                    }}
-                  >
-                    {timeLeft?.minutes || 0}
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: "8px",
-                      fontWeight: "400",
-                      color: "#0B4F26",
-                    }}
-                  >
-                    Min
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
+              )}
           </Box>
 
           {
@@ -652,7 +654,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[0]?.ex?.availableToBack[2]?.price
                       : 0
                   }
@@ -672,7 +674,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[0]?.ex?.availableToBack[1]?.price
                       : 0
                   }
@@ -691,7 +693,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
+                  matchOddsLive?.runners[0]?.ex?.availableToBack?.length > 0
                     ? matchOddsLive?.runners[0]?.ex?.availableToBack[0]?.price
                     : 0
                 }
@@ -709,7 +711,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                  matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                     ? matchOddsLive?.runners[0]?.ex?.availableToLay[0]?.price
                     : 0
                 }
@@ -728,7 +730,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[0]?.ex?.availableToLay[1]?.price
                       : 0
                   }
@@ -748,7 +750,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[0]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[0]?.ex?.availableToLay[2]?.price
                       : 0
                   }
@@ -817,7 +819,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[1]?.ex?.availableToBack[2]?.price
                       : 0
                   }
@@ -837,7 +839,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                    matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                       ? matchOddsLive?.runners[1]?.ex?.availableToBack[1]?.price
                       : 0
                   }
@@ -856,7 +858,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
+                  matchOddsLive?.runners[1]?.ex?.availableToBack?.length > 0
                     ? matchOddsLive?.runners[1]?.ex?.availableToBack[0]?.price
                     : 0
                 }
@@ -874,7 +876,7 @@ const Odds = ({ onClick, top, blur, match }) => {
               <SeparateBox
                 value={
                   matchOddsLive?.runners?.length &&
-                    matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                  matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                     ? matchOddsLive?.runners[1]?.ex?.availableToLay[0]?.price
                     : 0
                 }
@@ -893,7 +895,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[1]?.ex?.availableToLay[1]?.price
                       : 0
                   }
@@ -913,7 +915,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 <SeparateBox
                   value={
                     matchOddsLive?.runners?.length &&
-                      matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
+                    matchOddsLive?.runners[1]?.ex?.availableToLay?.length > 0
                       ? matchOddsLive?.runners[1]?.ex?.availableToLay[2]?.price
                       : 0
                   }
@@ -977,10 +979,10 @@ const Odds = ({ onClick, top, blur, match }) => {
                     <SeparateBox
                       value={
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[12]?.ex?.availableToBack
-                            ?.length > 0
+                        matchOddsLive?.runners[12]?.ex?.availableToBack
+                          ?.length > 0
                           ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]
-                            ?.price
+                              ?.price
                           : 0
                       }
                       value2={formatNumber(
@@ -988,7 +990,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                           matchOddsLive?.runners[2]?.ex?.availableToBack
                             ?.length > 0
                           ? matchOddsLive?.runners[2]?.ex?.availableToBack[2]
-                            ?.size
+                              ?.size
                           : 0
                       )}
                       color={matchesMobile ? "white" : "#CEEBFF"}
@@ -1001,10 +1003,10 @@ const Odds = ({ onClick, top, blur, match }) => {
                     <SeparateBox
                       value={
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
+                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
                           0
                           ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]
-                            ?.price
+                              ?.price
                           : 0
                       }
                       value2={formatNumber(
@@ -1012,7 +1014,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                           matchOddsLive?.runners[2]?.ex?.availableToBack
                             ?.length > 0
                           ? matchOddsLive?.runners[2]?.ex?.availableToBack[1]
-                            ?.size
+                              ?.size
                           : 0
                       )}
                       color={matchesMobile ? "white" : "#C2E6FF"}
@@ -1024,17 +1026,17 @@ const Odds = ({ onClick, top, blur, match }) => {
                   <SeparateBox
                     value={
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
+                      matchOddsLive?.runners[2]?.ex?.availableToBack?.length > 0
                         ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]
-                          ?.price
+                            ?.price
                         : 0
                     }
                     value2={formatNumber(
                       matchOddsLive?.runners?.length &&
                         matchOddsLive?.runners[2]?.ex?.availableToBack?.length >
-                        0
+                          0
                         ? matchOddsLive?.runners[2]?.ex?.availableToBack[0]
-                          ?.size
+                            ?.size
                         : 0
                     )}
                     color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
@@ -1045,15 +1047,15 @@ const Odds = ({ onClick, top, blur, match }) => {
                   <SeparateBox
                     value={
                       matchOddsLive?.runners?.length &&
-                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
+                      matchOddsLive?.runners[2]?.ex?.availableToLay?.length > 0
                         ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]
-                          ?.price
+                            ?.price
                         : 0
                     }
                     value2={formatNumber(
                       matchOddsLive?.runners?.length &&
                         matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
-                        0
+                          0
                         ? matchOddsLive?.runners[2]?.ex?.availableToLay[0]?.size
                         : 0
                     )}
@@ -1066,10 +1068,10 @@ const Odds = ({ onClick, top, blur, match }) => {
                     <SeparateBox
                       value={
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
+                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
                           0
                           ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]
-                            ?.price
+                              ?.price
                           : 0
                       }
                       value2={formatNumber(
@@ -1077,7 +1079,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                           matchOddsLive?.runners[2]?.ex?.availableToLay
                             ?.length > 0
                           ? matchOddsLive?.runners[2]?.ex?.availableToLay[1]
-                            ?.size
+                              ?.size
                           : 0
                       )}
                       color={matchesMobile ? "white" : "#F2CBCB"}
@@ -1090,10 +1092,10 @@ const Odds = ({ onClick, top, blur, match }) => {
                     <SeparateBox
                       value={
                         matchOddsLive?.runners?.length &&
-                          matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
+                        matchOddsLive?.runners[2]?.ex?.availableToLay?.length >
                           0
                           ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]
-                            ?.price
+                              ?.price
                           : 0
                       }
                       value2={formatNumber(
@@ -1101,7 +1103,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                           matchOddsLive?.runners[2]?.ex?.availableToLay
                             ?.length > 0
                           ? matchOddsLive?.runners[2]?.ex?.availableToLay[2]
-                            ?.size
+                              ?.size
                           : 0
                       )}
                       color={matchesMobile ? "white" : "#ECD6D6"}
