@@ -732,7 +732,7 @@ const SingleBox = ({
       <Box
         sx={{
           width: "140%",
-          height: "45px",
+          height: "40px",
           flexDirection: "column",
           background: "#F8C851",
           // marginX: { mobile: "1px", laptop: "1px" },
@@ -806,7 +806,7 @@ const SingleBox = ({
       <Box
         sx={{
           width: "100%",
-          height: "45px",
+          height: "40px",
           background: color,
           // marginX: { mobile: "1px", laptop: "1px" },
           display: "flex",
