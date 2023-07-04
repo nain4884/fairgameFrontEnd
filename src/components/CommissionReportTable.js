@@ -326,11 +326,12 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                   fontSize: { mobile: "10px", laptop: "12px", tablet: "10px" },
                   fontWeight: "600",
                   cursor: "pointer",
+                  textTransform: "capitalize",
                   color:
                     ["#319E5B", "#303030"].includes(
                       fContainerStyle.background
                     ) && "white",
-                },
+                }, fTextStyle
               ]}
             >
               {elementToUDM.commissionType}
@@ -551,7 +552,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                 containerStyle={{
                   background:
                     element?.ComissionType === "commission setteled"
-                      ? "#319E5B"
+                      ? "#135a2e"
                       : ["back", "yes"].includes(
                           element?.bet_place_id?.bet_type
                         )
@@ -566,15 +567,14 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                     element?.ComissionType === "session"
                       ? "#319E5B"
                       : element?.ComissionType === "commission setteled"
-                      ? "#319E5B"
+                      ? "#135a2e"
                       : "#F1C550",
                 }}
                 fTextStyle={{
                   color: ["commission setteled"].includes(
                     element?.ComissionType
                   )
-                    ? "white"
-                    : "black",
+                    && "white",
                 }}
                 element={element}
                 getListOfUser={getListOfUser}
