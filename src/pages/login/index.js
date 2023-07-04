@@ -270,6 +270,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: user,
           password: pass,
+          loginType:"user"
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -341,6 +342,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
+          loginType:"user"
         });
 
         if (props.allowedRole.includes(data.data.role)) {

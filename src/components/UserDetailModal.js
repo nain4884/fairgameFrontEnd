@@ -83,7 +83,7 @@ export default function UserDetailModal({
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
     setTimeout(() => {
       dispatch(setDailogData({ isModalOpen: false }));
-      navigate(`/${window.location.pathname.split("/")[1]}/list_of_clients`);
+      // navigate(`/${window.location.pathname.split("/")[1]}/list_of_clients`);
     }, [2000]);
     setShowModalMessage(message);
     setShowUserModal(false);

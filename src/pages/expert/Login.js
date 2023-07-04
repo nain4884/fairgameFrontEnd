@@ -386,7 +386,7 @@ export default function Login(props) {
     try {
       if (user === "" && pass === "") {
         // toast.warning("Username and password required");
-        setLoginError("Username and password required!")
+        setLoginError("Username and password required!");
         setLoading(false);
         return false;
       } else {
@@ -396,9 +396,11 @@ export default function Login(props) {
         //   setLoading(false);
         //   return false;
         // }
+
         let { data } = await axios.post(`/auth/login`, {
           username: user,
           password: pass,
+          loginType: location.pathname.split("/")[1],
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -456,7 +458,7 @@ export default function Login(props) {
               handleNavigate("/expert/match", "expert");
             } else {
               // toast.error("User Unauthorized !");
-              setLoginError("Incorrect username and password!")
+              setLoginError("Incorrect username and password!");
               setLoading(false);
             }
           }
@@ -482,7 +484,7 @@ export default function Login(props) {
     try {
       if (loginDetail[1].val === "" && loginDetail[2].val === "") {
         // toast.warning("Username and password required");
-        setLoginError("Username and password required!")
+        setLoginError("Username and password required!");
         setLoading(false);
         return false;
       } else {
@@ -495,6 +497,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
+          loginType: location.pathname.split("/")[1],
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -551,13 +554,13 @@ export default function Login(props) {
               handleNavigate("/expert/match", "expert");
             } else {
               // toast.error("User Unauthorized !");
-              setLoginError("Incorrect username and password!")
+              setLoginError("Incorrect username and password!");
               setLoading(false);
             }
           }
         } else {
           // toast.error("User Unauthorized !");
-          setLoginError("Incorrect username and password!")
+          setLoginError("Incorrect username and password!");
           setLoading(false);
         }
       }
@@ -696,7 +699,9 @@ export default function Login(props) {
                 title="Login"
               />
             </Box>
-            {loginError!=="" && <Alert severity="warning">{loginError}</Alert>}
+            {loginError !== "" && (
+              <Alert severity="warning">{loginError}</Alert>
+            )}
           </Box>
         </Box>
       </Box>
