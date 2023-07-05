@@ -29,14 +29,15 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
             paddingRight: "4px",
             marginBottom: ".1vh",
             display: "flex",
+            background: "#F8C851"
           },
-          (theme) => ({
-            backgroundImage: `${theme.palette.primary.headerGradient}`,
-          }),
+          // (theme) => ({
+          //   backgroundImage: `${theme.palette.primary.headerGradient}`,
+          // }),
         ]}
       >
         <Typography
-          sx={{ fontWeight: "12px", color: "white", fontWeight: "700" }}
+          sx={{ fontWeight: "12px", color: "black", fontWeight: "700" }}
         >
           Session Bets
         </Typography>
@@ -100,7 +101,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
             }}
           >
             <Typography
-              sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+              sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "0.7vw"}, color: "white" }}
             >
               {"Profit/Loss"}
             </Typography>
@@ -180,14 +181,14 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   >
                     <Typography
                       sx={{
-                        fontSize: { mobile: "11px", laptop: "14px" },
+                        fontSize: { mobile: "9px", laptop: "14px" },
                         color: "white",
                         fontWeight: "700",
                       }}
                     >
                       {Number(i.myProfitLoss).toFixed(2)}
                     </Typography>
-                    <StyledImage
+                    {/* <StyledImage
                       sx={{
                         width: { mobile: "15px", laptop: "25px" },
                         height: { laptop: "15px", mobile: "7px" },
@@ -198,7 +199,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                           : ARROWDOWN
                       }
                       // src={k % 2 == 0 ? ARROWDOWN : ARROWUP}
-                    />
+                    /> */}
                   </Box>
                 )}
                 {profit && i?.deleted_reason && (
@@ -346,7 +347,7 @@ const SingleBox = ({
       <Box
         sx={{
           width: "140%",
-          height: "30px",
+          height: "40px",
           flexDirection: "column",
           background: "#F8C851",
           marginX: { mobile: "1px", laptop: "1px" },
@@ -360,6 +361,7 @@ const SingleBox = ({
             fontSize: { mobile: "6px", laptop: "11px" },
             color: "black",
             textAlign: "center",
+            
           }}
         >
           {time}
@@ -433,6 +435,7 @@ const SingleBox = ({
             fontWeight: "700",
             fontSize: { mobile: "11px", laptop: "13px" },
             color: "black",
+            textTransform: "capitalize"
           }}
         >
           {data}

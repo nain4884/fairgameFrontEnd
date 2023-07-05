@@ -98,7 +98,7 @@ const ProfitLossComponent = ({eventData, reportData, betData, sessionBetData, ha
                     </Box>
                 </Box >
                 {selectedId === item?.matchId  && <Box sx={{ width: { mobile: '100%', laptop: '96%' }, marginTop: { mobile: '.25vh' }, marginLeft: { laptop: '4%' }, display: 'flex', flexDirection: { laptop: 'row', mobile: "column" } }}>
-                    <SessionBetSeperate betHistory={true} allBetsData={sessionBetData} profit />
+                    <SessionBetSeperate betHistory={true} allBetsData={sessionBetData} profit isArrow={true}/>
                     <Box sx={{ width: { laptop: '1vw', mobile: 0 } }} ></Box>
                     <AllRateSeperate  betHistory={true}  count={betData?.length}  allBetsData={betData}  profit />
                 </Box>}
