@@ -379,7 +379,7 @@ const Odds = ({ onClick, top, blur, match }) => {
             </Box>
             <Box
               sx={{
-                flex: 0.1,
+                flex: 1,
                 background: "#262626",
                 // '#262626'
               }}
