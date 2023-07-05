@@ -211,7 +211,7 @@ const BetHistory = ({
                       {!matchesMobile && !isArrow && <StyledImage
                         sx={{
                           width: { mobile: "15px", laptop: "15px" },
-                          height: { laptop: "15px", mobile: "7px" },
+                          height: { laptop: "7px", mobile: "7px" },
                         }}
                         src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
                         // src={k % 2 === 0 ? ARROWDOWN : ARROWUP}
