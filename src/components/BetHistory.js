@@ -1,5 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useTheme } from "@emotion/react";
 import { ArrowDown, DELETE, MyBet } from "../assets";
 import userAxios from "../axios/userAxios";
 
@@ -22,6 +23,8 @@ const BetHistory = ({
   callPage,
   betData,
   betHistory,
+  isArrow
+
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
@@ -32,6 +35,8 @@ const BetHistory = ({
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state?.currentUser);
   const match_id = location.state;
+  const theme = useTheme();
+  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   return (
     <>
@@ -203,14 +208,15 @@ const BetHistory = ({
                         {Number(i.myProfitLoss).toFixed(2)}
                       </Typography>
 
-                      <StyledImage
+                      {!matchesMobile && !isArrow && <StyledImage
                         sx={{
-                          width: { mobile: "15px", laptop: "25px" },
+                          width: { mobile: "15px", laptop: "15px" },
                           height: { laptop: "15px", mobile: "7px" },
                         }}
                         src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
                         // src={k % 2 === 0 ? ARROWDOWN : ARROWUP}
                       />
+                      }
                     </Box>
                     {/* )} */}
 
