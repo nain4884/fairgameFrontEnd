@@ -188,10 +188,10 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                     >
                       {Number(i.myProfitLoss).toFixed(2)}
                     </Typography>
-                    {/* <StyledImage
+                    <StyledImage
                       sx={{
-                        width: { mobile: "15px", laptop: "25px" },
-                        height: { laptop: "15px", mobile: "7px" },
+                        width: { mobile: "12px", laptop: "15px" },
+                        height: { laptop: "7px", mobile: "0px" },
                       }}
                       src={
                         Number(i.myProfitLoss).toFixed(2) > 0
@@ -199,7 +199,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                           : ARROWDOWN
                       }
                       // src={k % 2 == 0 ? ARROWDOWN : ARROWUP}
-                    /> */}
+                    />
                   </Box>
                 )}
                 {profit && i?.deleted_reason && (
