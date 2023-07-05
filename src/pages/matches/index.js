@@ -32,7 +32,8 @@ import Soccer from "./Soccer";
 import ProfitLoss from "./ProfitLoss";
 import BetHistory from "./BetHistory";
 import ChangeButtonValue from "./ChangeButtonValue";
-
+import ModalMUI from "@mui/material/Modal";
+import CustomLoader from "../../components/helper/CustomLoader";
 const Matches = () => {
   const [visible, setVisible] = useState(false);
 
@@ -64,7 +65,8 @@ const Matches = () => {
             backgroundImage: `${theme.palette.primary.homeBodyGradient}`,
           }),
         ]}
-      >
+      > 
+     
         <SideBar />
         <Box sx={{ width: "100%" }}>
           <Box

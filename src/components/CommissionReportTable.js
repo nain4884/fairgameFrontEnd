@@ -264,7 +264,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       commissionAmount: element.ComissionAmount,
       commissionType: element.ComissionType,
       betType: element?.bet_place_id?.bet_type,
-      stack: element?.bet_place_id?.amount,
+      stack:element?.ComissionType==="match total" ? (element?.ComissionAmount*100)/element?.userId?.matchComission :  element?.bet_place_id?.amount,
       odds: element?.bet_place_id?.odds,
       isActive: element?.isActive,
       teamBet: element?.bet_place_id?.team_bet,

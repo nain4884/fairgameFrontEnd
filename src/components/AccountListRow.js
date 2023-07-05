@@ -540,7 +540,7 @@ const AccountListRow = ({
                             fTextStyle,
                           ]}
                         >
-                          {":"} {elementToUDM?.matchComission}
+                          {":"} {elementToUDM?.matchComission ? elementToUDM?.matchComission : 0 }
                         </Typography>
                       </>
                     ) : (
@@ -622,7 +622,7 @@ const AccountListRow = ({
                         fTextStyle,
                       ]}
                     >
-                      {elementToUDM?.sessionComisssion}
+                      {elementToUDM?.sessionComisssion ? elementToUDM?.sessionComisssion : 0}
                     </Typography>
                   </Box>
                 </Box>

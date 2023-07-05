@@ -50,6 +50,8 @@ import jwtDecode from "jwt-decode";
 import IdleTimer from "./IdleTimer";
 import DropdownMenu1 from "./CommonMasterAdminLayout/MenuBar";
 import EventListing from "./EventListing";
+import ModalMUI from "@mui/material/Modal";
+import CustomLoader from "./helper/CustomLoader";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -63,6 +65,7 @@ const CustomHeader = ({ }) => {
   const [exposure, setExposure] = useState(0);
   const [notificationData, setNotificationData] = useState(null);
   let { axios, role, JWT } = setRole();
+  const [firstTimeLoader, setFirstTimeLoader] = useState(true);
 
   const { currentUser } = useSelector((state) => state?.currentUser);
   // const auth = useSelector(state => state?.auth?.user);
@@ -130,6 +133,12 @@ const CustomHeader = ({ }) => {
     return () => {
       window.removeEventListener("unload", handleBeforeUnload);
     };
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFirstTimeLoader(false);
+    }, 4000);
   }, []);
 
   useEffect(() => {
@@ -270,12 +279,56 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     handleGetNotification();
-    if (currentUser === null) {
-      getUserDetail();
-    }
+    getUserDetail();
   }, []);
+
   return (
     <>
+      <ModalMUI
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: !isOnline ? "none" : "center",
+
+          backgroundColor: "white",
+          "& > .MuiBackdrop-root": {
+            backdropFilter: "blur(2px)",
+            backgroundColor: "white",
+          },
+        }}
+        open={firstTimeLoader}
+        // onClose={setSelected}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{ position: "relative", width: "100%" }}>
+          {!isOnline && (
+            <Box
+              sx={{
+                position: "absolute",
+                height: "32px",
+                display: "flex",
+                width: "100%",
+                background: !isOnline ? "red" : "green",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "text.white",
+                  fontSize: "13px",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                {!isOnline && "Your are currently offline"}
+              </Typography>
+            </Box>
+          )}
+          <CustomLoader height={"100%"} />
+        </Box>
+      </ModalMUI>
       <SessionTimeOut />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer }}>
         <IdleTimer role="user" />

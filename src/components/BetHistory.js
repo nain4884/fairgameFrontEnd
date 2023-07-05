@@ -95,7 +95,7 @@ const BetHistory = ({
               sx={{
                 height: "30px",
                 margin: { mobile: "1px", laptop: "0.5px" },
-                width: "30px",
+                width: "5%",
                 display: "flex",
                 background: "black",
                 justifyContent: "center",
@@ -109,6 +109,7 @@ const BetHistory = ({
               </Typography>
             </Box>
             <RowComponent
+            profit={profit}
               header={true}
               data={["Market", "Favourite", "Back/Lay", "Odds", "Stake"]}
             />
@@ -117,7 +118,7 @@ const BetHistory = ({
               <Box
                 sx={{
                   height: "30px",
-                  width: "30%",
+                  width: "20%",
                   display: "flex",
                   background: "black",
                   justifyContent: "center",
@@ -136,7 +137,7 @@ const BetHistory = ({
           <Box
             sx={{
               maxHeight: { mobile: "200px", laptop: "420px" },
-              overflowY: "scroll",
+              overflowY: "auto",
             }}
           >
             {/* {console.warn("allBetsData :", allBetsData)} */}
@@ -146,7 +147,7 @@ const BetHistory = ({
                   /* {betData?.map((i, k) => { */
                 }
                 const num = betData.length - k;
-          const formattedNum = num < 10 ? "0" + num : num.toString();
+                const formattedNum = num < 10 ? "0" + num : num.toString();
                 return (
                   <Box
                     sx={{
@@ -158,7 +159,7 @@ const BetHistory = ({
                     <Box
                       sx={{
                         height: "40px",
-                        width: "30px",
+                        width: "5%",
                         display: "flex",
                         background: "black",
                         margin: { mobile: "1px", laptop: "1px" },
@@ -176,12 +177,12 @@ const BetHistory = ({
                         {formattedNum}
                       </Typography>
                     </Box>
-                    <RowComponent header={false} data={i} />
+                    <RowComponent   profit={profit} header={false} data={i} />
                     {/* {profit && k !== - && ( */}
                     <Box
                       sx={{
                         height: "40px",
-                        width: "30%",
+                        width: "20%",
                         margin: { mobile: "1px", laptop: "1px" },
                         display: "flex",
                         // background: k % 2 === 0 ? "#E32A2A" : "#10DC61",
@@ -230,11 +231,11 @@ const BetHistory = ({
                       </Box>
                     )}
 
-                    {profit && !i?.deleted_reason && (
+                    {/* {profit && i?.deleted_reason !==null && (
                       <Box
                         sx={{
                           height: "40px",
-                          width: "30%",
+                          width: "12.5%",
                           margin: { mobile: "1px", laptop: "1px" },
                           display: "flex",
                           background:
@@ -266,12 +267,12 @@ const BetHistory = ({
                           // src={k % 2 == 0 ? ARROWDOWN : ARROWUP}
                         />
                       </Box>
-                    )}
+                    )} */}
                     {profit && i?.deleted_reason && (
                       <Box
                         sx={{
                           height: "40px",
-                          width: "30%",
+                          width: "20%",
                           margin: { mobile: "1px", laptop: "1px" },
                           display: "flex",
                           background: "black",
@@ -319,7 +320,7 @@ const BetHistory = ({
   );
 };
 
-const RowComponent = ({ header, data }) => {
+const RowComponent = ({ header, data ,profit }) => {
   const getTime = (date) => {
     const now = new Date(date);
     const timeString = now.toLocaleTimeString("en-US", {
@@ -345,7 +346,7 @@ const RowComponent = ({ header, data }) => {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: profit ? "75%" : "95%",
         height: header ? "30px" : "42px",
         background: "white",
         justifyContent: "space-between",
@@ -356,35 +357,72 @@ const RowComponent = ({ header, data }) => {
       {!header && (
         <>
           <SingleBox
+           
             color={getColor}
             data={data?.marketType}
             first={true}
             header={header}
           />
           <SingleBox
+           
             color={getColor()}
             data={data}
             up={true}
             header={header}
             time={getTime(data.createAt)}
           />
-          <SingleBox color={getColor()} data={data?.betType} header={header} />
-          <SingleBox color={getColor()} data={data?.odds} header={header} />
           <SingleBox
+         
+            color={getColor()}
+            data={data?.betType}
+            header={header}
+          />
+          <SingleBox
+         
+            color={getColor()}
+            data={data?.odds}
+            header={header}
+          />
+          <SingleBox
+          
             color={getColor()}
             data={data?.amount}
             header={header}
-            width={"50%"}
           />
         </>
       )}
       {header && (
         <>
-          <SingleBox color={getColor} data={data[0]} header={header} />
-          <SingleBox color={getColor()} data={data[1]} header={header} />
-          <SingleBox color={getColor()} data={data[2]} header={header} />
-          <SingleBox color={getColor()} data={data[3]} header={header} />
-          <SingleBox color={getColor()} data={data[4]} header={header} />
+          <SingleBox
+           
+            color={getColor}
+            data={data[0]}
+            header={header}
+          />
+          <SingleBox
+           
+            color={getColor()}
+            data={data[1]}
+            header={header}
+          />
+          <SingleBox
+           
+            color={getColor()}
+            data={data[2]}
+            header={header}
+          />
+          <SingleBox
+           
+            color={getColor()}
+            data={data[3]}
+            header={header}
+          />
+          <SingleBox
+          
+            color={getColor()}
+            data={data[4]}
+            header={header}
+          />
         </>
       )}
     </Box>
@@ -493,7 +531,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
     first ? (
       <Box
         sx={{
-          width: width ? width : "100%",
+          width:  "100%",
           height: "40px",
           background: "#F1C550",
           marginX: { mobile: "1px", laptop: "1px" },
@@ -532,7 +570,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
     ) : up ? (
       <Box
         sx={{
-          width: "100%",
+          width:  "100%",
           height: "40px",
           flexDirection: "column",
           background: color,
@@ -564,13 +602,13 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
             lineHeight: 1,
           }}
         >
-          {data.team_bet}
+          {data?.team_bet || data?.teamBet}
         </Typography>
       </Box>
     ) : (
       <Box
         sx={{
-          width: "100%",
+          width:  "100%",
           height: "40px",
           background: color,
           marginX: { mobile: "1px", laptop: "1px" },
@@ -594,7 +632,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
     header && (
       <Box
         sx={{
-          width: "100%",
+          width:  "100%",
           height: "30px",
           background: "black",
           marginX: { mobile: "1px", laptop: "1px" },

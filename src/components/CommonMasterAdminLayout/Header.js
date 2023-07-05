@@ -16,6 +16,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import ModalMUI from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout } from "../../assets";
@@ -60,6 +61,7 @@ import EventListing from "../EventListing";
 import AdminEventListing from "../AdminEventListing";
 import HomeSlide from "../HomeSlide";
 import IdleTimer from "../../components/IdleTimer";
+import CustomLoader from "../helper/CustomLoader";
 
 var roleName = "";
 const CustomHeader = ({}) => {
@@ -71,6 +73,7 @@ const CustomHeader = ({}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchor, setAnchor] = React.useState(null);
   const [anchor1, setAnchor1] = React.useState(null);
+  const [firstTimeLoader,setFirstTimeLoader] = useState(true);
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
@@ -110,6 +113,12 @@ const CustomHeader = ({}) => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [nav]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFirstTimeLoader(false)
+    },4000)
+  },[])
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -352,9 +361,9 @@ const CustomHeader = ({}) => {
 
   useEffect(() => {
     handleGetNotification();
-    if (currentUser === null) {
+    
       getUserDetail(nav);
-    }
+    
   }, []);
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
@@ -493,7 +502,29 @@ const CustomHeader = ({}) => {
   ];
 
   return (
-    <>
+    <> 
+       <ModalMUI
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+
+            backgroundColor:"white",
+            "& > .MuiBackdrop-root" : {
+            backdropFilter: "blur(2px)",
+            backgroundColor:"white",
+          }
+    
+          }}
+      
+          open={firstTimeLoader}
+          // onClose={setSelected}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+        
+        <CustomLoader/>
+        </ModalMUI>
       <SessionTimeOut />
       <IdleTimer role="" />
       <AppBar position="fixed" sx={classes.AppBarVal}>

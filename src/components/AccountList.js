@@ -12,6 +12,7 @@ import {
 import Modal from "./Modal";
 import SearchInput from "./SearchInput";
 import ModalMUI from "@mui/material/Modal";
+
 import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,6 +61,7 @@ const AccountList = () => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { currentPageNo } = useSelector((state) => state?.auth);
   const [loading, setLoading] = useState(false);
+
   async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
@@ -156,6 +158,7 @@ const AccountList = () => {
 
   return (
     <>
+
       {loading ? (
         <Box
           sx={{
