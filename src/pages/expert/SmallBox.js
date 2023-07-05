@@ -3,12 +3,12 @@ import React from 'react'
 import { BroadCast } from '../../expert/assets';
 import { Button } from "@mui/material";
 
-const SmallBox = ({ color, title, width, textSize, onClick, hide }) => {
+const SmallBox = ({ color, title, width, textSize, onClick, hide, customStyle }) => {
   return (
     <>
       <Box
         onClick={onClick}
-        sx={{
+        sx={[{
           width: { laptop: width ? width : "80px", mobile: width },
           display: "flex",
           marginRight: "10px",
@@ -19,7 +19,9 @@ const SmallBox = ({ color, title, width, textSize, onClick, hide }) => {
           background: color ? color : "#46e080",
           borderRadius: "3px",
           cursor: "pointer",
-        }}
+        },
+        customStyle
+      ]}
       >
         <Typography
           sx={{

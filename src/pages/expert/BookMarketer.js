@@ -197,6 +197,9 @@ const BookMarketer = ({
               }}
               width={"80px"}
               title={"Live"}
+              customStyle={{
+                justifyContent: "center"
+              }}
             />
           )}
           <img

@@ -283,6 +283,9 @@ const MatchOdds = ({
                 }}
                 title={"Go Live"}
                 color={"#FF4D4D"}
+                customStyle={{
+                  justifyContent: "center"
+                }}
               />
             )}
             {stlive && (
@@ -295,6 +298,7 @@ const MatchOdds = ({
                   setLive(false);
                 }}
                 title={"Live"}
+                
               />
             )}
             <img

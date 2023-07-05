@@ -178,7 +178,7 @@ const SessionMarketLive = ({
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                paddingRight: "17px",
+                // paddingRight: "17px",
                 width: { laptop: "60%", mobile: "80%" },
                 justifyContent: "flex-end",
               }}
@@ -186,7 +186,7 @@ const SessionMarketLive = ({
               <Box
                 sx={{
                   background: "#FF9292",
-                  width: "28%",
+                  width: "26.5%",
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
@@ -203,7 +203,7 @@ const SessionMarketLive = ({
               <Box
                 sx={{
                   background: "#00C0F9",
-                  width: "28%",
+                  width: "27%",
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
