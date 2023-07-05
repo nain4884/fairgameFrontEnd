@@ -60,7 +60,7 @@ const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, s
               <Box sx={{ alignItems: "center", justifyContent: "space-around" }}>
                 <Typography
                   sx={{
-                    fontSize: "15px",
+                    fontSize: "13px",
                     color: color == "white" ? "white" : "black",
                     fontWeight: "700",
                     textAlign: "center",

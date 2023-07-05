@@ -23,7 +23,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#319E5B"
                 : "#F1C550",
               deleted_reason: v?.deleted_reason,
-              width: "11%"
+              width: "12.8%"
             },
             {
               name: v?.marketType,
@@ -32,7 +32,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#319E5B"
                 : "#F1C550",
               deleted_reason: v?.deleted_reason,
-              width: "25.4%"
+              width: "19.8%"
             },
             {
               name: v?.team_bet,
@@ -41,7 +41,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               deleted_reason: v?.deleted_reason,
-              width: "10.6%"
+              width: "11.9%"
 
             },
             {
@@ -55,7 +55,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 : "rgb(255, 146, 146)",
               small: true,
               deleted_reason: v?.deleted_reason,
-              width: "10.6%"
+              width: "7%"
             },
             {
               name: v?.bet_type,
@@ -65,7 +65,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 : "rgb(255, 146, 146)",
               small: true,
               deleted_reason: v?.deleted_reason,
-              width: "10.6%"
+              width: "7%"
             },
             {
               name: v?.amount,
@@ -74,14 +74,14 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               deleted_reason: v?.deleted_reason,
-              width: "10.6%"
+              width: "14.8%"
             },
             {
               name: v?.myStack,
               color: "white",
               background: "#0B4F26",
               deleted_reason: v?.deleted_reason,
-              width: "10.6%"
+              width: "14%"
             },
             {
               name: moment(v?.createAt).format("LT"),
@@ -92,7 +92,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               time: true,
               date: moment(v?.createAt).format("L"),
               deleted_reason: v?.deleted_reason,
-              width: "10.6%"
+              width: "13%"
             },
           ],
         };
@@ -218,7 +218,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                   <div style={{ display: "flex", position: "relative" }}>
                     <Box
                       sx={{
-                        width: "6%",
+                        width: "40px",
                         border: "1px solid white",
                         background: "black",
                         height: "30px",
@@ -291,7 +291,7 @@ const HeaderRow = ({ tag }) => {
     <Box sx={{ width: "100%", display: "flex" }}>
       <Box
         sx={{
-          width: "6%",
+          width: "40px",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -308,7 +308,7 @@ const HeaderRow = ({ tag }) => {
       </Box>
       <Box
         sx={{
-          width: "10%",
+          width: "12%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -326,7 +326,7 @@ const HeaderRow = ({ tag }) => {
       </Box>
       <Box
         sx={{
-          width: "24%",
+          width: "19%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -344,7 +344,7 @@ const HeaderRow = ({ tag }) => {
       </Box>
       <Box
         sx={{
-          width: "10%",
+          width: "11.4%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -361,7 +361,7 @@ const HeaderRow = ({ tag }) => {
       </Box>
       <Box
         sx={{
-          width: "10%",
+          width: "6.7%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -378,7 +378,7 @@ const HeaderRow = ({ tag }) => {
       </Box>
       <Box
         sx={{
-          width: "10%",
+          width: "7%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -395,7 +395,7 @@ const HeaderRow = ({ tag }) => {
       </Box>
       <Box
         sx={{
-          width: "10%",
+          width: "14.2%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -412,7 +412,7 @@ const HeaderRow = ({ tag }) => {
       </Box>
       <Box
         sx={{
-          width: "10%",
+          width: "13.3%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
@@ -429,7 +429,7 @@ const HeaderRow = ({ tag }) => {
       </Box>
       <Box
         sx={{
-          width: "10%",
+          width: "12.5%",
           border: "1px solid white",
           borderRight: "0",
           background: "rgba(0,0,0)",
@@ -464,7 +464,7 @@ const SmallBox = ({ item }) => {
       }}
     >
       <Typography
-        sx={{ fontSize: "12px", fontWeight: "600", color: item?.color, textTransform: "capitalize" }}
+        sx={{ fontSize: "11px", fontWeight: "600", color: item?.color, textTransform: "capitalize" }}
       >
         {item?.name}
       </Typography>
@@ -495,7 +495,7 @@ const LargeBox = ({ item, k }) => {
     >
       <Typography
         sx={{
-          fontSize: "0.5vw",
+          fontSize: "11px",
           fontWeight: "600",
           color: item?.color,
           wordWrap: "break-word",

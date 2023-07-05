@@ -25,7 +25,7 @@ const MoneyBox = ({ color, value }) => {
         sx={{
           fontSize: "0.6vw",
           fontWeight: "bold",
-          color: Number(value) > 0 ? "#46e080" : "#FF4D4D",
+          color: Number(value) > 0 ? "#319E5B" : "#FF4D4D",
         }}
       >
         {value === 0 ? "" : value}
