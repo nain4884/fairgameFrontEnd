@@ -178,8 +178,8 @@ const SessionMarketLive = ({
                 display: "flex",
                 background: "#319E5B",
                 height: "25px",
-                // paddingRight: "17px",
-                width: { laptop: "60%", mobile: "80%" },
+                paddingRight: "17px",
+                width: { laptop: "62%", mobile: "80%" },
                 justifyContent: "flex-end",
               }}
             >

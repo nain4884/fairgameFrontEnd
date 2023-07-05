@@ -54,7 +54,7 @@ const SmallBox2 = ({ valueA, valueB }) => {
           sx={{
             fontSize: "11px",
             fontWeight: "bold",
-            color: valueA < 0 ? `#FF9292` : `#46e080`,
+            color: valueA < 0 ? `#FF4D4D` : `#319E5B`,
           }}
         >
           {valueA < 0 ? ` ${valueA}` : `${valueA}`}
@@ -89,7 +89,7 @@ const SmallBox2 = ({ valueA, valueB }) => {
           sx={{
             fontSize: "11px",
             fontWeight: "bold",
-            color: valueB < 0 ? `#FF9292` : `#46e080`,
+            color: valueB < 0 ? `#FF9292` : `#319E5B`,
           }}
         >
           {valueB < 0 ? ` ${valueB}` : `${valueB}`}
@@ -298,6 +298,9 @@ const MatchOdds = ({
                   setLive(false);
                 }}
                 title={"Live"}
+                customStyle={{
+                  justifyContent: "center"
+                }}
                 
               />
             )}
