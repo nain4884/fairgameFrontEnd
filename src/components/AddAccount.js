@@ -55,7 +55,7 @@ const AddAccount = () => {
     8: { field: "creditReference", val: 0 },
     9: { field: "roleId", val: "" },
     10: { field: "uplinePertnerShip", val: 0 },
-    11: { field: "myPertnerShip", val: 0 },
+    11: { field: "myPertnerShip", val: null },
     12: { field: "downLinePertnerShip", val: 0 },
     13: { field: "remark", val: "" },
     14: { field: "adminTransPassword", val: "" },
@@ -173,8 +173,13 @@ const AddAccount = () => {
     if (error[11].val !== "") {
       toast.error(error[11].val);
       return false;
+    } if (error[1].val==="Only a-z, A-Z,and 0-9 characters allowed!. eg. fairGame00" || error[1].val===true){
+      toast.error("Field required");
+      return false;
     }
+   
      else {
+      
       let payload = {
         userName: "",
         password: "",
@@ -204,16 +209,6 @@ const AddAccount = () => {
           );
         }
 
-        if (Detail[11].val === "") {
-          setError({
-            ...error,
-            11: {
-              ...error[11],
-              val: "Field is required",
-            },
-          });
-          return false;
-        }
 
         if (Detail[14].val === "") {
           setError({
@@ -254,7 +249,7 @@ const AddAccount = () => {
             Detail[9].val === "" ||
             Detail[14].val === 0 ||
             Detail[14].val === "" ||
-            Detail[11].val === ""
+            Detail[11].val === null
           )
         ) {
           //Detail[2].val === 0 || Detail[2].val === "" ||
@@ -531,7 +526,14 @@ const AddAccount = () => {
                     title={"Username*"}
                     setDetail={setDetail}
                     onKeyDown={(event) => {
-                      if (event.code === "Space") event.preventDefault();
+                      if (event.code === "Space") {
+                        event.preventDefault();
+                      } else {
+                        const regex = /^[a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
+                        if (!regex.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }
                     }}
                     Detail={Detail}
                     setError={setError}
@@ -543,7 +545,9 @@ const AddAccount = () => {
                   />
                   {error[1].val && (
                     <p className="validCommon" style={{ color: "#fa1e1e" }}>
-                      {userAlreadyExist ? userAlreadyExist : "Field Required"}
+                      {userAlreadyExist
+                        ? userAlreadyExist
+                        : error[1].val || "Field Required"}
                     </p>
                   )}
                 </div>
@@ -779,10 +783,11 @@ const AddAccount = () => {
                     setDownlinePar={setDownlinePar}
                     Detail={Detail}
                     value={Detail[11].val}
-                    placeholder={Detail[11].val}
+                    // placeholder={Detail[11].val}
                     setError={setError}
                     error={error}
                     place={11}
+                    required={true}
                     type={"Number"}
                   />
                 ) : (
@@ -802,13 +807,14 @@ const AddAccount = () => {
                     setDetail={setDetail}
                     onFocusOut={CheckThisPosition}
                     toFoucs={true}
-                    min={0}
+                    // min={0}
                     setMypar={(val) => setMypar(val)}
                     max={100}
                     setDownlinePar={setDownlinePar}
                     Detail={Detail}
-                    placeholder={Detail[11].val}
+                    // placeholder={Detail[11].val}
                     setError={setError}
+                    required={true}
                     error={error}
                     place={11}
                     type={"Number"}

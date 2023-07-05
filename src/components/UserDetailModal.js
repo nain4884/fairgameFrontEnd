@@ -476,27 +476,27 @@ export default function UserDetailModal({
               <Button
                 sx={{ color: "#E32A2A" }}
                 onClick={(e) => {
-                  if (
-                    prevElement.available_balance == 0
-                  ) {
-                    UserDelete(userModal.id)
-                      .then(({ bool, message }) => {
-                        setDeleteModal(false);
-                        getListOfUser()
-                        showDialogModal(true, true, message);
-                      })
-                      .catch(({ bool, message }) => {
-                        setDeleteModal(false);
-                        showDialogModal(true, false, message);
-                      });
-                  } else {
+                  // if (
+                  //   prevElement.available_balance == 0
+                  // ) {
+                  UserDelete(userModal.id)
+                    .then(({ bool, message }) => {
+                      setDeleteModal(false);
+                      getListOfUser()
+                      showDialogModal(true, true, message);
+                    })
+                    .catch(({ bool, message }) => {
+                      setDeleteModal(false);
+                      showDialogModal(true, false, message);
+                    });
+                  // } else {
 
-                    setConfirmDeleteModal((prev) => !prev)
-                    // let message = "First Settle Account to Delete The User";
-                    // toast.error(message);
-                    setDeleteModal(false);
-                    // showDialogModal(true, false, message);
-                  }
+                  //   setConfirmDeleteModal((prev) => !prev)
+                  //   // let message = "First Settle Account to Delete The User";
+                  //   // toast.error(message);
+                  //   setDeleteModal(false);
+                  //   // showDialogModal(true, false, message);
+                  // }
                 }}
               >
                 Delete
@@ -2715,7 +2715,7 @@ const LockUnlockComponent = ({
       sx={{
         display: "flex",
         borderRadius: "5px",
-        paddingRight: {mobile: "0", laptop: "10px"},
+        paddingRight: { mobile: "0", laptop: "10px" },
         flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
         gap: 2,
         width: { mobile: "92vw", tablet: "80%", laptop: "80%" },
@@ -2866,8 +2866,8 @@ const LockUnlockComponent = ({
         }}
         >
           <BoxButton
-            containerStyle={{ 
-              maxWidth: "100%!important", height: "44px" ,
+            containerStyle={{
+              maxWidth: "100%!important", height: "44px",
               flex: { mobile: "0 0 100%", tablet: "0 0 100%", laptop: "0 0 100%" }
             }}
             isSelected={true}

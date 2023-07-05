@@ -48,6 +48,8 @@ import DropdownMenu1 from "./DropDownMenu1";
 import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
 import IdleTimer from "../../components/IdleTimer";
+import CustomLoader from "../../components/helper/CustomLoader";
+import ModalMUI from "@mui/material/Modal";
 
 const CustomHeader = ({ }) => {
   const theme = useTheme();
@@ -71,6 +73,7 @@ const CustomHeader = ({ }) => {
   const [onlineUser, setOnlineUser] = useState(activeUsers);
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
+  const [firstTimeLoader,setFirstTimeLoader] = useState(true);
   useEffect(() => {
     if (activeUsers !== 0) {
       setOnlineUser(activeUsers);
@@ -246,6 +249,12 @@ const CustomHeader = ({ }) => {
   }, [socket]);
 
   useEffect(() => {
+    setTimeout(() => {
+      setFirstTimeLoader(false)
+    },4000)
+  },[])
+  
+  useEffect(() => {
     if (location.pathname.includes("home")) {
       dispatch(setSelected(0));
     } else if (location.pathname.includes("match")) {
@@ -306,6 +315,28 @@ const CustomHeader = ({ }) => {
   };
   return (
     <>
+    <ModalMUI
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+
+            backgroundColor:"white",
+            "& > .MuiBackdrop-root" : {
+            backdropFilter: "blur(2px)",
+            backgroundColor:"white",
+          }
+    
+          }}
+      
+          open={firstTimeLoader}
+          // onClose={setSelected}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+        
+        <CustomLoader/>
+        </ModalMUI>
       <SessionTimeOut />
       <AppBar
         position="fixed"

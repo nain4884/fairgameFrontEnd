@@ -20,7 +20,7 @@ export default function BetMakerMarketComponent({ add, match }) {
                 <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600" }}>Bookmaker Bets</Typography>
                 <Box sx={{ height: "35px", width: "100px", background: "white", borderRadius: "5px", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
                     <Typography sx={{ color: "red", fontWeight: "700", fontSize: "14px" }}>All Bets</Typography>
-                    <Typography sx={{ color: "#0B4F26", fontWeight: "700", marginTop: "-5px" }}>{bookMakerBetRates?.length}</Typography>
+                    <Typography sx={{ color: "#0B4F26", fontWeight: "700", marginTop: "-5px" }}>{betData?.length}</Typography>
 
                 </Box>
             </Box>

@@ -12,6 +12,7 @@ import {
 import Modal from "./Modal";
 import SearchInput from "./SearchInput";
 import ModalMUI from "@mui/material/Modal";
+
 import StyledImage from "./StyledImage";
 import UserDetailModal from "./UserDetailModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,11 +61,11 @@ const AccountList = () => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { currentPageNo } = useSelector((state) => state?.auth);
   const [loading, setLoading] = useState(false);
+
   async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?${
-          username ? `userName=${username}` : ""
+        `/fair-game-wallet/getAllUser?${username ? `userName=${username}` : ""
         }&page=${currentPageNo}&limit=${pageLimit}`
       );
       if (data?.data?.data) {
@@ -83,9 +84,10 @@ const AccountList = () => {
         setPageCount(
           Math.ceil(
             parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-              pageLimit
+            pageLimit
           )
         );
+        getUerLogged();
       }
     } catch (e) {
       setTimeout(() => {
@@ -125,7 +127,7 @@ const AccountList = () => {
     }
   };
   useEffect(() => {
-    getUerLogged();
+    // getUerLogged();
     return () => {
       dispatch(setPage(parseInt(1)));
     };
@@ -156,6 +158,7 @@ const AccountList = () => {
 
   return (
     <>
+
       {loading ? (
         <Box
           sx={{
