@@ -48,14 +48,31 @@ const Input = ({
   const [showPass, setShowPass] = useState(true);
   const handleMypartnershipChange = debounce((e, place) => {
     const value = Number(e.target.value);
-    if (value < 0) {
+    if (e.target.value === "") {
       setDetail({
         ...Detail,
         11: {
           ...Detail[11],
-          val: value,
+          val: null,
         },
       });
+      setError({
+        ...error,
+        11: {
+          ...error[11],
+          val: "Filed Required",
+        },
+      });
+      return false;
+    }
+    if (value < 0) {
+      // setDetail({
+      //   ...Detail,
+      //   11: {
+      //     ...Detail[11],
+      //     val: value,
+      //   },
+      // });
       setError({
         ...error,
         11: {
@@ -70,7 +87,7 @@ const Input = ({
         ...Detail,
         12: {
           ...Detail[12],
-          val: 0,
+          val: null,
         },
       });
       setError({
@@ -82,7 +99,7 @@ const Input = ({
       });
       return false;
     }
-    const updatedMypartnership = value > 0 ? value : 0;
+    const updatedMypartnership = value >= 0 && value !== "" ? value : null;
     const subsum = Detail[10].val + updatedMypartnership;
     if (subsum >= 100) {
       setDetail({
@@ -93,7 +110,7 @@ const Input = ({
         },
         [place]: {
           ...Detail[place],
-          val: updatedMypartnership,
+          val: value === "" ? null : updatedMypartnership,
         },
       });
       setError({
@@ -118,7 +135,7 @@ const Input = ({
         },
         [place]: {
           ...Detail[place],
-          val: updatedMypartnership,
+          val: value === "" ? null : updatedMypartnership,
         },
       });
       setError({
@@ -138,7 +155,7 @@ const Input = ({
         },
         [place]: {
           ...Detail[place],
-          val: updatedMypartnership,
+          val: value === "" ? null : updatedMypartnership,
         },
       });
     }
@@ -164,7 +181,7 @@ const Input = ({
             backgroundColor: "white",
             display: "flex",
             alignItems: "center",
-            height: { laptop: "45px", mobile: "45px" ,tablet:"45px"},
+            height: { laptop: "45px", mobile: "45px", tablet: "45px" },
             overflow: "hidden",
             paddingX: "10px",
             marginTop: "1px",
@@ -242,7 +259,6 @@ const Input = ({
             onKeyDown={onKeyDown}
             required={required}
             InputProps={{
-              min: 0,
               max: 100,
               disabled: disabled,
               placeholder: placeholder,
@@ -268,6 +284,19 @@ const Input = ({
               fontSize: { laptop: "1px", mobile: "5px" },
             }}
             onChange={(e) => {
+              const inputValue = e.target.value;
+              const regex = /^[a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
+              if (!regex.test(inputValue) && place === 1) {
+                setError({
+                  ...error,
+                  [place]: {
+                    ...Detail[place],
+                    val: "Only a-z, A-Z,and 0-9 characters allowed!. eg. fairGame00",
+                  },
+                });
+                return false;
+              }
+
               String(title).toLowerCase().includes("password")
                 ? setDetail({
                     ...Detail,
@@ -289,6 +318,8 @@ const Input = ({
                             ? Number(e.target.value) < 100 &&
                               Number(e.target.value)
                             : Number(e.target.value)
+                          : e.target.value === "" && place === 11
+                          ? null
                           : e.target.value,
                     },
                   });
@@ -318,7 +349,7 @@ const Input = ({
                 onFocusOut({
                   place,
                   val: Detail[place].val,
-                  val2:e?.target.value ,
+                  val2: e?.target.value,
                   setError,
                   Detail,
                   error,
