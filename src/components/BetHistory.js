@@ -55,14 +55,15 @@ const BetHistory = ({
                 paddingRight: "4px",
                 marginBottom: ".1vh",
                 display: "flex",
+                background: "#F8C851"
               },
-              (theme) => ({
-                backgroundImage: `${theme.palette.primary.headerGradient}`,
-              }),
+              // (theme) => ({
+              //   backgroundImage: `${theme.palette.primary.headerGradient}`,
+              // }),
             ]}
           >
             <Typography
-              sx={{ fontWeight: "12px", color: "white", fontWeight: "700" }}
+              sx={{ fontWeight: "12px", color: "black", fontWeight: "700" }}
             >
               All Rate Bets
             </Typography>
@@ -111,7 +112,7 @@ const BetHistory = ({
             <RowComponent
             profit={profit}
               header={true}
-              data={["Market", "Favourite", "Back/Lay", "Odds", "Stake"]}
+              data={["Market", "Favourite", "B/Lay", "Odds", "Stake"]}
             />
 
             {profit && (
@@ -135,6 +136,7 @@ const BetHistory = ({
             )}
           </Box>
           <Box
+            className="myScroll"
             sx={{
               maxHeight: { mobile: "200px", laptop: "420px" },
               overflowY: "auto",
@@ -359,7 +361,7 @@ const RowComponent = ({ header, data ,profit }) => {
           <SingleBox
            
             color={getColor}
-            data={data?.marketType}
+            data={data?.marketType =="MANUAL BOOKMAKER" ? "Quick Bookmaker" : data?.marketType}
             first={true}
             header={header}
           />
@@ -376,18 +378,21 @@ const RowComponent = ({ header, data ,profit }) => {
             color={getColor()}
             data={data?.betType}
             header={header}
+            boxWidth="50%"
           />
           <SingleBox
          
             color={getColor()}
             data={data?.odds}
             header={header}
+            boxWidth="50%"
           />
           <SingleBox
           
             color={getColor()}
             data={data?.amount}
             header={header}
+            boxWidth="100%"
           />
         </>
       )}
@@ -398,21 +403,23 @@ const RowComponent = ({ header, data ,profit }) => {
             color={getColor}
             data={data[0]}
             header={header}
+            boxWidth="100%"
           />
           <SingleBox
            
             color={getColor()}
             data={data[1]}
             header={header}
+            boxWidth="100%"
           />
           <SingleBox
-           
+            boxWidth="50%"
             color={getColor()}
             data={data[2]}
             header={header}
           />
           <SingleBox
-           
+            boxWidth="50%"
             color={getColor()}
             data={data[3]}
             header={header}
@@ -422,6 +429,7 @@ const RowComponent = ({ header, data ,profit }) => {
             color={getColor()}
             data={data[4]}
             header={header}
+            boxWidth="100%"
           />
         </>
       )}
@@ -526,7 +534,7 @@ const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
     </Box>
   );
 };
-const SingleBox = ({ data, header, color, up, first, time, width }) => {
+const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) => {
   return !header ? (
     first ? (
       <Box
@@ -608,7 +616,8 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
     ) : (
       <Box
         sx={{
-          width:  "100%",
+          // width:  "100%",
+          width: boxWidth,
           height: "40px",
           background: color,
           marginX: { mobile: "1px", laptop: "1px" },
@@ -620,7 +629,7 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "p8x", tablet: "10px", laptop: "12px" },
+            fontSize: { mobile: "9px", tablet: "10px", laptop: "12px" },
             color: "black",
           }}
         >
@@ -632,7 +641,8 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
     header && (
       <Box
         sx={{
-          width:  "100%",
+          // width:  "100%",
+          width: boxWidth,
           height: "30px",
           background: "black",
           marginX: { mobile: "1px", laptop: "1px" },
