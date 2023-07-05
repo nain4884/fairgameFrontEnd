@@ -527,6 +527,7 @@ export default function UserDetailModal({
                 onClick={(e) => {
                   UserDelete(userModal.id)
                     .then(({ bool, message }) => {
+                      getListOfUser()
                       setConfirmDeleteModal(false);
                       showDialogModal(true, true, message);
                     })

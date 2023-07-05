@@ -262,7 +262,7 @@ const MatchOdds = ({
       timeLeft = {
         days: "00",
         hours: "00",
-        minutes: "00   ",
+        minutes: "00",
       };
     }
 
@@ -270,9 +270,9 @@ const MatchOdds = ({
   }
 
   const upcoming =
-    timeLeft.days === "00" &&
-    timeLeft.hours === "00" &&
-    timeLeft.minutes !== "00";
+  Number(timeLeft.days) === 0 &&
+  Number(timeLeft.hours) === 0 &&
+  Number(timeLeft.minutes) <= 59
 
   const teamRates =
     manualBookMarkerRates?.length > 0
