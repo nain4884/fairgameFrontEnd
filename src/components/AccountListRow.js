@@ -26,7 +26,7 @@ const AccountListRow = ({
   showOptions,
   showChildModal,
   callProfile,
-  handleExport
+  handleExport,
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -104,7 +104,7 @@ const AccountListRow = ({
     userId: element?.id,
     matchTypeComission: element?.matchTypeComission,
     sessionComisssion: element?.sessionComisssion,
-    matchComission:element?.matchComission
+    matchComission: element?.matchComission,
   };
 
   const updatedUserProfile = async () => {
@@ -129,6 +129,28 @@ const AccountListRow = ({
   // }, [showUserModal ,callProfile]);
 
   const [elementToUDM, setElementToUDM] = useState(prevElement);
+  useEffect(() => {
+    const prevElement = {
+      credit_refer: element.credit_refer,
+      balance: element.balance,
+      profit_loss: element.profit_loss,
+      exposure: element.exposure,
+      available_balance: element.available_balance,
+      exposure_limit: element.exposure_limit,
+      userName: element.userName,
+      percent_profit_loss: element.percent_profit_loss || 0,
+      bet_blocked: element.bet_blocked,
+      all_blocked: element.all_blocked,
+      rateToCalculatePercentage: handleUpline(),
+      totalCommissions: element.TotalComission,
+      role: allRole?.find((role) => role?.id === element?.roleId),
+      userId: element?.id,
+      matchTypeComission: element?.matchTypeComission,
+      sessionComisssion: element?.sessionComisssion,
+      matchComission: element?.matchComission,
+    };
+    setElementToUDM(prevElement);
+  }, [element]);
   function handleSetUDM(val) {
     setElementToUDM(val);
   }
@@ -216,10 +238,7 @@ const AccountListRow = ({
               src={
                 fContainerStyle.background == "#F8C851" ? DownGIcon : DownIcon
               }
-              style={{  cursor: "pointer", 
-              width: "16px", 
-              height: "12px", 
-            }}
+              style={{ cursor: "pointer", width: "16px", height: "12px" }}
               // {{ height: {mobile: "10px", laptop: "15px"}, cursor: "pointer", width: {mobile: "15px", laptop: "20px"} }}
             />
           )}
@@ -280,7 +299,6 @@ const AccountListRow = ({
               marginLeft: "5px",
               filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
               width: "15px",
-              
             }}
           />
         </Box>
@@ -436,7 +454,7 @@ const AccountListRow = ({
         </Box>
       </Box>
 
-      {showUserModal && element.role === "user" &&
+      {showUserModal && element.role === "user" && (
         <>
           <Box
             sx={[
@@ -447,7 +465,7 @@ const AccountListRow = ({
                 background: "#0B4F26",
                 alignItems: "center",
                 overflow: "hidden",
-                flexDirection: { mobile: "column", laptop: "row" }
+                flexDirection: { mobile: "column", laptop: "row" },
               },
               containerStyle,
             ]}
@@ -488,8 +506,10 @@ const AccountListRow = ({
                       display: "flex",
                       width: "100%",
                       alignItems: "center",
-                      justifyContent: { laptop: "flex-start", mobile: "flex-start" },
-
+                      justifyContent: {
+                        laptop: "flex-start",
+                        mobile: "flex-start",
+                      },
                     }}
                   >
                     {elementToUDM?.matchTypeComission ? (
@@ -501,7 +521,7 @@ const AccountListRow = ({
                               fontWeight: "600",
                               color: "white",
                               textAlign: { laptop: "left", mobile: "left" },
-                              width: { laptop: "100px", mobile: "100px" }
+                              width: { laptop: "100px", mobile: "100px" },
                             },
                             fTextStyle,
                           ]}
@@ -515,15 +535,13 @@ const AccountListRow = ({
                               fontWeight: "600",
                               color: "white",
                               textAlign: "center",
-                              marginRight: "1px"
+                              marginRight: "1px",
                             },
                             fTextStyle,
                           ]}
                         >
                           {":"} {elementToUDM?.matchComission}
                         </Typography>
-
-
                       </>
                     ) : (
                       <>
@@ -535,7 +553,7 @@ const AccountListRow = ({
                               fontWeight: "600",
                               color: "white",
                               textAlign: { laptop: "left", mobile: "left" },
-                              width: { laptop: "100px", mobile: "100px" }
+                              width: { laptop: "100px", mobile: "100px" },
                             },
                             fTextStyle,
                           ]}
@@ -570,7 +588,7 @@ const AccountListRow = ({
                             fontWeight: "600",
                             color: "white",
                             textAlign: { laptop: "left", mobile: "left" },
-                            width: { laptop: "100px", mobile: "100px" }
+                            width: { laptop: "100px", mobile: "100px" },
                           },
                           fTextStyle,
                         ]}
@@ -584,7 +602,7 @@ const AccountListRow = ({
                             fontWeight: "600",
                             color: "white",
                             textAlign: "center",
-                            marginRight: "1px"
+                            marginRight: "1px",
                           },
                           fTextStyle,
                         ]}
@@ -599,8 +617,7 @@ const AccountListRow = ({
                           fontWeight: "600",
                           color: "white",
                           textAlign: "left",
-                          marginLeft: "3px"
-
+                          marginLeft: "3px",
                         },
                         fTextStyle,
                       ]}
@@ -617,8 +634,7 @@ const AccountListRow = ({
                     alignItems: "center",
                     cursor: "pointer",
                     marginRight: { laptop: "0", mobile: "5px" },
-                    width: { desktop: "100%", mobile: "33%" }
-
+                    width: { desktop: "100%", mobile: "33%" },
                   }}
                   onClick={() => {
                     if (elementToUDM.totalCommissions !== null) {
@@ -639,7 +655,7 @@ const AccountListRow = ({
                         color: "white",
                         textAlign: "center",
                         alignItems: "center",
-                        marginRight: { desktop: "0", mobile: "3px" }
+                        marginRight: { desktop: "0", mobile: "3px" },
                       },
                       fTextStyle,
                     ]}
@@ -652,7 +668,11 @@ const AccountListRow = ({
                         ? DownGIcon
                         : DownIcon
                     }
-                    sx={{ height: { laptop: "10px", mobile: "14px" }, cursor: "pointer", width: { laptop: "15px", mobile: "23px" } }}
+                    sx={{
+                      height: { laptop: "10px", mobile: "14px" },
+                      cursor: "pointer",
+                      width: { laptop: "15px", mobile: "23px" },
+                    }}
                   />
                 </Box>
               </Box>
@@ -686,8 +706,7 @@ const AccountListRow = ({
           </Box>
           {/*  */}
         </>
-
-      }
+      )}
 
       {showUserModal && element?.role !== "user" && (
         <Box
@@ -699,7 +718,7 @@ const AccountListRow = ({
               background: "#0B4F26",
               alignItems: "center",
               overflow: "hidden",
-              flexDirection: { mobile: "column", laptop: "row" }
+              flexDirection: { mobile: "column", laptop: "row" },
             },
             containerStyle,
           ]}
@@ -722,8 +741,7 @@ const AccountListRow = ({
               },
               // fContainerStyle,
             ]}
-          >
-          </Box>
+          ></Box>
           <Box
             sx={{
               width: "100%",
@@ -733,7 +751,6 @@ const AccountListRow = ({
               height: "100%",
             }}
           >
-
             <UserDetailModal
               selected={selected}
               setSelected={setSelected}

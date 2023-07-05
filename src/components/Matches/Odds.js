@@ -64,7 +64,7 @@ const Odds = ({ onClick, top, blur, match }) => {
       timeLeft = {
         days: "00",
         hours: "00",
-        minutes: "00   ",
+        minutes: "00",
       };
     }
 
@@ -72,9 +72,9 @@ const Odds = ({ onClick, top, blur, match }) => {
   }
 
   const upcoming =
-    timeLeft.days === "00" &&
-    timeLeft.hours === "00" &&
-    timeLeft.minutes !== "00";
+    Number(timeLeft.days) === 0 &&
+    Number(timeLeft.hours) === 0 &&
+    Number(timeLeft.minutes) <= 59;
 
   useEffect(() => {
     if (socket && socket.connected) {
@@ -120,7 +120,6 @@ const Odds = ({ onClick, top, blur, match }) => {
       console.log("error", e?.message);
     }
   };
-
   useEffect(() => {
     if (socketMicro && socketMicro.connected && match?.marketId) {
       socketMicro.emit("init", { id: match?.marketId });
@@ -386,146 +385,146 @@ const Odds = ({ onClick, top, blur, match }) => {
             >
               <div className="slanted"></div>
             </Box>
-            {timeLeft.days !== "00" &&
-              timeLeft.hours !== "00" &&
-              timeLeft.minutes !== "00" && (
+            {Number(timeLeft.days) === 0 &&
+            Number(timeLeft.hours) === 0 &&
+            Number(timeLeft.minutes) === 0 ? null : (
+              <Box
+                sx={{
+                  flex: 1,
+                  background: "#262626",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <Box
                   sx={{
-                    flex: 1,
-                    background: "#262626",
+                    height: "80%",
+                    marginRight: "3px",
+                    borderRadius: "4px",
+                    width: "110px",
+                    background: "white",
+                    justifyContent: "space-evenly",
                     display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    alignSelf: "flex-end",
                   }}
                 >
                   <Box
                     sx={{
-                      height: "80%",
-                      marginRight: "3px",
-                      borderRadius: "4px",
-                      width: "110px",
-                      background: "white",
-                      justifyContent: "space-evenly",
                       display: "flex",
-                      alignSelf: "flex-end",
+                      justifyContent: "center",
+                      flexDirection: "column",
                     }}
                   >
-                    <Box
+                    <Typography
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        flexDirection: "column",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        color: "#0B4F26",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          color: "#0B4F26",
-                        }}
-                      >
-                        {timeLeft?.days || 0}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: "8px",
-                          fontWeight: "400",
-                          color: "#0B4F26",
-                        }}
-                      >
-                        Days
-                      </Typography>
-                    </Box>
-                    <Box
+                      {timeLeft?.days || 0}
+                    </Typography>
+                    <Typography
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        flexDirection: "column",
+                        fontSize: "8px",
+                        fontWeight: "400",
+                        color: "#0B4F26",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "25px",
-                          fontWeight: "bold",
-                          color: "#0B4F26",
-                        }}
-                      >
-                        :
-                      </Typography>
-                    </Box>
-                    <Box
+                      Days
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        flexDirection: "column",
+                        fontSize: "25px",
+                        fontWeight: "bold",
+                        color: "#0B4F26",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          color: "#0B4F26",
-                        }}
-                      >
-                        {timeLeft?.hours || 0}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: "8px",
-                          fontWeight: "400",
-                          color: "#0B4F26",
-                        }}
-                      >
-                        Hrs
-                      </Typography>
-                    </Box>
-                    <Box
+                      :
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        flexDirection: "column",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        color: "#0B4F26",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "25px",
-                          fontWeight: "bold",
-                          color: "#0B4F26",
-                        }}
-                      >
-                        :
-                      </Typography>
-                    </Box>
-                    <Box
+                      {timeLeft?.hours || 0}
+                    </Typography>
+                    <Typography
                       sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        flexDirection: "column",
+                        fontSize: "8px",
+                        fontWeight: "400",
+                        color: "#0B4F26",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          fontSize: "12px",
-                          fontWeight: "bold",
-                          color: "#0B4F26",
-                        }}
-                      >
-                        {timeLeft?.minutes || 0}
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: "8px",
-                          fontWeight: "400",
-                          color: "#0B4F26",
-                        }}
-                      >
-                        Min
-                      </Typography>
-                    </Box>
+                      Hrs
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "25px",
+                        fontWeight: "bold",
+                        color: "#0B4F26",
+                      }}
+                    >
+                      :
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        color: "#0B4F26",
+                      }}
+                    >
+                      {timeLeft?.minutes || 0}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: "8px",
+                        fontWeight: "400",
+                        color: "#0B4F26",
+                      }}
+                    >
+                      Min
+                    </Typography>
                   </Box>
                 </Box>
-              )}
+              </Box>
+            )}
           </Box>
 
           {
