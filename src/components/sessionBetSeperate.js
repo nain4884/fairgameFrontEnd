@@ -33,13 +33,13 @@ const SessionBetSeperate = ({
   mark2,
   allBetsData,
   betHistory,
+  isArrow
 }) => {
   //  {console.warn("allBetsData qq:",allBetsData)}
   console.log("betHistory", betHistory);
   const [visible, setVisible] = useState(true);
   return (
     <>
-
       <Box
         sx={[
           {
@@ -173,7 +173,7 @@ const SessionBetSeperate = ({
                   }}
                 >
                   <Typography
-                    sx={{ fontWeight: "400", fontSize: ".7vw", color: "white" }}
+                    sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: ".7vw"}, color: "white" }}
                   >
                     {"Profit/Loss"}
                   </Typography>
@@ -306,13 +306,15 @@ const SessionBetSeperate = ({
                           >
                             {Number(i.myProfitLoss).toFixed(2)}
                           </Typography>
-                          <StyledImage
+                         {!isArrow &&  <StyledImage
+                            
                             sx={{
                               width: { mobile: "12px", laptop: "15px" },
                               height: {  mobile: "12px",laptop: "15px" },
                             }}
                             src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
                           />
+                        }
                         </Box>
                       </Box>
                     )}

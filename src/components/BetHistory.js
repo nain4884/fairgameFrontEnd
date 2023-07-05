@@ -55,10 +55,11 @@ const BetHistory = ({
                 paddingRight: "4px",
                 marginBottom: ".1vh",
                 display: "flex",
+                background: "#F8C851"
               },
-              (theme) => ({
-                backgroundImage: `${theme.palette.primary.headerGradient}`,
-              }),
+              // (theme) => ({
+              //   backgroundImage: `${theme.palette.primary.headerGradient}`,
+              // }),
             ]}
           >
             <Typography
@@ -360,6 +361,7 @@ const RowComponent = ({ header, data }) => {
             data={data?.marketType}
             first={true}
             header={header}
+            boxWidth="30%"
           />
           <SingleBox
             color={getColor()}
@@ -367,24 +369,26 @@ const RowComponent = ({ header, data }) => {
             up={true}
             header={header}
             time={getTime(data.createAt)}
+            boxWidth="20%"
           />
-          <SingleBox color={getColor()} data={data?.betType} header={header} />
-          <SingleBox color={getColor()} data={data?.odds} header={header} />
+          <SingleBox color={getColor()} data={data?.betType} header={header} boxWidth="15%"/>
+          <SingleBox color={getColor()} data={data?.odds} header={header} boxWidth="15%"/>
           <SingleBox
             color={getColor()}
             data={data?.amount}
             header={header}
             width={"50%"}
+            boxWidth="20%"
           />
         </>
       )}
       {header && (
         <>
-          <SingleBox color={getColor} data={data[0]} header={header} />
-          <SingleBox color={getColor()} data={data[1]} header={header} />
-          <SingleBox color={getColor()} data={data[2]} header={header} />
-          <SingleBox color={getColor()} data={data[3]} header={header} />
-          <SingleBox color={getColor()} data={data[4]} header={header} />
+          <SingleBox color={getColor} data={data[0]} header={header} boxWidth="100%"/>
+          <SingleBox color={getColor()} data={data[1]} header={header} boxWidth="50%"/>
+          <SingleBox color={getColor()} data={data[2]} header={header} boxWidth="50%"/>
+          <SingleBox color={getColor()} data={data[3]} header={header} boxWidth="50%"/>
+          <SingleBox color={getColor()} data={data[4]} header={header} boxWidth="100%"/>
         </>
       )}
     </Box>
@@ -488,7 +492,7 @@ const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
     </Box>
   );
 };
-const SingleBox = ({ data, header, color, up, first, time, width }) => {
+const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) => {
   return !header ? (
     first ? (
       <Box
@@ -570,7 +574,8 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
     ) : (
       <Box
         sx={{
-          width: "100%",
+          // width: "100%",
+          width: boxWidth,
           height: "40px",
           background: color,
           marginX: { mobile: "1px", laptop: "1px" },
@@ -594,7 +599,8 @@ const SingleBox = ({ data, header, color, up, first, time, width }) => {
     header && (
       <Box
         sx={{
-          width: "100%",
+          // width: "100%",
+          width: boxWidth,
           height: "30px",
           background: "black",
           marginX: { mobile: "1px", laptop: "1px" },

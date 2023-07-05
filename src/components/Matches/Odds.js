@@ -378,21 +378,20 @@ const Odds = ({ onClick, top, blur, match }) => {
             </Box>
             <Box
               sx={{
-                flex: 1,
+                flex: 0.1,
                 background: "#262626",
                 // '#262626'
               }}
             >
               <div className="slanted"></div>
             </Box>
-            {Number(timeLeft.days) === 0 &&
-            Number(timeLeft.hours) === 0 &&
-            Number(timeLeft.minutes) === 0 ? null : (
+            
               <Box
                 sx={{
                   flex: 1,
                   background: "#262626",
                   display: "flex",
+                 
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
@@ -408,6 +407,9 @@ const Odds = ({ onClick, top, blur, match }) => {
                     justifyContent: "space-evenly",
                     display: "flex",
                     alignSelf: "flex-end",
+                    visibility: Number(timeLeft.days) === 0 &&
+                    Number(timeLeft.hours) === 0 &&
+                    Number(timeLeft.minutes) === 0 ? "hidden":"visible",
                   }}
                 >
                   <Box
@@ -524,7 +526,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                   </Box>
                 </Box>
               </Box>
-            )}
+            
           </Box>
 
           {
