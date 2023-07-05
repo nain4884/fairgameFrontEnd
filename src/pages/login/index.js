@@ -152,7 +152,7 @@ export default function Login(props) {
         //  else {
         //   navigate(`/matches`);
         // }
-      } catch (error) {}
+      } catch (error) { }
     });
   }, []);
 
@@ -270,7 +270,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: user,
           password: pass,
-          loginType:"user"
+          loginType: "user"
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -342,7 +342,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
-          loginType:"user"
+          loginType: "user"
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -372,12 +372,12 @@ export default function Login(props) {
               }));
               handleNavigate("/matches", "user");
             } else {
-            setLoginError("Incorrect username and password !")
+              setLoginError("Incorrect username and password !")
               setLoading(false);
             }
           }
         } else {
-        setLoginError("Incorrect username and password !")
+          setLoginError("Incorrect username and password !")
           setLoading(false);
         }
       }
@@ -500,7 +500,7 @@ export default function Login(props) {
                 title="Login"
               />
             </Box>
-           {loginError!=="" && <Alert severity="warning">{loginError}</Alert>}
+            {loginError !== "" && <Alert severity="warning">{loginError}</Alert>}
           </Box>
         </Card>
       </Box>

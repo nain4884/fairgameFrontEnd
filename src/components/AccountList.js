@@ -63,8 +63,7 @@ const AccountList = () => {
   async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?${
-          username ? `userName=${username}` : ""
+        `/fair-game-wallet/getAllUser?${username ? `userName=${username}` : ""
         }&page=${currentPageNo}&limit=${pageLimit}`
       );
       if (data?.data?.data) {
@@ -83,9 +82,10 @@ const AccountList = () => {
         setPageCount(
           Math.ceil(
             parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-              pageLimit
+            pageLimit
           )
         );
+        getUerLogged();
       }
     } catch (e) {
       setTimeout(() => {
@@ -125,7 +125,7 @@ const AccountList = () => {
     }
   };
   useEffect(() => {
-    getUerLogged();
+    // getUerLogged();
     return () => {
       dispatch(setPage(parseInt(1)));
     };

@@ -51,7 +51,7 @@ import IdleTimer from "./IdleTimer";
 import DropdownMenu1 from "./CommonMasterAdminLayout/MenuBar";
 import EventListing from "./EventListing";
 
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const location = useLocation();
@@ -165,6 +165,9 @@ const CustomHeader = ({}) => {
 
         //   //currentBalacne
         // }
+        if (packet.data[0] === "newMatchAdded") {
+          window.location.reload();
+        }
       };
     }
   }, [socket]);
@@ -513,8 +516,8 @@ const NewBoxData = ({
                 textTransform: showDropDown && "capitalize",
                 whiteSpace: showDropDown && "nowrap",
                 textOverflow: showDropDown && "ellipsis",
-                maxWidth:showDropDown && "54px",
-                overflow:showDropDown && "hidden",
+                maxWidth: showDropDown && "54px",
+                overflow: showDropDown && "hidden",
                 marginLeft: 0.5,
                 color: "black",
               },

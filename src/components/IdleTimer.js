@@ -19,6 +19,7 @@ const IdleTimer = ({ role }) => {
     const navigate = useNavigate();
     const [showWarning, setShowWarning] = useState(false);
     const [timer, setTimer] = useState(3570000);
+    // const [timer, setTimer] = useState(30000);
     const [showTimer, setShowTimer] = useState(30);
     // const [isOpen, setIsOpen] = useState(false);
 
