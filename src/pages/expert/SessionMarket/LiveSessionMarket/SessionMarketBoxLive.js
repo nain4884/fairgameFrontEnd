@@ -137,7 +137,7 @@ const SessionMarketBoxLive = ({
           sx={{
             display: "flex",
             background: "white",
-            height: "30px",
+            height: "40px",
             width: "55%",
             alignItems: "center",
           }}
@@ -236,7 +236,7 @@ const SessionMarketBoxLive = ({
             sx={{
               margin: "1px",
               background: "rgba(0,0,0,1)",
-              height: "40px",
+              height: "30px",
               right: "0vh",
               position: "absolute",
               width: { laptop: "27%", mobile: "27%" },

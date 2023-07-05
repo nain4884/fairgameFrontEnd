@@ -528,6 +528,7 @@ const MatchScreen = () => {
           // marginTop: "5px",
           background: !loading && "white",
           padding: 1,
+          gap: 1
         }}
       >
         {loading ? (
@@ -545,7 +546,7 @@ const MatchScreen = () => {
                     sx={{
                       width: { laptop: "100%", mobile: "100%", tablet: "100%" },
                       display: "flex",
-                      gap: 1,
+                      gap: 0.1,
                       flexDirection: { tablet: "column", laptop: "coulmn" },
                     }}
                   >
