@@ -70,7 +70,7 @@ export default function UserDetailModal({
   prevElement,
   selected,
   setSelected,
-  element
+  element,
 }) {
   const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
   const { axios } = setRole();
@@ -114,7 +114,11 @@ export default function UserDetailModal({
         borderRight: "2px solid #0000",
       },
     ],
-    BoxButtonStyledImage: { height: { mobile: "15px", laptop: "18px" }, width: { mobile: "15px", laptop: "17px" }, marginLeft: "5px" },
+    BoxButtonStyledImage: {
+      height: { mobile: "15px", laptop: "18px" },
+      width: { mobile: "15px", laptop: "17px" },
+      marginLeft: "5px",
+    },
     BoxButtonContStyle: {
       background: "#E32A2A",
       flex: 1,
@@ -131,7 +135,7 @@ export default function UserDetailModal({
       });
       if (data?.data?.data) {
         setSettalmentModal(false);
-        getListOfUser()
+        getListOfUser();
         toast.success(data?.data?.message);
       }
     } catch (err) {
@@ -146,7 +150,12 @@ export default function UserDetailModal({
       {selected != null && (
         <Box
           sx={{
-            width: { mobile: "auto", tablet: "90%", laptop: "80%", marginLeft: "0" },
+            width: {
+              mobile: "auto",
+              tablet: "90%",
+              laptop: "80%",
+              marginLeft: "0",
+            },
             padding: "5px",
           }}
         >
@@ -307,7 +316,7 @@ export default function UserDetailModal({
               borderColor: "white",
             }}
             titleStyle={{
-              fontSize: { mobile: "12px" }
+              fontSize: { mobile: "12px" },
             }}
             labelStyle={{}}
           />
@@ -321,7 +330,7 @@ export default function UserDetailModal({
               borderColor: "white",
             }}
             titleStyle={{
-              fontSize: { mobile: "12px" }
+              fontSize: { mobile: "12px" },
             }}
             isSelected={selected == 1}
             title={"Withdraw"}
@@ -340,7 +349,7 @@ export default function UserDetailModal({
                 borderColor: "white",
               }}
               titleStyle={{
-                fontSize: { mobile: "12px" }
+                fontSize: { mobile: "12px" },
               }}
               labelStyle={{}}
             />
@@ -357,7 +366,7 @@ export default function UserDetailModal({
               borderColor: "white",
             }}
             titleStyle={{
-              fontSize: { mobile: "12px" }
+              fontSize: { mobile: "12px" },
             }}
           />
           <BoxButton
@@ -371,7 +380,7 @@ export default function UserDetailModal({
               borderColor: "white",
             }}
             titleStyle={{
-              fontSize: { mobile: "12px" }
+              fontSize: { mobile: "12px" },
             }}
             isSelected={selected == 4}
           />
@@ -388,7 +397,7 @@ export default function UserDetailModal({
               borderColor: "white",
             }}
             titleStyle={{
-              fontSize: { mobile: "12px" }
+              fontSize: { mobile: "12px" },
             }}
           />
           <BoxButton
@@ -401,7 +410,7 @@ export default function UserDetailModal({
               borderColor: "white",
             }}
             titleStyle={{
-              fontSize: { mobile: "12px" }
+              fontSize: { mobile: "12px" },
             }}
             title={"Set Exposure Limit"}
             labelStyle={{}}
@@ -414,10 +423,8 @@ export default function UserDetailModal({
             }}
             title={"Delete User"}
             titleStyle={{
-              fontSize: { mobile: "12px" }
+              fontSize: { mobile: "12px" },
             }}
-
-
             icon={
               <StyledImage src={DeleteIcon} sx={classes.BoxButtonStyledImage} />
             }
@@ -482,7 +489,7 @@ export default function UserDetailModal({
                   UserDelete(userModal.id)
                     .then(({ bool, message }) => {
                       setDeleteModal(false);
-                      getListOfUser()
+                      getListOfUser();
                       showDialogModal(true, true, message);
                     })
                     .catch(({ bool, message }) => {
@@ -510,7 +517,9 @@ export default function UserDetailModal({
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title">
-              {"Your available balance is not zero. Are you sure want to delete this user?"}
+              {
+                "Your available balance is not zero. Are you sure want to delete this user?"
+              }
             </DialogTitle>
             {/* <DialogContent>
           <DialogContentText id="alert-dialog-description">
@@ -527,7 +536,7 @@ export default function UserDetailModal({
                 onClick={(e) => {
                   UserDelete(userModal.id)
                     .then(({ bool, message }) => {
-                      getListOfUser()
+                      getListOfUser();
                       setConfirmDeleteModal(false);
                       showDialogModal(true, true, message);
                     })
@@ -639,7 +648,7 @@ const DepositComponent = ({
   selected,
   percent_profit_loss,
   element,
-  titleBackgroundColor
+  titleBackgroundColor,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const theme = useTheme();
@@ -776,6 +785,7 @@ const DepositComponent = ({
                       getListOfUser();
                       updatedUserProfile();
                       setLoading(false);
+                      setSelected(e);
                       showDialogModal(true, true, message);
                     })
                     .catch(({ bool, message }) => {
@@ -905,7 +915,6 @@ const DepositComponent = ({
           </Box> */}
             </Box>
 
-
             <Box
               sx={{
                 width: { mobile: "41%", laptop: "100%" },
@@ -973,7 +982,7 @@ const DepositComponent = ({
                   tablet: "row",
                   laptop: "row",
                 },
-                marginTop: "10px"
+                marginTop: "10px",
               }}
             >
               <Box
@@ -1054,7 +1063,6 @@ const DepositComponent = ({
             </Box>
           </Box>
 
-
           <Box
             sx={{
               overflow: "hidden",
@@ -1065,7 +1073,6 @@ const DepositComponent = ({
               flexDirection: "row-reverse",
             }}
           >
-
             {/* Remark */}
 
             <Box
@@ -1104,20 +1111,21 @@ const DepositComponent = ({
               />
             </Box>
 
-            <Box sx={{
-              display: "flex",
-              width: "100%",
-              marginTop: "21px",
-              gap: 1,
-              flexDirection: "row-reverse",
-              justifyContent: "flex-end"
-            }}
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                marginTop: "21px",
+                gap: 1,
+                flexDirection: "row-reverse",
+                justifyContent: "flex-end",
+              }}
             >
               <BoxButton
                 loading={loading}
                 containerStyle={{
                   height: "44px",
-                  maxWidth: "150px !important"
+                  maxWidth: "150px !important",
                 }}
                 isSelected={true}
                 onClick={(e) => {
@@ -1147,11 +1155,10 @@ const DepositComponent = ({
               />
               <BoxButton
                 containerStyle={{
-
                   background: "#E32A2A",
                   border: "0px",
                   height: "44px",
-                  maxWidth: "150px !important"
+                  maxWidth: "150px !important",
                 }}
                 isSelected={true}
                 onClick={(e) => {
@@ -1167,7 +1174,6 @@ const DepositComponent = ({
                 title={"Cancel"}
               />
             </Box>
-
           </Box>
 
           {/* V hidden */}
@@ -1267,7 +1273,7 @@ const WithDrawComponent = ({
   selected,
   setSelected,
   element,
-  titleBackgroundColor
+  titleBackgroundColor,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -1399,7 +1405,7 @@ const WithDrawComponent = ({
                       toast.success(message);
                       updatedUserProfile();
                       getListOfUser();
-
+                      setSelected(e);
                       setLoading(false);
                       showDialogModal(true, true, message);
                     })
@@ -1429,7 +1435,6 @@ const WithDrawComponent = ({
             borderRadius: "5px",
           }}
         >
-
           <Box
             sx={{
               width: { mobile: "100%", laptop: "100%", tablet: "100%" },
@@ -1572,23 +1577,21 @@ const WithDrawComponent = ({
               </Box>
             </Box>
 
-
-
-
-
-            <Box sx={{
-              width: { mobile: "41%", laptop: "100%" },
-              display: "flex",
-              alignItems: "center",
-              overflow: "hidden",
-              justifyContent: "flex-end",
-              flexDirection: {
-                mobile: "column",
-                tablet: "row",
-                laptop: "row",
-              },
-              marginTop: "10px"
-            }}>
+            <Box
+              sx={{
+                width: { mobile: "41%", laptop: "100%" },
+                display: "flex",
+                alignItems: "center",
+                overflow: "hidden",
+                justifyContent: "flex-end",
+                flexDirection: {
+                  mobile: "column",
+                  tablet: "row",
+                  laptop: "row",
+                },
+                marginTop: "10px",
+              }}
+            >
               <Box
                 sx={{
                   display: "flex",
@@ -1667,7 +1670,6 @@ const WithDrawComponent = ({
             </Box>
           </Box>
 
-
           <Box
             sx={{
               overflow: "hidden",
@@ -1684,7 +1686,8 @@ const WithDrawComponent = ({
               sx={{
                 borderRadius: "5px",
                 flex: 1,
-                background: backgroundColor == "#ECECEC" ? "#ECECEC" : "#FFECBC",
+                background:
+                  backgroundColor == "#ECECEC" ? "#ECECEC" : "#FFECBC",
                 display: "flex",
                 alignItems: "center",
                 borderRadius: "5px",
@@ -1716,21 +1719,21 @@ const WithDrawComponent = ({
               />
             </Box>
 
-
-
-            <Box sx={{
-              display: "flex",
-              width: "100%",
-              marginTop: "21px",
-              gap: 1,
-              flexDirection: "row-reverse",
-              justifyContent: "flex-end"
-            }}>
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                marginTop: "21px",
+                gap: 1,
+                flexDirection: "row-reverse",
+                justifyContent: "flex-end",
+              }}
+            >
               <BoxButton
                 loading={loading}
                 containerStyle={{
                   maxWidth: "150px !important",
-                  height: "44px"
+                  height: "44px",
                 }}
                 isSelected={true}
                 onClick={(e) => {
@@ -1780,13 +1783,7 @@ const WithDrawComponent = ({
                 title={"Cancel"}
               />
             </Box>
-
           </Box>
-
-
-
-
-
 
           <Box
             sx={{
@@ -1863,7 +1860,6 @@ const WithDrawComponent = ({
               />
             </Box>
           </Box>
-
         </Box>
       )}
     </>
@@ -1899,7 +1895,7 @@ const NewCreditComponent = ({
     const inputValue = Number(
       isNaN(Number(e.target.value)) ? 0 : e.target.value
     );
-    const profitLoss = prevElement.profit_loss;
+    const profitLoss = val.profit_loss;
 
     let percent_profit_loss;
 
@@ -1952,27 +1948,42 @@ const NewCreditComponent = ({
             <TextField
               value={newCreditObj.amount}
               onChange={(e) => {
-                setNewCreditObj({
-                  ...newCreditObj,
-                  amount: e.target.value < 0 ? 0 : Number(e.target.value),
-                  userId: userModal.id,
-                });
-                setElementToUDM({
-                  ...elementToUDM,
-                  percent_profit_loss: calculatePercentProfitLoss(
-                    prevElement,
-                    e
-                  ),
-                  credit_refer: isNaN(Number(e.target.value))
-                    ? 0
-                    : Number(e.target.value),
-                  profit_loss:
-                    prevElement.profit_loss +
-                    prevElement.credit_refer -
-                    Number(
-                      isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)
-                    ),
-                });
+                console.log(e.target.value, Number(e.target.value), "Numer");
+                const newPerRate=elementToUDM.profit_loss +
+                      elementToUDM.credit_refer -
+                      Number(
+                        isNaN(Number(e.target.value))
+                          ? 0
+                          : Number(e.target.value)
+                      )
+                if (Number(e.target.value) === 0) {
+                  setNewCreditObj({
+                    ...newCreditObj,
+                    amount: Number(e.target.value),
+                    userId: userModal.id,
+                  });
+                  setElementToUDM({
+                    ...elementToUDM,
+                    percent_profit_loss: Number(e.target.value),
+                    credit_refer: Number(e.target.value),
+                    profit_loss: Number(e.target.value),
+                  });
+                } else {
+                  setNewCreditObj({
+                    ...newCreditObj,
+                    amount: Number(e.target.value),
+                    userId: userModal.id,
+                  });
+                  setElementToUDM({
+                    ...elementToUDM,
+                    credit_refer: isNaN(Number(e.target.value))
+                      ? 0
+                      : Number(e.target.value),
+                    profit_loss:newPerRate,
+                    percent_profit_loss:newPerRate*(elementToUDM?.rateToCalculatePercentage / 100) ,
+                 
+                  });
+                }
               }}
               variant="standard"
               InputProps={{
@@ -2107,6 +2118,7 @@ const NewCreditComponent = ({
                       getListOfUser();
                       showDialogModal(true, true, message);
                       setLoading(false);
+                      setSelected(e);
                     })
                     .catch(({ bool, message }) => {
                       toast.error(message);
@@ -2143,6 +2155,7 @@ const NewCreditComponent = ({
                 ...elementToUDM,
                 credit_refer: prevElement.credit_refer,
                 profit_loss: prevElement.profit_loss,
+                percent_profit_loss: prevElement.percent_profit_loss,
               });
               setSelected(e);
             }}
@@ -2363,6 +2376,7 @@ const SetExposureComponent = ({
                       getListOfUser();
                       showDialogModal(true, true, message);
                       setLoading(false);
+                      setSelected(e);
                     })
                     .catch(({ bool, message }) => {
                       toast.error(message);
@@ -2447,16 +2461,16 @@ const ChangePasswordComponent = ({
             overflow: "hidden",
             justifyContent: { mobile: "flex-start", laptop: "center" },
             flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
-
           }}
         >
-          <Box sx={{
-            display: "flex",
-            flexDirection: { mobile: "column", laptop: "row" },
-            width: { mobile: "60%", laptop: "70%", tablet: "70%" },
-            justifyContent: "center"
-
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { mobile: "column", laptop: "row" },
+              width: { mobile: "60%", laptop: "70%", tablet: "70%" },
+              justifyContent: "center",
+            }}
+          >
             <Typography
               sx={{
                 fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
@@ -2528,8 +2542,14 @@ const ChangePasswordComponent = ({
                 border: "0px",
                 height: "45px",
                 marginLeft: "10px",
-                maxWidth: { mobile: "91% !important", laptop: "100% !important" },
-                flex: { laptop: "0 0 60%!important", mobile: "0 0 100%!important" }
+                maxWidth: {
+                  mobile: "91% !important",
+                  laptop: "100% !important",
+                },
+                flex: {
+                  laptop: "0 0 60%!important",
+                  mobile: "0 0 100%!important",
+                },
               }}
               isSelected={true}
               onClick={(e) => {
@@ -2539,8 +2559,6 @@ const ChangePasswordComponent = ({
               title={"Cancel"}
             />
           </Box>
-
-
         </Box>
         <p style={{ color: "#fa1e1e" }}>
           {changePasswordObj.password &&
@@ -2554,16 +2572,17 @@ const ChangePasswordComponent = ({
             overflow: "hidden",
             justifyContent: { mobile: "flex-start", laptop: "center" },
             flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
-            marginTop: "20px"
+            marginTop: "20px",
           }}
         >
-          <Box sx={{
-            display: "flex",
-            flexDirection: { mobile: "column", laptop: "row" },
-            width: { mobile: "60%", laptop: "70%", tablet: "70%" },
-            justifyContent: "center"
-
-          }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { mobile: "column", laptop: "row" },
+              width: { mobile: "60%", laptop: "70%", tablet: "70%" },
+              justifyContent: "center",
+            }}
+          >
             <Typography
               sx={{
                 fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
@@ -2601,7 +2620,11 @@ const ChangePasswordComponent = ({
                   placeholder: "",
                   disableUnderline: true,
                   type: !showPass ? "password" : "text",
-                  style: { fontSize: "13px", height: "45px", fontWeight: "600" },
+                  style: {
+                    fontSize: "13px",
+                    height: "45px",
+                    fontWeight: "600",
+                  },
                 }}
               />
               <Box
@@ -2617,25 +2640,33 @@ const ChangePasswordComponent = ({
             </Box>
           </Box>
 
-          <Box sx={{
-            display: "flex",
-            width: { mobile: "40%", laptop: "250px" },
-            marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
-          }}>
-
+          <Box
+            sx={{
+              display: "flex",
+              width: { mobile: "40%", laptop: "250px" },
+              marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
+            }}
+          >
             <BoxButton
               containerStyle={{
                 width: "100%",
                 height: "45px",
                 marginLeft: "10px",
-                maxWidth: { mobile: "91% !important", laptop: "100% !important" },
-                flex: { laptop: "0 0 60%!important", mobile: "0 0 100%!important" }
+                maxWidth: {
+                  mobile: "91% !important",
+                  laptop: "100% !important",
+                },
+                flex: {
+                  laptop: "0 0 60%!important",
+                  mobile: "0 0 100%!important",
+                },
               }}
               isSelected={true}
               onClick={(e) => {
                 UpdatePassword(changePasswordObj)
                   .then(({ bool, message }) => {
                     toast.success(message);
+                    setSelected(e);
                     showDialogModal(true, true, message);
                   })
                   .catch(({ bool, message }) => {
@@ -2646,10 +2677,6 @@ const ChangePasswordComponent = ({
               title={"Submit"}
             />
           </Box>
-
-
-
-
         </Box>
 
         {/* cancel submit buttons  */}
@@ -2666,8 +2693,8 @@ const ChangePasswordComponent = ({
           <Box sx={{ display: "flex", width: "150px" }}>
             <BoxButton
               containerStyle={{
-                width: "100%", height: "35px",
-
+                width: "100%",
+                height: "35px",
               }}
               isSelected={true}
               onClick={(e) => {
@@ -2675,6 +2702,7 @@ const ChangePasswordComponent = ({
                   .then(({ bool, message }) => {
                     toast.success(message);
                     showDialogModal(true, true, message);
+                    setSelected(e);
                   })
                   .catch(({ bool, message }) => {
                     toast.error(message);
@@ -2684,10 +2712,8 @@ const ChangePasswordComponent = ({
               title={"Submit"}
             />
           </Box>
-
         </Box>
       </Box>
-
     </Box>
   );
 };
@@ -2743,8 +2769,7 @@ const LockUnlockComponent = ({
               marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
 
               visibility: "hidden",
-              display: { mobile: "none", laptop: "block" }
-
+              display: { mobile: "none", laptop: "block" },
             }}
           >
             Dummy
@@ -2773,7 +2798,12 @@ const LockUnlockComponent = ({
               />
             </Box>
             <Box
-              sx={{ width: "48%", display: "flex", alignItems: "center", marginLeft: "20px" }}
+              sx={{
+                width: "48%",
+                display: "flex",
+                alignItems: "center",
+                marginLeft: "20px",
+              }}
             >
               <BoxButtonWithSwitch
                 title={"Bet"}
@@ -2853,28 +2883,42 @@ const LockUnlockComponent = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: { mobile: "row-reverse", tablet: "column-reverse", laptop: "column-reverse" },
-          justifyContent: { mobile: "space-between", tablet: "center", laptop: "center" },
+          flexDirection: {
+            mobile: "row-reverse",
+            tablet: "column-reverse",
+            laptop: "column-reverse",
+          },
+          justifyContent: {
+            mobile: "space-between",
+            tablet: "center",
+            laptop: "center",
+          },
           gap: 1,
           alignItems: "center",
-
         }}
       >
-        <Box sx={{
-          display: "flex",
-          width: { mobile: "48%", tablet: "150px", laptop: "150px" }
-        }}
+        <Box
+          sx={{
+            display: "flex",
+            width: { mobile: "48%", tablet: "150px", laptop: "150px" },
+          }}
         >
           <BoxButton
             containerStyle={{
-              maxWidth: "100%!important", height: "44px",
-              flex: { mobile: "0 0 100%", tablet: "0 0 100%", laptop: "0 0 100%" }
+              maxWidth: "100%!important",
+              height: "44px",
+              flex: {
+                mobile: "0 0 100%",
+                tablet: "0 0 100%",
+                laptop: "0 0 100%",
+              },
             }}
             isSelected={true}
             onClick={(e) => {
               UpdateLockUnlock(lockUnlockObj)
                 .then(({ bool, message }) => {
                   toast.success(message);
+                  setSelected(e);
                   showDialogModal(true, true, message);
                 })
                 .catch(({ bool, message }) => {
@@ -2894,11 +2938,15 @@ const LockUnlockComponent = ({
         >
           <BoxButton
             containerStyle={{
-              maxWidth: "100%!important", height: "44px",
+              maxWidth: "100%!important",
+              height: "44px",
               background: "#E32A2A",
               border: "0px",
-              flex: { mobile: "0 0 100%", tablet: "0 0 100%", laptop: "0 0 100%" }
-
+              flex: {
+                mobile: "0 0 100%",
+                tablet: "0 0 100%",
+                laptop: "0 0 100%",
+              },
             }}
             isSelected={true}
             onClick={(e) => {
