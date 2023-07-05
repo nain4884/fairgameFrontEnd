@@ -789,13 +789,31 @@ const DepositComponent = ({
                       showDialogModal(true, true, message);
                     })
                     .catch(({ bool, message }) => {
+                      setElementToUDM({
+                            ...elementToUDM,
+                            profit_loss: prevElement.profit_loss,
+                            percent_profit_loss: prevElement.percent_profit_loss,
+                            balance: prevElement.balance,
+        
+                            available_balance: prevElement.available_balances,
+                          });
                       toast.error(message);
                       setLoading(false);
+                      setSelected(e);
                       showDialogModal(true, false, message);
                     });
                 }
               } catch (e) {
                 console.log(e?.message);
+                setElementToUDM({
+                            ...elementToUDM,
+                            profit_loss: prevElement.profit_loss,
+                            percent_profit_loss: prevElement.percent_profit_loss,
+                            balance: prevElement.balance,
+                            
+                            available_balance: prevElement.available_balances,
+                          });
+                setSelected(e);
                 setLoading(false);
               }
             }}
@@ -1139,15 +1157,37 @@ const DepositComponent = ({
                           updatedUserProfile();
                           setLoading(false);
                           showDialogModal(true, true, message);
+                          setDepositObj(defaultDepositObj);
+                          
+                          setSelected(e);
                         })
                         .catch(({ bool, message }) => {
                           toast.error(message);
+                          setSelected(e);
                           setLoading(false);
                           showDialogModal(true, false, message);
+
+                          setElementToUDM({
+                            ...elementToUDM,
+                            profit_loss: prevElement.profit_loss,
+                            balance: prevElement.balance,
+                            
+                            percent_profit_loss:
+                              prevElement.percent_profit_loss,
+                            available_balance: prevElement.available_balances,
+                          });
                         });
                     }
                   } catch (e) {
                     console.log(e?.message);
+                    setSelected(e);
+                    setElementToUDM({
+                      ...elementToUDM,
+                      profit_loss: prevElement.profit_loss,
+                      balance: prevElement.balance,
+                      percent_profit_loss: prevElement.percent_profit_loss,
+                      available_balance: prevElement.available_balances,
+                    });
                     setLoading(false);
                   }
                 }}
@@ -1167,6 +1207,7 @@ const DepositComponent = ({
                     ...elementToUDM,
                     profit_loss: prevElement.profit_loss,
                     balance: prevElement.balance,
+                    percent_profit_loss: prevElement.percent_profit_loss,
                     available_balance: prevElement.available_balances,
                   });
                   setSelected(e);
@@ -1204,11 +1245,19 @@ const DepositComponent = ({
                         .then(({ bool, message }) => {
                           toast.success(message);
                           getListOfUser();
+                          setSelected(e);
                           updatedUserProfile();
                           setLoading(false);
                           showDialogModal(true, true, message);
                         })
                         .catch(({ bool, message }) => {
+                          setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    available_balance: prevElement.available_balances,
+                  });
+                  setSelected(e);
                           toast.error(message);
                           setLoading(false);
                           showDialogModal(true, false, message);
@@ -1216,6 +1265,13 @@ const DepositComponent = ({
                     }
                   } catch (e) {
                     console.log(e?.message);
+                    setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    available_balance: prevElement.available_balances,
+                  });
+                  setSelected(e);
                     setLoading(false);
                   }
                 }}
@@ -1410,13 +1466,29 @@ const WithDrawComponent = ({
                       showDialogModal(true, true, message);
                     })
                     .catch(({ bool, message }) => {
+                      setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    percent_profit_loss: prevElement.percent_profit_loss,
+                    available_balance: prevElement.available_balance,
+                  });
                       toast.error(message);
+                      setSelected(e);
                       setLoading(false);
                       showDialogModal(true, false, message);
                     });
                 }
               } catch (e) {
+                setSelected(e);
                 setLoading(false);
+                setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    percent_profit_loss: prevElement.percent_profit_loss,
+                    available_balance: prevElement.available_balance,
+                  });
                 console.log(e.message);
               }
             }}
@@ -1745,18 +1817,36 @@ const WithDrawComponent = ({
                           toast.success(message);
                           updatedUserProfile();
                           getListOfUser();
-
+                     
+                          setSelected(e);
                           setLoading(false);
                           showDialogModal(true, true, message);
                         })
                         .catch(({ bool, message }) => {
+                   
                           toast.error(message);
+                          setSelected(e);
+                          setElementToUDM({
+                            ...elementToUDM,
+                            profit_loss: prevElement.profit_loss,
+                            balance: prevElement.balance,
+                            percent_profit_loss: prevElement.percent_profit_loss,
+                            available_balance: prevElement.available_balance,
+                          });
                           setLoading(false);
                           showDialogModal(true, false, message);
                         });
                     }
                   } catch (e) {
+                    setSelected(e);
                     setLoading(false);
+                    setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    percent_profit_loss: prevElement.percent_profit_loss,
+                    available_balance: prevElement.available_balance,
+                  });
                     console.log(e.message);
                   }
                 }}
@@ -1777,6 +1867,7 @@ const WithDrawComponent = ({
                     profit_loss: prevElement.profit_loss,
                     balance: prevElement.balance,
                     available_balance: prevElement.available_balance,
+                    percent_profit_loss: prevElement.percent_profit_loss,
                   });
                   setSelected(e);
                 }}
@@ -1813,17 +1904,33 @@ const WithDrawComponent = ({
                           toast.success(message);
                           updatedUserProfile();
                           getListOfUser();
-
+                          setSelected(e);
                           setLoading(false);
                           showDialogModal(true, true, message);
                         })
                         .catch(({ bool, message }) => {
                           toast.error(message);
+                          setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    available_balance: prevElement.available_balance,
+                    percent_profit_loss: prevElement.percent_profit_loss,
+                  });
+                  setSelected(e);
                           setLoading(false);
                           showDialogModal(true, false, message);
                         });
                     }
                   } catch (e) {
+                    setElementToUDM({
+                    ...elementToUDM,
+                    profit_loss: prevElement.profit_loss,
+                    balance: prevElement.balance,
+                    available_balance: prevElement.available_balance,
+                    percent_profit_loss: prevElement.percent_profit_loss,
+                  });
+                  setSelected(e);
                     setLoading(false);
                     console.log(e.message);
                   }
@@ -1853,6 +1960,7 @@ const WithDrawComponent = ({
                     profit_loss: prevElement.profit_loss,
                     balance: prevElement.balance,
                     available_balance: prevElement.available_balance,
+                    percent_profit_loss: prevElement.percent_profit_loss,
                   });
                   setSelected(e);
                 }}
@@ -1949,13 +2057,12 @@ const NewCreditComponent = ({
               value={newCreditObj.amount}
               onChange={(e) => {
                 console.log(e.target.value, Number(e.target.value), "Numer");
-                const newPerRate=elementToUDM.profit_loss +
-                      elementToUDM.credit_refer -
-                      Number(
-                        isNaN(Number(e.target.value))
-                          ? 0
-                          : Number(e.target.value)
-                      )
+                const newPerRate =
+                  elementToUDM.profit_loss +
+                  elementToUDM.credit_refer -
+                  Number(
+                    isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)
+                  );
                 if (Number(e.target.value) === 0) {
                   setNewCreditObj({
                     ...newCreditObj,
@@ -1964,9 +2071,16 @@ const NewCreditComponent = ({
                   });
                   setElementToUDM({
                     ...elementToUDM,
-                    percent_profit_loss: Number(e.target.value),
+                    percent_profit_loss:
+                      (elementToUDM.profit_loss +
+                        elementToUDM.credit_refer -
+                        Number(e.target.value)) *
+                      (elementToUDM?.rateToCalculatePercentage / 100),
                     credit_refer: Number(e.target.value),
-                    profit_loss: Number(e.target.value),
+                    profit_loss:
+                      elementToUDM.profit_loss +
+                      elementToUDM.credit_refer -
+                      Number(e.target.value),
                   });
                 } else {
                   setNewCreditObj({
@@ -1979,9 +2093,10 @@ const NewCreditComponent = ({
                     credit_refer: isNaN(Number(e.target.value))
                       ? 0
                       : Number(e.target.value),
-                    profit_loss:newPerRate,
-                    percent_profit_loss:newPerRate*(elementToUDM?.rateToCalculatePercentage / 100) ,
-                 
+                    profit_loss: newPerRate,
+                    percent_profit_loss:
+                      newPerRate *
+                      (elementToUDM?.rateToCalculatePercentage / 100),
                   });
                 }
               }}
