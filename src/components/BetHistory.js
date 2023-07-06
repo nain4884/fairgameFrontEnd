@@ -100,7 +100,7 @@ const BetHistory = ({
             <Box
               sx={{
                 height: "30px",
-                margin: { mobile: "1px", laptop: "0.5px" },
+                margin: { mobile: "1px", laptop: "0" },
                 width: "5%",
                 display: "flex",
                 background: "black",
@@ -109,7 +109,7 @@ const BetHistory = ({
               }}
             >
               <Typography
-                sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+                sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "0.7vw"}, color: "white" }}
               >
                 {"No"}
               </Typography>
@@ -130,10 +130,11 @@ const BetHistory = ({
                   justifyContent: "center",
                   alignItems: "center",
                   margin: { mobile: "1px", laptop: "1px" },
+                  my: "0px !important"
                 }}
               >
                 <Typography
-                  sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+                  sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "0.7vw"}, color: "white" }}
                 >
                   {"Profit/Loss"}
                 </Typography>
@@ -177,7 +178,7 @@ const BetHistory = ({
                       <Typography
                         sx={{
                           color: "white",
-                          fontSize: "10px",
+                          fontSize: {mobile: "10px", laptop: "12px"},
                           fontWeight: "500",
                         }}
                       >
@@ -200,7 +201,7 @@ const BetHistory = ({
                     >
                       <Typography
                         sx={{
-                          fontSize: { mobile: "11px", laptop: "14px" },
+                          fontSize: { mobile: "11px", laptop: "12px" },
                           color: "white",
                           fontWeight: "700",
                         }}
@@ -558,7 +559,7 @@ const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) =>
           <Typography
             sx={{
               fontWeight: "700",
-              fontSize: { mobile: "8px", tablet: "10px", laptop: ".5vw" },
+              fontSize: { mobile: "8px", tablet: "10px", laptop: ".7vw" },
               color: "black",
               textAlign: "center",
             }}
@@ -569,7 +570,7 @@ const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) =>
           <Typography
             sx={{
               fontWeight: "700",
-              fontSize: { mobile: "8px", tablet: "10px", laptop: ".5vw" },
+              fontSize: { mobile: "8px", tablet: "10px", laptop: ".6vw" },
               color: "black",
               textAlign: "center",
               maxHeight: "2em",
