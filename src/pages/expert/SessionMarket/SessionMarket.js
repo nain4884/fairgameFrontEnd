@@ -292,7 +292,7 @@ const [visible, setVisible] = useState(true);
                 width: "100%",
                 position: "relative",
                 height: "auto",
-                maxHeight: "200px",
+                maxHeight: "300px",
                 overflowY: "scroll",
               }}
             >
