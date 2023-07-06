@@ -33,9 +33,15 @@ const ProfitLossComponent = ({
   const getBetReport = (id) => {
     // if (!show) {
     // }
-    handleBet(id);
-    setShow(!show);
-    setSelectedId(id);
+    if (selectedId == id) {
+      handleBet(id);
+      setShow(false);
+      setSelectedId("");
+    } else {
+      handleBet(id);
+      setShow(true);
+      setSelectedId(id);
+    }
   };
 
   const RowHeader = ({ item, index }) => {
@@ -389,8 +395,8 @@ const ProfitLossComponent = ({
       })}
       {visible &&
         reportData.map((item, index) => {
-         
-          return <RowComponent key={index} item={item} index={index+1} />;
+
+          return <RowComponent key={index} item={item} index={index + 1} />;
         })}
       {/* {
                 visible && ["", "", "", ""].map((i, k) => {
