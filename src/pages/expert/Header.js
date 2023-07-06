@@ -525,7 +525,7 @@ const CustomHeader = ({ }) => {
                   onClick={() => {
                     dispatch(setSelected(3));
                   }}
-                  title={"MANUAL BOOKMAKER"}
+                  title={"QUICK BOOKMAKER"}
                   boxStyle={{
                     backgroundColor:
                       currentSelected == 3 ? "white" : "transparent",

@@ -64,7 +64,7 @@ import IdleTimer from "../../components/IdleTimer";
 import CustomLoader from "../helper/CustomLoader";
 
 var roleName = "";
-const CustomHeader = ({}) => {
+const CustomHeader = ({ }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -73,7 +73,7 @@ const CustomHeader = ({}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchor, setAnchor] = React.useState(null);
   const [anchor1, setAnchor1] = React.useState(null);
-  const [firstTimeLoader,setFirstTimeLoader] = useState(true);
+  const [firstTimeLoader, setFirstTimeLoader] = useState(true);
   const currentSelected = useSelector(
     (state) => state?.activeAdmin?.activeTabAdmin
   );
@@ -117,8 +117,8 @@ const CustomHeader = ({}) => {
   useEffect(() => {
     setTimeout(() => {
       setFirstTimeLoader(false)
-    },4000)
-  },[])
+    }, 4000)
+  }, [])
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -361,9 +361,9 @@ const CustomHeader = ({}) => {
 
   useEffect(() => {
     handleGetNotification();
-    
-      getUserDetail(nav);
-    
+
+    getUserDetail(nav);
+
   }, []);
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
@@ -490,10 +490,10 @@ const CustomHeader = ({}) => {
   // }, [classes.RenderLogoCompStyleImg, nav, navigate]);
 
   const menutItems1 = [
+    { title: "Profit/Loss", link: `/${nav}/profit_loss` },
     { title: "Account Statement", link: `/${nav}/account_statement` },
     { title: "Current Bet", link: `/${nav}/current_bet` },
     { title: "General Report", link: `/${nav}/general_report` },
-    { title: "Profit/Loss", link: `/${nav}/profit_loss` },
   ];
 
   const menutItems2 = [
@@ -502,29 +502,29 @@ const CustomHeader = ({}) => {
   ];
 
   return (
-    <> 
-       <ModalMUI
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+    <>
+      <ModalMUI
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
 
-            backgroundColor:"white",
-            "& > .MuiBackdrop-root" : {
+          backgroundColor: "white",
+          "& > .MuiBackdrop-root": {
             backdropFilter: "blur(2px)",
-            backgroundColor:"white",
+            backgroundColor: "white",
           }
-    
-          }}
-      
-          open={firstTimeLoader}
-          // onClose={setSelected}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-        
-        <CustomLoader/>
-        </ModalMUI>
+
+        }}
+
+        open={firstTimeLoader}
+        // onClose={setSelected}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+
+        <CustomLoader />
+      </ModalMUI>
       <SessionTimeOut />
       <IdleTimer role="" />
       <AppBar position="fixed" sx={classes.AppBarVal}>
@@ -618,7 +618,8 @@ const CustomHeader = ({}) => {
               </Box>
             )} */}
             <Box sx={classes.BoxCont1sub2}>
-              <SearchInput
+              {/* <SearchInput
+              
                 show={showSearch}
                 setShowSearch={() => {
                   setShowSearch((prev) => !prev);
@@ -626,7 +627,7 @@ const CustomHeader = ({}) => {
                 placeholder={"All Clients..."}
                 header={true}
                 inputContainerStyle={classes.BoxCont1sub2SearchInputContStyle}
-              />
+              /> */}
               <BoxProfile
                 nav={nav}
                 containerStyle={classes.BoxCont1sub2BoxProfileContStyle}

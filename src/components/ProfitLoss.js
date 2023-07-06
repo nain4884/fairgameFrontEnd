@@ -33,9 +33,15 @@ const ProfitLossComponent = ({
   const getBetReport = (id) => {
     // if (!show) {
     // }
-    handleBet(id);
-    setShow(!show);
-    setSelectedId(id);
+    if (selectedId == id) {
+      handleBet(id);
+      setShow(false);
+      setSelectedId("");
+    } else {
+      handleBet(id);
+      setShow(true);
+      setSelectedId(id);
+    }
   };
 
   const RowHeader = ({ item, index }) => {
@@ -125,7 +131,10 @@ const ProfitLossComponent = ({
                 color: "white",
               }}
             >
-              {Number(item?.totalLoss).toFixed(2)}
+                {Number(item.totalLoss) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{Number(item.totalLoss).toFixed(2)}</>
+              : Number(item.totalLoss).toFixed(2)}
+              {/* {Number(item?.totalLoss).toFixed(2)} */}
             </Typography>
             <StyledImage
               src={item?.totalLoss > 0 ? ARROWUP : ARROWDOWN}
@@ -298,7 +307,10 @@ const ProfitLossComponent = ({
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
               >
-                {Number(item.rateProfitLoss).toFixed(2)}
+                {Number(item.rateProfitLoss) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{Number(item.rateProfitLoss).toFixed(2)}</>
+              : Number(item.rateProfitLoss).toFixed(2)}
+                {/* {Number(item.rateProfitLoss).toFixed(2)} */}
               </Typography>
               <StyledImage
                 src={item.rateProfitLoss > 0 ? ARROWUP : ARROWDOWN}
@@ -335,7 +347,10 @@ const ProfitLossComponent = ({
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
               >
-                {Number(item.sessionProfitLoss).toFixed(2)}
+                      {Number(item.sessionProfitLoss) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{Number(item.sessionProfitLoss).toFixed(2)}</>
+              : Number(item.sessionProfitLoss).toFixed(2)}
+                {/* {Number(item.sessionProfitLoss).toFixed(2)} */}
               </Typography>
               <StyledImage
                 src={item.sessionProfitLoss > 0 ? ARROWUP : ARROWDOWN}
@@ -380,8 +395,8 @@ const ProfitLossComponent = ({
       })}
       {visible &&
         reportData.map((item, index) => {
-         
-          return <RowComponent key={index} item={item} index={index+1} />;
+
+          return <RowComponent key={index} item={item} index={index + 1} />;
         })}
       {/* {
                 visible && ["", "", "", ""].map((i, k) => {
