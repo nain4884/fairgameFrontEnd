@@ -187,7 +187,9 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                         fontWeight: "700",
                       }}
                     >
-                      {Number(i.myProfitLoss).toFixed(2)}
+                                {Number(i.myProfitLoss) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{Number(i.myProfitLoss).toFixed(2)}</>
+              : Number(i.myProfitLoss).toFixed(2)}
                     </Typography>
                     <StyledImage
                       sx={{
