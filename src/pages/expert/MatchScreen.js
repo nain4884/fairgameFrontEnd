@@ -525,6 +525,7 @@ const MatchScreen = () => {
             mobile: loading ? "80vh" : "100%",
             laptop: loading ? "90vh" : "100%",
           },
+          minHeight: "92vh",
           // marginTop: "5px",
           background: !loading && "white",
           padding: 1,
@@ -624,9 +625,10 @@ const MatchScreen = () => {
                     flexDirection: "row",
                     flexWrap: "wrap",
                     gap: "1px",
+                    rowGap: "5px",
                     height: "524px",
                     overflow: "scroll",
-                    marginTop: ".25vw",
+                    marginTop: "1.25vw",
                   }}
                 >
                   {data?.map((v) => {

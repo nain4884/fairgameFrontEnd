@@ -210,14 +210,14 @@ const AllBets = ({ tag, submit, allBetRates }) => {
       {visibleImg && (
         <>
           <HeaderRow tag={tag} />
-          <Box className="myScroll" sx={{ maxHeight: submit ? "200px" : "400px", overflowY: "auto" }}>
+          <Box className="myScroll" sx={{ maxHeight: submit ? "200px" : "500px", overflowY: "auto" }}>
             {newData?.length > 0 &&
               newData?.map((i, k) => {
                 const num = newData?.length - k;
                 return (
                   <div style={{ display: "flex", position: "relative" }}>
                     <Box
-                      sx={{
+                      sx={{ 
                         width: "4%",
                         border: "1px solid white",
                         background: "black",
