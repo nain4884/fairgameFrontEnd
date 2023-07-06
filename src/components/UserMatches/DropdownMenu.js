@@ -53,7 +53,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
             }}
           >
             <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px" }}
+              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px",width:"62px" }}
             >
               Amount
             </Typography>
@@ -126,9 +126,17 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
                         fontWeight: "500",
                         fontSize: "12px",
                         color: "white",
+                        width:"40px"
                       }}
                     >
-                      {v?.profit_loss}
+                      {Number(v?.profit_loss) >= 0 ? (
+                        <>
+                          <span style={{ visibility: "hidden" }}>-</span>
+                          {v?.profit_loss}
+                        </>
+                      ) : (
+                        v?.profit_loss
+                      )}
                     </Typography>
                     <StyledImage
                       src={getSVG(v?.profit_loss)}

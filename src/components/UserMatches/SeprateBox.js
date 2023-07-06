@@ -310,6 +310,7 @@ const SeprateBox = ({
         loading: true,
         type: false,
       });
+      setIsPopoverOpen(false);
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
       // dispatch(setAllBetRate(response?.data?.data[0]))

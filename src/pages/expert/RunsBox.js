@@ -186,9 +186,12 @@ const RunsBox = ({ item, setData, currentOdds }) => {
                       fontWeight: "500",
                       fontSize: matchesMobile ? "8px" : "12px",
                       color: "white",
+                      width:"40px"
                     }}
                   >
-                    {v?.profit_loss}
+                   {Number(v?.profit_loss) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{v?.profit_loss}</>
+              : v?.profit_loss}
                   </Typography>
                   <StyledImage
                     src={getSVG(v?.profit_loss)}
