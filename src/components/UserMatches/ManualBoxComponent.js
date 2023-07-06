@@ -6,7 +6,7 @@ import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
 import { BallStart } from "../../assets";
 import { useEffect } from "react";
-
+ 
 const BoxComponent = ({
   name,
   color,
