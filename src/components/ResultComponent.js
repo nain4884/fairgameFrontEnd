@@ -94,7 +94,7 @@ const ResultComponent = ({
             onClick();
           }}
           src={CancelDark}
-          style={{ width: "25px", height: "25px" }}
+          style={{ width: "25px", height: "25px", cursor: "pointer" }}
         />
       </Box>
       <Box sx={{ padding: 0,}}>

@@ -282,10 +282,11 @@ const AccountStatementList = ({ user, visible, selected }) => {
                   laptop: "0px",
                   tablet: "10px",
                 },
+                background: "#F8C851"
               },
-              (theme) => ({
-                backgroundImage: `${theme.palette.primary.headerGradient}`,
-              }),
+              // (theme) => ({
+              //   backgroundImage: `${theme.palette.primary.headerGradient}`,
+              // }),
             ]}
           >
             <ListH getLimitEntries={getLimitEntries} />
@@ -369,7 +370,7 @@ const ListH = ({ getLimitEntries }) => {
       sx={{
         display: "flex",
         flexDirection: {
-          mobile: "column-reverse",
+          mobile: "row",
           laptop: "row",
           tablet: "row",
         },
@@ -381,18 +382,18 @@ const ListH = ({ getLimitEntries }) => {
     >
       <Box display={"flex"} alignItems="center" sx={{ width: "100%" }}>
         <Typography
-          sx={{ fontSize: "10px", color: "white", fontWeight: "500" }}
+          sx={{ fontSize: "10px", color: "black", fontWeight: "500" }}
         >
           Show
         </Typography>
         <SmallDropDown getLimitEntries={getLimitEntries} />
         <Typography
-          sx={{ fontSize: "10px", color: "white", fontWeight: "500" }}
+          sx={{ fontSize: "10px", color: "black", fontWeight: "500" }}
         >
           Entries
         </Typography>
       </Box>
-      <SearchInput show={true} width={"100%"} placeholder={"Search..."} />
+      <SearchInput show={true} width={"100%"} placeholder={"Search..."} inputContainerStyle={{width: {mobile: "50vw", laptop: "17vw"}, marginLeft: "auto"}}/>
     </Box>
   );
 };
