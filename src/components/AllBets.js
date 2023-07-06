@@ -217,7 +217,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 return (
                   <div style={{ display: "flex", position: "relative" }}>
                     <Box
-                      sx={{
+                      sx={{ 
                         width: "4%",
                         border: "1px solid white",
                         background: "black",
