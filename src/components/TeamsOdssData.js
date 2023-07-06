@@ -84,6 +84,7 @@ const TeamsOdssData = ({
                   laptop:
                     title == "Back/Lay" || title == "Yes/No" ? "12px" : "12px",
                 },
+                textAlign: "center",
                 fontWeight:
                   title === "Back/Lay" || title === "Yes/No" ? "600" : "600",
               },

@@ -362,7 +362,7 @@ const AddMatchComp = () => {
                   marginLeft: "0px",
                   marginTop: "0px",
                   position: "absolute",
-                  maxHeight: "400px",
+                  maxHeight: "500px",
                   overflow: "auto",
                 }}
                 dropDownTextStyle={imputStyle}
