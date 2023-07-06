@@ -23,8 +23,7 @@ const BetHistory = ({
   callPage,
   betData,
   betHistory,
-  isArrow
-
+  isArrow,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
@@ -60,7 +59,7 @@ const BetHistory = ({
                 paddingRight: "4px",
                 marginBottom: ".1vh",
                 display: "flex",
-                background: "#F8C851"
+                background: "#F8C851",
               },
               // (theme) => ({
               //   backgroundImage: `${theme.palette.primary.headerGradient}`,
@@ -115,7 +114,7 @@ const BetHistory = ({
               </Typography>
             </Box>
             <RowComponent
-            profit={profit}
+              profit={profit}
               header={true}
               data={["Market", "Favourite", "B/Lay", "Odds", "Stake"]}
             />
@@ -184,7 +183,7 @@ const BetHistory = ({
                         {formattedNum}
                       </Typography>
                     </Box>
-                    <RowComponent   profit={profit} header={false} data={i} />
+                    <RowComponent profit={profit} header={false} data={i} />
                     {/* {profit && k !== - && ( */}
                     <Box
                       sx={{
@@ -205,18 +204,26 @@ const BetHistory = ({
                           fontWeight: "700",
                         }}
                       >
-                        {Number(i.myProfitLoss).toFixed(2)}
+                        {Number(i.myProfitLoss) >= 0 ? (
+                          <>
+                            <span style={{ visibility: "hidden" }}>-</span>
+                            {Number(i.myProfitLoss).toFixed(2)}
+                          </>
+                        ) : (
+                          Number(i.myProfitLoss).toFixed(2)
+                        )}
                       </Typography>
 
-                      {!matchesMobile && !isArrow && <StyledImage
-                        sx={{
-                          width: { mobile: "15px", laptop: "15px" },
-                          height: { laptop: "7px", mobile: "7px" },
-                        }}
-                        src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
-                        // src={k % 2 === 0 ? ARROWDOWN : ARROWUP}
-                      />
-                      }
+                      {!matchesMobile && !isArrow && (
+                        <StyledImage
+                          sx={{
+                            width: { mobile: "15px", laptop: "15px" },
+                            height: { laptop: "7px", mobile: "7px" },
+                          }}
+                          src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                          // src={k % 2 === 0 ? ARROWDOWN : ARROWUP}
+                        />
+                      )}
                     </Box>
                     {/* )} */}
 
@@ -328,7 +335,7 @@ const BetHistory = ({
   );
 };
 
-const RowComponent = ({ header, data ,profit }) => {
+const RowComponent = ({ header, data, profit }) => {
   const getTime = (date) => {
     const now = new Date(date);
     const timeString = now.toLocaleTimeString("en-US", {
@@ -365,14 +372,16 @@ const RowComponent = ({ header, data ,profit }) => {
       {!header && (
         <>
           <SingleBox
-           
             color={getColor}
-            data={data?.marketType =="MANUAL BOOKMAKER" ? "Quick Bookmaker" : data?.marketType}
+            data={
+              data?.marketType == "MANUAL BOOKMAKER"
+                ? "Quick Bookmaker"
+                : data?.marketType
+            }
             first={true}
             header={header}
           />
           <SingleBox
-           
             color={getColor()}
             data={data}
             up={true}
@@ -380,21 +389,18 @@ const RowComponent = ({ header, data ,profit }) => {
             time={getTime(data.createAt)}
           />
           <SingleBox
-         
             color={getColor()}
             data={data?.betType}
             header={header}
             boxWidth="50%"
           />
           <SingleBox
-         
             color={getColor()}
             data={data?.odds}
             header={header}
             boxWidth="50%"
           />
           <SingleBox
-          
             color={getColor()}
             data={data?.amount}
             header={header}
@@ -405,14 +411,12 @@ const RowComponent = ({ header, data ,profit }) => {
       {header && (
         <>
           <SingleBox
-           
             color={getColor}
             data={data[0]}
             header={header}
             boxWidth="100%"
           />
           <SingleBox
-           
             color={getColor()}
             data={data[1]}
             header={header}
@@ -431,7 +435,6 @@ const RowComponent = ({ header, data ,profit }) => {
             header={header}
           />
           <SingleBox
-          
             color={getColor()}
             data={data[4]}
             header={header}
@@ -540,12 +543,21 @@ const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
     </Box>
   );
 };
-const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) => {
+const SingleBox = ({
+  data,
+  header,
+  color,
+  up,
+  first,
+  time,
+  width,
+  boxWidth,
+}) => {
   return !header ? (
     first ? (
       <Box
         sx={{
-          width:  "100%",
+          width: "100%",
           height: "40px",
           background: "#F1C550",
           marginX: { mobile: "1px", laptop: "1px" },
@@ -584,7 +596,7 @@ const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) =>
     ) : up ? (
       <Box
         sx={{
-          width:  "100%",
+          width: "100%",
           height: "40px",
           flexDirection: "column",
           background: color,
