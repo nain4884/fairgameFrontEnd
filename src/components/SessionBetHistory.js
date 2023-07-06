@@ -101,7 +101,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
             }}
           >
             <Typography
-              sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "0.7vw"}, color: "white" }}
+              sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "12px"}, color: "white" }}
             >
               {"Profit/Loss"}
             </Typography>
@@ -109,6 +109,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         )}
       </Box>
       <Box
+        className= "myScroll"
         sx={{
           maxHeight: { mobile: "200px", laptop: "420px" },
           overflowY: "auto",
@@ -181,7 +182,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   >
                     <Typography
                       sx={{
-                        fontSize: { mobile: "9px", laptop: "14px" },
+                        fontSize: { mobile: "9px", laptop: "12px" },
                         color: "white",
                         fontWeight: "700",
                       }}
@@ -435,7 +436,7 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "11px", laptop: "13px" },
+            fontSize: { mobile: "11px", laptop: "12px" },
             color: "black",
             textTransform: "capitalize"
           }}

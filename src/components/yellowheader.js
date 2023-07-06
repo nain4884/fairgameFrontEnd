@@ -65,15 +65,16 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
           borderRadius: "5px",
           width: "100%",
           px: "10px",
-          minHeight: "80px",
+          py: {mobile: "10px", laptop: "0"},
+          minHeight: {mobile: "0", laptop: "80px"},
           background: "#F8C851",
           display: "flex",
-          flexDirection: { mobile: "column", laptop: "row", tablet: "row" },
+          flexDirection: { mobile: "row", laptop: "row", tablet: "row" , alignItems: {mobile: "center", laptop: "flex-end"}},
         }}
       >
         <Box
           sx={{
-            width: "100%",
+            width: {mobile: "67%", laptop: "100%"},
             gap: 1,
             display: "flex",
             flexDirection: { mobile: "row", laptop: "row", tablet: "row" },
@@ -83,7 +84,7 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
             pickerStyles={{ height: "40px" }}
             containerStyle={{
               width: matchesMobile ? "50%" : "19%",
-              height: "40px",
+              height: "auto",
             }}
             title={"From"}
             selectedDate={fromDate}
@@ -93,7 +94,7 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
             pickerStyles={{ height: "40px" }}
             containerStyle={{
               width: matchesMobile ? "50%" : "19%",
-              height: "40px",
+              height: "auto",
             }}
             title={"To"}
             selectedDate={toDate}
@@ -129,9 +130,9 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
               borderRadius: "5px",
               width: "30%",
               marginRight: "0px",
-              marginTop: matchesMobile ? "35px" : 0,
+              marginTop: matchesMobile ? "0" : 0,
               marginLeft: matchesMobile ? "10px" : "20px",
-              marginBottom: matchesMobile ? "15px" : tab ? "28px" : "15px",
+              marginBottom: matchesMobile ? "0" : tab ? "0" : "0",
             }}
             onClick={() => {
               if (fromDate === "" && toDate === "") {
@@ -194,6 +195,7 @@ const Calendar = ({
           fontWeight: "600",
           marginY: ".3vh",
           color: matchesMobile ? "transparent" : "black",
+          display: {mobile: "none", laptop: "block"}
         }}
       >
         {title}
