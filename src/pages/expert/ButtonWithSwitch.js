@@ -101,7 +101,7 @@ const ButtonWithSwitch = ({
             color: notSwitch ?  Number(updateMatchStatus) > 0 ? "#46E080" :"#FF4D4D" : "white",
             fontWeight: notSwitch ? "700" : "500",
             fontSize: "13px",
-            marginLeft: "1vw",
+            marginLeft: "0.3vw",
             lineHeight: "14px",
           }}
         >

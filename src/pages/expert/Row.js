@@ -181,7 +181,7 @@ const Row = ({ index, containerStyle, data }) => {
             <ButtonWithSwitch
               notSwitch={true}
               title={`Match Profit/Loss`}
-              containerStyle={{ width: "14%" }}
+              containerStyle={{ width: "18%" }}
               updateMatchStatus={data?.matchProfitLoss}
             />
           )}
