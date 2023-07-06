@@ -6,7 +6,7 @@ import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
 import { BallStart } from "../../assets";
 import { useEffect } from "react";
-
+ 
 const BoxComponent = ({
   name,
   color,
@@ -189,7 +189,7 @@ const BoxComponent = ({
                 top: 0,
                 zIndex: 10,
                 width: { laptop: "60%", mobile: "40.5%" },
-                justifyContent: { mobile: "flex-end", laptop: "center" },
+                justifyContent: { mobile: "center", laptop: "center" },
                 alignItems: "center",
                 display: "flex",
               }}
