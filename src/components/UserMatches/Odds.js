@@ -543,7 +543,7 @@ const Odds = ({
                                             : false
                                     }
                                     ballStatus={
-                                        matchOddsData?.[0]?.teamA_Ball === "ball" ? true : false
+                                        matchOddsData?.[0]?.teamA_Ball === "ball" || matchOddsData?.[0]?.teamA_suspend == "Ball Started" ? true : false
                                     }
                                     teamImage={newData?.teamA_Image}
                                     newData={newData}
@@ -590,7 +590,7 @@ const Odds = ({
                                             : false
                                     }
                                     ballStatus={
-                                        matchOddsData?.[0]?.teamB_Ball === "ball" ? true : false
+                                        matchOddsData?.[0]?.teamB_Ball === "ball" || matchOddsData?.[0]?.teamB_suspend == "Ball Started" ? true : false
                                     }
                                     color={teamBRates <= 0 ? "#FF4D4D" : "#319E5B"}
                                     name={newData?.teamB}
@@ -635,7 +635,7 @@ const Odds = ({
                                                     : false
                                             }
                                             ballStatus={
-                                                matchOddsData?.[0]?.teamC_Ball === "ball" ? true : false
+                                                matchOddsData?.[0]?.teamC_Ball === "ball" || matchOddsData?.[0]?.teamC_suspend == "Ball Started" ? true : false
                                             }
                                             showBox={showBox}
                                             newData={newData}
