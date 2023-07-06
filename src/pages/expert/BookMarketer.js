@@ -185,6 +185,9 @@ const BookMarketer = ({
               width={"80px"}
               title={"Go Live"}
               color={"#FF4D4D"}
+              customStyle={{
+                justifyContent: "center"
+              }}
             />
           ) : (
             <SmallBox

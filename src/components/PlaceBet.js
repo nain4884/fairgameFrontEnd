@@ -233,7 +233,10 @@ const PlaceBet = ({
               rate={Number(newRates?.loss_amount).toFixed(2)}
               color={"#FF4D4D"}
             />
-            <Box sx={{ width: "5px", marginRight: "20px" }}></Box>
+
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {/* <Box sx={{ width: "5px", marginRight: "20px" }}></Box> */}
             <StyledImage
               onClick={handleClose}
               src={CancelDark}

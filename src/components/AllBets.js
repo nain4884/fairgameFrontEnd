@@ -23,16 +23,16 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#319E5B"
                 : "#F1C550",
               deleted_reason: v?.deleted_reason,
-              width: "12.8%"
+              width: "12%"
             },
             {
-              name: v?.marketType,
+              name: v?.marketType =="MANUAL BOOKMAKER" ? "Quick Bookmaker" : v?.marketType,
               color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
               background: ["no", "yes"].includes(v?.bet_type)
                 ? "#319E5B"
                 : "#F1C550",
               deleted_reason: v?.deleted_reason,
-              width: "19.8%"
+              width: "20%"
             },
             {
               name: v?.team_bet,
@@ -41,7 +41,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               deleted_reason: v?.deleted_reason,
-              width: "11.9%"
+              width: "13%"
 
             },
             {
@@ -74,7 +74,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               deleted_reason: v?.deleted_reason,
-              width: "14.8%"
+              width: "17%"
             },
             {
               name: v?.myStack,
@@ -92,7 +92,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               time: true,
               date: moment(v?.createAt).format("L"),
               deleted_reason: v?.deleted_reason,
-              width: "13%"
+              width: "10%"
             },
           ],
         };
@@ -218,7 +218,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                   <div style={{ display: "flex", position: "relative" }}>
                     <Box
                       sx={{
-                        width: "40px",
+                        width: "4%",
                         border: "1px solid white",
                         background: "black",
                         height: "30px",
@@ -288,164 +288,169 @@ const AllBets = ({ tag, submit, allBetRates }) => {
 };
 const HeaderRow = ({ tag }) => {
   return (
-    <Box sx={{ width: "100%", display: "flex" }}>
-      <Box
-        sx={{
-          width: "40px",
+    <>
+      <Box sx={{ width: "100%", display: "flex" }}>
+        <Box sx={{
+          width: "4%",
           border: "1px solid white",
           background: "rgba(0,0,0)",
           height: "20px",
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          No
-        </Typography>
+        }}>
+
+          <Typography
+            sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+          >
+            No
+          </Typography>
+
+
+        </Box>
+        <Box sx={{ width: "100%", display: "flex" }}>
+          <Box
+            sx={{
+              width: "12%",
+              border: "1px solid white",
+              background: "rgba(0,0,0)",
+              height: "20px",
+              justifyContent: tag ? "flex-start" : "center",
+              paddingLeft: tag ? "5px" : 0,
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            >
+              Username
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: "20%",
+              border: "1px solid white",
+              background: "rgba(0,0,0)",
+              height: "20px",
+              justifyContent: tag ? "flex-start" : "center",
+              paddingLeft: tag ? "5px" : 0,
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            >
+              Market
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: "13%",
+              border: "1px solid white",
+              background: "rgba(0,0,0)",
+              height: "20px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            >
+              Favourite
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: "7%",
+              border: "1px solid white",
+              background: "rgba(0,0,0)",
+              height: "20px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            >
+              Odds
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: "7%",
+              border: "1px solid white",
+              background: "rgba(0,0,0)",
+              height: "20px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            >
+              Type
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: "17%",
+              border: "1px solid white",
+              background: "rgba(0,0,0)",
+              height: "20px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            >
+              Stake
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: "14%",
+              border: "1px solid white",
+              background: "rgba(0,0,0)",
+              height: "20px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            >
+              My Stake
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              width: "10%",
+              border: "1px solid white",
+              borderRight: "0",
+              background: "rgba(0,0,0)",
+              height: "20px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Typography
+              sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
+            >
+              Time
+            </Typography>
+          </Box>
+        </Box>
       </Box>
-      <Box
-        sx={{
-          width: "12%",
-          border: "1px solid white",
-          background: "rgba(0,0,0)",
-          height: "20px",
-          justifyContent: tag ? "flex-start" : "center",
-          paddingLeft: tag ? "5px" : 0,
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          Username
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "19%",
-          border: "1px solid white",
-          background: "rgba(0,0,0)",
-          height: "20px",
-          justifyContent: tag ? "flex-start" : "center",
-          paddingLeft: tag ? "5px" : 0,
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          Market
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "11.4%",
-          border: "1px solid white",
-          background: "rgba(0,0,0)",
-          height: "20px",
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          Favourite
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "6.7%",
-          border: "1px solid white",
-          background: "rgba(0,0,0)",
-          height: "20px",
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          Odds
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "7%",
-          border: "1px solid white",
-          background: "rgba(0,0,0)",
-          height: "20px",
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          Type
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "14.2%",
-          border: "1px solid white",
-          background: "rgba(0,0,0)",
-          height: "20px",
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          Stake
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "13.3%",
-          border: "1px solid white",
-          background: "rgba(0,0,0)",
-          height: "20px",
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          My Stake
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          width: "12.5%",
-          border: "1px solid white",
-          borderRight: "0",
-          background: "rgba(0,0,0)",
-          height: "20px",
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "10px", fontWeight: "500", color: "white" }}
-        >
-          Time
-        </Typography>
-      </Box>
-    </Box>
+    </>
   );
 };
 const SmallBox = ({ item }) => {
@@ -528,6 +533,27 @@ const LargeBox = ({ item, k }) => {
 const Row = ({ values, index }) => {
   return (
     <Box sx={{ width: "100%", display: "flex" }}>
+      {/* <Box
+          sx={{
+            width: "40px",
+            border: "1px solid white",
+            background: "black",
+            height: "30px",
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: !tag ? "10px" : "13px",
+              fontWeight: tag ? "bold" : "600",
+              color: "white",
+            }}
+          >
+            {num < 10 ? "0" + num : num.toString()}
+          </Typography>
+        </Box> */}
       {values?.map((item, k) => {
         if (!item?.small) {
           return <LargeBox k={k} item={item} />;
