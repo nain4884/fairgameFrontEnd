@@ -434,11 +434,11 @@ const ButtonHead = ({
   );
 };
 const menutItems1 = [
+  { title: "Profit/Loss", link: "/admin/profit_loss" },
   { title: "Account Statement", link: "/admin/account_statement" },
   { title: "Current Bet", link: "/admin/current_bet" },
   { title: "General Report", link: "/admin/general_report" },
   // { title: "Game Report", link: "/admin/game_report" },
-  { title: "Profit/Loss", link: "/admin/profit_loss" },
 ];
 const DropdownMenu1 = ({ anchorEl, open, handleClose }) => {
   const navigate = useNavigate();
@@ -698,9 +698,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
         marginTop: "2px",
       }}
     >
-      {menutItems.map((x,idx) => (
+      {menutItems.map((x, idx) => (
         <MenuItem
-         key={idx}
+          key={idx}
           dense={true}
           sx={{
             fontSize: { laptop: "12px", mobile: "10px" },
