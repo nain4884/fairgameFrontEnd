@@ -189,7 +189,7 @@ const BoxComponent = ({
                 top: 0,
                 zIndex: 10,
                 width: { laptop: "60%", mobile: "40.5%" },
-                justifyContent: { mobile: "flex-end", laptop: "center" },
+                justifyContent: { mobile: "center", laptop: "center" },
                 alignItems: "center",
                 display: "flex",
               }}
