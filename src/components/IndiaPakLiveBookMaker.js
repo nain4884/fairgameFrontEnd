@@ -1695,7 +1695,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <img src={BallStart} style={{ width: '90px', height: '27px' }} />
                             </Box> :
                                 <>
-                                    {/* {!teamBall?.isABall ?  */}
+                                    {/* {!teamBall?.isABall ?  */} 
                                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                                         {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
                                             {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
