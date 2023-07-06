@@ -488,11 +488,13 @@ export default function UserDetailModal({
                   // ) {
                   UserDelete(userModal.id)
                     .then(({ bool, message }) => {
+                      toast.success(message);
                       setDeleteModal(false);
                       getListOfUser();
                       showDialogModal(true, true, message);
                     })
                     .catch(({ bool, message }) => {
+                      toast.error(message);
                       setDeleteModal(false);
                       showDialogModal(true, false, message);
                     });
@@ -536,11 +538,13 @@ export default function UserDetailModal({
                 onClick={(e) => {
                   UserDelete(userModal.id)
                     .then(({ bool, message }) => {
+                      toast.success(message);
                       getListOfUser();
                       setConfirmDeleteModal(false);
                       showDialogModal(true, true, message);
                     })
                     .catch(({ bool, message }) => {
+                      toast.error(message);
                       setConfirmDeleteModal(false);
                       showDialogModal(true, false, message);
                     });

@@ -88,7 +88,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
               marginLeft: "7px",
             }}
           >
-            {typeOfBet}
+            {typeOfBet==="MANUAL BOOKMAKER" ? "QUICK BOOKMAKER":typeOfBet}
           </Typography>
           {/* {!submit && <img onClick={() => {
             setShowUnlock(true)

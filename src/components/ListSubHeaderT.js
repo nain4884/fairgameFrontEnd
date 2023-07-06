@@ -110,7 +110,10 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {data?.profitsum}
+          {/* {data?.profitsum} */}
+          {Number(data?.profitsum) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{data?.profitsum}</>
+              : data?.profitsum}
         </Typography>
         <StyledImage
           src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"
@@ -138,7 +141,10 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {data?.percent_profit_loss}
+          {/* {data?.percent_profit_loss} */}
+          {Number(data?.percent_profit_loss) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{data?.percent_profit_loss}</>
+              : data?.percent_profit_loss}
         </Typography>
         <StyledImage
           src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg"

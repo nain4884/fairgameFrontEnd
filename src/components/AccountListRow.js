@@ -286,7 +286,9 @@ const AccountListRow = ({
           <Typography
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
-            {elementToUDM.profit_loss}
+            {Number(elementToUDM.profit_loss) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{elementToUDM.profit_loss}</>
+              : elementToUDM.profit_loss}
           </Typography>
           <StyledImage
             src={
@@ -317,7 +319,10 @@ const AccountListRow = ({
           <Typography
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
-            {elementToUDM.percent_profit_loss}
+             {Number(elementToUDM.percent_profit_loss) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{elementToUDM.percent_profit_loss}</>
+              : elementToUDM.percent_profit_loss}
+         
           </Typography>
           <StyledImage
             src={
@@ -540,7 +545,10 @@ const AccountListRow = ({
                             fTextStyle,
                           ]}
                         >
-                          {":"} {elementToUDM?.matchComission ? elementToUDM?.matchComission : 0 }
+                          {":"}{" "}
+                          {elementToUDM?.matchComission
+                            ? elementToUDM?.matchComission
+                            : 0}
                         </Typography>
                       </>
                     ) : (
@@ -622,7 +630,9 @@ const AccountListRow = ({
                         fTextStyle,
                       ]}
                     >
-                      {elementToUDM?.sessionComisssion ? elementToUDM?.sessionComisssion : 0}
+                      {elementToUDM?.sessionComisssion
+                        ? elementToUDM?.sessionComisssion
+                        : 0}
                     </Typography>
                   </Box>
                 </Box>

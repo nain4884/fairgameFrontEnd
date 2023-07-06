@@ -618,7 +618,8 @@ const CustomHeader = ({}) => {
               </Box>
             )} */}
             <Box sx={classes.BoxCont1sub2}>
-              <SearchInput
+              {/* <SearchInput
+              
                 show={showSearch}
                 setShowSearch={() => {
                   setShowSearch((prev) => !prev);
@@ -626,7 +627,7 @@ const CustomHeader = ({}) => {
                 placeholder={"All Clients..."}
                 header={true}
                 inputContainerStyle={classes.BoxCont1sub2SearchInputContStyle}
-              />
+              /> */}
               <BoxProfile
                 nav={nav}
                 containerStyle={classes.BoxCont1sub2BoxProfileContStyle}
