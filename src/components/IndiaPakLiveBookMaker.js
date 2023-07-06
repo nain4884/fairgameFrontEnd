@@ -1603,14 +1603,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamC}</Typography>
                                 <Box
                                     sx={{
-                                        width: "80px",
+                                        width: "230px",
                                         marginRight: "15px",
                                         border: "1px solid #2626264D",
                                         borderRadius: "5px",
                                         justifyContent: "center",
                                         alignItems: "center",
                                         display: "flex",
-                                        height: "25px",
+                                        height: "55px",
                                         background: "#F6F6F6",
                                         borderRadius: "7px",
                                         zIndex: 100,
@@ -1623,6 +1623,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <Box sx={{ display: "flex", width: '30%', borderTop: "2px solid white" }}>
                                     <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus']} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
                                         <TextField
+                                            className="InputChild"
                                             variant="standard"
                                             value={teamCRate}
                                             onChange={(e) => handleChange(e)}
@@ -1634,7 +1635,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             InputProps={{
                                                 disableUnderline: true,
                                                 sx: {
-                                                    height: '45px', width: '98%',
+                                                    height: '55px', width: '98%',
                                                     background: '#F6F6F6',
                                                     alignSelf: 'flex-end',
                                                     textAlign: 'center',
@@ -1648,13 +1649,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         />
                                     </KeyboardEventHandler>
                                     <TextField
+                                        className="InputChild"
                                         variant="standard"
                                         disabled
                                         value={teamCLayValue}
                                         InputProps={{
                                             disableUnderline: true,
                                             sx: {
-                                                height: '45px', width: '97%',
+                                                height: '55px', width: '97%',
                                                 background: '#F6F6F6',
                                                 // border: '1px solid #2626264D',
                                                 // borderRadius: '4px',
@@ -1690,10 +1692,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     color: "#fff"
                                 }}
                             >
-                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                                <img src={BallStart} style={{ width: '90px', height: '27px' }} />
                             </Box> :
                                 <>
-                                    {/* {!teamBall?.isABall ?  */}
+                                    {/* {!teamBall?.isABall ?  */} 
                                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                                         {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
                                             {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
@@ -1761,17 +1763,17 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         <>
                                             {/* {!teamBall?.isCBall ?  */}
                                             <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                                                {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "56px", justifyContent: "center", alignItems: "center" }}>
                                                     {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}
                                                     {!isTeamBackUnlock ?
-                                                        <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                        <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamBackUnlock ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                                 </Box> :
-                                                    <Box sx={{ background: isTeamCSuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
+                                                    <Box sx={{ background: isTeamCSuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "56px", justifyContent: "center", alignItems: "center" }}>
                                                         {!isTeamCSuspend ?
-                                                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                            <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                                     </Box>}
-                                                <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                                    {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCLayValue}</Typography> :
+                                                <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "56px", justifyContent: "center", alignItems: "center" }}>
+                                                    {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>{isTeamCSuspend ? 0 : teamCLayValue}</Typography> :
                                                         <img src={Lock} style={{ width: "10px", height: "15px" }} />}
                                                 </Box>
                                             </Box>
