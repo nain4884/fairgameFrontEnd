@@ -8,6 +8,7 @@ import Modal from "../../components/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { setDailogData } from "../../store/dailogModal";
 import { SocketContext } from "../../context/socketContext";
+import Back from '../../expert/assets/back.png'
 
 export default function Live() {
     const childRef = useRef(null);
@@ -63,9 +64,8 @@ export default function Live() {
         }
     };
     return (
-        <Background>
-            {/* <Header /> */}
-            <Box display="flex">
+        <Box sx={{ minHeight: "100vh", padding: '0%', width: "100%", backgroundImage: `url(${Back})`, backgroundRepeat: "no-repeat", backgroundSize: "100% 100%" }}>
+         <Box display="flex">
                 <Box flex={1} sx={{ margin: "10px" }}>
                     <IndiaPakLive createSession={location?.state?.createSession} match={location?.state?.match} showDialogModal={showDialogModal} sessionEvent={location?.state?.sessionEvent} proLoss1={proLoss1} setCheckBetId={setCheckBetId} ref={childRef} />
                     <SessionResult createSession={location?.state?.createSession} showDialogModal={showDialogModal} betId={betId} handleSession={handleSession} sessionEvent={location?.state?.sessionEvent} />
@@ -73,9 +73,9 @@ export default function Live() {
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
                     {/* {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />} */}
                     {checkBetId && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />}
-                </Box>
+                </Box> 
             </Box>
             <DailogModal />
-        </Background>
+        </Box>
     )
 }

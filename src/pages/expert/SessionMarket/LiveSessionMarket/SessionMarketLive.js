@@ -57,7 +57,7 @@ const SessionMarketLive = ({
         display: "flex",
         backgroundColor: "white",
         flexDirection: "column",
-        marginY: { laptop: ".5vh" },
+        marginY: { laptop: "2px" },
         width: "100%",
         alignSelf: {
           mobile: "center",
