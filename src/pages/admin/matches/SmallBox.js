@@ -8,7 +8,7 @@ const SmallBox = ({ color, valueA, valueB }) => {
         <Box sx={{ marginLeft: { mobile: "0", laptop: "12px", tablet: "12px" }, display: "flex", gap: "4px", }}>
             <Box
                 sx={{
-                    width: { laptop: "3.68vw", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "3.68vw", mobile: "12.7vw", tablet: "70px" },
                     // position: "absolute",
                     flexDirection: "column",
                     paddingX: "5px",
@@ -26,7 +26,7 @@ const SmallBox = ({ color, valueA, valueB }) => {
             </Box>
             <Box
                 sx={{
-                    width: { laptop: "3.7vw", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "3.7vw", mobile: "12.7vw", tablet: "70px" },
                     // position: "absolute",
                     paddingX: "5px",
                     display: "flex",
