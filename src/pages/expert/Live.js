@@ -73,7 +73,7 @@ export default function Live() {
                 <Box sx={{ margin: "10px", flex: 1, marginLeft: "0px" }}>
                     {/* {location?.state?.sessionEvent && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />} */}
                     {checkBetId && <BetLive createSession={location?.state?.createSession} sessionEvent={location?.state?.sessionEvent} showDialogModal={showDialogModal} betData={sessionAllBet} />}
-                </Box>
+                </Box> 
             </Box>
             <DailogModal />
         </Box>
