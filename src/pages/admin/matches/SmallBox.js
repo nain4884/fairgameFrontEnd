@@ -8,7 +8,7 @@ const SmallBox = ({ color, valueA, valueB }) => {
         <Box sx={{ marginLeft: { mobile: "0", laptop: "12px", tablet: "12px" }, display: "flex", gap: "4px", }}>
             <Box
                 sx={{
-                    width: { laptop: "3.68vw", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "3.68vw", mobile: "12.7vw", tablet: "70px" },
                     // position: "absolute",
                     flexDirection: "column",
                     paddingX: "5px",
@@ -20,13 +20,13 @@ const SmallBox = ({ color, valueA, valueB }) => {
                     background: "white",
                     borderRadius: "3px",
                 }}
-            >
+            > 
                 <Typography sx={{ color: "#FF4D4D", fontSize: "8px", fontWeight: "bold", }} > Book </Typography>
                 <Typography sx={{ fontSize: "14px", lineHeight: 1, fontWeight: "bold", color: valueA < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueA < 0 ? ` ${valueA}` : `${valueA}`} </Typography>
             </Box>
             <Box
                 sx={{
-                    width: { laptop: "3.7vw", mobile: "50px", tablet: "70px" },
+                    width: { laptop: "3.7vw", mobile: "12.7vw", tablet: "70px" },
                     // position: "absolute",
                     paddingX: "5px",
                     display: "flex",

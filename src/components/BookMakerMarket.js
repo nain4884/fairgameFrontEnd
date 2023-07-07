@@ -13,11 +13,13 @@ export default function BetMakerMarketComponent({ add, match }) {
     }, [bookMakerBetRates]);
 
     return (
-        <Box sx={{ flex: 1, background: "white", borderRadius: "5px", minHeight: "640px", border: "2px solid white" }}>
-            <Box sx={[{ height: "45px", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px" }, (theme) => ({
-                backgroundImage: `${theme.palette.primary.headerGradient}`
-            })]}>
-                <Typography sx={{ color: "white", fontSize: "25px", fontWeight: "600" }}>Bookmaker Bets</Typography>
+        <Box sx={{ flex: 1, background: "white", borderRadius: "5px", minHeight: "75vh", border: "2px solid white", }}>
+            <Box sx={[{ height: "42px", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px", backgroundColor:"#F8C851"  }, 
+            // (theme) => ({
+            //     backgroundImage: `${theme.palette.primary.headerGradient}`
+            // })
+            ]}>
+                <Typography sx={{ color: "#000000", fontSize: "20px", fontWeight: "600" }}>Bookmaker Bets</Typography>
                 <Box sx={{ height: "35px", width: "100px", background: "white", borderRadius: "5px", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
                     <Typography sx={{ color: "red", fontWeight: "700", fontSize: "14px" }}>All Bets</Typography>
                     <Typography sx={{ color: "#0B4F26", fontWeight: "700", marginTop: "-5px" }}>{betData?.length}</Typography>
@@ -26,6 +28,11 @@ export default function BetMakerMarketComponent({ add, match }) {
             </Box>
             <Box sx={{ flex: 1, justifyContent: "space-between", display: "flex", flexDirection: "column" }}>
                 <Header />
+                <Box 
+                    className="myScroll"
+                sx={{
+                     maxHeight: "75vh", overflow: "hidden", overflowY: "auto"
+                }}>
                 {betData?.length > 0 &&
                     betData?.map((i, k) => {
                         const num = betData?.length - k
@@ -48,6 +55,7 @@ export default function BetMakerMarketComponent({ add, match }) {
                     <Row index={12} />
                     <Row yes={true} index={13} />
                 </>} */}
+                </Box>
             </Box>
         </Box>
     )
@@ -100,7 +108,7 @@ const Row = ({ index, values }) => {
     return (
         <Box sx={{ display: "flex", height: "40px", borderTop: "2px solid white" }}>
             <Box sx={{ background: "black", width: "6%", px: "5px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Typography sx={{ color: "white", fontWeight: "600", fontSize: "14px", }}>{index < 100 ? "0" +index: + index}</Typography>
+                <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px", }}>{index < 100 ? "0" +index: + index}</Typography>  
             </Box>
             <Box sx={{ background: "#0B4F26", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "white", }}>{values?.user?.userName || values?.userName}</Typography>
