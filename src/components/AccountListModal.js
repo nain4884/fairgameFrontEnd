@@ -28,6 +28,7 @@ import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
 import { useTheme } from "@emotion/react";
+import CustomLoader from "./helper/CustomLoader";
 
 const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
   const dispatch = useDispatch();
@@ -45,6 +46,8 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const { subCurrentPageNo } = useSelector((state) => state?.auth);
+  const [loader, setLoader]=useState(false)
+  const [loader1, setLoader1]=useState(false)
   const [sumValue, setSumVal] = useState({
     creditsum: 0.0,
     profitsum: 0.0,
@@ -57,6 +60,7 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
   });
 
   useEffect(() => {
+    setLoader(true);
     getListOfUser();
   }, [currentPage]);
 
@@ -81,7 +85,13 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
           pageLimit
         )
       );
+      setTimeout(() => {
+        setLoader(false)
+      },1000)
     } catch (e) {
+      setTimeout(() => {
+        setLoader(false)
+      },1000)
       console.log(e);
     }
     // /fair-game-wallet/getLogUserAggregateData
@@ -104,12 +114,20 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
         exposurelimit: "",
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
+      setTimeout(() => {
+        setLoader1(false)
+      },1000)
     } catch (e) {
       console.log(e);
+      setTimeout(() => {
+        setLoader1(false)
+      },1000)
     }
   };
   useEffect(() => {
+    setLoader1(true)
     getUerLogged();
+
   }, []);
 
   function callPage(val) {
@@ -128,12 +146,13 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
 
   return (
     <>
-      <Box
+   
+   <Box
         sx={[
           {
             marginX: "0.5%",
             width: { mobile: "96%", laptop: "85%", tablet: "96%" },
-            minHeight: "200px",
+            minHeight: loader && loader1 ? "20%":"200px",
             borderRadius: "10px",
             borderBottomRightRadius: "0px",
             borderBottomLeftRadius: "0px",
@@ -146,6 +165,7 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
           // }),
         ]}
       >
+      {loader && loader1 ? <CustomLoader/> : <>
         <Box sx={{ display: "flex", justifyContent: "space-between", height: "50px" }}>
           <ListH
             id={id}
@@ -213,6 +233,8 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
           pages={pageCount}
           callPage={callPage}
         />
+   </>
+   }
       </Box>
     </>
   );

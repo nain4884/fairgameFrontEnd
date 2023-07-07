@@ -114,7 +114,8 @@ const ProfitLossComponent = ({
             paddingLeft: "10px",
           }}
         >
-          <Typography
+         <Box  sx={{ display: "flex", alignItems: "center" ,justifyContent:"space-between" ,width:"100%"}}>
+         <Typography
             sx={{
               fontSize: { laptop: "16px", mobile: "12px" },
               fontWeight: "700",
@@ -123,7 +124,15 @@ const ProfitLossComponent = ({
           >
             {item?.totalLoss > 0 ? "Profit" : "Loss"}
           </Typography>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <StyledImage
+              src={item?.totalLoss > 0 ? ARROWUP : ARROWDOWN}
+              sx={{
+                width: { laptop: "25px", mobile: "15px" },
+                height: { laptop: "12px", mobile: "8px" },
+              }}
+            />
+         </Box>
+          <Box sx={{ display: "flex", alignItems: "center" ,justifyContent:"space-between" ,width:"100%"}}>
             <Typography
               sx={{
                 fontSize: { laptop: "16px", mobile: "12px" },
@@ -136,13 +145,7 @@ const ProfitLossComponent = ({
               : Number(item.totalLoss).toFixed(2)}
               {/* {Number(item?.totalLoss).toFixed(2)} */}
             </Typography>
-            <StyledImage
-              src={item?.totalLoss > 0 ? ARROWUP : ARROWDOWN}
-              sx={{
-                width: { laptop: "25px", mobile: "15px" },
-                height: { laptop: "12px", mobile: "8px" },
-              }}
-            />
+           
           </Box>
         </Box>
         <Box
@@ -294,6 +297,7 @@ const ProfitLossComponent = ({
               paddingLeft: "10px",
             }}
           >
+            <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center",width:"100%"}}>
             <Typography
               sx={{
                 fontSize: { laptop: "12px", mobile: "8px" },
@@ -303,6 +307,14 @@ const ProfitLossComponent = ({
             >
               Rate Profit/Loss
             </Typography>
+            <StyledImage
+                src={item.rateProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                sx={{
+                  width: { laptop: "25px", mobile: "15px" },
+                  height: { laptop: "12px", mobile: "8px" },
+                }}
+              />
+            </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
@@ -312,13 +324,7 @@ const ProfitLossComponent = ({
               : Number(item.rateProfitLoss).toFixed(2)}
                 {/* {Number(item.rateProfitLoss).toFixed(2)} */}
               </Typography>
-              <StyledImage
-                src={item.rateProfitLoss > 0 ? ARROWUP : ARROWDOWN}
-                sx={{
-                  width: { laptop: "25px", mobile: "15px" },
-                  height: { laptop: "12px", mobile: "8px" },
-                }}
-              />
+             
             </Box>
           </Box>
           <Box
@@ -334,6 +340,7 @@ const ProfitLossComponent = ({
               paddingLeft: "10px",
             }}
           >
+          <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center",width:"100%"}}>
             <Typography
               sx={{
                 fontSize: { laptop: "12px", mobile: "8px" },
@@ -343,6 +350,14 @@ const ProfitLossComponent = ({
             >
               Session Profit/Loss
             </Typography>
+            <StyledImage
+                src={item.sessionProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                sx={{
+                  width: { laptop: "25px", mobile: "15px" },
+                  height: { laptop: "12px", mobile: "8px" },
+                }}
+              />
+            </Box>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
@@ -352,13 +367,7 @@ const ProfitLossComponent = ({
               : Number(item.sessionProfitLoss).toFixed(2)}
                 {/* {Number(item.sessionProfitLoss).toFixed(2)} */}
               </Typography>
-              <StyledImage
-                src={item.sessionProfitLoss > 0 ? ARROWUP : ARROWDOWN}
-                sx={{
-                  width: { laptop: "25px", mobile: "15px" },
-                  height: { laptop: "12px", mobile: "8px" },
-                }}
-              />
+              
             </Box>
           </Box>
         </Box>

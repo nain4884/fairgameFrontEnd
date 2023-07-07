@@ -257,7 +257,7 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
       {visible && (
         <>
           <HeaderRow mode={mode} tag={tag} />
-          <div style={{ maxHeight: "80vh", overflowY: "auto" }}>
+          <div className="myScroll" style={{ maxHeight: "80vh", overflowY: "auto" }}>
             {newData?.map((i, k) => {
               const num = newData.length - k;
               const formattedNum = num < 10 ? "0" + num : num.toString();

@@ -70,8 +70,9 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         <Box
           sx={{
             margin: { mobile: "1px", laptop: "0.5px" },
+            my: "0px !important" ,
             height: "30px",
-            width: "30px",
+            width: "5%",
             display: "flex",
             background: "black",
             justifyContent: "center",
@@ -86,18 +87,19 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         </Box>
         <RowComponent
           header={true}
-          data={["Matched Bet", "Odds", "Yes/No", "Stake"]}
+          data={["Username","Matched Bet", "Odds", "Yes/No", "Stake"]}
         />
         {profit && (
           <Box
             sx={{
               height: "30px",
-              width: "30%",
+              width: "15%",
               display: "flex",
               background: "black",
               justifyContent: "center",
               alignItems: "center",
-              margin: { mobile: "1px", laptop: "1px" },
+              margin: { mobile: "1px", laptop: "0.5px" },
+              my: 0
             }}
           >
             <Typography
@@ -134,7 +136,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   sx={{
                     height: "40px",
                     margin: { mobile: "1px", laptop: "1px" },
-                    width: "30px",
+                    width: "5%",
                     display: "flex",
                     background: "black",
                     justifyContent: "center",
@@ -171,13 +173,14 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   <Box
                     sx={{
                       height: "40px",
-                      width: "30%",
+                      width: "15%",
                       margin: { mobile: "1px", laptop: "1px" },
                       display: "flex",
                       background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
                       // background: k % 2 == 0 ? "#E32A2A" : "#10DC61",
-                      justifyContent: "center",
+                      justifyContent: "space-between",
                       alignItems: "center",
+                      paddingX:"10px",
                     }}
                   >
                     <Typography
@@ -282,7 +285,7 @@ const RowComponent = ({ header, data }) => {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: "80%",
         height: header ? "30px" : "42px",
         background: "white",
         justifyContent: "space-between",
@@ -292,6 +295,13 @@ const RowComponent = ({ header, data }) => {
     >
       {!header && (
         <>
+        <SingleBox
+            color={getColor()}
+            data={data?.username}
+            first={true}
+            header={header}
+        
+          />
           <SingleBox
             color={getColor}
             data={data?.marketType}
@@ -320,15 +330,21 @@ const RowComponent = ({ header, data }) => {
       )}
       {header && (
         <>
-          <SingleBox
+        <SingleBox
             color={getColor}
             data={data[0]}
             first={true}
             header={header}
           />
-          <SingleBox color={getColor()} data={data[1]} header={header} />
+          <SingleBox
+            color={getColor}
+            data={data[1]}
+            first={true}
+            header={header}
+          />
           <SingleBox color={getColor()} data={data[2]} header={header} />
           <SingleBox color={getColor()} data={data[3]} header={header} />
+          <SingleBox color={getColor()} data={data[4]} header={header} />
         </>
       )}
     </Box>
@@ -349,7 +365,7 @@ const SingleBox = ({
     first ? (
       <Box
         sx={{
-          width: "140%",
+          width: "20%",
           height: "40px",
           flexDirection: "column",
           background: "#F8C851",
@@ -387,7 +403,7 @@ const SingleBox = ({
     ) : up ? (
       <Box
         sx={{
-          width: "100%",
+          width: "20%",
           height: "40px",
           flexDirection: "column",
           background: color,
@@ -423,7 +439,7 @@ const SingleBox = ({
     ) : (
       <Box
         sx={{
-          width: "100%",
+          width: "20%",
           height: "40px",
           background: color,
           marginX: { mobile: "1px", laptop: "1px" },
@@ -461,7 +477,7 @@ const SingleBox = ({
   ) : header && first ? (
     <Box
       sx={{
-        width: "140%",
+        width: "20%",
         height: "30px",
         background: "#319E5B",
         marginX: { mobile: "1px", laptop: "1px" },
@@ -484,7 +500,7 @@ const SingleBox = ({
   ) : (
     <Box
       sx={{
-        width: "100%",
+        width: "20%",
         height: "30px",
         background: "black",
         marginX: { mobile: "1px", laptop: "1px" },

@@ -268,7 +268,10 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.balance}
+            {/* {elementToUDM.balance} */}
+            {Number(elementToUDM.balance) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{Number(elementToUDM.balance)}</>
+              : Number(elementToUDM.balance)}
           </Typography>
         </Box>
         <Box
@@ -276,6 +279,7 @@ const AccountListRow = ({
             width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "26.5vw" },
             display: "flex",
             paddingX: "10px",
+            justifyContent: "space-between",
             background:
               Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
@@ -309,6 +313,7 @@ const AccountListRow = ({
             width: { laptop: "11.5vw", tablet: "11.5vw", mobile: "26.5vw" },
             display: "flex",
             paddingX: "10px",
+            justifyContent: "space-between",
             background:
               Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
@@ -388,9 +393,12 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM?.available_balance
+            {/* {elementToUDM?.available_balance
               ? elementToUDM?.available_balance.toFixed(2)
-              : "00"}
+              : "00"} */}
+                {Number(elementToUDM.available_balance) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{Number(elementToUDM.available_balance)}</>
+              : Number(elementToUDM.available_balance)}
             {console.log(elementToUDM, "elementToUDM")}
             {/* Math.abs(bookRatio).toFixed(2) */}
           </Typography>
@@ -829,6 +837,7 @@ const AccountListRow = ({
           }}
         >
           <CommissionReportTable
+             title={element.userName}
             id={showCommissionReport?.id}
             show={showCommissionReport?.value}
             setShow={setShowCommissionReport}

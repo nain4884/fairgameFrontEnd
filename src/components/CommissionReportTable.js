@@ -10,11 +10,13 @@ import SearchInputModal from "./SearchInputModal";
 
 import { useTheme } from "@emotion/react";
 import moment from "moment";
+import CustomLoader from "./helper/CustomLoader";
 
 const CommissionReportTable = ({ id, show, setShow, title }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
+  const [loader,setLoader]=useState(false)
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [data1, setData] = useState([]);
@@ -25,7 +27,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       const { data } = await axios.get(
         `/game-match/getCommisionReport/${id}?&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
-
+     
       // data?.data?.data.map((element) => {
       //   let roleDetail = roles.find(findThisRole);
       //   function findThisRole(role) {
@@ -41,7 +43,13 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             pageLimit
         )
       );
+    setTimeout(( )=>{
+      setLoader(false)
+    },1000)
     } catch (e) {
+      setTimeout(( )=>{
+        setLoader(false)
+      },1000)
       console.log(e);
     }
   }
@@ -52,6 +60,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
   const { subCurrentPageNo } = useSelector((state) => state?.auth);
 
   useEffect(() => {
+    setLoader(true)
     getListOfUser();
   }, [currentPage]);
 
@@ -505,7 +514,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           {
             width: { mobile: "96%", laptop: "85%", tablet: "96%" },
             // marginX: "0.5%",
-            minHeight: "200px",
+            minHeight:loader?"50%" : "200px",
             display: "flex",
             flexDirection: "column",
             // justifyContent: "space-between",
@@ -520,9 +529,10 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           }),
         ]}
       >
-        <Box sx={{ marginX: "0", background: "#F8C851", height: "50px" }}>
+      {loader ? <CustomLoader/> : <> <Box sx={{ marginX: "0", background: "#F8C851", height: "50px" }}>
           <ListH
             id={id}
+            userName={title}
             title={"Commission Report"}
             setData={setData}
             setShow={setShow}
@@ -587,7 +597,8 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           currentPage={currentPage}
           pages={pageCount}
           callPage={callPage}
-        />
+        /></>}
+       
       </Box>
     </>
   );
@@ -693,7 +704,7 @@ const Footer = ({ currentPage, getListOfUser, pages, callPage, setShow }) => {
   );
 };
 
-const ListH = ({ id, title, setData, matchesMobile, setShow }) => {
+const ListH = ({ id, title, setData, matchesMobile, setShow ,userName}) => {
   return (
     <Box
       display={"flex"}
@@ -711,11 +722,11 @@ const ListH = ({ id, title, setData, matchesMobile, setShow }) => {
             fontSize: { mobile: "14px", laptop: "18px", tablet: "18px" },
             fontWeight: "500",
             color: "#000",
+            textTransform:"capitalize",
             marginRight: { mobile: "10px", laptop: "20px", tablet: "20px" },
           }}
         >
-          {title}
-        </Typography>
+          {userName ? `${userName} -` :""}  ({title})        </Typography>
         {/* 
           {matchesMobile && (
             <Box sx={{ display: "flex", marginTop: "5px" }}>
@@ -801,6 +812,7 @@ const ListH = ({ id, title, setData, matchesMobile, setShow }) => {
           </>
         )} */}
       </Box>
+   
       <Button
         sx={{ color: "", fontSize: "30px" }}
         onClick={() => {

@@ -116,7 +116,7 @@ const BetHistory = ({
             <RowComponent
               profit={profit}
               header={true}
-              data={["Market", "Favourite", "B/Lay", "Odds", "Stake"]}
+              data={["Username","Market", "Favourite", "B/Lay", "Odds", "Stake"]}
             />
 
             {profit && (
@@ -194,8 +194,9 @@ const BetHistory = ({
                         display: "flex",
                         // background: k % 2 === 0 ? "#E32A2A" : "#10DC61",
                         background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
-                        justifyContent: "center",
+                        justifyContent: "space-between",
                         alignItems: "center",
+                        paddingX:"10px",
                       }}
                     >
                       <Typography
@@ -372,6 +373,14 @@ const RowComponent = ({ header, data, profit }) => {
     >
       {!header && (
         <>
+        <SingleBox
+            color={getColor}
+            data={
+              data?.username
+            }
+            first={true}
+            header={header}
+          />
           <SingleBox
             color={getColor}
             data={
@@ -417,17 +426,17 @@ const RowComponent = ({ header, data, profit }) => {
             header={header}
             boxWidth="100%"
           />
-          <SingleBox
-            color={getColor()}
+           <SingleBox
+            color={getColor}
             data={data[1]}
             header={header}
             boxWidth="100%"
           />
           <SingleBox
-            boxWidth="50%"
             color={getColor()}
             data={data[2]}
             header={header}
+            boxWidth="100%"
           />
           <SingleBox
             boxWidth="50%"
@@ -436,8 +445,14 @@ const RowComponent = ({ header, data, profit }) => {
             header={header}
           />
           <SingleBox
+            boxWidth="50%"
             color={getColor()}
             data={data[4]}
+            header={header}
+          />
+          <SingleBox
+            color={getColor()}
+            data={data[5]}
             header={header}
             boxWidth="100%"
           />

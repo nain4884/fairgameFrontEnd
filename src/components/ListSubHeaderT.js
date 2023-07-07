@@ -91,7 +91,10 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {data?.balancesum}
+          {/* {data?.balancesum} */}
+          {Number(data?.balancesum) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{Number(data?.balancesum)}</>
+              : Number(data?.balancesum)}
         </Typography>
       </Box>
       <Box
@@ -103,6 +106,7 @@ const ListSubHeaderT = ({ data }) => {
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
+          justifyContent: "space-between",
         }}
       >
         {" "}
@@ -134,6 +138,7 @@ const ListSubHeaderT = ({ data }) => {
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
+          justifyContent: "space-between",
         }}
       >
         {" "}
@@ -201,7 +206,10 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {data?.availablebalancesum}
+          {/* {data?.availablebalancesum} */}
+          {Number(data?.availablebalancesum) >= 0
+              ? <><span style={{visibility:"hidden"}}>-</span>{Number(data?.availablebalancesum)}</>
+              : Number(data?.availablebalancesum)}
         </Typography>
       </Box>
       <Box
