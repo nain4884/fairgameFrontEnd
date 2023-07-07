@@ -20,7 +20,7 @@ const SmallBox = ({ color, valueA, valueB }) => {
                     background: "white",
                     borderRadius: "3px",
                 }}
-            >
+            > 
                 <Typography sx={{ color: "#FF4D4D", fontSize: "8px", fontWeight: "bold", }} > Book </Typography>
                 <Typography sx={{ fontSize: "14px", lineHeight: 1, fontWeight: "bold", color: valueA < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueA < 0 ? ` ${valueA}` : `${valueA}`} </Typography>
             </Box>
