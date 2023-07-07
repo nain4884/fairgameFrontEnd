@@ -285,7 +285,7 @@ const Input = ({
             }}
             onChange={(e) => {
               const inputValue = e.target.value;
-              const regex = /^[a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
+              const regex =/^[a-zA-Z][a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
               if (!regex.test(inputValue) && place === 1) {
                 setError({
                   ...error,
