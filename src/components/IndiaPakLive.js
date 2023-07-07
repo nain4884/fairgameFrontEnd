@@ -397,18 +397,18 @@ const IndiaPakLive = React.forwardRef(({
         flex: 1,
         background: "#F8C851",
         borderRadius: "5px",
-        minHeight: "300px",
-        py: "30px",
+        minHeight: "42vh",
+        py: "25px",
         pt: "5px",
         px: "20px",
       }}
     >
       <Typography
-        sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}
+        sx={{ color: "#0B4F26", fontSize: "20px", fontWeight: "600" }}
       >
         {match?.title ? match.title : "India vs Pakistan"}
       </Typography>
-      <Box sx={{ display: "flex", marginTop: "8px" }}>
+      <Box sx={{ display: "flex", marginTop: "6px" }}>
         <Box
           sx={{
             flex: 1,
@@ -1546,7 +1546,7 @@ const RunsAmountBox = ({
                         <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
                     </Box>
                 </Box> */}
-        <Box ref={containerRef} sx={{ maxHeight: "300px", overflowY: "auto" }}>
+        <Box ref={containerRef} sx={{ maxHeight: "42vh", overflowY: "auto" }}>
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
               const getColor = (value) => {
@@ -1602,8 +1602,9 @@ const RunsAmountBox = ({
                       display: "flex",
                       borderLeft: `1px solid #306A47`,
                       background: getColor(v?.profit_loss),
-                      justifyContent: "center",
+                      justifyContent: "space-between",
                       alignItems: "center",
+                      paddingRight: "7px"
                     }}
                   >
                     <Typography

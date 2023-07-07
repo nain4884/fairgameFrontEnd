@@ -161,7 +161,7 @@ const ListHeaderT = () => {
             lineHeight: "1.1"
           }}
         >
-          <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "9px" }, lineHeight: '1.1' }}>
+          <Typography sx={{ color: "white", fontSize: { laptop: "11.5px", mobile: "9px" }, lineHeight: '1' }}>
             User Lock
           </Typography>
         </Box>

@@ -132,20 +132,21 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
         sx={[
           {
             marginX: "0.5%",
-            width: " 98%",
+            width: { mobile: "96%", laptop: "85%", tablet: "96%" },
             minHeight: "200px",
             borderRadius: "10px",
             borderBottomRightRadius: "0px",
             borderBottomLeftRadius: "0px",
             overflow: "hidden",
             border: "2px solid white",
+            background: "#F8C851"
           },
-          (theme) => ({
-            backgroundImage: `${theme.palette.primary.headerGradient}`,
-          }),
+          // (theme) => ({
+          //   backgroundImage: `${theme.palette.primary.headerGradient}`,
+          // }),
         ]}
       >
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", height: "50px" }}>
           <ListH
             id={id}
             title={title}
@@ -333,12 +334,13 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
         <Typography
           sx={{
             fontSize: { mobile: "14px", laptop: "18px", tablet: "18px" },
-            color: "#FFF",
+            color: "#000",
             marginRight: { mobile: "10px", laptop: "20px", tablet: "20px" },
           }}
         >
           {title}
 
+        </Typography>
           {matchesMobile && (
             <Box sx={{ display: "flex", marginTop: "5px" }}>
               <Box
@@ -382,7 +384,6 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
               </Box>
             </Box>
           )}
-        </Typography>
         {!matchesMobile && (
           <>
             <Box
@@ -434,6 +435,9 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
         id={id}
         show={true}
         placeholder={"Search User..."}
+        inputContainerStyle={{
+          width: {laptop: "12%", mobile: "50%"}
+        }}
       />
     </Box>
   );
