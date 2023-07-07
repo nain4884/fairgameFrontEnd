@@ -55,7 +55,8 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 : "rgb(255, 146, 146)",
               small: true,
               deleted_reason: v?.deleted_reason,
-              width: "7%"
+              width: "7%",  
+              fSize:"12px"            
             },
             {
               name: v?.bet_type,
@@ -74,7 +75,8 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
               deleted_reason: v?.deleted_reason,
-              width: "17%"
+              width: "17%",
+              fSize: "12px"
             },
             {
               name: v?.myStack,
@@ -465,11 +467,12 @@ const SmallBox = ({ item }) => {
         alignItems: "center",
         display: "flex",
         flexDirection: "column",
-        width: item?.width ? item?.width : "auto"
-      }}
+        width: item?.width ? item?.width : "auto",
+        
+      }}  
     >
       <Typography
-        sx={{ fontSize: "11px", fontWeight: "600", color: item?.color, textTransform: "capitalize" }}
+        sx={{ fontSize: item?.fSize ? item?.fSize : "11px", fontWeight: "600", color: item?.color, textTransform: "capitalize" }}
       >
         {item?.name}
       </Typography>
@@ -500,7 +503,7 @@ const LargeBox = ({ item, k }) => {
     >
       <Typography
         sx={{
-          fontSize: "11px",
+          fontSize: item?.fSize ? item?.fSize : "11px",
           fontWeight: "600",
           color: item?.color,
           wordWrap: "break-word",
