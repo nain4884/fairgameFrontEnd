@@ -6,6 +6,7 @@ import { ArrowDownRed, ArrowUpGreen } from "../../expert/assets";
 const MoneyBox = ({ color, value }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  console.log(value, "value")
   return (
     <>
     <Box
@@ -19,7 +20,7 @@ const MoneyBox = ({ color, value }) => {
         display: "flex",
         height: "35px",
         borderRadius: "7px",
-        border: "1px solid #ddd"
+        border:  value === 0 ? "0" : "1px solid #ddd" 
       }}
     >
       <Typography
