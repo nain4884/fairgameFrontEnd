@@ -417,7 +417,7 @@ const MatchOdds = ({
                   <Typography
                     sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
                   >
-                    Lay
+                    Lay456
                   </Typography>
                 </Box>
               </Box>

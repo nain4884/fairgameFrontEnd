@@ -10,20 +10,21 @@ const MoneyBox = ({ color, value }) => {
     <>
     <Box
       sx={{
-        width: "80px",
+        width: "270px",
         borderRadius: "5px",
         justifyContent: "center",
         position: matchesMobile ? "absolute" : "relative",
         right: matchesMobile ? "-90%" : "10px",
         alignItems: "center",
         display: "flex",
-        height: "25px",
+        height: "35px",
         borderRadius: "7px",
+        border: "1px solid #ddd"
       }}
     >
       <Typography
         sx={{
-          fontSize: "0.6vw",
+          fontSize: "14px",
           fontWeight: "bold",
           color: Number(value) > 0 ? "#319E5B" : "#FF4D4D",
         }}
