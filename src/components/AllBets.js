@@ -56,7 +56,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               small: true,
               deleted_reason: v?.deleted_reason,
               width: "7%",  
-              fSize:"12px",
+              fSize:"13px",
               lHeight: 1            
             },
             {
@@ -478,7 +478,7 @@ const SmallBox = ({ item }) => {
         {item?.name}
       </Typography>
       <Typography
-        sx={{ fontSize: "8px", fontWeight: "600", color: item?.color }}
+        sx={{ fontSize: "9px", fontWeight: "600", color: item?.color }}
       >
         {item?.rate && item?.rate}
       </Typography>

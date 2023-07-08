@@ -72,7 +72,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
             margin: { mobile: "1px", laptop: "0.5px" },
             my: "0px !important" ,
             height: "30px",
-            width: "5%",
+            width: "4%",
             display: "flex",
             background: "black",
             justifyContent: "center",
@@ -80,7 +80,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
           }}
         >
           <Typography
-            sx={{ fontWeight: "400", fontSize: "10px", color: "white" }}
+            sx={{ fontWeight: "400", fontSize: "11px", color: "white" }}
           >
             {"No"}
           </Typography>
@@ -136,7 +136,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   sx={{
                     height: "40px",
                     margin: { mobile: "1px", laptop: "1px" },
-                    width: "5%",
+                    width: "4%",
                     display: "flex",
                     background: "black",
                     justifyContent: "center",
@@ -144,7 +144,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   }}
                 >
                   <Typography
-                    sx={{ color: "white", fontSize: "10px", fontWeight: "500" }}
+                    sx={{ color: "white", fontSize: "11px", fontWeight: "500" }}
                   >
                     {formattedNum}
                   </Typography>
@@ -180,7 +180,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                       // background: k % 2 == 0 ? "#E32A2A" : "#10DC61",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      paddingX:"10px",
+                      paddingX: {laptop: "10px", mobile: "0"}
                     }}
                   >
                     <Typography
@@ -252,7 +252,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
   );
 };
 // value2 = { formatNumber(newData?.rate_percent?.split("-")[0])}
-const RowComponent = ({ header, data }) => {
+const RowComponent = ({ header, data, boxWidthHeader }) => {
   const getTime = (date) => {
     const now = new Date(date);
     const timeString = now.toLocaleTimeString("en-US", {
@@ -285,7 +285,7 @@ const RowComponent = ({ header, data }) => {
   return (
     <Box
       sx={{
-        width: "80%",
+        width: "81%",
         height: header ? "30px" : "42px",
         background: "white",
         justifyContent: "space-between",
@@ -300,6 +300,7 @@ const RowComponent = ({ header, data }) => {
             data={data?.username}
             first={true}
             header={header}
+            // boxWidth="20%"
         
           />
           <SingleBox
@@ -308,6 +309,7 @@ const RowComponent = ({ header, data }) => {
             first={true}
             header={header}
             time={getTime(data.createAt)}
+            
           />
           <SingleBox
             color={getColor()}
@@ -319,12 +321,14 @@ const RowComponent = ({ header, data }) => {
                 ? data?.rate?.split("-")[0]
                 : data?.rate?.split("-")[1]
             )}
+            boxWidth="10%"
           />
-          <SingleBox color={getColor()} data={data?.betType} header={header} />
+          <SingleBox boxWidth="10%" color={getColor()} data={data?.betType} header={header} />
           <SingleBox
             color={getColor()}
             data={data?.stack || data?.stake || data?.amount}
             header={header}
+            boxWidth="25%"
           />
         </>
       )}
@@ -359,13 +363,15 @@ const SingleBox = ({
   time,
   isPercent,
   rate,
+  boxWidth,
+  boxWidthHeader
 }) => {
   // console.log(data, "dataaaa")
   return !header ? (
     first ? (
       <Box
         sx={{
-          width: "20%",
+          width: "30%",
           height: "40px",
           flexDirection: "column",
           background: "#F8C851",
@@ -376,8 +382,8 @@ const SingleBox = ({
       >
         <Typography
           sx={{
-            fontWeight: "700",
-            fontSize: { mobile: "6px", laptop: "11px" },
+            fontWeight: "600",
+            fontSize: { mobile: "8px", laptop: "9px" },
             color: "black",
             textAlign: "center",
             
@@ -391,8 +397,8 @@ const SingleBox = ({
             maxHeight: "1em",
             overflow: "hidden",
             lineHeight: 1,
-            fontWeight: "800",
-            fontSize: { laptop: "12px", mobile: "10px" },
+            fontWeight: "600",
+            fontSize: { laptop: "11px", mobile: "10px" },
             color: "black",
             textAlign: "center",
           }}
@@ -439,7 +445,8 @@ const SingleBox = ({
     ) : (
       <Box
         sx={{
-          width: "20%",
+          // width: "15%",
+          width: boxWidth,
           height: "40px",
           background: color,
           marginX: { mobile: "1px", laptop: "1px" },
@@ -452,7 +459,7 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "11px", laptop: "12px" },
+            fontSize: { mobile: "10px", laptop: "12px" },
             color: "black",
             textTransform: "capitalize"
           }}
@@ -462,11 +469,11 @@ const SingleBox = ({
         {isPercent && (
           <Typography
             sx={{
-              fontSize: "8px",
+              fontSize: "9px",
               marginTop: -0.4,
               color: color == "white" ? "white" : "black",
               textAlign: "center",
-              fontWeight: "bold",
+              fontWeight: "600",
             }}
           >
             {rate}
@@ -477,9 +484,9 @@ const SingleBox = ({
   ) : header && first ? (
     <Box
       sx={{
-        width: "20%",
+        width: "30%",
         height: "30px",
-        background: "#319E5B",
+        background: "#000",
         marginX: { mobile: "1px", laptop: "1px" },
         display: "flex",
         justifyContent: "center",
@@ -498,15 +505,18 @@ const SingleBox = ({
       </Typography>
     </Box>
   ) : (
+    <>
     <Box
       sx={{
-        width: "20%",
+        // width:  data?.betType === "Stake" ? "10%" : "25%",
+        width: "15%",
         height: "30px",
         background: "black",
         marginX: { mobile: "1px", laptop: "1px" },
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        
       }}
     >
       <Typography
@@ -520,6 +530,8 @@ const SingleBox = ({
         {data}
       </Typography>
     </Box>
+    
+    </>
   );
 };
 export default SessionBetHistory;

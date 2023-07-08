@@ -70,7 +70,7 @@ const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, s
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: "10px",
+                    fontSize: {laptop: "9px", mobile: "9px"},
                     marginTop: -0.4,
                     color: color == "white" ? "white" : "black",
                     textAlign: "center",
