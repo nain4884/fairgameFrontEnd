@@ -100,7 +100,7 @@ const BetHistory = ({
               sx={{
                 height: "30px",
                 margin: { mobile: "1px", laptop: "0" },
-                width: "5%",
+                width: "4%",
                 display: "flex",
                 background: "black",
                 justifyContent: "center",
@@ -108,7 +108,7 @@ const BetHistory = ({
               }}
             >
               <Typography
-                sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "0.7vw"}, color: "white" }}
+                sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "11px"}, color: "white" }}
               >
                 {"No"}
               </Typography>
@@ -133,7 +133,7 @@ const BetHistory = ({
                 }}
               >
                 <Typography
-                  sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "0.7vw"}, color: "white" }}
+                  sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "11px"}, color: "white" }}
                 >
                   {"Profit/Loss"}
                 </Typography>
@@ -166,7 +166,7 @@ const BetHistory = ({
                     <Box
                       sx={{
                         height: "40px",
-                        width: "5%",
+                        width: "4%",
                         display: "flex",
                         background: "black",
                         margin: { mobile: "1px", laptop: "1px" },
@@ -177,7 +177,7 @@ const BetHistory = ({
                       <Typography
                         sx={{
                           color: "white",
-                          fontSize: {mobile: "10px", laptop: "12px"},
+                          fontSize: {mobile: "10px", laptop: "11px"},
                           fontWeight: "500",
                         }}
                       >
@@ -363,7 +363,7 @@ const RowComponent = ({ header, data, profit }) => {
   return (
     <Box
       sx={{
-        width: profit ? "75%" : "95%",
+        width: profit ? "76%" : "95%",
         height: header ? "30px" : "42px",
         background: "white",
         justifyContent: "space-between",
@@ -597,7 +597,7 @@ const SingleBox = ({
           <Typography
             sx={{
               fontWeight: "700",
-              fontSize: { mobile: "8px", tablet: "10px", laptop: ".6vw" },
+              fontSize: { mobile: "8px", tablet: "10px", laptop: "11px" },
               color: "black",
               textAlign: "center",
               maxHeight: "2em",
@@ -623,8 +623,8 @@ const SingleBox = ({
       >
         <Typography
           sx={{
-            fontWeight: "700",
-            fontSize: { laptop: "11px", tablet: "9px", mobile: "9px" },
+            fontWeight: "600",
+            fontSize: { laptop: "9px", tablet: "8px", mobile: "8px" },
             color: "black",
             textAlign: "center",
           }}
@@ -635,13 +635,16 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "600",
-            fontSize: { laptop: "12px", tablet: "10px", mobile: "10px" },
+            fontSize: { laptop: "11px", tablet: "9px", mobile: "9px" },
             color: "black",
             textAlign: "center",
             textTransform: "uppercase",
             maxHeight: "1em",
             overflow: "hidden",
             lineHeight: 1,
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+            maxWidth: {mobile: "54px",laptop: "initial"},
           }}
         >
           {data?.team_bet || data?.teamBet}
@@ -665,6 +668,7 @@ const SingleBox = ({
             fontWeight: "700",
             fontSize: { mobile: "9px", tablet: "10px", laptop: "12px" },
             color: "black",
+            textTransform: "capitalize"
           }}
         >
           {data}
@@ -688,7 +692,7 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "400",
-            fontSize: { laptop: ".7vw", mobile: "10px" },
+            fontSize: { laptop: "12px", mobile: "10px" },
             color: "white",
             flexWrap: "wrap",
           }}

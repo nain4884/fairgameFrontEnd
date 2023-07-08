@@ -44,7 +44,7 @@ const SmallBox2 = ({ valueA, valueB }) => {
         <Typography
           sx={{
             color: "#FF4D4D",
-            fontSize: "10px",
+            fontSize: "9px",
             fontWeight: "bold",
           }}
         >
@@ -52,7 +52,7 @@ const SmallBox2 = ({ valueA, valueB }) => {
         </Typography>
         <Typography
           sx={{
-            fontSize: "11px",
+            fontSize: "12px",
             fontWeight: "bold",
             color: valueA < 0 ? `#FF4D4D` : `#319E5B`,
           }}
@@ -78,7 +78,7 @@ const SmallBox2 = ({ valueA, valueB }) => {
         <Typography
           sx={{
             color: "#FF4D4D",
-            fontSize: "10px",
+            fontSize: "9px",
             fontWeight: "bold",
           }}
         >
@@ -87,7 +87,7 @@ const SmallBox2 = ({ valueA, valueB }) => {
 
         <Typography
           sx={{
-            fontSize: "11px",
+            fontSize: "12px",
             fontWeight: "bold",
             color: valueB < 0 ? `#FF4D4D` : `#319E5B`,
           }}

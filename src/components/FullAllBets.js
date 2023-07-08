@@ -588,6 +588,7 @@ const SmallBox = ({ item, k }) => {
         alignItems: "center",
         display: "flex",
         flexDirection: "column",
+        textTransform: "capitalize"
       }}
     >
       <Typography
@@ -595,13 +596,14 @@ const SmallBox = ({ item, k }) => {
         sx={{
           fontSize: matchesMobile ? "10px" : ".7vw",
           fontWeight: "600",
+          lineHeight: 1,
           color: item?.color,
         }}
       >
         {item?.name}
       </Typography>
       <Typography
-        sx={{ fontSize: "8px", fontWeight: "600", color: item?.color }}
+        sx={{ fontSize: "9px", fontWeight: "600", color: item?.color }}
       >
         {item?.rate && item?.rate}
       </Typography>

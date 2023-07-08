@@ -374,9 +374,9 @@ const ProfitLossComponent = ({
         {selectedId === item?.matchId && (
           <Box
             sx={{
-              width: { mobile: "100%", laptop: "96%" },
+              width: { mobile: "100%", laptop: "100%" },
               marginTop: { mobile: ".25vh" },
-              marginLeft: { laptop: "4%" },
+              // marginLeft: { laptop: "4%" },
               display: "flex",
               flexDirection: { laptop: "row", mobile: "column" },
             }}

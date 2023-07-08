@@ -116,7 +116,7 @@ const Row = ({ index, values }) => {
                         : values?.rate?.split("-")[1]}
                 </Typography>
             </Box>
-            <Box sx={{ background: "#B3E0FF", width: "14%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Box sx={{ background: values.bet_type == "yes" ? "#B3E0FF" : "#FFB5B5", width: "14%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
             <Typography sx={{ fontWeight: "600", fontSize: { mobile: "10px", laptop: "13px" }, color: "black", position: 'static', top: 0, right: 5 }} >{getTime(values.createAt)}</Typography>
             </Box>
             <Box sx={{ background: values.bet_type == "yes" ? "#B3E0FF" : "#FFB5B5", width: "10%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>

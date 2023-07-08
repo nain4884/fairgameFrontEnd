@@ -22,7 +22,7 @@ const SmallBox = ({ color, valueA, valueB }) => {
                 }}
             > 
                 <Typography sx={{ color: "#FF4D4D", fontSize: "8px", fontWeight: "bold", }} > Book </Typography>
-                <Typography sx={{ fontSize: "14px", lineHeight: 1, fontWeight: "bold", color: valueA < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueA < 0 ? ` ${valueA}` : `${valueA}`} </Typography>
+                <Typography sx={{ fontSize: "13px", lineHeight: 1, fontWeight: "bold", color: valueA < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueA < 0 ? ` ${valueA}` : `${valueA}`} </Typography>
             </Box>
             <Box
                 sx={{
@@ -42,7 +42,7 @@ const SmallBox = ({ color, valueA, valueB }) => {
             >
                 <Typography sx={{ color: "#FF4D4D", fontSize: "8px", fontWeight: "bold", }} > Book </Typography>
 
-                <Typography sx={{ fontSize: "14px", lineHeight: 1, fontWeight: "bold", color: valueB < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueB < 0 ? ` ${valueB}` : `${valueB}`} </Typography>
+                <Typography sx={{ fontSize: "13px", lineHeight: 1, fontWeight: "bold", color: valueB < 0 ? `#FF4D4D` : `#319E5B`, }} > {valueB < 0 ? ` ${valueB}` : `${valueB}`} </Typography>
             </Box>
         </Box>
     )

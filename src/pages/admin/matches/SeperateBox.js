@@ -53,10 +53,11 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
               </Typography>
               <Typography
                 sx={{
-                  fontSize: "8px",
+                  fontSize: {laptop: "10px", mobile: "9px"},
                   marginTop: -0.4,
                   color: color == "white" ? "white" : "black",
                   textAlign: "center",
+                  fontWeight: "600"
                 }}
               >
                 {value2}
