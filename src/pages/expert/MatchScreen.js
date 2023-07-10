@@ -477,6 +477,10 @@ const MatchScreen = () => {
   useEffect(() => {
     if (socketMicro?.connected && state?.marketId && marketId) {
       socketMicro.emit("init", { id: state?.marketId });
+      setInterval(() => {
+          
+        socketMicro.emit("init", { id: state?.marketId });
+      }, 3000);
       socketMicro.on("reconnect", () => {
         socket.emit("init", { id: state?.marketId });
         activateLiveMatchMarket(state?.marketId);

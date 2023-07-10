@@ -123,6 +123,10 @@ const Odds = ({ onClick, top, blur, match }) => {
   useEffect(() => {
     if (socketMicro && socketMicro.connected && match?.marketId) {
       socketMicro.emit("init", { id: match?.marketId });
+      setInterval(() => {
+          
+        socketMicro.emit("init", { id: match?.marketId });
+      }, 3000);
       activateLiveMatchMarket();
       socketMicro.on(`matchOdds${match?.marketId}`, (val) => {
         if (val.length === 0) {

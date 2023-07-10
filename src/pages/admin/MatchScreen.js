@@ -3265,8 +3265,14 @@ const NewMatchScreen = () => {
           setSessionLock(true);
           console.log("WebSocket connection failed:", event);
         });
-
         socketMicro.emit("init", { id: marketId });
+          setInterval(() => {
+          
+          socketMicro.emit("init", { id: marketId });
+        }, 3000);
+    
+
+
         socketMicro.emit("score", { id: eventId });
         // activateLiveMatchMarket();
         // socketMicro.on("bookMakerRateLive", (e) => {
@@ -3387,6 +3393,7 @@ const NewMatchScreen = () => {
       console.log("error", e);
     }
     return () => {
+
       socketMicro?.emit("disconnect_market", {
         id: marketId,
       });

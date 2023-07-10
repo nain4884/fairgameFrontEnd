@@ -1193,6 +1193,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       if (socketMicro && socketMicro.connected && marketId) {
         socketMicro.on("connect", () => {
           socketMicro.emit("init", { id: marketId });
+          
           socketMicro.emit("score", { id: eventId });
           activateLiveMatchMarket();
           setSessionLock(false);
@@ -1219,6 +1220,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         });
 
         socketMicro.emit("init", { id: marketId });
+        setInterval(() => {
+          
+          socketMicro.emit("init", { id: marketId });
+        }, 3000);
 
         socketMicro.emit("score", { id: eventId });
         activateLiveMatchMarket();

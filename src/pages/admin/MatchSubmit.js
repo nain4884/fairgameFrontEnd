@@ -904,6 +904,10 @@ const MatchSubmit = ({ }) => {
         socketMicro.on("connect", () => {
           for (var index = 0; index < marketIds.length; index++) {
             socketMicro.emit("init", { id: marketIds[index] });
+            setInterval(() => {
+          
+              socketMicro.emit("init", { id: marketIds[index] });
+            }, 3000);
           }
           // socketMicro.emit("init", { id: marketId });
           // activateLiveMatchMarket();
@@ -934,7 +938,11 @@ const MatchSubmit = ({ }) => {
         for (var i = 0; i < marketIds?.length; i++) {
           (function (i) {
             socketMicro.emit("init", { id: marketIds[i] });
-
+            
+            setInterval(() => {
+          
+              socketMicro.emit("init", { id: marketIds[i] });
+            }, 3000);
             socketMicro.on("reconnect", () => {
               socketMicro.emit("init", { id: marketIds[i] });
               // activateLiveMatchMarket();
