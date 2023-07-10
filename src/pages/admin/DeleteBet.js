@@ -861,6 +861,18 @@ const DeleteBet = ({ }) => {
               return updatedBettings;
             });
 
+            setCurrentMatch((prev) => {
+              if (prev?.id === value?.matchId) {
+                return {
+                  ...prev,
+                  teamA_rate: value?.teamA_rate,
+                  teamB_rate: value?.teamB_rate,
+                  teamC_rate: value?.teamC_rate,
+                };
+              }
+              return prev;
+            });
+
           } catch (err) {
             console.log(err?.message);
           }
@@ -880,6 +892,18 @@ const DeleteBet = ({ }) => {
               });
 
               return updatedBettings;
+            });
+
+            setCurrentMatch((prev) => {
+              if (prev?.id === value?.matchId) {
+                return {
+                  ...prev,
+                  teamA_rate: value?.teamA_rate,
+                  teamB_rate: value?.teamB_rate,
+                  teamC_rate: value?.teamC_rate,
+                };
+              }
+              return prev;
             });
 
           } catch (err) {
