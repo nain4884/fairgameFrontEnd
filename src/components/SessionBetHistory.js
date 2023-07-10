@@ -72,7 +72,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
             margin: { mobile: "1px", laptop: "0.5px" },
             my: "0px !important" ,
             height: "30px",
-            width: "4%",
+            width: "5%",
             display: "flex",
             background: "black",
             justifyContent: "center",
@@ -93,7 +93,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
           <Box
             sx={{
               height: "30px",
-              width: "15%",
+              width: "20%",
               display: "flex",
               background: "black",
               justifyContent: "center",
@@ -136,7 +136,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   sx={{
                     height: "40px",
                     margin: { mobile: "1px", laptop: "1px" },
-                    width: "4%",
+                    width: "5%",
                     display: "flex",
                     background: "black",
                     justifyContent: "center",
@@ -173,7 +173,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   <Box
                     sx={{
                       height: "40px",
-                      width: "15%",
+                      width: "20%",
                       margin: { mobile: "1px", laptop: "1px" },
                       display: "flex",
                       background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
@@ -212,7 +212,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   <Box
                     sx={{
                       height: "40px",
-                      width: "30%",
+                      width: "20%",
                       margin: { mobile: "1px", laptop: "1px" },
                       display: "flex",
                       background: "black",
@@ -285,7 +285,7 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
   return (
     <Box
       sx={{
-        width: "81%",
+        width: "100%",
         height: header ? "30px" : "42px",
         background: "white",
         justifyContent: "space-between",
@@ -321,14 +321,16 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
                 ? data?.rate?.split("-")[0]
                 : data?.rate?.split("-")[1]
             )}
-            boxWidth="10%"
+            // boxWidth="10%"
           />
-          <SingleBox boxWidth="10%" color={getColor()} data={data?.betType} header={header} />
+          <SingleBox 
+          // boxWidth="10%" 
+          color={getColor()} data={data?.betType} header={header} />
           <SingleBox
             color={getColor()}
             data={data?.stack || data?.stake || data?.amount}
             header={header}
-            boxWidth="25%"
+            // boxWidth="25%"
           />
         </>
       )}
@@ -346,9 +348,9 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
             first={true}
             header={header}
           />
-          <SingleBox color={getColor()} data={data[2]} header={header} />
-          <SingleBox color={getColor()} data={data[3]} header={header} />
-          <SingleBox color={getColor()} data={data[4]} header={header} />
+          <SingleBox color={getColor()} data={data[2]} header={header}    />
+          <SingleBox color={getColor()} data={data[3]} header={header}  />
+          <SingleBox color={getColor()} data={data[4]} header={header}  />
         </>
       )}
     </Box>
@@ -371,7 +373,7 @@ const SingleBox = ({
     first ? (
       <Box
         sx={{
-          width: "30%",
+          width: "100%",
           height: "40px",
           flexDirection: "column",
           background: "#F8C851",
@@ -409,7 +411,7 @@ const SingleBox = ({
     ) : up ? (
       <Box
         sx={{
-          width: "20%",
+          width: "100%",
           height: "40px",
           flexDirection: "column",
           background: color,
@@ -446,7 +448,7 @@ const SingleBox = ({
       <Box
         sx={{
           // width: "15%",
-          width: boxWidth,
+          width: "100%",
           height: "40px",
           background: color,
           marginX: { mobile: "1px", laptop: "1px" },
@@ -484,7 +486,7 @@ const SingleBox = ({
   ) : header && first ? (
     <Box
       sx={{
-        width: "30%",
+        width: "100%",
         height: "30px",
         background: "#000",
         marginX: { mobile: "1px", laptop: "1px" },
@@ -509,7 +511,7 @@ const SingleBox = ({
     <Box
       sx={{
         // width:  data?.betType === "Stake" ? "10%" : "25%",
-        width: "15%",
+        width: "100%",
         height: "30px",
         background: "black",
         marginX: { mobile: "1px", laptop: "1px" },

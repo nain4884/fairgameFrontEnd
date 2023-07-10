@@ -9,6 +9,7 @@ import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
 import constants from "../../components/helper/constants";
 import { setRole } from "../../newStore";
 import CustomLoader from "../../components/helper/CustomLoader";
+import moment from "moment";
 
 const ProfitLoss = () => {
   const ExtraHeader = () => {
@@ -102,15 +103,31 @@ const ProfitLoss = () => {
   const [reportData, setReportData] = useState([]);
   const [betData, setBetData] = useState([]);
   const [sessionBetData, setSessionBetData] = useState([]);
+  const [allClinets, setAllCliets] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("")
+  const [startDate,setStartDate]=useState(null);
+  const [endDate,setEndDate]=useState(null )
 
   useEffect(() => {
     // alert(1)
     getEventList();
   }, [currentPage, pageCount, pageLimit]);
+  useEffect(() => {
+    getAllClients();
+  }, []);
 
   async function getEventList() {
     var payload = {};
+   if(search?.id){
+    payload.userId=search?.id
+   }
+   if(startDate && search?.id){
+    payload.from=moment(startDate).format("YYYY-MM-DD")
+   }
+   if(endDate && search?.id){
+    payload.to= moment(endDate).format("YYYY-MM-DD")
+   }
     let { axios } = setRole();
     try {
       setLoading(true);
@@ -136,6 +153,15 @@ const ProfitLoss = () => {
     var payload = {
       gameType: eventType,
     };
+    if(search?.id){
+     payload.userId=search?.id
+    }
+    if(startDate && search?.id){
+     payload.from=moment(startDate).format("YYYY-MM-DD")
+    }
+    if(endDate && search?.id){
+     payload.to= moment(endDate).format("YYYY-MM-DD")
+    }
     let { axios } = setRole();
     try {
       const { data } = await axios.post(`/betting/profitLossReport`, payload);
@@ -157,6 +183,15 @@ const ProfitLoss = () => {
     var payload = {
       match_id: id,
     };
+    if(search?.id){
+      payload.userId=search?.id
+     }
+     if(startDate && search?.id){
+      payload.from=moment(startDate).format("YYYY-MM-DD")
+     }
+     if(endDate && search?.id){
+      payload.to= moment(endDate).format("YYYY-MM-DD")
+     }
     let { axios } = setRole();
     try {
       const { data } = await axios.post(
@@ -170,6 +205,30 @@ const ProfitLoss = () => {
     }
   }
 
+  async function getAllClients() {
+    setBetData([]);
+    setSessionBetData([]);
+
+    let { axios } = setRole();
+    try {
+      const { data } = await axios.get(`/users/getAllClients`);
+      if (data.data.length > 0) {
+        setAllCliets(data?.data);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const handleClick=(e) => {
+    try{
+      getEventList()
+
+    }
+    catch (e) {
+      console.log("error",e?.message)
+    }
+  }
   return (
     <Background>
       {/* <Header /> */}
@@ -186,7 +245,7 @@ const ProfitLoss = () => {
         </Box>
       ) : (
         <>
-          <YellowHeaderProfitLoss />
+          <YellowHeaderProfitLoss onClick={handleClick} clientData={allClinets} setSearch={setSearch} search={search}  setEndDate={setEndDate} endDate={endDate} startDate={startDate} setStartDate={setStartDate}/>
           <Typography
             sx={{
               fontSize: "16px",
