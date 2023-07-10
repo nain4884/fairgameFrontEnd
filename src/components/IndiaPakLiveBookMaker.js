@@ -110,6 +110,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         teamB: response?.data?.data[0].teamB_rate ? response?.data?.data[0].teamB_rate : 0,
                         teamC: response?.data?.data[0].teamC_rate ? response?.data?.data[0].teamC_rate : 0
                     })
+                    // alert(response?.data?.data[0].teamA_suspend)
+                    setIsTeamASuspend(response?.data?.data[0].teamA_suspend ? true : false);
+                    setIsTeamBSuspend(response?.data?.data[0].teamB_suspend ? true : false);
+                    setIsTeamCSuspend(response?.data?.data[0].teamC_suspend ? true : false);
                     // dispatch(setBookmakerTeamRates({
                     //     teamA: response?.data?.data[0].teamA_rate ? response?.data?.data[0].teamA_rate : 0,
                     //     teamB: response?.data?.data[0].teamB_rate ? response?.data?.data[0].teamB_rate : 0,
@@ -1695,7 +1699,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <img src={BallStart} style={{ width: '90px', height: '27px' }} />
                             </Box> :
                                 <>
-                                    {/* {!teamBall?.isABall ?  */} 
+                                    {/* {!teamBall?.isABall ?  */}
                                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                                         {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "55px", justifyContent: "center", alignItems: "center" }}>
                                             {/* <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{!add ? 39 : "00"}ww</Typography> */}

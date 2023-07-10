@@ -50,7 +50,7 @@ const MatchSubmit = ({ }) => {
 
       socket.onevent = async (packet) => {
         // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-        for (var i = 0; i < matchIds.length; i++) {
+        for (var i = 0; i < matchIds?.length; i++) {
           (function (i) {
             if (packet.data[0] === "updateMatchActiveStatus") {
               const value = packet.data[1];
@@ -1456,7 +1456,7 @@ const MatchSubmit = ({ }) => {
                                   // }
                                   data={item}
                                   manualBookmakerData={matchOddsDataTemp}
-                                  typeOfBet={"MANUAL BOOKMAKER"}
+                                  typeOfBet={"Quick Bookmaker"}
                                 // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                                 />
                               )}
@@ -1551,7 +1551,7 @@ const MatchSubmit = ({ }) => {
                               currentMatch={item}
                               data={item}
                               manualBookmakerData={matchOddsDataTemp}
-                              typeOfBet={"MANUAL BOOKMAKER"}
+                              typeOfBet={"Quick Bookmaker"}
                             // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                             />
                           )}
@@ -1647,7 +1647,7 @@ const MatchSubmit = ({ }) => {
                             currentMatch={item}
                             data={item}
                             manualBookmakerData={matchOddsDataTemp}
-                            typeOfBet={"MANUAL BOOKMAKER"}
+                            typeOfBet={"Quick Bookmaker"}
                           // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                           />
                         )}
