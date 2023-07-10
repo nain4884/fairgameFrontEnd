@@ -233,6 +233,29 @@ const IndiaPakLive = React.forwardRef(({
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "sessionDeleteBet") {
+          const value = packet.data[1];
+          try {
+            const updatedAllBet = sessionAllBet.map((currentMatch) => {
+              if (currentMatch.match_id === value?.matchId) {
+                if (value?.betPlaceData.includes(currentMatch.id)) {
+                  return {
+                    ...currentMatch,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+              }
+              return currentMatch;
+            });
+
+            dispatch(setSessionAllBet(updatedAllBet));
+            let profitLoss = value?.profitLoss;
+            setProLoss(profitLoss);
+
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
   }, [socket, betId, sessionAllBet]);
@@ -1615,9 +1638,9 @@ const RunsAmountBox = ({
                         width: "40px"
                       }}
                     >
-                                {Number(v?.profit_loss) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{v?.profit_loss}</>
-              : v?.profit_loss}
+                      {Number(v?.profit_loss) >= 0
+                        ? <><span style={{ visibility: "hidden" }}>-</span>{v?.profit_loss}</>
+                        : v?.profit_loss}
                     </Typography>
                     <StyledImage
                       src={getSVG(v?.profit_loss)}

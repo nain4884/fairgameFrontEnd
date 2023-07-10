@@ -711,7 +711,6 @@ const DeleteBet = ({ }) => {
           } catch (err) {
             console.log(err?.message);
           }
-
           setSingleIObtes((prev) => {
             const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
             return [
@@ -722,6 +721,7 @@ const DeleteBet = ({ }) => {
               ...updatedPrev,
             ];
           });
+
           // setCurrentMatch({
           //   ...currentMatch,
           //   matchSessionData: updatedBettings1

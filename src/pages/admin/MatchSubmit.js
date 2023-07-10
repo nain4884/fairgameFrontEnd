@@ -905,7 +905,7 @@ const MatchSubmit = ({ }) => {
           for (var index = 0; index < marketIds.length; index++) {
             socketMicro.emit("init", { id: marketIds[index] });
             setInterval(() => {
-          
+
               socketMicro.emit("init", { id: marketIds[index] });
             }, 3000);
           }
@@ -938,9 +938,9 @@ const MatchSubmit = ({ }) => {
         for (var i = 0; i < marketIds?.length; i++) {
           (function (i) {
             socketMicro.emit("init", { id: marketIds[i] });
-            
+
             setInterval(() => {
-          
+
               socketMicro.emit("init", { id: marketIds[i] });
             }, 3000);
             socketMicro.on("reconnect", () => {

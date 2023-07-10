@@ -20,6 +20,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
     const [visible1, setVisible1] = useState(false)
 
     const { bookmakerTeamRates } = useSelector((state) => state?.expertMatchDetails);
+    // const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
     // console.log('match', match)
     const { socket, socketMicro } = useContext(SocketContext);
 
@@ -83,6 +84,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             teamB: bookmakerTeamRates?.teamB,
             teamC: bookmakerTeamRates?.teamC
         })
+        const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
 
         useEffect(() => {
             // alert(JSON.stringify(bookmakerTeamRates))
@@ -421,6 +423,34 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             }
                         }
                         // alert(1)
+                    }
+
+                    if (packet.data[0] === "matchDeleteBet") {
+                        const value = packet.data[1];
+                        try {
+                            const updatedAllBet = bookMakerBetRates.map((currentMatch) => {
+                                if (currentMatch.match_id === value?.matchId) {
+                                    if (value?.betPlaceIds.includes(currentMatch.id)) {
+                                        return {
+                                            ...currentMatch,
+                                            deleted_reason: value?.deleted_reason,
+                                        };
+                                    }
+                                }
+                                return currentMatch;
+                            });
+
+                            dispatch(setBookMakerBetRate(updatedAllBet));
+                            // setBookMakerBetRate
+                            setteamRates({
+                                teamA: value?.teamA_rate ? value?.teamA_rate : 0,
+                                teamB: value?.teamB_rate ? value?.teamB_rate : 0,
+                                teamC: value?.teamC_rate ? value?.teamC_rate : 0
+                            })
+
+                        } catch (err) {
+                            console.log(err?.message);
+                        }
                     }
 
                 }
