@@ -347,7 +347,6 @@ const SeprateBox = ({
         type: false,
       });
       setBetPalaceError(true);
-      console.log(e.response.data.message);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
