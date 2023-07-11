@@ -22,7 +22,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         sx={[
           {
             width: "100%",
-            height: "42px",
+            height: "35px",
             justifyContent: "space-between",
             alignItems: "center",
             paddingLeft: "10px",
