@@ -148,7 +148,7 @@ const BoxComponent = ({
                             <SeperateBox
                                 align={align}
                                 value={matchOddsData?.back ? matchOddsData?.back : 0}
-                                value2={0}
+                                value2={null}
                                 // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") : 0}
                                 // value2={0}
                                 color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
@@ -180,7 +180,7 @@ const BoxComponent = ({
                             <SeperateBox
                                 align={align}
                                 value={matchOddsData?.lay ? matchOddsData?.lay : 0}
-                                value2={0}
+                                value2={null}
                                 color={matchesMobile ? "#FFB5B5" : "#FFB5B5"}
                             />
                         )}

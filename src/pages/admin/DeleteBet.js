@@ -711,16 +711,18 @@ const DeleteBet = ({ }) => {
           } catch (err) {
             console.log(err?.message);
           }
-          setSingleIObtes((prev) => {
-            const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-            return [
-              {
-                ...data.betPlaceData,
-                deleted_reason: data?.betPlaceData?.deleted_reason || null,
-              },
-              ...updatedPrev,
-            ];
-          });
+          if (data?.betPlaceData?.match_id === matchId) {
+            setSingleIObtes((prev) => {
+              const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
+              return [
+                {
+                  ...data.betPlaceData,
+                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                },
+                ...updatedPrev,
+              ];
+            });
+          }
 
           // setCurrentMatch({
           //   ...currentMatch,
@@ -780,9 +782,9 @@ const DeleteBet = ({ }) => {
                   amount:
                     data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                 };
-                // if (data?.betPlaceData?.match_id === id) {
-                setSingleIObtes((prev) => [body, ...prev]);
-                // }
+                if (data?.betPlaceData?.match_id === matchId) {
+                  setSingleIObtes((prev) => [body, ...prev]);
+                }
 
                 // dispatch(setCurrentUser(user));
                 // dispatch(setManualBookMarkerRates(manualBookmaker));

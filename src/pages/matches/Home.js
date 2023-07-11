@@ -1136,14 +1136,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               current_balance: value.newBalance,
               exposure: value.exposure,
             };
-            const manualBookmaker = {
-              matchId: value?.matchId,
-              teamA: value.teamA_rate,
-              teamB: value.teamB_rate,
-              teamC: value.teamC_rate,
-            };
             dispatch(setCurrentUser(user));
-            dispatch(setManualBookMarkerRates(manualBookmaker));
 
             setSessionBets((sessionBets) => {
               const updatedBettings = sessionBets?.map((betting) => {
@@ -1193,7 +1186,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       if (socketMicro && socketMicro.connected && marketId) {
         socketMicro.on("connect", () => {
           socketMicro.emit("init", { id: marketId });
-          
+
           socketMicro.emit("score", { id: eventId });
           activateLiveMatchMarket();
           setSessionLock(false);
@@ -1221,7 +1214,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
         socketMicro.emit("init", { id: marketId });
         setInterval(() => {
-          
+
           socketMicro.emit("init", { id: marketId });
         }, 3000);
 
