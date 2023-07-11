@@ -129,6 +129,7 @@ const BetHistory = ({
                   justifyContent: "center",
                   alignItems: "center",
                   margin: { mobile: "1px", laptop: "1px" },
+                  my: 0,
                   my: "0px !important"
                 }}
               >
