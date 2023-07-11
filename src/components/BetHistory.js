@@ -52,7 +52,7 @@ const BetHistory = ({
             sx={[
               {
                 width: "100%",
-                height: "42px",
+                height: {mobile: "37px", laptop: "42px"},
                 justifyContent: "space-between",
                 alignItems: "center",
                 paddingLeft: "10px",
@@ -67,7 +67,7 @@ const BetHistory = ({
             ]}
           >
             <Typography
-              sx={{ fontWeight: "12px", color: "black", fontWeight: "700" }}
+              sx={{ fontSize: {mobile: "12px", laptop: "16px"}, color: "black", fontWeight: "700" }}
             >
               All Rate Bets
             </Typography>
@@ -100,8 +100,8 @@ const BetHistory = ({
             <Box
               sx={{
                 height: "30px",
-                margin: { mobile: "1px", laptop: "0" },
-                width: "4%",
+                margin: { mobile: "0.5px", laptop: "0" },
+                width: {mobile: "5%", laptop: "4%"},
                 display: "flex",
                 background: "black",
                 justifyContent: "center",
@@ -109,7 +109,7 @@ const BetHistory = ({
               }}
             >
               <Typography
-                sx={{ fontWeight: "400", fontSize: { mobile: "10px", laptop: "11px" }, color: "white" }}
+                sx={{ fontWeight: "400", fontSize: { mobile: "8px", laptop: "11px" }, color: "white" }}
               >
                 {"No"}
               </Typography>
@@ -129,13 +129,13 @@ const BetHistory = ({
                   background: "black",
                   justifyContent: "center",
                   alignItems: "center",
-                  margin: { mobile: "1px", laptop: "1px" },
+                  margin: { mobile: "0", laptop: "1px" },
                   my: 0,
                   my: "0px !important"
                 }}
               >
                 <Typography
-                  sx={{ fontWeight: "400", fontSize: { mobile: "10px", laptop: "11px" }, color: "white" }}
+                  sx={{ fontWeight: "400", fontSize: { mobile: "8px", laptop: "11px" }, color: "white" }}
                 >
                   {"Profit/Loss"}
                 </Typography>
@@ -167,11 +167,11 @@ const BetHistory = ({
                   >
                     <Box
                       sx={{
-                        height: "40px",
-                        width: "4%",
+                        height: {mobile: "35px", laptop: "40px"},
+                        width: {mobile: "5%", laptop: "4%"},
                         display: "flex",
                         background: "black",
-                        margin: { mobile: "1px", laptop: "1px" },
+                        margin: { mobile: "0.5px", laptop: "1px" },
                         justifyContent: "center",
                         alignItems: "center",
                       }}
@@ -179,7 +179,7 @@ const BetHistory = ({
                       <Typography
                         sx={{
                           color: "white",
-                          fontSize: { mobile: "10px", laptop: "11px" },
+                          fontSize: { mobile: "8px", laptop: "11px" },
                           fontWeight: "500",
                         }}
                       >
@@ -190,9 +190,9 @@ const BetHistory = ({
                     {/* {profit && k !== - && ( */}
                     <Box
                       sx={{
-                        height: "40px",
+                        height: {mobile: "35px", laptop: "40px"},
                         width: "20%",
-                        margin: { mobile: "1px", laptop: "1px" },
+                        margin: { mobile: "0", laptop: "1px" },
                         display: "flex",
                         // background: k % 2 === 0 ? "#E32A2A" : "#10DC61",
                         background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
@@ -242,7 +242,7 @@ const BetHistory = ({
                             laptop: profit ? "100 % " : "100% ",
                           },
                           background: "rgba(0, 0, 0, 0.5)",
-                          height: "42px",
+                          height: {mobile: "35px", laptop: "40px"}, 
                           position: "absolute",
                         }}
                       >
@@ -290,7 +290,7 @@ const BetHistory = ({
                     {profit && i?.deleted_reason && (
                       <Box
                         sx={{
-                          height: "40px",
+                          height: {mobile: "35px", laptop: "40px"},
                           width: "20%",
                           margin: { mobile: "1px", laptop: "1px" },
                           display: "flex",
@@ -366,7 +366,7 @@ const RowComponent = ({ header, data, profit }) => {
     <Box
       sx={{
         width: profit ? "76%" : "95%",
-        height: header ? "30px" : "42px",
+        height: header ? "30px" : {mobile: "35px", laptop: "40px"},
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
@@ -576,9 +576,9 @@ const SingleBox = ({
       <Box
         sx={{
           width: "100%",
-          height: "40px",
+          height: {mobile: "35px", laptop: "40px"},
           background: "#F1C550",
-          marginX: { mobile: "1px", laptop: "1px" },
+          marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -615,10 +615,10 @@ const SingleBox = ({
       <Box
         sx={{
           width: "100%",
-          height: "40px",
+          height: {mobile: "35px", laptop: "40px"},
           flexDirection: "column",
           background: color,
-          marginX: { mobile: "1px", laptop: "1px" },
+          marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
         }}
@@ -657,9 +657,9 @@ const SingleBox = ({
         sx={{
           // width:  "100%",
           width: boxWidth,
-          height: "40px",
+          height: {mobile: "35px", laptop: "40px"},
           background: color,
-          marginX: { mobile: "1px", laptop: "1px" },
+          marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -685,7 +685,7 @@ const SingleBox = ({
           width: boxWidth,
           height: "30px",
           background: "black",
-          marginX: { mobile: "1px", laptop: "1px" },
+          marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

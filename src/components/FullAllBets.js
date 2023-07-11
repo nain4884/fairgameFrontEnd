@@ -297,7 +297,7 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
                     {!mode && (
                       <Typography
                         sx={{
-                          fontSize: !tag ? "10px" : "13px",
+                          fontSize: !tag ? {mobile: "8px", laptop: "11px"} : "13px",
                           fontWeight: tag ? "bold" : "600",
                           color: "white",
                         }}
@@ -389,7 +389,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -411,7 +411,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -433,7 +433,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -455,7 +455,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
             
@@ -478,7 +478,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -499,7 +499,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -520,7 +520,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -541,7 +541,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
             lineHeight: 1,
@@ -564,7 +564,7 @@ const HeaderRow = ({ tag, mode }) => {
       >
         <Typography
           sx={{
-            fontSize: matchesMobile ? "10px" : ".7vw",
+            fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
           }}
@@ -640,9 +640,9 @@ const LargeBox = ({ item, k }) => {
           wordWrap: "break-word",
           textAlign: "center",
           lineHeight: 1,
-          // whiteSpace: "nowrap",
-          // textOverflow: "ellipsis",
-          // maxWidth: "54px",
+          whiteSpace: {mobile: "nowrap",laptop: "inherit"},
+          textOverflow: "ellipsis",
+          maxWidth: {mobile: "47px", laptop: "initial"},
           
         }}
       >
