@@ -642,7 +642,7 @@ const LargeBox = ({ item, k }) => {
           lineHeight: 1,
           whiteSpace: {mobile: "nowrap",laptop: "inherit"},
           textOverflow: "ellipsis",
-          maxWidth: {mobile: "47px", laptop: "initial"},
+          maxWidth: {mobile: "43px", laptop: "initial"},
           
         }}
       >

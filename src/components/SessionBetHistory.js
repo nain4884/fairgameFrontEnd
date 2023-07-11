@@ -162,7 +162,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                         laptop: profit ? "100 % " : "100% ",
                       },
                       background: "rgba(0, 0, 0, 0.5)",
-                      height: "40px",
+                      height: "42px",
                       position: "absolute",
                     }}
                   >
