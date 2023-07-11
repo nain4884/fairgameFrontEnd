@@ -91,7 +91,8 @@ const BetHistory = ({
               <Typography
                 sx={{ fontSize: "12px", fontWeight: "700", color: "#0B4F26" }}
               >
-                {count || 0}
+                {[...new Set(betData?.filter((v) => v.sessionBet !== true))]?.length || 0}
+                {/* {betData.length || 0} */}
               </Typography>
             </Box>
           </Box>
@@ -108,7 +109,7 @@ const BetHistory = ({
               }}
             >
               <Typography
-                sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "11px"}, color: "white" }}
+                sx={{ fontWeight: "400", fontSize: { mobile: "10px", laptop: "11px" }, color: "white" }}
               >
                 {"No"}
               </Typography>
@@ -116,7 +117,7 @@ const BetHistory = ({
             <RowComponent
               profit={profit}
               header={true}
-              data={["Username","Market", "Favourite", "B/Lay", "Odds", "Stake"]}
+              data={["Username", "Market", "Favourite", "B/Lay", "Odds", "Stake"]}
             />
 
             {profit && (
@@ -133,7 +134,7 @@ const BetHistory = ({
                 }}
               >
                 <Typography
-                  sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "11px"}, color: "white" }}
+                  sx={{ fontWeight: "400", fontSize: { mobile: "10px", laptop: "11px" }, color: "white" }}
                 >
                   {"Profit/Loss"}
                 </Typography>
@@ -177,7 +178,7 @@ const BetHistory = ({
                       <Typography
                         sx={{
                           color: "white",
-                          fontSize: {mobile: "10px", laptop: "11px"},
+                          fontSize: { mobile: "10px", laptop: "11px" },
                           fontWeight: "500",
                         }}
                       >
@@ -196,7 +197,7 @@ const BetHistory = ({
                         background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        paddingX:"10px",
+                        paddingX: "10px",
                       }}
                     >
                       <Typography
@@ -223,7 +224,7 @@ const BetHistory = ({
                             height: { laptop: "7px", mobile: "7px" },
                           }}
                           src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
-                          // src={k % 2 === 0 ? ARROWDOWN : ARROWUP}
+                        // src={k % 2 === 0 ? ARROWDOWN : ARROWUP}
                         />
                       )}
                     </Box>
@@ -373,7 +374,7 @@ const RowComponent = ({ header, data, profit }) => {
     >
       {!header && (
         <>
-        <SingleBox
+          <SingleBox
             color={getColor}
             data={
               data?.username
@@ -426,7 +427,7 @@ const RowComponent = ({ header, data, profit }) => {
             header={header}
             boxWidth="100%"
           />
-           <SingleBox
+          <SingleBox
             color={getColor}
             data={data[1]}
             header={header}
@@ -644,7 +645,7 @@ const SingleBox = ({
             lineHeight: 1,
             whiteSpace: "nowrap",
             textOverflow: "ellipsis",
-            maxWidth: {mobile: "54px",laptop: "initial"},
+            maxWidth: { mobile: "54px", laptop: "initial" },
           }}
         >
           {data?.team_bet || data?.teamBet}

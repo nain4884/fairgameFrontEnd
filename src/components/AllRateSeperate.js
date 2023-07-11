@@ -44,7 +44,7 @@ const AllRateSeperate = ({
   callPage,
   betHistory,
   isArrow
-}) => {  
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [currentPage, setCurrentPage] = useState(0);
@@ -246,7 +246,7 @@ const AllRateSeperate = ({
                   }}
                 >
                   <Typography
-                    sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: ".7vw"}, color: "white" }}
+                    sx={{ fontWeight: "400", fontSize: { mobile: "10px", laptop: ".7vw" }, color: "white" }}
                   >
                     {"Profit/Loss"}
                   </Typography>
@@ -399,8 +399,8 @@ const AllRateSeperate = ({
                               fontWeight: "700",
                             }}
                           >
-                            {Number(i.myProfitLoss) >= 0 ? <><span style={{visibility:"hidden"}}>-</span>{Number(i.myProfitLoss).toFixed(2)}</>
-              : Number(i.myProfitLoss).toFixed(2) }
+                            {Number(i.myProfitLoss) >= 0 ? <><span style={{ visibility: "hidden" }}>-</span>{Number(i.myProfitLoss).toFixed(2)}</>
+                              : Number(i.myProfitLoss).toFixed(2)}
                             {/* {Number(i?.myProfitLoss).toFixed(2) || ""} */}
                           </Typography>
 
@@ -466,7 +466,7 @@ const AllRateSeperate = ({
 
       {/* --------- */}
       <style >
-              {`
+        {`
                 /* width */
                 .myScroll::-webkit-scrollbar {
                   width: 0px;
@@ -533,7 +533,7 @@ const RowComponent = ({ header, data }) => {
         <>
           <SingleBox
             color={getColor}
-            data={data?.marketType =="MANUAL BOOKMAKER" ? "Quick Bookmaker" : data?.marketType}
+            data={data?.marketType == "MANUAL BOOKMAKER" ? "Quick Bookmaker" : data?.marketType}
             first={true}
             header={header}
           />
@@ -557,11 +557,11 @@ const RowComponent = ({ header, data }) => {
       )}
       {header && (
         <>
-          <SingleBox color={getColor} data={data[0]} header={header} boxWidth="100%"/>
-          <SingleBox color={getColor()} data={data[1]} header={header} boxWidth="100%"/>
-          <SingleBox color={getColor()} data={data[2]} header={header}  boxWidth="50%"/>
-          <SingleBox color={getColor()} data={data[3]} header={header} boxWidth="50%"/>
-          <SingleBox color={getColor()} data={data[4]} header={header} boxWidth="100%"/>
+          <SingleBox color={getColor} data={data[0]} header={header} boxWidth="100%" />
+          <SingleBox color={getColor()} data={data[1]} header={header} boxWidth="100%" />
+          <SingleBox color={getColor()} data={data[2]} header={header} boxWidth="50%" />
+          <SingleBox color={getColor()} data={data[3]} header={header} boxWidth="50%" />
+          <SingleBox color={getColor()} data={data[4]} header={header} boxWidth="100%" />
         </>
       )}
     </Box>
@@ -665,7 +665,7 @@ const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
     </Box>
   );
 };
-const SingleBox = ({ data, header, color, up, first, time, width,boxWidth }) => {
+const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) => {
   return !header ? (
     first ? (
       <Box

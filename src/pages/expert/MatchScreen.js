@@ -353,6 +353,13 @@ const MatchScreen = () => {
 
               return updatedBettings;
             });
+            const manualBookmaker = {
+              matchId: value?.matchId,
+              teamA: value?.teamA_rate,
+              teamB: value?.teamB_rate,
+              teamC: value?.teamC_rate,
+            };
+            dispatch(setManualBookMarkerRates(manualBookmaker));
 
           } catch (err) {
             console.log(err?.message);
@@ -478,7 +485,7 @@ const MatchScreen = () => {
     if (socketMicro?.connected && state?.marketId && marketId) {
       socketMicro.emit("init", { id: state?.marketId });
       setInterval(() => {
-          
+
         socketMicro.emit("init", { id: state?.marketId });
       }, 3000);
       socketMicro.on("reconnect", () => {
