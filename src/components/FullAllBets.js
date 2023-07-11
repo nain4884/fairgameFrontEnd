@@ -450,6 +450,7 @@ const HeaderRow = ({ tag, mode }) => {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
+         
         }}
       >
         <Typography
@@ -457,6 +458,7 @@ const HeaderRow = ({ tag, mode }) => {
             fontSize: matchesMobile ? "10px" : ".7vw",
             fontWeight: "500",
             color: "white",
+            
           }}
         >
           Favourite
@@ -471,6 +473,7 @@ const HeaderRow = ({ tag, mode }) => {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
+      
         }}
       >
         <Typography
@@ -637,6 +640,10 @@ const LargeBox = ({ item, k }) => {
           wordWrap: "break-word",
           textAlign: "center",
           lineHeight: 1,
+          // whiteSpace: "nowrap",
+          // textOverflow: "ellipsis",
+          // maxWidth: "54px",
+          
         }}
       >
         {item?.name}

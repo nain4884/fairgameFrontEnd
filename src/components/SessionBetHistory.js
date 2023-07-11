@@ -22,7 +22,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         sx={[
           {
             width: "100%",
-            height: "42px",
+            height: "35px",
             justifyContent: "space-between",
             alignItems: "center",
             paddingLeft: "10px",
@@ -69,10 +69,10 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
       <Box sx={{ display: "flex", flexDirection: "row" }}>
         <Box
           sx={{
-            margin: { mobile: "1px", laptop: "0.5px" },
-            my: "0px !important" ,
+            margin: { mobile: "0.5px", laptop: "0.5px" },
+            // my: "0px !important",
             height: "30px",
-            width: "5%",
+            width: "4%",
             display: "flex",
             background: "black",
             justifyContent: "center",
@@ -80,14 +80,14 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
           }}
         >
           <Typography
-            sx={{ fontWeight: "400", fontSize: "11px", color: "white" }}
+            sx={{ fontWeight: "400", fontSize: { laptop: "11px", mobile: "8px" }, color: "white" }}
           >
             {"No"}
           </Typography>
         </Box>
         <RowComponent
           header={true}
-          data={["Username","Matched Bet", "Odds", "Yes/No", "Stake"]}
+          data={["Username", "Matched Bet", "Odds", "Yes/No", "Stake"]}
         />
         {profit && (
           <Box
@@ -98,12 +98,12 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
               background: "black",
               justifyContent: "center",
               alignItems: "center",
-              margin: { mobile: "1px", laptop: "0.5px" },
-              my: 0
+              margin: { mobile: "0.5px", laptop: "1px" },
+              marginY: '0 !important'
             }}
           >
             <Typography
-              sx={{ fontWeight: "400", fontSize: {mobile: "10px", laptop: "12px"}, color: "white" }}
+              sx={{ fontWeight: "400", fontSize: { mobile: "8px", laptop: "12px" }, color: "white" }}
             >
               {"Profit/Loss"}
             </Typography>
@@ -111,7 +111,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         )}
       </Box>
       <Box
-        className= "myScroll"
+        className="myScroll"
         sx={{
           maxHeight: { mobile: "200px", laptop: "420px" },
           overflowY: "auto",
@@ -134,9 +134,10 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
               >
                 <Box
                   sx={{
-                    height: "40px",
-                    margin: { mobile: "1px", laptop: "1px" },
-                    width: "5%",
+                    height: {mobile: "35px", laptop: "40px"},
+                    margin: { mobile: "0.5px", laptop: "0.5px" },
+                    // mb: 0,
+                    width: "4%",
                     display: "flex",
                     background: "black",
                     justifyContent: "center",
@@ -172,15 +173,16 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                 {profit && !i?.deleted_reason && (
                   <Box
                     sx={{
-                      height: "40px",
+                      height: {mobile: "35px", laptop: "40px"},
                       width: "20%",
-                      margin: { mobile: "1px", laptop: "1px" },
+                      margin: { mobile: "0.5px", laptop: "1px" },
+                      mb: 0,
                       display: "flex",
                       background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
                       // background: k % 2 == 0 ? "#E32A2A" : "#10DC61",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      paddingX: {laptop: "10px", mobile: "0"}
+                      paddingX: { laptop: "10px", mobile: "0" }
                     }}
                   >
                     <Typography
@@ -190,9 +192,9 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                         fontWeight: "700",
                       }}
                     >
-                                {Number(i.myProfitLoss) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{Number(i.myProfitLoss).toFixed(2)}</>
-              : Number(i.myProfitLoss).toFixed(2)}
+                      {Number(i.myProfitLoss) >= 0
+                        ? <><span style={{ visibility: "hidden" }}>-</span>{Number(i.myProfitLoss).toFixed(2)}</>
+                        : Number(i.myProfitLoss).toFixed(2)}
                     </Typography>
                     <StyledImage
                       sx={{
@@ -204,14 +206,14 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                           ? ARROWUP
                           : ARROWDOWN
                       }
-                      // src={k % 2 == 0 ? ARROWDOWN : ARROWUP}
+                    // src={k % 2 == 0 ? ARROWDOWN : ARROWUP}
                     />
                   </Box>
                 )}
                 {profit && i?.deleted_reason && (
                   <Box
                     sx={{
-                      height: "40px",
+                      height: {mobile: "35px", laptop: "40px"},
                       width: "20%",
                       margin: { mobile: "1px", laptop: "1px" },
                       display: "flex",
@@ -285,8 +287,8 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
   return (
     <Box
       sx={{
-        width: "100%",
-        height: header ? "30px" : "42px",
+        width: "81%",
+        height: header ? "30px" : {mobile: "35px", laptop: "40px"},
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
@@ -295,13 +297,13 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
     >
       {!header && (
         <>
-        <SingleBox
+          <SingleBox
             color={getColor()}
             data={data?.username}
             first={true}
             header={header}
-            // boxWidth="20%"
-        
+            boxWidth="25%"
+
           />
           <SingleBox
             color={getColor}
@@ -309,7 +311,7 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
             first={true}
             header={header}
             time={getTime(data.createAt)}
-            
+            boxWidth="30%"
           />
           <SingleBox
             color={getColor()}
@@ -321,36 +323,38 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
                 ? data?.rate?.split("-")[0]
                 : data?.rate?.split("-")[1]
             )}
-            // boxWidth="10%"
+            boxWidth="11%"
           />
-          <SingleBox 
-          // boxWidth="10%" 
-          color={getColor()} data={data?.betType} header={header} />
+          <SingleBox
+            boxWidth="11%"
+            color={getColor()} data={data?.betType} header={header} />
           <SingleBox
             color={getColor()}
             data={data?.stack || data?.stake || data?.amount}
             header={header}
-            // boxWidth="25%"
+            boxWidth="30%"
           />
         </>
       )}
       {header && (
         <>
-        <SingleBox
+          <SingleBox
             color={getColor}
             data={data[0]}
             first={true}
             header={header}
+            boxWidthHeader="25%"
           />
           <SingleBox
             color={getColor}
             data={data[1]}
             first={true}
             header={header}
+            boxWidthHeader="30%"
           />
-          <SingleBox color={getColor()} data={data[2]} header={header}    />
-          <SingleBox color={getColor()} data={data[3]} header={header}  />
-          <SingleBox color={getColor()} data={data[4]} header={header}  />
+          <SingleBox color={getColor()} data={data[2]} header={header} boxWidthHeader="11%" />
+          <SingleBox color={getColor()} data={data[3]} header={header} boxWidthHeader="11%" />
+          <SingleBox color={getColor()} data={data[4]} header={header} boxWidthHeader="30%" />
         </>
       )}
     </Box>
@@ -373,11 +377,12 @@ const SingleBox = ({
     first ? (
       <Box
         sx={{
-          width: "100%",
-          height: "40px",
+          // width: "100%",
+          width: boxWidth ? boxWidth : "100%",
+          height: {mobile: "35px", laptop: "40px"},
           flexDirection: "column",
           background: "#F8C851",
-          marginX: { mobile: "1px", laptop: "1px" },
+          marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
         }}
@@ -388,7 +393,7 @@ const SingleBox = ({
             fontSize: { mobile: "8px", laptop: "9px" },
             color: "black",
             textAlign: "center",
-            
+
           }}
         >
           {time}
@@ -400,7 +405,7 @@ const SingleBox = ({
             overflow: "hidden",
             lineHeight: 1,
             fontWeight: "600",
-            fontSize: { laptop: "11px", mobile: "10px" },
+            fontSize: { laptop: "11px", mobile: "8px" },
             color: "black",
             textAlign: "center",
           }}
@@ -415,7 +420,7 @@ const SingleBox = ({
           height: "40px",
           flexDirection: "column",
           background: color,
-          marginX: { mobile: "1px", laptop: "1px" },
+          marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
         }}
@@ -448,10 +453,10 @@ const SingleBox = ({
       <Box
         sx={{
           // width: "15%",
-          width: "100%",
-          height: "40px",
+          width: boxWidth,
+          height:{mobile: "35px", laptop: "40px"},
           background: color,
-          marginX: { mobile: "1px", laptop: "1px" },
+          marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -486,10 +491,10 @@ const SingleBox = ({
   ) : header && first ? (
     <Box
       sx={{
-        width: "100%",
+        width: boxWidthHeader ? boxWidthHeader : "100%",
         height: "30px",
         background: "#000",
-        marginX: { mobile: "1px", laptop: "1px" },
+        marginX: { mobile: "0.5px", laptop: "1px" },
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -498,7 +503,7 @@ const SingleBox = ({
       <Typography
         sx={{
           fontWeight: "400",
-          fontSize: "12px",
+          fontSize: { laptop: "12px", mobile: "8px" },
           color: "white",
           wordWrap: "break-word",
         }}
@@ -508,31 +513,31 @@ const SingleBox = ({
     </Box>
   ) : (
     <>
-    <Box
-      sx={{
-        // width:  data?.betType === "Stake" ? "10%" : "25%",
-        width: "100%",
-        height: "30px",
-        background: "black",
-        marginX: { mobile: "1px", laptop: "1px" },
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        
-      }}
-    >
-      <Typography
+      <Box
         sx={{
-          fontWeight: "400",
-          fontSize: { laptop: ".7vw", mobile: "10px" },
-          color: "white",
-          flexWrap: "wrap",
+          // width:  data?.betType === "Stake" ? "10%" : "25%",
+          width: boxWidthHeader ? boxWidthHeader : "100%",
+          height: "30px",
+          background: "black",
+          marginX: { mobile: "0.5px", laptop: "1px" },
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+
         }}
       >
-        {data}
-      </Typography>
-    </Box>
-    
+        <Typography
+          sx={{
+            fontWeight: "400",
+            fontSize: { laptop: "12px", mobile: "8px" },
+            color: "white",
+            flexWrap: "wrap",
+          }}
+        >
+          {data}
+        </Typography>
+      </Box>
+
     </>
   );
 };

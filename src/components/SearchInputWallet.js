@@ -33,7 +33,6 @@ const SearchInput = ({
           }}
           sx={{
             paddingY: "5px",
-            
             paddingLeft: "10px",
             fontSize: "10px",
             fontWeight: "500",
