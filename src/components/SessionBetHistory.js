@@ -22,7 +22,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         sx={[
           {
             width: "100%",
-            height: "35px",
+            height: {mobile: "37px", laptop: "42px"},
             justifyContent: "space-between",
             alignItems: "center",
             paddingLeft: "10px",
@@ -37,7 +37,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         ]}
       >
         <Typography
-          sx={{ fontWeight: "12px", color: "black", fontWeight: "700" }}
+          sx={{ fontSize: {mobile: "12px", laptop: "16px"}, color: "black", fontWeight: "700" }}
         >
           Session Bets
         </Typography>
@@ -72,7 +72,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
             margin: { mobile: "0.5px", laptop: "0.5px" },
             // my: "0px !important",
             height: "30px",
-            width: "4%",
+            width: {mobile: "5%", laptop: "4%"},
             display: "flex",
             background: "black",
             justifyContent: "center",
@@ -137,7 +137,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                     height: {mobile: "35px", laptop: "40px"},
                     margin: { mobile: "0.5px", laptop: "0.5px" },
                     // mb: 0,
-                    width: "4%",
+                    width: {mobile: "5%", laptop: "4%"},
                     display: "flex",
                     background: "black",
                     justifyContent: "center",
@@ -145,7 +145,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                   }}
                 >
                   <Typography
-                    sx={{ color: "white", fontSize: "11px", fontWeight: "500" }}
+                    sx={{ color: "white", fontSize: { mobile: "8px", laptop: "11px" }, fontWeight: "500" }}
                   >
                     {formattedNum}
                   </Typography>
