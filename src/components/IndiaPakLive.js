@@ -101,6 +101,7 @@ const IndiaPakLive = React.forwardRef(({
   const [live, setLive] = useState(true);
   // alert(JSON.stringify(proLoss1))
   const [proLoss, setProLoss] = useState(proLoss1);
+  const [isDisable, setIsDisable] = useState(false);
 
   // const [betData, setBetData] = useState(sessionAllBetRates);
 
@@ -122,6 +123,7 @@ const IndiaPakLive = React.forwardRef(({
     childFunction(item) {
       // alert(JSON.stringify(item));
       getManuallBookMaker(item?.bet_id?.id);
+      setIsDisable(true);
       // alert("Child function called from parent component");
       // Perform any desired actions in the child component
     }
@@ -454,11 +456,12 @@ const IndiaPakLive = React.forwardRef(({
             match={match}
             isPercent={{ isPercent, setIsPercent }}
             live={live}
+            isDisable={isDisable}
           />
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: "14px" }}>
             {!isCreateSession || sessionBetId ? (
               <>
-                <Box
+                {/* <Box
                   onClick={(e) => {
                     handleLive(live ? 0 : 1);
                     // setLive(!live);
@@ -483,7 +486,7 @@ const IndiaPakLive = React.forwardRef(({
                     src={LiveOn}
                     sx={{ marginLeft: "5px", height: "15px", width: "15px" }}
                   />
-                </Box>
+                </Box> */}
                 <Box
                   onClick={(e) => {
                     setVisible1(true);
@@ -531,7 +534,7 @@ const IndiaPakLive = React.forwardRef(({
                     )}
                   </Box>
                 </Box>
-                <Box
+                {!isDisable && <Box
                   onClick={(e) => {
                     setVisible(true);
                     e.stopPropagation();
@@ -571,13 +574,14 @@ const IndiaPakLive = React.forwardRef(({
                         }}
                         onClick={() => {
                           setVisible(false);
+                          setIsDisable(true);
                           getSessionResult(match?.id);
                         }}
                       />
                     )}
                   </Box>
-                </Box>
-                <Box
+                </Box>}
+                {!isDisable && <Box
                   onClick={(e) => {
                     setVisible2(true);
                     e.stopPropagation();
@@ -614,6 +618,7 @@ const IndiaPakLive = React.forwardRef(({
                           id: betId,
                           match_id: match?.id,
                           betStatus: 3,
+                          isNoResult: true,
                         }}
                         onClick={() => {
                           setVisible2(false);
@@ -622,7 +627,7 @@ const IndiaPakLive = React.forwardRef(({
                       />
                     )}
                   </Box>
-                </Box>
+                </Box>}
               </>
             ) : (
               <Box
@@ -700,6 +705,7 @@ const AddSession = ({
   match,
   isPercent,
   live,
+  isDisable
 }) => {
   const handleKeysMatchEvents = (key, event) => {
     // alert(key);
@@ -1018,6 +1024,7 @@ const AddSession = ({
                 bet_condition: e.target.value,
               });
             }}
+            disabled={betId ? true : false}
             value={Detail.Detail.bet_condition}
             variant="standard"
             InputProps={{
@@ -1171,6 +1178,7 @@ const AddSession = ({
                     onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
                   >
                     <TextField
+                      disabled={isDisable}
                       onChange={(e) => handleChange(e)}
                       type="Number"
                       value={Detail.Detail.no_rate ? Detail.Detail.no_rate : ""}
@@ -1257,6 +1265,7 @@ const AddSession = ({
                   >
                     <TextField
                       type="Number"
+                      disabled={isDisable}
                       value={
                         Detail?.Detail?.n_rate_percent
                           ? Detail?.Detail?.n_rate_percent

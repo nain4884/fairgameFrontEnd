@@ -244,7 +244,7 @@ const SessionResultModal = ({
             onClick();
           }}
           src={CancelDark}
-          style={{ width: "25px", height: "25px",cursor: "pointer" }}
+          style={{ width: "25px", height: "25px", cursor: "pointer" }}
         />
       </Box>
 
@@ -342,7 +342,7 @@ const SessionResultModal = ({
             </>
           )}
 
-          {newData?.betStatus !== 2 && (
+          {newData?.betStatus !== 2 && newData?.isNoResult && (
             <SessionResultCustomButton
               color={"rgb(106 90 90)"}
               title={newData?.betStatus !== 3 ? "No Result" : "Yes"}
