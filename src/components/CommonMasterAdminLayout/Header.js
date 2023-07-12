@@ -98,6 +98,22 @@ const CustomHeader = ({ }) => {
   const [notificationData, setNotificationData] = useState(null);
 
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // User returned to the web browser
+        console.log('User returned from sleep mode');
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleBeforeUnload = (event) => {
       if (nav === "admin") {
         localStorage.removeItem("role1");

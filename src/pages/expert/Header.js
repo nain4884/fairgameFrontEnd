@@ -126,10 +126,27 @@ const CustomHeader = ({ }) => {
   const { socket, socketMicro } = useContext(SocketContext);
 
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // User returned to the web browser
+        console.log('User returned from sleep mode 111');
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleBeforeUnload = (event) => {
       // localStorage.removeItem("role3");
       // localStorage.removeItem("JWTexpert");
     };
+
 
     const handleLoad = (event) => {
       let jwtS = sessionStorage.getItem("JWTexpert");

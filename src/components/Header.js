@@ -74,6 +74,22 @@ const CustomHeader = ({ }) => {
   const { socket, socketMicro } = useContext(SocketContext);
 
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // User returned to the web browser
+        console.log('User returned from sleep mode 111 user');
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleBeforeUnload = (event) => {
       // localStorage.removeItem("role4");//add
       // localStorage.removeItem("JWTuser");//add
