@@ -99,22 +99,25 @@ const MatchScreen = () => {
       socket.onevent = async (packet) => {
         // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
-          dispatch(setEConfirmAuth(true));
-          let token = localStorage.getItem("JWTexpert");
-          if (token) {
-            sessionStorage.setItem("JWTexpert", token);
-          }
-          navigate("/expert");
-          // dispatch(removeManualBookMarkerRates());
-          // dispatch(removeCurrentUser());
-          // dispatch(logout({ roleType: "role3" }));
-          // dispatch(removeSelectedMatch());
-          // setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
-          // // await axios.get("auth/logout");
-          // removeSocket();
+          // start use code start comment
+          // dispatch(setEConfirmAuth(true));
+          // let token = localStorage.getItem("JWTexpert");
+          // if (token) {
+          //   sessionStorage.setItem("JWTexpert", token);
+          // }
           // navigate("/expert");
-          // socket.disconnect();
-          // socketMicro.disconnect();
+          // start use code end comment
+
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role3" }));
+          dispatch(removeSelectedMatch());
+          setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
+          // await axios.get("auth/logout");
+          removeSocket();
+          navigate("/expert");
+          socket.disconnect();
+          socketMicro.disconnect();
         }
 
         if (packet.data[0] === "match_bet") {

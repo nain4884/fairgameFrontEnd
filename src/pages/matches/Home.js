@@ -183,21 +183,23 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           });
         }
         if (packet.data[0] === "logoutUserForce") {
-          dispatch(setConfirmAuth(true));
-          let token = localStorage.getItem("JWTuser");
-          if (token) {
-            sessionStorage.setItem("JWTuser", token);
-          }
-          navigate(`/`);
-          // dispatch(removeCurrentUser());
-          // dispatch(removeManualBookMarkerRates());
-          // dispatch(removeSelectedMatch());
-          // dispatch(logout({ roleType: "role4" }));
-          // setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-          // // await axios.get("auth/logout");
-          // removeSocket();
-          // socket.disconnect();
-          // socketMicro.disconnect();
+          // start use code start comment
+          // dispatch(setConfirmAuth(true));
+          // let token = localStorage.getItem("JWTuser");
+          // if (token) {
+          //   sessionStorage.setItem("JWTuser", token);
+          // }
+          // navigate(`/`);
+          // start use code end comment
+          dispatch(removeCurrentUser());
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeSelectedMatch());
+          dispatch(logout({ roleType: "role4" }));
+          setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+          // await axios.get("auth/logout");
+          removeSocket();
+          socket.disconnect();
+          socketMicro.disconnect();
         }
         if (packet.data[0] === "updateSessionRate_user") {
           const value = packet.data[1];

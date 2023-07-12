@@ -73,7 +73,7 @@ const CustomHeader = ({ }) => {
   const [onlineUser, setOnlineUser] = useState(activeUsers);
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const [firstTimeLoader,setFirstTimeLoader] = useState(true);
+  const [firstTimeLoader, setFirstTimeLoader] = useState(true);
   useEffect(() => {
     if (activeUsers !== 0) {
       setOnlineUser(activeUsers);
@@ -208,27 +208,30 @@ const CustomHeader = ({ }) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
+          // start use code start comment
           // alert(4)
-          dispatch(setEConfirmAuth(true));
-          // localStorage.setItem("confirmAuth", true);
-          let token = localStorage.getItem("JWTexpert");
-          if (token) {
-            sessionStorage.setItem("JWTexpert", token);
-          }
+          // dispatch(setEConfirmAuth(true));
+          // // localStorage.setItem("confirmAuth", true);
+          // let token = localStorage.getItem("JWTexpert");
+          // if (token) {
+          //   sessionStorage.setItem("JWTexpert", token);
+          // }
+          // navigate("/expert");
+          // start use code end comment
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role3" }));
+          socketMicro.disconnect();
+          socket.disconnect();
+          dispatch(removeSelectedMatch());
+          setGlobalStore((prev) => ({
+            ...prev,
+            expertJWT: "",
+            isSession: true,
+          }));
+          await axios.get("auth/logout");
+          removeSocket();
           navigate("/expert");
-          // dispatch(removeManualBookMarkerRates());
-          // dispatch(removeCurrentUser());
-          // dispatch(logout({ roleType: "role3" }));
-          // socketMicro.disconnect();
-          // socket.disconnect();
-          // dispatch(removeSelectedMatch());
-          // setGlobalStore((prev) => ({
-          //   ...prev,
-          //   expertJWT: "",
-          //   isSession: true,
-          // }));
-          // await axios.get("auth/logout");
-          // removeSocket();
         }
         if (packet.data[0] === "userBalanceUpdate") {
           const data = packet.data[1];
@@ -251,9 +254,9 @@ const CustomHeader = ({ }) => {
   useEffect(() => {
     setTimeout(() => {
       setFirstTimeLoader(false)
-    },4000)
-  },[])
-  
+    }, 4000)
+  }, [])
+
   useEffect(() => {
     if (location.pathname.includes("home")) {
       dispatch(setSelected(0));
@@ -315,28 +318,28 @@ const CustomHeader = ({ }) => {
   };
   return (
     <>
-    <ModalMUI
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+      <ModalMUI
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
 
-            backgroundColor:"white",
-            "& > .MuiBackdrop-root" : {
+          backgroundColor: "white",
+          "& > .MuiBackdrop-root": {
             backdropFilter: "blur(2px)",
-            backgroundColor:"white",
+            backgroundColor: "white",
           }
-    
-          }}
-      
-          open={firstTimeLoader}
-          // onClose={setSelected}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-        
-        <CustomLoader/>
-        </ModalMUI>
+
+        }}
+
+        open={firstTimeLoader}
+        // onClose={setSelected}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+
+        <CustomLoader />
+      </ModalMUI>
       <SessionTimeOut />
       <AppBar
         position="fixed"
@@ -584,7 +587,7 @@ const CustomHeader = ({ }) => {
                 sx={{ height: "25px", width: "25px" }}
               />
             </Box>
-            <Box sx={{display: "flex", alignItems: "center"}}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               <ActiveUsers
                 containerStyle={{}}
                 image={Users}
