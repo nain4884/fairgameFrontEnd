@@ -281,6 +281,12 @@ const IndiaPakLive = React.forwardRef(({
                 n_rate_percent: firstValue,
                 y_rate_percent: secondValue,
               });
+              setLock({
+                isNo: false,
+                isYes: false,
+                isNoPercent: false,
+                isYesPercent: false,
+              });
             }
           }
         }
