@@ -863,15 +863,40 @@ const DeleteBet = ({ }) => {
               return updatedBettings;
             });
 
+            // setCurrentMatch((prev) => {
+            //   if (prev?.id === value?.matchId) {
+            //     return {
+            //       ...prev,
+            //       teamA_rate: value?.teamA_rate,
+            //       teamB_rate: value?.teamB_rate,
+            //       teamC_rate: value?.teamC_rate,
+            //     };
+            //   }
+            //   return prev;
+            // });
             setCurrentMatch((prev) => {
+              const updatedBettings = prev?.bettings?.map((betting) => {
+                if (betting?.id === value?.betId) {
+                  // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                  let profitLoss = value?.profitLoss;
+                  return {
+                    ...betting,
+                    profitLoss: profitLoss,
+                  };
+                }
+                return betting;
+              });
+
               if (prev?.id === value?.matchId) {
                 return {
                   ...prev,
+                  bettings: updatedBettings,
                   teamA_rate: value?.teamA_rate,
                   teamB_rate: value?.teamB_rate,
                   teamC_rate: value?.teamC_rate,
                 };
               }
+
               return prev;
             });
 
@@ -885,9 +910,11 @@ const DeleteBet = ({ }) => {
             setSingleIObtes((IOSinglebets) => {
               const updatedBettings = IOSinglebets?.map((betting) => {
                 if (value?.betPlaceIds.includes(betting.id)) {
+                  // let profitLoss = value?.profitLoss;
                   return {
                     ...betting,
                     deleted_reason: value?.deleted_reason,
+                    // profitLoss: profitLoss,
                   };
                 }
                 return betting;
@@ -896,15 +923,40 @@ const DeleteBet = ({ }) => {
               return updatedBettings;
             });
 
+            // setCurrentMatch((prev) => {
+            //   if (prev?.id === value?.matchId) {
+            //     return {
+            //       ...prev,
+            //       teamA_rate: value?.teamA_rate,
+            //       teamB_rate: value?.teamB_rate,
+            //       teamC_rate: value?.teamC_rate,
+            //     };
+            //   }
+            //   return prev;
+            // });
             setCurrentMatch((prev) => {
+              const updatedBettings = prev?.bettings?.map((betting) => {
+                if (betting?.id === value?.betId) {
+                  // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                  let profitLoss = value?.profitLoss;
+                  return {
+                    ...betting,
+                    profitLoss: profitLoss,
+                  };
+                }
+                return betting;
+              });
+
               if (prev?.id === value?.matchId) {
                 return {
                   ...prev,
+                  bettings: updatedBettings,
                   teamA_rate: value?.teamA_rate,
                   teamB_rate: value?.teamB_rate,
                   teamC_rate: value?.teamC_rate,
                 };
               }
+
               return prev;
             });
 

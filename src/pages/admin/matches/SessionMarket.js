@@ -122,36 +122,36 @@ const SessionMarket = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-end",
-             
+
             }}
           >
-            <Box sx={{ gap: "4px", display: "flex"}}>
-            <SmallBoxSeason total={sessionBets?.length || 0} />
-            {/* static code */}
-            <Box
-              sx={{
-                width: { laptop: "72px", mobile: "50px" },
-                flexDirection: "column",
-                // position: "absolute",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "30px",
-                background: "white",
-                borderRadius: "3px",
-              }}
-            >
-              <Typography
-                sx={{ fontSize:  {mobile:"8px", laptop: "8px"}, fontWeight: "bold", color: "#FF4D4D" }}
+            <Box sx={{ gap: "4px", display: "flex" }}>
+              <SmallBoxSeason total={sessionBets?.length || 0} />
+              {/* static code */}
+              <Box
+                sx={{
+                  width: { laptop: "72px", mobile: "50px" },
+                  flexDirection: "column",
+                  // position: "absolute",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "30px",
+                  background: "white",
+                  borderRadius: "3px",
+                }}
               >
-                Amount
-              </Typography>
-              <Typography
-                sx={{ fontSize:  {mobile:"14px", laptop: "14px"}, fontWeight: "bold", color: "#0B4F26", lineHeight: 1 }}
-              >
-                0
-              </Typography>
-            </Box>
+                <Typography
+                  sx={{ fontSize: { mobile: "8px", laptop: "8px" }, fontWeight: "bold", color: "#FF4D4D" }}
+                >
+                  Amount
+                </Typography>
+                <Typography
+                  sx={{ fontSize: { mobile: "14px", laptop: "14px" }, fontWeight: "bold", color: "#0B4F26", lineHeight: 1 }}
+                >
+                  0
+                </Typography>
+              </Box>
 
             </Box>
             <img
@@ -171,166 +171,166 @@ const SessionMarket = ({
           </Box>
         </Box>
         {visible && (
-        <Box
-          sx={{
-            width: "100%",
-            alignItems: "center",
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "auto",
-          }}
-        >
-          {
-            <Box
-              sx={{
-                display: "flex",
-                background: "#319E5B",
-                height: "25px",
-                width: "99.7%",
-                alignSelf: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  background: "'#319E5B'",
-                  height: "25px",
-                  width: "40%",
-                  alignItems: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "white",
-                    fontSize: { laptop: "11px", mobile: "9px" },
-                    marginLeft: "7px",
-                  }}
-                >
-                  MIN: {currentMatch?.betfair_session_min_bet} MAX:
-                  {currentMatch?.betfair_session_max_bet}
-                </Typography>
-              </Box>
+          <Box
+            sx={{
+              width: "100%",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+              overflowY: "auto",
+            }}
+          >
+            {
               <Box
                 sx={{
                   display: "flex",
                   background: "#319E5B",
                   height: "25px",
-                  width: { laptop: "60%", mobile: "81%" },
-                  justifyContent: { laptop: "flex-end", mobile: "flex-end" },
+                  width: "99.7%",
+                  alignSelf: "center",
                 }}
               >
                 <Box
                   sx={{
-                    background: "#FF9292",
-                    width: { laptop: "5.02vw", mobile: "30.06%" },
-                    height: "100%",
                     display: "flex",
-                    justifyContent: "center",
+                    background: "'#319E5B'",
+                    height: "25px",
+                    width: "40%",
                     alignItems: "center",
                   }}
                 >
                   <Typography
-                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    sx={{
+                      color: "white",
+                      fontSize: { laptop: "11px", mobile: "9px" },
+                      marginLeft: "7px",
+                    }}
                   >
-                    NO
+                    MIN: {currentMatch?.betfair_session_min_bet} MAX:
+                    {currentMatch?.betfair_session_max_bet}
                   </Typography>
                 </Box>
                 <Box
-                  sx={{ width: "3px", display: "flex", background: "white" }}
+                  sx={{
+                    display: "flex",
+                    background: "#319E5B",
+                    height: "25px",
+                    width: { laptop: "60%", mobile: "81%" },
+                    justifyContent: { laptop: "flex-end", mobile: "flex-end" },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      background: "#FF9292",
+                      width: { laptop: "5.02vw", mobile: "30.06%" },
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    >
+                      NO
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{ width: "3px", display: "flex", background: "white" }}
+                  ></Box>
+                  <Box
+                    sx={{
+                      background: "#00C0F9",
+                      width: { laptop: "5.05vw", mobile: "30%" },
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    >
+                      YES
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            }
+            {locked && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  height: "86%",
+                  top: "14%",
+                  width: "100%",
+                  display: "flex",
+                  zIndex: "999",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "rgba(0, 0, 0, .6)",
+                }}
+              >
+                <Box
+                  sx={{ width: { mobile: "60%", laptop: "20%", tablet: "60%" } }}
                 ></Box>
                 <Box
                   sx={{
-                    background: "#00C0F9",
-                    width: { laptop: "5.05vw", mobile: "30%" },
-                    height: "100%",
+                    width: { mobile: "40%", laptop: "60%", tablet: "40%" },
+                    gap: 1,
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
                 >
+                  <img src={LOCKED} style={{ width: "35px", height: "40px" }} />
                   <Typography
-                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    sx={{
+                      fontWeight: "600",
+                      margin: "20px 0px 0px -25px",
+                      fontSize: "20px",
+                      color: "#FFF",
+                    }}
                   >
-                    YES
+                    {" "}
+                    Locked{" "}
                   </Typography>
                 </Box>
               </Box>
-            </Box>
-          }
-          {locked && (
+            )}
             <Box
               sx={{
-                position: "absolute",
-                height: "86%",
-                top: "14%",
-                width: "100%",
                 display: "flex",
-                zIndex: "999",
-                justifyContent: "center",
-                alignItems: "center",
-                background: "rgba(0, 0, 0, .6)",
+                flexDirection: "column",
+                maxHeight: "160px",
+                width: "100%",
+                position: "relative",
               }}
             >
-              <Box
-                sx={{ width: { mobile: "60%", laptop: "20%", tablet: "60%" } }}
-              ></Box>
-              <Box
-                sx={{
-                  width: { mobile: "40%", laptop: "60%", tablet: "40%" },
-                  gap: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <img src={LOCKED} style={{ width: "35px", height: "40px" }} />
-                <Typography
-                  sx={{
-                    fontWeight: "600",
-                    margin: "20px 0px 0px -25px",
-                    fontSize: "20px",
-                    color: "#FFF",
-                  }}
-                >
-                  {" "}
-                  Locked{" "}
-                </Typography>
-              </Box>
-            </Box>
-          )}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              maxHeight: "160px",
-              width: "100%",
-              position: "relative",
-            }}
-          >
-            {matchSessionData?.length > 0 &&
-              // matchSessionData?.reverse()?.map((element, index) => {
-              matchSessionData?.map((element, index) => {
-                return (
-                  <Box
-                    key={element?.id}
-                    sx={{
-                      width: "100%",
-                      display: sessionOffline?.includes(element.id)
-                        ? "none"
-                        : "block",
-                    }}
-                  >
-                    <SeasonMarketBox
-                      newData={element}
-                      setMatchSessionData={setMatchSessionData}
-                      index={index}
-                      setData={setData}
-                    />
-                    <Divider />
-                  </Box>
-                );
-              })}
-            {/* {matchSessionData?.length > 0 &&
+              {matchSessionData?.length > 0 &&
+                // matchSessionData?.reverse()?.map((element, index) => {
+                matchSessionData?.map((element, index) => {
+                  return (
+                    <Box
+                      key={element?.id}
+                      sx={{
+                        width: "100%",
+                        display: sessionOffline?.includes(element.id)
+                          ? "none"
+                          : "block",
+                      }}
+                    >
+                      <SeasonMarketBox
+                        newData={element}
+                        setMatchSessionData={setMatchSessionData}
+                        index={index}
+                        setData={setData}
+                      />
+                      <Divider />
+                    </Box>
+                  );
+                })}
+              {/* {matchSessionData?.length > 0 &&
               matchSessionData?.map((match, index) => (
                 <Box key={index}
                   sx={{
@@ -349,36 +349,36 @@ const SessionMarket = ({
                   <Divider />
                 </Box>
               ))} */}
-          </Box>
-          {/* {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
+            </Box>
+            {/* {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
             <Box sx={{ width: '100%', alignSelf: 'flex-end', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', alignItems: 'center', justifyContent: 'center', display: 'flex' }} >
               <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
 
               <Typography sx={{ color: 'white', fontWeight: '600', marginLeft: '-25px', fontSize: '20px', marginTop: '20px' }}>Locked</Typography>
             </Box>
           </Box>} */}
-          {showUnlock && (
-            <Box
-              sx={{
-                position: "absolute",
-                width: "100%",
-                background: "transparent",
-                alignSelf: "center",
-                position: "absolute",
-                marginTop: "38px",
-                left: "20%",
-                zIndex: 999,
-              }}
-            >
-              <UnlockComponent
-                unlock={locked}
-                title={(locked ? "Unlock " : "Lock ") + "Session Market"}
-                handleHide={handleHide}
-                onSubmit={onSubmit}
-              />
-            </Box>
-          )}
-        </Box>
+            {showUnlock && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  width: "100%",
+                  background: "transparent",
+                  alignSelf: "center",
+                  position: "absolute",
+                  marginTop: "38px",
+                  left: "20%",
+                  zIndex: 999,
+                }}
+              >
+                <UnlockComponent
+                  unlock={locked}
+                  title={(locked ? "Unlock " : "Lock ") + "Session Market"}
+                  handleHide={handleHide}
+                  onSubmit={onSubmit}
+                />
+              </Box>
+            )}
+          </Box>
         )}
       </Box>
       {data?.length > 0 && (

@@ -258,6 +258,33 @@ const IndiaPakLive = React.forwardRef(({
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "updateSessionRate_user") {
+          // match_id
+          const value = packet.data[1];
+          if (match?.id == value.match_id) {
+            if (value.suspended == "suspended") {
+              setLock({
+                ...lock,
+                isNo: true,
+                isYes: true,
+                isNoPercent: true,
+                isYesPercent: true,
+              });
+            } else {
+              let [firstValue, secondValue] = value.rate_percent
+                ? value.rate_percent.split("-")
+                : "";
+              setDetail({
+                ...Detail,
+                no_rate: value.no_rate,
+                yes_rate: value.yes_rate,
+                n_rate_percent: firstValue,
+                y_rate_percent: secondValue,
+              });
+            }
+          }
+        }
+
       };
     }
   }, [socket, betId, sessionAllBet]);
@@ -487,7 +514,7 @@ const IndiaPakLive = React.forwardRef(({
                     sx={{ marginLeft: "5px", height: "15px", width: "15px" }}
                   />
                 </Box> */}
-                <Box
+                {isDisable && <Box
                   onClick={(e) => {
                     setVisible1(true);
                     e.stopPropagation();
@@ -533,7 +560,7 @@ const IndiaPakLive = React.forwardRef(({
                       />
                     )}
                   </Box>
-                </Box>
+                </Box>}
                 {!isDisable && <Box
                   onClick={(e) => {
                     setVisible(true);
@@ -1213,6 +1240,7 @@ const AddSession = ({
                     type="Number"
                     value={Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ""}
                     variant="standard"
+                    disabled={isDisable}
                     InputProps={{
                       disableUnderline: true,
                       style: {
@@ -1299,6 +1327,7 @@ const AddSession = ({
               >
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                   <TextField
+                    disabled={isDisable}
                     type="Number"
                     value={
                       Detail.Detail.y_rate_percent

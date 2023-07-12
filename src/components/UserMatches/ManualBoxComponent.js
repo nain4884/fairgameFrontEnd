@@ -6,7 +6,7 @@ import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
 import { BallStart } from "../../assets";
 import { useEffect } from "react";
- 
+
 const BoxComponent = ({
   name,
   color,
@@ -273,7 +273,8 @@ const BoxComponent = ({
                     selectedFastAmount={selectedFastAmount}
                     back={true}
                     currentMatch={newData}
-                    lock={lock}
+                    // lock={lock}
+                    lock={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") > 0 ? false : true : true}
                     rates={allRates}
                     // value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
                     // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
@@ -308,7 +309,8 @@ const BoxComponent = ({
                     selectedFastAmount={selectedFastAmount}
                     back={true}
                     currentMatch={newData}
-                    lock={lock}
+                    // lock={lock}
+                    lock={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") > 0 ? false : true : true}
                     rates={allRates}
                     // value={matchOddsData?.back ? matchOddsData?.back - 1 : 0}
                     value={
@@ -342,7 +344,8 @@ const BoxComponent = ({
                   selectedFastAmount={selectedFastAmount}
                   back={true}
                   currentMatch={newData}
-                  lock={lock}
+                  // lock={lock}
+                  lock={matchOddsData?.back > 0 ? false : true}
                   rates={allRates}
                   value={matchOddsData?.back ? matchOddsData?.back : 0}
                   value2={""}
@@ -371,7 +374,8 @@ const BoxComponent = ({
                   selectedFastAmount={selectedFastAmount}
                   back={true}
                   currentMatch={newData}
-                  lock={lock}
+                  // lock={lock}
+                  lock={matchOddsData?.lay > 0 ? false : true}
                   rates={allRates}
                   value={matchOddsData?.lay ? matchOddsData?.lay : 0}
                   value2={""}
@@ -400,7 +404,8 @@ const BoxComponent = ({
                     back={true}
                     currentMatch={newData}
                     rates={allRates}
-                    lock={lock}
+                    // lock={lock}
+                    lock={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 1, "") > 0 ? false : true : true}
                     // value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
                     value={
                       matchOddsData?.lay
@@ -434,7 +439,8 @@ const BoxComponent = ({
                     back={true}
                     currentMatch={newData}
                     rates={allRates}
-                    lock={lock}
+                    // lock={lock}
+                    lock={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 2, "") > 0 ? false : true : true}
                     // value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
                     value={
                       matchOddsData?.lay
