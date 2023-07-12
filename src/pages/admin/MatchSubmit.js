@@ -844,6 +844,74 @@ const MatchSubmit = ({ }) => {
                 console.log(err?.message);
               }
             }
+
+            if (packet.data[0] === "resultDeclareForBet") {
+              const value = packet.data[1];
+              // matchId = value?.match_id;
+              try {
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
+                    if (item.id === value?.match_id) {
+                      const updatedBettings = item.bettings.map((betting) => {
+                        if (betting.id === value.betId) {
+                          if (item?.sessionOffline.includes(value.betId)) {
+                            const newRes = item.sessionOffline.filter((id) => id !== value.betId);
+                            item.sessionOffline = newRes;
+                          }
+                          item?.sessionOffline.push(value.betId);
+                        }
+                        return betting;
+                      });
+
+                      if (!item?.sessionOffline) {
+                        item.sessionOffline = [];
+                      }
+                      if (
+                        item.sessionOffline.includes(value.id) &&
+                        value.betStatus === 1
+                      ) {
+                        const newRes = item.sessionOffline.filter((id) => id !== value.id);
+                        item.sessionOffline = newRes;
+                      }
+                      if (value.betStatus === 0) {
+                        item.sessionOffline.push(value.id);
+                      }
+
+                      return {
+                        ...item,
+                        bettings: updatedBettings,
+                        sessionOffline: item.sessionOffline,
+                      };
+                    }
+                    return item;
+                  });
+                });
+              } catch (err) {
+                console.log(err?.message);
+              }
+            }
+            if (packet.data[0] === "sessionResult") {
+              const value = packet.data[1];
+              try {
+                setMatchData((prevMatchData) => {
+                  return prevMatchData.map((item) => {
+                    const updatedBettings = item.bettings.filter(
+                      (betting) => betting.id !== value?.betId
+                    );
+
+                    return {
+                      ...item,
+                      bettings: updatedBettings,
+                    };
+                  });
+                });
+                setSessionBets((sessionBets) =>
+                  sessionBets?.filter((v) => v?.bet_id !== value?.betId)
+                );
+              } catch (err) {
+                console.log(err?.message);
+              }
+            }
           })(i);
         }
 

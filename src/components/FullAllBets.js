@@ -75,7 +75,7 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
               id: v?.id
             },
             {
-              name: v?.marketType,
+              name: v?.marketType == "MANUAL BOOKMAKER" ? "Quick Bookmaker" : v?.marketType,
               color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
               background: ["no", "yes"].includes(v?.bet_type) ? "#319E5B" : "#F1C550",
               deleted_reason: v?.deleted_reason,
@@ -297,7 +297,7 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
                     {!mode && (
                       <Typography
                         sx={{
-                          fontSize: !tag ? {mobile: "8px", laptop: "11px"} : "13px",
+                          fontSize: !tag ? { mobile: "8px", laptop: "11px" } : "13px",
                           fontWeight: tag ? "bold" : "600",
                           color: "white",
                         }}
@@ -450,7 +450,7 @@ const HeaderRow = ({ tag, mode }) => {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
-         
+
         }}
       >
         <Typography
@@ -458,7 +458,7 @@ const HeaderRow = ({ tag, mode }) => {
             fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
-            
+
           }}
         >
           Favourite
@@ -473,7 +473,7 @@ const HeaderRow = ({ tag, mode }) => {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
-      
+
         }}
       >
         <Typography
@@ -640,10 +640,10 @@ const LargeBox = ({ item, k }) => {
           wordWrap: "break-word",
           textAlign: "center",
           lineHeight: 1,
-          whiteSpace: {mobile: "nowrap",laptop: "inherit"},
+          whiteSpace: { mobile: "nowrap", laptop: "inherit" },
           textOverflow: "ellipsis",
-          maxWidth: {mobile: "43px", laptop: "initial"},
-          
+          maxWidth: { mobile: "43px", laptop: "initial" },
+
         }}
       >
         {item?.name}

@@ -913,6 +913,72 @@ const DeleteBet = ({ }) => {
           }
         }
 
+        if (packet.data[0] === "resultDeclareForBet") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id !== value?.match_id) {
+                return currentMatch;
+              }
+              // Update the bettings array in the current match object
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (betting.id === value.betId) {
+                  if (sessionOffline.includes(value.betId)) {
+                    const newres = sessionOffline.filter(
+                      (id) => id !== value.betId
+                    );
+                    sessionOffline = newres;
+                  }
+                  sessionOffline.push(value.betId);
+                }
+                return betting;
+              });
+              var newUpdatedValue = updatedBettings;
+              return {
+                ...currentMatch,
+                bettings: newUpdatedValue,
+              };
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+        if (packet.data[0] === "sessionResult") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            // const user = {
+            //   ...currentUser,
+            //   current_balance: value.current_balance,
+            //   exposure: value.exposure,
+            // };
+
+            // dispatch(setCurrentUser(user));
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.matchId !== value?.matchId) {
+                // If the new bet doesn't belong to the current match, return the current state
+                return currentMatch;
+              }
+
+              const updatedBettings = currentMatch?.bettings?.filter(
+                (betting) => betting?.id !== value?.betId
+              );
+
+              return {
+                ...currentMatch,
+                bettings: updatedBettings,
+              };
+            });
+            // setSessionExposure(value?.sessionExposure);
+            setSessionBets((sessionBets) =>
+              sessionBets?.filter((v) => v?.bet_id !== value?.betId)
+            );
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
       };
     }
   }, [socket]);
