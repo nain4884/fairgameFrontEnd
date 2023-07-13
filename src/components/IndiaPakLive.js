@@ -274,19 +274,15 @@ const IndiaPakLive = React.forwardRef(({
               let [firstValue, secondValue] = value.rate_percent
                 ? value.rate_percent.split("-")
                 : "";
-              setDetail({
-                ...Detail,
-                no_rate: value.no_rate,
-                yes_rate: value.yes_rate,
-                n_rate_percent: firstValue,
-                y_rate_percent: secondValue,
-              });
-              setLock({
-                isNo: false,
-                isYes: false,
-                isNoPercent: false,
-                isYesPercent: false,
-              });
+              if (value.suspended != "Ball Started") {
+                setDetail({
+                  ...Detail,
+                  no_rate: value.no_rate,
+                  yes_rate: value.yes_rate,
+                  n_rate_percent: firstValue,
+                  y_rate_percent: secondValue,
+                });
+              }
             }
           }
         }

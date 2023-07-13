@@ -1026,6 +1026,9 @@ const DeleteBet = ({ }) => {
             setSessionBets((sessionBets) =>
               sessionBets?.filter((v) => v?.bet_id !== value?.betId)
             );
+            setSingleIObtes((sessionBets) =>
+              sessionBets?.filter((v) => v?.bet_id !== value?.betId)
+            );
           } catch (err) {
             console.log(err?.message);
           }
