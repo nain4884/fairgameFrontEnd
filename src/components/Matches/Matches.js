@@ -1,6 +1,6 @@
 import { Pagination, Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import {} from "@mui/material";
+import { } from "@mui/material";
 import "../index.css";
 import Odds from "./Odds";
 import { useDispatch } from "react-redux";
@@ -61,6 +61,10 @@ const MatchesComponent = ({
     setCurrentPage(parseInt(value));
   }
 
+  const handleUpdateMatch = async () => {
+    getAllMatch();
+  }
+
   const currentElements = matchData;
   return (
     <>
@@ -78,6 +82,7 @@ const MatchesComponent = ({
             top={true}
             blur={false}
             match={match}
+            handleUpdateMatch={handleUpdateMatch}
           />
         );
       })}

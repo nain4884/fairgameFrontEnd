@@ -16,7 +16,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
-  const [loader,setLoader]=useState(false)
+  const [loader, setLoader] = useState(false)
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [data1, setData] = useState([]);
@@ -27,7 +27,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       const { data } = await axios.get(
         `/game-match/getCommisionReport/${id}?&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
-     
+
       // data?.data?.data.map((element) => {
       //   let roleDetail = roles.find(findThisRole);
       //   function findThisRole(role) {
@@ -40,16 +40,16 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-            pageLimit
+          pageLimit
         )
       );
-    setTimeout(( )=>{
-      setLoader(false)
-    },1000)
-    } catch (e) {
-      setTimeout(( )=>{
+      setTimeout(() => {
         setLoader(false)
-      },1000)
+      }, 1000)
+    } catch (e) {
+      setTimeout(() => {
+        setLoader(false)
+      }, 1000)
       console.log(e);
     }
   }
@@ -273,7 +273,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       commissionAmount: element.ComissionAmount,
       commissionType: element.ComissionType,
       betType: element?.bet_place_id?.bet_type,
-      stack:element?.ComissionType==="match total" ? (element?.ComissionAmount*100)/element?.userId?.matchComission :  element?.bet_place_id?.amount,
+      stack: element?.ComissionType === "match total" ? (element?.ComissionAmount * 100) / element?.userId?.matchComission : element?.bet_place_id?.amount,
       odds: element?.bet_place_id?.odds,
       isActive: element?.isActive,
       teamBet: element?.bet_place_id?.team_bet,
@@ -315,7 +315,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             containerStyle,
           ]}
         >
-             <Box
+          <Box
             sx={[
               {
                 width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
@@ -370,6 +370,10 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                     ["#319E5B", "#303030"].includes(
                       fContainerStyle.background
                     ) && "white",
+                  display: " -webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
                 },
               ]}
             >
@@ -392,8 +396,8 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
               {/* {elementToUDM.teamBet} */}
               {elementToUDM.createAt
                 ? `${moment(elementToUDM?.createAt).format("L")}  ${moment(
-                    elementToUDM?.createAt
-                  ).format("LT")}`
+                  elementToUDM?.createAt
+                ).format("LT")}`
                 : ""}
             </Typography>
           </Box>
@@ -514,7 +518,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           {
             width: { mobile: "96%", laptop: "85%", tablet: "96%" },
             // marginX: "0.5%",
-            minHeight:loader?"50%" : "200px",
+            minHeight: loader ? "50%" : "200px",
             display: "flex",
             flexDirection: "column",
             // justifyContent: "space-between",
@@ -529,7 +533,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           }),
         ]}
       >
-      {loader ? <CustomLoader/> : <> <Box sx={{ marginX: "0", background: "#F8C851", height: "50px" }}>
+        {loader ? <CustomLoader /> : <> <Box sx={{ marginX: "0", background: "#F8C851", height: "50px" }}>
           <ListH
             id={id}
             userName={title}
@@ -540,65 +544,65 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           />
         </Box>
 
-        <Box
-          sx={{
-            overflowX: "auto",
-            width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-          }}
-        >
-          <ListHeaderT />
           <Box
             sx={{
-              display: matchesBreakPoint ? "inline-block" : "block",
-              width: "100%",
-              position: "relative",
+              overflowX: "auto",
+              width: { mobile: "100%", laptop: "100%", tablet: "100%" },
             }}
           >
-            {data1?.map((element, i) => (
-              <AccountListRow
-                key={i}
-                showOptions={false}
-                showChildModal={true}
-                containerStyle={{
-                  background:
-                    element?.ComissionType === "commission setteled"
-                      ? "#135a2e"
-                      : ["back", "yes"].includes(
+            <ListHeaderT />
+            <Box
+              sx={{
+                display: matchesBreakPoint ? "inline-block" : "block",
+                width: "100%",
+                position: "relative",
+              }}
+            >
+              {data1?.map((element, i) => (
+                <AccountListRow
+                  key={i}
+                  showOptions={false}
+                  showChildModal={true}
+                  containerStyle={{
+                    background:
+                      element?.ComissionType === "commission setteled"
+                        ? "#135a2e"
+                        : ["back", "yes"].includes(
                           element?.bet_place_id?.bet_type
                         )
-                      ? "#B3E0FF"
-                      : ["lay", "no"].includes(element?.bet_place_id?.bet_type)
-                      ? "#FF9292"
-                      : "#FFE094 ",
-                }}
-                profit={element.profit_loss >= 0}
-                fContainerStyle={{
-                  background:
-                    element?.ComissionType === "session"
-                      ? "#319E5B"
-                      : element?.ComissionType === "commission setteled"
-                      ? "#135a2e"
-                      : "#F1C550",
-                }}
-                fTextStyle={{
-                  color: ["commission setteled"].includes(
-                    element?.ComissionType
-                  )
-                    && "white",
-                }}
-                element={element}
-                getListOfUser={getListOfUser}
-                currentPage={currentPage}
-              />
-            ))}
+                          ? "#B3E0FF"
+                          : ["lay", "no"].includes(element?.bet_place_id?.bet_type)
+                            ? "#FF9292"
+                            : "#FFE094 ",
+                  }}
+                  profit={element.profit_loss >= 0}
+                  fContainerStyle={{
+                    background:
+                      element?.ComissionType === "session"
+                        ? "#319E5B"
+                        : element?.ComissionType === "commission setteled"
+                          ? "#135a2e"
+                          : "#F1C550",
+                  }}
+                  fTextStyle={{
+                    color: ["commission setteled"].includes(
+                      element?.ComissionType
+                    )
+                      && "white",
+                  }}
+                  element={element}
+                  getListOfUser={getListOfUser}
+                  currentPage={currentPage}
+                />
+              ))}
+            </Box>
           </Box>
-        </Box>
-        <Footer
-          currentPage={currentPage}
-          pages={pageCount}
-          callPage={callPage}
-        /></>}
-       
+          <Footer
+            currentPage={currentPage}
+            pages={pageCount}
+            callPage={callPage}
+          /></>}
+
       </Box>
     </>
   );
@@ -704,7 +708,7 @@ const Footer = ({ currentPage, getListOfUser, pages, callPage, setShow }) => {
   );
 };
 
-const ListH = ({ id, title, setData, matchesMobile, setShow ,userName}) => {
+const ListH = ({ id, title, setData, matchesMobile, setShow, userName }) => {
   return (
     <Box
       display={"flex"}
@@ -722,11 +726,11 @@ const ListH = ({ id, title, setData, matchesMobile, setShow ,userName}) => {
             fontSize: { mobile: "14px", laptop: "18px", tablet: "18px" },
             fontWeight: "500",
             color: "#000",
-            textTransform:"capitalize",
+            textTransform: "capitalize",
             marginRight: { mobile: "10px", laptop: "20px", tablet: "20px" },
           }}
         >
-          {userName ? `${userName} -` :""}  ({title})        </Typography>
+          {userName ? `${userName} -` : ""}  ({title})        </Typography>
         {/* 
           {matchesMobile && (
             <Box sx={{ display: "flex", marginTop: "5px" }}>
@@ -812,7 +816,7 @@ const ListH = ({ id, title, setData, matchesMobile, setShow ,userName}) => {
           </>
         )} */}
       </Box>
-   
+
       <Button
         sx={{ color: "", fontSize: "30px" }}
         onClick={() => {

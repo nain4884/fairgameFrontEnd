@@ -1,5 +1,5 @@
 import { Box, Pagination, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ARROWUP, BACKIMAGE, CHECK } from "../admin/assets/index";
 import StyledImage from "./StyledImage";
@@ -9,8 +9,10 @@ import { toast } from "react-toastify";
 import LiveMarketComponent from "./LiveMarketComponent";
 import CustomBox from "./CustomBox";
 import CustomLoader from "./helper/CustomLoader";
+import { SocketContext } from "../context/socketContext";
 
 const MarketAnalysis = () => {
+  const { socket } = useContext(SocketContext);
   const { pathname } = useLocation();
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState([]);
@@ -22,6 +24,23 @@ const MarketAnalysis = () => {
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.on("newMessage", (value) => {
+        console.log(value);
+      });
+
+      socket.onevent = async (packet) => {
+
+        if (packet.data[0] === "newMatchAdded") {
+          getAllMatch();
+        }
+
+      };
+    }
+  }, [socket]);
+
   const handleClick = (value) => {
     setMax(value);
     setMode("1");

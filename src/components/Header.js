@@ -190,9 +190,9 @@ const CustomHeader = ({ }) => {
 
         //   //currentBalacne
         // }
-        if (packet.data[0] === "newMatchAdded") {
-          window.location.reload();
-        }
+        // if (packet.data[0] === "newMatchAdded") {
+        //   window.location.reload();
+        // }
       };
     }
   }, [socket]);

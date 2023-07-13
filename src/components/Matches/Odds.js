@@ -25,7 +25,7 @@ import { setRole } from "../../newStore";
 import { removeSocket } from "../helper/removeSocket";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 let matchOddsCount = 0;
-const Odds = ({ onClick, top, blur, match }) => {
+const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -112,6 +112,9 @@ const Odds = ({ onClick, top, blur, match }) => {
           dispatch(setCurrentUser(user));
 
           //currentBalacne
+        }
+        if (packet.data[0] === "newMatchAdded") {
+          handleUpdateMatch();
         }
       };
     }

@@ -266,11 +266,11 @@ const SeprateBox = ({
       }
       if (newPayload.marketType == "MATCH ODDS") {
         setVisible(true);
-        // let delay = match?.delaySecond ? match?.delaySecond : 0;
-        // delay = delay * 1000;
-        // setTimeout(() => {
-        PlaceBetSubmit(newPayload, po);
-        // }, delay);
+        let delay = match?.delaySecond ? match?.delaySecond : 0;
+        delay = delay * 1000;
+        setTimeout(() => {
+          PlaceBetSubmit(newPayload, po);
+        }, delay);
       } else {
         PlaceBetSubmit(newPayload, po);
       }

@@ -38,6 +38,7 @@ import { logout, setGeoLocation } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import CustomLoader from "../../components/helper/CustomLoader";
+import { toast } from "react-toastify";
 
 let sessionOffline = [];
 let matchOddsCount = 0;
@@ -1465,6 +1466,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       // });
       // console.log(response.data, "sda");
       setLoading(false);
+      if (response?.data?.stopAt) {
+        toast.success("Match Declare");
+        navigate("/matches");
+      }
     } catch (e) {
       console.log("response", e.response.data);
       setLoading(false);

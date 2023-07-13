@@ -161,8 +161,8 @@ const AddMatchComp = () => {
 
   const getAllMatch = async () => {
     try {
-      let response = await axios.get(`/game-match/getAllMatch`);
-      dispatch(setAllMatchs(response.data[0]));
+      let response = await axios.get(`/game-match/getLiveMatchSession`);
+      dispatch(setAllMatchs(response.data.data[0]));
     } catch (e) {
       console.log(e);
     }

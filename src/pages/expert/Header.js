@@ -289,7 +289,7 @@ const CustomHeader = ({ }) => {
     getUserCount();
     getMatchLiveSession();
     if (allMatchData.length === 0) {
-      getAllMatch();
+      // getAllMatch();
     }
     // if (allEventSession?.length === 0) {
     // }
@@ -300,6 +300,8 @@ const CustomHeader = ({ }) => {
       let response = await axios.get(`/game-match/getLiveMatchSession`);
       // setAllLiveEventSession(response.data.data[0]);
       dispatch(setAllEventSession(response.data.data[0]));
+      setAllMatchData(response.data.data[0]);
+      dispatch(setAllMatchs(response.data.data[0]));
     } catch (e) {
       console.log(e);
     }
@@ -307,8 +309,8 @@ const CustomHeader = ({ }) => {
   const getAllMatch = async () => {
     try {
       let response = await axios.get(`/game-match/getAllMatch`);
-      setAllMatchData(response.data[0]);
-      dispatch(setAllMatchs(response.data[0]));
+      // setAllMatchData(response.data[0]);
+      // dispatch(setAllMatchs(response.data[0]));
     } catch (e) {
       console.log(e);
     }

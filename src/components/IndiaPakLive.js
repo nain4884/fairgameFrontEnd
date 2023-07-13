@@ -345,6 +345,7 @@ const IndiaPakLive = React.forwardRef(({
       // console.log("response :bbb", response)
       // alert("ddd :" + JSON.stringify(response?.data?.data?.id))
     } catch (e) {
+      toast.error(e.response.data.message);
       console.log(e.response.data.message);
     }
   }
