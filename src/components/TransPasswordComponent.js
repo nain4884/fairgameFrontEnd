@@ -38,7 +38,7 @@ export const TransPasswordComponent = () => {
         minWidth: { laptop: "350px", tablet: "350px", mobile: "0px" },
         marginTop: "10px",
         marginX: { mobile: "2vw", laptop: "5vw" },
-        
+
       }}
     >
       <TransPassComp />
@@ -50,12 +50,12 @@ export const TransPassComp = ({ onCancel }) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [passwordDetail, setPasswordDetail] = useState({
-    1: { field: "transPassword", val: "" },
-    2: { field: "confirmtransPassword", val: "" },
+    2: { field: "transPassword", val: "" },
+    3: { field: "confirmtransPassword", val: "" },
   });
   const [error, setError] = useState({
-    1: { field: "transPassword", val: false },
-    2: { field: "confirmtransPassword", val: false },
+    2: { field: "transPassword", val: false },
+    3: { field: "confirmtransPassword", val: false },
   });
   const [responseError, setResponseError] = useState();
 
@@ -63,15 +63,15 @@ export const TransPassComp = ({ onCancel }) => {
 
   const generateTrandPassword = useCallback(async () => {
     if (
-      !error[1].val &&
       !error[2].val &&
-      passwordDetail[1].val !== "" &&
-      passwordDetail[2].val !== ""
+      !error[3].val &&
+      passwordDetail[2].val !== "" &&
+      passwordDetail[3].val !== ""
     ) {
       try {
         const payload = {
-          transPassword: passwordDetail[1].val,
-          confirmtransPassword: passwordDetail[2].val,
+          transPassword: passwordDetail[2].val,
+          confirmtransPassword: passwordDetail[3].val,
         };
         const { data } = await axios.post(
           `/fair-game-wallet/savetransPassword`,
@@ -104,7 +104,7 @@ export const TransPassComp = ({ onCancel }) => {
       </Typography>
       <Box
         sx={{
-          width: {laptop:"400px", mobile: "300px",tablet: "400px"},
+          width: { laptop: "400px", mobile: "300px", tablet: "400px" },
           height: "450px",
           minHeight: "200px",
           background: "#F8C851",
@@ -129,11 +129,11 @@ export const TransPassComp = ({ onCancel }) => {
           Detail={passwordDetail}
           setError={setError}
           error={error}
-          place={1}
+          place={2}
           onFocusOut={doSendErrorForPassword}
           toFoucs={true}
         />
-        {error[1].val && <p style={{ color: "#fa1e1e" }}>{error[1].val}</p>}
+        {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
         <Input
           placeholder={"Enter Confirm Password"}
           inputProps={{ type: "password" }}
@@ -150,11 +150,11 @@ export const TransPassComp = ({ onCancel }) => {
           Detail={passwordDetail}
           setError={setError}
           error={error}
-          place={2}
+          place={3}
           onFocusOut={doSendErrorForPassword}
           toFoucs={true}
         />
-        {passwordDetail[1].val !== passwordDetail[2].val && (
+        {passwordDetail[2].val !== passwordDetail[3].val && (
           <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>
         )}
         <Box
