@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
-import { useRef } from "react";
 import { setCurrentUser } from "../newStore/reducers/currentUser";
 import { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
@@ -14,7 +13,6 @@ import AccountListModal from "./AccountListModal";
 import Modal from "./Modal";
 import ModalMUI from "@mui/material/Modal";
 import CommissionReportTable from "./CommissionReportTable";
-var OLDUSERBALANCE = 0;
 
 const AccountListRow = ({
   containerStyle,
@@ -24,8 +22,6 @@ const AccountListRow = ({
   element,
   getListOfUser,
   showOptions,
-  showChildModal,
-  callProfile,
   handleExport,
 }) => {
   const dispatch = useDispatch();
@@ -36,7 +32,6 @@ const AccountListRow = ({
   const [selected, setSelected] = useState(null);
 
   const { axios } = setRole();
-  const hasUpdatedUserProfile = useRef(false);
   const { allRole } = useSelector((state) => state.auth);
 
   const [showSubUsers, setSubSusers] = useState({
@@ -116,18 +111,6 @@ const AccountListRow = ({
     }
   };
 
-  // useEffect(() => {
-  //   if (
-  //     showUserModal === false &&
-  //     OLDUSERBALANCE === 0 && callProfile
-  //   ) {
-  //     updatedUserProfile();
-  //     OLDUSERBALANCE++;
-  //   } else {
-  //     OLDUSERBALANCE = 0;
-  //   }
-  // }, [showUserModal ,callProfile]);
-
   const [elementToUDM, setElementToUDM] = useState(prevElement);
   useEffect(() => {
     const prevElement = {
@@ -163,7 +146,6 @@ const AccountListRow = ({
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
-  // checkIfElementUpdated()
   return (
     <>
       <Box
@@ -214,9 +196,6 @@ const AccountListRow = ({
                 textTransform: "capitalize",
                 wordBreak: "break-all",
                 textTransform: "capitalize",
-                // whiteSpace: "nowrap",
-                // textOverflow: "ellipsis",
-                // maxWidth: "54px"
               },
               fTextStyle,
             ]}
@@ -239,7 +218,6 @@ const AccountListRow = ({
                 fContainerStyle.background == "#F8C851" ? DownGIcon : DownIcon
               }
               style={{ cursor: "pointer", width: "16px", height: "12px" }}
-              // {{ height: {mobile: "10px", laptop: "15px"}, cursor: "pointer", width: {mobile: "15px", laptop: "20px"} }}
             />
           )}
         </Box>
@@ -268,9 +246,8 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {/* {elementToUDM.balance} */}
             {Number(elementToUDM.balance) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{Number(elementToUDM.balance)}</>
+              ? <><span style={{ visibility: "hidden" }}>-</span>{Number(elementToUDM.balance)}</>
               : Number(elementToUDM.balance)}
           </Typography>
         </Box>
@@ -291,7 +268,7 @@ const AccountListRow = ({
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
             {Number(elementToUDM.profit_loss) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{elementToUDM.profit_loss}</>
+              ? <><span style={{ visibility: "hidden" }}>-</span>{elementToUDM.profit_loss}</>
               : elementToUDM.profit_loss}
           </Typography>
           <StyledImage
@@ -324,10 +301,10 @@ const AccountListRow = ({
           <Typography
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
-             {Number(elementToUDM.percent_profit_loss) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{elementToUDM.percent_profit_loss}</>
+            {Number(elementToUDM.percent_profit_loss) >= 0
+              ? <><span style={{ visibility: "hidden" }}>-</span>{elementToUDM.percent_profit_loss}</>
               : elementToUDM.percent_profit_loss}
-         
+
           </Typography>
           <StyledImage
             src={
@@ -358,15 +335,6 @@ const AccountListRow = ({
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
             {elementToUDM.totalCommissions}
           </Typography>
-          {/* <StyledImage
-            src={DownGIcon}
-            style={{
-              height: "10px",
-              cursor: "pointer",
-              width: "15px",
-              marginRight: "5px",
-            }}
-          /> */}
         </Box>
         <Box
           sx={{
@@ -393,14 +361,10 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {/* {elementToUDM?.available_balance
-              ? elementToUDM?.available_balance.toFixed(2)
-              : "00"} */}
-                {Number(elementToUDM.available_balance) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{Number(elementToUDM.available_balance)}</>
+            {Number(elementToUDM.available_balance) >= 0
+              ? <><span style={{ visibility: "hidden" }}>-</span>{Number(elementToUDM.available_balance)}</>
               : Number(elementToUDM.available_balance)}
             {console.log(elementToUDM, "elementToUDM")}
-            {/* Math.abs(bookRatio).toFixed(2) */}
           </Typography>
         </Box>
         <Box
@@ -463,7 +427,6 @@ const AccountListRow = ({
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
             {element.role}
           </Typography>{" "}
-          {/** {element.role} */}
         </Box>
       </Box>
 
@@ -491,11 +454,8 @@ const AccountListRow = ({
                     tablet: "25vw",
                     mobile: "96vw",
                   },
-                  // display: "flex",
                   alignSelf: "stretch",
-                  // height: "auto",
                   justifyContent: "space-between",
-                  // alignItems: "center" ,
                   borderRight: "2px solid white",
                 },
                 fContainerStyle,
@@ -837,7 +797,7 @@ const AccountListRow = ({
           }}
         >
           <CommissionReportTable
-             title={element.userName}
+            title={element.userName}
             id={showCommissionReport?.id}
             show={showCommissionReport?.value}
             setShow={setShowCommissionReport}

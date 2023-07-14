@@ -108,9 +108,6 @@ const MatchesComponent = ({
           <CustomLoader height={"70vh"} text={""} />
         </Box>
       )}
-      {/* <Odds onClick={onClick} top={false} />
-            <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
-            <Odds onClick={onClick} top={false} blur={true} upcoming={true} /> */}
     </>
   );
 };

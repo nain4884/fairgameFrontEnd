@@ -1,6 +1,6 @@
 import { Pagination, Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import {} from "@mui/material";
+import { } from "@mui/material";
 // import "../index.css";
 
 import { useDispatch } from "react-redux";
@@ -64,11 +64,6 @@ const AdminInPlay = () => {
           <Odds
             key={match.id}
             onClick={() => {
-              //   dispatch(setSelectedMatch({}));
-              //   dispatch(setMatchOddsLive([]));
-              //   dispatch(setSessionOddsLive([]));
-              //   dispatch(setAllBetRate([]));
-              //   doNavigateWithState(match.id);
               navigate(`/${pathname.split("/")[1]}/matches`, {
                 state: {
                   submit: true,
@@ -104,9 +99,6 @@ const AdminInPlay = () => {
           <CustomLoader text="" />
         </Box>
       )}
-      {/* <Odds onClick={onClick} top={false} />
-            <Odds onClick={onClick} top={false} blur={true} upcoming={true} />
-            <Odds onClick={onClick} top={false} blur={true} upcoming={true} /> */}
     </Background>
   );
 };

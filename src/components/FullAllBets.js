@@ -5,58 +5,7 @@ import { CHECK } from "../admin/assets";
 import { ARROWUP } from "../assets";
 import moment from "moment";
 import { useTheme } from "@emotion/react";
-const data = [
-  {
-    values: [
-      {
-        name: "John Doe",
-        color: "black",
-        background: "#F1C550",
-      },
-      {
-        name: "BOOKMAKER",
-        color: "black",
-        background: "#F1C550",
-      },
-      {
-        name: "INDIA",
-        color: "black",
-        background: "#B3E0FF",
-      },
-      {
-        name: "1000",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "Back",
-        color: "black",
-        background: "#B3E0FF",
-        small: true,
-      },
-      {
-        name: "100,000,000",
-        color: "black",
-        background: "#B3E0FF",
-      },
-      {
-        name: "10,000,000",
-        color: "white",
-        background: "#0B4F26",
-      },
-      {
-        name: "03:23 AM",
-        color: "black",
-        background: "#B3E0FF",
-        time: true,
-        date: "02-11-2022",
-      },
-    ],
-  },
-];
 const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData }) => {
-  //   const [selected, setSelected] = useState([...data, ...data]);
   const [selectedData, setSelectedData] = useState([]);
 
   const [visible, setVisible] = useState(true);
@@ -164,10 +113,6 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
       }}
     >
       <Box
-        // onClick={(e) => {
-        //   e.stopPropagation();
-        //   navigate("/admin/total_bets");
-        // }}
         sx={{
           display: "flex",
           height: 38,

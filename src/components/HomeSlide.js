@@ -1,12 +1,8 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
-import StyledImage from "./StyledImage";
-import { DropDown } from "../admin/assets";
-import adminAxios from "../axios/adminAxios";
 import { setRole } from "../newStore";
-import useOuterClick from "./helper/userOuterClick";
 import Background from "./Background";
-export default function HomeSlide({}) {
+export default function HomeSlide({ }) {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -84,11 +80,10 @@ export default function HomeSlide({}) {
               value={userBalanceDetails?.ul_credit_refer}
               containerStyle={{ flex: 1 }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.ul_credit_refer) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.ul_credit_refer) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
             <DataShow
@@ -100,11 +95,10 @@ export default function HomeSlide({}) {
                 marginX: matchesMobile ? "0px" : "20px",
               }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.dl_balance) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.dl_balance) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
             <DataShow
@@ -115,11 +109,10 @@ export default function HomeSlide({}) {
                 marginTop: matchesMobile ? "10px" : "0px",
               }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.dl_credit_refer) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.dl_credit_refer) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
           </Box>
@@ -136,11 +129,10 @@ export default function HomeSlide({}) {
               value={userBalanceDetails?.master_balance}
               containerStyle={{ flex: 1 }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.master_balance) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.master_balance) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
             <DataShow
@@ -152,11 +144,10 @@ export default function HomeSlide({}) {
                 marginX: matchesMobile ? "0px" : "20px",
               }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.upper_level) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.upper_level) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
             <DataShow
@@ -167,11 +158,10 @@ export default function HomeSlide({}) {
                 marginTop: matchesMobile ? "10px" : "0px",
               }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.dl_profit_loss) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.dl_profit_loss) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
           </Box>
@@ -189,11 +179,10 @@ export default function HomeSlide({}) {
               value={userBalanceDetails?.available_balance}
               containerStyle={{ flex: 1 }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.available_balance) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.available_balance) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
             <DataShow
@@ -205,11 +194,10 @@ export default function HomeSlide({}) {
                 marginX: matchesMobile ? "0px" : "20px",
               }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.available_balance_pl) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.available_balance_pl) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
             <DataShow
@@ -220,42 +208,14 @@ export default function HomeSlide({}) {
                 marginTop: matchesMobile ? "10px" : "0px",
               }}
               valueContainerStyle={{
-                background: `${
-                  parseInt(userBalanceDetails?.profit_loss) >= 0
-                    ? "#0B4F26"
-                    : "#FF4848"
-                }`,
+                background: `${parseInt(userBalanceDetails?.profit_loss) >= 0
+                  ? "#0B4F26"
+                  : "#FF4848"
+                  }`,
               }}
             />
           </Box>
         </Box>
-        {/* {show && (
-        <Box
-          onClick={() => {
-            setShow(!show);
-          }}
-          sx={{
-            background: "#ffe094",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "40px",
-            width: "40px",
-            display: "flex",
-            marginX: "auto",
-            marginTop: "-25px",
-            borderRadius: "25px",
-          }}
-        >
-          <StyledImage
-            src={DropDown}
-            sx={{
-              height: "25px",
-              width: "25px",
-              transform: show ? "rotate(0deg)" : "rotate(180deg);",
-            }}
-          />
-        </Box>
-      )} */}
       </Box>
     </Background>
   );

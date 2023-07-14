@@ -1,28 +1,11 @@
 import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-import {
-  DownGIcon,
-  DownIcon,
-  Excel,
-  LockIcon,
-  Pdf,
-  UnLockIcon,
-} from "../admin/assets";
-import Modal from "./Modal";
-import SearchInput from "./SearchInput";
+import { Excel, Pdf, } from "../admin/assets";
 
 import StyledImage from "./StyledImage";
-import UserDetailModal from "./UserDetailModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { setRole } from "../newStore";
 import constants from "./helper/constants";
-import {
-  setPage,
-  setSubPage,
-  setSubUserData,
-  setUserData,
-} from "../newStore/reducers/auth";
 import SearchInputModal from "./SearchInputModal";
 import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
@@ -31,23 +14,17 @@ import { useTheme } from "@emotion/react";
 import CustomLoader from "./helper/CustomLoader";
 
 const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
-  const dispatch = useDispatch();
   const theme = useTheme();
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
-  // const {currentUser} = useSelector((state) => state?.currentUser);
-  const { userWallet } = useSelector((state) => state?.auth);
-  // const [roles, setRoles] = useState([]);
   let { axios } = setRole();
-  const { subUserData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [data1, setData] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-  const { subCurrentPageNo } = useSelector((state) => state?.auth);
-  const [loader, setLoader]=useState(false)
-  const [loader1, setLoader1]=useState(false)
+  const [loader, setLoader] = useState(false)
+  const [loader1, setLoader1] = useState(false)
   const [sumValue, setSumVal] = useState({
     creditsum: 0.0,
     profitsum: 0.0,
@@ -77,7 +54,6 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
         }
         element.role = roleDetail?.roleName;
       });
-      // dispatch(setSubUserData(data?.data?.data));
       setData(data?.data?.data);
       setPageCount(
         Math.ceil(
@@ -87,11 +63,11 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
       );
       setTimeout(() => {
         setLoader(false)
-      },1000)
+      }, 1000)
     } catch (e) {
       setTimeout(() => {
         setLoader(false)
-      },1000)
+      }, 1000)
       console.log(e);
     }
     // /fair-game-wallet/getLogUserAggregateData
@@ -116,12 +92,12 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
       });
       setTimeout(() => {
         setLoader1(false)
-      },1000)
+      }, 1000)
     } catch (e) {
       console.log(e);
       setTimeout(() => {
         setLoader1(false)
-      },1000)
+      }, 1000)
     }
   };
   useEffect(() => {
@@ -131,28 +107,18 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
   }, []);
 
   function callPage(val) {
-    // dispatch(setSubPage(parseInt(val)));
     setCurrentPage(parseInt(val));
   }
 
-  // async function getRoles() {
-  //   setRoles(JSON.parse(localStorage.getItem("allRoles")));
-  // }
-
-  //   useEffect(() => {
-  //     // getRoles();
-  //     getListOfUser(id);
-  //   }, [currentPageNo, pageCount,id, userWallet?.access_token]);
-
   return (
     <>
-   
-   <Box
+
+      <Box
         sx={[
           {
             marginX: "0.5%",
             width: { mobile: "96%", laptop: "85%", tablet: "96%" },
-            minHeight: loader && loader1 ? "20%":"200px",
+            minHeight: loader && loader1 ? "20%" : "200px",
             borderRadius: "10px",
             borderBottomRightRadius: "0px",
             borderBottomLeftRadius: "0px",
@@ -160,81 +126,76 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
             border: "2px solid white",
             background: "#F8C851"
           },
-          // (theme) => ({
-          //   backgroundImage: `${theme.palette.primary.headerGradient}`,
-          // }),
         ]}
       >
-      {loader && loader1 ? <CustomLoader/> : <>
-        <Box sx={{ display: "flex", justifyContent: "space-between", height: "50px" }}>
-          <ListH
-            id={id}
-            title={title}
-            getListOfUser={getListOfUser}
-            setPageCount={setPageCount}
-            matchesMobile={matchesMobile}
-            handleExport={handleExport}
-          />
-          <Button
-            sx={{ color: "", fontSize: "30px" }}
-            onClick={() => {
-              setShow({ value: false, id: "", title: "" });
-              // dispatch(setSubUserData([]));
-              // dispatch(setSubPage(1));
-            }}
-          >
-            &times;
-          </Button>
-        </Box>
-
-        <Box
-          sx={{ overflowX: "auto" }}
-        >
-          <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
-            <ListHeaderT />
-            <ListSubHeaderT data={sumValue} />
-            {data1?.map((element, i) => {
-              if (i % 2 === 0) {
-                return (
-                  <AccountListRow
-                    callProfile={false}
-                    showOptions={false}
-                    showChildModal={true}
-                    containerStyle={{ background: "#FFE094" }}
-                    profit={element.profit_loss >= 0}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    element={element}
-                    getListOfUser={getListOfUser}
-                    currentPage={currentPage}
-                  />
-                );
-              } else {
-                return (
-                  <AccountListRow
-                    callProfile={false}
-                    showOptions={false}
-                    showChildModal={true}
-                    containerStyle={{ background: "#ECECEC" }}
-                    profit={element.profit_loss >= 0}
-                    fContainerStyle={{ background: "#F8C851" }}
-                    fTextStyle={{ color: "#0B4F26" }}
-                    element={element}
-                    getListOfUser={getListOfUser}
-                    currentPage={currentPage}
-                  />
-                );
-              }
-            })}
+        {loader && loader1 ? <CustomLoader /> : <>
+          <Box sx={{ display: "flex", justifyContent: "space-between", height: "50px" }}>
+            <ListH
+              id={id}
+              title={title}
+              getListOfUser={getListOfUser}
+              setPageCount={setPageCount}
+              matchesMobile={matchesMobile}
+              handleExport={handleExport}
+            />
+            <Button
+              sx={{ color: "", fontSize: "30px" }}
+              onClick={() => {
+                setShow({ value: false, id: "", title: "" });
+              }}
+            >
+              &times;
+            </Button>
           </Box>
-        </Box>
-        <Footer
-          currentPage={currentPage}
-          pages={pageCount}
-          callPage={callPage}
-        />
-   </>
-   }
+
+          <Box
+            sx={{ overflowX: "auto" }}
+          >
+            <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
+              <ListHeaderT />
+              <ListSubHeaderT data={sumValue} />
+              {data1?.map((element, i) => {
+                if (i % 2 === 0) {
+                  return (
+                    <AccountListRow
+                      callProfile={false}
+                      showOptions={false}
+                      showChildModal={true}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={element.profit_loss >= 0}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      element={element}
+                      getListOfUser={getListOfUser}
+                      currentPage={currentPage}
+                    />
+                  );
+                } else {
+                  return (
+                    <AccountListRow
+                      callProfile={false}
+                      showOptions={false}
+                      showChildModal={true}
+                      containerStyle={{ background: "#ECECEC" }}
+                      profit={element.profit_loss >= 0}
+                      fContainerStyle={{ background: "#F8C851" }}
+                      fTextStyle={{ color: "#0B4F26" }}
+                      element={element}
+                      getListOfUser={getListOfUser}
+                      currentPage={currentPage}
+                    />
+                  );
+                }
+              })}
+            </Box>
+          </Box>
+          <Footer
+            currentPage={currentPage}
+            pages={pageCount}
+            callPage={callPage}
+          />
+        </>
+        }
       </Box>
     </>
   );
@@ -363,49 +324,49 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
           {title}
 
         </Typography>
-          {matchesMobile && (
-            <Box sx={{ display: "flex", marginTop: "5px" }}>
-              <Box
+        {matchesMobile && (
+          <Box sx={{ display: "flex", marginTop: "5px" }}>
+            <Box
+              sx={{
+                background: "white",
+                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
+                borderRadius: "5px",
+                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <StyledImage
+                src={Excel}
                 sx={{
-                  background: "white",
-                  height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                  borderRadius: "5px",
-                  width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                 }}
-              >
-                <StyledImage
-                  src={Excel}
-                  sx={{
-                    height: { mobile: "15px", laptop: "20px", tablet: "20px" },
-                  }}
-                  onClick={() => handleExport('xlsx', id)}
-                />
-              </Box>
-              <Box
-                sx={{
-                  background: "white",
-                  marginLeft: "10px",
-                  borderRadius: "5px",
-                  height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                  width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <StyledImage
-                  src={Pdf}
-                  sx={{
-                    height: { mobile: "15px", laptop: "20px", tablet: "20px" },
-                  }}
-                  onClick={() => handleExport('pdf', id)}
-                />
-              </Box>
+                onClick={() => handleExport('xlsx', id)}
+              />
             </Box>
-          )}
+            <Box
+              sx={{
+                background: "white",
+                marginLeft: "10px",
+                borderRadius: "5px",
+                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
+                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <StyledImage
+                src={Pdf}
+                sx={{
+                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                }}
+                onClick={() => handleExport('pdf', id)}
+              />
+            </Box>
+          </Box>
+        )}
         {!matchesMobile && (
           <>
             <Box
@@ -458,7 +419,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
         show={true}
         placeholder={"Search User..."}
         inputContainerStyle={{
-          width: {laptop: "12%", mobile: "50%"}
+          width: { laptop: "12%", mobile: "50%" }
         }}
       />
     </Box>

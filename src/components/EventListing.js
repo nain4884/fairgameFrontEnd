@@ -1,7 +1,5 @@
-import { Grid, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import {
   BASKETBALL,
   Card,
@@ -12,17 +10,13 @@ import {
   Hockey,
   MYACCOUNT,
   Play,
-  SETTINGS,
   Slot,
   SNOOKER,
   Tennis,
 } from "../assets";
-import { setActive } from "../store/betPlace";
 import "./index.css";
-import { useNavigate } from "react-router-dom";
 import EventComponent from "./EventComponent";
-import DropdownMenu1 from "./CommonMasterAdminLayout/MenuBar";
-const EventListing = ({ selected ,top}) => {
+const EventListing = ({ selected, top }) => {
   const [anchor, setAnchor] = useState(null);
   const data = [
     {
@@ -116,18 +110,6 @@ const EventListing = ({ selected ,top}) => {
           );
         })}
       </Box>
-      {/* <DropdownMenu1
-        open={Boolean(anchor)}
-        anchorEl={anchor}
-        title={"My Account"}
-        activeTab={"MY ACCOUNT"}
-        menutItems1={menutItems1}
-        top={top}
-        // setShow={setShow}
-        handleClose={() => {
-          setAnchor(null);
-        }}
-      /> */}
     </>
   );
 };

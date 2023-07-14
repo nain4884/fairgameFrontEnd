@@ -8,32 +8,15 @@ import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import {
-  setAllBetRate,
-  setAllBetRates,
-} from "../newStore/reducers/matchDetails";
-import constants from "./helper/constants";
 const BetHistory = ({
   profit,
-  mark,
-  setPageCountOuter,
   mark2,
-  allBetsData,
-  count,
-  callPage,
   betData,
   betHistory,
   isArrow,
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const { allbetsPage } = useSelector((state) => state?.auth);
 
-  // const user = useSelector((state) => state?.rootReducer?.user);
   const location = useLocation();
-  const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state?.currentUser);
-  const match_id = location.state;
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -52,7 +35,7 @@ const BetHistory = ({
             sx={[
               {
                 width: "100%",
-                height: {mobile: "37px", laptop: "42px"},
+                height: { mobile: "37px", laptop: "42px" },
                 justifyContent: "space-between",
                 alignItems: "center",
                 paddingLeft: "10px",
@@ -61,13 +44,10 @@ const BetHistory = ({
                 display: "flex",
                 background: "#F8C851",
               },
-              // (theme) => ({
-              //   backgroundImage: `${theme.palette.primary.headerGradient}`,
-              // }),
             ]}
           >
             <Typography
-              sx={{ fontSize: {mobile: "12px", laptop: "16px"}, color: "black", fontWeight: "700" }}
+              sx={{ fontSize: { mobile: "12px", laptop: "16px" }, color: "black", fontWeight: "700" }}
             >
               All Rate Bets
             </Typography>
@@ -101,7 +81,7 @@ const BetHistory = ({
               sx={{
                 height: "30px",
                 margin: { mobile: "0.5px", laptop: "0" },
-                width: {mobile: "5%", laptop: "4%"},
+                width: { mobile: "5%", laptop: "4%" },
                 display: "flex",
                 background: "black",
                 justifyContent: "center",
@@ -149,12 +129,8 @@ const BetHistory = ({
               overflowY: "auto",
             }}
           >
-            {/* {console.warn("allBetsData :", allBetsData)} */}
             {[...new Set(betData?.filter((v) => v.sessionBet !== true))]?.map(
               (i, k) => {
-                {
-                  /* {betData?.map((i, k) => { */
-                }
                 const num = betData.length - k;
                 const formattedNum = num < 10 ? "0" + num : num.toString();
                 return (
@@ -167,8 +143,8 @@ const BetHistory = ({
                   >
                     <Box
                       sx={{
-                        height: {mobile: "35px", laptop: "40px"},
-                        width: {mobile: "5%", laptop: "4%"},
+                        height: { mobile: "35px", laptop: "40px" },
+                        width: { mobile: "5%", laptop: "4%" },
                         display: "flex",
                         background: "black",
                         margin: { mobile: "0.5px", laptop: "1px" },
@@ -187,10 +163,9 @@ const BetHistory = ({
                       </Typography>
                     </Box>
                     <RowComponent profit={profit} header={false} data={i} />
-                    {/* {profit && k !== - && ( */}
                     <Box
                       sx={{
-                        height: {mobile: "35px", laptop: "40px"},
+                        height: { mobile: "35px", laptop: "40px" },
                         width: "20%",
                         margin: { mobile: "0", laptop: "1px" },
                         display: "flex",
@@ -229,7 +204,6 @@ const BetHistory = ({
                         />
                       )}
                     </Box>
-                    {/* )} */}
 
                     {i?.deleted_reason && betHistory && (
                       <Box
@@ -242,55 +216,17 @@ const BetHistory = ({
                             laptop: profit ? "100 % " : "100% ",
                           },
                           background: "rgba(0, 0, 0, 0.5)",
-                          height: {mobile: "35px", laptop: "40px"}, 
+                          height: { mobile: "35px", laptop: "40px" },
                           position: "absolute",
                         }}
                       >
                         <Box sx={{ width: mark2 ? "20%" : "35%" }}></Box>
                       </Box>
                     )}
-
-                    {/* {profit && i?.deleted_reason !==null && (
-                      <Box
-                        sx={{
-                          height: "40px",
-                          width: "12.5%",
-                          margin: { mobile: "1px", laptop: "1px" },
-                          display: "flex",
-                          background:
-                            i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
-                          // background: k % 2 == 0 ? "#E32A2A" : "#10DC61",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontSize: { mobile: "11px", laptop: "14px" },
-                            color: "white",
-                            fontWeight: "700",
-                          }}
-                        >
-                          {Number(i.myProfitLoss).toFixed(2)}
-                        </Typography>
-                        <StyledImage
-                          sx={{
-                            width: { mobile: "15px", laptop: "25px" },
-                            height: { laptop: "15px", mobile: "7px" },
-                          }}
-                          src={
-                            Number(i.myProfitLoss).toFixed(2) > 0
-                              ? ARROWUP
-                              : ARROWDOWN
-                          }
-                          // src={k % 2 == 0 ? ARROWDOWN : ARROWUP}
-                        />
-                      </Box>
-                    )} */}
                     {profit && i?.deleted_reason && (
                       <Box
                         sx={{
-                          height: {mobile: "35px", laptop: "40px"},
+                          height: { mobile: "35px", laptop: "40px" },
                           width: "20%",
                           margin: { mobile: "1px", laptop: "1px" },
                           display: "flex",
@@ -326,12 +262,6 @@ const BetHistory = ({
                 );
               }
             )}
-            {/* <Footer
-                            currentPage={currentPage}
-                            pages={pageCount}
-                            callPage={callPage}
-                            currentPageNo={allbetsPage}
-                        /> */}
           </Box>
         </Box>
       }
@@ -366,7 +296,7 @@ const RowComponent = ({ header, data, profit }) => {
     <Box
       sx={{
         width: profit ? "76%" : "95%",
-        height: header ? "30px" : {mobile: "35px", laptop: "40px"},
+        height: header ? "30px" : { mobile: "35px", laptop: "40px" },
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
@@ -464,103 +394,6 @@ const RowComponent = ({ header, data, profit }) => {
   );
 };
 
-const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
-  return (
-    <Box
-      sx={{
-        height: "35px",
-        display: "flex",
-        alignItems: "center",
-        px: { mobile: "5px", laptop: "10px" },
-        justifyContent: "space-between",
-        background: "#FAFAFA",
-        // marginX: "0%",
-        // marginBottom: "10px",
-      }}
-    >
-      <Typography
-        sx={{ fontSize: { mobile: "10px", laptop: "12px" }, fontWeight: "600" }}
-      >
-        Showing 1 to {pages}
-      </Typography>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Box
-          sx={{
-            height: "25px",
-            width: { mobile: "60px", laptop: "80px" },
-            background: "#0B4F26",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "5px",
-          }}
-          onClick={() => {
-            callPage(
-              parseInt(currentPage) - 1 === -1 ? 0 : parseInt(currentPage) - 1
-            );
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { laptop: "12px", mobile: "10px" },
-            }}
-          >
-            Previous
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            height: "25px",
-            marginX: { laptop: "8px", mobile: "3.5px" },
-            width: "40px",
-            background: "#262626",
-            display: "flex",
-            borderRadius: "5px",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { laptop: "12px", mobile: "12px" },
-            }}
-          >
-            {currentPageNo + 1}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            height: "25px",
-            width: { mobile: "60px", laptop: "80px" },
-            background: "#0B4F26",
-            display: "flex",
-            borderRadius: "5px",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onClick={() => {
-            callPage(
-              parseInt(currentPage) === pages - 1
-                ? pages - 1
-                : parseInt(currentPage) + 1
-            );
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { laptop: "14px", mobile: "12px" },
-            }}
-          >
-            Next
-          </Typography>
-        </Box>
-      </Box>
-    </Box>
-  );
-};
 const SingleBox = ({
   data,
   header,
@@ -568,7 +401,6 @@ const SingleBox = ({
   up,
   first,
   time,
-  width,
   boxWidth,
 }) => {
   return !header ? (
@@ -576,7 +408,7 @@ const SingleBox = ({
       <Box
         sx={{
           width: "100%",
-          height: {mobile: "35px", laptop: "40px"},
+          height: { mobile: "35px", laptop: "40px" },
           background: "#F1C550",
           marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",
@@ -615,7 +447,7 @@ const SingleBox = ({
       <Box
         sx={{
           width: "100%",
-          height: {mobile: "35px", laptop: "40px"},
+          height: { mobile: "35px", laptop: "40px" },
           flexDirection: "column",
           background: color,
           marginX: { mobile: "0.5px", laptop: "1px" },
@@ -657,7 +489,7 @@ const SingleBox = ({
         sx={{
           // width:  "100%",
           width: boxWidth,
-          height: {mobile: "35px", laptop: "40px"},
+          height: { mobile: "35px", laptop: "40px" },
           background: color,
           marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",

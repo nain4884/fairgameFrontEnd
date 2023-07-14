@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
-import { ArrowDown, DELETE, MyBet, ARROWUP } from "../assets";
+import { useState } from "react";
+import { DELETE, ARROWUP } from "../assets";
 import userAxios from "../axios/userAxios";
 
 import {
@@ -11,37 +11,13 @@ import {
 import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import {
-  setAllBetRate,
-  setAllBetRates,
-} from "../newStore/reducers/matchDetails";
 import constants from "./helper/constants";
-const data = [
-  {
-    title: "Bookmaker",
-    time: "03:23 AM",
-    type: "Back",
-    odds: "90.00",
-    stake: "1000.00",
-    country: "INDIA",
-  },
-  {
-    title: "Match odds",
-    time: "03:23 AM",
-    type: "Lay",
-    odds: "90.00",
-    stake: "1000.00",
-    country: "INDIA",
-  },
-];
 const AllRateSeperate = ({
   profit,
   mark,
-  setPageCountOuter,
   mark2,
   allBetsData,
   count,
-  callPage,
   betHistory,
   isArrow
 }) => {
@@ -50,55 +26,10 @@ const AllRateSeperate = ({
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const { allbetsPage } = useSelector((state) => state?.auth);
-
-  // function callPage(val) {
-  //   alert(val)
-  //   // dispatch(setPage(parseInt(val)));
-  //   setCurrentPage(parseInt(val));
-  //   setPageCountOuter(parseInt(val))
-  // }
-
-  // const user = useSelector((state) => state?.rootReducer?.user);
   const location = useLocation();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const match_id = location.state;
 
-  const [allRateBets, setAllRateBets] = useState([]);
-
-  function doEmptyGetAllBets() {
-    setAllRateBets([]);
-  }
-
-  async function getAllBetsData() {
-    let allRateBetsTemp = [];
-    let Bets = [];
-    allBetsData?.forEach((element) => {
-      element?.bettings?.forEach((element2) => {
-        Bets.push({ ...element2, marketId: element.marketId });
-      });
-    });
-    Promise.all(
-      Bets.map(async (element) => {
-        let payload = {
-          match_id: element.match_id,
-          user_id: currentUser?.id,
-        };
-        try {
-          let { data } = await userAxios.post(
-            `/betting/getPlacedBets`,
-            payload
-          );
-
-          allRateBetsTemp.push(...data.data[0]);
-        } catch (e) {
-          console.log(e);
-        }
-      })
-    ).then(() => {
-      setAllRateBets(allRateBetsTemp);
-    });
-  }
   const [visible, setVisible] = useState(true);
   return (
     <>

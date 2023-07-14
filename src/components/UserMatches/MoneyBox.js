@@ -13,8 +13,6 @@ const MoneyBox = ({ color, rates }) => {
         border: "1px solid #2626264D",
         borderRadius: "5px",
         justifyContent: "center",
-        // position: matchesMobile ? "relative" : "relative",
-        // right: matchesMobile ? "7px" : "7px",
         alignItems: "center",
         display: "flex",
         height: "25px",

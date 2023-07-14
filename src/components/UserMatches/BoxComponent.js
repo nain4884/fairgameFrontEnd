@@ -75,23 +75,6 @@ const BoxComponent = ({
             alignItems: "center",
           }}
         >
-          {/* {name != "DRAW" ? (
-            <></>
-          ) : (
-            <img
-              src={name == "INDIA" ? INDIA : PAKISTAN}
-              style={{
-                width: "22px",
-                height: "25px",
-                marginLeft: "10px",
-                backgroundSize: "contains",
-              }}
-              alt="draw"
-            />
-            <Box
-              sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
-            ></Box>
-          )} */}
 
           {teamImage != null && (
             <>
@@ -154,7 +137,6 @@ const BoxComponent = ({
             display: "flex",
           }}
         >
-          {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
           <Typography
             sx={{
               fontSize: { mobile: "12px", laptop: "22px" },
@@ -431,9 +413,6 @@ const BoxComponent = ({
               typeOfBet={typeOfBet}
               handleRateChange={handleRateChange}
             />
-            {/* <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box> */}
             {!matchesMobile && (
               <SeprateBox
                 closeModal={
@@ -494,9 +473,6 @@ const BoxComponent = ({
                 handleRateChange={handleRateChange}
               />
             )}
-            {/* <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box> */}
             {!matchesMobile && (
               <SeprateBox
                 closeModal={

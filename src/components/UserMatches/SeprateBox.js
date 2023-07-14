@@ -1,31 +1,23 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React, { memo, useEffect, useRef } from "react";
+import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setDailogData } from "../../store/dailogModal";
 import useOuterClick from "../helper/userOuterClick";
 import { setColorValue } from "../../store/selectedColorBox";
 import PlaceBet from "../PlaceBet";
-import BetPlaced from "../BetPlaced";
 import { Modal } from "react-bootstrap";
 import MUIModal from "@mui/material/Modal";
 
-import { BETPLACED, Lock, NOT } from "../../assets";
+import { Lock } from "../../assets";
 import { useState } from "react";
 import {
-  setAllBetRate,
   setBetData,
   setUpdateBetData,
 } from "../../newStore/reducers/matchDetails";
-import { toast } from "react-toastify";
 import { setRole } from "../../newStore";
-import { height } from "@mui/system";
 import NotificationModal from "../NotificationModal";
-const PlaceBetType = {
-  BackLay: "BackLay",
-  YesNo: "YesNo",
-};
 
 const SeprateBox = ({
   color,
@@ -37,7 +29,6 @@ const SeprateBox = ({
   session,
   back,
   currentMatch,
-  time,
   type,
   name,
   data,
@@ -50,8 +41,6 @@ const SeprateBox = ({
   fromOdds,
   sessionMain,
   setFastRate,
-  fastRate,
-  setPlaceBetData,
   placeBetData,
   setFastBetLoading,
   closeModal,
@@ -63,10 +52,8 @@ const SeprateBox = ({
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [anchor, setAnchor] = React.useState(null);
   const [isBack, setIsBack] = React.useState(false);
   const [isSessionYes, setIsSessionYes] = React.useState(false);
-  const [placeBetType, setPlaceBetType] = React.useState(PlaceBetType.BackLay);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
 
@@ -84,11 +71,6 @@ const SeprateBox = ({
   });
   const { geoLocation } = useSelector((state) => state.auth);
   const [showAtTop, setShowAtTop] = useState(false);
-  const [checkBet, setCheckBet] = useState({
-    type: "",
-    po: "",
-    value: "",
-  });
   const { betData, updateDetData } = useSelector(
     (state) => state?.matchDetails
   );
@@ -103,8 +85,6 @@ const SeprateBox = ({
   }, [geoLocation]);
 
   useEffect(() => {
-    // console.log('updateRate wwwwww:', updateRate)
-    // console.log('checkBet wwwwww:', checkBet)
     if (
       updateRate?.key == betData?.po &&
       updateRate?.match == betData?.type &&
@@ -124,7 +104,6 @@ const SeprateBox = ({
   useEffect(() => {
     setPreviousValue(value);
     if (setFastRate !== undefined) {
-      // console.log("value", placeBetData, { name, po, typeOfBet, value });
       if (
         placeBetData?.po === po &&
         placeBetData?.typeOfBet === typeOfBet &&
@@ -165,7 +144,6 @@ const SeprateBox = ({
     }, [2000]);
     setShowModalMessage(message);
   }
-  // console.warn("Modal: ", currentMatch)
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
@@ -226,7 +204,6 @@ const SeprateBox = ({
       type: payload?.bet_type,
       po: po,
     };
-    // // alert(JSON.stringify(data));
     dispatch(setBetData({ ...data }));
 
     let newPayload = {
@@ -312,8 +289,6 @@ const SeprateBox = ({
       });
       setIsPopoverOpen(false);
       let response = await axios.post(`/betting/placeBet`, payload);
-      // setAllRateBets(response?.data?.data[0])
-      // dispatch(setAllBetRate(response?.data?.data[0]))
       if (sessionMain === "sessionOdds") {
         setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
       } else if (sessionMain === "manualBookMaker") {
@@ -332,9 +307,6 @@ const SeprateBox = ({
         loading: false,
         type: true,
       });
-      // setTimeout(() => {sss
-      //   setCanceled(false);
-      // }, 3000);
       setIsPopoverOpen(false);
       // navigate("/matchDetail")
     } catch (e) {
@@ -427,37 +399,6 @@ const SeprateBox = ({
                 }
                 handlePlaceBet(payload, currentMatch, po);
               }
-
-              // if (sessionMain !== "sessionOdds") {
-              //   let payload = {
-              //     id: currentMatch?.id,
-              //     matchType: currentMatch?.gameType,
-              //     // betId: currentMatch?.matchOddsData?.[0]?.id,
-              //     betId: findBetId(currentMatch),
-              //     bet_type: type?.color === "#A7DCFF" ? "back" : "lay",
-              //     odds: Number(value),
-              //     betOn: name,
-              //     stack: Number(selectedFastAmount),
-              //     team_bet: name,
-              //     stake: Number(selectedFastAmount),
-              //     teamA_name: currentMatch?.teamA,
-              //     teamB_name: currentMatch?.teamB,
-              //     teamC_name: currentMatch?.teamC,
-              //     marketType:
-              //       typeOfBet === "MATCH ODDS" ? "MATCH ODDS" : typeOfBet,
-              //     name,
-              //     rates,
-              //     back,
-              //     currentMatch,
-              //     selectedValue,
-              //     type,
-              //     data,
-              //     betOn: name,
-              //     typeOfBet: typeOfBet,
-              //     po: po,
-              //   };
-              //   setPlaceBetData(payload);
-              // } else
               else {
                 setIsPopoverOpen(true);
                 setSelectedCountry(name);
@@ -575,22 +516,6 @@ const SeprateBox = ({
             />
           </Box>
         </MUIModal>
-        {/* {
-          <BetPlaced
-            // time={5}
-            time={
-              typeOfBet == "MATCH ODDS"
-                ? currentMatch?.delaySecond
-                  ? currentMatch?.delaySecond
-                  : 0
-                : 0
-            }
-            visible={betPlaceLoading}
-            setVisible={(i) => {
-              setVisible(i);
-            }}
-          />
-        } */}
 
         {canceled.value && (
           <NotificationModal
@@ -606,58 +531,6 @@ const SeprateBox = ({
           />
         )}
       </Box>
-
-      {/* <MUIModal
-        onClose={() => {
-          setCanceled(false);
-        }}
-        sx={{
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-          backgroundColor: "transparent",
-          outline: "none",
-        }}
-        open={canceled}
-        disableAutoFocus={true}
-      >
-        <Box
-          sx={{
-            width: "190px",
-            borderRadius: "6px",
-            paddingY: "10px",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "white",
-            alignSelf: "center",
-            display: "flex",
-            position: "absolute",
-            top: "45%",
-            zIndex: 999,
-          }}
-        >
-          <img
-            src={betPalaceError ? NOT : BETPLACED}
-            style={{ width: "60px", height: "60px", marginTop: "3px" }}
-          />
-
-          <Typography
-            sx={{
-              fontSize: { mobile: "10px", laptop: "14px", tablet: "14px" },
-              fontWeight: "500",
-              marginY: ".7vh",
-              width: "70%",
-              alignSelf: "center",
-              textAlign: "center",
-            }}
-          >
-            {!betPalaceError
-              ? " Bet Placed Successfully"
-              : "Bet Not Placed Successfully"}
-          </Typography>
-        </Box>
-      </MUIModal> */}
       {showSuccessModal && (
         <Modal
           message={showModalMessage}

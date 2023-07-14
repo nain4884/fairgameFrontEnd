@@ -1,32 +1,12 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-import {
-  DownGIcon,
-  DownIcon,
-  Excel,
-  LockIcon,
-  Pdf,
-  UnLockIcon,
-} from "../admin/assets";
-import Modal from "./Modal";
+import { Excel, Pdf, } from "../admin/assets";
 import SearchInput from "./SearchInput";
-import ModalMUI from "@mui/material/Modal";
-
 import StyledImage from "./StyledImage";
-import UserDetailModal from "./UserDetailModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
 import constants from "./helper/constants";
-import {
-  setPage,
-  setSubPage,
-  setSubUserData,
-  setUserData,
-} from "../newStore/reducers/auth";
-import AccountListModal from "./AccountListModal";
-import { setCurrentUser } from "../newStore/reducers/currentUser";
-import { useRef } from "react";
+import { setPage, } from "../newStore/reducers/auth";
 import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
@@ -36,11 +16,6 @@ import CustomLoader from "./helper/CustomLoader";
 const AccountList = () => {
   const dispatch = useDispatch();
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
-  // const {currentUser} = useSelector((state) => state?.currentUser);
-  const { userWallet } = useSelector((state) => state?.auth);
-  // console.log(userWallet, "userWallet");
-  // const [roles, setRoles] = useState([]);
-  const { userData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole);
   const [data1, setData] = useState([]);
   const [sumValue, setSumVal] = useState({
@@ -53,10 +28,9 @@ const AccountList = () => {
     availablebalancesum: 0.0,
     totalCommissions: "",
   });
-  let { axios, JWT } = setRole();
+  let { axios } = setRole();
 
   const [pageCount, setPageCount] = useState(constants.pageLimit);
-  // const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.listOfClientCountLimit);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { currentPageNo } = useSelector((state) => state?.auth);
@@ -76,7 +50,6 @@ const AccountList = () => {
           }
           element.role = roleDetail?.roleName;
         });
-        // dispatch(setUserData(data?.data?.data));
         setTimeout(() => {
           setLoading(false);
         }, 1000);
@@ -95,16 +68,10 @@ const AccountList = () => {
       }, 1000);
       console.log(e);
     }
-    // /fair-game-wallet/getLogUserAggregateData
   }
   function callPage(val) {
     dispatch(setPage(parseInt(val)));
-    // setCurrentPage(parseInt(val));
   }
-
-  // async function getRoles() {
-  //   setRoles(JSON.parse(localStorage.getItem("allRoles")));
-  // }
 
   const getUerLogged = async () => {
     try {
@@ -127,7 +94,6 @@ const AccountList = () => {
     }
   };
   useEffect(() => {
-    // getUerLogged();
     return () => {
       dispatch(setPage(parseInt(1)));
     };
@@ -143,7 +109,6 @@ const AccountList = () => {
     if (id) {
       url = `/fair-game-wallet/exportUser?exportType=${type}&userId=${id}`;
     }
-    // if (type == "xlsx") {
     try {
       const response = await axios.get(url, { responseType: "blob" });
       saveAs(
@@ -153,7 +118,6 @@ const AccountList = () => {
     } catch (e) {
       console.log(e);
     }
-    // }
   };
 
   return (

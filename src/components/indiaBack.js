@@ -3,7 +3,7 @@ import { useState, useRef, useContext, useEffect } from "react";
 import StyledImage from "./StyledImage";
 import ResultComponent from "./ResultComponent";
 import './index.css'
-import { BALLSTART, BroadCast } from "../expert/assets";
+import { BALLSTART } from "../expert/assets";
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { Lock, BallStart } from '../assets';
 import { SocketContext } from "../context/socketContext";
@@ -11,21 +11,16 @@ import { setRole } from "../newStore";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setBookMakerBetRate } from "../newStore/reducers/matchDetails";
-import { setBookmakerTeamRates } from "../newStore/reducers/expertMatchDetails";
-
-
 
 export default function IndiaPakLiveBookMaker({ add, match }) {
     const [visible, setVisible] = useState(false)
     const [visible1, setVisible1] = useState(false)
 
     const { bookmakerTeamRates } = useSelector((state) => state?.expertMatchDetails);
-    // console.log('match', match)
     const { socket, socketMicro } = useContext(SocketContext);
 
     const { axios } = setRole();
     const dispatch = useDispatch();
-
 
     const bookRatioB = (teamARates, teamBRates) => {
         const bookRatio = teamBRates != 0 ? teamARates / teamBRates || 0 : 0;
@@ -57,9 +52,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const [isTeamBSuspend, setIsTeamBSuspend] = useState(true)
         const [isTeamCSuspend, setIsTeamCSuspend] = useState(true)
         const [isTeamBackUnlock, setIsTeamBackUnlock] = useState(true)
-        // const [isABall, setIsABall] = useState(false)
-        // const [isBBall, setIsBBall] = useState(false)
-        // const [isCBall, setIsCBall] = useState(false)
         const [teamBall, setTeamBall] = useState({
             isABall: false,
             isBBall: false,
@@ -85,9 +77,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         })
 
         useEffect(() => {
-            // alert(JSON.stringify(bookmakerTeamRates))
             getManuallBookMaker(match?.id);
-            // console.log("match :", JSON.stringify(match));
         }, []);
 
         async function getManuallBookMaker(id) {
@@ -110,11 +100,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         teamB: response?.data?.data[0].teamB_rate ? response?.data?.data[0].teamB_rate : 0,
                         teamC: response?.data?.data[0].teamC_rate ? response?.data?.data[0].teamC_rate : 0
                     })
-                    // dispatch(setBookmakerTeamRates({
-                    //     teamA: response?.data?.data[0].teamA_rate ? response?.data?.data[0].teamA_rate : 0,
-                    //     teamB: response?.data?.data[0].teamB_rate ? response?.data?.data[0].teamB_rate : 0,
-                    //     teamC: response?.data?.data[0].teamC_rate ? response?.data?.data[0].teamC_rate : 0
-                    // }));
                 }
             } catch (e) {
                 console.log(e.response.data.message);
@@ -131,14 +116,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             try {
                 let response = await axios.post(`/betting/addBetting`, payload);
                 setBetId(response?.data?.data?.id)
-                // alert("ddd :" + JSON.stringify(response?.data?.data?.id))
             } catch (e) {
                 console.log(e.response.data.message);
             }
         }
 
         async function getAllBetsData(id, matchId) {
-            // alert(122)
             let payload = {
                 match_id: matchId,
                 bet_id: id,
@@ -159,9 +142,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     if (packet.data[0] === "match_bet") {
                         const data = packet.data[1];
                         try {
-                            // console.warn(data, "check rates");
-                            // getAllBets();
-                            // console.log(data, "MATCHH_BET", data?.betPlaceData?.match_id, id);
                             if (data) {
                                 const body = {
                                     id: data?.betPlaceData?.id,
@@ -189,14 +169,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     amount:
                                         data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                                 };
-                                // dispatch(setBookmakerTeamRates(teamRates));
                                 if (data?.betPlaceData?.match_id === match?.id) {
                                     setteamRates({
                                         teamA: data?.teamA_rate ? data?.teamA_rate : 0,
                                         teamB: data?.teamB_rate ? data?.teamB_rate : 0,
                                         teamC: data?.teamC_rate ? data?.teamC_rate : 0
                                     })
-                                    // dispatch(setBookMakerBetRate((prev) => [body, ...prev]));
                                     dispatch(setBookMakerBetRate((prev) => {
                                         // Create a new array by adding `body` at the beginning and spreading the previous values
                                         const newData = [body, ...prev];
@@ -215,7 +193,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     if (packet.data[0] === "teamA_suspend_user") {
                         if (data.teamA_suspend == 'Ball Started') {
-                            // setIsABall(true)
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: true,
@@ -225,7 +202,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         } else {
                             setIsTeamASuspend(data.teamA_suspend);
                             setIsTeamBackUnlock(true);
-                            // setIsABall(false);
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: false,
@@ -276,14 +252,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         } else {
                             setIsTeamCSuspend(data.teamC_suspend);
                             setIsTeamBackUnlock(true);
-                            // setIsCBall(false);
                             setTeamBall((prevState) => ({
                                 ...prevState,
                                 isABall: false,
                                 isBBall: false,
                                 isCBall: false,
                             }));
-                            // alert("teamB_suspend_user")
                         }
                         setTeamSuspend((prevState) => ({
                             ...prevState,
@@ -296,7 +270,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamARate(data.teamA_Back);
                         setTeamALayValue(data.teamA_lay);
                         setIsTeamASuspend(data.teamA_suspend);
-                        // setIsABall(false);
                         setTeamBall((prevState) => ({
                             ...prevState,
                             isABall: false,
@@ -309,16 +282,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         }));
                     }
                     if (packet.data[0] === "teamB_rate_user") {
-                        // if (teamBLayValue) {
                         setIsTeamBLock(data?.teamB_suspend);
                         setTeamBRate(data?.teamB_Back);
                         setTeamBLayValue(data?.teamB_lay);
                         setIsTeamBSuspend(data?.teamB_suspend);
-                        // } 
-                        // else {
-                        // setIsTeamBackUnlock(false);
-                        // }
-                        // setIsBBall(false);
                         setTeamBall((prevState) => ({
                             ...prevState,
                             isABall: false,
@@ -335,8 +302,6 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamCRate(data.teamC_Back);
                         setTeamCLayValue(data.teamC_lay);
                         setIsTeamCSuspend(data.teamC_suspend);
-                        // setIsTeamBackUnlock(false);
-                        // setIsCBall(false);
                         setTeamBall((prevState) => ({
                             ...prevState,
                             isABall: false,

@@ -168,27 +168,6 @@ const SessionMarket = ({
                 }}
               />
             </Box>
-            {/* <Typography
-              sx={{
-                color: "white",
-                width: { mobile: "40px", tablet: "100px", laptop: "100px" },
-                fontSize: { laptop: "9px", tablet: "9px", mobile: "7px" },
-                fontWeight: "500",
-                flexWrap: "wrap",
-              }}
-            >
-              Maximum Bet {newData?.betfair_session_max_bet}
-            </Typography>
-            <img
-              alt="sd"
-              src={Info}
-              style={{
-                width: "15px",
-                height: "15px",
-                marginRight: "5px",
-                marginLeft: "5px",
-              }}
-            /> */}
           </Box>
         </Box>
         {showFastTimeBox && (
@@ -330,33 +309,6 @@ const SessionMarket = ({
               </Box>
             )}
 
-            {/* {fastBetLoading && (
-              <Box
-                sx={{
-                  position: "absolute",
-                  height: "100%",
-                  top: "0%",
-                  width: "100%",
-                  display: "flex",
-                  zIndex: "999",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  background: "rgba(0, 0, 0, .6)",
-                }}
-              >
-                <Lottie
-                  animationData={HourGlass}
-                  style={{
-                    display: "flex",
-                    alignSelf: "center",
-                    width: "50px",
-                    height: "50px",
-                  }}
-                />
-                <SmallCustomLoader />
-              </Box>
-            )} */}
-
             {upcoming && matchSessionData?.length > 0
               && (
                 <Box
@@ -423,7 +375,6 @@ const SessionMarket = ({
           </Box>
         )}
       </Box>
-      {/* <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} /> */}
 
       <style jsx scope>
         {`

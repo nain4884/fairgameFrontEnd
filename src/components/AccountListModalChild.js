@@ -1,28 +1,12 @@
 import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-import {
-  DownGIcon,
-  DownIcon,
-  Excel,
-  LockIcon,
-  Pdf,
-  UnLockIcon,
-} from "../admin/assets";
-import Modal from "./Modal";
-import SearchInput from "./SearchInput";
+import { Excel, Pdf, } from "../admin/assets";
 
 import StyledImage from "./StyledImage";
-import UserDetailModal from "./UserDetailModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
 import constants from "./helper/constants";
-import {
-  setPage,
-  setSubPage,
-  setSubUserData,
-  setUserData,
-} from "../newStore/reducers/auth";
+import { setSubPage, setSubUserData } from "../newStore/reducers/auth";
 import SearchInputModal from "./SearchInputModal";
 import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
@@ -32,9 +16,6 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
   const dispatch = useDispatch();
 
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
-  // const {currentUser} = useSelector((state) => state?.currentUser);
-  const { userWallet } = useSelector((state) => state?.auth);
-  // const [roles, setRoles] = useState([]);
   const { subUserData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole);
   const [data1, setData] = useState([]);
@@ -71,13 +52,12 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-            pageLimit
+          pageLimit
         )
       );
     } catch (e) {
       console.log(e);
     }
-    // /fair-game-wallet/getLogUserAggregateData
     try {
       const { data } = await axios.get(
         `/fair-game-wallet/getLogUserAggregateData?userId=${id}`
@@ -92,22 +72,11 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
   }
 
   const [pageCount, setPageCount] = useState(constants.pageLimit);
-  // const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const { subCurrentPageNo } = useSelector((state) => state?.auth);
   function callPage(val) {
     dispatch(setSubPage(parseInt(val)));
-    // setCurrentPage(parseInt(val));
   }
-
-  // async function getRoles() {
-  //   setRoles(JSON.parse(localStorage.getItem("allRoles")));
-  // }
-
-  //   useEffect(() => {
-  //     // getRoles();
-  //     getListOfUser(id);
-  //   }, [currentPageNo, pageCount,id, userWallet?.access_token]);
 
   return (
     <>

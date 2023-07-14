@@ -1,10 +1,8 @@
-import { Box, CircularProgress, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { useState, useContext } from "react";
 import { CancelDark } from "../assets";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
-import { useRef } from "react";
-import { useEffect } from "react";
 import { memo } from "react";
 import SessionResultCustomButton from "./SessionResultCustomButton";
 import { SocketContext } from "..//context/socketContext";
@@ -13,11 +11,9 @@ import useOuterClick from "./helper/userOuterClick";
 const CustomSessionResult = ({
   onClick,
   newData,
-  updateSessionData,
   setLive,
   setLocalState,
   currentMatch,
-  visible,
   setIObtes,
 }) => {
   const { socket, socketMicro } = useContext(SocketContext);
@@ -46,13 +42,6 @@ const CustomSessionResult = ({
           match_id: newData?.match_id,
           betId: newData?.id,
         });
-        // const updatedData = {
-        //   ...newData,
-        //   betStatus: 2,
-        //   suspended: "Result Declared",
-        // };
-        // // call the parent component's updateSessionData function
-        // updateSessionData(updatedData);
 
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
@@ -95,13 +84,6 @@ const CustomSessionResult = ({
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        // const updatedData = {
-        //   ...newData,
-        //   betStatus: 2,
-        //   suspended: "Result Declared",
-        // };
-        // // call the parent component's updateSessionData function
-        // updateSessionData(updatedData);
 
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
@@ -259,7 +241,7 @@ const CustomSessionResult = ({
           {newData?.betStatus !== 2 && (
             <SessionResultCustomButton
               color={"rgb(106 90 90)"}
-              title={"No Result" }
+              title={"No Result"}
               loading={loading}
               id="NR"
               session={true}

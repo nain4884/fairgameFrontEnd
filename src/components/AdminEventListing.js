@@ -1,24 +1,12 @@
-import { Grid, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADDACCOUNT,
-  BASKETBALL,
-  Card,
   CHECKLIST,
-  CHESS,
-  Cricket,
-  Football,
-  GOLF,
-  Hockey,
-  LIVEMARKET,
   MYACCOUNT,
   Play,
-  Slot,
-  SNOOKER,
   TEAM,
-  Tennis,
   TREND,
   WALLET,
 } from "../assets";
@@ -29,8 +17,6 @@ const AdminEventListing = ({
   selected,
   setAnchor,
   setAnchor1,
-  // setShow,
-  // show,
 }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const currroles = useSelector((state) => state?.auth?.allRole);
@@ -75,7 +61,7 @@ const AdminEventListing = ({
       });
     }
   }, [roleDetail]);
- 
+
   return (
     <Box
       sx={[
@@ -91,16 +77,14 @@ const AdminEventListing = ({
         },
       ]}
     >
-      
+
       {newData?.map((i, idx) => {
         return (
           <AdminEventComponent
             key={idx}
             data={i}
-            // setShow={setShow}
             selected={selected}
             setAnchor={setAnchor}
-            // show={show}
             setAnchor1={setAnchor1}
           />
         );

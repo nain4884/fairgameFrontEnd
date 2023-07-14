@@ -1,11 +1,8 @@
-import { Box, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { BETPLACED, NOT } from "../assets";
 import CountDownTimer from "./CountDownTimer";
 
 const BetPlaced = ({ visible, setVisible, not, time }) => {
   const [flag, setFlag] = useState(false);
-  const [timer, settimer] = useState(true);
   useEffect(() => {
     if (visible && !not && time) {
       setTimeout(

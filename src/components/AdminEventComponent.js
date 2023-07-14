@@ -1,16 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import { memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import StyledImage from "./StyledImage";
-import { DropDown } from "../admin/assets";
 
 const AdminEventComponent = ({
   data,
   selected,
   setAnchor,
   setAnchor1,
-  setShow,
-  show,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,7 +21,6 @@ const AdminEventComponent = ({
           !["Reports", "wallet"].includes(data?.title)
         ) {
           const href = `/${pathname}/nav`;
-          // setShow(false);
           navigate(href, {
             state: {
               activeTab: "",
@@ -33,7 +28,6 @@ const AdminEventComponent = ({
           });
         } else {
           if (data.url) {
-            // setShow(false);
             if (data?.title === "Reports") {
               setAnchor(e);
             } else if (data?.title === "wallet") {
@@ -85,27 +79,6 @@ const AdminEventComponent = ({
       >
         {data.title}
       </Typography>
-      {/* <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: "4px",
-          marginTop: { mobile: "5px", laptop: ".8vh" },
-        }}
-      > */}
-
-      {/* {["wallet", "Reports", "Details"].includes(data?.title) && (
-          <StyledImage
-            src={DropDown}
-            sx={{
-              height: "18px",
-              width: "18px",
-
-              transform: "rotate(180deg);",
-            }}
-          />
-        )} */}
-      {/* </Box> */}
     </Box>
   );
 };

@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import { Input } from ".";
 import { EyeIcon } from "../admin/assets";
 import { Background, DailogModal } from ".";
-import { setDailogData } from "../store/dailogModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -25,12 +24,6 @@ export default function DepositWallet() {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [userId, setUserId] = useState(currentUser?.id);
   const [balance, setBalance] = useState(currentUser?.current_balance);
-  let defaultError = {
-    1: { field: "Previous_Balance", val: true },
-    2: { field: "amount", val: true },
-    3: { field: "Transaction_Password", val: true },
-    4: { field: "Remark", val: true },
-  };
   const [error, setError] = useState({
     1: { field: "Previous_Balance", val: false },
     2: { field: "amount", val: false },
@@ -260,7 +253,6 @@ export default function DepositWallet() {
                       : Detail[2].val + balance}
                 </Typography>
               </Box>{" "}
-              {/**{(window.location.pathname.split("/")[2] === 'withdraw' && (Detail[2].val !== 0 || isNaN(Detail[2].val))) && '-'}{isNaN(Detail[2].val) ? 0 : Detail[2].val}  */}
             </Box>
           </Box>
 
@@ -278,7 +270,7 @@ export default function DepositWallet() {
               },
             }}
           >
-            <Box sx={{width: "50%"}}>
+            <Box sx={{ width: "50%" }}>
 
               <Box
                 sx={{
@@ -299,12 +291,6 @@ export default function DepositWallet() {
                     height: { mobile: "18px", tablet: "45px", laptop: "45px" },
                     display: "flex",
                     alignItems: "center",
-
-                    // justifyContent: {
-                    //   mobile: "flex-start",
-                    //   tablet: "flex-start",
-                    //   laptop: "flex-start",
-                    // },
                   }}
                 >
                   <Typography
@@ -385,11 +371,6 @@ export default function DepositWallet() {
                       height: { mobile: "18px", tablet: "45px", laptop: "45px" },
                       display: "flex",
                       alignItems: "center",
-                      // justifyContent: {
-                      //   mobile: "flex-start",
-                      //   tablet: "flex-start",
-                      //   laptop: "flex-end",
-                      // },
                     }}
                   >
                     <Typography
@@ -439,7 +420,7 @@ export default function DepositWallet() {
                 </Box>
               </Box>
             </Box>
-            <Box sx={{width: "50%"}}>
+            <Box sx={{ width: "50%" }}>
               <Input
                 placeholder="Remark (Optional)"
                 titleStyle={{ display: "none" }}
@@ -496,7 +477,6 @@ export default function DepositWallet() {
               <CustomButton
                 onClick={() => {
                   submit();
-                  // dispatch(setDailogData({ isModalOpen: true, showRight: true, bodyText: "Deposit Sucessfully" }))
                 }}
                 title={"Submit"}
                 color={"#0B4F26"}

@@ -1,64 +1,26 @@
 import {
-  Input,
-  Menu,
-  Popover,
   TextField,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useRef, useState } from "react";
-import { ArrowDown, CANCEL, CancelDark } from "../assets";
+import { useEffect, useRef } from "react";
 import "../components/index.css";
-import StyledImage from "./StyledImage";
-import { useSelector } from "react-redux";
-import BoxInput from "./BoxInput";
 import { toast } from "react-toastify";
-import { setRole } from "../newStore";
-import { currencyFormatter, formatNumber } from "./helper/helper";
-import { debounce } from "lodash";
+import { currencyFormatter } from "./helper/helper";
 const FastTimePlaceBet = ({
   session,
   setFastAmount,
-  onSubmit,
-  back,
-  isSessionYes,
-  isBack,
-  type,
-  name,
-  betOn,
-  data,
-  typeOfBet,
   selectedValue,
-  mainData,
   setShowFastTimeBox,
-  betType,
-  rates,
   fromOdds,
   selectedFastAmount,
 }) => {
-  const [defaultValue, setDefaultValue] = useState(" ");
-  const [currentOdds, setCurrentOdds] = useState(selectedValue);
-  const [newRates, setNewRates] = useState({
-    loss_amount: 0,
-    win_amount: 0,
-  });
   const theme = useTheme();
-  const { axios } = setRole();
-  const selectedColorBox = useSelector(
-    (state) => state.selectedColorBox
-  )?.value;
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const myDivRef = useRef(null);
-
-  // const scrollToBottom = () => {
-  //   myDivRef.current?.scrollIntoView({
-  //     top: 2000,
-  //     behavior: "smooth",
-  //   });
-  // };
 
   useEffect(() => {
     if (!fromOdds) {
@@ -123,11 +85,7 @@ const FastTimePlaceBet = ({
           gap: 1,
           overflow: "hidden",
           width: "100%",
-          // boxShadow:
-          //   "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
-          // left: isSessionYes?"-30%": "95%"
         },
-        // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
       ]}
     >
       <Box
@@ -191,66 +149,54 @@ const FastTimePlaceBet = ({
               flexDirection: "row-reverse"
             }}
           >
-          <button
-            // style={classes.CustomButton_Btn("#262626")}
-            style={{
-              color: "#fff",
-              backgroundColor: "rgb(49 158 91)",
-              width: "50%",
-              // width: { laptop: "150px", mobile: "130px" },
-              height: "45px",
-              borderRadius: "5px",
-              border: "2px solid white",
-            }}
-            onClick={() => {
-              setShowFastTimeBox(false);
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: { mobile: "11px", laptop: "14px", tablet: "14px" },
+            <button
+              // style={classes.CustomButton_Btn("#262626")}
+              style={{
+                color: "#fff",
+                backgroundColor: "rgb(49 158 91)",
+                width: "50%",
+                // width: { laptop: "150px", mobile: "130px" },
+                height: "45px",
+                borderRadius: "5px",
+                border: "2px solid white",
               }}
-            >
-              Submit
-            </Typography>
-          </button>
-          <button
-            // style={classes.CustomButton_Btn("#262626")}
-            style={{
-              color: "#fff",
-              backgroundColor: "#FF4D4D",
-              width: "50%",
-              // width: { laptop: "150px", mobile: "130px" },
-              height: "45px",
-              borderRadius: "5px",
-              border: "2px solid white",
-            }}
-            onClick={() => {
-              setShowFastTimeBox(false);
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: { mobile: "11px", laptop: "14px", tablet: "14px" },
-              }}
-            >
-              Cancel
-            </Typography>
-          </button>
-          </Box>
-          {/* <StyledImage
-               onClick={() => {
+              onClick={() => {
                 setShowFastTimeBox(false);
               }}
-              src={CancelDark}
-              sx={{
-                padding: "10px",
-                height: { mobile: "50px", laptop: "50px", tablet: "50px" },
-                width: { mobile: "50px", laptop: "50px", tablet: "50px" },
-                cursor: "pointer",
+            >
+              <Typography
+                sx={{
+                  fontSize: { mobile: "11px", laptop: "14px", tablet: "14px" },
+                }}
+              >
+                Submit
+              </Typography>
+            </button>
+            <button
+              // style={classes.CustomButton_Btn("#262626")}
+              style={{
+                color: "#fff",
+                backgroundColor: "#FF4D4D",
+                width: "50%",
+                // width: { laptop: "150px", mobile: "130px" },
+                height: "45px",
+                borderRadius: "5px",
+                border: "2px solid white",
               }}
-            /> */}
-          
+              onClick={() => {
+                setShowFastTimeBox(false);
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: { mobile: "11px", laptop: "14px", tablet: "14px" },
+                }}
+              >
+                Cancel
+              </Typography>
+            </button>
+          </Box>
+
         </Box>
         {
           <>
@@ -307,57 +253,6 @@ const FastTimePlaceBet = ({
             </Box>
           </>
         }
-        {/* <Box
-          sx={{
-            display: "flex",
-            flex: 1,
-            paddingY: "2vh",
-            justifyContent: "space-evenly",
-          }}
-        >
-          <button
-            // style={classes.CustomButton_Btn("#262626")}
-            style={{
-              color: "#FFF",
-              backgroundColor: "#FF4949",
-              width: "150px",
-              // width: { laptop: "150px", mobile: "130px" },
-              height: "35px",
-              borderRadius: "5px",
-              border: "2px solid white",
-            }}
-            onClick={() => {
-              if (session === "sessionOdds") {
-                setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
-              } else if (session === "manualBookMaker") {
-                setFastAmount((prev) => ({ ...prev, mannualBookMaker: 0 }));
-              } else if (session === "bookmaker") {
-                setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
-              }
-            }}
-          >
-            Reset
-          </button>
-
-          <button
-            // style={classes.CustomButton_Btn("#262626")}
-            style={{
-              color: "#fff",
-              backgroundColor: "#262626",
-              width: "150px",
-              // width: { laptop: "150px", mobile: "130px" },
-              height: "35px",
-              borderRadius: "5px",
-              border: "2px solid white",
-            }}
-            onClick={() => {
-              setShowFastTimeBox(false);
-              //   onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
-            }}
-          >
-            Submit
-          </button>
-        </Box> */}
       </Box>
     </Box>
   );

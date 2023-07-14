@@ -7,7 +7,6 @@ import {
   MenuItem,
   Drawer,
   AppBar,
-  Toolbar,
   CircularProgress,
 } from "@mui/material";
 import { useEffect, useState, useContext } from "react";
@@ -16,22 +15,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SocketContext } from "../context/socketContext";
 import {
   ArrowDown,
-  DownArrow,
   Draw,
   logo,
   Logout,
-  Money,
-  MoneyBag,
   DownIcon,
 } from "../assets";
-import userAxios from "../axios/userAxios";
-import { stateActions } from "../store/stateActions";
-import SearchInput from "./SearchInput";
 import SessionTimeOut from "./helper/SessionTimeOut";
 import SideBar from "./sideBar/SideBar";
 import StyledImage from "./StyledImage";
-import { userActions } from "../newStore/Actions/userActions";
-import { signIn, logout } from "../newStore/reducers/auth";
+import { logout } from "../newStore/reducers/auth";
 import {
   removeCurrentUser,
   setCurrentUser,
@@ -48,8 +40,6 @@ import {
 import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
 import IdleTimer from "./IdleTimer";
-import DropdownMenu1 from "./CommonMasterAdminLayout/MenuBar";
-import EventListing from "./EventListing";
 import ModalMUI from "@mui/material/Modal";
 import CustomLoader from "./helper/CustomLoader";
 
@@ -61,14 +51,11 @@ const CustomHeader = ({ }) => {
   const dispatch = useDispatch();
   const [showSideBarMobile, setShowSideBarMobile] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [balance, setBalance] = useState(0);
-  const [exposure, setExposure] = useState(0);
   const [notificationData, setNotificationData] = useState(null);
-  let { axios, role, JWT } = setRole();
+  let { axios } = setRole();
   const [firstTimeLoader, setFirstTimeLoader] = useState(true);
 
   const { currentUser } = useSelector((state) => state?.currentUser);
-  // const auth = useSelector(state => state?.auth?.user);
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { socket, socketMicro } = useContext(SocketContext);
@@ -91,8 +78,6 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      // localStorage.removeItem("role4");//add
-      // localStorage.removeItem("JWTuser");//add
     };
 
     const handleLoad = (event) => {
@@ -169,42 +154,15 @@ const CustomHeader = ({ }) => {
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
-        if (packet.data[0] === "logoutUserForce") {
-          // dispatch(removeCurrentUser());
-          // dispatch(removeManualBookMarkerRates());
-          // dispatch(removeSelectedMatch());
-          // dispatch(logout({ roleType: "role4" }));
-          // socket.disconnect();
-          // socketMicro.disconnect();
-          // setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-          // // await axios.get("auth/logout");
-          // removeSocket();
-        }
-        // if (packet.data[0] === "userBalanceUpdate") {
-        //   const data = packet.data[1];
-        //   const user = {
-        //     ...currentUser,
-        //     current_balance: data?.currentBalacne,
-        //   };
-        //   dispatch(setCurrentUser(user));
-
-        //   //currentBalacne
-        // }
-        // if (packet.data[0] === "newMatchAdded") {
-        //   window.location.reload();
-        // }
       };
     }
   }, [socket]);
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const [anchor, setAnchor] = useState(null);
 
   const [selected, setSelected] = useState(
     location.state?.activeTab || "CRICKET"
   );
-
-  const [showOfflineStatus, setShowOfflineStatus] = useState(false);
 
   useEffect(() => {
     function onlineHandler() {
@@ -229,16 +187,7 @@ const CustomHeader = ({ }) => {
       const { data } = await axios.get("users/profile");
 
       localStorage.setItem("role4", "role4");
-      // dispatch(
-      //   stateActions.setBalance(
-      //     data.data.current_balance || 0,
-      //     role,
-      //     data.data.exposure || 0,
-      //     data.data.id
-      //   )
-      // );
       dispatch(setCurrentUser(data.data));
-      // setFullName(data.data.fullName);
     } catch (e) {
       console.log(e);
       if (e.response.status === 401) {
@@ -261,24 +210,6 @@ const CustomHeader = ({ }) => {
       setMobileOpen(false);
     }
   }, [matchesMobile]);
-
-  const bal = window.localStorage.getItem("Balance4");
-  const exp = window.localStorage.getItem("exposure4");
-  // useEffect(() => {
-  //   // setBalance(user?.amount || bal);
-  //   // setExposure(user?.exposure || exp);
-  //   if (
-  //     location?.pathname.includes("change_password") ||
-  //     location?.pathname?.includes("change_button_value") ||
-  //     location?.pathname?.includes("account_statement") ||
-  //     location?.pathname?.includes("profit_loss") ||
-  //     location?.pathname?.includes("bet_history")
-  //   ) {
-  //     setShowSideBarMobile(true);
-  //   } else {
-  //     setShowSideBarMobile(false);
-  //   }
-  // }, [location, bal, JWT]);
 
   const handleGetNotification = async () => {
     try {
@@ -772,13 +703,6 @@ const BoxProfile = ({ image, value, containerStyle }) => {
 };
 
 const menutItems = [
-  // { title: "Account Statement", link: "/account_statement" },
-  // { title: "Profile/Loss Report", link: "/profit_loss" },
-  // { title: "Bet History", link: "/bet_history" },
-  // { title: "Casino Report History" },
-  // { title: "Set Button Values", link: "/change_button_value" },
-  // { title: "Security Auth Verification" },
-  // { title: "Change Password", link: "/change_password" },
   { title: "Rules", link: "/rules" },
 ];
 const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
@@ -791,8 +715,6 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
 
   const logoutProcess = async () => {
     try {
-      // dispatch(stateActions.logout("role4"));
-      // socketMicro.emit("logoutUserForce");
       dispatch(setConfirmAuth(false));
       sessionStorage.setItem("JWTuser", null);
       setLoading(true);

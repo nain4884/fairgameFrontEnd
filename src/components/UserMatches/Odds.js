@@ -5,29 +5,17 @@ import BoxComponent from "./BoxComponent";
 import ManualBoxComponent from "./ManualBoxComponent";
 import Divider from "../helper/Divider";
 import {
-    BallStart,
-    FASTTIME,
-    HourGlass,
-    Info,
     TIME,
     ARROWUP,
 } from "../../assets";
 import { memo } from "react";
 import FastTimePlaceBet from "../FastImePlaceBet";
-import LiveMarket from "../CommonMasterAdminLayout/LiveMarket";
 import FastTime from "../FastTime";
 import { currencyFormatter, formatNumber } from "../helper/helper";
-import PlaceBet from "../PlaceBet";
-import { toast } from "react-toastify";
 import OddsPlaceBet from "../OddsPlaceBet";
-import { setRole } from "../../newStore";
-import { useDispatch } from "react-redux";
-import { setDailogData } from "../../store/dailogModal";
-import Lottie from "lottie-react";
 import NotificationModal from "../NotificationModal";
 import { LockIcon } from "../../admin/assets";
 import { useEffect } from "react";
-import SmallCustomLoader from "../helper/SmallCustomLoader";
 
 const SmallBox = ({ valueA, valueB }) => {
     return (
@@ -143,10 +131,8 @@ const Odds = ({
     title,
     min,
     max,
-    lock,
     showBox,
     showDely,
-    suspended,
     newData,
     isRound,
     typeOfBet,
@@ -159,8 +145,6 @@ const Odds = ({
     upcoming,
     handleRateChange,
 }) => {
-    // alert(teamCRates)
-    // console.log("matchOddsData 11:", matchOddsData);
     const theme = useTheme();
     const [showFastTimeBox, setShowFastTimeBox] = useState(false);
     const [placeBetData, setPlaceBetData] = useState(null);
@@ -193,17 +177,12 @@ const Odds = ({
             return 0;
         } else {
             const bookRatio = teamARates != 0 ? teamBRates / teamARates || 0 : 0;
-            // alert(teamARates)
             const formattedRatio = Math.abs(bookRatio).toFixed(2);
-            // alert(typeof teamARates < 0 ? `-${formattedRatio}` : formattedRatio)
-
             return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
         }
     })();
 
     const [visible, setVisible] = useState(true);
-
-
     return (
         <>
             <Box
@@ -318,27 +297,6 @@ const Odds = ({
                                 alt={"Banner"}
                             />
                         </Box>
-                        {/* <Typography
-            sx={{
-              color: "white",
-              width: {mobile:"40px",tablet:"100px",laptop:"100px"},
-
-              fontSize: { laptop: "9px", mobile: "7px" },
-              fontWeight: "500",
-              flexWrap: "wrap",
-            }}
-          >
-            Maximum Bet {max}
-          </Typography>
-          <img
-            src={Info}
-            style={{
-              width: "15px",
-              height: "15px",
-              marginRight: "5px",
-              marginLeft: "5px",
-            }}
-          /> */}
                     </Box>
                 </Box>
 
@@ -392,7 +350,6 @@ const Odds = ({
                                     justifyContent: { laptop: "center", mobile: "flex-end" },
                                 }}
                             >
-                                {/* <Box sx={{ width: ".50%", display: "flex" }}></Box> */}
                                 <Box
                                     sx={{
                                         background: "#00C0F9",
@@ -422,7 +379,6 @@ const Odds = ({
                                         display: "flex",
                                         justifyContent: "center",
                                         alignItems: "center",
-                                        // borderRight: {laptop: '1.5px solid #319e5b', mobile: '2px solid #319e5b' }
                                     }}
                                 >
                                     <Typography
@@ -431,7 +387,6 @@ const Odds = ({
                                         Lay
                                     </Typography>
                                 </Box>
-                                {/* <Box sx={{ width: ".50%", display: "flex" }}></Box> */}
                             </Box>
                         </Box>
                         {betLock && (
@@ -479,33 +434,6 @@ const Odds = ({
                                 </Box>
                             </Box>
                         )}
-
-                        {/* {fastBetLoading && (
-                            <Box
-                                sx={{
-                                    position: "absolute",
-                                    height: "100%",
-                                    top: "0%",
-                                    width: "100%",
-                                    display: "flex",
-                                    zIndex: "999",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    background: "rgba(0, 0, 0, .5)",
-                                }}
-                            >
-                                <Lottie
-                                    animationData={HourGlass}
-                                    style={{
-                                        display: "flex",
-                                        alignSelf: "center",
-                                        width: "50px",
-                                        height: "50px",
-                                    }}
-                                />
-                                <SmallCustomLoader />
-                            </Box>
-                        )} */}
 
                         {upcoming && (
                             <Box

@@ -1,12 +1,10 @@
-import { Box, Typography, useTheme } from "@mui/material";
-import { useState, useEffect, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { SocketContext } from "../context/socketContext";
+import { Box, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function BetMakerMarketComponent({ add, match }) {
     const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
     const [betData, setBetData] = useState([]);
-    const { socket } = useContext(SocketContext);
 
     useEffect(() => {
         setBetData(bookMakerBetRates);
@@ -15,9 +13,6 @@ export default function BetMakerMarketComponent({ add, match }) {
     return (
         <Box sx={{ flex: 1, background: "white", borderRadius: "5px", minHeight: "75vh", border: "2px solid white", }}>
             <Box sx={[{ height: "42px", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px", backgroundColor: "#F8C851" },
-                // (theme) => ({
-                //     backgroundImage: `${theme.palette.primary.headerGradient}`
-                // })
             ]}>
                 <Typography sx={{ color: "#000000", fontSize: "20px", fontWeight: "600" }}>Bookmaker Bets</Typography>
                 <Box sx={{ height: "35px", width: "100px", background: "white", borderRadius: "5px", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
@@ -40,21 +35,6 @@ export default function BetMakerMarketComponent({ add, match }) {
                                 <Row index={num} values={i} />
                             );
                         })}
-                    {/* {!add && <>
-                    <Row index={1} yes={true} />
-                    <Row index={2} />
-                    <Row index={3} yes={true} />
-                    <Row index={4} />
-                    <Row yes={true} index={5} />
-                    <Row index={6} />
-                    <Row yes={true} index={7} />
-                    <Row index={8} />
-                    <Row yes={true} index={9} />
-                    <Row index={10} />
-                    <Row yes={true} index={11} />
-                    <Row index={12} />
-                    <Row yes={true} index={13} />
-                </>} */}
                 </Box>
             </Box>
         </Box>
@@ -88,9 +68,6 @@ const Header = () => {
             <Box sx={{ background: "#262626", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Typography sx={{ fontWeight: "600", fontSize: "12px", color: "white", }}>My Stake</Typography>
             </Box>
-            {/* <Box sx={{ background: "#262626", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Typography sx={{ fontWeight: "600", fontSize: "12px", color: "white", }}>Time</Typography>
-            </Box> */}
         </Box>
     )
 }
@@ -118,7 +95,6 @@ const Row = ({ index, values }) => {
                     <Typography sx={{ color: "black", fontWeight: "600", fontSize: "14px", lineHeight: 1 }}>{values.team_bet}</Typography>
                 </Box>
                 <Box sx={{ background: values.bet_type == "back" ? "#B3E0FF" : "#FFB5B5", width: "10%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", position: 'relative', }}>
-                    {/* <Typography sx={{ fontWeight: "600", fontSize: { mobile: "6px", laptop: "9px" }, color: "black", position: 'absolute', top: 5, right: 5 }} >{getTime(values.createAt)}</Typography> */}
                     <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>{values.odds}</Typography>
                 </Box>
                 <Box sx={{ background: values.bet_type == "back" ? "#B3E0FF" : "#FFB5B5", width: "14%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", position: 'relative', }}>
@@ -133,9 +109,6 @@ const Row = ({ index, values }) => {
                 <Box sx={{ background: "#0B4F26", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                     <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "white", }}>{values.myStack}</Typography>
                 </Box>
-                {/* <Box sx={{ background: "#FFE6A9", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black", }}>{getTime(values.createAt)}</Typography>
-            </Box> */}
             </Box>
             {values?.deleted_reason && (
                 <Box

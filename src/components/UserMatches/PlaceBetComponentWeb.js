@@ -5,14 +5,10 @@ import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
 import useOuterClick from "../helper/userOuterClick";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
 const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
   const [proLoss, setProfitLoss] = useState(profitLoss?.profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   const handleClose = () => {
     setAnchorEl(null);
   };

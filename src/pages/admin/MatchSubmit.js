@@ -33,6 +33,7 @@ const MatchSubmit = ({ }) => {
   const [currentOdds, setCurrentOdds] = useState(null);
   const [isHandled, setIsHandled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [popData, setPopData] = useState([]);
   // matchIds
   useEffect(() => {
     // alert(matchIds)
@@ -908,6 +909,10 @@ const MatchSubmit = ({ }) => {
                 setSessionBets((sessionBets) =>
                   sessionBets?.filter((v) => v?.bet_id !== value?.betId)
                 );
+                setPopData((prev) => {
+                  const updatedArray = prev?.filter((v) => v?.id !== value?.betId);
+                  return updatedArray;
+                });
               } catch (err) {
                 console.log(err?.message);
               }
@@ -1544,6 +1549,8 @@ const MatchSubmit = ({ }) => {
                                     data={[]}
                                     sessionOffline={item.sessionOffline}
                                     sessionBets={sessionBetsData}
+                                    setPopData={setPopData}
+                                    popData={popData}
                                   />
                                 )}
                             </Box>
@@ -1638,6 +1645,8 @@ const MatchSubmit = ({ }) => {
                                 currentMatch={item}
                                 sessionOffline={item.sessionOffline}
                                 sessionBets={sessionBetsData}
+                                setPopData={setPopData}
+                                popData={popData}
                               />
                             )}
                           <FullAllBets tag={true} IObets={IObetsData} setSelectedBetData={setSelectedBetData} selectedBetData={selectedBetData} />
@@ -1734,6 +1743,8 @@ const MatchSubmit = ({ }) => {
                               currentOdds={currentOdds}
                               sessionOffline={item.sessionOffline}
                               sessionBets={sessionBetsData}
+                              setPopData={setPopData}
+                              popData={popData}
                             />
                           )}
                         <FullAllBets tag={true} IObets={IObetsData} setSelectedBetData={setSelectedBetData} selectedBetData={selectedBetData} />

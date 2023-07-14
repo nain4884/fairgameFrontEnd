@@ -12,7 +12,7 @@ const FastTime = ({
 }) => {
   return (
     <Box
-    title="Faster Bet"
+      title="Faster Bet"
       sx={{
         display: "flex",
         alignItems: "center",
@@ -21,18 +21,6 @@ const FastTime = ({
         width: "100%",
       }}
     >
-      {/* <Typography
-          sx={{
-            fontSize: { mobile: "10px", laptop: "12px" },
-            fontWeight: "bold",
-            textAlign: "center",
-            color: "#FF4949",
-            width: { mobile: "40px", laptop: "80px" },
-          }}
-        >
-          {data ? data :""}
-  
-        </Typography> */}
       {data ? (
         <LiveMarket
           onClick={() => {

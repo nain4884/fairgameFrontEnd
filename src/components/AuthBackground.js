@@ -1,10 +1,6 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import { LoginBg } from "../expert/assets";
-
-
-
 import { useEffect, useRef } from "react";
-
 
 const AuthBackground = () => {
   const containerRef = useRef(null);

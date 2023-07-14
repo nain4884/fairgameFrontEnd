@@ -2,8 +2,6 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 
 const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
-  // const totalAmount = sessionBets?.reduce((acc, obj) => acc + obj?.amount || Number(obj?.stake), 0);
-// alert(totalAmount)
   return (
     <Box
       sx={{
@@ -44,7 +42,7 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
         <Typography
           sx={{ fontSize: { mobile: "10px", tablet: "10px", laptop: "12px" }, fontWeight: "bold", color: "#319E5B" }}
         >
-          {sessionBets?.length < 10 ? 0:""}{sessionBets?.length || 0}
+          {sessionBets?.length < 10 ? 0 : ""}{sessionBets?.length || 0}
         </Typography>
       </Box>
       <Box
@@ -70,7 +68,7 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
             lineHeight: '1'
           }}
         >
-          Total Amount 
+          Total Amount
         </Typography>
         <Typography
           sx={{
@@ -80,7 +78,7 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
             lineHeight: '1.5',
           }}
         >
-          {totalAmount > 0 ? `-`+totalAmount :totalAmount == undefined?0: totalAmount}
+          {totalAmount > 0 ? `-` + totalAmount : totalAmount == undefined ? 0 : totalAmount}
         </Typography>
       </Box>
     </Box>

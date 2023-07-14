@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, drawerBackground } from "../../assets";
 
-const SideBar = ({ mobileShow , }) => {
+const SideBar = ({ mobileShow, }) => {
   const [showSideBarMobile, setShowSideBarMobile] = useState(false);
   const location = useLocation();
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const [selected, setSelected] = useState("All Sports");
   const data = [
     {
@@ -22,7 +22,7 @@ const SideBar = ({ mobileShow , }) => {
         { title: "Ice Hockey", url: "/comingsoon", activeTab: "ICE HOCKEY" },
         { title: "Volleyball", url: "/comingsoon" },
         { title: "Politics", url: "/comingsoon" },
-        { title: "Table", url: "/comingsoon" ,},
+        { title: "Table", url: "/comingsoon", },
         { title: "Darts", url: "/comingsoon" },
         { title: "Snooker", url: "/comingsoon", activeTab: "SNOOKER" },
         { title: "Golf", url: "/comingsoon", activeTab: "GOLF" },
@@ -35,19 +35,6 @@ const SideBar = ({ mobileShow , }) => {
       data: [],
     },
   ];
-  // useEffect(() => {
-  //   if (
-  //     location?.pathname.includes("change_password") ||
-  //     location?.pathname?.includes("change_button_value") ||
-  //     location?.pathname?.includes("account_statement") ||
-  //     location?.pathname?.includes("profit_loss") ||
-  //     location?.pathname?.includes("bet_history")
-  //   ) {
-  //     setShowSideBarMobile(true);
-  //   } else {
-  //     setShowSideBarMobile(false);
-  //   }
-  // }, [location]);
   const ListHeader = ({ title }) => {
     return (
       <Box
@@ -120,9 +107,9 @@ const SideBar = ({ mobileShow , }) => {
   const ListItem = ({ item }) => {
     const theme = useTheme();
     return (
-      <Box 
-        onClick={()=>{
-          navigate(item?.url,{state:{activeTab:item?.activeTab}})
+      <Box
+        onClick={() => {
+          navigate(item?.url, { state: { activeTab: item?.activeTab } })
           // handleDrawerToggle()
         }}
         sx={{

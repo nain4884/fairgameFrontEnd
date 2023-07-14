@@ -114,13 +114,8 @@ const MainBox = ({ title, width, color, under, selected, sub }) => {
         marginBottom: ".5vh",
         marginRight: "3px",
         opacity: selected && under ? 1 : 0.8,
-        // borderBottomRightRadius: selected && under && ".5vh",
-        // borderTopRightRadius: selected && under && ".5vh",
-        // backgroundImage:
-        //   selected && under && `${theme.palette.primary.headerGradient}`,
         "&:hover": {
           cursor: "pointer",
-          // backgroundImage: `${theme.palette.primary.headerGradient}`,
           background: color,
           opacity: 1,
         },
@@ -156,7 +151,7 @@ const MainBox = ({ title, width, color, under, selected, sub }) => {
           {sub}
         </Typography>
       </Box>
-    {under && <Box
+      {under && <Box
         sx={{
           display: "flex",
           flex: 0.3,
@@ -172,7 +167,7 @@ const MainBox = ({ title, width, color, under, selected, sub }) => {
           }}
           src={ARROWDROPDOWN}
         />
-      </Box> }
+      </Box>}
       {/* {selected && under && <MinusBox />}
       {!selected && under && <PlusBox />} */}
     </Box>
@@ -495,7 +490,7 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              padding:"5px",
+              padding: "5px",
             }}
           >
             <img

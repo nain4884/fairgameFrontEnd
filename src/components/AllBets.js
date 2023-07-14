@@ -1,12 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import moment from "moment/moment";
 import { memo, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { ARROWUP } from "../assets";
 
 const AllBets = ({ tag, submit, allBetRates }) => {
-  const navigate = useNavigate();
 
   const [newData, setNewBets] = useState([]);
   const [visibleImg, setVisibleImg] = useState(true);
@@ -26,7 +23,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               width: "12%"
             },
             {
-              name: v?.marketType =="MANUAL BOOKMAKER" ? "Quick Bookmaker" : v?.marketType,
+              name: v?.marketType == "MANUAL BOOKMAKER" ? "Quick Bookmaker" : v?.marketType,
               color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
               background: ["no", "yes"].includes(v?.bet_type)
                 ? "#319E5B"
@@ -55,9 +52,9 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 : "rgb(255, 146, 146)",
               small: true,
               deleted_reason: v?.deleted_reason,
-              width: "7%",  
-              fSize:"13px",
-              lHeight: 1            
+              width: "7%",
+              fSize: "13px",
+              lHeight: 1
             },
             {
               name: v?.bet_type,
@@ -126,10 +123,6 @@ const AllBets = ({ tag, submit, allBetRates }) => {
         }}
       >
         <Box
-          // onClick={(e) => {
-          //   e.stopPropagation();
-          //   navigate("/admin/total_bets");
-          // }}
           sx={[
             {
               flex: 1,
@@ -220,7 +213,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
                 return (
                   <div style={{ display: "flex", position: "relative" }}>
                     <Box
-                      sx={{ 
+                      sx={{
                         width: "4%",
                         border: "1px solid white",
                         background: "black",
@@ -469,8 +462,8 @@ const SmallBox = ({ item }) => {
         display: "flex",
         flexDirection: "column",
         width: item?.width ? item?.width : "auto",
-        
-      }}  
+
+      }}
     >
       <Typography
         sx={{ fontSize: item?.fSize ? item?.fSize : "11px", fontWeight: "600", color: item?.color, textTransform: "capitalize", lineHeight: item?.lHeight ? item?.lHeight : 1.5, }}
@@ -513,9 +506,6 @@ const LargeBox = ({ item, k }) => {
           lineHeight: 1,
           px: "2px",
           textTransform: "capitalize",
-          // whiteSpace: "nowrap",
-          // textOverflow: "ellipsis",
-          // maxWidth: "50px",
           overflow: "hidden",
           display: " -webkit-box",
           WebkitLineClamp: 2,
@@ -537,27 +527,6 @@ const LargeBox = ({ item, k }) => {
 const Row = ({ values, index }) => {
   return (
     <Box sx={{ width: "100%", display: "flex" }}>
-      {/* <Box
-          sx={{
-            width: "40px",
-            border: "1px solid white",
-            background: "black",
-            height: "30px",
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: !tag ? "10px" : "13px",
-              fontWeight: tag ? "bold" : "600",
-              color: "white",
-            }}
-          >
-            {num < 10 ? "0" + num : num.toString()}
-          </Typography>
-        </Box> */}
       {values?.map((item, k) => {
         if (!item?.small) {
           return <LargeBox k={k} item={item} />;

@@ -276,8 +276,6 @@ const BoxComponent = ({
                     // lock={lock}
                     lock={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") > 0 ? false : true : true}
                     rates={allRates}
-                    // value={matchOddsData?.back ? matchOddsData?.back - 2 : 0}
-                    // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") : 0}
                     value={
                       matchOddsData?.back
                         ? handleDecimal(matchOddsData?.back, 2, "back")
@@ -386,9 +384,6 @@ const BoxComponent = ({
                   typeOfBet={typeOfBet}
                   handleRateChange={handleRateChange}
                 />
-                {/* <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box> */}
                 {!matchesMobile && (
                   <SeprateBox
                     closeModal={ballStatus}
@@ -421,9 +416,6 @@ const BoxComponent = ({
                     handleRateChange={handleRateChange}
                   />
                 )}
-                {/* <Box
-              sx={{ width: ".25%", display: "flex", background: "pink" }}
-            ></Box> */}
                 {!matchesMobile && (
                   <SeprateBox
                     closeModal={ballStatus}

@@ -4,7 +4,6 @@ import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
 import useOuterClick from "../helper/userOuterClick";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 
 const PlaceBetComponent = ({ amount, profitLoss }) => {
   const [proLoss, setProfitLoss] = useState(profitLoss?.profitLoss);

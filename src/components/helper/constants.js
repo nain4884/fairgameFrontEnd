@@ -1,14 +1,8 @@
 module.exports = {
   apiBasePath: "http://159.65.154.97:3100/", // server url
-  // apiBasePath: 'http://localhost:3100/', // server url
   apiMicroBasePath: "http://localhost:3200", // server url
   microServiceApiPath: "http://139.59.88.49:3200",
-  // microServiceApiPath: 'http://139.59.88.49:3200',
-  // microServiceApiPath: 'http://localhost:3200',
-  imageBasePath: "http://localhost:4000/public/images/", /// server image base path
-
-  //   'apiBasePath': 'http://18.169.59.243:4000', // server url
-  //   'imageBasePath': 'http://18.169.59.243:4000/public/images/' , /// server image base path
+  imageBasePath: "http://localhost:4000/public/images/", /// server image base pathpath
 
   thirdPartyAPIBasePath: "http://3.23.22.210:4001/api/", // third party api url
 
@@ -69,7 +63,7 @@ module.exports = {
 
   pageLimit: 10,
   pageCount: 10,
-  listOfClientCountLimit:15,
+  listOfClientCountLimit: 15,
 
   customPageLimit: 10,
 };

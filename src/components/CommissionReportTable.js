@@ -1,19 +1,12 @@
 import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-
-import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
 import constants from "./helper/constants";
-
-import SearchInputModal from "./SearchInputModal";
-
 import { useTheme } from "@emotion/react";
 import moment from "moment";
 import CustomLoader from "./helper/CustomLoader";
 
 const CommissionReportTable = ({ id, show, setShow, title }) => {
-  const dispatch = useDispatch();
   const theme = useTheme();
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   const [loader, setLoader] = useState(false)
@@ -27,15 +20,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       const { data } = await axios.get(
         `/game-match/getCommisionReport/${id}?&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
-
-      // data?.data?.data.map((element) => {
-      //   let roleDetail = roles.find(findThisRole);
-      //   function findThisRole(role) {
-      //     return role.id === element.roleId;
-      //   }
-      //   element.role = roleDetail?.roleName;
-      // });
-      // // dispatch(setSubUserData(data?.data?.data));
       setData(data?.data);
       setPageCount(
         Math.ceil(
@@ -57,7 +41,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-  const { subCurrentPageNo } = useSelector((state) => state?.auth);
 
   useEffect(() => {
     setLoader(true)
@@ -65,7 +48,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
   }, [currentPage]);
 
   function callPage(val) {
-    // dispatch(setSubPage(parseInt(val)));
     setCurrentPage(parseInt(val));
   }
 
@@ -159,25 +141,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             Team
           </Typography>
         </Box>
-        {/* <Box
-          sx={{
-            width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
-            display: "flex",
-            paddingLeft: "10px",
-            alignItems: "center",
-            height: "35px",
-            borderRight: "2px solid white",
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px" },
-            }}
-          >
-            Commission Type
-          </Typography>
-        </Box> */}
         <Box
           sx={{
             width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
@@ -417,29 +380,6 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
               {elementToUDM.teamBet}
             </Typography>
           </Box>
-          {/* <Box
-            sx={{
-              width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
-              display: "flex",
-              paddingLeft: "10px",
-              alignItems: "center",
-              height: "45px",
-              borderRight: "2px solid white",
-              ...fContainerStyle,
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: "12px",
-                fontWeight: "600",
-                color:
-                  ["#319E5B", "#303030"].includes(fContainerStyle.background) &&
-                  "white",
-              }}
-            >
-              {elementToUDM.commissionType}
-            </Typography>
-          </Box> */}
           <Box
             sx={{
               width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
@@ -731,109 +671,16 @@ const ListH = ({ id, title, setData, matchesMobile, setShow, userName }) => {
           }}
         >
           {userName ? `${userName} -` : ""}  ({title})        </Typography>
-        {/* 
-          {matchesMobile && (
-            <Box sx={{ display: "flex", marginTop: "5px" }}>
-              <Box
-                sx={{
-                  background: "white",
-                  height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                  borderRadius: "5px",
-                  width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <StyledImage
-                  src={Excel}
-                  sx={{
-                    height: { mobile: "15px", laptop: "20px", tablet: "20px" },
-                  }}
-                />
-              </Box>
-              <Box
-                sx={{
-                  background: "white",
-                  marginLeft: "10px",
-                  borderRadius: "5px",
-                  height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                  width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <StyledImage
-                  src={Pdf}
-                  sx={{
-                    height: { mobile: "15px", laptop: "20px", tablet: "20px" },
-                  }}
-                />
-              </Box>
-            </Box>
-          )}
-        </Typography>
-        {!matchesMobile && (
-          <>
-            <Box
-              sx={{
-                background: "white",
-                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                borderRadius: "5px",
-                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <StyledImage
-                src={Excel}
-                sx={{
-                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
-                }}
-              />
-            </Box>
-            <Box
-              sx={{
-                background: "white",
-                marginLeft: "10px",
-                borderRadius: "5px",
-                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <StyledImage
-                src={Pdf}
-                sx={{
-                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
-                }}
-              />
-            </Box>
-          </>
-        )} */}
       </Box>
 
       <Button
         sx={{ color: "", fontSize: "30px" }}
         onClick={() => {
           setShow({ value: false, id: "", title: "" });
-          // dispatch(setSubUserData([]));
-          // dispatch(setSubPage(1));
         }}
       >
         &times;
       </Button>
-      {/* 
-      <SearchInputModal
-        setData={setData}
-        id={id}
-        show={true}
-        placeholder={"Search User..."}
-      /> */}
     </Box>
   );
 };

@@ -1,10 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import constants from "./helper/constants";
 import SearchInput from "./SearchInput";
 import SmallDropDown from "./smallDropDown";
-import { setRole } from "../newStore";
 import moment from "moment";
 
 const Footer = ({ currentPage, pages, callPage, currenLimit }) => {
@@ -160,7 +156,7 @@ const BetsList = ({ betHistory, pageCount, currentPage, currenLimit, handleGetLi
           )}
         </Box>
       </Box>
-      <Box sx={{ width: {laptop: "100.25%", mobile: "101%"},  position: "absolute", left: "-2px" }}>
+      <Box sx={{ width: { laptop: "100.25%", mobile: "101%" }, position: "absolute", left: "-2px" }}>
         {/* <Footer /> */}
         <Footer
           currenLimit={currenLimit}

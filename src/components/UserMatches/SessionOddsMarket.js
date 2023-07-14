@@ -1,36 +1,8 @@
 import React from 'react'
 import Divider from '../helper/Divider';
-import { Box, Typography, useMediaQuery } from '@mui/material';
-import { useTheme } from '@emotion/react';
+import { Box, Typography } from '@mui/material';
 
 const SessionOddsMarket = ({ data }) => {
-  const theme = useTheme();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-
-  // const [matchData, setMatchData] = useState([])
-  // const [pageCount, setPageCount] = useState(10)
-  // const [currentPage, setCurrentPage] = useState(1)
-  // const [pageLimit, setPageLimit] = useState(5)
-
-  // useEffect(() => {
-  //     getAllMatch()
-  // }, [currentPage, pageCount])
-
-  // async function getAllMatch() {
-  //     try {
-  //         // let { data } = await axios.get(`/game-match/getAllMatch?bets=1&pageNo=${currentPage}&pageLimit=${pageLimit}`);
-  //         if(data.length > 0) {
-  //             setMatchData(data)
-  //             setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
-  //         }
-  //     } catch (e) {
-  //         console.log(e)
-  //     }
-  // }
-
-  // function callPage(e) {
-  //     setCurrentPage(parseInt(e.target.outerText))
-  // }
 
   return (
     <>
@@ -204,23 +176,8 @@ const SessionOddsMarket = ({ data }) => {
                 </>
               );
             })}
-          {/* <SeasonMarketBox index={1} typeOfBet={"Session"} data={data} />
-                <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data} />
-                <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data} />
-                <Divider />
-                <SeasonMarketBox index={2} typeOfBet={"Session"} data={data} />
-                <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data} />
-                <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data} />
-                <Divider />
-                <SeasonMarketBox typeOfBet={"Session"} data={data} />
-                <Divider /> */}
         </Box>
       </Box>
-      {/* <Pagination className="whiteTextPagination d-flex justify-content-center" count={pageCount} color="primary" onChange={callPage} /> */}
     </>
   );
 };

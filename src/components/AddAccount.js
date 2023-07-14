@@ -4,13 +4,11 @@ import Input from "./Input";
 import { EyeIcon } from "../admin/assets";
 import DropDownSimple from "./DropdownSimple";
 import { useNavigate } from "react-router-dom";
-
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 import Modal from "./Modal";
 import { setRole } from "../newStore";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { debounce } from "lodash";
 import InputMyPartnership from "./InputMypartnership";
 
 const containerStyles = {
@@ -39,7 +37,6 @@ const AddAccount = () => {
   const { axios, locPath, JWT, roleName } = setRole();
   const navigate = useNavigate();
   const { userWallet, allRole } = useSelector((state) => state.auth);
-  const [roleOfUser, setRoleOfUser] = useState("");
   const [errorShow, setErrorShow] = useState("");
   const [successShow, setSuccessShow] = useState("");
   const [locationPath, setLocationPath] = useState(locPath);
@@ -152,15 +149,14 @@ const AddAccount = () => {
   };
   const [mypar, setMypar] = useState("");
   const [uplineP, setUplineP] = useState(0);
-  // const { roleName } = allRole?.find((role) => role?.id === currentUser?.roleId);
   const setTypeForAccountType = () => {
     const typo =
       roleName === "fairGameWallet"
         ? types
         : types?.filter((type) => {
-            const roleLevel = types?.find((t) => t?.role === roleName)?.level;
-            return roleLevel && type?.level > roleLevel;
-          });
+          const roleLevel = types?.find((t) => t?.role === roleName)?.level;
+          return roleLevel && type?.level > roleLevel;
+        });
 
     if (roleName === "fairGameAdmin") {
       typo.push({ role: "expert", val: "Expert", level: 6 });
@@ -173,13 +169,13 @@ const AddAccount = () => {
     if (error[11].val !== "") {
       toast.error(error[11].val);
       return false;
-    } if (error[1].val==="Only a-z, A-Z,and 0-9 characters allowed!. eg. fairGame00" || error[1].val===true){
+    } if (error[1].val === "Only a-z, A-Z,and 0-9 characters allowed!. eg. fairGame00" || error[1].val === true) {
       toast.error("Field required");
       return false;
     }
-   
-     else {
-      
+
+    else {
+
       let payload = {
         userName: "",
         password: "",
@@ -853,7 +849,7 @@ const AddAccount = () => {
                 place={12}
                 type={"Number"}
                 placeholder={Detail[12].val}
-                // autoMaticFillValue={Detail[12].val}
+              // autoMaticFillValue={Detail[12].val}
               />
               {error[12]?.val && (
                 <p className="validCommon" style={{ color: "#fa1e1e" }}>
@@ -947,7 +943,6 @@ const AddAccount = () => {
                             maxHeight: "210px",
                             overflow: "scroll",
                           }}
-                          // dropDownTextStyle={{...imputStyle,  fontSize:{ laptop: "14px", mobile: "12px" },}}
                           Detail={Detail}
                           setDetail={setDetail}
                           place={18}
@@ -1058,11 +1053,6 @@ const AddAccount = () => {
                     onFocusOut={handleTransPass}
                     toFoucs={true}
                   />
-                  {/* {error[14]?.val !== "" && (
-                <Typography className="validCommon" style={{ color: "#fa1e1e" }}>
-                  Admin Transaction Password Required
-                </Typography>
-              )} */}
                 </div>
               </Box>
               <Button
@@ -1094,30 +1084,30 @@ const AddAccount = () => {
         </form>
         {errorShow ===
           "User need to first create the transaction password." && (
-          <Button
-            className="cursor-pointer"
-            sx={{
-              background: "#0B4F26",
-              width: "50%",
-              display: "flex",
-              justifyContent: "center",
-              border: "2px solid black",
-              alignItems: "center",
-              borderRadius: "5px",
-              height: "45px",
-              marginTop: "35px",
-              color: "white",
-              fontSize: "18px",
-            }}
-            onClick={(e) => {
-              navigate(
-                `/${window.location.pathname.split("/")[1]}/createTransPassword`
-              );
-            }}
-          >
-            Create Trans Password
-          </Button>
-        )}
+            <Button
+              className="cursor-pointer"
+              sx={{
+                background: "#0B4F26",
+                width: "50%",
+                display: "flex",
+                justifyContent: "center",
+                border: "2px solid black",
+                alignItems: "center",
+                borderRadius: "5px",
+                height: "45px",
+                marginTop: "35px",
+                color: "white",
+                fontSize: "18px",
+              }}
+              onClick={(e) => {
+                navigate(
+                  `/${window.location.pathname.split("/")[1]}/createTransPassword`
+                );
+              }}
+            >
+              Create Trans Password
+            </Button>
+          )}
       </Box>
       {showSuccessModal && (
         <Modal

@@ -80,17 +80,6 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
-          // start use code start comment
-          // dispatch(setConfirmAuth(true));
-          // // alert(4)
-          // // localStorage.setItem("confirmAuth", true);
-          // let token = localStorage.getItem("JWTuser");
-          // if (token) {
-          //   sessionStorage.setItem("JWTuser", token);
-          // }
-          // navigate(`/`);
-          // start use code end comment
-
           dispatch(removeCurrentUser());
           // dispatch(removeManualBookMarkerRates())
           // dispatch(removeSelectedMatch());
