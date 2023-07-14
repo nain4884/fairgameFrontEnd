@@ -7,7 +7,7 @@ import PlaceBetComponentWeb from "./PlaceBetComponentWeb";
 import PlaceBetComponent from "./PlaceBetComponent";
 import { formatNumber } from "../../../components/helper/helper";
 
-const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
+const SeasonMarketBox = ({ index, setMatchSessionData, newData, setPopData }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
@@ -55,12 +55,14 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
             matchesMobile ? <PlaceBetComponent
               // amount={index == 2}
               newData={newData}
-              setData={setData}
+              // setData={setData}
+              setPopData={setPopData}
             /> :
               <PlaceBetComponentWeb
                 // amount={index == 2}
                 newData={newData}
-                setData={setData}
+                // setData={setData}
+                setPopData={setPopData}
               />
           }
           {/* <SeperateBox color={"white"} />

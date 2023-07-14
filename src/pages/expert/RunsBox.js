@@ -4,7 +4,7 @@ import { useTheme } from "@emotion/react";
 import { StyledImage } from "../../components";
 import { CANCEL } from "../../assets";
 
-const RunsBox = ({ item, setData, currentOdds }) => {
+const RunsBox = ({ item, setPopData, currentOdds }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const containerRef = useRef(null);
@@ -68,7 +68,8 @@ const RunsBox = ({ item, setData, currentOdds }) => {
         </Typography>
         <img
           onClick={(e) => {
-            setData((prev) => {
+            alert(JSON.stringify(item?.id))
+            setPopData((prev) => {
               const updatedArray = prev?.filter((v) => v?.id !== item?.id);
               return updatedArray;
             });
@@ -186,12 +187,12 @@ const RunsBox = ({ item, setData, currentOdds }) => {
                       fontWeight: "500",
                       fontSize: matchesMobile ? "8px" : "12px",
                       color: "white",
-                      width:"40px"
+                      width: "40px"
                     }}
                   >
-                   {Number(v?.profit_loss) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{v?.profit_loss}</>
-              : v?.profit_loss}
+                    {Number(v?.profit_loss) >= 0
+                      ? <><span style={{ visibility: "hidden" }}>-</span>{v?.profit_loss}</>
+                      : v?.profit_loss}
                   </Typography>
                   <StyledImage
                     src={getSVG(v?.profit_loss)}

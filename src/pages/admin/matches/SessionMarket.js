@@ -22,13 +22,15 @@ const SessionMarket = ({
   handleHide,
   handleShowLock,
   selft,
+  setPopData,
+  popData
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   // const [showUnlock, setShowUnlock] = useState(false);
   // const [locked, setLocked] = useState(false);
   const [matchSessionData, setMatchSessionData] = useState([]);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
   useEffect(() => {
     if (currentMatch?.bettings?.length > 0) {
@@ -45,6 +47,9 @@ const SessionMarket = ({
   const onSubmit = (value) => {
     handleBlock(value, !locked, "SESSION");
   };
+
+
+
   const [visible, setVisible] = useState(true);
   return (
     <>
@@ -324,7 +329,8 @@ const SessionMarket = ({
                         newData={element}
                         setMatchSessionData={setMatchSessionData}
                         index={index}
-                        setData={setData}
+                        // setData={setData}
+                        setPopData={setPopData}
                       />
                       <Divider />
                     </Box>
@@ -381,7 +387,7 @@ const SessionMarket = ({
           </Box>
         )}
       </Box>
-      {data?.length > 0 && (
+      {popData?.length > 0 && (
         <Box
           sx={{
             display: "flex",
@@ -394,7 +400,7 @@ const SessionMarket = ({
             marginTop: ".25vw",
           }}
         >
-          {data?.map((v) => {
+          {popData?.map((v) => {
             console.log(
               "currentOdds?.bet_id === v?.id ? currentOdds : null",
               v,
@@ -404,7 +410,9 @@ const SessionMarket = ({
                 currentOdds={currentOdds?.bet_id === v?.id ? currentOdds : null}
                 key={v?.id}
                 item={v}
-                setData={setData}
+                // setData={setData}
+                setPopData={setPopData}
+                popData={popData}
               />
             );
           })}

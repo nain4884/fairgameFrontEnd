@@ -5,11 +5,11 @@ import DropdownMenu from "./DropdownMenu";
 import { useEffect } from "react";
 import { useCallback } from "react";
 
-const PlaceBetComponentWeb = ({ onClick, amount, setData, newData, width }) => {
+const PlaceBetComponentWeb = ({ onClick, amount, setPopData, newData, width }) => {
   const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
 
   useEffect(() => {
-    setData((prev) => {
+    setPopData((prev) => {
       if (Array.isArray(prev)) {
         const index = prev.findIndex((item) => item.id === newData.id);
         if (index !== -1) {
@@ -32,7 +32,7 @@ const PlaceBetComponentWeb = ({ onClick, amount, setData, newData, width }) => {
 
   const handleClick = useCallback(
     (e) => {
-      setData((prev) => {
+      setPopData((prev) => {
         if (Array.isArray(prev)) {
           const index = prev.findIndex((item) => item.id === newData.id);
           if (index !== -1) {
@@ -52,7 +52,7 @@ const PlaceBetComponentWeb = ({ onClick, amount, setData, newData, width }) => {
         }
       });
     },
-    [setData, newData]
+    [setPopData, newData]
   );
 
   return (

@@ -45,6 +45,8 @@ const DeleteBet = ({ }) => {
   const [isHandled, setIsHandled] = useState(false);
   const [currentOdds, setCurrentOdds] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [popData, setPopData] = useState([]);
+
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
   );
@@ -1029,6 +1031,10 @@ const DeleteBet = ({ }) => {
             setSingleIObtes((sessionBets) =>
               sessionBets?.filter((v) => v?.bet_id !== value?.betId)
             );
+            setPopData((prev) => {
+              const updatedArray = prev?.filter((v) => v?.id !== value?.betId);
+              return updatedArray;
+            });
           } catch (err) {
             console.log(err?.message);
           }
@@ -1486,6 +1492,8 @@ const DeleteBet = ({ }) => {
                     sessionBets={sessionBets}
                     data={[]}
                     sessionOffline={sessionOffline}
+                    setPopData={setPopData}
+                    popData={popData}
                   />
                 )}
               {/* {matchesMobile && */}
@@ -1538,6 +1546,8 @@ const DeleteBet = ({ }) => {
                       sessionBets={sessionBets}
                       data={[]}
                       sessionOffline={sessionOffline}
+                      setPopData={setPopData}
+                      popData={popData}
                     />
                   )}
               </Box>
