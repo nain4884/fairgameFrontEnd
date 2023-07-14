@@ -1,15 +1,13 @@
 import { Box, TextField, Typography, useTheme } from "@mui/material";
-import { borderTop } from "@mui/system";
 import { useState, useEffect, useContext, useRef, useImperativeHandle, forwardRef } from "react";
 import React, { } from 'react';
 import StyledImage from "./StyledImage";
-import { LiveOff, LiveOn } from "../expert/assets";
+import { LiveOff } from "../expert/assets";
 import SessionResultModal from "./SessionResultModal";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 import { SocketContext } from "../context/socketContext";
 import { setRole } from "../newStore";
 import { Lock, BallStart } from "../assets";
-// import { GlobalStore } from "../context/globalStore";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setSessionResults } from "../newStore/reducers/matchDetails";
@@ -19,42 +17,10 @@ import {
   setAllEventSession,
 } from "../newStore/reducers/expertMatchDetails";
 
-// const IndiaPakLive = React.forwardRef(({ match }, ref) => {
-//     alert(match?.id)
-//     const childRef = useRef(null);
-
-//     useImperativeHandle(ref, () => ({
-//         childFunction() {
-//             alert("Child function called from parent component");
-//             // Perform any desired actions in the child component
-//         }
-//     }));
-
-//     // Rest of the child component code
-
-//     return (
-//         <Box
-//             sx={{
-//                 flex: 1,
-//                 background: "#F8C851",
-//                 borderRadius: "5px",
-//                 minHeight: "300px",
-//                 py: "30px",
-//                 px: "20px",
-//             }}
-//         >
-//             {/* Child component JSX */}
-//         </Box>
-//     );
-// });
-// export default IndiaPakLive;
 const IndiaPakLive = React.forwardRef(({
   createSession,
   match,
-  showDialogModal,
   sessionEvent,
-  betData,
-  handleBetData,
   proLoss1,
   setCheckBetId,
   childFunction, }, ref) => {
@@ -62,14 +28,11 @@ const IndiaPakLive = React.forwardRef(({
   const { socket } = useContext(SocketContext);
   const { axios } = setRole();
   const dispatch = useDispatch();
-  const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
   const { sessionAllBet, sessionBetId, allEventSession } = useSelector(
     (state) => state?.expertMatchDetails
   );
 
   const [currentOdds, setCurrentOdds] = useState(null);
-  // const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  // const { sessionAllBetRates } = useSelector((state) => state?.matchDetails);
   const stateDetail = {
     match_id: match?.id,
     matchType: match?.gameType,
@@ -85,7 +48,6 @@ const IndiaPakLive = React.forwardRef(({
   const [Detail, setDetail] = useState(stateDetail);
   const [incGap, setIncGap] = useState(1);
   const [visible, setVisible] = useState(false);
-  const [isConfirm, setIsConfirm] = useState(false);
   const [visible1, setVisible1] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [betId, setBetId] = useState("");
@@ -99,45 +61,22 @@ const IndiaPakLive = React.forwardRef(({
   const [isCreateSession, setIsCreateSession] = useState(createSession);
   const [isPercent, setIsPercent] = useState("");
   const [live, setLive] = useState(true);
-  // alert(JSON.stringify(proLoss1))
   const [proLoss, setProLoss] = useState(proLoss1);
   const [isDisable, setIsDisable] = useState(false);
 
-  // const [betData, setBetData] = useState(sessionAllBetRates);
-
-  // alert(globalStore.isSession)
-  // let temp = null;
-  // if (socket && socket.connected) {
-  //     console.log("socket connected", socket)
-  //     socket.onevent = () => async (done) => {
-  //         console.log("socket connected 11", done)
-  //         temp = done.data
-  //     }
-  // }
-
-  // useEffect(() => {
-  //     alert(sessionBetId)
-  // }, [sessionBetId]);
-
   useImperativeHandle(ref, () => ({
     childFunction(item) {
-      // alert(JSON.stringify(item));
       getManuallBookMaker(item?.bet_id?.id);
       setIsDisable(true);
-      // alert("Child function called from parent component");
-      // Perform any desired actions in the child component
     }
   }));
 
-  // console.log('Session', temp)
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "session_bet") {
           const data = packet.data[1];
           try {
-            // alert(JSON.stringify(data?.profitLoss))
-            // alert("vvvvv: " + data?.betPlaceData?.bet_id)
             setCurrentOdds({
               bet_id: data?.betPlaceData?.bet_id,
               odds: data?.betPlaceData?.odds,
@@ -171,15 +110,11 @@ const IndiaPakLive = React.forwardRef(({
                 myStack: data?.betPlaceData?.myStack,
                 amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
               };
-              // const updatedData = [body, ...sessionAllBet]; // Combine new object with existing state data
-              // dispatch(setSessionAllBet(updatedData));
               if (sessionAllBet.length === 0) {
                 const updatedData = [body];
-                // handleBetData(updatedData);
                 dispatch(setSessionAllBet(updatedData));
               } else {
                 const updatedData = [body, ...sessionAllBet];
-                // handleBetData(updatedData);
                 dispatch(setSessionAllBet(updatedData));
               }
             }
@@ -292,9 +227,7 @@ const IndiaPakLive = React.forwardRef(({
   }, [socket, betId, sessionAllBet]);
 
   useEffect(() => {
-    // alert(JSON.stringify(sessionEvent?.id))
     if (sessionEvent?.id || sessionBetId) {
-      // alert(JSON.stringify(betData))
       if (sessionBetId) {
         getManuallBookMaker(sessionBetId);
       } else {
@@ -320,30 +253,24 @@ const IndiaPakLive = React.forwardRef(({
     setProLoss(null);
     dispatch(setSessionAllBet([]));
     let response = await axios.get(`/game-match/getResults/${match_id}`);
-    // alert(JSON.stringify(response?.data?.data.length))
     dispatch(setSessionResults(response?.data?.data || []));
-    // setSessionResults
   };
 
   async function doSubmitSessionBet(rate_percent) {
     dispatch(setSessionAllBet([]));
     const payload = { ...Detail, rate_percent };
-    // return alert("ddd :" + betId)
     try {
       let response = await axios.post(`/betting/addBetting`, payload);
       setBetId(response?.data?.data?.id);
       setCheckBetId(true);
       setIsCreateSession(false);
       dispatch(setSessionBetId(response?.data?.data?.id));
-      // setGlobalStore((prev) => ({ ...prev, isSession: false }));
       setLock({
         isNo: false,
         isYes: false,
         isNoPercent: false,
         isYesPercent: false,
       });
-      // console.log("response :bbb", response)
-      // alert("ddd :" + JSON.stringify(response?.data?.data?.id))
     } catch (e) {
       toast.error(e.response.data.message);
       console.log(e.response.data.message);
@@ -353,9 +280,7 @@ const IndiaPakLive = React.forwardRef(({
   async function getManuallBookMaker(id) {
     try {
       let response = await axios.get(`/betting/getById/${id}`);
-      // console.log("dddddd :", response?.data)
       let data = response?.data?.data[0];
-      // alert(JSON.stringify(data.no_rate))
       let [firstValue, secondValue] = data.rate_percent
         ? data.rate_percent.split("-")
         : "";
@@ -386,40 +311,19 @@ const IndiaPakLive = React.forwardRef(({
           isYesPercent: true,
         });
       }
-      // if (response?.data?.data?.length === 0) {
-      //     doSubmitSessionBet(id);
-      // } else {
-      //     setBetId(response?.data?.data[0].id);
-      //     setTeamARate(response?.data?.data[0].teamA_Back);
-      //     setTeamALayValue(response?.data?.data[0].teamA_lay);
-      //     setTeamBRate(response?.data?.data[0].teamB_Back);
-      //     setTeamBLayValue(response?.data?.data[0].teamB_lay);
-      //     setTeamCRate(response?.data?.data[0].teamC_Back);
-      //     setTeamCLayValue(response?.data?.data[0].teamC_lay);
-      // }
     } catch (e) {
       console.log(e.response.data.message);
     }
   }
 
   async function getAllBetsData(id) {
-    // alert(122)
     let payload = {
       match_id: match?.id,
       bet_id: id,
     };
-    // alert(JSON.stringify(payload))
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
-      // setBetData(data?.data?.data || []);
-      // alert(handleBetData)
-      // handleBetData(data?.data?.data || [], id)
-      // handleBetData(data?.data?.data || []);
       dispatch(setSessionAllBet(data?.data?.data || []));
-      // setGlobalStore((prev) => ({
-      //     ...prev,
-      //     sessionBets: data?.data?.data || [],
-      // }));
     } catch (e) {
       console.log(e);
     }
@@ -491,32 +395,6 @@ const IndiaPakLive = React.forwardRef(({
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: "14px" }}>
             {!isCreateSession || sessionBetId ? (
               <>
-                {/* <Box
-                  onClick={(e) => {
-                    handleLive(live ? 0 : 1);
-                    // setLive(!live);
-                  }}
-                  sx={{
-                    width: "30%",
-                    display: "flex",
-                    maxWidth: "120px",
-                    background: live ? "#10DC61" : "#FF4D4D",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "35px",
-                    borderRadius: "5px",
-                  }}
-                >
-                  <Typography
-                    sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
-                  >
-                    {live ? "Go Live" : "Stop"}
-                  </Typography>
-                  <StyledImage
-                    src={LiveOn}
-                    sx={{ marginLeft: "5px", height: "15px", width: "15px" }}
-                  />
-                </Box> */}
                 {isDisable && <Box
                   onClick={(e) => {
                     setVisible1(true);
@@ -738,10 +616,7 @@ const AddSession = ({
   isDisable
 }) => {
   const handleKeysMatchEvents = (key, event) => {
-    // alert(key);
-    // console.log('handle key event');
     event.preventDefault();
-    // this.setState({ focus_team: event.target.getAttribute('id'), ERROR: false });
     let targetValue = parseFloat(event.target.value);
     event.target.value = targetValue;
     if (key == "right") {
@@ -755,7 +630,6 @@ const AddSession = ({
         isNoPercent: true,
         isYesPercent: true,
       });
-      // let chckValue = teamALayValue ? teamALayValue : value
       let value =
         Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
           ? targetValue
@@ -832,10 +706,6 @@ const AddSession = ({
         isNoPercent: true,
         isYesPercent: true,
       });
-      // if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
-      //     let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : Detail?.Detail?.no_rate;
-      //     Detail.setDetail({ ...Detail.Detail, yes_rate: value - incGap.incGap, y_rate_percent: 100, n_rate_percent: 100 })
-      // }
       if (targetValue > 0) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
@@ -870,15 +740,7 @@ const AddSession = ({
           suspended: "Ball Started",
         });
       }
-      // if (event.target.name === 'teamA_rate') {
-      // socket.emit("teamA_Suspend", { betId: betId, teamA_suspend: 'Ball Started', })
-      // // } else if (event.target.name === 'teamB_rate') {
-      // socket.emit("teamB_Suspend", { betId: betId, teamB_suspend: 'Ball Started', })
-      // // } else if (event.target.name === 'teamC_rate') {
-      // socket.emit("teamC_Suspend", { betId: betId, teamC_suspend: 'Ball Started', })
-      // }
     } else if (key == ",") {
-      // alert(targetValue)
       isPercent.setIsPercent("percent");
       handleSuspend();
       setLock({
@@ -889,7 +751,6 @@ const AddSession = ({
         isYesPercent: true,
       });
       let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
-      // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
       Detail.setDetail({
         ...Detail.Detail,
         no_rate: value,
@@ -929,7 +790,6 @@ const AddSession = ({
         isYesPercent: true,
       });
       let value = Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : 0;
-      // let yesValue = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate : value
       Detail.setDetail({
         ...Detail.Detail,
         no_rate: value,
@@ -960,14 +820,7 @@ const AddSession = ({
         isBall.setIsBall(false);
         socket.emit("updateSessionRate", data);
       }
-      // setDetail({ ...Detail, no_rate: data.no_rate, yes_rate: data.yes_rate, n_rate_percent: firstValue, y_rate_percent: secondValue, bet_condition: data.bet_condition })
-      // return alert(JSON.stringify(socket))
-      // socket.emit("updateSessionRate", data)
     }
-
-    // else if (key == 'backspace') {
-    //     // setLock({ ...lock, isNo: true, isYes: true, isNoPercent: true, isYesPercent: true })
-    // }
   };
   const handleChange = (event) => {
     setLock({
@@ -978,12 +831,9 @@ const AddSession = ({
       isYesPercent: true,
     });
     handleSuspend();
-    // alert(isBall.isBall)
     let target = event.target;
-    // let targetValue = parseFloat(event.target.value);
     let targetValue = parseFloat(event.target.value);
     let checkValue = parseFloat(event.target.value);
-    // alert(targetValue)
     Detail.setDetail({
       ...Detail.Detail,
       no_rate: targetValue,
@@ -994,7 +844,6 @@ const AddSession = ({
   };
 
   const handleSuspend = () => {
-    // alert(JSON.stringify(lock))
     if (!lock.isNo || !lock.isNo || !lock.isNoPercent || !lock.isYesPercent) {
       isBall.setIsBall(false);
       socket.emit("updateSessionRate", {
@@ -1046,7 +895,6 @@ const AddSession = ({
       </Box>
       <Box sx={{ display: "flex" }}>
         <Box sx={{ background: "#FFFFFF", width: "40%" }}>
-          {/* {createSession ? */}
           <TextField
             onChange={(e) => {
               Detail.setDetail({
@@ -1069,103 +917,7 @@ const AddSession = ({
               },
             }}
           />
-          {/* : 
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px", px: "5px" }}>{sessionEvent?.bet_condition}</Typography>} */}
         </Box>
-        {/* <Box sx={{ borderLeft: "2px solid white", width: "60%" }}>
-
-
-                    <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                        <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
-                                    <TextField
-                                        onChange={(e) => handleChange(e)}
-                                        type="Number"
-                                        value={Detail?.Detail?.no_rate}
-                                        variant="standard"
-                                        InputProps={{
-                                            disableUnderline: true,
-                                            style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
-                                        }} /></KeyboardEventHandler>
-                            </Typography>
-                        </Box>
-                        <Box sx={{ background: "#A7DCFF", width: "20%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                <TextField
-                                    type="Number"
-                                    value={Detail.Detail.yes_rate}
-                                    variant="standard" InputProps={{
-                                        disableUnderline: true,
-                                        style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
-                                    }} />
-                            </Typography>
-                        </Box>
-                        {!isBall?.isBall ?
-                            <>
-                                <Box sx={{ background: lock?.isNo ? "#FDF21A" : "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                    {!lock?.isNo ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
-                                        {Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : ""}
-                                    </Typography>
-                                        : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                </Box>
-
-                                <Box sx={{ background: lock?.isYes ? "#FDF21A" : "#A7DCFF", width: "30%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                    {!lock?.isYes ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
-                                        {Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ""}
-                                    </Typography>
-                                        : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-
-                                </Box>
-                            </> :
-                            <Box sx={{ background: "#000", width: "60%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
-                            </Box>}
-
-                    </Box>
-                    <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                        <Box sx={{ background: "#FFB5B5", width: "20%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                <KeyboardEventHandler handleKeys={['up', 'down', 'left', 'right', 'tab', 'shift', '`', ',', '.', '/', 'enter', 'return', 'esc', '*', 'ctrl', "plus", "=", 'minus',]} isDisabled={false} onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)} >
-                                    <TextField
-                                        type="Number"
-                                        value={Detail?.Detail?.n_rate_percent}
-                                        variant="standard"
-                                        InputProps={{
-                                            disableUnderline: true,
-                                            style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
-                                        }} /></KeyboardEventHandler>
-                            </Typography>
-                        </Box>
-                        <Box sx={{ background: "#A7DCFF", width: "20%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                                <TextField
-                                    type="Number"
-                                    value={Detail.Detail.y_rate_percent}
-                                    variant="standard" InputProps={{
-                                        disableUnderline: true,
-                                        style: { fontSize: "14px", marginLeft: "5px", height: "45px", fontWeight: "600", color: "black" }
-                                    }} />
-                            </Typography>
-                        </Box>
-                        {!isBall?.isBall ?
-                            <>
-                                <Box sx={{ background: lock?.isNoPercent ? "#FDF21A" : "#FFB5B5", width: "30%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                    {!lock?.isNoPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
-                                        {Detail.Detail.n_rate_percent}
-                                    </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                </Box>
-                                <Box sx={{ background: lock?.isYesPercent ? "#FDF21A" : "#A7DCFF", width: "30%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                    {!lock?.isYesPercent ? <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>
-                                        {Detail.Detail.y_rate_percent}
-                                    </Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
-                                </Box>
-                            </> :
-                            <Box sx={{ background: "#000", width: "60%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
-                            </Box>}
-                    </Box>
-                </Box> */}
         <Box
           display={"flex"}
           sx={{ borderLeft: "2px solid white", width: "60%" }}
@@ -1601,15 +1353,6 @@ const RunsAmountBox = ({
             </Typography>
           </Box>
         </Box>
-        {/* <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>40</Typography>
-                    </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#10DC61", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
-                    </Box>
-                </Box> */}
         <Box ref={containerRef} sx={{ maxHeight: "42vh", overflowY: "auto" }}>
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
@@ -1699,42 +1442,6 @@ const RunsAmountBox = ({
             })
             : null}
         </Box>
-        {/* <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>41</Typography>
-                    </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#10DC61", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
-                    </Box>
-                </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>42</Typography>
-                    </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#F8C851", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
-                    </Box>
-                </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>43</Typography>
-                    </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#F8C851", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
-                    </Box>
-                </Box>
-                <Box sx={{ display: "flex", height: "30px", borderTop: "1px solid #306A47" }}>
-                    <Box sx={{ width: "60px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}>44</Typography>
-                    </Box>
-                    <Box sx={{ width: "100px", display: "flex", borderLeft: "1px solid #306A47", background: "#DC3545", justifyContent: "center", alignItems: "center" }}>
-                        <Typography sx={{ color: "#306A47", fontWeight: "500", fontSize: "14px", color: "white" }}>4,02,350</Typography>
-                        <StyledImage src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} />
-                    </Box>
-                </Box> */}
       </Box>
     </Box>
   );

@@ -1,20 +1,17 @@
 import { useTheme } from "@emotion/react";
 import { Typography, useMediaQuery, Box } from "@mui/material";
-import { BallStart, INDIA, PAKISTAN } from "../../../assets";
+import { BallStart } from "../../../assets";
 import { StyledImage } from "../../../components";
 import { LockSolid } from "../../../admin/assets";
 import SeperateBox from "./SeperateBox";
 import MoneyBox from "./MoneyBox";
 import { apiBasePath } from "../../../components/helper/constants";
-import { formatNumber } from "../../../components/helper/helper";
 
 const BoxComponent = ({
     name, color, align, lock, teamImage, rates, data, matchOddsData, ballStatus, status, isTeamC
 }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-    // console.log("check data :", data)
-    // const { ex, status } = data;
 
     return (
         <Box
@@ -45,21 +42,6 @@ const BoxComponent = ({
                         alignItems: "center",
                     }}
                 >
-                    {/* {name != "DRAW" ? (
-            <img
-              src={name == "INDIA" ? INDIA : PAKISTAN}
-              style={{
-                width: "22px",
-                height: "25px",
-                marginLeft: "10px",
-                backgroundSize: "contains",
-              }}
-            />
-          ) : (
-            <Box
-              sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
-            ></Box>
-          )} */}
                     {teamImage !== null && (
                         <>
                             <img
@@ -149,8 +131,6 @@ const BoxComponent = ({
                                 align={align}
                                 value={matchOddsData?.back ? matchOddsData?.back : 0}
                                 value2={null}
-                                // value={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") : 0}
-                                // value2={0}
                                 color={matchesMobile ? "#A7DCFF" : "#A7DCFF"}
                             />
                         )}

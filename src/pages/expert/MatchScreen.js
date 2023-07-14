@@ -1,14 +1,11 @@
 import React, { memo, useCallback, useContext, useEffect } from "react";
-import { useTheme } from "@emotion/react";
-import { Typography, Box } from "@mui/material";
-
+import { Box } from "@mui/material";
 import "../../components/index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
 import AllBets from "../../components/AllBets";
 import { Background, CustomHeader as CHeader } from "../../components/index";
-import CustomHeader from "./Header";
 import { SocketContext } from "../../context/socketContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -25,7 +22,6 @@ import BookMarketer from "./BookMarketer";
 import SessionMarket from "./SessionMarket/SessionMarket";
 import RunsBox from "./RunsBox";
 import MatchOdds from "./MatchOdds/MatchOdds";
-import DropdownMenu from "./DropdownMenu";
 import {
   removeCurrentUser,
   setCurrentUser,
@@ -35,7 +31,7 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import SessionMarketLive from "../expert/SessionMarket/LiveSessionMarket/SessionMarketLive";
 import CustomLoader from "../../components/helper/CustomLoader";
-import { setActiveUsers, setEConfirmAuth } from "../../newStore/reducers/expertMatchDetails";
+import { setActiveUsers } from "../../newStore/reducers/expertMatchDetails";
 let matchOddsCount = 0;
 let marketId = "";
 let profitLoss;
@@ -48,7 +44,6 @@ const MatchScreen = () => {
   const { axios } = setRole();
   const dispatch = useDispatch();
   const { allBetRates } = useSelector((state) => state?.matchDetails);
-  const { selectedMatch } = useSelector((state) => state?.expertMatchDetails);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [IObets, setIObtes] = useState(allBetRates);
   const [bookmakerLivedata, setBookmakerLiveData] = useState([]);
@@ -61,8 +56,6 @@ const MatchScreen = () => {
 
   const getSingleMatch = async (val) => {
     try {
-      // dispatch(removeSelectedMatch());
-      // setCurrentMatch({});
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
       const newMatch = { ...data, bettings: data?.bettings?.reverse() };
       setCurrentMatch(newMatch);
@@ -97,17 +90,7 @@ const MatchScreen = () => {
   useEffect(() => {
     if (socket && socket.connected && currentMatch !== null) {
       socket.onevent = async (packet) => {
-        // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
         if (packet.data[0] === "logoutUserForce") {
-          // start use code start comment
-          // dispatch(setEConfirmAuth(true));
-          // let token = localStorage.getItem("JWTexpert");
-          // if (token) {
-          //   sessionStorage.setItem("JWTexpert", token);
-          // }
-          // navigate("/expert");
-          // start use code end comment
-
           dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
@@ -123,8 +106,6 @@ const MatchScreen = () => {
         if (packet.data[0] === "match_bet") {
           const data = packet.data[1];
           try {
-            // getAllBets();
-            // console.warn(data, "MATCHH_BET");
             if (data) {
               const manualBookmaker = {
                 matchId: data?.betPlaceData?.match_id,
@@ -244,14 +225,7 @@ const MatchScreen = () => {
         }
         if (packet.data[0] === "session_bet") {
           const data = packet.data[1];
-          //  console.log(data,"session_bet")
           try {
-            // getAllBets();
-            // console.log(
-            //   currentMatch?.id,
-            //   data?.betPlaceData?.match_id,
-            //   "MATCHH_BET"
-            // );
             if (data) {
               setCurrentOdds({
                 bet_id: data?.betPlaceData?.bet_id,
@@ -316,9 +290,6 @@ const MatchScreen = () => {
                   bettings: updatedBettings,
                 };
               });
-
-              // dispatch(setCurrentUser(user));
-              // dispatch(setManualBookMarkerRates(manualBookmaker));
             }
           } catch (e) {
             console.log("error", e?.message);
@@ -390,10 +361,7 @@ const MatchScreen = () => {
           }
         }
       };
-
-      // socket.emit("init", { id: currentMatch?.marketId });
     }
-    // }, [socket, currentMatch]);
   }, [socket, currentMatch]);
 
   const activateLiveMatchMarket = async (val) => {

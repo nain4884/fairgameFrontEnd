@@ -38,12 +38,12 @@ export default function SessionResult({ createSession, betId, handleSession, ses
     };
 
     return (
-        <Box sx={{ 
-            flex: 1, background: "#F8C851", marginTop: "5px", borderRadius: "5px", 
-            minHeight: "300px", 
-            py: "30px", 
-            px: "20px", 
-            pt: "5px" 
+        <Box sx={{
+            flex: 1, background: "#F8C851", marginTop: "5px", borderRadius: "5px",
+            minHeight: "300px",
+            py: "30px",
+            px: "20px",
+            pt: "5px"
         }}
         >
             <Typography sx={{ color: "#0B4F26", fontSize: "25px", fontWeight: "600" }}>Session Result</Typography>
@@ -116,28 +116,6 @@ const Overs = ({ createSession, sessionData, mode, changeSelected, selected }) =
                         </Box >
                     );
                 })}
-            {/* <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                <Box sx={{ background: "#FFFFFF", width: "60%" }}>
-                    <Typography sx={{ fontWeight: "600", fontSize: "14px", px: "5px" }}>{createSession ? "" : "6 Over runs INDIA..."}</Typography>
-                </Box>
-                <Box sx={{ background: "#ECECEC", width: "20%", display: "flex", height: "30px", justifyContent: "center", alignItems: "center" }}>
-                    <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{createSession ? "" : sessionData.score}</Typography>
-                </Box>
-                <Box sx={{ background: createSession ? "#ECECEC" : "#10DC61", width: "20%", borderLeft: "2px solid white", display: "flex", height: "30px", justifyContent: "center", alignItems: "center" }}>
-                    {!createSession && <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "white" }}>4,02,350<StyledImage src="https://fontawesomeicons.com/images/svg/trending-up-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} /></Typography>}
-                </Box>
-            </Box>
-            <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                <Box sx={{ background: "#FFFFFF", width: "60%" }}>
-                    {!createSession && <Typography sx={{ fontWeight: "600", fontSize: "14px", px: "5px" }}>6 Over runs INDIA...</Typography>}
-                </Box>
-                <Box sx={{ background: "#ECECEC", width: "20%", display: "flex", height: "30px", justifyContent: "center", alignItems: "center" }}>
-                    {!createSession && <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>39</Typography>}
-                </Box>
-                <Box sx={{ background: createSession ? "#ECECEC" : "#FF4D4D", width: "20%", borderLeft: "2px solid white", display: "flex", height: "30px", justifyContent: "center", alignItems: "center" }}>
-                    {!createSession && <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "white" }}>4,02,350<StyledImage src="https://fontawesomeicons.com/images/svg/trending-down-sharp.svg" sx={{ height: "15px", marginLeft: "5px", filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);", width: "15px" }} /></Typography>}
-                </Box>
-            </Box> */}
         </Box >
     )
 }

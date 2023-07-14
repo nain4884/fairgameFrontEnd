@@ -16,7 +16,6 @@ const YellowHeaderGeneralReport = () => {
         marginBottom: 0,
       }}
     >
-      {/* <Typography sx={{ fontSize: '18px', color: 'white', marginLeft: '10px', fontWeight: '600', marginY: '10px', alignSelf: 'start' }} >General Report</Typography> */}
       <Typography
         sx={{
           fontSize: "16px",

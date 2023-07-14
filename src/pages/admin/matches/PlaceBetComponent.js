@@ -6,11 +6,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useCallback } from "react";
 
-const PlaceBetComponent = ({ onClick, amount, setPopData, newData, width }) => {
+const PlaceBetComponent = ({ onClick, amount, setData, newData, width }) => {
     const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
 
     useEffect(() => {
-        setPopData((prev) => {
+        setData((prev) => {
             if (Array.isArray(prev)) {
                 const index = prev.findIndex((item) => item.id === newData.id);
                 if (index !== -1) {
@@ -33,7 +33,7 @@ const PlaceBetComponent = ({ onClick, amount, setPopData, newData, width }) => {
 
     const handleClick = useCallback(
         (e) => {
-            setPopData((prev) => {
+            setData((prev) => {
                 if (Array.isArray(prev)) {
                     const index = prev.findIndex((item) => item.id === newData.id);
                     if (index !== -1) {
@@ -53,7 +53,7 @@ const PlaceBetComponent = ({ onClick, amount, setPopData, newData, width }) => {
                 }
             });
         },
-        [setPopData, newData]
+        [setData, newData]
     );
 
     return (
@@ -124,15 +124,6 @@ const PlaceBetComponent = ({ onClick, amount, setPopData, newData, width }) => {
                     </Typography>
                 </Box>
             </Box>
-            {/* {show && (
-                <DropdownMenu
-                    style={{ zIbnex: 10 }}
-                    list={proLoss?.betData}
-                    open={Boolean(anchorEl)}
-                    anchorEl={anchorEl}
-                    handleClose={handleClose}
-                />
-            )} */}
         </Box>
     );
 };

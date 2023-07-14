@@ -45,7 +45,7 @@ const DeleteBet = ({ }) => {
   const [isHandled, setIsHandled] = useState(false);
   const [currentOdds, setCurrentOdds] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [popData, setPopData] = useState([]);
+  const [popData, setPopData] = useState("");
 
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
@@ -78,159 +78,6 @@ const DeleteBet = ({ }) => {
         }
 
         // manual bookmaker
-        // if (packet.data[0] === "teamA_rate_user") {
-        //   const value = packet.data[1];
-        //   // console.log("value :", value);
-        //   // console.log("manualBookmakerData :", manualBookmakerData);
-        //   // alert(value?.betId);
-        //   // alert(JSON.stringify(value.betId));
-        //   try {
-        //     setManualBookmakerData((currentMatches) => {
-        //       if (currentMatches[0]?.id != value.betId) {
-        //         return currentMatches;
-        //       }
-        //       // Find the index of the match that you want to update
-        //       // const index = currentMatches.findIndex(match => match.id === value?.betId);
-        //       // alert(index)
-        //       // if (index === -1) {
-        //       //   // Match not found, return the current state
-        //       //   return currentMatches;
-        //       // }
-
-        //       // Update the match object at the specified index
-        //       const updatedMatch = {
-        //         ...currentMatches[0],
-        //         teamA_Back: value?.teamA_Back, // Update the teamA_Back value
-        //         teamA_lay: value?.teamA_lay, // Update the teamA_lay value
-        //         teamA_suspend:
-        //           value?.teamA_suspend == false ? null : "suspended", // Update the teamA_susp
-        //         teamA_Ball: null,
-        //         teamB_Ball: null,
-        //         teamC_Ball: null,
-        //       };
-
-        //       // Create a new array with the updated match object
-        //       const updatedMatches = [
-        //         ...currentMatches.slice(0, 0),
-        //         updatedMatch,
-        //         ...currentMatches.slice(0 + 1),
-        //       ];
-
-        //       // Return the new array as the updated state
-        //       return updatedMatches;
-        //     });
-
-        //     console.log("manualBookmakerData 222:", manualBookmakerData);
-        //   } catch (err) {
-        //     console.log(err?.message);
-        //   }
-        // }
-        // if (packet.data[0] === "teamB_rate_user") {
-        //   const value = packet.data[1];
-        //   try {
-        //     setManualBookmakerData((currentMatches) => {
-        //       if (currentMatches[0]?.id != value.betId) {
-        //         return currentMatches;
-        //       }
-
-        //       // Update the match object at the specified index
-        //       const updatedMatch = {
-        //         ...currentMatches[0],
-        //         teamB_Back: value?.teamB_Back, // Update the teamA_Back value
-        //         teamB_lay: value?.teamB_lay, // Update the teamA_lay value
-        //         teamB_suspend:
-        //           value?.teamB_suspend == false ? null : "suspended", // Update the teamA_susp
-        //         teamA_Ball: null,
-        //         teamB_Ball: null,
-        //         teamC_Ball: null,
-        //       };
-
-        //       // Create a new array with the updated match object
-        //       const updatedMatches = [
-        //         ...currentMatches.slice(0, 0),
-        //         updatedMatch,
-        //         ...currentMatches.slice(0 + 1),
-        //       ];
-
-        //       // Return the new array as the updated state
-        //       return updatedMatches;
-        //     });
-        //   } catch (err) {
-        //     console.log(err?.message);
-        //   }
-        // }
-        // if (packet.data[0] === "teamC_rate_user") {
-        //   const value = packet.data[1];
-        //   try {
-        //     setManualBookmakerData((currentMatches) => {
-        //       if (currentMatches[0]?.id != value.betId) {
-        //         return currentMatches;
-        //       }
-
-        //       // Update the match object at the specified index
-        //       const updatedMatch = {
-        //         ...currentMatches[0],
-        //         teamC_Back: value?.teamC_Back, // Update the teamA_Back value
-        //         teamC_lay: value?.teamC_lay, // Update the teamA_lay value
-        //         teamC_suspend:
-        //           value?.teamC_suspend == false ? null : "suspended", // Update the teamA_susp
-        //         teamA_Ball: null,
-        //         teamB_Ball: null,
-        //         teamC_Ball: null,
-        //       };
-
-        //       // Create a new array with the updated match object
-        //       const updatedMatches = [
-        //         ...currentMatches.slice(0, 0),
-        //         updatedMatch,
-        //         ...currentMatches.slice(0 + 1),
-        //       ];
-
-        //       // Return the new array as the updated state
-        //       return updatedMatches;
-        //     });
-        //   } catch (err) {
-        //     console.log(err?.message);
-        //   }
-        // }
-
-        // if (packet.data[0] === "updateRate_user") {
-        //   const value = packet.data[1];
-        //   try {
-        //     setManualBookmakerData((currentMatches) => {
-        //       if (currentMatches[0]?.id != value.betId) {
-        //         return currentMatches;
-        //       }
-        //       const updatedMatch = {
-        //         ...currentMatches[0],
-        //         teamA_Back: value?.teamA_Back,
-        //         teamA_lay: "",
-        //         teamB_Back: value?.teamB_Back,
-        //         teamB_lay: "",
-        //         teamC_Back: value?.teamC_Back,
-        //         teamC_lay: "",
-        //         // teamA_suspend: "live",
-        //         teamA_suspend: null, // Update the teamA_susp
-        //         teamB_suspend: null, // Update the teamA_susp
-        //         teamC_suspend: null, // Update the teamA_susp
-        //         // teamB_suspend: "live",
-        //         // teamC_suspend: "live",
-        //       };
-
-        //       // Create a new array with the updated match object
-        //       const updatedMatches = [
-        //         ...currentMatches.slice(0, 0),
-        //         updatedMatch,
-        //         ...currentMatches.slice(0 + 1),
-        //       ];
-
-        //       // Return the new array as the updated state
-        //       return updatedMatches;
-        //     });
-        //   } catch (err) {
-        //     console.log(err?.message);
-        //   }
-        // }
 
         if (packet.data[0] === "updateRate_user") {
           const value = packet.data[1];
@@ -375,159 +222,6 @@ const DeleteBet = ({ }) => {
             console.log(err?.message);
           }
         }
-        // if (packet.data[0] === "teamA_suspend_user") {
-        //   const value = packet.data[1];
-        //   if (value.teamA_suspend == "Ball Started") {
-        //     try {
-        //       setManualBookmakerData((currentMatches) => {
-        //         // alert(JSON.stringify(currentMatches))
-        //         if (currentMatches[0]?.id != value.betId) {
-        //           return currentMatches;
-        //         }
-        //         const updatedMatch = {
-        //           ...currentMatches[0],
-        //           teamA_suspend: "suspended",
-        //           teamA_Ball: "ball",
-        //           teamB_Ball: "ball",
-        //           teamC_Ball: "ball",
-        //         };
-        //         const updatedMatches = [
-        //           ...currentMatches.slice(0, 0),
-        //           updatedMatch,
-        //           ...currentMatches.slice(0 + 1),
-        //         ];
-        //         return updatedMatches;
-        //       });
-        //     } catch (err) {
-        //       console.log(err?.message);
-        //     }
-        //   } else {
-        //     try {
-        //       setManualBookmakerData((currentMatches) => {
-        //         // alert(JSON.stringify(currentMatches[0]));
-        //         if (currentMatches[0]?.id != value.betId) {
-        //           return currentMatches;
-        //         }
-        //         const updatedMatch = {
-        //           ...currentMatches[0],
-        //           teamA_suspend: "suspended",
-        //           teamA_Ball: null,
-        //           teamB_Ball: null,
-        //           teamC_Ball: null,
-        //         };
-        //         const updatedMatches = [
-        //           ...currentMatches.slice(0, 0),
-        //           updatedMatch,
-        //           ...currentMatches.slice(0 + 1),
-        //         ];
-        //         return updatedMatches;
-        //       });
-        //     } catch (err) {
-        //       console.log(err?.message);
-        //     }
-        //   }
-        // }
-        // if (packet.data[0] === "teamB_suspend_user") {
-        //   const value = packet.data[1];
-        //   if (value.teamB_suspend == "Ball Started") {
-        //     try {
-        //       setManualBookmakerData((currentMatches) => {
-        //         if (currentMatches[0]?.id != value.betId) {
-        //           return currentMatches;
-        //         }
-
-        //         const updatedMatch = {
-        //           ...currentMatches[0],
-        //           teamB_suspend: "suspended",
-        //           teamA_Ball: "ball",
-        //           teamB_Ball: "ball",
-        //           teamC_Ball: "ball",
-        //         };
-        //         const updatedMatches = [
-        //           ...currentMatches.slice(0, 0),
-        //           updatedMatch,
-        //           ...currentMatches.slice(0 + 1),
-        //         ];
-        //         return updatedMatches;
-        //       });
-        //     } catch (err) {
-        //       console.log(err?.message);
-        //     }
-        //   } else {
-        //     try {
-        //       setManualBookmakerData((currentMatches) => {
-        //         if (currentMatches[0]?.id != value.betId) {
-        //           return currentMatches;
-        //         }
-        //         const updatedMatch = {
-        //           ...currentMatches[0],
-        //           teamB_suspend: "suspended",
-        //           teamA_Ball: null,
-        //           teamB_Ball: null,
-        //           teamC_Ball: null,
-        //         };
-        //         const updatedMatches = [
-        //           ...currentMatches.slice(0, 0),
-        //           updatedMatch,
-        //           ...currentMatches.slice(0 + 1),
-        //         ];
-        //         return updatedMatches;
-        //       });
-        //     } catch (err) {
-        //       console.log(err?.message);
-        //     }
-        //   }
-        // }
-        // if (packet.data[0] === "teamC_suspend_user") {
-        //   const value = packet.data[1];
-        //   if (value.teamC_suspend == "Ball Started") {
-        //     try {
-        //       setManualBookmakerData((currentMatches) => {
-        //         if (currentMatches[0]?.id != value.betId) {
-        //           return currentMatches;
-        //         }
-        //         const updatedMatch = {
-        //           ...currentMatches[0],
-        //           teamC_suspend: "suspended",
-        //           teamA_Ball: "ball",
-        //           teamB_Ball: "ball",
-        //           teamC_Ball: "ball",
-        //         };
-        //         const updatedMatches = [
-        //           ...currentMatches.slice(0, 0),
-        //           updatedMatch,
-        //           ...currentMatches.slice(0 + 1),
-        //         ];
-        //         return updatedMatches;
-        //       });
-        //     } catch (err) {
-        //       console.log(err?.message);
-        //     }
-        //   } else {
-        //     try {
-        //       setManualBookmakerData((currentMatches) => {
-        //         if (currentMatches[0]?.id != value.betId) {
-        //           return currentMatches;
-        //         }
-        //         const updatedMatch = {
-        //           ...currentMatches[0],
-        //           teamC_suspend: "suspended",
-        //           teamA_Ball: null,
-        //           teamB_Ball: null,
-        //           teamC_Ball: null,
-        //         };
-        //         const updatedMatches = [
-        //           ...currentMatches.slice(0, 0),
-        //           updatedMatch,
-        //           ...currentMatches.slice(0 + 1),
-        //         ];
-        //         return updatedMatches;
-        //       });
-        //     } catch (err) {
-        //       console.log(err?.message);
-        //     }
-        //   }
-        // }
 
         if (packet.data[0] === "updateSessionRate_user") {
           const value = packet.data[1];
@@ -623,9 +317,6 @@ const DeleteBet = ({ }) => {
                 if (value?.betStatus === 0) {
                   sessionOffline.push(value.id);
                 }
-                // newUpdatedValue = newUpdatedValue?.filter(
-                //   (v) => v?.id !== value?.id && v?.betStatus === 1
-                // );
               }
 
               // Return the updated current match object
@@ -652,16 +343,6 @@ const DeleteBet = ({ }) => {
             return prev;
           });
         }
-        // if (packet.data[0] === "userBalanceUpdate") {
-        //   const data = packet.data[1];
-        //   const user = {
-        //     ...currentUser,
-        //     current_balance: data?.currentBalacne,
-        //   };
-        //   dispatch(setCurrentUser(user));
-
-        //   //currentBalacne
-        // }
         if (packet.data[0] === "bookMakerRateLive") {
           // Bookmaker Market live and stop disable condition
           const value = packet.data[1];
@@ -674,13 +355,6 @@ const DeleteBet = ({ }) => {
             }
             return prev;
           });
-
-          // if (value?.matchId === currentMatch?.id) {
-          //   setCurrentMatch((prev) => ({
-          //     ...prev,
-          //     bookMakerRateLive: value?.bookMakerLive,
-          //   }));
-          // }
         }
 
         if (packet.data[0] === "session_bet") {
@@ -725,11 +399,6 @@ const DeleteBet = ({ }) => {
               ];
             });
           }
-
-          // setCurrentMatch({
-          //   ...currentMatch,
-          //   matchSessionData: updatedBettings1
-          // });
           setSessionBets((prev) => {
             const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
             return [
@@ -748,16 +417,6 @@ const DeleteBet = ({ }) => {
             setIsHandled(true);
             try {
               if (data) {
-                // const user = {
-                //   ...currentUser,
-                //   current_balance: data.newBalance,
-                //   exposure: data.exposure,
-                // };
-                // const manualBookmaker = {
-                //   matchId: data?.betPlaceData?.match_id,
-                //   teamA: data.teamA_rate,
-                //   teamB: data.teamB_rate,
-                // };
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
@@ -788,8 +447,6 @@ const DeleteBet = ({ }) => {
                   setSingleIObtes((prev) => [body, ...prev]);
                 }
 
-                // dispatch(setCurrentUser(user));
-                // dispatch(setManualBookMarkerRates(manualBookmaker));
                 setCurrentMatch((prev) => {
                   if (prev?.id === data?.betPlaceData?.match_id) {
                     return {
@@ -840,7 +497,6 @@ const DeleteBet = ({ }) => {
               };
             });
 
-            // setSessionExposure(value?.sessionExposure);
             setSingleIObtes((sessionBets) =>
               sessionBets?.filter((v) => v?.bet_id !== value?.betId)
             );
@@ -864,18 +520,6 @@ const DeleteBet = ({ }) => {
 
               return updatedBettings;
             });
-
-            // setCurrentMatch((prev) => {
-            //   if (prev?.id === value?.matchId) {
-            //     return {
-            //       ...prev,
-            //       teamA_rate: value?.teamA_rate,
-            //       teamB_rate: value?.teamB_rate,
-            //       teamC_rate: value?.teamC_rate,
-            //     };
-            //   }
-            //   return prev;
-            // });
             setCurrentMatch((prev) => {
               const updatedBettings = prev?.bettings?.map((betting) => {
                 if (betting?.id === value?.betId) {
@@ -925,17 +569,6 @@ const DeleteBet = ({ }) => {
               return updatedBettings;
             });
 
-            // setCurrentMatch((prev) => {
-            //   if (prev?.id === value?.matchId) {
-            //     return {
-            //       ...prev,
-            //       teamA_rate: value?.teamA_rate,
-            //       teamB_rate: value?.teamB_rate,
-            //       teamC_rate: value?.teamC_rate,
-            //     };
-            //   }
-            //   return prev;
-            // });
             setCurrentMatch((prev) => {
               const updatedBettings = prev?.bettings?.map((betting) => {
                 if (betting?.id === value?.betId) {
@@ -1002,13 +635,6 @@ const DeleteBet = ({ }) => {
           const value = packet.data[1];
           // matchId = value?.match_id;
           try {
-            // const user = {
-            //   ...currentUser,
-            //   current_balance: value.current_balance,
-            //   exposure: value.exposure,
-            // };
-
-            // dispatch(setCurrentUser(user));
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.matchId !== value?.matchId) {
                 // If the new bet doesn't belong to the current match, return the current state
@@ -1024,17 +650,13 @@ const DeleteBet = ({ }) => {
                 bettings: updatedBettings,
               };
             });
-            // setSessionExposure(value?.sessionExposure);
             setSessionBets((sessionBets) =>
               sessionBets?.filter((v) => v?.bet_id !== value?.betId)
             );
             setSingleIObtes((sessionBets) =>
               sessionBets?.filter((v) => v?.bet_id !== value?.betId)
             );
-            setPopData((prev) => {
-              const updatedArray = prev?.filter((v) => v?.id !== value?.betId);
-              return updatedArray;
-            });
+            setPopData(value?.betId);
           } catch (err) {
             console.log(err?.message);
           }
@@ -1062,22 +684,15 @@ const DeleteBet = ({ }) => {
         });
 
         socketMicro.emit("init", { id: marketId });
-        // activateLiveMatchMarket();
-        // socketMicro.on("bookMakerRateLive", (e) => {
-        //   console.log("BookMaker", e);
-        // });
 
         socketMicro.on("reconnect", () => {
           socketMicro.emit("init", { id: marketId });
-          // activateLiveMatchMarket();
           setSessionLock(false);
         });
 
         socketMicro.on(`session${marketId}`, (val) => {
-          // console.log("currentMatchProfit 33:", val);
 
           if (val !== null && matchId === checkMctchId) {
-            // console.warn("updatedBettings1 ", updatedBettings1);
             var newVal = val?.map((v) => ({
               bet_condition: v?.RunnerName,
               betStatus: 0,
@@ -1132,10 +747,8 @@ const DeleteBet = ({ }) => {
                   id: marketId,
                 });
                 setMacthOddsLive([]);
-                // socketMicro.disconnect();
               }
             } else {
-              // dispatch(setMatchOddsLive(val[0]));
               setMacthOddsLive(val[0]);
               if (val[0]?.status === "CLOSED") {
                 socketMicro.emit("disconnect_market", {
@@ -1148,10 +761,7 @@ const DeleteBet = ({ }) => {
         });
         socketMicro.on(`bookmaker${marketId}`, (val) => {
           if (val !== null) {
-            // console.log("val 222:", val);
             if (val.length > 0) {
-              // dispatch(setBookMakerLive(val[0]));
-              // alert(JSON.stringify(val[0].runners))
               setBookmakerLive(val[0]);
             } else {
               setBookmakerLive([]);
@@ -1186,8 +796,6 @@ const DeleteBet = ({ }) => {
       );
 
       setManualBookmakerData(matchOddsDataTemp);
-      // alert(response?.data?.status)
-      //   setSessionExposure(response?.data?.sessionExposure);
       setCurrentMatch({
         ...response.data,
       });
@@ -1197,14 +805,6 @@ const DeleteBet = ({ }) => {
           ...response.data,
         })
       );
-      //TODO
-      //   dispatch(
-      //     setManualBookMarkerRates({
-      //       matchId: response.data.id,
-      //       teamA: response.data.teamA_rate ? response.data.teamA_rate : 0,
-      //       teamB: response.data.teamB_rate ? response.data.teamB_rate : 0,
-      //     })
-      //   );
 
       setMarketId(response.data.marketId);
       setMatchDetail(response.data);
@@ -1212,12 +812,6 @@ const DeleteBet = ({ }) => {
         setLoading(false);
       }, 1500);
 
-      //TODO
-      //   dispatch(
-      //     setAllSessionBets(
-      //       response?.data?.betting?.filter((v) => v?.sessionBet === true) || []
-      //     )
-      //   );
     } catch (e) {
       setTimeout(() => {
         setLoading(false);
@@ -1234,13 +828,6 @@ const DeleteBet = ({ }) => {
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
 
-      // setSingleIObtes(
-      //   data?.data?.data?.filter((b) =>
-      //     ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-      //       b?.marketType
-      //     )
-      //   )
-      // );
       console.log("response 1111", data?.data?.data);
       setSingleIObtes(data?.data?.data);
       const bets = data?.data?.data?.filter(
@@ -1249,15 +836,12 @@ const DeleteBet = ({ }) => {
             b?.marketType
           )
       );
-
-      // console.log("bets", bets, data?.data?.data);
       setSessionBets(bets || []);
     } catch (e) {
       console.log(e);
     }
   }
 
-  // console.log("currentMatch", IOSinglebets);
   useEffect(() => {
     if (matchId !== undefined) {
       getThisMatch(matchId);
@@ -1272,40 +856,12 @@ const DeleteBet = ({ }) => {
       matchId: matchId
     }
     setMode(!mode);
-    // alert(JSON.stringify(data));
     try {
       let response = await axios.post(`/betting/deleteMultipleBet`, data);
     } catch (e) {
       console.log(e);
     }
   }
-  //TODO
-  // const PlaceBetComponent = () => {
-  //     const [anchorEl, setAnchorEl] = useState(null);
-  //     const handleClick = (event) => {
-  //         setAnchorEl(event.currentTarget);
-  //     };
-  //     const handleClose = () => {
-  //         setAnchorEl(0);
-  //     };
-  //     return (
-  //         <>
-  //             <Box onClick={e => handleClick(e)} sx={{ background: "#0B4F26", flexDirection: 'column', display: 'flex', alignItems: 'center', justifyContent: 'center', width: { laptop: "90px", mobile: '80px' }, borderRadius: '5px', height: '35px', left: '35px', position: 'absolute' }} >
-  //                 <Box sx={{ background: "#FDF21A", borderRadius: '3px', width: "90%", height: '45%', display: "flex", alignItems: 'center', justifyContent: 'center' }}>
-  //                     <Typography sx={{ fontSize: { laptop: '10px', mobile: "8px" }, fontWeight: 'bold', color: "#FF4D4D" }}>Total Bet : <span style={{ color: "#0B4F26" }} >250</span></Typography>
-  //                 </Box>
-  //                 <Box >
-  //                     <Typography sx={{ fontSize: { laptop: '10px', mobile: "8px" }, fontWeight: '500', color: "white" }}>Profit/Loss</Typography>
-
-  //                 </Box>
-  //             </Box >
-  //             <DropdownMenu open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} />
-
-  //         </>
-  //     )
-  // }
-
-  // const menutItems = [{ title: "Account Statement" }, { title: "Profile Loss Report" }, { title: "Bet History" }, { title: "Unsetteled Bet" }, { title: "Casino Report History" }, { title: "Set Button Values" }, { title: "Security Auth Verfication" }, { title: "Change Password" }]
 
   const [mode, setMode] = useState(false);
   const [selectedBetData, setSelectedBetData] = useState([]);
@@ -1316,7 +872,6 @@ const DeleteBet = ({ }) => {
           if (mode) {
             setVisible(true);
           } else {
-            // alert(JSON.stringify(selectedBetData));
             setMode(!mode);
           }
         }}
@@ -1400,27 +955,10 @@ const DeleteBet = ({ }) => {
             title={"Add Remark"}
             visible={visible}
             setVisible={setVisible}
-            // onDone={() => {
-            //   // dispatch(
-            //   //   setDailogData({
-            //   //     isModalOpen: true,
-            //   //     showRight: true,
-            //   //     bodyText: "Deleted Sucessfully",
-            //   //   })
-            //   // );
-            //   alert(value)
-            //   // setMode(!mode);
-            //   // handleDeleteBet();
-            // }}
             onDone={handleDeleteBet}
             onClick={() => {
               setMode(!mode);
             }}
-          // onClick={() => {
-          //   // setVisible(false);
-          //   setMode(!mode);
-          //   handleDeleteBet();
-          // }}
           />
           <Box
             sx={{
@@ -1460,7 +998,6 @@ const DeleteBet = ({ }) => {
                     matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
                   }
                   typeOfBet={"Match Odds"}
-                // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                 />
               )}
               {currentMatch?.apiBookMakerActive && (
@@ -1474,14 +1011,9 @@ const DeleteBet = ({ }) => {
               {currentMatch?.manualBookMakerActive && (
                 <Odds
                   currentMatch={currentMatch}
-                  // matchOddsLive={matchOddsLive}
-                  // data={
-                  //   matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
-                  // }
                   data={currentMatch}
                   manualBookmakerData={manualBookmakerData}
                   typeOfBet={"Quick Bookmaker"}
-                // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                 />
               )}
               {(currentMatch?.apiSessionActive ||

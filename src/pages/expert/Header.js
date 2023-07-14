@@ -93,10 +93,6 @@ const CustomHeader = ({ }) => {
       const { data } = await axios.get("users/profile");
       localStorage.setItem("role3", "role3");
       dispatch(setCurrentUser(data.data));
-      // alert(111)
-      // setBalance(data.data.current_balance)
-      // dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
-      // setFullName(data.data.fullName)
     } catch (e) {
       console.log(e);
     }
@@ -105,12 +101,7 @@ const CustomHeader = ({ }) => {
   async function getUserCount() {
     try {
       const { data } = await axios.get("/users/onlineUserCount");
-      // dispatch(setCurrentUser(data.data));
       setOnlineUser(data?.data);
-      // alert(JSON.stringify(data.data));
-      // setBalance(data.data.current_balance)
-      // dispatch(stateActions.setBalance(data.data.current_balance, role, data.data.exposure))
-      // setFullName(data.data.fullName)
     } catch (e) {
       console.log(e);
     }
@@ -143,8 +134,6 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
-      // localStorage.removeItem("role3");
-      // localStorage.removeItem("JWTexpert");
     };
 
 
@@ -172,8 +161,6 @@ const CustomHeader = ({ }) => {
         if (result) {
           // navigate("/expert");//add
           dispatch(removeManualBookMarkerRates());
-          // dispatch(removeCurrentUser());
-          // dispatch(logout({ roleType: "role3" }));//add
           socketMicro?.disconnect();
           socket?.disconnect();
           dispatch(removeSelectedMatch());
@@ -225,16 +212,6 @@ const CustomHeader = ({ }) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
-          // start use code start comment
-          // alert(4)
-          // dispatch(setEConfirmAuth(true));
-          // // localStorage.setItem("confirmAuth", true);
-          // let token = localStorage.getItem("JWTexpert");
-          // if (token) {
-          //   sessionStorage.setItem("JWTexpert", token);
-          // }
-          // navigate("/expert");
-          // start use code end comment
           dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
@@ -291,8 +268,6 @@ const CustomHeader = ({ }) => {
     if (allMatchData.length === 0) {
       // getAllMatch();
     }
-    // if (allEventSession?.length === 0) {
-    // }
   }, []);
 
   const getMatchLiveSession = async () => {
@@ -309,8 +284,6 @@ const CustomHeader = ({ }) => {
   const getAllMatch = async () => {
     try {
       let response = await axios.get(`/game-match/getAllMatch`);
-      // setAllMatchData(response.data[0]);
-      // dispatch(setAllMatchs(response.data[0]));
     } catch (e) {
       console.log(e);
     }
@@ -649,32 +622,5 @@ const CustomHeader = ({ }) => {
     </>
   );
 };
-
-// const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
-//   const handleDrawerToggle = () => {
-//     setMobileOpen(!mobileOpen);
-//   };
-//   const container =
-//     window !== undefined ? () => window.document.body : undefined;
-
-//   return (
-//     <Drawer
-//       container={container}
-//       variant="temporary"
-//       open={mobileOpen}
-//       onClose={handleDrawerToggle}
-//       ModalProps={{
-//         keepMounted: true, // Better open performance on mobile.
-//       }}
-//       sx={{
-//         display: { xs: "block", sm: "none" },
-//         "& .MuiDrawer-paper": { boxSizing: "border-box", width: "300px" },
-//       }}
-//     >
-//       <Box sx={{ minHeight: { laptop: 90, mobile: 60 + 32 } }} />
-//       <Box sx={{ height: "100vh" }}></Box>
-//     </Drawer>
-//   );
-// };
 
 export default memo(CustomHeader);

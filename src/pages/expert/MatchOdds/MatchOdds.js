@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Divider from "../../../components/helper/Divider";
 import BoxComponent from "../BoxComponent";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import SmallBox from "../SmallBox";
 import Result from "../Result";
 import Stop from "../Stop";
@@ -105,10 +105,8 @@ const MatchOdds = ({
   matchOddsLive,
   socket,
 }) => {
-  // const { matchOddsLive } = useSelector((state) => state?.matchDetails);
   const { axios } = setRole();
   const theme = useTheme();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const [newMatchOdds, setNewMatchOdds] = useState(matchOdds);
   const [stlive, setLive] = useState(currentMatch?.matchOddRateLive);
@@ -162,17 +160,6 @@ const MatchOdds = ({
         matchId: currentMatch?.id,
         matchOddLive: true,
       });
-      // setCurrentMatch((currentMatch) => {
-      //   const updatedBettings = [...currentMatch?.bettings]; // Create a copy of the bettings array
-
-      //   updatedBettings.push(data); // Push the response data into the updatedBettings array
-
-      //   return {
-      //     ...currentMatch,
-      //     bettings: updatedBettings,
-      //   };
-      // });
-      // setNewMatchOdds(data?.data);
     } catch (err) {
       toast.error(err?.message);
       console.log(err?.response?.data?.message, "err");
@@ -236,8 +223,6 @@ const MatchOdds = ({
                 }
               }}
             />
-            {/* teamARates={teamRates?.teamA}
-          teamBRates={teamRates?.teamB} */}
 
             <SmallBox2 valueA={bookRatioA} valueB={bookRatioB} />
           </Box>
@@ -301,7 +286,7 @@ const MatchOdds = ({
                 customStyle={{
                   justifyContent: "center"
                 }}
-                
+
               />
             )}
             <img

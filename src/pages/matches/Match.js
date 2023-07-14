@@ -1,14 +1,10 @@
 import { useTheme } from "@emotion/react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Lottie from "lottie-react";
-import EventListing from "../../components/EventListing";
 import MatchesComponent from "../../components/Matches/Matches";
-import { HourGlass } from "../../assets";
-import { memo, useEffect } from "react";
-import CustomLoader from "../../components/helper/CustomLoader";
+import { memo } from "react";
 
 const Match = ({ selected, setLoader, loader }) => {
   const [id, setId] = useState("");
@@ -39,32 +35,26 @@ const Match = ({ selected, setLoader, loader }) => {
           }}
         >
           <div style={{ height: "1vh" }} />
-          {/* {selected === "CRICKET" || selected === "INPLAY" ? ( */}
           <MatchesComponent
             setLoader={setLoader}
             loader={loader}
             selected={selected}
-            // onClick={() => {
-            //   dispatch(setActive("CRICKET"));
-            //   navigate("/home",{state:id});
-            // }}
-            // matches={matches}
             setMatchId={setId}
             doNavigateWithState={doNavigateWithState}
           />
         </Box>
       ) : (
-        <Box sx={{ overflowX: "hidden", minHeight: "100vh" ,width:"100%"}}>
-            <MatchesComponent
-              setLoader={setLoader}
-              loader={loader}
-              doNavigateWithState={doNavigateWithState}
-              setMatchId={doSetId}
-              selected={selected}
-              macthId={id}
-            />
-       
-    </Box>)}
+        <Box sx={{ overflowX: "hidden", minHeight: "100vh", width: "100%" }}>
+          <MatchesComponent
+            setLoader={setLoader}
+            loader={loader}
+            doNavigateWithState={doNavigateWithState}
+            setMatchId={doSetId}
+            selected={selected}
+            macthId={id}
+          />
+
+        </Box>)}
     </>
   );
 };

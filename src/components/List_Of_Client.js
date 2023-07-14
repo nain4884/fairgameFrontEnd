@@ -16,19 +16,13 @@ export default function Home() {
     <Background>
       {CondiionCheck(window.location.pathname) ? (
         <>
-        <Box sx={{ margin:" 1%"}}>
-          {/* <HomeSlide /> */}
-          <Account />
-          <AccountList />
-          {/* <UserDetailModal />
-            <DepositModal />
-            <SetCreditModal />
-            <WithDrawModal />
-            <SetExposureModal />
-            <ChangePasswordModal />*/}
-          <DailogModal />
+          <Box sx={{ margin: " 1%" }}>
+            {/* <HomeSlide /> */}
+            <Account />
+            <AccountList />
+            <DailogModal />
 
-        </Box>
+          </Box>
         </>
       ) : (
         <></>

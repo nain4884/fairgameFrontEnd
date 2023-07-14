@@ -6,21 +6,23 @@ import { useNavigate } from "react-router-dom";
 const MyAccount = ({ selected }) => {
   const navigate = useNavigate();
   const classes = {
-    Menusx: { marginTop: { mobile: "15px", laptop: "30px", tablet: "18px" }, marginLeft: { mobile: "5px", laptop: "0", tablet: "0" }, paddingY: "0px", padding: "0px", width: { mobile: "105%", laptop: "100%", tablet: "100%" } ,  top:{mobile:"-260px"},tablet:"-460px",laptop:"-460px"},
+    Menusx: { marginTop: { mobile: "15px", laptop: "30px", tablet: "18px" }, marginLeft: { mobile: "5px", laptop: "0", tablet: "0" }, paddingY: "0px", padding: "0px", width: { mobile: "105%", laptop: "100%", tablet: "100%" }, top: { mobile: "-260px" }, tablet: "-460px", laptop: "-460px" },
     MenuListProps: { "aria-labelledby": "basic-button" },
-    MenuPaperProps: { sx: {
-      // border: "1px solid #fff", 
-      paddingY: "0px", padding: "0px", 
-    
-      // width: "96.25%", 
-      width: "100%", 
-      left: "1px !important",  
-      minHeight: "220px", 
-      background: "url(/static/media/back.00d2deda3616019e96ee.png)",
-      boxShadow: "none",
-      // background: "none"
-      // left: "27px !important",  
-  } },
+    MenuPaperProps: {
+      sx: {
+        // border: "1px solid #fff", 
+        paddingY: "0px", padding: "0px",
+
+        // width: "96.25%", 
+        width: "100%",
+        left: "1px !important",
+        minHeight: "220px",
+        background: "url(/static/media/back.00d2deda3616019e96ee.png)",
+        boxShadow: "none",
+        // background: "none"
+        // left: "27px !important",  
+      }
+    },
     MenuItemsx: {
       width: "100%",
       fontSize: { laptop: "16px", mobile: "10px" },
@@ -36,7 +38,7 @@ const MyAccount = ({ selected }) => {
       minHeight: "40px",
       lineHeight: "18px",
       color: "black",
-      "&:hover": {        
+      "&:hover": {
         backgroundColor: "#e5b744",
         // color: "white",
         border: 0,
@@ -51,7 +53,7 @@ const MyAccount = ({ selected }) => {
     { title: "Profile/Loss Report", link: "/profit_loss" },
     { title: "Bet History", link: "/bet_history" },
     { title: "Set Button Values", link: "/change_button_value" },
-    { title: "Security Auth Verification" ,link:"/comingsoon"},
+    { title: "Security Auth Verification", link: "/comingsoon" },
     { title: "Change Password", link: "/change_password" },
   ];
 
@@ -68,56 +70,44 @@ const MyAccount = ({ selected }) => {
         alignItems: "flex-start",
       }}
     >
-      <Box sx={{width: "100%"}}>
-        {/* <Menu
-          id="basic-menu"
-          // anchorEl={anchorEl}
-          open={true}
-          // onClose={handleClose}
-          sx={classes.Menusx}
-          MenuListProps={classes.MenuListProps}
-          PaperProps={classes.MenuPaperProps}
-        > */}
-          <Box sx={{}}>
-            <Typography
-              sx={[
-                {
-                  fontSize: { laptop: "18px", mobile: "10px" },
-                  fontWeight: "600",
-                  fontFamily: "Montserrat",
-                  padding: "10px 13px",
-                  paddingBottom: "15px",
-                  color: "#fff",
-                  textTransform: "uppercase"
-                },
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{}}>
+          <Typography
+            sx={[
+              {
+                fontSize: { laptop: "18px", mobile: "10px" },
+                fontWeight: "600",
+                fontFamily: "Montserrat",
+                padding: "10px 13px",
+                paddingBottom: "15px",
+                color: "#fff",
+                textTransform: "uppercase"
+              },
 
-              ]}
+            ]}
+          >
+            My Account
+          </Typography>
+        </Box>
+        <Box sx={{ background: "#F8C851", marginLeft: "13px", marginRight: "20px", padding: "10px", borderRadius: "5px" }}>
+
+          {menutItems1.map((x, index) => (
+            <MenuItem
+              key={index}
+              dense={true}
+              sx={classes.MenuItemsx}
+              onClick={() => {
+                navigate(x.link, {
+                  state: {
+                    activeTab: "MY ACCOUNT",
+                  },
+                });
+              }}
             >
-              My Account
-            </Typography>
-            {/* <Box sx={{ height: "1px", background: "#ddd" }}></Box> */}
-          </Box>
-          <Box sx={{background: "#F8C851", marginLeft: "13px",marginRight: "20px", padding: "10px", borderRadius: "5px"}}>
-
-            {menutItems1.map((x, index) => (
-              <MenuItem
-                key={index}
-                dense={true}
-                sx={classes.MenuItemsx}
-                onClick={() => {
-                  navigate(x.link, {
-                    state: {
-                      activeTab: "MY ACCOUNT",
-                    },
-                  });
-                  // handleClose();
-                }}
-              >
-                {x.title}
-              </MenuItem>
-            ))}
-          </Box>
-        {/* </Menu> */}
+              {x.title}
+            </MenuItem>
+          ))}
+        </Box>
       </Box>
     </Box>
   );

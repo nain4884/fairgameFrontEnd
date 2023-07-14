@@ -1,39 +1,31 @@
 import React from "react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import SeperateBox from "../../SeperateBox";
 import SmallBox from "../../SmallBox";
 import { toast } from "react-toastify";
 import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import { useEffect } from "react";
-import PlaceBetComponentWeb from "../PlaceBetComponentWeb";
 import Result from "../../Result";
 import SessionResultModal from "../../../../components/SessionResultModal";
 import { formatNumber } from "../../../../components/helper/helper";
-import { useDispatch } from "react-redux";
-import { setSelectedMatch } from "../../../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../../../newStore"
 import Divider from "../../../../components/helper/Divider";
 
 const SessionMarketBoxLive = ({
   index,
   stop,
-  setCurrentMatch,
   currentMatch,
   newData,
   setStop,
   liveOnly,
   setLocalState,
-  setLiveData,
   setMatchSessionData,
   updateSessionData,
   hideResult,
-  hideTotalBet,
 }) => {
   const theme = useTheme();
-  const dispatch = useDispatch();
   const { axios } = setRole();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [visible, setVisible] = useState(false);
   const [live, setLive] = useState(
     [0, 2].includes(newData?.betStatus) ? true : false
@@ -297,15 +289,6 @@ const SessionMarketBoxLive = ({
               lock={newData?.suspended === "suspended"}
               color={"#B3E0FF"}
             />
-
-            {/* {
-                            index != 1 && index !== 2 &&
-                            <Box sx={{
-                                width: '100%', marginLeft: '-2px', display: 'flex', position: 'absolute', height: '100%', background: 'rgba(0,0,0,1)', justifyContent: 'center ', alignItems: 'center'
-                            }}>
-                                <img src={BallStart} style={{ width: '60px', height: '19px' }} />
-                            </Box>
-                        } */}
 
           </Box>
         )}

@@ -7,13 +7,11 @@ import { useSelector } from "react-redux";
 
 const MobileViewUserDetails = ({
   setSelected,
-  selected,
   handleAdminPass,
   handleChange,
   handleReview,
   amount,
   profit_loss,
-  percent_profit_loss,
   setShowPass,
   showPass,
   onCancel,
@@ -40,14 +38,14 @@ const MobileViewUserDetails = ({
           borderBottomLeftRadius: "0px",
           overflow: "hidden",
           border: "2px solid white",
-          
+
         },
         (theme) => ({
           backgroundImage: `${theme.palette.primary.headerGradient}`,
         }),
       ]}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between", background: titleBackgroundColor ? titleBackgroundColor: "#ff0000"}}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", background: titleBackgroundColor ? titleBackgroundColor : "#ff0000" }}>
         <Box
           display={"flex"}
           sx={{
@@ -182,7 +180,7 @@ const MobileViewUserDetails = ({
                 borderRadius: "5px",
                 border: "2px solid #26262633",
                 paddingX: "10px",
-               
+
               }}
             >
               <TextField
@@ -268,7 +266,7 @@ const MobileViewUserDetails = ({
                   color: "white",
                   display: "flex",
                   alignItems: "center",
-                  
+
                 }}
               >
                 {element?.available_balance ? element?.available_balance.toFixed(2) : "00"}
@@ -288,7 +286,7 @@ const MobileViewUserDetails = ({
               }}
             >
               <TextField
-                value=  {elementToUDM?.available_balance
+                value={elementToUDM?.available_balance
                   ? elementToUDM?.available_balance.toFixed(2)
                   : "00"}
                 sx={{ width: "100%", height: "45px" }}

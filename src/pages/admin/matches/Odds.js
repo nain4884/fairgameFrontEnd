@@ -9,11 +9,8 @@ import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets";
 import { ARROWUP } from "../../../assets";
 import { useState } from "react";
 
-// export { default as ARROWUP } from './homeScreen/arrowup.png'
 const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, mShowUnlock, locked, blockMatch, handleBlock, handleHide, handleShowLock, selft }) => {
   const theme = useTheme();
-  // alert(data.length)
-  // console.log("currentMatch 22222", data);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const bookRatioB = (teamARates, teamBRates) => {
@@ -29,14 +26,8 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
     const formattedRatio = Math.abs(bookRatio).toFixed(2);
     return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
   };
-  // data = { data?.length > 0 ? data[1] : []
-  // lock = { ex?.availableToBack?.length > 0 ? false : true
   const handleLock = (data) => {
-    // if (data?.length > 0) {
     return data?.ex?.availableToBack?.length > 0 ? false : true
-    // return data?.ex?.availableToLay?.length > 0 ? false : true
-    // }
-    // return true;
   }
 
   const onSubmit = (value) => {
@@ -90,11 +81,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
           >
             {typeOfBet === "MANUAL BOOKMAKER" ? "QUICK BOOKMAKER" : typeOfBet}
           </Typography>
-          {/* {!submit && <img onClick={() => {
-            setShowUnlock(true)
-          }} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />} */}
           {blockMatch && <img onClick={() => selft || selft == undefined ? handleShowLock(true, typeOfBet) : ""
-            // setShowUnlock(true)
 
           } src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
         </Box>
@@ -362,12 +349,6 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
           title={(locked ? "Unlock " : "Lock ") + typeOfBet + " Market"}
           handleHide={handleHide}
           onSubmit={onSubmit}
-        // onSubmit={(i) => {
-        //   if (i) {
-        //     setLocked(!locked)
-        //   }
-        //   setShowUnlock(false)
-        // }} 
         />
       </Box>}
     </Box>

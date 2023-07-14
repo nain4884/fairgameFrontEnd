@@ -7,7 +7,7 @@ import PlaceBetComponentWeb from "./PlaceBetComponentWeb";
 import PlaceBetComponent from "./PlaceBetComponent";
 import { formatNumber } from "../../../components/helper/helper";
 
-const SeasonMarketBox = ({ index, setMatchSessionData, newData, setPopData }) => {
+const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
@@ -56,20 +56,15 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setPopData }) =>
               // amount={index == 2}
               newData={newData}
               // setData={setData}
-              setPopData={setPopData}
+              setData={setData}
             /> :
               <PlaceBetComponentWeb
                 // amount={index == 2}
                 newData={newData}
                 // setData={setData}
-                setPopData={setPopData}
+                setData={setData}
               />
           }
-          {/* <SeperateBox color={"white"} />
-          <Box
-            sx={{ width: ".45%", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox color={"white"} /> */}
           <SeperateBox
             session={true}
             back={true}
@@ -91,22 +86,6 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setPopData }) =>
           <Box
             sx={{ width: ".45%", display: "flex", background: "pink" }}
           ></Box>
-          {/* {index == 1 && (
-            <Box
-              sx={{
-                width: "10.2vw",
-                right: "2px",
-                display: "flex",
-                position: "absolute",
-                height: "100%",
-                background: "rgba(0,0,0,1)",
-                justifyContent: "center ",
-                alignItems: "center",
-              }}
-            >
-              <img src={BallStart} style={{ width: "60px", height: "17px" }} />
-            </Box>
-          )} */}
         </Box>
       </Box>
       <Divider />

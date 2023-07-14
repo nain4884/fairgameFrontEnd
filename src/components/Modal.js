@@ -33,8 +33,8 @@ export function ThisUseModal() {
             height: "100vh",
             width: "100vw",
             zIndex: 9999,
-            transition: "transform 1s ease-in-out", 
-           
+            transition: "transform 1s ease-in-out",
+
           }}
         >
           <Box
@@ -49,7 +49,7 @@ export function ThisUseModal() {
               borderRadius: "15px",
               position: "relative",
               top: "20px",
-              transition: "transform 1s ease-in-out", 
+              transition: "transform 1s ease-in-out",
             }}
           >
             <Button
@@ -84,13 +84,6 @@ export function Modal({
   const navigate = useNavigate();
   return (
     <>
-      {/* <Box p={2} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', border: '1px solid #707070', backgroundColor: '#000', borderRadius: '15px' }}>
-        <Typography mb={2} color={'#fff'}>{message}</Typography>
-        <Button sx={{ backgroundColor: '#fff', ':hover': { backgroundColor: '#43ff5f' } }} onClick={() => {
-            setShowSuccessModal(!showSuccessModal)
-            navigateTo && navigate(`/${window.location.pathname.split("/")[1]}/${navigateTo}`)
-        }}>{buttonMessage}</Button>
-      </Box> */}
       <>
         <Box
           p={2}
@@ -158,8 +151,7 @@ export function Modal({
                     setShowSuccessModal(!showSuccessModal);
                     navigateTo &&
                       navigate(
-                        `/${
-                          window.location.pathname.split("/")[1]
+                        `/${window.location.pathname.split("/")[1]
                         }/${navigateTo}`,
                         { state: { activeTab: activeTab } }
                       );

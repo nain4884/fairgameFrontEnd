@@ -589,9 +589,6 @@ function AddBetComp() {
             />
           </Box>
           <Box sx={{ display: "flex", marginTop: "20px" }}>
-            {/* <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team B Back"} type={"text"} value="Enter Name of Team A..." InputValType={"InputVal"} place={7} DetailError={{ Error, setDetail, Detail, setError, type: "Number" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} title={"Team B Lay"} type={"text"} value="Enter Name of Team B..." InputValType={"InputVal"} place={5} DetailError={{ Error, setDetail, Detail, setError, type: "Number" }} />
-                    <LabelValueComponent containerStyle={{ flex: 1, marginLeft: "1%" }} /> */}
           </Box>
         </Box>
       )}

@@ -1,21 +1,13 @@
 import {
-  Input,
-  Menu,
-  Popover,
-  TextField,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  ArrowDown,
-  BETPLACED,
-  CANCEL,
   CancelDark,
   HourGlass,
-  NOT,
 } from "../assets";
 import "../components/index.css";
 import Lottie from "lottie-react";
@@ -25,28 +17,16 @@ import BoxInput from "./BoxInput";
 import { toast } from "react-toastify";
 import { setRole } from "../newStore";
 import { setDailogData } from "../store/dailogModal";
-import BetPlaced from "./BetPlaced";
-import MUIModal from "@mui/material/Modal";
-import NotificationModal from "./NotificationModal";
 const OddsPlaceBet = ({
-  open,
-  refs,
   handleClose,
-  currentMatch,
   season,
   type,
   name,
-  betOn,
   typeOfBet,
-  mainData,
-  betType,
-  rates,
-  fromOdds,
   placeBetData,
   setPlaceBetData,
   setFastRate,
   fastRate,
-  isBack,
   setCanceled,
   handleRateChange
 }) => {
@@ -117,7 +97,6 @@ const OddsPlaceBet = ({
     bet_condition,
   }) => {
     const [oddValue, setOddValue] = useState(placeBetData?.odds);
-    // console.log(selectedColorBox, "selectedColorBox");
     return (
       <Box sx={[{ display: "flex", flexDirection: "column" }, containerStyle]}>
         <Box
@@ -343,9 +322,6 @@ const OddsPlaceBet = ({
   }
   const PlaceBetSubmit = async (payload) => {
     try {
-      // if (Number(payload?.odds) !== Number(value)) {
-      //   return toast.error("Rate changed ");
-      // }
       let response = await axios.post(`/betting/placeBet`, payload);
       // setAllRateBets(response?.data?.data[0])
       setBetPalaceError(false);
@@ -353,8 +329,6 @@ const OddsPlaceBet = ({
       setTimeout(() => {
         setPlaceBetData(null);
       }, 1500);
-      // dispatch(setAllBetRate(response?.data?.data[0]))
-      // toast.success(response?.data?.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
       setFastRate(0);
@@ -611,77 +585,6 @@ const OddsPlaceBet = ({
             Submit
           </button>
         </Box>
-
-        {
-          // <BetPlaced
-          //   // time={5}
-          //   time={
-          //     placeBetData?.typeOfBet == "MATCH ODDS"
-          //       ? placeBetData?.currentMatch?.delaySecond
-          //         ? placeBetData?.currentMatch?.delaySecond
-          //         : 0
-          //       : 0
-          //   }
-          //   // not={canceled}
-          //   visible={visible}
-          //   setVisible={(i) => {
-          //     setPlaceBetData(null);
-          //     setVisible(i);
-          //   }}
-          // />
-        }
-
-        {/* <MUIModal
-          onClose={() => {
-            setCanceled(false);
-          }}
-          sx={{
-            alignItems: "center",
-            justifyContent: "center",
-            display: "flex",
-            backgroundColor: "transparent",
-            outline: "none",
-          }}
-          open={canceled}
-          disableAutoFocus={true}
-        >
-          <Box
-            sx={{
-              width: "190px",
-              borderRadius: "6px",
-              paddingY: "10px",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              background: "white",
-              alignSelf: "center",
-              display: "flex",
-              position: "absolute",
-              top: "45%",
-              zIndex: 999,
-            }}
-          >
-            <img
-              src={betPalaceError ? NOT : BETPLACED}
-              style={{ width: "60px", height: "60px", marginTop: "3px" }}
-            />
-
-            <Typography
-              sx={{
-                fontSize: { mobile: "10px", laptop: "14px", tablet: "14px" },
-                fontWeight: "500",
-                marginY: ".7vh",
-                width: "70%",
-                alignSelf: "center",
-                textAlign: "center",
-              }}
-            >
-              {!betPalaceError
-                ? " Bet Placed Successfully"
-                : "Bet Not Placed Successfully"}
-            </Typography>
-          </Box>
-        </MUIModal> */}
       </Box>
       {betPlaceLoading && (
         <Box

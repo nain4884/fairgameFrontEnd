@@ -7,7 +7,7 @@ import { useTheme } from "@emotion/react";
 import { useEffect } from "react";
 import RunsBox from "../../expert/RunsBox";
 import UnlockComponent from "../../../components/UnlockComponent";
-import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets";
+import { LOCKED, LOCKOPEN } from "../../../admin/assets";
 import { ARROWUP } from "../../../assets";
 
 const SessionMarket = ({
@@ -22,15 +22,19 @@ const SessionMarket = ({
   handleHide,
   handleShowLock,
   selft,
-  setPopData,
   popData
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  // const [showUnlock, setShowUnlock] = useState(false);
-  // const [locked, setLocked] = useState(false);
   const [matchSessionData, setMatchSessionData] = useState([]);
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    setData((prev) => {
+      const updatedArray = prev?.filter((v) => v?.id !== popData);
+      return updatedArray;
+    });
+  }, [popData]);
 
   useEffect(() => {
     if (currentMatch?.bettings?.length > 0) {
@@ -330,39 +334,13 @@ const SessionMarket = ({
                         setMatchSessionData={setMatchSessionData}
                         index={index}
                         // setData={setData}
-                        setPopData={setPopData}
+                        setData={setData}
                       />
                       <Divider />
                     </Box>
                   );
                 })}
-              {/* {matchSessionData?.length > 0 &&
-              matchSessionData?.map((match, index) => (
-                <Box key={index}
-                  sx={{
-                    // display: sessionOffline?.includes(element.id)
-                    //   ? "none"
-                    //   : "block",
-                  }}
-                >
-                  <SeasonMarketBox
-                    newData={match}
-                    setMatchSessionData={setMatchSessionData}
-                    index={index}
-                    setData={setData}
-                  />
-
-                  <Divider />
-                </Box>
-              ))} */}
             </Box>
-            {/* {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
-            <Box sx={{ width: '100%', alignSelf: 'flex-end', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', alignItems: 'center', justifyContent: 'center', display: 'flex' }} >
-              <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
-
-              <Typography sx={{ color: 'white', fontWeight: '600', marginLeft: '-25px', fontSize: '20px', marginTop: '20px' }}>Locked</Typography>
-            </Box>
-          </Box>} */}
             {showUnlock && (
               <Box
                 sx={{
@@ -387,7 +365,7 @@ const SessionMarket = ({
           </Box>
         )}
       </Box>
-      {popData?.length > 0 && (
+      {data?.length > 0 && (
         <Box
           sx={{
             display: "flex",
@@ -400,7 +378,7 @@ const SessionMarket = ({
             marginTop: ".25vw",
           }}
         >
-          {popData?.map((v) => {
+          {data?.map((v) => {
             console.log(
               "currentOdds?.bet_id === v?.id ? currentOdds : null",
               v,
@@ -411,8 +389,8 @@ const SessionMarket = ({
                 key={v?.id}
                 item={v}
                 // setData={setData}
-                setPopData={setPopData}
-                popData={popData}
+                setData={setData}
+              // popData={popData}
               />
             );
           })}

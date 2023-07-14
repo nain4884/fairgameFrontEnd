@@ -7,37 +7,27 @@ import {
   styled,
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
-  CircularProgress,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setModalOpen } from "../store/userdetail";
 import StyledImage from "./StyledImage";
 import { setDailogData } from "../store/dailogModal";
 import {
-  CircleBack,
   DeleteIcon,
   EyeIcon,
   EyeIconWhite,
   EyeSlash,
   EyeSlashWhite,
   LockClosed,
-  LockIcon,
   LockOpen,
-  UnLockIcon,
 } from "../admin/assets";
 import { onChangeKeyCheck } from "./helper/PassKeyCheck";
 import { useNavigate } from "react-router-dom";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
-import { setCurrentUser } from "../newStore/reducers/currentUser";
-import { debounce } from "lodash";
-import { useEffect } from "react";
 import ModalMUI from "@mui/material/Modal";
 import MobileViewUserDetails from "./MobileViewUserDetails";
 import BoxButton from "./BoxButton";
@@ -65,7 +55,6 @@ export default function UserDetailModal({
   elementToUDM,
   setElementToUDM,
   getListOfUser,
-  showUserModal,
   updatedUserProfile,
   prevElement,
   selected,
@@ -470,12 +459,6 @@ export default function UserDetailModal({
             <DialogTitle id="alert-dialog-title">
               {"Are you sure want to delete this user?"}
             </DialogTitle>
-            {/* <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent> */}
             <DialogActions>
               <Button onClick={() => setDeleteModal((prev) => !prev)}>
                 Cancel
@@ -483,9 +466,6 @@ export default function UserDetailModal({
               <Button
                 sx={{ color: "#E32A2A" }}
                 onClick={(e) => {
-                  // if (
-                  //   prevElement.available_balance == 0
-                  // ) {
                   UserDelete(userModal.id)
                     .then(({ bool, message }) => {
                       toast.success(message);
@@ -498,14 +478,6 @@ export default function UserDetailModal({
                       setDeleteModal(false);
                       showDialogModal(true, false, message);
                     });
-                  // } else {
-
-                  //   setConfirmDeleteModal((prev) => !prev)
-                  //   // let message = "First Settle Account to Delete The User";
-                  //   // toast.error(message);
-                  //   setDeleteModal(false);
-                  //   // showDialogModal(true, false, message);
-                  // }
                 }}
               >
                 Delete
@@ -523,12 +495,6 @@ export default function UserDetailModal({
                 "Your available balance is not zero. Are you sure want to delete this user?"
               }
             </DialogTitle>
-            {/* <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent> */}
             <DialogActions>
               <Button onClick={() => setConfirmDeleteModal((prev) => !prev)}>
                 Cancel
@@ -794,13 +760,13 @@ const DepositComponent = ({
                     })
                     .catch(({ bool, message }) => {
                       setElementToUDM({
-                            ...elementToUDM,
-                            profit_loss: prevElement.profit_loss,
-                            percent_profit_loss: prevElement.percent_profit_loss,
-                            balance: prevElement.balance,
-        
-                            available_balance: prevElement.available_balances,
-                          });
+                        ...elementToUDM,
+                        profit_loss: prevElement.profit_loss,
+                        percent_profit_loss: prevElement.percent_profit_loss,
+                        balance: prevElement.balance,
+
+                        available_balance: prevElement.available_balances,
+                      });
                       toast.error(message);
                       setLoading(false);
                       setSelected(e);
@@ -810,13 +776,13 @@ const DepositComponent = ({
               } catch (e) {
                 console.log(e?.message);
                 setElementToUDM({
-                            ...elementToUDM,
-                            profit_loss: prevElement.profit_loss,
-                            percent_profit_loss: prevElement.percent_profit_loss,
-                            balance: prevElement.balance,
-                            
-                            available_balance: prevElement.available_balances,
-                          });
+                  ...elementToUDM,
+                  profit_loss: prevElement.profit_loss,
+                  percent_profit_loss: prevElement.percent_profit_loss,
+                  balance: prevElement.balance,
+
+                  available_balance: prevElement.available_balances,
+                });
                 setSelected(e);
                 setLoading(false);
               }
@@ -883,26 +849,6 @@ const DepositComponent = ({
                 >
                   Deposit Amount
                 </Typography>
-                {/* <Typography
-              sx={{
-                fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                width: { mobile: "24vw", laptop: "100%", tablet: "40%" },
-                fontWeight: "600",
-                marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-                textAlign: "center",
-                background: "red",
-                position: "absolute",
-                right: "-11px",
-                // marginRight: "-16px",
-                height: "45px",
-                display: { mobile:"flex", laptop: "none"},
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff"
-              }}
-            >
-             100000
-            </Typography> */}
               </Box>
               <Box
                 sx={{
@@ -931,10 +877,6 @@ const DepositComponent = ({
                   type={"Number"}
                 />
               </Box>
-              {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
-            <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Predicted Wallet</Typography>
-            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount- Number(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
-          </Box> */}
             </Box>
 
             <Box
@@ -1078,10 +1020,6 @@ const DepositComponent = ({
                   />
                 </Box>
               </Box>
-              {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
-            <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Profit/Loss</Typography>
-            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss + Number(isNaN(depositObj.amount)?0:depositObj.amount)}</Typography>
-          </Box> */}
             </Box>
           </Box>
 
@@ -1162,7 +1100,7 @@ const DepositComponent = ({
                           setLoading(false);
                           showDialogModal(true, true, message);
                           setDepositObj(defaultDepositObj);
-                          
+
                           setSelected(e);
                         })
                         .catch(({ bool, message }) => {
@@ -1175,7 +1113,7 @@ const DepositComponent = ({
                             ...elementToUDM,
                             profit_loss: prevElement.profit_loss,
                             balance: prevElement.balance,
-                            
+
                             percent_profit_loss:
                               prevElement.percent_profit_loss,
                             available_balance: prevElement.available_balances,
@@ -1256,12 +1194,12 @@ const DepositComponent = ({
                         })
                         .catch(({ bool, message }) => {
                           setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    available_balance: prevElement.available_balances,
-                  });
-                  setSelected(e);
+                            ...elementToUDM,
+                            profit_loss: prevElement.profit_loss,
+                            balance: prevElement.balance,
+                            available_balance: prevElement.available_balances,
+                          });
+                          setSelected(e);
                           toast.error(message);
                           setLoading(false);
                           showDialogModal(true, false, message);
@@ -1270,12 +1208,12 @@ const DepositComponent = ({
                   } catch (e) {
                     console.log(e?.message);
                     setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    available_balance: prevElement.available_balances,
-                  });
-                  setSelected(e);
+                      ...elementToUDM,
+                      profit_loss: prevElement.profit_loss,
+                      balance: prevElement.balance,
+                      available_balance: prevElement.available_balances,
+                    });
+                    setSelected(e);
                     setLoading(false);
                   }
                 }}
@@ -1471,12 +1409,12 @@ const WithDrawComponent = ({
                     })
                     .catch(({ bool, message }) => {
                       setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    percent_profit_loss: prevElement.percent_profit_loss,
-                    available_balance: prevElement.available_balance,
-                  });
+                        ...elementToUDM,
+                        profit_loss: prevElement.profit_loss,
+                        balance: prevElement.balance,
+                        percent_profit_loss: prevElement.percent_profit_loss,
+                        available_balance: prevElement.available_balance,
+                      });
                       toast.error(message);
                       setSelected(e);
                       setLoading(false);
@@ -1487,12 +1425,12 @@ const WithDrawComponent = ({
                 setSelected(e);
                 setLoading(false);
                 setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    percent_profit_loss: prevElement.percent_profit_loss,
-                    available_balance: prevElement.available_balance,
-                  });
+                  ...elementToUDM,
+                  profit_loss: prevElement.profit_loss,
+                  balance: prevElement.balance,
+                  percent_profit_loss: prevElement.percent_profit_loss,
+                  available_balance: prevElement.available_balance,
+                });
                 console.log(e.message);
               }
             }}
@@ -1589,10 +1527,6 @@ const WithDrawComponent = ({
                   type={"Number"}
                 />
               </Box>
-              {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
-            <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Predicted Wallet</Typography>
-            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{activeWalletAmount+ Number(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
-          </Box> */}
             </Box>
 
             {/* wallet */}
@@ -1739,10 +1673,6 @@ const WithDrawComponent = ({
                   />
                 </Box>
               </Box>
-              {/* <Box sx={{ flex: 1, minWidth:'110px', height:'50px', background: "#0B4F26", marginTop: "2px", display: "flex", marginLeft:'10px', paddingLeft: "5px", flexDirection: "column", justifyContent: "center", border: "2px solid #FFFFFF4D", borderRadius:'5px' }}>
-            <Typography sx={{ color: "white", fontSize: "12px", fontWeight: '400' }}>Profit/Loss</Typography>
-            <Typography sx={{ color: "#10DC61", fontWeight: '600', fontSize: '0.8rem', lineHeight: 1, wordBreak: 'break-all' }}>{profitLoss - Number(isNaN(withDrawObj.amount)?0:withDrawObj.amount)}</Typography>
-          </Box> */}
             </Box>
           </Box>
 
@@ -1821,13 +1751,13 @@ const WithDrawComponent = ({
                           toast.success(message);
                           updatedUserProfile();
                           getListOfUser();
-                     
+
                           setSelected(e);
                           setLoading(false);
                           showDialogModal(true, true, message);
                         })
                         .catch(({ bool, message }) => {
-                   
+
                           toast.error(message);
                           setSelected(e);
                           setElementToUDM({
@@ -1845,12 +1775,12 @@ const WithDrawComponent = ({
                     setSelected(e);
                     setLoading(false);
                     setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    percent_profit_loss: prevElement.percent_profit_loss,
-                    available_balance: prevElement.available_balance,
-                  });
+                      ...elementToUDM,
+                      profit_loss: prevElement.profit_loss,
+                      balance: prevElement.balance,
+                      percent_profit_loss: prevElement.percent_profit_loss,
+                      available_balance: prevElement.available_balance,
+                    });
                     console.log(e.message);
                   }
                 }}
@@ -1915,26 +1845,26 @@ const WithDrawComponent = ({
                         .catch(({ bool, message }) => {
                           toast.error(message);
                           setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    available_balance: prevElement.available_balance,
-                    percent_profit_loss: prevElement.percent_profit_loss,
-                  });
-                  setSelected(e);
+                            ...elementToUDM,
+                            profit_loss: prevElement.profit_loss,
+                            balance: prevElement.balance,
+                            available_balance: prevElement.available_balance,
+                            percent_profit_loss: prevElement.percent_profit_loss,
+                          });
+                          setSelected(e);
                           setLoading(false);
                           showDialogModal(true, false, message);
                         });
                     }
                   } catch (e) {
                     setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    available_balance: prevElement.available_balance,
-                    percent_profit_loss: prevElement.percent_profit_loss,
-                  });
-                  setSelected(e);
+                      ...elementToUDM,
+                      profit_loss: prevElement.profit_loss,
+                      balance: prevElement.balance,
+                      available_balance: prevElement.available_balance,
+                      percent_profit_loss: prevElement.percent_profit_loss,
+                    });
+                    setSelected(e);
                     setLoading(false);
                     console.log(e.message);
                   }

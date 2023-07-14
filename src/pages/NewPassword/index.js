@@ -1,31 +1,18 @@
 import { Card, Typography, Box, useTheme, useMediaQuery } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { eye, logo, mail } from "../../assets";
+import { eye } from "../../assets";
 import {
   Input,
   CustomButton,
   AuthLogo,
   AuthBackground,
-  ReCAPTCHACustom,
 } from "../../components";
-import { useDispatch } from "react-redux";
-import {
-  apiBasePath,
-  LoginServerError,
-} from "../../components/helper/constants";
-import OTPInput from "otp-input-react";
-import { setAllRoles, signIn } from "../../newStore/reducers/auth";
-import { setCurrentUser } from "../../newStore/reducers/currentUser";
-import UseTokenUpdate from "../../useTokenUpdate";
-import { setRole } from "../../newStore";
 
 export default function NewPassword() {
-  let { transPass, axios, role } = setRole();
 
   const theme = useTheme();
   const navigate = useNavigate();
-  
+
 
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));

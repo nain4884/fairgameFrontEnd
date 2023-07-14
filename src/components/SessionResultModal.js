@@ -37,21 +37,6 @@ const SessionResultModal = ({
       inline: "center",
     });
   };
-  // useEffect(() => {
-  //   if (socket && socket.connected) {
-  //     socket.onevent = async (packet) => {
-  //       if (packet.data[0] === "resultDeclareForBet") {
-  //         const data = packet.data[1];
-  //         try {
-  //           let profitLoss = data?.profitLoss;
-  //           setProLoss(profitLoss);
-  //         } catch (err) {
-  //           console.log(err?.message);
-  //         }
-  //       }
-  //     }
-  //   }
-  // }, [socket]);
 
   useEffect(() => {
     scrollToBottom();
@@ -73,13 +58,6 @@ const SessionResultModal = ({
           match_id: newData?.match_id,
           betId: newData?.id,
         });
-        // const updatedData = {
-        //   ...newData,
-        //   betStatus: 2,
-        //   suspended: "Result Declared",
-        // };
-        // // call the parent component's updateSessionData function
-        // updateSessionData(updatedData);
 
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
@@ -122,13 +100,6 @@ const SessionResultModal = ({
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        // const updatedData = {
-        //   ...newData,
-        //   betStatus: 2,
-        //   suspended: "Result Declared",
-        // };
-        // // call the parent component's updateSessionData function
-        // updateSessionData(updatedData);
 
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(

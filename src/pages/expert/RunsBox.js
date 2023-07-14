@@ -4,7 +4,7 @@ import { useTheme } from "@emotion/react";
 import { StyledImage } from "../../components";
 import { CANCEL } from "../../assets";
 
-const RunsBox = ({ item, setPopData, currentOdds }) => {
+const RunsBox = ({ item, setData, currentOdds }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const containerRef = useRef(null);
@@ -68,8 +68,7 @@ const RunsBox = ({ item, setPopData, currentOdds }) => {
         </Typography>
         <img
           onClick={(e) => {
-            alert(JSON.stringify(item?.id))
-            setPopData((prev) => {
+            setData((prev) => {
               const updatedArray = prev?.filter((v) => v?.id !== item?.id);
               return updatedArray;
             });

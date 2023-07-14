@@ -239,10 +239,6 @@ const AddMatchComp = () => {
           p: "10px",
         }}
       >
-        {/* <Box sx={{ display: "flex" }}>
-                  <LabelValueComponent icon={ArrowDownWhite} valueStyle={{ color: "white" }} valueContainerStyle={{ background: "#0B4F26" }}  containerStyle={{ flex: 1, width: "100%", }} title={"BetFair Match List"} value="India vs Pakistan" />
-                  <LabelValueComponent icon={ArrowDownWhite} valueStyle={{ color: "white" }} valueContainerStyle={{ background: "#0B4F26" }} containerStyle={{ flex: 1, marginLeft: "20px" }} title={"BetFair Maximum Amount"} value="$ 1,00,000,000,000,000" />
-              </Box> */}
         <Box sx={{ margin: "15px" }}>
           <LabelValueComponent
             title={"Add Match"}
@@ -271,7 +267,6 @@ const AddMatchComp = () => {
               justifyContent: "flex-start",
             }}
           >
-            {/* <LabelValueComponent icon={ArrowDownBlack} valueStyle={{}}  containerStyle={{ flex: 1, width: "100%", }} title={"Game"} value="Select Game" /> */}
             <Box
               sx={{
                 position: "relative",
@@ -325,7 +320,6 @@ const AddMatchComp = () => {
                   Game Type Required
                 </Typography>
               )}
-              {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Game'} data={["Cricket", "Football", "Tennis", "Football", "Ice", "Hockey", "Volleyball", "Politics", "Basketball", "Table Tennis", "Darts"]} place={1} /> */}
             </Box>
 
             <Box
@@ -370,10 +364,7 @@ const AddMatchComp = () => {
                 setDetail={setDetail}
                 place={5}
               />
-              {/* <DropDownSimple titleStyle={{ marginY: "0px", fontSize: "12px" }} valueContainerStyle={{ border: "0px", borderRadius: "5px" }} dropDownStyle={{ width: "100%", background: "#F2F2F2" }} containerStyle={{ width: "100%" }} title={'Match Name'} data={["India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England", "India vs Pakistan", "Australia vs England"]} place={2} /> */}
             </Box>
-
-            {/* <LabelValueComponent icon={ArrowDownBlack} containerStyle={{ flex: 1,  }} title={"Match Name"} value="Enter Name of the Match..." /> */}
             <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
@@ -568,7 +559,6 @@ const AddMatchComp = () => {
                 }}
               />
             </Box>
-            {/* <Input placeholder="Delhi" containerStyle={containerStyles} titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"City"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={5} /> */}
 
             <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
@@ -762,7 +752,6 @@ const AddMatchComp = () => {
                 }}
               />
             </Box>
-            {/* <Box sx={{ flex: 1,  }} /> */}
           </Box>
         </Box>
         <Box

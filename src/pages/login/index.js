@@ -11,8 +11,8 @@ import {
   Alert,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { eye, logo, mail } from "../../assets";
+import { useLocation, useNavigate } from "react-router-dom";
+import { eye, mail } from "../../assets";
 import {
   Input,
   CustomButton,
@@ -25,21 +25,14 @@ import {
   apiBasePath,
   LoginServerError,
 } from "../../components/helper/constants";
-import OTPInput from "otp-input-react";
 import { setAllRoles, signIn } from "../../newStore/reducers/auth";
-import UseTokenUpdate from "../../useTokenUpdate";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
-import { toast } from "react-toastify";
-import jwtDecode from "jwt-decode";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
-import axios from "axios";
-import { setConfirmAuth } from "../../newStore/reducers/matchDetails";
-import NotificationModal from "../../components/NotificationModal";
 
 export default function Login(props) {
-  let { transPass, axios, role } = setRole();
+  let { axios } = setRole();
   const location = useLocation();
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -62,13 +55,9 @@ export default function Login(props) {
   const [loginError, setLoginError] = useState("");
   const [confirmPop, setConfirmPop] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
-  // useEffect(() => {
-  // }, [error, loginDetail])
 
   useEffect(() => {
     if (!confirmAuth) {
-      // setConfirmPop(false);
-      // alert("pop :" + confirmAuth)
     }
   }, [confirmAuth]);
 
@@ -108,55 +97,6 @@ export default function Login(props) {
     } catch (err) {
       console.log(err.message);
     }
-    setTimeout(async () => {
-      try {
-        var value = await localStorage.getItem("role4");
-        let token = await localStorage.getItem("JWTuser");
-        // let confirmAuth = await localStorage.getItem("confirmAuth");
-        // alert("pop 111:" + confirmAuth)
-        const currentURL = window.location.href;
-        // if (currentURL !== 'http://localhost:3000/' || currentURL !== 'http://159.65.154.97:3000/' || currentURL !== 'http://143.244.138.15:3000/') {
-
-        // start use code start comment
-        // if (value && !confirmAuth) {
-        //   try {
-        //     const config = {
-        //       headers: {
-        //         Authorization: `Bearer ${token}`,
-        //       },
-        //     };
-        //     const response = await axios.get(
-        //       `${apiBasePath}fair-game-wallet/changeAuth`,
-        //       config
-        //     );
-        //     const data = response.data;
-        //     loginToAccountAuth(data?.data?.username, "pass");
-        //     console.log(data);
-        //   } catch (error) {
-        //     // Handle any errors
-        //     console.error("Error fetching data:", error);
-        //   }
-        //   // setConfirmPop(true)
-        //   // user--role4
-        //   // expert---role3
-        //   // wallet---role2
-        //   // admin---role1
-        // } else {
-        //   let checkSessionStorage = sessionStorage.getItem("JWTuser");
-        //   if (checkSessionStorage) {
-        //     navigate("/");
-        //     setConfirmPop(true);
-        //   } else {
-        //     setConfirmPop(false);
-        //   }
-        // }
-        // start use code end comment
-        // }
-        //  else {
-        //   navigate(`/matches`);
-        // }
-      } catch (error) { }
-    });
   }, []);
 
   const useHereHandle = async () => {
@@ -212,15 +152,8 @@ export default function Login(props) {
       // alert("ssss :" + token)
       localStorage.setItem("JWTuser", token);
     }
-    // alert(confirmPop)
-    // if (checkLocalStorage && checkSessionStorage && confirmPop) {
-    //   navigate(`/matches`);
-    // }
   }, [location.pathname, localStorage]);
 
-  // const getUseEffect = async () => {
-  //   alert(checkLocalStorage)
-  // }
   async function getToken(val) {
     try {
       const token = await sessionStorage.getItem(val);
@@ -253,8 +186,6 @@ export default function Login(props) {
   };
 
   async function loginToAccountAuth(user, pass) {
-    // changeErrors()
-    // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
       if (user === "" && pass === "") {
         // toast.warning("Username and password required");
@@ -263,13 +194,6 @@ export default function Login(props) {
         return false;
       } else {
         setLoading(true);
-        // const token = await localStorage.getItem("role4");
-
-        // if (["role4"].includes(token)) {
-        //   toast.warn("Please logout from previous session");
-        //   setLoading(false);
-        //   return false;
-        // }
         let { data } = await axios.post(`/auth/login`, {
           username: user,
           password: pass,
@@ -286,10 +210,7 @@ export default function Login(props) {
           }
           if (roleDetail) data.data.role = roleDetail;
           if (data.message === "User login successfully.") {
-            // getUserDetail();
             removeSocket();
-            // dispatch(setActiveRole(foundRoles.data));
-            // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
             setRole(data.data.access_token);
             dispatch(signIn(data.data));
             setLoading(false);
@@ -325,8 +246,6 @@ export default function Login(props) {
   }
 
   async function loginToAccount() {
-    // changeErrors()
-    // if (!error[1].val && !error[2].val && loginDetail[1].val !== "" && loginDetail[2].val !== "")
     try {
       if (loginDetail[1].val === "" && loginDetail[2].val === "") {
         // toast.warning("Username and password required");
@@ -336,12 +255,6 @@ export default function Login(props) {
       } else {
         setLoading(true);
         const token = await localStorage.getItem("role4");
-
-        // if (["role4"].includes(token)) {
-        //   toast.warn("Please logout from previous session");
-        //   setLoading(false);
-        //   return false;
-        // }
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
@@ -360,15 +273,11 @@ export default function Login(props) {
           if (data.message === "User login successfully.") {
             // getUserDetail();
             removeSocket();
-            // dispatch(setActiveRole(foundRoles.data));
-            // dispatch(stateActions.setUser(data.data.role.roleName, data.data.access_token, data.data.isTransPasswordCreated));
             setRole(data.data.access_token);
             dispatch(signIn(data.data));
             setLoading(false);
             if (["user"].includes(data.data.role.roleName)) {
-              // localStorage.setItem("confirmAuth", true);
               localStorage.setItem("JWTuser", data.data.access_token);
-              // dispatch(setConfirmAuth(false));
               setGlobalStore((prev) => ({
                 ...prev,
                 userJWT: data.data.access_token,
@@ -398,12 +307,6 @@ export default function Login(props) {
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
-      {/* <NotificationModal
-        open={{ value: true, msg: "Error", loading: false, type: false }}
-        handleClose={() =>
-          setCanceled({ value: false, msg: "", loading: false, type: false })
-        }
-      /> */}
       <Box
         style={{
           height: "100vh",

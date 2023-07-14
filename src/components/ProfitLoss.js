@@ -4,7 +4,6 @@ import { useState } from "react";
 import StyledImage from "./StyledImage";
 import { ArrowDown, Cricket } from "../assets/index";
 import { ARROWDOWN, ARROWUP } from "../expert/assets";
-// import AllRateSeperate from "./AllRateSeperate";
 import BetHistory from "./BetHistory";
 import SessionBetSeperate from "./sessionBetSeperate";
 import SessionBetHistory from "./SessionBetHistory";
@@ -18,7 +17,6 @@ const ProfitLossComponent = ({
   handleReport,
   handleBet,
 }) => {
-  // alert(JSON.stringify(eventData))
   const [visible, setVisible] = useState(false);
   const [show, setShow] = useState(false);
   const [selectedId, setSelectedId] = useState("");
@@ -31,8 +29,6 @@ const ProfitLossComponent = ({
   };
 
   const getBetReport = (id) => {
-    // if (!show) {
-    // }
     if (selectedId == id) {
       handleBet(id);
       setShow(false);
@@ -49,9 +45,6 @@ const ProfitLossComponent = ({
       <Box
         key={index}
         onClick={() => getHandleReport(item?.eventType)}
-        // onClick={() => {
-        //     setVisible(!visible)
-        // }}
         sx={{
           width: "100%",
           height: { laptop: "60px", mobile: "50px" },
@@ -114,25 +107,7 @@ const ProfitLossComponent = ({
             paddingLeft: "10px",
           }}
         >
-         <Box  sx={{ display: "flex", alignItems: "center" ,justifyContent:"space-between" ,width:"100%"}}>
-         <Typography
-            sx={{
-              fontSize: { laptop: "16px", mobile: "12px" },
-              fontWeight: "700",
-              color: "white",
-            }}
-          >
-            {item?.totalLoss > 0 ? "Profit" : "Loss"}
-          </Typography>
-          <StyledImage
-              src={item?.totalLoss > 0 ? ARROWUP : ARROWDOWN}
-              sx={{
-                width: { laptop: "25px", mobile: "15px" },
-                height: { laptop: "12px", mobile: "8px" },
-              }}
-            />
-         </Box>
-          <Box sx={{ display: "flex", alignItems: "center" ,justifyContent:"space-between" ,width:"100%"}}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
             <Typography
               sx={{
                 fontSize: { laptop: "16px", mobile: "12px" },
@@ -140,12 +115,30 @@ const ProfitLossComponent = ({
                 color: "white",
               }}
             >
-                {Number(item.totalLoss) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{Number(item.totalLoss).toFixed(2)}</>
-              : Number(item.totalLoss).toFixed(2)}
+              {item?.totalLoss > 0 ? "Profit" : "Loss"}
+            </Typography>
+            <StyledImage
+              src={item?.totalLoss > 0 ? ARROWUP : ARROWDOWN}
+              sx={{
+                width: { laptop: "25px", mobile: "15px" },
+                height: { laptop: "12px", mobile: "8px" },
+              }}
+            />
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <Typography
+              sx={{
+                fontSize: { laptop: "16px", mobile: "12px" },
+                fontWeight: "700",
+                color: "white",
+              }}
+            >
+              {Number(item.totalLoss) >= 0
+                ? <><span style={{ visibility: "hidden" }}>-</span>{Number(item.totalLoss).toFixed(2)}</>
+                : Number(item.totalLoss).toFixed(2)}
               {/* {Number(item?.totalLoss).toFixed(2)} */}
             </Typography>
-           
+
           </Box>
         </Box>
         <Box
@@ -297,17 +290,17 @@ const ProfitLossComponent = ({
               paddingLeft: "10px",
             }}
           >
-            <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center",width:"100%"}}>
-            <Typography
-              sx={{
-                fontSize: { laptop: "12px", mobile: "8px" },
-                fontWeight: "500",
-                color: "white",
-              }}
-            >
-              Rate Profit/Loss
-            </Typography>
-            <StyledImage
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+              <Typography
+                sx={{
+                  fontSize: { laptop: "12px", mobile: "8px" },
+                  fontWeight: "500",
+                  color: "white",
+                }}
+              >
+                Rate Profit/Loss
+              </Typography>
+              <StyledImage
                 src={item.rateProfitLoss > 0 ? ARROWUP : ARROWDOWN}
                 sx={{
                   width: { laptop: "25px", mobile: "15px" },
@@ -320,11 +313,10 @@ const ProfitLossComponent = ({
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
               >
                 {Number(item.rateProfitLoss) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{Number(item.rateProfitLoss).toFixed(2)}</>
-              : Number(item.rateProfitLoss).toFixed(2)}
-                {/* {Number(item.rateProfitLoss).toFixed(2)} */}
+                  ? <><span style={{ visibility: "hidden" }}>-</span>{Number(item.rateProfitLoss).toFixed(2)}</>
+                  : Number(item.rateProfitLoss).toFixed(2)}
               </Typography>
-             
+
             </Box>
           </Box>
           <Box
@@ -340,17 +332,17 @@ const ProfitLossComponent = ({
               paddingLeft: "10px",
             }}
           >
-          <Box sx={{display:"flex",justifyContent:"space-between",alignItems:"center",width:"100%"}}>
-            <Typography
-              sx={{
-                fontSize: { laptop: "12px", mobile: "8px" },
-                fontWeight: "500",
-                color: "white",
-              }}
-            >
-              Session Profit/Loss
-            </Typography>
-            <StyledImage
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+              <Typography
+                sx={{
+                  fontSize: { laptop: "12px", mobile: "8px" },
+                  fontWeight: "500",
+                  color: "white",
+                }}
+              >
+                Session Profit/Loss
+              </Typography>
+              <StyledImage
                 src={item.sessionProfitLoss > 0 ? ARROWUP : ARROWDOWN}
                 sx={{
                   width: { laptop: "25px", mobile: "15px" },
@@ -362,12 +354,12 @@ const ProfitLossComponent = ({
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
               >
-                      {Number(item.sessionProfitLoss) >= 0
-              ? <><span style={{visibility:"hidden"}}>-</span>{Number(item.sessionProfitLoss).toFixed(2)}</>
-              : Number(item.sessionProfitLoss).toFixed(2)}
+                {Number(item.sessionProfitLoss) >= 0
+                  ? <><span style={{ visibility: "hidden" }}>-</span>{Number(item.sessionProfitLoss).toFixed(2)}</>
+                  : Number(item.sessionProfitLoss).toFixed(2)}
                 {/* {Number(item.sessionProfitLoss).toFixed(2)} */}
               </Typography>
-              
+
             </Box>
           </Box>
         </Box>
@@ -407,13 +399,6 @@ const ProfitLossComponent = ({
 
           return <RowComponent key={index} item={item} index={index + 1} />;
         })}
-      {/* {
-                visible && ["", "", "", ""].map((i, k) => {
-                    return (
-                        <RowComponent index={k + 1} />
-                    )
-                })
-            } */}
     </Box>
   );
 };

@@ -44,12 +44,11 @@ const ShowComponent = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              background:"white",
+              background: "white",
             },
             valueContainerStyle,
           ]}
         >
-          {/* <Input containerStyle={containerStyles} placeholder="1,000,000,000" titleStyle={titleStyles} inputStyle={imputStyle} inputContainerStyle={inputContainerStyle} title={"Credit Reference"} setDetail={setDetail} Detail={Detail} setError={setError} error={error} place={8} type={"Number"} /> */}
           <Input
             placeholder={`${value}`}
             value={DetailError.Detail[place].val}
@@ -169,7 +168,7 @@ const ShowComponent = ({
             valueContainerStyle,
           ]}
         >
-          <Typography sx={[ valueStyle ,imputStyle]}>
+          <Typography sx={[valueStyle, imputStyle]}>
             {value}
           </Typography>
           {icon && (

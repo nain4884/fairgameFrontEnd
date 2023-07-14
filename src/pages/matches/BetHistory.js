@@ -8,7 +8,6 @@ import { setRole } from "../../newStore";
 import AllRateSeperate from "../../components/AllRateSeperate";
 import SessionBetSeperate from "../../components/sessionBetSeperate";
 import { Background } from "../../components";
-import EventListing from "../../components/EventListing";
 import CustomLoader from "../../components/helper/CustomLoader";
 
 const BetHistory = ({ selected, visible }) => {
@@ -17,7 +16,6 @@ const BetHistory = ({ selected, visible }) => {
   const decodedTokenUser = userToken !== null && jwtDecode(userToken);
   const [allBets, SetAllBets] = useState([]);
   const [count, setCount] = useState(0);
-  // console.log(decodedTokenUser.sub)
   const userID = decodedTokenUser.sub;
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
@@ -27,7 +25,6 @@ const BetHistory = ({ selected, visible }) => {
 
   function callPage(val) {
     dispatch(setallbetsPage(parseInt(val)));
-    // setCurrentPage(parseInt(val * pageLimit));
     setCurrentPage(parseInt(val));
     setCurrenLimit(parseInt(val));
   }
@@ -36,9 +33,6 @@ const BetHistory = ({ selected, visible }) => {
     let { axios } = setRole();
     const payload = {
       userId: userId,
-      // limit: pageLimit,
-      // // skip: 0 ,
-      // skip: currentPage * pageLimit,
     };
     try {
       setLoading(true);

@@ -90,22 +90,6 @@ const SessionMarketBox = ({
             return prev;
           });
         }
-        // setLocalState(() => {
-        //   const updatedBettings = currentMatch?.bettings.map(
-        //     (betting, index) => {
-        //       if (betting.selectionId === data?.data?.selectionId) {
-        //         return (betting[index] = data?.data);
-        //       } else if (betting.id === data?.data?.id) {
-        //         return (betting[index] = data?.data);
-        //       }
-        //       return betting;
-        //     }
-        //   );
-        //   return {
-        //     ...currentMatch,
-        //     bettings: updatedBettings,
-        //   };
-        // });
       }
     } catch (err) {
       toast.error(err.response.data.message);
@@ -214,30 +198,6 @@ const SessionMarketBox = ({
             />
           )}
         </Box>
-
-        {/* {visible && (
-          <Box
-            sx={{
-              position: "absolute",
-              zIndex: 105,
-              top: "100%",
-              right: "0vh",
-            }}
-          >
-            <SessionResultModal
-              newData={newData}
-              visible={visible}
-              setIObtes={setIObtes}
-              setLocalState={setLocalState}
-              currentMatch={currentMatch}
-              setLive={setLive}
-              updateSessionData={updateSessionData}
-              onClick={() => {
-                setVisible(false);
-              }}
-            />
-          </Box>
-        )} */}
         {visible && (
           <Box
             sx={{
@@ -329,15 +289,6 @@ const SessionMarketBox = ({
               lock={newData?.suspended === "suspended"}
               color={"#B3E0FF"}
             />
-
-            {/* {
-                            index != 1 && index !== 2 &&
-                            <Box sx={{
-                                width: '100%', marginLeft: '-2px', display: 'flex', position: 'absolute', height: '100%', background: 'rgba(0,0,0,1)', justifyContent: 'center ', alignItems: 'center'
-                            }}>
-                                <img src={BallStart} style={{ width: '60px', height: '19px' }} />
-                            </Box>
-                        } */}
           </Box>
         )}
         {!hideTotalBet && (

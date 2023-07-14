@@ -1,37 +1,26 @@
 import {
-  Input,
-  Menu,
-  Popover,
-  TextField,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { memo, useEffect, useRef, useState } from "react";
-import { ArrowDown, CANCEL, CancelDark, HourGlass } from "../assets";
+import { CancelDark } from "../assets";
 import "../components/index.css";
 import StyledImage from "./StyledImage";
 import { useSelector } from "react-redux";
-import Lottie from "lottie-react";
 import BoxInput from "./BoxInput";
 import { toast } from "react-toastify";
 import { setRole } from "../newStore";
-import SmallCustomLoader from "./helper/SmallCustomLoader";
 import NumberData from "./NumberData";
 import TeamsOdssData from "./TeamsOdssData";
 import PlaceBetCustomButton from "./PlaceBetCustomButton";
 import PlaceBetMoneyBox from "./PlaceBetMoneyBox";
 const PlaceBet = ({
-  open,
-  refs,
   handleClose,
   currentMatch,
   season,
-  betPlaceLoading,
   onSubmit,
-  onCancel,
-  back,
   isSessionYes,
   isBack,
   type,
@@ -42,8 +31,6 @@ const PlaceBet = ({
   selectedValue,
   mainData,
   betType,
-  rates,
-  fromOdds,
   po,
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
@@ -167,34 +154,8 @@ const PlaceBet = ({
           overflow: "hidden",
 
           width: { mobile: "98vw", tablet: "60vw", laptop: "40%" },
-          // boxShadow:
-          //   "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
           boxShadow: "rgba(0, 0, 0, 0.56) 0px 22px 70px 4px",
-          // left: isSessionYes?"-30%": "95%"
         },
-        // typeOfBet == "MATCH ODDS" || typeOfBet == "BOOKMAKER ?
-        // matchesMobile
-        //   ? // ? { position: "absolute", right: back ? "-16.5vw" : "0vw" }
-        //     // : { position: "absolute", right: back ? "-16.5vw" : "0vw" },
-        //     { position: "absolute", right: back ? "0vw" : "0vw" }
-        //   : typeOfBet == "Session"
-        //   ? {
-        //       position: "absolute",
-        //       right: back ? "auto" : "0vw",
-        //       left: {
-        //         mobile: isSessionYes ? "-30%" : "95%",
-        //         tablet: isSessionYes ? "-30%" : "95%",
-        //         laptop: isSessionYes ? "-112%" : "34%",
-        //       },
-        //     }
-        //   : {
-        //       position: "absolute",
-        //       right: back
-        //         ? typeOfBet != "Session"
-        //           ? "1.5vw"
-        //           : "-16.5vw"
-        //         : "0vw",
-        //     },
       ]}
     >
       <Box sx={{ background: "#F8C851", width: "100%", overflow: "hidden" }}>
@@ -294,8 +255,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                ? "Lay"
-                : "Back"
+                  ? "Lay"
+                  : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}
@@ -363,14 +324,6 @@ const PlaceBet = ({
             title={"Reset"}
             color={"#FF4949"}
           />
-          {/* <CustomButton
-            onClick={() => {
-              handleClose();
-              onSubmit(SubmitPayloadForPlaceBet(betOn, typeOfBet));
-            }}
-            title={"Submit"}
-            color={"#262626"}
-          /> */}
           <button
             // style={classes.CustomButton_Btn("#262626")}
             style={{
@@ -390,30 +343,6 @@ const PlaceBet = ({
           </button>
         </Box>
       </Box>
-      {/* {betPlaceLoading && (
-        <Box
-          sx={{
-            position: "absolute",
-            height: "100%",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "rgba(0, 0, 0, .5)",
-          }}
-        >
-          <Lottie
-            animationData={HourGlass}
-            style={{
-              display: "flex",
-              alignSelf: "center",
-              width: "50px",
-              height: "50px",
-            }}
-          />
-          <SmallCustomLoader />
-        </Box>
-      )} */}
     </Box>
   );
 };

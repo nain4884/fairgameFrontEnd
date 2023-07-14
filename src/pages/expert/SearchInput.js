@@ -8,13 +8,10 @@ import { SEARCH } from "../../admin/assets";
 import { Search } from "../../assets";
 import { StyledImage } from "../../components";
 import { setRole } from "../../newStore";
-// import InboxIcon from '@mui/icons-material/Inbox';
-// import DraftsIcon from '@mui/icons-material/Drafts';
 
 const SearchInput = ({
   placeholder,
   inputContainerStyle,
-  setData,
   showTextInput,
   header,
   setShowSearch,
@@ -22,14 +19,11 @@ const SearchInput = ({
   width,
   searchContainerStyle,
   onChange,
-  currentPage,
-  pageLimit,
   getAllMatch
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [searchValue, setSearchValue] = useState("");
-  const { axios } = setRole();
 
   const handleInputChange = debounce(async (event) => {
     const value = event.target.value;
@@ -38,9 +32,8 @@ const SearchInput = ({
       onChange(value);
     }
     try {
-    //   if (value !== "") {
       getAllMatch(value)
-     
+
     } catch (e) {
       console.log(e);
     }

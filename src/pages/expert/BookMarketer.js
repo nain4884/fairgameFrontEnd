@@ -2,32 +2,26 @@ import React from "react";
 import { memo } from "react";
 import Divider from "../../components/helper/Divider";
 import BoxComponent from "./BoxComponent";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import SmallBox from "./SmallBox";
 import Stop from "./Stop";
 import { useEffect } from "react";
 import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import ResultComponent from "../../components/ResultComponent";
-import Result from "./Result";
 import { setRole } from "../../newStore";
 import { toast } from "react-toastify";
-import {  ARROWUP } from "../../assets";
+import { ARROWUP } from "../../assets";
 
 const BookMarketer = ({
   currentMatch,
   socket,
   liveData,
   matchOdds,
-  setCurrentMatch,
 }) => {
-  // const { bookmakerLive } = useSelector((state) => state?.matchDetails);
   const theme = useTheme();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [newMatchOdds, setNewMatchOdds] = useState(matchOdds);
   const [live, setLive] = useState(currentMatch?.bookMakerRateLive);
-  const [visible, setVisible] = useState(false);
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [visibleImg, setVisibleImg] = useState(true);
   const teamRates =
@@ -43,7 +37,6 @@ const BookMarketer = ({
     }
   }, [matchOdds]);
   const activateMatchOdds = async (val, id) => {
-    // alert(5555)
     try {
       const { data } = await axios.post("/betting/addBetting", {
         match_id: currentMatch?.id,
@@ -51,33 +44,6 @@ const BookMarketer = ({
         matchType: currentMatch?.gameType,
         sessionBet: false,
       });
-      // setNewMatchOdds(data?.data);
-      // if (data?.data?.id && id !== "") {
-      //   const updatedBettings = currentMatch?.bettings?.map((betting) => {
-      //     if (betting?.id === data?.data?.id) {
-      //       // If the betting's ID matches the given `id`, update the `betStatus` value
-      //       return {
-      //         ...val,
-      //       };
-      //     }
-      //     // Otherwise, return the original betting object
-      //     return betting;
-      //   });
-      //   setCurrentMatch((prevState) => ({
-      //     ...prevState,
-      //     bettings: updatedBettings,
-      //   }));
-      // } else {
-      //   const updatedBettings = currentMatch?.bettings?.map((betting) => {
-      //     return {
-      //       ...val,
-      //     };
-      //   });
-      //   setCurrentMatch((prevState) => ({
-      //     ...prevState,
-      //     bettings: updatedBettings,
-      //   }));
-      // }
     } catch (err) {
       toast.error(err?.message);
       console.log(err?.response?.data?.message, "err");
@@ -206,48 +172,23 @@ const BookMarketer = ({
             />
           )}
           <img
-              onClick={() => {
-                setVisibleImg(!visibleImg);
-              }}
-              src={ARROWUP}
-              style={{
-                transform: visibleImg ? "rotate(180deg)" : "rotate(0deg)",
-                width: "15px",
-                height: "15px",
-                marginRight: "5px",
-                marginLeft: "5px",
-                cursor: 'pointer'
-              }}
-            />
+            onClick={() => {
+              setVisibleImg(!visibleImg);
+            }}
+            src={ARROWUP}
+            style={{
+              transform: visibleImg ? "rotate(180deg)" : "rotate(0deg)",
+              width: "15px",
+              height: "15px",
+              marginRight: "5px",
+              marginLeft: "5px",
+              cursor: 'pointer'
+            }}
+          />
         </Box>
       </Box>
       <Divider />
-      {/* <Box
-        sx={{
-          position: "absolute",
-          zIndex: 999,
-          top: "31%",
-          right: "100px",
-        }}
-      >
-        {visible && (
-          <ResultComponent
-            betId={
-              currentMatch?.bettings?.length > 0 &&
-              currentMatch?.bettings?.filter((v) => v.sessionBet === false)
-            }
-            matchId={currentMatch?.matchId}
-            teamA={currentMatch?.teamA}
-            teamB={currentMatch?.teamB}
-            tie={"Tie"}
-            draw={"Draw"}
-            onClick={() => {
-              setVisible(false);
-            }}
-          />
-        )}
-      </Box> */}
-       {visibleImg && (
+      {visibleImg && (
         <>
           <Box
             sx={{
@@ -322,57 +263,57 @@ const BookMarketer = ({
               </Box>
             </Box>
           </Box>
-        
-        <Box sx={{ position: "relative" }}>
-          <BoxComponent
-            teamRates={teamRates?.teamA}
-            teamImage={currentMatch?.teamA_Image}
-            livestatus={liveData?.status === "SUSPENDED" ? true : false}
-            data={liveData?.runners?.length > 0 ? liveData?.runners[0] : []}
-            lock={liveData?.runners?.length > 0 ? false : true}
-            name={currentMatch?.teamA}
-          />
-          <Divider />
-          <BoxComponent
-            livestatus={liveData?.status === "SUSPENDED" ? true : false}
-            teamRates={teamRates?.teamB}
-            teamImage={currentMatch?.teamB_Image}
-            lock={liveData?.runners?.length > 0 ? false : true}
-            name={currentMatch?.teamB}
-            data={liveData?.runners?.length > 0 ? liveData?.runners[1] : []}
-            align="end"
-          />
-          {currentMatch?.teamC && (
-            <>
-              <Divider />
-              <BoxComponent
-                color={"#FF4D4D"}
-                livestatus={liveData?.status === "SUSPENDED" ? true : false}
-                teamRates={teamRates?.teamC}
-                teamImage={null}
-                lock={liveData?.runners?.length > 0 ? false : true}
-                name={currentMatch?.teamC}
-                data={liveData?.runners?.length > 0 ? liveData?.runners[2] : []}
-                align="end"
-              />
-            </>
-          )}
 
-          <Divider />
-          {!live && (
-            <Box
-              sx={{
-                width: "100%",
-                position: "absolute",
-                height: "100%",
-                bottom: 0,
-                background: "rgba(0,0,0,0.5)",
-              }}
-            ></Box>
-          )}
-        </Box>
+          <Box sx={{ position: "relative" }}>
+            <BoxComponent
+              teamRates={teamRates?.teamA}
+              teamImage={currentMatch?.teamA_Image}
+              livestatus={liveData?.status === "SUSPENDED" ? true : false}
+              data={liveData?.runners?.length > 0 ? liveData?.runners[0] : []}
+              lock={liveData?.runners?.length > 0 ? false : true}
+              name={currentMatch?.teamA}
+            />
+            <Divider />
+            <BoxComponent
+              livestatus={liveData?.status === "SUSPENDED" ? true : false}
+              teamRates={teamRates?.teamB}
+              teamImage={currentMatch?.teamB_Image}
+              lock={liveData?.runners?.length > 0 ? false : true}
+              name={currentMatch?.teamB}
+              data={liveData?.runners?.length > 0 ? liveData?.runners[1] : []}
+              align="end"
+            />
+            {currentMatch?.teamC && (
+              <>
+                <Divider />
+                <BoxComponent
+                  color={"#FF4D4D"}
+                  livestatus={liveData?.status === "SUSPENDED" ? true : false}
+                  teamRates={teamRates?.teamC}
+                  teamImage={null}
+                  lock={liveData?.runners?.length > 0 ? false : true}
+                  name={currentMatch?.teamC}
+                  data={liveData?.runners?.length > 0 ? liveData?.runners[2] : []}
+                  align="end"
+                />
+              </>
+            )}
+
+            <Divider />
+            {!live && (
+              <Box
+                sx={{
+                  width: "100%",
+                  position: "absolute",
+                  height: "100%",
+                  bottom: 0,
+                  background: "rgba(0,0,0,0.5)",
+                }}
+              ></Box>
+            )}
+          </Box>
         </>
-        )}
+      )}
     </Box>
   );
 };

@@ -53,9 +53,6 @@ const LiveMatchComponent = ({ }) => {
                 </Box>
 
             </Box>}
-            {/* {visible && <Box sx={{ width: '99.2%', height: '63%', top: 40, left: '2px', background: 'rgba(0,0,0,0.5)', position: 'absolute' }} >
-
-            </Box>} */}
         </Box >
     )
 }

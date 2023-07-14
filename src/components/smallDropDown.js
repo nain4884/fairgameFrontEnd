@@ -3,10 +3,9 @@ import { useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
 import { useDispatch, useSelector } from "react-redux";
 
-const SmallDropDown = ({ handleChange ,getLimitEntries}) => {
-  const { currentStatementPage } = useSelector((state) => state?.auth);
-//   alert(currentStatementPage)
-  const dispatch = useDispatch()
+const SmallDropDown = ({ handleChange, getLimitEntries }) => {
+    const { currentStatementPage } = useSelector((state) => state?.auth);
+    const dispatch = useDispatch()
     const [value, setValue] = useState(15)
     const [open, setOpen] = useState(false)
     const Divider = () => {
@@ -35,7 +34,7 @@ const SmallDropDown = ({ handleChange ,getLimitEntries}) => {
             </Box>
             {open && <Box sx={{ display: 'flex', flexDirection: 'column', background: 'white', width: '47px', alignSelf: 'center', marginX: '5px', borderRadius: '2px', marginTop: '2px', position: 'absolute', zIndex: 22 }} >
 
-                {['1', '2', '3', '4', '5','6','7','8','9','10',"11","12","13","14", "15"].map((i) => {
+                {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', "11", "12", "13", "14", "15"].map((i) => {
                     return (<Item item={i} getLimitEntries={getLimitEntries} />)
                 })}
             </Box>}

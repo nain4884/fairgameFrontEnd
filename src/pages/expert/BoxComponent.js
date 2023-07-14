@@ -2,7 +2,6 @@ import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import SeperateBox from "./SeperateBox";
 import MoneyBox from "./MoneyBox";
-import { INDIA, PAKISTAN } from "../../assets";
 import { useTheme } from "@emotion/react";
 import { formatNumber } from "../../components/helper/helper";
 import { apiBasePath } from "../../components/helper/constants";
@@ -11,7 +10,6 @@ const BoxComponent = ({
   data,
   teamImage,
   currentMatch,
-  color,
   align,
   lock,
   teamRates,
@@ -49,22 +47,6 @@ const BoxComponent = ({
             alignItems: "center",
           }}
         >
-          {/* {name != "DRAW" ? (
-            <></>
-          ) : (
-        <img
-              src={`${apiBasePath}/${teamImage}`}
-              style={{
-                width: "22px",
-                height: "25px",
-                marginLeft: "10px",
-                backgroundSize: "contains",
-              }}
-            />
-            <Box
-              sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
-            ></Box>
-          )} */}
           {teamImage !== null && (
             <>
               <img
@@ -104,7 +86,6 @@ const BoxComponent = ({
             display: "flex",
           }}
         >
-          {/* <img src={BallStart} style={{ width: '113px', height: "32px" }} /> */}
           <h4 style={{ textTransform: "uppercase", color: "#FFF", fontWeight: '400', fontSize: { mobile: "12px", laptop: "22px" }, }}>
             {livestatus ? "SUSPENDED" : status}
           </h4>

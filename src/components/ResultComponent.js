@@ -78,9 +78,6 @@ const ResultComponent = ({
             borderRadius: "10px 10px 0 0",
             background: "#ff4d4d"
           },
-          // (theme) => ({
-          //   backgroundImage: theme.palette.primary.headerGradient,
-          // }),
         ]}
       >
         <Typography
@@ -97,7 +94,7 @@ const ResultComponent = ({
           style={{ width: "25px", height: "25px", cursor: "pointer" }}
         />
       </Box>
-      <Box sx={{ padding: 0,}}>
+      <Box sx={{ padding: 0, }}>
         <Box
           sx={{
             width: "100%",
@@ -109,7 +106,7 @@ const ResultComponent = ({
             justifyContent: "center",
             px: "10px",
             py: "5px"
-           
+
           }}
         >
 
@@ -160,7 +157,7 @@ const ResultComponent = ({
         >
           <MatchOddsResultCustomButton
             color={"#FF4D4D"}
-           
+
             loading={loading}
             id="UD"
             title={"Un Declare"}

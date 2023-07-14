@@ -129,7 +129,6 @@ const MenutItemsComponent = ({
             }}
             sx={{ marginTop: "5px", display: "flex", alignItems: "center" }}
           >
-            {/* <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Create Session" : "Add Bookmaker"}</Typography> */}
             <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
               Create Session
             </Typography>
@@ -147,7 +146,6 @@ const MenutItemsComponent = ({
             }}
             sx={{ marginTop: "5px", display: "flex", alignItems: "center" }}
           >
-            {/* <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>{activeUser == '1' ? "Create Session" : "Add Bookmaker"}</Typography> */}
             <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
               Add Bookmaker
             </Typography>

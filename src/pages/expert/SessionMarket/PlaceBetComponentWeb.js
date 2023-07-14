@@ -7,7 +7,6 @@ import { UD } from "../../../assets";
 
 const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
   const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
-  const [anchorEl, setAnchorEl] = useState(null);
 
   const [show, setShow] = useState(false);
   const innerRef = useOuterClick((ev) => {
@@ -76,10 +75,6 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
           alignItems: "center",
           // top: "4px",
           top: '2px',
-          // '@media screen and (max-width: 1300px)': {
-          //   width: '9vw',
-          // },
-          // width: { laptop: "7vw" },
           width: boxWidth,
           borderRadius: "5px",
           height: "26px",

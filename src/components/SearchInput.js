@@ -6,27 +6,11 @@ import { Search } from "../assets";
 import StyledImage from "./StyledImage";
 
 import * as React from "react";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import { setRole } from "../newStore";
-import { useDispatch, useSelector } from "react-redux";
-import { setPage, setUserData } from "../newStore/reducers/auth";
-import { pageLimit } from "./helper/constants";
 import { debounce } from "lodash";
-// import InboxIcon from '@mui/icons-material/Inbox';
-// import DraftsIcon from '@mui/icons-material/Drafts';
 
 const SearchInput = ({
   placeholder,
   inputContainerStyle,
-  setData,
   showTextInput,
   header,
   setShowSearch,
@@ -34,16 +18,11 @@ const SearchInput = ({
   width,
   searchContainerStyle,
   onChange,
-  setPageCount,
   getListOfUser,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [searchValue, setSearchValue] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const { axios } = setRole();
-  const { userData } = useSelector((state) => state?.auth);
-  const dispatch = useDispatch();
 
   const handleInputChange = debounce(async (event) => {
     const value = event.target.value;
@@ -140,9 +119,6 @@ const SearchInput = ({
           />
         )}
         <Box
-          // onClick={() => {
-          //   getListOfUser(searchValue);
-          // }}
           sx={[
             {
               height: "30px",

@@ -186,9 +186,6 @@ const Row = ({ index, containerStyle, data }) => {
             />
           )}
         </Box>
-        {/* <CusButton onClick={() => {
-                      navigateToAddBet()
-                  }} title={"Add Bet"} /> */}
         <CusButton
           loading={loading.id === data.id}
           onClick={() => {

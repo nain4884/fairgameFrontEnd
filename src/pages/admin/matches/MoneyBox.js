@@ -6,15 +6,11 @@ const MoneyBox = ({ color, rates }) => {
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"))
     return (
         <Box sx={{
-            // width: '80px',
-            // borderRadius: "5px", justifyContent: 'center', position: matchesMobile ? 'absolute' : 'relative', right: matchesMobile ? '-90%' : '20px', alignItems: 'center', display: 'flex', height: '25px', borderRadius: '7px'
             width: "85px",
             marginRight: { mobile: "5px", laptop: "15px" },
             border: "1px solid #2626264D",
             borderRadius: "5px",
             justifyContent: "center",
-            // position: matchesMobile ? "relative" : "relative",
-            // right: matchesMobile ? "7px" : "7px",
             alignItems: "center",
             display: "flex",
             height: "25px",

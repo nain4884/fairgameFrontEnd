@@ -13,7 +13,6 @@ const MatchListComp = () => {
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
-  // const totalPages = Math.ceil(allMatch?.length / constants.customPageLimit);
 
   const { axios } = setRole();
   const getAllMatch = async (title) => {
@@ -23,8 +22,7 @@ const MatchListComp = () => {
       }
 
       let response = await axios.get(
-        `/game-match/getAllMatch?${
-          title ? `title=${title}` : ""
+        `/game-match/getAllMatch?${title ? `title=${title}` : ""
         }&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
       setAllMatch(response.data[0]);
@@ -32,7 +30,7 @@ const MatchListComp = () => {
       setPageCount(
         Math.ceil(
           parseInt(response?.data[1] ? response.data[1] : 1) /
-            constants.customPageLimit
+          constants.customPageLimit
         )
       );
     } catch (e) {

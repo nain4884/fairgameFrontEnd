@@ -7,7 +7,6 @@ import StyledImage from "./StyledImage";
 import { useSelector } from "react-redux";
 import { formatNumber } from "./helper/helper";
 const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
-  //  {console.warn("allBetsData qq:",allBetsData)}
   return (
     <Box
       sx={{
@@ -22,7 +21,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         sx={[
           {
             width: "100%",
-            height: {mobile: "37px", laptop: "42px"},
+            height: { mobile: "37px", laptop: "42px" },
             justifyContent: "space-between",
             alignItems: "center",
             paddingLeft: "10px",
@@ -31,13 +30,10 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
             display: "flex",
             background: "#F8C851"
           },
-          // (theme) => ({
-          //   backgroundImage: `${theme.palette.primary.headerGradient}`,
-          // }),
         ]}
       >
         <Typography
-          sx={{ fontSize: {mobile: "12px", laptop: "16px"}, color: "black", fontWeight: "700" }}
+          sx={{ fontSize: { mobile: "12px", laptop: "16px" }, color: "black", fontWeight: "700" }}
         >
           Session Bets
         </Typography>
@@ -72,7 +68,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
             margin: { mobile: "0.5px", laptop: "0.5px" },
             // my: "0px !important",
             height: "30px",
-            width: {mobile: "5%", laptop: "4%"},
+            width: { mobile: "5%", laptop: "4%" },
             display: "flex",
             background: "black",
             justifyContent: "center",
@@ -134,10 +130,10 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
               >
                 <Box
                   sx={{
-                    height: {mobile: "35px", laptop: "40px"},
+                    height: { mobile: "35px", laptop: "40px" },
                     margin: { mobile: "0.5px", laptop: "0.5px" },
                     // mb: 0,
-                    width: {mobile: "5%", laptop: "4%"},
+                    width: { mobile: "5%", laptop: "4%" },
                     display: "flex",
                     background: "black",
                     justifyContent: "center",
@@ -173,7 +169,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                 {profit && !i?.deleted_reason && (
                   <Box
                     sx={{
-                      height: {mobile: "35px", laptop: "40px"},
+                      height: { mobile: "35px", laptop: "40px" },
                       width: "20%",
                       margin: { mobile: "0.5px", laptop: "1px" },
                       mb: 0,
@@ -213,7 +209,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
                 {profit && i?.deleted_reason && (
                   <Box
                     sx={{
-                      height: {mobile: "35px", laptop: "40px"},
+                      height: { mobile: "35px", laptop: "40px" },
                       width: "20%",
                       margin: { mobile: "1px", laptop: "1px" },
                       display: "flex",
@@ -265,15 +261,6 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
     return timeString;
   };
   const getColor = () => {
-    // if (header) {
-    //     return "black"
-    // }
-    // else if (data?.type == "Yes") {
-    //     return "#B3E0FF"
-    // }
-    // else {
-    //     return "#FF9292"
-    // }
     if (header) {
       return "black";
     } else if (data?.betType === "back" || data?.betType == "yes") {
@@ -288,7 +275,7 @@ const RowComponent = ({ header, data, boxWidthHeader }) => {
     <Box
       sx={{
         width: "81%",
-        height: header ? "30px" : {mobile: "35px", laptop: "40px"},
+        height: header ? "30px" : { mobile: "35px", laptop: "40px" },
         background: "white",
         justifyContent: "space-between",
         alignItems: "center",
@@ -372,14 +359,13 @@ const SingleBox = ({
   boxWidth,
   boxWidthHeader
 }) => {
-  // console.log(data, "dataaaa")
   return !header ? (
     first ? (
       <Box
         sx={{
           // width: "100%",
           width: boxWidth ? boxWidth : "100%",
-          height: {mobile: "35px", laptop: "40px"},
+          height: { mobile: "35px", laptop: "40px" },
           flexDirection: "column",
           background: "#F8C851",
           marginX: { mobile: "0.5px", laptop: "1px" },
@@ -454,7 +440,7 @@ const SingleBox = ({
         sx={{
           // width: "15%",
           width: boxWidth,
-          height:{mobile: "35px", laptop: "40px"},
+          height: { mobile: "35px", laptop: "40px" },
           background: color,
           marginX: { mobile: "0.5px", laptop: "1px" },
           display: "flex",

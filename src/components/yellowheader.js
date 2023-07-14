@@ -1,28 +1,16 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import { CalendarImage } from "../admin/assets";
 import CustomButton from "../admin/components/CustomButton";
-import { useSelector } from "react-redux";
-import constants from "./helper/constants";
-import { setRole } from "../newStore";
-import CustomButtonAdmin from "./CustomButtonAdmin";
-import jwtDecode from "jwt-decode";
 import { toast } from "react-toastify";
 
 const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
-  const adminToken = sessionStorage.getItem("JWTadmin");
-  const userToken = sessionStorage.getItem("JWTuser");
 
-  const decodedTokenAdmin = adminToken !== null && jwtDecode(adminToken);
-  const decodedTokenUser = userToken !== null && jwtDecode(userToken);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-  const [currentPage, setCurrentPage] = useState(1);
-  const { currentUser } = useSelector((state) => state?.currentUser);
 
   const handleFromDateChange = (date) => {
     setFromDate(date);
@@ -65,16 +53,16 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
           borderRadius: "5px",
           width: "100%",
           px: "10px",
-          py: {mobile: "10px", laptop: "0"},
-          minHeight: {mobile: "0", laptop: "80px"},
+          py: { mobile: "10px", laptop: "0" },
+          minHeight: { mobile: "0", laptop: "80px" },
           background: "#F8C851",
           display: "flex",
-          flexDirection: { mobile: "row", laptop: "row", tablet: "row" , alignItems: {mobile: "center", laptop: "flex-end"}},
+          flexDirection: { mobile: "row", laptop: "row", tablet: "row", alignItems: { mobile: "center", laptop: "flex-end" } },
         }}
       >
         <Box
           sx={{
-            width: {mobile: "67%", laptop: "100%"},
+            width: { mobile: "67%", laptop: "100%" },
             gap: 1,
             display: "flex",
             flexDirection: { mobile: "row", laptop: "row", tablet: "row" },
@@ -145,10 +133,6 @@ const YellowHeader = ({ admin, onChildData, getAccountStatement }) => {
             getAccountStatement={getAccountStatement}
           />
         )}
-
-        {/* {decodedTokenUser.role === "user" && (
-                <CustomButton btnStyle={{ height: "40px", borderRadius: "5px", width: matchesMobile ? "32%" : "20%", marginRight: "0px", marginLeft: matchesMobile ? "10px" : "20px", marginBottom: matchesMobile ? "15px" : (tab ? "28px" : "15px") }} onClick={sendDataToParent} getAccountStatement={getAccountStatement} />
-                )} */}
       </Box>
     </Box>
   );
@@ -195,16 +179,12 @@ const Calendar = ({
           fontWeight: "600",
           marginY: ".3vh",
           color: matchesMobile ? "transparent" : "black",
-          display: {mobile: "none", laptop: "block"}
+          display: { mobile: "none", laptop: "block" }
         }}
       >
         {title}
       </Typography>
       <Box sx={[{ position: "absolute", height: "35px" }, pickerStyles]}>
-        {/* <DatePicker open={open} selected={startDate} onChange={(date) => {
-                    setOpen(false)
-                    setStartDate(date)
-                }} {...DatePickerProps} customInput={<Box sx={[{ width: "25vw" }]}></Box>} /> */}
         <DatePicker
           open={open}
           selected={startDate}

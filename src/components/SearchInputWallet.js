@@ -1,18 +1,11 @@
 import {
   Box,
-  FormControl,
-  InputLabel,
   TextField,
-  makeStyles,
-  MenuItem,
-  Select,
-  SliderValueLabel,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
 const SearchInput = ({
-  handleChange,
   title,
   data,
   containerStyle,
@@ -38,9 +31,9 @@ const SearchInput = ({
             fontWeight: "500",
             color: "black",
             "&:hover": {
-                cursor: "pointer",
-                background:  "#3498ff33",
-              },
+              cursor: "pointer",
+              background: "#3498ff33",
+            },
           }}
         >
           {item?.userName}
@@ -124,7 +117,7 @@ const SearchInput = ({
             borderRadius: "3px",
             border: "2px solid #DEDEDE",
             zIndex: 9999,
-          
+
           }}
         >
           {data

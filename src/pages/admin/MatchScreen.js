@@ -36,7 +36,6 @@ import {
   microServiceApiPath,
 } from "../../components/helper/constants";
 import { formatNumber } from "../../components/helper/helper";
-// import SeasonMarketBox from "./matches/SeasonMarketBox";
 import Odds from "./matches/Odds";
 import SessionMarket from "./matches/SessionMarket";
 import BookMarketer from "./matches/BookMaketer";
@@ -52,11 +51,7 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const dispatch = useDispatch();
-  // const anchor=useSelector(state=>state.betplace)?.anchor
-  const [anchor, setAnchor] = React.useState(null);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
-  const [canceled, setCanceled] = React.useState(false);
   return (
     <>
       <Popover
@@ -64,21 +59,6 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
         align={matchesMobile ? "end" : "center"}
         positions={["bottom"]} // preferred positions by priority
         onClickOutside={() => setIsPopoverOpen(false)}
-        // content={<PlaceBet onSubmit={() => {
-        //     setVisible(true)
-        //     setCanceled(false)
-        // }}
-        //     onCancel={() => {
-        //         setVisible(true)
-        //         setCanceled(true)
-        //     }}
-
-        //     handleClose={() => {
-        //         setIsPopoverOpen(false)
-        //     }}
-        //     season={session}
-        //     back={back}
-        // />}
       >
         <Box
           onClick={(e) => {
@@ -178,9 +158,6 @@ export const MatchScreen = ({
               alignItems: "center",
             }}
           >
-            {/* {
-                            name != "DRAW" ? */}
-            {/* <img src={name == "INDIA" ? INDIA : PAKISTAN} style={{ width: "22px", height: '25px', marginLeft: '10px', backgroundSize: "contains" }} /> */}
             {
               teamImage !== null && (
                 <img
@@ -194,9 +171,6 @@ export const MatchScreen = ({
                   alt={name}
                 />
               )
-              // :
-              // <Box sx={{ width: '22px', height: '25px', marginLeft: '10px', }}>
-              // </Box>
             }
             <Typography
               sx={{
@@ -292,9 +266,6 @@ export const MatchScreen = ({
   };
   const SmallBox = ({ color, valueA, valueB }) => {
     return (
-      // <Box sx={{ width: { laptop: '70px', mobile: '17vw' }, display: 'flex', marginRight: '5px', justifyContent: 'center', alignItems: 'center', height: '30px', background: 'white', borderRadius: '3px' }}>
-      //     <Typography sx={{ fontSize: { laptop: '12px', mobile: '10px' }, fontWeight: 'bold', color: color ? color : '#46e080' }} >+Book.60</Typography>
-      // </Box>
       <Box
         sx={{
           marginLeft: { mobile: "34px", laptop: "12px", tablet: "12px" },
@@ -714,7 +685,6 @@ export const MatchScreen = ({
   };
   const SeasonMarketBox = ({
     index,
-    setMatchSessionData,
     newData,
     setData,
   }) => {
@@ -762,7 +732,6 @@ export const MatchScreen = ({
             }}
           >
             <SeperateBox color={"white"} />
-            {/* {matchesMobile && <PlaceBetComponent />} */}
             {false && (
               <>
                 <Box
@@ -800,9 +769,6 @@ export const MatchScreen = ({
             ></Box>
             <SeperateBox
               session={true}
-              // value={"39"}
-              // value2={"100"}
-              // lock={index == 2}
               color={"#B3E0FF"}
               value={newData?.yes_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[1])}
@@ -944,34 +910,9 @@ export const MatchScreen = ({
     const [proLoss, setProfitLoss] = useState(newData?.profitLoss);
 
     const [anchorEl, setAnchorEl] = useState(null);
-    // const handleClick = (event) => {
-    //     setAnchorEl(event.currentTarget);
-    // };
     const handleClose = () => {
       setAnchorEl(null);
     };
-
-    // useEffect(() => {
-    //     setData((prev) => {
-    //         if (Array.isArray(prev)) {
-    //             const index = prev.findIndex((item) => item.id === newData.id);
-    //             if (index !== -1) {
-    //                 // merge newData with the existing object
-    //                 const updatedItem = { ...prev[index], ...newData };
-    //                 const updatedArray = [...prev];
-    //                 updatedArray.splice(index, 1, updatedItem);
-    //                 return updatedArray;
-    //             } else {
-    //                 return prev;
-    //             }
-    //         } else {
-    //             // handle the case when prev is not an array
-    //             return prev;
-    //         }
-    //     });
-
-    //     setProfitLoss(newData?.profitLoss);
-    // }, [newData]);
 
     const handleClick = useCallback(
       (e) => {
@@ -1066,7 +1007,6 @@ export const MatchScreen = ({
             />
           </Box>
         </Box>
-        {/* <DropdownMenu open={Boolean(anchorEl)} anchorEl={anchorEl} handleClose={handleClose} /> */}
       </>
     );
   };
@@ -1416,8 +1356,8 @@ export const MatchScreen = ({
         const sessionData =
           currentMatch?.bettings?.length > 0
             ? currentMatch?.bettings?.filter(
-                (element) => element?.sessionBet && element?.id
-              )
+              (element) => element?.sessionBet && element?.id
+            )
             : 0;
         setMatchSessionData(sessionData.reverse());
       }
@@ -1598,16 +1538,12 @@ export const MatchScreen = ({
             }}
           >
             {matchSessionData?.length > 0 &&
-              // matchSessionData?.reverse()?.map((element, index) => {
               matchSessionData?.map((element, index) => {
                 return (
                   <Box
                     key={element?.id}
                     sx={{
                       width: "100%",
-                      // display: sessionOffline?.includes(element.id)
-                      //     ? "none"
-                      //     : "block",
                     }}
                   >
                     <SeasonMarketBox
@@ -1620,20 +1556,6 @@ export const MatchScreen = ({
                   </Box>
                 );
               })}
-            {/* <SeasonMarketBox index={1} />
-                        <Divider />
-                        <SeasonMarketBox index={2} />
-                        <Divider /> */}
-            {/* <SeasonMarketBox index={3} />
-                        <Divider />
-                        <SeasonMarketBox index={4} />
-                        <Divider />
-                        <SeasonMarketBox index={5} />
-                        <Divider />
-                        <SeasonMarketBox index={6} />
-                        <Divider />
-                        <SeasonMarketBox index={7} />
-                        <Divider /> */}
             {locked && (
               <Box
                 sx={{
@@ -2475,7 +2397,6 @@ export const MatchScreen = ({
       <Box sx={{ width: "60%", flexDirection: "column", display: "flex" }}>
         <Odds1 submit={submit} currentMatch={currentMatch} />
         <BookMarketer1 submit={submit} currentMatch={currentMatch} />
-        {/* <SessionMarket1 submit={submit} currentMatch={currentMatch} sessionBets={sessionBets} /> */}
         <Box
           sx={{
             display: "flex",
@@ -2509,8 +2430,6 @@ const NewMatchScreen = () => {
   const matchId = location?.state?.matchId;
   const { socket, socketMicro } = useContext(SocketContext);
   const { axios } = setRole();
-  const [showUnlock, setShowUnlock] = useState(false);
-  const [locked, setLocked] = useState(false);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [sessionBets, setSessionBets] = useState([]);
   const [matchOddsLive, setMacthOddsLive] = useState([]);
@@ -2522,9 +2441,6 @@ const NewMatchScreen = () => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [sessionLock, setSessionLock] = useState(false);
   const [isHandled, setIsHandled] = useState(false);
-  // const checkMctchId = useSelector(
-  //     (state) => state
-  // );
   const [isMatchLock, setIsMatchLock] = useState(false);
   const [isBookmakerLock, setIsBookmakerLock] = useState(false);
   const [isManualLock, setIsManualLock] = useState(false);
@@ -2538,7 +2454,6 @@ const NewMatchScreen = () => {
       });
 
       socket.onevent = async (packet) => {
-        // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
 
         if (packet.data[0] === "updateMatchActiveStatus") {
           const value = packet.data[1];
@@ -2560,22 +2475,11 @@ const NewMatchScreen = () => {
         // manual bookmaker
         if (packet.data[0] === "teamA_rate_user") {
           const value = packet.data[1];
-          // console.log("value :", value);
-          // console.log("manualBookmakerData :", manualBookmakerData);
-          // alert(value?.betId);
-          // alert(JSON.stringify(value.betId));
           try {
             setManualBookmakerData((currentMatches) => {
               if (currentMatches[0]?.id != value.betId) {
                 return currentMatches;
               }
-              // Find the index of the match that you want to update
-              // const index = currentMatches.findIndex(match => match.id === value?.betId);
-              // alert(index)
-              // if (index === -1) {
-              //   // Match not found, return the current state
-              //   return currentMatches;
-              // }
 
               // Update the match object at the specified index
               const updatedMatch = {
@@ -2958,9 +2862,6 @@ const NewMatchScreen = () => {
                 if (value?.betStatus === 0) {
                   sessionOffline.push(value.id);
                 }
-                // newUpdatedValue = newUpdatedValue?.filter(
-                //   (v) => v?.id !== value?.id && v?.betStatus === 1
-                // );
               }
 
               // Return the updated current match object
@@ -2987,16 +2888,6 @@ const NewMatchScreen = () => {
             return prev;
           });
         }
-        // if (packet.data[0] === "userBalanceUpdate") {
-        //   const data = packet.data[1];
-        //   const user = {
-        //     ...currentUser,
-        //     current_balance: data?.currentBalacne,
-        //   };
-        //   dispatch(setCurrentUser(user));
-
-        //   //currentBalacne
-        // }
         if (packet.data[0] === "bookMakerRateLive") {
           // Bookmaker Market live and stop disable condition
           const value = packet.data[1];
@@ -3009,13 +2900,6 @@ const NewMatchScreen = () => {
             }
             return prev;
           });
-
-          // if (value?.matchId === currentMatch?.id) {
-          //   setCurrentMatch((prev) => ({
-          //     ...prev,
-          //     bookMakerRateLive: value?.bookMakerLive,
-          //   }));
-          // }
         }
 
         if (packet.data[0] === "session_bet") {
@@ -3054,10 +2938,6 @@ const NewMatchScreen = () => {
               ...updatedPrev,
             ];
           });
-          // setCurrentMatch({
-          //   ...currentMatch,
-          //   matchSessionData: updatedBettings1
-          // });
           setSessionBets((prev) => {
             const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
             return [
@@ -3076,16 +2956,6 @@ const NewMatchScreen = () => {
             setIsHandled(true);
             try {
               if (data) {
-                // const user = {
-                //   ...currentUser,
-                //   current_balance: data.newBalance,
-                //   exposure: data.exposure,
-                // };
-                // const manualBookmaker = {
-                //   matchId: data?.betPlaceData?.match_id,
-                //   teamA: data.teamA_rate,
-                //   teamB: data.teamB_rate,
-                // };
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
@@ -3112,12 +2982,7 @@ const NewMatchScreen = () => {
                   amount:
                     data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                 };
-                // if (data?.betPlaceData?.match_id === id) {
                 setSingleIObtes((prev) => [body, ...prev]);
-                // }
-
-                // dispatch(setCurrentUser(user));
-                // dispatch(setManualBookMarkerRates(manualBookmaker));
                 setCurrentMatch((prev) => {
                   if (prev?.id === data?.betPlaceData?.match_id) {
                     return {
@@ -3266,18 +3131,14 @@ const NewMatchScreen = () => {
           console.log("WebSocket connection failed:", event);
         });
         socketMicro.emit("init", { id: marketId });
-          setInterval(() => {
-          
+        setInterval(() => {
+
           socketMicro.emit("init", { id: marketId });
         }, 3000);
-    
+
 
 
         socketMicro.emit("score", { id: eventId });
-        // activateLiveMatchMarket();
-        // socketMicro.on("bookMakerRateLive", (e) => {
-        //   console.log("BookMaker", e);
-        // });
 
         socketMicro.on("reconnect", () => {
           socketMicro.emit("init", { id: marketId });
@@ -3287,10 +3148,8 @@ const NewMatchScreen = () => {
         });
 
         socketMicro.on(`session${marketId}`, (val) => {
-          // console.log("currentMatchProfit 33:", val);
 
           if (val !== null && matchId === matchId) {
-            // console.warn("updatedBettings1 ", updatedBettings1);
             var newVal = val?.map((v) => ({
               bet_condition: v?.RunnerName,
               betStatus: 0,
@@ -3345,10 +3204,8 @@ const NewMatchScreen = () => {
                   id: marketId,
                 });
                 setMacthOddsLive([]);
-                // socketMicro.disconnect();
               }
             } else {
-              // dispatch(setMatchOddsLive(val[0]));
               setMacthOddsLive(val[0]);
               if (val[0]?.status === "CLOSED") {
                 socketMicro.emit("disconnect_market", {
@@ -3361,10 +3218,7 @@ const NewMatchScreen = () => {
         });
         socketMicro.on(`bookmaker${marketId}`, (val) => {
           if (val !== null) {
-            // console.log("val 222:", val);
             if (val.length > 0) {
-              // dispatch(setBookMakerLive(val[0]));
-              // alert(JSON.stringify(val[0].runners))
               setBookmakerLive(val[0]);
             } else {
               setBookmakerLive([]);
@@ -3372,12 +3226,9 @@ const NewMatchScreen = () => {
           }
         });
         socketMicro.on(`liveScore${eventId}`, (val) => {
-          // alert(11111)
           if (val !== null) {
-            // console.log("val 333:", JSON.str val);
             setLiveScoreData(val);
             if (val) {
-              // dispatch(setBookMakerLive(val[0]));
               setLiveScoreData(val);
             } else {
               setLiveScoreData();
@@ -3404,16 +3255,12 @@ const NewMatchScreen = () => {
   }, [socketMicro, marketId]);
 
   useEffect(() => {
-    // alert(JSON.stringify(matchId))
-    // if (state?.id) {
-    // alert(1)
     getSingleMatch(matchId);
     getAllBetsData(matchId);
     // }
   }, []);
   const getSingleMatch = async (val) => {
     try {
-      // const { data } = await axios.get(`game-match/matchDetail/${val}`);
       const data = await axios.get(`/game-match/matchDetail/${val}`);
 
       let matchOddsDataTemp = data.data?.bettings?.filter(
@@ -3421,21 +3268,11 @@ const NewMatchScreen = () => {
       );
 
       setManualBookmakerData(matchOddsDataTemp);
-      // setCurrentMatch(newMatch);
       setCurrentMatch({
         ...data.data,
       });
       setEventId(data?.data?.EventId);
       activateLiveMatchEvent(data?.data?.EventId);
-      // const bets = data?.data?.data?.filter(
-      //     (b) =>
-      //         !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-      //             b?.marketType
-      //         )
-      // );
-
-      // // console.log("bets", bets, data?.data?.data);
-      // setSessionBets(bets || []);
       setMarketId(data.data.marketId);
     } catch (e) {
       console.log(e?.message, "message");
@@ -3478,7 +3315,6 @@ const NewMatchScreen = () => {
         marketLock: locked,
         adminTransPassword: value,
       };
-      // alert(JSON.stringify(payload))
       let response = await axios.post(`/game-match/blockMatchMarket`, payload);
       if (typeOfBet == "Match Odds") {
         setCurrentMatch((prevState) => ({
@@ -3553,23 +3389,6 @@ const NewMatchScreen = () => {
   };
 
   return (
-    // <Background>
-    //     <MatchScreen submit={location?.state?.submit} currentMatch={currentMatch} sessionBets={sessionBets} />
-    //     {/* <Odds
-    //         currentMatch={currentMatch}
-    //         matchOddsLive={matchOddsLive}
-    //         data={
-    //             matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
-    //         }
-    //         typeOfBet={"Match Odds"}
-    //     // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
-    //     /> */}
-    //     <Box sx={{ width: false ? "38.83%" : '39.5%', marginLeft: false ? "10px" : "0px", flexDirection: 'column', display: 'flex' }}>
-    //         <LiveMatchComponent submit={true} />
-    //         <LiveMatchAdmin submit={true} />
-    //         <AllBets tag={true} submit={true} />
-    //     </Box>
-    // </Background>
     <Background>
       <Box sx={{ paddingLeft: "0.7% " }}>
         <Typography
@@ -3646,28 +3465,25 @@ const NewMatchScreen = () => {
               handleHide={handleHide}
               handleShowLock={handleShowLock}
               mShowUnlock={isManualLock}
-              // showUnlock={isMatchLock}
-              // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
             />
           )}
 
           {(currentMatch?.apiSessionActive ||
             currentMatch?.manualSessionActive) && (
-            <SessionMarket
-              currentMatch={currentMatch}
-              sessionBets={sessionBets}
-              data={[]}
-              blockMatch={true}
-              locked={currentMatch?.blockMarket?.SESSION?.block}
-              selft={currentMatch?.blockMarket?.SESSION?.selft}
-              handleBlock={handleBlock}
-              handleHide={handleHide}
-              handleShowLock={handleShowLock}
-              showUnlock={isSessionLock}
+              <SessionMarket
+                currentMatch={currentMatch}
+                sessionBets={sessionBets}
+                data={[]}
+                blockMatch={true}
+                locked={currentMatch?.blockMarket?.SESSION?.block}
+                selft={currentMatch?.blockMarket?.SESSION?.selft}
+                handleBlock={handleBlock}
+                handleHide={handleHide}
+                handleShowLock={handleShowLock}
+                showUnlock={isSessionLock}
               // sessionOffline={sessionOffline}
-            />
-          )}
-          {/* {IOSinglebets.length > 0 && <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} />} */}
+              />
+            )}
         </Box>
         <Box sx={{ width: "20px" }} />
         <Box
@@ -3678,12 +3494,6 @@ const NewMatchScreen = () => {
             minHeight: "100px",
           }}
         >
-          {/* <Box
-                        sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
-                    >
-                        <Box sx={{ width: "2%" }}></Box>
-                        <Box sx={{ width: "150px", marginY: ".75%", height: "35px", }} ></Box>
-                    </Box> */}
           <MatchComponent
             currentMatch={currentMatch}
             liveScoreData={liveScoreData}
