@@ -1,5 +1,5 @@
 import { Pagination, Box, Typography, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { } from "@mui/material";
 // import "../index.css";
 
@@ -10,9 +10,11 @@ import CustomLoader from "./helper/CustomLoader";
 import Odds from "./Matches/Odds";
 import Background from "./Background";
 import { useLocation, useNavigate } from "react-router-dom";
+import { SocketContext } from "../context/socketContext";
 
 const AdminInPlay = () => {
-  // const classes=useStyle()
+  // const classes=useStyle() 
+  const { socket } = useContext(SocketContext);
   const [loader, setLoader] = useState(false);
   const [matchData, setMatchData] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
@@ -25,6 +27,26 @@ const AdminInPlay = () => {
   useEffect(() => {
     getAllMatch();
   }, [currentPage]);
+
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.on("newMessage", (value) => {
+        console.log(value);
+      });
+
+      socket.onevent = async (packet) => {
+
+        if (packet.data[0] === "newMatchAdded") {
+          getAllMatch();
+        }
+        if (packet.data[0] === "resultDeclareForBet") {
+          getAllMatch();
+        }
+
+
+      };
+    }
+  }, [socket]);
 
   async function getAllMatch() {
     try {

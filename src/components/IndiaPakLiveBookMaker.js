@@ -81,6 +81,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
 
         useEffect(() => {
+            // alert(JSON.stringify(match))
             getManuallBookMaker(match?.id);
         }, []);
 

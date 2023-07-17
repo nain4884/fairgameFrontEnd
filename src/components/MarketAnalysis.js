@@ -36,6 +36,9 @@ const MarketAnalysis = () => {
         if (packet.data[0] === "newMatchAdded") {
           getAllMatch();
         }
+        if (packet.data[0] === "resultDeclareForBet") {
+          getAllMatch();
+        }
 
       };
     }

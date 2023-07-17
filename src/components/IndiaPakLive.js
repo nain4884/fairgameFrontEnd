@@ -196,7 +196,7 @@ const IndiaPakLive = React.forwardRef(({
         if (packet.data[0] === "updateSessionRate_user") {
           // match_id
           const value = packet.data[1];
-          if (match?.id == value.match_id) {
+          if (match?.id == value?.match_id && betId == value?.betId) {
             if (value.suspended == "suspended") {
               setLock({
                 ...lock,
@@ -216,6 +216,13 @@ const IndiaPakLive = React.forwardRef(({
                   yes_rate: value.yes_rate,
                   n_rate_percent: firstValue,
                   y_rate_percent: secondValue,
+                });
+                setLock({
+                  ...lock,
+                  isNo: false,
+                  isYes: false,
+                  isNoPercent: false,
+                  isYesPercent: false,
                 });
               }
             }

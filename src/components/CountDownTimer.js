@@ -1,4 +1,5 @@
-import { Box, Modal } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { HourGlass } from "../assets";
 import Lottie from "lottie-react";
 import React from "react";
@@ -31,7 +32,21 @@ const CountDownTimer = ({ visible, setVisible, time }) => {
           zIndex: 999,
         }}
       >
-        <Lottie
+        <CountdownCircleTimer
+          isPlaying
+          duration={time}
+          size={130}
+          colors={['#F7B801', "#0B4F26"]}
+          colorsTime={[5, 0]}
+          strokeLinecap={0}
+          strokeWidth={8}
+          onComplete={() => {
+            setVisible(false)
+          }}
+        >
+          {({ remainingTime }) => <Typography sx={{ fontSize: '25px' }}>{remainingTime}</Typography>}
+        </CountdownCircleTimer>
+        {/* <Lottie
           animationData={HourGlass}
           style={{
             display: "flex",
@@ -39,7 +54,7 @@ const CountDownTimer = ({ visible, setVisible, time }) => {
             width: "50px",
             height: "50px",
           }}
-        />
+        /> */}
       </Box>
     </Modal>
   );

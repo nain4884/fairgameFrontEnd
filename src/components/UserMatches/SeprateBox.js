@@ -7,6 +7,7 @@ import { setDailogData } from "../../store/dailogModal";
 import useOuterClick from "../helper/userOuterClick";
 import { setColorValue } from "../../store/selectedColorBox";
 import PlaceBet from "../PlaceBet";
+import BetPlaced from "../BetPlaced";
 import { Modal } from "react-bootstrap";
 import MUIModal from "@mui/material/Modal";
 
@@ -516,7 +517,22 @@ const SeprateBox = ({
             />
           </Box>
         </MUIModal>
-
+        {
+          <BetPlaced
+            // time={5}
+            time={
+              typeOfBet == "MATCH ODDS"
+                ? currentMatch?.delaySecond
+                  ? currentMatch?.delaySecond
+                  : 0
+                : 0
+            }
+            visible={betPlaceLoading}
+            setVisible={(i) => {
+              setVisible(i);
+            }}
+          />
+        }
         {canceled.value && (
           <NotificationModal
             open={canceled}

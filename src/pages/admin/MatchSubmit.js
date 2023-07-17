@@ -519,14 +519,14 @@ const MatchSubmit = ({ }) => {
               try {
                 setMatchData((prevMatchData) => {
                   return prevMatchData.map((item) => {
-                    if (item.id === value?.match_id) {
-                      const updatedBettings = item.bettings.map((betting) => {
-                        if (betting.id === value.betId) {
-                          if (item?.sessionOffline.includes(value.betId)) {
-                            const newRes = item.sessionOffline.filter((id) => id !== value.betId);
+                    if (item?.id === value?.match_id) {
+                      const updatedBettings = item?.bettings.map((betting) => {
+                        if (betting.id === value?.betId) {
+                          if (item && item?.sessionOffline.includes(value?.betId)) {
+                            const newRes = item?.sessionOffline.filter((id) => id !== value?.betId);
                             item.sessionOffline = newRes;
                           }
-                          item?.sessionOffline.push(value.betId);
+                          item.sessionOffline.push(value?.betId);
                         }
                         return betting;
                       });
@@ -535,14 +535,14 @@ const MatchSubmit = ({ }) => {
                         item.sessionOffline = [];
                       }
                       if (
-                        item.sessionOffline.includes(value.id) &&
+                        item?.sessionOffline.includes(value?.id) &&
                         value.betStatus === 1
                       ) {
-                        const newRes = item.sessionOffline.filter((id) => id !== value.id);
+                        const newRes = item.sessionOffline.filter((id) => id !== value?.id);
                         item.sessionOffline = newRes;
                       }
                       if (value.betStatus === 0) {
-                        item.sessionOffline.push(value.id);
+                        item.sessionOffline.push(value?.id);
                       }
 
                       return {
