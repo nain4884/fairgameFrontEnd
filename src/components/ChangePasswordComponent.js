@@ -5,25 +5,36 @@ import { eye } from "../assets";
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 import { useState } from "react";
 
-export const ChangePasswordComponent = ({ visible, selected }) => {
+export const ChangePasswordComponent = ({ visible, selected, width, changePassword }) => {
   const [passwordDetail, setPasswordDetail] = useState({
-    1: { field: "oldPassword", val: "" },
-    2: { field: "newPassword", val: "" },
-    3: { field: "confirmPassword", val: "" },
+    2: { field: "oldPassword", val: "" },
+    3: { field: "newPassword", val: "" },
+    4: { field: "confirmPassword", val: "" },
   });
   const [error, setError] = useState({
-    1: { field: "oldPassword", val: false },
-    2: { field: "newPassword", val: false },
-    3: { field: "confirmPassword", val: false },
+    2: { field: "oldPassword", val: false },
+    3: { field: "newPassword", val: false },
+    4: { field: "confirmPassword", val: false },
   });
 
+  const handleChange = () => {
+    if (
+      !error[3].val &&
+      !error[4].val &&
+      passwordDetail[2].val !== "" &&
+      passwordDetail[3].val !== "" &&
+      passwordDetail[4].val !== ""
+    ) {
+      changePassword(passwordDetail);
+    }
+  }
   return (
     <Box>
-     
+
       <Box
         sx={{
           width: { mobile: "96vw", laptop: "22vw", tablet: "22vw" },
-          minWidth: { laptop: "350px", tablet: "350px", mobile: "0px" },
+          minWidth: { laptop: width ? width : "350px", tablet: width ? width : "350px", mobile: "0px" },
           marginTop: "10px",
           marginX: { mobile: "2vw", laptop: "1vw" },
         }}
@@ -63,7 +74,7 @@ export const ChangePasswordComponent = ({ visible, selected }) => {
             Detail={passwordDetail}
             setError={setError}
             error={error}
-            place={1}
+            place={2}
             onFocusOut={doSendErrorForPassword}
             toFoucs={true}
           />
@@ -83,10 +94,11 @@ export const ChangePasswordComponent = ({ visible, selected }) => {
             Detail={passwordDetail}
             setError={setError}
             error={error}
-            place={2}
+            place={3}
             onFocusOut={doSendErrorForPassword}
             toFoucs={true}
           />
+          {error[3].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
           <Input
             placeholder={"Enter Confirm Password"}
             inputProps={{ type: "password" }}
@@ -103,11 +115,15 @@ export const ChangePasswordComponent = ({ visible, selected }) => {
             Detail={passwordDetail}
             setError={setError}
             error={error}
-            place={3}
+            place={4}
             onFocusOut={doSendErrorForPassword}
             toFoucs={true}
           />
+          {passwordDetail[3].val !== passwordDetail[4].val && (
+            <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>
+          )}
           <Box
+            onClick={handleChange}
             sx={{
               height: "50px",
               display: "flex",

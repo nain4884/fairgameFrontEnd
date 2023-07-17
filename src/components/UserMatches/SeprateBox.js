@@ -19,6 +19,7 @@ import {
 } from "../../newStore/reducers/matchDetails";
 import { setRole } from "../../newStore";
 import NotificationModal from "../NotificationModal";
+import { toast } from "react-toastify";
 
 const SeprateBox = ({
   color,
@@ -297,6 +298,7 @@ const SeprateBox = ({
       } else if (sessionMain === "bookmaker") {
         setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
       }
+      toast.success(response.data.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
       setFastBetLoading(false);

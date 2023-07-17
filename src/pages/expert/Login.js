@@ -30,6 +30,8 @@ import {
   apiBasePath,
 } from "../../components/helper/constants";
 import { SocketContext } from "../../context/socketContext";
+import ChangePassword from "../../components/ChangePasswordComponent";
+import { toast } from "react-toastify";
 
 var newtoken = "";
 export default function Login(props) {
@@ -60,6 +62,7 @@ export default function Login(props) {
   //handled if user already exists and tries open other role login page
   const { currentUser } = useSelector((state) => state?.currentUser);
   const currroles = useSelector((state) => state?.auth?.allRole);
+  const [isChangePassword, setIsChangePassword] = useState(false);
 
   useEffect(() => {
     try {
@@ -269,7 +272,11 @@ export default function Login(props) {
               }));
               localStorage.setItem("JWTadmin", data.data.access_token);
               // dispatch(setAConfirmAuth(false));
-              handleNavigate("/admin/list_of_clients", "admin");
+              if (data?.data?.forceChangePassword) {
+                setIsChangePassword(true);
+              } else {
+                handleNavigate("/admin/list_of_clients", "admin");
+              }
             } else if (
               ["fairGameWallet", "fairGameAdmin"].includes(
                 data.data.role.roleName
@@ -281,7 +288,11 @@ export default function Login(props) {
               }));
               localStorage.setItem("JWTwallet", data.data.access_token);
               // dispatch(setWConfirmAuth(false));
-              handleNavigate("/wallet/list_of_clients", "wallet");
+              if (data?.data?.forceChangePassword) {
+                setIsChangePassword(true);
+              } else {
+                handleNavigate("/wallet/list_of_clients", "wallet");
+              }
             } else if (["expert"].includes(data.data.role.roleName)) {
               setGlobalStore((prev) => ({
                 ...prev,
@@ -289,7 +300,11 @@ export default function Login(props) {
               }));
               localStorage.setItem("JWTexpert", data.data.access_token);
               // dispatch(setEConfirmAuth(false));
-              handleNavigate("/expert/match", "expert");
+              if (data?.data?.forceChangePassword) {
+                setIsChangePassword(true);
+              } else {
+                handleNavigate("/expert/match", "expert");
+              }
             } else {
               // toast.error("User Unauthorized !");
               setLoginError("Incorrect username and password!");
@@ -352,7 +367,11 @@ export default function Login(props) {
                 adminWT: data.data.access_token,
               }));
               localStorage.setItem("JWTadmin", data.data.access_token);
-              handleNavigate("/admin/list_of_clients", "admin");
+              if (data?.data?.forceChangePassword) {
+                setIsChangePassword(true);
+              } else {
+                handleNavigate("/admin/list_of_clients", "admin");
+              }
             } else if (
               ["fairGameWallet", "fairGameAdmin"].includes(
                 data.data.role.roleName
@@ -363,14 +382,22 @@ export default function Login(props) {
                 walletWT: data.data.access_token,
               }));
               localStorage.setItem("JWTwallet", data.data.access_token);
-              handleNavigate("/wallet/list_of_clients", "wallet");
+              if (data?.data?.forceChangePassword) {
+                setIsChangePassword(true);
+              } else {
+                handleNavigate("/wallet/list_of_clients", "wallet");
+              }
             } else if (["expert"].includes(data.data.role.roleName)) {
               setGlobalStore((prev) => ({
                 ...prev,
                 expertJWT: data.data.access_token,
               }));
               localStorage.setItem("JWTexpert", data.data.access_token);
-              handleNavigate("/expert/match", "expert");
+              if (data?.data?.forceChangePassword) {
+                setIsChangePassword(true);
+              } else {
+                handleNavigate("/expert/match", "expert");
+              }
             } else {
               setLoginError("Incorrect username and password!");
               setLoading(false);
@@ -419,6 +446,28 @@ export default function Login(props) {
     setConfirmPop(false);
   };
 
+  const changePassword = async (value) => {
+    try {
+      const payload = {
+        OldPassword: value[2].val,
+        password: value[3].val,
+        confirmpassword: value[4].val,
+      };
+      const { data } = await axios.post(
+        `/fair-game-wallet/updateSelfPassword`,
+        payload
+      );
+
+      if (data.message === "Password update successfully.") {
+        toast.success("Password update successfully.");
+        setIsChangePassword(false);
+      }
+    } catch (e) {
+      // console.log(e.response.data.message);
+      toast.error(e.response.data.message);
+    }
+  }
+
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
@@ -451,7 +500,7 @@ export default function Login(props) {
               height: "100px",
             }}
           />
-          <Box sx={{ width: "100%", opacity: 1, width: "90%" }}>
+          {!isChangePassword ? <Box sx={{ width: "100%", opacity: 1, width: "90%" }}>
             <Input
               placeholder={"Enter Username"}
               title={"Username"}
@@ -517,7 +566,8 @@ export default function Login(props) {
             {loginError !== "" && (
               <Alert severity="warning">{loginError}</Alert>
             )}
-          </Box>
+          </Box> :
+            <ChangePassword changePassword={changePassword} />}
         </Box>
       </Box>
       <Dialog

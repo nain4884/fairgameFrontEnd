@@ -30,6 +30,10 @@ import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
+import ChangePassword from "../../components/ChangePasswordComponent";
+import { toast } from "react-toastify";
+
+// import ChangePasswordComponent from "./ChangePasswordComponent";
 
 export default function Login(props) {
   let { axios } = setRole();
@@ -51,6 +55,7 @@ export default function Login(props) {
     2: { field: "password", val: false },
   });
   const [OTP, setOTP] = useState("");
+  const [isChangePassword, setIsChangePassword] = useState(false);
 
   const [loginError, setLoginError] = useState("");
   const [confirmPop, setConfirmPop] = useState(false);
@@ -282,7 +287,13 @@ export default function Login(props) {
                 ...prev,
                 userJWT: data.data.access_token,
               }));
-              handleNavigate("/matches", "user");
+              // alert(JSON.stringify(data.data?.isTransPasswordCreated))
+              if (data?.data?.forceChangePassword) {
+                // handleNavigate("/change_password", "user");
+                setIsChangePassword(true);
+              } else {
+                handleNavigate("/matches", "user");
+              }
             } else {
               setLoginError("Incorrect username and password !")
               setLoading(false);
@@ -302,6 +313,29 @@ export default function Login(props) {
     }
     // }
   }
+
+  const changePassword = async (value) => {
+    try {
+      const payload = {
+        OldPassword: value[2].val,
+        password: value[3].val,
+        confirmpassword: value[4].val,
+      };
+      const { data } = await axios.post(
+        `/fair-game-wallet/updateSelfPassword`,
+        payload
+      );
+
+      if (data.message === "Password update successfully.") {
+        toast.success("Password update successfully.");
+        setIsChangePassword(false);
+      }
+    } catch (e) {
+      // console.log(e.response.data.message);
+      toast.error(e.response.data.message);
+    }
+  }
+
   const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));
 
   return (
@@ -335,7 +369,7 @@ export default function Login(props) {
         >
           <AuthLogo />
 
-          <Box
+          {!isChangePassword ? <Box
             sx={{
               width: {
                 laptop: "55%",
@@ -407,7 +441,8 @@ export default function Login(props) {
               />
             </Box>
             {loginError !== "" && <Alert severity="warning">{loginError}</Alert>}
-          </Box>
+          </Box> :
+            <ChangePassword width="300px" changePassword={changePassword} />}
         </Card>
       </Box>
       <Dialog

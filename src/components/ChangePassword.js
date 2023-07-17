@@ -2,7 +2,7 @@ import { Background } from ".";
 import ChangePasswordComponent from "./ChangePasswordComponent";
 
 
- const ChangePassword = ({ visible, selected }) => {
+const ChangePassword = ({ visible, selected }) => {
   return (
     <Background>
       <ChangePasswordComponent visible={visible} selected={selected} />
