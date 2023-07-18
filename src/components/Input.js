@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
-import { onChangeKeyCheck } from "./helper/PassKeyCheck";
+import { onChangeKeyCheck, onChangeKeyCheckNumber } from "./helper/PassKeyCheck";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 
@@ -42,6 +42,7 @@ const Input = ({
   checkMesasge,
   disabled,
   setDownlinePar,
+  condition
 }) => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("tablet"));
@@ -205,8 +206,8 @@ const Input = ({
                 showPass && String(title).toLowerCase().includes("password")
                   ? "password"
                   : type === "Number"
-                  ? "number"
-                  : "text",
+                    ? "number"
+                    : "text",
               sx: [
                 { fontSize: { laptop: "12px", mobile: "14px" } },
                 inputStyle,
@@ -222,22 +223,22 @@ const Input = ({
             onChange={(e) => {
               String(title).toLowerCase().includes("password")
                 ? setDetail({
-                    ...Detail,
-                    [place]: {
-                      ...Detail[place],
-                      val: autoMaticFillValue,
-                    },
-                  })
+                  ...Detail,
+                  [place]: {
+                    ...Detail[place],
+                    val: autoMaticFillValue,
+                  },
+                })
                 : setDetail({
-                    ...Detail,
-                    [place]: {
-                      ...Detail[place],
-                      val:
-                        type === "Number"
-                          ? Number(autoMaticFillValue)
-                          : autoMaticFillValue,
-                    },
-                  });
+                  ...Detail,
+                  [place]: {
+                    ...Detail[place],
+                    val:
+                      type === "Number"
+                        ? Number(autoMaticFillValue)
+                        : autoMaticFillValue,
+                  },
+                });
               setError({
                 ...error,
                 [place]: {
@@ -270,8 +271,8 @@ const Input = ({
                 showPass && String(title).toLowerCase().includes("password")
                   ? "password"
                   : type === "Number"
-                  ? "number"
-                  : "text",
+                    ? "number"
+                    : "text",
               sx: [
                 { fontSize: { laptop: "12px", mobile: "14px" } },
                 inputStyle,
@@ -285,7 +286,7 @@ const Input = ({
             }}
             onChange={(e) => {
               const inputValue = e.target.value;
-              const regex =/^[a-zA-Z][a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
+              const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
               if (!regex.test(inputValue) && place === 1) {
                 setError({
                   ...error,
@@ -299,15 +300,15 @@ const Input = ({
 
               String(title).toLowerCase().includes("password")
                 ? setDetail({
-                    ...Detail,
-                    [place]: {
-                      ...Detail[place],
-                      val: e.target.value,
-                    },
-                  })
+                  ...Detail,
+                  [place]: {
+                    ...Detail[place],
+                    val: e.target.value,
+                  },
+                })
                 : title === "My Partnership"
-                ? handleMypartnershipChange(e, place)
-                : setDetail({
+                  ? handleMypartnershipChange(e, place)
+                  : setDetail({
                     ...Detail,
                     [place]: {
                       ...Detail[place],
@@ -316,32 +317,32 @@ const Input = ({
                         type === "Number"
                           ? title === "Upline Partnership"
                             ? Number(e.target.value) < 100 &&
-                              Number(e.target.value)
+                            Number(e.target.value)
                             : Number(e.target.value)
                           : e.target.value === "" && place === 11
-                          ? null
-                          : e.target.value,
+                            ? null
+                            : e.target.value,
                     },
                   });
               String(title).toLowerCase().includes("password")
                 ? setError({
-                    ...error,
-                    [place]: {
-                      ...Detail[place],
-                      val:
-                        place === 14 ? "" : onChangeKeyCheck(Detail[place].val),
-                    },
-                  })
+                  ...error,
+                  [place]: {
+                    ...Detail[place],
+                    val:
+                      place === 14 ? "" : condition ? onChangeKeyCheckNumber(Detail[place].val) : onChangeKeyCheck((Detail[place].val)),
+                  },
+                })
                 : setError({
-                    ...error,
-                    [place]: {
-                      ...Detail[place],
-                      val:
-                        type === "Number"
-                          ? Detail[place].val === 0
-                          : Detail[place].val === "",
-                    },
-                  });
+                  ...error,
+                  [place]: {
+                    ...Detail[place],
+                    val:
+                      type === "Number"
+                        ? Detail[place].val === 0
+                        : Detail[place].val === "",
+                  },
+                });
               // checkMesasge && errorHandle(Detail[place].val)
             }}
             onBlur={(e) => {

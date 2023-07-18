@@ -362,14 +362,14 @@ export default function Login(props) {
                 data.data.role.roleName
               )
             ) {
-              setGlobalStore((prev) => ({
-                ...prev,
-                adminWT: data.data.access_token,
-              }));
-              localStorage.setItem("JWTadmin", data.data.access_token);
               if (data?.data?.forceChangePassword) {
                 setIsChangePassword(true);
               } else {
+                setGlobalStore((prev) => ({
+                  ...prev,
+                  adminWT: data.data.access_token,
+                }));
+                localStorage.setItem("JWTadmin", data.data.access_token);
                 handleNavigate("/admin/list_of_clients", "admin");
               }
             } else if (
@@ -377,25 +377,25 @@ export default function Login(props) {
                 data.data.role.roleName
               )
             ) {
-              setGlobalStore((prev) => ({
-                ...prev,
-                walletWT: data.data.access_token,
-              }));
-              localStorage.setItem("JWTwallet", data.data.access_token);
               if (data?.data?.forceChangePassword) {
                 setIsChangePassword(true);
               } else {
+                setGlobalStore((prev) => ({
+                  ...prev,
+                  walletWT: data.data.access_token,
+                }));
+                localStorage.setItem("JWTwallet", data.data.access_token);
                 handleNavigate("/wallet/list_of_clients", "wallet");
               }
             } else if (["expert"].includes(data.data.role.roleName)) {
-              setGlobalStore((prev) => ({
-                ...prev,
-                expertJWT: data.data.access_token,
-              }));
-              localStorage.setItem("JWTexpert", data.data.access_token);
               if (data?.data?.forceChangePassword) {
                 setIsChangePassword(true);
               } else {
+                setGlobalStore((prev) => ({
+                  ...prev,
+                  expertJWT: data.data.access_token,
+                }));
+                localStorage.setItem("JWTexpert", data.data.access_token);
                 handleNavigate("/expert/match", "expert");
               }
             } else {

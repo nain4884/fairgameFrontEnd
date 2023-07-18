@@ -569,7 +569,7 @@ const AddAccount = () => {
                   />{" "}
                 </div>
                 {/** handleError={handleError} checkMesasge={true} */}
-                {/* {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>} */}
+                {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
                 <div style={{ order: 5 }}>
                   <Input
                     containerStyle={containerStyles}

@@ -91,8 +91,24 @@ const CustomHeader = ({ }) => {
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
-      localStorage.setItem("role3", "role3");
-      dispatch(setCurrentUser(data.data));
+      if (!data.data.loginAt) {
+        // navigate("/expert");
+        dispatch(removeManualBookMarkerRates());
+        dispatch(removeCurrentUser());
+        dispatch(logout({ roleType: "role3" }));
+        dispatch(removeSelectedMatch());
+        setGlobalStore((prev) => ({
+          ...prev,
+          expertJWT: "",
+          isSession: true,
+        }));
+        await axios.get("auth/logout");
+        removeSocket();
+        navigate("/expert");
+      } else {
+        localStorage.setItem("role3", "role3");
+        dispatch(setCurrentUser(data.data));
+      }
     } catch (e) {
       console.log(e);
     }

@@ -1,11 +1,10 @@
 export const onChangeKeyCheck = (textValue) => {
-
     let errorText = "Password must contain atleast "
     let errorPush = []
 
     var lowerCaseLetters = /[a-z]/g;
-    
-    if (textValue.match(lowerCaseLetters)===null) {
+
+    if (textValue.match(lowerCaseLetters) === null) {
         errorPush.push("one lowercase letter ")
     }
 
@@ -25,8 +24,8 @@ export const onChangeKeyCheck = (textValue) => {
         errorPush.push("one numeric value ")
     }
 
-    if (textValue.length < 8) {
-        errorPush.push("eight characters ")
+    if (textValue.length < 5) {
+        errorPush.push("six characters ")
     }
 
     if (errorPush.length === 1) {
@@ -54,3 +53,31 @@ export const onChangeKeyCheck = (textValue) => {
     }
 
 }
+export const onChangeKeyCheckNumber = (textValue) => {
+    let errorText = "Password must contain at least ";
+    let errorPush = [];
+
+    var numbers = /^\d+$/;
+    if (!textValue.match(numbers)) {
+        errorPush.push("only numeric digits");
+    }
+
+    if (textValue.length < 4) {
+        errorPush.push("minimum 5 digits");
+    }
+
+    if (errorPush.length === 1) {
+        errorText += errorPush[0];
+    } else if (errorPush.length === 2) {
+        errorText += errorPush.join(" & ");
+    } else if (errorPush.length > 2) {
+        errorText +=
+            errorPush.slice(0, -1).join(", ") + " & " + errorPush.slice(-1);
+    }
+
+    if (errorPush.length === 0) {
+        return null; // Return null when there are no errors
+    } else {
+        return errorText;
+    }
+};

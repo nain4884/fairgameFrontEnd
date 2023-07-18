@@ -60,7 +60,6 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
         >
           <Input
             placeholder={"Enter Old Password"}
-            inputProps={{ type: "password" }}
             title={"Old Password"}
             titleStyle={{
               color: "#222222",
@@ -98,7 +97,7 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
             onFocusOut={doSendErrorForPassword}
             toFoucs={true}
           />
-          {error[3].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
+          {error[3].val && <p style={{ color: "#fa1e1e" }}>{error[3].val}</p>}
           <Input
             placeholder={"Enter Confirm Password"}
             inputProps={{ type: "password" }}

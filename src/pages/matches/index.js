@@ -34,7 +34,10 @@ import BetHistory from "./BetHistory";
 import ChangeButtonValue from "./ChangeButtonValue";
 import ModalMUI from "@mui/material/Modal";
 import CustomLoader from "../../components/helper/CustomLoader";
+import { toast } from "react-toastify";
+
 const Matches = () => {
+  let { axios } = setRole();
   const [visible, setVisible] = useState(false);
 
   const location = useLocation();
@@ -55,6 +58,27 @@ const Matches = () => {
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
+  const changePassword = async (value) => {
+    try {
+      const payload = {
+        OldPassword: value[2].val,
+        password: value[3].val,
+        confirmpassword: value[4].val,
+      };
+      const { data } = await axios.post(
+        `/fair-game-wallet/updateSelfPassword`,
+        payload
+      );
+
+      if (data.message === "Password update successfully.") {
+        toast.success("Password update successfully.");
+      }
+    } catch (e) {
+      // console.log(e.response.data.message);
+      toast.error(e.response.data.message);
+    }
+  }
+
   return (
     <div style={{ height: "120vh", display: "flex", flexDirection: "column" }}>
       <Box
@@ -65,8 +89,8 @@ const Matches = () => {
             backgroundImage: `${theme.palette.primary.homeBodyGradient}`,
           }),
         ]}
-      > 
-     
+      >
+
         <SideBar />
         <Box sx={{ width: "100%" }}>
           <Box
@@ -89,7 +113,7 @@ const Matches = () => {
                   loader={loader}
                   selected={selected}
                   setVisible={setVisible}
-                  // handleClose={handleClose}
+                // handleClose={handleClose}
                 />
               )}
             {window.location.pathname === "/matchDetail" && (
@@ -97,7 +121,7 @@ const Matches = () => {
                 selected={selected}
                 setVisible={setVisible}
                 visible={visible}
-                // handleClose={handleClose}
+              // handleClose={handleClose}
               />
             )}
             {["MY ACCOUNT"].includes(selected) &&
@@ -106,12 +130,12 @@ const Matches = () => {
                   selected={selected}
                   setVisible={setVisible}
                   visible={visible}
-                  // handleClose={handleClose}
+                // handleClose={handleClose}
                 />
               )}
             {["MY ACCOUNT"].includes(selected) &&
               window.location.pathname === "/change_password" && (
-                <ChangePasswordComponent selected={selected} visible={true} />
+                <ChangePasswordComponent selected={selected} visible={true} changePassword={changePassword} />
               )}
 
             {["EmptyComponent"].includes(selected) &&

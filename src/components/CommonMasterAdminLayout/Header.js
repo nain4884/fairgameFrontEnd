@@ -331,8 +331,35 @@ const CustomHeader = ({ }) => {
         localStorage.setItem("role2", "role2");
       }
       const { data } = await axios.get("users/profile");
-      setBalance(data.data.current_balance);
-      dispatch(setCurrentUser(data.data));
+      if (!data.data.loginAt) {
+        if (nav === "admin") {
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role1" }));
+          setGlobalStore((prev) => ({
+            ...prev,
+            JWTadmin: "",
+            isSession: true,
+          }));
+          await axios.get("auth/logout");
+          removeSocket();
+          navigate("/admin");
+        }
+        if (nav === "wallet") {
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role2" }));
+          setGlobalStore((prev) => ({
+            ...prev,
+            JWTwallet: "",
+            isSession: true,
+          }));
+          await axios.get("auth/logout");
+          removeSocket();
+          navigate("/wallet");
+        }
+      } else {
+        setBalance(data.data.current_balance);
+        dispatch(setCurrentUser(data.data));
+      }
 
       var value = allRole?.find((role) => role?.id === data?.data?.roleId);
       roleName = value?.roleName;

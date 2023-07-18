@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 import { eye } from "../assets";
 import { useCallback, useEffect, useState } from "react";
 
-import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
+import { doSendErrorForPasswordNumber } from "./helper/doCheckErrorForPassword";
 import { setRole } from "../newStore";
 import { useDispatch } from "react-redux";
 import { setUpdatedTransPasswords } from "../newStore/reducers/auth";
@@ -130,8 +130,9 @@ export const TransPassComp = ({ onCancel }) => {
           setError={setError}
           error={error}
           place={2}
-          onFocusOut={doSendErrorForPassword}
+          onFocusOut={doSendErrorForPasswordNumber}
           toFoucs={true}
+          condition={true}
         />
         {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
         <Input
@@ -151,8 +152,9 @@ export const TransPassComp = ({ onCancel }) => {
           setError={setError}
           error={error}
           place={3}
-          onFocusOut={doSendErrorForPassword}
+          onFocusOut={doSendErrorForPasswordNumber}
           toFoucs={true}
+          condition={true}
         />
         {passwordDetail[2].val !== passwordDetail[3].val && (
           <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>
