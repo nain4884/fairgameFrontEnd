@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useContext } from "react";
 import { DeleteIcon } from "../../admin/assets";
 import { Background, DailogModal } from "../../components/index";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FullAllBets from "../../components/FullAllBets";
 import AddNotificationModal from "../../components/AddNotificationModal";
 import { setDailogData } from "../../store/dailogModal";
@@ -18,10 +18,19 @@ import { setRole } from "../../newStore";
 import { setSelectedMatch } from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
 import CustomLoader from "../../components/helper/CustomLoader";
+import { removeSocket } from "../../components/helper/removeSocket";
+import { removeCurrentUser, } from "../../newStore/reducers/currentUser";
+import {
+  removeManualBookMarkerRates,
+} from "../../newStore/reducers/matchDetails";
+import { GlobalStore } from "../../context/globalStore";
+import { logout } from "../../newStore/reducers/auth";
 
 let matchOddsCount = 0;
 let sessionOffline = [];
 const DeleteBet = ({ }) => {
+  const dispatch = useDispatch();
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { socket, socketMicro } = useContext(SocketContext);
@@ -51,6 +60,7 @@ const DeleteBet = ({ }) => {
     (state) => state?.matchDetails?.selectedMatch?.id
   );
   const url = window.location.href;
+  const navigate = useNavigate();
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
@@ -662,6 +672,18 @@ const DeleteBet = ({ }) => {
           }
         }
 
+        if (packet.data[0] === "logoutUserForce") {
+          dispatch(logout({ roleType: "role2" }));
+          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeCurrentUser());
+          // dispatch(removeSelectedMatch());
+          await axios.get("auth/logout");
+          removeSocket();
+          navigate("/wallet");
+          socket.disconnect();
+        }
+
       };
     }
   }, [socket]);
@@ -934,7 +956,6 @@ const DeleteBet = ({ }) => {
       </Box>
     );
   };
-  const dispatch = useDispatch();
   return (
     <Background>
       {loading ? (

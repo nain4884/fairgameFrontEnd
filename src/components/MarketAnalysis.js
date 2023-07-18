@@ -10,8 +10,18 @@ import LiveMarketComponent from "./LiveMarketComponent";
 import CustomBox from "./CustomBox";
 import CustomLoader from "./helper/CustomLoader";
 import { SocketContext } from "../context/socketContext";
+import { removeSocket } from "../components/helper/removeSocket";
+import { removeCurrentUser, } from "../newStore/reducers/currentUser";
+import {
+  removeManualBookMarkerRates,
+} from "../newStore/reducers/matchDetails";
+import { useDispatch, useSelector } from "react-redux";
+import { GlobalStore } from "../context/globalStore";
+import { logout } from "../newStore/reducers/auth";
 
 const MarketAnalysis = () => {
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const dispatch = useDispatch();
   const { socket } = useContext(SocketContext);
   const { pathname } = useLocation();
   const [loading, setLoading] = useState(false);
@@ -25,6 +35,7 @@ const MarketAnalysis = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (socket && socket.connected) {
       socket.on("newMessage", (value) => {
@@ -39,7 +50,17 @@ const MarketAnalysis = () => {
         if (packet.data[0] === "resultDeclareForBet") {
           getAllMatch();
         }
-
+        if (packet.data[0] === "logoutUserForce") {
+          dispatch(logout({ roleType: "role2" }));
+          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeCurrentUser());
+          // dispatch(removeSelectedMatch());
+          await axios.get("auth/logout");
+          removeSocket();
+          navigate("/wallet");
+          socket.disconnect();
+        }
       };
     }
   }, [socket]);
@@ -78,7 +99,6 @@ const MarketAnalysis = () => {
   useEffect(() => {
     // console.log(selected, 'selcted')
   }, [selected]);
-  const navigate = useNavigate();
 
   async function getAllMatch() {
     try {

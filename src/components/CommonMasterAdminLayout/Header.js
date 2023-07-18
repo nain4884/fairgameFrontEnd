@@ -268,22 +268,40 @@ const CustomHeader = ({ }) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
+          // alert(1111)
           const url = window.location.href;
-          // alert(url)
           if (url.includes("wallet")) {
             dispatch(setWConfirmAuth(true));
             let token = localStorage.getItem("JWTwallet");
             if (token) {
               sessionStorage.setItem("JWTwallet", token);
             }
-            navigate(`/wallet`);
+            dispatch(logout({ roleType: "role2" }));
+            setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+            dispatch(removeManualBookMarkerRates());
+            dispatch(removeCurrentUser());
+            // dispatch(removeSelectedMatch());
+            await axios.get("auth/logout");
+            removeSocket();
+            navigate("/wallet");
+            socketMicro.disconnect();
+            socket.disconnect();
           } else {
             dispatch(setAConfirmAuth(true));
             let token = localStorage.getItem("JWTadmin");
             if (token) {
               sessionStorage.setItem("JWTadmin", token);
             }
-            navigate(`/admin`);
+            dispatch(logout({ roleType: "role1" }));
+            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+            dispatch(removeManualBookMarkerRates());
+            dispatch(removeCurrentUser());
+            socketMicro.disconnect();
+            socket.disconnect();
+            // dispatch(removeSelectedMatch());
+            await axios.get("auth/logout");
+            removeSocket();
+            navigate("/admin");
           }
           // const { data } = await axios.get("auth/logout");
           // if (data?.data === "success logout") {

@@ -231,17 +231,17 @@ const CustomHeader = ({ }) => {
           dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           dispatch(logout({ roleType: "role3" }));
-          socketMicro.disconnect();
-          socket.disconnect();
           dispatch(removeSelectedMatch());
           setGlobalStore((prev) => ({
             ...prev,
             expertJWT: "",
-            isSession: true,
+            // isSession: true,
           }));
-          await axios.get("auth/logout");
+          // await axios.get("auth/logout");
           removeSocket();
           navigate("/expert");
+          socketMicro.disconnect();
+          socket.disconnect();
         }
         if (packet.data[0] === "userBalanceUpdate") {
           const data = packet.data[1];

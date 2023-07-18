@@ -10,12 +10,17 @@ import { setRole } from "../newStore";
 import { Lock, BallStart } from "../assets";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { setSessionResults } from "../newStore/reducers/matchDetails";
+import { setSessionResults, removeManualBookMarkerRates, removeSelectedMatch } from "../newStore/reducers/matchDetails";
 import {
   setSessionAllBet,
   setSessionBetId,
   setAllEventSession,
 } from "../newStore/reducers/expertMatchDetails";
+import { removeCurrentUser, } from "../newStore/reducers/currentUser";
+import { logout } from "../newStore/reducers/auth";
+import { GlobalStore } from "../context/globalStore";
+import { useNavigate } from "react-router-dom";
+import { removeSocket } from "./helper/removeSocket";
 
 const IndiaPakLive = React.forwardRef(({
   createSession,
@@ -24,6 +29,8 @@ const IndiaPakLive = React.forwardRef(({
   proLoss1,
   setCheckBetId,
   childFunction, }, ref) => {
+  const navigate = useNavigate();
+  const { setGlobalStore } = useContext(GlobalStore);
   const childRef = useRef(null);
   const { socket } = useContext(SocketContext);
   const { axios } = setRole();
@@ -228,7 +235,6 @@ const IndiaPakLive = React.forwardRef(({
             }
           }
         }
-
       };
     }
   }, [socket, betId, sessionAllBet]);

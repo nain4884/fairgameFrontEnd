@@ -21,7 +21,7 @@ const menutItems = [
   { title: "Market", navigateTo: "market" },
   { title: "Add Book Maker", navigateTo: "add_book_maker" },
   { title: "Add Match", navigateTo: "add_match" },
-  { title: "Change Password" },
+  { title: "Change Password", navigateTo: "change_password" },
 ];
 const HeaderDropdown = ({ anchorEl, open, handleClose }) => {
   const { axios } = setRole();
@@ -90,7 +90,7 @@ const HeaderDropdown = ({ anchorEl, open, handleClose }) => {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      {menutItems.map((x,i) => (
+      {menutItems.map((x, i) => (
         <MenuItem
           key={i}
           dense={true}

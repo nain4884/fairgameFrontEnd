@@ -14,6 +14,7 @@ import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
 import PageNotFound from "../../components/PageNotFound";
+import ChangePassword from "./ChangePassword.js";
 import Header from "./Header";
 import AddMatchComp from "./AddMatchComp";
 
@@ -100,6 +101,15 @@ const ExportRoutes = () => {
             <ExpertPrivateRoute>
               {" "}
               <AddBookMakerMarket />
+            </ExpertPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/change_password"
+          element={
+            <ExpertPrivateRoute>
+              <ChangePassword />
             </ExpertPrivateRoute>
           }
         />

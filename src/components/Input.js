@@ -330,7 +330,7 @@ const Input = ({
                   [place]: {
                     ...Detail[place],
                     val:
-                      place === 14 ? "" : condition ? onChangeKeyCheckNumber(Detail[place].val) : onChangeKeyCheck((Detail[place].val)),
+                      place === 14 ? "" : condition ? onChangeKeyCheckNumber(e?.target.value) : onChangeKeyCheck(e?.target.value),
                   },
                 })
                 : setError({

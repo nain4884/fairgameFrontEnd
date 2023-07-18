@@ -4,17 +4,26 @@ import { useTheme } from "@emotion/react";
 import "../../components/index.css";
 import { Background } from "../../components/index";
 import FullAllBets from "../../components/FullAllBets";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Odds from "./matches/Odds";
 import BookMarketer from "./matches/BookMaketer";
 import SessionMarket from "./matches/SessionMarket";
 import { setRole } from "../../newStore";
 import { SocketContext } from "../../context/socketContext";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CustomLoader from "../../components/helper/CustomLoader";
+import { removeSocket } from "../../components/helper/removeSocket";
+import { removeCurrentUser, } from "../../newStore/reducers/currentUser";
+import {
+  removeManualBookMarkerRates,
+} from "../../newStore/reducers/matchDetails";
+import { GlobalStore } from "../../context/globalStore";
+import { logout } from "../../newStore/reducers/auth";
 
 let matchOddsCount = 0;
 const MatchSubmit = ({ }) => {
+  const dispatch = useDispatch();
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { socket, socketMicro } = useContext(SocketContext);
@@ -32,6 +41,8 @@ const MatchSubmit = ({ }) => {
   const [isHandled, setIsHandled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState();
+
+  const navigate = useNavigate();
   // matchIds
   useEffect(() => {
     // alert(matchIds)
@@ -583,6 +594,17 @@ const MatchSubmit = ({ }) => {
             }
           })(i);
         }
+        // if (packet.data[0] === "logoutUserForce") {
+        //   dispatch(logout({ roleType: "role1" }));
+        //   setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+        //   dispatch(removeManualBookMarkerRates());
+        //   dispatch(removeCurrentUser());
+        //   // dispatch(removeSelectedMatch());
+        //   // await axios.get("auth/logout");
+        //   removeSocket();
+        //   navigate("/wallet");
+        //   socket.disconnect();
+        // }
       };
     }
   }, [socket]);
