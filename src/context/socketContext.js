@@ -40,51 +40,51 @@ export const SocketProvider = ({ children }) => {
     try {
       const token = getToken(globalStore, role);
       if (!["Bearer null", ""].includes(token)) {
-        if (!socket && checkSocket !== "true") {
-          const newSocket = io(`${apiBasePath}`, {
-            transports: ["websocket"],
-            headers: {
-              Authorization: `${token}`,
-            },
-            auth: {
-              token: `${token}`,
-            },
-          });
-          newSocket.on("connect", () => {
-            setSocket(newSocket);
-            // toast.success("Socket connect !", { autoClose: 2000 });
-            // localStorage.setItem("socket", newSocket.connected)
-          });
-        }
+        // if (!socket && checkSocket !== "true") {
+        const newSocket = io(`${apiBasePath}`, {
+          transports: ["websocket"],
+          headers: {
+            Authorization: `${token}`,
+          },
+          auth: {
+            token: `${token}`,
+          },
+        });
+        newSocket.on("connect", () => {
+          setSocket(newSocket);
+          // toast.success("Socket connect !", { autoClose: 2000 });
+          // localStorage.setItem("socket", newSocket.connected)
+        });
+        // }
         // newSocket.on("disconnect", () => {
         //   toast.error("Socket disconnect !", { autoClose: 1000 });
         // });
         // }
-        if (!socketMicro && checkMicroSocket !== "true") {
-          const newMicroSocket = io(`${microServiceApiPath}`, {
-            transports: ["websocket"],
-            headers: {
-              Authorization: `${token}`,
-            },
-            auth: {
-              token: `${token}`,
-            },
-          });
-          newMicroSocket.on("connect", () => {
-            setSocketMicro(newMicroSocket);
-            // toast.success("Third party socket connect !", { autoClose: 2000 });
-            // localStorage.setItem("microSocket", newMicroSocket.connected)
-          });
+        // if (!socketMicro && checkMicroSocket !== "true") {
+        const newMicroSocket = io(`${microServiceApiPath}`, {
+          transports: ["websocket"],
+          headers: {
+            Authorization: `${token}`,
+          },
+          auth: {
+            token: `${token}`,
+          },
+        });
+        newMicroSocket.on("connect", () => {
+          setSocketMicro(newMicroSocket);
+          // toast.success("Third party socket connect !", { autoClose: 2000 });
+          // localStorage.setItem("microSocket", newMicroSocket.connected)
+        });
 
-          // newMicroSocket.on("disconnect", () => {
-          //   toast.error("Third party socket disconnect !", { autoClose: 1000 });
-          // });
+        // newMicroSocket.on("disconnect", () => {
+        //   toast.error("Third party socket disconnect !", { autoClose: 1000 });
+        // });
 
-          newMicroSocket.onerror = (event) => {
-            // Handle the WebSocket connection error here
-            console.error("WebSocket connection failed:", event);
-          };
-        }
+        newMicroSocket.onerror = (event) => {
+          // Handle the WebSocket connection error here
+          console.error("WebSocket connection failed:", event);
+        };
+        // }
       }
     } catch (e) {
       console.log("Error: " + e);
