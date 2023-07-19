@@ -52,9 +52,25 @@ const PlaceBet = ({
   useEffect(() => {
     if (geoLocation) {
       setIP(geoLocation);
+      getButtonList();
     }
   }, [geoLocation]);
   const myDivRef = useRef(null);
+
+  const getButtonList = async () => {
+    try {
+
+      const { data } = await axios.get("/users/getButtonValues");
+      alert(JSON.stringify(data))
+      // if (data?.data) {
+      //   setNewRates(data?.data);
+      // }
+    } catch (e) {
+      toast.error(e.response.data.message);
+      console.log("error", e.message);
+    }
+  };
+
   const getLatestBetAmount = async (value, newData) => {
     try {
       const title = season ? betType : isBack ? "back" : "lay";
