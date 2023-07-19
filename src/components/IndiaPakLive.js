@@ -451,6 +451,9 @@ const IndiaPakLive = React.forwardRef(({
                           setVisible1(false);
                           getSessionResult(match?.id);
                         }}
+                        onClickCancel={() => {
+                          setVisible1(false);
+                        }}
                       />
                     )}
                   </Box>
@@ -497,6 +500,9 @@ const IndiaPakLive = React.forwardRef(({
                           setVisible(false);
                           setIsDisable(true);
                           getSessionResult(match?.id);
+                        }}
+                        onClickCancel={() => {
+                          setVisible(false);
                         }}
                       />
                     )}
@@ -545,6 +551,9 @@ const IndiaPakLive = React.forwardRef(({
                           setVisible2(false);
                           getSessionResult(match?.id);
                         }}
+                        onClickCancel={() => {
+                          setVisible2(false);
+                        }}
                       />
                     )}
                   </Box>
@@ -586,6 +595,9 @@ const IndiaPakLive = React.forwardRef(({
                   {visible && (
                     <SessionResultModal
                       onClick={() => {
+                        setVisible(false);
+                      }}
+                      onClickCancel={() => {
                         setVisible(false);
                       }}
                     />

@@ -5,6 +5,7 @@ import { setRole } from "../newStore";
 import { toast } from "react-toastify";
 import { memo } from "react";
 import MatchOddsResultCustomButton from "./MatchOddsResultCustomButom";
+import { useNavigate } from "react-router-dom";
 
 const ResultComponent = ({
   onClick,
@@ -15,6 +16,7 @@ const ResultComponent = ({
   betId,
   matchId,
 }) => {
+  const navigate = useNavigate();
   const [selected, setSelected] = useState(teamA);
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
@@ -48,6 +50,7 @@ const ResultComponent = ({
       onClick();
       toast.success(data?.message);
       setLoading({ id: "", value: false });
+      navigate("/expert/match")
     } catch (e) {
       setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);

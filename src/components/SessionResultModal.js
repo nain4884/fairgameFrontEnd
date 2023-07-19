@@ -19,6 +19,7 @@ const SessionResultModal = ({
   currentMatch,
   visible,
   setIObtes,
+  onClickCancel
 }) => {
   const { socket, socketMicro } = useContext(SocketContext);
   const [selected, setSelected] = useState("");
@@ -212,7 +213,7 @@ const SessionResultModal = ({
         <img
           onClick={(e) => {
             e.stopPropagation();
-            onClick();
+            onClickCancel();
           }}
           src={CancelDark}
           style={{ width: "25px", height: "25px", cursor: "pointer" }}

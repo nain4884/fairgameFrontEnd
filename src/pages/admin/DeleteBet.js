@@ -613,6 +613,10 @@ const DeleteBet = ({ }) => {
         if (packet.data[0] === "resultDeclareForBet") {
           const value = packet.data[1];
           // matchId = value?.match_id;
+          if (value?.sessionBet == false) {
+            navigate("/wallet/market_analysis");
+            return;
+          }
           try {
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id !== value?.match_id) {

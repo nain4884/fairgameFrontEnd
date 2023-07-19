@@ -179,46 +179,48 @@ const MatchScreen = () => {
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
           try {
-            setLiveData((liveData) =>
-              liveData?.filter((v) => v.betStatus !== 1)
-            );
+            if (currentMatch?.id == value?.match_id) {
+              setLiveData((liveData) =>
+                liveData?.filter((v) => v.betStatus !== 1)
+              );
 
-            setLiveData((liveData) => {
-              liveData?.map((val) => {
-                if (val?.selectionId === data?.selectionId) {
-                  return {
-                    ...val,
-                    betStatus: 1, // update betStatus to 1
-                  };
-                }
-                return val;
+              setLiveData((liveData) => {
+                liveData?.map((val) => {
+                  if (val?.selectionId === data?.selectionId) {
+                    return {
+                      ...val,
+                      betStatus: 1, // update betStatus to 1
+                    };
+                  }
+                  return val;
+                });
               });
-            });
-            setCurrentMatch((currentMatch) => {
-              var updatedBettings = currentMatch?.bettings.map((betting) => {
-                if (
-                  betting?.selectionId === value?.selectionId ||
-                  betting?.id === value?.id
-                ) {
-                  return { ...betting, betStatus: value?.betStatus };
-                } else {
-                  return betting;
-                }
-              });
-              if (
-                !updatedBettings.find(
-                  (betting) =>
+              setCurrentMatch((currentMatch) => {
+                var updatedBettings = currentMatch?.bettings.map((betting) => {
+                  if (
                     betting?.selectionId === value?.selectionId ||
                     betting?.id === value?.id
-                )
-              ) {
-                updatedBettings.unshift(value);
-              }
-              return {
-                ...currentMatch,
-                bettings: updatedBettings,
-              };
-            });
+                  ) {
+                    return { ...betting, betStatus: value?.betStatus };
+                  } else {
+                    return betting;
+                  }
+                });
+                if (
+                  !updatedBettings.find(
+                    (betting) =>
+                      betting?.selectionId === value?.selectionId ||
+                      betting?.id === value?.id
+                  )
+                ) {
+                  updatedBettings.unshift(value);
+                }
+                return {
+                  ...currentMatch,
+                  bettings: updatedBettings,
+                };
+              });
+            }
           } catch (e) {
             console.log(e.message);
           }

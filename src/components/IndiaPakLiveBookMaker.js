@@ -150,7 +150,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     if (packet.data[0] === "match_bet") {
                         const data = packet.data[1];
                         try {
-                            if (data) {
+                            if (data && data?.betPlaceData?.marketType == "MANUAL BOOKMAKER") {
                                 const body = {
                                     id: data?.betPlaceData?.id,
                                     isActive: true,

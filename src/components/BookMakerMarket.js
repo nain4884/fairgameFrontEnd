@@ -51,6 +51,9 @@ const Header = () => {
                 <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>User</Typography>
             </Box>
             <Box sx={{ background: "#262626", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>Market</Typography>
+            </Box>
+            <Box sx={{ background: "#262626", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}>Team</Typography>
             </Box>
             <Box sx={{ background: "#262626", width: "10%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -89,25 +92,28 @@ const Row = ({ index, values }) => {
                     <Typography sx={{ color: "white", fontWeight: "600", fontSize: "12px", }}>{index < 100 ? "0" + index : + index}</Typography>
                 </Box>
                 <Box sx={{ background: "#0B4F26", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "white", }}>{values?.user?.userName || values?.userName}</Typography>
+                    <Typography sx={{ fontWeight: "600", fontSize: "12px", color: "white", }}>{values?.user?.userName || values?.userName}</Typography>
                 </Box>
                 <Box sx={{ background: "#F8C851", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Typography sx={{ color: "black", fontWeight: "600", fontSize: "14px", lineHeight: 1 }}>{values.team_bet}</Typography>
+                    <Typography sx={{ color: "black", fontWeight: "600", fontSize: "12px", lineHeight: 1, textAlign: 'center' }}>{values.marketType}</Typography>
+                </Box>
+                <Box sx={{ background: "#F8C851", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Typography sx={{ color: "black", fontWeight: "600", fontSize: "12px", lineHeight: 1 }}>{values.team_bet}</Typography>
                 </Box>
                 <Box sx={{ background: values.bet_type == "back" ? "#B3E0FF" : "#FFB5B5", width: "10%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", position: 'relative', }}>
-                    <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black" }}>{values.odds}</Typography>
+                    <Typography sx={{ fontWeight: "600", fontSize: "12px", color: "black" }}>{values.odds}</Typography>
                 </Box>
                 <Box sx={{ background: values.bet_type == "back" ? "#B3E0FF" : "#FFB5B5", width: "14%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", position: 'relative', }}>
-                    <Typography sx={{ fontWeight: "600", fontSize: { mobile: "6px", laptop: "14px" }, color: "black", position: 'inhert', top: 5, right: 5 }} >{getTime(values.createAt)}</Typography>
+                    <Typography sx={{ fontWeight: "600", fontSize: { mobile: "6px", laptop: "12px" }, color: "black", position: 'inhert', top: 5, right: 5 }} >{getTime(values.createAt)}</Typography>
                 </Box>
                 <Box sx={{ background: values.bet_type == "back" ? "#B3E0FF" : "#FFB5B5", width: "15%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black", }}>{values.bet_type == "back" ? "Back" : "Lay"}</Typography>
+                    <Typography sx={{ fontWeight: "600", fontSize: "12px", color: "black", }}>{values.bet_type == "back" ? "Back" : "Lay"}</Typography>
                 </Box>
                 <Box sx={{ background: values.bet_type == "back" ? "#B3E0FF" : "#FFB5B5", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "black", }}>{values.amount || values.stake}</Typography>
+                    <Typography sx={{ fontWeight: "600", fontSize: "12px", color: "black", }}>{values.amount || values.stake}</Typography>
                 </Box>
                 <Box sx={{ background: "#0B4F26", width: "20%", borderLeft: "2px solid white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Typography sx={{ fontWeight: "600", fontSize: "14px", color: "white", }}>{values.myStack}</Typography>
+                    <Typography sx={{ fontWeight: "600", fontSize: "12px", color: "white", }}>{values.myStack}</Typography>
                 </Box>
             </Box>
             {values?.deleted_reason && (

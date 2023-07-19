@@ -76,6 +76,9 @@ const AdminInPlay = () => {
     setCurrentPage(parseInt(value));
   }
 
+  const handleUpdateMatch = async () => {
+    getAllMatch();
+  }
   const currentElements = matchData;
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -97,6 +100,7 @@ const AdminInPlay = () => {
             top={true}
             blur={false}
             match={match}
+            handleUpdateMatch={handleUpdateMatch}
           />
         );
       })}
