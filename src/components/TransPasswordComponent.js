@@ -1,6 +1,6 @@
 import { CustomHeader, Input } from ".";
 import { Box, Typography } from "@mui/material";
-import { eye } from "../assets";
+import { eye, eyeLock } from "../assets";
 import { useCallback, useEffect, useState } from "react";
 
 import { doSendErrorForPasswordNumber } from "./helper/doCheckErrorForPassword";
@@ -125,6 +125,7 @@ export const TransPassComp = ({ onCancel }) => {
           inputContainerStyle={{ borderRadius: "5px" }}
           containerStyle={{}}
           img={eye}
+          img1={eyeLock}
           setDetail={setPasswordDetail}
           Detail={passwordDetail}
           setError={setError}
@@ -147,6 +148,7 @@ export const TransPassComp = ({ onCancel }) => {
           inputContainerStyle={{ borderRadius: "5px" }}
           containerStyle={{ marginTop: "20px" }}
           img={eye}
+          img1={eyeLock}
           setDetail={setPasswordDetail}
           Detail={passwordDetail}
           setError={setError}

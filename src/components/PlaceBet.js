@@ -48,6 +48,7 @@ const PlaceBet = ({
 
   const { geoLocation } = useSelector((state) => state.auth);
   const [ip, setIP] = useState(geoLocation);
+  const [buttonData, setButtonData] = useState([]);
 
   useEffect(() => {
     if (geoLocation) {
@@ -57,6 +58,17 @@ const PlaceBet = ({
   }, [geoLocation]);
   const myDivRef = useRef(null);
 
+  function customSort(a, b) {
+    if (a.label === "1k") {
+      return -1; // "1k" comes first
+    } else if (b.label === "1k") {
+      return 1; // "1k" comes first
+    } else {
+      // For other labels, maintain their original order
+      return 0;
+    }
+  }
+
   const getButtonList = async () => {
     try {
 
@@ -65,6 +77,22 @@ const PlaceBet = ({
       // if (data?.data) {
       //   setNewRates(data?.data);
       // }
+      const initialData = data?.data?.buttons; // Replace this with your initial data
+      const jsonObject = JSON.parse(initialData);
+      // Update the state using the spread operator to keep the existing objects
+      // const updatedState = valueLabel.map((item, index) => {
+      //   return {
+      //     ...item,
+      //     label: Object.keys(jsonObject)[index],
+      //     value: Object.values(jsonObject)[index],
+      //   };
+      // });
+      const resultArray = Object.entries(jsonObject).map(([label, value]) => ({
+        label: label,
+        value: value,
+      }));
+      resultArray.sort(customSort);
+      setButtonData(resultArray);
     } catch (e) {
       toast.error(e.response.data.message);
       console.log("error", e.message);
@@ -295,11 +323,12 @@ const PlaceBet = ({
         {
           <>
             <Box sx={{ display: "flex", marginTop: "15px", marginX: "2px" }}>
-              {["2000", "3000", "5000", "10000"]?.map((v) => (
+              {buttonData?.slice(0, 4).map((v, index) => (
                 <NumberData
-                  key={v}
+                  key={index}
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
-                  value={v}
+                  value={v.value}
+                  label={v.label}
                   getLatestBetAmount={(value) =>
                     getLatestBetAmount(value, data)
                   }
@@ -308,11 +337,12 @@ const PlaceBet = ({
               ))}
             </Box>
             <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }}>
-              {["20000", "100000", "200000", "500000"]?.map((v) => (
+              {buttonData?.slice(4, 8).map((v, index) => (
                 <NumberData
-                  key={v}
+                  key={index}
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
-                  value={v}
+                  value={v.value}
+                  label={v.label}
                   getLatestBetAmount={(value) =>
                     getLatestBetAmount(value, data)
                   }

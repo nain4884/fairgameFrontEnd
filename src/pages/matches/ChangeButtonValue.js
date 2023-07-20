@@ -7,7 +7,7 @@ import { setRole } from "../../newStore";
 
 const ChangeButtonValue = ({ selected, visible }) => {
   const { axios } = setRole();
-  const values = ["0", "1", "2", "3", "4", "5", "6", "7"];
+  const [id, setId] = useState("");
   const [valueLabel, setValueLabel] = useState([
     { lable: "", value: "" },
     { lable: "", value: "" },
@@ -19,151 +19,80 @@ const ChangeButtonValue = ({ selected, visible }) => {
     { lable: "", value: "" },
   ]);
 
-  // const handleChange = (event) => {
-  //   onChange(index, event.target.value);
-  // };
 
+  useEffect(() => {
+    getButtonList();
+  }, []);
 
-  // const handleLabelChange = (item, newValue) => {
-  //   const updatedValueLable = valueLable.map((value) => {
-  //     if (value === item) {
-  //       return { ...value, lable: newValue };
-  //     }
-  //     return value;
-  //   });
-  //   setValueLable(updatedValueLable);
-  // };
-
-
-
-  const setButtonList = async () => {
-    // alert(JSON.stringify(valueLabel))
-    return;
-    var payload = {
-      buttons: {
-        "100": 100,
-        "5000": 100,
-        "10000": 100,
-        "25000": 100,
-        "100": 100,
-        "100": 100,
-        "100": 100,
-        "100": 100,
-      },
-      id: ""
-    };
+  function customSort(a, b) {
+    if (a.label === "1k") {
+      return -1; // "1k" comes first
+    } else if (b.label === "1k") {
+      return 1; // "1k" comes first
+    } else {
+      // For other labels, maintain their original order
+      return 0;
+    }
+  }
+  const getButtonList = async () => {
     try {
-      const { data } = await axios.post("/users/setButtonValues",);
-      alert(JSON.stringify(data))
-      // if (data?.data) {
-      //   setNewRates(data?.data);
-      // }
+      const { data } = await axios.get("/users/getButtonValues");
+      setId(data?.data?.id)
+      const initialData = data?.data?.buttons; // Replace this with your initial data
+      const jsonObject = JSON.parse(initialData);
+      // Update the state using the spread operator to keep the existing objects
+      const updatedState = valueLabel.map((item, index) => {
+        return {
+          ...item,
+          lable: Object.keys(jsonObject)[index],
+          value: Object.values(jsonObject)[index],
+        };
+      });
+      updatedState.sort(customSort);
+      // Now update the state with the updatedState
+      setValueLabel(updatedState);
     } catch (e) {
       toast.error(e.response.data.message);
       console.log("error", e.message);
     }
   };
 
-  const LabelButton1 = ({ value, index, onChange }) => {
-    const handleChange = (event) => {
-      onChange(index, event.target.value);
+  const setButtonList = async () => {
+    const convertedData = valueLabel.reduce((result, item) => {
+      if (item.value) {
+        result[item.lable] = item.value;
+      }
+      return result;
+    }, {});
+    var payload = {
+      buttons: convertedData,
+      id: id
     };
-    return (
-      <Box
-        sx={{
-          background: "white",
-          height: "40px",
-          marginTop: "5px",
-          // border: "2px solid #DEDEDE",
-          borderRadius: "5px",
-          display: "flex",
-          alignItems: "center",
-          // px: "5px",
-        }}
-      >
-        {/* <Typography sx={{ fontSize: "14px", fontWeight: "600" }}>
-          {value}
-        </Typography> */}
-        <TextField
-          value={value.lable}
-          // onChange={handleChange}
-          // // onChange={(event) => onChange(value, event.target.value)}
-          // // onChange={handleChange}
-          // variant="outlined"
-          // size="small"
-          // fullWidth
-          // sx={{ fontSize: "14px", fontWeight: "600" }}
-          // value={value.label}
-          // onChange={handleChange}
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ fontSize: "14px", fontWeight: "600" }}
-          inputProps={{
-            onBlur: (event) => event.target.blur(),
-          }}
-        />
-      </Box>
-
-    );
-  };
-
-  const ValButton1 = ({ value, index, onChange }) => {
-    // const handleChange = (event) => {
-    //   onChange(index, event.target.value);
-    // };
-    return (
-      <Box
-        sx={{
-          background: "white",
-          height: "40px",
-          marginTop: "5px",
-          // border: "2px solid #DEDEDE",
-          borderRadius: "5px",
-          display: "flex",
-          alignItems: "center",
-          // px: "5px",
-        }}
-      >
-        {/* <Typography sx={{ fontSize: "14px", fontWeight: "600" }}>
-          {value}
-        </Typography> */}
-        <TextField
-        // value={value.value}
-        // onChange={handleLabelChange}
-        // variant="outlined"
-        // size="small"
-        // fullWidth
-        // sx={{ fontSize: "14px", fontWeight: "600" }}
-        // value={value.value}
-        // // onChange={handleChange}
-        // variant="outlined"
-        // size="small"
-        // fullWidth
-        // sx={{ fontSize: "14px", fontWeight: "600" }}
-        // inputProps={{
-        //   onBlur: (event) => event.target.blur(),
-        // }}
-        />
-      </Box>
-    );
+    try {
+      const { data } = await axios.post("/users/setButtonValues", payload);
+      toast.success(data?.message);
+    } catch (e) {
+      toast.error(e.response.data.message);
+      console.log("error", e.message);
+    }
   };
 
   const handleLabelChange = (index, newValue, type) => {
-    // alert(type);
     if (type == "label") {
       setValueLabel((prevValues) => {
         const updatedValues = [...prevValues];
-        updatedValues[index].label = newValue;
+        updatedValues[index].lable = newValue;
         return updatedValues;
       });
     } else {
       setValueLabel((prevValues) => {
-        const updatedValues = [...prevValues];
-        updatedValues[index].value = newValue;
-        return updatedValues;
+        const updatedValues1 = [...prevValues];
+        updatedValues1[index].value = newValue;
+        return updatedValues1;
       });
     }
+
+    // alert(JSON.stringify(valueLabel))
   };
 
   return (
@@ -210,12 +139,6 @@ const ChangeButtonValue = ({ selected, visible }) => {
                 </Typography>
                 {valueLabel.map((item, index) => {
                   return <LabelButton key={index} value={item} index={index} onChange={handleLabelChange} />
-                  // return 
-                  // <LabelButton
-                  //   key={index}
-                  //   value={item}
-                  //   index={index}
-                  //   onChange={handleLabelChange} />;
                 }
                 )}
               </Box>
@@ -230,7 +153,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
                   Price Value
                 </Typography>
                 {valueLabel.map((item, index) => {
-                  return <ValButton value={item} index={index} onChange={handleLabelChange} />;
+                  return <ValButton key={index} value={item} index={index} onChange={handleLabelChange} />;
                 })}
               </Box>
             </Box>
@@ -253,7 +176,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
                 sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
                 color={"white"}
               >
-                Update 1
+                Update
               </Typography>
             </Box>
           </Box>
@@ -389,7 +312,7 @@ const LabelButton = ({ value, index, onChange }) => {
       }}
     >
       <TextField
-        value={value.label}
+        value={value.lable}
         onChange={handleChange}
         variant="outlined"
         size="small"
@@ -423,6 +346,7 @@ const ValButton = ({ value, index, onChange }) => {
         value={value.value}
         onChange={handleChange}
         variant="outlined"
+        type="number" // Allow only numeric input
         size="small"
         fullWidth
         sx={{ fontSize: "14px", fontWeight: "600" }}
