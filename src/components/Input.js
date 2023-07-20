@@ -7,7 +7,7 @@ import {
   withStyles,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { onChangeKeyCheck, onChangeKeyCheckNumber } from "./helper/PassKeyCheck";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
@@ -25,6 +25,7 @@ const Input = ({
   inputStyle,
   inputContainerStyle,
   img,
+  img1,
   inputProps,
   setDetail,
   Detail,
@@ -42,8 +43,10 @@ const Input = ({
   checkMesasge,
   disabled,
   setDownlinePar,
-  condition
+  condition,
+  okButtonRef
 }) => {
+  const formRef1 = useRef(null);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("tablet"));
   const [showPass, setShowPass] = useState(true);
@@ -257,7 +260,7 @@ const Input = ({
             variant="standard"
             placeholder={placeholder}
             value={value}
-            onKeyDown={onKeyDown}
+            // onKeyDown={onKeyDown}
             required={required}
             InputProps={{
               max: 100,
@@ -356,11 +359,13 @@ const Input = ({
                   error,
                 });
             }}
+            ref={formRef1}
+            onKeyDown={okButtonRef ? (e) => onKeyDown(e, formRef1) : null}
           />
         )}
         {img && (
           <img
-            src={img}
+            src={showPass ? img : img1}
             onClick={() => {
               setShowPass(!showPass);
             }}

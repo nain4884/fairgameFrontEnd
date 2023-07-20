@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import EventListing from "./EventListing";
 import Input from "./Input";
-import { eye } from "../assets";
+import { eye, eyeLock } from "../assets";
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 import { useState } from "react";
 
@@ -28,6 +28,14 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
       changePassword(passwordDetail);
     }
   }
+  const handleEnterKeyPress = (e) => {
+    if (e.key === "Enter") {
+      // Check if the Enter key is pressed
+      e.preventDefault();
+      // loginButtonRef.current.click(); // Trigger the click event on the CustomButton
+      handleChange();
+    }
+  };
   return (
     <Box>
 
@@ -69,6 +77,7 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
             inputContainerStyle={{ borderRadius: "5px" }}
             containerStyle={{}}
             img={eye}
+            img1={eyeLock}
             setDetail={setPasswordDetail}
             Detail={passwordDetail}
             setError={setError}
@@ -89,6 +98,7 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
             inputContainerStyle={{ borderRadius: "5px" }}
             containerStyle={{ marginTop: "30px" }}
             img={eye}
+            img1={eyeLock}
             setDetail={setPasswordDetail}
             Detail={passwordDetail}
             setError={setError}
@@ -110,6 +120,7 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
             inputContainerStyle={{ borderRadius: "5px" }}
             containerStyle={{ marginTop: "30px" }}
             img={eye}
+            img1={eyeLock}
             setDetail={setPasswordDetail}
             Detail={passwordDetail}
             setError={setError}
@@ -117,6 +128,8 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
             place={4}
             onFocusOut={doSendErrorForPassword}
             toFoucs={true}
+            okButtonRef={"okButtonRef"}
+            onKeyDown={handleEnterKeyPress}
           />
           {passwordDetail[3].val !== passwordDetail[4].val && (
             <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>

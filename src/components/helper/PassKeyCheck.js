@@ -24,7 +24,7 @@ export const onChangeKeyCheck = (textValue) => {
         errorPush.push("one numeric value ")
     }
 
-    if (textValue.length < 5) {
+    if (textValue.length < 6) {
         errorPush.push("six characters ")
     }
 

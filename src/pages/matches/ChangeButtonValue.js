@@ -19,30 +19,27 @@ const ChangeButtonValue = ({ selected, visible }) => {
     { lable: "", value: "" },
   ]);
 
-  const handleChange = (event) => {
-    onChange(index, event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   onChange(index, event.target.value);
+  // };
 
 
-  const handleLabelChange = (item, newValue) => {
-    const updatedValueLable = valueLable.map((value) => {
-      if (value === item) {
-        return { ...value, lable: newValue };
-      }
-      return value;
-    });
-    setValueLable(updatedValueLable);
-  };
+  // const handleLabelChange = (item, newValue) => {
+  //   const updatedValueLable = valueLable.map((value) => {
+  //     if (value === item) {
+  //       return { ...value, lable: newValue };
+  //     }
+  //     return value;
+  //   });
+  //   setValueLable(updatedValueLable);
+  // };
 
-  const handleLabelChange = (index, newValue) => {
-    setValueLabel((prevValues) => {
-      const updatedValues = [...prevValues];
-      updatedValues[index].label = newValue;
-      return updatedValues;
-    });
-  };
+
 
   const setButtonList = async () => {
+    alert(11111)
+    alert(valueLabel)
+    return;
     var payload = {
       buttons: {
         "100": 100,
@@ -68,7 +65,10 @@ const ChangeButtonValue = ({ selected, visible }) => {
     }
   };
 
-  const LabelButton = ({ value, onChange }) => {
+  const LabelButton1 = ({ value, index, onChange }) => {
+    const handleChange = (event) => {
+      onChange(index, event.target.value);
+    };
     return (
       <Box
         sx={{
@@ -87,19 +87,32 @@ const ChangeButtonValue = ({ selected, visible }) => {
         </Typography> */}
         <TextField
           value={value.lable}
-          onChange={handleChange}
-          // onChange={(event) => onChange(value, event.target.value)}
+          // onChange={handleChange}
+          // // onChange={(event) => onChange(value, event.target.value)}
+          // // onChange={handleChange}
+          // variant="outlined"
+          // size="small"
+          // fullWidth
+          // sx={{ fontSize: "14px", fontWeight: "600" }}
+          // value={value.label}
           // onChange={handleChange}
           variant="outlined"
           size="small"
           fullWidth
           sx={{ fontSize: "14px", fontWeight: "600" }}
+          inputProps={{
+            onBlur: (event) => event.target.blur(),
+          }}
         />
       </Box>
+
     );
   };
 
-  const ValButton = ({ value }) => {
+  const ValButton1 = ({ value, index, onChange }) => {
+    // const handleChange = (event) => {
+    //   onChange(index, event.target.value);
+    // };
     return (
       <Box
         sx={{
@@ -117,15 +130,34 @@ const ChangeButtonValue = ({ selected, visible }) => {
           {value}
         </Typography> */}
         <TextField
-          value={value.value}
-          onChange={handleLabelChange}
-          variant="outlined"
-          size="small"
-          fullWidth
-          sx={{ fontSize: "14px", fontWeight: "600" }}
+        // value={value.value}
+        // onChange={handleLabelChange}
+        // variant="outlined"
+        // size="small"
+        // fullWidth
+        // sx={{ fontSize: "14px", fontWeight: "600" }}
+        // value={value.value}
+        // // onChange={handleChange}
+        // variant="outlined"
+        // size="small"
+        // fullWidth
+        // sx={{ fontSize: "14px", fontWeight: "600" }}
+        // inputProps={{
+        //   onBlur: (event) => event.target.blur(),
+        // }}
         />
       </Box>
     );
+  };
+
+  const handleLabelChange = (index, newValue) => {
+
+    // alert(JSON.stringify(valueLabel));
+    setValueLabel((prevValues) => {
+      const updatedValues = [...prevValues];
+      updatedValues[index].label = newValue;
+      return updatedValues;
+    });
   };
 
   return (
@@ -171,12 +203,15 @@ const ChangeButtonValue = ({ selected, visible }) => {
                   Price Lable
                 </Typography>
                 {valueLabel.map((item, index) => {
-                  return <LabelButton
-                    key={index}
-                    value={item}
-                    index={index}
-                    onChange={handleLabelChange} />;
-                })}
+                  return <LabelButton key={index} value={item} index={index} onChange={handleLabelChange} />
+                  // return 
+                  // <LabelButton
+                  //   key={index}
+                  //   value={item}
+                  //   index={index}
+                  //   onChange={handleLabelChange} />;
+                }
+                )}
               </Box>
               <Box sx={{ flex: 1, marginLeft: "10px" }}>
                 <Typography
@@ -189,11 +224,12 @@ const ChangeButtonValue = ({ selected, visible }) => {
                   Price Value
                 </Typography>
                 {valueLabel.map((item, index) => {
-                  return <ValButton value={item} index={index} />;
+                  return <ValButton value={item} index={index} onChange={handleLabelChange} />;
                 })}
               </Box>
             </Box>
             <Box
+              onChange={setButtonList}
               sx={{
                 height: "50px",
                 display: "flex",
@@ -302,6 +338,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
                 </Box>
               </Box>
               <Box
+
                 sx={{
                   height: "50px",
                   display: "flex",
@@ -325,6 +362,68 @@ const ChangeButtonValue = ({ selected, visible }) => {
             </Box>
           </Box>
         </Background>}
+    </Box>
+  );
+};
+
+const LabelButton = ({ value, index, onChange }) => {
+  const handleChange = (event) => {
+    onChange(index, event.target.value);
+  };
+
+  return (
+    <Box
+      sx={{
+        background: "white",
+        height: "40px",
+        marginTop: "5px",
+        borderRadius: "5px",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <TextField
+        value={value.label}
+        onChange={handleChange}
+        variant="outlined"
+        size="small"
+        fullWidth
+        sx={{ fontSize: "14px", fontWeight: "600" }}
+        inputProps={{
+          onBlur: (event) => event.target.blur(),
+        }}
+      />
+    </Box>
+  );
+};
+
+const ValButton = ({ value, index, onChange }) => {
+  const handleChange = (event) => {
+    onChange(index, event.target.value);
+  };
+
+  return (
+    <Box
+      sx={{
+        background: "white",
+        height: "40px",
+        marginTop: "5px",
+        borderRadius: "5px",
+        display: "flex",
+        alignItems: "center",
+      }}
+    >
+      <TextField
+        value={value.value}
+        onChange={handleChange}
+        variant="outlined"
+        size="small"
+        fullWidth
+        sx={{ fontSize: "14px", fontWeight: "600" }}
+        inputProps={{
+          onBlur: (event) => event.target.blur(),
+        }}
+      />
     </Box>
   );
 };

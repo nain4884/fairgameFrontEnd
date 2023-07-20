@@ -662,7 +662,8 @@ const DepositComponent = ({
   const handleChange = (e) => {
     setDepositObj({
       ...depositObj,
-      amount: e.target.value < 0 ? 0 : Number(e.target.value),
+      amount: e.target.value < 0 ? 0 : e.target.value,
+      // amount: e.target.value < 0 ? 0 : e.target.value,
       userId: userModal.id,
     });
 
@@ -902,7 +903,7 @@ const DepositComponent = ({
                   marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
                 }}
               >
-                Wallet Balance 1
+                Wallet Balance
               </Typography>
               <Box
                 sx={{
@@ -1090,6 +1091,8 @@ const DepositComponent = ({
                 isSelected={true}
                 onClick={(e) => {
                   try {
+                    let payload = depositObj;
+                    payload.amount = parseFloat(payload.amount);
                     if (!loading) {
                       setLoading(true);
                       UpdateAvailableBalance(depositObj)
@@ -1313,7 +1316,8 @@ const WithDrawComponent = ({
   const handleChange = (e) => {
     setWithDrawObj({
       ...withDrawObj,
-      amount: e.target.value < 0 ? 0 : Number(e.target.value),
+      // amount: e.target.value < 0 ? 0 : Number(e.target.value),
+      amount: e.target.value < 0 ? 0 : e.target.value,
       userId: userModal.id,
     });
     setElementToUDM({
@@ -1553,7 +1557,7 @@ const WithDrawComponent = ({
                   marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
                 }}
               >
-                Wallet Balance W
+                Wallet Balance
               </Typography>
               <Box
                 sx={{
@@ -1744,6 +1748,8 @@ const WithDrawComponent = ({
                 isSelected={true}
                 onClick={(e) => {
                   try {
+                    let payload = withDrawObj;
+                    payload.amount = parseFloat(payload.amount);
                     if (!loading) {
                       setLoading(true);
                       UpdateAvailableBalance(withDrawObj)

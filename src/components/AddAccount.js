@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Input from "./Input";
-import { EyeIcon } from "../admin/assets";
+import { EyeIcon, EyeSlash } from "../admin/assets";
 import DropDownSimple from "./DropdownSimple";
 import { useNavigate } from "react-router-dom";
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
@@ -34,6 +34,8 @@ const inputContainerStyle = {
 var matchComissionArray = [];
 
 const AddAccount = () => {
+  const formRef = useRef(null);
+  const okButtonRef = useRef(null);
   const { axios, locPath, JWT, roleName } = setRole();
   const navigate = useNavigate();
   const { userWallet, allRole } = useSelector((state) => state.auth);
@@ -88,6 +90,7 @@ const AddAccount = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [downLinePar, setDownlinePar] = useState(0);
+  const [isDisable, setIsDisable] = useState(false);
 
   const [typeToShow, setTypeToShow] = useState([
     "Select account type",
@@ -275,6 +278,7 @@ const AddAccount = () => {
           if (response.status == 200) {
             setSuccessShow(response.data.message);
             handleChangeShowModalSuccess(true);
+            setIsDisable(true);
           }
         }
       } catch (e) {
@@ -466,6 +470,14 @@ const AddAccount = () => {
     }
   }, [Detail[9].val]);
 
+  const handleEnterKey = (e, nextElement) => {
+    // if (e.key === "Enter") {
+    //   console.log("Enter key pressed,:,", nextElement)
+    //   e.preventDefault();
+    //   // nextElement.current.focus();
+    // }
+  }
+
   return (
     <>
       <Box sx={{ margin: "1%" }}>
@@ -480,6 +492,7 @@ const AddAccount = () => {
           Add Account
         </Typography>
         <form
+          ref={formRef}
           style={{ marginTop: "1%" }}
           onSubmit={(e) => {
             e?.preventDefault();
@@ -551,6 +564,7 @@ const AddAccount = () => {
                   <Input
                     containerStyle={containerStyles}
                     img={EyeIcon}
+                    img1={EyeSlash}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     inputContainerStyle={{
@@ -558,6 +572,7 @@ const AddAccount = () => {
                       height: { laptop: "45px", mobile: "36px" },
                     }}
                     title={"User Password*"}
+                    placeholder={"Ex : Abc@12"}
                     setDetail={setDetail}
                     Detail={Detail}
                     required={true}
@@ -574,6 +589,7 @@ const AddAccount = () => {
                   <Input
                     containerStyle={containerStyles}
                     img={EyeIcon}
+                    img1={EyeSlash}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     inputContainerStyle={{
@@ -581,6 +597,7 @@ const AddAccount = () => {
                       height: { laptop: "45px", mobile: "36px" },
                     }}
                     title={"Confirm User Password*"}
+                    placeholder={"Ex : Abc@12"}
                     setDetail={setDetail}
                     required={true}
                     Detail={Detail}
@@ -1040,10 +1057,13 @@ const AddAccount = () => {
                 <div>
                   <Input
                     containerStyle={{ ...containerStyles, width: "100%" }}
+                    img={EyeIcon}
+                    img1={EyeSlash}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
                     inputContainerStyle={{ ...inputContainerStyle }}
                     title={"Admin Transaction Password*"}
+                    placeholder={"Ex : 12345"}
                     required={true}
                     setDetail={setDetail}
                     Detail={Detail}
@@ -1052,10 +1072,14 @@ const AddAccount = () => {
                     place={14}
                     onFocusOut={handleTransPass}
                     toFoucs={true}
+                    onKeyDown={handleEnterKey}
+                  // okButtonRef={okButtonRef}
+                  // onKeyDown={(e) => handleEnterKey(e, okButtonRef)}
                   />
                 </div>
               </Box>
               <Button
+                disabled={isDisable}
                 className="cursor-pointer"
                 sx={{
                   background: "#0B4F26",
