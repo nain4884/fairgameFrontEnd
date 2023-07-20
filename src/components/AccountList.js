@@ -87,7 +87,8 @@ const AccountList = () => {
         percent_profit_loss: profitLoss?.toFixed(2),
         totalCommissions: "",
         exposurelimit: "",
-        availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
+        availablebalancesum: data?.data?.avabalancesum - data?.data?.exposuresum,
+        // availablebalancesum: data?.data?.balancesum,
       });
     } catch (e) {
       console.log(e);

@@ -37,8 +37,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
 
 
   const setButtonList = async () => {
-    alert(11111)
-    alert(valueLabel)
+    // alert(JSON.stringify(valueLabel))
     return;
     var payload = {
       buttons: {
@@ -150,14 +149,21 @@ const ChangeButtonValue = ({ selected, visible }) => {
     );
   };
 
-  const handleLabelChange = (index, newValue) => {
-
-    // alert(JSON.stringify(valueLabel));
-    setValueLabel((prevValues) => {
-      const updatedValues = [...prevValues];
-      updatedValues[index].label = newValue;
-      return updatedValues;
-    });
+  const handleLabelChange = (index, newValue, type) => {
+    // alert(type);
+    if (type == "label") {
+      setValueLabel((prevValues) => {
+        const updatedValues = [...prevValues];
+        updatedValues[index].label = newValue;
+        return updatedValues;
+      });
+    } else {
+      setValueLabel((prevValues) => {
+        const updatedValues = [...prevValues];
+        updatedValues[index].value = newValue;
+        return updatedValues;
+      });
+    }
   };
 
   return (
@@ -229,7 +235,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
               </Box>
             </Box>
             <Box
-              onChange={setButtonList}
+              onClick={setButtonList}
               sx={{
                 height: "50px",
                 display: "flex",
@@ -247,7 +253,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
                 sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
                 color={"white"}
               >
-                Update
+                Update 1
               </Typography>
             </Box>
           </Box>
@@ -368,7 +374,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
 
 const LabelButton = ({ value, index, onChange }) => {
   const handleChange = (event) => {
-    onChange(index, event.target.value);
+    onChange(index, event.target.value, "label");
   };
 
   return (
@@ -399,7 +405,7 @@ const LabelButton = ({ value, index, onChange }) => {
 
 const ValButton = ({ value, index, onChange }) => {
   const handleChange = (event) => {
-    onChange(index, event.target.value);
+    onChange(index, event.target.value, "value");
   };
 
   return (

@@ -61,7 +61,7 @@ const PlaceBet = ({
     try {
 
       const { data } = await axios.get("/users/getButtonValues");
-      alert(JSON.stringify(data))
+      // alert(JSON.stringify(data))
       // if (data?.data) {
       //   setNewRates(data?.data);
       // }
