@@ -208,7 +208,7 @@ const FastTimePlaceBet = ({
                 gap: { mobile: 0, laptop: 1, tablet: 1 },
               }}
             >
-              {["20001", "3000", "5000", "10000"]?.map((v) => (
+              {["2000", "3000", "5000", "10000"]?.map((v) => (
                 <NumberData
                   key={v}
                   containerStyle={{
