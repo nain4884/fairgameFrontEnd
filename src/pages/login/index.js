@@ -10,9 +10,9 @@ import {
   Button,
   Alert,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { eye, mail } from "../../assets";
+import { eye, eyeLock, mail } from "../../assets";
 import {
   Input,
   CustomButton,
@@ -36,6 +36,7 @@ import { toast } from "react-toastify";
 // import ChangePasswordComponent from "./ChangePasswordComponent";
 
 export default function Login(props) {
+  const loginButtonRef = useRef(null);
   let { axios } = setRole();
   const location = useLocation();
   const theme = useTheme();
@@ -338,6 +339,15 @@ export default function Login(props) {
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));
 
+  const handleEnterKeyPress = (e) => {
+    if (e.key === "Enter") {
+      // Check if the Enter key is pressed
+      e.preventDefault();
+      // loginButtonRef.current.click(); // Trigger the click event on the CustomButton
+      loginToAccount();
+    }
+  };
+
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
@@ -396,11 +406,14 @@ export default function Login(props) {
               title={"Password"}
               containerStyle={{ marginTop: "10px" }}
               img={eye}
+              img1={eyeLock}
               setDetail={setLoginDetail}
               Detail={loginDetail}
               setError={setError}
               error={error}
               place={2}
+              okButtonRef={"okButtonRef"}
+              onKeyDown={handleEnterKeyPress} // Handle "Enter" key press on the password field
             />
             {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
             <Typography
@@ -428,6 +441,7 @@ export default function Login(props) {
               }}
             >
               <CustomButton
+                ref={loginButtonRef}
                 loading={loading}
                 onClick={() => {
                   if (!loading) {

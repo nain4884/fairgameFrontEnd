@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { eye, mail } from "../../assets";
+import { eye, eyeLock, mail } from "../../assets";
 import { Input, CustomButton, AuthLogo } from "../../components";
 import AuthBackground from "../../components/AuthBackground";
 import { ReCAPTCHACustom } from "../../components";
@@ -468,6 +468,14 @@ export default function Login(props) {
     }
   }
 
+  const handleEnterKeyPress = (e) => {
+    if (e.key === "Enter") {
+      // Check if the Enter key is pressed
+      e.preventDefault();
+      // loginButtonRef.current.click(); // Trigger the click event on the CustomButton
+      loginToAccount();
+    }
+  };
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
@@ -518,11 +526,14 @@ export default function Login(props) {
               title={"Password"}
               containerStyle={{ marginTop: "10px" }}
               img={eye}
+              img1={eyeLock}
               setDetail={setLoginDetail}
               Detail={loginDetail}
+              okButtonRef={"okButtonRef"}
               setError={setError}
               error={error}
               place={2}
+              onKeyDown={handleEnterKeyPress}
             />
             {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
             <Typography
