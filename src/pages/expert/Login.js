@@ -508,6 +508,7 @@ export default function Login(props) {
   }
 
   const handleEnterKeyPress = (e) => {
+    setLoginError("");
     if (e.key === "Enter") {
       // Check if the Enter key is pressed
       e.preventDefault();

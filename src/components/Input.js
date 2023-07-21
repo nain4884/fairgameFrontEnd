@@ -52,6 +52,7 @@ const Input = ({
   const [showPass, setShowPass] = useState(true);
   const handleMypartnershipChange = debounce((e, place) => {
     const value = Number(e.target.value);
+    // const value = parseInt(e.target.value);
     if (e.target.value === "") {
       setDetail({
         ...Detail,
@@ -290,6 +291,17 @@ const Input = ({
             onChange={(e) => {
               const inputValue = e.target.value;
               const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
+              const regex1 = /^[0-9]+$/; // Only allows whole numbers (no decimal)
+              if (!regex1.test(inputValue) && place === 11) {
+                setError({
+                  ...error,
+                  [place]: {
+                    ...Detail[place],
+                    val: "Only allows whole numbers (no decimal)",
+                  },
+                });
+                return false;
+              }
               if (!regex.test(inputValue) && place === 1) {
                 setError({
                   ...error,
@@ -360,7 +372,7 @@ const Input = ({
                 });
             }}
             ref={formRef1}
-            onKeyDown={okButtonRef ? (e) => onKeyDown(e, formRef1) : null}
+            onKeyDown={okButtonRef ? (e) => onKeyDown(e, formRef1) : onKeyDown}
           />
         )}
         {img && (

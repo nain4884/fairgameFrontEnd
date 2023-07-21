@@ -425,6 +425,17 @@ const AddAccount = () => {
     if (isNaN(Detail[11].val) || Detail[11].val < 0) {
       return false;
     }
+    const regex1 = /^[0-9]+$/; // Only allows whole numbers (no decimal)
+    if (!regex1.test(val2) && place === 11) {
+      setError({
+        ...error,
+        [place]: {
+          ...Detail[place],
+          val: "Only allows whole numbers (no decimal)",
+        },
+      });
+      return false;
+    }
     if (total <= 100) {
       setError({
         ...error,
@@ -445,7 +456,6 @@ const AddAccount = () => {
     }
   }
 
-  console.log(Detail, "error");
   useEffect(() => {
     if (Detail[9].val === "user") {
       setDetail({
@@ -786,7 +796,7 @@ const AddAccount = () => {
                     }}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    title={"My Partnership"}
+                    title={"My Partnership 1"}
                     setDetail={setDetail}
                     onFocusOut={CheckThisPosition}
                     toFoucs={true}
