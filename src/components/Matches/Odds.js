@@ -105,6 +105,24 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
         if (packet.data[0] === "newMatchAdded") {
           handleUpdateMatch();
         }
+        if (packet.data[0] === "resultDeclareForBet") {
+          handleUpdateMatch();
+        }
+        if (packet.data[0] === "sessionResult") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            const user = {
+              ...currentUser,
+              current_balance: value.current_balance,
+              exposure: value.exposure,
+            };
+            dispatch(setCurrentUser(user));
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
       };
     }
   }, [socket]);

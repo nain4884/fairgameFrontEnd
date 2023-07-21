@@ -18,6 +18,7 @@ import {
   setAllSessionBets,
   setManualBookMarkerRates,
   setSelectedMatch,
+  setButtonData
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -1114,12 +1115,44 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       setLoading(false);
     }
   }
+
+  function customSort(a, b) {
+    if (a.lable === "1k") {
+      return -1; // "1k" comes first
+    } else if (b.lable === "1k") {
+      return 1; // "1k" comes first
+    } else {
+      // For other labels, maintain their original order
+      return 0;
+    }
+  }
+
+  const getButtonList = async () => {
+    try {
+
+      const { data } = await axios.get("/users/getButtonValues");
+      const initialData = data?.data?.buttons; // Replace this with your initial data
+      const jsonObject = JSON.parse(initialData);
+      const resultArray = Object.entries(jsonObject).map(([lable, value]) => ({
+        lable: lable,
+        value: value,
+      }));
+      resultArray.sort(customSort);
+      dispatch(setButtonData(resultArray));
+      // setButtonData(resultArray);
+    } catch (e) {
+      toast.error(e.response.data.message);
+      console.log("error", e.message);
+    }
+  };
+
   useEffect(() => {
     if (matchId) {
       getThisMatch(matchId);
     }
     // getAllBetsData();
     getAllBetsData1();
+    getButtonList();
   }, [matchId]);
 
   const handleRateChange = async () => {

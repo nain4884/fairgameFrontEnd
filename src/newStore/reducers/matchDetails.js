@@ -16,7 +16,8 @@ const initialState = {
   sessionResults: [],
   confirmAuth: false,
   betData: {},
-  updateDetData: ""
+  updateDetData: "",
+  buttonData: []
 };
 
 const matchDetails = createSlice({
@@ -148,6 +149,9 @@ const matchDetails = createSlice({
     setUpdateBetData: (state, action) => {
       state.updateDetData = action.payload;
     },
+    setButtonData: (state, action) => {
+      state.buttonData = action.payload;
+    },
   },
 });
 
@@ -175,7 +179,8 @@ export const {
   setSessionOddsLive,
   setConfirmAuth,
   setBetData,
-  setUpdateBetData
+  setUpdateBetData,
+  setButtonData
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

@@ -23,6 +23,7 @@ import {
   setAllRoles,
   setUpdatedTransPasswords,
   signIn,
+  logout
 } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import {
@@ -32,6 +33,10 @@ import {
 import { SocketContext } from "../../context/socketContext";
 import ChangePassword from "../../components/ChangePasswordComponent";
 import { toast } from "react-toastify";
+import {
+  removeCurrentUser,
+} from "../../newStore/reducers/currentUser";
+import { removeManualBookMarkerRates, removeSelectedMatch, setConfirmAuth, } from "../../newStore/reducers/matchDetails";
 
 var newtoken = "";
 export default function Login(props) {
@@ -447,6 +452,7 @@ export default function Login(props) {
   };
 
   const changePassword = async (value) => {
+    // alert(1111)
     try {
       const payload = {
         OldPassword: value[2].val,
@@ -459,8 +465,41 @@ export default function Login(props) {
       );
 
       if (data.message === "Password update successfully.") {
+        setLoginError("");
         toast.success("Password update successfully.");
         setIsChangePassword(false);
+        let foundRoles = await axios.get(`/role`);
+        let roles = foundRoles.data;
+        let roleDetail = roles.find(findThisRole);
+        function findThisRole(role) {
+          return role.id === data.data.roleId;;
+        }
+
+        if (
+          ["admin", "master", "superAdmin", "supperMaster"]?.includes(
+            roleDetail?.roleName
+          )
+        ) {
+          dispatch(logout({ roleType: "role1" }));
+          setGlobalStore((prev) => ({ ...prev, JWTadmin: "" }));
+        } else if (
+          ["fairGameWallet", "fairGameAdmin"]?.includes(roleDetail?.roleName)
+        ) {
+          dispatch(logout({ roleType: "role2" }));
+          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+
+        } else if (["expert"]?.includes(roleDetail?.roleName)) {
+          dispatch(logout({ roleType: "role3" }));
+          setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
+        }
+        dispatch(removeManualBookMarkerRates());
+        dispatch(removeSelectedMatch());
+        dispatch(removeCurrentUser());
+        removeSocket();
+        socket.disconnect();
+        socketMicro.disconnect();
+        await axios.get("auth/logout");
+
       }
     } catch (e) {
       // console.log(e.response.data.message);
@@ -536,7 +575,7 @@ export default function Login(props) {
               onKeyDown={handleEnterKeyPress}
             />
             {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-            <Typography
+            {/* <Typography
               onClick={() => {
                 navigate("/forget_password");
               }}
@@ -550,7 +589,7 @@ export default function Login(props) {
               }}
             >
               Forgot Password?
-            </Typography>
+            </Typography> */}
             <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
 
             <Box

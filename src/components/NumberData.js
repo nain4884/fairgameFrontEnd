@@ -3,7 +3,7 @@ import React from 'react'
 
 const NumberData = ({
   value,
-  label,
+  lable,
   containerStyle,
   setDefaultValue,
   getLatestBetAmount,
@@ -36,7 +36,7 @@ const NumberData = ({
           fontWeight: "600",
         }}
       >
-        {label}
+        {lable}
       </Typography>
     </Box>
   );

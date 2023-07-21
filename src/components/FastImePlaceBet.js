@@ -5,7 +5,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useSelector } from "react-redux";
 import "../components/index.css";
 import { toast } from "react-toastify";
 import { currencyFormatter } from "./helper/helper";
@@ -20,12 +21,16 @@ const FastTimePlaceBet = ({
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
+  const { buttonData } = useSelector((state) => state?.matchDetails);
+  const [buttonList, setButtonList] = useState(buttonData);
+
   const myDivRef = useRef(null);
 
   useEffect(() => {
     if (!fromOdds) {
       // scrollToBottom();
       scrollToFullDiv();
+      setButtonList(buttonData)
     }
   }, [selectedValue, fromOdds]);
 
@@ -208,9 +213,9 @@ const FastTimePlaceBet = ({
                 gap: { mobile: 0, laptop: 1, tablet: 1 },
               }}
             >
-              {["2000", "3000", "5000", "10000"]?.map((v) => (
+              {buttonList.length > 0 && buttonList?.slice(0, 4)?.map((v, index) => (
                 <NumberData
-                  key={v}
+                  key={index}
                   containerStyle={{
                     marginLeft: "2px",
                     flex: 1,
@@ -218,7 +223,8 @@ const FastTimePlaceBet = ({
                     borderRadius: "5px",
                     border: "2px solid white",
                   }}
-                  value={v}
+                  value={v.value}
+                  lable={v.lable}
                   session={session}
                   setShowFastTimeBox={setShowFastTimeBox}
                   setFastAmount={setFastAmount}
@@ -234,9 +240,9 @@ const FastTimePlaceBet = ({
                 gap: { mobile: 0, laptop: 1, tablet: 1 },
               }}
             >
-              {["20000", "100000", "200000", "500000"]?.map((v) => (
+              {buttonList.length > 0 && buttonList?.slice(4, 8)?.map((v, index) => (
                 <NumberData
-                  key={v}
+                  key={index}
                   containerStyle={{
                     marginLeft: "2px",
                     flex: 1,
@@ -244,7 +250,8 @@ const FastTimePlaceBet = ({
                     borderRadius: "5px",
                     border: "2px solid white",
                   }}
-                  value={v}
+                  value={v.value}
+                  lable={v.lable}
                   session={session}
                   setShowFastTimeBox={setShowFastTimeBox}
                   setFastAmount={setFastAmount}

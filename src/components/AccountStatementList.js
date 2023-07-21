@@ -462,6 +462,8 @@ const Row = ({
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   return (
@@ -501,7 +503,7 @@ const Row = ({
             fTextStyle,
           ]}
         >
-          {moment(formattedDate).format("DD-MM-YYYY")}
+          {moment(formattedDate).format("DD-MM-YYYY HH:mm")}
         </Typography>
       </Box>
       <Box

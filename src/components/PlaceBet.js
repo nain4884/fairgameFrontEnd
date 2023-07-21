@@ -35,6 +35,7 @@ const PlaceBet = ({
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
+  const { buttonData } = useSelector((state) => state?.matchDetails);
   const [newRates, setNewRates] = useState({
     loss_amount: 0,
     win_amount: 0,
@@ -48,56 +49,45 @@ const PlaceBet = ({
 
   const { geoLocation } = useSelector((state) => state.auth);
   const [ip, setIP] = useState(geoLocation);
-  const [buttonData, setButtonData] = useState([]);
+  const [buttonList, setButtonList] = useState(buttonData);
 
   useEffect(() => {
     if (geoLocation) {
       setIP(geoLocation);
-      getButtonList();
+      // getButtonList();
+      setButtonList(buttonData);
     }
   }, [geoLocation]);
   const myDivRef = useRef(null);
 
-  function customSort(a, b) {
-    if (a.label === "1k") {
-      return -1; // "1k" comes first
-    } else if (b.label === "1k") {
-      return 1; // "1k" comes first
-    } else {
-      // For other labels, maintain their original order
-      return 0;
-    }
-  }
+  // function customSort(a, b) {
+  //   if (a.lable === "1k") {
+  //     return -1; // "1k" comes first
+  //   } else if (b.lable === "1k") {
+  //     return 1; // "1k" comes first
+  //   } else {
+  //     // For other labels, maintain their original order
+  //     return 0;
+  //   }
+  // }
 
-  const getButtonList = async () => {
-    try {
+  // const getButtonList = async () => {
+  //   try {
 
-      const { data } = await axios.get("/users/getButtonValues");
-      // alert(JSON.stringify(data))
-      // if (data?.data) {
-      //   setNewRates(data?.data);
-      // }
-      const initialData = data?.data?.buttons; // Replace this with your initial data
-      const jsonObject = JSON.parse(initialData);
-      // Update the state using the spread operator to keep the existing objects
-      // const updatedState = valueLabel.map((item, index) => {
-      //   return {
-      //     ...item,
-      //     label: Object.keys(jsonObject)[index],
-      //     value: Object.values(jsonObject)[index],
-      //   };
-      // });
-      const resultArray = Object.entries(jsonObject).map(([label, value]) => ({
-        label: label,
-        value: value,
-      }));
-      resultArray.sort(customSort);
-      setButtonData(resultArray);
-    } catch (e) {
-      toast.error(e.response.data.message);
-      console.log("error", e.message);
-    }
-  };
+  //     const { data } = await axios.get("/users/getButtonValues");
+  //     const initialData = data?.data?.buttons; // Replace this with your initial data
+  //     const jsonObject = JSON.parse(initialData);
+  //     const resultArray = Object.entries(jsonObject).map(([label, value]) => ({
+  //       label: label,
+  //       value: value,
+  //     }));
+  //     resultArray.sort(customSort);
+  //     setButtonData(resultArray);
+  //   } catch (e) {
+  //     toast.error(e.response.data.message);
+  //     console.log("error", e.message);
+  //   }
+  // };
 
   const getLatestBetAmount = async (value, newData) => {
     try {
@@ -323,12 +313,12 @@ const PlaceBet = ({
         {
           <>
             <Box sx={{ display: "flex", marginTop: "15px", marginX: "2px" }}>
-              {buttonData?.slice(0, 4).map((v, index) => (
+              {buttonList.length > 0 && buttonList?.slice(0, 4)?.map((v, index) => (
                 <NumberData
                   key={index}
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
-                  value={v.value}
-                  label={v.label}
+                  value={v?.value}
+                  lable={v?.lable}
                   getLatestBetAmount={(value) =>
                     getLatestBetAmount(value, data)
                   }
@@ -337,12 +327,12 @@ const PlaceBet = ({
               ))}
             </Box>
             <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }}>
-              {buttonData?.slice(4, 8).map((v, index) => (
+              {buttonList.length > 0 && buttonList?.slice(4, 8)?.map((v, index) => (
                 <NumberData
                   key={index}
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
                   value={v.value}
-                  label={v.label}
+                  lable={v.lable}
                   getLatestBetAmount={(value) =>
                     getLatestBetAmount(value, data)
                   }

@@ -25,13 +25,17 @@ import {
   apiBasePath,
   LoginServerError,
 } from "../../components/helper/constants";
-import { setAllRoles, signIn } from "../../newStore/reducers/auth";
+import { setAllRoles, signIn, logout } from "../../newStore/reducers/auth";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 import ChangePassword from "../../components/ChangePasswordComponent";
 import { toast } from "react-toastify";
+import { removeManualBookMarkerRates, removeSelectedMatch, setConfirmAuth, } from "../../newStore/reducers/matchDetails";
+import {
+  removeCurrentUser,
+} from "../../newStore/reducers/currentUser";
 
 // import ChangePasswordComponent from "./ChangePasswordComponent";
 
@@ -327,6 +331,19 @@ export default function Login(props) {
         payload
       );
 
+      dispatch(setConfirmAuth(false));
+      sessionStorage.setItem("JWTuser", null);
+      dispatch(removeCurrentUser());
+      removeSocket();
+      dispatch(logout({ roleType: "role4" }));
+      setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+      dispatch(removeManualBookMarkerRates());
+      dispatch(removeSelectedMatch());
+      socket.disconnect();
+      socketMicro.disconnect();
+      await axios.get("auth/logout");
+      localStorage.setItem("confirmAuth", false);
+      setLoginError("");
       if (data.message === "Password update successfully.") {
         toast.success("Password update successfully.");
         setIsChangePassword(false);
@@ -416,7 +433,7 @@ export default function Login(props) {
               onKeyDown={handleEnterKeyPress} // Handle "Enter" key press on the password field
             />
             {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-            <Typography
+            {/* <Typography
               onClick={() => {
                 navigate("/forget_password");
               }}
@@ -430,7 +447,7 @@ export default function Login(props) {
               }}
             >
               Forgot Password?
-            </Typography>
+            </Typography> */}
             <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
             <Box
               sx={{
