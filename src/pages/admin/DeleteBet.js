@@ -894,7 +894,7 @@ const DeleteBet = ({ }) => {
 
   const [mode, setMode] = useState(false);
   const [selectedBetData, setSelectedBetData] = useState([]);
-  const CustomButton = () => {
+  const CustomButton = ({ mode, setMode, setVisible }) => {
     return (
       <Box
         onClick={() => {
@@ -915,6 +915,7 @@ const DeleteBet = ({ }) => {
           border: "1.5px solid white",
           display: "flex",
           alignSelf: "flex-end",
+          cursor: "pointer",
         }}
       >
         <Typography
@@ -931,7 +932,7 @@ const DeleteBet = ({ }) => {
       </Box>
     );
   };
-  const CancelButton = () => {
+  const CancelButton = ({ setMode }) => {
     return (
       <Box
         onClick={() => {
@@ -948,6 +949,7 @@ const DeleteBet = ({ }) => {
           border: "1.5px solid white",
           display: "flex",
           alignSelf: "flex-end",
+          cursor: "pointer",
         }}
       >
         <Typography
@@ -1065,9 +1067,74 @@ const DeleteBet = ({ }) => {
                     width: "100%",
                   }}
                 >
-                  {mode && <CancelButton />}
+                  {mode &&
+                    //  <CancelButton setMode={setMode} />
+                    <Box
+                      onClick={() => {
+                        setMode(!mode);
+                      }}
+                      sx={{
+                        width: "150px",
+                        marginY: ".75%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "5px",
+                        background: "#f1c550",
+                        height: "35px",
+                        border: "1.5px solid white",
+                        display: "flex",
+                        alignSelf: "flex-end",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Typography
+                        style={{
+                          fontWeight: "600",
+                          fontSize: "13px",
+                          color: "black",
+                          marginRight: "10px",
+                        }}
+                      >
+                        {"Cancel"}
+                      </Typography>
+                    </Box>
+                  }
                   <Box sx={{ width: "2%" }}></Box>
-                  <CustomButton />
+                  {/* <CustomButton mode={mode} setMode={setMode} setVisible={setVisible} /> */}
+                  <Box
+                    onClick={() => {
+                      if (mode) {
+                        setVisible(true);
+                      } else {
+                        setMode(!mode);
+                      }
+                    }}
+                    sx={{
+                      width: "150px",
+                      marginY: ".75%",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "5px",
+                      background: "#E32A2A",
+                      height: "35px",
+                      border: "1.5px solid white",
+                      display: "flex",
+                      alignSelf: "flex-end",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Typography
+                      style={{
+                        fontWeight: "600",
+                        fontSize: "13px",
+                        color: "white",
+                        marginRight: "10px",
+                      }}
+                    >
+                      {mode ? "Delete" : "Delete Bet"}
+                    </Typography>
+                    <img src={DeleteIcon} style={{ width: "17px", height: "20px" }} />
+                  </Box>
                 </Box>
               }
               {/* } */}
