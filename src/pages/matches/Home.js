@@ -559,13 +559,15 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             };
 
             dispatch(setCurrentUser(user));
-            setCurrentMatch((currentMatch) => {
-              if (currentMatch?.matchId !== value?.matchId) {
-                // If the new bet doesn't belong to the current match, return the current state
-                return currentMatch;
-              }
+            // setCurrentMatch((currentMatch) => {
+            //   if (currentMatch?.matchId !== value?.matchId) {
+            //     // If the new bet doesn't belong to the current match, return the current state
+            //     return currentMatch;
+            //   }
+            // });
+            if (currentMatch?.matchId == value?.matchId) {
               navigate("/matches");
-            });
+            }
           } catch (err) {
             console.log(err?.message);
           }
@@ -786,15 +788,6 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               }
               return currentMatch;
             });
-          } catch (err) {
-            console.log(err?.message);
-          }
-        }
-
-        if (packet.data[0] === "matchDeleteBet") {
-          const value = packet.data[1];
-          // matchId = value?.match_id;
-          try {
             const user = {
               ...currentUser,
               current_balance: value.newBalance,
@@ -826,6 +819,42 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             console.log(err?.message);
           }
         }
+
+        // if (packet.data[0] === "matchDeleteBet") {
+        //   const value = packet.data[1];
+        //   // matchId = value?.match_id;
+        //   try {
+        //     const user = {
+        //       ...currentUser,
+        //       current_balance: value.newBalance,
+        //       exposure: value.exposure,
+        //     };
+        //     const manualBookmaker = {
+        //       matchId: value?.matchId,
+        //       teamA: value.teamA_rate,
+        //       teamB: value.teamB_rate,
+        //       teamC: value.teamC_rate,
+        //     };
+        //     dispatch(setCurrentUser(user));
+        //     dispatch(setManualBookMarkerRates(manualBookmaker));
+
+        //     setIObtes((IObets) => {
+        //       const updatedBettings = IObets?.map((betting) => {
+        //         if (value?.betPlaceIds.includes(betting.id)) {
+        //           return {
+        //             ...betting,
+        //             deleted_reason: value?.deleted_reason,
+        //           };
+        //         }
+        //         return betting;
+        //       });
+
+        //       return updatedBettings;
+        //     });
+        //   } catch (err) {
+        //     console.log(err?.message);
+        //   }
+        // }
         if (packet.data[0] === "sessionDeleteBet") {
           const value = packet.data[1];
           // matchId = value?.match_id;

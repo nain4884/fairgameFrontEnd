@@ -1,18 +1,26 @@
-import { memo } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import ListH from "./ListH";
 import ListHeaderT from "./ListHeaderT";
 import Row from "./Row";
 import { Box, Pagination } from "@mui/material";
-import { useEffect } from "react";
 import { setRole } from "../../newStore";
-import { useState } from "react";
 import constants from "../../components/helper/constants";
+import { SocketContext } from "../../context/socketContext";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAllEventSession,
+} from "../../newStore/reducers/expertMatchDetails";
 
 const MatchListComp = () => {
   const [allMatch, setAllMatch] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
+  const { socket } = useContext(SocketContext);
+  const dispatch = useDispatch();
+  const { allEventSession } = useSelector(
+    (state) => state?.expertMatchDetails
+  );
 
   const { axios } = setRole();
   const getAllMatch = async (title) => {
@@ -43,7 +51,43 @@ const MatchListComp = () => {
   function callPage(e, value) {
     setCurrentPage(parseInt(value));
   }
-  const currentElements = allMatch;
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        if (packet.data[0] === "newMatchAdded") {
+          getAllMatch();
+        }
+        if (packet.data[0] === "resultDeclareForBet") {
+          getAllMatch();
+        }
+        if (packet.data[0] === "newBetAdded") {
+          const value = packet.data[1];
+          try {
+            const updatedAllEventSession = allEventSession.map(
+              (currentMatch) => {
+                if (currentMatch.id === value?.match_id) {
+                  const betObj = {
+                    id: value.id,
+                    bet_condition: value.bet_condition,
+                  };
+                  const newBettings = [...currentMatch.bettings, betObj];
+                  return {
+                    ...currentMatch,
+                    bettings: newBettings,
+                  };
+                }
+                return currentMatch;
+              }
+            );
+            dispatch(setAllEventSession(updatedAllEventSession));
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+      };
+    }
+  }, [socket]);
+  // const currentElements = allMatch;
   return (
     <Box
       sx={[
@@ -61,7 +105,7 @@ const MatchListComp = () => {
     >
       <ListH getAllMatch={getAllMatch} />
       <ListHeaderT />
-      {currentElements.map((element, i) => {
+      {allMatch.map((element, i) => {
         return (
           <Row
             key={i}

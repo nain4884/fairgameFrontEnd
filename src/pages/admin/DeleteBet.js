@@ -614,8 +614,11 @@ const DeleteBet = ({ }) => {
           const value = packet.data[1];
           // matchId = value?.match_id;
           if (value?.sessionBet == false) {
-            navigate("/wallet/market_analysis");
+            if (matchId == value?.match_id) {
+              navigate("/wallet/market_analysis");
+            }
             return;
+
           }
           try {
             setCurrentMatch((currentMatch) => {

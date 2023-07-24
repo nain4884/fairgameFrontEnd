@@ -45,7 +45,7 @@ const MatchSubmit = ({ }) => {
   const navigate = useNavigate();
   // matchIds
   useEffect(() => {
-    // alert(matchIds)
+    // alert(JSON.stringify(matchIds))
     if (matchIds !== undefined) {
       getAllBetsData();
       getThisMatch();
@@ -528,7 +528,9 @@ const MatchSubmit = ({ }) => {
               const value = packet.data[1];
               // matchId = value?.match_id;
               if (value?.sessionBet == false) {
-                navigate("/wallet/market_analysis");
+                if (matchIds.includes(value?.match_id)) {
+                  navigate("/wallet/market_analysis");
+                }
                 return;
               }
               try {

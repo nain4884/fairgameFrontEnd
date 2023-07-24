@@ -122,6 +122,20 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "matchResult") {
+          const value = packet.data[1];
+          try {
+            const user = {
+              ...currentUser,
+              current_balance: value.current_balance,
+              exposure: value.exposure,
+            };
+
+            dispatch(setCurrentUser(user));
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
 
       };
     }

@@ -271,7 +271,24 @@ const IndiaPakLive = React.forwardRef(({
 
   async function doSubmitSessionBet(rate_percent) {
     dispatch(setSessionAllBet([]));
-    const payload = { ...Detail, rate_percent };
+    var payload = {};
+    if (!isBall) {
+      payload = { ...Detail, rate_percent };
+    } else {
+      payload = {
+        match_id: Detail?.match_id,
+        matchType: Detail?.matchType,
+        sessionBet: true,
+        betStatus: 1,
+        bet_condition: Detail?.bet_condition,
+        no_rate: Detail?.no_rate,
+        yes_rate: Detail?.yes_rate,
+        y_rate_percent: Detail?.y_rate_percent,
+        n_rate_percent: Detail?.n_rate_percent,
+        suspended: "Ball Started",
+      }
+    }
+    // alert(JSON.stringify(payload))
     try {
       let response = await axios.post(`/betting/addBetting`, payload);
       setBetId(response?.data?.data?.id);

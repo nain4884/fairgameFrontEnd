@@ -5,13 +5,14 @@ import { BETPLACED, NOT } from "../assets";
 import CustomLoader from "./helper/CustomLoader";
 import SmallCustomLoader from "./helper/SmallCustomLoader";
 
-const NotificationModal = ({ open, handleClose }) => {
+const NotificationModal = ({ open, handleClose, time }) => {
   try {
     useEffect(() => {
-      if (open.value ) {
+      let TimeVal = (time * 1000) + 2000;
+      if (open.value) {
         setTimeout(() => {
           handleClose();
-        }, 2000);
+        }, TimeVal);
       }
     }, [open.value]);
     console.log("open", open);
@@ -31,7 +32,7 @@ const NotificationModal = ({ open, handleClose }) => {
         <Box
           sx={{
             width: "190px",
-            minHeight:"150px",
+            minHeight: "150px",
             borderRadius: "6px",
             paddingY: "10px",
             flexDirection: "column",

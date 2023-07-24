@@ -4,7 +4,7 @@ import CusButton from "./CusButton";
 import SearchInput from "./SearchInput";
 
 
-const ListH = ({getAllMatch}) => {
+const ListH = ({ getAllMatch }) => {
   const navigate = useNavigate();
   return (
     <Box

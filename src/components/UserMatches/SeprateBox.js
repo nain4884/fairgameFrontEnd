@@ -247,6 +247,12 @@ const SeprateBox = ({
         setVisible(true);
         let delay = match?.delaySecond ? match?.delaySecond : 0;
         delay = delay * 1000;
+        setCanceled({
+          value: true,
+          msg: "Rate changed",
+          loading: true,
+          type: false,
+        });
         setTimeout(() => {
           PlaceBetSubmit(newPayload, po);
         }, delay);
@@ -283,12 +289,14 @@ const SeprateBox = ({
         });
         return false;
       }
-      setCanceled({
-        value: true,
-        msg: "Rate changed",
-        loading: true,
-        type: false,
-      });
+      if (payload.marketType !== "MATCH ODDS") {
+        setCanceled({
+          value: true,
+          msg: "Rate changed",
+          loading: true,
+          type: false,
+        });
+      }
       setIsPopoverOpen(false);
       let response = await axios.post(`/betting/placeBet`, payload);
       if (sessionMain === "sessionOdds") {
@@ -489,7 +497,7 @@ const SeprateBox = ({
                 if (betPlaceLoading) {
                   return false;
                 } else {
-                  setBetPlaceLoading(true);
+                  // setBetPlaceLoading(true);// timer related
                   handlePlaceBet(payload, currentMatch, payload?.po);
                 }
               }}
@@ -537,6 +545,13 @@ const SeprateBox = ({
         }
         {canceled.value && (
           <NotificationModal
+            time={
+              typeOfBet == "MATCH ODDS"
+                ? currentMatch?.delaySecond
+                  ? currentMatch?.delaySecond
+                  : 0
+                : 0
+            }
             open={canceled}
             handleClose={() =>
               setCanceled({
