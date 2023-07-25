@@ -48,6 +48,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
         const [teamBLayValue, setTeamBLayValue] = useState()
         const [teamCRate, setTeamCRate] = useState()
         const [teamCLayValue, setTeamCLayValue] = useState()
+        const [l_teamARate, setLTeamARate] = useState()
+        const [l_teamALayValue, setLTeamALayValue] = useState()
+        const [l_teamBRate, setLTeamBRate] = useState()
+        const [l_teamBLayValue, setLTeamBLayValue] = useState()
+        const [l_teamCRate, setLTeamCRate] = useState()
+        const [l_teamCLayValue, setLTeamCLayValue] = useState()
         const [incGap, setIncGap] = useState(1)
         const [pressEnter, setPressEnter] = useState(false)
         const [isTeamALock, setIsTeamALock] = useState(true)
@@ -98,6 +104,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamBLayValue(response?.data?.data[0].teamB_lay);
                     setTeamCRate(response?.data?.data[0].teamC_Back);
                     setTeamCLayValue(response?.data?.data[0].teamC_lay);
+
+
+                    setLTeamARate(response?.data?.data[0].teamA_Back);
+                    setLTeamALayValue(response?.data?.data[0].teamA_lay);
+                    setLTeamBRate(response?.data?.data[0].teamB_Back);
+                    setLTeamBLayValue(response?.data?.data[0].teamB_lay);
+                    setLTeamCRate(response?.data?.data[0].teamC_Back);
+                    setLTeamCLayValue(response?.data?.data[0].teamC_lay);
                     // alert(id)
                     getAllBetsData(response?.data?.data[0].id, id);
                     setteamRates({
@@ -210,6 +224,8 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     setTeamARate(data.teamA_Back);
                                     setTeamBRate(data.teamB_Back);
                                     setTeamCRate(data.teamC_Back);
+
+                                  
                                 } else {
                                     setTeamBall((prevState) => ({
                                         ...prevState,
@@ -231,7 +247,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                                     setIsTeamCSuspend(data.teamC_suspend);
                                     setTeamCRate(data.teamC_Back);
-                                    setTeamCLayValue(data.teamC_lay);
+                                    setTeamCLayValue(data.teamC_lay);                                 
                                 }
 
                                 setTeamSuspend((prevState) => ({
@@ -327,30 +343,40 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             let target = event.target;
             if (target.value <= 100) {
                 if (target.name === 'teamA_rate') {
+                    
                     setTeamARate(target.value)
+                    setLTeamARate(target.value)
                     if (target.value !== '') {
                         let teamA_lay = parseInt(target.value) + 1
                         setTeamALayValue(teamA_lay);
+                        setLTeamALayValue(teamA_lay);
                     } else {
                         setTeamALayValue('');
+                        setLTeamALayValue('');
                     }
                 }
                 else if (target.name === 'teamB_rate') {
                     setTeamBRate(target.value)
+                    setLTeamBRate(target.value)
                     if (target.value !== '') {
                         let teamB_lay = parseInt(target.value) + 1
                         setTeamBLayValue(teamB_lay);
+                        setLTeamBLayValue(teamB_lay);
                     } else {
                         setTeamBLayValue('');
+                        setLTeamBLayValue('');
                     }
                 }
                 else if (target.name === 'teamC_rate') {
                     setTeamCRate(target.value)
+                    setLTeamCRate(target.value)
                     if (target.value !== '') {
                         let teamC_lay = parseInt(target.value) + 1
                         setTeamCLayValue(teamC_lay);
+                        setLTeamCLayValue(teamC_lay);
                     } else {
                         setTeamCLayValue('');
+                        setLTeamCLayValue('');
                     }
                 }
             }
@@ -392,10 +418,15 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         return;
                     }
                     setTeamARate(value);
+                    setLTeamARate(value);
                     let chckValue = teamALayValue ? teamALayValue : value
+                    let l_chckValue = l_teamALayValue ? l_teamALayValue : value
                     setTeamALayValue(chckValue + incGap);
                     setTeamBRate('');
                     setTeamBLayValue('');
+                    setLTeamALayValue(l_chckValue + incGap);
+                    setLTeamBRate('');
+                    setLTeamBLayValue('');
                 }
 
                 if (event.target.name === 'teamB_rate') {
@@ -404,10 +435,15 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         return;
                     }
                     setTeamBRate(value);
+                    setLTeamBRate(value);
                     let chckValue = teamBLayValue ? teamBLayValue : value
+                    let l_chckValue = l_teamBLayValue ? l_teamBLayValue : value
                     setTeamBLayValue(chckValue + incGap);
                     setTeamARate('');
                     setTeamALayValue('');
+                    setLTeamBLayValue(l_chckValue + incGap);
+                    setLTeamARate('');
+                    setLTeamALayValue('');
                 }
                 if (event.target.name === 'teamC_rate') {
                     let result = handleHunderedValue(targetValue, teamCLayValue);
@@ -415,12 +451,21 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         return;
                     }
                     setTeamCRate(value);
+                    setLTeamCRate(value);
                     let chckValue = teamCLayValue ? teamCLayValue : value
+
+                    let l_chckValue = l_teamCLayValue ? l_teamCLayValue : value
                     setTeamCLayValue(chckValue + incGap);
                     setTeamARate('');
                     setTeamALayValue('');
                     setTeamBRate('');
                     setTeamBLayValue('');
+
+                    setLTeamCLayValue(l_chckValue + incGap);
+                    setLTeamARate('');
+                    setLTeamALayValue('');
+                    setLTeamBRate('');
+                    setLTeamBLayValue('');
                 }
             }
             else if (key == 'left') {
@@ -432,6 +477,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue(teamALayValue - incGap);
                     setTeamBRate('');
                     setTeamBLayValue('')
+
+                    setLTeamARate(value);
+                    setLTeamALayValue(l_teamALayValue - incGap);
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 }
 
                 if (event.target.name === 'teamB_rate' && teamBRate > 0) {
@@ -439,6 +489,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamBLayValue(teamBLayValue - incGap)
                     setTeamARate('');
                     setTeamALayValue('');
+
+                    setLTeamBRate(value);
+                    setLTeamBLayValue(l_teamBLayValue - incGap)
+                    setLTeamARate('');
+                    setLTeamALayValue('');
                 }
                 if (event.target.name === 'teamC_rate' && teamCRate > 0) {
                     setTeamCRate(value);
@@ -447,6 +502,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue('');
                     setTeamBRate('');
                     setTeamBLayValue('');
+
+                    setLTeamCRate(value);
+                    setLTeamCLayValue(l_teamCLayValue - incGap)
+                    setLTeamARate('');
+                    setLTeamALayValue('');
+                    setLTeamBRate('');
+                    setLTeamBLayValue('');
                 }
 
             }
@@ -459,9 +521,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         return;
                     }
                     let value = teamALayValue ? teamALayValue : teamARate
+                    let l_value = l_teamALayValue ? l_teamALayValue : l_teamARate
                     setTeamALayValue(value + incGap);
                     setTeamBRate('');
                     setTeamBLayValue('')
+
+                    setLTeamALayValue(l_value + incGap);
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 }
 
                 if (event.target.name === 'teamB_rate') {
@@ -470,9 +537,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         return;
                     }
                     let value = teamBLayValue ? teamBLayValue : teamBRate
+                    let l_value = l_teamBLayValue ? l_teamBLayValue : l_teamBRate
                     setTeamBLayValue(value + incGap)
                     setTeamARate('');
                     setTeamALayValue('');
+
+                    setLTeamBLayValue(l_value + incGap)
+                    setLTeamARate('');
+                    setLTeamALayValue('');
                 }
                 if (event.target.name === 'teamC_rate') {
                     let result = handleHunderedValue(targetValue, teamCLayValue);
@@ -480,11 +552,18 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         return;
                     }
                     let value = teamCLayValue ? teamCLayValue : teamCRate
+                    let l_value = l_teamCLayValue ? l_teamCLayValue : l_teamCRate
                     setTeamCLayValue(value + incGap)
                     setTeamARate('');
                     setTeamALayValue('');
                     setTeamBRate('');
                     setTeamBLayValue('');
+
+                    setLTeamCLayValue(l_value + incGap)
+                    setLTeamARate('');
+                    setLTeamALayValue('');
+                    setLTeamBRate('');
+                    setLTeamBLayValue('');
                 }
             }
             else if (key == 'down') {
@@ -494,12 +573,19 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue(teamALayValue - incGap);
                     setTeamBRate('');
                     setTeamBLayValue('')
+                    setLTeamALayValue(l_teamALayValue - incGap);
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 }
 
                 if (event.target.name === 'teamB_rate' && teamBLayValue - incGap > teamBRate) {
                     setTeamBLayValue(teamBLayValue - incGap)
                     setTeamARate('');
                     setTeamALayValue('');
+
+                    setLTeamBLayValue(l_teamBLayValue - incGap)
+                    setLTeamARate('');
+                    setLTeamALayValue('');
                 }
                 if (event.target.name === 'teamC_rate' && teamCLayValue - incGap > teamCRate) {
                     setTeamCLayValue(teamCLayValue - incGap)
@@ -507,6 +593,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue('');
                     setTeamBRate('');
                     setTeamBLayValue('');
+
+                    setLTeamCLayValue(l_teamCLayValue - incGap)
+                    setLTeamARate('');
+                    setLTeamALayValue('');
+                    setLTeamBRate('');
+                    setLTeamBLayValue('');
                 }
             }
             else if (key == '`') {
@@ -620,6 +712,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 setTeamALayValue('');
                 setTeamBLayValue('');
                 setTeamCLayValue('');
+
+                setLTeamARate(targetValue);
+                setLTeamBRate(targetValue);
+                setLTeamCRate(targetValue);
+                setLTeamALayValue('');
+                setLTeamBLayValue('');
+                setLTeamCLayValue('');
                 setIsTab("tab");
 
             }
@@ -632,6 +731,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setIncGap(0.25)
                     setTeamBRate('');
                     setTeamBLayValue('')
+
+                    setLTeamARate(value);
+                    setLTeamALayValue(value + 0.5);
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 } else if (event.target.name === 'teamB_rate') {
                     let value = event.target.value ? targetValue + 0.5 : 0;
                     setTeamBRate(value);
@@ -639,6 +743,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setIncGap(0.25)
                     setTeamARate('');
                     setTeamALayValue('')
+
+                    setLTeamBRate(value);
+                    setLTeamBLayValue(value + 0.5);
+                    setLTeamARate('');
+                    setLTeamALayValue('')
                 } else if (event.target.name === 'teamC_rate') {
                     let value = event.target.value ? targetValue + 0.5 : 0;
                     setTeamCRate(value);
@@ -648,6 +757,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue('')
                     setTeamBRate('');
                     setTeamBLayValue('')
+
+                    setLTeamCRate(value);
+                    setLTeamCLayValue(value + 0.5);
+                    setLTeamARate('');
+                    setLTeamALayValue('')
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 }
             }
             if (key == 'ctrl') {
@@ -674,6 +790,9 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     setTeamARate(value);
                     setTeamALayValue(value + 1);
+
+                    setLTeamARate(value);
+                    setLTeamALayValue(value + 1);
                 } else if (event.target.name === 'teamB_rate') {
                     let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
                     let teamBLayValueDecimal = teamBLayValue % 1; // get the decimal portion of the number
@@ -691,6 +810,9 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     setTeamBRate(value);
                     setTeamBLayValue(value + 1);
+
+                    setLTeamBRate(value);
+                    setLTeamBLayValue(value + 1);
                 } else if (event.target.name === 'teamC_rate') {
                     let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
                     let teamCLayValueDecimal = teamCLayValue % 1; // get the decimal portion of the number
@@ -708,6 +830,9 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     setTeamCRate(value);
                     setTeamCLayValue(value + 1);
+
+                    setLTeamCRate(value);
+                    setLTeamCLayValue(value + 1);
                 }
             }
             if (key == '.') {
@@ -732,6 +857,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue(value + 1.5);
                     setTeamBRate('');
                     setTeamBLayValue('')
+
+
+                    setLTeamARate(value);
+                    setLTeamALayValue(value + 1.5);
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 } else if (event.target.name === 'teamB_rate') {
                     let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
                     let teamBLayValueDecimal = teamBLayValue % 1; // get the decimal portion of the number
@@ -751,6 +882,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamBLayValue(value + 1.5);
                     setTeamARate('');
                     setTeamALayValue('')
+
+                    setLTeamBRate(value);
+                    setLTeamBLayValue(value + 1.5);
+                    setLTeamARate('');
+                    setLTeamALayValue('')
                 } else if (event.target.name === 'teamC_rate') {
                     let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
                     let teamCLayValueDecimal = teamCLayValue % 1; // get the decimal portion of the number
@@ -772,6 +908,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue('')
                     setTeamBRate('');
                     setTeamBLayValue('')
+
+                    setLTeamCRate(value);
+                    setLTeamCLayValue(value + 1.5);
+                    setLTeamARate('');
+                    setLTeamALayValue('')
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 }
 
             }
@@ -799,6 +942,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+                        setLTeamARate(value - 0.5);
+                        setLTeamALayValue(value + 1);
+
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     }
                 } else if (event.target.name === 'teamB_rate') {
                     if (teamBRate > 0.5) {
@@ -821,6 +970,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                         setTeamARate('');
                         setTeamALayValue('')
+
+                        setLTeamBRate(value - 0.5);
+                        setLTeamBLayValue(value + 1);
+
+                        setLTeamARate('');
+                        setLTeamALayValue('')
                     }
                 } else if (event.target.name === 'teamC_rate') {
                     if (teamCRate > 0.5) {
@@ -845,6 +1000,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue('');
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+                        setLTeamCRate(value - 0.5);
+                        setLTeamCLayValue(value + 1);
+
+                        setLTeamARate('');
+                        setLTeamALayValue('');
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     }
                 }
             }
@@ -884,6 +1047,10 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue(value + 1);
                         setTeamBRate('');
                         setTeamBLayValue('')
+                        setLTeamARate(value);
+                        setLTeamALayValue(value + 1);
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     } else if (event.target.name === 'teamB_rate') {
                         let result = handleHunderedValue(targetValue, teamBLayValue);
                         if (result) {
@@ -900,6 +1067,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamBLayValue(value + 1);
                         setTeamARate('');
                         setTeamALayValue('')
+
+                        setLTeamBRate(value);
+                        setLTeamBLayValue(value + 1);
+                        setLTeamARate('');
+                        setLTeamALayValue('')
                     } else if (event.target.name === 'teamC_rate') {
                         let result = handleHunderedValue(targetValue, teamCLayValue);
                         if (result) {
@@ -918,6 +1090,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue('')
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+                        setLTeamCRate(value);
+                        setLTeamCLayValue(value + 1);
+                        setLTeamARate('');
+                        setLTeamALayValue('')
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     }
                 } else {
                     if (event.target.name === 'teamA_rate') {
@@ -926,12 +1105,23 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue(value ? value + incGap : incGap);
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+                        setLTeamARate(value ? value : 1);
+                        setLTeamALayValue(value ? value + incGap : incGap);
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     } else if (event.target.name === 'teamB_rate') {
                         let value = Math.round(teamBRate) + incGap;
                         setTeamBRate(value ? value : 1);
                         setTeamBLayValue(value ? value + incGap : incGap);
                         setTeamARate('');
                         setTeamALayValue('')
+
+
+                        setLTeamBRate(value ? value : 1);
+                        setLTeamBLayValue(value ? value + incGap : incGap);
+                        setLTeamARate('');
+                        setLTeamALayValue('')
                     } else if (event.target.name === 'teamC_rate') {
                         let value = Math.round(teamCRate) + incGap;
                         setTeamCRate(value ? value : 1);
@@ -940,6 +1130,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue('')
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+
+                        setLTeamCRate(value ? value : 1);
+                        setLTeamCLayValue(value ? value + incGap : incGap);
+                        setLTeamARate('');
+                        setLTeamALayValue('')
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     }
                 }
             }
@@ -963,6 +1161,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue(value + 1);
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+                        setLTeamARate(value);
+                        setLTeamALayValue(value + 1);
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     } else if (event.target.name === 'teamB_rate') {
                         let result = handleZeroValue(targetValue, teamBLayValue);
                         if (result) {
@@ -979,6 +1182,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamBLayValue(value + 1);
                         setTeamARate('');
                         setTeamALayValue('')
+
+                        setLTeamBRate(value);
+                        setLTeamBLayValue(value + 1);
+                        setLTeamARate('');
+                        setLTeamALayValue('')
                     } else if (event.target.name === 'teamC_rate') {
                         let result = handleZeroValue(targetValue, teamCLayValue);
                         if (result) {
@@ -997,6 +1205,13 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue('')
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+                        setLTeamCRate(value);
+                        setLTeamCLayValue(value + 1);
+                        setLTeamARate('');
+                        setLTeamALayValue('')
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     }
                 } else {
                     if (event.target.name === 'teamA_rate' && event.target.value >= 5) {
@@ -1009,6 +1224,11 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue(value ? value + incGap : incGap);
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+                        setLTeamARate(value ? value : 0);
+                        setLTeamALayValue(value ? value + incGap : incGap);
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     } else if (event.target.name === 'teamB_rate' && event.target.value >= 5) {
                         let result = handleZeroValue(targetValue, teamBLayValue);
                         if (result) {
@@ -1020,6 +1240,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                         setTeamARate('');
                         setTeamALayValue('')
+
+                        setLTeamBRate(value ? value : 0);
+                        setLTeamBLayValue(value ? value + incGap : incGap);
+
+                        setLTeamARate('');
+                        setLTeamALayValue('')
                     } else if (event.target.name === 'teamC_rate' && event.target.value >= 5) {
                         let result = handleZeroValue(targetValue, teamCLayValue);
                         if (result) {
@@ -1033,6 +1259,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         setTeamALayValue('');
                         setTeamBRate('');
                         setTeamBLayValue('')
+
+                        setLTeamCRate(value ? value : 0);
+                        setLTeamCLayValue(value ? value + incGap : incGap);
+
+                        setLTeamARate('');
+                        setLTeamALayValue('');
+                        setLTeamBRate('');
+                        setLTeamBLayValue('')
                     }
                 }
             }
@@ -1045,12 +1279,22 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue(value + 5);
                     setTeamBRate('');
                     setTeamBLayValue('')
+
+                    setLTeamARate(value);
+                    setLTeamALayValue(value + 5);
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 } else if (event.target.name === 'teamB_rate') {
                     let value = event.target.value ? targetValue : 0;
                     setTeamBRate(value);
                     setTeamBLayValue(value + 5);
                     setTeamARate('');
                     setTeamALayValue('')
+
+                    setLTeamBRate(value);
+                    setLTeamBLayValue(value + 5);
+                    setLTeamARate('');
+                    setLTeamALayValue('')
                 } else if (event.target.name === 'teamC_rate') {
                     let value = event.target.value ? targetValue : 0;
                     setTeamCRate(value);
@@ -1059,6 +1303,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     setTeamALayValue('');
                     setTeamBRate('');
                     setTeamBLayValue('')
+
+
+                    setLTeamCRate(value);
+                    setLTeamCLayValue(value + 5);
+                    setLTeamARate('');
+                    setLTeamALayValue('');
+                    setLTeamBRate('');
+                    setLTeamBLayValue('')
                 }
             }
         }
@@ -1143,7 +1395,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             onFocus={() => handleFocus(innerRefTeamA)}
                                             type="number"
                                             variant="standard"
-                                            value={teamARate}
+                                            value={l_teamARate}
                                             InputProps={{
                                                 disableUnderline: true,
                                                 sx: {
@@ -1169,7 +1421,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         disabled
                                         // onChange={(e) => handleChange(e)}
                                         variant="standard"
-                                        value={teamALayValue}
+                                        value={l_teamALayValue}
                                         InputProps={{
                                             disableUnderline: true,
                                             sx: {
@@ -1218,7 +1470,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         <TextField
                                             className="InputChild"
                                             variant="standard"
-                                            value={teamBRate}
+                                            value={l_teamBRate}
                                             onChange={(e) => handleChange(e)}
                                             name={"teamB_rate"}
                                             inputRef={innerRefTeamB}
@@ -1248,7 +1500,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         className="InputChild"
                                         variant="standard"
                                         disabled
-                                        value={teamBLayValue}
+                                        value={l_teamBLayValue}
                                         // onChange={(i) => setTeamBLayValue(i.target.value)}
                                         InputProps={{
                                             disableUnderline: true,
@@ -1297,7 +1549,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         <TextField
                                             className="InputChild"
                                             variant="standard"
-                                            value={teamCRate}
+                                            value={l_teamCRate}
                                             onChange={(e) => handleChange(e)}
                                             name={"teamC_rate"}
                                             inputRef={innerRefTeamC}
@@ -1324,7 +1576,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                         className="InputChild"
                                         variant="standard"
                                         disabled
-                                        value={teamCLayValue}
+                                        value={l_teamCLayValue}
                                         InputProps={{
                                             disableUnderline: true,
                                             sx: {

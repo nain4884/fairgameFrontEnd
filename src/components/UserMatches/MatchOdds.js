@@ -25,7 +25,7 @@ const MatchOdds = ({
   manualBookmakerData,
   setFastAmount,
   fastAmount,
-  handleRateChange
+  handleRateChange,
 }) => {
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [matchOddsData, setMatchOddsData] = useState([]);
@@ -81,7 +81,7 @@ const MatchOdds = ({
   const upcoming =
     Number(timeLeft.days) === 0 &&
     Number(timeLeft.hours) === 0 &&
-    Number(timeLeft.minutes) <= 59
+    Number(timeLeft.minutes) <= 59;
 
   const teamRates =
     manualBookMarkerRates?.length > 0
@@ -115,40 +115,6 @@ const MatchOdds = ({
           handleRateChange={handleRateChange}
         />
       )}
-
-      {data?.apiBookMakerActive && (
-        <Odds
-          upcoming={!upcoming}
-          betLock={data?.blockMarket?.BOOKMAKER?.block}
-          showBox={!bookMakerRateLive}
-          newData={data}
-          showFast={true}
-          showDely={true}
-          lock={
-            data?.bookmakerLive?.length > 0 &&
-              data?.bookmakerLive[0]?.betStatus === 0
-              ? true
-              : false
-          }
-          data={
-            bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
-          }
-          // suspended={false}
-          teamARates={teamRates?.teamA}
-          teamBRates={teamRates?.teamB}
-          teamCRates={teamRates?.teamC}
-          min={data?.betfair_bookmaker_min_bet || 0}
-          max={data?.betfair_bookmaker_max_bet || 0}
-          title={"Bookmaker Market "}
-          isRound={false}
-          session={"bookmaker"}
-          typeOfBet={"BOOKMAKER"}
-          setFastAmount={setFastAmount}
-          fastAmount={fastAmount?.bookMaker}
-          handleRateChange={handleRateChange}
-        />
-      )}
-
       {/* Manual Bookmaker */}
       {data?.manualBookMakerActive && (
         <Odds
@@ -174,12 +140,46 @@ const MatchOdds = ({
           handleRateChange={handleRateChange}
         />
       )}
-
+      {data?.apiBookMakerActive && (
+        <Odds
+          upcoming={!upcoming}
+          betLock={data?.blockMarket?.BOOKMAKER?.block}
+          showBox={!bookMakerRateLive}
+          newData={data}
+          showFast={false}
+          showDely={true}
+          lock={
+            data?.bookmakerLive?.length > 0 &&
+            data?.bookmakerLive[0]?.betStatus === 0
+              ? true
+              : false
+          }
+          data={
+            bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
+          }
+          // suspended={false}
+          teamARates={teamRates?.teamA}
+          teamBRates={teamRates?.teamB}
+          teamCRates={teamRates?.teamC}
+          min={data?.betfair_bookmaker_min_bet || 0}
+          max={data?.betfair_bookmaker_max_bet || 0}
+          title={"Bookmaker Market "}
+          isRound={false}
+          session={"bookmaker"}
+          typeOfBet={"BOOKMAKER"}
+          setFastAmount={setFastAmount}
+          fastAmount={fastAmount?.bookMaker}
+          handleRateChange={handleRateChange}
+        />
+      )}
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
 
-      {(data?.apiSessionActive || data?.manualSessionActive) && (
+      {data?.manualSessionActive && (
         <>
           <SessionMarket
+            min={data?.manaual_session_min_bet || 0}
+            max={data?.manaual_session_max_bet || 0}
+            title={"Quick Session Market"}
             upcoming={!upcoming}
             betLock={data?.blockMarket?.SESSION?.block}
             showFast={true}
@@ -201,6 +201,32 @@ const MatchOdds = ({
         </>
       )}
 
+      {data?.apiSessionActive && (
+        <>
+          <SessionMarket
+            min={data?.betfair_session_min_bet || 0}
+            max={data?.betfair_session_max_bet || 0}
+            title={"Session Market"}
+            upcoming={!upcoming}
+            betLock={data?.blockMarket?.SESSION?.block}
+            showFast={false}
+            session={"sessionOdds"}
+            sessionBets={sessionBets}
+            data={sessionOddsLive}
+            newData={data}
+            sessionOffline={sessionOffline}
+            sessionExposer={sessionExposer}
+            // dataProfit={dataProfit}
+            teamARates={teamRates?.teamA}
+            teamBRates={teamRates?.teamB}
+            teamCRates={teamRates?.teamC}
+            allBetsData={allBetsData}
+            setFastAmount={setFastAmount}
+            fastAmount={fastAmount?.sessionOdds}
+            handleRateChange={handleRateChange}
+          />
+        </>
+      )}
     </Box>
   );
 };

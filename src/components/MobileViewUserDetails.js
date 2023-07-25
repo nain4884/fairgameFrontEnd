@@ -23,7 +23,7 @@ const MobileViewUserDetails = ({
   userName,
   element,
   elementToUDM,
-  titleBackgroundColor
+  titleBackgroundColor,
 }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   return (
@@ -38,14 +38,19 @@ const MobileViewUserDetails = ({
           borderBottomLeftRadius: "0px",
           overflow: "hidden",
           border: "2px solid white",
-
         },
         (theme) => ({
           backgroundImage: `${theme.palette.primary.headerGradient}`,
         }),
       ]}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between", background: titleBackgroundColor ? titleBackgroundColor : "#ff0000" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          background: titleBackgroundColor ? titleBackgroundColor : "#ff0000",
+        }}
+      >
         <Box
           display={"flex"}
           sx={{
@@ -80,7 +85,10 @@ const MobileViewUserDetails = ({
             </Typography>
           </Box>
         </Box>
-        <Button sx={{ color: "", fontSize: "30px", color: "#fff" }} onClick={setSelected}>
+        <Button
+          sx={{ color: "", fontSize: "30px", color: "#fff" }}
+          onClick={setSelected}
+        >
           &times;
         </Button>
       </Box>
@@ -93,7 +101,7 @@ const MobileViewUserDetails = ({
           display: "flex",
           flexDirection: "column",
           gap: 1,
-          background: "#F8C851"
+          background: "#F8C851",
         }}
       >
         <Box
@@ -136,8 +144,7 @@ const MobileViewUserDetails = ({
                   marginRight: 0,
                   color: "#000",
                   textTransform: "capitalize",
-                  marginLeft: "5px"
-
+                  marginLeft: "5px",
                 }}
               >
                 {currentUser?.userName}
@@ -180,7 +187,6 @@ const MobileViewUserDetails = ({
                 borderRadius: "5px",
                 border: "2px solid #26262633",
                 paddingX: "10px",
-
               }}
             >
               <TextField
@@ -242,7 +248,7 @@ const MobileViewUserDetails = ({
                   marginRight: 0,
                   color: "#000",
                   textTransform: "capitalize",
-                  marginLeft: "5px"
+                  marginLeft: "5px",
                 }}
               >
                 {userName}
@@ -266,10 +272,11 @@ const MobileViewUserDetails = ({
                   color: "white",
                   display: "flex",
                   alignItems: "center",
-
                 }}
               >
-                {element?.available_balance ? element?.available_balance.toFixed(2) : "00"}
+                {element?.available_balance
+                  ? element?.available_balance.toFixed(2)
+                  : "00"}
               </Typography>
             </Box>
 
@@ -286,9 +293,11 @@ const MobileViewUserDetails = ({
               }}
             >
               <TextField
-                value={elementToUDM?.available_balance
-                  ? elementToUDM?.available_balance.toFixed(2)
-                  : "00"}
+                value={
+                  elementToUDM?.available_balance
+                    ? elementToUDM?.available_balance.toFixed(2)
+                    : "00"
+                }
                 sx={{ width: "100%", height: "45px" }}
                 variant="standard"
                 InputProps={{
@@ -336,7 +345,7 @@ const MobileViewUserDetails = ({
                 marginRight: 0,
                 color: "#000",
                 textTransform: "capitalize",
-                marginLeft: "5px"
+                marginLeft: "5px",
               }}
             >
               Client Profit/Loss
@@ -426,7 +435,7 @@ const MobileViewUserDetails = ({
                 marginRight: 0,
                 color: "#000",
                 textTransform: "capitalize",
-                marginLeft: "5px"
+                marginLeft: "5px",
               }}
             >
               {title}
@@ -443,6 +452,7 @@ const MobileViewUserDetails = ({
             }}
           >
             <TextField
+              required={true}
               value={amount}
               onChange={handleChange}
               variant="standard"
@@ -491,7 +501,7 @@ const MobileViewUserDetails = ({
                 marginRight: 0,
                 color: "#000",
                 textTransform: "capitalize",
-                marginLeft: "5px"
+                marginLeft: "5px",
               }}
             >
               Remarks
@@ -561,7 +571,7 @@ const MobileViewUserDetails = ({
                 marginRight: 0,
                 color: "#000",
                 textTransform: "capitalize",
-                marginLeft: "5px"
+                marginLeft: "5px",
               }}
             >
               Transaction
@@ -582,6 +592,7 @@ const MobileViewUserDetails = ({
             }}
           >
             <TextField
+              required={true}
               onChange={handleAdminPass}
               sx={{ width: "100%", height: "45px" }}
               variant="standard"
@@ -616,10 +627,11 @@ const MobileViewUserDetails = ({
           width: "100%",
           justifyContent: "space-around",
           gap: 1,
-          background: "#fff"
+          background: "#fff",
         }}
       >
         <BoxButton
+          color={"#E32A2A"}
           containerStyle={{
             width: "150px",
             background: "#E32A2A",
@@ -631,10 +643,12 @@ const MobileViewUserDetails = ({
           title={"Cancel"}
         />
         <BoxButton
+          color={"#0B4F26"}
           loading={loading}
           containerStyle={{ width: "150px", height: "45px" }}
           isSelected={true}
-          onClick={onSubmit}
+          // onClick={onSubmit}
+          type="submit"
           title={"Submit"}
         />
       </Box>

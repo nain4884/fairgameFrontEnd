@@ -294,6 +294,7 @@ export default function UserDetailModal({
           }}
         >
           <BoxButton
+            color={"#0B4F26"}
             onClick={() => {
               setSelected(0);
             }}
@@ -310,6 +311,7 @@ export default function UserDetailModal({
             labelStyle={{}}
           />
           <BoxButton
+            color={"#0B4F26"}
             onClick={() => {
               setSelected(1);
             }}
@@ -327,6 +329,7 @@ export default function UserDetailModal({
           />
           {elementToUDM?.role?.roleName === "user" && (
             <BoxButton
+              color={"#0B4F26"}
               onClick={(e) => {
                 e?.preventDefault();
                 setSettalmentModal(true);
@@ -344,6 +347,7 @@ export default function UserDetailModal({
             />
           )}
           <BoxButton
+            color={"#0B4F26"}
             onClick={() => {
               setSelected(3);
             }}
@@ -359,6 +363,7 @@ export default function UserDetailModal({
             }}
           />
           <BoxButton
+            color={"#0B4F26"}
             onClick={() => {
               setSelected(4);
             }}
@@ -374,6 +379,7 @@ export default function UserDetailModal({
             isSelected={selected == 4}
           />
           <BoxButton
+            color={"#0B4F26"}
             onClick={() => {
               setSelected(2);
             }}
@@ -390,6 +396,7 @@ export default function UserDetailModal({
             }}
           />
           <BoxButton
+            color={"#0B4F26"}
             onClick={() => {
               setSelected(5);
             }}
@@ -406,6 +413,7 @@ export default function UserDetailModal({
             isSelected={selected == 5}
           />
           <BoxButton
+            color={"#E32A2A"}
             deleteBtn={true}
             onClick={(e) => {
               setDeleteModal((prev) => !prev);
@@ -700,6 +708,54 @@ const DepositComponent = ({
     }
   };
 
+  const handleDepositeSubmit = (e) => {
+    e.preventDefault();
+    try {
+      let payload = depositObj;
+      payload.amount = parseFloat(payload.amount);
+      if (!loading) {
+        setLoading(true);
+        UpdateAvailableBalance(depositObj)
+          .then(({ bool, message }) => {
+            toast.success(message);
+            getListOfUser();
+            updatedUserProfile();
+            setLoading(false);
+            showDialogModal(true, true, message);
+            setDepositObj(defaultDepositObj);
+
+            setSelected(e);
+          })
+          .catch(({ bool, message }) => {
+            toast.error(message);
+            setSelected(e);
+            setLoading(false);
+            showDialogModal(true, false, message);
+
+            setElementToUDM({
+              ...elementToUDM,
+              profit_loss: prevElement.profit_loss,
+              balance: prevElement.balance,
+
+              percent_profit_loss: prevElement.percent_profit_loss,
+              available_balance: prevElement.available_balances,
+            });
+          });
+      }
+    } catch (e) {
+      console.log(e?.message);
+      setSelected(e);
+      setElementToUDM({
+        ...elementToUDM,
+        profit_loss: prevElement.profit_loss,
+        balance: prevElement.balance,
+        percent_profit_loss: prevElement.percent_profit_loss,
+        available_balance: prevElement.available_balances,
+      });
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {matchesMobile && matchesTablet ? (
@@ -714,418 +770,377 @@ const DepositComponent = ({
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <MobileViewUserDetails
-            elementToUDM={elementToUDM}
-            element={element}
-            userName={elementToUDM?.userName}
-            title={"Deposit Amount"}
-            setSelected={setSelected}
-            selected={selected}
-            handleAdminPass={(e) => {
-              setDepositObj({
-                ...depositObj,
-                adminTransPassword: e.target.value,
-              });
-            }}
-            handleChange={handleChange}
-            handleReview={(e) => {
-              setDepositObj({ ...depositObj, remark: e.target.value });
-            }}
-            amount={depositObj.amount}
-            profit_loss={elementToUDM?.profit_loss}
-            percent_profit_loss={elementToUDM?.percent_profit_loss}
-            setShowPass={setShowPass}
-            showPass={showPass}
-            onCancel={(e) => {
-              setDepositObj(defaultDepositObj);
-              setElementToUDM({
-                ...elementToUDM,
-                profit_loss: prevElement.profit_loss,
-                balance: prevElement.balance,
-                available_balance: prevElement.available_balances,
-              });
-              setShowUserModal(false);
-            }}
-            onSubmit={(e) => {
-              try {
-                if (!loading) {
-                  setLoading(true);
-                  UpdateAvailableBalance(depositObj)
-                    .then(({ bool, message }) => {
-                      toast.success(message);
-                      getListOfUser();
-                      updatedUserProfile();
-                      setLoading(false);
-                      setSelected(e);
-                      showDialogModal(true, true, message);
-                    })
-                    .catch(({ bool, message }) => {
-                      setElementToUDM({
-                        ...elementToUDM,
-                        profit_loss: prevElement.profit_loss,
-                        percent_profit_loss: prevElement.percent_profit_loss,
-                        balance: prevElement.balance,
-
-                        available_balance: prevElement.available_balances,
-                      });
-                      toast.error(message);
-                      setLoading(false);
-                      setSelected(e);
-                      showDialogModal(true, false, message);
-                    });
-                }
-              } catch (e) {
-                console.log(e?.message);
+          <form onSubmit={handleDepositeSubmit}>
+            <MobileViewUserDetails
+              elementToUDM={elementToUDM}
+              element={element}
+              userName={elementToUDM?.userName}
+              title={"Deposit Amount"}
+              setSelected={setSelected}
+              selected={selected}
+              handleAdminPass={(e) => {
+                setDepositObj({
+                  ...depositObj,
+                  adminTransPassword: e.target.value,
+                });
+              }}
+              handleChange={handleChange}
+              handleReview={(e) => {
+                setDepositObj({ ...depositObj, remark: e.target.value });
+              }}
+              amount={depositObj.amount}
+              profit_loss={elementToUDM?.profit_loss}
+              percent_profit_loss={elementToUDM?.percent_profit_loss}
+              setShowPass={setShowPass}
+              showPass={showPass}
+              onCancel={(e) => {
+                setDepositObj(defaultDepositObj);
                 setElementToUDM({
                   ...elementToUDM,
                   profit_loss: prevElement.profit_loss,
-                  percent_profit_loss: prevElement.percent_profit_loss,
                   balance: prevElement.balance,
-
                   available_balance: prevElement.available_balances,
                 });
-                setSelected(e);
-                setLoading(false);
-              }
-            }}
-            initialBalance={initialBalance}
-            backgroundColor={backgroundColor}
-            loading={loading}
-            titleBackgroundColor={titleBackgroundColor}
-          />
+                setShowUserModal(false);
+              }}
+              // onSubmit={handle}
+              initialBalance={initialBalance}
+              backgroundColor={backgroundColor}
+              loading={loading}
+              titleBackgroundColor={titleBackgroundColor}
+            />
+          </form>
         </ModalMUI>
       ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-            gap: 2,
-            borderRadius: "5px",
-          }}
-        >
+        <form onSubmit={handleDepositeSubmit}>
           <Box
             sx={{
-              width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-              gap: "1%",
-              display: { mobile: "flex", laptop: "block" },
-              flexDirection: "row-reverse",
-              justifyContent: "flex-end",
+              display: "flex",
+              flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+              gap: 2,
+              borderRadius: "5px",
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                width: { mobile: "41%", laptop: "100%" },
-                flexDirection: {
-                  mobile: "column",
-                  tablet: "row",
-                  laptop: "row",
-                },
-                justifyContent: "flex-end",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "60%",
-                  flexDirection: {
-                    mobile: "row",
-                    tablet: "row",
-                    laptop: "row",
-                  },
-                  justifyContent: "space-between",
-                  position: { mobile: "relative", laptop: "static" },
-                  marginTop: { mobile: "0", laptop: "0" },
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
-                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-                    fontWeight: "600",
-                    marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-                  }}
-                >
-                  Deposit Amount
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  background: "#004A25",
-                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
-                  height: "45px",
-                  borderRadius: "5px",
-                  paddingX: "20px",
-                  marginTop: { mobile: "0", laptop: "0" },
-                }}
-              >
-                <TextField
-                  value={depositObj.amount}
-                  onChange={handleChange}
-                  variant="standard"
-                  InputProps={{
-                    placeholder: "Type Amount...",
-                    disableUnderline: true,
-                    style: {
-                      fontSize: "15px",
-                      height: "45px",
-                      fontWeight: "600",
-                      color: "white",
-                    },
-                  }}
-                  type={"Number"}
-                />
-              </Box>
-            </Box>
-
-            <Box
-              sx={{
-                width: { mobile: "41%", laptop: "100%" },
-                display: "flex",
-                alignItems: "center",
-                overflow: "hidden",
-                flexDirection: {
-                  mobile: "column",
-                  tablet: "row",
-                  laptop: "row",
-                },
-                justifyContent: "flex-end",
-                marginTop: "10px",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
-                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
-                  fontWeight: "600",
-                  marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
-                }}
-              >
-                Wallet Balance
-              </Typography>
-              <Box
-                sx={{
-                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
-                  height: "45px",
-                  background: "#FFECBC",
-                  display: "flex",
-                  alignItems: "center",
-                  borderRadius: "5px",
-                  border: "2px solid #26262633",
-                  paddingX: "20px",
-                }}
-              >
-                <TextField
-                  value={initialBalance || 0}
-                  sx={{ width: "100%", height: "45px" }}
-                  variant="standard"
-                  InputProps={{
-                    disabled: true,
-                    placeholder: "",
-                    disableUnderline: true,
-                    type: "text",
-                    style: {
-                      fontSize: "13px",
-                      height: "45px",
-                      fontWeight: "600",
-                    },
-                  }}
-                />
-              </Box>
-            </Box>
-            <Box
-              sx={{
-                width: { mobile: "41%", laptop: "100%" },
-                display: "flex",
-                alignItems: "center",
-                overflow: "hidden",
-                justifyContent: "flex-end",
-                flexDirection: {
-                  mobile: "column",
-                  tablet: "row",
-                  laptop: "row",
-                },
-                marginTop: "10px",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "60%",
-                  flexDirection: {
-                    mobile: "row",
-                    tablet: "row",
-                    laptop: "row",
-                  },
-                  justifyContent: "space-between",
-                  position: { mobile: "relative", laptop: "static" },
-                  marginTop: { mobile: "0", laptop: "0" },
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
-                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-                    fontWeight: "600",
-                    marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-                  }}
-                >
-                  Transaction Password
-                </Typography>
-              </Box>
-
-              <Box
-                sx={{
-                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
-                  height: "45px",
-                  paddingLeft: "20px",
-                  paddingRight: "20px",
-                  background: "white",
-                  display: "flex",
-                  alignItems: "center",
-                  borderRadius: "5px",
-                  border: "2px solid #26262633",
-                }}
-              >
-                <TextField
-                  onChange={(e) => {
-                    setDepositObj({
-                      ...depositObj,
-                      adminTransPassword: e.target.value,
-                    });
-                  }}
-                  sx={{ width: "100%", height: "45px" }}
-                  variant="standard"
-                  InputProps={{
-                    placeholder: "",
-                    disableUnderline: true,
-                    type: !showPass ? "password" : "text",
-                    style: {
-                      fontSize: "13px",
-                      height: "45px",
-                      fontWeight: "600",
-                    },
-                  }}
-                />
-                <Box
-                  onClick={() => {
-                    setShowPass(!showPass);
-                  }}
-                >
-                  <StyledImage
-                    src={showPass ? EyeIcon : EyeSlash}
-                    sx={{ height: "14px", width: "20px" }}
-                  />
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              overflow: "hidden",
-              width: "100%",
-              gap: "1%",
-              display: { mobile: "flex", laptop: "block" },
-              justifyContent: "flex-end",
-              flexDirection: "row-reverse",
-            }}
-          >
-            {/* Remark */}
-
-            <Box
-              sx={{
-                borderRadius: "5px",
-                flex: 1,
-                background: backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
-                display: "flex",
-                alignItems: "center",
-                borderRadius: "5px",
-                border: "2px solid #26262633",
-                minHeight: "80px",
-                maxHeight: "115px",
-                marginTop: "0",
-                paddingX: "10px",
-                width: { mobile: "41%", laptop: "55%" },
-              }}
-            >
-              <TextField
-                onChange={(e) => {
-                  setDepositObj({ ...depositObj, remark: e.target.value });
-                }}
-                rows={4}
-                sx={{ width: "100%", minHeight: "40px" }}
-                multiline={true}
-                variant="standard"
-                InputProps={{
-                  placeholder: "Remark (Optional)",
-                  disableUnderline: true,
-                  style: {
-                    fontSize: "13px",
-                    minHeight: "45px",
-                    fontWeight: "600",
-                  },
-                }}
-              />
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                marginTop: "21px",
-                gap: 1,
+                width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                gap: "1%",
+                display: { mobile: "flex", laptop: "block" },
                 flexDirection: "row-reverse",
                 justifyContent: "flex-end",
               }}
             >
-              <BoxButton
-                loading={loading}
-                containerStyle={{
-                  height: "44px",
-                  maxWidth: "150px !important",
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: { mobile: "41%", laptop: "100%" },
+                  flexDirection: {
+                    mobile: "column",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                  justifyContent: "flex-end",
                 }}
-                isSelected={true}
-                onClick={(e) => {
-                  try {
-                    let payload = depositObj;
-                    payload.amount = parseFloat(payload.amount);
-                    if (!loading) {
-                      setLoading(true);
-                      UpdateAvailableBalance(depositObj)
-                        .then(({ bool, message }) => {
-                          toast.success(message);
-                          getListOfUser();
-                          updatedUserProfile();
-                          setLoading(false);
-                          showDialogModal(true, true, message);
-                          setDepositObj(defaultDepositObj);
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "60%",
+                    flexDirection: {
+                      mobile: "row",
+                      tablet: "row",
+                      laptop: "row",
+                    },
+                    justifyContent: "space-between",
+                    position: { mobile: "relative", laptop: "static" },
+                    marginTop: { mobile: "0", laptop: "0" },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        mobile: "3vw",
+                        laptop: "16px",
+                        tablet: "16px",
+                      },
+                      width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                      fontWeight: "600",
+                      marginRight: {
+                        mobile: 0,
+                        laptop: "20px",
+                        tablet: "20px",
+                      },
+                    }}
+                  >
+                    Deposit Amount
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    background: "#004A25",
+                    width: { mobile: "100%", laptop: "43%", tablet: "43%" },
+                    height: "45px",
+                    borderRadius: "5px",
+                    paddingX: "20px",
+                    marginTop: { mobile: "0", laptop: "0" },
+                  }}
+                >
+                  <TextField
+                    required={true}
+                    value={depositObj.amount}
+                    onChange={handleChange}
+                    variant="standard"
+                    InputProps={{
+                      placeholder: "Type Amount...",
+                      disableUnderline: true,
+                      style: {
+                        fontSize: "15px",
+                        height: "45px",
+                        fontWeight: "600",
+                        color: "white",
+                      },
+                    }}
+                    type={"Number"}
+                  />
+                </Box>
+              </Box>
 
-                          setSelected(e);
-                        })
-                        .catch(({ bool, message }) => {
-                          toast.error(message);
-                          setSelected(e);
-                          setLoading(false);
-                          showDialogModal(true, false, message);
+              <Box
+                sx={{
+                  width: { mobile: "41%", laptop: "100%" },
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                  flexDirection: {
+                    mobile: "column",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                  justifyContent: "flex-end",
+                  marginTop: "10px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
+                    width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                    fontWeight: "600",
+                    marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
+                  }}
+                >
+                  Wallet Balance
+                </Typography>
+                <Box
+                  sx={{
+                    width: { mobile: "100%", laptop: "43%", tablet: "43%" },
+                    height: "45px",
+                    background: "#FFECBC",
+                    display: "flex",
+                    alignItems: "center",
+                    borderRadius: "5px",
+                    border: "2px solid #26262633",
+                    paddingX: "20px",
+                  }}
+                >
+                  <TextField
+                    value={initialBalance || 0}
+                    sx={{ width: "100%", height: "45px" }}
+                    variant="standard"
+                    InputProps={{
+                      disabled: true,
+                      placeholder: "",
+                      disableUnderline: true,
+                      type: "text",
+                      style: {
+                        fontSize: "13px",
+                        height: "45px",
+                        fontWeight: "600",
+                      },
+                    }}
+                  />
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  width: { mobile: "41%", laptop: "100%" },
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                  justifyContent: "flex-end",
+                  flexDirection: {
+                    mobile: "column",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                  marginTop: "10px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "60%",
+                    flexDirection: {
+                      mobile: "row",
+                      tablet: "row",
+                      laptop: "row",
+                    },
+                    justifyContent: "space-between",
+                    position: { mobile: "relative", laptop: "static" },
+                    marginTop: { mobile: "0", laptop: "0" },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        mobile: "3vw",
+                        laptop: "16px",
+                        tablet: "16px",
+                      },
+                      width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                      fontWeight: "600",
+                      marginRight: {
+                        mobile: 0,
+                        laptop: "20px",
+                        tablet: "20px",
+                      },
+                    }}
+                  >
+                    Transaction Password
+                  </Typography>
+                </Box>
 
-                          setElementToUDM({
-                            ...elementToUDM,
-                            profit_loss: prevElement.profit_loss,
-                            balance: prevElement.balance,
+                <Box
+                  sx={{
+                    width: { mobile: "100%", laptop: "43%", tablet: "43%" },
+                    height: "45px",
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
+                    background: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    borderRadius: "5px",
+                    border: "2px solid #26262633",
+                  }}
+                >
+                  <TextField
+                    required={true}
+                    onChange={(e) => {
+                      setDepositObj({
+                        ...depositObj,
+                        adminTransPassword: e.target.value,
+                      });
+                    }}
+                    sx={{ width: "100%", height: "45px" }}
+                    variant="standard"
+                    InputProps={{
+                      placeholder: "",
+                      disableUnderline: true,
+                      type: !showPass ? "password" : "text",
+                      style: {
+                        fontSize: "13px",
+                        height: "45px",
+                        fontWeight: "600",
+                      },
+                    }}
+                  />
+                  <Box
+                    onClick={() => {
+                      setShowPass(!showPass);
+                    }}
+                  >
+                    <StyledImage
+                      src={showPass ? EyeIcon : EyeSlash}
+                      sx={{ height: "14px", width: "20px" }}
+                    />
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
 
-                            percent_profit_loss:
-                              prevElement.percent_profit_loss,
-                            available_balance: prevElement.available_balances,
-                          });
-                        });
-                    }
-                  } catch (e) {
-                    console.log(e?.message);
-                    setSelected(e);
+            <Box
+              sx={{
+                overflow: "hidden",
+                width: "100%",
+                gap: "1%",
+                display: { mobile: "flex", laptop: "block" },
+                justifyContent: "flex-end",
+                flexDirection: "row-reverse",
+              }}
+            >
+              {/* Remark */}
+
+              <Box
+                sx={{
+                  borderRadius: "5px",
+                  flex: 1,
+                  background:
+                    backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
+                  display: "flex",
+                  alignItems: "center",
+                  borderRadius: "5px",
+                  border: "2px solid #26262633",
+                  minHeight: "80px",
+                  maxHeight: "115px",
+                  marginTop: "0",
+                  paddingX: "10px",
+                  width: { mobile: "41%", laptop: "55%" },
+                }}
+              >
+                <TextField
+                  onChange={(e) => {
+                    setDepositObj({ ...depositObj, remark: e.target.value });
+                  }}
+                  rows={4}
+                  sx={{ width: "100%", minHeight: "40px" }}
+                  multiline={true}
+                  variant="standard"
+                  InputProps={{
+                    placeholder: "Remark (Optional)",
+                    disableUnderline: true,
+                    style: {
+                      fontSize: "13px",
+                      minHeight: "45px",
+                      fontWeight: "600",
+                    },
+                  }}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  marginTop: "21px",
+                  gap: 1,
+                  flexDirection: "row-reverse",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <BoxButton
+                  color={"#0B4F26"}
+                  loading={loading}
+                  containerStyle={{
+                    height: "44px",
+                    maxWidth: "150px !important",
+                  }}
+                  isSelected={true}
+                  type="submit"
+                  title={"Submit"}
+                />
+                <BoxButton
+                  color={"#E32A2A"}
+                  containerStyle={{
+                    background: "#E32A2A",
+                    border: "0px",
+                    height: "44px",
+                    maxWidth: "150px !important",
+                  }}
+                  isSelected={true}
+                  onClick={(e) => {
+                    setDepositObj(defaultDepositObj);
                     setElementToUDM({
                       ...elementToUDM,
                       profit_loss: prevElement.profit_loss,
@@ -1133,83 +1148,93 @@ const DepositComponent = ({
                       percent_profit_loss: prevElement.percent_profit_loss,
                       available_balance: prevElement.available_balances,
                     });
-                    setLoading(false);
-                  }
-                }}
-                title={"Submit"}
-              />
-              <BoxButton
-                containerStyle={{
-                  background: "#E32A2A",
-                  border: "0px",
-                  height: "44px",
-                  maxWidth: "150px !important",
-                }}
-                isSelected={true}
-                onClick={(e) => {
-                  setDepositObj(defaultDepositObj);
-                  setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    percent_profit_loss: prevElement.percent_profit_loss,
-                    available_balance: prevElement.available_balances,
-                  });
-                  setSelected(e);
-                }}
-                title={"Cancel"}
-              />
+                    setSelected(e);
+                  }}
+                  title={"Cancel"}
+                />
+              </Box>
             </Box>
-          </Box>
 
-          {/* V hidden */}
-          <Box
-            sx={{
-              display: "flex",
-              visibility: "hidden",
-              flexDirection: {
-                mobile: "row",
-                tablet: "column",
-                laptop: "column",
-              },
-              justifyContent: "center",
-              gap: 1,
-              alignItems: "center",
-            }}
-          >
-            <Box sx={{ display: "flex", width: "150px" }}>
-              <BoxButton
-                loading={loading}
-                containerStyle={{ width: "150px", height: "35px" }}
-                isSelected={true}
-                onClick={(e) => {
-                  try {
-                    if (!loading) {
-                      setLoading(true);
-                      UpdateAvailableBalance(depositObj)
-                        .then(({ bool, message }) => {
-                          toast.success(message);
-                          getListOfUser();
-                          setSelected(e);
-                          updatedUserProfile();
-                          setLoading(false);
-                          showDialogModal(true, true, message);
-                        })
-                        .catch(({ bool, message }) => {
-                          setElementToUDM({
-                            ...elementToUDM,
-                            profit_loss: prevElement.profit_loss,
-                            balance: prevElement.balance,
-                            available_balance: prevElement.available_balances,
+            {/* V hidden */}
+            <Box
+              sx={{
+                display: "flex",
+                visibility: "hidden",
+                flexDirection: {
+                  mobile: "row",
+                  tablet: "column",
+                  laptop: "column",
+                },
+                justifyContent: "center",
+                gap: 1,
+                alignItems: "center",
+              }}
+            >
+              <Box sx={{ display: "flex", width: "150px" }}>
+                <BoxButton
+                  color={"#0B4F26"}
+                  loading={loading}
+                  containerStyle={{ width: "150px", height: "35px" }}
+                  isSelected={true}
+                  onClick={(e) => {
+                    try {
+                      if (!loading) {
+                        setLoading(true);
+                        UpdateAvailableBalance(depositObj)
+                          .then(({ bool, message }) => {
+                            toast.success(message);
+                            getListOfUser();
+                            setSelected(e);
+                            updatedUserProfile();
+                            setLoading(false);
+                            showDialogModal(true, true, message);
+                          })
+                          .catch(({ bool, message }) => {
+                            setElementToUDM({
+                              ...elementToUDM,
+                              profit_loss: prevElement.profit_loss,
+                              balance: prevElement.balance,
+                              available_balance: prevElement.available_balances,
+                            });
+                            setSelected(e);
+                            toast.error(message);
+                            setLoading(false);
+                            showDialogModal(true, false, message);
                           });
-                          setSelected(e);
-                          toast.error(message);
-                          setLoading(false);
-                          showDialogModal(true, false, message);
-                        });
+                      }
+                    } catch (e) {
+                      console.log(e?.message);
+                      setElementToUDM({
+                        ...elementToUDM,
+                        profit_loss: prevElement.profit_loss,
+                        balance: prevElement.balance,
+                        available_balance: prevElement.available_balances,
+                      });
+                      setSelected(e);
+                      setLoading(false);
                     }
-                  } catch (e) {
-                    console.log(e?.message);
+                  }}
+                  title={"Submit"}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "150px",
+                  marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+                }}
+              >
+                <BoxButton
+                  color={"#E32A2A"}
+                  containerStyle={{
+                    width: "150px",
+                    background: "#E32A2A",
+                    border: "0px",
+                    height: "35px",
+                  }}
+                  isSelected={true}
+                  onClick={(e) => {
+                    setDepositObj(defaultDepositObj);
                     setElementToUDM({
                       ...elementToUDM,
                       profit_loss: prevElement.profit_loss,
@@ -1217,42 +1242,13 @@ const DepositComponent = ({
                       available_balance: prevElement.available_balances,
                     });
                     setSelected(e);
-                    setLoading(false);
-                  }
-                }}
-                title={"Submit"}
-              />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                width: "150px",
-                marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
-              }}
-            >
-              <BoxButton
-                containerStyle={{
-                  width: "150px",
-                  background: "#E32A2A",
-                  border: "0px",
-                  height: "35px",
-                }}
-                isSelected={true}
-                onClick={(e) => {
-                  setDepositObj(defaultDepositObj);
-                  setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    available_balance: prevElement.available_balances,
-                  });
-                  setSelected(e);
-                }}
-                title={"Cancel"}
-              />
+                  }}
+                  title={"Cancel"}
+                />
+              </Box>
             </Box>
           </Box>
-        </Box>
+        </form>
       )}
     </>
   );
@@ -1352,6 +1348,48 @@ const WithDrawComponent = ({
       }, 51);
     }
   };
+
+  const handleWithdrawAmount = (e) => {
+    e.preventDefault();
+    try {
+      if (!loading) {
+        setLoading(true);
+        UpdateAvailableBalance(withDrawObj)
+          .then(({ bool, message }) => {
+            toast.success(message);
+            updatedUserProfile();
+            getListOfUser();
+            setSelected(e);
+            setLoading(false);
+            showDialogModal(true, true, message);
+          })
+          .catch(({ bool, message }) => {
+            setElementToUDM({
+              ...elementToUDM,
+              profit_loss: prevElement.profit_loss,
+              balance: prevElement.balance,
+              percent_profit_loss: prevElement.percent_profit_loss,
+              available_balance: prevElement.available_balance,
+            });
+            toast.error(message);
+            setSelected(e);
+            setLoading(false);
+            showDialogModal(true, false, message);
+          });
+      }
+    } catch (e) {
+      setSelected(e);
+      setLoading(false);
+      setElementToUDM({
+        ...elementToUDM,
+        profit_loss: prevElement.profit_loss,
+        balance: prevElement.balance,
+        percent_profit_loss: prevElement.percent_profit_loss,
+        available_balance: prevElement.available_balance,
+      });
+      console.log(e.message);
+    }
+  };
   return (
     <>
       {matchesMobile && matchesTablet ? (
@@ -1366,83 +1404,46 @@ const WithDrawComponent = ({
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <MobileViewUserDetails
-            elementToUDM={elementToUDM}
-            element={element}
-            userName={elementToUDM?.userName}
-            title={"Withdraw Amount"}
-            setSelected={setSelected}
-            selected={selected}
-            handleAdminPass={(e) => {
-              setWithDrawObj({
-                ...withDrawObj,
-                adminTransPassword: e.target.value,
-              });
-            }}
-            handleChange={handleChange}
-            handleReview={(e) => {
-              setWithDrawObj({ ...withDrawObj, remark: e.target.value });
-            }}
-            amount={withDrawObj.amount}
-            profit_loss={elementToUDM?.profit_loss}
-            percent_profit_loss={elementToUDM?.percent_profit_loss}
-            setShowPass={setShowPass}
-            showPass={showPass}
-            onCancel={(e) => {
-              setWithDrawObj(defaultWithDrawObj);
-              setElementToUDM({
-                ...elementToUDM,
-                profit_loss: prevElement.profit_loss,
-                balance: prevElement.balance,
-                available_balance: prevElement.available_balance,
-              });
-              setShowUserModal(false);
-            }}
-            onSubmit={(e) => {
-              try {
-                if (!loading) {
-                  setLoading(true);
-                  UpdateAvailableBalance(withDrawObj)
-                    .then(({ bool, message }) => {
-                      toast.success(message);
-                      updatedUserProfile();
-                      getListOfUser();
-                      setSelected(e);
-                      setLoading(false);
-                      showDialogModal(true, true, message);
-                    })
-                    .catch(({ bool, message }) => {
-                      setElementToUDM({
-                        ...elementToUDM,
-                        profit_loss: prevElement.profit_loss,
-                        balance: prevElement.balance,
-                        percent_profit_loss: prevElement.percent_profit_loss,
-                        available_balance: prevElement.available_balance,
-                      });
-                      toast.error(message);
-                      setSelected(e);
-                      setLoading(false);
-                      showDialogModal(true, false, message);
-                    });
-                }
-              } catch (e) {
-                setSelected(e);
-                setLoading(false);
+          <form onSubmit={handleWithdrawAmount}>
+            <MobileViewUserDetails
+              elementToUDM={elementToUDM}
+              element={element}
+              userName={elementToUDM?.userName}
+              title={"Withdraw Amount"}
+              setSelected={setSelected}
+              selected={selected}
+              handleAdminPass={(e) => {
+                setWithDrawObj({
+                  ...withDrawObj,
+                  adminTransPassword: e.target.value,
+                });
+              }}
+              handleChange={handleChange}
+              handleReview={(e) => {
+                setWithDrawObj({ ...withDrawObj, remark: e.target.value });
+              }}
+              amount={withDrawObj.amount}
+              profit_loss={elementToUDM?.profit_loss}
+              percent_profit_loss={elementToUDM?.percent_profit_loss}
+              setShowPass={setShowPass}
+              showPass={showPass}
+              onCancel={(e) => {
+                setWithDrawObj(defaultWithDrawObj);
                 setElementToUDM({
                   ...elementToUDM,
                   profit_loss: prevElement.profit_loss,
                   balance: prevElement.balance,
-                  percent_profit_loss: prevElement.percent_profit_loss,
                   available_balance: prevElement.available_balance,
                 });
-                console.log(e.message);
-              }
-            }}
-            initialBalance={initialBalance}
-            backgroundColor={backgroundColor}
-            loading={loading}
-            titleBackgroundColor={titleBackgroundColor}
-          />
+                setShowUserModal(false);
+              }}
+              // onSubmit={}
+              initialBalance={initialBalance}
+              backgroundColor={backgroundColor}
+              loading={loading}
+              titleBackgroundColor={titleBackgroundColor}
+            />
+          </form>
         </ModalMUI>
       ) : (
         <Box
@@ -1453,461 +1454,443 @@ const WithDrawComponent = ({
             borderRadius: "5px",
           }}
         >
-          <Box
-            sx={{
-              width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-              gap: "1%",
-              display: { mobile: "flex", laptop: "block" },
-              flexDirection: "row-reverse",
-              justifyContent: "flex-end",
-            }}
-          >
+          <form onSubmit={handleWithdrawAmount}>
             <Box
               sx={{
-                display: "flex",
-                alignItems: "center",
-                width: { mobile: "41%", laptop: "100%" },
-                flexDirection: {
-                  mobile: "column",
-                  tablet: "row",
-                  laptop: "row",
-                },
-                justifyContent: "flex-end",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "60%",
-                  flexDirection: {
-                    mobile: "row",
-                    tablet: "row",
-                    laptop: "row",
-                  },
-                  justifyContent: "space-between",
-                  position: { mobile: "relative", laptop: "static" },
-                  marginTop: { mobile: "0", laptop: "0" },
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
-                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-                    fontWeight: "600",
-                    marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-                  }}
-                >
-                  Withdraw Amount
-                </Typography>
-              </Box>
-
-              <Box
-                sx={{
-                  background: "#E32A2A",
-                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
-                  height: "45px",
-                  display: "flex",
-                  gap: 2,
-                  alignItems: "center",
-                  borderRadius: "5px",
-                  paddingX: "20px",
-                }}
-              >
-                <TextField
-                  value={withDrawObj.amount}
-                  onChange={handleChange}
-                  variant="standard"
-                  InputProps={{
-                    placeholder: "Type Amount...",
-                    disableUnderline: true,
-                    style: {
-                      fontSize: "15px",
-                      height: "45px",
-                      fontWeight: "600",
-                      color: "white",
-                    },
-                  }}
-                  type={"Number"}
-                />
-              </Box>
-            </Box>
-
-            {/* wallet */}
-            <Box
-              sx={{
-                width: { mobile: "41%", laptop: "100%" },
-                display: "flex",
-                alignItems: "center",
-                overflow: "hidden",
-                flexDirection: {
-                  mobile: "column",
-                  tablet: "row",
-                  laptop: "row",
-                },
-                justifyContent: "flex-end",
-                marginTop: "10px",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
-                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
-                  fontWeight: "600",
-                  marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
-                }}
-              >
-                Wallet Balance
-              </Typography>
-              <Box
-                sx={{
-                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
-                  height: "45px",
-                  // background: "#FFECBC",
-                  background: "#ECECEC",
-                  display: "flex",
-                  alignItems: "center",
-                  borderRadius: "5px",
-                  border: "2px solid #26262633",
-                  paddingX: "20px",
-                }}
-              >
-                <TextField
-                  value={initialBalance || 0}
-                  sx={{ width: "100%", height: "45px" }}
-                  variant="standard"
-                  InputProps={{
-                    disabled: true,
-                    placeholder: "",
-                    disableUnderline: true,
-                    type: "text",
-                    style: {
-                      fontSize: "13px",
-                      height: "45px",
-                      fontWeight: "600",
-                    },
-                  }}
-                />
-              </Box>
-            </Box>
-
-            <Box
-              sx={{
-                width: { mobile: "41%", laptop: "100%" },
-                display: "flex",
-                alignItems: "center",
-                overflow: "hidden",
-                justifyContent: "flex-end",
-                flexDirection: {
-                  mobile: "column",
-                  tablet: "row",
-                  laptop: "row",
-                },
-                marginTop: "10px",
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  width: "60%",
-                  flexDirection: {
-                    mobile: "row",
-                    tablet: "row",
-                    laptop: "row",
-                  },
-                  justifyContent: "space-between",
-                  position: { mobile: "relative", laptop: "static" },
-                  marginTop: { mobile: "0", laptop: "0" },
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
-                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-                    fontWeight: "600",
-                    marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-                  }}
-                >
-                  Transaction Password
-                </Typography>
-              </Box>
-
-              <Box
-                sx={{
-                  width: { mobile: "100%", laptop: "43%", tablet: "43%" },
-                  height: "45px",
-                  paddingLeft: "20px",
-                  paddingRight: "20px",
-                  background: "white",
-                  display: "flex",
-                  alignItems: "center",
-                  borderRadius: "5px",
-                  border: "2px solid #26262633",
-                }}
-              >
-                <TextField
-                  onChange={(e) => {
-                    setWithDrawObj({
-                      ...withDrawObj,
-                      adminTransPassword: e.target.value,
-                    });
-                  }}
-                  sx={{ width: "100%", height: "45px" }}
-                  variant="standard"
-                  InputProps={{
-                    placeholder: "",
-                    disableUnderline: true,
-                    type: !showPass ? "password" : "text",
-                    style: {
-                      fontSize: "13px",
-                      height: "45px",
-                      fontWeight: "600",
-                    },
-                  }}
-                />
-                <Box
-                  onClick={() => {
-                    setShowPass(!showPass);
-                  }}
-                >
-                  <StyledImage
-                    src={showPass ? EyeIcon : EyeSlash}
-                    sx={{ height: "14px", width: "20px" }}
-                  />
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              overflow: "hidden",
-              width: "100%",
-              gap: "1%",
-              display: { mobile: "flex", laptop: "block" },
-              justifyContent: "flex-end",
-              flexDirection: "row-reverse",
-            }}
-          >
-            {/* Remark */}
-
-            <Box
-              sx={{
-                borderRadius: "5px",
-                flex: 1,
-                background:
-                  backgroundColor == "#ECECEC" ? "#ECECEC" : "#FFECBC",
-                display: "flex",
-                alignItems: "center",
-                borderRadius: "5px",
-                border: "2px solid #26262633",
-                minHeight: "80px",
-                maxHeight: "115px",
-                marginTop: "0",
-                paddingX: "10px",
-                width: { mobile: "41%", laptop: "55%" },
-              }}
-            >
-              <TextField
-                onChange={(e) => {
-                  setWithDrawObj({ ...withDrawObj, remark: e.target.value });
-                }}
-                rows={4}
-                sx={{ width: "100%", minHeight: "40px" }}
-                multiline={true}
-                variant="standard"
-                InputProps={{
-                  placeholder: "Remark (Optional)",
-                  disableUnderline: true,
-                  style: {
-                    fontSize: "13px",
-                    minHeight: "45px",
-                    fontWeight: "600",
-                  },
-                }}
-              />
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                marginTop: "21px",
-                gap: 1,
+                width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                gap: "1%",
+                display: { mobile: "flex", laptop: "block" },
                 flexDirection: "row-reverse",
                 justifyContent: "flex-end",
               }}
             >
-              <BoxButton
-                loading={loading}
-                containerStyle={{
-                  maxWidth: "150px !important",
-                  height: "44px",
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: { mobile: "41%", laptop: "100%" },
+                  flexDirection: {
+                    mobile: "column",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                  justifyContent: "flex-end",
                 }}
-                isSelected={true}
-                onClick={(e) => {
-                  try {
-                    let payload = withDrawObj;
-                    payload.amount = parseFloat(payload.amount);
-                    if (!loading) {
-                      setLoading(true);
-                      UpdateAvailableBalance(withDrawObj)
-                        .then(({ bool, message }) => {
-                          toast.success(message);
-                          updatedUserProfile();
-                          getListOfUser();
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "60%",
+                    flexDirection: {
+                      mobile: "row",
+                      tablet: "row",
+                      laptop: "row",
+                    },
+                    justifyContent: "space-between",
+                    position: { mobile: "relative", laptop: "static" },
+                    marginTop: { mobile: "0", laptop: "0" },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        mobile: "3vw",
+                        laptop: "16px",
+                        tablet: "16px",
+                      },
+                      width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                      fontWeight: "600",
+                      marginRight: {
+                        mobile: 0,
+                        laptop: "20px",
+                        tablet: "20px",
+                      },
+                    }}
+                  >
+                    Withdraw Amount
+                  </Typography>
+                </Box>
 
-                          setSelected(e);
-                          setLoading(false);
-                          showDialogModal(true, true, message);
-                        })
-                        .catch(({ bool, message }) => {
+                <Box
+                  sx={{
+                    background: "#E32A2A",
+                    width: { mobile: "100%", laptop: "43%", tablet: "43%" },
+                    height: "45px",
+                    display: "flex",
+                    gap: 2,
+                    alignItems: "center",
+                    borderRadius: "5px",
+                    paddingX: "20px",
+                  }}
+                >
+                  <TextField
+                    required={true}
+                    value={withDrawObj.amount}
+                    onChange={handleChange}
+                    variant="standard"
+                    InputProps={{
+                      placeholder: "Type Amount...",
+                      disableUnderline: true,
+                      style: {
+                        fontSize: "15px",
+                        height: "45px",
+                        fontWeight: "600",
+                        color: "white",
+                      },
+                    }}
+                    type={"Number"}
+                  />
+                </Box>
+              </Box>
 
-                          toast.error(message);
-                          setSelected(e);
-                          setElementToUDM({
-                            ...elementToUDM,
-                            profit_loss: prevElement.profit_loss,
-                            balance: prevElement.balance,
-                            percent_profit_loss: prevElement.percent_profit_loss,
-                            available_balance: prevElement.available_balance,
-                          });
-                          setLoading(false);
-                          showDialogModal(true, false, message);
-                        });
-                    }
-                  } catch (e) {
-                    setSelected(e);
-                    setLoading(false);
+              {/* wallet */}
+              <Box
+                sx={{
+                  width: { mobile: "41%", laptop: "100%" },
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                  flexDirection: {
+                    mobile: "column",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                  justifyContent: "flex-end",
+                  marginTop: "10px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: { mobile: "3vw", laptop: "16px", tablet: "16px" },
+                    width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                    fontWeight: "600",
+                    marginRight: { mobile: 0, laptop: "0", tablet: "20px" },
+                  }}
+                >
+                  Wallet Balance
+                </Typography>
+                <Box
+                  sx={{
+                    width: { mobile: "100%", laptop: "43%", tablet: "43%" },
+                    height: "45px",
+                    // background: "#FFECBC",
+                    background: "#ECECEC",
+                    display: "flex",
+                    alignItems: "center",
+                    borderRadius: "5px",
+                    border: "2px solid #26262633",
+                    paddingX: "20px",
+                  }}
+                >
+                  <TextField
+                    value={initialBalance || 0}
+                    sx={{ width: "100%", height: "45px" }}
+                    variant="standard"
+                    InputProps={{
+                      disabled: true,
+                      placeholder: "",
+                      disableUnderline: true,
+                      type: "text",
+                      style: {
+                        fontSize: "13px",
+                        height: "45px",
+                        fontWeight: "600",
+                      },
+                    }}
+                  />
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  width: { mobile: "41%", laptop: "100%" },
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                  justifyContent: "flex-end",
+                  flexDirection: {
+                    mobile: "column",
+                    tablet: "row",
+                    laptop: "row",
+                  },
+                  marginTop: "10px",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    width: "60%",
+                    flexDirection: {
+                      mobile: "row",
+                      tablet: "row",
+                      laptop: "row",
+                    },
+                    justifyContent: "space-between",
+                    position: { mobile: "relative", laptop: "static" },
+                    marginTop: { mobile: "0", laptop: "0" },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        mobile: "3vw",
+                        laptop: "16px",
+                        tablet: "16px",
+                      },
+                      width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                      fontWeight: "600",
+                      marginRight: {
+                        mobile: 0,
+                        laptop: "20px",
+                        tablet: "20px",
+                      },
+                    }}
+                  >
+                    Transaction Password
+                  </Typography>
+                </Box>
+
+                <Box
+                  sx={{
+                    width: { mobile: "100%", laptop: "43%", tablet: "43%" },
+                    height: "45px",
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
+                    background: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    borderRadius: "5px",
+                    border: "2px solid #26262633",
+                  }}
+                >
+                  <TextField
+                    required={true}
+                    onChange={(e) => {
+                      setWithDrawObj({
+                        ...withDrawObj,
+                        adminTransPassword: e.target.value,
+                      });
+                    }}
+                    sx={{ width: "100%", height: "45px" }}
+                    variant="standard"
+                    InputProps={{
+                      placeholder: "",
+                      disableUnderline: true,
+                      type: !showPass ? "password" : "text",
+                      style: {
+                        fontSize: "13px",
+                        height: "45px",
+                        fontWeight: "600",
+                      },
+                    }}
+                  />
+                  <Box
+                    onClick={() => {
+                      setShowPass(!showPass);
+                    }}
+                  >
+                    <StyledImage
+                      src={showPass ? EyeIcon : EyeSlash}
+                      sx={{ height: "14px", width: "20px" }}
+                    />
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                overflow: "hidden",
+                width: "100%",
+                gap: "1%",
+                display: { mobile: "flex", laptop: "block" },
+                justifyContent: "flex-end",
+                flexDirection: "row-reverse",
+              }}
+            >
+              {/* Remark */}
+
+              <Box
+                sx={{
+                  borderRadius: "5px",
+                  flex: 1,
+                  background:
+                    backgroundColor == "#ECECEC" ? "#ECECEC" : "#FFECBC",
+                  display: "flex",
+                  alignItems: "center",
+                  borderRadius: "5px",
+                  border: "2px solid #26262633",
+                  minHeight: "80px",
+                  maxHeight: "115px",
+                  marginTop: "0",
+                  paddingX: "10px",
+                  width: { mobile: "41%", laptop: "55%" },
+                }}
+              >
+                <TextField
+                  onChange={(e) => {
+                    setWithDrawObj({ ...withDrawObj, remark: e.target.value });
+                  }}
+                  rows={4}
+                  sx={{ width: "100%", minHeight: "40px" }}
+                  multiline={true}
+                  variant="standard"
+                  InputProps={{
+                    placeholder: "Remark (Optional)",
+                    disableUnderline: true,
+                    style: {
+                      fontSize: "13px",
+                      minHeight: "45px",
+                      fontWeight: "600",
+                    },
+                  }}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  marginTop: "21px",
+                  gap: 1,
+                  flexDirection: "row-reverse",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <BoxButton
+                  color={"#0B4F26"}
+                  loading={loading}
+                  containerStyle={{
+                    maxWidth: "150px !important",
+                    height: "44px",
+                  }}
+                  isSelected={true}
+                  type="submit"
+                  title={"Submit"}
+                />
+                <BoxButton
+                  color={"#E32A2A"}
+                  containerStyle={{
+                    maxWidth: "150px !important",
+                    background: "#E32A2A",
+                    border: "0px",
+                    height: "44px",
+                  }}
+                  isSelected={true}
+                  onClick={(e) => {
+                    setWithDrawObj(defaultWithDrawObj);
                     setElementToUDM({
                       ...elementToUDM,
                       profit_loss: prevElement.profit_loss,
                       balance: prevElement.balance,
-                      percent_profit_loss: prevElement.percent_profit_loss,
-                      available_balance: prevElement.available_balance,
-                    });
-                    console.log(e.message);
-                  }
-                }}
-                title={"Submit"}
-              />
-              <BoxButton
-                containerStyle={{
-                  maxWidth: "150px !important",
-                  background: "#E32A2A",
-                  border: "0px",
-                  height: "44px",
-                }}
-                isSelected={true}
-                onClick={(e) => {
-                  setWithDrawObj(defaultWithDrawObj);
-                  setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    available_balance: prevElement.available_balance,
-                    percent_profit_loss: prevElement.percent_profit_loss,
-                  });
-                  setSelected(e);
-                }}
-                title={"Cancel"}
-              />
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: {
-                mobile: "row",
-                tablet: "column",
-                laptop: "column",
-              },
-              visibility: "hidden",
-              justifyContent: "center",
-              gap: 1,
-              alignItems: "center",
-            }}
-          >
-            <Box sx={{ display: "flex", width: "150px" }}>
-              <BoxButton
-                loading={loading}
-                containerStyle={{ width: "150px", height: "35px" }}
-                isSelected={true}
-                onClick={(e) => {
-                  try {
-                    if (!loading) {
-                      setLoading(true);
-                      UpdateAvailableBalance(withDrawObj)
-                        .then(({ bool, message }) => {
-                          toast.success(message);
-                          updatedUserProfile();
-                          getListOfUser();
-                          setSelected(e);
-                          setLoading(false);
-                          showDialogModal(true, true, message);
-                        })
-                        .catch(({ bool, message }) => {
-                          toast.error(message);
-                          setElementToUDM({
-                            ...elementToUDM,
-                            profit_loss: prevElement.profit_loss,
-                            balance: prevElement.balance,
-                            available_balance: prevElement.available_balance,
-                            percent_profit_loss: prevElement.percent_profit_loss,
-                          });
-                          setSelected(e);
-                          setLoading(false);
-                          showDialogModal(true, false, message);
-                        });
-                    }
-                  } catch (e) {
-                    setElementToUDM({
-                      ...elementToUDM,
-                      profit_loss: prevElement.profit_loss,
-                      balance: prevElement.balance,
                       available_balance: prevElement.available_balance,
                       percent_profit_loss: prevElement.percent_profit_loss,
                     });
                     setSelected(e);
-                    setLoading(false);
-                    console.log(e.message);
-                  }
-                }}
-                title={"Submit"}
-              />
+                  }}
+                  title={"Cancel"}
+                />
+              </Box>
             </Box>
+
             <Box
               sx={{
                 display: "flex",
-                width: "150px",
-                marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
+                flexDirection: {
+                  mobile: "row",
+                  tablet: "column",
+                  laptop: "column",
+                },
+                visibility: "hidden",
+                justifyContent: "center",
+                gap: 1,
+                alignItems: "center",
               }}
             >
-              <BoxButton
-                containerStyle={{
+              <Box sx={{ display: "flex", width: "150px" }}>
+                <BoxButton
+                  color={"#0B4F26"}
+                  loading={loading}
+                  containerStyle={{ width: "150px", height: "35px" }}
+                  isSelected={true}
+                  onClick={(e) => {
+                    try {
+                      if (!loading) {
+                        setLoading(true);
+                        UpdateAvailableBalance(withDrawObj)
+                          .then(({ bool, message }) => {
+                            toast.success(message);
+                            updatedUserProfile();
+                            getListOfUser();
+                            setSelected(e);
+                            setLoading(false);
+                            showDialogModal(true, true, message);
+                          })
+                          .catch(({ bool, message }) => {
+                            toast.error(message);
+                            setElementToUDM({
+                              ...elementToUDM,
+                              profit_loss: prevElement.profit_loss,
+                              balance: prevElement.balance,
+                              available_balance: prevElement.available_balance,
+                              percent_profit_loss:
+                                prevElement.percent_profit_loss,
+                            });
+                            setSelected(e);
+                            setLoading(false);
+                            showDialogModal(true, false, message);
+                          });
+                      }
+                    } catch (e) {
+                      setElementToUDM({
+                        ...elementToUDM,
+                        profit_loss: prevElement.profit_loss,
+                        balance: prevElement.balance,
+                        available_balance: prevElement.available_balance,
+                        percent_profit_loss: prevElement.percent_profit_loss,
+                      });
+                      setSelected(e);
+                      setLoading(false);
+                      console.log(e.message);
+                    }
+                  }}
+                  title={"Submit"}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
                   width: "150px",
-                  background: "#E32A2A",
-                  border: "0px",
-                  height: "35px",
+                  marginTop: { mobile: 0, tablet: "10px", laptop: "10px" },
                 }}
-                isSelected={true}
-                onClick={(e) => {
-                  setWithDrawObj(defaultWithDrawObj);
-                  setElementToUDM({
-                    ...elementToUDM,
-                    profit_loss: prevElement.profit_loss,
-                    balance: prevElement.balance,
-                    available_balance: prevElement.available_balance,
-                    percent_profit_loss: prevElement.percent_profit_loss,
-                  });
-                  setSelected(e);
-                }}
-                title={"Cancel"}
-              />
+              >
+                <BoxButton
+                  color={"#E32A2A"}
+                  containerStyle={{
+                    width: "150px",
+                    background: "#E32A2A",
+                    border: "0px",
+                    height: "35px",
+                  }}
+                  isSelected={true}
+                  onClick={(e) => {
+                    setWithDrawObj(defaultWithDrawObj);
+                    setElementToUDM({
+                      ...elementToUDM,
+                      profit_loss: prevElement.profit_loss,
+                      balance: prevElement.balance,
+                      available_balance: prevElement.available_balance,
+                      percent_profit_loss: prevElement.percent_profit_loss,
+                    });
+                    setSelected(e);
+                  }}
+                  title={"Cancel"}
+                />
+              </Box>
             </Box>
-          </Box>
+          </form>
         </Box>
       )}
     </>
@@ -2160,6 +2143,7 @@ const NewCreditComponent = ({
       >
         <Box sx={{ display: "flex", width: "150px" }}>
           <BoxButton
+            color={"#0B4F26"}
             loading={loading}
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
@@ -2197,6 +2181,7 @@ const NewCreditComponent = ({
           }}
         >
           <BoxButton
+            color={"#E32A2A"}
             containerStyle={{
               width: "150px",
               background: "#E32A2A",
@@ -2247,8 +2232,33 @@ const SetExposureComponent = ({
     remark: "",
   };
   const [exposureObj, setExposureObj] = useState(defaultExposureObj);
+  const handleExposerSubmit=(e)=>{
+    e.preventDefault()
+    try {
+      if (!loading) {
+        setLoading(true);
+        UpdateAvailableBalance(exposureObj)
+          .then(({ bool, message }) => {
+            toast.success(message);
+            getListOfUser();
+            showDialogModal(true, true, message);
+            setLoading(false);
+            setSelected(e);
+          })
+          .catch(({ bool, message }) => {
+            toast.error(message);
+            showDialogModal(true, false, message);
+            setLoading(false);
+          });
+      }
+    } catch (e) {
+      setLoading(false);
+      console.log(e.message);
+    }
+  }
   return (
-    <Box
+<form onSubmit={handleExposerSubmit}>
+<Box
       sx={{
         display: "flex",
         borderRadius: "5px",
@@ -2286,6 +2296,7 @@ const SetExposureComponent = ({
             }}
           >
             <TextField
+            required={true}
               onChange={(e) => {
                 setExposureObj({
                   ...exposureObj,
@@ -2348,6 +2359,7 @@ const SetExposureComponent = ({
             }}
           >
             <TextField
+            required={true}
               onChange={(e) => {
                 setExposureObj({
                   ...exposureObj,
@@ -2418,32 +2430,11 @@ const SetExposureComponent = ({
       >
         <Box sx={{ display: "flex", width: "150px" }}>
           <BoxButton
+            color={"#0B4F26"}
             loading={loading}
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
-            onClick={(e) => {
-              try {
-                if (!loading) {
-                  setLoading(true);
-                  UpdateAvailableBalance(exposureObj)
-                    .then(({ bool, message }) => {
-                      toast.success(message);
-                      getListOfUser();
-                      showDialogModal(true, true, message);
-                      setLoading(false);
-                      setSelected(e);
-                    })
-                    .catch(({ bool, message }) => {
-                      toast.error(message);
-                      showDialogModal(true, false, message);
-                      setLoading(false);
-                    });
-                }
-              } catch (e) {
-                setLoading(false);
-                console.log(e.message);
-              }
-            }}
+          type="submit"
             title={"Submit"}
           />
         </Box>
@@ -2455,6 +2446,7 @@ const SetExposureComponent = ({
           }}
         >
           <BoxButton
+            color={"#E32A2A"}
             containerStyle={{
               width: "150px",
               background: "#E32A2A",
@@ -2475,6 +2467,7 @@ const SetExposureComponent = ({
         </Box>
       </Box>
     </Box>
+</form>
   );
 };
 
@@ -2498,7 +2491,23 @@ const ChangePasswordComponent = ({
   const [changePasswordObj, setChangePasswordObj] = useState(
     defaultChangePasswordObj
   );
+
+  const handleChangePassword = (e) => {
+    e.preventDefault();
+    UpdatePassword(changePasswordObj)
+      .then(({ bool, message }) => {
+        toast.success(message);
+        setSelected(e);
+        showDialogModal(true, true, message);
+      })
+      .catch(({ bool, message }) => {
+        toast.error(message);
+        showDialogModal(true, false, message);
+      });
+  };
+
   return (
+      <form onSubmit={handleChangePassword}>
     <Box
       sx={{
         display: "flex",
@@ -2508,77 +2517,363 @@ const ChangePasswordComponent = ({
         gap: 2,
       }}
     >
-      <Box sx={{ width: { laptop: "100%", mobile: "88vw" } }}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            overflow: "hidden",
-            justifyContent: { mobile: "flex-start", laptop: "center" },
-            flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
-          }}
-        >
+        <Box sx={{ width: { laptop: "100%", mobile: "88vw" } }}>
           <Box
             sx={{
               display: "flex",
-              flexDirection: { mobile: "column", laptop: "row" },
-              width: { mobile: "60%", laptop: "70%", tablet: "70%" },
-              justifyContent: "center",
+              alignItems: "center",
+              overflow: "hidden",
+              justifyContent: { mobile: "flex-start", laptop: "center" },
+              flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { mobile: "column", laptop: "row" },
+                width: { mobile: "60%", laptop: "70%", tablet: "70%" },
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+                  width: { mobile: "100%", laptop: "32.5%", tablet: "32.5%" },
+                  fontWeight: "600",
+                  marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+                }}
+              >
+                New Password
+              </Typography>
+              <Box
+                sx={{
+                  borderRadius: "px",
+                  width: { mobile: "100%", laptop: "32.5", tablet: "60%" },
+                  height: "45px",
+                  background: "#0B4F26",
+                  display: "flex",
+                  alignItems: "center",
+                  borderRadius: "5px",
+                  border: "2px solid #26262633",
+                  paddingX: "20px",
+                }}
+              >
+                <TextField
+                  required={true}
+                  onChange={(e) => {
+                    setChangePasswordObj({
+                      ...changePasswordObj,
+                      password: e.target.value,
+                      userId: userModal.id,
+                    });
+                  }}
+                  sx={{ width: "100%", height: "45px", color: "white" }}
+                  variant="standard"
+                  InputProps={{
+                    placeholder: "",
+                    disableUnderline: true,
+                    type: !showPass1 ? "password" : "text",
+                    style: {
+                      fontSize: "13px",
+                      height: "45px",
+                      fontWeight: "600",
+                      color: "white",
+                    },
+                  }}
+                />
+                <Box
+                  onClick={() => {
+                    setShowPass1(!showPass1);
+                  }}
+                >
+                  <StyledImage
+                    src={showPass1 ? EyeIconWhite : EyeSlashWhite}
+                    sx={{ height: "14px", width: "20px", fill: "white" }}
+                  />
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                width: { mobile: "40%", laptop: "250px" },
+                marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
+              }}
+            >
+              <BoxButton
+                color={"#E32A2A"}
+                containerStyle={{
+                  width: "100%",
+                  background: "#E32A2A",
+                  border: "0px",
+                  height: "45px",
+                  marginLeft: "10px",
+                  maxWidth: {
+                    mobile: "91% !important",
+                    laptop: "100% !important",
+                  },
+                  flex: {
+                    laptop: "0 0 60%!important",
+                    mobile: "0 0 100%!important",
+                  },
+                }}
+                isSelected={true}
+                onClick={(e) => {
+                  setChangePasswordObj(defaultChangePasswordObj);
+                  setSelected(e);
+                }}
+                title={"Cancel"}
+              />
+            </Box>
+          </Box>
+          <p style={{ color: "#fa1e1e" }}>
+            {changePasswordObj.password &&
+              onChangeKeyCheck(changePasswordObj.password) !== false &&
+              onChangeKeyCheck(changePasswordObj.password)}
+          </p>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              overflow: "hidden",
+              justifyContent: { mobile: "flex-start", laptop: "center" },
+              flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+              marginTop: "20px",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { mobile: "column", laptop: "row" },
+                width: { mobile: "60%", laptop: "70%", tablet: "70%" },
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
+                  width: { mobile: "100%", laptop: "32.5%", tablet: "32.5%" },
+                  fontWeight: "600",
+                  marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+                }}
+              >
+                Transaction Password
+              </Typography>
+
+              <Box
+                sx={{
+                  borderRadius: "px",
+                  width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                  height: "45px",
+                  background: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  borderRadius: "5px",
+                  border: "2px solid #26262633",
+                  paddingX: "20px",
+                }}
+              >
+                <TextField
+                  required={true}
+                  onChange={(e) => {
+                    setChangePasswordObj({
+                      ...changePasswordObj,
+                      adminTransPassword: e.target.value,
+                    });
+                  }}
+                  sx={{ width: "100%", height: "45px" }}
+                  variant="standard"
+                  InputProps={{
+                    placeholder: "",
+                    disableUnderline: true,
+                    type: !showPass ? "password" : "text",
+                    style: {
+                      fontSize: "13px",
+                      height: "45px",
+                      fontWeight: "600",
+                    },
+                  }}
+                />
+                <Box
+                  onClick={() => {
+                    setShowPass(!showPass);
+                  }}
+                >
+                  <StyledImage
+                    src={showPass ? EyeIcon : EyeSlash}
+                    sx={{ height: "14px", width: "20px" }}
+                  />
+                </Box>
+              </Box>
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                width: { mobile: "40%", laptop: "250px" },
+                marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
+              }}
+            >
+              <BoxButton
+                color={"#0B4F26"}
+                containerStyle={{
+                  width: "100%",
+                  height: "45px",
+                  marginLeft: "10px",
+                  maxWidth: {
+                    mobile: "91% !important",
+                    laptop: "100% !important",
+                  },
+                  flex: {
+                    laptop: "0 0 60%!important",
+                    mobile: "0 0 100%!important",
+                  },
+                }}
+                isSelected={true}
+                type="submit"
+                title={"Submit"}
+              />
+            </Box>
+          </Box>
+
+          {/* cancel submit buttons  */}
+
+          <Box
+            sx={{
+              display: "none",
+              flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
+              justifyContent: "flex-start",
+              gap: 1,
+              alignItems: "center",
+            }}
+          >
+            <Box sx={{ display: "flex", width: "150px" }}>
+              <BoxButton
+                containerStyle={{
+                  width: "100%",
+                  height: "35px",
+                }}
+                isSelected={true}
+                color={"#0B4F26"}
+               type="submit"
+                title={"Submit"}
+              />
+            </Box>
+          </Box>
+        </Box>
+    </Box>
+      </form>
+  );
+};
+
+const LockUnlockComponent = ({
+  setShowUserModal,
+  userModal,
+  showDialogModal,
+  elementToUDM,
+  setElementToUDM,
+  prevElement,
+  setSelected,
+}) => {
+  const [showPass, setShowPass] = useState(false);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const defaultLockUnlockObj = {
+    userId: currentUser?.id,
+    all_blocked: userModal.all_blocked,
+    adminTransPassword: "",
+    bet_blocked: userModal.bet_blocked,
+  };
+  const [lockUnlockObj, setLockUnlockObj] = useState(defaultLockUnlockObj);
+  const handleLockSubmit = (e) => {
+    e.preventDefault();
+    UpdateLockUnlock(lockUnlockObj)
+      .then(({ bool, message }) => {
+        toast.success(message);
+        setSelected(e);
+        showDialogModal(true, true, message);
+      })
+      .catch(({ bool, message }) => {
+        toast.error(message);
+        showDialogModal(true, false, message);
+      });
+  };
+  return (
+    <form onSubmit={handleLockSubmit}>
+      <Box
+        sx={{
+          display: "flex",
+          borderRadius: "5px",
+          paddingRight: { mobile: "0", laptop: "10px" },
+          flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+          gap: 2,
+          width: { mobile: "92vw", tablet: "80%", laptop: "80%" },
+        }}
+      >
+        <Box sx={{ width: "100%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: {
+                mobile: "center",
+                tablet: "flex-start ",
+                laptop: "flex-start ",
+              },
+              height: "45px",
+              alignItems: "center",
+              overflow: "hidden",
             }}
           >
             <Typography
               sx={{
                 fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                width: { mobile: "100%", laptop: "32.5%", tablet: "32.5%" },
+                width: { mobile: "100%", laptop: "35%", tablet: "35%" },
                 fontWeight: "600",
                 marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
+
+                visibility: "hidden",
+                display: { mobile: "none", laptop: "block" },
               }}
             >
-              New Password
+              Dummy
             </Typography>
             <Box
               sx={{
                 borderRadius: "px",
-                width: { mobile: "100%", laptop: "32.5", tablet: "60%" },
+                width: { mobile: "100%", laptop: "65%", tablet: "65%" },
                 height: "45px",
-                background: "#0B4F26",
+                // background: "white",
                 display: "flex",
                 alignItems: "center",
                 borderRadius: "5px",
-                border: "2px solid #26262633",
-                paddingX: "20px",
+                // border: "2px solid #26262633",
+                // paddingX: "20px",
               }}
             >
-              <TextField
-                onChange={(e) => {
-                  setChangePasswordObj({
-                    ...changePasswordObj,
-                    password: e.target.value,
-                    userId: userModal.id,
-                  });
-                }}
-                sx={{ width: "100%", height: "45px", color: "white" }}
-                variant="standard"
-                InputProps={{
-                  placeholder: "",
-                  disableUnderline: true,
-                  type: !showPass1 ? "password" : "text",
-                  style: {
-                    fontSize: "13px",
-                    height: "45px",
-                    fontWeight: "600",
-                    color: "white",
-                  },
-                }}
-              />
+              <Box sx={{ width: "48%", display: "flex", alignItems: "center" }}>
+                <BoxButtonWithSwitch
+                  title={"User"}
+                  val={lockUnlockObj.all_blocked}
+                  setLockUnlockObj={setLockUnlockObj}
+                  lockUnlockObj={lockUnlockObj}
+                  elementToUDM={elementToUDM}
+                  setElementToUDM={setElementToUDM}
+                />
+              </Box>
               <Box
-                onClick={() => {
-                  setShowPass1(!showPass1);
+                sx={{
+                  width: "48%",
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft: "20px",
                 }}
               >
-                <StyledImage
-                  src={showPass1 ? EyeIconWhite : EyeSlashWhite}
-                  sx={{ height: "14px", width: "20px", fill: "white" }}
+                <BoxButtonWithSwitch
+                  title={"Bet"}
+                  val={lockUnlockObj.bet_blocked}
+                  setLockUnlockObj={setLockUnlockObj}
+                  lockUnlockObj={lockUnlockObj}
+                  elementToUDM={elementToUDM}
+                  setElementToUDM={setElementToUDM}
                 />
               </Box>
             </Box>
@@ -2586,73 +2881,28 @@ const ChangePasswordComponent = ({
           <Box
             sx={{
               display: "flex",
-              width: { mobile: "40%", laptop: "250px" },
-              marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
-            }}
-          >
-            <BoxButton
-              containerStyle={{
-                width: "100%",
-                background: "#E32A2A",
-                border: "0px",
-                height: "45px",
-                marginLeft: "10px",
-                maxWidth: {
-                  mobile: "91% !important",
-                  laptop: "100% !important",
-                },
-                flex: {
-                  laptop: "0 0 60%!important",
-                  mobile: "0 0 100%!important",
-                },
-              }}
-              isSelected={true}
-              onClick={(e) => {
-                setChangePasswordObj(defaultChangePasswordObj);
-                setSelected(e);
-              }}
-              title={"Cancel"}
-            />
-          </Box>
-        </Box>
-        <p style={{ color: "#fa1e1e" }}>
-          {changePasswordObj.password &&
-            onChangeKeyCheck(changePasswordObj.password) !== false &&
-            onChangeKeyCheck(changePasswordObj.password)}
-        </p>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            overflow: "hidden",
-            justifyContent: { mobile: "flex-start", laptop: "center" },
-            flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
-            marginTop: "20px",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: { mobile: "column", laptop: "row" },
-              width: { mobile: "60%", laptop: "70%", tablet: "70%" },
-              justifyContent: "center",
+              alignItems: "center",
+              overflow: "hidden",
+              flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+              justifyContent: "flex-start",
+              marginTop: "10px",
+              width: "100%",
             }}
           >
             <Typography
               sx={{
                 fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-                width: { mobile: "100%", laptop: "32.5%", tablet: "32.5%" },
+                width: { mobile: "100%", laptop: "35%", tablet: "35%" },
                 fontWeight: "600",
                 marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
               }}
             >
               Transaction Password
             </Typography>
-
             <Box
               sx={{
                 borderRadius: "px",
-                width: { mobile: "100%", laptop: "60%", tablet: "60%" },
+                width: { mobile: "100%", laptop: "65%", tablet: "65%" },
                 height: "45px",
                 background: "white",
                 display: "flex",
@@ -2663,10 +2913,12 @@ const ChangePasswordComponent = ({
               }}
             >
               <TextField
+                required={true}
                 onChange={(e) => {
-                  setChangePasswordObj({
-                    ...changePasswordObj,
+                  setLockUnlockObj({
+                    ...lockUnlockObj,
                     adminTransPassword: e.target.value,
+                    userId: prevElement?.userId,
                   });
                 }}
                 sx={{ width: "100%", height: "45px" }}
@@ -2694,334 +2946,86 @@ const ChangePasswordComponent = ({
               </Box>
             </Box>
           </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              width: { mobile: "40%", laptop: "250px" },
-              marginTop: { mobile: "18px", tablet: "0", laptop: "0" },
-            }}
-          >
-            <BoxButton
-              containerStyle={{
-                width: "100%",
-                height: "45px",
-                marginLeft: "10px",
-                maxWidth: {
-                  mobile: "91% !important",
-                  laptop: "100% !important",
-                },
-                flex: {
-                  laptop: "0 0 60%!important",
-                  mobile: "0 0 100%!important",
-                },
-              }}
-              isSelected={true}
-              onClick={(e) => {
-                UpdatePassword(changePasswordObj)
-                  .then(({ bool, message }) => {
-                    toast.success(message);
-                    setSelected(e);
-                    showDialogModal(true, true, message);
-                  })
-                  .catch(({ bool, message }) => {
-                    toast.error(message);
-                    showDialogModal(true, false, message);
-                  });
-              }}
-              title={"Submit"}
-            />
-          </Box>
         </Box>
-
-        {/* cancel submit buttons  */}
-
         <Box
           sx={{
-            display: "none",
-            flexDirection: { mobile: "row", tablet: "row", laptop: "row" },
-            justifyContent: "flex-start",
+            display: "flex",
+            flexDirection: {
+              mobile: "row-reverse",
+              tablet: "column-reverse",
+              laptop: "column-reverse",
+            },
+            justifyContent: {
+              mobile: "space-between",
+              tablet: "center",
+              laptop: "center",
+            },
             gap: 1,
             alignItems: "center",
           }}
         >
-          <Box sx={{ display: "flex", width: "150px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              width: { mobile: "48%", tablet: "150px", laptop: "150px" },
+            }}
+          >
             <BoxButton
+              color={"#0B4F26"}
               containerStyle={{
-                width: "100%",
-                height: "35px",
+                maxWidth: "100%!important",
+                height: "44px",
+                flex: {
+                  mobile: "0 0 100%",
+                  tablet: "0 0 100%",
+                  laptop: "0 0 100%",
+                },
               }}
               isSelected={true}
-              onClick={(e) => {
-                UpdatePassword(changePasswordObj)
-                  .then(({ bool, message }) => {
-                    toast.success(message);
-                    showDialogModal(true, true, message);
-                    setSelected(e);
-                  })
-                  .catch(({ bool, message }) => {
-                    toast.error(message);
-                    showDialogModal(true, false, message);
-                  });
-              }}
+              type="submit"
               title={"Submit"}
             />
           </Box>
-        </Box>
-      </Box>
-    </Box>
-  );
-};
-
-const LockUnlockComponent = ({
-  setShowUserModal,
-  userModal,
-  showDialogModal,
-  elementToUDM,
-  setElementToUDM,
-  prevElement,
-  setSelected,
-}) => {
-  const [showPass, setShowPass] = useState(false);
-  const { currentUser } = useSelector((state) => state?.currentUser);
-  const defaultLockUnlockObj = {
-    userId: currentUser?.id,
-    all_blocked: userModal.all_blocked,
-    adminTransPassword: "",
-    bet_blocked: userModal.bet_blocked,
-  };
-  const [lockUnlockObj, setLockUnlockObj] = useState(defaultLockUnlockObj);
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        borderRadius: "5px",
-        paddingRight: { mobile: "0", laptop: "10px" },
-        flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-        gap: 2,
-        width: { mobile: "92vw", tablet: "80%", laptop: "80%" },
-      }}
-    >
-      <Box sx={{ width: "100%" }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: {
-              mobile: "center",
-              tablet: "flex-start ",
-              laptop: "flex-start ",
-            },
-            height: "45px",
-            alignItems: "center",
-            overflow: "hidden",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-              width: { mobile: "100%", laptop: "35%", tablet: "35%" },
-              fontWeight: "600",
-              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-
-              visibility: "hidden",
-              display: { mobile: "none", laptop: "block" },
-            }}
-          >
-            Dummy
-          </Typography>
           <Box
             sx={{
-              borderRadius: "px",
-              width: { mobile: "100%", laptop: "65%", tablet: "65%" },
-              height: "45px",
-              // background: "white",
               display: "flex",
-              alignItems: "center",
-              borderRadius: "5px",
-              // border: "2px solid #26262633",
-              // paddingX: "20px",
+              width: { mobile: "48%", tablet: "150px", laptop: "150px" },
+              marginTop: { mobile: 0, tablet: "0", laptop: "0" },
             }}
           >
-            <Box sx={{ width: "48%", display: "flex", alignItems: "center" }}>
-              <BoxButtonWithSwitch
-                title={"User"}
-                val={lockUnlockObj.all_blocked}
-                setLockUnlockObj={setLockUnlockObj}
-                lockUnlockObj={lockUnlockObj}
-                elementToUDM={elementToUDM}
-                setElementToUDM={setElementToUDM}
-              />
-            </Box>
-            <Box
-              sx={{
-                width: "48%",
-                display: "flex",
-                alignItems: "center",
-                marginLeft: "20px",
+            <BoxButton
+              color={"#E32A2A"}
+              containerStyle={{
+                maxWidth: "100%!important",
+                height: "44px",
+                background: "#E32A2A",
+                border: "0px",
+                flex: {
+                  mobile: "0 0 100%",
+                  tablet: "0 0 100%",
+                  laptop: "0 0 100%",
+                },
               }}
-            >
-              <BoxButtonWithSwitch
-                title={"Bet"}
-                val={lockUnlockObj.bet_blocked}
-                setLockUnlockObj={setLockUnlockObj}
-                lockUnlockObj={lockUnlockObj}
-                elementToUDM={elementToUDM}
-                setElementToUDM={setElementToUDM}
-              />
-            </Box>
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            overflow: "hidden",
-            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-            justifyContent: "flex-start",
-            marginTop: "10px",
-            width: "100%",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: { mobile: "3vw", laptop: "1vw", tablet: "1vw" },
-              width: { mobile: "100%", laptop: "35%", tablet: "35%" },
-              fontWeight: "600",
-              marginRight: { mobile: 0, laptop: "20px", tablet: "20px" },
-            }}
-          >
-            Transaction Password
-          </Typography>
-          <Box
-            sx={{
-              borderRadius: "px",
-              width: { mobile: "100%", laptop: "65%", tablet: "65%" },
-              height: "45px",
-              background: "white",
-              display: "flex",
-              alignItems: "center",
-              borderRadius: "5px",
-              border: "2px solid #26262633",
-              paddingX: "20px",
-            }}
-          >
-            <TextField
-              onChange={(e) => {
-                setLockUnlockObj({
-                  ...lockUnlockObj,
-                  adminTransPassword: e.target.value,
-                  userId: prevElement?.userId,
+              isSelected={true}
+              onClick={(e) => {
+                setSelected(e);
+                console.log(
+                  "elementToUDM.bet_blocked, elementToUDM.all_blocked",
+                  elementToUDM.bet_blocked,
+                  elementToUDM.all_blocked
+                );
+                setElementToUDM({
+                  ...elementToUDM,
+                  bet_blocked: prevElement.bet_blocked,
+                  all_blocked: prevElement.all_blocked,
                 });
               }}
-              sx={{ width: "100%", height: "45px" }}
-              variant="standard"
-              InputProps={{
-                placeholder: "",
-                disableUnderline: true,
-                type: !showPass ? "password" : "text",
-                style: { fontSize: "13px", height: "45px", fontWeight: "600" },
-              }}
+              title={"Cancel"}
             />
-            <Box
-              onClick={() => {
-                setShowPass(!showPass);
-              }}
-            >
-              <StyledImage
-                src={showPass ? EyeIcon : EyeSlash}
-                sx={{ height: "14px", width: "20px" }}
-              />
-            </Box>
           </Box>
         </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: {
-            mobile: "row-reverse",
-            tablet: "column-reverse",
-            laptop: "column-reverse",
-          },
-          justifyContent: {
-            mobile: "space-between",
-            tablet: "center",
-            laptop: "center",
-          },
-          gap: 1,
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            width: { mobile: "48%", tablet: "150px", laptop: "150px" },
-          }}
-        >
-          <BoxButton
-            containerStyle={{
-              maxWidth: "100%!important",
-              height: "44px",
-              flex: {
-                mobile: "0 0 100%",
-                tablet: "0 0 100%",
-                laptop: "0 0 100%",
-              },
-            }}
-            isSelected={true}
-            onClick={(e) => {
-              UpdateLockUnlock(lockUnlockObj)
-                .then(({ bool, message }) => {
-                  toast.success(message);
-                  setSelected(e);
-                  showDialogModal(true, true, message);
-                })
-                .catch(({ bool, message }) => {
-                  toast.error(message);
-                  showDialogModal(true, false, message);
-                });
-            }}
-            title={"Submit"}
-          />
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            width: { mobile: "48%", tablet: "150px", laptop: "150px" },
-            marginTop: { mobile: 0, tablet: "0", laptop: "0" },
-          }}
-        >
-          <BoxButton
-            containerStyle={{
-              maxWidth: "100%!important",
-              height: "44px",
-              background: "#E32A2A",
-              border: "0px",
-              flex: {
-                mobile: "0 0 100%",
-                tablet: "0 0 100%",
-                laptop: "0 0 100%",
-              },
-            }}
-            isSelected={true}
-            onClick={(e) => {
-              setSelected(e);
-              console.log(
-                "elementToUDM.bet_blocked, elementToUDM.all_blocked",
-                elementToUDM.bet_blocked,
-                elementToUDM.all_blocked
-              );
-              setElementToUDM({
-                ...elementToUDM,
-                bet_blocked: prevElement.bet_blocked,
-                all_blocked: prevElement.all_blocked,
-              });
-            }}
-            title={"Cancel"}
-          />
-        </Box>
-      </Box>
-    </Box>
+    </form>
   );
 };
 
