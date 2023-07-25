@@ -592,16 +592,20 @@ const DeleteBet = ({ }) => {
                 return betting;
               });
 
-              if (prev?.id === value?.matchId) {
+              if (prev?.id === value?.matchId && value?.teamA_rate) {
                 return {
                   ...prev,
                   bettings: updatedBettings,
                   teamA_rate: value?.teamA_rate,
                   teamB_rate: value?.teamB_rate,
                   teamC_rate: value?.teamC_rate,
-                };
+                }
+              } else {
+                return {
+                  ...prev,
+                  bettings: updatedBettings,
+                }
               }
-
               return prev;
             });
 
