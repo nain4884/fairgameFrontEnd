@@ -7,22 +7,28 @@ import { setRole } from "../../newStore";
 import constants from "../../components/helper/constants";
 import { SocketContext } from "../../context/socketContext";
 import { useDispatch, useSelector } from "react-redux";
+import { setAllEventSession } from "../../newStore/reducers/expertMatchDetails";
 import {
-  setAllEventSession,
-} from "../../newStore/reducers/expertMatchDetails";
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
+} from "../../newStore/reducers/matchDetails";
+import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { logout } from "../../newStore/reducers/auth";
+import { GlobalStore } from "../../context/globalStore";
+import { removeSocket } from "../../components/helper/removeSocket";
+import { useNavigate } from "react-router-dom";
 
 const MatchListComp = () => {
   const [allMatch, setAllMatch] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
-  const { socket } = useContext(SocketContext);
+  const { socket, socketMicro } = useContext(SocketContext);
   const dispatch = useDispatch();
-  const { allEventSession } = useSelector(
-    (state) => state?.expertMatchDetails
-  );
-
+  const { allEventSession } = useSelector((state) => state?.expertMatchDetails);
+  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const { axios } = setRole();
+  const navigate = useNavigate();
   const getAllMatch = async (title) => {
     try {
       if (title) {
@@ -30,7 +36,8 @@ const MatchListComp = () => {
       }
 
       let response = await axios.get(
-        `/game-match/getAllMatch?${title ? `title=${title}` : ""
+        `/game-match/getAllMatch?${
+          title ? `title=${title}` : ""
         }&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
       setAllMatch(response.data[0]);
@@ -38,7 +45,7 @@ const MatchListComp = () => {
       setPageCount(
         Math.ceil(
           parseInt(response?.data[1] ? response.data[1] : 1) /
-          constants.customPageLimit
+            constants.customPageLimit
         )
       );
     } catch (e) {
@@ -54,6 +61,23 @@ const MatchListComp = () => {
   useEffect(() => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
+        if (packet.data[0] === "logoutUserForce") {
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role3" }));
+          dispatch(removeSelectedMatch());
+          setGlobalStore((prev) => ({
+            ...prev,
+            expertJWT: "",
+            // isSession: true,
+          }));
+          // await axios.get("auth/logout");
+          removeSocket();
+          navigate("/expert");
+          socketMicro.disconnect();
+          socket.disconnect();
+        }
+
         if (packet.data[0] === "newMatchAdded") {
           getAllMatch();
         }
