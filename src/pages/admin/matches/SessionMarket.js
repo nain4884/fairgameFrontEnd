@@ -22,7 +22,10 @@ const SessionMarket = ({
   handleHide,
   handleShowLock,
   selft,
-  popData
+  popData,
+  title,
+  min,
+  max,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -41,9 +44,20 @@ const SessionMarket = ({
       const sessionData =
         currentMatch?.bettings?.length > 0
           ? currentMatch?.bettings?.filter(
-            (element) => element?.sessionBet && element?.id
-          )
+            (element) => {
+              if (currentMatch?.apiSessionActive && title === "Session Market") {
+                return element?.sessionBet === true && element?.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
+              }
+          
+              if (currentMatch?.manualSessionActive && title === "Quick Session Market") {
+                return element?.sessionBet === true && element?.selectionId === null; // Show elements where selectionId is null when manualSessionActive is true
+              }
+          
+              return false; // Default case: no active session types
+            }
+            )
           : 0;
+
       setMatchSessionData(sessionData.reverse());
     }
   }, [currentMatch]);
@@ -51,8 +65,6 @@ const SessionMarket = ({
   const onSubmit = (value) => {
     handleBlock(value, !locked, "SESSION");
   };
-
-
 
   const [visible, setVisible] = useState(true);
   return (
@@ -102,7 +114,7 @@ const SessionMarket = ({
                 marginLeft: "7px",
               }}
             >
-              Session Odds
+              {title}
             </Typography>
             {blockMatch && (
               <img
@@ -131,7 +143,6 @@ const SessionMarket = ({
               display: "flex",
               alignItems: "center",
               justifyContent: "flex-end",
-
             }}
           >
             <Box sx={{ gap: "4px", display: "flex" }}>
@@ -151,17 +162,25 @@ const SessionMarket = ({
                 }}
               >
                 <Typography
-                  sx={{ fontSize: { mobile: "8px", laptop: "8px" }, fontWeight: "bold", color: "#FF4D4D" }}
+                  sx={{
+                    fontSize: { mobile: "8px", laptop: "8px" },
+                    fontWeight: "bold",
+                    color: "#FF4D4D",
+                  }}
                 >
                   Amount
                 </Typography>
                 <Typography
-                  sx={{ fontSize: { mobile: "14px", laptop: "14px" }, fontWeight: "bold", color: "#0B4F26", lineHeight: 1 }}
+                  sx={{
+                    fontSize: { mobile: "14px", laptop: "14px" },
+                    fontWeight: "bold",
+                    color: "#0B4F26",
+                    lineHeight: 1,
+                  }}
                 >
                   0
                 </Typography>
               </Box>
-
             </Box>
             <img
               onClick={() => {
@@ -174,7 +193,7 @@ const SessionMarket = ({
                 height: "15px",
                 marginRight: "5px",
                 marginLeft: "5px",
-                cursor: 'pointer'
+                cursor: "pointer",
               }}
             />
           </Box>
@@ -215,8 +234,8 @@ const SessionMarket = ({
                       marginLeft: "7px",
                     }}
                   >
-                    MIN: {currentMatch?.betfair_session_min_bet} MAX:
-                    {currentMatch?.betfair_session_max_bet}
+                    MIN: {min} MAX:
+                    {max}
                   </Typography>
                 </Box>
                 <Box
@@ -239,7 +258,11 @@ const SessionMarket = ({
                     }}
                   >
                     <Typography
-                      sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                      sx={{
+                        fontSize: "12px",
+                        color: "black",
+                        fontWeight: "600",
+                      }}
                     >
                       NO
                     </Typography>
@@ -258,7 +281,11 @@ const SessionMarket = ({
                     }}
                   >
                     <Typography
-                      sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                      sx={{
+                        fontSize: "12px",
+                        color: "black",
+                        fontWeight: "600",
+                      }}
                     >
                       YES
                     </Typography>
@@ -281,7 +308,9 @@ const SessionMarket = ({
                 }}
               >
                 <Box
-                  sx={{ width: { mobile: "60%", laptop: "20%", tablet: "60%" } }}
+                  sx={{
+                    width: { mobile: "60%", laptop: "20%", tablet: "60%" },
+                  }}
                 ></Box>
                 <Box
                   sx={{
@@ -381,7 +410,7 @@ const SessionMarket = ({
           {data?.map((v) => {
             console.log(
               "currentOdds?.bet_id === v?.id ? currentOdds : null",
-              v,
+              v
             );
             return (
               <RunsBox
@@ -390,7 +419,7 @@ const SessionMarket = ({
                 item={v}
                 // setData={setData}
                 setData={setData}
-              // popData={popData}
+                // popData={popData}
               />
             );
           })}

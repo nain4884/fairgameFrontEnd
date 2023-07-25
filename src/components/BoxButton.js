@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import React from 'react'
 
 const BoxButton = ({
@@ -10,13 +10,18 @@ const BoxButton = ({
     deleteBtn,
     titleStyle,
     loading,
+    type,
+    color
   }) => {
     const classes = {
       mainBox: [
         {
-          background: isSelected ? "#0B4F26" : "#0B4F26",
+          background: isSelected ? color : color,
+          '&:hover': {
+            background: isSelected ? color : color,
+         },
           border:
-            isSelected || deleteBtn ? "2px solid #0B4F26" : "2px solid #303030",
+            isSelected || deleteBtn ? `2px solid ${color}` : `2px solid ${color}`,
           display: "flex",
           flex: 1,
           justifyContent: "center",
@@ -25,7 +30,6 @@ const BoxButton = ({
           alignItems: "center",
           borderRadius: "5px",
           padding: "5px",
-          flex: { mobile: " 0 0 43% ", laptop: "1 " },
           flex: { mobile: " 0 0 43% ", laptop: "1 " },
           maxWidth: "46% !important",
           textTransform: "capitalize",
@@ -48,7 +52,7 @@ const BoxButton = ({
       ],
     };
     return (
-      <Box onClick={onClick} sx={classes.mainBox}>
+      <Button type={type} onClick={onClick} sx={classes.mainBox}>
         <Typography sx={classes.mainBoxTypography}>
           {loading ? (
             <CircularProgress
@@ -64,7 +68,7 @@ const BoxButton = ({
           )}
           {icon}
         </Typography>
-      </Box>
+      </Button>
     );
   };
   

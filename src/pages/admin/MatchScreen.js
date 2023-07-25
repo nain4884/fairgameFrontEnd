@@ -158,20 +158,18 @@ export const MatchScreen = ({
               alignItems: "center",
             }}
           >
-            {
-              teamImage !== null && (
-                <img
-                  src={`${apiBasePath}/${teamImage}`}
-                  style={{
-                    width: "22px",
-                    height: "25px",
-                    marginLeft: "10px",
-                    backgroundSize: "contains",
-                  }}
-                  alt={name}
-                />
-              )
-            }
+            {teamImage !== null && (
+              <img
+                src={`${apiBasePath}/${teamImage}`}
+                style={{
+                  width: "22px",
+                  height: "25px",
+                  marginLeft: "10px",
+                  backgroundSize: "contains",
+                }}
+                alt={name}
+              />
+            )}
             <Typography
               sx={{
                 color: "black",
@@ -683,11 +681,7 @@ export const MatchScreen = ({
       </Box>
     );
   };
-  const SeasonMarketBox = ({
-    index,
-    newData,
-    setData,
-  }) => {
+  const SeasonMarketBox = ({ index, newData, setData }) => {
     const theme = useTheme();
     const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     return (
@@ -1356,8 +1350,8 @@ export const MatchScreen = ({
         const sessionData =
           currentMatch?.bettings?.length > 0
             ? currentMatch?.bettings?.filter(
-              (element) => element?.sessionBet && element?.id
-            )
+                (element) => element?.sessionBet && element?.id
+              )
             : 0;
         setMatchSessionData(sessionData.reverse());
       }
@@ -2454,7 +2448,6 @@ const NewMatchScreen = () => {
       });
 
       socket.onevent = async (packet) => {
-
         if (packet.data[0] === "updateMatchActiveStatus") {
           const value = packet.data[1];
           setCurrentMatch((currentMatch) => {
@@ -3132,11 +3125,8 @@ const NewMatchScreen = () => {
         });
         socketMicro.emit("init", { id: marketId });
         setInterval(() => {
-
           socketMicro.emit("init", { id: marketId });
         }, 3000);
-
-
 
         socketMicro.emit("score", { id: eventId });
 
@@ -3148,7 +3138,6 @@ const NewMatchScreen = () => {
         });
 
         socketMicro.on(`session${marketId}`, (val) => {
-
           if (val !== null && matchId === matchId) {
             var newVal = val?.map((v) => ({
               bet_condition: v?.RunnerName,
@@ -3244,7 +3233,6 @@ const NewMatchScreen = () => {
       console.log("error", e);
     }
     return () => {
-
       socketMicro?.emit("disconnect_market", {
         id: marketId,
       });
@@ -3437,21 +3425,6 @@ const NewMatchScreen = () => {
               showUnlock={isMatchLock}
             />
           )}
-          {currentMatch?.apiBookMakerActive && (
-            <BookMarketer
-              currentMatch={currentMatch}
-              data={
-                bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
-              }
-              blockMatch={true}
-              locked={currentMatch?.blockMarket?.BOOKMAKER?.block}
-              selft={currentMatch?.blockMarket?.BOOKMAKER?.selft}
-              handleBlock={handleBlock}
-              handleHide={handleHide}
-              handleShowLock={handleShowLock}
-              showUnlock={isBookmakerLock}
-            />
-          )}
           {currentMatch?.manualBookMakerActive && (
             <Odds
               currentMatch={currentMatch}
@@ -3467,23 +3440,58 @@ const NewMatchScreen = () => {
               mShowUnlock={isManualLock}
             />
           )}
+          {currentMatch?.apiBookMakerActive && (
+            <BookMarketer
+              currentMatch={currentMatch}
+              data={
+                bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
+              }
+              blockMatch={true}
+              locked={currentMatch?.blockMarket?.BOOKMAKER?.block}
+              selft={currentMatch?.blockMarket?.BOOKMAKER?.selft}
+              handleBlock={handleBlock}
+              handleHide={handleHide}
+              handleShowLock={handleShowLock}
+              showUnlock={isBookmakerLock}
+            />
+          )}
 
-          {(currentMatch?.apiSessionActive ||
-            currentMatch?.manualSessionActive) && (
-              <SessionMarket
-                currentMatch={currentMatch}
-                sessionBets={sessionBets}
-                data={[]}
-                blockMatch={true}
-                locked={currentMatch?.blockMarket?.SESSION?.block}
-                selft={currentMatch?.blockMarket?.SESSION?.selft}
-                handleBlock={handleBlock}
-                handleHide={handleHide}
-                handleShowLock={handleShowLock}
-                showUnlock={isSessionLock}
+          {currentMatch?.manualSessionActive && (
+            <SessionMarket
+              title={"Quick Session Market"}
+              currentMatch={currentMatch}
+              sessionBets={sessionBets}
+              data={[]}
+              blockMatch={true}
+              locked={currentMatch?.blockMarket?.SESSION?.block}
+              selft={currentMatch?.blockMarket?.SESSION?.selft}
+              handleBlock={handleBlock}
+              handleHide={handleHide}
+              handleShowLock={handleShowLock}
+              showUnlock={isSessionLock}
+              max={currentMatch?.manaual_session_max_bet}
+              min={currentMatch?.manaual_session_min_bet}
               // sessionOffline={sessionOffline}
-              />
-            )}
+            />
+          )}
+          {currentMatch?.apiSessionActive && (
+            <SessionMarket
+              title={"Session Market"}
+              currentMatch={currentMatch}
+              sessionBets={sessionBets}
+              data={[]}
+              blockMatch={true}
+              locked={currentMatch?.blockMarket?.SESSION?.block}
+              selft={currentMatch?.blockMarket?.SESSION?.selft}
+              handleBlock={handleBlock}
+              handleHide={handleHide}
+              handleShowLock={handleShowLock}
+              showUnlock={isSessionLock}
+              max={currentMatch?.betfair_session_max_bet}
+              min={currentMatch?.betfair_session_min_bet}
+              // sessionOffline={sessionOffline}
+            />
+          )}
         </Box>
         <Box sx={{ width: "20px" }} />
         <Box

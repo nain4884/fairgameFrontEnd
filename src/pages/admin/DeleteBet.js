@@ -19,16 +19,14 @@ import { setSelectedMatch } from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
 import CustomLoader from "../../components/helper/CustomLoader";
 import { removeSocket } from "../../components/helper/removeSocket";
-import { removeCurrentUser, } from "../../newStore/reducers/currentUser";
-import {
-  removeManualBookMarkerRates,
-} from "../../newStore/reducers/matchDetails";
+import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { removeManualBookMarkerRates } from "../../newStore/reducers/matchDetails";
 import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
 
 let matchOddsCount = 0;
 let sessionOffline = [];
-const DeleteBet = ({ }) => {
+const DeleteBet = ({}) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
@@ -555,7 +553,6 @@ const DeleteBet = ({ }) => {
 
               return prev;
             });
-
           } catch (err) {
             console.log(err?.message);
           }
@@ -599,16 +596,15 @@ const DeleteBet = ({ }) => {
                   teamA_rate: value?.teamA_rate,
                   teamB_rate: value?.teamB_rate,
                   teamC_rate: value?.teamC_rate,
-                }
+                };
               } else {
                 return {
                   ...prev,
                   bettings: updatedBettings,
-                }
+                };
               }
               return prev;
             });
-
           } catch (err) {
             console.log(err?.message);
           }
@@ -622,7 +618,6 @@ const DeleteBet = ({ }) => {
               navigate("/wallet/market_analysis");
             }
             return;
-
           }
           try {
             setCurrentMatch((currentMatch) => {
@@ -694,7 +689,6 @@ const DeleteBet = ({ }) => {
           navigate("/wallet");
           socket.disconnect();
         }
-
       };
     }
   }, [socket]);
@@ -724,7 +718,6 @@ const DeleteBet = ({ }) => {
         });
 
         socketMicro.on(`session${marketId}`, (val) => {
-
           if (val !== null && matchId === checkMctchId) {
             var newVal = val?.map((v) => ({
               bet_condition: v?.RunnerName,
@@ -844,7 +837,6 @@ const DeleteBet = ({ }) => {
       setTimeout(() => {
         setLoading(false);
       }, 1500);
-
     } catch (e) {
       setTimeout(() => {
         setLoading(false);
@@ -886,15 +878,15 @@ const DeleteBet = ({ }) => {
     let data = {
       deleteReason: value,
       placeBetId: selectedBetData,
-      matchId: matchId
-    }
+      matchId: matchId,
+    };
     setMode(!mode);
     try {
       let response = await axios.post(`/betting/deleteMultipleBet`, data);
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   const [mode, setMode] = useState(false);
   const [selectedBetData, setSelectedBetData] = useState([]);
@@ -1029,17 +1021,11 @@ const DeleteBet = ({ }) => {
                   currentMatch={currentMatch}
                   matchOddsLive={matchOddsLive}
                   data={
-                    matchOddsLive?.runners?.length > 0 ? matchOddsLive?.runners : []
+                    matchOddsLive?.runners?.length > 0
+                      ? matchOddsLive?.runners
+                      : []
                   }
                   typeOfBet={"Match Odds"}
-                />
-              )}
-              {currentMatch?.apiBookMakerActive && (
-                <BookMarketer
-                  currentMatch={currentMatch}
-                  data={
-                    bookmakerLive?.runners?.length > 0 ? bookmakerLive?.runners : []
-                  }
                 />
               )}
               {currentMatch?.manualBookMakerActive && (
@@ -1050,20 +1036,45 @@ const DeleteBet = ({ }) => {
                   typeOfBet={"Quick Bookmaker"}
                 />
               )}
-              {(currentMatch?.apiSessionActive ||
-                currentMatch?.manualSessionActive) &&
-                matchesMobile && (
-                  <SessionMarket
-                    currentMatch={currentMatch}
-                    sessionBets={sessionBets}
-                    data={[]}
-                    sessionOffline={sessionOffline}
-                    setPopData={setPopData}
-                    popData={popData}
-                  />
-                )}
+              {currentMatch?.apiBookMakerActive && (
+                <BookMarketer
+                  currentMatch={currentMatch}
+                  data={
+                    bookmakerLive?.runners?.length > 0
+                      ? bookmakerLive?.runners
+                      : []
+                  }
+                />
+              )}
+       
+              {currentMatch?.manualSessionActive && matchesMobile && (
+                <SessionMarket
+                  title={"Quick Session Market"}
+                  currentMatch={currentMatch}
+                  sessionBets={sessionBets}
+                  data={[]}
+                  sessionOffline={sessionOffline}
+                  setPopData={setPopData}
+                  popData={popData}
+                  min={currentMatch?.manaual_session_min_bet || 0}
+            max={currentMatch?.manaual_session_max_bet || 0}
+                />
+              )}
+              {currentMatch?.apiSessionActive && matchesMobile && (
+                <SessionMarket
+                  title={"Session Market"}
+                  currentMatch={currentMatch}
+                  sessionBets={sessionBets}
+                  data={[]}
+                  sessionOffline={sessionOffline}
+                  setPopData={setPopData}
+                  popData={popData}
+                  max={currentMatch?.betfair_session_max_bet}
+                    min={currentMatch?.betfair_session_min_bet}
+                />
+              )}
               {/* {matchesMobile && */}
-              {url.includes("wallet") && IOSinglebets.length > 0 &&
+              {url.includes("wallet") && IOSinglebets.length > 0 && (
                 <Box
                   sx={{
                     display: "flex",
@@ -1071,7 +1082,7 @@ const DeleteBet = ({ }) => {
                     width: "100%",
                   }}
                 >
-                  {mode &&
+                  {mode && (
                     //  <CancelButton setMode={setMode} />
                     <Box
                       onClick={() => {
@@ -1102,7 +1113,7 @@ const DeleteBet = ({ }) => {
                         {"Cancel"}
                       </Typography>
                     </Box>
-                  }
+                  )}
                   <Box sx={{ width: "2%" }}></Box>
                   {/* <CustomButton mode={mode} setMode={setMode} setVisible={setVisible} /> */}
                   <Box
@@ -1137,13 +1148,22 @@ const DeleteBet = ({ }) => {
                     >
                       {mode ? "Delete" : "Delete Bet"}
                     </Typography>
-                    <img src={DeleteIcon} style={{ width: "17px", height: "20px" }} />
+                    <img
+                      src={DeleteIcon}
+                      style={{ width: "17px", height: "20px" }}
+                    />
                   </Box>
                 </Box>
-              }
+              )}
               {/* } */}
               {IOSinglebets.length > 0 && (
-                <FullAllBets IObets={IOSinglebets} mode={mode} tag={false} setSelectedBetData={setSelectedBetData} selectedBetData={selectedBetData} />
+                <FullAllBets
+                  IObets={IOSinglebets}
+                  mode={mode}
+                  tag={false}
+                  setSelectedBetData={setSelectedBetData}
+                  selectedBetData={selectedBetData}
+                />
               )}
             </Box>
             {!matchesMobile && <Box sx={{ width: "20px" }} />}
@@ -1169,23 +1189,41 @@ const DeleteBet = ({ }) => {
                     sx={{ width: "150px", marginY: ".75%", height: "15px" }}
                   ></Box>
                 </Box>
-                {(currentMatch?.apiSessionActive ||
-                  currentMatch?.manualSessionActive) && (
-                    <SessionMarket
-                      currentOdds={currentOdds}
-                      currentMatch={currentMatch}
-                      sessionBets={sessionBets}
-                      data={[]}
-                      sessionOffline={sessionOffline}
-                      setPopData={setPopData}
-                      popData={popData}
-                    />
-                  )}
+                {
+                  currentMatch?.manualSessionActive && (
+                  <SessionMarket
+                    title={"Quick Session Market"}
+                    currentOdds={currentOdds}
+                    currentMatch={currentMatch}
+                    sessionBets={sessionBets}
+                    data={[]}
+                    sessionOffline={sessionOffline}
+                    setPopData={setPopData}
+                    popData={popData}
+                    min={currentMatch?.manaual_session_min_bet || 0}
+            max={currentMatch?.manaual_session_max_bet || 0}
+                  />
+                )}
+                {currentMatch?.apiSessionActive && (
+                  <SessionMarket
+                   title={"Session Market"}
+                    currentOdds={currentOdds}
+                    currentMatch={currentMatch}
+                    sessionBets={sessionBets}
+                    data={[]}
+                    sessionOffline={sessionOffline}
+                    setPopData={setPopData}
+                    popData={popData}
+                    max={currentMatch?.betfair_session_max_bet}
+                    min={currentMatch?.betfair_session_min_bet}
+                  />
+                )}
               </Box>
             )}
           </Box>
           <DailogModal />
-        </>)}
+        </>
+      )}
     </Background>
   );
 };

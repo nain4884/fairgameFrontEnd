@@ -61,6 +61,66 @@ export const setRole = (token) => {
     },
   });
 
+  // userAxiosInstance.interceptors.response.use(
+  //   (response) => {
+  //     // For successful responses, just return the response
+  //     return response;
+  //   },
+  //   (error) => {
+  //     // Handle unauthorized errors (status code 401)
+  //     if (error.response && error.response.status === 401) {
+  //       // Redirect the user to the login screen (replace '/login' with your actual login screen route)
+  //       window.location.replace("/");
+  //     }
+  //     return Promise.reject(error);
+  //   }
+  // );
+
+  // expertInstance.interceptors.response.use(
+  //   (response) => {
+  //     // For successful responses, just return the response
+  //     return response;
+  //   },
+  //   (error) => {
+  //     // Handle unauthorized errors (status code 401)
+  //     if (error.response && error.response.status === 401) {
+  //       // Redirect the user to the login screen (replace '/login' with your actual login screen route)
+  //       window.location.replace("/expert");
+  //     }
+  //     return Promise.reject(error);
+  //   }
+  // );
+
+  // adminInstance.interceptors.response.use(
+  //   (response) => {
+  //     // For successful responses, just return the response
+  //     return response;
+  //   },
+  //   (error) => {
+  //     // Handle unauthorized errors (status code 401)
+  //     if (error.response && error.response.status === 401) {
+  //       // Redirect the user to the login screen (replace '/login' with your actual login screen route)
+  //       window.location.replace("/admin");
+  //     }
+  //     return Promise.reject(error);
+  //   }
+  // );
+
+  // walletInstance.interceptors.response.use(
+  //   (response) => {
+  //     // For successful responses, just return the response
+  //     return response;
+  //   },
+  //   (error) => {
+  //     // Handle unauthorized errors (status code 401)
+  //     if (error.response && error.response.status === 401) {
+  //       // Redirect the user to the login screen (replace '/login' with your actual login screen route)
+  //       window.location.replace("/wallet");
+  //     }
+  //     return Promise.reject(error);
+  //   }
+  // );
+
   let role = "role4";
   let roleName = user?.role?.roleName;
   let JWT = user?.access_token;

@@ -31,7 +31,10 @@ const SessionMarket = ({
   session,
   betLock,
   upcoming,
-  handleRateChange
+  handleRateChange,
+  title,
+  max,
+  min,
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
@@ -39,15 +42,11 @@ const SessionMarket = ({
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const matchSessionData = newData?.bettings?.filter((element) => {
-    if (newData.apiSessionActive && newData.manualSessionActive && element.sessionBet === true) {
-      return true; // Return all elements when both apiSessionActive and manualSessionActive are true
-    }
-
-    if (newData.apiSessionActive) {
+    if (newData.apiSessionActive && title === "Session Market") {
       return element.sessionBet === true && element.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
     }
 
-    if (newData.manualSessionActive) {
+    if (newData.manualSessionActive && title === "Quick Session Market") {
       return element.sessionBet === true && element.selectionId === null; // Show elements where selectionId is null when manualSessionActive is true
     }
 
@@ -62,7 +61,7 @@ const SessionMarket = ({
           display: "flex",
           position: "relative",
           background: "white",
-          padding: '1px',
+          padding: "1px",
           flexDirection: "column",
           marginY: { mobile: "2px", laptop: ".5vh" },
           marginTop: { mobile: "0" },
@@ -101,7 +100,7 @@ const SessionMarket = ({
                 marginLeft: "7px",
               }}
             >
-              Session Odds
+              {title}
             </Typography>
             {showFast && (
               <FastTime
@@ -142,11 +141,11 @@ const SessionMarket = ({
               totalAmount={sessionExposer}
             />
             <Box
-              className='arrowUpCollaps'
+              className="arrowUpCollaps"
               sx={{
                 flex: 1,
-                background: { laptop: "#262626", mobile: 'none' },
-                position: { laptop: "static", mobile: 'absolute' },
+                background: { laptop: "#262626", mobile: "none" },
+                position: { laptop: "static", mobile: "absolute" },
                 // '#262626' ,
                 display: "flex",
                 alignItems: "center",
@@ -164,7 +163,7 @@ const SessionMarket = ({
                   height: "15px",
                   marginRight: "5px",
                   marginLeft: "5px",
-                  cursor: 'pointer'
+                  cursor: "pointer",
                 }}
               />
             </Box>
@@ -181,7 +180,7 @@ const SessionMarket = ({
           </Box>
         )}
         {visible && (
-          <Box sx={{ width: "100%", position: "relative", }}>
+          <Box sx={{ width: "100%", position: "relative" }}>
             {
               <Box
                 sx={{
@@ -208,8 +207,8 @@ const SessionMarket = ({
                       marginLeft: "7px",
                     }}
                   >
-                    MIN:{newData?.manaual_session_min_bet} MAX:
-                    {newData?.manaual_session_max_bet}
+                    MIN:{min} MAX:
+                    {max}
                   </Typography>
                 </Box>
                 <Box
@@ -238,7 +237,11 @@ const SessionMarket = ({
                     }}
                   >
                     <Typography
-                      sx={{ fontSize: "12px", color: "black", fontWeight: "600", }}
+                      sx={{
+                        fontSize: "12px",
+                        color: "black",
+                        fontWeight: "600",
+                      }}
                     >
                       NO
                     </Typography>
@@ -256,11 +259,14 @@ const SessionMarket = ({
                         laptop: " 4px solid #319e5b;",
                         mobile: "0 solid #319e5b",
                       },
-
                     }}
                   >
                     <Typography
-                      sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                      sx={{
+                        fontSize: "12px",
+                        color: "black",
+                        fontWeight: "600",
+                      }}
                     >
                       YES
                     </Typography>
@@ -283,7 +289,9 @@ const SessionMarket = ({
                 }}
               >
                 <Box
-                  sx={{ width: { mobile: "60%", laptop: "40%", tablet: "60%" } }}
+                  sx={{
+                    width: { mobile: "60%", laptop: "40%", tablet: "60%" },
+                  }}
                 ></Box>
                 <Box
                   sx={{
@@ -294,7 +302,10 @@ const SessionMarket = ({
                     alignItems: "center",
                   }}
                 >
-                  <img style={{ width: "35px", height: "40px" }} src={LockIcon} />
+                  <img
+                    style={{ width: "35px", height: "40px" }}
+                    src={LockIcon}
+                  />
                   <Typography
                     sx={{
                       fontWeight: "600",
@@ -309,24 +320,21 @@ const SessionMarket = ({
               </Box>
             )}
 
-            {upcoming && matchSessionData?.length > 0
-              && (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    height: "90%",
-                    // top: "29%",
-                    width: "100%",
-                    display: "flex",
-                    zIndex: "999",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    background: "rgba(0, 0, 0, .5)",
-                  }}
-                >
-
-                </Box>
-              )}
+            {upcoming && matchSessionData?.length > 0 && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  height: "90%",
+                  // top: "29%",
+                  width: "100%",
+                  display: "flex",
+                  zIndex: "999",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "rgba(0, 0, 0, .5)",
+                }}
+              ></Box>
+            )}
 
             <Box
               sx={{
@@ -378,15 +386,14 @@ const SessionMarket = ({
 
       <style jsx scope>
         {`
-            @media only screen and (max-width: 600px) {
-              body .arrowUpCollaps img{
-                  width: 14px !important;
-                  height: 14px !important;
-                  margin-right: 3px !important;
-              }
+          @media only screen and (max-width: 600px) {
+            body .arrowUpCollaps img {
+              width: 14px !important;
+              height: 14px !important;
+              margin-right: 3px !important;
             }
-
-            `}
+          }
+        `}
       </style>
     </>
   );
