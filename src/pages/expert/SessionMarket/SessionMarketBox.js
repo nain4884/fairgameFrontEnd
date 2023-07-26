@@ -42,12 +42,21 @@ const SessionMarketBox = ({
     [0, 2].includes(newData?.betStatus) ? true : false
   );
 
+  const  [loader,setLoader]=useState(false)
+
+
   useEffect(() => {
     if (!stop) {
       setLive(true);
     }
   }, [stop]);
 
+  function customSort(a, b) {
+    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
+    const aStatus = betStatusOrder[a?.betStatus] || 0;
+    const bStatus = betStatusOrder[b?.betStatus] || 0;
+    return aStatus - bStatus;
+  }
   const handleLive = async (status) => {
     try {
       if (status === 1) {
@@ -56,6 +65,7 @@ const SessionMarketBox = ({
       } else {
         setLive(true);
       }
+      setLoader(true)
       const body = {
         match_id: currentMatch?.id,
         matchType: currentMatch?.gameType,
@@ -78,28 +88,39 @@ const SessionMarketBox = ({
       if (data?.data?.id) {
         if (liveOnly) {
           setLive(true);
-          setMatchSessionData((prev) =>
-            prev?.filter((v) => v?.selectionId !== data?.data?.selectionId)
-          );
+      
+          // Sort and update the matchSessionData array with the new data
+          setMatchSessionData((prev) => {
+            const filteredArray = prev?.filter(
+              (v) => v?.selectionId !== data?.data?.selectionId
+            );
+            const sortedArray = filteredArray.sort(customSort);
+            return sortedArray;
+          });
         } else {
           setMatchSessionData((prev) => {
             const exists = prev.some((v) => v?.id === data?.data?.id);
             if (!exists) {
-              return [data.data, ...prev];
+              // Add the new data to the array and sort it
+              const sortedArray = [data.data, ...prev].sort(customSort);
+              return sortedArray;
             }
             return prev;
           });
         }
+        setLoader(false)
+
       }
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
+      setLoader(false)
     }
   };
 
   return (
     <div style={{ position: "relative" }}>
-      {live && (
+      {[0,2].includes(newData?.betStatus) && (
         <Box
           sx={{
             margin: "1px",
@@ -152,8 +173,9 @@ const SessionMarketBox = ({
             zIndex: 100,
           }}
         >
-          {live && newData?.betStatus !== 2 && (
+          {newData?.betStatus === 0 && (
             <SmallBox
+            loading={loader}
               hide={true}
               onClick={(e) => {
                 e.preventDefault();
@@ -168,6 +190,7 @@ const SessionMarketBox = ({
           )}
           {newData?.betStatus === 2 && newData?.betRestult && (
             <SmallBox
+              loading={false}
               hide={false}
               textSize={"12px"}
               width={"80px"}
@@ -175,9 +198,10 @@ const SessionMarketBox = ({
               color={"#FFF"}
             />
           )}
-          {!live && (
+          {newData?.betStatus === 1 && (
             <SmallBox
               hide={true}
+              loading={loader}
               onClick={(e) => {
                 e.preventDefault();
                 setLive(!live);

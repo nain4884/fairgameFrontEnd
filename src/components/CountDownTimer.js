@@ -8,7 +8,7 @@ const CountDownTimer = ({ visible, setVisible, time }) => {
   return (
     <Modal
       disableAutoFocus={true}
-      onClose={() => setVisible(false)}
+      // onClose={() => setVisible(false)}
       sx={{
         alignItems: "center",
         justifyContent: "center",
@@ -16,6 +16,11 @@ const CountDownTimer = ({ visible, setVisible, time }) => {
         outline: "none",
       }}
       open={visible}
+      slotProps={{
+        backdrop: {
+          onClick: (event) => event.stopPropagation(),
+        },
+      }}
     >
       <Box
         sx={{
@@ -36,15 +41,17 @@ const CountDownTimer = ({ visible, setVisible, time }) => {
           isPlaying
           duration={time}
           size={130}
-          colors={['#F7B801', "#0B4F26"]}
+          colors={["#F7B801", "#0B4F26"]}
           colorsTime={[5, 0]}
           strokeLinecap={0}
           strokeWidth={8}
           onComplete={() => {
-            setVisible(false)
+            setVisible(false);
           }}
         >
-          {({ remainingTime }) => <Typography sx={{ fontSize: '25px' }}>{remainingTime}</Typography>}
+          {({ remainingTime }) => (
+            <Typography sx={{ fontSize: "25px" }}>{remainingTime}</Typography>
+          )}
         </CountdownCircleTimer>
         {/* <Lottie
           animationData={HourGlass}

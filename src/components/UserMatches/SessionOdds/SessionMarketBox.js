@@ -77,7 +77,7 @@ const SessionMarketBox = ({
       {!matchesMobile && (
         <PlaceBetComponentWeb amount={index === 2} profitLoss={data} />
       )}
-      {!["ACTIVE", "", undefined, null].includes(data?.suspended) ? (
+      {!["ACTIVE", "", undefined, null].includes(data?.suspended) &&  data.yes_rate===null && data.no_rate===null ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",
@@ -156,7 +156,7 @@ const SessionMarketBox = ({
               betType={"no"}
               value={data?.no_rate}
               value2={formatNumber(data?.rate_percent?.split("-")[0])}
-              lock={data?.no_rate === null ? true : false}
+              lock={[null,0,"0"].includes(data?.no_rate) ? true : false}
               color={"#F6D0CB"}
               type={{ color: "#FFB5B5", type: "YN" }}
               typeOfBet={typeOfBet}
@@ -179,7 +179,7 @@ const SessionMarketBox = ({
               betType={"yes"}
               value={data?.yes_rate}
               value2={formatNumber(data?.rate_percent?.split("-")[1])}
-              lock={data?.yes_rate === null ? true : false}
+              lock={[null,0,"0"].includes(data?.yes_rate) ? true : false}
               color={"#B3E0FF"}
               type={{ color: "#A7DCFF", type: "YN" }}
               typeOfBet={typeOfBet}

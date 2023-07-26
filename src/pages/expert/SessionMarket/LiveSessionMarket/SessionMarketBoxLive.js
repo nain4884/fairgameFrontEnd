@@ -50,7 +50,7 @@ const SessionMarketBoxLive = ({
         matchType: currentMatch?.gameType,
         id: newData?.id ? newData?.id : "",
         selectionId: newData?.selectionId,
-        betStatus: status,
+        betStatus: 1,
         sessionBet: true,
         bet_condition: newData?.bet_condition,
         no_rate: newData?.no_rate,
@@ -74,7 +74,7 @@ const SessionMarketBoxLive = ({
           setMatchSessionData((prev) => {
             const exists = prev.some((v) => v?.id === data?.data?.id);
             if (!exists) {
-              return [data.data, ...prev];
+              return [...prev,data.data];
             }
             return prev;
           });

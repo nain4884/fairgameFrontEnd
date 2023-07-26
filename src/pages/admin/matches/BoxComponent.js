@@ -122,7 +122,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
         >
           <MoneyBox color={color} rates={rates} />
 
-          {ex?.availableToBack?.length > 0 ?
+          {ex?.availableToBack?.length > 0 && ![0,"0"].includes(ex?.availableToBack[0]?.price) ?
             <SeperateBox
               align={align}
               value={
@@ -160,7 +160,7 @@ const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
 
           <Box sx={{ width: "3px", display: "flex", background: "pink" }}></Box>
           {/* {!lock ? */}
-          {ex?.availableToLay?.length > 0 ?
+          {ex?.availableToLay?.length >0 && ![0,"0"].includes(ex?.availableToLay[0]?.price)  ?
             <SeperateBox
               align={align}
               value={ex?.availableToLay?.length > 0

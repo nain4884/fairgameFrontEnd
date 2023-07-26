@@ -25,7 +25,12 @@ const NotificationModal = ({ open, handleClose, time }) => {
           outline: "none",
         }}
         open={open?.value}
-        onClose={handleClose}
+        // onClose={handleClose}
+        slotProps={{
+        backdrop: {
+          onClick: (event) => event.stopPropagation(),
+        },
+      }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

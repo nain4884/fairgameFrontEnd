@@ -1,8 +1,8 @@
-import { Box, Typography } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import React from 'react'
 import { BroadCast } from '../../expert/assets';
 
-const SmallBox = ({ color, title, width, textSize, onClick, hide, customStyle }) => {
+const SmallBox = ({ color, title, width, textSize, onClick, hide, customStyle,loading }) => {
   return (
     <>
       <Box
@@ -30,9 +30,18 @@ const SmallBox = ({ color, title, width, textSize, onClick, hide, customStyle })
             lineHeight: 1
           }}
         >
-          {title}
+          {loading ? (
+        <CircularProgress
+          sx={{
+            color: "#FFF",
+          }}
+          size={14}
+          thickness={2}
+          value={60}
+        />
+      ) : (title)}
         </Typography>
-        {hide && <img src={BroadCast} style={{ height: "15px", width: "15px" }} />}
+        {hide && !loading && <img src={BroadCast} style={{ height: "15px", width: "15px" }} />}
       </Box>
     </>
   );

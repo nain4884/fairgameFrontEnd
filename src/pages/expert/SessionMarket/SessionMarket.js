@@ -25,10 +25,19 @@ const SessionMarket = ({
   const theme = useTheme();
   const [stop, setStop] = useState(true);
   const { axios } = setRole();
-  const [matchSessionData, setMatchSessionData] = useState(sessionData);
+  const [matchSessionData, setMatchSessionData] = useState([]);
+
+  function customSort(a, b) {
+    // betStatus 1 should come before betStatus 2
+    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
+    const aStatus = betStatusOrder[a?.betStatus] || 0;
+    const bStatus = betStatusOrder[b?.betStatus] || 0;
+    return aStatus - bStatus;
+  }
+
   useEffect(() => {
     if (sessionData?.length > 0) {
-      setMatchSessionData(sessionData);
+      setMatchSessionData(sessionData.sort(customSort));
       // scrollToMessage();
     }
   }, [sessionData]);
@@ -161,7 +170,7 @@ const SessionMarket = ({
               height: "15px",
               marginRight: "5px",
               marginLeft: "5px",
-              cursor: 'pointer'
+              cursor: "pointer",
             }}
           />
         </Box>
@@ -210,7 +219,7 @@ const SessionMarket = ({
                   display: "flex",
                   background: "#319E5B",
                   height: "25px",
-                  // marginLeft: "0vw",          
+                  // marginLeft: "0vw",
                   width: { laptop: "40%", mobile: "80%", marginLeft: "8px" },
                   justifyContent: { laptop: "flex-start", mobile: "flex-end" },
                 }}
@@ -266,7 +275,7 @@ const SessionMarket = ({
               matchSessionData?.map((match, index) => (
                 <Box
                   key={index}
-                //  ref={messageRef}
+                  //  ref={messageRef}
                 >
                   <SessionMarketBox
                     liveOnly={liveOnly}

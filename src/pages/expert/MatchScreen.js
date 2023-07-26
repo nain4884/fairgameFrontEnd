@@ -87,6 +87,14 @@ const MatchScreen = () => {
     }
   }, [localState]);
 
+  function customSort(a, b) {
+    // betStatus 1 should come before betStatus 2
+    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
+  const aStatus = betStatusOrder[a?.betStatus] || 0;
+  const bStatus = betStatusOrder[b?.betStatus] || 0;
+  return aStatus - bStatus;
+  }
+
   useEffect(() => {
     if (socket && socket.connected && currentMatch !== null) {
       socket.onevent = async (packet) => {
@@ -215,9 +223,11 @@ const MatchScreen = () => {
                 ) {
                   updatedBettings.unshift(value);
                 }
+
+              
                 return {
                   ...currentMatch,
-                  bettings: updatedBettings,
+                  bettings:   updatedBettings?.sort(customSort),
                 };
               });
             }
@@ -336,7 +346,6 @@ const MatchScreen = () => {
               teamC: value?.teamC_rate,
             };
             dispatch(setManualBookMarkerRates(manualBookmaker));
-
           } catch (err) {
             console.log(err?.message);
           }
@@ -357,7 +366,6 @@ const MatchScreen = () => {
 
               return updatedBettings;
             });
-
           } catch (err) {
             console.log(err?.message);
           }
@@ -367,7 +375,10 @@ const MatchScreen = () => {
           const value = packet.data[1];
           // matchId = value?.match_id;
           try {
-            if (currentMatch?.id == value?.match_id && value?.sessionBet===false) {
+            if (
+              currentMatch?.id == value?.match_id &&
+              value?.sessionBet === false
+            ) {
               navigate("/expert/match");
             }
           } catch (err) {
@@ -470,7 +481,6 @@ const MatchScreen = () => {
     if (socketMicro?.connected && state?.marketId && marketId) {
       socketMicro.emit("init", { id: state?.marketId });
       setInterval(() => {
-
         socketMicro.emit("init", { id: state?.marketId });
       }, 3000);
       socketMicro.on("reconnect", () => {
@@ -504,6 +514,14 @@ const MatchScreen = () => {
     }
   }
 
+  const arrayObject =
+    currentMatch?.bettings?.length > 0
+      ? currentMatch?.bettings?.filter(
+          (element) => element?.sessionBet && element?.id
+        )
+      : [];
+
+console.log(arrayObject,"arrayObject")
   return (
     <Background>
       {/* <CHeader /> */}
@@ -525,7 +543,7 @@ const MatchScreen = () => {
           // marginTop: "5px",
           background: !loading && "white",
           padding: 1,
-          gap: 1
+          gap: 1,
         }}
       >
         {loading ? (
@@ -539,80 +557,74 @@ const MatchScreen = () => {
             >
               {(currentMatch?.apiSessionActive ||
                 currentMatch?.manualSessionActive) && (
+                <Box
+                  sx={{
+                    width: { laptop: "100%", mobile: "100%", tablet: "100%" },
+                    display: "flex",
+                    gap: 0.1,
+                    flexDirection: { tablet: "column", laptop: "coulmn" },
+                  }}
+                >
                   <Box
                     sx={{
                       width: { laptop: "100%", mobile: "100%", tablet: "100%" },
+                      flexDirection: "column",
                       display: "flex",
-                      gap: 0.1,
-                      flexDirection: { tablet: "column", laptop: "coulmn" },
                     }}
                   >
-                    <Box
-                      sx={{
-                        width: { laptop: "100%", mobile: "100%", tablet: "100%" },
-                        flexDirection: "column",
-                        display: "flex",
-                      }}
-                    >
-                      <SessionMarketLive
-                        title={"Session API Market"}
-                        hideTotalBet={true}
-                        liveOnly={true}
-                        stopAllHide={true}
-                        hideResult={true}
-                        sessionData={
-                          currentMatch?.bettings?.length > 0
-                            ? [...currentMatch?.bettings].filter(
+                    <SessionMarketLive
+                      title={"Session API Market"}
+                      hideTotalBet={true}
+                      liveOnly={true}
+                      stopAllHide={true}
+                      hideResult={true}
+                      sessionData={
+                        currentMatch?.bettings?.length > 0
+                          ? [...currentMatch?.bettings].filter(
                               (e) =>
                                 e?.sessionBet && !e?.id && e?.betStatus === 0
                             )
-                            : []
-                        }
-                        setLocalState={setLocalState}
-                        setCurrentMatch={setCurrentMatch}
-                        currentMatch={currentMatch}
-                        SessionMarket={SessionMarket}
-                      />
-                    </Box>
-                    <Box
-                      sx={{
-                        width: { laptop: "100%", mobile: "100%", tablet: "100%" },
-                        flexDirection: "column",
-                        display: "flex",
-                      }}
-                    >
-                      <SessionMarket
-                        setIObtes={(val) => {
-                          setIObtes((IObets) =>
-                            IObets?.filter(
-                              (v) =>
-                                v?.bet_id !== val?.betId &&
-                                val?.match_id === v?.match_id
-                            )
-                          );
-                        }}
-                        title={"Session Market"}
-                        setLiveData={setLiveData}
-                        liveOnly={false}
-                        hideTotalBet={false}
-                        stopAllHide={false}
-                        setData={setData}
-                        sessionData={
-                          currentMatch?.bettings?.length > 0
-                            ? currentMatch?.bettings?.filter(
-                              (element) => element?.sessionBet && element?.id
-                            )
-                            : 0
-                        }
-                        hideResult={false}
-                        setLocalState={setLocalState}
-                        setCurrentMatch={setCurrentMatch}
-                        currentMatch={currentMatch}
-                        SessionMarket={SessionMarket}
-                      />
-                    </Box>
+                          : []
+                      }
+                      setLocalState={setLocalState}
+                      setCurrentMatch={setCurrentMatch}
+                      currentMatch={currentMatch}
+                      SessionMarket={SessionMarket}
+                    />
                   </Box>
-                )}
+                  <Box
+                    sx={{
+                      width: { laptop: "100%", mobile: "100%", tablet: "100%" },
+                      flexDirection: "column",
+                      display: "flex",
+                    }}
+                  >
+                    <SessionMarket
+                      setIObtes={(val) => {
+                        setIObtes((IObets) =>
+                          IObets?.filter(
+                            (v) =>
+                              v?.bet_id !== val?.betId &&
+                              val?.match_id === v?.match_id
+                          )
+                        );
+                      }}
+                      title={"Session Market"}
+                      setLiveData={setLiveData}
+                      liveOnly={false}
+                      hideTotalBet={false}
+                      stopAllHide={false}
+                      setData={setData}
+                      sessionData={arrayObject?.sort(customSort)}
+                      hideResult={false}
+                      setLocalState={setLocalState}
+                      setCurrentMatch={setCurrentMatch}
+                      currentMatch={currentMatch}
+                      SessionMarket={SessionMarket}
+                    />
+                  </Box>
+                </Box>
+              )}
 
               {data?.length > 0 && (
                 <Box
@@ -647,7 +659,7 @@ const MatchScreen = () => {
                 width: { laptop: "50%", mobile: "100%", tablet: "100%" },
                 flexDirection: "column",
                 display: "flex",
-                paddingLeft: "5px"
+                paddingLeft: "5px",
               }}
             >
               {currentMatch?.apiMatchActive && (
@@ -656,8 +668,8 @@ const MatchScreen = () => {
                   matchOdds={
                     currentMatch?.bettings?.length > 0
                       ? currentMatch?.bettings?.filter(
-                        (v) => v?.sessionBet === false
-                      )[0]
+                          (v) => v?.sessionBet === false
+                        )[0]
                       : null
                   }
                   showHeader={true}
@@ -673,8 +685,8 @@ const MatchScreen = () => {
                   matchOdds={
                     currentMatch?.bettings?.length > 0
                       ? [...currentMatch?.bettings].filter(
-                        (v) => v?.sessionBet === false
-                      )[0]
+                          (v) => v?.sessionBet === false
+                        )[0]
                       : null
                   }
                   currentMatch={currentMatch}

@@ -29,7 +29,7 @@ const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, s
             dispatch(setColorValue(color));
           }}
           sx={{
-            background: lock ? "#FDF21A" : color,
+            background: lock || [0,"0"].includes(value) ? "#FDF21A" : color,
             border:
               color != "white" ? "1px solid #2626264D" : "0px solid white",
             width: { mobile: "30%", laptop: width ? width : "50%" },
@@ -40,7 +40,7 @@ const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, s
             flexDirection: "column",
           }}
         >
-          {!empty && !lock && (
+          {!empty && !lock && ![0,"0"].includes(value) && (
             <Box sx={{ alignItems: "center", justifyContent: "space-around" }}>
               <Typography
                 sx={{
@@ -65,7 +65,7 @@ const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, s
               </Typography>
             </Box>
           )}
-          {lock && <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+          {lock && [0,"0"].includes(value) && <img src={Lock} style={{ width: "10px", height: "15px" }} />}
         </Box>
       </Popover>
     </>

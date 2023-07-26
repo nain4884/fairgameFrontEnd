@@ -366,7 +366,7 @@ const SeprateBox = ({
       >
         <Box
           onClick={(e) => {
-            if(lock){
+            if(lock || [0,"0"].includes(value)){
               return false
             }
             if (betPlaceLoading) {
@@ -427,7 +427,7 @@ const SeprateBox = ({
           }}
           style={{ position: "relative" }}
           sx={{
-            background: lock ? "#FDF21A" : color,
+            background: lock || [0,"0"].includes(value) ? "#FDF21A" : color,
             border:
               color != "white" ? "1px solid #2626264D" : "0px solid white",
             width: "100%",
@@ -439,7 +439,7 @@ const SeprateBox = ({
             cursor: !empty && !lock && value && value2 && "pointer",
           }}
         >
-          {!empty && !lock && (
+          {!empty && (!lock && ![0,"0"].includes(value)) && (
             <Box sx={{ alignItems: "center", justifyContent: "space-around" }}>
               <Typography
                 sx={{
@@ -466,7 +466,7 @@ const SeprateBox = ({
               ) : null}
             </Box>
           )}
-          {lock && (
+          {(lock || [0,"0"].includes(value)) && (
             <img
               src={Lock}
               style={{ width: "10px", height: "15px" }}
