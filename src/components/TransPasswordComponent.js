@@ -1,5 +1,5 @@
 import { CustomHeader, Input } from ".";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { eye, eyeLock } from "../assets";
 import { useCallback, useEffect, useState } from "react";
 
@@ -60,8 +60,10 @@ export const TransPassComp = ({ onCancel }) => {
   const [responseError, setResponseError] = useState();
 
   let { axios, roleName } = setRole();
-
-  const generateTrandPassword = useCallback(async () => {
+const [loading,setLoading]=useState(false)
+  const generateTrandPassword = useCallback(async (e) => {
+    e.preventDefault()
+    setLoading(true)
     if (
       !error[2].val &&
       !error[3].val &&
@@ -82,17 +84,20 @@ export const TransPassComp = ({ onCancel }) => {
           toast.success("Transaction saved successfully");
 
           dispatch(setUpdatedTransPasswords(true));
+          setLoading(false)
           onCancel();
         }
+        setLoading(false)
       } catch (e) {
         console.log(e);
         setResponseError(e.response.data.message);
+        setLoading(false)
       }
     }
   }, [axios, error, passwordDetail]);
 
   return (
-    <>
+    <form onSubmit={generateTrandPassword}>
       <Typography
         sx={{
           color: "white",
@@ -114,6 +119,7 @@ export const TransPassComp = ({ onCancel }) => {
         }}
       >
         <Input
+        required={true}
           placeholder={"Enter Password"}
           inputProps={{ type: "password" }}
           title={"Transaction Password"}
@@ -137,6 +143,7 @@ export const TransPassComp = ({ onCancel }) => {
         />
         {error[2].val && <p style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
         <Input
+          required={true}
           placeholder={"Enter Confirm Password"}
           inputProps={{ type: "password" }}
           title={"Confirm Transaction Password"}
@@ -161,7 +168,8 @@ export const TransPassComp = ({ onCancel }) => {
         {passwordDetail[2].val !== passwordDetail[3].val && (
           <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>
         )}
-        <Box
+        <Button
+        type="submit"
           sx={{
             height: "50px",
             display: "flex",
@@ -174,16 +182,31 @@ export const TransPassComp = ({ onCancel }) => {
             width: "80%",
             background: "#0B4F26",
             borderRadius: "5px",
+            '&:hover': {
+            background: "#0B4F26",
+         },
           }}
         >
           <Typography
             sx={{ fontSize: { laptop: "18px", mobile: "14px" } }}
             color={"white"}
-            onClick={generateTrandPassword}
+           
           >
-            Generate Password
+          {loading ? (
+            <CircularProgress
+              sx={{
+                color: "#FFF",
+              }}
+              size={20}
+              thickness={4}
+              value={60}
+            />
+          ) : (
+            "Generate Password"
+          )}
+           
           </Typography>
-        </Box>
+        </Button>
         <Box
           sx={{
             height: "50px",
@@ -211,6 +234,6 @@ export const TransPassComp = ({ onCancel }) => {
         </Box>
         {responseError && <p style={{ color: "#fa1e1e" }}>{responseError}</p>}
       </Box>
-    </>
+    </form>
   );
 };

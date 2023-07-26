@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Typography, TextField } from "@mui/material";
+import { Box, Typography, TextField, CircularProgress } from "@mui/material";
 import { Background } from "../../components";
 import EventListing from "../../components/EventListing";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ import { setRole } from "../../newStore";
 const ChangeButtonValue = ({ selected, visible }) => {
   const { axios } = setRole();
   const [id, setId] = useState("");
+  const [loader,setLoader]=useState(false)
   const [valueLabel, setValueLabel] = useState([
     { lable: "", value: "" },
     { lable: "", value: "" },
@@ -58,6 +59,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
   };
 
   const setButtonList = async () => {
+    setLoader(true)
     const convertedData = valueLabel.reduce((result, item) => {
       if (item.value) {
         result[item.lable] = item.value;
@@ -71,9 +73,11 @@ const ChangeButtonValue = ({ selected, visible }) => {
     try {
       const { data } = await axios.post("/users/setButtonValues", payload);
       toast.success(data?.message);
+      setLoader(false)
     } catch (e) {
       toast.error(e.response.data.message);
       console.log("error", e.message);
+      setLoader(false)
     }
   };
 
@@ -170,13 +174,25 @@ const ChangeButtonValue = ({ selected, visible }) => {
                 width: "80%",
                 background: "#0B4F26",
                 borderRadius: "5px",
+                cursor:"pointer"
               }}
             >
               <Typography
                 sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
                 color={"white"}
               >
-                Update
+               {loader ? (
+        <CircularProgress
+          sx={{
+            color: "#FFF",
+          }}
+          size={20}
+          thickness={4}
+          value={60}
+        />
+      ) : (
+        "Update"
+      )} 
               </Typography>
             </Box>
           </Box>

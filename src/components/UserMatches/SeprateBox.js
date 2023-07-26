@@ -366,6 +366,9 @@ const SeprateBox = ({
       >
         <Box
           onClick={(e) => {
+            if(lock){
+              return false
+            }
             if (betPlaceLoading) {
               return false;
             } else {

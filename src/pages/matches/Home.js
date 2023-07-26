@@ -565,9 +565,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             //     return currentMatch;
             //   }
             // });
-            if (currentMatch?.matchId == value?.matchId) {
-              navigate("/matches");
-            }
+            // console.log('currentMatch?.matchId == value?.matchId', currentMatch?.matchId == value?.matchId)
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id === value?.matchId) {
+                return navigate("/matches");
+              }
+
+              return currentMatch;
+            });
           } catch (err) {
             console.log(err?.message);
           }

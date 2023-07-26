@@ -50,7 +50,7 @@ const CustomSessionResult = ({
                 setLive(true);
                 return {
                   ...newData,
-                  betStatus: 1,
+                  betStatus: 2,
                   betRestult: data?.data?.score,
                   suspended: "",
                 };
@@ -210,8 +210,11 @@ const CustomSessionResult = ({
                 if (loading?.value) {
                   return false;
                 }
-
-                undeclareResult();
+                if (selected === "") {
+                  toast.warn("Please enter score");
+                } else {
+                  undeclareResult();
+                }
               }}
             />
           ) : (
@@ -227,10 +230,10 @@ const CustomSessionResult = ({
                     if (loading?.value) {
                       return false;
                     }
-                    if (selected !== "" || !isNaN(selected)) {
-                      declareResult();
-                    } else {
+                    if (selected === "" ) {
                       toast.warn("Please enter score");
+                    } else {
+                      declareResult();
                     }
                   }}
                 />
@@ -276,7 +279,7 @@ const CustomSessionResult = ({
                 if (loading?.value) {
                   return false;
                 }
-                noResultDeclare()
+                noResultDeclare();
               }}
             />
           )}

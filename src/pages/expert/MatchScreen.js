@@ -362,6 +362,18 @@ const MatchScreen = () => {
             console.log(err?.message);
           }
         }
+
+        if (packet.data[0] === "resultDeclareForBet") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            if (currentMatch?.id == value?.match_id && value?.sessionBet===false) {
+              navigate("/expert/match");
+            }
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
       };
     }
   }, [socket, currentMatch]);

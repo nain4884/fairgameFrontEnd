@@ -2,6 +2,18 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 
 const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
+  function countObjectsWithNullDeletedReason(array) {
+    let count = 0;
+    for (const obj of array) {
+      if (obj?.deleted_reason === null) {
+        count++;
+      }
+    }
+    return count;
+  }
+  
+  // Call the function and get the count
+  const countNullDeletedReason = countObjectsWithNullDeletedReason(sessionBets);
   return (
     <Box
       sx={{
@@ -42,7 +54,7 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
         <Typography
           sx={{ fontSize: { mobile: "10px", tablet: "10px", laptop: "12px" }, fontWeight: "bold", color: "#319E5B" }}
         >
-          {sessionBets?.length < 10 ? 0 : ""}{sessionBets?.length || 0}
+          {sessionBets?.length < 10 ? 0 : ""}{countNullDeletedReason || 0}
         </Typography>
       </Box>
       <Box

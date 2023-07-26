@@ -1,11 +1,17 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import EventListing from "./EventListing";
 import Input from "./Input";
 import { eye, eyeLock } from "../assets";
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 import { useState } from "react";
 
-export const ChangePasswordComponent = ({ visible, selected, width, changePassword }) => {
+export const ChangePasswordComponent = ({
+  visible,
+  selected,
+  passLoader,
+  width,
+  changePassword,
+}) => {
   const [passwordDetail, setPasswordDetail] = useState({
     2: { field: "oldPassword", val: "" },
     3: { field: "newPassword", val: "" },
@@ -17,7 +23,8 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
     4: { field: "confirmPassword", val: false },
   });
 
-  const handleChange = () => {
+  const handleChange = (e) => {
+    e.preventDefault();
     if (
       !error[3].val &&
       !error[4].val &&
@@ -27,7 +34,7 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
     ) {
       changePassword(passwordDetail);
     }
-  }
+  };
   const handleEnterKeyPress = (e) => {
     if (e.key === "Enter") {
       // Check if the Enter key is pressed
@@ -37,12 +44,15 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
     }
   };
   return (
-    <Box>
-
+    <form onSubmit={handleChange}>
       <Box
         sx={{
           width: { mobile: "96vw", laptop: "22vw", tablet: "22vw" },
-          minWidth: { laptop: width ? width : "350px", tablet: width ? width : "350px", mobile: "0px" },
+          minWidth: {
+            laptop: width ? width : "350px",
+            tablet: width ? width : "350px",
+            mobile: "0px",
+          },
           marginTop: "10px",
           marginX: { mobile: "2vw", laptop: "1vw" },
         }}
@@ -67,6 +77,7 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
           }}
         >
           <Input
+            required={true}
             placeholder={"Enter Old Password"}
             title={"Old Password"}
             titleStyle={{
@@ -87,6 +98,7 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
             toFoucs={true}
           />
           <Input
+            required={true}
             placeholder={"Enter New Password"}
             inputProps={{ type: "password" }}
             title={"New Password"}
@@ -109,6 +121,7 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
           />
           {error[3].val && <p style={{ color: "#fa1e1e" }}>{error[3].val}</p>}
           <Input
+            required={true}
             placeholder={"Enter Confirm Password"}
             inputProps={{ type: "password" }}
             title={"Confirm New Password"}
@@ -134,8 +147,9 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
           {passwordDetail[3].val !== passwordDetail[4].val && (
             <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>
           )}
-          <Box
-            onClick={handleChange}
+          <Button
+            // onClick={handleChange}
+            type="submit"
             sx={{
               height: "50px",
               display: "flex",
@@ -147,18 +161,33 @@ export const ChangePasswordComponent = ({ visible, selected, width, changePasswo
               width: "80%",
               background: "#0B4F26",
               borderRadius: "5px",
+              cursor: "pointer",
+              "&:hover": {
+                background: "#0B4F26",
+              },
             }}
           >
             <Typography
               sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
               color={"white"}
             >
-              Update
+              {passLoader ? (
+                <CircularProgress
+                  sx={{
+                    color: "#FFF",
+                  }}
+                  size={20}
+                  thickness={4}
+                  value={60}
+                />
+              ) : (
+                "Update"
+              )}
             </Typography>
-          </Box>
+          </Button>
         </Box>
       </Box>
-    </Box>
+    </form>
   );
 };
 

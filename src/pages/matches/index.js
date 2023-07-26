@@ -55,10 +55,13 @@ const Matches = () => {
   // const { currentUser } = useSelector((state) => state?.currentUser);
 
   const [loader, setLoader] = useState(true);
+  const [passLoader,setPassLoader]=useState(false)
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const changePassword = async (value) => {
+    setPassLoader(true)
+   setTimeout(async()=>{
     try {
       const payload = {
         OldPassword: value[2].val,
@@ -72,11 +75,15 @@ const Matches = () => {
 
       if (data.message === "Password update successfully.") {
         toast.success("Password update successfully.");
+
       }
+      setPassLoader(false)
     } catch (e) {
       // console.log(e.response.data.message);
       toast.error(e.response.data.message);
+      setPassLoader(false)
     }
+   },1000)
   }
 
   return (
@@ -135,7 +142,7 @@ const Matches = () => {
               )}
             {["MY ACCOUNT"].includes(selected) &&
               window.location.pathname === "/change_password" && (
-                <ChangePasswordComponent selected={selected} visible={true} changePassword={changePassword} />
+                <ChangePasswordComponent selected={selected} visible={true} passLoader={passLoader} changePassword={changePassword} />
               )}
 
             {["EmptyComponent"].includes(selected) &&

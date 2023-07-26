@@ -1103,6 +1103,9 @@ const AddAccount = () => {
                   marginTop: { mobile: "12px", laptop: "35px" },
                   color: "white",
                   fontSize: "18px",
+      
+                  '&:hover':{
+                    background: "#0B4F26"}
                 }}
                 type="submit"
               >
