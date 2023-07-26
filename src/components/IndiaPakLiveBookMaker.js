@@ -164,51 +164,54 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     if (packet.data[0] === "match_bet") {
                         const data = packet.data[1];
                         try {
-                            if (data && data?.betPlaceData?.marketType == "MANUAL BOOKMAKER") {
-                                const body = {
-                                    id: data?.betPlaceData?.id,
-                                    isActive: true,
-                                    createAt: data?.betPlaceData?.createAt,
-                                    updateAt: data?.betPlaceData?.createAt,
-                                    createdBy: null,
-                                    deletedAt: null,
-                                    user_id: null,
-                                    match_id: data?.betPlaceData?.match_id,
-                                    bet_id: data?.betPlaceData?.bet_id,
-                                    result: "pending",
-                                    team_bet: data?.betPlaceData?.team_bet,
-                                    odds: data?.betPlaceData?.odds,
-                                    win_amount: null,
-                                    loss_amount: null,
-                                    bet_type: data?.betPlaceData?.bet_type,
-                                    country: null,
-                                    ip_address: null,
-                                    rate: null,
-                                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                                    userName: data?.betPlaceData?.userName,
-                                    myStack: data?.betPlaceData?.myStack,
-                                    marketType: data?.betPlaceData?.marketType,
-                                    amount:
-                                        data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                                };
-                                // dispatch(setBookmakerTeamRates(teamRates));
-                                if (data?.betPlaceData?.match_id === match?.id) {
-                                    setteamRates({
-                                        teamA: data?.teamA_rate ? data?.teamA_rate : 0,
-                                        teamB: data?.teamB_rate ? data?.teamB_rate : 0,
-                                        teamC: data?.teamC_rate ? data?.teamC_rate : 0
-                                    })
-                                    // dispatch(setBookMakerBetRate((prev) => [body, ...prev]));
+                         
+                            if (data?.betPlaceData?.match_id === match?.id) {
+                                setteamRates({
+                                    teamA: data?.teamA_rate ? data?.teamA_rate : 0,
+                                    teamB: data?.teamB_rate ? data?.teamB_rate : 0,
+                                    teamC: data?.teamC_rate ? data?.teamC_rate : 0
+                                })
+                                // dispatch(setBookMakerBetRate((prev) => [body, ...prev]));
+
+                                if (data && data?.betPlaceData?.marketType == "MANUAL BOOKMAKER") {
+                                    const body = {
+                                        id: data?.betPlaceData?.id,
+                                        isActive: true,
+                                        createAt: data?.betPlaceData?.createAt,
+                                        updateAt: data?.betPlaceData?.createAt,
+                                        createdBy: null,
+                                        deletedAt: null,
+                                        user_id: null,
+                                        match_id: data?.betPlaceData?.match_id,
+                                        bet_id: data?.betPlaceData?.bet_id,
+                                        result: "pending",
+                                        team_bet: data?.betPlaceData?.team_bet,
+                                        odds: data?.betPlaceData?.odds,
+                                        win_amount: null,
+                                        loss_amount: null,
+                                        bet_type: data?.betPlaceData?.bet_type,
+                                        country: null,
+                                        ip_address: null,
+                                        rate: null,
+                                        deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                                        userName: data?.betPlaceData?.userName,
+                                        myStack: data?.betPlaceData?.myStack,
+                                        marketType: data?.betPlaceData?.marketType,
+                                        amount:
+                                            data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                                    };
+                                    // dispatch(setBookmakerTeamRates(teamRates));
                                     dispatch(setBookMakerBetRate((prev) => {
                                         // Create a new array by adding `body` at the beginning and spreading the previous values
                                         const newData = [body, ...prev];
-
+    
                                         // Modify the `newData` array if needed
-
+    
                                         // Return the modified `newData` array
                                         return newData;
                                     }));
                                 }
+                               
                             }
                         } catch (err) {
                             console.log(err?.message);
