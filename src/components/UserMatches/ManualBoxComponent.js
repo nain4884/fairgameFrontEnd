@@ -40,7 +40,7 @@ const BoxComponent = ({
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   // console.log("check data :", matchOddsData)
-  const { ex, status } = data;
+  const { ex, status } = data ?? {};
   useEffect(() => {
     if (livestatus || status !== "ACTIVE" || showBox) {
       setPlaceBetData(null);

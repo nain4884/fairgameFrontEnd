@@ -10,7 +10,7 @@ import { formatNumber } from "../../../components/helper/helper";
 const BoxComponent = ({ name, color, align, lock, teamImage, rates, data }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const { ex, status } = data;
+  const { ex, status } = data ?? {};
   return (
     <Box
       sx={{
