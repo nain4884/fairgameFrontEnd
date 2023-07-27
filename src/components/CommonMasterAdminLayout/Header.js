@@ -281,11 +281,11 @@ const CustomHeader = ({ }) => {
             dispatch(removeManualBookMarkerRates());
             dispatch(removeCurrentUser());
             // dispatch(removeSelectedMatch());
-            await axios.get("auth/logout");
             removeSocket();
-            navigate("/wallet");
             socketMicro.disconnect();
             socket.disconnect();
+            navigate("/wallet");
+            await axios.get("auth/logout");
           } else {
             dispatch(setAConfirmAuth(true));
             let token = localStorage.getItem("JWTadmin");
@@ -299,9 +299,9 @@ const CustomHeader = ({ }) => {
             socketMicro.disconnect();
             socket.disconnect();
             // dispatch(removeSelectedMatch());
-            await axios.get("auth/logout");
             removeSocket();
             navigate("/admin");
+            await axios.get("auth/logout");
           }
           // const { data } = await axios.get("auth/logout");
           // if (data?.data === "success logout") {
@@ -358,9 +358,9 @@ const CustomHeader = ({ }) => {
             JWTadmin: "",
             isSession: true,
           }));
-          await axios.get("auth/logout");
           removeSocket();
           navigate("/admin");
+          await axios.get("auth/logout");
         }
         if (nav === "wallet") {
           dispatch(removeCurrentUser());
@@ -370,9 +370,9 @@ const CustomHeader = ({ }) => {
             JWTwallet: "",
             isSession: true,
           }));
-          await axios.get("auth/logout");
           removeSocket();
           navigate("/wallet");
+          await axios.get("auth/logout");
         }
       } else {
         setBalance(data.data.current_balance);

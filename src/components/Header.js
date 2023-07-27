@@ -718,7 +718,6 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
       dispatch(setConfirmAuth(false));
       sessionStorage.setItem("JWTuser", null);
       setLoading(true);
-      navigate("/");
       dispatch(removeCurrentUser());
       handleClose();
       removeSocket();
@@ -728,8 +727,9 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
       dispatch(removeSelectedMatch());
       socket.disconnect();
       socketMicro.disconnect();
-      const { data } = await axios.get("auth/logout");
       localStorage.setItem("confirmAuth", false);
+      navigate("/");
+      const { data } = await axios.get("auth/logout");
       if (data?.data == "success logout") {
         toast.success(data?.data);
       }

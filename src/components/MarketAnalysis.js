@@ -56,9 +56,9 @@ const MarketAnalysis = () => {
           dispatch(removeManualBookMarkerRates());
           dispatch(removeCurrentUser());
           // dispatch(removeSelectedMatch());
-          await axios.get("auth/logout");
           removeSocket();
           navigate("/wallet");
+          await axios.get("auth/logout");
           socket.disconnect();
         }
       };

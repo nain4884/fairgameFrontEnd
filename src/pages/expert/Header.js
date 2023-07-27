@@ -102,9 +102,9 @@ const CustomHeader = ({ }) => {
           expertJWT: "",
           isSession: true,
         }));
-        await axios.get("auth/logout");
         removeSocket();
         navigate("/expert");
+        await axios.get("auth/logout");
       } else {
         localStorage.setItem("role3", "role3");
         dispatch(setCurrentUser(data.data));

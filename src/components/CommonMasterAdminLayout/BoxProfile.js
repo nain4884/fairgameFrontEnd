@@ -71,7 +71,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
       color: "text.white",
       fontWeight: "600",
       textTransform: "capitalize",
-      overflow: {mobile: "hidden" , laptop: "visible"},
+      overflow: { mobile: "hidden", laptop: "visible" },
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
       maxWidth: "54px"
@@ -102,12 +102,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
     const logoutProcess = async () => {
       try {
         setLoading(true);
-        if (nav === "admin") {
-          navigate("/admin");
-          dispatch(logout({ roleType: "role1" }));
-          setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-        }
-        navigate(`/${nav}`);
+
         dispatch(removeCurrentUser());
         dispatch(logout({ roleType: "role2" }));
         dispatch(removeManualBookMarkerRates());
@@ -120,6 +115,12 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         socketMicro.disconnect();
         dispatch(setPage(parseInt(1)));
         setLoading(false);
+        if (nav === "admin") {
+          navigate("/admin");
+          dispatch(logout({ roleType: "role1" }));
+          setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+        }
+        navigate(`/${nav}`);
         const { data } = await axios.get("auth/logout");
         if (data?.data === "success logout") {
           toast.success(data?.data);
