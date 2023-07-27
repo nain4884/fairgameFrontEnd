@@ -164,7 +164,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     if (packet.data[0] === "match_bet") {
                         const data = packet.data[1];
                         try {
-                         
+
                             if (data?.betPlaceData?.match_id === match?.id) {
                                 setteamRates({
                                     teamA: data?.teamA_rate ? data?.teamA_rate : 0,
@@ -204,14 +204,14 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     dispatch(setBookMakerBetRate((prev) => {
                                         // Create a new array by adding `body` at the beginning and spreading the previous values
                                         const newData = [body, ...prev];
-    
+
                                         // Modify the `newData` array if needed
-    
+
                                         // Return the modified `newData` array
                                         return newData;
                                     }));
                                 }
-                               
+
                             }
                         } catch (err) {
                             console.log(err?.message);
@@ -228,7 +228,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     setTeamBRate(data.teamB_Back);
                                     setTeamCRate(data.teamC_Back);
 
-                                  
+
                                 } else {
                                     setTeamBall((prevState) => ({
                                         ...prevState,
@@ -250,7 +250,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
                                     setIsTeamCSuspend(data.teamC_suspend);
                                     setTeamCRate(data.teamC_Back);
-                                    setTeamCLayValue(data.teamC_lay);                                 
+                                    setTeamCLayValue(data.teamC_lay);
                                 }
 
                                 setTeamSuspend((prevState) => ({
@@ -346,7 +346,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             let target = event.target;
             if (target.value <= 100) {
                 if (target.name === 'teamA_rate') {
-                    
+
                     setTeamARate(target.value)
                     setLTeamARate(target.value)
                     if (target.value !== '') {
@@ -1367,7 +1367,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%", }}>{match?.teamA}</Typography>
                                 <Box
                                     sx={{
-                                        width: "230px",
+                                        width: "180px",
                                         // my: "5px",
                                         marginRight: "15px",
                                         border: "1px solid #2626264D",
@@ -1451,7 +1451,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamB}</Typography>
                                 <Box
                                     sx={{
-                                        width: "230px",
+                                        width: "180px",
                                         marginRight: "15px",
                                         border: "1px solid #2626264D",
                                         borderRadius: "5px",
@@ -1530,7 +1530,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%" }}>{match?.teamC}</Typography>
                                 <Box
                                     sx={{
-                                        width: "230px",
+                                        width: "180px",
                                         marginRight: "15px",
                                         border: "1px solid #2626264D",
                                         borderRadius: "5px",

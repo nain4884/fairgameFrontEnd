@@ -66,4 +66,7 @@ module.exports = {
   listOfClientCountLimit: 15,
 
   customPageLimit: 10,
+  customTimeOut: 300000,// 5 mint in mili seconds user ideal 5 mint after that logout
+  customTimer: 30000,// 30 sec in mili seconds remainint timer start and show message  Your session will expire in 30 second
+  sessionExpireTime: 30 // 30 sec,
 };
