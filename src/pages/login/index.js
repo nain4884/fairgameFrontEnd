@@ -9,6 +9,7 @@ import {
   DialogActions,
   Button,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import { useContext, useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -32,10 +33,12 @@ import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 import ChangePassword from "../../components/ChangePasswordComponent";
 import { toast } from "react-toastify";
-import { removeManualBookMarkerRates, removeSelectedMatch, setConfirmAuth, } from "../../newStore/reducers/matchDetails";
 import {
-  removeCurrentUser,
-} from "../../newStore/reducers/currentUser";
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
+  setConfirmAuth,
+} from "../../newStore/reducers/matchDetails";
+import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 
 // import ChangePasswordComponent from "./ChangePasswordComponent";
 
@@ -199,7 +202,7 @@ export default function Login(props) {
     try {
       if (user === "" && pass === "") {
         // toast.warning("Username and password required");
-        setLoginError("Username and password required")
+        setLoginError("Username and password required");
         setLoading(false);
         return false;
       } else {
@@ -207,7 +210,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: user,
           password: pass,
-          loginType: "user"
+          loginType: "user",
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -235,13 +238,13 @@ export default function Login(props) {
               handleNavigate("/matches", "user");
             } else {
               // toast.error("Incorrect username and password !");
-              setLoginError("Incorrect username and password !")
+              setLoginError("Incorrect username and password !");
               setLoading(false);
             }
           }
         } else {
           // toast.error("Incorrect username and password !");
-          setLoginError("Incorrect username and password !")
+          setLoginError("Incorrect username and password !");
           setLoading(false);
         }
       }
@@ -259,7 +262,7 @@ export default function Login(props) {
     try {
       if (loginDetail[1].val === "" && loginDetail[2].val === "") {
         // toast.warning("Username and password required");
-        setLoginError("Username and password required")
+        setLoginError("Username and password required");
         setLoading(false);
         return false;
       } else {
@@ -268,7 +271,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
-          loginType: "user"
+          loginType: "user",
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -300,12 +303,12 @@ export default function Login(props) {
                 handleNavigate("/matches", "user");
               }
             } else {
-              setLoginError("Incorrect username and password !")
+              setLoginError("Incorrect username and password !");
               setLoading(false);
             }
           }
         } else {
-          setLoginError("Incorrect username and password !")
+          setLoginError("Incorrect username and password !");
           setLoading(false);
         }
       }
@@ -352,7 +355,7 @@ export default function Login(props) {
       // console.log(e.response.data.message);
       toast.error(e.response.data.message);
     }
-  }
+  };
 
   const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));
 
@@ -366,6 +369,14 @@ export default function Login(props) {
     }
   };
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!loading) {
+      loginToAccount();
+    } else {
+      return false;
+    }
+  };
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
@@ -397,44 +408,53 @@ export default function Login(props) {
         >
           <AuthLogo />
 
-          {!isChangePassword ? <Box
-            sx={{
-              width: {
-                laptop: "55%",
-                mobile: "75%",
-                marginTop: matchesMobile ? "100px" : "20px",
-              },
-              opacity: 1,
-            }}
-          >
-            <Input
-              placeholder={"Enter Username"}
-              title={"Username"}
-              img={mail}
-              setDetail={setLoginDetail}
-              Detail={loginDetail}
-              setError={setError}
-              error={error}
-              place={1}
-            />
-            {error[1].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-            <Input
-              placeholder={"Enter Password"}
-              inputProps={{ type: "password" }}
-              title={"Password"}
-              containerStyle={{ marginTop: "10px" }}
-              img={eye}
-              img1={eyeLock}
-              setDetail={setLoginDetail}
-              Detail={loginDetail}
-              setError={setError}
-              error={error}
-              place={2}
-              okButtonRef={"okButtonRef"}
-              onKeyDown={handleEnterKeyPress} // Handle "Enter" key press on the password field
-            />
-            {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-            {/* <Typography
+          {!isChangePassword ? (
+            <form onSubmit={handleLogin} style={{width:"75%"}}>
+              <Box
+                sx={{
+                  width: {
+                    laptop: "100%",
+                    mobile: "100%",
+                    marginTop: matchesMobile ? "100px" : "20px",
+                  },
+                  opacity: 1,
+                }}
+              >
+                <Input
+                  required={true}
+                  autoFocus
+                  placeholder={"Enter Username"}
+                  title={"Username"}
+                  img={mail}
+                  setDetail={setLoginDetail}
+                  Detail={loginDetail}
+                  setError={setError}
+                  error={error}
+                  place={1}
+                />
+                {error[1].val && (
+                  <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                )}
+                <Input
+                  required={true}
+                  placeholder={"Enter Password"}
+                  inputProps={{ type: "password" }}
+                  title={"Password"}
+                  containerStyle={{ marginTop: "10px" }}
+                  img={eye}
+                  img1={eyeLock}
+                  setDetail={setLoginDetail}
+                  Detail={loginDetail}
+                  setError={setError}
+                  error={error}
+                  place={2}
+                  okButtonRef={"okButtonRef"}
+                  onKeyDown={handleEnterKeyPress} // Handle "Enter" key press on the password field
+                />
+                {error[2].val && (
+                  <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                )}
+                {/* <Typography
               onClick={() => {
                 navigate("/forget_password");
               }}
@@ -449,16 +469,44 @@ export default function Login(props) {
             >
               Forgot Password?
             </Typography> */}
-            <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                marginY: "1vh",
-                marginTop: "4vh",
-              }}
-            >
-              <CustomButton
+                <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginY: "1vh",
+                    marginTop: "4vh",
+                  }}
+                >
+                  <Button
+                  type="submit"
+                    variant="contained"
+                    color="secondary"
+                    sx={{
+                      width: "62%",
+                      cursor: "pointer",
+                      height: { mobile: "50px", laptop: "43px" },
+                      borderRadius: "10px",
+                      fontWeight: "500",
+                      textTransform: "none",
+                      fontSize: { laptop: "14px", mobile: "14px" },
+                      background: theme.palette.button.main,
+                    }}
+                  >
+                    {loading ? (
+                      <CircularProgress
+                        sx={{
+                          color: "#FFF",
+                        }}
+                        size={20}
+                        thickness={4}
+                        value={60}
+                      />
+                    ) : (
+                      "Login"
+                    )}
+                  </Button>
+                  {/* <CustomButton
                 ref={loginButtonRef}
                 loading={loading}
                 onClick={() => {
@@ -470,11 +518,16 @@ export default function Login(props) {
                 }}
                 buttonStyle={{ background: theme.palette.button.main }}
                 title="Login"
-              />
-            </Box>
-            {loginError !== "" && <Alert severity="warning">{loginError}</Alert>}
-          </Box> :
-            <ChangePassword width="300px" changePassword={changePassword} />}
+              /> */}
+                </Box>
+                {loginError !== "" && (
+                  <Alert severity="warning">{loginError}</Alert>
+                )}
+              </Box>
+            </form>
+          ) : (
+            <ChangePassword width="300px" changePassword={changePassword} />
+          )}
         </Card>
       </Box>
       <Dialog

@@ -9,6 +9,7 @@ import {
   DialogActions,
   Button,
   Alert,
+  CircularProgress,
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,7 +24,7 @@ import {
   setAllRoles,
   setUpdatedTransPasswords,
   signIn,
-  logout
+  logout,
 } from "../../newStore/reducers/auth";
 import { removeSocket } from "../../components/helper/removeSocket";
 import {
@@ -33,10 +34,12 @@ import {
 import { SocketContext } from "../../context/socketContext";
 import ChangePassword from "../../components/ChangePasswordComponent";
 import { toast } from "react-toastify";
+import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import {
-  removeCurrentUser,
-} from "../../newStore/reducers/currentUser";
-import { removeManualBookMarkerRates, removeSelectedMatch, setConfirmAuth, } from "../../newStore/reducers/matchDetails";
+  removeManualBookMarkerRates,
+  removeSelectedMatch,
+  setConfirmAuth,
+} from "../../newStore/reducers/matchDetails";
 
 var newtoken = "";
 export default function Login(props) {
@@ -472,7 +475,7 @@ export default function Login(props) {
         let roles = foundRoles.data;
         let roleDetail = roles.find(findThisRole);
         function findThisRole(role) {
-          return role.id === data.data.roleId;;
+          return role.id === data.data.roleId;
         }
 
         if (
@@ -487,7 +490,6 @@ export default function Login(props) {
         ) {
           dispatch(logout({ roleType: "role2" }));
           setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-
         } else if (["expert"]?.includes(roleDetail?.roleName)) {
           dispatch(logout({ roleType: "role3" }));
           setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
@@ -499,13 +501,12 @@ export default function Login(props) {
         socket.disconnect();
         socketMicro.disconnect();
         await axios.get("auth/logout");
-
       }
     } catch (e) {
       // console.log(e.response.data.message);
       toast.error(e.response.data.message);
     }
-  }
+  };
 
   const handleEnterKeyPress = (e) => {
     setLoginError("");
@@ -514,6 +515,15 @@ export default function Login(props) {
       e.preventDefault();
       // loginButtonRef.current.click(); // Trigger the click event on the CustomButton
       loginToAccount();
+    }
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (!loading) {
+      loginToAccount();
+    } else {
+      return false;
     }
   };
   return (
@@ -548,35 +558,44 @@ export default function Login(props) {
               height: "100px",
             }}
           />
-          {!isChangePassword ? <Box sx={{ width: "100%", opacity: 1, width: "90%" }}>
-            <Input
-              placeholder={"Enter Username"}
-              title={"Username"}
-              img={mail}
-              setDetail={setLoginDetail}
-              Detail={loginDetail}
-              setError={setError}
-              error={error}
-              place={1}
-            />
-            {error[1].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-            <Input
-              placeholder={"Enter Password"}
-              inputProps={{ type: "password" }}
-              title={"Password"}
-              containerStyle={{ marginTop: "10px" }}
-              img={eye}
-              img1={eyeLock}
-              setDetail={setLoginDetail}
-              Detail={loginDetail}
-              okButtonRef={"okButtonRef"}
-              setError={setError}
-              error={error}
-              place={2}
-              onKeyDown={handleEnterKeyPress}
-            />
-            {error[2].val && <p style={{ color: "#fa1e1e" }}>Field Required</p>}
-            {/* <Typography
+          {!isChangePassword ? (
+            <form onSubmit={handleLogin} style={{width:"90%" ,justifyContent:"center" ,}}>
+              <Box sx={{ width: "100%", opacity: 1,  }}>
+                <Input
+                  required={true}
+                  autoFocus
+                  placeholder={"Enter Username"}
+                  title={"Username"}
+                  img={mail}
+                  setDetail={setLoginDetail}
+                  Detail={loginDetail}
+                  setError={setError}
+                  error={error}
+                  place={1}
+                />
+                {error[1].val && (
+                  <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                )}
+                <Input
+                  required={true}
+                  placeholder={"Enter Password"}
+                  inputProps={{ type: "password" }}
+                  title={"Password"}
+                  containerStyle={{ marginTop: "10px" }}
+                  img={eye}
+                  img1={eyeLock}
+                  setDetail={setLoginDetail}
+                  Detail={loginDetail}
+                  okButtonRef={"okButtonRef"}
+                  setError={setError}
+                  error={error}
+                  place={2}
+                  onKeyDown={handleEnterKeyPress}
+                />
+                {error[2].val && (
+                  <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                )}
+                {/* <Typography
               onClick={() => {
                 navigate("/forget_password");
               }}
@@ -591,17 +610,46 @@ export default function Login(props) {
             >
               Forgot Password?
             </Typography> */}
-            <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
+                <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
 
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                marginY: "1vh",
-                marginTop: "4vh",
-              }}
-            >
-              <CustomButton
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginY: "1vh",
+                    marginTop: "4vh",
+                  }}
+                >
+                  <Button
+                    // onClick={onClick}
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    sx={{
+                      width: "62%",
+                      cursor: "pointer",
+                      height: { mobile: "50px", laptop: "43px" },
+                      borderRadius: "10px",
+                      fontWeight: "500",
+                      textTransform: "none",
+                      fontSize: { laptop: "14px", mobile: "14px" },
+                      background: theme.palette.button.main,
+                    }}
+                  >
+                    {loading ? (
+                      <CircularProgress
+                        sx={{
+                          color: "#FFF",
+                        }}
+                        size={20}
+                        thickness={4}
+                        value={60}
+                      />
+                    ) : (
+                      "Login"
+                    )}
+                  </Button>
+                  {/* <CustomButton
                 onClick={() => {
                   if (!loading) {
                     loginToAccount();
@@ -612,13 +660,16 @@ export default function Login(props) {
                 loading={loading}
                 buttonStyle={{ background: theme.palette.button.main }}
                 title="Login"
-              />
-            </Box>
-            {loginError !== "" && (
-              <Alert severity="warning">{loginError}</Alert>
-            )}
-          </Box> :
-            <ChangePassword changePassword={changePassword} />}
+              /> */}
+                </Box>
+                {loginError !== "" && (
+                  <Alert severity="warning">{loginError}</Alert>
+                )}
+              </Box>
+            </form>
+          ) : (
+            <ChangePassword changePassword={changePassword} />
+          )}
         </Box>
       </Box>
       <Dialog

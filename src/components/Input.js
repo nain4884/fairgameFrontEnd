@@ -44,7 +44,8 @@ const Input = ({
   disabled,
   setDownlinePar,
   condition,
-  okButtonRef
+  okButtonRef,
+  autoFocus
 }) => {
   const formRef1 = useRef(null);
   const theme = useTheme();
@@ -258,6 +259,7 @@ const Input = ({
           />
         ) : (
           <TextField
+           autoFocus={autoFocus}
             variant="standard"
             placeholder={placeholder}
             value={value}
