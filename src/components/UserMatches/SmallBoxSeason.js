@@ -86,11 +86,11 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
           sx={{
             fontSize: { mobile: "10px", tablet: "10px", laptop: "12px" },
             fontWeight: "bold",
-            color: "#FF4D4D",
+            color: "#319E5B",
             lineHeight: '1.5',
           }}
         >
-          {totalAmount > 0 ? `-` + totalAmount : totalAmount == undefined ? 0 : totalAmount}
+          {totalAmount > 0 ?  totalAmount : totalAmount == undefined ? 0 : totalAmount}
         </Typography>
       </Box>
     </Box>
