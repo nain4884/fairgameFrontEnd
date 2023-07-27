@@ -17,7 +17,10 @@ const initialState = {
   confirmAuth: false,
   betData: {},
   updateDetData: "",
-  buttonData: []
+  buttonData: [],
+  sessionExposure:0,
+  manualBookmaker:[],
+  sessionOffline:[]
 };
 
 const matchDetails = createSlice({
@@ -152,6 +155,15 @@ const matchDetails = createSlice({
     setButtonData: (state, action) => {
       state.buttonData = action.payload;
     },
+    setSessionExposure: (state, action) => {
+      state.sessionExposure = action.payload;
+    },
+    setManualBookmaker: (state, action) => {
+      state.manualBookmaker = action.payload;
+    },
+    setSessionOffline: (state, action) => {
+      state.sessionOffline = action.payload;
+    },
   },
 });
 
@@ -180,7 +192,10 @@ export const {
   setConfirmAuth,
   setBetData,
   setUpdateBetData,
-  setButtonData
+  setButtonData,
+  setSessionExposure,
+  setManualBookmaker,
+  setSessionOffline
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

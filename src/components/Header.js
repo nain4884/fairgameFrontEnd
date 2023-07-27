@@ -149,14 +149,14 @@ const CustomHeader = ({ }) => {
     if (checkSeStorage && checkLoStorage === null) {
       localStorage.setItem("role4", "role4");
     }
-  }, [localStorage]);
+  }, [localStorage]); 
 
-  useEffect(() => {
-    if (socket && socket.connected) {
-      socket.onevent = async (packet) => {
-      };
-    }
-  }, [socket]);
+  // useEffect(() => {
+  //   if (socket && socket.connected) {
+  //     socket.onevent = async (packet) => {
+  //     };
+  //   }
+  // }, [socket]);
 
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
