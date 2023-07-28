@@ -19,7 +19,7 @@ import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
 
 let matchOddsCount = 0;
-const MatchSubmit = ({}) => {
+const MatchSubmit = ({ }) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
@@ -398,6 +398,7 @@ const MatchSubmit = ({}) => {
                     return {
                       ...item,
                       bettings: updatedBettings,
+                      sessionExposure: data?.sessionExposure
                     };
                   });
                 });
@@ -632,7 +633,7 @@ const MatchSubmit = ({}) => {
           }
         });
 
-        socketMicro.on("connect_error", (event) => {});
+        socketMicro.on("connect_error", (event) => { });
 
         for (var i = 0; i < marketIds?.length; i++) {
           (function (i) {
@@ -961,6 +962,7 @@ const MatchSubmit = ({}) => {
                                   currentMatch={item}
                                   data={[]}
                                   sessionOffline={item.sessionOffline}
+                                  sessionExposer={item.sessionExposure}
                                   sessionBets={sessionBetsData}
                                   setPopData={setPopData}
                                   popData={popData}
@@ -975,6 +977,7 @@ const MatchSubmit = ({}) => {
                                   currentMatch={item}
                                   data={[]}
                                   sessionOffline={item.sessionOffline}
+                                  sessionExposer={item.sessionExposure}
                                   sessionBets={sessionBetsData}
                                   setPopData={setPopData}
                                   popData={popData}
@@ -1054,10 +1057,10 @@ const MatchSubmit = ({}) => {
                               data={item}
                               manualBookmakerData={matchOddsDataTemp}
                               typeOfBet={"Quick Bookmaker"}
-                              // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                            // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                             />
                           )}
-                          {item?.apiBookMakerActive &&  <BookMarketer
+                          {item?.apiBookMakerActive && <BookMarketer
                             currentMatch={item}
                             bookmakerLive={item.bookmakerLive}
                             data={
@@ -1072,6 +1075,7 @@ const MatchSubmit = ({}) => {
                               title={"Quick Session Market"}
                               currentOdds={currentOdds}
                               currentMatch={item}
+                              sessionExposer={item.sessionExposure}
                               sessionOffline={item.sessionOffline}
                               sessionBets={sessionBetsData}
                               setPopData={setPopData}
@@ -1085,6 +1089,7 @@ const MatchSubmit = ({}) => {
                               title={"Session Market"}
                               currentOdds={currentOdds}
                               currentMatch={item}
+                              sessionExposer={item.sessionExposure}
                               sessionOffline={item.sessionOffline}
                               sessionBets={sessionBetsData}
                               setPopData={setPopData}
@@ -1166,7 +1171,7 @@ const MatchSubmit = ({}) => {
                           }
                           typeOfBet={"Match Odds"}
                         />
-                             {item?.manualBookMakerActive && (
+                        {item?.manualBookMakerActive && (
                           <Odds
                             currentMatch={item}
                             data={item}
@@ -1174,7 +1179,7 @@ const MatchSubmit = ({}) => {
                             typeOfBet={"Quick Bookmaker"}
                           />
                         )}
-                        {item?.apiBookMakerActive  && <BookMarketer
+                        {item?.apiBookMakerActive && <BookMarketer
                           currentMatch={item}
                           bookmakerLive={item.bookmakerLive}
                           data={
@@ -1183,32 +1188,34 @@ const MatchSubmit = ({}) => {
                               : []
                           }
                         />}
-                   
+
                         {
                           item?.manualSessionActive && (
-                          <SessionMarket
-                          title={"Quick Session Market"}
-                            currentMatch={item}
-                            currentOdds={currentOdds}
-                            sessionOffline={item.sessionOffline}
-                            sessionBets={sessionBetsData}
-                            setPopData={setPopData}
-                            popData={popData}
-                            max={item?.manaual_session_max_bet}
+                            <SessionMarket
+                              title={"Quick Session Market"}
+                              currentMatch={item}
+                              currentOdds={currentOdds}
+                              sessionOffline={item.sessionOffline}
+                              sessionExposer={item.sessionExposure}
+                              sessionBets={sessionBetsData}
+                              setPopData={setPopData}
+                              popData={popData}
+                              max={item?.manaual_session_max_bet}
                               min={item?.manaual_session_min_bet}
-                          />
-                        )}
-                        {item?.apiSessionActive  && (
+                            />
+                          )}
+                        {item?.apiSessionActive && (
                           <SessionMarket
                             title={"Session Market"}
                             currentMatch={item}
                             currentOdds={currentOdds}
                             sessionOffline={item.sessionOffline}
+                            sessionExposer={item.sessionExposure}
                             sessionBets={sessionBetsData}
                             setPopData={setPopData}
                             popData={popData}
                             max={item?.betfair_session_max_bet}
-                              min={item?.betfair_session_min_bet}
+                            min={item?.betfair_session_min_bet}
                           />
                         )}
                         <FullAllBets

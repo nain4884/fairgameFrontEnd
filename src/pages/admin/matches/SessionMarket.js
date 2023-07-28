@@ -26,6 +26,7 @@ const SessionMarket = ({
   title,
   min,
   max,
+  sessionExposer
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -48,14 +49,14 @@ const SessionMarket = ({
               if (currentMatch?.apiSessionActive && title === "Session Market") {
                 return element?.sessionBet === true && element?.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
               }
-          
+
               if (currentMatch?.manualSessionActive && title === "Quick Session Market") {
                 return element?.sessionBet === true && element?.selectionId === null; // Show elements where selectionId is null when manualSessionActive is true
               }
-          
+
               return false; // Default case: no active session types
             }
-            )
+          )
           : 0;
 
       setMatchSessionData(sessionData.reverse());
@@ -178,7 +179,7 @@ const SessionMarket = ({
                     lineHeight: 1,
                   }}
                 >
-                  0
+                  {sessionExposer}
                 </Typography>
               </Box>
             </Box>
@@ -419,7 +420,7 @@ const SessionMarket = ({
                 item={v}
                 // setData={setData}
                 setData={setData}
-                // popData={popData}
+              // popData={popData}
               />
             );
           })}

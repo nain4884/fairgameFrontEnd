@@ -1099,6 +1099,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
   const activateLiveMatchEvent = async (eventId) => {
     try {
+      // https://super007.in/api/MatchOdds/score/32466783
       await Axios.get(`${microServiceApiPath}/event/${eventId}`);
     } catch (e) {
       console.log("error", e?.message);
@@ -1213,6 +1214,27 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
+
+  const getScoreBord = async (eventId) => {
+    // alert(1)
+    try {
+      const response = await Axios.get(`https://super007.in/api/MatchOdds/score/${eventId}`);
+      // Handle the API response here
+      console.log("API Response:", response.data);
+    } catch (e) {
+      console.log("Error:", e?.message);
+    }
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getScoreBord(eventId);
+    }, 5000); // 30000 milliseconds (30 seconds)
+
+    // Cleanup function to clear the interval when the component is unmounted
+    return () => clearInterval(interval);
+  }, [eventId]);
+
   return (
     <Box
       sx={{
