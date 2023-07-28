@@ -53,6 +53,7 @@ const DeleteBet = ({ }) => {
   const [currentOdds, setCurrentOdds] = useState(null);
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState("");
+  const [sessionExposer, setSessionExposure] = useState(0);
 
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
@@ -368,7 +369,7 @@ const DeleteBet = ({ }) => {
         if (packet.data[0] === "session_bet") {
           const data = packet.data[1];
           try {
-            // setSessionExposure(data?.sessionExposure);
+            setSessionExposure(data?.sessionExposure);
             setCurrentOdds({
               bet_id: data?.betPlaceData?.bet_id,
               odds: data?.betPlaceData?.odds,
@@ -831,7 +832,7 @@ const DeleteBet = ({ }) => {
           ...response.data,
         })
       );
-
+      setSessionExposure(response.data.sessionExposure);
       setMarketId(response.data.marketId);
       setMatchDetail(response.data);
       setTimeout(() => {
@@ -1050,6 +1051,7 @@ const DeleteBet = ({ }) => {
               {currentMatch?.manualSessionActive && matchesMobile && (
                 <SessionMarket
                   title={"Quick Session Market"}
+                  sessionExposer={sessionExposer}
                   currentMatch={currentMatch}
                   sessionBets={sessionBets}
                   data={[]}
@@ -1065,6 +1067,7 @@ const DeleteBet = ({ }) => {
                   title={"Session Market"}
                   currentMatch={currentMatch}
                   sessionBets={sessionBets}
+                  sessionExposer={sessionExposer}
                   data={[]}
                   sessionOffline={sessionOffline}
                   setPopData={setPopData}
@@ -1196,6 +1199,7 @@ const DeleteBet = ({ }) => {
                       currentOdds={currentOdds}
                       currentMatch={currentMatch}
                       sessionBets={sessionBets}
+                      sessionExposer={sessionExposer}
                       data={[]}
                       sessionOffline={sessionOffline}
                       setPopData={setPopData}
@@ -1210,6 +1214,7 @@ const DeleteBet = ({ }) => {
                     currentOdds={currentOdds}
                     currentMatch={currentMatch}
                     sessionBets={sessionBets}
+                    sessionExposer={sessionExposer}
                     data={[]}
                     sessionOffline={sessionOffline}
                     setPopData={setPopData}

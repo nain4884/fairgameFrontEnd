@@ -144,7 +144,8 @@ const IdleTimer = ({ role }) => {
 
     useEffect(() => {
         const updateTitle = () => {
-            document.title = `Your session will expire in ${showTimer} sec.`;
+            document.title = `${showTimer} sec${showTimer !== 1 ? 's' : ''
+                }.`;
         };
 
         if (showTimer > 0 && showWarning) {
