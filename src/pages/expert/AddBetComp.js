@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import microServiceAxios from "../../axios/microServiceAxios";
 import Modal from "../../components/Modal";
 import { setRole } from "../../newStore";
+import { setAllMatches } from "../../newStore/reducers/matchDetails";
 
 const stateDetail = {
   1: { field: "match_id", val: "" },

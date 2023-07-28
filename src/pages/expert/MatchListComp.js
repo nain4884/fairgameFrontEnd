@@ -7,10 +7,11 @@ import { setRole } from "../../newStore";
 import constants from "../../components/helper/constants";
 import { SocketContext } from "../../context/socketContext";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllEventSession } from "../../newStore/reducers/expertMatchDetails";
+import { setAllEventSession, setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
 import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
+  setAllMatches,
 } from "../../newStore/reducers/matchDetails";
 import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import { logout } from "../../newStore/reducers/auth";

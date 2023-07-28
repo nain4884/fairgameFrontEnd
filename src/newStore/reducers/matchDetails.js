@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,createAction } from "@reduxjs/toolkit";
 
 const initialState = {
   manualBookMarkerRates: [],
@@ -18,10 +18,13 @@ const initialState = {
   betData: {},
   updateDetData: "",
   buttonData: [],
-  sessionExposure:0,
-  manualBookmaker:[],
-  sessionOffline:[]
+  sessionExposure: 0,
+  manualBookmaker: [],
+  sessionOffline: [],
 };
+
+export const logoutReset = createAction('auth/logoutReset');
+
 
 const matchDetails = createSlice({
   name: "matchDetails",
@@ -68,13 +71,13 @@ const matchDetails = createSlice({
       }
     },
     removeManualBookMarkerRates: (state, action) => {
-      state.manualBookMarkerRates = []
+      state.manualBookMarkerRates = [];
     },
     setMatchOdds: (state, action) => {
       state.matchOdds = action.payload;
     },
     setMatchOddsLive: (state, action) => {
-      console.log(action.payload, "action.payload")
+      console.log(action.payload, "action.payload");
       state.matchOddsLive = action.payload;
     },
     removeMatchOddsLive: (state, action) => {
@@ -141,7 +144,7 @@ const matchDetails = createSlice({
       state.selectedMatch = action.payload;
     },
     removeSelectedMatch: (state, action) => {
-      state.selectedMatch = {}
+      state.selectedMatch = {};
     },
     setConfirmAuth: (state, action) => {
       state.confirmAuth = action.payload;
@@ -164,6 +167,11 @@ const matchDetails = createSlice({
     setSessionOffline: (state, action) => {
       state.sessionOffline = action.payload;
     },
+    
+  },
+  extraReducers: (builder) => {
+    // This will handle the reset on logout
+    builder.addCase(logoutReset, () => initialState);
   },
 });
 
@@ -195,7 +203,7 @@ export const {
   setButtonData,
   setSessionExposure,
   setManualBookmaker,
-  setSessionOffline
+  setSessionOffline,
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

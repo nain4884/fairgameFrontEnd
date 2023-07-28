@@ -6,6 +6,7 @@ import Odds from "./Odds";
 import { useDispatch } from "react-redux";
 import {
   setAllBetRate,
+  setAllMatches,
   setMatchOddsLive,
   setSelectedMatch,
   setSessionOddsLive,
