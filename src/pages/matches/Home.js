@@ -307,7 +307,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       const allrates = data?.data?.data?.filter((b) =>
         ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(b?.marketType)
       );
-
+      setIObtes(allrates)
+     
       dispatch(setAllBetRate(allrates));
       const bets = data?.data?.data?.filter(
         (b) =>
@@ -315,6 +316,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             b?.marketType
           )
       );
+      setSessionBets(bets) 
       dispatch(setAllSessionBets(bets));
     } catch (e) {
       console.log(e);

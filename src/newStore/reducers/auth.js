@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   guest: {},
@@ -17,6 +17,8 @@ const initialState = {
   allbetsPage: 0,
   geoLocation: null,
 };
+
+export const logoutAuth = createAction('auth/logoutReset');
 
 export const auth = createSlice({
   name: "authUser",
@@ -114,6 +116,10 @@ export const auth = createSlice({
     setGeoLocation: (state, action) => {
       state.geoLocation = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    // This will handle the reset on logout
+    builder.addCase(logoutAuth, () => initialState);
   },
 });
 

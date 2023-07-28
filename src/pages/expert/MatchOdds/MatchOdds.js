@@ -166,6 +166,7 @@ const MatchOdds = ({
     }
   };
 
+
   return (
     <>
       <Box
@@ -420,7 +421,7 @@ const MatchOdds = ({
                     : []
                 }
                 teamImage={currentMatch?.teamA_Image}
-                lock={matchOddsLive?.runners?.length > 0 ? false : true}
+                lock={ matchOddsLive?.runners !== undefined && matchOddsLive?.runners?.length > 0 ? false : true}
                 name={currentMatch?.teamA}
                 currentMatch={currentMatch}
                 teamRates={teamRates?.teamA}
@@ -428,7 +429,7 @@ const MatchOdds = ({
               <Divider />
               <BoxComponent
                 teamRates={teamRates?.teamB}
-                lock={matchOddsLive?.runners?.length > 0 ? false : true}
+                lock={matchOddsLive?.runners !== undefined && matchOddsLive?.runners?.length > 0 ? false : true}
                 teamImage={currentMatch?.teamB_Image}
                 data={
                   matchOddsLive?.runners?.length > 0
@@ -443,7 +444,7 @@ const MatchOdds = ({
                   <Divider />
                   <BoxComponent
                     teamRates={teamRates?.teamC}
-                    lock={matchOddsLive?.runners?.length > 0 ? false : true}
+                    lock={matchOddsLive?.runners !== undefined && matchOddsLive?.runners?.length > 0 ? false : true}
                     color={"#FF4D4D"}
                     teamImage={null}
                     data={

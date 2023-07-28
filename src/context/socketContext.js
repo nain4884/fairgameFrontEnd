@@ -24,6 +24,7 @@ import {
   setSelectedMatch,
   setSessionExposure,
   setSessionOffline,
+  setUserAllMatches,
 } from "../newStore/reducers/matchDetails";
 import { removeSocket } from "../components/helper/removeSocket";
 import { logout } from "../newStore/reducers/auth";
@@ -48,6 +49,7 @@ export const SocketProvider = ({ children }) => {
     selectedMatch,
     sessionOffline,
     manualBookmaker,
+    userAllMatches,
   } = useSelector((state) => state?.matchDetails);
 
   const [localCurrentUser, setLocalCurrentUser] = useState(null);
@@ -56,6 +58,7 @@ export const SocketProvider = ({ children }) => {
   const [currentMatch, setCurrentMatch] = useState([]);
   const [localSessionOffline, setLocalSessionOffline] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
+  const [localAllmatches, setLocalAllMatches] = useState([]);
 
   useEffect(() => {
     if (allBetRates) {
@@ -76,6 +79,9 @@ export const SocketProvider = ({ children }) => {
     if (manualBookmaker) {
       setManualBookmakerData(manualBookmaker);
     }
+    if (userAllMatches) {
+      setLocalAllMatches(userAllMatches);
+    }
   }, [
     allBetRates,
     allSessionBets,
@@ -83,6 +89,7 @@ export const SocketProvider = ({ children }) => {
     selectedMatch,
     sessionOffline,
     manualBookmaker,
+    userAllMatches,
   ]);
 
   console.log("nav", location);
@@ -129,7 +136,7 @@ export const SocketProvider = ({ children }) => {
       console.error("Error occurred while accessing sessionStorage:", error);
     });
 
-  const localServerEvents = (localSocket, microSocket) => {
+  const localUserServerEvents = (localSocket, microSocket) => {
     localSocket.on("logoutUserForce", (event) => {
       try {
         dispatch(removeCurrentUser());
@@ -176,8 +183,16 @@ export const SocketProvider = ({ children }) => {
             bettings: newUpdatedValue,
           };
           dispatch(setSelectedMatch(newBody));
+
           return newBody;
         });
+
+        setLocalAllMatches((prev) => {
+          const filteredMatches = prev.filter((v) => v.id !== data?.match_id && data.sessionBet === false);
+          dispatch(setUserAllMatches(filteredMatches));
+          return filteredMatches;
+        });
+        
       } catch (e) {
         console.log("error :", e?.message);
       }
@@ -955,7 +970,30 @@ export const SocketProvider = ({ children }) => {
         console.log("error :", e?.message);
       }
     });
+
+    localSocket.on("newMatchAdded", (event) => {
+      const data = event;
+      alert(4);
+      console.log("news :", data);
+
+      try {
+        setLocalAllMatches((prev) => {
+          const newBody = {
+            ...prev,
+            ...data,
+          };
+          alert(1);
+          console.log("new body", newBody);
+          dispatch(setUserAllMatches(newBody));
+          return newBody;
+        });
+      } catch (e) {
+        console.log("error :", e?.message);
+      }
+    });
   };
+
+  const localExpertServerEvents = () => {};
 
   const localServerSocket = () => {
     // if (!socket && checkSocket !== "true") {
@@ -980,7 +1018,12 @@ export const SocketProvider = ({ children }) => {
     // });
     // }
     // if (!socketMicro && checkMicroSocket !== "true") {
-    localServerEvents(newSocket);
+    if (role === "role4") {
+      localUserServerEvents(newSocket);
+    } else if (role === "role2") {
+      localExpertServerEvents(newSocket);
+    } else if (["role1", "role2".includes](role)) {
+    }
   };
 
   const mircoServerSocket = () => {
@@ -1011,6 +1054,7 @@ export const SocketProvider = ({ children }) => {
   };
   useEffect(() => {
     try {
+      console.log(role, "role");
       const token = getToken(globalStore, role);
       if (!["Bearer null", ""].includes(token)) {
         localServerSocket();

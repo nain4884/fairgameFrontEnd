@@ -21,9 +21,10 @@ const initialState = {
   sessionExposure: 0,
   manualBookmaker: [],
   sessionOffline: [],
+  userAllMatches:[]
 };
 
-export const logoutReset = createAction('auth/logoutReset');
+export const logoutMatchDetails = createAction('auth/logoutReset');
 
 
 const matchDetails = createSlice({
@@ -167,11 +168,13 @@ const matchDetails = createSlice({
     setSessionOffline: (state, action) => {
       state.sessionOffline = action.payload;
     },
-    
+    setUserAllMatches: (state, action) => {
+      state.userAllMatches = action.payload;
+    }
   },
   extraReducers: (builder) => {
     // This will handle the reset on logout
-    builder.addCase(logoutReset, () => initialState);
+    builder.addCase(logoutMatchDetails, () => initialState);
   },
 });
 
@@ -204,6 +207,7 @@ export const {
   setSessionExposure,
   setManualBookmaker,
   setSessionOffline,
+  setUserAllMatches
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

@@ -23,7 +23,7 @@ import {
 import SessionTimeOut from "./helper/SessionTimeOut";
 import SideBar from "./sideBar/SideBar";
 import StyledImage from "./StyledImage";
-import { logout } from "../newStore/reducers/auth";
+import { logout, logoutAuth } from "../newStore/reducers/auth";
 import {
   removeCurrentUser,
   setCurrentUser,
@@ -33,6 +33,7 @@ import { setRole } from "../newStore";
 import { removeSocket } from "./helper/removeSocket";
 import { GlobalStore } from "../context/globalStore";
 import {
+  logoutMatchDetails,
   removeManualBookMarkerRates,
   removeSelectedMatch,
   setConfirmAuth,
@@ -715,6 +716,8 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
 
   const logoutProcess = async () => {
     try {
+     
+      
       dispatch(setConfirmAuth(false));
       sessionStorage.setItem("JWTuser", null);
       setLoading(true);
