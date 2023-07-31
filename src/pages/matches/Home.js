@@ -945,16 +945,15 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   useEffect(() => {
     try {
       if (socketMicro && socketMicro.connected && marketId) {
-          socketMicro.on("connect", () => {
+        socketMicro.on("connect", () => {
           socketMicro.emit("init", { id: marketId });
 
           socketMicro.emit("score", { id: eventId });
           activateLiveMatchMarket();
           setSessionLock(false);
         });
-          socketMicro.on("connect_error", (event) => {
+        socketMicro.on("connect_error", (event) => {
           // Handle the WebSocket connection error here
-
           setMacthOddsLive([]);
           setBookmakerLive([]);
           setCurrentMatch((currentMatch) => {
@@ -980,7 +979,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
         socketMicro.emit("score", { id: eventId });
         activateLiveMatchMarket();
-          socketMicro.on("reconnect", () => {
+        socketMicro.on("reconnect", () => {
           socketMicro.emit("init", { id: marketId });
           socketMicro.emit("score", { id: eventId });
           activateLiveMatchMarket();
@@ -1103,7 +1102,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(b?.marketType)
       );
       setIObtes(allrates)
-     
+
       dispatch(setAllBetRate(allrates));
       const bets = data?.data?.data?.filter(
         (b) =>
@@ -1111,7 +1110,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             b?.marketType
           )
       );
-      setSessionBets(bets) 
+      setSessionBets(bets)
       dispatch(setAllSessionBets(bets));
     } catch (e) {
       console.log(e);
@@ -1426,8 +1425,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 />
                 {(matchDetail?.manualSessionActive ||
                   matchDetail?.apiSessionActive) && (
-                  <SessionBetSeperate allBetsData={sessionBets} mark />
-                )}
+                    <SessionBetSeperate allBetsData={sessionBets} mark />
+                  )}
               </Box>
             </Box>
           )}
