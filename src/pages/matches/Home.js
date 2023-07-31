@@ -1254,14 +1254,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     }
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      getScoreBord(eventId);
-    }, 5000); // 30000 milliseconds (30 seconds)
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     getScoreBord(eventId);
+  //   }, 5000); // 30000 milliseconds (30 seconds)
 
-    // Cleanup function to clear the interval when the component is unmounted
-    return () => clearInterval(interval);
-  }, [eventId]);
+  //   // Cleanup function to clear the interval when the component is unmounted
+  //   return () => clearInterval(interval);
+  // }, [eventId]);
 
   return (
     <Box
