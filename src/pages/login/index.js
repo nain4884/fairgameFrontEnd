@@ -377,6 +377,20 @@ export default function Login(props) {
       return false;
     }
   };
+
+  const handleBlur = (event) => {
+    setLoginDetail((prev)=>({
+      ...prev,
+      [event?.place]: {
+        ...prev[event?.place],
+
+        val:event?.val2
+ 
+      },
+    }))
+    // setInputValue(event.target.value);
+  }; 
+
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
@@ -422,6 +436,8 @@ export default function Login(props) {
               >
                 <Input
                   required={true}
+                  onFocusOut={handleBlur}
+  toFoucs={true}
                   autoFocus
                   placeholder={"Enter Username"}
                   title={"Username"}

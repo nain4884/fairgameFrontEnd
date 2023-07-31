@@ -259,7 +259,7 @@ const Input = ({
           />
         ) : (
           <TextField
-           autoFocus={autoFocus}
+             autoFocus={autoFocus}
             variant="standard"
             placeholder={placeholder}
             value={value}
