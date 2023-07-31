@@ -11,10 +11,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  logoutCurrentUser,
   removeCurrentUser,
   setCurrentUser,
 } from "../newStore/reducers/currentUser";
 import {
+  logoutMatchDetails,
   removeManualBookMarkerRates,
   removeSelectedMatch,
   setAllBetRate,
@@ -27,7 +29,8 @@ import {
   setUserAllMatches,
 } from "../newStore/reducers/matchDetails";
 import { removeSocket } from "../components/helper/removeSocket";
-import { logout } from "../newStore/reducers/auth";
+import { logout, logoutAuth } from "../newStore/reducers/auth";
+import ResetAllState from "../components/helper/logoutUserAction";
 
 export const SocketContext = createContext();
 var match_id;
@@ -139,10 +142,17 @@ export const SocketProvider = ({ children }) => {
   const localUserServerEvents = (localSocket, microSocket) => {
     localSocket.on("logoutUserForce", (event) => {
       try {
-        dispatch(removeCurrentUser());
-        dispatch(removeManualBookMarkerRates());
-        dispatch(removeSelectedMatch());
-        dispatch(logout({ roleType: "role4" }));
+        // ResetAllState()
+        dispatch(logoutMatchDetails());
+        dispatch(logoutCurrentUser());
+        dispatch(logoutAuth());
+        localStorage.removeItem("role4");
+        localStorage.removeItem("JWTuser");
+        sessionStorage.clear();
+        // dispatch(removeCurrentUser());
+        // dispatch(removeManualBookMarkerRates());
+        // dispatch(removeSelectedMatch());
+        // dispatch(logout({ roleType: "role4" }));
         setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
         // await axios.get("auth/logout");
         removeSocket();
@@ -188,11 +198,12 @@ export const SocketProvider = ({ children }) => {
         });
 
         setLocalAllMatches((prev) => {
-          const filteredMatches = prev.filter((v) => v.id !== data?.match_id && data.sessionBet === false);
+          const filteredMatches = prev.filter(
+            (v) => v.id !== data?.match_id && data.sessionBet === false
+          );
           dispatch(setUserAllMatches(filteredMatches));
           return filteredMatches;
         });
-        
       } catch (e) {
         console.log("error :", e?.message);
       }

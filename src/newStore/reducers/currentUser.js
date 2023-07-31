@@ -1,9 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   currentUser: null,
   currentUserAccountStatementPage:0
 }
+
+export const logoutCurrentUser = createAction('auth/logoutReset');
 const currentUser = createSlice({
   name: "currentUser",
   initialState,
@@ -17,6 +19,10 @@ const currentUser = createSlice({
     setCurrentUserAccountStatementPage: (state, action) => {
       state.currentUserAccountStatementPage = action.payload
     }
+  },
+  extraReducers: (builder) => {
+    // This will handle the reset on logout
+    builder.addCase(logoutCurrentUser, () => initialState);
   },
 });
 

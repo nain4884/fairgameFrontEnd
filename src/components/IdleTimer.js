@@ -4,12 +4,13 @@ import { useIdleTimer } from "react-idle-timer";
 import { SocketContext } from "../context/socketContext";
 import { removeSocket } from "./helper/removeSocket";
 import { GlobalStore } from "../context/globalStore";
-import { removeCurrentUser } from "../newStore/reducers/currentUser";
+import { logoutCurrentUser, removeCurrentUser } from "../newStore/reducers/currentUser";
 import {
+    logoutMatchDetails,
     removeManualBookMarkerRates,
     removeSelectedMatch,
 } from "../newStore/reducers/matchDetails";
-import { logout } from "../newStore/reducers/auth";
+import { logout, logoutAuth } from "../newStore/reducers/auth";
 import { useNavigate } from "react-router-dom";
 import constants from "../components/helper/constants";
 
@@ -24,10 +25,9 @@ const IdleTimer = ({ role }) => {
 
     const handleOnIdle = (event) => {
         if (role == "user") {
-            dispatch(removeCurrentUser());
-            dispatch(removeManualBookMarkerRates());
-            dispatch(removeSelectedMatch());
-            dispatch(logout({ roleType: "role4" }));
+            dispatch(logoutMatchDetails());
+            dispatch(logoutCurrentUser());
+            dispatch(logoutAuth());
             socket.disconnect();
             socketMicro.disconnect();
             setGlobalStore((prev) => ({ ...prev, userJWT: "" }));

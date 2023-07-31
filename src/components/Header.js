@@ -13,18 +13,13 @@ import { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SocketContext } from "../context/socketContext";
-import {
-  ArrowDown,
-  Draw,
-  logo,
-  Logout,
-  DownIcon,
-} from "../assets";
+import { ArrowDown, Draw, logo, Logout, DownIcon } from "../assets";
 import SessionTimeOut from "./helper/SessionTimeOut";
 import SideBar from "./sideBar/SideBar";
 import StyledImage from "./StyledImage";
 import { logout, logoutAuth } from "../newStore/reducers/auth";
 import {
+  logoutCurrentUser,
   removeCurrentUser,
   setCurrentUser,
 } from "../newStore/reducers/currentUser";
@@ -44,7 +39,7 @@ import IdleTimer from "./IdleTimer";
 import ModalMUI from "@mui/material/Modal";
 import CustomLoader from "./helper/CustomLoader";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const location = useLocation();
@@ -63,23 +58,22 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         // User returned to the web browser
-        console.log('User returned from sleep mode 111 user');
+        console.log("User returned from sleep mode 111 user");
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // Clean up the event listener on component unmount
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
-    };
+    const handleBeforeUnload = (event) => {};
 
     const handleLoad = (event) => {
       let jwtS = sessionStorage.getItem("JWTuser");
@@ -101,9 +95,15 @@ const CustomHeader = ({ }) => {
         const result = checkSubMatch(latestJWT, jwtSDecoded, jwtLDecoded);
         if (result) {
           // dispatch(removeCurrentUser());
-          dispatch(removeManualBookMarkerRates());
-          dispatch(removeSelectedMatch());
+          // dispatch(removeManualBookMarkerRates());
+          // dispatch(removeSelectedMatch());
           // dispatch(logout({ roleType: "role4" }));//add
+          dispatch(logoutMatchDetails());
+          dispatch(logoutCurrentUser());
+          dispatch(logoutAuth());
+          localStorage.removeItem("role4");
+          localStorage.removeItem("JWTuser");
+          sessionStorage.clear();
           socket?.disconnect();
           socketMicro?.disconnect();
           setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
@@ -150,7 +150,7 @@ const CustomHeader = ({ }) => {
     if (checkSeStorage && checkLoStorage === null) {
       localStorage.setItem("role4", "role4");
     }
-  }, [localStorage]); 
+  }, [localStorage]);
 
   // useEffect(() => {
   //   if (socket && socket.connected) {
@@ -193,14 +193,21 @@ const CustomHeader = ({ }) => {
       console.log(e);
       if (e.response.status === 401) {
         navigate("/");
-        dispatch(removeCurrentUser());
-        dispatch(removeManualBookMarkerRates());
-        dispatch(removeSelectedMatch());
-        dispatch(logout({ roleType: "role4" }));
+        // LogoutUser();
+        dispatch(logoutMatchDetails());
+        dispatch(logoutCurrentUser());
+        dispatch(logoutAuth());
+        localStorage.removeItem("role4");
+        localStorage.removeItem("JWTuser");
+        sessionStorage.clear();
+        // dispatch(removeCurrentUser());
+        // dispatch(removeManualBookMarkerRates());
+        // dispatch(removeSelectedMatch());
+        // dispatch(logout({ roleType: "role4" }));
         socket.disconnect();
         socketMicro.disconnect();
         setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-        // await axios.get("auth/logout");
+        // // await axios.get("auth/logout");
         removeSocket();
       }
     }
@@ -703,9 +710,7 @@ const BoxProfile = ({ image, value, containerStyle }) => {
   );
 };
 
-const menutItems = [
-  { title: "Rules", link: "/rules" },
-];
+const menutItems = [{ title: "Rules", link: "/rules" }];
 const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
   const [loading, setLoading] = useState(false);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -716,21 +721,25 @@ const DropdownMenu = ({ anchorEl, open, handleClose, axios }) => {
 
   const logoutProcess = async () => {
     try {
-     
-      
-      dispatch(setConfirmAuth(false));
+      // dispatch(setConfirmAuth(false));
       sessionStorage.setItem("JWTuser", null);
       setLoading(true);
-      dispatch(removeCurrentUser());
+      localStorage.setItem("confirmAuth", false);
       handleClose();
-      removeSocket();
-      dispatch(logout({ roleType: "role4" }));
+      dispatch(logoutMatchDetails());
+      dispatch(logoutCurrentUser());
+      dispatch(logoutAuth());
+      localStorage.removeItem("role4");
+      localStorage.removeItem("JWTuser");
+      sessionStorage.clear();
+      // dispatch(removeCurrentUser());
+      // removeSocket();
+      // dispatch(logout({ roleType: "role4" }));
       setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-      dispatch(removeManualBookMarkerRates());
-      dispatch(removeSelectedMatch());
+      // dispatch(removeManualBookMarkerRates());
+      // dispatch(removeSelectedMatch());
       socket.disconnect();
       socketMicro.disconnect();
-      localStorage.setItem("confirmAuth", false);
       navigate("/");
       const { data } = await axios.get("auth/logout");
       if (data?.data == "success logout") {
