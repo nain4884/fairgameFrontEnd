@@ -1160,7 +1160,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           teamC: response.data.teamC_rate ? response.data.teamC_rate : 0,
         })
       );
-      // setMarketId(response.data.marketId);
+      setMarketId(response.data.marketId);
       setEventId(response.data.EventId);
       activateLiveMatchEvent(response?.data?.EventId);
       setMatchDetail(response.data);
