@@ -80,12 +80,12 @@ const MatchScreen = () => {
     }
   }, [state?.id]);
 
-  useEffect(() => {
-    if (localState?.id) {
-      setCurrentMatch((currentMatch) => ({ ...currentMatch, ...localState }));
-      setLocalState(null);
-    }
-  }, [localState]);
+  // useEffect(() => {
+  //   if (localState?.id) {
+  //     setCurrentMatch((currentMatch) => ({ ...currentMatch, ...localState }));
+  //     setLocalState(null);
+  //   }
+  // }, [localState]);
 
   function customSort(a, b) {
     // betStatus 1 should come before betStatus 2
@@ -204,32 +204,28 @@ const MatchScreen = () => {
                 });
               });
               setCurrentMatch((currentMatch) => {
+                console.log(currentMatch, "currentMatch");
                 var updatedBettings = currentMatch?.bettings.map((betting) => {
                   if (
                     betting?.selectionId === value?.selectionId ||
                     betting?.id === value?.id
                   ) {
                     return { ...betting, betStatus: value?.betStatus };
-                  } else {
-                    return betting;
-                  }
+                  } 
+                  return betting; // Return the unchanged betting object if no match is found
                 });
-                if (
-                  !updatedBettings.find(
-                    (betting) =>
-                      betting?.selectionId === value?.selectionId ||
-                      betting?.id === value?.id
-                  )
-                ) {
+              
+                // If no match was found, push the value to the bettings array
+                if (!updatedBettings.some((betting) => betting.id === value.id)) {
                   updatedBettings.unshift(value);
                 }
-
               
                 return {
                   ...currentMatch,
-                  bettings:   updatedBettings?.sort(customSort),
+                  bettings: updatedBettings.sort(customSort),
                 };
               });
+              
             }
           } catch (e) {
             console.log(e.message);
@@ -521,7 +517,7 @@ const MatchScreen = () => {
         )
       : [];
 
-console.log(arrayObject,"arrayObject")
+// console.log(arrayObject,"arrayObject")
   return (
     <Background>
       {/* <CHeader /> */}
@@ -620,6 +616,7 @@ console.log(arrayObject,"arrayObject")
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
                     />
+                    {console.log(arrayObject,"arrayObjectddddddddddddddd")}
                   </Box>
                 </Box>
               )}
