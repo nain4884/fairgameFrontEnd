@@ -526,6 +526,18 @@ export default function Login(props) {
       return false;
     }
   };
+  const handleBlur = (event) => {
+    setLoginDetail((prev)=>({
+      ...prev,
+      [event?.place]: {
+        ...prev[event?.place],
+
+        val:event?.val2
+ 
+      },
+    }))
+    // setInputValue(event.target.value);
+  }; 
   return (
     <Box style={{ position: "relative" }}>
       <AuthBackground />
@@ -562,6 +574,8 @@ export default function Login(props) {
             <form onSubmit={handleLogin} style={{width:"90%" ,justifyContent:"center" ,}}>
               <Box sx={{ width: "100%", opacity: 1,  }}>
                 <Input
+            onFocusOut={handleBlur}
+  toFoucs={true}
                   required={true}
                   autoFocus
                   placeholder={"Enter Username"}
