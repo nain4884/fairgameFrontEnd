@@ -1,4 +1,10 @@
-import { Box, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { CancelDark } from "../assets";
 const AddNotificationModal = ({
@@ -7,20 +13,23 @@ const AddNotificationModal = ({
   setVisible,
   title,
   onDone,
+  loadingDeleteBet,
 }) => {
-
   const [value, setValue] = useState("");
   const [error, setError] = useState(false);
 
   const handleDone = () => {
+    if(loadingDeleteBet){
+      return false
+    }
     if (value == "") {
       return setError(true);
     }
     onDone(value);
     setValue("");
     setVisible(false);
-  }
-  const CustomButton = ({ title, color }) => {
+  };
+  const CustomButton = ({ title, color, loadingDeleteBet }) => {
     return (
       <Box
         onClick={handleDone}
@@ -32,12 +41,24 @@ const AddNotificationModal = ({
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
+          cursor: "pointer",
         }}
       >
         <Typography
           sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
         >
-          {title}
+          {loadingDeleteBet ? (
+            <CircularProgress
+              sx={{
+                color: "#FFF",
+              }}
+              size={20}
+              thickness={4}
+              value={60}
+            />
+          ) : (
+            title
+          )}
         </Typography>
       </Box>
     );
@@ -148,7 +169,11 @@ const AddNotificationModal = ({
               marginX: "2%",
             }}
           >
-            {error && <Typography sx={{ fontSize: "12px", color: '#ff0000' }} >Field Required !</Typography>}
+            {error && (
+              <Typography sx={{ fontSize: "12px", color: "#ff0000" }}>
+                Field Required !
+              </Typography>
+            )}
           </Box>
           <Box
             sx={{
@@ -160,7 +185,11 @@ const AddNotificationModal = ({
               alignItems: "center",
             }}
           >
-            <CustomButton color={"#0B4F26"} title={"Done"} />
+            <CustomButton
+              loadingDeleteBet={loadingDeleteBet}
+              color={"#0B4F26"}
+              title={"Done"}
+            />
           </Box>
         </Box>
       </Box>

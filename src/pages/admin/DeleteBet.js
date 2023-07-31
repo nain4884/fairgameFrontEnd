@@ -37,6 +37,7 @@ const DeleteBet = ({ }) => {
   const location = useLocation();
   const matchId = location?.state?.matchId;
   const { axios } = setRole();
+  const [loadingDeleteBet,setLoadingDeleteBet]=useState(false)
 
   const [IOSinglebets, setSingleIObtes] = useState([]);
   const [marketId, setMarketId] = useState("");
@@ -881,10 +882,15 @@ const DeleteBet = ({ }) => {
       placeBetId: selectedBetData,
       matchId: matchId,
     };
-    setMode(!mode);
-    try {
+      try {
+        setLoadingDeleteBet(true)
       let response = await axios.post(`/betting/deleteMultipleBet`, data);
+      if(response){
+        setLoadingDeleteBet(false)
+      setMode(false);
+      }
     } catch (e) {
+      setLoadingDeleteBet(false)
       console.log(e);
     }
   };
@@ -981,6 +987,7 @@ const DeleteBet = ({ }) => {
             value={value}
             title={"Add Remark"}
             visible={visible}
+            loadingDeleteBet={loadingDeleteBet}
             setVisible={setVisible}
             onDone={handleDeleteBet}
             onClick={() => {

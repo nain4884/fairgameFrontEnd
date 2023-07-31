@@ -589,7 +589,6 @@ console.log(arrayObject,"arrayObject")
                       setLocalState={setLocalState}
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
-                      SessionMarket={SessionMarket}
                     />
                   </Box>
                   <Box
@@ -620,7 +619,6 @@ console.log(arrayObject,"arrayObject")
                       setLocalState={setLocalState}
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
-                      SessionMarket={SessionMarket}
                     />
                   </Box>
                 </Box>
