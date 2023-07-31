@@ -1004,7 +1004,7 @@ export const SocketProvider = ({ children }) => {
     });
   };
 
-  const localExpertServerEvents = () => {};
+  const localExpertServerEvents = () => { };
 
   const localServerSocket = () => {
     // if (!socket && checkSocket !== "true") {
@@ -1029,12 +1029,13 @@ export const SocketProvider = ({ children }) => {
     // });
     // }
     // if (!socketMicro && checkMicroSocket !== "true") {
-    if (role === "role4") {
-      localUserServerEvents(newSocket);
-    } else if (role === "role2") {
-      localExpertServerEvents(newSocket);
-    } else if (["role1", "role2".includes](role)) {
-    }
+    // if (role === "role4") {
+    localUserServerEvents(newSocket);
+    // } else if (role === "role2") {
+    // localExpertServerEvents(newSocket);
+    // } 
+    // else if (["role1", "role2".includes](role)) {
+    // }
   };
 
   const mircoServerSocket = () => {
