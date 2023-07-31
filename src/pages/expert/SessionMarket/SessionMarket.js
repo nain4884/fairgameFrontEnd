@@ -37,6 +37,7 @@ const SessionMarket = ({
 
   useEffect(() => {
     if (sessionData?.length > 0) {
+      console.log("sessionData", sessionData);
       setMatchSessionData(sessionData.sort(customSort));
       // scrollToMessage();
     }
@@ -271,6 +272,7 @@ const SessionMarket = ({
               overflowY: "scroll",
             }}
           >
+                  {console.log("matchSessionData", matchSessionData)}
             {matchSessionData?.length > 0 &&
               matchSessionData?.map((match, index) => (
                 <Box
