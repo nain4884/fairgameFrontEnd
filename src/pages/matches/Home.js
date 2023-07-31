@@ -37,7 +37,7 @@ import { GlobalStore } from "../../context/globalStore";
 import CustomLoader from "../../components/helper/CustomLoader";
 import { toast } from "react-toastify";
 
-let sessionOffline = [];
+// let sessionOffline = [];
 let matchOddsCount = 0;
 const Home = ({ setVisible, visible, handleClose, selected }) => {
   const [loading, setLoading] = useState(true);
@@ -58,6 +58,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     sessionExposure,
     selectedMatch,
     manualBookmaker,
+    sessionOffline
   } = useSelector((state) => state?.matchDetails);
   const [IObets, setIObtes] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
@@ -90,6 +91,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [sessionLock, setSessionLock] = useState(false);
   const { geoLocation } = useSelector((state) => state.auth);
+  const [sessionOff,setSessionOff] = useState([])
   async function FetchIpAddress() {
     const maxRetries = 3; // Maximum number of retries
     let retryCount = 0;
@@ -138,12 +140,16 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     if (manualBookmaker) {
       setManualBookmakerData(manualBookmaker);
     }
+  if(sessionOffline){
+    setSessionOff(sessionOffline)
+    }
   }, [
     allBetRates,
     allSessionBets,
     sessionExposure,
     selectedMatch,
     manualBookmaker,
+    sessionOffline
   ]);
 
   // useEffect(() => {
@@ -1317,7 +1323,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   onClick={() => handleClose(true)}
                   bookMakerRateLive={bookMakerRateLive}
                   data={currentMatch}
-                  sessionOffline={sessionOffline}
+                  sessionOffline={sessionOff}
                   // dataProfit={currentMatchProfit}
                   allBetsData={sessionBets}
                   manualBookmakerData={manualBookmakerData}
@@ -1392,7 +1398,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   fastAmount={fastAmount}
                   matchOddsLive={matchOddsLive}
                   bookmakerLive={bookmakerLive}
-                  sessionOffline={sessionOffline}
+                  sessionOffline={sessionOff}
                   onClick={() => handleClose(true)}
                   data={currentMatch}
                   // dataProfit={currentMatchProfit}

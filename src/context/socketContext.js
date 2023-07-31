@@ -433,16 +433,23 @@ export const SocketProvider = ({ children }) => {
             newUpdatedValue = [...newUpdatedValue, value];
           } else {
             setLocalSessionOffline((prev) => {
-              if (prev.includes(value.id) && value.betStatus === 1) {
+              if (value.betStatus === 1) {
+                // If value.betStatus is 1, add the id to the array if it doesn't exist
+                if (!prev.includes(value.id)) {
+                  const newres = [...prev, value.id];
+                  dispatch(setSessionOffline(newres));
+                  return newres;
+                }
+              } else if (value.betStatus === 0) {
+                // If value.betStatus is 0, remove the id from the array if it exists
                 const newres = prev.filter((id) => id !== value.id);
                 dispatch(setSessionOffline(newres));
+                return newres;
               }
-
-              const body = [...prev, value.id];
-              dispatch(setSessionOffline(body));
-
-              return body;
+            
+              return prev; // Return the unchanged prev if no action is taken
             });
+            
             // newUpdatedValue = newUpdatedValue?.filter(
             //   (v) => v?.id !== value?.id && v?.betStatus === 1
             // );
@@ -524,7 +531,7 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("userBalanceUpdate", (event) => {
       const data = event;
       try {
-        setCurrentUser((prev) => {
+        setLocalCurrentUser((prev) => {
           const user = {
             ...prev,
             current_balance: data?.currentBalacne,
@@ -559,7 +566,7 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("sessionResult", (event) => {
       const data = event;
       try {
-        setCurrentUser((prev) => {
+        setLocalCurrentUser((prev) => {
           const user = {
             ...prev,
             current_balance: data?.current_balance,
@@ -600,7 +607,7 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("sessionNoResult", (event) => {
       const data = event;
       try {
-        setCurrentUser((prev) => {
+        setLocalCurrentUser((prev) => {
           const user = {
             ...prev,
             current_balance: data?.current_balance,
@@ -645,7 +652,7 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("matchResult", (event) => {
       const data = event;
       try {
-        setCurrentUser((prev) => {
+        setLocalCurrentUser((prev) => {
           const user = {
             ...prev,
             current_balance: data?.current_balance,
@@ -858,7 +865,7 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("matchDeleteBet", (event) => {
       const data = event;
       try {
-        setCurrentUser((prev) => {
+        setLocalCurrentUser((prev) => {
           const user = {
             ...prev,
             current_balance: data?.newBalance,
@@ -932,7 +939,7 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("sessionDeleteBet", (event) => {
       const data = event;
       try {
-        setCurrentUser((prev) => {
+        setLocalCurrentUser((prev) => {
           const user = {
             ...prev,
             current_balance: data?.newBalance,

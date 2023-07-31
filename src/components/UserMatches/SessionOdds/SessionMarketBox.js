@@ -77,7 +77,7 @@ const SessionMarketBox = ({
       {!matchesMobile && (
         <PlaceBetComponentWeb amount={index === 2} profitLoss={data} />
       )}
-      {!["ACTIVE", "", undefined, null].includes(data?.suspended) &&  data.yes_rate===null && data.no_rate===null ? (
+      {!["ACTIVE", "", undefined, null,""].includes(data?.suspended) || data.yes_rate===null && data.no_rate===null ? (
         <Box
           sx={{
             background: "rgba(0,0,0,1)",

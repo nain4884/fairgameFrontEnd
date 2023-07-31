@@ -90,9 +90,9 @@ const MatchScreen = () => {
   function customSort(a, b) {
     // betStatus 1 should come before betStatus 2
     const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
-  const aStatus = betStatusOrder[a?.betStatus] || 0;
-  const bStatus = betStatusOrder[b?.betStatus] || 0;
-  return aStatus - bStatus;
+    const aStatus = betStatusOrder[a?.betStatus] || 0;
+    const bStatus = betStatusOrder[b?.betStatus] || 0;
+    return aStatus - bStatus;
   }
 
   useEffect(() => {
@@ -204,28 +204,26 @@ const MatchScreen = () => {
                 });
               });
               setCurrentMatch((currentMatch) => {
-                console.log(currentMatch, "currentMatch");
                 var updatedBettings = currentMatch?.bettings.map((betting) => {
                   if (
                     betting?.selectionId === value?.selectionId ||
                     betting?.id === value?.id
                   ) {
                     return { ...betting, betStatus: value?.betStatus };
-                  } 
+                  }
                   return betting; // Return the unchanged betting object if no match is found
                 });
-              
+
                 // If no match was found, push the value to the bettings array
-                if (!updatedBettings.some((betting) => betting.id === value.id)) {
+                if (value.selectionId && !updatedBettings.some((betting) => betting.id === value.id)) {
                   updatedBettings.unshift(value);
                 }
-              
+
                 return {
                   ...currentMatch,
                   bettings: updatedBettings.sort(customSort),
                 };
               });
-              
             }
           } catch (e) {
             console.log(e.message);
@@ -377,6 +375,27 @@ const MatchScreen = () => {
             ) {
               navigate("/expert/match");
             }
+            setCurrentMatch((prev) => {
+              const updatedBettings = prev?.bettings?.map((betting) => {
+                if (value?.betId === betting?.id && value?.sessionBet) {
+                  return {
+                    ...betting,
+                    betStatus: 2,
+                    betRestult:value.score,
+                    profitLoss: value?.profitLoss,
+                  };
+                }
+                return betting;
+              });
+              return { ...prev, bettings: updatedBettings };
+            });
+
+            if (
+              currentMatch?.id == value?.match_id &&
+              value?.sessionBet === false
+            ) {
+              navigate("/expert/match");
+            }
           } catch (err) {
             console.log(err?.message);
           }
@@ -517,7 +536,7 @@ const MatchScreen = () => {
         )
       : [];
 
-// console.log(arrayObject,"arrayObject")
+  // console.log(arrayObject,"arrayObject")
   return (
     <Background>
       {/* <CHeader /> */}
@@ -616,7 +635,7 @@ const MatchScreen = () => {
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
                     />
-                    {console.log(arrayObject,"arrayObjectddddddddddddddd")}
+                    {console.log(arrayObject, "arrayObjectddddddddddddddd")}
                   </Box>
                 </Box>
               )}
