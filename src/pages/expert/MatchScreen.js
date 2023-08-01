@@ -80,19 +80,19 @@ const MatchScreen = () => {
     }
   }, [state?.id]);
 
-  useEffect(() => {
-    if (localState?.id) {
-      setCurrentMatch((currentMatch) => ({ ...currentMatch, ...localState }));
-      setLocalState(null);
-    }
-  }, [localState]);
+  // useEffect(() => {
+  //   if (localState?.id) {
+  //     setCurrentMatch((currentMatch) => ({ ...currentMatch, ...localState }));
+  //     setLocalState(null);
+  //   }
+  // }, [localState]);
 
   function customSort(a, b) {
     // betStatus 1 should come before betStatus 2
     const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
-  const aStatus = betStatusOrder[a?.betStatus] || 0;
-  const bStatus = betStatusOrder[b?.betStatus] || 0;
-  return aStatus - bStatus;
+    const aStatus = betStatusOrder[a?.betStatus] || 0;
+    const bStatus = betStatusOrder[b?.betStatus] || 0;
+    return aStatus - bStatus;
   }
 
   useEffect(() => {
@@ -210,24 +210,18 @@ const MatchScreen = () => {
                     betting?.id === value?.id
                   ) {
                     return { ...betting, betStatus: value?.betStatus };
-                  } else {
-                    return betting;
                   }
+                  return betting; // Return the unchanged betting object if no match is found
                 });
-                if (
-                  !updatedBettings.find(
-                    (betting) =>
-                      betting?.selectionId === value?.selectionId ||
-                      betting?.id === value?.id
-                  )
-                ) {
+
+                // If no match was found, push the value to the bettings array
+                if (value.selectionId && !updatedBettings.some((betting) => betting.id === value.id)) {
                   updatedBettings.unshift(value);
                 }
 
-              
                 return {
                   ...currentMatch,
-                  bettings:   updatedBettings?.sort(customSort),
+                  bettings: updatedBettings.sort(customSort),
                 };
               });
             }
@@ -381,6 +375,27 @@ const MatchScreen = () => {
             ) {
               navigate("/expert/match");
             }
+            setCurrentMatch((prev) => {
+              const updatedBettings = prev?.bettings?.map((betting) => {
+                if (value?.betId === betting?.id && value?.sessionBet) {
+                  return {
+                    ...betting,
+                    betStatus: 2,
+                    betRestult:value.score,
+                    profitLoss: value?.profitLoss,
+                  };
+                }
+                return betting;
+              });
+              return { ...prev, bettings: updatedBettings };
+            });
+
+            if (
+              currentMatch?.id == value?.match_id &&
+              value?.sessionBet === false
+            ) {
+              navigate("/expert/match");
+            }
           } catch (err) {
             console.log(err?.message);
           }
@@ -521,7 +536,7 @@ const MatchScreen = () => {
         )
       : [];
 
-console.log(arrayObject,"arrayObject")
+  // console.log(arrayObject,"arrayObject")
   return (
     <Background>
       {/* <CHeader /> */}
@@ -589,7 +604,6 @@ console.log(arrayObject,"arrayObject")
                       setLocalState={setLocalState}
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
-                      SessionMarket={SessionMarket}
                     />
                   </Box>
                   <Box
@@ -620,8 +634,8 @@ console.log(arrayObject,"arrayObject")
                       setLocalState={setLocalState}
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
-                      SessionMarket={SessionMarket}
                     />
+                    {console.log(arrayObject, "arrayObjectddddddddddddddd")}
                   </Box>
                 </Box>
               )}

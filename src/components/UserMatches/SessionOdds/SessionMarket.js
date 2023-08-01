@@ -53,6 +53,8 @@ const SessionMarket = ({
     return false; // Default case: no active session types
   });
   const [visible, setVisible] = useState(true);
+
+  console.log(sessionOffline,'sessionOffline')
   return (
     <>
       <Box

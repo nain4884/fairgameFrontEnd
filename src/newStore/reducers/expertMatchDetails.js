@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   allMatch: [],
@@ -12,7 +12,7 @@ const initialState = {
   wConfirmAuth: false,
   aConfirmAuth: false,
 };
-
+export const logoutExpertDetails = createAction('auth/logoutReset');
 const expertMatchDetails = createSlice({
   name: "expertMatchDetails",
   initialState,
@@ -50,6 +50,10 @@ const expertMatchDetails = createSlice({
     },
     setAConfirmAuth: (state, action) => {
       state.aConfirmAuth = action.payload;
+    },
+    extraReducers: (builder) => {
+      // This will handle the reset on logout
+      builder.addCase(logoutExpertDetails, () => initialState);
     },
   }
 });

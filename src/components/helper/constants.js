@@ -43,7 +43,7 @@ module.exports = {
   // -------React Captcha--------//
 
   REACT_APP_SECRET_KEY: "6Lc7BsAiAAAAAA6gDOpiBsb8fybpUYfS8_qLY9NS",
-  REACT_APP_SITE_KEY: "6Lc7BsAiAAAAAEymVuF8kjJeoqPFSSgkxI3Euhve",
+  REACT_APP_SITE_KEY: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
 
   // ----------- Matches ---------- //
 

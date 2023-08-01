@@ -35,6 +35,8 @@ const MarketAnalysis = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
 
+  
+
   const navigate = useNavigate();
   useEffect(() => {
     if (socket && socket.connected) {

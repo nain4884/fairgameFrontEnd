@@ -1,48 +1,72 @@
-import { Box, Modal, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { CancelDark } from "../assets";
+import CustomButton from "./CustomButton";
+import { memo } from "react";
 const AddNotificationModal = ({
   onClick,
   visible,
   setVisible,
   title,
   onDone,
+  loadingDeleteBet,
 }) => {
-
   const [value, setValue] = useState("");
   const [error, setError] = useState(false);
 
-  const handleDone = () => {
-    if (value == "") {
-      return setError(true);
+  const handleDone = (e) => {
+    if (loadingDeleteBet) {
+      return false;
+    } else {
+      if (value == "") {
+        return setError(true);
+      }
+      onDone(value);
+      setValue("");
+      setVisible(false);
     }
-    onDone(value);
-    setValue("");
-    setVisible(false);
-  }
-  const CustomButton = ({ title, color }) => {
-    return (
-      <Box
-        onClick={handleDone}
-        sx={{
-          width: "35%",
-          height: "35px",
-          borderRadius: "5px",
-          background: color,
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
-        >
-          {title}
-        </Typography>
-      </Box>
-    );
   };
-
+  // const CustomButton = ({ title, color, loadingDeleteBet }) => {
+  //   return (
+  //     <Box
+  //       onClick={handleDone}
+  //       sx={{
+  //         width: "35%",
+  //         height: "35px",
+  //         borderRadius: "5px",
+  //         background: color,
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         display: "flex",
+  //         cursor: "pointer",
+  //       }}
+  //     >
+  //       <Typography
+  //         sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
+  //       >
+  //         {!loadingDeleteBet ? (
+  //           <CircularProgress
+  //             sx={{
+  //               color: "#FFF",
+  //             }}
+  //             size={20}
+  //             thickness={4}
+  //             value={60}
+  //           />
+  //         ) : (
+  //           title
+  //         )}
+  //       </Typography>
+  //     </Box>
+  //   );
+  // };
+  console.log(loadingDeleteBet, "loadingDeleteBet");
   return (
     <Modal
       open={visible}
@@ -93,14 +117,9 @@ const AddNotificationModal = ({
               {title ? title : "Add Notification"}
             </Typography>
             <img
-              onClick={(e) => {
-                e.stopPropagation();
-                setVisible(false);
-
-                onClick();
-              }}
+              onClick={onClick}
               src={CancelDark}
-              style={{ width: "25px", height: "25px" }}
+              style={{ width: "25px", height: "25px", cursor: "pointer" }}
             />
           </Box>
           <Box
@@ -148,7 +167,11 @@ const AddNotificationModal = ({
               marginX: "2%",
             }}
           >
-            {error && <Typography sx={{ fontSize: "12px", color: '#ff0000' }} >Field Required !</Typography>}
+            {error && (
+              <Typography sx={{ fontSize: "12px", color: "#ff0000" }}>
+                Field Required !
+              </Typography>
+            )}
           </Box>
           <Box
             sx={{
@@ -160,11 +183,20 @@ const AddNotificationModal = ({
               alignItems: "center",
             }}
           >
-            <CustomButton color={"#0B4F26"} title={"Done"} />
+            <CustomButton
+              onClick={handleDone}
+              loading={loadingDeleteBet}
+              buttonStyle={{
+                backgroundColor: "#0B4F26",
+                color: "white",
+                "&:hover": { backgroundColor: "#0B4F26" },
+              }}
+              title={"Done"}
+            />
           </Box>
         </Box>
       </Box>
     </Modal>
   );
 };
-export default AddNotificationModal;
+export default memo(AddNotificationModal);

@@ -65,7 +65,7 @@ const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, s
               </Typography>
             </Box>
           )}
-          {lock && [0,"0"].includes(value) && <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+          { [0,"0"].includes(value) && <img src={Lock} style={{ width: "10px", height: "15px" }} />}
         </Box>
       </Popover>
     </>

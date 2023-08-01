@@ -11,6 +11,7 @@ import Odds from "./Matches/Odds";
 import Background from "./Background";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SocketContext } from "../context/socketContext";
+import { setAllMatches } from "../newStore/reducers/matchDetails";
 
 const AdminInPlay = () => {
   // const classes=useStyle() 

@@ -297,13 +297,7 @@ const CustomHeader = ({ }) => {
       console.log(e);
     }
   };
-  const getAllMatch = async () => {
-    try {
-      let response = await axios.get(`/game-match/getAllMatch`);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+
   useEffect(() => {
     if (currentUser === null) {
       getUserDetail();

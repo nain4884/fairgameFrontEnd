@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,createAction } from "@reduxjs/toolkit";
 
 const initialState = {
   manualBookMarkerRates: [],
@@ -17,8 +17,15 @@ const initialState = {
   confirmAuth: false,
   betData: {},
   updateDetData: "",
-  buttonData: []
+  buttonData: [],
+  sessionExposure: 0,
+  manualBookmaker: [],
+  sessionOffline: [],
+  userAllMatches:[]
 };
+
+export const logoutMatchDetails = createAction('auth/logoutReset');
+
 
 const matchDetails = createSlice({
   name: "matchDetails",
@@ -65,13 +72,13 @@ const matchDetails = createSlice({
       }
     },
     removeManualBookMarkerRates: (state, action) => {
-      state.manualBookMarkerRates = []
+      state.manualBookMarkerRates = [];
     },
     setMatchOdds: (state, action) => {
       state.matchOdds = action.payload;
     },
     setMatchOddsLive: (state, action) => {
-      console.log(action.payload, "action.payload")
+      console.log(action.payload, "action.payload");
       state.matchOddsLive = action.payload;
     },
     removeMatchOddsLive: (state, action) => {
@@ -138,7 +145,7 @@ const matchDetails = createSlice({
       state.selectedMatch = action.payload;
     },
     removeSelectedMatch: (state, action) => {
-      state.selectedMatch = {}
+      state.selectedMatch = {};
     },
     setConfirmAuth: (state, action) => {
       state.confirmAuth = action.payload;
@@ -152,6 +159,22 @@ const matchDetails = createSlice({
     setButtonData: (state, action) => {
       state.buttonData = action.payload;
     },
+    setSessionExposure: (state, action) => {
+      state.sessionExposure = action.payload;
+    },
+    setManualBookmaker: (state, action) => {
+      state.manualBookmaker = action.payload;
+    },
+    setSessionOffline: (state, action) => {
+      state.sessionOffline = action.payload;
+    },
+    setUserAllMatches: (state, action) => {
+      state.userAllMatches = action.payload;
+    }
+  },
+  extraReducers: (builder) => {
+    // This will handle the reset on logout
+    builder.addCase(logoutMatchDetails, () => initialState);
   },
 });
 
@@ -180,7 +203,11 @@ export const {
   setConfirmAuth,
   setBetData,
   setUpdateBetData,
-  setButtonData
+  setButtonData,
+  setSessionExposure,
+  setManualBookmaker,
+  setSessionOffline,
+  setUserAllMatches
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

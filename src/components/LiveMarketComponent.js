@@ -3,6 +3,9 @@ import { ARROWUP, CHECK } from "../admin/assets";
 import StyledImage from "./StyledImage";
 import { useLocation, useNavigate } from "react-router-dom";
 import { memo } from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import moment from "moment";
 
 const LiveMarketComponent = ({
   team,
@@ -14,6 +17,45 @@ const LiveMarketComponent = ({
 }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 0);
+    return () => clearTimeout(timer);
+  });
+
+  function calculateTimeLeft() {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const targetDate = moment(data?.startAt).tz(timezone);
+    const difference = targetDate.diff(moment().tz(timezone), "milliseconds");
+    let timeLeft = {};
+    if (difference > 0) {
+      timeLeft = {
+        days:
+          ("0" + Math.floor(difference / (1000 * 60 * 60 * 24))).slice(-2) || 0,
+        hours:
+          ("0" + Math.floor((difference / (1000 * 60 * 60)) % 24)).slice(-2) ||
+          0,
+        minutes:
+          ("0" + Math.floor((difference / 1000 / 60) % 60)).slice(-2) || 0,
+        seconds: ("0" + Math.floor((difference / 1000) % 60)).slice(-2) || 0,
+      };
+    } else {
+      timeLeft = {
+        days: "00",
+        hours: "00",
+        minutes: "00",
+      };
+    }
+
+    return timeLeft;
+  }
+
+  const upcoming =
+    Number(timeLeft.days) === 0 &&
+    Number(timeLeft.hours) === 0 &&
+    Number(timeLeft.minutes) <= 59;
   const StockBox = ({ team, value, up }) => {
     return (
       <Box
@@ -231,9 +273,10 @@ const LiveMarketComponent = ({
             >
               {team} Vs {team_2}
             </Typography>
-            <Box
+          {upcoming &&   <Box
               className="liveAnimation"
               sx={{
+                backgroundSize: "400% 400%",
                 position: "absolute",
                 zIndex: 11,
                 width: "50px",
@@ -257,9 +300,42 @@ const LiveMarketComponent = ({
                   
                 }}
               >
-                LIVE NOW
+              LIVE NOW
               </Typography>
-            </Box>
+            </Box>}
+
+            {!upcoming && (
+          <Box
+          
+            sx={{
+           
+              position: "absolute",
+                zIndex: 11,
+                width: "70px",
+                height: "15px",
+                top: "-10px",
+          
+                left:"-1px",
+                background: "#129FFE",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                border: "1px solid white",
+                borderRadius: "3px",
+            }}
+          >
+            <Typography
+              sx={{
+                fontStyle: "italic",
+                fontSize: { laptop: "10px", mobile: "10px" },
+                fontWeight: "600",
+                color: "white",
+              }}
+            >
+              UPCOMING
+            </Typography>
+          </Box>
+        )}
           </Box>
           <Box
             sx={{
@@ -316,6 +392,19 @@ const LiveMarketComponent = ({
               />
             </Box>
           </Box>
+          {!upcoming && (
+            <Box
+              sx={{
+                width: "99.67%",
+                marginRight: ".1%",
+                height: "94%",
+                marginTop: "1.5px",
+                background: "rgba(0,0,0,.6)",
+                position: "absolute",
+                right: 0,
+              }}
+            ></Box>
+          )}
           {selected && mode == "1" && (
             <Box
               sx={{
