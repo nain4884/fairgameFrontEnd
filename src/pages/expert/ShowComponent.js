@@ -51,7 +51,7 @@ const ShowComponent = ({
         >
           <Input
             placeholder={`${value}`}
-            value={DetailError.Detail[place].val}
+            value={DetailError.Detail[place]?.val}
             containerStyle={containerStyles}
             titleStyle={titleStyles}
             inputStyle={imputStyle}
@@ -77,8 +77,8 @@ const ShowComponent = ({
                   ...DetailError.Detail[place],
                   val:
                     type === "Number"
-                      ? DetailError.Detail[place].val === 0
-                      : DetailError.Detail[place].val === "",
+                      ? DetailError.Detail[place]?.val === 0
+                      : DetailError.Detail[place]?.val === "",
                 },
               });
             }}
