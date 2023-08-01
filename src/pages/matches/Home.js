@@ -21,6 +21,7 @@ import {
   setButtonData,
   setAllBetRate,
   setManualBookmaker,
+  setSessionExposure,
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -58,7 +59,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     sessionExposure,
     selectedMatch,
     manualBookmaker,
-    sessionOffline
+    sessionOffline,
   } = useSelector((state) => state?.matchDetails);
   const [IObets, setIObtes] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
@@ -86,12 +87,11 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     id || sessionStorage.getItem("matchId")
   );
 
-
-  const [sessionExposer, setSessionExposure] = useState(0);
+  const [localSessionExposer, setLocalSessionExposure] = useState(0);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [sessionLock, setSessionLock] = useState(false);
   const { geoLocation } = useSelector((state) => state.auth);
-  const [sessionOff,setSessionOff] = useState([])
+  const [sessionOff, setSessionOff] = useState([]);
   async function FetchIpAddress() {
     const maxRetries = 3; // Maximum number of retries
     let retryCount = 0;
@@ -131,7 +131,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     }
 
     if (sessionExposure) {
-      setSessionExposure(sessionExposure);
+      setLocalSessionExposure(sessionExposure);
     }
     if (selectedMatch) {
       setCurrentMatch(selectedMatch);
@@ -140,8 +140,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     if (manualBookmaker) {
       setManualBookmakerData(manualBookmaker);
     }
-  if(sessionOffline){
-    setSessionOff(sessionOffline)
+    if (sessionOffline) {
+      setSessionOff(sessionOffline);
     }
   }, [
     allBetRates,
@@ -149,7 +149,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     sessionExposure,
     selectedMatch,
     manualBookmaker,
-    sessionOffline
+    sessionOffline,
   ]);
 
   // useEffect(() => {
@@ -947,7 +947,6 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   //   }
   // }, [socket]);
 
-
   useEffect(() => {
     try {
       if (socketMicro && socketMicro.connected && marketId) {
@@ -1107,7 +1106,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       const allrates = data?.data?.data?.filter((b) =>
         ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(b?.marketType)
       );
-      setIObtes(allrates)
+      setIObtes(allrates);
 
       dispatch(setAllBetRate(allrates));
       const bets = data?.data?.data?.filter(
@@ -1116,7 +1115,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             b?.marketType
           )
       );
-      setSessionBets(bets)
+      setSessionBets(bets);
       dispatch(setAllSessionBets(bets));
     } catch (e) {
       console.log(e);
@@ -1149,7 +1148,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       );
       setManualBookmakerData(matchOddsDataTemp);
       dispatch(setManualBookmaker(matchOddsDataTemp));
-      setSessionExposure(response?.data?.sessionExposure);
+      dispatch(setSessionExposure(response?.data?.sessionExposure));
+      setLocalSessionExposure(response?.data?.sessionExposure);
       setCurrentMatch({
         ...response.data,
       });
@@ -1252,7 +1252,9 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const getScoreBord = async (eventId) => {
     // alert(1)
     try {
-      const response = await Axios.get(`https://super007.in/api/MatchOdds/score/${eventId}`);
+      const response = await Axios.get(
+        `https://super007.in/api/MatchOdds/score/${eventId}`
+      );
       // Handle the API response here
       console.log("API Response:", response.data);
     } catch (e) {
@@ -1318,7 +1320,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   setFastAmount={setFastAmount}
                   fastAmount={fastAmount}
                   matchOddsLive={matchOddsLive}
-                  sessionExposer={sessionExposer}
+                  sessionExposer={localSessionExposer}
                   bookmakerLive={bookmakerLive}
                   onClick={() => handleClose(true)}
                   bookMakerRateLive={bookMakerRateLive}
@@ -1393,7 +1395,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               >
                 <MatchOdds
                   sessionBets={sessionBets}
-                  sessionExposer={sessionExposer}
+                  sessionExposer={localSessionExposer}
                   setFastAmount={setFastAmount}
                   fastAmount={fastAmount}
                   matchOddsLive={matchOddsLive}
@@ -1431,8 +1433,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 />
                 {(matchDetail?.manualSessionActive ||
                   matchDetail?.apiSessionActive) && (
-                    <SessionBetSeperate allBetsData={sessionBets} mark />
-                  )}
+                  <SessionBetSeperate allBetsData={sessionBets} mark />
+                )}
               </Box>
             </Box>
           )}

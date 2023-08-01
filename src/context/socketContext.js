@@ -961,6 +961,9 @@ export const SocketProvider = ({ children }) => {
             return betting;
           });
           // Return the updated current match object
+          if (currentMatch?.id === data.matchId) {
+            dispatch(setSessionExposure(data?.sessionExposure));
+          }
           const newBody = {
             ...currentMatch,
             bettings: updatedBettings,
