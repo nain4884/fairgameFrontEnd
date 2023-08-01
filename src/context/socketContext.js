@@ -81,7 +81,7 @@ export const SocketProvider = ({ children }) => {
         // });
 
         newMicroSocket.onerror = (event) => {
-          // Handle the WebSocket connection error here
+          // Handle the WebSocket connection error here //
           console.error("WebSocket connection failed:", event);
         };
         // }
