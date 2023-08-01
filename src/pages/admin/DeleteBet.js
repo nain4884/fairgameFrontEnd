@@ -26,7 +26,7 @@ import { logout } from "../../newStore/reducers/auth";
 
 let matchOddsCount = 0;
 let sessionOffline = [];
-const DeleteBet = ({ }) => {
+const DeleteBet = ({}) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
@@ -37,7 +37,7 @@ const DeleteBet = ({ }) => {
   const location = useLocation();
   const matchId = location?.state?.matchId;
   const { axios } = setRole();
-  const [loadingDeleteBet,setLoadingDeleteBet]=useState(false)
+  const [loadingDeleteBet, setLoadingDeleteBet] = useState(false);
 
   const [IOSinglebets, setSingleIObtes] = useState([]);
   const [marketId, setMarketId] = useState("");
@@ -698,6 +698,7 @@ const DeleteBet = ({ }) => {
   useEffect(() => {
     try {
       if (socketMicro && socketMicro.connected && marketId) {
+
         socketMicro.on("connect", () => {
           socketMicro.emit("init", { id: marketId });
           // activateLiveMatchMarket();
@@ -812,7 +813,7 @@ const DeleteBet = ({ }) => {
       setBookmakerLive([]);
       setSessionLock(false);
     };
-  }, [socketMicro, marketId]);
+  }, [marketId,socketMicro]);
 
   async function getThisMatch(id) {
     try {
@@ -882,92 +883,22 @@ const DeleteBet = ({ }) => {
       placeBetId: selectedBetData,
       matchId: matchId,
     };
-      try {
-        setLoadingDeleteBet(true)
+    try {
+      setLoadingDeleteBet(true);
       let response = await axios.post(`/betting/deleteMultipleBet`, data);
-      if(response){
-        setLoadingDeleteBet(false)
-      setMode(false);
+      if (response) {
+        setLoadingDeleteBet(false);
+        setMode(false);
       }
     } catch (e) {
-      setLoadingDeleteBet(false)
+      setLoadingDeleteBet(false);
       console.log(e);
     }
   };
 
   const [mode, setMode] = useState(false);
   const [selectedBetData, setSelectedBetData] = useState([]);
-  const CustomButton = ({ mode, setMode, setVisible }) => {
-    return (
-      <Box
-        onClick={() => {
-          if (mode) {
-            setVisible(true);
-          } else {
-            setMode(!mode);
-          }
-        }}
-        sx={{
-          width: "150px",
-          marginY: ".75%",
-          justifyContent: "center",
-          alignItems: "center",
-          borderRadius: "5px",
-          background: "#E32A2A",
-          height: "35px",
-          border: "1.5px solid white",
-          display: "flex",
-          alignSelf: "flex-end",
-          cursor: "pointer",
-        }}
-      >
-        <Typography
-          style={{
-            fontWeight: "600",
-            fontSize: "13px",
-            color: "white",
-            marginRight: "10px",
-          }}
-        >
-          {mode ? "Delete" : "Delete Bet"}
-        </Typography>
-        <img src={DeleteIcon} style={{ width: "17px", height: "20px" }} />
-      </Box>
-    );
-  };
-  const CancelButton = ({ setMode }) => {
-    return (
-      <Box
-        onClick={() => {
-          setMode(!mode);
-        }}
-        sx={{
-          width: "150px",
-          marginY: ".75%",
-          justifyContent: "center",
-          alignItems: "center",
-          borderRadius: "5px",
-          background: "#f1c550",
-          height: "35px",
-          border: "1.5px solid white",
-          display: "flex",
-          alignSelf: "flex-end",
-          cursor: "pointer",
-        }}
-      >
-        <Typography
-          style={{
-            fontWeight: "600",
-            fontSize: "13px",
-            color: "black",
-            marginRight: "10px",
-          }}
-        >
-          {"Cancel"}
-        </Typography>
-      </Box>
-    );
-  };
+
   return (
     <Background>
       {loading ? (
@@ -983,17 +914,21 @@ const DeleteBet = ({ }) => {
         </Box>
       ) : (
         <>
-          <AddNotificationModal
-            value={value}
-            title={"Add Remark"}
-            visible={visible}
-            loadingDeleteBet={loadingDeleteBet}
-            setVisible={setVisible}
-            onDone={handleDeleteBet}
-            onClick={() => {
-              setMode(!mode);
-            }}
-          />
+          {visible && (
+            <AddNotificationModal
+              value={value}
+              title={"Add Remark"}
+              visible={visible}
+              loadingDeleteBet={loadingDeleteBet}
+              setVisible={setVisible}
+              onDone={handleDeleteBet}
+              onClick={(e) => {
+                e.stopPropagation();
+                setVisible(false);
+                setMode(false)
+              }}
+            />
+          )}
           <Box
             sx={{
               display: "flex",
@@ -1199,22 +1134,21 @@ const DeleteBet = ({ }) => {
                     sx={{ width: "150px", marginY: ".75%", height: "15px" }}
                   ></Box>
                 </Box>
-                {
-                  currentMatch?.manualSessionActive && (
-                    <SessionMarket
-                      title={"Quick Session Market"}
-                      currentOdds={currentOdds}
-                      currentMatch={currentMatch}
-                      sessionBets={sessionBets}
-                      sessionExposer={sessionExposer}
-                      data={[]}
-                      sessionOffline={sessionOffline}
-                      setPopData={setPopData}
-                      popData={popData}
-                      min={currentMatch?.manaual_session_min_bet || 0}
-                      max={currentMatch?.manaual_session_max_bet || 0}
-                    />
-                  )}
+                {currentMatch?.manualSessionActive && (
+                  <SessionMarket
+                    title={"Quick Session Market"}
+                    currentOdds={currentOdds}
+                    currentMatch={currentMatch}
+                    sessionBets={sessionBets}
+                    sessionExposer={sessionExposer}
+                    data={[]}
+                    sessionOffline={sessionOffline}
+                    setPopData={setPopData}
+                    popData={popData}
+                    min={currentMatch?.manaual_session_min_bet || 0}
+                    max={currentMatch?.manaual_session_max_bet || 0}
+                  />
+                )}
                 {currentMatch?.apiSessionActive && (
                   <SessionMarket
                     title={"Session Market"}

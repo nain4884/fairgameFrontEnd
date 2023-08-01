@@ -7,6 +7,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { CancelDark } from "../assets";
+import CustomButton from "./CustomButton";
+import { memo } from "react";
 const AddNotificationModal = ({
   onClick,
   visible,
@@ -18,52 +20,53 @@ const AddNotificationModal = ({
   const [value, setValue] = useState("");
   const [error, setError] = useState(false);
 
-  const handleDone = () => {
-    if(loadingDeleteBet){
-      return false
+  const handleDone = (e) => {
+    if (loadingDeleteBet) {
+      return false;
+    } else {
+      if (value == "") {
+        return setError(true);
+      }
+      onDone(value);
+      setValue("");
+      setVisible(false);
     }
-    if (value == "") {
-      return setError(true);
-    }
-    onDone(value);
-    setValue("");
-    setVisible(false);
   };
-  const CustomButton = ({ title, color, loadingDeleteBet }) => {
-    return (
-      <Box
-        onClick={handleDone}
-        sx={{
-          width: "35%",
-          height: "35px",
-          borderRadius: "5px",
-          background: color,
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-          cursor: "pointer",
-        }}
-      >
-        <Typography
-          sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
-        >
-          {loadingDeleteBet ? (
-            <CircularProgress
-              sx={{
-                color: "#FFF",
-              }}
-              size={20}
-              thickness={4}
-              value={60}
-            />
-          ) : (
-            title
-          )}
-        </Typography>
-      </Box>
-    );
-  };
-
+  // const CustomButton = ({ title, color, loadingDeleteBet }) => {
+  //   return (
+  //     <Box
+  //       onClick={handleDone}
+  //       sx={{
+  //         width: "35%",
+  //         height: "35px",
+  //         borderRadius: "5px",
+  //         background: color,
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         display: "flex",
+  //         cursor: "pointer",
+  //       }}
+  //     >
+  //       <Typography
+  //         sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
+  //       >
+  //         {!loadingDeleteBet ? (
+  //           <CircularProgress
+  //             sx={{
+  //               color: "#FFF",
+  //             }}
+  //             size={20}
+  //             thickness={4}
+  //             value={60}
+  //           />
+  //         ) : (
+  //           title
+  //         )}
+  //       </Typography>
+  //     </Box>
+  //   );
+  // };
+  console.log(loadingDeleteBet, "loadingDeleteBet");
   return (
     <Modal
       open={visible}
@@ -114,14 +117,9 @@ const AddNotificationModal = ({
               {title ? title : "Add Notification"}
             </Typography>
             <img
-              onClick={(e) => {
-                e.stopPropagation();
-                setVisible(false);
-
-                onClick();
-              }}
+              onClick={onClick}
               src={CancelDark}
-              style={{ width: "25px", height: "25px" }}
+              style={{ width: "25px", height: "25px", cursor: "pointer" }}
             />
           </Box>
           <Box
@@ -186,8 +184,13 @@ const AddNotificationModal = ({
             }}
           >
             <CustomButton
-              loadingDeleteBet={loadingDeleteBet}
-              color={"#0B4F26"}
+              onClick={handleDone}
+              loading={loadingDeleteBet}
+              buttonStyle={{
+                backgroundColor: "#0B4F26",
+                color: "white",
+                "&:hover": { backgroundColor: "#0B4F26" },
+              }}
               title={"Done"}
             />
           </Box>
@@ -196,4 +199,4 @@ const AddNotificationModal = ({
     </Modal>
   );
 };
-export default AddNotificationModal;
+export default memo(AddNotificationModal);
