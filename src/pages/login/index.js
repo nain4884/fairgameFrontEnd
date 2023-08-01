@@ -69,6 +69,8 @@ export default function Login(props) {
   const [confirmPop, setConfirmPop] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
 
+  const [recaptchaToken, setRecaptchToken] = useState(null);
+
   useEffect(() => {
     if (!confirmAuth) {
     }
@@ -265,6 +267,10 @@ export default function Login(props) {
         setLoginError("Username and password required");
         setLoading(false);
         return false;
+      } else if (recaptchaToken === null) {
+        setLoading(false);
+        setLoginError("reCaptcha required ");
+        return false;
       } else {
         setLoading(true);
         const token = await localStorage.getItem("role4");
@@ -272,6 +278,7 @@ export default function Login(props) {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
           loginType: "user",
+          recaptchaToken: recaptchaToken,
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -379,17 +386,16 @@ export default function Login(props) {
   };
 
   const handleBlur = (event) => {
-    setLoginDetail((prev)=>({
+    setLoginDetail((prev) => ({
       ...prev,
       [event?.place]: {
         ...prev[event?.place],
 
-        val:event?.val2
- 
+        val: event?.val2,
       },
-    }))
+    }));
     // setInputValue(event.target.value);
-  }; 
+  };
 
   return (
     <Box style={{ position: "relative" }}>
@@ -423,7 +429,7 @@ export default function Login(props) {
           <AuthLogo />
 
           {!isChangePassword ? (
-            <form onSubmit={handleLogin} style={{width:"75%"}}>
+            <form onSubmit={handleLogin} style={{ width: "75%" }}>
               <Box
                 sx={{
                   width: {
@@ -437,7 +443,7 @@ export default function Login(props) {
                 <Input
                   required={true}
                   onFocusOut={handleBlur}
-  toFoucs={true}
+                  toFoucs={true}
                   autoFocus
                   placeholder={"Enter Username"}
                   title={"Username"}
@@ -485,7 +491,20 @@ export default function Login(props) {
             >
               Forgot Password?
             </Typography> */}
-                <ReCAPTCHACustom containerStyle={{ marginTop: "20px" }} />
+                <ReCAPTCHACustom
+                  containerStyle={{
+                    marginTop: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                  onSubmitWithReCAPTCHA={(token) => {
+                    console.log(token, "token");
+                    setRecaptchToken(token);
+                    // apply to form data
+                  }}
+                />
                 <Box
                   sx={{
                     display: "flex",
@@ -495,7 +514,7 @@ export default function Login(props) {
                   }}
                 >
                   <Button
-                  type="submit"
+                    type="submit"
                     variant="contained"
                     color="secondary"
                     sx={{

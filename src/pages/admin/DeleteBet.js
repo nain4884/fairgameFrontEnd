@@ -590,7 +590,9 @@ const DeleteBet = ({}) => {
                 }
                 return betting;
               });
-
+              if (currentMatch.id === value.matchId) {
+                setSessionExposure(value.sessionExposure);
+              }
               if (prev?.id === value?.matchId && value?.teamA_rate) {
                 return {
                   ...prev,
@@ -605,7 +607,6 @@ const DeleteBet = ({}) => {
                   bettings: updatedBettings,
                 };
               }
-              return prev;
             });
           } catch (err) {
             console.log(err?.message);
@@ -698,7 +699,6 @@ const DeleteBet = ({}) => {
   useEffect(() => {
     try {
       if (socketMicro && socketMicro.connected && marketId) {
-
         socketMicro.on("connect", () => {
           socketMicro.emit("init", { id: marketId });
           // activateLiveMatchMarket();
@@ -813,7 +813,7 @@ const DeleteBet = ({}) => {
       setBookmakerLive([]);
       setSessionLock(false);
     };
-  }, [marketId,socketMicro]);
+  }, [marketId, socketMicro]);
 
   async function getThisMatch(id) {
     try {
@@ -925,7 +925,7 @@ const DeleteBet = ({}) => {
               onClick={(e) => {
                 e.stopPropagation();
                 setVisible(false);
-                setMode(false)
+                setMode(false);
               }}
             />
           )}
