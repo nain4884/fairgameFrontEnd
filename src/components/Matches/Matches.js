@@ -79,6 +79,7 @@ const MatchesComponent = ({
   }
 
   const currentElements = matchData || [];
+  console.log(matchData,"matchData")
   return (
     <>
       {currentElements.length > 0 && currentElements?.map((match) => {

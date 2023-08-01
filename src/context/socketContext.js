@@ -446,10 +446,10 @@ export const SocketProvider = ({ children }) => {
                 dispatch(setSessionOffline(newres));
                 return newres;
               }
-            
+
               return prev; // Return the unchanged prev if no action is taken
             });
-            
+
             // newUpdatedValue = newUpdatedValue?.filter(
             //   (v) => v?.id !== value?.id && v?.betStatus === 1
             // );
@@ -991,17 +991,9 @@ export const SocketProvider = ({ children }) => {
 
     localSocket.on("newMatchAdded", (event) => {
       const data = event;
-      alert(4);
-      console.log("news :", data);
-
       try {
         setLocalAllMatches((prev) => {
-          const newBody = {
-            ...prev,
-            ...data,
-          };
-          alert(1);
-          console.log("new body", newBody);
+          const newBody = [...prev, data];
           dispatch(setUserAllMatches(newBody));
           return newBody;
         });
@@ -1011,7 +1003,7 @@ export const SocketProvider = ({ children }) => {
     });
   };
 
-  const localExpertServerEvents = () => { };
+  const localExpertServerEvents = () => {};
 
   const localServerSocket = () => {
     // if (!socket && checkSocket !== "true") {
@@ -1040,7 +1032,7 @@ export const SocketProvider = ({ children }) => {
     localUserServerEvents(newSocket);
     // } else if (role === "role2") {
     // localExpertServerEvents(newSocket);
-    // } 
+    // }
     // else if (["role1", "role2".includes](role)) {
     // }
   };
