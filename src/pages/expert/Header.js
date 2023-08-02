@@ -30,6 +30,7 @@ import {
   setAllMatchs,
   setAllEventSession,
   setEConfirmAuth,
+  setCurrentOdd,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -39,6 +40,7 @@ import { memo } from "react";
 import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
+  setManualBookMarkerRates
 } from "../../newStore/reducers/matchDetails";
 import { a } from "@react-spring/web";
 import ButtonHead from "./ButtonHead";
@@ -50,8 +52,13 @@ import { toast } from "react-toastify";
 import IdleTimer from "../../components/IdleTimer";
 import CustomLoader from "../../components/helper/CustomLoader";
 import ModalMUI from "@mui/material/Modal";
+import {
+  setAllBetRate,
+  setSelectedExpertMatch,
+} from "../../newStore/reducers/expertMatchDetails";
 
-const CustomHeader = ({ }) => {
+var match_id;
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -64,9 +71,17 @@ const CustomHeader = ({ }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [active, setActiveAdmin] = useState(0);
-  const { allEventSession, activeUsers, allMatch } = useSelector(
-    (state) => state?.expertMatchDetails
-  );
+  const {
+    allEventSession,
+    activeUsers,
+    allMatch,
+    allBetRates,
+    selectedExpertMatch,
+    currentOdd
+  } = useSelector((state) => state?.expertMatchDetails);
+  const { userExpert } = useSelector((state) => state.auth);
+  const { socket, socketMicro } = useContext(SocketContext);
+
   const [allMatchData, setAllMatchData] = useState([]);
   // const [allLiveEventSession, setAllLiveEventSession] = useState(allEventSession);
   const [balance, setBalance] = useState(0);
@@ -74,6 +89,401 @@ const CustomHeader = ({ }) => {
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [firstTimeLoader, setFirstTimeLoader] = useState(true);
+  const [localAllBetRates, setLocalAllBetRates] = useState([]);
+  const [currentMatch, setCurrentMatch] = useState(null);
+  const [localCurrentMatch, setLocalCurrentUser] = useState(null);
+  const [currentOdds, setCurrentOdds] = useState(null);
+
+  useEffect(() => {
+    if (allBetRates) {
+      setLocalAllBetRates(allBetRates);
+    }
+    if (selectedExpertMatch) {
+      setCurrentMatch(selectedExpertMatch);
+    }
+
+    if (currentUser) {
+      setLocalCurrentUser(currentUser);
+    }
+    if (currentOdd) {
+      setCurrentOdds(currentOdd);
+    }
+  }, [allBetRates, selectedExpertMatch,currentUser,currentOdd]);
+
+  function getSessionStorageItemAsync(key) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          const item = sessionStorage.getItem(key);
+          resolve(item);
+        } catch (error) {
+          reject(error);
+        }
+      }, 0);
+    });
+  }
+  // Usage example
+  getSessionStorageItemAsync("matchId")
+    .then((matchId) => {
+      if (matchId !== null) {
+        console.log("Match ID:", matchId);
+        match_id = matchId;
+        // Your further processing with the matchId
+      } else {
+        console.log("Match ID not found in sessionStorage.");
+      }
+    })
+    .catch((error) => {
+      console.error("Error occurred while accessing sessionStorage:", error);
+    });
+
+  function customSort(a, b) {
+    // betStatus 1 should come before betStatus 2
+    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
+    const aStatus = betStatusOrder[a?.betStatus] || 0;
+    const bStatus = betStatusOrder[b?.betStatus] || 0;
+    return aStatus - bStatus;
+  }
+
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        if (packet.data[0] === "logoutUserForce") {
+          dispatch(removeManualBookMarkerRates());
+          dispatch(removeCurrentUser());
+          dispatch(logout({ roleType: "role3" }));
+          dispatch(removeSelectedMatch());
+          setGlobalStore((prev) => ({
+            ...prev,
+            expertJWT: "",
+            // isSession: true,
+          }));
+          // await axios.get("auth/logout");
+          removeSocket();
+          navigate("/expert");
+          socketMicro.disconnect();
+          socket.disconnect();
+        }
+        if (packet.data[0] === "userBalanceUpdate") {
+          const data = packet.data[1];
+
+          setLocalCurrentUser((prev) => {
+            const user = {
+              ...prev,
+              current_balance: data?.currentBalacne,
+            };
+            dispatch(setCurrentUser(user));
+            return user;
+          });
+       
+        }
+        if (packet.data[0] === "loginUserCount") {
+          const data = packet.data[1];
+          setOnlineUser(data?.count);
+        }
+
+        if (packet.data[0] === "match_bet") {
+          const data = packet.data[1];
+          try {
+            if (data) {
+              const manualBookmaker = {
+                matchId: data?.betPlaceData?.match_id,
+                teamA: data.teamA_rate,
+                teamB: data.teamB_rate,
+                teamC: data.teamC_rate,
+              };
+
+              setLocalAllBetRates((prev) => {
+                if (match_id === data?.betPlaceData?.match_id) {
+                  const body = {
+                    id: data?.betPlaceData?.id,
+                    isActive: true,
+                    createAt: data?.betPlaceData?.createdAt,
+                    updateAt: data?.betPlaceData?.createdAt,
+                    createdBy: null,
+                    deletedAt: null,
+                    user: { userName: data?.betPlaceData?.userName },
+                    user_id: null,
+                    match_id: data?.betPlaceData?.match_id,
+                    bet_id: data?.betPlaceData?.bet_id,
+                    result: "pending",
+                    team_bet: data?.betPlaceData?.team_bet,
+                    odds: data?.betPlaceData?.odds,
+                    win_amount: null,
+                    loss_amount: null,
+                    bet_type: data?.betPlaceData?.bet_type,
+                    country: null,
+                    ip_address: null,
+                    rate: data?.betPlaceData?.rate,
+                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                    marketType: data?.betPlaceData?.marketType,
+                    myStack: data?.betPlaceData?.myStack,
+                    myStack: data?.betPlaceData?.myStack,
+                    amount:
+                      data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                  };
+                  const newBody = [body, ...prev];
+                  dispatch(setAllBetRate(newBody));
+                  return newBody;
+                }
+                return prev;
+              });
+
+              dispatch(setManualBookMarkerRates(manualBookmaker));
+            }
+          } catch (e) {
+            console.log("error", e?.message);
+          }
+        }
+
+        if (packet.data[0] === "matchOddRateLive") {
+          const e = packet.data[1];
+          setCurrentMatch((prev) => {
+            if (prev?.id === e?.matchId) {
+              const newBody = {
+                ...prev,
+                matchOddRateLive: e?.matchOddLive,
+              };
+              dispatch(setSelectedExpertMatch(newBody));
+              return;
+            }
+            return prev;
+          });
+        }
+
+        if (packet.data[0] === "bookMakerRateLive") {
+          const e = packet.data[1];
+          setCurrentMatch((prev) => {
+            if (prev?.id === e?.matchId) {
+              const newBody = {
+                ...prev,
+                bookMakerRateLive: e?.bookMakerLive,
+              };
+              dispatch(setSelectedExpertMatch(newBody));
+              return newBody;
+            }
+            return prev;
+          });
+        }
+
+        if (packet.data[0] === "newBetAdded") {
+          const value = packet.data[1];
+          try {
+            // if (matchId == value?.match_id) {
+            // setLiveData((liveData) =>
+            //   liveData?.filter((v) => v.betStatus !== 1)
+            // );
+
+            // setLiveData((liveData) => {
+            //   liveData?.map((val) => {
+            //     if (val?.selectionId === e?.selectionId) {
+            //       return {
+            //         ...val,
+            //         betStatus: 1, // update betStatus to 1
+            //       };
+            //     }
+            //     return val;
+            //   });
+            // });
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id === value?.match_id) {
+                var updatedBettings = currentMatch?.bettings.map((betting) => {
+                  if (
+                    betting?.selectionId === value?.selectionId ||
+                    betting?.id === value?.id
+                  ) {
+                    return { ...betting, betStatus: value?.betStatus };
+                  }
+                  return betting; // Return the unchanged betting object if no match is found
+                });
+
+                // If no match was found, push the value to the bettings array
+                if (
+                  value.selectionId &&
+                  !updatedBettings.some((betting) => betting.id === value.id)
+                ) {
+                  updatedBettings.unshift(value);
+                }
+                const newBody = {
+                  ...currentMatch,
+                  bettings: updatedBettings.sort(customSort),
+                };
+                dispatch(setSelectedExpertMatch(newBody));
+                return newBody;
+              }
+              return currentMatch;
+            });
+            // }
+          } catch (e) {
+            console.log(e.message);
+          }
+        }
+
+        if (packet.data[0] === "session_bet") {
+          const data = packet.data[1];
+          try {
+            if (data) {
+              setCurrentOdds(prev=>{
+              const newBody = {...prev,
+                  bet_id: data?.betPlaceData?.bet_id,
+                  odds: data?.betPlaceData?.odds,
+                  match_id: data?.betPlaceData?.match_id,
+                }
+                dispatch(setCurrentOdd(newBody))
+                return newBody
+              });
+              localAllBetRates((IObets) => {
+                const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
+
+                if (currentMatch?.id === data?.betPlaceData?.match_id) {
+                  const body = {
+                    id: data?.betPlaceData?.id,
+                    isActive: true,
+                    createAt: data?.betPlaceData?.createdAt,
+                    updateAt: data?.betPlaceData?.createdAt,
+                    createdBy: null,
+                    deletedAt: null,
+                    user: { userName: data?.betPlaceData?.userName },
+                    user_id: null,
+                    match_id: data?.betPlaceData?.match_id,
+                    bet_id: data?.betPlaceData?.bet_id,
+                    result: "pending",
+                    team_bet: data?.betPlaceData?.team_bet,
+                    odds: data?.betPlaceData?.odds,
+                    win_amount: null,
+                    loss_amount: null,
+                    bet_type: data?.betPlaceData?.bet_type,
+                    country: null,
+                    ip_address: null,
+                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                    rate: data?.betPlaceData?.rate,
+                    marketType: data?.betPlaceData?.marketType,
+                    myStack: data?.betPlaceData?.myStack,
+                    amount:
+                      data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                  };
+                  const newBody = [body, ...updatedIObets];
+                  dispatch(setAllBetRate(newBody));
+                  return newBody;
+                }
+                dispatch(setAllBetRate(updatedIObets));
+                return updatedIObets;
+              });
+
+              setCurrentMatch((currentMatch) => {
+                const updatedBettings = currentMatch?.bettings?.map(
+                  (betting) => {
+                    if (betting?.id === data?.betPlaceData?.bet_id) {
+                      // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                      let profitLoss = data?.profitLoss;
+
+                      return {
+                        ...betting,
+                        profitLoss: profitLoss,
+                      };
+                    }
+                    return betting;
+                  }
+                );
+                // Return the updated current match object
+                const newBody = {
+                  ...currentMatch,
+                  bettings: updatedBettings,
+                };
+                dispatch(setSelectedExpertMatch(newBody));
+                return newBody;
+              });
+            }
+          } catch (e) {
+            console.log("error", e?.message);
+          }
+        }
+        if (packet.data[0] === "matchDeleteBet") {
+          const value = packet.data[1];
+          try {
+            setLocalAllBetRates((IObets) => {
+              const updatedBettings = IObets?.map((betting) => {
+                if (value?.betPlaceIds.includes(betting.id)) {
+                  return {
+                    ...betting,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+                return betting;
+              });
+              dispatch(setAllBetRate(updatedBettings));
+              return updatedBettings;
+            });
+            const manualBookmaker = {
+              matchId: value?.matchId,
+              teamA: value?.teamA_rate,
+              teamB: value?.teamB_rate,
+              teamC: value?.teamC_rate,
+            };
+            dispatch(setManualBookMarkerRates(manualBookmaker));
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
+        if (packet.data[0] === "sessionDeleteBet") {
+          const value = packet.data[1];
+          try {
+            setLocalAllBetRates((IObets) => {
+              const updatedBettings = IObets?.map((betting) => {
+                if (value?.betPlaceData.includes(betting.id)) {
+                  return {
+                    ...betting,
+                    deleted_reason: value?.deleted_reason,
+                  };
+                }
+                return betting;
+              });
+              dispatch(setAllBetRate(updatedBettings));
+              return updatedBettings;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+
+        if (packet.data[0] === "resultDeclareForBet") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            setCurrentMatch((prev) => {
+              if (prev.id === value?.match_id && value?.sessionBet === false) {
+                navigate("/expert/match");
+              }
+              if (prev.id === value?.match_id && value?.sessionBet) {
+                const updatedBettings = prev?.bettings?.map((betting) => {
+                  if (value?.betId === betting?.id && value?.sessionBet) {
+                    return {
+                      ...betting,
+                      betStatus: 2,
+                      betRestult: value.score,
+                      profitLoss: value?.profitLoss,
+                    };
+                  }
+                  return betting;
+                });
+
+                const newBody = { ...prev, bettings: updatedBettings };
+
+                dispatch(setSelectedExpertMatch(newBody));
+                return newBody;
+              }
+
+              return prev;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+      };
+    }
+  }, [socket]);
+
   useEffect(() => {
     if (activeUsers !== 0) {
       setOnlineUser(activeUsers);
@@ -129,29 +539,24 @@ const CustomHeader = ({ }) => {
     }
   }, [matchesMobile]);
 
-  const { userExpert } = useSelector((state) => state.auth);
-  const { socket, socketMicro } = useContext(SocketContext);
-
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         // User returned to the web browser
-        console.log('User returned from sleep mode 111');
+        console.log("User returned from sleep mode 111");
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // Clean up the event listener on component unmount
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
-    };
-
+    const handleBeforeUnload = (event) => {};
 
     const handleLoad = (event) => {
       let jwtS = sessionStorage.getItem("JWTexpert");
@@ -225,47 +630,10 @@ const CustomHeader = ({ }) => {
   }, [localStorage]);
 
   useEffect(() => {
-    if (socket && socket.connected) {
-      socket.onevent = async (packet) => {
-        if (packet.data[0] === "logoutUserForce") {
-          dispatch(removeManualBookMarkerRates());
-          dispatch(removeCurrentUser());
-          dispatch(logout({ roleType: "role3" }));
-          dispatch(removeSelectedMatch());
-          setGlobalStore((prev) => ({
-            ...prev,
-            expertJWT: "",
-            // isSession: true,
-          }));
-          // await axios.get("auth/logout");
-          removeSocket();
-          navigate("/expert");
-          socketMicro.disconnect();
-          socket.disconnect();
-        }
-        if (packet.data[0] === "userBalanceUpdate") {
-          const data = packet.data[1];
-          const user = {
-            ...currentUser,
-            current_balance: data?.currentBalacne,
-          };
-          dispatch(setCurrentUser(user));
-
-          //currentBalacne
-        }
-        if (packet.data[0] === "loginUserCount") {
-          const data = packet.data[1];
-          setOnlineUser(data?.count);
-        }
-      };
-    }
-  }, [socket]);
-
-  useEffect(() => {
     setTimeout(() => {
-      setFirstTimeLoader(false)
-    }, 4000)
-  }, [])
+      setFirstTimeLoader(false);
+    }, 4000);
+  }, []);
 
   useEffect(() => {
     if (location.pathname.includes("home")) {
@@ -330,16 +698,13 @@ const CustomHeader = ({ }) => {
           "& > .MuiBackdrop-root": {
             backdropFilter: "blur(2px)",
             backgroundColor: "white",
-          }
-
+          },
         }}
-
         open={firstTimeLoader}
         // onClose={setSelected}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-
         <CustomLoader />
       </ModalMUI>
       <SessionTimeOut />
@@ -351,7 +716,7 @@ const CustomHeader = ({ }) => {
         <AddNotificationModal
           setVisible={setVisible}
           visible={visible}
-          onClick={() => { }}
+          onClick={() => {}}
           onDone={(value) => {
             handleAddNotification(value);
           }}
@@ -602,10 +967,10 @@ const CustomHeader = ({ }) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                      ? "Bookmaker"
-                      : "Betfair"
+                    ? "Bookmaker"
+                    : "Betfair"
                 }
-                value1={currentUser?.userName || ""}
+                value1={localCurrentMatch?.userName || ""}
               />
             </Box>
           </Box>

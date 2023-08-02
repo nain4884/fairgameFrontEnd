@@ -98,168 +98,168 @@ const IndiaPakLive = React.forwardRef(
       },
     }));
 
-    useEffect(() => {
-      if (socket && socket.connected) {
-        socket.onevent = async (packet) => {
-          if (packet.data[0] === "session_bet") {
-            const data = packet.data[1];
-            try {
-              setCurrentOdds({
-                bet_id: data?.betPlaceData?.bet_id,
-                odds: data?.betPlaceData?.odds,
-                match_id: data?.betPlaceData?.match_id,
-              });
-              if (betId === data?.betPlaceData?.bet_id) {
-                let profitLoss = data?.profitLoss;
-                setProLoss(profitLoss);
-                const body = {
-                  id: data?.betPlaceData?.id,
-                  isActive: true,
-                  createAt: data?.betPlaceData?.createAt,
-                  updateAt: data?.betPlaceData?.createdAt,
-                  createdBy: null,
-                  deletedAt: null,
-                  user: { userName: data?.betPlaceData?.userName },
-                  user_id: null,
-                  match_id: data?.betPlaceData?.match_id,
-                  bet_id: data?.betPlaceData?.bet_id,
-                  result: "pending",
-                  team_bet: data?.betPlaceData?.team_bet,
-                  odds: data?.betPlaceData?.odds,
-                  win_amount: null,
-                  loss_amount: null,
-                  bet_type: data?.betPlaceData?.bet_type,
-                  country: null,
-                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                  ip_address: null,
-                  rate: data?.betPlaceData?.rate,
-                  marketType: data?.betPlaceData?.marketType,
-                  myStack: data?.betPlaceData?.myStack,
-                  amount:
-                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                };
-                if (sessionAllBet.length === 0) {
-                  const updatedData = [body];
-                  dispatch(setSessionAllBet(updatedData));
-                } else {
-                  const updatedData = [body, ...sessionAllBet];
-                  dispatch(setSessionAllBet(updatedData));
-                }
-              }
-            } catch (err) {
-              console.log(err?.message);
-            }
-          }
-          if (packet.data[0] === "newBetAdded") {
-            const value = packet.data[1];
-            try {
-              const updatedAllEventSession = allEventSession.map(
-                (currentMatch) => {
-                  if (currentMatch.id === value?.match_id) {
-                    const betObj = {
-                      id: value.id,
-                      bet_condition: value.bet_condition,
-                    };
-                    const newBettings = [...currentMatch.bettings, betObj];
-                    return {
-                      ...currentMatch,
-                      bettings: newBettings,
-                    };
-                  }
-                  return currentMatch;
-                }
-              );
-              dispatch(setAllEventSession(updatedAllEventSession));
-            } catch (err) {
-              console.log(err?.message);
-            }
-          }
-          if (packet.data[0] === "resultDeclareForBet") {
-            const value = packet.data[1];
+    // useEffect(() => {
+    //   if (socket && socket.connected) {
+    //     socket.onevent = async (packet) => {
+    //       if (packet.data[0] === "session_bet") {
+    //         const data = packet.data[1];
+    //         try {
+    //           setCurrentOdds({
+    //             bet_id: data?.betPlaceData?.bet_id,
+    //             odds: data?.betPlaceData?.odds,
+    //             match_id: data?.betPlaceData?.match_id,
+    //           });
+    //           if (betId === data?.betPlaceData?.bet_id) {
+    //             let profitLoss = data?.profitLoss;
+    //             setProLoss(profitLoss);
+    //             const body = {
+    //               id: data?.betPlaceData?.id,
+    //               isActive: true,
+    //               createAt: data?.betPlaceData?.createAt,
+    //               updateAt: data?.betPlaceData?.createdAt,
+    //               createdBy: null,
+    //               deletedAt: null,
+    //               user: { userName: data?.betPlaceData?.userName },
+    //               user_id: null,
+    //               match_id: data?.betPlaceData?.match_id,
+    //               bet_id: data?.betPlaceData?.bet_id,
+    //               result: "pending",
+    //               team_bet: data?.betPlaceData?.team_bet,
+    //               odds: data?.betPlaceData?.odds,
+    //               win_amount: null,
+    //               loss_amount: null,
+    //               bet_type: data?.betPlaceData?.bet_type,
+    //               country: null,
+    //               deleted_reason: data?.betPlaceData?.deleted_reason || null,
+    //               ip_address: null,
+    //               rate: data?.betPlaceData?.rate,
+    //               marketType: data?.betPlaceData?.marketType,
+    //               myStack: data?.betPlaceData?.myStack,
+    //               amount:
+    //                 data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+    //             };
+    //             if (sessionAllBet.length === 0) {
+    //               const updatedData = [body];
+    //               dispatch(setSessionAllBet(updatedData));
+    //             } else {
+    //               const updatedData = [body, ...sessionAllBet];
+    //               dispatch(setSessionAllBet(updatedData));
+    //             }
+    //           }
+    //         } catch (err) {
+    //           console.log(err?.message);
+    //         }
+    //       }
+    //       if (packet.data[0] === "newBetAdded") {
+    //         const value = packet.data[1];
+    //         try {
+    //           const updatedAllEventSession = allEventSession.map(
+    //             (currentMatch) => {
+    //               if (currentMatch.id === value?.match_id) {
+    //                 const betObj = {
+    //                   id: value.id,
+    //                   bet_condition: value.bet_condition,
+    //                 };
+    //                 const newBettings = [...currentMatch.bettings, betObj];
+    //                 return {
+    //                   ...currentMatch,
+    //                   bettings: newBettings,
+    //                 };
+    //               }
+    //               return currentMatch;
+    //             }
+    //           );
+    //           dispatch(setAllEventSession(updatedAllEventSession));
+    //         } catch (err) {
+    //           console.log(err?.message);
+    //         }
+    //       }
+    //       if (packet.data[0] === "resultDeclareForBet") {
+    //         const value = packet.data[1];
 
-            try {
-              const updatedAllEventSession = allEventSession.map(
-                (currentMatch) => {
-                  if (currentMatch.id === value?.match_id) {
-                    const filteredBettings = currentMatch.bettings.filter(
-                      (bet) => bet.id !== value?.betId
-                      );
-                      getSessionResult(currentMatch.id)
-                      return {
-                        ...currentMatch,
-                        bettings: filteredBettings,
-                      };
+    //         try {
+    //           const updatedAllEventSession = allEventSession.map(
+    //             (currentMatch) => {
+    //               if (currentMatch.id === value?.match_id) {
+    //                 const filteredBettings = currentMatch.bettings.filter(
+    //                   (bet) => bet.id !== value?.betId
+    //                   );
+    //                   getSessionResult(currentMatch.id)
+    //                   return {
+    //                     ...currentMatch,
+    //                     bettings: filteredBettings,
+    //                   };
                       
-                  }
-                  return currentMatch;
-                }
-              );
+    //               }
+    //               return currentMatch;
+    //             }
+    //           );
              
-              dispatch(setAllEventSession(updatedAllEventSession));
-            } catch (err) {
-              console.log(err?.message);
-            }
-          }
-          if (packet.data[0] === "sessionDeleteBet") {
-            const value = packet.data[1];
-            try {
-              const updatedAllBet = sessionAllBet.map((currentMatch) => {
-                if (currentMatch.match_id === value?.matchId) {
-                  if (value?.betPlaceData.includes(currentMatch.id)) {
-                    return {
-                      ...currentMatch,
-                      deleted_reason: value?.deleted_reason,
-                    };
-                  }
-                }
-                return currentMatch;
-              });
+    //           dispatch(setAllEventSession(updatedAllEventSession));
+    //         } catch (err) {
+    //           console.log(err?.message);
+    //         }
+    //       }
+    //       if (packet.data[0] === "sessionDeleteBet") {
+    //         const value = packet.data[1];
+    //         try {
+    //           const updatedAllBet = sessionAllBet.map((currentMatch) => {
+    //             if (currentMatch.match_id === value?.matchId) {
+    //               if (value?.betPlaceData.includes(currentMatch.id)) {
+    //                 return {
+    //                   ...currentMatch,
+    //                   deleted_reason: value?.deleted_reason,
+    //                 };
+    //               }
+    //             }
+    //             return currentMatch;
+    //           });
 
-              dispatch(setSessionAllBet(updatedAllBet));
-              let profitLoss = value?.profitLoss;
-              setProLoss(profitLoss);
-            } catch (err) {
-              console.log(err?.message);
-            }
-          }
-          if (packet.data[0] === "updateSessionRate_user") {
-            // match_id
-            const value = packet.data[1];
-            if (match?.id == value?.match_id && betId == value?.betId) {
-              if (value.suspended == "suspended") {
-                setLock({
-                  ...lock,
-                  isNo: true,
-                  isYes: true,
-                  isNoPercent: true,
-                  isYesPercent: true,
-                });
-              } else {
-                let [firstValue, secondValue] = value.rate_percent
-                  ? value.rate_percent.split("-")
-                  : "";
-                if (value.suspended != "Ball Started") {
-                  setDetail((prev) => ({
-                    ...prev,
-                    no_rate: value.no_rate,
-                    yes_rate: value.yes_rate,
-                    n_rate_percent: firstValue,
-                    y_rate_percent: secondValue,
-                  }));
-                  setLock({
-                    ...lock,
-                    isNo: false,
-                    isYes: false,
-                    isNoPercent: false,
-                    isYesPercent: false,
-                  });
-                }
-              }
-            }
-          }
-        };
-      }
-    }, [socket, betId, sessionAllBet]);
+    //           dispatch(setSessionAllBet(updatedAllBet));
+    //           let profitLoss = value?.profitLoss;
+    //           setProLoss(profitLoss);
+    //         } catch (err) {
+    //           console.log(err?.message);
+    //         }
+    //       }
+    //       if (packet.data[0] === "updateSessionRate_user") {
+    //         // match_id
+    //         const value = packet.data[1];
+    //         if (match?.id == value?.match_id && betId == value?.betId) {
+    //           if (value.suspended == "suspended") {
+    //             setLock({
+    //               ...lock,
+    //               isNo: true,
+    //               isYes: true,
+    //               isNoPercent: true,
+    //               isYesPercent: true,
+    //             });
+    //           } else {
+    //             let [firstValue, secondValue] = value.rate_percent
+    //               ? value.rate_percent.split("-")
+    //               : "";
+    //             if (value.suspended != "Ball Started") {
+    //               setDetail((prev) => ({
+    //                 ...prev,
+    //                 no_rate: value.no_rate,
+    //                 yes_rate: value.yes_rate,
+    //                 n_rate_percent: firstValue,
+    //                 y_rate_percent: secondValue,
+    //               }));
+    //               setLock({
+    //                 ...lock,
+    //                 isNo: false,
+    //                 isYes: false,
+    //                 isNoPercent: false,
+    //                 isYesPercent: false,
+    //               });
+    //             }
+    //           }
+    //         }
+    //       }
+    //     };
+    //   }
+    // }, [socket, betId, sessionAllBet]);
 
     console.log(Detail, "details");
     useEffect(() => {

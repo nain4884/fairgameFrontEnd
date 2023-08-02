@@ -2,7 +2,7 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   allMatch: [],
-  selectedMatch: {},
+  selectedExpertMatch: {},
   sessionAllBet: [],
   sessionBetId: "",
   allEventSession: [],
@@ -11,20 +11,25 @@ const initialState = {
   eConfirmAuth: false,
   wConfirmAuth: false,
   aConfirmAuth: false,
+  allBetRates: [],
+  currentOdd: [],
 };
-export const logoutExpertDetails = createAction('auth/logoutReset');
+export const logoutExpertDetails = createAction("auth/logoutReset");
 const expertMatchDetails = createSlice({
   name: "expertMatchDetails",
   initialState,
   reducers: {
+    setAllBetRate: (state, action) => {
+      state.allBetRates = action.payload;
+    },
     setAllMatchs: (state, action) => {
       state.allMatch = action.payload;
     },
-    setSelectedMatch: (state, action) => {
-      state.selectedMatch = action.payload;
+    setSelectedExpertMatch: (state, action) => {
+      state.selectedExpertMatch = action.payload;
     },
     removeSelectedMatch: (state, action) => {
-      state.selectedMatch = {}
+      state.selectedMatch = {};
     },
     setSessionAllBet: (state, action) => {
       state.sessionAllBet = action.payload;
@@ -51,13 +56,30 @@ const expertMatchDetails = createSlice({
     setAConfirmAuth: (state, action) => {
       state.aConfirmAuth = action.payload;
     },
+    setCurrentOdd: (state, action) => {
+      state.currentOdd = action.payload;
+    },
     extraReducers: (builder) => {
       // This will handle the reset on logout
       builder.addCase(logoutExpertDetails, () => initialState);
     },
-  }
+  },
 });
 
-export const { setAllMatchs, setSelectedMatch, removeSelectedMatch, setSessionAllBet, setSessionBetId, setAllEventSession, setBookmakerTeamRates, setActiveUsers, setEConfirmAuth, setWConfirmAuth, setAConfirmAuth } = expertMatchDetails.actions;
+export const {
+  setAllMatchs,
+  setAllBetRate,
+  setSelectedExpertMatch,
+  removeSelectedMatch,
+  setSessionAllBet,
+  setSessionBetId,
+  setAllEventSession,
+  setBookmakerTeamRates,
+  setActiveUsers,
+  setEConfirmAuth,
+  setWConfirmAuth,
+  setAConfirmAuth,
+  setCurrentOdd,
+} = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

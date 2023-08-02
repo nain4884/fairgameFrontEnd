@@ -2441,670 +2441,670 @@ const NewMatchScreen = () => {
   const [isSessionLock, setIsSessionLock] = useState(false);
   const [liveScoreData, setLiveScoreData] = useState();
   const [eventId, setEventId] = useState("");
-  useEffect(() => {
-    if (socket && socket.connected) {
-      socket.on("newMessage", (value) => {
-        console.log(value);
-      });
+  // useEffect(() => {
+  //   if (socket && socket.connected) {
+  //     socket.on("newMessage", (value) => {
+  //       console.log(value);
+  //     });
 
-      socket.onevent = async (packet) => {
-        if (packet.data[0] === "updateMatchActiveStatus") {
-          const value = packet.data[1];
-          setCurrentMatch((currentMatch) => {
-            if (currentMatch?.id === value?.matchId) {
-              return {
-                ...currentMatch,
-                apiBookMakerActive: value?.apiBookMakerActive,
-                apiMatchActive: value?.apiMatchActive,
-                apiSessionActive: value?.apiSessionActive,
-                manualBookMakerActive: value?.manualBookMakerActive,
-                manualSessionActive: value?.manualSessionActive,
-              };
-            }
-            return currentMatch;
-          });
-        }
+  //     socket.onevent = async (packet) => {
+  //       if (packet.data[0] === "updateMatchActiveStatus") {
+  //         const value = packet.data[1];
+  //         setCurrentMatch((currentMatch) => {
+  //           if (currentMatch?.id === value?.matchId) {
+  //             return {
+  //               ...currentMatch,
+  //               apiBookMakerActive: value?.apiBookMakerActive,
+  //               apiMatchActive: value?.apiMatchActive,
+  //               apiSessionActive: value?.apiSessionActive,
+  //               manualBookMakerActive: value?.manualBookMakerActive,
+  //               manualSessionActive: value?.manualSessionActive,
+  //             };
+  //           }
+  //           return currentMatch;
+  //         });
+  //       }
 
-        // manual bookmaker
-        if (packet.data[0] === "teamA_rate_user") {
-          const value = packet.data[1];
-          try {
-            setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0]?.id != value.betId) {
-                return currentMatches;
-              }
+  //       // manual bookmaker
+  //       if (packet.data[0] === "teamA_rate_user") {
+  //         const value = packet.data[1];
+  //         try {
+  //           setManualBookmakerData((currentMatches) => {
+  //             if (currentMatches[0]?.id != value.betId) {
+  //               return currentMatches;
+  //             }
 
-              // Update the match object at the specified index
-              const updatedMatch = {
-                ...currentMatches[0],
-                teamA_Back: value?.teamA_Back, // Update the teamA_Back value
-                teamA_lay: value?.teamA_lay, // Update the teamA_lay value
-                teamA_suspend:
-                  value?.teamA_suspend == false ? null : "suspended", // Update the teamA_susp
-                teamA_Ball: null,
-                teamB_Ball: null,
-                teamC_Ball: null,
-              };
+  //             // Update the match object at the specified index
+  //             const updatedMatch = {
+  //               ...currentMatches[0],
+  //               teamA_Back: value?.teamA_Back, // Update the teamA_Back value
+  //               teamA_lay: value?.teamA_lay, // Update the teamA_lay value
+  //               teamA_suspend:
+  //                 value?.teamA_suspend == false ? null : "suspended", // Update the teamA_susp
+  //               teamA_Ball: null,
+  //               teamB_Ball: null,
+  //               teamC_Ball: null,
+  //             };
 
-              // Create a new array with the updated match object
-              const updatedMatches = [
-                ...currentMatches.slice(0, 0),
-                updatedMatch,
-                ...currentMatches.slice(0 + 1),
-              ];
+  //             // Create a new array with the updated match object
+  //             const updatedMatches = [
+  //               ...currentMatches.slice(0, 0),
+  //               updatedMatch,
+  //               ...currentMatches.slice(0 + 1),
+  //             ];
 
-              // Return the new array as the updated state
-              return updatedMatches;
-            });
+  //             // Return the new array as the updated state
+  //             return updatedMatches;
+  //           });
 
-            console.log("manualBookmakerData 222:", manualBookmakerData);
-          } catch (err) {
-            console.log(err?.message);
-          }
-        }
-        if (packet.data[0] === "teamB_rate_user") {
-          const value = packet.data[1];
-          try {
-            setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0]?.id != value.betId) {
-                return currentMatches;
-              }
+  //           console.log("manualBookmakerData 222:", manualBookmakerData);
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
+  //       }
+  //       if (packet.data[0] === "teamB_rate_user") {
+  //         const value = packet.data[1];
+  //         try {
+  //           setManualBookmakerData((currentMatches) => {
+  //             if (currentMatches[0]?.id != value.betId) {
+  //               return currentMatches;
+  //             }
 
-              // Update the match object at the specified index
-              const updatedMatch = {
-                ...currentMatches[0],
-                teamB_Back: value?.teamB_Back, // Update the teamA_Back value
-                teamB_lay: value?.teamB_lay, // Update the teamA_lay value
-                teamB_suspend:
-                  value?.teamB_suspend == false ? null : "suspended", // Update the teamA_susp
-                teamA_Ball: null,
-                teamB_Ball: null,
-                teamC_Ball: null,
-              };
+  //             // Update the match object at the specified index
+  //             const updatedMatch = {
+  //               ...currentMatches[0],
+  //               teamB_Back: value?.teamB_Back, // Update the teamA_Back value
+  //               teamB_lay: value?.teamB_lay, // Update the teamA_lay value
+  //               teamB_suspend:
+  //                 value?.teamB_suspend == false ? null : "suspended", // Update the teamA_susp
+  //               teamA_Ball: null,
+  //               teamB_Ball: null,
+  //               teamC_Ball: null,
+  //             };
 
-              // Create a new array with the updated match object
-              const updatedMatches = [
-                ...currentMatches.slice(0, 0),
-                updatedMatch,
-                ...currentMatches.slice(0 + 1),
-              ];
+  //             // Create a new array with the updated match object
+  //             const updatedMatches = [
+  //               ...currentMatches.slice(0, 0),
+  //               updatedMatch,
+  //               ...currentMatches.slice(0 + 1),
+  //             ];
 
-              // Return the new array as the updated state
-              return updatedMatches;
-            });
-          } catch (err) {
-            console.log(err?.message);
-          }
-        }
-        if (packet.data[0] === "teamC_rate_user") {
-          const value = packet.data[1];
-          try {
-            setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0]?.id != value.betId) {
-                return currentMatches;
-              }
+  //             // Return the new array as the updated state
+  //             return updatedMatches;
+  //           });
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
+  //       }
+  //       if (packet.data[0] === "teamC_rate_user") {
+  //         const value = packet.data[1];
+  //         try {
+  //           setManualBookmakerData((currentMatches) => {
+  //             if (currentMatches[0]?.id != value.betId) {
+  //               return currentMatches;
+  //             }
 
-              // Update the match object at the specified index
-              const updatedMatch = {
-                ...currentMatches[0],
-                teamC_Back: value?.teamC_Back, // Update the teamA_Back value
-                teamC_lay: value?.teamC_lay, // Update the teamA_lay value
-                teamC_suspend:
-                  value?.teamC_suspend == false ? null : "suspended", // Update the teamA_susp
-                teamA_Ball: null,
-                teamB_Ball: null,
-                teamC_Ball: null,
-              };
+  //             // Update the match object at the specified index
+  //             const updatedMatch = {
+  //               ...currentMatches[0],
+  //               teamC_Back: value?.teamC_Back, // Update the teamA_Back value
+  //               teamC_lay: value?.teamC_lay, // Update the teamA_lay value
+  //               teamC_suspend:
+  //                 value?.teamC_suspend == false ? null : "suspended", // Update the teamA_susp
+  //               teamA_Ball: null,
+  //               teamB_Ball: null,
+  //               teamC_Ball: null,
+  //             };
 
-              // Create a new array with the updated match object
-              const updatedMatches = [
-                ...currentMatches.slice(0, 0),
-                updatedMatch,
-                ...currentMatches.slice(0 + 1),
-              ];
+  //             // Create a new array with the updated match object
+  //             const updatedMatches = [
+  //               ...currentMatches.slice(0, 0),
+  //               updatedMatch,
+  //               ...currentMatches.slice(0 + 1),
+  //             ];
 
-              // Return the new array as the updated state
-              return updatedMatches;
-            });
-          } catch (err) {
-            console.log(err?.message);
-          }
-        }
-        if (packet.data[0] === "updateRate_user") {
-          const value = packet.data[1];
-          try {
-            setManualBookmakerData((currentMatches) => {
-              if (currentMatches[0]?.id != value.betId) {
-                return currentMatches;
-              }
-              const updatedMatch = {
-                ...currentMatches[0],
-                teamA_Back: value?.teamA_Back,
-                teamA_lay: "",
-                teamB_Back: value?.teamB_Back,
-                teamB_lay: "",
-                teamC_Back: value?.teamC_Back,
-                teamC_lay: "",
-                // teamA_suspend: "live",
-                teamA_suspend: null, // Update the teamA_susp
-                teamB_suspend: null, // Update the teamA_susp
-                teamC_suspend: null, // Update the teamA_susp
-                // teamB_suspend: "live",
-                // teamC_suspend: "live",
-              };
+  //             // Return the new array as the updated state
+  //             return updatedMatches;
+  //           });
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
+  //       }
+  //       if (packet.data[0] === "updateRate_user") {
+  //         const value = packet.data[1];
+  //         try {
+  //           setManualBookmakerData((currentMatches) => {
+  //             if (currentMatches[0]?.id != value.betId) {
+  //               return currentMatches;
+  //             }
+  //             const updatedMatch = {
+  //               ...currentMatches[0],
+  //               teamA_Back: value?.teamA_Back,
+  //               teamA_lay: "",
+  //               teamB_Back: value?.teamB_Back,
+  //               teamB_lay: "",
+  //               teamC_Back: value?.teamC_Back,
+  //               teamC_lay: "",
+  //               // teamA_suspend: "live",
+  //               teamA_suspend: null, // Update the teamA_susp
+  //               teamB_suspend: null, // Update the teamA_susp
+  //               teamC_suspend: null, // Update the teamA_susp
+  //               // teamB_suspend: "live",
+  //               // teamC_suspend: "live",
+  //             };
 
-              // Create a new array with the updated match object
-              const updatedMatches = [
-                ...currentMatches.slice(0, 0),
-                updatedMatch,
-                ...currentMatches.slice(0 + 1),
-              ];
+  //             // Create a new array with the updated match object
+  //             const updatedMatches = [
+  //               ...currentMatches.slice(0, 0),
+  //               updatedMatch,
+  //               ...currentMatches.slice(0 + 1),
+  //             ];
 
-              // Return the new array as the updated state
-              return updatedMatches;
-            });
-          } catch (err) {
-            console.log(err?.message);
-          }
-        }
-        if (packet.data[0] === "teamA_suspend_user") {
-          const value = packet.data[1];
-          if (value.teamA_suspend == "Ball Started") {
-            try {
-              setManualBookmakerData((currentMatches) => {
-                // alert(JSON.stringify(currentMatches))
-                if (currentMatches[0]?.id != value.betId) {
-                  return currentMatches;
-                }
-                const updatedMatch = {
-                  ...currentMatches[0],
-                  teamA_suspend: "suspended",
-                  teamA_Ball: "ball",
-                  teamB_Ball: "ball",
-                  teamC_Ball: "ball",
-                };
-                const updatedMatches = [
-                  ...currentMatches.slice(0, 0),
-                  updatedMatch,
-                  ...currentMatches.slice(0 + 1),
-                ];
-                return updatedMatches;
-              });
-            } catch (err) {
-              console.log(err?.message);
-            }
-          } else {
-            try {
-              setManualBookmakerData((currentMatches) => {
-                // alert(JSON.stringify(currentMatches[0]));
-                if (currentMatches[0]?.id != value.betId) {
-                  return currentMatches;
-                }
-                const updatedMatch = {
-                  ...currentMatches[0],
-                  teamA_suspend: "suspended",
-                  teamA_Ball: null,
-                  teamB_Ball: null,
-                  teamC_Ball: null,
-                };
-                const updatedMatches = [
-                  ...currentMatches.slice(0, 0),
-                  updatedMatch,
-                  ...currentMatches.slice(0 + 1),
-                ];
-                return updatedMatches;
-              });
-            } catch (err) {
-              console.log(err?.message);
-            }
-          }
-        }
-        if (packet.data[0] === "teamB_suspend_user") {
-          const value = packet.data[1];
-          if (value.teamB_suspend == "Ball Started") {
-            try {
-              setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0]?.id != value.betId) {
-                  return currentMatches;
-                }
+  //             // Return the new array as the updated state
+  //             return updatedMatches;
+  //           });
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
+  //       }
+  //       if (packet.data[0] === "teamA_suspend_user") {
+  //         const value = packet.data[1];
+  //         if (value.teamA_suspend == "Ball Started") {
+  //           try {
+  //             setManualBookmakerData((currentMatches) => {
+  //               // alert(JSON.stringify(currentMatches))
+  //               if (currentMatches[0]?.id != value.betId) {
+  //                 return currentMatches;
+  //               }
+  //               const updatedMatch = {
+  //                 ...currentMatches[0],
+  //                 teamA_suspend: "suspended",
+  //                 teamA_Ball: "ball",
+  //                 teamB_Ball: "ball",
+  //                 teamC_Ball: "ball",
+  //               };
+  //               const updatedMatches = [
+  //                 ...currentMatches.slice(0, 0),
+  //                 updatedMatch,
+  //                 ...currentMatches.slice(0 + 1),
+  //               ];
+  //               return updatedMatches;
+  //             });
+  //           } catch (err) {
+  //             console.log(err?.message);
+  //           }
+  //         } else {
+  //           try {
+  //             setManualBookmakerData((currentMatches) => {
+  //               // alert(JSON.stringify(currentMatches[0]));
+  //               if (currentMatches[0]?.id != value.betId) {
+  //                 return currentMatches;
+  //               }
+  //               const updatedMatch = {
+  //                 ...currentMatches[0],
+  //                 teamA_suspend: "suspended",
+  //                 teamA_Ball: null,
+  //                 teamB_Ball: null,
+  //                 teamC_Ball: null,
+  //               };
+  //               const updatedMatches = [
+  //                 ...currentMatches.slice(0, 0),
+  //                 updatedMatch,
+  //                 ...currentMatches.slice(0 + 1),
+  //               ];
+  //               return updatedMatches;
+  //             });
+  //           } catch (err) {
+  //             console.log(err?.message);
+  //           }
+  //         }
+  //       }
+  //       if (packet.data[0] === "teamB_suspend_user") {
+  //         const value = packet.data[1];
+  //         if (value.teamB_suspend == "Ball Started") {
+  //           try {
+  //             setManualBookmakerData((currentMatches) => {
+  //               if (currentMatches[0]?.id != value.betId) {
+  //                 return currentMatches;
+  //               }
 
-                const updatedMatch = {
-                  ...currentMatches[0],
-                  teamB_suspend: "suspended",
-                  teamA_Ball: "ball",
-                  teamB_Ball: "ball",
-                  teamC_Ball: "ball",
-                };
-                const updatedMatches = [
-                  ...currentMatches.slice(0, 0),
-                  updatedMatch,
-                  ...currentMatches.slice(0 + 1),
-                ];
-                return updatedMatches;
-              });
-            } catch (err) {
-              console.log(err?.message);
-            }
-          } else {
-            try {
-              setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0]?.id != value.betId) {
-                  return currentMatches;
-                }
-                const updatedMatch = {
-                  ...currentMatches[0],
-                  teamB_suspend: "suspended",
-                  teamA_Ball: null,
-                  teamB_Ball: null,
-                  teamC_Ball: null,
-                };
-                const updatedMatches = [
-                  ...currentMatches.slice(0, 0),
-                  updatedMatch,
-                  ...currentMatches.slice(0 + 1),
-                ];
-                return updatedMatches;
-              });
-            } catch (err) {
-              console.log(err?.message);
-            }
-          }
-        }
-        if (packet.data[0] === "teamC_suspend_user") {
-          const value = packet.data[1];
-          if (value.teamC_suspend == "Ball Started") {
-            try {
-              setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0]?.id != value.betId) {
-                  return currentMatches;
-                }
-                const updatedMatch = {
-                  ...currentMatches[0],
-                  teamC_suspend: "suspended",
-                  teamA_Ball: "ball",
-                  teamB_Ball: "ball",
-                  teamC_Ball: "ball",
-                };
-                const updatedMatches = [
-                  ...currentMatches.slice(0, 0),
-                  updatedMatch,
-                  ...currentMatches.slice(0 + 1),
-                ];
-                return updatedMatches;
-              });
-            } catch (err) {
-              console.log(err?.message);
-            }
-          } else {
-            try {
-              setManualBookmakerData((currentMatches) => {
-                if (currentMatches[0]?.id != value.betId) {
-                  return currentMatches;
-                }
-                const updatedMatch = {
-                  ...currentMatches[0],
-                  teamC_suspend: "suspended",
-                  teamA_Ball: null,
-                  teamB_Ball: null,
-                  teamC_Ball: null,
-                };
-                const updatedMatches = [
-                  ...currentMatches.slice(0, 0),
-                  updatedMatch,
-                  ...currentMatches.slice(0 + 1),
-                ];
-                return updatedMatches;
-              });
-            } catch (err) {
-              console.log(err?.message);
-            }
-          }
-        }
+  //               const updatedMatch = {
+  //                 ...currentMatches[0],
+  //                 teamB_suspend: "suspended",
+  //                 teamA_Ball: "ball",
+  //                 teamB_Ball: "ball",
+  //                 teamC_Ball: "ball",
+  //               };
+  //               const updatedMatches = [
+  //                 ...currentMatches.slice(0, 0),
+  //                 updatedMatch,
+  //                 ...currentMatches.slice(0 + 1),
+  //               ];
+  //               return updatedMatches;
+  //             });
+  //           } catch (err) {
+  //             console.log(err?.message);
+  //           }
+  //         } else {
+  //           try {
+  //             setManualBookmakerData((currentMatches) => {
+  //               if (currentMatches[0]?.id != value.betId) {
+  //                 return currentMatches;
+  //               }
+  //               const updatedMatch = {
+  //                 ...currentMatches[0],
+  //                 teamB_suspend: "suspended",
+  //                 teamA_Ball: null,
+  //                 teamB_Ball: null,
+  //                 teamC_Ball: null,
+  //               };
+  //               const updatedMatches = [
+  //                 ...currentMatches.slice(0, 0),
+  //                 updatedMatch,
+  //                 ...currentMatches.slice(0 + 1),
+  //               ];
+  //               return updatedMatches;
+  //             });
+  //           } catch (err) {
+  //             console.log(err?.message);
+  //           }
+  //         }
+  //       }
+  //       if (packet.data[0] === "teamC_suspend_user") {
+  //         const value = packet.data[1];
+  //         if (value.teamC_suspend == "Ball Started") {
+  //           try {
+  //             setManualBookmakerData((currentMatches) => {
+  //               if (currentMatches[0]?.id != value.betId) {
+  //                 return currentMatches;
+  //               }
+  //               const updatedMatch = {
+  //                 ...currentMatches[0],
+  //                 teamC_suspend: "suspended",
+  //                 teamA_Ball: "ball",
+  //                 teamB_Ball: "ball",
+  //                 teamC_Ball: "ball",
+  //               };
+  //               const updatedMatches = [
+  //                 ...currentMatches.slice(0, 0),
+  //                 updatedMatch,
+  //                 ...currentMatches.slice(0 + 1),
+  //               ];
+  //               return updatedMatches;
+  //             });
+  //           } catch (err) {
+  //             console.log(err?.message);
+  //           }
+  //         } else {
+  //           try {
+  //             setManualBookmakerData((currentMatches) => {
+  //               if (currentMatches[0]?.id != value.betId) {
+  //                 return currentMatches;
+  //               }
+  //               const updatedMatch = {
+  //                 ...currentMatches[0],
+  //                 teamC_suspend: "suspended",
+  //                 teamA_Ball: null,
+  //                 teamB_Ball: null,
+  //                 teamC_Ball: null,
+  //               };
+  //               const updatedMatches = [
+  //                 ...currentMatches.slice(0, 0),
+  //                 updatedMatch,
+  //                 ...currentMatches.slice(0 + 1),
+  //               ];
+  //               return updatedMatches;
+  //             });
+  //           } catch (err) {
+  //             console.log(err?.message);
+  //           }
+  //         }
+  //       }
 
-        if (packet.data[0] === "updateSessionRate_user") {
-          const value = packet.data[1];
-          try {
-            setCurrentMatch((currentMatch) => {
-              if (currentMatch?.id !== value?.match_id) {
-                // If the new bet doesn't belong to the current match, return the current state
-                return currentMatch;
-              }
-              // Update the bettings array in the current match object
-              const updatedBettings = currentMatch?.bettings?.map((betting) => {
-                if (betting.id === value.betId) {
-                  return {
-                    ...betting,
-                    ...value,
-                  };
-                } else if (
-                  betting?.id === value?.betId &&
-                  value.sessionBet === false
-                ) {
-                  return {
-                    ...betting,
-                    ...value,
-                  };
-                }
-                return betting;
-              });
-              var newUpdatedValue = updatedBettings;
-              const bettingsIds = updatedBettings?.map(
-                (betting) => betting?.id
-              );
-              if (!bettingsIds?.includes(value.betId)) {
-                newUpdatedValue = [...newUpdatedValue, value];
-              }
+  //       if (packet.data[0] === "updateSessionRate_user") {
+  //         const value = packet.data[1];
+  //         try {
+  //           setCurrentMatch((currentMatch) => {
+  //             if (currentMatch?.id !== value?.match_id) {
+  //               // If the new bet doesn't belong to the current match, return the current state
+  //               return currentMatch;
+  //             }
+  //             // Update the bettings array in the current match object
+  //             const updatedBettings = currentMatch?.bettings?.map((betting) => {
+  //               if (betting.id === value.betId) {
+  //                 return {
+  //                   ...betting,
+  //                   ...value,
+  //                 };
+  //               } else if (
+  //                 betting?.id === value?.betId &&
+  //                 value.sessionBet === false
+  //               ) {
+  //                 return {
+  //                   ...betting,
+  //                   ...value,
+  //                 };
+  //               }
+  //               return betting;
+  //             });
+  //             var newUpdatedValue = updatedBettings;
+  //             const bettingsIds = updatedBettings?.map(
+  //               (betting) => betting?.id
+  //             );
+  //             if (!bettingsIds?.includes(value.betId)) {
+  //               newUpdatedValue = [...newUpdatedValue, value];
+  //             }
 
-              // Return the updated current match object
-              return {
-                ...currentMatch,
-                bettings: newUpdatedValue,
-              };
-            });
-          } catch (err) {
-            console.log(err?.message);
-          }
-        }
+  //             // Return the updated current match object
+  //             return {
+  //               ...currentMatch,
+  //               bettings: newUpdatedValue,
+  //             };
+  //           });
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
+  //       }
 
-        if (packet.data[0] === "newBetAdded") {
-          const value = packet.data[1];
-          // matchId = value?.match_id;
-          try {
-            setCurrentMatch((currentMatch) => {
-              if (currentMatch?.id !== value?.match_id) {
-                // If the new bet doesn't belong to the current match, return the current state
-                return currentMatch;
-              }
+  //       if (packet.data[0] === "newBetAdded") {
+  //         const value = packet.data[1];
+  //         // matchId = value?.match_id;
+  //         try {
+  //           setCurrentMatch((currentMatch) => {
+  //             if (currentMatch?.id !== value?.match_id) {
+  //               // If the new bet doesn't belong to the current match, return the current state
+  //               return currentMatch;
+  //             }
 
-              // Update the bettings array in the current match object
-              const updatedBettings = currentMatch?.bettings?.map((betting) => {
-                if (betting.id === value.id && value.sessionBet) {
-                  // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                  return {
-                    ...betting,
-                    ...value,
-                  };
-                } else if (
-                  betting?.id === value?.id &&
-                  value.sessionBet === false
-                ) {
-                  return {
-                    ...betting,
-                    ...value,
-                  };
-                }
-                return betting;
-              });
-              var newUpdatedValue = updatedBettings;
-              const bettingsIds = updatedBettings?.map(
-                (betting) => betting?.id
-              );
+  //             // Update the bettings array in the current match object
+  //             const updatedBettings = currentMatch?.bettings?.map((betting) => {
+  //               if (betting.id === value.id && value.sessionBet) {
+  //                 // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+  //                 return {
+  //                   ...betting,
+  //                   ...value,
+  //                 };
+  //               } else if (
+  //                 betting?.id === value?.id &&
+  //                 value.sessionBet === false
+  //               ) {
+  //                 return {
+  //                   ...betting,
+  //                   ...value,
+  //                 };
+  //               }
+  //               return betting;
+  //             });
+  //             var newUpdatedValue = updatedBettings;
+  //             const bettingsIds = updatedBettings?.map(
+  //               (betting) => betting?.id
+  //             );
 
-              if (!bettingsIds?.includes(value.id)) {
-                // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
+  //             if (!bettingsIds?.includes(value.id)) {
+  //               // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
 
-                newUpdatedValue = [...newUpdatedValue, value];
-              } else {
-                if (
-                  sessionOffline.includes(value.id) &&
-                  value.betStatus === 1
-                ) {
-                  const newres = sessionOffline.filter((id) => id !== value.id);
-                  sessionOffline = newres;
-                }
-                if (value?.betStatus === 0) {
-                  sessionOffline.push(value.id);
-                }
-              }
+  //               newUpdatedValue = [...newUpdatedValue, value];
+  //             } else {
+  //               if (
+  //                 sessionOffline.includes(value.id) &&
+  //                 value.betStatus === 1
+  //               ) {
+  //                 const newres = sessionOffline.filter((id) => id !== value.id);
+  //                 sessionOffline = newres;
+  //               }
+  //               if (value?.betStatus === 0) {
+  //                 sessionOffline.push(value.id);
+  //               }
+  //             }
 
-              // Return the updated current match object
-              return {
-                ...currentMatch,
-                bettings: newUpdatedValue,
-              };
-            });
-          } catch (err) {
-            console.log(err?.message);
-          }
-        }
+  //             // Return the updated current match object
+  //             return {
+  //               ...currentMatch,
+  //               bettings: newUpdatedValue,
+  //             };
+  //           });
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
+  //       }
 
-        if (packet.data[0] === "matchOddRateLive") {
-          // Bookmaker Market live and stop disable condition
-          const value = packet.data[1];
-          setCurrentMatch((prev) => {
-            if (prev?.id === value?.matchId) {
-              return {
-                ...prev,
-                matchOddRateLive: value?.matchOddLive,
-              };
-            }
-            return prev;
-          });
-        }
-        if (packet.data[0] === "bookMakerRateLive") {
-          // Bookmaker Market live and stop disable condition
-          const value = packet.data[1];
-          setCurrentMatch((prev) => {
-            if (prev?.id === value?.matchId) {
-              return {
-                ...prev,
-                bookMakerRateLive: value?.bookMakerLive,
-              };
-            }
-            return prev;
-          });
-        }
+  //       if (packet.data[0] === "matchOddRateLive") {
+  //         // Bookmaker Market live and stop disable condition
+  //         const value = packet.data[1];
+  //         setCurrentMatch((prev) => {
+  //           if (prev?.id === value?.matchId) {
+  //             return {
+  //               ...prev,
+  //               matchOddRateLive: value?.matchOddLive,
+  //             };
+  //           }
+  //           return prev;
+  //         });
+  //       }
+  //       if (packet.data[0] === "bookMakerRateLive") {
+  //         // Bookmaker Market live and stop disable condition
+  //         const value = packet.data[1];
+  //         setCurrentMatch((prev) => {
+  //           if (prev?.id === value?.matchId) {
+  //             return {
+  //               ...prev,
+  //               bookMakerRateLive: value?.bookMakerLive,
+  //             };
+  //           }
+  //           return prev;
+  //         });
+  //       }
 
-        if (packet.data[0] === "session_bet") {
-          const data = packet.data[1];
-          try {
-            // setSessionExposure(data?.sessionExposure);
-            setCurrentMatch((currentMatch) => {
-              const updatedBettings = currentMatch?.bettings?.map((betting) => {
-                if (betting?.id === data?.betPlaceData?.bet_id) {
-                  // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                  let profitLoss = data?.profitLoss;
-                  return {
-                    ...betting,
-                    profitLoss: profitLoss,
-                  };
-                }
-                return betting;
-              });
-              // Return the updated current match object
-              return {
-                ...currentMatch,
-                bettings: updatedBettings,
-              };
-            });
-          } catch (err) {
-            console.log(err?.message);
-          }
+  //       if (packet.data[0] === "session_bet") {
+  //         const data = packet.data[1];
+  //         try {
+  //           // setSessionExposure(data?.sessionExposure);
+  //           setCurrentMatch((currentMatch) => {
+  //             const updatedBettings = currentMatch?.bettings?.map((betting) => {
+  //               if (betting?.id === data?.betPlaceData?.bet_id) {
+  //                 // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+  //                 let profitLoss = data?.profitLoss;
+  //                 return {
+  //                   ...betting,
+  //                   profitLoss: profitLoss,
+  //                 };
+  //               }
+  //               return betting;
+  //             });
+  //             // Return the updated current match object
+  //             return {
+  //               ...currentMatch,
+  //               bettings: updatedBettings,
+  //             };
+  //           });
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
 
-          setSingleIObtes((prev) => {
-            const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-            return [
-              {
-                ...data.betPlaceData,
-                deleted_reason: data?.betPlaceData?.deleted_reason || null,
-              },
-              ...updatedPrev,
-            ];
-          });
-          setSessionBets((prev) => {
-            const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-            return [
-              {
-                ...data.betPlaceData,
-                deleted_reason: data?.betPlaceData?.deleted_reason || null,
-              },
-              ...updatedPrev,
-            ];
-          });
-        }
+  //         setSingleIObtes((prev) => {
+  //           const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
+  //           return [
+  //             {
+  //               ...data.betPlaceData,
+  //               deleted_reason: data?.betPlaceData?.deleted_reason || null,
+  //             },
+  //             ...updatedPrev,
+  //           ];
+  //         });
+  //         setSessionBets((prev) => {
+  //           const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
+  //           return [
+  //             {
+  //               ...data.betPlaceData,
+  //               deleted_reason: data?.betPlaceData?.deleted_reason || null,
+  //             },
+  //             ...updatedPrev,
+  //           ];
+  //         });
+  //       }
 
-        if (packet.data[0] === "match_bet") {
-          const data = packet.data[1];
-          if (!isHandled) {
-            setIsHandled(true);
-            try {
-              if (data) {
-                const body = {
-                  id: data?.betPlaceData?.id,
-                  isActive: true,
-                  createAt: data?.betPlaceData?.createAt,
-                  updateAt: data?.betPlaceData?.createAt,
-                  createdBy: null,
-                  deletedAt: null,
-                  user_id: null,
-                  match_id: data?.betPlaceData?.match_id,
-                  bet_id: data?.betPlaceData?.bet_id,
-                  result: "pending",
-                  team_bet: data?.betPlaceData?.team_bet,
-                  odds: data?.betPlaceData?.odds,
-                  win_amount: null,
-                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                  loss_amount: null,
-                  bet_type: data?.betPlaceData?.bet_type,
-                  myStack: data?.betPlaceData?.myStack,
-                  userName: data?.betPlaceData?.userName,
-                  country: null,
-                  ip_address: null,
-                  rate: null,
-                  marketType: data?.betPlaceData?.marketType,
-                  amount:
-                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                };
-                setSingleIObtes((prev) => [body, ...prev]);
-                setCurrentMatch((prev) => {
-                  if (prev?.id === data?.betPlaceData?.match_id) {
-                    return {
-                      ...prev,
-                      teamA_rate: data?.teamA_rate,
-                      teamB_rate: data?.teamB_rate,
-                      teamC_rate: data?.teamC_rate,
-                    };
-                  }
-                  return prev;
-                });
-              }
-            } catch (e) {
-              console.log("error", e?.message);
-            } finally {
-              setIsHandled(false);
-            }
-          }
-        }
-        if (packet.data[0] === "marketBlock") {
-          const value = packet.data[1];
-          setCurrentMatch((currentMatch) => {
-            if (currentMatch?.id !== value?.match_id) {
-              // If the new bet doesn't belong to the current match, return the current state
-              return currentMatch;
-            }
+  //       if (packet.data[0] === "match_bet") {
+  //         const data = packet.data[1];
+  //         if (!isHandled) {
+  //           setIsHandled(true);
+  //           try {
+  //             if (data) {
+  //               const body = {
+  //                 id: data?.betPlaceData?.id,
+  //                 isActive: true,
+  //                 createAt: data?.betPlaceData?.createAt,
+  //                 updateAt: data?.betPlaceData?.createAt,
+  //                 createdBy: null,
+  //                 deletedAt: null,
+  //                 user_id: null,
+  //                 match_id: data?.betPlaceData?.match_id,
+  //                 bet_id: data?.betPlaceData?.bet_id,
+  //                 result: "pending",
+  //                 team_bet: data?.betPlaceData?.team_bet,
+  //                 odds: data?.betPlaceData?.odds,
+  //                 win_amount: null,
+  //                 deleted_reason: data?.betPlaceData?.deleted_reason || null,
+  //                 loss_amount: null,
+  //                 bet_type: data?.betPlaceData?.bet_type,
+  //                 myStack: data?.betPlaceData?.myStack,
+  //                 userName: data?.betPlaceData?.userName,
+  //                 country: null,
+  //                 ip_address: null,
+  //                 rate: null,
+  //                 marketType: data?.betPlaceData?.marketType,
+  //                 amount:
+  //                   data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+  //               };
+  //               setSingleIObtes((prev) => [body, ...prev]);
+  //               setCurrentMatch((prev) => {
+  //                 if (prev?.id === data?.betPlaceData?.match_id) {
+  //                   return {
+  //                     ...prev,
+  //                     teamA_rate: data?.teamA_rate,
+  //                     teamB_rate: data?.teamB_rate,
+  //                     teamC_rate: data?.teamC_rate,
+  //                   };
+  //                 }
+  //                 return prev;
+  //               });
+  //             }
+  //           } catch (e) {
+  //             console.log("error", e?.message);
+  //           } finally {
+  //             setIsHandled(false);
+  //           }
+  //         }
+  //       }
+  //       if (packet.data[0] === "marketBlock") {
+  //         const value = packet.data[1];
+  //         setCurrentMatch((currentMatch) => {
+  //           if (currentMatch?.id !== value?.match_id) {
+  //             // If the new bet doesn't belong to the current match, return the current state
+  //             return currentMatch;
+  //           }
 
-            // Update the block value of BOOKMAKER
-            var updatedBlockMarket = {};
-            if (value?.marketType == "MATCH ODDS") {
-              updatedBlockMarket = {
-                ...currentMatch.blockMarket,
-                MATCH_ODDS: {
-                  ...currentMatch.blockMarket.MATCH_ODDS,
-                  block: value?.marketLock,
-                },
-              };
-            } else if (value?.marketType == "MANUAL BOOKMAKER") {
-              updatedBlockMarket = {
-                ...currentMatch.blockMarket,
-                MANUALBOOKMAKER: {
-                  ...currentMatch.blockMarket.MANUALBOOKMAKER,
-                  block: value?.marketLock,
-                },
-              };
-            } else if (value?.marketType == "BOOKMAKER") {
-              updatedBlockMarket = {
-                ...currentMatch.blockMarket,
-                BOOKMAKER: {
-                  ...currentMatch.blockMarket.BOOKMAKER,
-                  block: value?.marketLock,
-                },
-              };
-            } else if (value?.marketType == "SESSION") {
-              updatedBlockMarket = {
-                ...currentMatch.blockMarket,
-                SESSION: {
-                  ...currentMatch.blockMarket.SESSION,
-                  block: value?.marketLock,
-                },
-              };
-            }
+  //           // Update the block value of BOOKMAKER
+  //           var updatedBlockMarket = {};
+  //           if (value?.marketType == "MATCH ODDS") {
+  //             updatedBlockMarket = {
+  //               ...currentMatch.blockMarket,
+  //               MATCH_ODDS: {
+  //                 ...currentMatch.blockMarket.MATCH_ODDS,
+  //                 block: value?.marketLock,
+  //               },
+  //             };
+  //           } else if (value?.marketType == "MANUAL BOOKMAKER") {
+  //             updatedBlockMarket = {
+  //               ...currentMatch.blockMarket,
+  //               MANUALBOOKMAKER: {
+  //                 ...currentMatch.blockMarket.MANUALBOOKMAKER,
+  //                 block: value?.marketLock,
+  //               },
+  //             };
+  //           } else if (value?.marketType == "BOOKMAKER") {
+  //             updatedBlockMarket = {
+  //               ...currentMatch.blockMarket,
+  //               BOOKMAKER: {
+  //                 ...currentMatch.blockMarket.BOOKMAKER,
+  //                 block: value?.marketLock,
+  //               },
+  //             };
+  //           } else if (value?.marketType == "SESSION") {
+  //             updatedBlockMarket = {
+  //               ...currentMatch.blockMarket,
+  //               SESSION: {
+  //                 ...currentMatch.blockMarket.SESSION,
+  //                 block: value?.marketLock,
+  //               },
+  //             };
+  //           }
 
-            // Return the updated current match object
-            return {
-              ...currentMatch,
-              blockMarket: updatedBlockMarket,
-            };
-          });
-        }
-        if (packet.data[0] === "changeOwnerForBlock") {
-          const value = packet.data[1];
-          // alert(value?.marketLock)
-          setCurrentMatch((currentMatch) => {
-            if (currentMatch?.id !== value?.match_id) {
-              // If the new bet doesn't belong to the current match, return the current state
-              return currentMatch;
-            }
+  //           // Return the updated current match object
+  //           return {
+  //             ...currentMatch,
+  //             blockMarket: updatedBlockMarket,
+  //           };
+  //         });
+  //       }
+  //       if (packet.data[0] === "changeOwnerForBlock") {
+  //         const value = packet.data[1];
+  //         // alert(value?.marketLock)
+  //         setCurrentMatch((currentMatch) => {
+  //           if (currentMatch?.id !== value?.match_id) {
+  //             // If the new bet doesn't belong to the current match, return the current state
+  //             return currentMatch;
+  //           }
 
-            // Update the block value of BOOKMAKER
-            var updatedBlockMarket = {};
-            if (value?.marketType == "MATCH ODDS") {
-              updatedBlockMarket = {
-                ...currentMatch.blockMarket,
-                MATCH_ODDS: {
-                  ...currentMatch.blockMarket.MATCH_ODDS,
-                  // block: value?.marketLock,
-                  self: value?.marketLock ? false : true,
-                },
-              };
-            } else if (value?.marketType == "MANUAL BOOKMAKER") {
-              updatedBlockMarket = {
-                ...currentMatch.blockMarket,
-                MANUALBOOKMAKER: {
-                  ...currentMatch.blockMarket.MANUALBOOKMAKER,
-                  // block: value?.marketLock,
-                  self: value?.marketLock ? false : true,
-                },
-              };
-            } else if (value?.marketType == "BOOKMAKER") {
-              updatedBlockMarket = {
-                ...currentMatch.blockMarket,
-                BOOKMAKER: {
-                  ...currentMatch.blockMarket.BOOKMAKER,
-                  // block: value?.marketLock,
-                  self: value?.marketLock ? false : true,
-                },
-              };
-            } else if (value?.marketType == "SESSION") {
-              updatedBlockMarket = {
-                ...currentMatch.blockMarket,
-                SESSION: {
-                  ...currentMatch.blockMarket.SESSION,
-                  // block: value?.marketLock,
-                  self: value?.marketLock ? false : true,
-                },
-              };
-            }
+  //           // Update the block value of BOOKMAKER
+  //           var updatedBlockMarket = {};
+  //           if (value?.marketType == "MATCH ODDS") {
+  //             updatedBlockMarket = {
+  //               ...currentMatch.blockMarket,
+  //               MATCH_ODDS: {
+  //                 ...currentMatch.blockMarket.MATCH_ODDS,
+  //                 // block: value?.marketLock,
+  //                 self: value?.marketLock ? false : true,
+  //               },
+  //             };
+  //           } else if (value?.marketType == "MANUAL BOOKMAKER") {
+  //             updatedBlockMarket = {
+  //               ...currentMatch.blockMarket,
+  //               MANUALBOOKMAKER: {
+  //                 ...currentMatch.blockMarket.MANUALBOOKMAKER,
+  //                 // block: value?.marketLock,
+  //                 self: value?.marketLock ? false : true,
+  //               },
+  //             };
+  //           } else if (value?.marketType == "BOOKMAKER") {
+  //             updatedBlockMarket = {
+  //               ...currentMatch.blockMarket,
+  //               BOOKMAKER: {
+  //                 ...currentMatch.blockMarket.BOOKMAKER,
+  //                 // block: value?.marketLock,
+  //                 self: value?.marketLock ? false : true,
+  //               },
+  //             };
+  //           } else if (value?.marketType == "SESSION") {
+  //             updatedBlockMarket = {
+  //               ...currentMatch.blockMarket,
+  //               SESSION: {
+  //                 ...currentMatch.blockMarket.SESSION,
+  //                 // block: value?.marketLock,
+  //                 self: value?.marketLock ? false : true,
+  //               },
+  //             };
+  //           }
 
-            // Return the updated current match object
-            return {
-              ...currentMatch,
-              blockMarket: updatedBlockMarket,
-            };
-          });
-        }
-      };
-    }
-  }, [socket]);
+  //           // Return the updated current match object
+  //           return {
+  //             ...currentMatch,
+  //             blockMarket: updatedBlockMarket,
+  //           };
+  //         });
+  //       }
+  //     };
+  //   }
+  // }, [socket]);
 
   useEffect(() => {
     try {

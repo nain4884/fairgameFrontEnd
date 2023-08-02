@@ -140,6 +140,8 @@ export const SocketProvider = ({ children }) => {
     });
 
   const localUserServerEvents = (localSocket, microSocket) => {
+    
+
     localSocket.on("logoutUserForce", (event) => {
       try {
         // ResetAllState()
@@ -284,7 +286,6 @@ export const SocketProvider = ({ children }) => {
 
     localSocket.on("match_bet", (event) => {
       const data = event;
-
       try {
         if (data) {
           const body = {
@@ -509,8 +510,10 @@ export const SocketProvider = ({ children }) => {
       }
     });
 
+    // The `message` event listener is not being overridden.
     localSocket.on("matchOddRateLive", (event) => {
       const value = event;
+      console.log("matchOddRateLive", event);
       try {
         setCurrentMatch((prev) => {
           if (prev?.id === value?.matchId) {
@@ -1006,8 +1009,6 @@ export const SocketProvider = ({ children }) => {
     });
   };
 
-  const localExpertServerEvents = () => {};
-
   const localServerSocket = () => {
     // if (!socket && checkSocket !== "true") {
     const newSocket = io(`${apiBasePath}`, {
@@ -1033,6 +1034,13 @@ export const SocketProvider = ({ children }) => {
     // if (!socketMicro && checkMicroSocket !== "true") {
     // if (role === "role4") {
     localUserServerEvents(newSocket);
+    // }
+
+    // if (role === "role3") {
+    //   alert(role);
+    //   localExpertServerEvents(newSocket);
+    // }
+
     // } else if (role === "role2") {
     // localExpertServerEvents(newSocket);
     // }

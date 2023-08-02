@@ -59,59 +59,59 @@ const MatchListComp = () => {
   function callPage(e, value) {
     setCurrentPage(parseInt(value));
   }
-  useEffect(() => {
-    if (socket && socket.connected) {
-      socket.onevent = async (packet) => {
-        if (packet.data[0] === "logoutUserForce") {
-          dispatch(removeManualBookMarkerRates());
-          dispatch(removeCurrentUser());
-          dispatch(logout({ roleType: "role3" }));
-          dispatch(removeSelectedMatch());
-          setGlobalStore((prev) => ({
-            ...prev,
-            expertJWT: "",
-            // isSession: true,
-          }));
-          // await axios.get("auth/logout");
-          removeSocket();
-          navigate("/expert");
-          socketMicro.disconnect();
-          socket.disconnect();
-        }
+  // useEffect(() => {
+  //   if (socket && socket.connected) {
+  //     socket.onevent = async (packet) => {
+  //       if (packet.data[0] === "logoutUserForce") {
+  //         dispatch(removeManualBookMarkerRates());
+  //         dispatch(removeCurrentUser());
+  //         dispatch(logout({ roleType: "role3" }));
+  //         dispatch(removeSelectedMatch());
+  //         setGlobalStore((prev) => ({
+  //           ...prev,
+  //           expertJWT: "",
+  //           // isSession: true,
+  //         }));
+  //         // await axios.get("auth/logout");
+  //         removeSocket();
+  //         navigate("/expert");
+  //         socketMicro.disconnect();
+  //         socket.disconnect();
+  //       }
 
-        if (packet.data[0] === "newMatchAdded") {
-          getAllMatch();
-        }
-        if (packet.data[0] === "resultDeclareForBet") {
-          getAllMatch();
-        }
-        if (packet.data[0] === "newBetAdded") {
-          const value = packet.data[1];
-          try {
-            const updatedAllEventSession = allEventSession.map(
-              (currentMatch) => {
-                if (currentMatch.id === value?.match_id) {
-                  const betObj = {
-                    id: value.id,
-                    bet_condition: value.bet_condition,
-                  };
-                  const newBettings = [...currentMatch.bettings, betObj];
-                  return {
-                    ...currentMatch,
-                    bettings: newBettings,
-                  };
-                }
-                return currentMatch;
-              }
-            );
-            dispatch(setAllEventSession(updatedAllEventSession));
-          } catch (err) {
-            console.log(err?.message);
-          }
-        }
-      };
-    }
-  }, [socket]);
+  //       if (packet.data[0] === "newMatchAdded") {
+  //         getAllMatch();
+  //       }
+  //       if (packet.data[0] === "resultDeclareForBet") {
+  //         getAllMatch();
+  //       }
+  //       if (packet.data[0] === "newBetAdded") {
+  //         const value = packet.data[1];
+  //         try {
+  //           const updatedAllEventSession = allEventSession.map(
+  //             (currentMatch) => {
+  //               if (currentMatch.id === value?.match_id) {
+  //                 const betObj = {
+  //                   id: value.id,
+  //                   bet_condition: value.bet_condition,
+  //                 };
+  //                 const newBettings = [...currentMatch.bettings, betObj];
+  //                 return {
+  //                   ...currentMatch,
+  //                   bettings: newBettings,
+  //                 };
+  //               }
+  //               return currentMatch;
+  //             }
+  //           );
+  //           dispatch(setAllEventSession(updatedAllEventSession));
+  //         } catch (err) {
+  //           console.log(err?.message);
+  //         }
+  //       }
+  //     };
+  //   }
+  // }, [socket]);
   // const currentElements = allMatch;
   return (
     <Box

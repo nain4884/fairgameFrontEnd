@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ButtonWithSwitch from "./ButtonWithSwitch";
 import { toast } from "react-toastify";
+import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
 
 const Row = ({ index, containerStyle, data }) => {
   const dispatch = useDispatch();
@@ -82,6 +83,9 @@ const Row = ({ index, containerStyle, data }) => {
       matchId: data.id,
       ...defaultMatchStatus,
     };
+
+    sessionStorage.setItem("matchId",data.id)
+    dispatch(setAllBetRate([]));
     try {
       let response = await axios.post(
         `/game-match/updateMatchActiveStatus`,
