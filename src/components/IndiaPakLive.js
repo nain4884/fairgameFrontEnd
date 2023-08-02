@@ -183,19 +183,24 @@ const IndiaPakLive = React.forwardRef(
                   if (currentMatch.id === value?.match_id) {
                     const filteredBettings = currentMatch.bettings.filter(
                       (bet) => bet.id !== value?.betId
-                      );
-                      getSessionResult(currentMatch.id)
-                      return {
-                        ...currentMatch,
-                        bettings: filteredBettings,
-                      };
-                      
+                    );
+                    getSessionResult(currentMatch.id);
+                    return {
+                      ...currentMatch,
+                      bettings: filteredBettings,
+                    };
                   }
                   return currentMatch;
                 }
               );
-             
+
               dispatch(setAllEventSession(updatedAllEventSession));
+              setBetId(value?.betId);
+              setCheckBetId(true);
+              setIsCreateSession(true);
+              dispatch(setSessionBetId(value?.betId));
+              setVisible(false);
+              setIsDisable(true);
             } catch (err) {
               console.log(err?.message);
             }
@@ -259,7 +264,7 @@ const IndiaPakLive = React.forwardRef(
           }
         };
       }
-    }, [socket, betId, sessionAllBet]);
+    }, [socket, betId, sessionAllBet, allEventSession]);
 
     console.log(Detail, "details");
     useEffect(() => {
@@ -406,7 +411,6 @@ const IndiaPakLive = React.forwardRef(
         console.log(err?.message);
       }
     };
-
     return (
       <Box
         sx={{
