@@ -67,6 +67,7 @@ const MenutItemsComponent = ({
             paddingY: "5px",
           }}
         >
+        {console.log("allLiveEventSession", allLiveEventSession)} 
           {allLiveEventSession.map((event) => {
             if (event.id == x.id)
               return (
@@ -149,6 +150,48 @@ const MenutItemsComponent = ({
             <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
               Add Bookmaker
             </Typography>
+
+           {allLiveEventSession.map((event) => {
+            if (event.id == x.id)
+            console.log("event", event)
+              return (
+                <>
+                  
+                  {event?.bookmakers.map((element) => {
+                    return (
+                      <Box
+                        // onClick={(e) => {
+                        //   if (activeUser == "1") {
+                        //     dispatch(setSessionBetId(""));
+                        //     navigate("/expert/live", {
+                        //       state: {
+                        //         createSession: false,
+                        //         match: x,
+                        //         sessionEvent: element,
+                        //       },
+                        //     });
+                        //   } else if (activeUser == "2") {
+                        //     navigate("/expert/market");
+                        //   }
+                        //   handleClose();
+                        // }}
+                        sx={{ marginLeft: "10px", marginTop: "3px" }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: "12px",
+                            marginTop: "3px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {element.marketName}
+                        </Typography>
+                      </Box>
+                    );
+                  })}
+                </>
+              );
+          })}
             <StyledImage
               src={ArrowLeft}
               sx={{ width: "15px", height: "10px", marginLeft: "10px" }}
