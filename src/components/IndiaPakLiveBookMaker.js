@@ -15,7 +15,8 @@ import { setBookmakerTeamRates } from "../newStore/reducers/expertMatchDetails";
 
 
 
-export default function IndiaPakLiveBookMaker({ add, match }) {
+export default function IndiaPakLiveBookMaker({ add, match,Bid }) {
+    console.log('id>>>>>>>>>>>32456435645',match)
     const [visible, setVisible] = useState(false)
     const [visible1, setVisible1] = useState(false)
 
@@ -97,6 +98,8 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                 if (response?.data?.data?.length === 0) {
                     doSubmitSessionBet(id);
                 } else {
+                console.log(response,'secondone');
+
                     setBetId(response?.data?.data[0].id);
                     setTeamARate(response?.data?.data[0].teamA_Back);
                     setTeamALayValue(response?.data?.data[0].teamA_lay);
@@ -137,6 +140,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             }
             try {
                 let response = await axios.post(`/betting/addBetting`, payload);
+                console.log(response,'firstone');
                 setBetId(response?.data?.data?.id)
             } catch (e) {
                 console.log(e.response.data.message);
@@ -325,6 +329,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
 
             if (!teamSuspend.teamA_suspend || !teamSuspend.teamB_suspend || !teamSuspend.teamC_suspend) {
                 socket.emit("updateRate", {
+                    id:Bid,
                     matchId: match?.id,
                     betId: betId,
                     teamA_lay: "",
@@ -627,6 +632,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     let data = {};
                     if (match?.teamC) {
                         data = {
+                            id:Bid,
                             matchId: match?.id,
                             betId: betId,
                             teamA_Back: targetValue,
@@ -642,6 +648,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         }
                     } else {
                         data = {
+                            id:Bid,
                             matchId: match?.id,
                             betId: betId,
                             teamA_Back: targetValue,
@@ -656,11 +663,12 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                             isTab: true,
                         }
                     }
-                    // alert(JSON.stringify(data));
+                    console.log('5555641636',JSON.stringify(data));
                     socket.emit("updateRate", data);
                 } else {
                     if (event.target.name === 'teamA_rate') {
                         socket.emit("updateRate", {
+                            id:Bid,
                             matchId: match?.id,
                             betId: betId,
                             teamA_lay: teamALayValue,
@@ -676,6 +684,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     if (event.target.name === 'teamB_rate') {
                         socket.emit("updateRate", {
+                            id:Bid,
                             matchId: match?.id,
                             betId: betId,
                             teamA_lay: "",
@@ -691,6 +700,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     }
                     if (event.target.name === 'teamC_rate') {
                         socket.emit("updateRate", {
+                            id:Bid,
                             matchId: match?.id,
                             betId: betId,
                             teamA_lay: "",
@@ -1016,6 +1026,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             }
             if (key == 'shift') {
                 socket.emit("updateRate", {
+                    id:Bid,
                     matchId: match?.id,
                     betId: betId,
                     teamA_lay: "",
