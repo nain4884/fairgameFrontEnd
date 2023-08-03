@@ -97,7 +97,7 @@ const ProfitLoss = () => {
 
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [currenLimit, setCurrenLimit] = useState(1);
   const [eventData, setEventData] = useState([]);
   const [reportData, setReportData] = useState([]);
@@ -105,29 +105,35 @@ const ProfitLoss = () => {
   const [sessionBetData, setSessionBetData] = useState([]);
   const [allClinets, setAllCliets] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [search, setSearch] = useState("")
-  const [startDate,setStartDate]=useState(null);
-  const [endDate,setEndDate]=useState(null )
-
+  const [search, setSearch] = useState("");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const { profitLossReportPage } = useSelector((state) => state?.adminMatches);
   useEffect(() => {
     // alert(1)
     getEventList();
-  }, [currentPage, pageCount, pageLimit]);
+  }, [pageCount, pageLimit]);
   useEffect(() => {
     getAllClients();
   }, []);
 
+  // useEffect(() => {
+  //   if (profitLossReportPage) {
+  //     setCurrentPage(profitLossReportPage);
+  //   }
+  // }, [profitLossReportPage]);
+
   async function getEventList() {
     var payload = {};
-   if(search?.id){
-    payload.userId=search?.id
-   }
-   if(startDate && search?.id){
-    payload.from=moment(startDate).format("YYYY-MM-DD")
-   }
-   if(endDate && search?.id){
-    payload.to= moment(endDate).format("YYYY-MM-DD")
-   }
+    if (search?.id) {
+      payload.userId = search?.id;
+    }
+    if (startDate && search?.id) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
+    }
+    if (endDate && search?.id) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
+    }
     let { axios } = setRole();
     try {
       setLoading(true);
@@ -145,28 +151,35 @@ const ProfitLoss = () => {
     }
   }
 
-  const handleReport = (eventType) => {
-    getReport(eventType);
+
+
+  const handleReport = (eventType,pageno) => {
+    getReport(eventType,pageno);
   };
 
-  const getReport = async (eventType) => {
+  const getReport = async (eventType,pageno) => {
     var payload = {
       gameType: eventType,
+      skip: pageno,
+      limit: pageLimit,
     };
-    if(search?.id){
-     payload.userId=search?.id
+    if (search?.id) {
+      payload.userId = search?.id;
     }
-    if(startDate && search?.id){
-     payload.from=moment(startDate).format("YYYY-MM-DD")
+    if (startDate && search?.id) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
     }
-    if(endDate && search?.id){
-     payload.to= moment(endDate).format("YYYY-MM-DD")
+    if (endDate && search?.id) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
     }
     let { axios } = setRole();
     try {
       const { data } = await axios.post(`/betting/profitLossReport`, payload);
       // console.log(data.data[0], 'datadatadatadata')l
-      setReportData(data?.data);
+      setReportData(data?.data[0]);
+      setPageCount(
+        Math.ceil(parseInt(data?.data?.[1] ? data.data?.[1] : 1) / pageLimit)
+      );
     } catch (e) {
       console.log(e);
     }
@@ -183,15 +196,15 @@ const ProfitLoss = () => {
     var payload = {
       match_id: id,
     };
-    if(search?.id){
-      payload.userId=search?.id
-     }
-     if(startDate && search?.id){
-      payload.from=moment(startDate).format("YYYY-MM-DD")
-     }
-     if(endDate && search?.id){
-      payload.to= moment(endDate).format("YYYY-MM-DD")
-     }
+    if (search?.id) {
+      payload.userId = search?.id;
+    }
+    if (startDate && search?.id) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
+    }
+    if (endDate && search?.id) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
+    }
     let { axios } = setRole();
     try {
       const { data } = await axios.post(
@@ -220,15 +233,13 @@ const ProfitLoss = () => {
     }
   }
 
-  const handleClick=(e) => {
-    try{
-      getEventList()
-
+  const handleClick = (e) => {
+    try {
+      getEventList();
+    } catch (e) {
+      console.log("error", e?.message);
     }
-    catch (e) {
-      console.log("error",e?.message)
-    }
-  }
+  };
   return (
     <Background>
       {/* <Header /> */}
@@ -245,7 +256,16 @@ const ProfitLoss = () => {
         </Box>
       ) : (
         <>
-          <YellowHeaderProfitLoss onClick={handleClick} clientData={allClinets} setSearch={setSearch} search={search}  setEndDate={setEndDate} endDate={endDate} startDate={startDate} setStartDate={setStartDate}/>
+          <YellowHeaderProfitLoss
+            onClick={handleClick}
+            clientData={allClinets}
+            setSearch={setSearch}
+            search={search}
+            setEndDate={setEndDate}
+            endDate={endDate}
+            startDate={startDate}
+            setStartDate={setStartDate}
+          />
           <Typography
             sx={{
               fontSize: "16px",
@@ -268,6 +288,9 @@ const ProfitLoss = () => {
               sessionBetData={sessionBetData}
               handleReport={handleReport}
               handleBet={handleBet}
+              currentPage={currentPage}
+              pageCount={pageCount}
+              setCurrentPage={setCurrentPage}
             />
           </Box>
         </>

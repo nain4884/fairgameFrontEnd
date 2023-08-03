@@ -25,7 +25,6 @@ import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
 
 let matchOddsCount = 0;
-let sessionOffline = [];
 const DeleteBet = ({}) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -42,8 +41,8 @@ const DeleteBet = ({}) => {
   const [IOSinglebets, setSingleIObtes] = useState([]);
   const [marketId, setMarketId] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const { selectedMatch } = useSelector((state) => state?.matchDetails);
-  const [currentMatch, setCurrentMatch] = useState(selectedMatch);
+  const { selectedMatch ,sessionOffline} = useSelector((state) => state?.adminMatches);
+  const [currentMatch, setCurrentMatch] = useState([]);
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
@@ -55,12 +54,27 @@ const DeleteBet = ({}) => {
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState("");
   const [sessionExposer, setSessionExposure] = useState(0);
+  const [sessionOff,setSessionOff]=useState([])
 
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
   );
   const url = window.location.href;
   const navigate = useNavigate();
+
+  useEffect(() => {
+ 
+    if (selectedMatch) {
+      setCurrentMatch(selectedMatch);
+    }
+    
+    if (sessionOffline) {
+      setSessionOff(sessionOffline);
+    }
+  }, [ selectedMatch, sessionOffline]);
+
+
+
   // useEffect(() => {
   //   if (socket && socket.connected) {
   //     socket.on("newMessage", (value) => {
@@ -997,7 +1011,7 @@ const DeleteBet = ({}) => {
                   currentMatch={currentMatch}
                   sessionBets={sessionBets}
                   data={[]}
-                  sessionOffline={sessionOffline}
+                  sessionOffline={sessionOff}
                   setPopData={setPopData}
                   popData={popData}
                   min={currentMatch?.manaual_session_min_bet || 0}
@@ -1011,7 +1025,7 @@ const DeleteBet = ({}) => {
                   sessionBets={sessionBets}
                   sessionExposer={sessionExposer}
                   data={[]}
-                  sessionOffline={sessionOffline}
+                  sessionOffline={sessionOff}
                   setPopData={setPopData}
                   popData={popData}
                   max={currentMatch?.betfair_session_max_bet}
@@ -1142,7 +1156,7 @@ const DeleteBet = ({}) => {
                     sessionBets={sessionBets}
                     sessionExposer={sessionExposer}
                     data={[]}
-                    sessionOffline={sessionOffline}
+                    sessionOffline={sessionOff}
                     setPopData={setPopData}
                     popData={popData}
                     min={currentMatch?.manaual_session_min_bet || 0}
@@ -1157,7 +1171,7 @@ const DeleteBet = ({}) => {
                     sessionBets={sessionBets}
                     sessionExposer={sessionExposer}
                     data={[]}
-                    sessionOffline={sessionOffline}
+                    sessionOffline={sessionOff}
                     setPopData={setPopData}
                     popData={popData}
                     max={currentMatch?.betfair_session_max_bet}

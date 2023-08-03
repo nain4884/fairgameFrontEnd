@@ -8,6 +8,9 @@ import BetHistory from "./BetHistory";
 import SessionBetSeperate from "./sessionBetSeperate";
 import SessionBetHistory from "./SessionBetHistory";
 import moment from "moment";
+import Footer from "./Footer";
+import { useDispatch } from "react-redux";
+import { setProfitLossReportPage } from "../newStore/reducers/adminMatches";
 
 const ProfitLossComponent = ({
   eventData,
@@ -16,17 +19,31 @@ const ProfitLossComponent = ({
   sessionBetData,
   handleReport,
   handleBet,
+  currentPage,
+  pageCount,
+  getListOfUser,
+  setCurrentPage,
 }) => {
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [show, setShow] = useState(false);
   const [selectedId, setSelectedId] = useState("");
+  const [event, setEvent] = useState("");
 
   const getHandleReport = (eventType) => {
+    setEvent(eventType);
     if (!visible) {
-      handleReport(eventType);
+      handleReport(eventType,currentPage);
     }
     setVisible(!visible);
   };
+
+  function callPage(val) {
+    // setCurrentPage(setProfitLossReportPage(parseInt(val)));
+    setCurrentPage(parseInt(val))
+
+    handleReport(event,parseInt(val));
+  }
 
   const getBetReport = (id) => {
     if (selectedId == id) {
@@ -107,7 +124,14 @@ const ProfitLossComponent = ({
             paddingLeft: "10px",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
             <Typography
               sx={{
                 fontSize: { laptop: "16px", mobile: "12px" },
@@ -125,7 +149,14 @@ const ProfitLossComponent = ({
               }}
             />
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
             <Typography
               sx={{
                 fontSize: { laptop: "16px", mobile: "12px" },
@@ -133,12 +164,16 @@ const ProfitLossComponent = ({
                 color: "white",
               }}
             >
-              {Number(item.totalLoss) >= 0
-                ? <><span style={{ visibility: "hidden" }}>-</span>{Number(item.totalLoss).toFixed(2)}</>
-                : Number(item.totalLoss).toFixed(2)}
+              {Number(item.totalLoss) >= 0 ? (
+                <>
+                  <span style={{ visibility: "hidden" }}>-</span>
+                  {Number(item.totalLoss).toFixed(2)}
+                </>
+              ) : (
+                Number(item.totalLoss).toFixed(2)
+              )}
               {/* {Number(item?.totalLoss).toFixed(2)} */}
             </Typography>
-
           </Box>
         </Box>
         <Box
@@ -290,7 +325,14 @@ const ProfitLossComponent = ({
               paddingLeft: "10px",
             }}
           >
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
               <Typography
                 sx={{
                   fontSize: { laptop: "12px", mobile: "8px" },
@@ -312,11 +354,15 @@ const ProfitLossComponent = ({
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
               >
-                {Number(item.rateProfitLoss) >= 0
-                  ? <><span style={{ visibility: "hidden" }}>-</span>{Number(item.rateProfitLoss).toFixed(2)}</>
-                  : Number(item.rateProfitLoss).toFixed(2)}
+                {Number(item.rateProfitLoss) >= 0 ? (
+                  <>
+                    <span style={{ visibility: "hidden" }}>-</span>
+                    {Number(item.rateProfitLoss).toFixed(2)}
+                  </>
+                ) : (
+                  Number(item.rateProfitLoss).toFixed(2)
+                )}
               </Typography>
-
             </Box>
           </Box>
           <Box
@@ -332,7 +378,14 @@ const ProfitLossComponent = ({
               paddingLeft: "10px",
             }}
           >
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
               <Typography
                 sx={{
                   fontSize: { laptop: "12px", mobile: "8px" },
@@ -354,12 +407,16 @@ const ProfitLossComponent = ({
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
               >
-                {Number(item.sessionProfitLoss) >= 0
-                  ? <><span style={{ visibility: "hidden" }}>-</span>{Number(item.sessionProfitLoss).toFixed(2)}</>
-                  : Number(item.sessionProfitLoss).toFixed(2)}
+                {Number(item.sessionProfitLoss) >= 0 ? (
+                  <>
+                    <span style={{ visibility: "hidden" }}>-</span>
+                    {Number(item.sessionProfitLoss).toFixed(2)}
+                  </>
+                ) : (
+                  Number(item.sessionProfitLoss).toFixed(2)
+                )}
                 {/* {Number(item.sessionProfitLoss).toFixed(2)} */}
               </Typography>
-
             </Box>
           </Box>
         </Box>
@@ -396,9 +453,16 @@ const ProfitLossComponent = ({
       })}
       {visible &&
         reportData.map((item, index) => {
-
           return <RowComponent key={index} item={item} index={index + 1} />;
         })}
+      {visible && reportData?.length > 0 && (
+        <Footer
+          getListOfUser={() => handleReport(event)}
+          currentPage={currentPage}
+          pages={pageCount}
+          callPage={callPage}
+        />
+      )}
     </Box>
   );
 };

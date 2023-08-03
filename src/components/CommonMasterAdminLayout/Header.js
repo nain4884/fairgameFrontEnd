@@ -62,9 +62,14 @@ import AdminEventListing from "../AdminEventListing";
 import HomeSlide from "../HomeSlide";
 import IdleTimer from "../../components/IdleTimer";
 import CustomLoader from "../helper/CustomLoader";
+import {
+  setAdminAllMatches,
+  setSelectedMatch,
+  setSessionOffline,
+} from "../../newStore/reducers/adminMatches";
 
 var roleName = "";
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -93,23 +98,208 @@ const CustomHeader = ({ }) => {
   const location = useLocation();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const { adminAllMatches, selectedMatch, sessionOffline } = useSelector(
+    (state) => state?.adminMatches
+  );
 
   const { socket, socketMicro } = useContext(SocketContext);
   const [notificationData, setNotificationData] = useState(null);
+  const [localAllmatches, setLocalAllMatches] = useState([]);
+  const [currentMatch, setCurrentMatch] = useState(null);
+  const [localSessionOffline, setLocalSessionOffline] = useState([]);
+  useEffect(() => {
+    if (adminAllMatches) {
+      setLocalAllMatches(adminAllMatches);
+    }
+    if (selectedMatch) {
+      setCurrentMatch(selectedMatch);
+    }
+    if (sessionOffline) {
+      setLocalSessionOffline(sessionOffline);
+    }
+    
+  }, [adminAllMatches, selectedMatch, sessionOffline]);
+
+  useEffect(() => {
+    if (socket && socket.connected) {
+      socket.onevent = async (packet) => {
+        if (packet.data[0] === "logoutUserForce") {
+          // alert(1111)
+          const url = window.location.href;
+          if (url.includes("wallet")) {
+            dispatch(setWConfirmAuth(true));
+            let token = localStorage.getItem("JWTwallet");
+            if (token) {
+              sessionStorage.setItem("JWTwallet", token);
+            }
+            dispatch(logout({ roleType: "role2" }));
+            setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+            dispatch(removeManualBookMarkerRates());
+            dispatch(removeCurrentUser());
+            // dispatch(removeSelectedMatch());
+            removeSocket();
+            socketMicro.disconnect();
+            socket.disconnect();
+            navigate("/wallet");
+            await axios.get("auth/logout");
+          } else {
+            dispatch(setAConfirmAuth(true));
+            let token = localStorage.getItem("JWTadmin");
+            if (token) {
+              sessionStorage.setItem("JWTadmin", token);
+            }
+            dispatch(logout({ roleType: "role1" }));
+            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+            dispatch(removeManualBookMarkerRates());
+            dispatch(removeCurrentUser());
+            socketMicro.disconnect();
+            socket.disconnect();
+            // dispatch(removeSelectedMatch());
+            removeSocket();
+            navigate("/admin");
+            await axios.get("auth/logout");
+          }
+          // const { data } = await axios.get("auth/logout");
+          // if (data?.data === "success logout") {
+          // dispatch(removeSelectedMatch());
+          // dispatch(removeCurrentUser());
+          // dispatch(removeManualBookMarkerRates());
+          // dispatch(logout({ roleType: "role2" }));
+          // dispatch(setUpdatedTransPasswords(false));
+          // socket.disconnect();
+          // socketMicro.disconnect();
+          // dispatch(setPage(parseInt(1)));
+          // setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+          // if (nav === "admin") {
+          //   navigate("/admin");
+          //   dispatch(logout({ roleType: "role1" }));
+          //   setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+          // }
+          // navigate(`/${nav}`);
+          // removeSocket();
+          // } else {
+          //   toast.error("Something went wrong");
+          // }
+        }
+
+        if (packet.data[0] === "userBalanceUpdate") {
+          const data = packet.data[1];
+          const user = {
+            ...currentUser,
+            current_balance: data?.currentBalacne,
+          };
+          dispatch(setCurrentUser(user));
+
+          //currentBalacne
+        }
+
+        if (packet.data[0] === "newMatchAdded") {
+          const data = packet.data[1];
+          setLocalAllMatches((prev) => {
+            const newBody = [...prev, data];
+            dispatch(setAdminAllMatches(newBody));
+            return newBody;
+          });
+
+          setCurrentMatch((currentMatch) => {
+            if (currentMatch?.id !== data?.match_id) {
+              // If the new bet doesn't belong to the current match, return the current state
+              return currentMatch;
+            }
+
+            // Update the bettings array in the current match object
+            const updatedBettings = currentMatch?.bettings?.map((betting) => {
+              if (betting.id === data.id && data.sessionBet) {
+                // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                return {
+                  ...betting,
+                  ...data,
+                };
+              } else if (
+                betting?.id === data?.id &&
+                data.sessionBet === false
+              ) {
+                return {
+                  ...betting,
+                  ...data,
+                };
+              }
+              return betting;
+            });
+            var newUpdatedValue = updatedBettings;
+            const bettingsIds = updatedBettings?.map((betting) => betting?.id);
+
+            if (!bettingsIds?.includes(data.id)) {
+              // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
+
+              newUpdatedValue = [...newUpdatedValue, data];
+            } else {
+              setLocalSessionOffline((prev) => {
+                if (prev.includes(data.id)) {
+                  const newres = sessionOffline.filter((id) => id !== data.id);
+
+                  dispatch(setSessionOffline(newres));
+                }
+                const body = [...prev, data.id];
+
+                dispatch(setSessionOffline(body));
+                return body;
+              });
+            }
+
+            // Return the updated current match object
+            const newBody = {
+              ...currentMatch,
+              bettings: newUpdatedValue,
+            };
+            dispatch(setSelectedMatch(newBody));
+            return newBody;
+          });
+        }
+        if (packet.data[0] === "resultDeclareForBet") {
+          const data = packet.data[1];
+          setLocalAllMatches((prev) => {
+            const filteredMatches = prev.filter(
+              (v) => !(v.id === data?.match_id && data.sessionBet === false)
+            );
+            dispatch(setAdminAllMatches(filteredMatches));
+            return filteredMatches;
+          });
+        }
+
+        if (packet.data[0] === "updateMatchActiveStatus") {
+          const value = packet.data[1];
+          setCurrentMatch((currentMatch) => {
+            if (currentMatch?.id === value?.matchId) {
+              return {
+                ...currentMatch,
+                apiBookMakerActive: value?.apiBookMakerActive,
+                apiMatchActive: value?.apiMatchActive,
+                apiSessionActive: value?.apiSessionActive,
+                manualBookMakerActive: value?.manualBookMakerActive,
+                manualSessionActive: value?.manualSessionActive,
+              };
+            }
+            return currentMatch;
+          });
+        }
+      };
+    }
+  }, [socket, nav]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         // User returned to the web browser
-        console.log('User returned from sleep mode');
+        console.log("User returned from sleep mode");
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // Clean up the event listener on component unmount
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -132,9 +322,9 @@ const CustomHeader = ({ }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setFirstTimeLoader(false)
-    }, 4000)
-  }, [])
+      setFirstTimeLoader(false);
+    }, 4000);
+  }, []);
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -264,82 +454,6 @@ const CustomHeader = ({ }) => {
     }
   }, [localStorage, nav]);
 
-  useEffect(() => {
-    if (socket && socket.connected) {
-      socket.onevent = async (packet) => {
-        if (packet.data[0] === "logoutUserForce") {
-          // alert(1111)
-          const url = window.location.href;
-          if (url.includes("wallet")) {
-            dispatch(setWConfirmAuth(true));
-            let token = localStorage.getItem("JWTwallet");
-            if (token) {
-              sessionStorage.setItem("JWTwallet", token);
-            }
-            dispatch(logout({ roleType: "role2" }));
-            setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-            dispatch(removeManualBookMarkerRates());
-            dispatch(removeCurrentUser());
-            // dispatch(removeSelectedMatch());
-            removeSocket();
-            socketMicro.disconnect();
-            socket.disconnect();
-            navigate("/wallet");
-            await axios.get("auth/logout");
-          } else {
-            dispatch(setAConfirmAuth(true));
-            let token = localStorage.getItem("JWTadmin");
-            if (token) {
-              sessionStorage.setItem("JWTadmin", token);
-            }
-            dispatch(logout({ roleType: "role1" }));
-            setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-            dispatch(removeManualBookMarkerRates());
-            dispatch(removeCurrentUser());
-            socketMicro.disconnect();
-            socket.disconnect();
-            // dispatch(removeSelectedMatch());
-            removeSocket();
-            navigate("/admin");
-            await axios.get("auth/logout");
-          }
-          // const { data } = await axios.get("auth/logout");
-          // if (data?.data === "success logout") {
-          // dispatch(removeSelectedMatch());
-          // dispatch(removeCurrentUser());
-          // dispatch(removeManualBookMarkerRates());
-          // dispatch(logout({ roleType: "role2" }));
-          // dispatch(setUpdatedTransPasswords(false));
-          // socket.disconnect();
-          // socketMicro.disconnect();
-          // dispatch(setPage(parseInt(1)));
-          // setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-          // if (nav === "admin") {
-          //   navigate("/admin");
-          //   dispatch(logout({ roleType: "role1" }));
-          //   setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-          // }
-          // navigate(`/${nav}`);
-          // removeSocket();
-          // } else {
-          //   toast.error("Something went wrong");
-          // }
-        }
-
-        if (packet.data[0] === "userBalanceUpdate") {
-          const data = packet.data[1];
-          const user = {
-            ...currentUser,
-            current_balance: data?.currentBalacne,
-          };
-          dispatch(setCurrentUser(user));
-
-          //currentBalacne
-        }
-      };
-    }
-  }, [socket, nav]);
-
   async function getUserDetail(nav) {
     try {
       if (nav === "admin") {
@@ -424,7 +538,6 @@ const CustomHeader = ({ }) => {
     handleGetNotification();
 
     getUserDetail(nav);
-
   }, []);
   const [balance, setBalance] = useState(0);
   const [fullName, setFullName] = useState("");
@@ -574,16 +687,13 @@ const CustomHeader = ({ }) => {
           "& > .MuiBackdrop-root": {
             backdropFilter: "blur(2px)",
             backgroundColor: "white",
-          }
-
+          },
         }}
-
         open={firstTimeLoader}
         // onClose={setSelected}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-
         <CustomLoader />
       </ModalMUI>
       <SessionTimeOut />

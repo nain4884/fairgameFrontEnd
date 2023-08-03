@@ -376,7 +376,7 @@ const CustomHeader = ({}) => {
 
           if (betId === data?.betPlaceData?.bet_id) {
             let profitLoss = data?.profitLoss;
-            dispatch(setSessionProfitLoss(profitLoss))
+            dispatch(setSessionProfitLoss(profitLoss));
             const body = {
               id: data?.betPlaceData?.id,
               isActive: true,
@@ -409,83 +409,77 @@ const CustomHeader = ({}) => {
               return updatedData;
             });
           }
-          
-      
+
           try {
-           
-              setCurrentOdds((prev) => {
-                const newBody = {
-                  ...prev,
-                  bet_id: data?.betPlaceData?.bet_id,
-                  odds: data?.betPlaceData?.odds,
+            setCurrentOdds((prev) => {
+              const newBody = {
+                ...prev,
+                bet_id: data?.betPlaceData?.bet_id,
+                odds: data?.betPlaceData?.odds,
+                match_id: data?.betPlaceData?.match_id,
+              };
+              dispatch(setCurrentOdd(newBody));
+              return newBody;
+            });
+            localAllBetRates((IObets) => {
+              const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
+
+              if (currentMatch?.id === data?.betPlaceData?.match_id) {
+                const body = {
+                  id: data?.betPlaceData?.id,
+                  isActive: true,
+                  createAt: data?.betPlaceData?.createdAt,
+                  updateAt: data?.betPlaceData?.createdAt,
+                  createdBy: null,
+                  deletedAt: null,
+                  user: { userName: data?.betPlaceData?.userName },
+                  user_id: null,
                   match_id: data?.betPlaceData?.match_id,
+                  bet_id: data?.betPlaceData?.bet_id,
+                  result: "pending",
+                  team_bet: data?.betPlaceData?.team_bet,
+                  odds: data?.betPlaceData?.odds,
+                  win_amount: null,
+                  loss_amount: null,
+                  bet_type: data?.betPlaceData?.bet_type,
+                  country: null,
+                  ip_address: null,
+                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                  rate: data?.betPlaceData?.rate,
+                  marketType: data?.betPlaceData?.marketType,
+                  myStack: data?.betPlaceData?.myStack,
+                  amount:
+                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                 };
-                dispatch(setCurrentOdd(newBody));
+                const newBody = [body, ...updatedIObets];
+                dispatch(setAllBetRate(newBody));
                 return newBody;
-              });
-              localAllBetRates((IObets) => {
-                const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
+              }
+              dispatch(setAllBetRate(updatedIObets));
+              return updatedIObets;
+            });
 
-                if (currentMatch?.id === data?.betPlaceData?.match_id) {
-                  const body = {
-                    id: data?.betPlaceData?.id,
-                    isActive: true,
-                    createAt: data?.betPlaceData?.createdAt,
-                    updateAt: data?.betPlaceData?.createdAt,
-                    createdBy: null,
-                    deletedAt: null,
-                    user: { userName: data?.betPlaceData?.userName },
-                    user_id: null,
-                    match_id: data?.betPlaceData?.match_id,
-                    bet_id: data?.betPlaceData?.bet_id,
-                    result: "pending",
-                    team_bet: data?.betPlaceData?.team_bet,
-                    odds: data?.betPlaceData?.odds,
-                    win_amount: null,
-                    loss_amount: null,
-                    bet_type: data?.betPlaceData?.bet_type,
-                    country: null,
-                    ip_address: null,
-                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                    rate: data?.betPlaceData?.rate,
-                    marketType: data?.betPlaceData?.marketType,
-                    myStack: data?.betPlaceData?.myStack,
-                    amount:
-                      data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+            setCurrentMatch((currentMatch) => {
+              const updatedBettings = currentMatch?.bettings?.map((betting) => {
+                if (betting?.id === data?.betPlaceData?.bet_id) {
+                  // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                  let profitLoss = data?.profitLoss;
+
+                  return {
+                    ...betting,
+                    profitLoss: profitLoss,
                   };
-                  const newBody = [body, ...updatedIObets];
-                  dispatch(setAllBetRate(newBody));
-                  return newBody;
                 }
-                dispatch(setAllBetRate(updatedIObets));
-                return updatedIObets;
+                return betting;
               });
-
-
-              setCurrentMatch((currentMatch) => {
-                const updatedBettings = currentMatch?.bettings?.map(
-                  (betting) => {
-                    if (betting?.id === data?.betPlaceData?.bet_id) {
-                      // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                      let profitLoss = data?.profitLoss;
-
-                      return {
-                        ...betting,
-                        profitLoss: profitLoss,
-                      };
-                    }
-                    return betting;
-                  }
-                );
-                // Return the updated current match object
-                const newBody = {
-                  ...currentMatch,
-                  bettings: updatedBettings,
-                };
-                dispatch(setSelectedExpertMatch(newBody));
-                return newBody;
-              });
-            
+              // Return the updated current match object
+              const newBody = {
+                ...currentMatch,
+                bettings: updatedBettings,
+              };
+              dispatch(setSelectedExpertMatch(newBody));
+              return newBody;
+            });
           } catch (e) {
             console.log("error", e?.message);
           }
@@ -534,7 +528,7 @@ const CustomHeader = ({}) => {
                 return currentMatch;
               });
               let profitLoss = value?.profitLoss;
-              dispatch(setSessionProfitLoss(profitLoss))
+              dispatch(setSessionProfitLoss(profitLoss));
               dispatch(setSessionAllBet(updatedAllBet));
               return updatedAllBet;
             });
@@ -601,8 +595,6 @@ const CustomHeader = ({}) => {
 
               return updatedPrev;
             });
-
-
           } catch (err) {
             console.log(err?.message);
           }

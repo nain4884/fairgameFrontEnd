@@ -11,13 +11,12 @@ import CustomBox from "./CustomBox";
 import CustomLoader from "./helper/CustomLoader";
 import { SocketContext } from "../context/socketContext";
 import { removeSocket } from "../components/helper/removeSocket";
-import { removeCurrentUser, } from "../newStore/reducers/currentUser";
-import {
-  removeManualBookMarkerRates,
-} from "../newStore/reducers/matchDetails";
+import { removeCurrentUser } from "../newStore/reducers/currentUser";
+import { removeManualBookMarkerRates } from "../newStore/reducers/matchDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalStore } from "../context/globalStore";
 import { logout } from "../newStore/reducers/auth";
+import { setAdminAllMatches } from "../newStore/reducers/adminMatches";
 
 const MarketAnalysis = () => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -34,38 +33,43 @@ const MarketAnalysis = () => {
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-
-  
+  const { adminAllMatches } = useSelector((state) => state?.adminMatches);
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (socket && socket.connected) {
-      socket.on("newMessage", (value) => {
-        console.log(value);
-      });
-
-      socket.onevent = async (packet) => {
-
-        if (packet.data[0] === "newMatchAdded") {
-          getAllMatch();
-        }
-        if (packet.data[0] === "resultDeclareForBet") {
-          getAllMatch();
-        }
-        if (packet.data[0] === "logoutUserForce") {
-          dispatch(logout({ roleType: "role2" }));
-          setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-          dispatch(removeManualBookMarkerRates());
-          dispatch(removeCurrentUser());
-          // dispatch(removeSelectedMatch());
-          removeSocket();
-          navigate("/wallet");
-          await axios.get("auth/logout");
-          socket.disconnect();
-        }
-      };
+    if (adminAllMatches) {
+      setMatchData(adminAllMatches);
     }
-  }, [socket]);
+  }, [adminAllMatches]);
+  // useEffect(() => {
+  //   if (socket && socket.connected) {
+  //     socket.on("newMessage", (value) => {
+  //       console.log(value);
+  //     });
+
+  //     socket.onevent = async (packet) => {
+
+  //       if (packet.data[0] === "newMatchAdded") {
+  //         getAllMatch();
+  //       }
+  //       if (packet.data[0] === "resultDeclareForBet") {
+  //         getAllMatch();
+  //       }
+  //       if (packet.data[0] === "logoutUserForce") {
+  //         dispatch(logout({ roleType: "role2" }));
+  //         setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
+  //         dispatch(removeManualBookMarkerRates());
+  //         dispatch(removeCurrentUser());
+  //         // dispatch(removeSelectedMatch());
+  //         removeSocket();
+  //         navigate("/wallet");
+  //         await axios.get("auth/logout");
+  //         socket.disconnect();
+  //       }
+  //     };
+  //   }
+  // }, [socket]);
 
   const handleClick = (value) => {
     setMax(value);
@@ -111,6 +115,7 @@ const MarketAnalysis = () => {
       if (data.length > 0) {
         setLoading(false);
         setMatchData(data[0]);
+        dispatch(setAdminAllMatches(data[0]));
         setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
       }
     } catch (e) {
@@ -127,7 +132,14 @@ const MarketAnalysis = () => {
     setCurrentPage(parseInt(value));
   }
   return (
-    <Box sx={{ display: "flex", width: "100%", flexDirection: "column", margin: "0.5%" }}>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        flexDirection: "column",
+        margin: "0.5%",
+      }}
+    >
       <Box
         sx={{
           width: "100%",
@@ -170,7 +182,7 @@ const MarketAnalysis = () => {
                   mobile: "center",
                   tablet: "flex-end",
                   laptop: "flex-end",
-                  marginRight: "0.5%"
+                  marginRight: "0.5%",
                 },
               }}
             >
