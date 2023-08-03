@@ -201,7 +201,7 @@ export const SocketProvider = ({ children }) => {
 
         setLocalAllMatches((prev) => {
           const filteredMatches = prev.filter(
-            (v) => v.id !== data?.match_id && data.sessionBet === false
+            (v) => !(v.id === data?.match_id && data.sessionBet === false)
           );
           dispatch(setUserAllMatches(filteredMatches));
           return filteredMatches;

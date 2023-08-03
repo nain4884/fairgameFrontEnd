@@ -28,7 +28,7 @@ const DropdownMenu1 = ({
         },
       }}
     >
-      {allMatch.map((x, i) => (
+      {allMatch?.length> 0  && allMatch?.map((x, i) => (
         <MenutItemsComponent
           allLiveEventSession={allLiveEventSession}
           handleClose={handleClose}

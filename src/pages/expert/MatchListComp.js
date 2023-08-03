@@ -7,7 +7,10 @@ import { setRole } from "../../newStore";
 import constants from "../../components/helper/constants";
 import { SocketContext } from "../../context/socketContext";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllEventSession, setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
+import {
+  setAllEventSession,
+  setAllMatchs,
+} from "../../newStore/reducers/expertMatchDetails";
 import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
@@ -18,6 +21,7 @@ import { logout } from "../../newStore/reducers/auth";
 import { GlobalStore } from "../../context/globalStore";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { useNavigate } from "react-router-dom";
+import CustomLoader from "../../components/helper/CustomLoader";
 
 const MatchListComp = () => {
   const [allMatch, setAllMatch] = useState([]);
@@ -26,10 +30,20 @@ const MatchListComp = () => {
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const { socket, socketMicro } = useContext(SocketContext);
   const dispatch = useDispatch();
-  const { allEventSession } = useSelector((state) => state?.expertMatchDetails);
+  const { allEventSession, selectedExpertMatch } = useSelector(
+    (state) => state?.expertMatchDetails
+  );
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const [loading, setLoading] = useState(true);
   const { axios } = setRole();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (selectedExpertMatch) {
+      setAllMatch(selectedExpertMatch);
+    }
+  }, [selectedExpertMatch]);
+
   const getAllMatch = async (title) => {
     try {
       if (title) {
@@ -41,21 +55,28 @@ const MatchListComp = () => {
           title ? `title=${title}` : ""
         }&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
-      setAllMatch(response.data[0]);
+      if (response.data[0]) {
+        setAllMatch(response.data[0]);
+        setLoading(false);
 
-      setPageCount(
-        Math.ceil(
-          parseInt(response?.data[1] ? response.data[1] : 1) /
-            constants.customPageLimit
-        )
-      );
+        setPageCount(
+          Math.ceil(
+            parseInt(response?.data[1] ? response.data[1] : 1) /
+              constants.customPageLimit
+          )
+        );
+      } else {
+        setLoading(false);
+      }
     } catch (e) {
+      setLoading(false);
       console.log(e);
     }
   };
   useEffect(() => {
     getAllMatch();
   }, [currentPage]);
+
   function callPage(e, value) {
     setCurrentPage(parseInt(value));
   }
@@ -114,45 +135,63 @@ const MatchListComp = () => {
   // }, [socket]);
   // const currentElements = allMatch;
   return (
-    <Box
-      sx={[
-        {
-          marginX: "10px",
-          marginTop: "10px",
-          minHeight: "200px",
-          borderRadius: "10px",
-          border: "2px solid white",
-        },
-        (theme) => ({
-          backgroundImage: `${theme.palette.primary.headerGradient}`,
-        }),
-      ]}
-    >
-      <ListH getAllMatch={getAllMatch} />
-      <ListHeaderT />
-      {allMatch.map((element, i) => {
-        return (
-          <Row
-            key={i}
-            index={i + 1}
-            containerStyle={{ background: (i + 1) % 2 === 0 ? "#ECECEC" : "" }}
-            data={element}
+    <>
+      {loading ? (
+        <Box
+          sx={{
+            minHeight: "60vh",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CustomLoader text="" />
+        </Box>
+      ) : (
+        <Box
+          sx={[
+            {
+              marginX: "10px",
+              marginTop: "10px",
+              minHeight: "200px",
+              borderRadius: "10px",
+              border: "2px solid white",
+            },
+            (theme) => ({
+              backgroundImage: `${theme.palette.primary.headerGradient}`,
+            }),
+          ]}
+        >
+          <ListH getAllMatch={getAllMatch} />
+          <ListHeaderT />
+          {allMatch.length > 0 &&
+            allMatch?.map((element, i) => {
+              return (
+                <Row
+                  key={i}
+                  index={i + 1}
+                  containerStyle={{
+                    background: (i + 1) % 2 === 0 ? "#ECECEC" : "",
+                  }}
+                  data={element}
+                />
+              );
+            })}
+          <Pagination
+            sx={{
+              background: "#073c25",
+              overflow: "hidden",
+              borderRadius: "0px 0px 10px 10px",
+            }}
+            page={currentPage}
+            className="whiteTextPagination d-flex justify-content-center"
+            count={pageCount}
+            color="primary"
+            onChange={callPage}
           />
-        );
-      })}
-      <Pagination
-        sx={{
-          background: "#073c25",
-          overflow: "hidden",
-          borderRadius: "0px 0px 10px 10px",
-        }}
-        page={currentPage}
-        className="whiteTextPagination d-flex justify-content-center"
-        count={pageCount}
-        color="primary"
-        onChange={callPage}
-      />
-    </Box>
+        </Box>
+      )}
+    </>
   );
 };
 

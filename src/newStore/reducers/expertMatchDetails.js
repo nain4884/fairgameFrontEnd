@@ -13,6 +13,7 @@ const initialState = {
   aConfirmAuth: false,
   allBetRates: [],
   currentOdd: [],
+  sessionProfitLoss:null
 };
 export const logoutExpertDetails = createAction("auth/logoutReset");
 const expertMatchDetails = createSlice({
@@ -59,6 +60,9 @@ const expertMatchDetails = createSlice({
     setCurrentOdd: (state, action) => {
       state.currentOdd = action.payload;
     },
+    setSessionProfitLoss: (state, action) => {
+      state.sessionProfitLoss = action.payload;
+    },
     extraReducers: (builder) => {
       // This will handle the reset on logout
       builder.addCase(logoutExpertDetails, () => initialState);
@@ -74,6 +78,7 @@ export const {
   setSessionAllBet,
   setSessionBetId,
   setAllEventSession,
+  setSessionProfitLoss,
   setBookmakerTeamRates,
   setActiveUsers,
   setEConfirmAuth,

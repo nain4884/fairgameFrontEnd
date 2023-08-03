@@ -21,8 +21,9 @@ import { stateActions } from "../../store/stateActions";
 import SessionTimeOut from "../../components/helper/SessionTimeOut";
 import AddNotificationModal from "../../components/AddNotificationModal";
 import { ThisUseModal } from "../../components/Modal";
-import { logout } from "../../newStore/reducers/auth";
+import { logout, logoutAuth } from "../../newStore/reducers/auth";
 import {
+  logoutCurrentUser,
   removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
@@ -31,6 +32,9 @@ import {
   setAllEventSession,
   setEConfirmAuth,
   setCurrentOdd,
+  logoutExpertDetails,
+  setSessionAllBet,
+  setSessionProfitLoss,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -38,9 +42,11 @@ import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 import { memo } from "react";
 import {
+  logoutMatchDetails,
   removeManualBookMarkerRates,
   removeSelectedMatch,
-  setManualBookMarkerRates
+  setManualBookMarkerRates,
+  setSessionResults,
 } from "../../newStore/reducers/matchDetails";
 import { a } from "@react-spring/web";
 import ButtonHead from "./ButtonHead";
@@ -77,22 +83,27 @@ const CustomHeader = ({}) => {
     allMatch,
     allBetRates,
     selectedExpertMatch,
-    currentOdd
+    currentOdd,
+    sessionAllBet,
+    sessionBetId,
   } = useSelector((state) => state?.expertMatchDetails);
   const { userExpert } = useSelector((state) => state.auth);
   const { socket, socketMicro } = useContext(SocketContext);
 
   const [allMatchData, setAllMatchData] = useState([]);
-  // const [allLiveEventSession, setAllLiveEventSession] = useState(allEventSession);
   const [balance, setBalance] = useState(0);
   const [onlineUser, setOnlineUser] = useState(activeUsers);
   const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [firstTimeLoader, setFirstTimeLoader] = useState(true);
   const [localAllBetRates, setLocalAllBetRates] = useState([]);
+  const [localSessionBets, setLocalSessionBets] = useState([]);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [localCurrentMatch, setLocalCurrentUser] = useState(null);
   const [currentOdds, setCurrentOdds] = useState(null);
+  const [betId, setBetId] = useState("");
+
+  const [allLiveEventSession, setAllLiveEventSession] = useState([]);
 
   useEffect(() => {
     if (allBetRates) {
@@ -108,7 +119,27 @@ const CustomHeader = ({}) => {
     if (currentOdd) {
       setCurrentOdds(currentOdd);
     }
-  }, [allBetRates, selectedExpertMatch,currentUser,currentOdd]);
+
+    if (allEventSession) {
+      setAllLiveEventSession(allEventSession);
+    }
+
+    if (sessionAllBet) {
+      setLocalSessionBets(sessionAllBet);
+    }
+
+    if (sessionBetId) {
+      setBetId(sessionBetId);
+    }
+  }, [
+    allBetRates,
+    selectedExpertMatch,
+    currentUser,
+    allEventSession,
+    currentOdd,
+    sessionAllBet,
+    sessionBetId,
+  ]);
 
   function getSessionStorageItemAsync(key) {
     return new Promise((resolve, reject) => {
@@ -149,10 +180,11 @@ const CustomHeader = ({}) => {
     if (socket && socket.connected) {
       socket.onevent = async (packet) => {
         if (packet.data[0] === "logoutUserForce") {
-          dispatch(removeManualBookMarkerRates());
-          dispatch(removeCurrentUser());
-          dispatch(logout({ roleType: "role3" }));
-          dispatch(removeSelectedMatch());
+          dispatch(logoutMatchDetails());
+          dispatch(logoutCurrentUser());
+          dispatch(logoutAuth());
+          dispatch(logoutExpertDetails());
+          sessionStorage.removeItem("JWTexpert");
           setGlobalStore((prev) => ({
             ...prev,
             expertJWT: "",
@@ -175,7 +207,6 @@ const CustomHeader = ({}) => {
             dispatch(setCurrentUser(user));
             return user;
           });
-       
         }
         if (packet.data[0] === "loginUserCount") {
           const data = packet.data[1];
@@ -309,11 +340,32 @@ const CustomHeader = ({}) => {
                   bettings: updatedBettings.sort(customSort),
                 };
                 dispatch(setSelectedExpertMatch(newBody));
+
                 return newBody;
               }
               return currentMatch;
             });
-            // }
+
+            setAllLiveEventSession((prev) => {
+              const updatedAllEventSession = prev?.map((match) => {
+                if (match.id === value?.match_id) {
+                  const betObj = {
+                    id: value.id,
+                    bet_condition: value.bet_condition,
+                  };
+                  const newBettings = [...match.bettings, betObj];
+                  return {
+                    ...match,
+                    bettings: newBettings,
+                  };
+                }
+                return match;
+              });
+
+              dispatch(setAllEventSession(updatedAllEventSession));
+
+              return updatedAllEventSession;
+            });
           } catch (e) {
             console.log(e.message);
           }
@@ -321,16 +373,55 @@ const CustomHeader = ({}) => {
 
         if (packet.data[0] === "session_bet") {
           const data = packet.data[1];
+
+          if (betId === data?.betPlaceData?.bet_id) {
+            let profitLoss = data?.profitLoss;
+            dispatch(setSessionProfitLoss(profitLoss))
+            const body = {
+              id: data?.betPlaceData?.id,
+              isActive: true,
+              createAt: data?.betPlaceData?.createAt,
+              updateAt: data?.betPlaceData?.createdAt,
+              createdBy: null,
+              deletedAt: null,
+              user: { userName: data?.betPlaceData?.userName },
+              user_id: null,
+              match_id: data?.betPlaceData?.match_id,
+              bet_id: data?.betPlaceData?.bet_id,
+              result: "pending",
+              team_bet: data?.betPlaceData?.team_bet,
+              odds: data?.betPlaceData?.odds,
+              win_amount: null,
+              loss_amount: null,
+              bet_type: data?.betPlaceData?.bet_type,
+              country: null,
+              deleted_reason: data?.betPlaceData?.deleted_reason || null,
+              ip_address: null,
+              rate: data?.betPlaceData?.rate,
+              marketType: data?.betPlaceData?.marketType,
+              myStack: data?.betPlaceData?.myStack,
+              amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+            };
+            console.log(body, "BODY");
+            setLocalSessionBets((prev) => {
+              const updatedData = [body, ...prev];
+              dispatch(setSessionAllBet(updatedData));
+              return updatedData;
+            });
+          }
+          
+      
           try {
-            if (data) {
-              setCurrentOdds(prev=>{
-              const newBody = {...prev,
+           
+              setCurrentOdds((prev) => {
+                const newBody = {
+                  ...prev,
                   bet_id: data?.betPlaceData?.bet_id,
                   odds: data?.betPlaceData?.odds,
                   match_id: data?.betPlaceData?.match_id,
-                }
-                dispatch(setCurrentOdd(newBody))
-                return newBody
+                };
+                dispatch(setCurrentOdd(newBody));
+                return newBody;
               });
               localAllBetRates((IObets) => {
                 const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
@@ -370,6 +461,7 @@ const CustomHeader = ({}) => {
                 return updatedIObets;
               });
 
+
               setCurrentMatch((currentMatch) => {
                 const updatedBettings = currentMatch?.bettings?.map(
                   (betting) => {
@@ -393,7 +485,7 @@ const CustomHeader = ({}) => {
                 dispatch(setSelectedExpertMatch(newBody));
                 return newBody;
               });
-            }
+            
           } catch (e) {
             console.log("error", e?.message);
           }
@@ -429,6 +521,23 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "sessionDeleteBet") {
           const value = packet.data[1];
           try {
+            setLocalSessionBets((prev) => {
+              const updatedAllBet = prev.map((currentMatch) => {
+                if (currentMatch.match_id === value?.matchId) {
+                  if (value?.betPlaceData.includes(currentMatch.id)) {
+                    return {
+                      ...currentMatch,
+                      deleted_reason: value?.deleted_reason,
+                    };
+                  }
+                }
+                return currentMatch;
+              });
+              let profitLoss = value?.profitLoss;
+              dispatch(setSessionProfitLoss(profitLoss))
+              dispatch(setSessionAllBet(updatedAllBet));
+              return updatedAllBet;
+            });
             setLocalAllBetRates((IObets) => {
               const updatedBettings = IObets?.map((betting) => {
                 if (value?.betPlaceData.includes(betting.id)) {
@@ -476,13 +585,31 @@ const CustomHeader = ({}) => {
 
               return prev;
             });
+
+            setAllLiveEventSession((prev) => {
+              const updatedPrev = prev.map((item) => {
+                if (item.id === value?.match_id) {
+                  const updatedBettings = item.bettings.filter(
+                    (betting) => betting.id !== value?.betId
+                  );
+                  return { ...item, bettings: updatedBettings };
+                }
+                return item;
+              });
+
+              dispatch(setAllEventSession(updatedPrev));
+
+              return updatedPrev;
+            });
+
+
           } catch (err) {
             console.log(err?.message);
           }
         }
       };
     }
-  }, [socket]);
+  }, [socket, betId]);
 
   useEffect(() => {
     if (activeUsers !== 0) {
@@ -503,10 +630,11 @@ const CustomHeader = ({}) => {
       const { data } = await axios.get("users/profile");
       if (!data.data.loginAt) {
         // navigate("/expert");
-        dispatch(removeManualBookMarkerRates());
-        dispatch(removeCurrentUser());
-        dispatch(logout({ roleType: "role3" }));
-        dispatch(removeSelectedMatch());
+        dispatch(logoutMatchDetails());
+        dispatch(logoutCurrentUser());
+        dispatch(logoutAuth());
+        dispatch(logoutExpertDetails());
+        sessionStorage.removeItem("JWTexpert");
         setGlobalStore((prev) => ({
           ...prev,
           expertJWT: "",
@@ -992,7 +1120,7 @@ const CustomHeader = ({}) => {
         handleClose={() => {
           setAnchor(null);
         }}
-        allLiveEventSession={allEventSession}
+        allLiveEventSession={allLiveEventSession}
       />
     </>
   );

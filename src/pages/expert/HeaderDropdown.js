@@ -4,17 +4,19 @@ import { SocketContext } from "../../context/socketContext";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
+  logoutMatchDetails,
   removeManualBookMarkerRates,
   removeSelectedMatch,
 } from "../../newStore/reducers/matchDetails";
-import { logout } from "../../newStore/reducers/auth";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { logout, logoutAuth } from "../../newStore/reducers/auth";
+import { logoutCurrentUser, removeCurrentUser } from "../../newStore/reducers/currentUser";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { Box, CircularProgress, Menu, MenuItem } from "@mui/material";
 import { StyledImage } from "../../components";
 import { Logout } from "../../assets";
 import { setRole } from "../../newStore";
 import { toast } from "react-toastify";
+import { logoutExpertDetails } from "../../newStore/reducers/expertMatchDetails";
 
 const menutItems = [
   { title: "Bet Odds", navigateTo: "betodds" },
@@ -35,11 +37,12 @@ const HeaderDropdown = ({ anchorEl, open, handleClose }) => {
     try {
       setLoading(true);
       setLoading(false);
-      dispatch(removeManualBookMarkerRates());
-      dispatch(logout({ roleType: "role3" }));
-      dispatch(removeSelectedMatch());
+      dispatch(logoutMatchDetails());
+      dispatch(logoutCurrentUser());
+      dispatch(logoutAuth());
+      dispatch(logoutExpertDetails());
       setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
-      dispatch(removeCurrentUser());
+      sessionStorage.removeItem("JWTexpert")
       navigate("/expert");
       handleClose();
       removeSocket();

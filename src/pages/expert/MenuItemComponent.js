@@ -67,52 +67,53 @@ const MenutItemsComponent = ({
             paddingY: "5px",
           }}
         >
-          {allLiveEventSession.map((event) => {
-            if (event.id == x.id)
-              return (
-                <>
-                  {event.bettings.length > 0 && (
-                    <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-                      {activeUser == "1"
-                        ? "Current Live Session"
-                        : "Current Live Bookmaker"}
-                    </Typography>
-                  )}
-                  {event.bettings.map((element) => {
-                    return (
-                      <Box
-                        onClick={(e) => {
-                          if (activeUser == "1") {
-                            dispatch(setSessionBetId(""));
-                            navigate("/expert/live", {
-                              state: {
-                                createSession: false,
-                                match: x,
-                                sessionEvent: element,
-                              },
-                            });
-                          } else if (activeUser == "2") {
-                            navigate("/expert/market");
-                          }
-                          handleClose();
-                        }}
-                        sx={{ marginLeft: "10px", marginTop: "3px" }}
-                      >
-                        <Typography
-                          sx={{
-                            fontSize: "12px",
-                            marginTop: "3px",
-                            cursor: "pointer",
+          {allLiveEventSession?.length > 0 &&
+            allLiveEventSession?.map((event) => {
+              if (event.id == x.id)
+                return (
+                  <>
+                    {event.bettings.length > 0 && (
+                      <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+                        {activeUser == "1"
+                          ? "Current Live Session"
+                          : "Current Live Bookmaker"}
+                      </Typography>
+                    )}
+                    {event.bettings.map((element) => {
+                      return (
+                        <Box
+                          onClick={(e) => {
+                            dispatch(setSessionBetId(element.id));
+                            if (activeUser == "1") {
+                              navigate("/expert/live", {
+                                state: {
+                                  createSession: false,
+                                  match: x,
+                                  sessionEvent: element,
+                                },
+                              });
+                            } else if (activeUser == "2") {
+                              navigate("/expert/market");
+                            }
+                            handleClose();
                           }}
+                          sx={{ marginLeft: "10px", marginTop: "3px" }}
                         >
-                          {element.bet_condition}
-                        </Typography>
-                      </Box>
-                    );
-                  })}
-                </>
-              );
-          })}
+                          <Typography
+                            sx={{
+                              fontSize: "12px",
+                              marginTop: "3px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            {element.bet_condition}
+                          </Typography>
+                        </Box>
+                      );
+                    })}
+                  </>
+                );
+            })}
           {/* <Typography sx={{ fontSize: "12px", }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 1"}</Typography>
                   <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography> */}
           <Box
@@ -160,5 +161,4 @@ const MenutItemsComponent = ({
   );
 };
 
-
-export default MenutItemsComponent
+export default MenutItemsComponent;

@@ -51,9 +51,8 @@ const IndiaPakLive = React.forwardRef(
     const { socket } = useContext(SocketContext);
     const { axios } = setRole();
     const dispatch = useDispatch();
-    const { sessionAllBet, sessionBetId, allEventSession } = useSelector(
-      (state) => state?.expertMatchDetails
-    );
+    const { sessionAllBet, sessionBetId, allEventSession, currentOdd,sessionProfitLoss } =
+      useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
     const stateDetail = {
@@ -97,6 +96,16 @@ const IndiaPakLive = React.forwardRef(
         setIsDisable(true);
       },
     }));
+
+    useEffect(() => {
+      if (currentOdd) {
+        setCurrentOdds(currentOdd);
+      }
+
+      if (sessionProfitLoss) {
+        setProLoss(sessionProfitLoss);
+      }
+    }, [currentOdd,sessionProfitLoss]);
 
     // useEffect(() => {
     //   if (socket && socket.connected) {
@@ -189,12 +198,12 @@ const IndiaPakLive = React.forwardRef(
     //                     ...currentMatch,
     //                     bettings: filteredBettings,
     //                   };
-                      
+
     //               }
     //               return currentMatch;
     //             }
     //           );
-             
+
     //           dispatch(setAllEventSession(updatedAllEventSession));
     //         } catch (err) {
     //           console.log(err?.message);

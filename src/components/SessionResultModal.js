@@ -9,6 +9,7 @@ import { memo } from "react";
 import SessionResultCustomButton from "./SessionResultCustomButton";
 import { SocketContext } from "..//context/socketContext";
 import useOuterClick from "./helper/userOuterClick";
+import { useSelector } from "react-redux";
 
 const SessionResultModal = ({
   onClick,
@@ -25,6 +26,10 @@ const SessionResultModal = ({
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
+
+  const { sessionResults } = useSelector((state) => state?.matchDetails);
+
+
   const innerRef = useOuterClick((ev) => {
     onClick();
   });
@@ -101,7 +106,7 @@ const SessionResultModal = ({
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
         onClick();
-
+             
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
             (betting, index) => {
