@@ -9,12 +9,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ButtonWithSwitch from "./ButtonWithSwitch";
 import { toast } from "react-toastify";
+import ButtonWithSwitchBookmaker from "./ButtonWithSwitchBookmaker";
 
 const Row = ({ index, containerStyle, data }) => {
-  console.log(data ,'kjnjnjnkjin');
+  console.log(data, "kjnjnjnkjin");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { axios } = setRole();
+
   const [updateMatchStatus, setUpdateMatchStatus] = useState({
     1: { field: "apiMatchActive", val: data?.apiMatchActive || false },
     2: { field: "apiBookMakerActive", val: data?.apiBookMakerActive || false },
@@ -27,19 +29,31 @@ const Row = ({ index, containerStyle, data }) => {
       field: "manualBookMakerActive",
       val: data?.manualBookMakerActive || false,
     },
-    5: {
-      field: "quick_bookmaker1",
-      val: data?.bookmakers[0]?.betStatus == 0? false : true,
-    },
-    6: {
-      field: "quick_bookmaker2",
-      val: data?.bookmakers[1]?.betStatus == 0? false : true,
-    },
-    7: {
-      field: "quick_bookmaker3",
-      val: data?.bookmakers[2]?.betStatus == 0? false : true,
-    },
+    // 5: {
+    //   field: "bookmaker1",
+    //   val: bookMaker[0]?.betStatus == 0? false : true,
+    // },
+    // 6: {
+    //   field: "bookmaker2",
+    //   val: bookMaker[1]?.betStatus == 0? false : true,
+    // },
+    // 7: {
+    //   field: "bookmaker3",
+    //   val: bookMaker[2]?.betStatus == 0? false : true,
+    // },
   });
+
+  const [updateBookmaker, setUpdateBookmaker] = useState([
+    ...data?.bookmakers?.map((bookmaker, index) => {
+      return {
+        id: bookmaker?.id,
+        marketName: bookmaker?.marketName,
+        betStatus: bookmaker?.betStatus == 0 || null ? false : true,
+      };
+    }),
+  ]);
+
+  console.log("bookmaker", updateBookmaker);
 
   function showDialogModal(isModalOpen, showRight, message, navigateTo, state) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -69,6 +83,14 @@ const Row = ({ index, containerStyle, data }) => {
     }
   }, [socketMicro]);
 
+  let bookMakerData = data?.bookmakers?.map((bookmaker) => {
+    return {
+      id: bookmaker.id,
+      betStatus: bookmaker.betStatus,
+    };
+  });
+  console.log("book", bookMakerData);
+
   async function submitMatchUpdation() {
     setLoading({ val: true, id: data.id });
     let defaultMatchStatus = {
@@ -77,6 +99,12 @@ const Row = ({ index, containerStyle, data }) => {
       apiSessionActive: false,
       manualBookMakerActive: false,
       manualSessionActive: false,
+      quick_bookmaker: updateBookmaker?.map((bookmaker) => {
+        return {
+          id: bookmaker.id,
+          betStatus: bookmaker.betStatus === false ? 0 : 1,
+        };
+      }),
     };
     let i;
     for (i = 0; i < 5; i++) {
@@ -91,6 +119,7 @@ const Row = ({ index, containerStyle, data }) => {
       if (updateMatchStatus[i + 1].field === "manualSessionActive")
         defaultMatchStatus.manualSessionActive = updateMatchStatus[i + 1].val;
     }
+
     let payload = {
       matchId: data.id,
       ...defaultMatchStatus,
@@ -176,38 +205,46 @@ const Row = ({ index, containerStyle, data }) => {
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={3}
           />
-          {/* {data?.bookmakers?.map((item, index) => {
+
+          {updateBookmaker?.map((bookmaker) => {
             return (
-              <ButtonWithSwitch
-            title={item?.marketName}
-            containerStyle={{ width: "14%" }}
-            updateMatchStatus={updateMatchStatus}
-            setUpdateMatchStatus={setUpdateMatchStatus}
-            place={4}
-          />
+              <ButtonWithSwitchBookmaker
+                title={bookmaker.marketName}
+                containerStyle={{ width: "14%" }}
+                updateBookmaker={updateBookmaker}
+                setUpdateBookmaker={setUpdateBookmaker}
+                id={bookmaker.id}
+              />
             );
-          })} */}
-          {data?.bookmakers?.length ==1 && <ButtonWithSwitch
-            title={data?.bookmakers[0]?.marketName}
-            containerStyle={{ width: "14%" }}
-            updateMatchStatus={updateMatchStatus}
-            setUpdateMatchStatus={setUpdateMatchStatus}
-            place={5}
-          />}
-          {data?.bookmakers?.length ==2 && <ButtonWithSwitch
-            title={data?.bookmakers[1]?.marketName}
-            containerStyle={{ width: "14%" }}
-            updateMatchStatus={updateMatchStatus}
-            setUpdateMatchStatus={setUpdateMatchStatus}
-            place={6}
-          />}
-          {data?.bookmakers?.length ==3 && <ButtonWithSwitch
-            title={data?.bookmakers[1]?.marketName}
-            containerStyle={{ width: "14%" }}
-            updateMatchStatus={updateMatchStatus}
-            setUpdateMatchStatus={setUpdateMatchStatus}
-            place={7}
-          />}
+          })}
+
+          {/* {data?.bookmakers?.length == 1 && (
+            <ButtonWithSwitch
+              title={data?.bookmakers[0]?.marketName}
+              containerStyle={{ width: "14%" }}
+              updateMatchStatus={updateMatchStatus}
+              setUpdateMatchStatus={setUpdateMatchStatus}
+              place={5}
+            />
+          )}
+          {data?.bookmakers?.length == 2 && (
+            <ButtonWithSwitch
+              title={data?.bookmakers[1]?.marketName}
+              containerStyle={{ width: "14%" }}
+              updateMatchStatus={updateMatchStatus}
+              setUpdateMatchStatus={setUpdateMatchStatus}
+              place={6}
+            />
+          )}
+          {data?.bookmakers?.length == 3 && (
+            <ButtonWithSwitch
+              title={data?.bookmakers[2]?.marketName}
+              containerStyle={{ width: "14%" }}
+              updateMatchStatus={updateMatchStatus}
+              setUpdateMatchStatus={setUpdateMatchStatus}
+              place={7}
+            />
+          )} */}
           {/* <ButtonWithSwitch
             title={`Quick\nBookmaker`}
             containerStyle={{ width: "14%" }}
