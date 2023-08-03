@@ -11,6 +11,7 @@ import ButtonWithSwitch from "./ButtonWithSwitch";
 import { toast } from "react-toastify";
 
 const Row = ({ index, containerStyle, data }) => {
+  console.log(data ,'kjnjnjnkjin');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { axios } = setRole();
@@ -25,6 +26,18 @@ const Row = ({ index, containerStyle, data }) => {
     4: {
       field: "manualBookMakerActive",
       val: data?.manualBookMakerActive || false,
+    },
+    5: {
+      field: "quick_bookmaker1",
+      val: data?.bookmakers[0]?.betStatus == 0? false : true,
+    },
+    6: {
+      field: "quick_bookmaker2",
+      val: data?.bookmakers[1]?.betStatus == 0? false : true,
+    },
+    7: {
+      field: "quick_bookmaker3",
+      val: data?.bookmakers[2]?.betStatus == 0? false : true,
     },
   });
 
@@ -163,13 +176,45 @@ const Row = ({ index, containerStyle, data }) => {
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={3}
           />
-          <ButtonWithSwitch
-            title={`Quick\nBookmaker`}
+          {/* {data?.bookmakers?.map((item, index) => {
+            return (
+              <ButtonWithSwitch
+            title={item?.marketName}
             containerStyle={{ width: "14%" }}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={4}
           />
+            );
+          })} */}
+          {data?.bookmakers?.length ==1 && <ButtonWithSwitch
+            title={data?.bookmakers[0]?.marketName}
+            containerStyle={{ width: "14%" }}
+            updateMatchStatus={updateMatchStatus}
+            setUpdateMatchStatus={setUpdateMatchStatus}
+            place={5}
+          />}
+          {data?.bookmakers?.length ==2 && <ButtonWithSwitch
+            title={data?.bookmakers[1]?.marketName}
+            containerStyle={{ width: "14%" }}
+            updateMatchStatus={updateMatchStatus}
+            setUpdateMatchStatus={setUpdateMatchStatus}
+            place={6}
+          />}
+          {data?.bookmakers?.length ==3 && <ButtonWithSwitch
+            title={data?.bookmakers[1]?.marketName}
+            containerStyle={{ width: "14%" }}
+            updateMatchStatus={updateMatchStatus}
+            setUpdateMatchStatus={setUpdateMatchStatus}
+            place={7}
+          />}
+          {/* <ButtonWithSwitch
+            title={`Quick\nBookmaker`}
+            containerStyle={{ width: "14%" }}
+            updateMatchStatus={updateMatchStatus}
+            setUpdateMatchStatus={setUpdateMatchStatus}
+            place={4}
+          /> */}
           <ButtonWithSwitch
             title={`Manual\nSession`}
             containerStyle={{ width: "14%" }}
