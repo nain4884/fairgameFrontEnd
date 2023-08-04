@@ -206,10 +206,12 @@ const LiveMarketComponent = ({
       <Box
         onClick={() => {
           if (mode == "0") {
+            sessionStorage.setItem("matchId", data?.id)
             navigate(`/${pathname.split("/")[1]}/matches`, {
               state: { submit: true, matchId: data?.id, activeTab: "Analysis" },
             });
           }
+          sessionStorage.removeItem("matchId")
           setSelected();
         }}
         sx={{

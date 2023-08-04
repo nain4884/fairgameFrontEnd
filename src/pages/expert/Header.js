@@ -46,7 +46,9 @@ import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
   setManualBookMarkerRates,
+  setSelectedMatch,
   setSessionResults,
+  setUserAllMatches,
 } from "../../newStore/reducers/matchDetails";
 import { a } from "@react-spring/web";
 import ButtonHead from "./ButtonHead";
@@ -82,11 +84,11 @@ const CustomHeader = ({}) => {
     activeUsers,
     allMatch,
     allBetRates,
-    selectedExpertMatch,
     currentOdd,
     sessionAllBet,
     sessionBetId,
   } = useSelector((state) => state?.expertMatchDetails);
+  const { userAllMatches ,selectedMatch} = useSelector((state) => state?.matchDetails);
   const { userExpert } = useSelector((state) => state.auth);
   const { socket, socketMicro } = useContext(SocketContext);
 
@@ -99,18 +101,19 @@ const CustomHeader = ({}) => {
   const [localAllBetRates, setLocalAllBetRates] = useState([]);
   const [localSessionBets, setLocalSessionBets] = useState([]);
   const [currentMatch, setCurrentMatch] = useState(null);
-  const [localCurrentMatch, setLocalCurrentUser] = useState(null);
+  const [localCurrentUser, setLocalCurrentUser] = useState(null);
   const [currentOdds, setCurrentOdds] = useState(null);
   const [betId, setBetId] = useState("");
 
   const [allLiveEventSession, setAllLiveEventSession] = useState([]);
+  const [localAllmatches, setLocalAllMatches] = useState([]);
 
   useEffect(() => {
     if (allBetRates) {
       setLocalAllBetRates(allBetRates);
     }
-    if (selectedExpertMatch) {
-      setCurrentMatch(selectedExpertMatch);
+    if (selectedMatch) {
+      setCurrentMatch(selectedMatch);
     }
 
     if (currentUser) {
@@ -131,14 +134,19 @@ const CustomHeader = ({}) => {
     if (sessionBetId) {
       setBetId(sessionBetId);
     }
+
+    if (userAllMatches) {
+      setLocalAllMatches(userAllMatches);
+    }
   }, [
     allBetRates,
-    selectedExpertMatch,
+    selectedMatch,
     currentUser,
     allEventSession,
     currentOdd,
     sessionAllBet,
     sessionBetId,
+    userAllMatches,
   ]);
 
   function getSessionStorageItemAsync(key) {
@@ -216,52 +224,50 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "match_bet") {
           const data = packet.data[1];
           try {
-            if (data) {
-              const manualBookmaker = {
-                matchId: data?.betPlaceData?.match_id,
-                teamA: data.teamA_rate,
-                teamB: data.teamB_rate,
-                teamC: data.teamC_rate,
-              };
+            const manualBookmaker = {
+              matchId: data?.betPlaceData?.match_id,
+              teamA: data.teamA_rate,
+              teamB: data.teamB_rate,
+              teamC: data.teamC_rate,
+            };
 
-              setLocalAllBetRates((prev) => {
-                if (match_id === data?.betPlaceData?.match_id) {
-                  const body = {
-                    id: data?.betPlaceData?.id,
-                    isActive: true,
-                    createAt: data?.betPlaceData?.createdAt,
-                    updateAt: data?.betPlaceData?.createdAt,
-                    createdBy: null,
-                    deletedAt: null,
-                    user: { userName: data?.betPlaceData?.userName },
-                    user_id: null,
-                    match_id: data?.betPlaceData?.match_id,
-                    bet_id: data?.betPlaceData?.bet_id,
-                    result: "pending",
-                    team_bet: data?.betPlaceData?.team_bet,
-                    odds: data?.betPlaceData?.odds,
-                    win_amount: null,
-                    loss_amount: null,
-                    bet_type: data?.betPlaceData?.bet_type,
-                    country: null,
-                    ip_address: null,
-                    rate: data?.betPlaceData?.rate,
-                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                    marketType: data?.betPlaceData?.marketType,
-                    myStack: data?.betPlaceData?.myStack,
-                    myStack: data?.betPlaceData?.myStack,
-                    amount:
-                      data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                  };
-                  const newBody = [body, ...prev];
-                  dispatch(setAllBetRate(newBody));
-                  return newBody;
-                }
-                return prev;
-              });
+            setLocalAllBetRates((prev) => {
+              if (match_id === data?.betPlaceData?.match_id) {
+                const body = {
+                  id: data?.betPlaceData?.id,
+                  isActive: true,
+                  createAt: data?.betPlaceData?.createdAt,
+                  updateAt: data?.betPlaceData?.createdAt,
+                  createdBy: null,
+                  deletedAt: null,
+                  user: { userName: data?.betPlaceData?.userName },
+                  user_id: null,
+                  match_id: data?.betPlaceData?.match_id,
+                  bet_id: data?.betPlaceData?.bet_id,
+                  result: "pending",
+                  team_bet: data?.betPlaceData?.team_bet,
+                  odds: data?.betPlaceData?.odds,
+                  win_amount: null,
+                  loss_amount: null,
+                  bet_type: data?.betPlaceData?.bet_type,
+                  country: null,
+                  ip_address: null,
+                  rate: data?.betPlaceData?.rate,
+                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                  marketType: data?.betPlaceData?.marketType,
+                  myStack: data?.betPlaceData?.myStack,
+                  myStack: data?.betPlaceData?.myStack,
+                  amount:
+                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                };
+                const newBody = [body, ...prev];
+                dispatch(setAllBetRate(newBody));
+                return newBody;
+              }
+              return prev;
+            });
 
-              dispatch(setManualBookMarkerRates(manualBookmaker));
-            }
+            dispatch(setManualBookMarkerRates(manualBookmaker));
           } catch (e) {
             console.log("error", e?.message);
           }
@@ -275,7 +281,7 @@ const CustomHeader = ({}) => {
                 ...prev,
                 matchOddRateLive: e?.matchOddLive,
               };
-              dispatch(setSelectedExpertMatch(newBody));
+              dispatch(setSelectedMatch(newBody));
               return;
             }
             return prev;
@@ -290,7 +296,7 @@ const CustomHeader = ({}) => {
                 ...prev,
                 bookMakerRateLive: e?.bookMakerLive,
               };
-              dispatch(setSelectedExpertMatch(newBody));
+              dispatch(setSelectedMatch(newBody));
               return newBody;
             }
             return prev;
@@ -421,7 +427,7 @@ const CustomHeader = ({}) => {
               dispatch(setCurrentOdd(newBody));
               return newBody;
             });
-            localAllBetRates((IObets) => {
+            setLocalAllBetRates((IObets) => {
               const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
 
               if (currentMatch?.id === data?.betPlaceData?.match_id) {
@@ -595,10 +601,32 @@ const CustomHeader = ({}) => {
 
               return updatedPrev;
             });
+
+            setLocalAllMatches((prev) => {
+              const filteredMatches = prev.filter(
+                (v) => !(v.id === value?.match_id && value.sessionBet === false)
+              );
+              dispatch(setUserAllMatches(filteredMatches));
+              return filteredMatches;
+            });
           } catch (err) {
             console.log(err?.message);
           }
         }
+        if (packet.data[0] === "newMatchAdded") {
+          const value = packet.data[1];
+          // matchId = value?.match_id;
+          try {
+            setLocalAllMatches((prev) => {
+              const newBody = [value,...prev];
+              dispatch(setUserAllMatches(newBody));
+              return newBody;
+            });
+          } catch (err) {
+            console.log(err?.message);
+          }
+        }
+      
       };
     }
   }, [socket, betId]);
@@ -1090,7 +1118,7 @@ const CustomHeader = ({}) => {
                     ? "Bookmaker"
                     : "Betfair"
                 }
-                value1={localCurrentMatch?.userName || ""}
+                value1={localCurrentUser?.userName || ""}
               />
             </Box>
           </Box>

@@ -5,7 +5,8 @@ const initialState = {
   selectedMatchIds: [],
   profitLossReportPage: 1,
   selectedMatch: null,
-  sessionOffline:[]
+  sessionOffline:[],
+  manualBookmaker: [],
 };
 
 export const logoutAdminDetails = createAction("auth/logoutReset");
@@ -45,6 +46,9 @@ const adminMatches = createSlice({
     setSessionOffline: (state, action) => {
       state.sessionOffline = action.payload;
     },
+    setManualBookmaker: (state, action) => {
+      state.manualBookmaker = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // This will handle the reset on logout
@@ -58,7 +62,8 @@ export const {
   removeSelectedMatchIds,
   setAdminAllMatches,
   setSelectedMatch,
-  setSessionOffline
+  setSessionOffline,
+  setManualBookmaker
 } = adminMatches.actions;
 
 export default adminMatches.reducer;

@@ -130,7 +130,7 @@ const BookMarketer = ({
             invert={true}
           /> */}
           {/* { <SmallBox title={'Live'} />} */}
-          {!live ? (
+          {!currentMatch?.bookMakerRateLive ? (
             <SmallBox
               onClick={() => {
                 if (newMatchOdds?.id) {
@@ -300,7 +300,7 @@ const BookMarketer = ({
             )}
 
             <Divider />
-            {!live && (
+            {!currentMatch?.bookMakerRateLive && (
               <Box
                 sx={{
                   width: "100%",

@@ -21,7 +21,8 @@ const initialState = {
   sessionExposure: 0,
   manualBookmaker: [],
   sessionOffline: [],
-  userAllMatches:[]
+  userAllMatches:[],
+  multiSelectedMatches:[]
 };
 
 export const logoutMatchDetails = createAction('auth/logoutReset');
@@ -170,6 +171,9 @@ const matchDetails = createSlice({
     },
     setUserAllMatches: (state, action) => {
       state.userAllMatches = action.payload;
+    },
+    setMultiSelectedMatch: (state, action) => {
+      state.multiSelectedMatches = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -207,7 +211,8 @@ export const {
   setSessionExposure,
   setManualBookmaker,
   setSessionOffline,
-  setUserAllMatches
+  setUserAllMatches,
+  setMultiSelectedMatch
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

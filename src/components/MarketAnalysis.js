@@ -12,11 +12,10 @@ import CustomLoader from "./helper/CustomLoader";
 import { SocketContext } from "../context/socketContext";
 import { removeSocket } from "../components/helper/removeSocket";
 import { removeCurrentUser } from "../newStore/reducers/currentUser";
-import { removeManualBookMarkerRates } from "../newStore/reducers/matchDetails";
+import { removeManualBookMarkerRates, setUserAllMatches } from "../newStore/reducers/matchDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalStore } from "../context/globalStore";
 import { logout } from "../newStore/reducers/auth";
-import { setAdminAllMatches } from "../newStore/reducers/adminMatches";
 
 const MarketAnalysis = () => {
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
@@ -33,15 +32,15 @@ const MarketAnalysis = () => {
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-  const { adminAllMatches } = useSelector((state) => state?.adminMatches);
+  const { userAllMatches } = useSelector((state) => state?.matchDetails);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (adminAllMatches) {
-      setMatchData(adminAllMatches);
+    if (userAllMatches) {
+      setMatchData(userAllMatches);
     }
-  }, [adminAllMatches]);
+  }, [userAllMatches]);
   // useEffect(() => {
   //   if (socket && socket.connected) {
   //     socket.on("newMessage", (value) => {
@@ -115,7 +114,7 @@ const MarketAnalysis = () => {
       if (data.length > 0) {
         setLoading(false);
         setMatchData(data[0]);
-        dispatch(setAdminAllMatches(data[0]));
+        dispatch(setUserAllMatches(data[0]));
         setPageCount(Math.ceil(parseInt(data[1]) / pageLimit));
       }
     } catch (e) {

@@ -109,7 +109,7 @@ const MatchOdds = ({
   const theme = useTheme();
 
   const [newMatchOdds, setNewMatchOdds] = useState(matchOdds);
-  const [stlive, setLive] = useState(currentMatch?.matchOddRateLive);
+  const [stlive, setLive] = useState(false);
   const [visible, setVisible] = useState(false);
   const [visibleImg, setVisibleImg] = useState(true);
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
@@ -254,7 +254,7 @@ const MatchOdds = ({
               }}
               invert={true}
             />
-            {!stlive && (
+            {!currentMatch?.matchOddRateLive  && (
               <SmallBox
                 onClick={() => {
                   if (newMatchOdds?.id) {
@@ -274,7 +274,7 @@ const MatchOdds = ({
                 }}
               />
             )}
-            {stlive && (
+            {currentMatch?.matchOddRateLive  && (
               <SmallBox
                 onClick={() => {
                   socket.emit("matchOddRateLive", {
@@ -457,7 +457,7 @@ const MatchOdds = ({
                   />
                 </>
               )}
-              {!stlive && (
+              {!currentMatch?.matchOddRateLive && (
                 <Box
                   sx={{
                     width: "100%",

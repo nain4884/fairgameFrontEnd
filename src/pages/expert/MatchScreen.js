@@ -12,6 +12,7 @@ import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
   setManualBookMarkerRates,
+  setSelectedMatch,
 } from "../../newStore/reducers/matchDetails";
 
 import { microServiceApiPath } from "../../components/helper/constants";
@@ -30,7 +31,8 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import SessionMarketLive from "../expert/SessionMarket/LiveSessionMarket/SessionMarketLive";
 import CustomLoader from "../../components/helper/CustomLoader";
-import { setActiveUsers, setAllBetRate, setSelectedExpertMatch } from "../../newStore/reducers/expertMatchDetails";
+import { setActiveUsers, setAllBetRate, } from "../../newStore/reducers/expertMatchDetails";
+import { setSelected } from "../../store/activeUser";
 let matchOddsCount = 0;
 let marketId = "";
 let profitLoss;
@@ -42,7 +44,7 @@ const MatchScreen = () => {
   const navigate = useNavigate();
   const { axios } = setRole();
   const dispatch = useDispatch();
-  const { allBetRates ,selectedExpertMatch,currentOdd } = useSelector((state) => state?.expertMatchDetails);
+  const { allBetRates ,currentOdd } = useSelector((state) => state?.expertMatchDetails);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [IObets, setIObtes] = useState([]);
   const [bookmakerLivedata, setBookmakerLiveData] = useState([]);
@@ -53,24 +55,27 @@ const MatchScreen = () => {
   const [currentOdds, setCurrentOdds] = useState(null);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 
+
+  const { selectedMatch} = useSelector((state) => state?.matchDetails);
+
    useEffect(()=>{
     if (allBetRates) {
       setIObtes(allBetRates);
     }
-    if (selectedExpertMatch) {
-      setCurrentMatch(selectedExpertMatch);
+    if (selectedMatch) {
+      setCurrentMatch(selectedMatch);
     }
     if(currentOdd){
       setCurrentOdds(currentOdd)
     }
-   },[selectedExpertMatch,allBetRates,currentOdd])
+   },[selectedMatch,allBetRates,currentOdd])
 
   const getSingleMatch = async (val) => {
     try {
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
       const newMatch = { ...data, bettings: data?.bettings?.reverse() };
       setCurrentMatch(newMatch);
-      dispatch(setSelectedExpertMatch(newMatch))
+      dispatch(setSelectedMatch(newMatch))
       marketId = data?.marketId;
       const manualBookmaker = {
         matchId: data?.id,

@@ -15,6 +15,7 @@ import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
   setAllMatches,
+  setUserAllMatches,
 } from "../../newStore/reducers/matchDetails";
 import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import { logout } from "../../newStore/reducers/auth";
@@ -30,8 +31,8 @@ const MatchListComp = () => {
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const { socket, socketMicro } = useContext(SocketContext);
   const dispatch = useDispatch();
-  const { allEventSession, selectedExpertMatch } = useSelector(
-    (state) => state?.expertMatchDetails
+  const { userAllMatches,  } = useSelector(
+    (state) => state?.matchDetails
   );
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loading, setLoading] = useState(true);
@@ -39,10 +40,10 @@ const MatchListComp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (selectedExpertMatch) {
-      setAllMatch(selectedExpertMatch);
+    if (userAllMatches) {
+      setAllMatch(userAllMatches);
     }
-  }, [selectedExpertMatch]);
+  }, [userAllMatches]);
 
   const getAllMatch = async (title) => {
     try {
@@ -58,7 +59,7 @@ const MatchListComp = () => {
       if (response.data[0]) {
         setAllMatch(response.data[0]);
         setLoading(false);
-
+ dispatch(setUserAllMatches(response.data[0]))
         setPageCount(
           Math.ceil(
             parseInt(response?.data[1] ? response.data[1] : 1) /

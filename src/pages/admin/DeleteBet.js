@@ -15,7 +15,7 @@ import SessionMarket from "./matches/SessionMarket";
 import BookMarketer from "./matches/BookMaketer";
 import { useEffect } from "react";
 import { setRole } from "../../newStore";
-import { setSelectedMatch } from "../../newStore/reducers/matchDetails";
+import { setAllBetRate, setSelectedMatch } from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
 import CustomLoader from "../../components/helper/CustomLoader";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -41,7 +41,14 @@ const DeleteBet = ({}) => {
   const [IOSinglebets, setSingleIObtes] = useState([]);
   const [marketId, setMarketId] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const { selectedMatch ,sessionOffline} = useSelector((state) => state?.adminMatches);
+  const {
+    selectedMatch,
+    sessionOffline,
+    manualBookmaker,
+    allBetRates,
+    allSessionBets,
+  } = useSelector((state) => state?.matchDetails);
+  const { currentOdd } = useSelector((state) => state?.expertMatchDetails);
   const [currentMatch, setCurrentMatch] = useState([]);
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
@@ -54,7 +61,7 @@ const DeleteBet = ({}) => {
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState("");
   const [sessionExposer, setSessionExposure] = useState(0);
-  const [sessionOff,setSessionOff]=useState([])
+  const [sessionOff, setSessionOff] = useState([]);
 
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
@@ -63,17 +70,35 @@ const DeleteBet = ({}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
- 
     if (selectedMatch) {
       setCurrentMatch(selectedMatch);
     }
-    
+
     if (sessionOffline) {
       setSessionOff(sessionOffline);
     }
-  }, [ selectedMatch, sessionOffline]);
 
+    if (manualBookmaker) {
+      setManualBookmakerData(manualBookmaker);
+    }
+    if (currentOdd) {
+      setCurrentOdds(currentOdd);
+    }
 
+    if (allSessionBets) {
+      setSessionBets(allSessionBets);
+    }
+    if (allBetRates) {
+      setSingleIObtes(allBetRates);
+    }
+  }, [
+    selectedMatch,
+    sessionOffline,
+    manualBookmaker,
+    allSessionBets,
+    currentOdd,
+    allBetRates,
+  ]);
 
   // useEffect(() => {
   //   if (socket && socket.connected) {
@@ -869,16 +894,16 @@ const DeleteBet = ({}) => {
     };
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
-
-      console.log("response 1111", data?.data?.data);
       setSingleIObtes(data?.data?.data);
+      dispatch(setAllBetRate(data?.data?.data))
       const bets = data?.data?.data?.filter(
         (b) =>
           !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
             b?.marketType
           )
       );
-      setSessionBets(bets || []);
+      // setSessionBets(bets || []);
+      // dispatch(setSessionBets(bets))
     } catch (e) {
       console.log(e);
     }

@@ -14,12 +14,17 @@ import { useSelector, useDispatch } from "react-redux";
 import CustomLoader from "../../components/helper/CustomLoader";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { removeCurrentUser } from "../../newStore/reducers/currentUser";
-import { removeManualBookMarkerRates } from "../../newStore/reducers/matchDetails";
+import {
+  removeManualBookMarkerRates,
+  setAllBetRate,
+  setAllSessionBets,
+  setMultiSelectedMatch,
+} from "../../newStore/reducers/matchDetails";
 import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
 
 let matchOddsCount = 0;
-const MatchSubmit = ({ }) => {
+const MatchSubmit = ({}) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
@@ -39,9 +44,25 @@ const MatchSubmit = ({ }) => {
   const [isHandled, setIsHandled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState();
+  const { multiSelectedMatches,allBetRates,allSessionBets } = useSelector((state) => state?.matchDetails);
 
   const navigate = useNavigate();
   // matchIds
+
+  useEffect(() => {
+    if (multiSelectedMatches) {
+      setMatchData(multiSelectedMatches);
+    }
+
+    if(allBetRates)
+    {
+      setIObtes(allBetRates)
+    }
+    if(allSessionBets){
+      setSessionBets(allSessionBets)
+    }
+  }, [multiSelectedMatches,allBetRates,allSessionBets]);
+
   useEffect(() => {
     // alert(JSON.stringify(matchIds))
     if (matchIds !== undefined) {
@@ -50,576 +71,576 @@ const MatchSubmit = ({ }) => {
     }
   }, [matchIds]);
 
-  useEffect(() => {
-    if (socket && socket.connected) {
-      socket.on("newMessage", (value) => {
-        console.log(value);
-      });
+  // useEffect(() => {
+  //   if (socket && socket.connected) {
+  //     socket.on("newMessage", (value) => {
+  //       console.log(value);
+  //     });
 
-      socket.onevent = async (packet) => {
-        // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
-        for (var i = 0; i < matchIds?.length; i++) {
-          (function (i) {
-            if (packet.data[0] === "updateMatchActiveStatus") {
-              const value = packet.data[1];
-              setMatchData((prevMatchData) => {
-                return prevMatchData.map((item) => {
-                  if (item?.id === matchIds[i]) {
-                    return {
-                      ...item,
-                      apiBookMakerActive: value?.apiBookMakerActive,
-                      apiMatchActive: value?.apiMatchActive,
-                      apiSessionActive: value?.apiSessionActive,
-                      manualBookMakerActive: value?.manualBookMakerActive,
-                      manualSessionActive: value?.manualSessionActive,
-                    };
-                  }
-                  return item;
-                });
-              });
-            }
+  //     socket.onevent = async (packet) => {
+  //       // console.log(`Received event: ${packet.data[0]}`, packet.data[1]);
+  //       for (var i = 0; i < matchIds?.length; i++) {
+  //         (function (i) {
+  //           if (packet.data[0] === "updateMatchActiveStatus") {
+  //             const value = packet.data[1];
+  //             setMatchData((prevMatchData) => {
+  //               return prevMatchData.map((item) => {
+  //                 if (item?.id === matchIds[i]) {
+  //                   return {
+  //                     ...item,
+  //                     apiBookMakerActive: value?.apiBookMakerActive,
+  //                     apiMatchActive: value?.apiMatchActive,
+  //                     apiSessionActive: value?.apiSessionActive,
+  //                     manualBookMakerActive: value?.manualBookMakerActive,
+  //                     manualSessionActive: value?.manualSessionActive,
+  //                   };
+  //                 }
+  //                 return item;
+  //               });
+  //             });
+  //           }
 
-            if (packet.data[0] === "updateRate_user") {
-              const value = packet.data[1];
-              try {
-                if (!value?.lock) {
-                  if (value?.isTab) {
-                    setMatchData((prevMatchData) => {
-                      return prevMatchData.map((item) => {
-                        const updatedBettings = item.bettings.map((betting) => {
-                          // Check if the betting object has the specified ID
-                          if (betting.id === value.betId) {
-                            // Update the bet_condition value
-                            return {
-                              ...betting,
-                              teamA_Back: value?.teamA_Back,
-                              teamA_lay: "",
-                              teamB_Back: value?.teamB_Back,
-                              teamB_lay: "",
-                              teamC_Back: value?.teamC_Back,
-                              teamC_lay: "",
-                              // teamA_suspend: "live",
-                              // teamB_suspend: "live",
-                              // teamC_suspend: "live",
-                              teamA_suspend: null,
-                              teamB_suspend: null,
-                              teamC_suspend: null,
-                            };
-                          }
-                          return betting;
-                        });
+  //           if (packet.data[0] === "updateRate_user") {
+  //             const value = packet.data[1];
+  //             try {
+  //               if (!value?.lock) {
+  //                 if (value?.isTab) {
+  //                   setMatchData((prevMatchData) => {
+  //                     return prevMatchData.map((item) => {
+  //                       const updatedBettings = item.bettings.map((betting) => {
+  //                         // Check if the betting object has the specified ID
+  //                         if (betting.id === value.betId) {
+  //                           // Update the bet_condition value
+  //                           return {
+  //                             ...betting,
+  //                             teamA_Back: value?.teamA_Back,
+  //                             teamA_lay: "",
+  //                             teamB_Back: value?.teamB_Back,
+  //                             teamB_lay: "",
+  //                             teamC_Back: value?.teamC_Back,
+  //                             teamC_lay: "",
+  //                             // teamA_suspend: "live",
+  //                             // teamB_suspend: "live",
+  //                             // teamC_suspend: "live",
+  //                             teamA_suspend: null,
+  //                             teamB_suspend: null,
+  //                             teamC_suspend: null,
+  //                           };
+  //                         }
+  //                         return betting;
+  //                       });
 
-                        return {
-                          ...item,
-                          bettings: updatedBettings,
-                        };
-                      });
-                    });
-                  } else {
-                    setMatchData((prevMatchData) => {
-                      return prevMatchData.map((item) => {
-                        const updatedBettings = item.bettings.map((betting) => {
-                          // Check if the betting object has the specified ID
-                          if (betting.id === value.betId) {
-                            // Update the bet_condition value
-                            return {
-                              ...betting,
-                              teamA_Back: value?.teamA_Back
-                                ? value?.teamA_Back
-                                : "",
-                              teamA_lay: value?.teamA_lay
-                                ? value?.teamA_lay
-                                : "",
-                              teamA_suspend:
-                                value?.teamA_suspend === false
-                                  ? null
-                                  : "suspended",
-                              teamB_Back: value?.teamB_Back
-                                ? value?.teamB_Back
-                                : "",
-                              teamB_lay: value?.teamB_lay
-                                ? value?.teamB_lay
-                                : "",
-                              teamB_suspend:
-                                value?.teamB_suspend === false
-                                  ? null
-                                  : "suspended",
-                              teamC_Back: value?.teamC_Back
-                                ? value?.teamC_Back
-                                : "",
-                              teamC_lay: value?.teamC_lay
-                                ? value?.teamC_lay
-                                : "",
-                              teamC_suspend:
-                                value?.teamC_suspend === false
-                                  ? null
-                                  : "suspended",
-                              teamA_Ball: null,
-                              teamB_Ball: null,
-                              teamC_Ball: null,
-                            };
-                          }
-                          return betting;
-                        });
+  //                       return {
+  //                         ...item,
+  //                         bettings: updatedBettings,
+  //                       };
+  //                     });
+  //                   });
+  //                 } else {
+  //                   setMatchData((prevMatchData) => {
+  //                     return prevMatchData.map((item) => {
+  //                       const updatedBettings = item.bettings.map((betting) => {
+  //                         // Check if the betting object has the specified ID
+  //                         if (betting.id === value.betId) {
+  //                           // Update the bet_condition value
+  //                           return {
+  //                             ...betting,
+  //                             teamA_Back: value?.teamA_Back
+  //                               ? value?.teamA_Back
+  //                               : "",
+  //                             teamA_lay: value?.teamA_lay
+  //                               ? value?.teamA_lay
+  //                               : "",
+  //                             teamA_suspend:
+  //                               value?.teamA_suspend === false
+  //                                 ? null
+  //                                 : "suspended",
+  //                             teamB_Back: value?.teamB_Back
+  //                               ? value?.teamB_Back
+  //                               : "",
+  //                             teamB_lay: value?.teamB_lay
+  //                               ? value?.teamB_lay
+  //                               : "",
+  //                             teamB_suspend:
+  //                               value?.teamB_suspend === false
+  //                                 ? null
+  //                                 : "suspended",
+  //                             teamC_Back: value?.teamC_Back
+  //                               ? value?.teamC_Back
+  //                               : "",
+  //                             teamC_lay: value?.teamC_lay
+  //                               ? value?.teamC_lay
+  //                               : "",
+  //                             teamC_suspend:
+  //                               value?.teamC_suspend === false
+  //                                 ? null
+  //                                 : "suspended",
+  //                             teamA_Ball: null,
+  //                             teamB_Ball: null,
+  //                             teamC_Ball: null,
+  //                           };
+  //                         }
+  //                         return betting;
+  //                       });
 
-                        return {
-                          ...item,
-                          bettings: updatedBettings,
-                        };
-                      });
-                    });
-                  }
-                } else {
-                  if (value.teamA_suspend == "Ball Started") {
-                    try {
-                      setMatchData((prevMatchData) => {
-                        return prevMatchData.map((item) => {
-                          const updatedBettings = item.bettings.map(
-                            (betting) => {
-                              // Check if the betting object has the specified ID
-                              if (betting.id === value.betId) {
-                                // Update the bet_condition value
-                                return {
-                                  ...betting,
-                                  teamA_suspend: value?.teamA_suspend
-                                    ? "suspended"
-                                    : value?.teamA_suspend,
-                                  teamB_suspend: value?.teamB_suspend
-                                    ? "suspended"
-                                    : value?.teamB_suspend,
-                                  teamC_suspend: value?.teamC_suspend
-                                    ? "suspended"
-                                    : value?.teamC_suspend,
-                                  teamA_Ball: "ball",
-                                  teamB_Ball: "ball",
-                                  teamC_Ball: "ball",
-                                };
-                              }
-                              return betting;
-                            }
-                          );
+  //                       return {
+  //                         ...item,
+  //                         bettings: updatedBettings,
+  //                       };
+  //                     });
+  //                   });
+  //                 }
+  //               } else {
+  //                 if (value.teamA_suspend == "Ball Started") {
+  //                   try {
+  //                     setMatchData((prevMatchData) => {
+  //                       return prevMatchData.map((item) => {
+  //                         const updatedBettings = item.bettings.map(
+  //                           (betting) => {
+  //                             // Check if the betting object has the specified ID
+  //                             if (betting.id === value.betId) {
+  //                               // Update the bet_condition value
+  //                               return {
+  //                                 ...betting,
+  //                                 teamA_suspend: value?.teamA_suspend
+  //                                   ? "suspended"
+  //                                   : value?.teamA_suspend,
+  //                                 teamB_suspend: value?.teamB_suspend
+  //                                   ? "suspended"
+  //                                   : value?.teamB_suspend,
+  //                                 teamC_suspend: value?.teamC_suspend
+  //                                   ? "suspended"
+  //                                   : value?.teamC_suspend,
+  //                                 teamA_Ball: "ball",
+  //                                 teamB_Ball: "ball",
+  //                                 teamC_Ball: "ball",
+  //                               };
+  //                             }
+  //                             return betting;
+  //                           }
+  //                         );
 
-                          return {
-                            ...item,
-                            bettings: updatedBettings,
-                          };
-                        });
-                      });
-                    } catch (err) {
-                      console.log(err?.message);
-                    }
-                  } else {
-                    try {
-                      setMatchData((prevMatchData) => {
-                        return prevMatchData.map((item) => {
-                          const updatedBettings = item.bettings.map(
-                            (betting) => {
-                              // Check if the betting object has the specified ID
-                              if (betting.id === value.betId) {
-                                // Update the bet_condition value
-                                return {
-                                  ...betting,
-                                  teamA_suspend: value?.teamA_suspend
-                                    ? "suspended"
-                                    : value?.teamA_suspend,
-                                  teamB_suspend: value?.teamB_suspend
-                                    ? "suspended"
-                                    : value?.teamB_suspend,
-                                  teamC_suspend: value?.teamC_suspend
-                                    ? "suspended"
-                                    : value?.teamC_suspend,
+  //                         return {
+  //                           ...item,
+  //                           bettings: updatedBettings,
+  //                         };
+  //                       });
+  //                     });
+  //                   } catch (err) {
+  //                     console.log(err?.message);
+  //                   }
+  //                 } else {
+  //                   try {
+  //                     setMatchData((prevMatchData) => {
+  //                       return prevMatchData.map((item) => {
+  //                         const updatedBettings = item.bettings.map(
+  //                           (betting) => {
+  //                             // Check if the betting object has the specified ID
+  //                             if (betting.id === value.betId) {
+  //                               // Update the bet_condition value
+  //                               return {
+  //                                 ...betting,
+  //                                 teamA_suspend: value?.teamA_suspend
+  //                                   ? "suspended"
+  //                                   : value?.teamA_suspend,
+  //                                 teamB_suspend: value?.teamB_suspend
+  //                                   ? "suspended"
+  //                                   : value?.teamB_suspend,
+  //                                 teamC_suspend: value?.teamC_suspend
+  //                                   ? "suspended"
+  //                                   : value?.teamC_suspend,
 
-                                  teamA_Ball: null,
-                                  teamB_Ball: null,
-                                  teamC_Ball: null,
-                                };
-                              }
-                              return betting;
-                            }
-                          );
+  //                                 teamA_Ball: null,
+  //                                 teamB_Ball: null,
+  //                                 teamC_Ball: null,
+  //                               };
+  //                             }
+  //                             return betting;
+  //                           }
+  //                         );
 
-                          return {
-                            ...item,
-                            bettings: updatedBettings,
-                          };
-                        });
-                      });
-                    } catch (err) {
-                      console.log(err?.message);
-                    }
-                  }
-                }
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
+  //                         return {
+  //                           ...item,
+  //                           bettings: updatedBettings,
+  //                         };
+  //                       });
+  //                     });
+  //                   } catch (err) {
+  //                     console.log(err?.message);
+  //                   }
+  //                 }
+  //               }
+  //             } catch (err) {
+  //               console.log(err?.message);
+  //             }
+  //           }
 
-            if (packet.data[0] === "updateSessionRate_user") {
-              const value = packet.data[1];
-              try {
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((currentMatch) => {
-                    if (currentMatch?.id !== value?.match_id) {
-                      // If the new bet doesn't belong to the current match, return the current state
-                      return currentMatch;
-                    }
-                    // Update the bettings array in the current match object
-                    const updatedBettings = currentMatch?.bettings?.map(
-                      (betting) => {
-                        if (betting.id === value.betId) {
-                          return {
-                            ...betting,
-                            ...value,
-                          };
-                        } else if (
-                          betting?.id === value?.betId &&
-                          value.sessionBet === false
-                        ) {
-                          return {
-                            ...betting,
-                            ...value,
-                          };
-                        }
-                        return betting;
-                      }
-                    );
-                    var newUpdatedValue = updatedBettings;
-                    const bettingsIds = updatedBettings?.map(
-                      (betting) => betting?.id
-                    );
-                    if (!bettingsIds?.includes(value.betId)) {
-                      newUpdatedValue = [...newUpdatedValue, value];
-                    }
-                    // Return the updated current match object
-                    return {
-                      ...currentMatch,
-                      bettings: newUpdatedValue,
-                    };
-                  });
-                });
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
+  //           if (packet.data[0] === "updateSessionRate_user") {
+  //             const value = packet.data[1];
+  //             try {
+  //               setMatchData((prevMatchData) => {
+  //                 return prevMatchData.map((currentMatch) => {
+  //                   if (currentMatch?.id !== value?.match_id) {
+  //                     // If the new bet doesn't belong to the current match, return the current state
+  //                     return currentMatch;
+  //                   }
+  //                   // Update the bettings array in the current match object
+  //                   const updatedBettings = currentMatch?.bettings?.map(
+  //                     (betting) => {
+  //                       if (betting.id === value.betId) {
+  //                         return {
+  //                           ...betting,
+  //                           ...value,
+  //                         };
+  //                       } else if (
+  //                         betting?.id === value?.betId &&
+  //                         value.sessionBet === false
+  //                       ) {
+  //                         return {
+  //                           ...betting,
+  //                           ...value,
+  //                         };
+  //                       }
+  //                       return betting;
+  //                     }
+  //                   );
+  //                   var newUpdatedValue = updatedBettings;
+  //                   const bettingsIds = updatedBettings?.map(
+  //                     (betting) => betting?.id
+  //                   );
+  //                   if (!bettingsIds?.includes(value.betId)) {
+  //                     newUpdatedValue = [...newUpdatedValue, value];
+  //                   }
+  //                   // Return the updated current match object
+  //                   return {
+  //                     ...currentMatch,
+  //                     bettings: newUpdatedValue,
+  //                   };
+  //                 });
+  //               });
+  //             } catch (err) {
+  //               console.log(err?.message);
+  //             }
+  //           }
 
-            if (packet.data[0] === "newBetAdded") {
-              const value = packet.data[1];
-              // matchId = value?.match_id;
-              try {
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    if (item?.id === value?.match_id) {
-                      // Update the bettings array in the current match object
-                      const updatedBettings = item?.bettings?.map((betting) => {
-                        if (betting.id === value.id && value.sessionBet) {
-                          // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                          return {
-                            ...betting,
-                            ...value,
-                          };
-                        } else if (
-                          betting?.id === value?.id &&
-                          value.sessionBet === false
-                        ) {
-                          return {
-                            ...betting,
-                            ...value,
-                          };
-                        }
-                        return betting;
-                      });
-                      var newUpdatedValue = updatedBettings;
-                      const bettingsIds = updatedBettings?.map(
-                        (betting) => betting?.id
-                      );
+  //           if (packet.data[0] === "newBetAdded") {
+  //             const value = packet.data[1];
+  //             // matchId = value?.match_id;
+  //             try {
+  //               setMatchData((prevMatchData) => {
+  //                 return prevMatchData.map((item) => {
+  //                   if (item?.id === value?.match_id) {
+  //                     // Update the bettings array in the current match object
+  //                     const updatedBettings = item?.bettings?.map((betting) => {
+  //                       if (betting.id === value.id && value.sessionBet) {
+  //                         // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+  //                         return {
+  //                           ...betting,
+  //                           ...value,
+  //                         };
+  //                       } else if (
+  //                         betting?.id === value?.id &&
+  //                         value.sessionBet === false
+  //                       ) {
+  //                         return {
+  //                           ...betting,
+  //                           ...value,
+  //                         };
+  //                       }
+  //                       return betting;
+  //                     });
+  //                     var newUpdatedValue = updatedBettings;
+  //                     const bettingsIds = updatedBettings?.map(
+  //                       (betting) => betting?.id
+  //                     );
 
-                      if (!bettingsIds?.includes(value.id)) {
-                        // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
-                        newUpdatedValue = [...newUpdatedValue, value];
-                      } else {
-                        if (!item.sessionOffline) {
-                          item.sessionOffline = [];
-                        }
-                        if (
-                          item?.sessionOffline &&
-                          item?.sessionOffline.includes(value.id) &&
-                          value.betStatus === 1
-                        ) {
-                          const newres = item?.sessionOffline.filter(
-                            (id) => id !== value.id
-                          );
-                          item.sessionOffline = newres;
-                        }
-                        if (value?.betStatus === 0) {
-                          item.sessionOffline.push(value.id);
-                        }
+  //                     if (!bettingsIds?.includes(value.id)) {
+  //                       // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
+  //                       newUpdatedValue = [...newUpdatedValue, value];
+  //                     } else {
+  //                       if (!item.sessionOffline) {
+  //                         item.sessionOffline = [];
+  //                       }
+  //                       if (
+  //                         item?.sessionOffline &&
+  //                         item?.sessionOffline.includes(value.id) &&
+  //                         value.betStatus === 1
+  //                       ) {
+  //                         const newres = item?.sessionOffline.filter(
+  //                           (id) => id !== value.id
+  //                         );
+  //                         item.sessionOffline = newres;
+  //                       }
+  //                       if (value?.betStatus === 0) {
+  //                         item.sessionOffline.push(value.id);
+  //                       }
 
-                        // newUpdatedValue = newUpdatedValue?.filter(v => v?.id !== value?.id && v?.betStatus === 1);
-                      }
+  //                       // newUpdatedValue = newUpdatedValue?.filter(v => v?.id !== value?.id && v?.betStatus === 1);
+  //                     }
 
-                      // Return the updated current match object
-                      return {
-                        ...item,
-                        bettings: newUpdatedValue,
-                        sessionOffline: item.sessionOffline,
-                      };
-                    }
-                    return item;
-                  });
-                });
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
-            if (packet.data[0] === "session_bet") {
-              const data = packet.data[1];
+  //                     // Return the updated current match object
+  //                     return {
+  //                       ...item,
+  //                       bettings: newUpdatedValue,
+  //                       sessionOffline: item.sessionOffline,
+  //                     };
+  //                   }
+  //                   return item;
+  //                 });
+  //               });
+  //             } catch (err) {
+  //               console.log(err?.message);
+  //             }
+  //           }
+  //           if (packet.data[0] === "session_bet") {
+  //             const data = packet.data[1];
 
-              try {
-                setCurrentOdds({
-                  bet_id: data?.betPlaceData?.bet_id,
-                  odds: data?.betPlaceData?.odds,
-                  match_id: data?.betPlaceData?.match_id,
-                });
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    const updatedBettings = item.bettings.map((betting) => {
-                      // Check if the betting object has the specified ID
-                      if (betting.id === data?.betPlaceData?.bet_id) {
-                        // Update the properties of the betting object
-                        let profitLoss = data?.profitLoss;
-                        return {
-                          ...betting,
-                          profitLoss: profitLoss,
-                        };
-                      }
-                      return betting;
-                    });
+  //             try {
+  //               setCurrentOdds({
+  //                 bet_id: data?.betPlaceData?.bet_id,
+  //                 odds: data?.betPlaceData?.odds,
+  //                 match_id: data?.betPlaceData?.match_id,
+  //               });
+  //               setMatchData((prevMatchData) => {
+  //                 return prevMatchData.map((item) => {
+  //                   const updatedBettings = item.bettings.map((betting) => {
+  //                     // Check if the betting object has the specified ID
+  //                     if (betting.id === data?.betPlaceData?.bet_id) {
+  //                       // Update the properties of the betting object
+  //                       let profitLoss = data?.profitLoss;
+  //                       return {
+  //                         ...betting,
+  //                         profitLoss: profitLoss,
+  //                       };
+  //                     }
+  //                     return betting;
+  //                   });
 
-                    return {
-                      ...item,
-                      bettings: updatedBettings,
-                      sessionExposure: data?.sessionExposure
-                    };
-                  });
-                });
-              } catch (err) {
-                console.log(err?.message);
-              }
-              if (data?.betPlaceData?.match_id === matchIds[i]) {
-                setSessionBets((prev) => {
-                  const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                  return [
-                    {
-                      ...data.betPlaceData,
-                      deleted_reason:
-                        data?.betPlaceData?.deleted_reason || null,
-                    },
-                    ...updatedPrev,
-                  ];
-                });
-                setIObtes((prev) => [data.betPlaceData, ...prev]);
-              }
-            }
-            if (packet.data[0] === "match_bet") {
-              const data = packet.data[1];
-              if (!isHandled) {
-                setIsHandled(true);
-                try {
-                  if (data) {
-                    // alert(1111)
-                    const body = {
-                      id: data?.betPlaceData?.id,
-                      isActive: true,
-                      createAt: data?.betPlaceData?.createAt,
-                      updateAt: data?.betPlaceData?.createAt,
-                      createdBy: null,
-                      deletedAt: null,
-                      user_id: null,
-                      match_id: data?.betPlaceData?.match_id,
-                      bet_id: data?.betPlaceData?.bet_id,
-                      result: "pending",
-                      team_bet: data?.betPlaceData?.team_bet,
-                      odds: data?.betPlaceData?.odds,
-                      myStack: data?.betPlaceData?.myStack,
-                      userName: data?.betPlaceData?.userName,
-                      win_amount: null,
-                      loss_amount: null,
-                      bet_type: data?.betPlaceData?.bet_type,
-                      country: null,
-                      ip_address: null,
-                      rate: null,
-                      marketType: data?.betPlaceData?.marketType,
-                      amount:
-                        data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                    };
-                    if (data?.betPlaceData?.match_id === matchIds[i]) {
-                      setIObtes((prev) => [body, ...prev]);
-                      setMatchData((prevMatchData) => {
-                        return prevMatchData.map((item) => {
-                          if (item?.id === matchIds[i]) {
-                            return {
-                              ...item,
-                              teamA_rate: data?.teamA_rate,
-                              teamB_rate: data?.teamB_rate,
-                              teamC_rate: data?.teamC_rate,
-                            };
-                          }
-                          return item;
-                        });
-                      });
-                    }
+  //                   return {
+  //                     ...item,
+  //                     bettings: updatedBettings,
+  //                     sessionExposure: data?.sessionExposure,
+  //                   };
+  //                 });
+  //               });
+  //             } catch (err) {
+  //               console.log(err?.message);
+  //             }
+  //             if (data?.betPlaceData?.match_id === matchIds[i]) {
+  //               setSessionBets((prev) => {
+  //                 const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
+  //                 return [
+  //                   {
+  //                     ...data.betPlaceData,
+  //                     deleted_reason:
+  //                       data?.betPlaceData?.deleted_reason || null,
+  //                   },
+  //                   ...updatedPrev,
+  //                 ];
+  //               });
+  //               setIObtes((prev) => [data.betPlaceData, ...prev]);
+  //             }
+  //           }
+  //           if (packet.data[0] === "match_bet") {
+  //             const data = packet.data[1];
+  //             if (!isHandled) {
+  //               setIsHandled(true);
+  //               try {
+  //                 if (data) {
+  //                   // alert(1111)
+  //                   const body = {
+  //                     id: data?.betPlaceData?.id,
+  //                     isActive: true,
+  //                     createAt: data?.betPlaceData?.createAt,
+  //                     updateAt: data?.betPlaceData?.createAt,
+  //                     createdBy: null,
+  //                     deletedAt: null,
+  //                     user_id: null,
+  //                     match_id: data?.betPlaceData?.match_id,
+  //                     bet_id: data?.betPlaceData?.bet_id,
+  //                     result: "pending",
+  //                     team_bet: data?.betPlaceData?.team_bet,
+  //                     odds: data?.betPlaceData?.odds,
+  //                     myStack: data?.betPlaceData?.myStack,
+  //                     userName: data?.betPlaceData?.userName,
+  //                     win_amount: null,
+  //                     loss_amount: null,
+  //                     bet_type: data?.betPlaceData?.bet_type,
+  //                     country: null,
+  //                     ip_address: null,
+  //                     rate: null,
+  //                     marketType: data?.betPlaceData?.marketType,
+  //                     amount:
+  //                       data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+  //                   };
+  //                   if (data?.betPlaceData?.match_id === matchIds[i]) {
+  //                     setIObtes((prev) => [body, ...prev]);
+  //                     setMatchData((prevMatchData) => {
+  //                       return prevMatchData.map((item) => {
+  //                         if (item?.id === matchIds[i]) {
+  //                           return {
+  //                             ...item,
+  //                             teamA_rate: data?.teamA_rate,
+  //                             teamB_rate: data?.teamB_rate,
+  //                             teamC_rate: data?.teamC_rate,
+  //                           };
+  //                         }
+  //                         return item;
+  //                       });
+  //                     });
+  //                   }
 
-                    // dispatch(setCurrentUser(user));
-                    // dispatch(setManualBookMarkerRates(manualBookmaker));
-                  }
-                } catch (e) {
-                  console.log("error", e?.message);
-                } finally {
-                  setIsHandled(false);
-                }
-              }
-            }
-            if (packet.data[0] === "sessionNoResult") {
-              const value = packet.data[1];
-              // matchId = value?.match_id;
-              try {
-                const user = {
-                  ...currentUser,
-                  current_balance: value.current_balance,
-                  exposure: value.exposure,
-                };
+  //                   // dispatch(setCurrentUser(user));
+  //                   // dispatch(setManualBookMarkerRates(manualBookmaker));
+  //                 }
+  //               } catch (e) {
+  //                 console.log("error", e?.message);
+  //               } finally {
+  //                 setIsHandled(false);
+  //               }
+  //             }
+  //           }
+  //           if (packet.data[0] === "sessionNoResult") {
+  //             const value = packet.data[1];
+  //             // matchId = value?.match_id;
+  //             try {
+  //               const user = {
+  //                 ...currentUser,
+  //                 current_balance: value.current_balance,
+  //                 exposure: value.exposure,
+  //               };
 
-                // dispatch(setCurrentUser(user));
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    const updatedBettings = item.bettings.map((betting) => {
-                      if (
-                        betting.id === value.betId &&
-                        item.id === value.match_id
-                      ) {
-                        return {
-                          ...betting,
-                          profitLoss: null,
-                        };
-                      }
-                      return betting;
-                    });
+  //               // dispatch(setCurrentUser(user));
+  //               setMatchData((prevMatchData) => {
+  //                 return prevMatchData.map((item) => {
+  //                   const updatedBettings = item.bettings.map((betting) => {
+  //                     if (
+  //                       betting.id === value.betId &&
+  //                       item.id === value.match_id
+  //                     ) {
+  //                       return {
+  //                         ...betting,
+  //                         profitLoss: null,
+  //                       };
+  //                     }
+  //                     return betting;
+  //                   });
 
-                    return {
-                      ...item,
-                      bettings: updatedBettings,
-                    };
-                  });
-                });
+  //                   return {
+  //                     ...item,
+  //                     bettings: updatedBettings,
+  //                   };
+  //                 });
+  //               });
 
-                // setSessionExposure(value?.sessionExposure);
-                if (value?.match_id === matchIds[i]) {
-                  setIObtes((sessionBets) =>
-                    sessionBets?.filter((v) => v?.bet_id !== value?.betId)
-                  );
-                }
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
+  //               // setSessionExposure(value?.sessionExposure);
+  //               if (value?.match_id === matchIds[i]) {
+  //                 setIObtes((sessionBets) =>
+  //                   sessionBets?.filter((v) => v?.bet_id !== value?.betId)
+  //                 );
+  //               }
+  //             } catch (err) {
+  //               console.log(err?.message);
+  //             }
+  //           }
 
-            if (packet.data[0] === "resultDeclareForBet") {
-              const value = packet.data[1];
-              // matchId = value?.match_id;
-              if (value?.sessionBet == false) {
-                if (matchIds.includes(value?.match_id)) {
-                  navigate("/wallet/market_analysis");
-                }
-                return;
-              }
-              try {
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    if (item?.id === value?.match_id) {
-                      const updatedBettings = item?.bettings.map((betting) => {
-                        if (betting.id === value?.betId) {
-                          if (
-                            item &&
-                            item?.sessionOffline.includes(value?.betId)
-                          ) {
-                            const newRes = item?.sessionOffline.filter(
-                              (id) => id !== value?.betId
-                            );
-                            item.sessionOffline = newRes;
-                          }
-                          item.sessionOffline.push(value?.betId);
-                        }
-                        return betting;
-                      });
+  //           if (packet.data[0] === "resultDeclareForBet") {
+  //             const value = packet.data[1];
+  //             // matchId = value?.match_id;
+  //             if (value?.sessionBet == false) {
+  //               if (matchIds.includes(value?.match_id)) {
+  //                 navigate("/wallet/market_analysis");
+  //               }
+  //               return;
+  //             }
+  //             try {
+  //               setMatchData((prevMatchData) => {
+  //                 return prevMatchData.map((item) => {
+  //                   if (item?.id === value?.match_id) {
+  //                     const updatedBettings = item?.bettings.map((betting) => {
+  //                       if (betting.id === value?.betId) {
+  //                         if (
+  //                           item &&
+  //                           item?.sessionOffline.includes(value?.betId)
+  //                         ) {
+  //                           const newRes = item?.sessionOffline.filter(
+  //                             (id) => id !== value?.betId
+  //                           );
+  //                           item.sessionOffline = newRes;
+  //                         }
+  //                         item.sessionOffline.push(value?.betId);
+  //                       }
+  //                       return betting;
+  //                     });
 
-                      if (!item?.sessionOffline) {
-                        item.sessionOffline = [];
-                      }
-                      if (
-                        item?.sessionOffline.includes(value?.id) &&
-                        value.betStatus === 1
-                      ) {
-                        const newRes = item.sessionOffline.filter(
-                          (id) => id !== value?.id
-                        );
-                        item.sessionOffline = newRes;
-                      }
-                      if (value.betStatus === 0) {
-                        item.sessionOffline.push(value?.id);
-                      }
+  //                     if (!item?.sessionOffline) {
+  //                       item.sessionOffline = [];
+  //                     }
+  //                     if (
+  //                       item?.sessionOffline.includes(value?.id) &&
+  //                       value.betStatus === 1
+  //                     ) {
+  //                       const newRes = item.sessionOffline.filter(
+  //                         (id) => id !== value?.id
+  //                       );
+  //                       item.sessionOffline = newRes;
+  //                     }
+  //                     if (value.betStatus === 0) {
+  //                       item.sessionOffline.push(value?.id);
+  //                     }
 
-                      return {
-                        ...item,
-                        bettings: updatedBettings,
-                        sessionOffline: item.sessionOffline,
-                      };
-                    }
-                    return item;
-                  });
-                });
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
-            if (packet.data[0] === "sessionResult") {
-              const value = packet.data[1];
-              try {
-                setMatchData((prevMatchData) => {
-                  return prevMatchData.map((item) => {
-                    const updatedBettings = item.bettings.filter(
-                      (betting) => betting.id !== value?.betId
-                    );
+  //                     return {
+  //                       ...item,
+  //                       bettings: updatedBettings,
+  //                       sessionOffline: item.sessionOffline,
+  //                     };
+  //                   }
+  //                   return item;
+  //                 });
+  //               });
+  //             } catch (err) {
+  //               console.log(err?.message);
+  //             }
+  //           }
+  //           if (packet.data[0] === "sessionResult") {
+  //             const value = packet.data[1];
+  //             try {
+  //               setMatchData((prevMatchData) => {
+  //                 return prevMatchData.map((item) => {
+  //                   const updatedBettings = item.bettings.filter(
+  //                     (betting) => betting.id !== value?.betId
+  //                   );
 
-                    return {
-                      ...item,
-                      bettings: updatedBettings,
-                    };
-                  });
-                });
-                setSessionBets((sessionBets) =>
-                  sessionBets?.filter((v) => v?.bet_id !== value?.betId)
-                );
-                setPopData(value?.betId);
-              } catch (err) {
-                console.log(err?.message);
-              }
-            }
-          })(i);
-        }
-        // if (packet.data[0] === "logoutUserForce") {
-        //   dispatch(logout({ roleType: "role1" }));
-        //   setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-        //   dispatch(removeManualBookMarkerRates());
-        //   dispatch(removeCurrentUser());
-        //   // dispatch(removeSelectedMatch());
-        //   // await axios.get("auth/logout");
-        //   removeSocket();
-        //   navigate("/wallet");
-        //   socket.disconnect();
-        // }
-      };
-    }
-  }, [socket]);
+  //                   return {
+  //                     ...item,
+  //                     bettings: updatedBettings,
+  //                   };
+  //                 });
+  //               });
+  //               setSessionBets((sessionBets) =>
+  //                 sessionBets?.filter((v) => v?.bet_id !== value?.betId)
+  //               );
+  //               setPopData(value?.betId);
+  //             } catch (err) {
+  //               console.log(err?.message);
+  //             }
+  //           }
+  //         })(i);
+  //       }
+  //       // if (packet.data[0] === "logoutUserForce") {
+  //       //   dispatch(logout({ roleType: "role1" }));
+  //       //   setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
+  //       //   dispatch(removeManualBookMarkerRates());
+  //       //   dispatch(removeCurrentUser());
+  //       //   // dispatch(removeSelectedMatch());
+  //       //   // await axios.get("auth/logout");
+  //       //   removeSocket();
+  //       //   navigate("/wallet");
+  //       //   socket.disconnect();
+  //       // }
+  //     };
+  //   }
+  // }, [socket]);
 
   useEffect(() => {
     try {
@@ -633,7 +654,7 @@ const MatchSubmit = ({ }) => {
           }
         });
 
-        socketMicro.on("connect_error", (event) => { });
+        socketMicro.on("connect_error", (event) => {});
 
         for (var i = 0; i < marketIds?.length; i++) {
           (function (i) {
@@ -819,6 +840,7 @@ const MatchSubmit = ({ }) => {
         payload
       );
       setMatchData(response?.data?.data);
+      dispatch(setMultiSelectedMatch(response?.data?.data));
       setTimeout(() => {
         setLoading(false);
       }, 1000);
@@ -837,6 +859,7 @@ const MatchSubmit = ({ }) => {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
 
       setIObtes(data?.data?.data);
+      dispatch(setAllBetRate(data?.data?.data))
       const bets = data?.data?.data?.filter(
         (b) =>
           !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
@@ -844,6 +867,7 @@ const MatchSubmit = ({ }) => {
           )
       );
       setSessionBets(bets || []);
+      dispatch(setAllSessionBets(bets))
     } catch (e) {
       console.log(e);
     }
@@ -1057,18 +1081,20 @@ const MatchSubmit = ({ }) => {
                               data={item}
                               manualBookmakerData={matchOddsDataTemp}
                               typeOfBet={"Quick Bookmaker"}
-                            // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                              // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                             />
                           )}
-                          {item?.apiBookMakerActive && <BookMarketer
-                            currentMatch={item}
-                            bookmakerLive={item.bookmakerLive}
-                            data={
-                              item.bookmakerLive?.runners?.length > 0
-                                ? item.bookmakerLive?.runners
-                                : []
-                            }
-                          />}
+                          {item?.apiBookMakerActive && (
+                            <BookMarketer
+                              currentMatch={item}
+                              bookmakerLive={item.bookmakerLive}
+                              data={
+                                item.bookmakerLive?.runners?.length > 0
+                                  ? item.bookmakerLive?.runners
+                                  : []
+                              }
+                            />
+                          )}
 
                           {item?.manualSessionActive && (
                             <SessionMarket
@@ -1179,31 +1205,32 @@ const MatchSubmit = ({ }) => {
                             typeOfBet={"Quick Bookmaker"}
                           />
                         )}
-                        {item?.apiBookMakerActive && <BookMarketer
-                          currentMatch={item}
-                          bookmakerLive={item.bookmakerLive}
-                          data={
-                            item.bookmakerLive?.runners?.length > 0
-                              ? item.bookmakerLive?.runners
-                              : []
-                          }
-                        />}
+                        {item?.apiBookMakerActive && (
+                          <BookMarketer
+                            currentMatch={item}
+                            bookmakerLive={item.bookmakerLive}
+                            data={
+                              item.bookmakerLive?.runners?.length > 0
+                                ? item.bookmakerLive?.runners
+                                : []
+                            }
+                          />
+                        )}
 
-                        {
-                          item?.manualSessionActive && (
-                            <SessionMarket
-                              title={"Quick Session Market"}
-                              currentMatch={item}
-                              currentOdds={currentOdds}
-                              sessionOffline={item.sessionOffline}
-                              sessionExposer={item.sessionExposure}
-                              sessionBets={sessionBetsData}
-                              setPopData={setPopData}
-                              popData={popData}
-                              max={item?.manaual_session_max_bet}
-                              min={item?.manaual_session_min_bet}
-                            />
-                          )}
+                        {item?.manualSessionActive && (
+                          <SessionMarket
+                            title={"Quick Session Market"}
+                            currentMatch={item}
+                            currentOdds={currentOdds}
+                            sessionOffline={item.sessionOffline}
+                            sessionExposer={item.sessionExposure}
+                            sessionBets={sessionBetsData}
+                            setPopData={setPopData}
+                            popData={popData}
+                            max={item?.manaual_session_max_bet}
+                            min={item?.manaual_session_min_bet}
+                          />
+                        )}
                         {item?.apiSessionActive && (
                           <SessionMarket
                             title={"Session Market"}

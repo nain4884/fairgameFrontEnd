@@ -287,7 +287,7 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("match_bet", (event) => {
       const data = event;
       try {
-        if (data) {
+        
           const body = {
             id: data?.betPlaceData?.id,
             isActive: true,
@@ -337,7 +337,7 @@ export const SocketProvider = ({ children }) => {
             dispatch(setManualBookMarkerRates(manualBookmaker));
           }
           // alert(JSON.stringify(manualBookmaker));
-        }
+        
       } catch (e) {
         console.log("error", e?.message);
       }

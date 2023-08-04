@@ -11,21 +11,31 @@ import { useTheme } from "@emotion/react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { ArrowDown, Logout } from "../../assets";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import {
+  logoutCurrentUser,
+  removeCurrentUser,
+} from "../../newStore/reducers/currentUser";
 import useOuterClick from "../helper/userOuterClick";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setRole } from "../../newStore";
 import { useContext } from "react";
 import { GlobalStore } from "../../context/globalStore";
-import { logout, setPage, setUpdatedTransPasswords } from "../../newStore/reducers/auth";
 import {
+  logout,
+  logoutAuth,
+  setPage,
+  setUpdatedTransPasswords,
+} from "../../newStore/reducers/auth";
+import {
+  logoutMatchDetails,
   removeManualBookMarkerRates,
   removeSelectedMatch,
 } from "../../newStore/reducers/matchDetails";
 import { removeSocket } from "../helper/removeSocket";
 import { toast } from "react-toastify";
 import { SocketContext } from "../../context/socketContext";
+import { logoutExpertDetails } from "../../newStore/reducers/expertMatchDetails";
 
 const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
   const theme = useTheme();
@@ -74,7 +84,7 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
       overflow: { mobile: "hidden", laptop: "visible" },
       whiteSpace: "nowrap",
       textOverflow: "ellipsis",
-      maxWidth: "54px"
+      maxWidth: "54px",
     },
     mainBoxSubSubTypography2sx: {
       fontSize: { laptop: "13px", mobile: "10px" },
@@ -103,24 +113,26 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
       try {
         setLoading(true);
 
-        dispatch(removeCurrentUser());
-        dispatch(logout({ roleType: "role2" }));
-        dispatch(removeManualBookMarkerRates());
-        dispatch(setUpdatedTransPasswords(false));
-        dispatch(removeSelectedMatch());
+        dispatch(logoutMatchDetails());
+        dispatch(logoutCurrentUser());
+        dispatch(logoutAuth());
+        dispatch(logoutExpertDetails());
+        sessionStorage.removeItem("JWTwallet");
         setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
         handleClose();
         removeSocket();
         socket.disconnect();
         socketMicro.disconnect();
-        dispatch(setPage(parseInt(1)));
+        // dispatch(setPage(parseInt(1)));
         setLoading(false);
         if (nav === "admin") {
           navigate("/admin");
           dispatch(logout({ roleType: "role1" }));
+          sessionStorage.removeItem("JWTadmin");
           setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
         }
         navigate(`/${nav}`);
+        sessionStorage.removeItem("JWTwallet");
         const { data } = await axios.get("auth/logout");
         if (data?.data === "success logout") {
           toast.success(data?.data);
