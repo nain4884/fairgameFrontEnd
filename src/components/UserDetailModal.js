@@ -1446,15 +1446,15 @@ const WithDrawComponent = ({
           </form>
         </ModalMUI>
       ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-            gap: 2,
-            borderRadius: "5px",
-          }}
-        >
-          <form onSubmit={handleWithdrawAmount}>
+        <form onSubmit={handleWithdrawAmount}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
+              gap: 2,
+              borderRadius: "5px",
+            }}
+          >
             <Box
               sx={{
                 width: { mobile: "100%", laptop: "100%", tablet: "100%" },
@@ -1890,8 +1890,8 @@ const WithDrawComponent = ({
                 />
               </Box>
             </Box>
-          </form>
-        </Box>
+          </Box>
+        </form>
       )}
     </>
   );
@@ -2233,7 +2233,7 @@ const SetExposureComponent = ({
   };
   const [exposureObj, setExposureObj] = useState(defaultExposureObj);
   const handleExposerSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
       if (!loading) {
         setLoading(true);
@@ -2255,7 +2255,7 @@ const SetExposureComponent = ({
       setLoading(false);
       console.log(e.message);
     }
-  }
+  };
   return (
     <form onSubmit={handleExposerSubmit}>
       <Box
@@ -2372,7 +2372,11 @@ const SetExposureComponent = ({
                   placeholder: "",
                   disableUnderline: true,
                   type: !showPass ? "password" : "text",
-                  style: { fontSize: "13px", height: "45px", fontWeight: "600" },
+                  style: {
+                    fontSize: "13px",
+                    height: "45px",
+                    fontWeight: "600",
+                  },
                 }}
               />
               <Box
@@ -2414,7 +2418,11 @@ const SetExposureComponent = ({
               InputProps={{
                 placeholder: "Remark (Optional)",
                 disableUnderline: true,
-                style: { fontSize: "13px", minHeight: "45px", fontWeight: "600" },
+                style: {
+                  fontSize: "13px",
+                  minHeight: "45px",
+                  fontWeight: "600",
+                },
               }}
             />
           </Box>
@@ -2422,7 +2430,11 @@ const SetExposureComponent = ({
         <Box
           sx={{
             display: "flex",
-            flexDirection: { mobile: "row", tablet: "column", laptop: "column" },
+            flexDirection: {
+              mobile: "row",
+              tablet: "column",
+              laptop: "column",
+            },
             justifyContent: "center",
             gap: 1,
             alignItems: "center",

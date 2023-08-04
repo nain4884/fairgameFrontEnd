@@ -140,7 +140,7 @@ export const SocketProvider = ({ children }) => {
     });
 
   const localUserServerEvents = (localSocket, microSocket) => {
-    
+
 
     localSocket.on("logoutUserForce", (event) => {
       try {

@@ -51,7 +51,7 @@ const IndiaPakLive = React.forwardRef(
     const { socket } = useContext(SocketContext);
     const { axios } = setRole();
     const dispatch = useDispatch();
-    const { sessionAllBet, sessionBetId, allEventSession, currentOdd,sessionProfitLoss } =
+    const { sessionAllBet, sessionBetId, allEventSession, currentOdd, sessionProfitLoss } =
       useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
@@ -98,177 +98,172 @@ const IndiaPakLive = React.forwardRef(
     }));
 
     useEffect(() => {
-      if (currentOdd) {
-        setCurrentOdds(currentOdd);
+      if (socket && socket.connected) {
+        socket.onevent = async (packet) => {
+          if (packet.data[0] === "session_bet") {
+            const data = packet.data[1];
+            try {
+              setCurrentOdds({
+                bet_id: data?.betPlaceData?.bet_id,
+                odds: data?.betPlaceData?.odds,
+                match_id: data?.betPlaceData?.match_id,
+              });
+              if (betId === data?.betPlaceData?.bet_id) {
+                let profitLoss = data?.profitLoss;
+                setProLoss(profitLoss);
+                const body = {
+                  id: data?.betPlaceData?.id,
+                  isActive: true,
+                  createAt: data?.betPlaceData?.createAt,
+                  updateAt: data?.betPlaceData?.createdAt,
+                  createdBy: null,
+                  deletedAt: null,
+                  user: { userName: data?.betPlaceData?.userName },
+                  user_id: null,
+                  match_id: data?.betPlaceData?.match_id,
+                  bet_id: data?.betPlaceData?.bet_id,
+                  result: "pending",
+                  team_bet: data?.betPlaceData?.team_bet,
+                  odds: data?.betPlaceData?.odds,
+                  win_amount: null,
+                  loss_amount: null,
+                  bet_type: data?.betPlaceData?.bet_type,
+                  country: null,
+                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                  ip_address: null,
+                  rate: data?.betPlaceData?.rate,
+                  marketType: data?.betPlaceData?.marketType,
+                  myStack: data?.betPlaceData?.myStack,
+                  amount:
+                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                };
+                if (sessionAllBet.length === 0) {
+                  const updatedData = [body];
+                  dispatch(setSessionAllBet(updatedData));
+                } else {
+                  const updatedData = [body, ...sessionAllBet];
+                  dispatch(setSessionAllBet(updatedData));
+                }
+              }
+            } catch (err) {
+              console.log(err?.message);
+            }
+          }
+          if (packet.data[0] === "newBetAdded") {
+            const value = packet.data[1];
+            try {
+              const updatedAllEventSession = allEventSession.map(
+                (currentMatch) => {
+                  if (currentMatch.id === value?.match_id) {
+                    const betObj = {
+                      id: value.id,
+                      bet_condition: value.bet_condition,
+                    };
+                    const newBettings = [...currentMatch.bettings, betObj];
+                    return {
+                      ...currentMatch,
+                      bettings: newBettings,
+                    };
+                  }
+                  return currentMatch;
+                }
+              );
+              dispatch(setAllEventSession(updatedAllEventSession));
+            } catch (err) {
+              console.log(err?.message);
+            }
+          }
+          if (packet.data[0] === "resultDeclareForBet") {
+            const value = packet.data[1];
+
+            try {
+              const updatedAllEventSession = allEventSession.map(
+                (currentMatch) => {
+                  if (currentMatch.id === value?.match_id) {
+                    const filteredBettings = currentMatch.bettings.filter(
+                      (bet) => bet.id !== value?.betId
+                    );
+                    getSessionResult(currentMatch.id);
+                    return {
+                      ...currentMatch,
+                      bettings: filteredBettings,
+                    };
+                  }
+                  return currentMatch;
+                }
+              );
+
+              dispatch(setAllEventSession(updatedAllEventSession));
+              setBetId(value?.betId);
+              setCheckBetId(true);
+              setIsCreateSession(true);
+              dispatch(setSessionBetId(value?.betId));
+              setVisible(false);
+              setIsDisable(true);
+            } catch (err) {
+              console.log(err?.message);
+            }
+          }
+          if (packet.data[0] === "sessionDeleteBet") {
+            const value = packet.data[1];
+            try {
+              const updatedAllBet = sessionAllBet.map((currentMatch) => {
+                if (currentMatch.match_id === value?.matchId) {
+                  if (value?.betPlaceData.includes(currentMatch.id)) {
+                    return {
+                      ...currentMatch,
+                      deleted_reason: value?.deleted_reason,
+                    };
+                  }
+                }
+                return currentMatch;
+              });
+
+              dispatch(setSessionAllBet(updatedAllBet));
+              let profitLoss = value?.profitLoss;
+              setProLoss(profitLoss);
+            } catch (err) {
+              console.log(err?.message);
+            }
+          }
+          if (packet.data[0] === "updateSessionRate_user") {
+            // match_id
+            const value = packet.data[1];
+            if (match?.id == value?.match_id && betId == value?.betId) {
+              if (value.suspended == "suspended") {
+                setLock({
+                  ...lock,
+                  isNo: true,
+                  isYes: true,
+                  isNoPercent: true,
+                  isYesPercent: true,
+                });
+              } else {
+                let [firstValue, secondValue] = value.rate_percent
+                  ? value.rate_percent.split("-")
+                  : "";
+                if (value.suspended != "Ball Started") {
+                  setDetail((prev) => ({
+                    ...prev,
+                    no_rate: value.no_rate,
+                    yes_rate: value.yes_rate,
+                    n_rate_percent: firstValue,
+                    y_rate_percent: secondValue,
+                  }));
+                  setLock({
+                    ...lock,
+                    isNo: false,
+                    isYes: false,
+                    isNoPercent: false,
+                    isYesPercent: false,
+                  });
+                }
+              }
+            }
+          }
+        };
       }
-
-      if (sessionProfitLoss) {
-        setProLoss(sessionProfitLoss);
-      }
-    }, [currentOdd,sessionProfitLoss]);
-
-    // useEffect(() => {
-    //   if (socket && socket.connected) {
-    //     socket.onevent = async (packet) => {
-    //       if (packet.data[0] === "session_bet") {
-    //         const data = packet.data[1];
-    //         try {
-    //           setCurrentOdds({
-    //             bet_id: data?.betPlaceData?.bet_id,
-    //             odds: data?.betPlaceData?.odds,
-    //             match_id: data?.betPlaceData?.match_id,
-    //           });
-    //           if (betId === data?.betPlaceData?.bet_id) {
-    //             let profitLoss = data?.profitLoss;
-    //             setProLoss(profitLoss);
-    //             const body = {
-    //               id: data?.betPlaceData?.id,
-    //               isActive: true,
-    //               createAt: data?.betPlaceData?.createAt,
-    //               updateAt: data?.betPlaceData?.createdAt,
-    //               createdBy: null,
-    //               deletedAt: null,
-    //               user: { userName: data?.betPlaceData?.userName },
-    //               user_id: null,
-    //               match_id: data?.betPlaceData?.match_id,
-    //               bet_id: data?.betPlaceData?.bet_id,
-    //               result: "pending",
-    //               team_bet: data?.betPlaceData?.team_bet,
-    //               odds: data?.betPlaceData?.odds,
-    //               win_amount: null,
-    //               loss_amount: null,
-    //               bet_type: data?.betPlaceData?.bet_type,
-    //               country: null,
-    //               deleted_reason: data?.betPlaceData?.deleted_reason || null,
-    //               ip_address: null,
-    //               rate: data?.betPlaceData?.rate,
-    //               marketType: data?.betPlaceData?.marketType,
-    //               myStack: data?.betPlaceData?.myStack,
-    //               amount:
-    //                 data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-    //             };
-    //             if (sessionAllBet.length === 0) {
-    //               const updatedData = [body];
-    //               dispatch(setSessionAllBet(updatedData));
-    //             } else {
-    //               const updatedData = [body, ...sessionAllBet];
-    //               dispatch(setSessionAllBet(updatedData));
-    //             }
-    //           }
-    //         } catch (err) {
-    //           console.log(err?.message);
-    //         }
-    //       }
-    //       if (packet.data[0] === "newBetAdded") {
-    //         const value = packet.data[1];
-    //         try {
-    //           const updatedAllEventSession = allEventSession.map(
-    //             (currentMatch) => {
-    //               if (currentMatch.id === value?.match_id) {
-    //                 const betObj = {
-    //                   id: value.id,
-    //                   bet_condition: value.bet_condition,
-    //                 };
-    //                 const newBettings = [...currentMatch.bettings, betObj];
-    //                 return {
-    //                   ...currentMatch,
-    //                   bettings: newBettings,
-    //                 };
-    //               }
-    //               return currentMatch;
-    //             }
-    //           );
-    //           dispatch(setAllEventSession(updatedAllEventSession));
-    //         } catch (err) {
-    //           console.log(err?.message);
-    //         }
-    //       }
-    //       if (packet.data[0] === "resultDeclareForBet") {
-    //         const value = packet.data[1];
-
-    //         try {
-    //           const updatedAllEventSession = allEventSession.map(
-    //             (currentMatch) => {
-    //               if (currentMatch.id === value?.match_id) {
-    //                 const filteredBettings = currentMatch.bettings.filter(
-    //                   (bet) => bet.id !== value?.betId
-    //                   );
-    //                   getSessionResult(currentMatch.id)
-    //                   return {
-    //                     ...currentMatch,
-    //                     bettings: filteredBettings,
-    //                   };
-
-    //               }
-    //               return currentMatch;
-    //             }
-    //           );
-
-    //           dispatch(setAllEventSession(updatedAllEventSession));
-    //         } catch (err) {
-    //           console.log(err?.message);
-    //         }
-    //       }
-    //       if (packet.data[0] === "sessionDeleteBet") {
-    //         const value = packet.data[1];
-    //         try {
-    //           const updatedAllBet = sessionAllBet.map((currentMatch) => {
-    //             if (currentMatch.match_id === value?.matchId) {
-    //               if (value?.betPlaceData.includes(currentMatch.id)) {
-    //                 return {
-    //                   ...currentMatch,
-    //                   deleted_reason: value?.deleted_reason,
-    //                 };
-    //               }
-    //             }
-    //             return currentMatch;
-    //           });
-
-    //           dispatch(setSessionAllBet(updatedAllBet));
-    //           let profitLoss = value?.profitLoss;
-    //           setProLoss(profitLoss);
-    //         } catch (err) {
-    //           console.log(err?.message);
-    //         }
-    //       }
-    //       if (packet.data[0] === "updateSessionRate_user") {
-    //         // match_id
-    //         const value = packet.data[1];
-    //         if (match?.id == value?.match_id && betId == value?.betId) {
-    //           if (value.suspended == "suspended") {
-    //             setLock({
-    //               ...lock,
-    //               isNo: true,
-    //               isYes: true,
-    //               isNoPercent: true,
-    //               isYesPercent: true,
-    //             });
-    //           } else {
-    //             let [firstValue, secondValue] = value.rate_percent
-    //               ? value.rate_percent.split("-")
-    //               : "";
-    //             if (value.suspended != "Ball Started") {
-    //               setDetail((prev) => ({
-    //                 ...prev,
-    //                 no_rate: value.no_rate,
-    //                 yes_rate: value.yes_rate,
-    //                 n_rate_percent: firstValue,
-    //                 y_rate_percent: secondValue,
-    //               }));
-    //               setLock({
-    //                 ...lock,
-    //                 isNo: false,
-    //                 isYes: false,
-    //                 isNoPercent: false,
-    //                 isYesPercent: false,
-    //               });
-    //             }
-    //           }
-    //         }
-    //       }
-    //     };
-    //   }
-    // }, [socket, betId, sessionAllBet]);
+    }, [socket, betId, sessionAllBet, allEventSession]);
 
     console.log(Detail, "details");
     useEffect(() => {
@@ -415,7 +410,6 @@ const IndiaPakLive = React.forwardRef(
         console.log(err?.message);
       }
     };
-
     return (
       <Box
         sx={{
@@ -1499,95 +1493,95 @@ const RunsAmountBox = ({
         <Box ref={containerRef} sx={{ maxHeight: "42vh", overflowY: "auto" }}>
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
-                const getColor = (value) => {
-                  if (value > 1) {
-                    return "#10DC61";
-                  } else if (value === v?.profit_loss && value > 1) {
-                    return "#F8C851";
-                  } else {
-                    return "#DC3545";
-                  }
-                };
-                const getSVG = (value) => {
-                  if (value > 1) {
-                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                  } else if (value === v?.profit_loss && value > 1) {
-                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                  } else {
-                    return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
-                  }
-                };
-                return (
+              const getColor = (value) => {
+                if (value > 1) {
+                  return "#10DC61";
+                } else if (value === v?.profit_loss && value > 1) {
+                  return "#F8C851";
+                } else {
+                  return "#DC3545";
+                }
+              };
+              const getSVG = (value) => {
+                if (value > 1) {
+                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                } else if (value === v?.profit_loss && value > 1) {
+                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                } else {
+                  return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+                }
+              };
+              return (
+                <Box
+                  id={`${betId}_${v?.odds}`}
+                  key={v?.odds}
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    height: "25px",
+                    borderTop: "1px solid #306A47",
+                  }}
+                >
                   <Box
-                    id={`${betId}_${v?.odds}`}
-                    key={v?.odds}
                     sx={{
+                      width: "35%",
                       display: "flex",
-                      width: "100%",
-                      height: "25px",
-                      borderTop: "1px solid #306A47",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    <Box
+                    <Typography
                       sx={{
-                        width: "35%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        color: "#306A47",
+                        fontWeight: "bold",
+                        fontSize: "12px",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          color: "#306A47",
-                          fontWeight: "bold",
-                          fontSize: "12px",
-                        }}
-                      >
-                        {v?.odds}
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        width: "65%",
-                        display: "flex",
-                        borderLeft: `1px solid #306A47`,
-                        background: getColor(v?.profit_loss),
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        paddingRight: "7px",
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          fontWeight: "500",
-                          fontSize: "16px",
-                          color: "white",
-                          width: "40px",
-                        }}
-                      >
-                        {Number(v?.profit_loss) >= 0 ? (
-                          <>
-                            <span style={{ visibility: "hidden" }}>-</span>
-                            {v?.profit_loss}
-                          </>
-                        ) : (
-                          v?.profit_loss
-                        )}
-                      </Typography>
-                      <StyledImage
-                        src={getSVG(v?.profit_loss)}
-                        sx={{
-                          height: "15px",
-                          marginLeft: "5px",
-                          filter:
-                            "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                          width: "15px",
-                        }}
-                      />
-                    </Box>
+                      {v?.odds}
+                    </Typography>
                   </Box>
-                );
-              })
+                  <Box
+                    sx={{
+                      width: "65%",
+                      display: "flex",
+                      borderLeft: `1px solid #306A47`,
+                      background: getColor(v?.profit_loss),
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingRight: "7px",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "16px",
+                        color: "white",
+                        width: "40px",
+                      }}
+                    >
+                      {Number(v?.profit_loss) >= 0 ? (
+                        <>
+                          <span style={{ visibility: "hidden" }}>-</span>
+                          {v?.profit_loss}
+                        </>
+                      ) : (
+                        v?.profit_loss
+                      )}
+                    </Typography>
+                    <StyledImage
+                      src={getSVG(v?.profit_loss)}
+                      sx={{
+                        height: "15px",
+                        marginLeft: "5px",
+                        filter:
+                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                        width: "15px",
+                      }}
+                    />
+                  </Box>
+                </Box>
+              );
+            })
             : null}
         </Box>
       </Box>
