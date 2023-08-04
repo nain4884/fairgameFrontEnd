@@ -9,7 +9,7 @@ import EventListing from "../../components/EventListing";
 const ProfitLoss = ({ selected, visible }) => {
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [currenLimit, setCurrenLimit] = useState(1);
   const [eventData, setEventData] = useState([]);
   const [reportData, setReportData] = useState([]);
@@ -20,7 +20,7 @@ const ProfitLoss = ({ selected, visible }) => {
   useEffect(() => {
     // alert(1)
     getEventList();
-  }, [currentPage, pageCount, pageLimit]);
+  }, [, pageCount, pageLimit]);
 
   async function getEventList() {
     var payload = {};
@@ -33,18 +33,23 @@ const ProfitLoss = ({ selected, visible }) => {
     }
   }
 
-  const handleReport = (eventType) => {
-    getReport(eventType);
+  const handleReport = (eventType,pageno) => {
+    getReport(eventType,pageno);
   };
 
-  const getReport = async (eventType) => {
+  const getReport = async (eventType,pageno) => {
     var payload = {
+      skip: pageno,
+      limit: pageLimit,
       gameType: eventType,
     };
     try {
       const { data } = await axios.post(`/betting/profitLossReport`, payload);
       // console.log(data.data[0], 'datadatadatadata')l
-      setReportData(data?.data);
+      setReportData(data?.data[0]);
+      setPageCount(
+        Math.ceil(parseInt(data?.data?.[1] ? data.data?.[1] : 1) / pageLimit)
+      );
     } catch (e) {
       console.log(e);
     }
@@ -125,7 +130,10 @@ const ProfitLoss = ({ selected, visible }) => {
             betData={betData}
             sessionBetData={sessionBetData}
             handleReport={handleReport}
+            pageCount={pageCount}
             handleBet={handleBet}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </>
       ) : (
@@ -149,6 +157,9 @@ const ProfitLoss = ({ selected, visible }) => {
             sessionBetData={sessionBetData}
             handleReport={handleReport}
             handleBet={handleBet}
+            currentPage={currentPage}
+              pageCount={pageCount}
+              setCurrentPage={setCurrentPage}
           />
         </Background>
       )}

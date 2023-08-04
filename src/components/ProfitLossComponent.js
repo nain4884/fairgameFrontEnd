@@ -7,6 +7,7 @@ import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import AllRateSeperate from "./AllRateSeperate";
 import SessionBetSeperate from "./sessionBetSeperate";
 import moment from "moment";
+import Footer from "./Footer";
 
 const ProfitLossComponent = ({
   eventData,
@@ -15,18 +16,29 @@ const ProfitLossComponent = ({
   sessionBetData,
   handleReport,
   handleBet,
+  currentPage,
+  pageCount,
+  setCurrentPage
 }) => {
   const [visible, setVisible] = useState(false);
 
   const [show, setShow] = useState(false);
   const [selectedId, setSelectedId] = useState("");
-
+  const [event, setEvent] = useState("");
   const getHandleReport = (eventType) => {
+    setEvent(eventType);
     if (!visible) {
-      handleReport(eventType);
+      handleReport(eventType,currentPage);
     }
     setVisible(!visible);
   };
+
+  function callPage(val) {
+    // setCurrentPage(setProfitLossReportPage(parseInt(val)));
+    setCurrentPage(parseInt(val))
+
+    handleReport(event,parseInt(val));
+  }
 
   const getBetReport = (id) => {
     // if (!show) {
@@ -435,10 +447,22 @@ const ProfitLossComponent = ({
       {eventData.map((item, index) => {
         return <RowHeader key={index} item={item} index={index} />;
       })}
-      {visible &&
-        reportData.map((item, index) => {
+     
+       
+       <Box sx={{maxHeight:"47vh",overflowY:"auto"}}>
+       {visible && reportData.map((item, index) => {
           return <RowComponent key={index} item={item} index={index + 1} />;
-        })}
+        })
+       }
+     
+       </Box>
+
+       {visible &&  <Footer
+          getListOfUser={() => handleReport(event)}
+          currentPage={currentPage}
+          pages={pageCount}
+          callPage={callPage}
+        />}
     </Box>
   );
 };
