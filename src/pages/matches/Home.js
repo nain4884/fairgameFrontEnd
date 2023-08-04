@@ -18,7 +18,7 @@ import {
   setAllSessionBets,
   setManualBookMarkerRates,
   setSelectedMatch,
-  setButtonData
+  setButtonData,
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -584,67 +584,129 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           try {
             if (!value?.lock) {
               if (value?.isTab) {
-                setManualBookmakerData((currentMatches) => {
-                  if (currentMatches[0]?.id != value.betId) {
-                    return currentMatches;
-                  }
-                  const updatedMatch = {
-                    ...currentMatches[0],
-                    teamA_Back: value?.teamA_Back,
-                    teamA_lay: "",
-                    teamB_Back: value?.teamB_Back,
-                    teamB_lay: "",
-                    teamC_Back: value?.teamC_Back,
-                    teamC_lay: "",
-                    teamA_suspend: "live",
-                    teamB_suspend: "live",
-                    teamC_suspend: "live",
+                setCurrentMatch((currentMatches) => {
+                  const updatedBookmaker = currentMatch?.bookmakers?.map(
+                    (bookmaker) => {
+                      if (
+                        bookmaker?.id === value?.id &&
+                        bookmaker.match_id === matchId
+                      ) {
+                        return {
+                          ...bookmaker,
+                          teamA_Back: value?.teamA_Back,
+                          teamA_lay: "",
+                          teamB_Back: value?.teamB_Back,
+                          teamB_lay: "",
+                          teamC_Back: value?.teamC_Back,
+                          teamC_lay: "",
+                          teamA_suspend: "live",
+                          teamB_suspend: "live",
+                          teamC_suspend: "live",
+                        };
+                      }
+                      return bookmaker;
+                    }
+                  );
+                  return {
+                    ...currentMatches,
+                    bookmakers: updatedBookmaker,
                   };
-
-                  // Create a new array with the updated match object
-                  const updatedMatches = [
-                    ...currentMatches.slice(0, 0),
-                    updatedMatch,
-                    ...currentMatches.slice(0 + 1),
-                  ];
-
-                  // Return the new array as the updated state
-                  return updatedMatches;
+                  // if (currentMatches[0]?.id != value.betId) {
+                  //   return currentMatches;
+                  // }
+                  // const updatedMatch = {
+                  //   ...currentMatches[0],
+                  //   teamA_Back: value?.teamA_Back,
+                  //   teamA_lay: "",
+                  //   teamB_Back: value?.teamB_Back,
+                  //   teamB_lay: "",
+                  //   teamC_Back: value?.teamC_Back,
+                  //   teamC_lay: "",
+                  //   teamA_suspend: "live",
+                  //   teamB_suspend: "live",
+                  //   teamC_suspend: "live",
+                  // };
+                  // // Create a new array with the updated match object
+                  // const updatedMatches = [
+                  //   ...currentMatches.slice(0, 0),
+                  //   updatedMatch,
+                  //   ...currentMatches.slice(0 + 1),
+                  // ];
+                  // // Return the new array as the updated state
+                  // return updatedMatches;
                 });
               } else {
-                setManualBookmakerData((currentMatches) => {
-                  // alert(value.betId)
-                  if (currentMatches[0]?.id != value.betId) {
-                    return currentMatches;
-                  }
-                  const updatedMatch = {
-                    ...currentMatches[0],
-                    teamA_Back: value?.teamA_Back ? value?.teamA_Back : "", // Update the teamA_Back value
-                    teamA_lay: value?.teamA_lay ? value?.teamA_lay : "", // Update the teamA_lay value
-                    teamA_suspend:
-                      value?.teamA_suspend == false ? null : "suspended", // Update the teamA_susp
-                    teamB_Back: value?.teamB_Back ? value?.teamB_Back : "",
-                    teamB_lay: value?.teamB_lay ? value?.teamB_lay : "",
-                    teamB_suspend:
-                      value?.teamB_suspend == false ? null : "suspended",
-                    teamC_Back: value?.teamC_Back ? value?.teamC_Back : "",
-                    teamC_lay: value?.teamC_lay ? value?.teamC_lay : "",
-                    teamC_suspend:
-                      value?.teamC_suspend == false ? null : "suspended",
-                    teamA_Ball: null,
-                    teamB_Ball: null,
-                    teamC_Ball: null,
+                setCurrentMatch((currentMatches) => {
+                  const updatedBookmaker = currentMatch?.bookmakers?.map(
+                    (bookmaker) => {
+                      if (
+                        bookmaker?.id === value?.id &&
+                        bookmaker.match_id === matchId
+                      ) {
+                        return {
+                          ...bookmaker,
+                          teamA_Back: value?.teamA_Back
+                            ? value?.teamA_Back
+                            : "",
+                          teamA_lay: value?.teamA_lay ? value?.teamA_lay : "",
+                          teamA_suspend:
+                            value?.teamA_suspend == false ? null : "suspended",
+                          teamB_Back: value?.teamB_Back
+                            ? value?.teamB_Back
+                            : "",
+                          teamB_lay: value?.teamB_lay ? value?.teamB_lay : "",
+                          teamB_suspend:
+                            value?.teamB_suspend == false ? null : "suspended",
+                          teamC_Back: value?.teamC_Back
+                            ? value?.teamC_Back
+                            : "",
+                          teamC_lay: value?.teamC_lay ? value?.teamC_lay : "",
+                          teamC_suspend:
+                            value?.teamC_suspend == false ? null : "suspended",
+                          teamA_Ball: null,
+                          teamB_Ball: null,
+                          teamC_Ball: null,
+                        };
+                      }
+                      return bookmaker;
+                    }
+                  );
+                  return {
+                    ...currentMatches,
+                    bookmakers: updatedBookmaker,
                   };
+                  // alert(value.betId)
+                  // if (currentMatches[0]?.id != value.betId) {
+                  //   return currentMatches;
+                  // }
+                  // const updatedMatch = {
+                  //   ...currentMatches[0],
+                  //   teamA_Back: value?.teamA_Back ? value?.teamA_Back : "", // Update the teamA_Back value
+                  //   teamA_lay: value?.teamA_lay ? value?.teamA_lay : "", // Update the teamA_lay value
+                  //   teamA_suspend:
+                  //     value?.teamA_suspend == false ? null : "suspended", // Update the teamA_susp
+                  //   teamB_Back: value?.teamB_Back ? value?.teamB_Back : "",
+                  //   teamB_lay: value?.teamB_lay ? value?.teamB_lay : "",
+                  //   teamB_suspend:
+                  //     value?.teamB_suspend == false ? null : "suspended",
+                  //   teamC_Back: value?.teamC_Back ? value?.teamC_Back : "",
+                  //   teamC_lay: value?.teamC_lay ? value?.teamC_lay : "",
+                  //   teamC_suspend:
+                  //     value?.teamC_suspend == false ? null : "suspended",
+                  //   teamA_Ball: null,
+                  //   teamB_Ball: null,
+                  //   teamC_Ball: null,
+                  // };
 
-                  // Create a new array with the updated match object
-                  const updatedMatches = [
-                    ...currentMatches.slice(0, 0),
-                    updatedMatch,
-                    ...currentMatches.slice(0 + 1),
-                  ];
+                  // // Create a new array with the updated match object
+                  // const updatedMatches = [
+                  //   ...currentMatches.slice(0, 0),
+                  //   updatedMatch,
+                  //   ...currentMatches.slice(0 + 1),
+                  // ];
 
-                  // Return the new array as the updated state
-                  return updatedMatches;
+                  // // Return the new array as the updated state
+                  // return updatedMatches;
                 });
               }
             } else {
@@ -942,7 +1004,6 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
         socketMicro.emit("init", { id: marketId });
         setInterval(() => {
-
           socketMicro.emit("init", { id: marketId });
         }, 3000);
 
@@ -957,7 +1018,6 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         });
 
         socketMicro.on(`session${marketId}`, (val) => {
-
           if (val !== null && matchId === checkMctchId) {
             var newVal = val?.map((v) => ({
               bet_condition: v?.RunnerName,
@@ -1164,7 +1224,6 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
   const getButtonList = async () => {
     try {
-
       const { data } = await axios.get("/users/getButtonValues");
       const initialData = data?.data?.buttons; // Replace this with your initial data
       const jsonObject = JSON.parse(initialData);
@@ -1196,7 +1255,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         // User returned to the web browser
         if (matchId) {
           if (socket && socket.connected) {
@@ -1207,18 +1266,20 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     // Clean up the event listener on component unmount
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
   const getScoreBord = async (eventId) => {
     // alert(1)
     try {
-      const response = await Axios.get(`https://super007.in/api/MatchOdds/score/${eventId}`);
+      const response = await Axios.get(
+        `https://super007.in/api/MatchOdds/score/${eventId}`
+      );
       // Handle the API response here
       console.log("API Response:", response.data);
     } catch (e) {
@@ -1397,8 +1458,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 />
                 {(matchDetail?.manualSessionActive ||
                   matchDetail?.apiSessionActive) && (
-                    <SessionBetSeperate allBetsData={sessionBets} mark />
-                  )}
+                  <SessionBetSeperate allBetsData={sessionBets} mark />
+                )}
               </Box>
             </Box>
           )}

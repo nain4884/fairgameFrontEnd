@@ -83,14 +83,6 @@ const Row = ({ index, containerStyle, data }) => {
     }
   }, [socketMicro]);
 
-  let bookMakerData = data?.bookmakers?.map((bookmaker) => {
-    return {
-      id: bookmaker.id,
-      betStatus: bookmaker.betStatus,
-    };
-  });
-  console.log("book", bookMakerData);
-
   async function submitMatchUpdation() {
     setLoading({ val: true, id: data.id });
     let defaultMatchStatus = {
