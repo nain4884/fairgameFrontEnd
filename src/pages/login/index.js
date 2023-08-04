@@ -561,7 +561,7 @@ export default function Login(props) {
               </Box>
             </form>
           ) : (
-            <ChangePassword width="300px" changePassword={changePassword} />
+            <ChangePassword width="300px" changePassword={changePassword} setRecaptchToken={setRecaptchToken}/>
           )}
         </Card>
       </Box>
