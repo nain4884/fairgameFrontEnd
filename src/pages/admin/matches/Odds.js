@@ -9,7 +9,7 @@ import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../../admin/assets";
 import { ARROWUP } from "../../../assets";
 import { useState } from "react";
 
-const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, mShowUnlock, locked, blockMatch, handleBlock, handleHide, handleShowLock, selft }) => {
+const Odds = ({ currentMatch, data, minBet, maxBet, typeOfBet, manualBookmakerData, showUnlock, mShowUnlock, locked, blockMatch, handleBlock, handleHide, handleShowLock, selft }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
@@ -148,8 +148,7 @@ const Odds = ({ currentMatch, data, typeOfBet, manualBookmakerData, showUnlock, 
                   marginLeft: "7px",
                 }}
               >
-                MIN:{currentMatch?.betfair_match_min_bet} MAX:
-                {currentMatch?.betfair_match_max_bet}
+                MIN:{minBet} MAX: {maxBet}
               </Typography>
             </Box>
             <Box

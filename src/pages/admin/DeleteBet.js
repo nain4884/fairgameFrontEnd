@@ -26,7 +26,7 @@ import { logout } from "../../newStore/reducers/auth";
 
 let matchOddsCount = 0;
 let sessionOffline = [];
-const DeleteBet = ({ }) => {
+const DeleteBet = ({}) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
@@ -1027,16 +1027,35 @@ const DeleteBet = ({ }) => {
                       : []
                   }
                   typeOfBet={"Match Odds"}
+                  minBet = {currentMatch?.betfair_match_min_bet}
+                  maxBet = {currentMatch?.betfair_match_max_bet}
                 />
               )}
-              {currentMatch?.manualBookMakerActive && (
+
+              {currentMatch?.bookmakers?.map((bookmaker) => {
+                console.log(bookmaker, 'yayyy')
+                if(bookmaker.betStatus === 1 ) {
+                  return (
+                    <Odds
+                      currentMatch={currentMatch}
+                      session={"manualBookMaker"}
+                      data={bookmaker}
+                      minBet={bookmaker?.min_bet || 0}
+                      maxBet={bookmaker?.max_bet || 0}
+                      typeOfBet={bookmaker?.marketName}
+                      matchOddsData={bookmaker}
+                    />
+                  );
+                }
+              })}
+              {/* {currentMatch?.manualBookMakerActive && (
                 <Odds
                   currentMatch={currentMatch}
                   data={currentMatch}
                   manualBookmakerData={manualBookmakerData}
                   typeOfBet={"Quick Bookmaker"}
                 />
-              )}
+              )} */}
               {currentMatch?.apiBookMakerActive && (
                 <BookMarketer
                   currentMatch={currentMatch}
@@ -1192,22 +1211,21 @@ const DeleteBet = ({ }) => {
                     sx={{ width: "150px", marginY: ".75%", height: "15px" }}
                   ></Box>
                 </Box>
-                {
-                  currentMatch?.manualSessionActive && (
-                    <SessionMarket
-                      title={"Quick Session Market"}
-                      currentOdds={currentOdds}
-                      currentMatch={currentMatch}
-                      sessionBets={sessionBets}
-                      sessionExposer={sessionExposer}
-                      data={[]}
-                      sessionOffline={sessionOffline}
-                      setPopData={setPopData}
-                      popData={popData}
-                      min={currentMatch?.manaual_session_min_bet || 0}
-                      max={currentMatch?.manaual_session_max_bet || 0}
-                    />
-                  )}
+                {currentMatch?.manualSessionActive && (
+                  <SessionMarket
+                    title={"Quick Session Market"}
+                    currentOdds={currentOdds}
+                    currentMatch={currentMatch}
+                    sessionBets={sessionBets}
+                    sessionExposer={sessionExposer}
+                    data={[]}
+                    sessionOffline={sessionOffline}
+                    setPopData={setPopData}
+                    popData={popData}
+                    min={currentMatch?.manaual_session_min_bet || 0}
+                    max={currentMatch?.manaual_session_max_bet || 0}
+                  />
+                )}
                 {currentMatch?.apiSessionActive && (
                   <SessionMarket
                     title={"Session Market"}

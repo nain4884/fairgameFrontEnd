@@ -3250,7 +3250,7 @@ const NewMatchScreen = () => {
   const getSingleMatch = async (val) => {
     try {
       const data = await axios.get(`/game-match/matchDetail/${val}`);
-
+      console.log("yayy",data)
       let matchOddsDataTemp = data.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );

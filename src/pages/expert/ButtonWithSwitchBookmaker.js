@@ -125,7 +125,7 @@ const ButtonWithSwitchBookmaker = ({
             setUpdateBookmaker((pre) => {
               const body = pre?.map((val) => {
                 if (val.id === id) {
-                  return { ...val, betStatus: !checked === true ? 1: 0 };
+                  return { ...val, betStatus: !checked };
                 }
                 return val;
               });

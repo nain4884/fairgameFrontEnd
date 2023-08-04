@@ -116,30 +116,32 @@ const MatchOdds = ({
       )}
       {/* Manual Bookmaker */}
       {data?.bookmakers?.map((bookmaker) => {
-        return (
-          <Odds
-            upcoming={!upcoming}
-            betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
-            newData={data}
-            lock={false}
-            showDely={false}
-            session={"manualBookMaker"}
-            showFast={true}
-            suspended={false}
-            data={data}
-            teamARates={teamRates?.teamA}
-            teamBRates={teamRates?.teamB}
-            teamCRates={teamRates?.teamC}
-            min={bookmaker?.min_bet || 0}
-            max={bookmaker?.max_bet || 0}
-            title={bookmaker.marketName}
-            typeOfBet={"MANUAL BOOKMAKER"}
-            matchOddsData={bookmaker}
-            setFastAmount={setFastAmount}
-            fastAmount={fastAmount?.mannualBookMaker}
-            handleRateChange={handleRateChange}
-          />
-        );
+        if (bookmaker.betStatus === 1) {
+          return (
+            <Odds
+              upcoming={!upcoming}
+              betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
+              newData={data}
+              lock={false}
+              showDely={false}
+              session={"manualBookMaker"}
+              showFast={true}
+              suspended={false}
+              data={data}
+              teamARates={teamRates?.teamA}
+              teamBRates={teamRates?.teamB}
+              teamCRates={teamRates?.teamC}
+              min={bookmaker?.min_bet || 0}
+              max={bookmaker?.max_bet || 0}
+              title={bookmaker.marketName}
+              typeOfBet={"MANUAL BOOKMAKER"}
+              matchOddsData={bookmaker}
+              setFastAmount={setFastAmount}
+              fastAmount={fastAmount?.mannualBookMaker}
+              handleRateChange={handleRateChange}
+            />
+          );
+        }
       })}
 
       {/* {data?.manualBookMakerActive && (
