@@ -322,6 +322,7 @@ const MatchOdds = ({
                 currentMatch?.bettings?.filter((v) => v?.sessionBet === false)
               }
               teamA={currentMatch?.teamA}
+              stopAt={currentMatch?.stopAt}
               teamB={currentMatch?.teamB}
               tie={"Tie"}
               draw={currentMatch?.teamC ? currentMatch?.teamC : "Draw"}

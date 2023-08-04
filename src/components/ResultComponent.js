@@ -15,6 +15,7 @@ const ResultComponent = ({
   draw,
   betId,
   matchId,
+  stopAt,
 }) => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(teamA);
@@ -50,14 +51,16 @@ const ResultComponent = ({
       onClick();
       toast.success(data?.message);
       setLoading({ id: "", value: false });
-      navigate("/expert/match")
+      navigate("/expert/match");
     } catch (e) {
       setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
   };
-  const teamData = draw ? [`${teamA}`, `${teamB}`, `${tie}`, `${draw}`] : [`${teamA}`, `${teamB}`, `${tie}`]
+  const teamData = draw
+    ? [`${teamA}`, `${teamB}`, `${tie}`, `${draw}`]
+    : [`${teamA}`, `${teamB}`, `${tie}`];
   return (
     <Box
       sx={{
@@ -79,7 +82,7 @@ const ResultComponent = ({
             height: "50px",
             background: "white",
             borderRadius: "10px 10px 0 0",
-            background: "#ff4d4d"
+            background: "#ff4d4d",
           },
         ]}
       >
@@ -97,7 +100,7 @@ const ResultComponent = ({
           style={{ width: "25px", height: "25px", cursor: "pointer" }}
         />
       </Box>
-      <Box sx={{ padding: 0, }}>
+      <Box sx={{ padding: 0 }}>
         <Box
           sx={{
             width: "100%",
@@ -108,11 +111,9 @@ const ResultComponent = ({
             alignItems: "center",
             justifyContent: "center",
             px: "10px",
-            py: "5px"
-
+            py: "5px",
           }}
         >
-
           {teamData.map((i, k) => {
             return (
               <Box
@@ -155,37 +156,38 @@ const ResultComponent = ({
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            background: "#000"
+            background: "#000",
           }}
         >
-          <MatchOddsResultCustomButton
-            color={"#FF4D4D"}
+          {stopAt !== null ? (
+            <MatchOddsResultCustomButton
+              color={"#FF4D4D"}
+              loading={loading}
+              id="UD"
+              title={"Un Declare"}
+              onClick={() => {
+                if (loading?.value) {
+                  return false;
+                }
+                undeclareResult();
+              }}
+            />
+          ) : (
+            <MatchOddsResultCustomButton
+              id="DR"
+              color={"#0B4F26"}
+              loading={loading}
+              title={"Declare"}
+              onClick={() => {
+                if (loading?.value) {
+                  return false;
+                }
 
-            loading={loading}
-            id="UD"
-            title={"Un Declare"}
-            onClick={() => {
-              if (loading?.value) {
-                return false;
-              }
-              undeclareResult();
-            }}
-          />
-          <MatchOddsResultCustomButton
-            id="DR"
-            color={"#0B4F26"}
-            loading={loading}
-            title={"Declare"}
-            onClick={() => {
-              if (loading?.value) {
-                return false;
-              }
-
-              declareResult();
-            }}
-          />
+                declareResult();
+              }}
+            />
+          )}
         </Box>
-
       </Box>
     </Box>
   );
