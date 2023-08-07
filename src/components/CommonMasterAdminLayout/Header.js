@@ -855,11 +855,12 @@ const CustomHeader = ({}) => {
                 } else {
                   setLocalSessionOffline((prev) => {
                     if (prev.includes(data.id)) {
-                      const newres = sessionOffline.filter(
+                      const newres = prev.filter(
                         (id) => id !== data.id
                       );
 
                       dispatch(setSessionOffline(newres));
+                      return newres
                     }
                     const body = [...prev, data.id];
 

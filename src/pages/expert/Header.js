@@ -376,7 +376,8 @@ const CustomHeader = ({}) => {
 
             setAllLiveEventSession((prev) => {
               const updatedAllEventSession = prev?.map((match) => {
-                if (match.id === value?.match_id) {
+
+                if (match.id === value?.match_id &&  [undefined,null].includes(value?.selectionId)) {
                   const betObj = {
                     id: value.id,
                     bet_condition: value.bet_condition,
