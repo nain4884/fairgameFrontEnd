@@ -308,20 +308,23 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "updateMatchActiveStatus") {
           const data = packet.data[1];
 
-          userAllMatches?.map((matches) => {
-            console.log("abc");
-            if (matches.id === data.matchId) {
-              const newBody = {
-                ...matches,
-                apiBookMakerActive: data?.apiBookMakerActive,
-                apiMatchActive: data?.apiMatchActive,
-                apiSessionActive: data?.apiSessionActive,
-                manualBookMakerActive: data?.manualBookMakerActive,
-                manualSessionActive: data?.manualSessionActive,
-              };
-              return newBody;
-            }
-            return matches;
+          setLocalAllMatches((prev) => {
+            const updated = prev?.map((matches) => {
+              if (matches?.id === data?.matchId) {
+                const newBody = {
+                  ...matches,
+                  apiBookMakerActive: data?.apiBookMakerActive,
+                  apiMatchActive: data?.apiMatchActive,
+                  apiSessionActive: data?.apiSessionActive,
+                  manualBookMakerActive: data?.manualBookMakerActive,
+                  manualSessionActive: data?.manualSessionActive,
+                };
+                return newBody;
+              }
+              return matches;
+            });
+            dispatch(setUserAllMatches(updated));
+            return updated;
           });
         }
 
@@ -648,7 +651,7 @@ const CustomHeader = ({}) => {
               dispatch(setUserAllMatches(newBody));
               return newBody;
             });
-   
+
             setAllLiveEventSession((prev) => {
               const body = {
                 bettings: [],
