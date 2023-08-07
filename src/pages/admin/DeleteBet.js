@@ -71,6 +71,7 @@ const DeleteBet = ({}) => {
 
         if (packet.data[0] === "updateMatchActiveStatus") {
           const value = packet.data[1];
+          console.log('hey', value)
           setCurrentMatch((currentMatch) => {
             if (currentMatch?.id === value?.matchId) {
               return {
@@ -80,6 +81,12 @@ const DeleteBet = ({}) => {
                 apiSessionActive: value?.apiSessionActive,
                 manualBookMakerActive: value?.manualBookMakerActive,
                 manualSessionActive: value?.manualSessionActive,
+                quick_bookmaker: currentMatch?.quick_bookmaker?.map((bookmaker) => {
+                  return {
+                    id: bookmaker.id,
+                    betStatus: bookmaker.betStatus,
+                  };
+                }),
               };
             }
             return currentMatch;
@@ -692,7 +699,7 @@ const DeleteBet = ({}) => {
         }
       };
     }
-  }, [socket]);
+  }, [socket, currentMatch]);
 
   useEffect(() => {
     try {
@@ -1033,7 +1040,6 @@ const DeleteBet = ({}) => {
               )}
 
               {currentMatch?.bookmakers?.map((bookmaker) => {
-                console.log(bookmaker, 'yayyy')
                 if(bookmaker.betStatus === 1 ) {
                   return (
                     <Odds
