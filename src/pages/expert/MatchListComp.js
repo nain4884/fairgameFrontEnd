@@ -34,6 +34,7 @@ const MatchListComp = () => {
   const { userAllMatches,  } = useSelector(
     (state) => state?.matchDetails
   );
+  const {allEventSession} = useSelector(state => state?.expertMatchDetails)
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loading, setLoading] = useState(true);
   const { axios } = setRole();
@@ -43,7 +44,7 @@ const MatchListComp = () => {
     if (userAllMatches) {
       setAllMatch(userAllMatches);
     }
-  }, [userAllMatches]);
+  }, [userAllMatches, allEventSession]);
 
   const getAllMatch = async (title) => {
     try {
