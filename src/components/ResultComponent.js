@@ -58,7 +58,8 @@ const ResultComponent = ({
       console.log("error", e?.message);
     }
   };
-  const teamData = draw
+  const teamData = draw===
+  'draw'
     ? [`${teamA}`, `${teamB}`, `${tie}`, `${draw}`]
     : [`${teamA}`, `${teamB}`, `${tie}`];
   return (

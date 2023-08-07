@@ -216,9 +216,9 @@ const CustomHeader = ({}) => {
             if (token) {
               sessionStorage.setItem("JWTwallet", token);
             }
-            
+
             setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-             sessionStorage.removeItem("JWTwallet")
+            sessionStorage.removeItem("JWTwallet");
             // dispatch(removeSelectedMatch());
             removeSocket();
             socketMicro.disconnect();
@@ -231,9 +231,9 @@ const CustomHeader = ({}) => {
             if (token) {
               sessionStorage.setItem("JWTadmin", token);
             }
-          
+
             setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
-            sessionStorage.removeItem("JWTadmin")
+            sessionStorage.removeItem("JWTadmin");
             socketMicro.disconnect();
             socket.disconnect();
             // dispatch(removeSelectedMatch());
@@ -285,6 +285,7 @@ const CustomHeader = ({}) => {
         }
         if (packet.data[0] === "resultDeclareForBet") {
           const value = packet.data[1];
+
           setLocalAllMatches((prev) => {
             const filteredMatches = prev.filter(
               (v) => !(v.id === value?.match_id && value.sessionBet === false)
@@ -294,18 +295,23 @@ const CustomHeader = ({}) => {
           });
 
           // matchId = value?.match_id;
-          if (value?.sessionBet == false && match_id) {
-            if (match_id == value?.match_id) {
-              navigate(`/${nav}/market_analysis`);
-            }
-            return;
-          }
+          // if (value?.sessionBet == false && match_id) {
+          //   if (match_id == value?.match_id) {
+          //     navigate(`/${nav}/market_analysis`);
+          //   }
+          //   return;
+          // }
 
           try {
             setCurrentMatch((currentMatch) => {
-              if (currentMatch?.id !== value?.match_id) {
-                return currentMatch;
+              if (
+                currentMatch?.id === value?.match_id &&
+                value?.sessionBet == false
+              ) {
+                dispatch(setSelectedMatch(null));
+                return navigate(`/market_analysis`);
               }
+
               // Update the bettings array in the current match object
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting.id === value.betId) {
@@ -1483,7 +1489,7 @@ const CustomHeader = ({}) => {
             dispatch(logoutCurrentUser());
             dispatch(logoutAuth());
             dispatch(logoutExpertDetails());
-            sessionStorage.removeItem("JWTadmin")
+            sessionStorage.removeItem("JWTadmin");
             // dispatch(removeCurrentUser());// add
             // dispatch(logout({ roleType: "role1" }));//add
             socketMicro?.disconnect();
@@ -1523,7 +1529,7 @@ const CustomHeader = ({}) => {
             dispatch(logoutCurrentUser());
             dispatch(logoutAuth());
             dispatch(logoutExpertDetails());
-            sessionStorage.removeItem("JWTwallet")
+            sessionStorage.removeItem("JWTwallet");
             // dispatch(removeCurrentUser());//add
             // dispatch(logout({ roleType: "role2" }));//add
             socketMicro?.disconnect();
