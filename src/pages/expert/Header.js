@@ -60,10 +60,7 @@ import { toast } from "react-toastify";
 import IdleTimer from "../../components/IdleTimer";
 import CustomLoader from "../../components/helper/CustomLoader";
 import ModalMUI from "@mui/material/Modal";
-import {
-  setAllBetRate,
-  setSelectedExpertMatch,
-} from "../../newStore/reducers/expertMatchDetails";
+import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
 
 var match_id;
 const CustomHeader = ({}) => {
@@ -370,7 +367,7 @@ const CustomHeader = ({}) => {
                   ...currentMatch,
                   bettings: updatedBettings.sort(customSort),
                 };
-                dispatch(setSelectedExpertMatch(newBody));
+                dispatch(setSelectedMatch(newBody));
 
                 return newBody;
               }
@@ -508,7 +505,7 @@ const CustomHeader = ({}) => {
                 ...currentMatch,
                 bettings: updatedBettings,
               };
-              dispatch(setSelectedExpertMatch(newBody));
+              dispatch(setSelectedMatch(newBody));
               return newBody;
             });
           } catch (e) {
@@ -604,7 +601,7 @@ const CustomHeader = ({}) => {
 
                 const newBody = { ...prev, bettings: updatedBettings };
 
-                dispatch(setSelectedExpertMatch(newBody));
+                dispatch(setSelectedMatch(newBody));
                 return newBody;
               }
 

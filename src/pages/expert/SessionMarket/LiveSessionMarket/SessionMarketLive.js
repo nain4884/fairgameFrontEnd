@@ -20,6 +20,7 @@ const SessionMarketLive = ({
   stopAllHide,
   title,
   hideTotalBet,
+  setMatchLiveSession,
   sessionData,
 }) => {
   const theme = useTheme();
@@ -214,6 +215,7 @@ const SessionMarketLive = ({
               matchSessionData?.map((match, index) => (
                 <Box key={index}>
                   <SessionMarketBoxLive
+                  setMatchLiveSession={setMatchLiveSession}
                     liveOnly={liveOnly}
                     hideResult={hideResult}
                     hideTotalBet={hideTotalBet}

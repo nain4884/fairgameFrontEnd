@@ -9,13 +9,14 @@ import { useEffect } from "react";
 import Result from "../../Result";
 import SessionResultModal from "../../../../components/SessionResultModal";
 import { formatNumber } from "../../../../components/helper/helper";
-import { setRole } from "../../../../newStore"
+import { setRole } from "../../../../newStore";
 import Divider from "../../../../components/helper/Divider";
+import { setSelectedMatch } from "../../../../newStore/reducers/matchDetails";
+import { useDispatch, useSelector } from "react-redux";
 
 const SessionMarketBoxLive = ({
   index,
   stop,
-  currentMatch,
   newData,
   setStop,
   liveOnly,
@@ -23,13 +24,23 @@ const SessionMarketBoxLive = ({
   setMatchSessionData,
   updateSessionData,
   hideResult,
+  setMatchLiveSession,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [live, setLive] = useState(
     [0, 2].includes(newData?.betStatus) ? true : false
   );
+  const [currentMatch, setCurrentMatch] = useState(null);
+  const { selectedMatch } = useSelector((state) => state?.matchDetails);
+
+  useEffect(() => {
+    if (selectedMatch) {
+      setCurrentMatch(selectedMatch);
+    }
+  }, [selectedMatch]);
 
   useEffect(() => {
     if (!stop) {
@@ -74,27 +85,15 @@ const SessionMarketBoxLive = ({
           setMatchSessionData((prev) => {
             const exists = prev.some((v) => v?.id === data?.data?.id);
             if (!exists) {
-              return [...prev,data.data];
+              return [...prev, data.data];
             }
             return prev;
           });
         }
-        // setLocalState(() => {
-        //   const updatedBettings = currentMatch?.bettings.map(
-        //     (betting, index) => {
-        //       if (betting.selectionId === data?.data?.selectionId) {
-        //         return (betting[index] = data?.data);
-        //       } else if (betting.id === data?.data?.id) {
-        //         return (betting[index] = data?.data);
-        //       }
-        //       return betting;
-        //     }
-        //   );
-        //   return {
-        //     ...currentMatch,
-        //     bettings: updatedBettings,
-        //   };
-        // });
+
+        setMatchLiveSession((prev) =>
+          prev?.filter((v) => v?.selectionId !== data?.data?.selectionId)
+        );
       }
     } catch (err) {
       toast.error(err.response.data.message);
@@ -188,7 +187,7 @@ const SessionMarketBoxLive = ({
               }}
               textSize={"8px"}
               width={"33px"}
-            // title={"Live"}
+              // title={"Live"}
             />
           )}
           {!hideResult && (
@@ -223,7 +222,7 @@ const SessionMarketBoxLive = ({
         )}
 
         {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
-          newData?.betStatus === 2 ? (
+        newData?.betStatus === 2 ? (
           <Box
             sx={{
               margin: "1px",
@@ -289,7 +288,6 @@ const SessionMarketBoxLive = ({
               lock={newData?.suspended === "suspended"}
               color={"#B3E0FF"}
             />
-
           </Box>
         )}
       </Box>

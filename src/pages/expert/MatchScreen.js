@@ -54,6 +54,7 @@ const MatchScreen = () => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [currentOdds, setCurrentOdds] = useState(null);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const [matchLiveSession,setMatchLiveSession]=useState([])
 
 
   const { selectedMatch} = useSelector((state) => state?.matchDetails);
@@ -500,9 +501,14 @@ const MatchScreen = () => {
               }) || [];
 
             // Merge the filteredNewVal with the currentMatch bettings array
-            return { ...currentMatch, bettings: [...data, ...filteredNewVal] };
+
+            const newBody ={ ...currentMatch, bettings: [...data, ...filteredNewVal] };
+          
+            return newBody
           }
-          return { ...currentMatch, bettings: newVal };
+
+          const newBody={ ...currentMatch, bettings: newVal }; 
+          return newBody 
         });
       }
     },
@@ -554,6 +560,19 @@ const MatchScreen = () => {
       : [];
 
   // console.log(arrayObject,"arrayObject")
+
+  const sessionData =
+  currentMatch?.bettings?.length > 0
+    && [...currentMatch?.bettings].filter(
+        (e) =>
+          e?.sessionBet && !e?.id && e?.betStatus === 0
+      )
+      useEffect(()=>{
+        if(sessionData.length>0)
+        {  setMatchLiveSession(sessionData)}
+      },[sessionData])
+      console.log(matchLiveSession,"sessionData")
+
   return (
     <Background>
       {/* <CHeader /> */}
@@ -611,13 +630,9 @@ const MatchScreen = () => {
                       stopAllHide={true}
                       hideResult={true}
                       sessionData={
-                        currentMatch?.bettings?.length > 0
-                          ? [...currentMatch?.bettings].filter(
-                              (e) =>
-                                e?.sessionBet && !e?.id && e?.betStatus === 0
-                            )
-                          : []
+                        matchLiveSession
                       }
+                      setMatchLiveSession={setMatchLiveSession}
                       setLocalState={setLocalState}
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
@@ -652,7 +667,7 @@ const MatchScreen = () => {
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
                     />
-                    {console.log(arrayObject, "arrayObjectddddddddddddddd")}
+
                   </Box>
                 </Box>
               )}
