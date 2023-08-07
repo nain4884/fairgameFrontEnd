@@ -449,7 +449,7 @@ const ProfitLossComponent = ({
       })}
      
        
-       <Box sx={{maxHeight:"47vh",overflowY:"auto"}}>
+       <Box>
        {visible && reportData.map((item, index) => {
           return <RowComponent key={index} item={item} index={index + 1} />;
         })

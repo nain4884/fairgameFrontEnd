@@ -107,7 +107,7 @@ const SessionBetHistory = ({ profit, betData, mark, mark2, betHistory }) => {
         )}
       </Box>
       <Box
-        className="myScroll"
+        // className="myScroll"
         sx={{
           maxHeight: { mobile: "200px", laptop: "420px" },
           overflowY: "auto",

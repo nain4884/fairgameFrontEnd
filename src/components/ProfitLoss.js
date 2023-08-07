@@ -451,7 +451,7 @@ const ProfitLossComponent = ({
       {eventData.map((item, index) => {
         return <RowHeader key={index} item={item} index={index} />;
       })}
-      <Box sx={{maxHeight:"47vh",overflowY:"auto"}}>
+      <Box >
       {visible &&
         reportData.map((item, index) => {
           return <RowComponent key={index} item={item} index={index + 1} />;

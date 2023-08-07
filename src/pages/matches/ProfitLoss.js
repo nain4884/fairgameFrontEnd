@@ -7,7 +7,7 @@ import constants from "../../components/helper/constants";
 import EventListing from "../../components/EventListing";
 
 const ProfitLoss = ({ selected, visible }) => {
-  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+  const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(1);
   const [currenLimit, setCurrenLimit] = useState(1);

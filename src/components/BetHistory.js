@@ -123,7 +123,7 @@ const BetHistory = ({
             )}
           </Box>
           <Box
-            className="myScroll"
+            // className="myScroll"
             sx={{
               maxHeight: { mobile: "200px", laptop: "420px" },
               overflowY: "auto",

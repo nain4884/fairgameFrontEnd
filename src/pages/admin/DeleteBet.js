@@ -15,12 +15,15 @@ import SessionMarket from "./matches/SessionMarket";
 import BookMarketer from "./matches/BookMaketer";
 import { useEffect } from "react";
 import { setRole } from "../../newStore";
-import { setAllBetRate, setSelectedMatch } from "../../newStore/reducers/matchDetails";
+import {
+  setAllBetRate,
+  setSelectedMatch,
+} from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
 import CustomLoader from "../../components/helper/CustomLoader";
 import { removeSocket } from "../../components/helper/removeSocket";
 import { removeCurrentUser } from "../../newStore/reducers/currentUser";
-import { removeManualBookMarkerRates } from "../../newStore/reducers/matchDetails";
+import { setAllSessionBets } from "../../newStore/reducers/matchDetails";
 import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
 
@@ -864,15 +867,15 @@ const DeleteBet = ({}) => {
       );
 
       setManualBookmakerData(matchOddsDataTemp);
-      setCurrentMatch({
+      const newBody ={
         ...response.data,
-      });
+      }
+      setCurrentMatch(newBody);
 
       dispatch(
-        setSelectedMatch({
-          ...response.data,
-        })
+        setSelectedMatch(newBody)
       );
+
       setSessionExposure(response.data.sessionExposure);
       setMarketId(response.data.marketId);
       setMatchDetail(response.data);
@@ -895,15 +898,17 @@ const DeleteBet = ({}) => {
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
       setSingleIObtes(data?.data?.data);
-      dispatch(setAllBetRate(data?.data?.data))
+      dispatch(setAllBetRate(data?.data?.data));
       const bets = data?.data?.data?.filter(
         (b) =>
           !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
             b?.marketType
           )
       );
-      // setSessionBets(bets || []);
-      // dispatch(setSessionBets(bets))
+      setSessionBets(bets || []);
+      dispatch(setAllSessionBets(bets))
+
+      
     } catch (e) {
       console.log(e);
     }
@@ -1034,7 +1039,7 @@ const DeleteBet = ({}) => {
                   title={"Quick Session Market"}
                   sessionExposer={sessionExposer}
                   currentMatch={currentMatch}
-                  sessionBets={sessionBets}
+                  sessionBets={sessionBets?.length}
                   data={[]}
                   sessionOffline={sessionOff}
                   setPopData={setPopData}
@@ -1047,7 +1052,7 @@ const DeleteBet = ({}) => {
                 <SessionMarket
                   title={"Session Market"}
                   currentMatch={currentMatch}
-                  sessionBets={sessionBets}
+                  sessionBets={sessionBets?.length}
                   sessionExposer={sessionExposer}
                   data={[]}
                   sessionOffline={sessionOff}
@@ -1178,8 +1183,8 @@ const DeleteBet = ({}) => {
                     title={"Quick Session Market"}
                     currentOdds={currentOdds}
                     currentMatch={currentMatch}
-                    sessionBets={sessionBets}
-                    sessionExposer={sessionExposer}
+                    sessionBets={sessionBets?.length}
+                    sessionExposer={currentMatch?.sessionExposure}
                     data={[]}
                     sessionOffline={sessionOff}
                     setPopData={setPopData}
@@ -1193,8 +1198,8 @@ const DeleteBet = ({}) => {
                     title={"Session Market"}
                     currentOdds={currentOdds}
                     currentMatch={currentMatch}
-                    sessionBets={sessionBets}
-                    sessionExposer={sessionExposer}
+                    sessionBets={sessionBets?.length}
+                    sessionExposer={currentMatch?.sessionExposure}
                     data={[]}
                     sessionOffline={sessionOff}
                     setPopData={setPopData}
