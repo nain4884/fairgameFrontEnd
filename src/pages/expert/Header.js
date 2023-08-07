@@ -305,6 +305,26 @@ const CustomHeader = ({}) => {
           });
         }
 
+        if (packet.data[0] === "updateMatchActiveStatus") {
+          const data = packet.data[1];
+
+          userAllMatches?.map((matches) => {
+            console.log("abc");
+            if (matches.id === data.matchId) {
+              const newBody = {
+                ...matches,
+                apiBookMakerActive: data?.apiBookMakerActive,
+                apiMatchActive: data?.apiMatchActive,
+                apiSessionActive: data?.apiSessionActive,
+                manualBookMakerActive: data?.manualBookMakerActive,
+                manualSessionActive: data?.manualSessionActive,
+              };
+              return newBody;
+            }
+            return matches;
+          });
+        }
+
         if (packet.data[0] === "newBetAdded") {
           const value = packet.data[1];
           try {
@@ -589,28 +609,32 @@ const CustomHeader = ({}) => {
             });
 
             setAllLiveEventSession((prev) => {
-              const updatedPrev = prev.map((item) => {
-                if (item.id === value?.match_id) {
+              var updatedPrev = prev?.map((item) => {
+                if (item.id === value?.match_id && value?.sessionBet) {
                   const updatedBettings = item.bettings.filter(
                     (betting) => betting.id !== value?.betId
                   );
                   return { ...item, bettings: updatedBettings };
                 }
+
                 return item;
               });
 
-              dispatch(setAllEventSession(updatedPrev));
-
-              return updatedPrev;
-            });
-
-            setLocalAllMatches((prev) => {
-              const filteredMatches = prev.filter(
+              const newUpdatedPrev = updatedPrev?.filter(
                 (v) => !(v.id === value?.match_id && value.sessionBet === false)
               );
-              dispatch(setUserAllMatches(filteredMatches));
-              return filteredMatches;
+              dispatch(setAllEventSession(newUpdatedPrev));
+
+              return newUpdatedPrev;
             });
+
+            // setLocalAllMatches((prev) => {
+            //   const filteredMatches = prev.filter(
+            //     (v) => !(v.id === value?.match_id && value.sessionBet === false)
+            //   );
+            //   dispatch(setUserAllMatches(filteredMatches));
+            //   return filteredMatches;
+            // });
           } catch (err) {
             console.log(err?.message);
           }
@@ -624,6 +648,7 @@ const CustomHeader = ({}) => {
               dispatch(setUserAllMatches(newBody));
               return newBody;
             });
+   
             setAllLiveEventSession((prev) => {
               const body = {
                 bettings: [],
@@ -634,7 +659,7 @@ const CustomHeader = ({}) => {
                 teamC: value.teamC,
                 title: value.title,
               };
-              const newBody = [body, ...prev];
+              const newBody = [...prev, body];
               dispatch(setAllEventSession(newBody));
               return newBody;
             });
@@ -1151,7 +1176,7 @@ const CustomHeader = ({}) => {
       <DropdownMenu1
         anchorEl={anchor}
         open={Boolean(anchor)}
-        allMatch={allMatchData}
+        allMatch={allLiveEventSession}
         handleClose={() => {
           setAnchor(null);
         }}
