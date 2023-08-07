@@ -136,17 +136,12 @@ const ProfitLoss = () => {
     }
     let { axios } = setRole();
     try {
-      setLoading(true);
       const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
       // console.log(data.data[0], 'datadatadatadata')
       setEventData(data?.data);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+   
     } catch (e) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+   
       console.log(e);
     }
   }
@@ -281,7 +276,7 @@ const ProfitLoss = () => {
 
           <Box sx={{ width: "99%", marginX: ".5%" }}>
             <ProfitLossComponent
-              loading
+              // loading
               eventData={eventData}
               reportData={reportData}
               betData={betData}

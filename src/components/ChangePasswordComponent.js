@@ -11,6 +11,7 @@ export const ChangePasswordComponent = ({
   passLoader,
   width,
   changePassword,
+  setRecaptchToken
 }) => {
   const [passwordDetail, setPasswordDetail] = useState({
     2: { field: "oldPassword", val: "" },
@@ -25,6 +26,7 @@ export const ChangePasswordComponent = ({
 
   const handleChange = (e) => {
     e.preventDefault();
+    setRecaptchToken(null)
     if (
       !error[3].val &&
       !error[4].val &&
@@ -33,6 +35,7 @@ export const ChangePasswordComponent = ({
       passwordDetail[4].val !== ""
     ) {
       changePassword(passwordDetail);
+      
     }
   };
   const handleEnterKeyPress = (e) => {
@@ -47,7 +50,7 @@ export const ChangePasswordComponent = ({
     <form onSubmit={handleChange}>
       <Box
         sx={{
-          width: { mobile: "96vw", laptop: "22vw", tablet: "22vw" },
+          width: { mobile: "96vw", laptop: "19vw", tablet: "19vw" },
           minWidth: {
             laptop: width ? width : "350px",
             tablet: width ? width : "350px",

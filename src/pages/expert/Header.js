@@ -88,7 +88,9 @@ const CustomHeader = ({}) => {
     sessionAllBet,
     sessionBetId,
   } = useSelector((state) => state?.expertMatchDetails);
-  const { userAllMatches ,selectedMatch} = useSelector((state) => state?.matchDetails);
+  const { userAllMatches, selectedMatch } = useSelector(
+    (state) => state?.matchDetails
+  );
   const { userExpert } = useSelector((state) => state.auth);
   const { socket, socketMicro } = useContext(SocketContext);
 
@@ -618,15 +620,28 @@ const CustomHeader = ({}) => {
           // matchId = value?.match_id;
           try {
             setLocalAllMatches((prev) => {
-              const newBody = [value,...prev];
+              const newBody = [value, ...prev];
               dispatch(setUserAllMatches(newBody));
+              return newBody;
+            });
+            setAllLiveEventSession((prev) => {
+              const body = {
+                bettings: [],
+                gameType: value.gameType,
+                id: value.id,
+                teamA: value.teamA,
+                teamB: value.teamB,
+                teamC: value.teamC,
+                title: value.title,
+              };
+              const newBody = [body, ...prev];
+              dispatch(setAllEventSession(newBody));
               return newBody;
             });
           } catch (err) {
             console.log(err?.message);
           }
         }
-      
       };
     }
   }, [socket, betId]);

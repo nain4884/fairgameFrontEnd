@@ -705,7 +705,7 @@ export default function Login(props) {
               </Box>
             </form>
           ) : (
-            <ChangePassword changePassword={changePassword} />
+            <ChangePassword changePassword={changePassword} setRecaptchToken={setRecaptchToken}/>
           )}
         </Box>
       </Box>
