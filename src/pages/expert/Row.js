@@ -17,8 +17,14 @@ const Row = ({ index, containerStyle, data }) => {
   const { axios } = setRole();
   const [updateMatchStatus, setUpdateMatchStatus] = useState({
     1: { field: "apiMatchActive", val: data?.apiMatchActive || false },
-    2: { field: "apiBookMakerActive", val: data?.apiBookMakerActive || false },
-    3: { field: "apiSessionActive", val: data?.apiSessionActive || false },
+    2: {
+      field: "apiBookMakerActive",
+      val: data?.apiBookMakerActive || false,
+    },
+    3: {
+      field: "apiSessionActive",
+      val: data?.apiSessionActive || false,
+    },
     5: {
       field: "manualSessionActive",
       val: data?.manualSessionActive || false,
@@ -28,6 +34,18 @@ const Row = ({ index, containerStyle, data }) => {
       val: data?.manualBookMakerActive || false,
     },
   });
+
+  useEffect(() => {
+    setUpdateMatchStatus((prevStatus) => ({
+      ...prevStatus,
+      1: { ...prevStatus[1], val: data?.apiMatchActive || false },
+      2: { ...prevStatus[2], val: data?.apiBookMakerActive },
+      3: { ...prevStatus[3], val: data?.apiSessionActive || false },
+      4: { ...prevStatus[4], val: data?.manualBookMakerActive || false },
+      5: { ...prevStatus[5], val: data?.manualSessionActive || false },
+    }));
+  }, [data]);
+
 
   function showDialogModal(isModalOpen, showRight, message, navigateTo, state) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -84,7 +102,7 @@ const Row = ({ index, containerStyle, data }) => {
       ...defaultMatchStatus,
     };
 
-    sessionStorage.setItem("matchId",data.id)
+    sessionStorage.setItem("matchId", data.id);
     dispatch(setAllBetRate([]));
     try {
       let response = await axios.post(

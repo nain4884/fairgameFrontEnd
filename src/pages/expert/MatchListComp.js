@@ -31,10 +31,8 @@ const MatchListComp = () => {
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const { socket, socketMicro } = useContext(SocketContext);
   const dispatch = useDispatch();
-  const { userAllMatches,  } = useSelector(
-    (state) => state?.matchDetails
-  );
-  const {allEventSession} = useSelector(state => state?.expertMatchDetails)
+  const { userAllMatches } = useSelector((state) => state?.matchDetails);
+  const { allEventSession } = useSelector((state) => state?.expertMatchDetails);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loading, setLoading] = useState(true);
   const { axios } = setRole();
@@ -60,7 +58,7 @@ const MatchListComp = () => {
       if (response.data[0]) {
         setAllMatch(response.data[0]);
         setLoading(false);
- dispatch(setUserAllMatches(response.data[0]))
+        dispatch(setUserAllMatches(response.data[0]));
         setPageCount(
           Math.ceil(
             parseInt(response?.data[1] ? response.data[1] : 1) /

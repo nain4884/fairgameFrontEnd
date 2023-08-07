@@ -908,26 +908,27 @@ const CustomHeader = ({}) => {
                     if (!bettingsIds?.includes(data.id)) {
                       // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
                       newUpdatedValue = [...newUpdatedValue, data];
-                    } else {
-                      if (!item.sessionOffline) {
-                        item.sessionOffline = [];
-                      }
-                      if (
-                        item?.sessionOffline &&
-                        item?.sessionOffline.includes(data.id) &&
-                        data.betStatus === 1
-                      ) {
-                        const newres = item?.sessionOffline.filter(
-                          (id) => id !== data.id
-                        );
-                        item.sessionOffline = newres;
-                      }
-                      if (data?.betStatus === 0) {
-                        item.sessionOffline.push(data.id);
-                      }
+                    }
+                    // else {
+                      // if (!item.sessionOffline) {
+                      //   item.sessionOffline = [];
+                      // }
+                      // if (
+                      //   item?.sessionOffline &&
+                      //   item?.sessionOffline.includes(data.id) &&
+                      //   data.betStatus === 1
+                      // ) {
+                      //   const newres = item?.sessionOffline.filter(
+                      //     (id) => id !== data.id
+                      //   );
+                      //   item.sessionOffline = newres;
+                      // }
+                      // if (data?.betStatus === 0) {
+                      //   item.sessionOffline.push(data.id);
+                      // }
 
                       // newUpdatedValue = newUpdatedValue?.filter(v => v?.id !== value?.id && v?.betStatus === 1);
-                    }
+                    // }
 
                     // Return the updated current match object
                     return {
