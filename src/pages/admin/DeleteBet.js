@@ -71,23 +71,31 @@ const DeleteBet = ({}) => {
 
         if (packet.data[0] === "updateMatchActiveStatus") {
           const value = packet.data[1];
-          console.log('hey', value)
           setCurrentMatch((currentMatch) => {
             if (currentMatch?.id === value?.matchId) {
-              return {
+
+              const idToNewBetStatusMap = value?.quick_bookmaker?.reduce((map, item) => {
+                map[item.id] = item.betStatus;
+                return map;
+            }, {});
+            
+ 
+            const updatedArray1 = currentMatch?.bookmakers.map(item => ({
+                ...item,
+                betStatus: idToNewBetStatusMap[item.id]
+            }));
+            
+              const newBody={
                 ...currentMatch,
                 apiBookMakerActive: value?.apiBookMakerActive,
                 apiMatchActive: value?.apiMatchActive,
                 apiSessionActive: value?.apiSessionActive,
                 manualBookMakerActive: value?.manualBookMakerActive,
                 manualSessionActive: value?.manualSessionActive,
-                quick_bookmaker: currentMatch?.quick_bookmaker?.map((bookmaker) => {
-                  return {
-                    id: bookmaker.id,
-                    betStatus: bookmaker.betStatus,
-                  };
-                }),
+                bookmakers:updatedArray1
               };
+              console.log(newBody,"newBody")
+              return newBody
             }
             return currentMatch;
           });
@@ -969,6 +977,7 @@ const DeleteBet = ({}) => {
       </Box>
     );
   };
+
   return (
     <Background>
       {loading ? (
@@ -1040,7 +1049,7 @@ const DeleteBet = ({}) => {
               )}
 
               {currentMatch?.bookmakers?.map((bookmaker) => {
-                if(bookmaker.betStatus === 1 ) {
+                if(bookmaker?.betStatus === 1 ) {
                   return (
                     <Odds
                       currentMatch={currentMatch}
