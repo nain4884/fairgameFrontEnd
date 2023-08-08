@@ -16,22 +16,22 @@ const initialState = {
   sessionProfitLoss: null,
   teamA: {
     rate: null,
-    lock: null,
-    suspended: null,
+    lock: true,
+    suspended: true,
     lay: null,
     back: null,
   },
   teamB: {
     rate: null,
-    lock: null,
-    suspended: null,
+    lock: true,
+    suspended: true,
     lay: null,
     back: null,
   },
   teamC: {
     rate: null,
-    lock: null,
-    suspended: null,
+    lock: true,
+    suspended: true,
     lay: null,
     back: null,
   },
@@ -41,11 +41,11 @@ const initialState = {
     isCBall: false,
   },
   teamSuspended: {
-    teamA_suspend: null,
-    teamB_suspend: null,
-    teamC_suspend: null,
+    teamA_suspend: true,
+    teamB_suspend: true,
+    teamC_suspend: true,
   },
-  teamBackUnlock: false,
+  teamBackUnlock: true,
 };
 export const logoutExpertDetails = createAction("auth/logoutReset");
 const expertMatchDetails = createSlice({
@@ -140,8 +140,7 @@ export const {
   setTeamA,
   setTeamB,
   setTeamC,
-    setTeamSuspended
-
+  setTeamSuspended,
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

@@ -132,218 +132,218 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
             }
         }
 
-        useEffect(() => {
-            if (socket && socket.connected) {
-                socket.onevent = async (packet) => {
-                    const data = packet.data[1];
-                    if (packet.data[0] === "match_bet") {
-                        const data = packet.data[1];
-                        try {
-                            if (data) {
-                                const body = {
-                                    id: data?.betPlaceData?.id,
-                                    isActive: true,
-                                    createAt: data?.betPlaceData?.createAt,
-                                    updateAt: data?.betPlaceData?.createAt,
-                                    createdBy: null,
-                                    deletedAt: null,
-                                    user_id: null,
-                                    match_id: data?.betPlaceData?.match_id,
-                                    bet_id: data?.betPlaceData?.bet_id,
-                                    result: "pending",
-                                    team_bet: data?.betPlaceData?.team_bet,
-                                    odds: data?.betPlaceData?.odds,
-                                    win_amount: null,
-                                    loss_amount: null,
-                                    bet_type: data?.betPlaceData?.bet_type,
-                                    country: null,
-                                    ip_address: null,
-                                    rate: null,
-                                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                                    userName: data?.betPlaceData?.userName,
-                                    myStack: data?.betPlaceData?.myStack,
-                                    marketType: data?.betPlaceData?.marketType,
-                                    amount:
-                                        data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                                };
-                                if (data?.betPlaceData?.match_id === match?.id) {
-                                    setteamRates({
-                                        teamA: data?.teamA_rate ? data?.teamA_rate : 0,
-                                        teamB: data?.teamB_rate ? data?.teamB_rate : 0,
-                                        teamC: data?.teamC_rate ? data?.teamC_rate : 0
-                                    })
-                                    dispatch(setBookMakerBetRate((prev) => {
-                                        // Create a new array by adding `body` at the beginning and spreading the previous values
-                                        const newData = [body, ...prev];
+        // useEffect(() => {
+        //     if (socket && socket.connected) {
+        //         socket.onevent = async (packet) => {
+        //             const data = packet.data[1];
+        //             if (packet.data[0] === "match_bet") {
+        //                 const data = packet.data[1];
+        //                 try {
+        //                     if (data) {
+        //                         const body = {
+        //                             id: data?.betPlaceData?.id,
+        //                             isActive: true,
+        //                             createAt: data?.betPlaceData?.createAt,
+        //                             updateAt: data?.betPlaceData?.createAt,
+        //                             createdBy: null,
+        //                             deletedAt: null,
+        //                             user_id: null,
+        //                             match_id: data?.betPlaceData?.match_id,
+        //                             bet_id: data?.betPlaceData?.bet_id,
+        //                             result: "pending",
+        //                             team_bet: data?.betPlaceData?.team_bet,
+        //                             odds: data?.betPlaceData?.odds,
+        //                             win_amount: null,
+        //                             loss_amount: null,
+        //                             bet_type: data?.betPlaceData?.bet_type,
+        //                             country: null,
+        //                             ip_address: null,
+        //                             rate: null,
+        //                             deleted_reason: data?.betPlaceData?.deleted_reason || null,
+        //                             userName: data?.betPlaceData?.userName,
+        //                             myStack: data?.betPlaceData?.myStack,
+        //                             marketType: data?.betPlaceData?.marketType,
+        //                             amount:
+        //                                 data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+        //                         };
+        //                         if (data?.betPlaceData?.match_id === match?.id) {
+        //                             setteamRates({
+        //                                 teamA: data?.teamA_rate ? data?.teamA_rate : 0,
+        //                                 teamB: data?.teamB_rate ? data?.teamB_rate : 0,
+        //                                 teamC: data?.teamC_rate ? data?.teamC_rate : 0
+        //                             })
+        //                             dispatch(setBookMakerBetRate((prev) => {
+        //                                 // Create a new array by adding `body` at the beginning and spreading the previous values
+        //                                 const newData = [body, ...prev];
 
-                                        // Modify the `newData` array if needed
+        //                                 // Modify the `newData` array if needed
 
-                                        // Return the modified `newData` array
-                                        return newData;
-                                    }));
-                                }
-                            }
-                        } catch (err) {
-                            console.log(err?.message);
-                        }
+        //                                 // Return the modified `newData` array
+        //                                 return newData;
+        //                             }));
+        //                         }
+        //                     }
+        //                 } catch (err) {
+        //                     console.log(err?.message);
+        //                 }
 
-                    }
-                    if (packet.data[0] === "teamA_suspend_user") {
-                        if (data.teamA_suspend == 'Ball Started') {
-                            setTeamBall((prevState) => ({
-                                ...prevState,
-                                isABall: true,
-                                isBBall: true,
-                                isCBall: true,
-                            }));
-                        } else {
-                            setIsTeamASuspend(data.teamA_suspend);
-                            setIsTeamBackUnlock(true);
-                            setTeamBall((prevState) => ({
-                                ...prevState,
-                                isABall: false,
-                                isBBall: false,
-                                isCBall: false,
-                            }));
-                        }
-                        setTeamSuspend((prevState) => ({
-                            ...prevState,
-                            teamA_suspend: true,
-                        }));
+        //             }
+        //             if (packet.data[0] === "teamA_suspend_user") {
+        //                 if (data.teamA_suspend == 'Ball Started') {
+        //                     setTeamBall((prevState) => ({
+        //                         ...prevState,
+        //                         isABall: true,
+        //                         isBBall: true,
+        //                         isCBall: true,
+        //                     }));
+        //                 } else {
+        //                     setIsTeamASuspend(data.teamA_suspend);
+        //                     setIsTeamBackUnlock(true);
+        //                     setTeamBall((prevState) => ({
+        //                         ...prevState,
+        //                         isABall: false,
+        //                         isBBall: false,
+        //                         isCBall: false,
+        //                     }));
+        //                 }
+        //                 setTeamSuspend((prevState) => ({
+        //                     ...prevState,
+        //                     teamA_suspend: true,
+        //                 }));
 
-                    }
-                    if (packet.data[0] === "teamB_suspend_user") {
-                        if (data.teamB_suspend == 'Ball Started') {
-                            // setIsBBall(true)
-                            setTeamBall((prevState) => ({
-                                ...prevState,
-                                isABall: true,
-                                isBBall: true,
-                                isCBall: true,
-                            }));
-                        } else {
-                            setIsTeamBSuspend(data.teamB_suspend);
-                            setIsTeamBackUnlock(true);
-                            // setIsBBall(false);
-                            setTeamBall((prevState) => ({
-                                ...prevState,
-                                isABall: false,
-                                isBBall: false,
-                                isCBall: false,
-                            }));
-                        }
-                        setTeamSuspend((prevState) => ({
-                            ...prevState,
-                            teamB_suspend: true,
-                        }));
-                    }
-                    if (packet.data[0] === "teamC_suspend_user") {
-                        if (data.teamC_suspend == 'Ball Started') {
-                            // setIsCBall(true)
-                            setTeamBall((prevState) => ({
-                                ...prevState,
-                                isABall: true,
-                                isBBall: true,
-                                isCBall: true,
-                            }));
-                        } else {
-                            setIsTeamCSuspend(data.teamC_suspend);
-                            setIsTeamBackUnlock(true);
-                            setTeamBall((prevState) => ({
-                                ...prevState,
-                                isABall: false,
-                                isBBall: false,
-                                isCBall: false,
-                            }));
-                        }
-                        setTeamSuspend((prevState) => ({
-                            ...prevState,
-                            teamC_suspend: true,
-                        }));
-                    }
+        //             }
+        //             if (packet.data[0] === "teamB_suspend_user") {
+        //                 if (data.teamB_suspend == 'Ball Started') {
+        //                     // setIsBBall(true)
+        //                     setTeamBall((prevState) => ({
+        //                         ...prevState,
+        //                         isABall: true,
+        //                         isBBall: true,
+        //                         isCBall: true,
+        //                     }));
+        //                 } else {
+        //                     setIsTeamBSuspend(data.teamB_suspend);
+        //                     setIsTeamBackUnlock(true);
+        //                     // setIsBBall(false);
+        //                     setTeamBall((prevState) => ({
+        //                         ...prevState,
+        //                         isABall: false,
+        //                         isBBall: false,
+        //                         isCBall: false,
+        //                     }));
+        //                 }
+        //                 setTeamSuspend((prevState) => ({
+        //                     ...prevState,
+        //                     teamB_suspend: true,
+        //                 }));
+        //             }
+        //             if (packet.data[0] === "teamC_suspend_user") {
+        //                 if (data.teamC_suspend == 'Ball Started') {
+        //                     // setIsCBall(true)
+        //                     setTeamBall((prevState) => ({
+        //                         ...prevState,
+        //                         isABall: true,
+        //                         isBBall: true,
+        //                         isCBall: true,
+        //                     }));
+        //                 } else {
+        //                     setIsTeamCSuspend(data.teamC_suspend);
+        //                     setIsTeamBackUnlock(true);
+        //                     setTeamBall((prevState) => ({
+        //                         ...prevState,
+        //                         isABall: false,
+        //                         isBBall: false,
+        //                         isCBall: false,
+        //                     }));
+        //                 }
+        //                 setTeamSuspend((prevState) => ({
+        //                     ...prevState,
+        //                     teamC_suspend: true,
+        //                 }));
+        //             }
 
-                    if (packet.data[0] === "teamA_rate_user") {
-                        setIsTeamALock(data.teamA_suspend);
-                        setTeamARate(data.teamA_Back);
-                        setTeamALayValue(data.teamA_lay);
-                        setIsTeamASuspend(data.teamA_suspend);
-                        setTeamBall((prevState) => ({
-                            ...prevState,
-                            isABall: false,
-                            isBBall: false,
-                            isCBall: false,
-                        }));
-                        setTeamSuspend((prevState) => ({
-                            ...prevState,
-                            teamA_suspend: false,
-                        }));
-                    }
-                    if (packet.data[0] === "teamB_rate_user") {
-                        setIsTeamBLock(data?.teamB_suspend);
-                        setTeamBRate(data?.teamB_Back);
-                        setTeamBLayValue(data?.teamB_lay);
-                        setIsTeamBSuspend(data?.teamB_suspend);
-                        setTeamBall((prevState) => ({
-                            ...prevState,
-                            isABall: false,
-                            isBBall: false,
-                            isCBall: false,
-                        }));
-                        setTeamSuspend((prevState) => ({
-                            ...prevState,
-                            teamB_suspend: false,
-                        }))
-                    }
-                    if (packet.data[0] === "teamC_rate_user") {
-                        setIsTeamCLock(data.teamC_suspend);
-                        setTeamCRate(data.teamC_Back);
-                        setTeamCLayValue(data.teamC_lay);
-                        setIsTeamCSuspend(data.teamC_suspend);
-                        setTeamBall((prevState) => ({
-                            ...prevState,
-                            isABall: false,
-                            isBBall: false,
-                            isCBall: false,
-                        }));
-                        setTeamSuspend((prevState) => ({
-                            ...prevState,
-                            teamC_suspend: false,
-                        }))
-                    }
-                    if (packet.data[0] === "updateRate_user") {
-                        if (match?.teamC) {
-                            setIsTeamBackUnlock(false);
-                            setTeamARate(data.teamA_Back);
-                            setTeamBRate(data.teamB_Back);
-                            setTeamCRate(data.teamC_Back);
-                            setTeamSuspend((prevState) => ({
-                                ...prevState,
-                                teamA_suspend: false,
-                                teamB_suspend: false,
-                                teamC_suspend: false,
-                            }))
+        //             if (packet.data[0] === "teamA_rate_user") {
+        //                 setIsTeamALock(data.teamA_suspend);
+        //                 setTeamARate(data.teamA_Back);
+        //                 setTeamALayValue(data.teamA_lay);
+        //                 setIsTeamASuspend(data.teamA_suspend);
+        //                 setTeamBall((prevState) => ({
+        //                     ...prevState,
+        //                     isABall: false,
+        //                     isBBall: false,
+        //                     isCBall: false,
+        //                 }));
+        //                 setTeamSuspend((prevState) => ({
+        //                     ...prevState,
+        //                     teamA_suspend: false,
+        //                 }));
+        //             }
+        //             if (packet.data[0] === "teamB_rate_user") {
+        //                 setIsTeamBLock(data?.teamB_suspend);
+        //                 setTeamBRate(data?.teamB_Back);
+        //                 setTeamBLayValue(data?.teamB_lay);
+        //                 setIsTeamBSuspend(data?.teamB_suspend);
+        //                 setTeamBall((prevState) => ({
+        //                     ...prevState,
+        //                     isABall: false,
+        //                     isBBall: false,
+        //                     isCBall: false,
+        //                 }));
+        //                 setTeamSuspend((prevState) => ({
+        //                     ...prevState,
+        //                     teamB_suspend: false,
+        //                 }))
+        //             }
+        //             if (packet.data[0] === "teamC_rate_user") {
+        //                 setIsTeamCLock(data.teamC_suspend);
+        //                 setTeamCRate(data.teamC_Back);
+        //                 setTeamCLayValue(data.teamC_lay);
+        //                 setIsTeamCSuspend(data.teamC_suspend);
+        //                 setTeamBall((prevState) => ({
+        //                     ...prevState,
+        //                     isABall: false,
+        //                     isBBall: false,
+        //                     isCBall: false,
+        //                 }));
+        //                 setTeamSuspend((prevState) => ({
+        //                     ...prevState,
+        //                     teamC_suspend: false,
+        //                 }))
+        //             }
+        //             if (packet.data[0] === "updateRate_user") {
+        //                 if (match?.teamC) {
+        //                     setIsTeamBackUnlock(false);
+        //                     setTeamARate(data.teamA_Back);
+        //                     setTeamBRate(data.teamB_Back);
+        //                     setTeamCRate(data.teamC_Back);
+        //                     setTeamSuspend((prevState) => ({
+        //                         ...prevState,
+        //                         teamA_suspend: false,
+        //                         teamB_suspend: false,
+        //                         teamC_suspend: false,
+        //                     }))
 
-                        } else {
-                            setIsTeamBackUnlock(false);
-                            setTeamARate(data.teamA_Back);
-                            setTeamBRate(data.teamB_Back);
-                            setTeamSuspend((prevState) => ({
-                                ...prevState,
-                                teamA_suspend: false,
-                                teamB_suspend: false,
-                            }))
-                        }
-                        setTeamBall((prevState) => ({
-                            ...prevState,
-                            isABall: false,
-                            isBBall: false,
-                            isCBall: false,
-                        }));
-                    }
+        //                 } else {
+        //                     setIsTeamBackUnlock(false);
+        //                     setTeamARate(data.teamA_Back);
+        //                     setTeamBRate(data.teamB_Back);
+        //                     setTeamSuspend((prevState) => ({
+        //                         ...prevState,
+        //                         teamA_suspend: false,
+        //                         teamB_suspend: false,
+        //                     }))
+        //                 }
+        //                 setTeamBall((prevState) => ({
+        //                     ...prevState,
+        //                     isABall: false,
+        //                     isBBall: false,
+        //                     isCBall: false,
+        //                 }));
+        //             }
 
-                }
-            }
-        }, [socket]);
+        //         }
+        //     }
+        // }, [socket]);
 
         const handleSuspend = () => {
             if (match?.teamC) {

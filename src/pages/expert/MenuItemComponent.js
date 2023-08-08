@@ -143,6 +143,7 @@ const MenutItemsComponent = ({
               navigate("/expert/add_book_maker", {
                 state: { createSession: true, match: x },
               });
+              sessionStorage.setItem("matchId",x.id)
               handleClose();
             }}
             sx={{ marginTop: "5px", display: "flex", alignItems: "center" }}

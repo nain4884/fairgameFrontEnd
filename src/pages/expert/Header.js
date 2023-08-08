@@ -371,6 +371,42 @@ const CustomHeader = ({}) => {
               return prev;
             });
 
+            setLocalBookMakerRates((prev) => {
+              if (data.betPlaceData.match_id === match_id) {
+                const body = {
+                  id: data?.betPlaceData?.id,
+                  isActive: true,
+                  createAt: data?.betPlaceData?.createAt,
+                  updateAt: data?.betPlaceData?.createAt,
+                  createdBy: null,
+                  deletedAt: null,
+                  user_id: null,
+                  match_id: data?.betPlaceData?.match_id,
+                  bet_id: data?.betPlaceData?.bet_id,
+                  result: "pending",
+                  team_bet: data?.betPlaceData?.team_bet,
+                  odds: data?.betPlaceData?.odds,
+                  win_amount: null,
+                  loss_amount: null,
+                  bet_type: data?.betPlaceData?.bet_type,
+                  country: null,
+                  ip_address: null,
+                  rate: null,
+                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                  userName: data?.betPlaceData?.userName,
+                  myStack: data?.betPlaceData?.myStack,
+                  marketType: data?.betPlaceData?.marketType,
+                  amount:
+                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                };
+                const newBody = [body, ...prev];
+                dispatch(setBookMakerBetRate(newBody));
+                return newBody; // Push the new element at the beginning of the array
+              }
+
+              return prev;
+            });
+
             dispatch(setManualBookMarkerRates(manualBookmaker));
           } catch (e) {
             console.log("error", e?.message);
@@ -819,6 +855,9 @@ const CustomHeader = ({}) => {
                   const newBody = {
                     ...prev,
                     rate: data.teamA_Back,
+                    suspended: data.teamA_suspend,
+                    lock: data?.teamA_suspend,
+                    lay: data?.teamA_lay,
                   };
 
                   dispatch(setTeamA(newBody));
@@ -828,6 +867,9 @@ const CustomHeader = ({}) => {
                   const newBody = {
                     ...prev,
                     rate: data.teamB_Back,
+                    suspended: data.teamB_suspend,
+                    lock: data?.teamB_suspend,
+                    lay: data?.teamB_lay,
                   };
 
                   dispatch(setTeamB(newBody));
@@ -837,6 +879,9 @@ const CustomHeader = ({}) => {
                   const newBody = {
                     ...prev,
                     rate: data.teamC_Back,
+                    suspended: data.teamC_suspend,
+                    lock: data?.teamC_suspend,
+                    lay: data?.teamC_lay,
                   };
 
                   dispatch(setTeamC(newBody));
@@ -853,16 +898,13 @@ const CustomHeader = ({}) => {
                   dispatch(setTeamBall(newBody));
                   return newBody;
                 });
-
                 setLocalTeamA((prev) => {
                   const newBody = {
-                    ...prev,
                     rate: data.teamA_Back,
                     suspended: data.teamA_suspend,
-                    lock: data.teamA_suspend,
+                    lock: data?.teamA_suspend,
                     lay: data?.teamA_lay,
                   };
-
                   dispatch(setTeamA(newBody));
                   return newBody;
                 });
@@ -977,7 +1019,7 @@ const CustomHeader = ({}) => {
         }
       };
     }
-  }, [socket, betId]);
+  }, [socket, betId, match_id]);
 
   useEffect(() => {
     if (activeUsers !== 0) {

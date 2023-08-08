@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { setBookMakerBetRate } from "../newStore/reducers/matchDetails";
 import { BallStart, Lock } from "../assets";
 import ResultComponent from "./ResultComponent";
+import { setBookmakerTeamRates } from "../newStore/reducers/expertMatchDetails";
 
 const AddSession = ({ add, match }) => {
   const location = useLocation();
@@ -172,7 +173,7 @@ const AddSession = ({ add, match }) => {
         setLTeamCLayValue(response?.data?.data[0].teamC_lay);
         // alert(id)
         getAllBetsData(response?.data?.data[0].id, id);
-        setteamRates({
+        const newBody={
           teamA: response?.data?.data[0].teamA_rate
             ? response?.data?.data[0].teamA_rate
             : 0,
@@ -182,7 +183,9 @@ const AddSession = ({ add, match }) => {
           teamC: response?.data?.data[0].teamC_rate
             ? response?.data?.data[0].teamC_rate
             : 0,
-        });
+        }
+        setteamRates(newBody);
+        dispatch(setBookmakerTeamRates(newBody))
         setIsTeamASuspend(response?.data?.data[0].teamA_suspend ? true : false);
         setIsTeamBSuspend(response?.data?.data[0].teamB_suspend ? true : false);
         setIsTeamCSuspend(response?.data?.data[0].teamC_suspend ? true : false);
