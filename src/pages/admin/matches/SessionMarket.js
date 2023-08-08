@@ -40,6 +40,14 @@ const SessionMarket = ({
     });
   }, [popData]);
 
+
+  const totalSessionBet = currentMatch?.bettings?.reduce((total, betting) => {
+    if (betting?.sessionBet && betting?.betStatus===1 && betting?.profitLoss && betting?.profitLoss?.total_bet) {
+      return total + betting?.profitLoss?.total_bet;
+    }
+    return total;
+  }, 0);
+
   useEffect(() => {
     if (currentMatch?.bettings?.length > 0) {
       const sessionData =
@@ -147,7 +155,7 @@ const SessionMarket = ({
             }}
           >
             <Box sx={{ gap: "4px", display: "flex" }}>
-              <SmallBoxSeason total={sessionBets || 0} />
+              <SmallBoxSeason total={totalSessionBet || 0} />
               {/* static code */}
               <Box
                 sx={{

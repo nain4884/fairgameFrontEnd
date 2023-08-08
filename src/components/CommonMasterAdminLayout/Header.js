@@ -308,71 +308,48 @@ const CustomHeader = ({}) => {
                   return navigate(`/market_analysis`);
                 }
                 // Update the bettings array in the current match object
-                const updatedBettings = currentMatch?.bettings?.map((betting) => {
-                  if (betting.id === value.betId) {
-                    setLocalSessionOffline((prev) => {
-                      if (prev.includes(value.betId)) {
-                        const newres = prev.filter((id) => id !== value.betId);
-                        dispatch(setSessionOffline(newres));
-                      }
-                      const body = [...prev, value.betId];
-                      dispatch(setSessionOffline(body));
-                      return body;
-                    });
+                const updatedBettings = currentMatch?.bettings?.map(
+                  (betting) => {
+                    if (betting.id === value.betId)
+                      return { ...betting, betStatus: 0 };
                   }
-                  return betting;
-                });
-                var newUpdatedValue = updatedBettings;
+                );
                 const newBody = {
                   ...currentMatch,
-                  bettings: newUpdatedValue,
+                  bettings: updatedBettings,
                 };
                 dispatch(setSelectedMatch(newBody));
                 return newBody;
               });
+
               setMatchData((prevMatchData) => {
                 const updated = prevMatchData.map((item) => {
-                  if (value?.sessionBet == false) {
-                    if (item.id === value?.match_id) {
-                      return navigate("/wallet/market_analysis");
-                    }
+                  if (
+                    item?.id === value?.match_id &&
+                    value?.sessionBet === false
+                  ) {
+                    navigate("/wallet/market_analysis");
                   }
+
                   if (item?.id === value?.match_id) {
                     const updatedBettings = item?.bettings.map((betting) => {
                       if (betting.id === value?.betId) {
-                        if (item && item?.sessionOffline.includes(value?.betId)) {
-                          const newRes = item?.sessionOffline.filter(
-                            (id) => id !== value?.betId
-                          );
-                          item.sessionOffline = newRes;
-                        }
-                        item.sessionOffline.push(value?.betId);
+                        return { ...betting, betStatus: 0 };
                       }
                       return betting;
                     });
-                    if (!item?.sessionOffline) {
-                      item.sessionOffline = [];
-                    }
-                    if (
-                      item?.sessionOffline.includes(value?.id) &&
-                      value.betStatus === 1
-                    ) {
-                      const newRes = item.sessionOffline.filter(
-                        (id) => id !== value?.id
-                      );
-                      item.sessionOffline = newRes;
-                    }
-                    if (value.betStatus === 0) {
-                      item.sessionOffline.push(value?.id);
-                    }
-                    return {
+
+                    const updatedItem = {
                       ...item,
                       bettings: updatedBettings,
-                      sessionOffline: item.sessionOffline,
                     };
+
+                    return updatedItem;
                   }
+
                   return item;
                 });
+
                 dispatch(setMultiSelectedMatch(updated));
                 return updated;
               });
@@ -427,7 +404,7 @@ const CustomHeader = ({}) => {
               if (!value?.lock) {
                 if (value?.isTab) {
                   setManualBookmakerData((currentMatches) => {
-                    if (currentMatches[0]?.id != value.betId) {
+                    if (currentMatches[0]?.id != value?.betId) {
                       return currentMatches;
                     }
                     const updatedMatch = {
@@ -855,12 +832,10 @@ const CustomHeader = ({}) => {
                 } else {
                   setLocalSessionOffline((prev) => {
                     if (prev.includes(data.id)) {
-                      const newres = prev.filter(
-                        (id) => id !== data.id
-                      );
+                      const newres = prev.filter((id) => id !== data.id);
 
                       dispatch(setSessionOffline(newres));
-                      return newres
+                      return newres;
                     }
                     const body = [...prev, data.id];
 
@@ -910,24 +885,24 @@ const CustomHeader = ({}) => {
                       newUpdatedValue = [...newUpdatedValue, data];
                     }
                     // else {
-                      // if (!item.sessionOffline) {
-                      //   item.sessionOffline = [];
-                      // }
-                      // if (
-                      //   item?.sessionOffline &&
-                      //   item?.sessionOffline.includes(data.id) &&
-                      //   data.betStatus === 1
-                      // ) {
-                      //   const newres = item?.sessionOffline.filter(
-                      //     (id) => id !== data.id
-                      //   );
-                      //   item.sessionOffline = newres;
-                      // }
-                      // if (data?.betStatus === 0) {
-                      //   item.sessionOffline.push(data.id);
-                      // }
+                    // if (!item.sessionOffline) {
+                    //   item.sessionOffline = [];
+                    // }
+                    // if (
+                    //   item?.sessionOffline &&
+                    //   item?.sessionOffline.includes(data.id) &&
+                    //   data.betStatus === 1
+                    // ) {
+                    //   const newres = item?.sessionOffline.filter(
+                    //     (id) => id !== data.id
+                    //   );
+                    //   item.sessionOffline = newres;
+                    // }
+                    // if (data?.betStatus === 0) {
+                    //   item.sessionOffline.push(data.id);
+                    // }
 
-                      // newUpdatedValue = newUpdatedValue?.filter(v => v?.id !== value?.id && v?.betStatus === 1);
+                    // newUpdatedValue = newUpdatedValue?.filter(v => v?.id !== value?.id && v?.betStatus === 1);
                     // }
 
                     // Return the updated current match object
@@ -1011,29 +986,51 @@ const CustomHeader = ({}) => {
                 if (data?.betPlaceData?.match_id === currentMatch?.id) {
                   setLocalAllBetRates((prev) => {
                     const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                    const newBody = [
-                      {
-                        ...data.betPlaceData,
-                        deleted_reason:
-                          data?.betPlaceData?.deleted_reason || null,
-                      },
-                      ...updatedPrev,
-                    ];
-                    dispatch(setAllBetRate(newBody));
-                    return newBody;
+
+                    // Check if the new data's id already exists in updatedPrev
+                    const newDataId = data?.betPlaceData?.id;
+                    const idExists =
+                      newDataId &&
+                      updatedPrev.some((item) => item.id === newDataId);
+
+                    if (!idExists) {
+                      const newBody = [
+                        {
+                          ...data.betPlaceData,
+                          deleted_reason:
+                            data?.betPlaceData?.deleted_reason || null,
+                        },
+                        ...updatedPrev,
+                      ];
+
+                      dispatch(setAllBetRate(newBody));
+                      return newBody;
+                    }
+
+                    // If id already exists, return the original array
+                    return updatedPrev;
                   });
 
                   setLocalSessionBets((prev) => {
-                    // const updatedPrev = Array.isArray(prev) ? prev : []; // Ensure prev is an array
-                    const newBody = [
-                      {
-                        ...data.betPlaceData,
-                        deleted_reason:
-                          data?.betPlaceData?.deleted_reason || null,
-                      },
-                      ...prev,
-                    ];
-                    dispatch(setAllSessionBets(newBody));
+                    // Check if the new data's id already exists in prev
+                    const newDataId = data?.betPlaceData?.id;
+                    const idExists =
+                      newDataId && prev.some((item) => item.id === newDataId);
+
+                    if (!idExists) {
+                      const newBody = [
+                        {
+                          ...data.betPlaceData,
+                          deleted_reason:
+                            data?.betPlaceData?.deleted_reason || null,
+                        },
+                        ...prev,
+                      ];
+
+                      dispatch(setAllSessionBets(newBody));
+                    }
+
+                    // Always return the original array
                     return prev;
                   });
                 }

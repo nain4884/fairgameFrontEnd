@@ -116,71 +116,71 @@ export default function Login(props) {
     }
   }, [eConfirmAuth]);
 
-  useEffect(() => {
-    let checkLocalStorage;
-    let checkSessionStorage;
-    const mobileDevice =
-      navigator.userAgent.match(/Android/i) ||
-      navigator.userAgent.match(/webOS/i) ||
-      navigator.userAgent.match(/iPhone/i) ||
-      navigator.userAgent.match(/iPad/i) ||
-      navigator.userAgent.match(/iPod/i) ||
-      navigator.userAgent.match(/BlackBerry/i) ||
-      navigator.userAgent.match(/Windows Phone/i);
+  // useEffect(() => {
+  //   let checkLocalStorage;
+  //   let checkSessionStorage;
+  //   const mobileDevice =
+  //     navigator.userAgent.match(/Android/i) ||
+  //     navigator.userAgent.match(/webOS/i) ||
+  //     navigator.userAgent.match(/iPhone/i) ||
+  //     navigator.userAgent.match(/iPad/i) ||
+  //     navigator.userAgent.match(/iPod/i) ||
+  //     navigator.userAgent.match(/BlackBerry/i) ||
+  //     navigator.userAgent.match(/Windows Phone/i);
 
-    if (mobileDevice) {
-      if (location.pathname.split("/")[1] === "admin") {
-        checkLocalStorage = localStorage.getItem("role1");
-        checkSessionStorage = sessionStorage.getItem("JWTadmin");
-        if (checkSessionStorage === null && checkLocalStorage !== null) {
-          localStorage.removeItem("role1", "role1");
-        }
-      }
-      if (location.pathname.split("/")[1] === "wallet") {
-        checkLocalStorage = localStorage.getItem("role2");
-        checkSessionStorage = sessionStorage.getItem("JWTwallet");
-        if (checkSessionStorage === null && checkLocalStorage !== null) {
-          localStorage.removeItem("role2", "role2");
-        }
-      }
+  //   if (mobileDevice) {
+  //     if (location.pathname.split("/")[1] === "admin") {
+  //       checkLocalStorage = localStorage.getItem("role1");
+  //       checkSessionStorage = sessionStorage.getItem("JWTadmin");
+  //       if (checkSessionStorage === null && checkLocalStorage !== null) {
+  //         localStorage.removeItem("role1", "role1");
+  //       }
+  //     }
+  //     if (location.pathname.split("/")[1] === "wallet") {
+  //       checkLocalStorage = localStorage.getItem("role2");
+  //       checkSessionStorage = sessionStorage.getItem("JWTwallet");
+  //       if (checkSessionStorage === null && checkLocalStorage !== null) {
+  //         localStorage.removeItem("role2", "role2");
+  //       }
+  //     }
 
-      if (location.pathname.split("/")[1] === "expert") {
-        let checkLoStorage = localStorage.getItem("role3");
-        let checkSeStorage = sessionStorage.getItem("JWTexpert");
-        if (checkSeStorage === null && checkLoStorage !== null) {
-          localStorage.removeItem("role3", "role3");
-        }
-      }
-    }
-    if (location.pathname.split("/")[1] === "admin") {
-      checkLocalStorage = localStorage.getItem("role1");
-      checkSessionStorage = sessionStorage.getItem("JWTadmin");
-      if (checkSessionStorage && checkLocalStorage === null) {
-        localStorage.setItem("role1", "role1");
-      }
-    }
-    if (location.pathname.split("/")[1] === "wallet") {
-      checkLocalStorage = localStorage.getItem("role2");
-      checkSessionStorage = sessionStorage.getItem("JWTwallet");
-      if (checkSessionStorage && checkLocalStorage === null) {
-        localStorage.setItem("role2", "role2");
-      }
-    }
+  //     if (location.pathname.split("/")[1] === "expert") {
+  //       let checkLoStorage = localStorage.getItem("role3");
+  //       let checkSeStorage = sessionStorage.getItem("JWTexpert");
+  //       if (checkSeStorage === null && checkLoStorage !== null) {
+  //         localStorage.removeItem("role3", "role3");
+  //       }
+  //     }
+  //   }
+  //   if (location.pathname.split("/")[1] === "admin") {
+  //     checkLocalStorage = localStorage.getItem("role1");
+  //     checkSessionStorage = sessionStorage.getItem("JWTadmin");
+  //     if (checkSessionStorage && checkLocalStorage === null) {
+  //       localStorage.setItem("role1", "role1");
+  //     }
+  //   }
+  //   if (location.pathname.split("/")[1] === "wallet") {
+  //     checkLocalStorage = localStorage.getItem("role2");
+  //     checkSessionStorage = sessionStorage.getItem("JWTwallet");
+  //     if (checkSessionStorage && checkLocalStorage === null) {
+  //       localStorage.setItem("role2", "role2");
+  //     }
+  //   }
 
-    if (location.pathname.split("/")[1] === "expert") {
-      let checkLoStorage = localStorage.getItem("role3");
-      let checkSeStorage = sessionStorage.getItem("JWTexpert");
-      if (checkSeStorage && checkLoStorage === null) {
-        localStorage.setItem("role3", "role3");
-      }
-      if (checkSeStorage && checkLoStorage) {
-        navigate(`/${location.pathname.split("/")[1]}/match`);
-      }
-    }
-    if (checkLocalStorage && checkSessionStorage) {
-      navigate(`/${location.pathname.split("/")[1]}/list_of_clients`);
-    }
-  }, [location.pathname.split("/")[1], localStorage]);
+  //   if (location.pathname.split("/")[1] === "expert") {
+  //     let checkLoStorage = localStorage.getItem("role3");
+  //     let checkSeStorage = sessionStorage.getItem("JWTexpert");
+  //     if (checkSeStorage && checkLoStorage === null) {
+  //       localStorage.setItem("role3", "role3");
+  //     }
+  //     if (checkSeStorage && checkLoStorage) {
+  //       navigate(`/${location.pathname.split("/")[1]}/match`);
+  //     }
+  //   }
+  //   if (checkLocalStorage && checkSessionStorage) {
+  //     navigate(`/${location.pathname.split("/")[1]}/list_of_clients`);
+  //   }
+  // }, [location.pathname.split("/")[1], localStorage]);
 
   const getLocalToken = (val) => {
     if (

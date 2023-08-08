@@ -42,6 +42,8 @@ const HeaderDropdown = ({ anchorEl, open, handleClose }) => {
       dispatch(logoutAuth());
       dispatch(logoutExpertDetails());
       setGlobalStore((prev) => ({ ...prev, expertJWT: "" }));
+      localStorage.removeItem("JWTexpert")
+      localStorage.removeItem("role3")
       sessionStorage.removeItem("JWTexpert")
       navigate("/expert");
       handleClose();
