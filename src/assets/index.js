@@ -1,6 +1,6 @@
 export { default as loginBackground } from './login/new_back.webp'
-export { default as loginBackground1 } from './login/back1.png'
-export { default as loginBackground2 } from './login/back2.png'
+// export { default as loginBackground1 } from './login/back1.png'
+// export { default as loginBackground2 } from './login/back2.png'
 export { default as MobileBackground } from './login/mobile_back.webp'
 export { default as Re } from './login/re.png'
 
