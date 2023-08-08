@@ -38,7 +38,6 @@ export const TransPasswordComponent = () => {
         minWidth: { laptop: "350px", tablet: "350px", mobile: "0px" },
         marginTop: "10px",
         marginX: { mobile: "2vw", laptop: "5vw" },
-
       }}
     >
       <TransPassComp />
@@ -60,41 +59,45 @@ export const TransPassComp = ({ onCancel }) => {
   const [responseError, setResponseError] = useState();
 
   let { axios, roleName } = setRole();
-const [loading,setLoading]=useState(false)
-  const generateTrandPassword = useCallback(async (e) => {
-    e.preventDefault()
-    setLoading(true)
-    if (
-      !error[2].val &&
-      !error[3].val &&
-      passwordDetail[2].val !== "" &&
-      passwordDetail[3].val !== ""
-    ) {
-      try {
-        const payload = {
-          transPassword: passwordDetail[2].val,
-          confirmtransPassword: passwordDetail[3].val,
-        };
-        const { data } = await axios.post(
-          `/fair-game-wallet/savetransPassword`,
-          payload
-        );
+  const [loading, setLoading] = useState(false);
+  const generateTrandPassword = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-        if (data.message === "Transaction password update successfully.") {
-          toast.success("Transaction saved successfully");
+      if (
+        error[2].val === "" &&
+        error[3].val === "" &&
+        passwordDetail[2].val !== "" &&
+        passwordDetail[3].val !== ""
+      ) {
+        setLoading(true);
+        try {
+          const payload = {
+            transPassword: passwordDetail[2].val,
+            confirmtransPassword: passwordDetail[3].val,
+          };
+          const { data } = await axios.post(
+            `/fair-game-wallet/savetransPassword`,
+            payload
+          );
 
-          dispatch(setUpdatedTransPasswords(true));
-          setLoading(false)
-          onCancel();
+          if (data.message === "Transaction password update successfully.") {
+            toast.success("Transaction saved successfully");
+
+            dispatch(setUpdatedTransPasswords(true));
+            setLoading(false);
+            onCancel();
+          }
+          setLoading(false);
+        } catch (e) {
+          console.log(e);
+          setResponseError(e.response.data.message);
+          setLoading(false);
         }
-        setLoading(false)
-      } catch (e) {
-        console.log(e);
-        setResponseError(e.response.data.message);
-        setLoading(false)
       }
-    }
-  }, [axios, error, passwordDetail]);
+    },
+    [axios, error, passwordDetail]
+  );
 
   return (
     <form onSubmit={generateTrandPassword}>
@@ -119,7 +122,7 @@ const [loading,setLoading]=useState(false)
         }}
       >
         <Input
-        required={true}
+          required={true}
           placeholder={"Enter Password"}
           inputProps={{ type: "password" }}
           title={"Transaction Password"}
@@ -169,7 +172,7 @@ const [loading,setLoading]=useState(false)
           <p style={{ color: "#fa1e1e" }}>Password Doesn't match</p>
         )}
         <Button
-        type="submit"
+          type="submit"
           sx={{
             height: "50px",
             display: "flex",
@@ -182,29 +185,27 @@ const [loading,setLoading]=useState(false)
             width: "80%",
             background: "#0B4F26",
             borderRadius: "5px",
-            '&:hover': {
-            background: "#0B4F26",
-         },
+            "&:hover": {
+              background: "#0B4F26",
+            },
           }}
         >
           <Typography
             sx={{ fontSize: { laptop: "18px", mobile: "14px" } }}
             color={"white"}
-           
           >
-          {loading ? (
-            <CircularProgress
-              sx={{
-                color: "#FFF",
-              }}
-              size={20}
-              thickness={4}
-              value={60}
-            />
-          ) : (
-            "Generate Password"
-          )}
-           
+            {loading ? (
+              <CircularProgress
+                sx={{
+                  color: "#FFF",
+                }}
+                size={20}
+                thickness={4}
+                value={60}
+              />
+            ) : (
+              "Generate Password"
+            )}
           </Typography>
         </Button>
         <Box

@@ -117,6 +117,8 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         dispatch(logoutCurrentUser());
         dispatch(logoutAuth());
         dispatch(logoutExpertDetails());
+        localStorage.removeItem("JWTwallet");
+        localStorage.removeItem("role2");
         sessionStorage.removeItem("JWTwallet");
         setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
         handleClose();
@@ -128,6 +130,8 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
         if (nav === "admin") {
           navigate("/admin");
           dispatch(logout({ roleType: "role1" }));
+          localStorage.removeItem("JWTadmin");
+          localStorage.removeItem("role1");
           sessionStorage.removeItem("JWTadmin");
           setGlobalStore((prev) => ({ ...prev, adminWT: "" }));
         }

@@ -5,7 +5,13 @@ import { CHECK } from "../admin/assets";
 import { ARROWUP } from "../assets";
 import moment from "moment";
 import { useTheme } from "@emotion/react";
-const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData }) => {
+const FullAllBets = ({
+  tag,
+  mode,
+  IObets,
+  setSelectedBetData,
+  selectedBetData,
+}) => {
   const [selectedData, setSelectedData] = useState([]);
 
   const [visible, setVisible] = useState(true);
@@ -13,20 +19,33 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
   const [newData, setNewBets] = useState([]);
   useEffect(() => {
     if (IObets) {
-      const body = IObets?.map((v) => {
+      const uniqueData = {};
+      IObets?.forEach((item) => {
+        uniqueData[item.id] = item;
+      });
+
+      const result = Object.values(uniqueData);
+      const body = result?.map((v) => {
         const values = {
           values: [
             {
               name: v?.user?.userName || v?.userName,
               color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
-              background: ["no", "yes"].includes(v?.bet_type) ? "#319E5B" : "#F1C550",
+              background: ["no", "yes"].includes(v?.bet_type)
+                ? "#319E5B"
+                : "#F1C550",
               deleted_reason: v?.deleted_reason,
-              id: v?.id
+              id: v?.id,
             },
             {
-              name: v?.marketType == "MANUAL BOOKMAKER" ? "Quick Bookmaker" : v?.marketType,
+              name:
+                v?.marketType == "MANUAL BOOKMAKER"
+                  ? "Quick Bookmaker"
+                  : v?.marketType,
               color: ["no", "yes"].includes(v?.bet_type) ? "#FFF" : "black",
-              background: ["no", "yes"].includes(v?.bet_type) ? "#319E5B" : "#F1C550",
+              background: ["no", "yes"].includes(v?.bet_type)
+                ? "#319E5B"
+                : "#F1C550",
               deleted_reason: v?.deleted_reason,
             },
             {
@@ -40,10 +59,11 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
             {
               name: v?.odds,
               color: "black",
-              rate: v.rate ?
-                v?.bet_type === "no" ? v?.rate?.split("-")[0] :
-                  v?.rate?.split("-")[1] : null
-              ,
+              rate: v.rate
+                ? v?.bet_type === "no"
+                  ? v?.rate?.split("-")[0]
+                  : v?.rate?.split("-")[1]
+                : null,
               background: ["yes", "back"].includes(v?.bet_type)
                 ? "#B3E0FF"
                 : "rgb(255, 146, 146)",
@@ -155,7 +175,7 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
             display: "flex",
             alignItems: "center",
             justifyContent: { laptop: "flex-end", mobile: "flex-end" },
-            padding: { laptop: '0', mobile: '0' },
+            padding: { laptop: "0", mobile: "0" },
           }}
         >
           <Box
@@ -172,13 +192,22 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
             }}
           >
             <Typography
-              sx={{ fontSize: { laptop: "8px", mobile: "8px" }, fontWeight: "700", color: "#FF1111" }}
+              sx={{
+                fontSize: { laptop: "8px", mobile: "8px" },
+                fontWeight: "700",
+                color: "#FF1111",
+              }}
             >
               Total Bet
             </Typography>
 
             <Typography
-              sx={{ fontSize: "14px", fontWeight: "700", color: "#0B4F26", lineHeight: 1 }}
+              sx={{
+                fontSize: "14px",
+                fontWeight: "700",
+                color: "#0B4F26",
+                lineHeight: 1,
+              }}
             >
               {IObets?.length || 0}
             </Typography>
@@ -194,7 +223,7 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
               height: "15px",
               marginRight: "5px",
               marginLeft: "5px",
-              cursor: 'pointer'
+              cursor: "pointer",
             }}
           />
         </Box>
@@ -202,7 +231,10 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
       {visible && (
         <>
           <HeaderRow mode={mode} tag={tag} />
-          <div className="myScroll" style={{ maxHeight: "80vh", overflowY: "auto" }}>
+          <div
+            className="myScroll"
+            style={{ maxHeight: "80vh", overflowY: "auto" }}
+          >
             {newData?.map((i, k) => {
               const num = newData.length - k;
               const formattedNum = num < 10 ? "0" + num : num.toString();
@@ -213,15 +245,20 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
                   onClick={(e) => {
                     let x = [...selectedData];
                     if (x.includes(k)) {
-                      const updatedSelectedBetData = selectedBetData.filter((id) => id !== i?.values[0].id);
+                      const updatedSelectedBetData = selectedBetData.filter(
+                        (id) => id !== i?.values[0].id
+                      );
                       setSelectedBetData(updatedSelectedBetData);
                       x.splice(x.indexOf(k), 1);
                       setSelectedData([...x]);
                       e.stopPropagation();
                     } else {
                       if (!i?.values[0].deleted_reason) {
-                        setSelectedBetData(i?.values[0].id)
-                        setSelectedBetData([...selectedBetData, i?.values[0].id]);
+                        setSelectedBetData(i?.values[0].id);
+                        setSelectedBetData([
+                          ...selectedBetData,
+                          i?.values[0].id,
+                        ]);
                         x.push(k);
                         setSelectedData([...x]);
                       }
@@ -242,7 +279,9 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
                     {!mode && (
                       <Typography
                         sx={{
-                          fontSize: !tag ? { mobile: "8px", laptop: "11px" } : "13px",
+                          fontSize: !tag
+                            ? { mobile: "8px", laptop: "11px" }
+                            : "13px",
                           fontWeight: tag ? "bold" : "600",
                           color: "white",
                         }}
@@ -300,7 +339,8 @@ const FullAllBets = ({ tag, mode, IObets, setSelectedBetData, selectedBetData })
                               textTransform: "uppercase",
                             }}
                           >
-                            Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
+                            Bet{" "}
+                            <span style={{ color: "#e41b23" }}>deleted</span>{" "}
                             due to {i?.values[0]?.deleted_reason}
                           </Typography>
                         </Box>
@@ -395,7 +435,6 @@ const HeaderRow = ({ tag, mode }) => {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
-
         }}
       >
         <Typography
@@ -403,7 +442,6 @@ const HeaderRow = ({ tag, mode }) => {
             fontSize: matchesMobile ? "8px" : ".7vw",
             fontWeight: "500",
             color: "white",
-
           }}
         >
           Favourite
@@ -418,7 +456,6 @@ const HeaderRow = ({ tag, mode }) => {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
-
         }}
       >
         <Typography
@@ -536,11 +573,10 @@ const SmallBox = ({ item, k }) => {
         alignItems: "center",
         display: "flex",
         flexDirection: "column",
-        textTransform: "capitalize"
+        textTransform: "capitalize",
       }}
     >
       <Typography
-
         sx={{
           fontSize: matchesMobile ? "10px" : ".7vw",
           fontWeight: "600",
@@ -571,7 +607,8 @@ const LargeBox = ({ item, k }) => {
         height: "35px",
         justifyContent: "center",
         alignItems: k == 1 || k == 0 ? "center" : "center",
-        paddingLeft: k == 1 || k == 0 ? { mobile: "0", tablet: "5px", laptop: "5px" } : 0,
+        paddingLeft:
+          k == 1 || k == 0 ? { mobile: "0", tablet: "5px", laptop: "5px" } : 0,
         display: "flex",
         flexDirection: "column",
       }}
@@ -581,14 +618,13 @@ const LargeBox = ({ item, k }) => {
           fontSize: matchesMobile ? "8px" : ".6vw",
           fontWeight: "600",
           color: item?.color,
-          textTransform: 'capitalize',
+          textTransform: "capitalize",
           wordWrap: "break-word",
           textAlign: "center",
           lineHeight: 1,
           whiteSpace: { mobile: "nowrap", laptop: "inherit" },
           textOverflow: "ellipsis",
           maxWidth: { mobile: "43px", laptop: "initial" },
-
         }}
       >
         {item?.name}

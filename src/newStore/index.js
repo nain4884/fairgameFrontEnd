@@ -70,6 +70,8 @@ export const setRole = (token) => {
       // Handle unauthorized errors (status code 401)
       if (error.response && error.response.status === 401) {
         // Redirect the user to the login screen (replace '/login' with your actual login screen route)
+        localStorage.clear()
+        sessionStorage.clear()
         window.location.replace("/");
       }
       return Promise.reject(error);
@@ -84,6 +86,8 @@ export const setRole = (token) => {
     (error) => {
       // Handle unauthorized errors (status code 401)
       if (error.response && error.response.status === 401) {
+        localStorage.clear()
+        sessionStorage.clear()
         // Redirect the user to the login screen (replace '/login' with your actual login screen route)
         window.location.replace("/expert");
       }
@@ -99,6 +103,8 @@ export const setRole = (token) => {
     (error) => {
       // Handle unauthorized errors (status code 401)
       if (error.response && error.response.status === 401) {
+        localStorage.clear()
+        sessionStorage.clear()
         // Redirect the user to the login screen (replace '/login' with your actual login screen route)
         window.location.replace("/admin");
       }
@@ -114,6 +120,8 @@ export const setRole = (token) => {
     (error) => {
       // Handle unauthorized errors (status code 401)
       if (error.response && error.response.status === 401) {
+        localStorage.clear()
+        sessionStorage.clear()
         // Redirect the user to the login screen (replace '/login' with your actual login screen route)
         window.location.replace("/wallet");
       }
