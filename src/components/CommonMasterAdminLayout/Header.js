@@ -304,8 +304,7 @@ const CustomHeader = ({}) => {
                   currentMatch?.id === value?.match_id &&
                   value?.sessionBet == false
                 ) {
-                  dispatch(setSelectedMatch(null));
-                  return navigate(`/market_analysis`);
+                  return navigate(`/${nav}/market_analysis`);
                 }
                 // Update the bettings array in the current match object
                 const updatedBettings = currentMatch?.bettings?.map(
@@ -330,7 +329,7 @@ const CustomHeader = ({}) => {
                     item?.id === value?.match_id &&
                     value?.sessionBet === false
                   ) {
-                    navigate("/wallet/market_analysis");
+                    navigate(`${nav}/market_analysis`);
                   }
 
                   if (item?.id === value?.match_id) {

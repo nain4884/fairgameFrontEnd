@@ -29,25 +29,25 @@ const AdminInPlay = () => {
     getAllMatch();
   }, [currentPage]);
 
-  useEffect(() => {
-    if (socket && socket.connected) {
-      socket.on("newMessage", (value) => {
-        console.log(value);
-      });
+  // useEffect(() => {
+  //   if (socket && socket.connected) {
+  //     socket.on("newMessage", (value) => {
+  //       console.log(value);
+  //     });
 
-      socket.onevent = async (packet) => {
+  //     socket.onevent = async (packet) => {
 
-        if (packet.data[0] === "newMatchAdded") {
-          getAllMatch();
-        }
-        if (packet.data[0] === "resultDeclareForBet") {
-          getAllMatch();
-        }
+  //       if (packet.data[0] === "newMatchAdded") {
+  //         getAllMatch();
+  //       }
+  //       if (packet.data[0] === "resultDeclareForBet") {
+  //         getAllMatch();
+  //       }
 
 
-      };
-    }
-  }, [socket]);
+  //     };
+  //   }
+  // }, [socket]);
 
   async function getAllMatch() {
     try {
