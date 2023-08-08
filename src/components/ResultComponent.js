@@ -15,7 +15,7 @@ const ResultComponent = ({
   draw,
   betId,
   matchId,
-  stopAt,
+  betStatus,
 }) => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(teamA);
@@ -160,7 +160,7 @@ const ResultComponent = ({
             background: "#000",
           }}
         >
-          {stopAt !== null ? (
+          {betStatus === 2 ? (
             <MatchOddsResultCustomButton
               color={"#FF4D4D"}
               loading={loading}

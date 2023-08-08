@@ -65,7 +65,7 @@ const AddSession = ({ add, match }) => {
   });
   const [betId, setBetId] = useState("");
   const [isTab, setIsTab] = useState("");
-  const [stopAt, setStopAt] = useState(null);
+  const [betStatus, setBetStatus] = useState(null);
   const innerRefTeamA = useRef();
   const innerRefTeamB = useRef();
   const innerRefTeamC = useRef();
@@ -130,7 +130,7 @@ const AddSession = ({ add, match }) => {
         setIsTeamASuspend(response?.data?.data[0].teamA_suspend ? true : false);
         setIsTeamBSuspend(response?.data?.data[0].teamB_suspend ? true : false);
         setIsTeamCSuspend(response?.data?.data[0].teamC_suspend ? true : false);
-        setStopAt(response?.data?.data[0].stopAt);
+        betStatus(response?.data?.data[0].betStatus);
       }
     } catch (e) {
       console.log(e.response.data.message);
@@ -2116,7 +2116,7 @@ const AddSession = ({ add, match }) => {
         }}
       >
         <Box sx={{ width: "2%" }}></Box>
-        {stopAt !== null ? (
+        {betStatus === 2 ? (
           <Box
             onClick={(e) => {
               setVisible1(true);
@@ -2159,7 +2159,7 @@ const AddSession = ({ add, match }) => {
                   teamB={match?.teamB}
                   tie={"Tie"}
                   draw={match?.teamC ? match?.teamC : ""}
-                  stopAt={stopAt}
+                  betStatus={betStatus}
                 />
               )}
             </Box>
@@ -2209,7 +2209,7 @@ const AddSession = ({ add, match }) => {
                   teamB={match?.teamB}
                   tie={"Tie"}
                   draw={match?.teamC ? match?.teamC : ""}
-                  stopAt={stopAt}
+                  betStatus={betStatus}
                 />
               )}
             </Box>

@@ -1,5 +1,5 @@
 import { Box, useMediaQuery, useTheme } from "@mui/material";
-import { loginBackground, loginBackground1, loginBackground2 ,MobileBackground} from "../assets";
+import { loginBackground ,MobileBackground} from "../assets";
 import Carousel from 'react-bootstrap/Carousel';
 
 function BackgroundCarousel() {
