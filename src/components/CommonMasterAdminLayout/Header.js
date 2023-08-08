@@ -284,6 +284,13 @@ const CustomHeader = ({}) => {
           }
           if (packet.data[0] === "resultDeclareForBet") {
             const value = packet.data[1];
+
+            setLocalAllBetRates((prev) => {
+              const filtered = prev.filter((v) => v.bet_id !== value?.betId);
+              dispatch(setAllBetRate(filtered));
+              return filtered;
+            });
+
             setLocalAllMatches((prev) => {
               const filteredMatches = prev.filter(
                 (v) => !(v.id === value?.match_id && value.sessionBet === false)
@@ -310,7 +317,7 @@ const CustomHeader = ({}) => {
                 // Update the bettings array in the current match object
                 const updatedBettings = currentMatch?.bettings?.map(
                   (betting) => {
-                    if (betting.id === value.betId)
+                    if (betting?.id === value?.betId)
                       return { ...betting, betStatus: 0 };
                   }
                 );
@@ -802,7 +809,7 @@ const CustomHeader = ({}) => {
                 // Update the bettings array in the current match object
                 const updatedBettings = currentMatch?.bettings?.map(
                   (betting) => {
-                    if (betting.id === data.id && data.sessionBet) {
+                    if (betting?.id === data?.id && data?.sessionBet) {
                       // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                       return {
                         ...betting,
