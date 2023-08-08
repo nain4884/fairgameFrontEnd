@@ -17,6 +17,7 @@ import { useEffect } from "react";
 import { setRole } from "../../newStore";
 import {
   setAllBetRate,
+  setManualBookmaker,
   setSelectedMatch,
 } from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
@@ -866,7 +867,9 @@ const DeleteBet = ({}) => {
         (element) => element.sessionBet === false
       );
 
+
       setManualBookmakerData(matchOddsDataTemp);
+      dispatch(setManualBookmaker(matchOddsDataTemp))
       const newBody ={
         ...response.data,
       }
