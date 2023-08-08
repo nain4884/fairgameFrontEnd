@@ -13,7 +13,39 @@ const initialState = {
   aConfirmAuth: false,
   allBetRates: [],
   currentOdd: [],
-  sessionProfitLoss:null
+  sessionProfitLoss: null,
+  teamA: {
+    rate: null,
+    lock: null,
+    suspended: null,
+    lay: null,
+    back: null,
+  },
+  teamB: {
+    rate: null,
+    lock: null,
+    suspended: null,
+    lay: null,
+    back: null,
+  },
+  teamC: {
+    rate: null,
+    lock: null,
+    suspended: null,
+    lay: null,
+    back: null,
+  },
+  teamBall: {
+    isABall: false,
+    isBBall: false,
+    isCBall: false,
+  },
+  teamSuspended: {
+    teamA_suspend: null,
+    teamB_suspend: null,
+    teamC_suspend: null,
+  },
+  teamBackUnlock: false,
 };
 export const logoutExpertDetails = createAction("auth/logoutReset");
 const expertMatchDetails = createSlice({
@@ -63,6 +95,24 @@ const expertMatchDetails = createSlice({
     setSessionProfitLoss: (state, action) => {
       state.sessionProfitLoss = action.payload;
     },
+    setTeamA: (state, action) => {
+      state.teamA = action.payload;
+    },
+    setTeamB: (state, action) => {
+      state.teamB = action.payload;
+    },
+    setTeamC: (state, action) => {
+      state.teamC = action.payload;
+    },
+    setTeamBall: (state, action) => {
+      state.teamBall = action.payload;
+    },
+    setTeamBackUnlock: (state, action) => {
+      state.teamBackUnlock = action.payload;
+    },
+    setTeamSuspended: (state, action) => {
+      state.teamSuspended = action.payload;
+    },
     extraReducers: (builder) => {
       // This will handle the reset on logout
       builder.addCase(logoutExpertDetails, () => initialState);
@@ -85,6 +135,13 @@ export const {
   setWConfirmAuth,
   setAConfirmAuth,
   setCurrentOdd,
+  setTeamBackUnlock,
+  setTeamBall,
+  setTeamA,
+  setTeamB,
+  setTeamC,
+    setTeamSuspended
+
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;
