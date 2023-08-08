@@ -311,14 +311,15 @@ const CustomHeader = ({}) => {
                   currentMatch?.id === value?.match_id &&
                   value?.sessionBet == false
                 ) {
-                  dispatch(setSelectedMatch(null));
-                  return navigate(`/market_analysis`);
+                  return navigate(`/${nav}/market_analysis`);
                 }
                 // Update the bettings array in the current match object
                 const updatedBettings = currentMatch?.bettings?.map(
                   (betting) => {
-                    if (betting?.id === value?.betId)
+                    if (betting?.id === value?.betId) {
                       return { ...betting, betStatus: 0 };
+                    }
+                    return betting;
                   }
                 );
                 const newBody = {
@@ -335,7 +336,7 @@ const CustomHeader = ({}) => {
                     item?.id === value?.match_id &&
                     value?.sessionBet === false
                   ) {
-                    navigate("/wallet/market_analysis");
+                    navigate(`${nav}/market_analysis`);
                   }
 
                   if (item?.id === value?.match_id) {
@@ -1302,9 +1303,11 @@ const CustomHeader = ({}) => {
               setLocalAllBetRates((IOSinglebets) => {
                 const updatedBettings = IOSinglebets?.map((betting) => {
                   if (value?.betPlaceIds.includes(betting.id)) {
+                    // let profitLoss = value?.profitLoss;
                     return {
                       ...betting,
                       deleted_reason: value?.deleted_reason,
+                      // profitLoss: profitLoss,
                     };
                   }
                   return betting;
@@ -1312,6 +1315,7 @@ const CustomHeader = ({}) => {
                 dispatch(setAllBetRate(updatedBettings));
                 return updatedBettings;
               });
+
               setCurrentMatch((prev) => {
                 const updatedBettings = prev?.bettings?.map((betting) => {
                   if (betting?.id === value?.betId) {
@@ -1422,6 +1426,7 @@ const CustomHeader = ({}) => {
                 const newBody = {
                   ...currentMatch,
                   bettings: updatedBettings,
+                  sessionExposure: value.sessionExposure,
                 };
 
                 dispatch(setSelectedMatch(newBody));
@@ -1429,18 +1434,19 @@ const CustomHeader = ({}) => {
               });
               setMatchData((prevMatchData) => {
                 const updated = prevMatchData.map((item) => {
-                  const updatedBettings = item.bettings.filter(
-                    (betting) => betting.id !== value?.betId
-                  );
+                  if (item?.id === value?.match_id) {
+                    const updatedBettings = item.bettings.filter(
+                      (betting) => betting.id !== value?.betId
+                    );
 
-                  return {
-                    ...item,
-                    bettings: updatedBettings,
-                  };
+                    return {
+                      ...item,
+                      bettings: updatedBettings,
+                      sessionExposure: value.sessionExposure,
+                    };
+                  }
+                  return item;
                 });
-                // setSessionBets((sessionBets) =>
-                //                 sessionBets?.filter((v) => v?.bet_id !== value?.betId)
-                //               );
 
                 dispatch(setMultiSelectedMatch(updated));
                 return updated;

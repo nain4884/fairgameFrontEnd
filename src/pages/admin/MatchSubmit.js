@@ -53,6 +53,7 @@ const MatchSubmit = ({}) => {
 
   useEffect(() => {
     if (multiSelectedMatches) {
+      console.log(multiSelectedMatches,"multiSelectedMatches")
       setMatchData(multiSelectedMatches);
     }
 
