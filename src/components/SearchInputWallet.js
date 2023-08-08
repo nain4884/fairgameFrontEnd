@@ -1,8 +1,4 @@
-import {
-  Box,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
 const SearchInput = ({
@@ -117,11 +113,12 @@ const SearchInput = ({
             borderRadius: "3px",
             border: "2px solid #DEDEDE",
             zIndex: 9999,
-
           }}
         >
           {data
-            ?.filter((k) => k?.userName?.includes(search))
+            ?.filter((k) =>
+              k?.userName?.toLowerCase().includes(search.toLowerCase())
+            )
             .map((i) => {
               return <Block i={i} />;
             })}
