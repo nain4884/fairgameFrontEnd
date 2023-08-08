@@ -179,7 +179,7 @@ const SessionMarket = ({
                     lineHeight: 1,
                   }}
                 >
-                  {sessionExposer}
+                  { !isNaN(sessionExposer) ?  Number(sessionExposer).toFixed(2) : "" }
                 </Typography>
               </Box>
             </Box>
@@ -354,7 +354,7 @@ const SessionMarket = ({
                       key={element?.id}
                       sx={{
                         width: "100%",
-                        display: sessionOffline?.includes(element.id)
+                        display: element?.betStatus===0
                           ? "none"
                           : "block",
                       }}

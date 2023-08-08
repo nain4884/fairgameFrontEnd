@@ -12,7 +12,20 @@ const ButtonWithSwitch = ({
 }) => {
   const [background, setBackground] = useState("#0B4F26");
 
-  const [checked, setChecked] = useState(notSwitch ? false : updateMatchStatus[place]?.val);
+  const [checked, setChecked] = useState(
+    notSwitch ? false : updateMatchStatus[place]?.val
+  );
+
+  useEffect(() => {
+    if (notSwitch) {
+      setChecked(false);
+    } else {
+      setChecked(updateMatchStatus[place]?.val);
+    }
+  
+  }, [notSwitch, place, updateMatchStatus]);
+
+  
   useEffect(() => {
     if (checked) {
       setBackground("#0B4F26");
@@ -98,7 +111,11 @@ const ButtonWithSwitch = ({
         <Typography
           sx={{
             marginRight: "10px",
-            color: notSwitch ?  Number(updateMatchStatus) > 0 ? "#46E080" :"#FF4D4D" : "white",
+            color: notSwitch
+              ? Number(updateMatchStatus) > 0
+                ? "#46E080"
+                : "#FF4D4D"
+              : "white",
             fontWeight: notSwitch ? "700" : "500",
             fontSize: "13px",
             marginLeft: "0.3vw",
