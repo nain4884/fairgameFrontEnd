@@ -10,10 +10,9 @@ import { useTheme } from "@emotion/react";
 import ResultComponent from "../../../components/ResultComponent";
 import { setRole } from "../../../newStore";
 import { memo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ARROWUP } from "../../../assets";
-
-
+import { setSelectedMatch } from "../../../newStore/reducers/matchDetails";
 
 const SmallBox2 = ({ valueA, valueB }) => {
   return (
@@ -113,6 +112,9 @@ const MatchOdds = ({
   const [visible, setVisible] = useState(false);
   const [visibleImg, setVisibleImg] = useState(true);
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
+  const [localSelectedMatch, setLocalSelectedMatch] = useState([]);
+  const { selectedMatch } = useSelector((state) => state?.matchDetails);
+  const dispatch = useDispatch();
   const teamRates =
     manualBookMarkerRates?.length > 0
       ? manualBookMarkerRates?.find((v) => v?.matchId === currentMatch?.id)
@@ -146,6 +148,9 @@ const MatchOdds = ({
     if (matchOdds) {
       setNewMatchOdds(matchOdds);
     }
+    if (selectedMatch) {
+      setLocalSelectedMatch(selectedMatch);
+    }
   }, [matchOdds]);
   const activateMatchOdds = async (val, id) => {
     try {
@@ -156,6 +161,14 @@ const MatchOdds = ({
         betStatus: val,
         matchType: currentMatch?.gameType,
       });
+      if (data?.data?.id) {
+        setLocalSelectedMatch((prev) => {
+          const updatedBettings = [...prev?.bettings, data?.data];
+          const newBody = { ...prev, bettings: updatedBettings };
+          dispatch(setSelectedMatch(newBody));
+          return newBody;
+        });
+      }
       socket.emit("matchOddRateLive", {
         matchId: currentMatch?.id,
         matchOddLive: true,
@@ -165,7 +178,6 @@ const MatchOdds = ({
       console.log(err?.response?.data?.message, "err");
     }
   };
-
 
   return (
     <>
@@ -254,7 +266,7 @@ const MatchOdds = ({
               }}
               invert={true}
             />
-            {!currentMatch?.matchOddRateLive  && (
+            {!currentMatch?.matchOddRateLive && (
               <SmallBox
                 onClick={() => {
                   if (newMatchOdds?.id) {
@@ -270,11 +282,11 @@ const MatchOdds = ({
                 title={"Go Live"}
                 color={"#FF4D4D"}
                 customStyle={{
-                  justifyContent: "center"
+                  justifyContent: "center",
                 }}
               />
             )}
-            {currentMatch?.matchOddRateLive  && (
+            {currentMatch?.matchOddRateLive && (
               <SmallBox
                 onClick={() => {
                   socket.emit("matchOddRateLive", {
@@ -285,9 +297,8 @@ const MatchOdds = ({
                 }}
                 title={"Live"}
                 customStyle={{
-                  justifyContent: "center"
+                  justifyContent: "center",
                 }}
-
               />
             )}
             <img
@@ -301,7 +312,7 @@ const MatchOdds = ({
                 height: "15px",
                 marginRight: "5px",
                 marginLeft: "5px",
-                cursor: 'pointer'
+                cursor: "pointer",
               }}
             />
           </Box>
@@ -422,7 +433,12 @@ const MatchOdds = ({
                     : []
                 }
                 teamImage={currentMatch?.teamA_Image}
-                lock={ matchOddsLive?.runners !== undefined && matchOddsLive?.runners?.length > 0 ? false : true}
+                lock={
+                  matchOddsLive?.runners !== undefined &&
+                  matchOddsLive?.runners?.length > 0
+                    ? false
+                    : true
+                }
                 name={currentMatch?.teamA}
                 currentMatch={currentMatch}
                 teamRates={teamRates?.teamA}
@@ -430,7 +446,12 @@ const MatchOdds = ({
               <Divider />
               <BoxComponent
                 teamRates={teamRates?.teamB}
-                lock={matchOddsLive?.runners !== undefined && matchOddsLive?.runners?.length > 0 ? false : true}
+                lock={
+                  matchOddsLive?.runners !== undefined &&
+                  matchOddsLive?.runners?.length > 0
+                    ? false
+                    : true
+                }
                 teamImage={currentMatch?.teamB_Image}
                 data={
                   matchOddsLive?.runners?.length > 0
@@ -445,7 +466,12 @@ const MatchOdds = ({
                   <Divider />
                   <BoxComponent
                     teamRates={teamRates?.teamC}
-                    lock={matchOddsLive?.runners !== undefined && matchOddsLive?.runners?.length > 0 ? false : true}
+                    lock={
+                      matchOddsLive?.runners !== undefined &&
+                      matchOddsLive?.runners?.length > 0
+                        ? false
+                        : true
+                    }
                     color={"#FF4D4D"}
                     teamImage={null}
                     data={
@@ -470,7 +496,6 @@ const MatchOdds = ({
                 ></Box>
               )}
             </Box>
-
           </>
         )}
       </Box>

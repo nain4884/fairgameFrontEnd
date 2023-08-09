@@ -7,6 +7,8 @@ import { memo } from "react";
 import SessionResultCustomButton from "./SessionResultCustomButton";
 import { SocketContext } from "..//context/socketContext";
 import useOuterClick from "./helper/userOuterClick";
+import { setSelectedMatch } from "../newStore/reducers/matchDetails";
+import { useDispatch } from "react-redux";
 
 const CustomSessionResult = ({
   onClick,
@@ -17,6 +19,7 @@ const CustomSessionResult = ({
   setIObtes,
 }) => {
   const { socket, socketMicro } = useContext(SocketContext);
+  const dispatch = useDispatch();
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
@@ -58,10 +61,12 @@ const CustomSessionResult = ({
               return betting;
             }
           );
-          return {
+          const newBody = {
             ...currentMatch,
             bettings: updatedBettings,
           };
+          dispatch(setSelectedMatch(newBody));
+          return newBody;
         });
       }
       onClick();
@@ -230,7 +235,7 @@ const CustomSessionResult = ({
                     if (loading?.value) {
                       return false;
                     }
-                    if (selected === "" ) {
+                    if (selected === "") {
                       toast.warn("Please enter score");
                     } else {
                       declareResult();
