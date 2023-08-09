@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { useTheme } from "@emotion/react";
 import { StyledImage } from "../../components";
 import { CANCEL } from "../../assets";
+import { memo } from "react";
 
 const RunsBox = ({ item, setData, currentOdds }) => {
   const theme = useTheme();
@@ -11,17 +12,11 @@ const RunsBox = ({ item, setData, currentOdds }) => {
 
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
-    console.log(`Scroll to`, element, id);
     if (element) {
       if (element && containerRef.current) {
         containerRef.current.scrollTop =
           element.offsetTop - containerRef.current.offsetTop;
       }
-      // element.scrollIntoView({
-      //   behavior: "smooth",
-      //   block: "center",
-      //   inline: "center",
-      // });
     }
   };
 
@@ -31,7 +26,7 @@ const RunsBox = ({ item, setData, currentOdds }) => {
         scrollToElement(`${item?.id}_${currentOdds?.odds}`);
       }, 500);
     }
-  }, [currentOdds, item]);
+  }, [currentOdds]);
 
   return (
     <Box
@@ -223,4 +218,4 @@ const RunsBox = ({ item, setData, currentOdds }) => {
     </Box>
   );
 };
-export default RunsBox;
+export default memo(RunsBox);
