@@ -575,26 +575,25 @@ const AddSession = ({ add, match }) => {
           return;
         }
 
+  
         setLocalTeamA((prev) => {
-          const newBody = { ...prev, rate: value };
+          const newBody = { ...prev,rate: value, lay: chckValue + incGap };
           dispatch(setTeamA(newBody));
           return newBody;
         });
+
         setLTeamARate(value);
         let chckValue = teamA?.lay ? teamA?.lay : value;
         let l_chckValue = l_teamALayValue ? l_teamALayValue : value;
 
-        setLocalTeamA((prev) => {
-          const newBody = { ...prev, lay: chckValue + incGap };
-          dispatch(setTeamA(newBody));
-          return newBody;
-        });
+      
 
         setLocalTeamB((prev) => {
           const newBody = { ...prev, rate: "", lay: "" };
           dispatch(setTeamB(newBody));
           return newBody;
         });
+
         setLTeamALayValue(l_chckValue + incGap);
         setLTeamBRate("");
         setLTeamBLayValue("");
@@ -607,19 +606,16 @@ const AddSession = ({ add, match }) => {
         }
 
         setLocalTeamB((prev) => {
-          const newBody = { ...prev, rate: value };
+          const newBody = { ...prev, rate: value,lay: chckValue + incGap };
           dispatch(setTeamB(newBody));
           return newBody;
         });
+
         setLTeamBRate(value);
         let chckValue = teamB?.lay ? teamB?.lay : value;
         let l_chckValue = l_teamBLayValue ? l_teamBLayValue : value;
 
-        setLocalTeamB((prev) => {
-          const newBody = { ...prev, lay: chckValue + incGap };
-          dispatch(setTeamB(newBody));
-          return newBody;
-        });
+  
         setLocalTeamA((prev) => {
           const newBody = { ...prev, lay: "", rate: "" };
           dispatch(setTeamA(newBody));
@@ -636,7 +632,7 @@ const AddSession = ({ add, match }) => {
         }
 
         setLocalTeamC((prev) => {
-          const newBody = { ...prev, rate: value };
+          const newBody = { ...prev, rate: value,lay: chckValue + incGap };
           dispatch(setTeamC(newBody));
           return newBody;
         });
@@ -646,11 +642,6 @@ const AddSession = ({ add, match }) => {
 
         let l_chckValue = l_teamCLayValue ? l_teamCLayValue : value;
 
-        setLocalTeamC((prev) => {
-          const newBody = { ...prev, lay: chckValue + incGap };
-          dispatch(setTeamC(newBody));
-          return newBody;
-        });
 
         setLocalTeamA((prev) => {
           const newBody = { ...prev, lay: "", rate: "" };
@@ -675,7 +666,7 @@ const AddSession = ({ add, match }) => {
       setPressEnter(false);
       if (event.target.name === "teamA_rate" && teamA?.rate > 0) {
         setLocalTeamA((prev) => {
-          const newBody = { ...prev, lay: value, rate: teamA?.lay - incGap };
+          const newBody = { ...prev, lay: teamA?.lay - incGap , rate: value };
           dispatch(setTeamA(newBody));
           return newBody;
         });
@@ -694,7 +685,7 @@ const AddSession = ({ add, match }) => {
 
       if (event.target.name === "teamB_rate" && teamB?.rate > 0) {
         setLocalTeamB((prev) => {
-          const newBody = { ...prev, lay: value, rate: teamB?.lay - incGap };
+          const newBody = { ...prev, lay:teamB?.lay - incGap , rate:value  };
           dispatch(setTeamB(newBody));
           return newBody;
         });
@@ -711,7 +702,7 @@ const AddSession = ({ add, match }) => {
       }
       if (event.target.name === "teamC_rate" && teamC?.rate > 0) {
         setLocalTeamC((prev) => {
-          const newBody = { ...prev, lay: value, rate: teamC?.lay - incGap };
+          const newBody = { ...prev, lay:teamC?.lay - incGap , rate:value  };
           dispatch(setTeamC(newBody));
           return newBody;
         });
