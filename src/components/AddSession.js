@@ -17,7 +17,13 @@ import { useEffect } from "react";
 import { setBookMakerBetRate } from "../newStore/reducers/matchDetails";
 import { BallStart, Lock } from "../assets";
 import ResultComponent from "./ResultComponent";
-import { setBookmakerTeamRates } from "../newStore/reducers/expertMatchDetails";
+import {
+  setBookmakerTeamRates,
+  setTeamA,
+  setTeamB,
+  setTeamC,
+  setTeamSuspended,
+} from "../newStore/reducers/expertMatchDetails";
 
 const AddSession = ({ add, match }) => {
   const location = useLocation();
@@ -39,12 +45,6 @@ const AddSession = ({ add, match }) => {
 
   const { axios } = setRole();
   const dispatch = useDispatch();
-  const [teamARate, setTeamARate] = useState();
-  const [teamALayValue, setTeamALayValue] = useState();
-  const [teamBRate, setTeamBRate] = useState();
-  const [teamBLayValue, setTeamBLayValue] = useState();
-  const [teamCRate, setTeamCRate] = useState();
-  const [teamCLayValue, setTeamCLayValue] = useState();
   const [l_teamARate, setLTeamARate] = useState();
   const [l_teamALayValue, setLTeamALayValue] = useState();
   const [l_teamBRate, setLTeamBRate] = useState();
@@ -53,23 +53,7 @@ const AddSession = ({ add, match }) => {
   const [l_teamCLayValue, setLTeamCLayValue] = useState();
   const [incGap, setIncGap] = useState(1);
   const [pressEnter, setPressEnter] = useState(false);
-  const [isTeamALock, setIsTeamALock] = useState(true);
-  const [isTeamBLock, setIsTeamBLock] = useState(true);
-  const [isTeamCLock, setIsTeamCLock] = useState(true);
-  const [isTeamASuspend, setIsTeamASuspend] = useState(true);
-  const [isTeamBSuspend, setIsTeamBSuspend] = useState(true);
-  const [isTeamCSuspend, setIsTeamCSuspend] = useState(true);
-  const [isTeamBackUnlock, setIsTeamBackUnlock] = useState(true);
-  const [localTeamBall, setLocalTeamBall] = useState({
-    isABall: false,
-    isBBall: false,
-    isCBall: false,
-  });
-  const [localTeamSuspend, setLocalTeamSuspend] = useState({
-    teamA_suspend: false,
-    teamB_suspend: false,
-    teamC_suspend: false,
-  });
+
   const [betId, setBetId] = useState("");
   const [isTab, setIsTab] = useState("");
   const [betStatus, setBetStatus] = useState(null);
@@ -77,13 +61,50 @@ const AddSession = ({ add, match }) => {
   const innerRefTeamB = useRef();
   const innerRefTeamC = useRef();
 
-  const [teamRates, setteamRates] = useState({
+  const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
+
+  //sddddddd
+
+  const [teamRates, setTeamRates] = useState({
     teamA: bookmakerTeamRates?.teamA,
     teamB: bookmakerTeamRates?.teamB,
     teamC: bookmakerTeamRates?.teamC,
   });
-  const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
   const [localBookMakerRates, setLocalBookMakerRates] = useState([]);
+
+  const [localTeamA, setLocalTeamA] = useState({
+    rate: null,
+    lock: true,
+    suspended: true,
+    lay: null,
+    back: null,
+  });
+  const [localTeamB, setLocalTeamB] = useState({
+    rate: null,
+    lock: true,
+    suspended: true,
+    lay: null,
+    back: null,
+  });
+  const [localTeamC, setLocalTeamC] = useState({
+    rate: null,
+    lock: true,
+    suspended: true,
+    lay: null,
+    back: null,
+  });
+  const [localTeamBall, setLocalTeamBall] = useState({
+    isABall: false,
+    isBBall: false,
+    isCBall: false,
+  });
+
+  const [localTeamSuspended, setLocalTeamSuspended] = useState({
+    teamA_suspend: false,
+    teamB_suspend: false,
+    teamC_suspend: false,
+  });
+  const [localTeamBackUnlock, setLocalTeamBackUnlock] = useState(true);
 
   useEffect(() => {
     // alert(JSON.stringify(match))
@@ -92,7 +113,7 @@ const AddSession = ({ add, match }) => {
 
   useEffect(() => {
     if (bookmakerTeamRates) {
-      setteamRates({
+      setTeamRates({
         teamA: bookmakerTeamRates?.teamA,
         teamB: bookmakerTeamRates?.teamB,
         teamC: bookmakerTeamRates?.teamC,
@@ -102,31 +123,22 @@ const AddSession = ({ add, match }) => {
       setLocalBookMakerRates(bookMakerBetRates);
     }
     if (teamA) {
-      setTeamARate(teamA?.rate);
-      setIsTeamALock(teamA?.lock);
-      setTeamALayValue(teamA?.lay);
-      setIsTeamASuspend(teamA?.suspended)
+      setLocalTeamA(teamA);
     }
     if (teamB) {
-      setTeamBRate(teamB?.rate);
-      setIsTeamBLock(teamB?.lock);
-      setTeamBLayValue(teamB?.lay);
-      setIsTeamBSuspend(teamB?.suspended)
+      setLocalTeamB(teamB);
     }
     if (teamC) {
-      setTeamCRate(teamC?.rate);
-      setIsTeamCLock(teamC?.lock);
-      setTeamCLayValue(teamC?.lay);
-       setIsTeamCSuspend(teamC?.suspended)
+      setLocalTeamC(teamC);
     }
     if (teamBall) {
       setLocalTeamBall(teamBall);
     }
     if (teamSuspended) {
-      setLocalTeamSuspend(teamSuspended);
+      setLocalTeamSuspended(teamSuspended);
     }
     if (teamBackUnlock) {
-      setIsTeamBackUnlock(teamBackUnlock);
+      setLocalTeamBackUnlock(teamBackUnlock);
     }
   }, [
     bookmakerTeamRates,
@@ -158,22 +170,52 @@ const AddSession = ({ add, match }) => {
         doSubmitSessionBet(id);
       } else {
         setBetId(response?.data?.data[0].id);
-        setTeamARate(response?.data?.data[0].teamA_Back);
-        setTeamALayValue(response?.data?.data[0].teamA_lay);
-        setTeamBRate(response?.data?.data[0].teamB_Back);
-        setTeamBLayValue(response?.data?.data[0].teamB_lay);
-        setTeamCRate(response?.data?.data[0].teamC_Back);
-        setTeamCLayValue(response?.data?.data[0].teamC_lay);
+        // setTeamARate(response?.data?.data[0].teamA_Back);
+        // setTeamALayValue(response?.data?.data[0].teamA_lay);
+        // setTeamBRate(response?.data?.data[0].teamB_Back);
+        // setTeamBLayValue(response?.data?.data[0].teamB_lay);
+        // setTeamCRate(response?.data?.data[0].teamC_Back);
+        // setTeamCLayValue(response?.data?.data[0].teamC_lay);
+        setLocalTeamA((prev) => {
+          const newBody = {
+            ...prev,
+            rate: response?.data?.data[0].teamA_Back,
+            suspended: response?.data?.data[0].teamA_suspend,
+            lock: response?.data?.data[0]?.teamA_suspend,
+            lay: response?.data?.data[0]?.teamA_lay,
+          };
 
-        setLTeamARate(response?.data?.data[0].teamA_Back);
-        setLTeamALayValue(response?.data?.data[0].teamA_lay);
-        setLTeamBRate(response?.data?.data[0].teamB_Back);
-        setLTeamBLayValue(response?.data?.data[0].teamB_lay);
-        setLTeamCRate(response?.data?.data[0].teamC_Back);
-        setLTeamCLayValue(response?.data?.data[0].teamC_lay);
-        // alert(id)
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = {
+            ...prev,
+            rate: response?.data?.data[0].teamB_Back,
+            suspended: response?.data?.data[0].teamB_suspend,
+            lock: response?.data?.data[0]?.teamB_suspend,
+            lay: response?.data?.data[0]?.teamB_lay,
+          };
+
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLocalTeamC((prev) => {
+          const newBody = {
+            ...prev,
+            rate: response?.data?.data[0].teamC_Back,
+            suspended: response?.data?.data[0].teamC_suspend,
+            lock: response?.data?.data[0]?.teamC_suspend,
+            lay: response?.data?.data[0]?.teamC_lay,
+          };
+
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+
         getAllBetsData(response?.data?.data[0].id, id);
-        const newBody={
+        const newBody = {
           teamA: response?.data?.data[0].teamA_rate
             ? response?.data?.data[0].teamA_rate
             : 0,
@@ -183,16 +225,24 @@ const AddSession = ({ add, match }) => {
           teamC: response?.data?.data[0].teamC_rate
             ? response?.data?.data[0].teamC_rate
             : 0,
-        }
-        setteamRates(newBody);
-        dispatch(setBookmakerTeamRates(newBody))
-        setIsTeamASuspend(response?.data?.data[0].teamA_suspend ? true : false);
-        setIsTeamBSuspend(response?.data?.data[0].teamB_suspend ? true : false);
-        setIsTeamCSuspend(response?.data?.data[0].teamC_suspend ? true : false);
+        };
+        setTeamRates(newBody);
+        dispatch(setBookmakerTeamRates(newBody));
+
         betStatus(response?.data?.data[0].betStatus);
+        setLocalTeamSuspended((prev) => {
+          const newBody = {
+            ...prev,
+            teamA_suspend: response?.data?.data[0].teamA_suspend ? true : false,
+            teamB_suspend: response?.data?.data[0].teamB_suspend ? true : false,
+            teamC_suspend: response?.data?.data[0].teamC_suspend ? true : false,
+          };
+          dispatch(setTeamSuspended(newBody));
+          return newBody;
+        });
       }
     } catch (e) {
-      console.log(e.response.data.message);
+      console.log(e.message);
     }
   }
 
@@ -389,9 +439,9 @@ const AddSession = ({ add, match }) => {
 
   const handleSuspend = () => {
     if (
-      !localTeamSuspend?.teamA_suspend ||
-      !localTeamSuspend?.teamB_suspend ||
-      !localTeamSuspend?.teamC_suspend
+      !localTeamSuspended?.teamA_suspend ||
+      !localTeamSuspended?.teamB_suspend ||
+      !localTeamSuspended?.teamC_suspend
     ) {
       socket.emit("updateRate", {
         matchId: match?.id,
@@ -415,36 +465,75 @@ const AddSession = ({ add, match }) => {
     let target = event.target;
     if (target.value <= 100) {
       if (target.name === "teamA_rate") {
-        setTeamARate(target.value);
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, rate: target.value };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
         setLTeamARate(target.value);
+
         if (target.value !== "") {
           let teamA_lay = parseInt(target.value) + 1;
-          setTeamALayValue(teamA_lay);
+
           setLTeamALayValue(teamA_lay);
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: teamA_lay };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
         } else {
-          setTeamALayValue("");
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
           setLTeamALayValue("");
         }
       } else if (target.name === "teamB_rate") {
-        setTeamBRate(target.value);
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, rate: target.value };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
         setLTeamBRate(target.value);
         if (target.value !== "") {
           let teamB_lay = parseInt(target.value) + 1;
-          setTeamBLayValue(teamB_lay);
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: teamB_lay };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
           setLTeamBLayValue(teamB_lay);
         } else {
-          setTeamBLayValue("");
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
           setLTeamBLayValue("");
         }
       } else if (target.name === "teamC_rate") {
-        setTeamCRate(target.value);
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, rate: target.value };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
         setLTeamCRate(target.value);
         if (target.value !== "") {
           let teamC_lay = parseInt(target.value) + 1;
-          setTeamCLayValue(teamC_lay);
+          setLocalTeamC((prev) => {
+            const newBody = { ...prev, lay: teamC_lay };
+            dispatch(setTeamC(newBody));
+            return newBody;
+          });
           setLTeamCLayValue(teamC_lay);
         } else {
-          setTeamCLayValue("");
+          setLocalTeamC((prev) => {
+            const newBody = { ...prev, lay: "" };
+            dispatch(setTeamC(newBody));
+            return newBody;
+          });
           setLTeamCLayValue("");
         }
       }
@@ -481,54 +570,99 @@ const AddSession = ({ add, match }) => {
       let value = targetValue ? targetValue + incGap : incGap;
       setPressEnter(false);
       if (event.target.name === "teamA_rate") {
-        let result = handleHunderedValue(targetValue, teamALayValue);
+        let result = handleHunderedValue(targetValue, teamA?.lay);
         if (result) {
           return;
         }
-        setTeamARate(value);
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, rate: value };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
         setLTeamARate(value);
-        let chckValue = teamALayValue ? teamALayValue : value;
+        let chckValue = teamA?.lay ? teamA?.lay : value;
         let l_chckValue = l_teamALayValue ? l_teamALayValue : value;
-        setTeamALayValue(chckValue + incGap);
-        setTeamBRate("");
-        setTeamBLayValue("");
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: chckValue + incGap };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, rate: "", lay: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
         setLTeamALayValue(l_chckValue + incGap);
         setLTeamBRate("");
         setLTeamBLayValue("");
       }
 
       if (event.target.name === "teamB_rate") {
-        let result = handleHunderedValue(targetValue, teamBLayValue);
+        let result = handleHunderedValue(targetValue, teamB?.lay);
         if (result) {
           return;
         }
-        setTeamBRate(value);
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, rate: value };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
         setLTeamBRate(value);
-        let chckValue = teamBLayValue ? teamBLayValue : value;
+        let chckValue = teamB?.lay ? teamB?.lay : value;
         let l_chckValue = l_teamBLayValue ? l_teamBLayValue : value;
-        setTeamBLayValue(chckValue + incGap);
-        setTeamARate("");
-        setTeamALayValue("");
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: chckValue + incGap };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
         setLTeamBLayValue(l_chckValue + incGap);
         setLTeamARate("");
         setLTeamALayValue("");
       }
       if (event.target.name === "teamC_rate") {
-        let result = handleHunderedValue(targetValue, teamCLayValue);
+        let result = handleHunderedValue(targetValue, teamC?.lay);
         if (result) {
           return;
         }
-        setTeamCRate(value);
+
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, rate: value };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+
         setLTeamCRate(value);
-        let chckValue = teamCLayValue ? teamCLayValue : value;
+        let chckValue = teamC?.lay ? teamC?.lay : value;
 
         let l_chckValue = l_teamCLayValue ? l_teamCLayValue : value;
-        setTeamCLayValue(chckValue + incGap);
-        setTeamARate("");
-        setTeamALayValue("");
-        setTeamBRate("");
-        setTeamBLayValue("");
 
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: chckValue + incGap };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
         setLTeamCLayValue(l_chckValue + incGap);
         setLTeamARate("");
         setLTeamALayValue("");
@@ -539,11 +673,18 @@ const AddSession = ({ add, match }) => {
       handleSuspend();
       let value = targetValue - incGap;
       setPressEnter(false);
-      if (event.target.name === "teamA_rate" && teamARate > 0) {
-        setTeamARate(value);
-        setTeamALayValue(teamALayValue - incGap);
-        setTeamBRate("");
-        setTeamBLayValue("");
+      if (event.target.name === "teamA_rate" && teamA?.rate > 0) {
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: value, rate: teamA?.lay - incGap };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamARate(value);
         setLTeamALayValue(l_teamALayValue - incGap);
@@ -551,25 +692,40 @@ const AddSession = ({ add, match }) => {
         setLTeamBLayValue("");
       }
 
-      if (event.target.name === "teamB_rate" && teamBRate > 0) {
-        setTeamBRate(value);
-        setTeamBLayValue(teamBLayValue - incGap);
-        setTeamARate("");
-        setTeamALayValue("");
+      if (event.target.name === "teamB_rate" && teamB?.rate > 0) {
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: value, rate: teamB?.lay - incGap };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
         setLTeamBRate(value);
         setLTeamBLayValue(l_teamBLayValue - incGap);
         setLTeamARate("");
         setLTeamALayValue("");
       }
-      if (event.target.name === "teamC_rate" && teamCRate > 0) {
-        setTeamCRate(value);
-        setTeamCLayValue(teamCLayValue - incGap);
-        setTeamARate("");
-        setTeamALayValue("");
-        setTeamBRate("");
-        setTeamBLayValue("");
+      if (event.target.name === "teamC_rate" && teamC?.rate > 0) {
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: value, rate: teamC?.lay - incGap };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
 
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
         setLTeamCRate(value);
         setLTeamCLayValue(l_teamCLayValue - incGap);
         setLTeamARate("");
@@ -581,15 +737,23 @@ const AddSession = ({ add, match }) => {
       handleSuspend();
       setPressEnter(false);
       if (event.target.name === "teamA_rate") {
-        let result = handleHunderedValue(targetValue, teamALayValue);
+        let result = handleHunderedValue(targetValue, teamA?.lay);
         if (result) {
           return;
         }
-        let value = teamALayValue ? teamALayValue : teamARate;
+        let value = teamA?.lay ? teamA?.lay : teamA?.rate;
         let l_value = l_teamALayValue ? l_teamALayValue : l_teamARate;
-        setTeamALayValue(value + incGap);
-        setTeamBRate("");
-        setTeamBLayValue("");
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: value + incGap };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, rate: "", lay: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamALayValue(l_value + incGap);
         setLTeamBRate("");
@@ -597,33 +761,60 @@ const AddSession = ({ add, match }) => {
       }
 
       if (event.target.name === "teamB_rate") {
-        let result = handleHunderedValue(targetValue, teamBLayValue);
+        let result = handleHunderedValue(targetValue, teamB?.lay);
         if (result) {
           return;
         }
-        let value = teamBLayValue ? teamBLayValue : teamBRate;
+        let value = teamB?.lay ? teamB?.lay : teamB?.rate;
         let l_value = l_teamBLayValue ? l_teamBLayValue : l_teamBRate;
-        setTeamBLayValue(value + incGap);
-        setTeamARate("");
-        setTeamALayValue("");
 
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = {
+            ...prev,
+
+            lay: value + incGap,
+          };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
         setLTeamBLayValue(l_value + incGap);
         setLTeamARate("");
         setLTeamALayValue("");
       }
       if (event.target.name === "teamC_rate") {
-        let result = handleHunderedValue(targetValue, teamCLayValue);
+        let result = handleHunderedValue(targetValue, teamC?.lay);
         if (result) {
           return;
         }
-        let value = teamCLayValue ? teamCLayValue : teamCRate;
+        let value = teamC?.lay ? teamC?.lay : teamC?.rate;
         let l_value = l_teamCLayValue ? l_teamCLayValue : l_teamCRate;
-        setTeamCLayValue(value + incGap);
-        setTeamARate("");
-        setTeamALayValue("");
-        setTeamBRate("");
-        setTeamBLayValue("");
 
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: value + incGap };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = {
+            ...prev,
+
+            lay: "",
+            rate: "",
+          };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
         setLTeamCLayValue(l_value + incGap);
         setLTeamARate("");
         setLTeamALayValue("");
@@ -635,11 +826,19 @@ const AddSession = ({ add, match }) => {
       setPressEnter(false);
       if (
         event.target.name === "teamA_rate" &&
-        teamALayValue - incGap > teamARate
+        teamA?.lay - incGap > teamA?.rate
       ) {
-        setTeamALayValue(teamALayValue - incGap);
-        setTeamBRate("");
-        setTeamBLayValue("");
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: teamA?.lay - incGap };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+
         setLTeamALayValue(l_teamALayValue - incGap);
         setLTeamBRate("");
         setLTeamBLayValue("");
@@ -647,26 +846,41 @@ const AddSession = ({ add, match }) => {
 
       if (
         event.target.name === "teamB_rate" &&
-        teamBLayValue - incGap > teamBRate
+        teamB?.lay - incGap > teamB?.rate
       ) {
-        setTeamBLayValue(teamBLayValue - incGap);
-        setTeamARate("");
-        setTeamALayValue("");
-
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: teamB?.lay - incGap };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
         setLTeamBLayValue(l_teamBLayValue - incGap);
         setLTeamARate("");
         setLTeamALayValue("");
       }
       if (
         event.target.name === "teamC_rate" &&
-        teamCLayValue - incGap > teamCRate
+        teamC?.lay - incGap > teamC?.rate
       ) {
-        setTeamCLayValue(teamCLayValue - incGap);
-        setTeamARate("");
-        setTeamALayValue("");
-        setTeamBRate("");
-        setTeamBLayValue("");
-
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: teamC?.lay - incGap };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
         setLTeamCLayValue(l_teamCLayValue - incGap);
         setLTeamARate("");
         setLTeamALayValue("");
@@ -731,8 +945,8 @@ const AddSession = ({ add, match }) => {
           socket.emit("updateRate", {
             matchId: match?.id,
             betId: betId,
-            teamA_lay: teamALayValue,
-            teamA_Back: teamARate,
+            teamA_lay: teamA?.lay,
+            teamA_Back: teamA?.rate,
             teamA_suspend: false,
             teamB_lay: "",
             teamB_Back: "",
@@ -749,8 +963,8 @@ const AddSession = ({ add, match }) => {
             teamA_lay: "",
             teamA_Back: "",
             teamA_suspend: true,
-            teamB_lay: teamBLayValue,
-            teamB_Back: teamBRate,
+            teamB_lay: teamB?.lay,
+            teamB_Back: teamB?.rate,
             teamB_suspend: false,
             teamC_lay: "",
             teamC_Back: "",
@@ -767,8 +981,8 @@ const AddSession = ({ add, match }) => {
             teamB_lay: "",
             teamB_Back: "",
             teamB_suspend: true,
-            teamC_lay: teamCLayValue,
-            teamC_Back: teamCRate,
+            teamC_lay: teamC?.lay,
+            teamC_Back: teamC?.rate,
             teamC_suspend: false,
           });
         }
@@ -776,13 +990,23 @@ const AddSession = ({ add, match }) => {
       setIsTab("");
     } else if (key == "tab") {
       handleSuspend();
-      setTeamARate(targetValue);
-      setTeamBRate(targetValue);
-      setTeamCRate(targetValue);
-      setTeamALayValue("");
-      setTeamBLayValue("");
-      setTeamCLayValue("");
 
+      setLocalTeamA((prev) => {
+        const newBody = { ...prev, lay: "", rate: targetValue };
+        dispatch(setTeamA(newBody));
+        return newBody;
+      });
+      setLocalTeamB((prev) => {
+        const newBody = { ...prev, lay: "", rate: targetValue };
+        dispatch(setTeamB(newBody));
+        return newBody;
+      });
+
+      setLocalTeamC((prev) => {
+        const newBody = { ...prev, lay: "", rate: targetValue };
+        dispatch(setTeamC(newBody));
+        return newBody;
+      });
       setLTeamARate(targetValue);
       setLTeamBRate(targetValue);
       setLTeamCRate(targetValue);
@@ -795,11 +1019,19 @@ const AddSession = ({ add, match }) => {
       handleSuspend();
       if (event.target.name === "teamA_rate") {
         let value = event.target.value ? targetValue + 0.5 : 0;
-        setTeamARate(value);
-        setTeamALayValue(value + 0.5);
+
         setIncGap(0.25);
-        setTeamBRate("");
-        setTeamBLayValue("");
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: value + 0.5, rate: value };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamARate(value);
         setLTeamALayValue(value + 0.5);
@@ -807,11 +1039,19 @@ const AddSession = ({ add, match }) => {
         setLTeamBLayValue("");
       } else if (event.target.name === "teamB_rate") {
         let value = event.target.value ? targetValue + 0.5 : 0;
-        setTeamBRate(value);
-        setTeamBLayValue(value + 0.5);
+
         setIncGap(0.25);
-        setTeamARate("");
-        setTeamALayValue("");
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: value + 0.5, rate: value };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
 
         setLTeamBRate(value);
         setLTeamBLayValue(value + 0.5);
@@ -819,13 +1059,25 @@ const AddSession = ({ add, match }) => {
         setLTeamALayValue("");
       } else if (event.target.name === "teamC_rate") {
         let value = event.target.value ? targetValue + 0.5 : 0;
-        setTeamCRate(value);
-        setTeamCLayValue(value + 0.5);
+
         setIncGap(0.25);
-        setTeamARate("");
-        setTeamALayValue("");
-        setTeamBRate("");
-        setTeamBLayValue("");
+
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: value + 0.5, rate: value };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamCRate(value);
         setLTeamCLayValue(value + 0.5);
@@ -843,62 +1095,74 @@ const AddSession = ({ add, match }) => {
       handleSuspend();
       setIncGap(1);
       if (event.target.name === "teamA_rate") {
-        let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
-        let teamALayValueDecimal = teamALayValue % 1; // get the decimal portion of the number
+        let teamARateDecimal = teamA?.rate % 1; // get the decimal portion of the number
+        let teamALayValueDecimal = teamA?.lay % 1; // get the decimal portion of the number
         let value;
         let layValue;
         if (teamARateDecimal >= 0.5) {
-          value = Math.round(teamARate) - 1;
+          value = Math.round(teamA?.rate) - 1;
         } else {
-          value = Math.round(teamARate);
+          value = Math.round(teamA?.rate);
         }
         if (teamALayValueDecimal >= 0.5) {
-          layValue = Math.round(teamALayValue);
+          layValue = Math.round(teamA?.lay);
         } else {
-          layValue = Math.round(teamALayValue);
+          layValue = Math.round(teamA?.lay);
         }
-        setTeamARate(value);
-        setTeamALayValue(value + 1);
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: value + 1, rate: value };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
 
         setLTeamARate(value);
         setLTeamALayValue(value + 1);
       } else if (event.target.name === "teamB_rate") {
-        let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
-        let teamBLayValueDecimal = teamBLayValue % 1; // get the decimal portion of the number
+        let teamBRateDecimal = teamB?.rate % 1; // get the decimal portion of the number
+        let teamBLayValueDecimal = teamB?.lay % 1; // get the decimal portion of the number
         let value;
         let layValue;
         if (teamBRateDecimal >= 0.5) {
-          value = Math.round(teamBRate) - 1;
+          value = Math.round(teamB?.rate) - 1;
         } else {
-          value = Math.round(teamBRate);
+          value = Math.round(teamB?.rate);
         }
         if (teamBLayValueDecimal >= 0.5) {
-          layValue = Math.round(teamBLayValue);
+          layValue = Math.round(teamB?.lay);
         } else {
-          layValue = Math.round(teamBLayValue);
+          layValue = Math.round(teamB?.lay);
         }
-        setTeamBRate(value);
-        setTeamBLayValue(value + 1);
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: value + 1, rate: value };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamBRate(value);
         setLTeamBLayValue(value + 1);
       } else if (event.target.name === "teamC_rate") {
-        let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
-        let teamCLayValueDecimal = teamCLayValue % 1; // get the decimal portion of the number
+        let teamCRateDecimal = teamC?.rate % 1; // get the decimal portion of the number
+        let teamCLayValueDecimal = teamC?.lay % 1; // get the decimal portion of the number
         let value;
         let layValue;
         if (teamCRateDecimal >= 0.5) {
-          value = Math.round(teamCRate) - 1;
+          value = Math.round(teamC?.rate) - 1;
         } else {
-          value = Math.round(teamCRate);
+          value = Math.round(teamC?.rate);
         }
         if (teamCLayValueDecimal >= 0.5) {
-          layValue = Math.round(teamCLayValue);
+          layValue = Math.round(teamC?.lay);
         } else {
-          layValue = Math.round(teamCLayValue);
+          layValue = Math.round(teamC?.lay);
         }
-        setTeamCRate(value);
-        setTeamCLayValue(value + 1);
+
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: value + 1, rate: value };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
 
         setLTeamCRate(value);
         setLTeamCLayValue(value + 1);
@@ -908,74 +1172,101 @@ const AddSession = ({ add, match }) => {
       handleSuspend();
       setIncGap(1);
       if (event.target.name === "teamA_rate") {
-        let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
-        let teamALayValueDecimal = teamALayValue % 1; // get the decimal portion of the number
+        let teamARateDecimal = teamA?.rate % 1; // get the decimal portion of the number
+        let teamALayValueDecimal = teamA?.lay % 1; // get the decimal portion of the number
         let value;
         let layValue;
         if (teamARateDecimal >= 0.5) {
-          value = teamARate ? Math.round(teamARate) : 0;
+          value = teamA?.rate ? Math.round(teamA?.rate) : 0;
         } else {
-          value = teamARate ? Math.round(teamARate) : 0;
+          value = teamA?.rate ? Math.round(teamA?.rate) : 0;
         }
         if (teamALayValueDecimal >= 0.5) {
-          layValue = teamALayValue ? Math.round(teamALayValue) : 0;
+          layValue = teamA?.lay ? Math.round(teamA?.lay) : 0;
         } else {
-          layValue = teamALayValue ? Math.round(teamALayValue) : 0;
+          layValue = teamA?.lay ? Math.round(teamA?.lay) : 0;
         }
-        setTeamARate(value);
-        setTeamALayValue(value + 1.5);
-        setTeamBRate("");
-        setTeamBLayValue("");
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: value + 1.5, rate: value };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamARate(value);
         setLTeamALayValue(value + 1.5);
         setLTeamBRate("");
         setLTeamBLayValue("");
       } else if (event.target.name === "teamB_rate") {
-        let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
-        let teamBLayValueDecimal = teamBLayValue % 1; // get the decimal portion of the number
+        let teamBRateDecimal = teamB?.rate % 1; // get the decimal portion of the number
+        let teamBLayValueDecimal = teamB?.lay % 1; // get the decimal portion of the number
         let value;
         let layValue;
         if (teamBRateDecimal >= 0.5) {
-          value = teamBRate ? Math.round(teamBRate) : 0;
+          value = teamB?.rate ? Math.round(teamB?.rate) : 0;
         } else {
-          value = teamBRate ? Math.round(teamBRate) : 0;
+          value = teamB?.rate ? Math.round(teamB?.rate) : 0;
         }
         if (teamBLayValueDecimal >= 0.5) {
-          layValue = teamBLayValue ? Math.round(teamBLayValue) : 0;
+          layValue = teamB?.lay ? Math.round(teamB?.lay) : 0;
         } else {
-          layValue = teamBLayValue ? Math.round(teamBLayValue) : 0;
+          layValue = teamB?.lay ? Math.round(teamB?.lay) : 0;
         }
-        setTeamBRate(value);
-        setTeamBLayValue(value + 1.5);
-        setTeamARate("");
-        setTeamALayValue("");
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: value + 1.5, rate: value };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamBRate(value);
         setLTeamBLayValue(value + 1.5);
         setLTeamARate("");
         setLTeamALayValue("");
       } else if (event.target.name === "teamC_rate") {
-        let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
-        let teamCLayValueDecimal = teamCLayValue % 1; // get the decimal portion of the number
+        let teamCRateDecimal = teamC?.rate % 1; // get the decimal portion of the number
+        let teamCLayValueDecimal = teamC?.lay % 1; // get the decimal portion of the number
         let value;
         let layValue;
         if (teamCRateDecimal >= 0.5) {
-          value = teamCRate ? Math.round(teamCRate) : 0;
+          value = teamC?.rate ? Math.round(teamC?.rate) : 0;
         } else {
-          value = teamCRate ? Math.round(teamCRate) : 0;
+          value = teamC?.rate ? Math.round(teamC?.rate) : 0;
         }
         if (teamCLayValueDecimal >= 0.5) {
-          layValue = teamCLayValue ? Math.round(teamCLayValue) : 0;
+          layValue = teamC?.lay ? Math.round(teamC?.lay) : 0;
         } else {
-          layValue = teamCLayValue ? Math.round(teamCLayValue) : 0;
+          layValue = teamC?.lay ? Math.round(teamC?.lay) : 0;
         }
-        setTeamCRate(value);
-        setTeamCLayValue(value + 1.5);
-        setTeamARate("");
-        setTeamALayValue("");
-        setTeamBRate("");
-        setTeamBLayValue("");
+
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: value + 1.5, rate: value };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamCRate(value);
         setLTeamCLayValue(value + 1.5);
@@ -989,26 +1280,33 @@ const AddSession = ({ add, match }) => {
       handleSuspend();
       setIncGap(1);
       if (event.target.name === "teamA_rate") {
-        if (teamARate > 0.5) {
-          let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
-          let teamALayValueDecimal = teamALayValue % 1; // get the decimal portion of the number
+        if (teamA?.rate > 0.5) {
+          let teamARateDecimal = teamA?.rate % 1; // get the decimal portion of the number
+          let teamALayValueDecimal = teamA?.lay % 1; // get the decimal portion of the number
           let value;
           let layValue;
           if (teamARateDecimal >= 0.5) {
-            value = Math.round(teamARate) - 1;
+            value = Math.round(teamA?.rate) - 1;
           } else {
-            value = Math.round(teamARate);
+            value = Math.round(teamA?.rate);
           }
           if (teamALayValueDecimal >= 0.5) {
-            layValue = Math.round(teamALayValue);
+            layValue = Math.round(teamA?.lay);
           } else {
-            layValue = Math.round(teamALayValue);
+            layValue = Math.round(teamA?.lay);
           }
-          setTeamARate(value - 0.5);
-          setTeamALayValue(value + 1);
 
-          setTeamBRate("");
-          setTeamBLayValue("");
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: value + 1, rate: value - 0.5 };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamARate(value - 0.5);
           setLTeamALayValue(value + 1);
@@ -1017,26 +1315,33 @@ const AddSession = ({ add, match }) => {
           setLTeamBLayValue("");
         }
       } else if (event.target.name === "teamB_rate") {
-        if (teamBRate > 0.5) {
-          let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
-          let teamBLayValueDecimal = teamBLayValue % 1; // get the decimal portion of the number
+        if (teamB?.rate > 0.5) {
+          let teamBRateDecimal = teamB?.rate % 1; // get the decimal portion of the number
+          let teamBLayValueDecimal = teamB?.lay % 1; // get the decimal portion of the number
           let value;
           let layValue;
           if (teamBRateDecimal >= 0.5) {
-            value = Math.round(teamBRate) - 1;
+            value = Math.round(teamB?.rate) - 1;
           } else {
-            value = Math.round(teamBRate);
+            value = Math.round(teamB?.rate);
           }
           if (teamBLayValueDecimal >= 0.5) {
-            layValue = Math.round(teamBLayValue);
+            layValue = Math.round(teamB?.rate);
           } else {
-            layValue = Math.round(teamBLayValue);
+            layValue = Math.round(teamB?.rate);
           }
-          setTeamBRate(value - 0.5);
-          setTeamBLayValue(value + 1);
 
-          setTeamARate("");
-          setTeamALayValue("");
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: value + 1, rate: value - 0.5 };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
 
           setLTeamBRate(value - 0.5);
           setLTeamBLayValue(value + 1);
@@ -1045,28 +1350,39 @@ const AddSession = ({ add, match }) => {
           setLTeamALayValue("");
         }
       } else if (event.target.name === "teamC_rate") {
-        if (teamCRate > 0.5) {
-          let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
-          let teamCLayValueDecimal = teamCLayValue % 1; // get the decimal portion of the number
+        if (teamC?.rate > 0.5) {
+          let teamCRateDecimal = teamC?.rate % 1; // get the decimal portion of the number
+          let teamCLayValueDecimal = teamC?.lay % 1; // get the decimal portion of the number
           let value;
           let layValue;
           if (teamCRateDecimal >= 0.5) {
-            value = Math.round(teamCRate) - 1;
+            value = Math.round(teamC?.rate) - 1;
           } else {
-            value = Math.round(teamCRate);
+            value = Math.round(teamC?.rate);
           }
           if (teamCLayValueDecimal >= 0.5) {
-            layValue = Math.round(teamCLayValue);
+            layValue = Math.round(teamC?.lay);
           } else {
-            layValue = Math.round(teamCLayValue);
+            layValue = Math.round(teamC?.lay);
           }
-          setTeamCRate(value - 0.5);
-          setTeamCLayValue(value + 1);
 
-          setTeamARate("");
-          setTeamALayValue("");
-          setTeamBRate("");
-          setTeamBLayValue("");
+          setLocalTeamC((prev) => {
+            const newBody = { ...prev, lay: value + 1, rate: value - 0.5 };
+            dispatch(setTeamC(newBody));
+            return newBody;
+          });
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamCRate(value - 0.5);
           setLTeamCLayValue(value + 1);
@@ -1099,64 +1415,92 @@ const AddSession = ({ add, match }) => {
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {
-          let result = handleHunderedValue(targetValue, teamALayValue);
+          let result = handleHunderedValue(targetValue, teamA?.lay);
           if (result) {
             return;
           }
-          let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
+          let teamARateDecimal = teamA?.rate % 1; // get the decimal portion of the number
           let value;
           if (teamARateDecimal >= 0.5) {
             value = parseFloat(event.target.value) + 1;
           } else {
             value = parseFloat(event.target.value) + 0.5;
           }
-          setTeamARate(value);
-          setTeamALayValue(value + 1);
-          setTeamBRate("");
-          setTeamBLayValue("");
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: value + 1, rate: value };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
           setLTeamARate(value);
           setLTeamALayValue(value + 1);
           setLTeamBRate("");
           setLTeamBLayValue("");
         } else if (event.target.name === "teamB_rate") {
-          let result = handleHunderedValue(targetValue, teamBLayValue);
+          let result = handleHunderedValue(targetValue, teamB?.lay);
           if (result) {
             return;
           }
-          let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
+          let teamBRateDecimal = teamB?.rate % 1; // get the decimal portion of the number
           let value;
           if (teamBRateDecimal >= 0.5) {
             value = parseFloat(event.target.value) + 1;
           } else {
             value = parseFloat(event.target.value) + 0.5;
           }
-          setTeamBRate(value);
-          setTeamBLayValue(value + 1);
-          setTeamARate("");
-          setTeamALayValue("");
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: value + 1, rate: value };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
 
           setLTeamBRate(value);
           setLTeamBLayValue(value + 1);
           setLTeamARate("");
           setLTeamALayValue("");
         } else if (event.target.name === "teamC_rate") {
-          let result = handleHunderedValue(targetValue, teamCLayValue);
+          let result = handleHunderedValue(targetValue, teamC?.lay);
           if (result) {
             return;
           }
-          let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
+          let teamCRateDecimal = teamC?.rate % 1; // get the decimal portion of the number
           let value;
           if (teamCRateDecimal >= 0.5) {
             value = parseFloat(event.target.value) + 1;
           } else {
             value = parseFloat(event.target.value) + 0.5;
           }
-          setTeamCRate(value);
-          setTeamCLayValue(value + 1);
-          setTeamARate("");
-          setTeamALayValue("");
-          setTeamBRate("");
-          setTeamBLayValue("");
+
+          setLocalTeamC((prev) => {
+            const newBody = { ...prev, lay: value + 1, rate: value };
+            dispatch(setTeamC(newBody));
+            return newBody;
+          });
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamCRate(value);
           setLTeamCLayValue(value + 1);
@@ -1167,35 +1511,73 @@ const AddSession = ({ add, match }) => {
         }
       } else {
         if (event.target.name === "teamA_rate") {
-          let value = Math.round(teamARate) + incGap;
-          setTeamARate(value ? value : 1);
-          setTeamALayValue(value ? value + incGap : incGap);
-          setTeamBRate("");
-          setTeamBLayValue("");
+          let value = Math.round(teamA?.rate) + incGap;
+
+          setLocalTeamA((prev) => {
+            const newBody = {
+              ...prev,
+              lay: value ? value + incGap : incGap,
+              rate: value ? value : 1,
+            };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamARate(value ? value : 1);
           setLTeamALayValue(value ? value + incGap : incGap);
           setLTeamBRate("");
           setLTeamBLayValue("");
         } else if (event.target.name === "teamB_rate") {
-          let value = Math.round(teamBRate) + incGap;
-          setTeamBRate(value ? value : 1);
-          setTeamBLayValue(value ? value + incGap : incGap);
-          setTeamARate("");
-          setTeamALayValue("");
+          let value = Math.round(teamB?.rate) + incGap;
 
+          setLocalTeamB((prev) => {
+            const newBody = {
+              ...prev,
+              lay: value ? value + incGap : incGap,
+              rate: value ? value : 1,
+            };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
           setLTeamBRate(value ? value : 1);
           setLTeamBLayValue(value ? value + incGap : incGap);
           setLTeamARate("");
           setLTeamALayValue("");
         } else if (event.target.name === "teamC_rate") {
-          let value = Math.round(teamCRate) + incGap;
-          setTeamCRate(value ? value : 1);
-          setTeamCLayValue(value ? value + incGap : incGap);
-          setTeamARate("");
-          setTeamALayValue("");
-          setTeamBRate("");
-          setTeamBLayValue("");
+          let value = Math.round(teamC?.rate) + incGap;
+
+          setLocalTeamC((prev) => {
+            const newBody = {
+              ...prev,
+              lay: value ? value + incGap : incGap,
+              rate: value ? value : 1,
+            };
+            dispatch(setTeamC(newBody));
+            return newBody;
+          });
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamCRate(value ? value : 1);
           setLTeamCLayValue(value ? value + incGap : incGap);
@@ -1211,65 +1593,90 @@ const AddSession = ({ add, match }) => {
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {
-          let result = handleZeroValue(targetValue, teamALayValue);
+          let result = handleZeroValue(targetValue, teamA?.lay);
           if (result) {
             return;
           }
-          let teamARateDecimal = teamARate % 1; // get the decimal portion of the number
+          let teamARateDecimal = teamA?.rate % 1; // get the decimal portion of the number
           let value;
           if (teamARateDecimal >= 0.5) {
             value = parseFloat(event.target.value) - 1;
           } else {
             value = parseFloat(event.target.value) - 0.5;
           }
-          setTeamARate(value);
-          setTeamALayValue(value + 1);
-          setTeamBRate("");
-          setTeamBLayValue("");
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, rate: value, lay: value + 1 };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamARate(value);
           setLTeamALayValue(value + 1);
           setLTeamBRate("");
           setLTeamBLayValue("");
         } else if (event.target.name === "teamB_rate") {
-          let result = handleZeroValue(targetValue, teamBLayValue);
+          let result = handleZeroValue(targetValue, teamB?.lay);
           if (result) {
             return;
           }
-          let teamBRateDecimal = teamBRate % 1; // get the decimal portion of the number
+          let teamBRateDecimal = teamB?.rate % 1; // get the decimal portion of the number
           let value;
           if (teamBRateDecimal >= 0.5) {
             value = parseFloat(event.target.value) - 1;
           } else {
             value = parseFloat(event.target.value) - 0.5;
           }
-          setTeamBRate(value);
-          setTeamBLayValue(value + 1);
-          setTeamARate("");
-          setTeamALayValue("");
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, rate: value, lay: value + 1 };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
 
           setLTeamBRate(value);
           setLTeamBLayValue(value + 1);
           setLTeamARate("");
           setLTeamALayValue("");
         } else if (event.target.name === "teamC_rate") {
-          let result = handleZeroValue(targetValue, teamCLayValue);
+          let result = handleZeroValue(targetValue, teamC?.lay);
           if (result) {
             return;
           }
-          let teamCRateDecimal = teamCRate % 1; // get the decimal portion of the number
+          let teamCRateDecimal = teamC?.rate % 1; // get the decimal portion of the number
           let value;
           if (teamCRateDecimal >= 0.5) {
             value = parseFloat(event.target.value) - 1;
           } else {
             value = parseFloat(event.target.value) - 0.5;
           }
-          setTeamCRate(value);
-          setTeamCLayValue(value + 1);
-          setTeamARate("");
-          setTeamALayValue("");
-          setTeamBRate("");
-          setTeamBLayValue("");
+
+          setLocalTeamC((prev) => {
+            const newBody = { ...prev, rate: value, lay: value + 1 };
+            dispatch(setTeamC(newBody));
+            return newBody;
+          });
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamCRate(value);
           setLTeamCLayValue(value + 1);
@@ -1280,15 +1687,27 @@ const AddSession = ({ add, match }) => {
         }
       } else {
         if (event.target.name === "teamA_rate" && event.target.value >= 5) {
-          let result = handleZeroValue(targetValue, teamALayValue);
+          let result = handleZeroValue(targetValue, teamA?.lay);
           if (result) {
             return;
           }
-          let value = Math.round(teamARate) - incGap;
-          setTeamARate(value ? value : 0);
-          setTeamALayValue(value ? value + incGap : incGap);
-          setTeamBRate("");
-          setTeamBLayValue("");
+          let value = Math.round(teamA?.rate) - incGap;
+
+          setLocalTeamA((prev) => {
+            const newBody = {
+              ...prev,
+              lay: value ? value + incGap : incGap,
+              rate: value ? value : 0,
+            };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamARate(value ? value : 0);
           setLTeamALayValue(value ? value + incGap : incGap);
@@ -1298,16 +1717,27 @@ const AddSession = ({ add, match }) => {
           event.target.name === "teamB_rate" &&
           event.target.value >= 5
         ) {
-          let result = handleZeroValue(targetValue, teamBLayValue);
+          let result = handleZeroValue(targetValue, teamB?.lay);
           if (result) {
             return;
           }
-          let value = Math.round(teamBRate) - incGap;
-          setTeamBRate(value ? value : 0);
-          setTeamBLayValue(value ? value + incGap : incGap);
+          let value = Math.round(teamB?.rate) - incGap;
 
-          setTeamARate("");
-          setTeamALayValue("");
+          setLocalTeamB((prev) => {
+            const newBody = {
+              ...prev,
+              lay: value ? value + incGap : incGap,
+              rate: value ? value : 0,
+            };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
 
           setLTeamBRate(value ? value : 0);
           setLTeamBLayValue(value ? value + incGap : incGap);
@@ -1318,18 +1748,32 @@ const AddSession = ({ add, match }) => {
           event.target.name === "teamC_rate" &&
           event.target.value >= 5
         ) {
-          let result = handleZeroValue(targetValue, teamCLayValue);
+          let result = handleZeroValue(targetValue, teamC?.lay);
           if (result) {
             return;
           }
-          let value = Math.round(teamCRate) - incGap;
-          setTeamCRate(value ? value : 0);
-          setTeamCLayValue(value ? value + incGap : incGap);
+          let value = Math.round(teamC?.rate) - incGap;
 
-          setTeamARate("");
-          setTeamALayValue("");
-          setTeamBRate("");
-          setTeamBLayValue("");
+          setLocalTeamC((prev) => {
+            const newBody = {
+              ...prev,
+              lay: value ? value + incGap : incGap,
+              rate: value ? value : 0,
+            };
+            dispatch(setTeamC(newBody));
+            return newBody;
+          });
+
+          setLocalTeamA((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamA(newBody));
+            return newBody;
+          });
+          setLocalTeamB((prev) => {
+            const newBody = { ...prev, lay: "", rate: "" };
+            dispatch(setTeamB(newBody));
+            return newBody;
+          });
 
           setLTeamCRate(value ? value : 0);
           setLTeamCLayValue(value ? value + incGap : incGap);
@@ -1346,10 +1790,17 @@ const AddSession = ({ add, match }) => {
       setIncGap(5);
       if (event.target.name === "teamA_rate") {
         let value = event.target.value ? targetValue : 0;
-        setTeamARate(value);
-        setTeamALayValue(value + 5);
-        setTeamBRate("");
-        setTeamBLayValue("");
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: value + 5, rate: value };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamARate(value);
         setLTeamALayValue(value + 5);
@@ -1357,10 +1808,16 @@ const AddSession = ({ add, match }) => {
         setLTeamBLayValue("");
       } else if (event.target.name === "teamB_rate") {
         let value = event.target.value ? targetValue : 0;
-        setTeamBRate(value);
-        setTeamBLayValue(value + 5);
-        setTeamARate("");
-        setTeamALayValue("");
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: value + 5, rate: value };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
 
         setLTeamBRate(value);
         setLTeamBLayValue(value + 5);
@@ -1368,12 +1825,23 @@ const AddSession = ({ add, match }) => {
         setLTeamALayValue("");
       } else if (event.target.name === "teamC_rate") {
         let value = event.target.value ? targetValue : 0;
-        setTeamCRate(value);
-        setTeamCLayValue(value + 5);
-        setTeamARate("");
-        setTeamALayValue("");
-        setTeamBRate("");
-        setTeamBLayValue("");
+
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: value + 5, rate: value };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
         setLTeamCRate(value);
         setLTeamCLayValue(value + 5);
@@ -1931,10 +2399,10 @@ const AddSession = ({ add, match }) => {
               <>
                 {/* {!teamBall?.isABall ?  */}
                 <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                  {!isTeamBackUnlock ? (
+                  {!localTeamBackUnlock ? (
                     <Box
                       sx={{
-                        background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF",
+                        background: localTeamBackUnlock ? "#FDF21A" : "#A7DCFF",
                         width: "50%",
                         display: "flex",
                         height: "55px",
@@ -1942,11 +2410,11 @@ const AddSession = ({ add, match }) => {
                         alignItems: "center",
                       }}
                     >
-                      {!isTeamBackUnlock ? (
+                      {!localTeamBackUnlock ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
-                          {isTeamBackUnlock ? 0 : teamARate}
+                          {localTeamBackUnlock ? 0 : teamA?.rate}
                         </Typography>
                       ) : (
                         <img
@@ -1958,7 +2426,7 @@ const AddSession = ({ add, match }) => {
                   ) : (
                     <Box
                       sx={{
-                        background: isTeamASuspend ? "#FDF21A" : "#A7DCFF",
+                        background: teamA?.suspended ? "#FDF21A" : "#A7DCFF",
                         width: "50%",
                         display: "flex",
                         height: "55px",
@@ -1966,11 +2434,11 @@ const AddSession = ({ add, match }) => {
                         alignItems: "center",
                       }}
                     >
-                      {!isTeamASuspend ? (
+                      {!teamA?.suspended ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
-                          {isTeamASuspend ? 0 : teamARate}
+                          {teamA?.suspended ? 0 : teamA?.rate}
                         </Typography>
                       ) : (
                         <img
@@ -1982,7 +2450,7 @@ const AddSession = ({ add, match }) => {
                   )}
                   <Box
                     sx={{
-                      background: isTeamASuspend ? "#FDF21A" : "#FFB5B5",
+                      background: teamA?.suspended ? "#FDF21A" : "#FFB5B5",
                       width: "50%",
                       borderLeft: "2px solid white",
                       display: "flex",
@@ -1991,9 +2459,9 @@ const AddSession = ({ add, match }) => {
                       alignItems: "center",
                     }}
                   >
-                    {!isTeamASuspend ? (
+                    {!teamA?.suspended ? (
                       <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>
-                        {isTeamASuspend ? 0 : teamALayValue}
+                        {teamA?.suspended ? 0 : teamA?.lay}
                       </Typography>
                     ) : (
                       <img
@@ -2004,10 +2472,10 @@ const AddSession = ({ add, match }) => {
                   </Box>
                 </Box>
                 <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                  {!isTeamBackUnlock ? (
+                  {!localTeamBackUnlock ? (
                     <Box
                       sx={{
-                        background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF",
+                        background: localTeamBackUnlock ? "#FDF21A" : "#A7DCFF",
                         width: "50%",
                         display: "flex",
                         height: "55px",
@@ -2015,11 +2483,11 @@ const AddSession = ({ add, match }) => {
                         alignItems: "center",
                       }}
                     >
-                      {!isTeamBackUnlock ? (
+                      {!localTeamBackUnlock ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
-                          {isTeamBackUnlock ? 0 : teamBRate}
+                          {localTeamBackUnlock ? 0 : teamB?.rate}
                         </Typography>
                       ) : (
                         <img
@@ -2031,7 +2499,7 @@ const AddSession = ({ add, match }) => {
                   ) : (
                     <Box
                       sx={{
-                        background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF",
+                        background: teamB?.suspended ? "#FDF21A" : "#A7DCFF",
                         width: "50%",
                         display: "flex",
                         height: "55px",
@@ -2039,11 +2507,11 @@ const AddSession = ({ add, match }) => {
                         alignItems: "center",
                       }}
                     >
-                      {!isTeamBSuspend ? (
+                      {!teamB?.suspended ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
-                          {isTeamBSuspend ? 0 : teamBRate}
+                          {teamB?.suspended ? 0 : teamB?.rate}
                         </Typography>
                       ) : (
                         <img
@@ -2055,7 +2523,7 @@ const AddSession = ({ add, match }) => {
                   )}
                   <Box
                     sx={{
-                      background: isTeamBSuspend ? "#FDF21A" : "#FFB5B5",
+                      background: teamB?.suspended ? "#FDF21A" : "#FFB5B5",
                       width: "50%",
                       borderLeft: "2px solid white",
                       display: "flex",
@@ -2064,9 +2532,9 @@ const AddSession = ({ add, match }) => {
                       alignItems: "center",
                     }}
                   >
-                    {!isTeamBSuspend ? (
+                    {!teamB?.suspended ? (
                       <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>
-                        {isTeamBSuspend ? 0 : teamBLayValue}
+                        {teamB?.suspended ? 0 : teamB?.lay}
                       </Typography>
                     ) : (
                       <img
@@ -2080,10 +2548,10 @@ const AddSession = ({ add, match }) => {
                   <>
                     {/* {!teamBall?.isCBall ?  */}
                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
-                      {!isTeamBackUnlock ? (
+                      {!localTeamBackUnlock ? (
                         <Box
                           sx={{
-                            background: isTeamBackUnlock
+                            background: localTeamBackUnlock
                               ? "#FDF21A"
                               : "#A7DCFF",
                             width: "50%",
@@ -2093,11 +2561,11 @@ const AddSession = ({ add, match }) => {
                             alignItems: "center",
                           }}
                         >
-                          {!isTeamBackUnlock ? (
+                          {!localTeamBackUnlock ? (
                             <Typography
                               sx={{ fontWeight: "600", fontSize: "22px" }}
                             >
-                              {isTeamBackUnlock ? 0 : teamCRate}
+                              {localTeamBackUnlock ? 0 : teamC?.rate}
                             </Typography>
                           ) : (
                             <img
@@ -2109,7 +2577,9 @@ const AddSession = ({ add, match }) => {
                       ) : (
                         <Box
                           sx={{
-                            background: isTeamCSuspend ? "#FDF21A" : "#A7DCFF",
+                            background: teamC?.suspended
+                              ? "#FDF21A"
+                              : "#A7DCFF",
                             width: "50%",
                             display: "flex",
                             height: "56px",
@@ -2117,11 +2587,11 @@ const AddSession = ({ add, match }) => {
                             alignItems: "center",
                           }}
                         >
-                          {!isTeamCSuspend ? (
+                          {!teamC?.suspended ? (
                             <Typography
                               sx={{ fontWeight: "600", fontSize: "22px" }}
                             >
-                              {isTeamCSuspend ? 0 : teamCRate}
+                              {teamC?.suspended ? 0 : teamC?.rate}
                             </Typography>
                           ) : (
                             <img
@@ -2133,7 +2603,7 @@ const AddSession = ({ add, match }) => {
                       )}
                       <Box
                         sx={{
-                          background: isTeamCSuspend ? "#FDF21A" : "#FFB5B5",
+                          background: teamC?.suspended ? "#FDF21A" : "#FFB5B5",
                           width: "50%",
                           borderLeft: "2px solid white",
                           display: "flex",
@@ -2142,11 +2612,11 @@ const AddSession = ({ add, match }) => {
                           alignItems: "center",
                         }}
                       >
-                        {!isTeamCSuspend ? (
+                        {!teamC?.suspended ? (
                           <Typography
                             sx={{ fontWeight: "600", fontSize: "22px" }}
                           >
-                            {isTeamCSuspend ? 0 : teamCLayValue}
+                            {teamC?.suspended ? 0 : teamC?.lay}
                           </Typography>
                         ) : (
                           <img

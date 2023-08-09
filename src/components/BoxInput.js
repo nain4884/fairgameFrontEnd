@@ -73,7 +73,7 @@ const BoxInput = ({
       >
         <TextField 
           value={defaultValue}
-          autoFocus
+          // autoFocus
           variant="standard"
           InputProps={{
             sx: {
