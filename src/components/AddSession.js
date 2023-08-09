@@ -565,7 +565,8 @@ const AddSession = ({ add, match }) => {
     event.preventDefault();
     let targetValue = parseFloat(event.target.value);
     event.target.value = targetValue;
-    if (key == "right") {
+    // if (key == "right") {
+    if (key == "d") {
       handleSuspend();
       let value = targetValue ? targetValue + incGap : incGap;
       setPressEnter(false);
@@ -575,9 +576,8 @@ const AddSession = ({ add, match }) => {
           return;
         }
 
-  
         setLocalTeamA((prev) => {
-          const newBody = { ...prev,rate: value, lay: chckValue + incGap };
+          const newBody = { ...prev, rate: value, lay: chckValue + incGap };
           dispatch(setTeamA(newBody));
           return newBody;
         });
@@ -585,8 +585,6 @@ const AddSession = ({ add, match }) => {
         setLTeamARate(value);
         let chckValue = teamA?.lay ? teamA?.lay : value;
         let l_chckValue = l_teamALayValue ? l_teamALayValue : value;
-
-      
 
         setLocalTeamB((prev) => {
           const newBody = { ...prev, rate: "", lay: "" };
@@ -606,7 +604,7 @@ const AddSession = ({ add, match }) => {
         }
 
         setLocalTeamB((prev) => {
-          const newBody = { ...prev, rate: value,lay: chckValue + incGap };
+          const newBody = { ...prev, rate: value, lay: chckValue + incGap };
           dispatch(setTeamB(newBody));
           return newBody;
         });
@@ -615,7 +613,6 @@ const AddSession = ({ add, match }) => {
         let chckValue = teamB?.lay ? teamB?.lay : value;
         let l_chckValue = l_teamBLayValue ? l_teamBLayValue : value;
 
-  
         setLocalTeamA((prev) => {
           const newBody = { ...prev, lay: "", rate: "" };
           dispatch(setTeamA(newBody));
@@ -632,7 +629,7 @@ const AddSession = ({ add, match }) => {
         }
 
         setLocalTeamC((prev) => {
-          const newBody = { ...prev, rate: value,lay: chckValue + incGap };
+          const newBody = { ...prev, rate: value, lay: chckValue + incGap };
           dispatch(setTeamC(newBody));
           return newBody;
         });
@@ -641,7 +638,6 @@ const AddSession = ({ add, match }) => {
         let chckValue = teamC?.lay ? teamC?.lay : value;
 
         let l_chckValue = l_teamCLayValue ? l_teamCLayValue : value;
-
 
         setLocalTeamA((prev) => {
           const newBody = { ...prev, lay: "", rate: "" };
@@ -660,13 +656,15 @@ const AddSession = ({ add, match }) => {
         setLTeamBRate("");
         setLTeamBLayValue("");
       }
-    } else if (key == "left") {
+    } else 
+    // if (key == "left") {
+        if (key == "a") {
       handleSuspend();
       let value = targetValue - incGap;
       setPressEnter(false);
       if (event.target.name === "teamA_rate" && teamA?.rate > 0) {
         setLocalTeamA((prev) => {
-          const newBody = { ...prev, lay: teamA?.lay - incGap , rate: value };
+          const newBody = { ...prev, lay: teamA?.lay - incGap, rate: value };
           dispatch(setTeamA(newBody));
           return newBody;
         });
@@ -685,7 +683,7 @@ const AddSession = ({ add, match }) => {
 
       if (event.target.name === "teamB_rate" && teamB?.rate > 0) {
         setLocalTeamB((prev) => {
-          const newBody = { ...prev, lay:teamB?.lay - incGap , rate:value  };
+          const newBody = { ...prev, lay: teamB?.lay - incGap, rate: value };
           dispatch(setTeamB(newBody));
           return newBody;
         });
@@ -702,7 +700,7 @@ const AddSession = ({ add, match }) => {
       }
       if (event.target.name === "teamC_rate" && teamC?.rate > 0) {
         setLocalTeamC((prev) => {
-          const newBody = { ...prev, lay:teamC?.lay - incGap , rate:value  };
+          const newBody = { ...prev, lay: teamC?.lay - incGap, rate: value };
           dispatch(setTeamC(newBody));
           return newBody;
         });
@@ -724,7 +722,9 @@ const AddSession = ({ add, match }) => {
         setLTeamBRate("");
         setLTeamBLayValue("");
       }
-    } else if (key == "up") {
+    } else 
+    // if (key == "up") {
+      if (key == "w") {
       handleSuspend();
       setPressEnter(false);
       if (event.target.name === "teamA_rate") {
@@ -812,7 +812,9 @@ const AddSession = ({ add, match }) => {
         setLTeamBRate("");
         setLTeamBLayValue("");
       }
-    } else if (key == "down") {
+    } else 
+    // if (key == "down") {
+      if (key == "z") {
       handleSuspend();
       setPressEnter(false);
       if (
@@ -2015,6 +2017,10 @@ const AddSession = ({ add, match }) => {
               >
                 <KeyboardEventHandler
                   handleKeys={[
+                    "d",
+                    "a",
+                    "w",
+                    "z",
                     "up",
                     "down",
                     "left",
@@ -2151,6 +2157,10 @@ const AddSession = ({ add, match }) => {
               >
                 <KeyboardEventHandler
                   handleKeys={[
+                    "d",
+                    "a",
+                    "w",
+                    "z",
                     "up",
                     "down",
                     "left",
@@ -2285,6 +2295,10 @@ const AddSession = ({ add, match }) => {
                 >
                   <KeyboardEventHandler
                     handleKeys={[
+                      "d",
+                      "a",
+                      "w",
+                      "z",
                       "up",
                       "down",
                       "left",
