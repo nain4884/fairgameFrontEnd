@@ -18,8 +18,22 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
           background: "white",
           height: "38px",
           width: "100%",
+          position:"relative"
         }}
       >
+     {newData?.betStatus === 0 && (
+        <Box
+          sx={{
+            margin: "1px",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            right: 0,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 2,
+          }}
+        ></Box>
+      )}
         <Box
           sx={{
             display: "flex",

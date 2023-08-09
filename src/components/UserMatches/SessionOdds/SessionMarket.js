@@ -355,7 +355,7 @@ const SessionMarket = ({
                       key={element?.id}
                       sx={{
                         width: "100%",
-                        display: element?.betStatus === 0
+                        display: element?.betStatus === 2
                           ? "none"
                           : "block",
                       }}

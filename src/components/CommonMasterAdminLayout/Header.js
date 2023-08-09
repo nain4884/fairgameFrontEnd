@@ -317,7 +317,7 @@ const CustomHeader = ({}) => {
                 const updatedBettings = currentMatch?.bettings?.map(
                   (betting) => {
                     if (betting?.id === value?.betId) {
-                      return { ...betting, betStatus: 0 };
+                      return { ...betting, betStatus: 2 };
                     }
                     return betting;
                   }
@@ -342,7 +342,7 @@ const CustomHeader = ({}) => {
                   if (item?.id === value?.match_id) {
                     const updatedBettings = item?.bettings.map((betting) => {
                       if (betting.id === value?.betId) {
-                        return { ...betting, betStatus: 0 };
+                        return { ...betting, betStatus: 2 };
                       }
                       return betting;
                     });

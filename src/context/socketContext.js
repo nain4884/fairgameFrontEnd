@@ -175,17 +175,19 @@ export const SocketProvider = ({ children }) => {
           // Update the bettings array in the current match object
           const updatedBettings = currentMatch?.bettings?.map((betting) => {
             if (betting.id === data.betId) {
-              setLocalSessionOffline((prev) => {
-                if (prev.includes(data.betId)) {
-                  const newres = prev.filter((id) => id !== data.betId);
+              // setLocalSessionOffline((prev) => {
+              //   if (prev.includes(data.betId)) {
+              //     const newres = prev.filter((id) => id !== data.betId);
 
-                  dispatch(setSessionOffline(newres));
-                }
-                const body = [...prev, data.betId];
+              //     dispatch(setSessionOffline(newres));
+              //   }
+              //   const body = [...prev, data.betId];
 
-                dispatch(setSessionOffline(body));
-                return body;
-              });
+              //   dispatch(setSessionOffline(body));
+              //   return body;
+              // });
+
+              return {...betting,betStatus:2}
             }
             return betting;
           });
