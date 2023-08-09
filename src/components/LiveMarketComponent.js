@@ -124,7 +124,7 @@ const LiveMarketComponent = ({
 
   return (
     <>
-      <style jsx scoped>
+      <style jsx="true" scoped>
         {`
           @keyframes gradient {
             0% {

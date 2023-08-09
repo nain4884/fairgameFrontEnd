@@ -1848,7 +1848,7 @@ const AddSession = ({ add, match }) => {
 
   return (
     <>
-      <style jsx scoped>
+      <style jsx="true" scoped>
         {`
           .InputChild input {
             text-align: center;

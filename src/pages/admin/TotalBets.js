@@ -352,7 +352,7 @@ const TotalBets = () => {
                 {
                     [...data, ...data, ...data]?.map((i, k) => {
                         return (
-                            <div style={{ display: 'flex', position: 'relative' }} >
+                            <div key={k} style={{ display: 'flex', position: 'relative' }} >
                                 <Box sx={{ width: '3%', border: '1px solid white', background: 'black', height: '50px', justifyContent: 'center', alignItems: 'center', display: 'flex' }} >
                                     <Typography sx={{ fontSize: '10px', fontWeight: '600', color: 'white' }}>{k + 1}</Typography>
 
@@ -455,12 +455,12 @@ const Row = ({ values, index }) => {
             {values.map((item, k) => {
                 if (!item?.small) {
                     return (
-                        <LargeBox k={k} item={item} />
+                        <LargeBox key={k} k={k} item={item} />
                     )
                 }
                 else {
                     return (
-                        <SmallBox k={k} item={item} />
+                        <SmallBox key={k} k={k} item={item} />
                     )
                 }
             })

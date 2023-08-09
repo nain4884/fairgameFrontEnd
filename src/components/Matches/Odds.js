@@ -156,7 +156,7 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
       }, 3000);
       activateLiveMatchMarket();
       socketMicro.on(`matchOdds${match?.marketId}`, (val) => {
-        if (val.length === 0) {
+        if (val?.length === 0) {
           matchOddsCount += 1;
           if (matchOddsCount >= 3) {
             socketMicro.emit("disconnect_market", {
@@ -186,7 +186,7 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
 
   return (
     <>
-      <style jsx scoped>
+      <style jsx="true" scoped>
         {`
           @keyframes gradient {
             0% {

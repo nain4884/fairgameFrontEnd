@@ -386,7 +386,7 @@ const SessionMarket = ({
         )}
       </Box>
 
-      <style jsx scope>
+      <style jsx="true" scope="true">
         {`
           @media only screen and (max-width: 600px) {
             body .arrowUpCollaps img {

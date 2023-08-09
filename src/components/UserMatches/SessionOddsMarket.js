@@ -171,7 +171,7 @@ const SessionOddsMarket = ({ data }) => {
             data.matchSessionData.map((element, idx) => {
               return (
                 <>
-                  <SeasonMarketBox key={index} typeOfBet={"Session"} data={element} />
+                  <SeasonMarketBox key={idx} typeOfBet={"Session"} data={element} />
                   <Divider />
                 </>
               );

@@ -246,8 +246,8 @@ const ChangeButtonValue = ({ selected, visible }) => {
                     "5",
                     "6",
                     "7",
-                  ].map((x) => {
-                    return <ValButton value={x} />;
+                  ].map((x, idx) => {
+                    return <ValButton key={idx} value={x} />;
                   })}
                 </Box>
                 <Box sx={{ flex: 1, marginLeft: "10px" }}>
@@ -277,8 +277,8 @@ const ChangeButtonValue = ({ selected, visible }) => {
                     "5",
                     "6",
                     "7",
-                  ].map((x) => {
-                    return <ValButton value={x} />;
+                  ].map((x, idx) => {
+                    return <ValButton key={idx} value={x} />;
                   })}
                 </Box>
               </Box>

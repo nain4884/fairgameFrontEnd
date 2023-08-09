@@ -125,7 +125,7 @@ const Rules = ({userPadding}) => {
       </Typography>
       <ListHeader />
       {["", "", "", ""].map((value, index) => {
-        return <RowComponent index={index} />;
+        return <RowComponent key={index} index={index} />;
       })}{" "}
     </Background>
   );

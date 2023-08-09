@@ -28,16 +28,18 @@ const DropdownMenu1 = ({
         },
       }}
     >
-      {allMatch?.length> 0  && allMatch?.map((x, i) => (
-        <MenutItemsComponent
-          allLiveEventSession={allLiveEventSession}
-          handleClose={handleClose}
-          setSelected={setSelected}
-          index={i}
-          selected={selected}
-          x={x}
-        />
-      ))}
+      {allMatch?.length > 0 &&
+        allMatch?.map((x, i) => (
+          <MenutItemsComponent
+            key={i}
+            allLiveEventSession={allLiveEventSession}
+            handleClose={handleClose}
+            setSelected={setSelected}
+            index={i}
+            selected={selected}
+            x={x}
+          />
+        ))}
     </Menu>
   );
 };

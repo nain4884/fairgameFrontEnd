@@ -73,7 +73,7 @@ const MenutItemsComponent = ({
                 return (
                   <>
                     {event.bettings.length > 0 && (
-                      <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+                      <Typography key={event.id} sx={{ fontSize: "12px", fontWeight: "600" }}>
                         {activeUser == "1"
                           ? "Current Live Session"
                           : "Current Live Bookmaker"}
@@ -82,6 +82,7 @@ const MenutItemsComponent = ({
                     {event.bettings.map((element) => {
                       return (
                         <Box
+                        key={element.id}
                           onClick={(e) => {
                             dispatch(setSessionBetId(element.id));
                             if (activeUser == "1") {
