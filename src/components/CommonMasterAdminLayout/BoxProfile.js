@@ -197,8 +197,9 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
     };
     return (
       <Box ref={innerRef} sx={classes.mainBoxsx}>
-        {menutItems?.map((x) => (
+        {menutItems?.map((x, idx) => (
           <MenuItem
+            key={idx}
             dense={true}
             sx={classes.mainBoxMenuItem}
             onClick={() => {

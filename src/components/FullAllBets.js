@@ -648,9 +648,9 @@ const Row = ({ values, index }) => {
     <Box key={index} sx={{ width: "100%", display: "flex" }}>
       {values.map((item, k) => {
         if (!item?.small) {
-          return <LargeBox k={k} item={item} />;
+          return <LargeBox k={k} key={k} item={item} />;
         } else {
-          return <SmallBox k={k} item={item} />;
+          return <SmallBox k={k} key={k} item={item} />;
         }
       })}
     </Box>

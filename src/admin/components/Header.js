@@ -37,7 +37,7 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import { SocketContext } from "../../context/socketContext";
 
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const CustomHeader = ({ }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchor, setAnchor] = React.useState(null);
   const [balance, setBalance] = useState(currentUser?.current_balance);
-  const [fullName, setFullName] = useState(currentUser?.userName)
+  const [fullName, setFullName] = useState(currentUser?.userName);
   const { axios, JWT } = setRole();
   async function getUserDetail() {
     try {
@@ -91,7 +91,7 @@ const CustomHeader = ({ }) => {
     }
   }, []);
 
-  useEffect(() => { }, [currentSelected]);
+  useEffect(() => {}, [currentSelected]);
   useEffect(() => {
     if (!matchesMobile) {
       setMobileOpen(false);
@@ -233,7 +233,6 @@ const CustomHeader = ({ }) => {
                       borderRadius: "3px",
                       marginLeft: "1.5%",
                       justifyContent: "center",
-
                     }}
                     titleStyle={{
                       color: currentSelected == 3 ? "green" : "white",
@@ -459,8 +458,9 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose }) => {
         },
       }}
     >
-      {menutItems1.map((x) => (
+      {menutItems1.map((x, idx) => (
         <MenuItem
+          key={idx}
           dense={true}
           sx={{
             fontSize: { laptop: "11px", mobile: "10px" },
@@ -564,7 +564,7 @@ const BoxProfile = ({ image, value, containerStyle, balance }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  useEffect(() => { }, [anchorEl]);
+  useEffect(() => {}, [anchorEl]);
   const handleClose = () => {
     setOpen(false);
   };
@@ -682,7 +682,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose }) => {
     handleClose();
     removeSocket();
     socket.disconnect();
-    socketMicro.disconnect()
+    socketMicro.disconnect();
   };
   return (
     <Box

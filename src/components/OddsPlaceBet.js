@@ -484,9 +484,9 @@ const OddsPlaceBet = ({
         {
           <>
             <Box sx={{ display: "flex", marginTop: "15px", marginX: "2px", border: '2px solid white' }}>
-              {["2000", "3000", "5000", "10000"]?.map((v) => (
+              {["2000", "3000", "5000", "10000"]?.map((v, idx) => (
                 <NumberData
-                  key={v}
+                  key={idx}
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
                   value={v}
                   getLatestBetAmount={(value) =>
@@ -497,9 +497,9 @@ const OddsPlaceBet = ({
               ))}
             </Box>
             <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }}>
-              {["20000", "100000", "200000", "500000"]?.map((v) => (
+              {["20000", "100000", "200000", "500000"]?.map((v, idx) => (
                 <NumberData
-                  key={v}
+                  key={idx}
                   containerStyle={{ marginLeft: "2px", flex: 1 }}
                   value={v}
                   getLatestBetAmount={(value) =>

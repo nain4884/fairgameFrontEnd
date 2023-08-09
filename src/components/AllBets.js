@@ -211,7 +211,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
               newData?.map((i, k) => {
                 const num = newData?.length - k;
                 return (
-                  <div style={{ display: "flex", position: "relative" }}>
+                  <div key={k} style={{ display: "flex", position: "relative" }}>
                     <Box
                       sx={{
                         width: "4%",
@@ -529,9 +529,9 @@ const Row = ({ values, index }) => {
     <Box sx={{ width: "100%", display: "flex" }}>
       {values?.map((item, k) => {
         if (!item?.small) {
-          return <LargeBox k={k} item={item} />;
+          return <LargeBox k={k} key={k} item={item} />;
         } else {
-          return <SmallBox k={k} item={item} />;
+          return <SmallBox k={k} key={k} item={item} />;
         }
       })}
     </Box>

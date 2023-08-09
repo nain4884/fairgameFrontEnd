@@ -184,6 +184,7 @@ const RenderDates = ({ i, handleDrawerToggle }) => {
               handleDrawerToggle={handleDrawerToggle}
               i={value}
               k={index}
+              key={index}
             />
           );
         })}
@@ -222,6 +223,7 @@ const RenderValues = ({ i, handleDrawerToggle }) => {
               handleDrawerToggle={handleDrawerToggle}
               i={value}
               k={index}
+              key={index}
             />
           );
         })}
@@ -287,6 +289,7 @@ const RenderEvents = ({ i, handleDrawerToggle, k }) => {
               handleDrawerToggle={handleDrawerToggle}
               i={value}
               k={index}
+              key={index}
             />
           );
         })}
@@ -326,6 +329,7 @@ const RenderGames = ({ i, k, handleDrawerToggle }) => {
               handleDrawerToggle={handleDrawerToggle}
               i={value}
               k={index}
+              key={index}
             />
           );
         })}
@@ -384,7 +388,7 @@ const SideBarAdmin = ({ handleDrawerToggle, key }) => {
       </Box>
       {datas.map((i, k) => {
         return (
-          <RenderGames handleDrawerToggle={handleDrawerToggle} i={i} k={k} />
+          <RenderGames key={k} handleDrawerToggle={handleDrawerToggle} i={i} k={k} />
         );
       })}
     </Box>

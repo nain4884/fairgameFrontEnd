@@ -32,7 +32,7 @@ export default function BetMakerMarketComponent({ add, match }) {
                         betData?.map((i, k) => {
                             const num = betData?.length - k
                             return (
-                                <Row index={num} values={i} />
+                                <Row key={k} index={num} values={i} />
                             );
                         })}
                 </Box>

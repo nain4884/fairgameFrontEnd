@@ -34,8 +34,8 @@ const SmallDropDown = ({ handleChange, getLimitEntries }) => {
             </Box>
             {open && <Box sx={{ display: 'flex', flexDirection: 'column', background: 'white', width: '47px', alignSelf: 'center', marginX: '5px', borderRadius: '2px', marginTop: '2px', position: 'absolute', zIndex: 22 }} >
 
-                {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', "11", "12", "13", "14", "15"].map((i) => {
-                    return (<Item item={i} getLimitEntries={getLimitEntries} />)
+                {['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', "11", "12", "13", "14", "15"].map((i, idx) => {
+                    return (<Item key={idx} item={i} getLimitEntries={getLimitEntries} />)
                 })}
             </Box>}
         </Box>

@@ -1,6 +1,6 @@
 import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Excel, Pdf, } from "../admin/assets";
+import { Excel, Pdf } from "../admin/assets";
 
 import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,7 +52,7 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-          pageLimit
+            pageLimit
         )
       );
     } catch (e) {
@@ -118,6 +118,7 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
               if (i % 2 === 0) {
                 return (
                   <AccountListRow
+                    key={i}
                     showOptions={false}
                     containerStyle={{ background: "#FFE094" }}
                     profit={element.profit_loss >= 0}

@@ -59,7 +59,14 @@ const DropDownSimple = ({
     setOpen(false);
   });
 
-  const Item = ({ item, mId, matchesSelect, eventDetail, CompetitionName ,EventId}) => {
+  const Item = ({
+    item,
+    mId,
+    matchesSelect,
+    eventDetail,
+    CompetitionName,
+    EventId,
+  }) => {
     return (
       <Box
         onClick={() => {
@@ -136,12 +143,19 @@ const DropDownSimple = ({
           dropDownTextStyle,
         ]}
       >
-        <Typography>{item==="0" ? "0.00":item}</Typography>
+        <Typography>{item === "0" ? "0.00" : item}</Typography>
         <Typography sx={{ fontSize: "12px" }}>{CompetitionName}</Typography>
       </Box>
     );
   };
-  const Block = ({ i, mId, matchesSelect, eventDetail, CompetitionName ,EventId}) => {
+  const Block = ({
+    i,
+    mId,
+    matchesSelect,
+    eventDetail,
+    CompetitionName,
+    EventId,
+  }) => {
     return (
       <Item
         CompetitionName={CompetitionName}
@@ -157,7 +171,12 @@ const DropDownSimple = ({
     <Box sx={[{ width: "19%" }, containerStyle]} ref={innerRef}>
       <Typography
         sx={[
-          { fontSize: "10px", fontWeight: "600", marginBottom: ".3vh", color: '#202020' },
+          {
+            fontSize: "10px",
+            fontWeight: "600",
+            marginBottom: ".3vh",
+            color: "#202020",
+          },
           titleStyle,
         ]}
       >
@@ -193,10 +212,16 @@ const DropDownSimple = ({
             },
           ]}
         >
-          <Typography  
-          sx={{
-            fontSize:{ laptop: "14px !important", mobile: "12px !important" },
-          }}>{value==="0"? "0.00":value}</Typography>
+          <Typography
+            sx={{
+              fontSize: {
+                laptop: "14px !important",
+                mobile: "12px !important",
+              },
+            }}
+          >
+            {value === "0" ? "0.00" : value}
+          </Typography>
           {place === 5 && (
             <Typography sx={{ fontSize: "10px !important" }}>
               {Detail[22].val}
@@ -236,9 +261,10 @@ const DropDownSimple = ({
           ]}
         >
           {matchesSelect
-            ? data.map((i) => {
+            ? data.map((i, idx) => {
                 return (
                   <Block
+                    key={idx}
                     i={i.EventName}
                     mId={i.MarketId}
                     EventId={i.EventId}
@@ -248,8 +274,8 @@ const DropDownSimple = ({
                   />
                 );
               })
-            : data.map((i) => {
-                return <Block i={i} />;
+            : data.map((i, idx) => {
+                return <Block key={idx} i={i} />;
               })}
         </Box>
       )}

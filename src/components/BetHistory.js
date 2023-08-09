@@ -135,6 +135,7 @@ const BetHistory = ({
                 const formattedNum = num < 10 ? "0" + num : num.toString();
                 return (
                   <Box
+                  key={k}
                     sx={{
                       display: "flex",
                       flexDirection: "row",

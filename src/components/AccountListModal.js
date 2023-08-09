@@ -1,6 +1,6 @@
 import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Excel, Pdf, } from "../admin/assets";
+import { Excel, Pdf } from "../admin/assets";
 
 import StyledImage from "./StyledImage";
 import { useSelector } from "react-redux";
@@ -23,8 +23,8 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
-  const [loader, setLoader] = useState(false)
-  const [loader1, setLoader1] = useState(false)
+  const [loader, setLoader] = useState(false);
+  const [loader1, setLoader1] = useState(false);
   const [sumValue, setSumVal] = useState({
     creditsum: 0.0,
     profitsum: 0.0,
@@ -44,7 +44,8 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
   async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUserById/${id}?${username ? `userName=${username}` : ""
+        `/fair-game-wallet/getAllUserById/${id}?${
+          username ? `userName=${username}` : ""
         }&page=${currentPage}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
@@ -58,16 +59,16 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-          pageLimit
+            pageLimit
         )
       );
       setTimeout(() => {
-        setLoader(false)
-      }, 1000)
+        setLoader(false);
+      }, 1000);
     } catch (e) {
       setTimeout(() => {
-        setLoader(false)
-      }, 1000)
+        setLoader(false);
+      }, 1000);
       console.log(e);
     }
     // /fair-game-wallet/getLogUserAggregateData
@@ -91,19 +92,18 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
       setTimeout(() => {
-        setLoader1(false)
-      }, 1000)
+        setLoader1(false);
+      }, 1000);
     } catch (e) {
       console.log(e);
       setTimeout(() => {
-        setLoader1(false)
-      }, 1000)
+        setLoader1(false);
+      }, 1000);
     }
   };
   useEffect(() => {
-    setLoader1(true)
+    setLoader1(true);
     getUerLogged();
-
   }, []);
 
   function callPage(val) {
@@ -112,7 +112,6 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
 
   return (
     <>
-
       <Box
         sx={[
           {
@@ -124,78 +123,89 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
             borderBottomLeftRadius: "0px",
             overflow: "hidden",
             border: "2px solid white",
-            background: "#F8C851"
+            background: "#F8C851",
           },
         ]}
       >
-        {loader && loader1 ? <CustomLoader /> : <>
-          <Box sx={{ display: "flex", justifyContent: "space-between", height: "50px" }}>
-            <ListH
-              id={id}
-              title={title}
-              getListOfUser={getListOfUser}
-              setPageCount={setPageCount}
-              matchesMobile={matchesMobile}
-              handleExport={handleExport}
-            />
-            <Button
-              sx={{ color: "", fontSize: "30px" }}
-              onClick={() => {
-                setShow({ value: false, id: "", title: "" });
+        {loader && loader1 ? (
+          <CustomLoader />
+        ) : (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                height: "50px",
               }}
             >
-              &times;
-            </Button>
-          </Box>
-
-          <Box
-            sx={{ overflowX: "auto" }}
-          >
-            <Box sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}>
-              <ListHeaderT />
-              <ListSubHeaderT data={sumValue} />
-              {data1?.map((element, i) => {
-                if (i % 2 === 0) {
-                  return (
-                    <AccountListRow
-                      callProfile={false}
-                      showOptions={false}
-                      showChildModal={true}
-                      containerStyle={{ background: "#FFE094" }}
-                      profit={element.profit_loss >= 0}
-                      fContainerStyle={{ background: "#0B4F26" }}
-                      fTextStyle={{ color: "white" }}
-                      element={element}
-                      getListOfUser={getListOfUser}
-                      currentPage={currentPage}
-                    />
-                  );
-                } else {
-                  return (
-                    <AccountListRow
-                      callProfile={false}
-                      showOptions={false}
-                      showChildModal={true}
-                      containerStyle={{ background: "#ECECEC" }}
-                      profit={element.profit_loss >= 0}
-                      fContainerStyle={{ background: "#F8C851" }}
-                      fTextStyle={{ color: "#0B4F26" }}
-                      element={element}
-                      getListOfUser={getListOfUser}
-                      currentPage={currentPage}
-                    />
-                  );
-                }
-              })}
+              <ListH
+                id={id}
+                title={title}
+                getListOfUser={getListOfUser}
+                setPageCount={setPageCount}
+                matchesMobile={matchesMobile}
+                handleExport={handleExport}
+              />
+              <Button
+                sx={{ color: "", fontSize: "30px" }}
+                onClick={() => {
+                  setShow({ value: false, id: "", title: "" });
+                }}
+              >
+                &times;
+              </Button>
             </Box>
-          </Box>
-          <Footer
-            currentPage={currentPage}
-            pages={pageCount}
-            callPage={callPage}
-          />
-        </>
-        }
+
+            <Box sx={{ overflowX: "auto" }}>
+              <Box
+                sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}
+              >
+                <ListHeaderT />
+                <ListSubHeaderT data={sumValue} />
+                {data1?.map((element, i) => {
+                  if (i % 2 === 0) {
+                    return (
+                      <AccountListRow
+                        key={i}
+                        callProfile={false}
+                        showOptions={false}
+                        showChildModal={true}
+                        containerStyle={{ background: "#FFE094" }}
+                        profit={element.profit_loss >= 0}
+                        fContainerStyle={{ background: "#0B4F26" }}
+                        fTextStyle={{ color: "white" }}
+                        element={element}
+                        getListOfUser={getListOfUser}
+                        currentPage={currentPage}
+                      />
+                    );
+                  } else {
+                    return (
+                      <AccountListRow
+                        key={i}
+                        callProfile={false}
+                        showOptions={false}
+                        showChildModal={true}
+                        containerStyle={{ background: "#ECECEC" }}
+                        profit={element.profit_loss >= 0}
+                        fContainerStyle={{ background: "#F8C851" }}
+                        fTextStyle={{ color: "#0B4F26" }}
+                        element={element}
+                        getListOfUser={getListOfUser}
+                        currentPage={currentPage}
+                      />
+                    );
+                  }
+                })}
+              </Box>
+            </Box>
+            <Footer
+              currentPage={currentPage}
+              pages={pageCount}
+              callPage={callPage}
+            />
+          </>
+        )}
       </Box>
     </>
   );
@@ -301,7 +311,14 @@ const Footer = ({ currentPage, pages, callPage }) => {
   );
 };
 
-const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleExport }) => {
+const ListH = ({
+  id,
+  title,
+  getListOfUser,
+  setPageCount,
+  matchesMobile,
+  handleExport,
+}) => {
   return (
     <Box
       display={"flex"}
@@ -322,7 +339,6 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
           }}
         >
           {title}
-
         </Typography>
         {matchesMobile && (
           <Box sx={{ display: "flex", marginTop: "5px" }}>
@@ -342,7 +358,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
                 sx={{
                   height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                 }}
-                onClick={() => handleExport('xlsx', id)}
+                onClick={() => handleExport("xlsx", id)}
               />
             </Box>
             <Box
@@ -362,7 +378,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
                 sx={{
                   height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                 }}
-                onClick={() => handleExport('pdf', id)}
+                onClick={() => handleExport("pdf", id)}
               />
             </Box>
           </Box>
@@ -385,7 +401,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
                 sx={{
                   height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                 }}
-                onClick={() => handleExport('xlsx', id)}
+                onClick={() => handleExport("xlsx", id)}
               />
             </Box>
             <Box
@@ -405,7 +421,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
                 sx={{
                   height: { mobile: "15px", laptop: "20px", tablet: "20px" },
                 }}
-                onClick={() => handleExport('pdf', id)}
+                onClick={() => handleExport("pdf", id)}
               />
             </Box>
           </>
@@ -419,7 +435,7 @@ const ListH = ({ id, title, getListOfUser, setPageCount, matchesMobile, handleEx
         show={true}
         placeholder={"Search User..."}
         inputContainerStyle={{
-          width: { laptop: "12%", mobile: "50%" }
+          width: { laptop: "12%", mobile: "50%" },
         }}
       />
     </Box>

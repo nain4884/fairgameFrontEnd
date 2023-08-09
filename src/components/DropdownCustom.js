@@ -53,9 +53,9 @@ const DropDownCustom = ({ handleChange, title, data, containerStyle, dropDownSty
             </Box>
             {open && <Box sx={[{ display: 'flex', flexDirection: 'column', background: 'white', width: '19%', alignSelf: 'center', borderRadius: '2px', marginTop: '2px', position: 'absolute', borderRadius: '3px', border: '2px solid #DEDEDE', zIndex: 9999 }, dropDownStyle]} >
 
-                {data.map((i) => {
+                {data.map((i, idx) => {
                     return (
-                        <Block i={i} />
+                        <Block key={idx} i={i} />
                     )
                 })}
             </Box>}

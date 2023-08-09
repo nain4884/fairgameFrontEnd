@@ -47,7 +47,7 @@ const ManualBookMakerMarket = ({ profit, mark, mark2 }) => {
             {
                 [...data, ...data, ...data, ...data].map((i, k) => {
                     return (
-                        <Box sx={{ display: 'flex', flexDirection: 'row', position: 'relative' }} >
+                        <Box key={k} sx={{ display: 'flex', flexDirection: 'row', position: 'relative' }} >
                             <Box sx={{ height: '40px', margin: { mobile: '1px', laptop: '0.4px' }, width: '30px', display: 'flex', background: 'black', justifyContent: 'center', alignItems: 'center' }} >
                                 <Typography sx={{ color: 'white', fontSize: '10px', fontWeight: '500' }} >{"0" + (k + 1)}</Typography>
                             </Box>

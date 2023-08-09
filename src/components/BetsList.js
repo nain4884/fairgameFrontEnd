@@ -142,6 +142,7 @@ const BetsList = ({ betHistory, pageCount, currentPage, currenLimit, handleGetLi
           {betHistory.map((item, index) => {
             return (
               <Row
+              key={index}
                 data={item}
                 index={index}
                 containerStyle={{ background: "#FFE094" }}

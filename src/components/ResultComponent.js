@@ -58,10 +58,10 @@ const ResultComponent = ({
       console.log("error", e?.message);
     }
   };
-  const teamData = draw===
-  'draw'
-    ? [`${teamA}`, `${teamB}`, `${tie}`, `${draw}`]
-    : [`${teamA}`, `${teamB}`, `${tie}`];
+  const teamData =
+    draw === "draw"
+      ? [`${teamA}`, `${teamB}`, `${tie}`, `${draw}`]
+      : [`${teamA}`, `${teamB}`, `${tie}`];
   return (
     <Box
       sx={{
@@ -118,6 +118,7 @@ const ResultComponent = ({
           {teamData.map((i, k) => {
             return (
               <Box
+                key={k}
                 onClick={() => {
                   setSelected(i);
                 }}

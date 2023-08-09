@@ -419,7 +419,7 @@ const MatchSubmit1 = ({ }) => {
                 </Box >
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                     {data.map((x, i) => {
-                        return <RunsBox  margin={i != 0} />
+                        return <RunsBox key={i}  margin={i != 0} />
                     })}
                 </Box>
             </>

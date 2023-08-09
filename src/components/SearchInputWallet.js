@@ -119,8 +119,8 @@ const SearchInput = ({
             ?.filter((k) =>
               k?.userName?.toLowerCase().includes(search.toLowerCase())
             )
-            .map((i) => {
-              return <Block i={i} />;
+            .map((i, idx) => {
+              return <Block key={idx} i={i} />;
             })}
         </Box>
       )}
