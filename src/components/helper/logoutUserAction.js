@@ -7,15 +7,15 @@ import { useEffect } from "react";
 // Import the reset actions for other slices as well...
 
 const LogoutUser = () => {
-  alert(11);
+
   const dispatch = useDispatch();
 
     dispatch(logoutMatchDetails());
-    alert(22);
+ 
     dispatch(logoutCurrentUser());
-    alert(33);
+    
     dispatch(logoutAuth());
-    alert(44);
+   
 
 };
 
