@@ -449,7 +449,7 @@ const Odds = ({
                 }}
               ></Box>
             )}
-            {typeOfBet == "MANUAL BOOKMAKER" ? (
+            {session === "manualBookMaker" ? (
               <>
                 <ManualBoxComponent
                   setFastBetLoading={setFastBetLoading}

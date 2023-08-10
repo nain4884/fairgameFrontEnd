@@ -25,7 +25,7 @@ import {
   setTeamSuspended,
 } from "../newStore/reducers/expertMatchDetails";
 
-const AddSession = ({ add, match }) => {
+const AddSession = ({ add, match,Bid }) => {
   const location = useLocation();
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
@@ -60,6 +60,7 @@ const AddSession = ({ add, match }) => {
   const innerRefTeamA = useRef();
   const innerRefTeamB = useRef();
   const innerRefTeamC = useRef();
+  const [currentBookmaker, setCurrentBookmaker] = useState("");
 
   const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
 
@@ -108,8 +109,10 @@ const AddSession = ({ add, match }) => {
 
   useEffect(() => {
     // alert(JSON.stringify(match))
-    getManuallBookMaker(match?.id);
-  }, []);
+  if(Bid){
+    getManuallBookMaker(Bid);
+  }
+  }, [Bid]);
 
   useEffect(() => {
     if (bookmakerTeamRates) {
@@ -165,24 +168,25 @@ const AddSession = ({ add, match }) => {
 
   async function getManuallBookMaker(id) {
     try {
-      let response = await axios.get(`/betting/getManuallBookMaker/${id}`);
+      let response = await axios.get(`/betting/getBookmaker/${id}`);
       if (response?.data?.data?.length === 0) {
         doSubmitSessionBet(id);
       } else {
-        setBetId(response?.data?.data[0].id);
-        // setTeamARate(response?.data?.data[0].teamA_Back);
-        // setTeamALayValue(response?.data?.data[0].teamA_lay);
-        // setTeamBRate(response?.data?.data[0].teamB_Back);
-        // setTeamBLayValue(response?.data?.data[0].teamB_lay);
-        // setTeamCRate(response?.data?.data[0].teamC_Back);
-        // setTeamCLayValue(response?.data?.data[0].teamC_lay);
+        setCurrentBookmaker(response?.data?.data?.marketName);
+        setBetId(response?.data?.data?.bet_id);
+        // setTeamARate(response?.data?.data.teamA_Back);
+        // setTeamALayValue(response?.data?.data.teamA_lay);
+        // setTeamBRate(response?.data?.data.teamB_Back);
+        // setTeamBLayValue(response?.data?.data.teamB_lay);
+        // setTeamCRate(response?.data?.data.teamC_Back);
+        // setTeamCLayValue(response?.data?.data.teamC_lay);
         setLocalTeamA((prev) => {
           const newBody = {
             ...prev,
-            rate: response?.data?.data[0].teamA_Back,
-            suspended: response?.data?.data[0].teamA_suspend,
-            lock: response?.data?.data[0]?.teamA_suspend,
-            lay: response?.data?.data[0]?.teamA_lay,
+            rate: response?.data?.data.teamA_Back,
+            suspended: response?.data?.data.teamA_suspend,
+            lock: response?.data?.data?.teamA_suspend,
+            lay: response?.data?.data?.teamA_lay,
           };
 
           dispatch(setTeamA(newBody));
@@ -192,10 +196,10 @@ const AddSession = ({ add, match }) => {
         setLocalTeamB((prev) => {
           const newBody = {
             ...prev,
-            rate: response?.data?.data[0].teamB_Back,
-            suspended: response?.data?.data[0].teamB_suspend,
-            lock: response?.data?.data[0]?.teamB_suspend,
-            lay: response?.data?.data[0]?.teamB_lay,
+            rate: response?.data?.data.teamB_Back,
+            suspended: response?.data?.data.teamB_suspend,
+            lock: response?.data?.data?.teamB_suspend,
+            lay: response?.data?.data?.teamB_lay,
           };
 
           dispatch(setTeamB(newBody));
@@ -204,38 +208,38 @@ const AddSession = ({ add, match }) => {
         setLocalTeamC((prev) => {
           const newBody = {
             ...prev,
-            rate: response?.data?.data[0].teamC_Back,
-            suspended: response?.data?.data[0].teamC_suspend,
-            lock: response?.data?.data[0]?.teamC_suspend,
-            lay: response?.data?.data[0]?.teamC_lay,
+            rate: response?.data?.data.teamC_Back,
+            suspended: response?.data?.data.teamC_suspend,
+            lock: response?.data?.data?.teamC_suspend,
+            lay: response?.data?.data?.teamC_lay,
           };
 
           dispatch(setTeamC(newBody));
           return newBody;
         });
 
-        getAllBetsData(response?.data?.data[0].id, id);
+        getAllBetsData(response?.data?.data?.bet_id, id);
         const newBody = {
-          teamA: response?.data?.data[0].teamA_rate
-            ? response?.data?.data[0].teamA_rate
+          teamA: response?.data?.data.teamA_rate
+            ? response?.data?.data.teamA_rate
             : 0,
-          teamB: response?.data?.data[0].teamB_rate
-            ? response?.data?.data[0].teamB_rate
+          teamB: response?.data?.data.teamB_rate
+            ? response?.data?.data.teamB_rate
             : 0,
-          teamC: response?.data?.data[0].teamC_rate
-            ? response?.data?.data[0].teamC_rate
+          teamC: response?.data?.data.teamC_rate
+            ? response?.data?.data.teamC_rate
             : 0,
         };
         setTeamRates(newBody);
         dispatch(setBookmakerTeamRates(newBody));
 
-        betStatus(response?.data?.data[0].betStatus);
+        betStatus(response?.data?.data.betStatus);
         setLocalTeamSuspended((prev) => {
           const newBody = {
             ...prev,
-            teamA_suspend: response?.data?.data[0].teamA_suspend ? true : false,
-            teamB_suspend: response?.data?.data[0].teamB_suspend ? true : false,
-            teamC_suspend: response?.data?.data[0].teamC_suspend ? true : false,
+            teamA_suspend: response?.data?.data.teamA_suspend ? true : false,
+            teamB_suspend: response?.data?.data.teamB_suspend ? true : false,
+            teamC_suspend: response?.data?.data.teamC_suspend ? true : false,
           };
           dispatch(setTeamSuspended(newBody));
           return newBody;
@@ -252,6 +256,7 @@ const AddSession = ({ add, match }) => {
       sessionBet: false,
       matchType: "cricket",
       match_id: id,
+     
     };
     try {
       let response = await axios.post(`/betting/addBetting`, payload);
@@ -266,6 +271,7 @@ const AddSession = ({ add, match }) => {
       match_id: matchId,
       bet_id: id,
       marketType: "MANUAL BOOKMAKER",
+      id:Bid
     };
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
@@ -274,7 +280,7 @@ const AddSession = ({ add, match }) => {
       console.log(e);
     }
   }
-
+console.log("state", match)
   // useEffect(() => {
   //   if (socket && socket.connected) {
   //     socket.onevent = async (packet) => {
@@ -446,6 +452,7 @@ const AddSession = ({ add, match }) => {
       socket.emit("updateRate", {
         matchId: match?.id,
         betId: betId,
+        id:Bid,
         teamA_lay: "",
         teamA_Back: "",
         teamA_suspend: true,
@@ -937,6 +944,7 @@ const AddSession = ({ add, match }) => {
               if (event.target.name === "teamA_rate") {
                 socket.emit("updateRate", {
                   matchId: match?.id,
+                  id:Bid,
                   betId: betId,
                   teamA_lay: teamA?.lay,
                   teamA_Back: teamA?.rate,
@@ -952,6 +960,7 @@ const AddSession = ({ add, match }) => {
               if (event.target.name === "teamB_rate") {
                 socket.emit("updateRate", {
                   matchId: match?.id,
+                  id:Bid,
                   betId: betId,
                   teamA_lay: "",
                   teamA_Back: "",
@@ -967,6 +976,7 @@ const AddSession = ({ add, match }) => {
               if (event.target.name === "teamC_rate") {
                 socket.emit("updateRate", {
                   matchId: match?.id,
+                  id:Bid,
                   betId: betId,
                   teamA_lay: "",
                   teamA_Back: "",
@@ -1390,6 +1400,7 @@ const AddSession = ({ add, match }) => {
     if (key == "shift") {
       socket.emit("updateRate", {
         matchId: match?.id,
+        id:Bid,
         betId: betId,
         teamA_lay: "",
         teamA_Back: "",
@@ -1883,7 +1894,7 @@ const AddSession = ({ add, match }) => {
               marginLeft: "7px",
             }}
           >
-            Bookmaker Market
+            {currentBookmaker}
           </Typography>
         </Box>
         <Box

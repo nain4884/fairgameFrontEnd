@@ -867,17 +867,14 @@ const DeleteBet = ({}) => {
         (element) => element.sessionBet === false
       );
 
-
       setManualBookmakerData(matchOddsDataTemp);
-      dispatch(setManualBookmaker(matchOddsDataTemp))
-      const newBody ={
+      dispatch(setManualBookmaker(matchOddsDataTemp));
+      const newBody = {
         ...response.data,
-      }
+      };
       setCurrentMatch(newBody);
 
-      dispatch(
-        setSelectedMatch(newBody)
-      );
+      dispatch(setSelectedMatch(newBody));
 
       setSessionExposure(response.data.sessionExposure);
       setMarketId(response.data.marketId);
@@ -909,9 +906,7 @@ const DeleteBet = ({}) => {
           )
       );
       setSessionBets(bets || []);
-      dispatch(setAllSessionBets(bets))
-
-      
+      dispatch(setAllSessionBets(bets));
     } catch (e) {
       console.log(e);
     }
@@ -1016,12 +1011,12 @@ const DeleteBet = ({}) => {
                       : []
                   }
                   typeOfBet={"Match Odds"}
-                  minBet = {currentMatch?.betfair_match_min_bet}
-                  maxBet = {currentMatch?.betfair_match_max_bet}
+                  minBet={currentMatch?.betfair_match_min_bet}
+                  maxBet={currentMatch?.betfair_match_max_bet}
                 />
               )}
-               {currentMatch?.bookmakers?.map((bookmaker) => {
-                if(bookmaker.betStatus === 1 ) {
+              {currentMatch?.bookmakers?.map((bookmaker) => {
+                if (bookmaker.betStatus === 1) {
                   return (
                     <Odds
                       currentMatch={currentMatch}
@@ -1043,7 +1038,7 @@ const DeleteBet = ({}) => {
                   typeOfBet={"Quick Bookmaker"}
                 />
               )} */}
-              )} */}
+
               {currentMatch?.apiBookMakerActive && (
                 <BookMarketer
                   currentMatch={currentMatch}
