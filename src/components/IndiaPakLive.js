@@ -578,7 +578,7 @@ const IndiaPakLive = React.forwardRef(
                             onClick={() => {
                               setVisible(false);
                               setIsDisable(true);
-                              // getSessionResult(match?.id);
+                              getSessionResult(match?.id);
                             }}
                             onClickCancel={() => {
                               setVisible(false);

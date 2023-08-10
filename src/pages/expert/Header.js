@@ -317,9 +317,6 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "match_bet") {
           const data = packet.data[1];
           try {
-
-     
-
             setLocalAllBetRates((prev) => {
               if (match_id === data?.betPlaceData?.match_id) {
                 const manualBookmaker = {
@@ -329,7 +326,7 @@ const CustomHeader = ({}) => {
                   teamC: data.teamC_rate,
                 };
                 dispatch(setManualBookMarkerRates(manualBookmaker));
-    
+
                 setTeamRates((prev) => {
                   const newBody = {
                     ...prev,
@@ -375,7 +372,10 @@ const CustomHeader = ({}) => {
             });
 
             setLocalBookMakerRates((prev) => {
-              if (data.betPlaceData.match_id === match_id) {
+              if (
+                data?.betPlaceData?.match_id === match_id &&
+                data?.betPlaceData?.marketType === "MANUAL BOOKMAKER"
+              ) {
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
@@ -409,7 +409,6 @@ const CustomHeader = ({}) => {
 
               return prev;
             });
-
           } catch (e) {
             console.log("error", e?.message);
           }
@@ -593,13 +592,11 @@ const CustomHeader = ({}) => {
               dispatch(setCurrentOdd(newBody));
               return newBody;
             });
-          
 
             setCurrentMatch((currentMatch) => {
-
               setLocalAllBetRates((IObets) => {
                 const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
-  
+
                 if (currentMatch?.id === data?.betPlaceData?.match_id) {
                   const body = {
                     id: data?.betPlaceData?.id,
@@ -635,7 +632,6 @@ const CustomHeader = ({}) => {
                 return updatedIObets;
               });
 
-              
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting?.id === data?.betPlaceData?.bet_id) {
                   // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
@@ -763,6 +759,7 @@ const CustomHeader = ({}) => {
                 navigate("/expert/match");
               }
               if (prev.id === value?.match_id && value?.sessionBet) {
+                dispatch(setSessionProfitLoss(value?.profitLoss));
                 const updatedBettings = prev?.bettings?.map((betting) => {
                   if (value?.betId === betting?.id && value?.sessionBet) {
                     return {
