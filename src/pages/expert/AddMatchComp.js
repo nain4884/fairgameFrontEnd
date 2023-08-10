@@ -893,7 +893,7 @@ const AddMatchComp = () => {
                         containerStyle={{ flex: 1, width: "100%" }}
                         title={"Max Limit"}
                         type={"Number"}
-                        value="Enter Session Max Bet..."
+                        value="Enter Max Bet..."
                         InputValType={"InputVal"}
                         place={26}
                         DetailError={{
@@ -958,7 +958,7 @@ const AddMatchComp = () => {
                         containerStyle={{ flex: 1, width: "100%" }}
                         title={"Max Limit"}
                         type={"Number"}
-                        value="Enter Session Max Bet..."
+                        value="Enter Max Bet..."
                         InputValType={"InputVal"}
                         place={29}
                         DetailError={{
@@ -1023,7 +1023,7 @@ const AddMatchComp = () => {
                         containerStyle={{ flex: 1, width: "100%" }}
                         title={"Max Limit"}
                         type={"Number"}
-                        value="Enter Session Max Bet..."
+                        value="Enter Max Bet..."
                         InputValType={"InputVal"}
                         place={32}
                         DetailError={{
