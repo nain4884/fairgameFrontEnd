@@ -370,6 +370,18 @@ const CustomHeader = ({}) => {
             const value = packet.data[1];
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id === value?.matchId) {
+                const idToNewBetStatusMap = value?.quick_bookmaker?.reduce(
+                  (map, item) => {
+                    map[item.id] = item.betStatus;
+                    return map;
+                  },
+                  {}
+                );
+
+                const updatedArray1 = currentMatch?.bookmakers.map((item) => ({
+                  ...item,
+                  betStatus: idToNewBetStatusMap[item.id],
+                }));
                 const newBody = {
                   ...currentMatch,
                   apiBookMakerActive: value?.apiBookMakerActive,
@@ -377,12 +389,7 @@ const CustomHeader = ({}) => {
                   apiSessionActive: value?.apiSessionActive,
                   manualBookMakerActive: value?.manualBookMakerActive,
                   manualSessionActive: value?.manualSessionActive,
-                  quick_bookmaker: currentMatch?.quick_bookmaker?.map((bookmaker) => {
-                    return {
-                      id: bookmaker.id,
-                      betStatus: bookmaker.betStatus,
-                    };
-                  }),
+                  bookmakers: updatedArray1,
                 };
                 dispatch(setSelectedMatch(newBody));
                 return newBody;
@@ -1172,7 +1179,7 @@ const CustomHeader = ({}) => {
                 marketType: data?.betPlaceData?.marketType,
                 amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
               };
-         
+
               setMatchData((prevMatchData) => {
                 const updated = prevMatchData.map((item) => {
                   if (item?.id === data?.betPlaceData?.match_id) {
@@ -1192,19 +1199,17 @@ const CustomHeader = ({}) => {
                   return item;
                 });
 
-           
-
                 dispatch(setMultiSelectedMatch(updated));
                 return updated;
               });
 
               setCurrentMatch((prev) => {
                 if (prev?.id === data?.betPlaceData?.match_id) {
-                    setLocalAllBetRates((prev) => {
-                      const newBody = [body, ...prev];
-                      dispatch(setAllBetRate(newBody));
-                      return newBody;
-                    });
+                  setLocalAllBetRates((prev) => {
+                    const newBody = [body, ...prev];
+                    dispatch(setAllBetRate(newBody));
+                    return newBody;
+                  });
                   const newBody = {
                     ...prev,
                     teamA_rate: data?.teamA_rate,
