@@ -26,6 +26,7 @@ import {
   setSessionAllBet,
   setSessionBetId,
   setAllEventSession,
+  setSessionProfitLoss,
 } from "../newStore/reducers/expertMatchDetails";
 import { removeCurrentUser } from "../newStore/reducers/currentUser";
 import { logout } from "../newStore/reducers/auth";
@@ -51,8 +52,13 @@ const IndiaPakLive = React.forwardRef(
     const { socket } = useContext(SocketContext);
     const { axios } = setRole();
     const dispatch = useDispatch();
-    const { sessionAllBet, sessionBetId, allEventSession, currentOdd, sessionProfitLoss } =
-      useSelector((state) => state?.expertMatchDetails);
+    const {
+      sessionAllBet,
+      sessionBetId,
+      allEventSession,
+      currentOdd,
+      sessionProfitLoss,
+    } = useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
     const stateDetail = {
@@ -96,6 +102,12 @@ const IndiaPakLive = React.forwardRef(
         setIsDisable(true);
       },
     }));
+
+    useEffect(() => {
+      if (sessionProfitLoss) {
+        setProLoss(sessionProfitLoss);
+      }
+    }, [sessionProfitLoss]);
 
     // useEffect(() => {
     //   if (socket && socket.connected) {
@@ -284,15 +296,14 @@ const IndiaPakLive = React.forwardRef(
       }
       setIsCreateSession(createSession);
       getSessionResult(match?.id);
-      return () => {
-        dispatch(setSessionBetId(""));
-      };
+
     }, [sessionEvent?.id]);
 
     const getSessionResult = async (match_id) => {
       setProLoss(null);
       dispatch(setSessionAllBet([]));
       let response = await axios.get(`/game-match/getResults/${match_id}`);
+
       dispatch(setSessionResults(response?.data?.data || []));
     };
 
@@ -357,6 +368,7 @@ const IndiaPakLive = React.forwardRef(
         setCheckBetId(true);
         getAllBetsData(data.id);
         setProLoss(data?.profitLoss);
+        dispatch(setSessionProfitLoss(data?.profitLoss));
         if (data.suspended == "ACTIVE") {
           setLock({
             isNo: false,
@@ -1493,95 +1505,95 @@ const RunsAmountBox = ({
         <Box ref={containerRef} sx={{ maxHeight: "42vh", overflowY: "auto" }}>
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
-              const getColor = (value) => {
-                if (value > 1) {
-                  return "#10DC61";
-                } else if (value === v?.profit_loss && value > 1) {
-                  return "#F8C851";
-                } else {
-                  return "#DC3545";
-                }
-              };
-              const getSVG = (value) => {
-                if (value > 1) {
-                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                } else if (value === v?.profit_loss && value > 1) {
-                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                } else {
-                  return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
-                }
-              };
-              return (
-                <Box
-                  id={`${betId}_${v?.odds}`}
-                  key={v?.odds}
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    height: "25px",
-                    borderTop: "1px solid #306A47",
-                  }}
-                >
+                const getColor = (value) => {
+                  if (value > 1) {
+                    return "#10DC61";
+                  } else if (value === v?.profit_loss && value > 1) {
+                    return "#F8C851";
+                  } else {
+                    return "#DC3545";
+                  }
+                };
+                const getSVG = (value) => {
+                  if (value > 1) {
+                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                  } else if (value === v?.profit_loss && value > 1) {
+                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                  } else {
+                    return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+                  }
+                };
+                return (
                   <Box
+                    id={`${betId}_${v?.odds}`}
+                    key={v?.odds}
                     sx={{
-                      width: "35%",
                       display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      width: "100%",
+                      height: "25px",
+                      borderTop: "1px solid #306A47",
                     }}
                   >
-                    <Typography
+                    <Box
                       sx={{
-                        color: "#306A47",
-                        fontWeight: "bold",
-                        fontSize: "12px",
+                        width: "35%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
-                      {v?.odds}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      width: "65%",
-                      display: "flex",
-                      borderLeft: `1px solid #306A47`,
-                      background: getColor(v?.profit_loss),
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      paddingRight: "7px",
-                    }}
-                  >
-                    <Typography
+                      <Typography
+                        sx={{
+                          color: "#306A47",
+                          fontWeight: "bold",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {v?.odds}
+                      </Typography>
+                    </Box>
+                    <Box
                       sx={{
-                        fontWeight: "500",
-                        fontSize: "16px",
-                        color: "white",
-                        width: "40px",
+                        width: "65%",
+                        display: "flex",
+                        borderLeft: `1px solid #306A47`,
+                        background: getColor(v?.profit_loss),
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        paddingRight: "7px",
                       }}
                     >
-                      {Number(v?.profit_loss) >= 0 ? (
-                        <>
-                          <span style={{ visibility: "hidden" }}>-</span>
-                          {v?.profit_loss}
-                        </>
-                      ) : (
-                        v?.profit_loss
-                      )}
-                    </Typography>
-                    <StyledImage
-                      src={getSVG(v?.profit_loss)}
-                      sx={{
-                        height: "15px",
-                        marginLeft: "5px",
-                        filter:
-                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                        width: "15px",
-                      }}
-                    />
+                      <Typography
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "16px",
+                          color: "white",
+                          width: "40px",
+                        }}
+                      >
+                        {Number(v?.profit_loss) >= 0 ? (
+                          <>
+                            <span style={{ visibility: "hidden" }}>-</span>
+                            {v?.profit_loss}
+                          </>
+                        ) : (
+                          v?.profit_loss
+                        )}
+                      </Typography>
+                      <StyledImage
+                        src={getSVG(v?.profit_loss)}
+                        sx={{
+                          height: "15px",
+                          marginLeft: "5px",
+                          filter:
+                            "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                          width: "15px",
+                        }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              );
-            })
+                );
+              })
             : null}
         </Box>
       </Box>

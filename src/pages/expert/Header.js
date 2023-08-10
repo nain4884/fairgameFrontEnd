@@ -547,7 +547,6 @@ const CustomHeader = ({}) => {
 
         if (packet.data[0] === "session_bet") {
           const data = packet.data[1];
-
           if (betId === data?.betPlaceData?.bet_id) {
             let profitLoss = data?.profitLoss;
             dispatch(setSessionProfitLoss(profitLoss));

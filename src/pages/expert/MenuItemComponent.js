@@ -84,8 +84,10 @@ const MenutItemsComponent = ({
                         <Box
                         key={element.id}
                           onClick={(e) => {
-                            dispatch(setSessionBetId(element.id));
+                          
+                         
                             if (activeUser == "1") {
+                              dispatch(setSessionBetId(element?.id));
                               navigate("/expert/live", {
                                 state: {
                                   createSession: false,
