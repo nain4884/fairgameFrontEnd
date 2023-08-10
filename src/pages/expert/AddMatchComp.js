@@ -101,7 +101,7 @@ const AddMatchComp = () => {
         quick_bookmaker = [
           {
             marketName: Detail[24]?.val,
-            min_bet: Detail[25]?.val,
+            min_bet: Detail[18]?.val,
             max_bet: Detail[26]?.val,
           },
         ];
@@ -110,12 +110,12 @@ const AddMatchComp = () => {
         quick_bookmaker = [
           {
             marketName: Detail[24]?.val,
-            min_bet: Detail[25]?.val,
+            min_bet: Detail[18]?.val,
             max_bet: Detail[26]?.val,
           },
           {
             marketName: Detail[27]?.val,
-            min_bet: Detail[28]?.val,
+            min_bet: Detail[18]?.val,
             max_bet: Detail[29]?.val,
           },
         ];
@@ -124,17 +124,17 @@ const AddMatchComp = () => {
         quick_bookmaker = [
           {
             marketName: Detail[24]?.val,
-            min_bet: Detail[25]?.val,
+            min_bet: Detail[18]?.val,
             max_bet: Detail[26]?.val,
           },
           {
             marketName: Detail[27]?.val,
-            min_bet: Detail[28]?.val,
+            min_bet: Detail[18]?.val,
             max_bet: Detail[29]?.val,
           },
           {
             marketName: Detail[30]?.val,
-            min_bet: Detail[31]?.val,
+            min_bet: Detail[18]?.val,
             max_bet: Detail[32]?.val,
           },
         ];
@@ -195,6 +195,7 @@ const AddMatchComp = () => {
         });
         return false;
       }
+ 
 
       let request = new FormData();
       let i;
@@ -205,6 +206,11 @@ const AddMatchComp = () => {
       }
       request.append("EventId", Detail[23].val);
       request.append("quick_bookmaker", JSON.stringify(quick_bookmaker));
+      request.append("betfair_session_min_bet", Detail[18].val)
+      request.append("bookmaker_manual_min_bet", Detail[18].val)
+      request.append("betfair_bookmaker_min_bet", Detail[18].val)
+      request.append("manaual_session_min_bet", Detail[18].val)
+      request.append("betfair_match_min_bet", Detail[18].val)
       console.log("request", quick_bookmaker);
       console.log(Object.fromEntries(request), "request");
       const { data } = await axios.post(`/game-match/addmatch`, request);
@@ -303,7 +309,16 @@ const AddMatchComp = () => {
         setshow3(true);
       }
     }
-  }, [Detail[1].val, Detail[9].val, Detail[13].val, Detail[4].val]);
+
+    if(Detail[5].val!=="") {
+      setDetail({
+        ...Detail,
+        18: {
+          ...Detail[18], val: "100"
+        }
+      })
+    }
+  }, [Detail[1].val, Detail[9].val, Detail[13].val, Detail[4].val, Detail[5].val]);
 
   return (
     <Background>
