@@ -575,9 +575,13 @@ const CustomHeader = ({}) => {
               amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
             };
             setLocalSessionBets((prev) => {
-              const updatedData = [body, ...prev];
-              dispatch(setSessionAllBet(updatedData));
-              return updatedData;
+              const prevId = prev?.map((v) => v?.id) || [];
+              if (!prevId?.includes(body?.id)) {
+                const newBody = [body, ...prev];
+                dispatch(setSessionAllBet(newBody));
+                return newBody;
+              }
+              return prev;
             });
           }
 
