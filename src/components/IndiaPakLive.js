@@ -107,7 +107,10 @@ const IndiaPakLive = React.forwardRef(
       if (sessionProfitLoss) {
         setProLoss(sessionProfitLoss);
       }
-    }, [sessionProfitLoss]);
+      if (currentOdd) {
+        setCurrentOdds(currentOdd);
+      }
+    }, [sessionProfitLoss,currentOdd]);
 
     // useEffect(() => {
     //   if (socket && socket.connected) {
