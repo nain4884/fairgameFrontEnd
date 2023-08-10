@@ -183,7 +183,7 @@ const MenutItemsComponent = ({
                         // }}
                         onClick={(e) => {
                           sessionStorage.setItem("matchId",x.id)
-                          dispatch(setSelectedBookmaker(x))
+                          dispatch(setSelectedBookmaker(element.id))
                           navigate("/expert/add_book_maker", {
                             state: { id: element.id, match: x },
                           });
