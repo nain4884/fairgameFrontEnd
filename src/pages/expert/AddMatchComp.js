@@ -56,10 +56,10 @@ const stateDetail = {
 
 const AddMatchComp = () => {
   const [Detail, setDetail] = useState(stateDetail);
-  const [numTimesToShow, setnumTimesToShow] = useState(0)
-  const [show1, setshow1] = useState(false)
-  const [show2, setshow2] = useState(false)
-  const [show3, setshow3] = useState(false)
+  const [numTimesToShow, setnumTimesToShow] = useState(0);
+  const [show1, setshow1] = useState(false);
+  const [show2, setshow2] = useState(false);
+  const [show3, setshow3] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -87,11 +87,8 @@ const AddMatchComp = () => {
     20: { field: "marketId", val: false },
     21: { field: "delaySecond", val: false },
     22: { field: "CompetitionName", val: false },
-    
   });
-  const selectionData=[
-   1,2,3
-  ]
+  const selectionData = [1, 2, 3];
   const [matches, setMatches] = useState([
     { EventName: "No Matches Available", MarketId: defaultMarketId },
   ]);
@@ -100,23 +97,47 @@ const AddMatchComp = () => {
   const createMatch = async () => {
     try {
       let quick_bookmaker = [];
-      if(show1){
-        quick_bookmaker=[
-          {"marketName": Detail[24]?.val, "min_bet": Detail[25]?.val, "max_bet": Detail[26]?.val}
-        ]
-      } 
-      if(show2){
-        quick_bookmaker=[
-          {"marketName": Detail[24]?.val, "min_bet": Detail[25]?.val, "max_bet": Detail[26]?.val},
-          {"marketName": Detail[27]?.val, "min_bet": Detail[28]?.val, "max_bet": Detail[29]?.val}
-        ]
-      } 
-      if(show3){
-        quick_bookmaker=[
-          {"marketName": Detail[24]?.val, "min_bet": Detail[25]?.val, "max_bet": Detail[26]?.val},
-          {"marketName": Detail[27]?.val, "min_bet": Detail[28]?.val, "max_bet": Detail[29]?.val},
-          {"marketName": Detail[30]?.val, "min_bet": Detail[31]?.val, "max_bet": Detail[32]?.val}
-        ]
+      if (show1) {
+        quick_bookmaker = [
+          {
+            marketName: Detail[24]?.val,
+            min_bet: Detail[25]?.val,
+            max_bet: Detail[26]?.val,
+          },
+        ];
+      }
+      if (show2) {
+        quick_bookmaker = [
+          {
+            marketName: Detail[24]?.val,
+            min_bet: Detail[25]?.val,
+            max_bet: Detail[26]?.val,
+          },
+          {
+            marketName: Detail[27]?.val,
+            min_bet: Detail[28]?.val,
+            max_bet: Detail[29]?.val,
+          },
+        ];
+      }
+      if (show3) {
+        quick_bookmaker = [
+          {
+            marketName: Detail[24]?.val,
+            min_bet: Detail[25]?.val,
+            max_bet: Detail[26]?.val,
+          },
+          {
+            marketName: Detail[27]?.val,
+            min_bet: Detail[28]?.val,
+            max_bet: Detail[29]?.val,
+          },
+          {
+            marketName: Detail[30]?.val,
+            min_bet: Detail[31]?.val,
+            max_bet: Detail[32]?.val,
+          },
+        ];
       }
       if (
         (Detail[1].val === "") & (Detail[9].val === "") &&
@@ -183,9 +204,9 @@ const AddMatchComp = () => {
         if (i === 19) request.append(`${Detail[i + 1].field}`, marketId);
       }
       request.append("EventId", Detail[23].val);
-      request.append("quick_bookmaker",  JSON.stringify(quick_bookmaker));
+      request.append("quick_bookmaker", JSON.stringify(quick_bookmaker));
       console.log("request", quick_bookmaker);
-      console.log(Object.fromEntries(request),"request") 
+      console.log(Object.fromEntries(request), "request");
       const { data } = await axios.post(`/game-match/addmatch`, request);
       if (data.message === "Match added successfully.") {
         getAllMatch();
@@ -265,24 +286,24 @@ const AddMatchComp = () => {
         },
       });
     }
-    if(Detail[4].val !== ""){
+    if (Detail[4].val !== "") {
       // alert(Detail[24].val)
-      setnumTimesToShow(Detail[4].val)
-      if(Detail[4].val == 1){
-        setshow1(true)
-        setshow2(false)
-        setshow3(false)
-      }else if(Detail[4].val == 2){
-        setshow1(true)
-        setshow2(true)
-        setshow3(false)
-      }else if(Detail[4].val == 3){
-        setshow1(true)
-        setshow2(true)
-        setshow3(true)
+      setnumTimesToShow(Detail[4].val);
+      if (Detail[4].val == 1) {
+        setshow1(true);
+        setshow2(false);
+        setshow3(false);
+      } else if (Detail[4].val == 2) {
+        setshow1(true);
+        setshow2(true);
+        setshow3(false);
+      } else if (Detail[4].val == 3) {
+        setshow1(true);
+        setshow2(true);
+        setshow3(true);
       }
     }
-  }, [Detail[1].val, Detail[9].val, Detail[13].val,Detail[4].val]);
+  }, [Detail[1].val, Detail[9].val, Detail[13].val, Detail[4].val]);
 
   return (
     <Background>
@@ -601,9 +622,9 @@ const AddMatchComp = () => {
             >
               <LabelValueComponent
                 containerStyle={{ flex: 1, width: "100%" }}
-                title={"Betfair Match Min Bet"}
+                title={"Min Bet"}
                 type={"Number"}
-                value="Enter your Match Min Bet..."
+                value="Enter your Min Bet..."
                 InputValType={"InputVal"}
                 place={18}
                 DetailError={{
@@ -636,7 +657,7 @@ const AddMatchComp = () => {
                 }}
               />
             </Box>
-            <Box
+            {/* <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
               <LabelValueComponent
@@ -654,7 +675,7 @@ const AddMatchComp = () => {
                   type: "String",
                 }}
               />
-            </Box>
+            </Box> */}
             <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
@@ -693,7 +714,7 @@ const AddMatchComp = () => {
                 }}
               />
             </Box>
-            <Box
+            {/* <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
               <LabelValueComponent
@@ -711,49 +732,8 @@ const AddMatchComp = () => {
                   type: "String",
                 }}
               />
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <DropDownSimple
-
-                valued="Select Bookmaker"
-                dropStyle={{
-                  filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                }}
-                valueStyle={{ ...imputStyle, color: "white" }}
-                title={"Bookmaker"}
-                valueContainerStyle={{
-                  height: "45px",
-                  marginX: "0px",
-                  background: "#0B4F26",
-                  border: "1px solid #DEDEDE",
-                  borderRadius: "5px",
-                }}
-                containerStyle={{
-                  width: "100%",
-                  position: "relative",
-                  marginTop: "5px",
-                }}
-                titleStyle={{ marginLeft: "0px", color: "#575757" }}
-                data={selectionData}
-                // setMarketId={setMarketId}
-                // matchesSelect={true}
-                dropDownStyle={{
-                  width: "100%",
-                  marginLeft: "0px",
-                  marginTop: "0px",
-                  position: "absolute",
-                  maxHeight: "500px",
-                  overflow: "auto",
-                }}
-                dropDownTextStyle={imputStyle}
-                Detail={Detail}
-                setDetail={setDetail}
-                place={4}
-              />
-            </Box>
-            <Box
+            </Box> */}
+            {/* <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
               <LabelValueComponent
@@ -771,7 +751,7 @@ const AddMatchComp = () => {
                   type: "String",
                 }}
               />
-            </Box>
+            </Box> */}
             <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
@@ -811,29 +791,82 @@ const AddMatchComp = () => {
               />
             </Box>
 
+            <Box sx={{ width: "100%" }}>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <DropDownSimple
+                  valued="Select Bookmaker"
+                  dropStyle={{
+                    filter:
+                      "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                  }}
+                  valueStyle={{ ...imputStyle, color: "white" }}
+                  title={"Bookmaker"}
+                  valueContainerStyle={{
+                    height: "45px",
+                    marginX: "0px",
+                    background: "#0B4F26",
+                    border: "1px solid #DEDEDE",
+                    borderRadius: "5px",
+                  }}
+                  containerStyle={{
+                    width: "100%",
+                    position: "relative",
+                    marginTop: "5px",
+                  }}
+                  titleStyle={{ marginLeft: "0px", color: "#575757" }}
+                  data={selectionData}
+                  // setMarketId={setMarketId}
+                  // matchesSelect={true}
+                  dropDownStyle={{
+                    width: "100%",
+                    marginLeft: "0px",
+                    marginTop: "0px",
+                    position: "absolute",
+                    maxHeight: "500px",
+                    overflow: "auto",
+                  }}
+                  dropDownTextStyle={imputStyle}
+                  Detail={Detail}
+                  setDetail={setDetail}
+                  place={4}
+                />
+              </Box>
 
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "100%",
+                  gap: 1,
+                }}
+              >
+                {show1 && (
+                  <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
+                    <Box
+                      sx={{
+                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                      }}
+                    >
+                      <LabelValueComponent
+                        containerStyle={{ flex: 1, width: "100%" }}
+                        title={"Market Name"}
+                        type={"Text"}
+                        value="Enter Market Name..."
+                        InputValType={"InputVal"}
+                        place={24}
+                        DetailError={{
+                          Error,
+                          setDetail,
+                          Detail,
+                          setError,
+                          type: "String",
+                        }}
+                      />
+                    </Box>
 
-            {show1 && (
-      <>
-      <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
-            <LabelValueComponent
-              containerStyle={{ flex: 1, width: "100%" }}
-              title={"Market Name"}
-              type={"Text"}
-              value="Enter Market Name..."
-              InputValType={"InputVal"}
-              place={24}
-              DetailError={{
-                Error,
-                setDetail,
-                Detail,
-                setError,
-                type: "String",
-              }}
-            />
-          </Box>
-
-          <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
+                    {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
             <LabelValueComponent
               containerStyle={{ flex: 1, width: "100%" }}
               title={"Min Bet"}
@@ -848,49 +881,57 @@ const AddMatchComp = () => {
                 setError,
                 type: "String",
               }}
-            />
-          </Box>
+              />
+            </Box> */}
 
-          <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
-            <LabelValueComponent
-              containerStyle={{ flex: 1, width: "100%" }}
-              title={"Max Limit"}
-              type={"Number"}
-              value="Enter Session Max Bet..."
-              InputValType={"InputVal"}
-              place={26}
-              DetailError={{
-                Error,
-                setDetail,
-                Detail,
-                setError,
-                type: "String",
-              }}
-            />
-          </Box>
-      </>
-    )}
-    {show2 && (
-      <>
-      <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
-            <LabelValueComponent
-              containerStyle={{ flex: 1, width: "100%" }}
-              title={"Market Name"}
-              type={"Text"}
-              value="Enter Market Name..."
-              InputValType={"InputVal"}
-              place={27}
-              DetailError={{
-                Error,
-                setDetail,
-                Detail,
-                setError,
-                type: "String",
-              }}
-            />
-          </Box>
+                    <Box
+                      sx={{
+                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                      }}
+                    >
+                      <LabelValueComponent
+                        containerStyle={{ flex: 1, width: "100%" }}
+                        title={"Max Limit"}
+                        type={"Number"}
+                        value="Enter Session Max Bet..."
+                        InputValType={"InputVal"}
+                        place={26}
+                        DetailError={{
+                          Error,
+                          setDetail,
+                          Detail,
+                          setError,
+                          type: "String",
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                )}
+                {show2 && (
+                  <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
+                    <Box
+                      sx={{
+                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                      }}
+                    >
+                      <LabelValueComponent
+                        containerStyle={{ flex: 1, width: "100%" }}
+                        title={"Market Name"}
+                        type={"Text"}
+                        value="Enter Market Name..."
+                        InputValType={"InputVal"}
+                        place={27}
+                        DetailError={{
+                          Error,
+                          setDetail,
+                          Detail,
+                          setError,
+                          type: "String",
+                        }}
+                      />
+                    </Box>
 
-          <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
+                    {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
             <LabelValueComponent
               containerStyle={{ flex: 1, width: "100%" }}
               title={"Min Bet"}
@@ -906,48 +947,56 @@ const AddMatchComp = () => {
                 type: "String",
               }}
             />
-          </Box>
+          </Box> */}
 
-          <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
-            <LabelValueComponent
-              containerStyle={{ flex: 1, width: "100%" }}
-              title={"Max Limit"}
-              type={"Number"}
-              value="Enter Session Max Bet..."
-              InputValType={"InputVal"}
-              place={29}
-              DetailError={{
-                Error,
-                setDetail,
-                Detail,
-                setError,
-                type: "String",
-              }}
-            />
-          </Box>
-      </>
-    )}
-    {show3 && (
-      <>
-      <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
-            <LabelValueComponent
-              containerStyle={{ flex: 1, width: "100%" }}
-              title={"Market Name"}
-              type={"Text"}
-              value="Enter Market Name..."
-              InputValType={"InputVal"}
-              place={30}
-              DetailError={{
-                Error,
-                setDetail,
-                Detail,
-                setError,
-                type: "String",
-              }}
-            />
-          </Box>
+                    <Box
+                      sx={{
+                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                      }}
+                    >
+                      <LabelValueComponent
+                        containerStyle={{ flex: 1, width: "100%" }}
+                        title={"Max Limit"}
+                        type={"Number"}
+                        value="Enter Session Max Bet..."
+                        InputValType={"InputVal"}
+                        place={29}
+                        DetailError={{
+                          Error,
+                          setDetail,
+                          Detail,
+                          setError,
+                          type: "String",
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                )}
+                {show3 && (
+                  <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
+                    <Box
+                      sx={{
+                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                      }}
+                    >
+                      <LabelValueComponent
+                        containerStyle={{ flex: 1, width: "100%" }}
+                        title={"Market Name"}
+                        type={"Text"}
+                        value="Enter Market Name..."
+                        InputValType={"InputVal"}
+                        place={30}
+                        DetailError={{
+                          Error,
+                          setDetail,
+                          Detail,
+                          setError,
+                          type: "String",
+                        }}
+                      />
+                    </Box>
 
-          <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
+                    {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
             <LabelValueComponent
               containerStyle={{ flex: 1, width: "100%" }}
               title={"Min Bet"}
@@ -963,30 +1012,33 @@ const AddMatchComp = () => {
                 type: "String",
               }}
             />
-          </Box>
+          </Box> */}
 
-          <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
-            <LabelValueComponent
-              containerStyle={{ flex: 1, width: "100%" }}
-              title={"Max Limit"}
-              type={"Number"}
-              value="Enter Session Max Bet..."
-              InputValType={"InputVal"}
-              place={32}
-              DetailError={{
-                Error,
-                setDetail,
-                Detail,
-                setError,
-                type: "String",
-              }}
-            />
-          </Box>
-      </>
-    )}
-           
-          
-           
+                    <Box
+                      sx={{
+                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                      }}
+                    >
+                      <LabelValueComponent
+                        containerStyle={{ flex: 1, width: "100%" }}
+                        title={"Max Limit"}
+                        type={"Number"}
+                        value="Enter Session Max Bet..."
+                        InputValType={"InputVal"}
+                        place={32}
+                        DetailError={{
+                          Error,
+                          setDetail,
+                          Detail,
+                          setError,
+                          type: "String",
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            </Box>
           </Box>
         </Box>
         <Box
