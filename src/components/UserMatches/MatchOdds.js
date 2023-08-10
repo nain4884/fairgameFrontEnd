@@ -145,6 +145,35 @@ const MatchOdds = ({
         })}
 
       {/* Manual Bookmaker */}
+      {data?.bookmakers?.map((bookmaker) => {
+        if (bookmaker.betStatus === 1) {
+          return (
+            <Odds
+              upcoming={!upcoming}
+              betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
+              newData={data}
+              lock={false}
+              showDely={false}
+              session={"manualBookMaker"}
+              showFast={true}
+              suspended={false}
+              data={data}
+              teamARates={teamRates?.teamA}
+              teamBRates={teamRates?.teamB}
+              teamCRates={teamRates?.teamC}
+              min={bookmaker?.min_bet || 0}
+              max={bookmaker?.max_bet || 0}
+              title={bookmaker.marketName}
+              typeOfBet={"MANUAL BOOKMAKER"}
+              matchOddsData={bookmaker}
+              setFastAmount={setFastAmount}
+              fastAmount={fastAmount?.mannualBookMaker}
+              handleRateChange={handleRateChange}
+            />
+          );
+        }
+      })}
+
       {/* {data?.manualBookMakerActive && (
         <Odds
           upcoming={!upcoming}
@@ -202,7 +231,6 @@ const MatchOdds = ({
         />
       )}
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
-
       {data?.manualSessionActive && (
         <>
           <SessionMarket
@@ -229,7 +257,6 @@ const MatchOdds = ({
           />
         </>
       )}
-
       {data?.apiSessionActive && (
         <>
           <SessionMarket

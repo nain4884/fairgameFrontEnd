@@ -1016,6 +1016,8 @@ const DeleteBet = ({}) => {
                       : []
                   }
                   typeOfBet={"Match Odds"}
+                  minBet = {currentMatch?.betfair_match_min_bet}
+                  maxBet = {currentMatch?.betfair_match_max_bet}
                 />
               )}
                {currentMatch?.bookmakers?.map((bookmaker) => {
@@ -1040,6 +1042,7 @@ const DeleteBet = ({}) => {
                   manualBookmakerData={manualBookmakerData}
                   typeOfBet={"Quick Bookmaker"}
                 />
+              )} */}
               )} */}
               {currentMatch?.apiBookMakerActive && (
                 <BookMarketer
