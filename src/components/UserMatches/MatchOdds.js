@@ -89,7 +89,6 @@ const MatchOdds = ({
       : { teamA: 0, teamB: 0, teamC: 0 };
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-
       {data?.apiMatchActive && (
         <Odds
           upcoming={!upcoming}
@@ -115,8 +114,38 @@ const MatchOdds = ({
           handleRateChange={handleRateChange}
         />
       )}
+
+      {data?.manualBookMakerActive &&
+        data?.bookmakers?.map((bookmaker, idx) => {
+          return (
+            <Odds
+              key={idx}
+              upcoming={!upcoming}
+              betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
+              newData={data}
+              lock={false}
+              showDely={false}
+              session={"manualBookMaker"}
+              showFast={true}
+              suspended={false}
+              data={data}
+              teamARates={teamRates?.teamA}
+              teamBRates={teamRates?.teamB}
+              teamCRates={teamRates?.teamC}
+              min={bookmaker?.min_bet || 0}
+              max={bookmaker?.max_bet || 0}
+              title={bookmaker.marketName}
+              typeOfBet={"MANUAL BOOKMAKER"}
+              matchOddsData={bookmaker}
+              setFastAmount={setFastAmount}
+              fastAmount={fastAmount?.mannualBookMaker}
+              handleRateChange={handleRateChange}
+            />
+          );
+        })}
+
       {/* Manual Bookmaker */}
-      {data?.manualBookMakerActive && (
+      {/* {data?.manualBookMakerActive && (
         <Odds
           upcoming={!upcoming}
           betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
@@ -139,7 +168,7 @@ const MatchOdds = ({
           fastAmount={fastAmount?.mannualBookMaker}
           handleRateChange={handleRateChange}
         />
-      )}
+      )} */}
       {data?.apiBookMakerActive && (
         <Odds
           upcoming={!upcoming}

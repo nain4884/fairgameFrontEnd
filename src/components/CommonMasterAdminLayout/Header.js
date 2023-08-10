@@ -377,6 +377,12 @@ const CustomHeader = ({}) => {
                   apiSessionActive: value?.apiSessionActive,
                   manualBookMakerActive: value?.manualBookMakerActive,
                   manualSessionActive: value?.manualSessionActive,
+                  quick_bookmaker: currentMatch?.quick_bookmaker?.map((bookmaker) => {
+                    return {
+                      id: bookmaker.id,
+                      betStatus: bookmaker.betStatus,
+                    };
+                  }),
                 };
                 dispatch(setSelectedMatch(newBody));
                 return newBody;

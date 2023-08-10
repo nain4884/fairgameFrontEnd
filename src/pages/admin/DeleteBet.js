@@ -1018,14 +1018,29 @@ const DeleteBet = ({}) => {
                   typeOfBet={"Match Odds"}
                 />
               )}
-              {currentMatch?.manualBookMakerActive && (
+               {currentMatch?.bookmakers?.map((bookmaker) => {
+                if(bookmaker.betStatus === 1 ) {
+                  return (
+                    <Odds
+                      currentMatch={currentMatch}
+                      session={"manualBookMaker"}
+                      data={bookmaker}
+                      minBet={bookmaker?.min_bet || 0}
+                      maxBet={bookmaker?.max_bet || 0}
+                      typeOfBet={bookmaker?.marketName}
+                      matchOddsData={bookmaker}
+                    />
+                  );
+                }
+              })}
+              {/* {currentMatch?.manualBookMakerActive && (
                 <Odds
                   currentMatch={currentMatch}
                   data={currentMatch}
                   manualBookmakerData={manualBookmakerData}
                   typeOfBet={"Quick Bookmaker"}
                 />
-              )}
+              )} */}
               {currentMatch?.apiBookMakerActive && (
                 <BookMarketer
                   currentMatch={currentMatch}
