@@ -378,7 +378,7 @@ const CustomHeader = ({}) => {
             });
 
             setLocalBookMakerRates((prev) => {
-              if (data.betPlaceData.match_id === match_id) {
+              if (data?.betPlaceData?.match_id === match_id ) {
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,

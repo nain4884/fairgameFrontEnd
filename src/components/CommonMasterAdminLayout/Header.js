@@ -378,9 +378,9 @@ const CustomHeader = ({}) => {
                   {}
                 );
 
-                const updatedArray1 = currentMatch?.bookmakers.map((item) => ({
+                const updatedArray1 = currentMatch?.bookmakers?.map((item) => ({
                   ...item,
-                  betStatus: idToNewBetStatusMap[item.id],
+                  betStatus: idToNewBetStatusMap[item?.id],
                 }));
                 const newBody = {
                   ...currentMatch,
