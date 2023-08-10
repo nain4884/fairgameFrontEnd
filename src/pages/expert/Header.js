@@ -576,7 +576,6 @@ const CustomHeader = ({}) => {
               myStack: data?.betPlaceData?.myStack,
               amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
             };
-            console.log(body, "BODY");
             setLocalSessionBets((prev) => {
               const updatedData = [body, ...prev];
               dispatch(setSessionAllBet(updatedData));
@@ -595,45 +594,49 @@ const CustomHeader = ({}) => {
               dispatch(setCurrentOdd(newBody));
               return newBody;
             });
-            setLocalAllBetRates((IObets) => {
-              const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
-
-              if (currentMatch?.id === data?.betPlaceData?.match_id) {
-                const body = {
-                  id: data?.betPlaceData?.id,
-                  isActive: true,
-                  createAt: data?.betPlaceData?.createdAt,
-                  updateAt: data?.betPlaceData?.createdAt,
-                  createdBy: null,
-                  deletedAt: null,
-                  user: { userName: data?.betPlaceData?.userName },
-                  user_id: null,
-                  match_id: data?.betPlaceData?.match_id,
-                  bet_id: data?.betPlaceData?.bet_id,
-                  result: "pending",
-                  team_bet: data?.betPlaceData?.team_bet,
-                  odds: data?.betPlaceData?.odds,
-                  win_amount: null,
-                  loss_amount: null,
-                  bet_type: data?.betPlaceData?.bet_type,
-                  country: null,
-                  ip_address: null,
-                  deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                  rate: data?.betPlaceData?.rate,
-                  marketType: data?.betPlaceData?.marketType,
-                  myStack: data?.betPlaceData?.myStack,
-                  amount:
-                    data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                };
-                const newBody = [body, ...updatedIObets];
-                dispatch(setAllBetRate(newBody));
-                return newBody;
-              }
-              dispatch(setAllBetRate(updatedIObets));
-              return updatedIObets;
-            });
+          
 
             setCurrentMatch((currentMatch) => {
+
+              setLocalAllBetRates((IObets) => {
+                const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
+  
+                if (currentMatch?.id === data?.betPlaceData?.match_id) {
+                  const body = {
+                    id: data?.betPlaceData?.id,
+                    isActive: true,
+                    createAt: data?.betPlaceData?.createdAt,
+                    updateAt: data?.betPlaceData?.createdAt,
+                    createdBy: null,
+                    deletedAt: null,
+                    user: { userName: data?.betPlaceData?.userName },
+                    user_id: null,
+                    match_id: data?.betPlaceData?.match_id,
+                    bet_id: data?.betPlaceData?.bet_id,
+                    result: "pending",
+                    team_bet: data?.betPlaceData?.team_bet,
+                    odds: data?.betPlaceData?.odds,
+                    win_amount: null,
+                    loss_amount: null,
+                    bet_type: data?.betPlaceData?.bet_type,
+                    country: null,
+                    ip_address: null,
+                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                    rate: data?.betPlaceData?.rate,
+                    marketType: data?.betPlaceData?.marketType,
+                    myStack: data?.betPlaceData?.myStack,
+                    amount:
+                      data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                  };
+                  const newBody = [body, ...updatedIObets];
+                  dispatch(setAllBetRate(newBody));
+                  return newBody;
+                }
+                dispatch(setAllBetRate(updatedIObets));
+                return updatedIObets;
+              });
+
+              
               const updatedBettings = currentMatch?.bettings?.map((betting) => {
                 if (betting?.id === data?.betPlaceData?.bet_id) {
                   // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
