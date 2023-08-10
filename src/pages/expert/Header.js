@@ -317,26 +317,29 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "match_bet") {
           const data = packet.data[1];
           try {
-            const manualBookmaker = {
-              matchId: data?.betPlaceData?.match_id,
-              teamA: data.teamA_rate,
-              teamB: data.teamB_rate,
-              teamC: data.teamC_rate,
-            };
 
-            setTeamRates((prev) => {
-              const newBody = {
-                ...prev,
-                teamA: data?.teamA_rate ? data?.teamA_rate : 0,
-                teamB: data?.teamB_rate ? data?.teamB_rate : 0,
-                teamC: data?.teamC_rate ? data?.teamC_rate : 0,
-              };
-              dispatch(setBookmakerTeamRates(newBody));
-              return newBody;
-            });
+     
 
             setLocalAllBetRates((prev) => {
               if (match_id === data?.betPlaceData?.match_id) {
+                const manualBookmaker = {
+                  matchId: data?.betPlaceData?.match_id,
+                  teamA: data.teamA_rate,
+                  teamB: data.teamB_rate,
+                  teamC: data.teamC_rate,
+                };
+                dispatch(setManualBookMarkerRates(manualBookmaker));
+    
+                setTeamRates((prev) => {
+                  const newBody = {
+                    ...prev,
+                    teamA: data?.teamA_rate ? data?.teamA_rate : 0,
+                    teamB: data?.teamB_rate ? data?.teamB_rate : 0,
+                    teamC: data?.teamC_rate ? data?.teamC_rate : 0,
+                  };
+                  dispatch(setBookmakerTeamRates(newBody));
+                  return newBody;
+                });
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
@@ -407,7 +410,6 @@ const CustomHeader = ({}) => {
               return prev;
             });
 
-            dispatch(setManualBookMarkerRates(manualBookmaker));
           } catch (e) {
             console.log("error", e?.message);
           }
