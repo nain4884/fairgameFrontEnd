@@ -13,7 +13,7 @@ const initialState = {
   aConfirmAuth: false,
   allBetRates: [],
   currentOdd: [],
-  manualBookmakerId: "",
+  selectedBookmaker: null,
   sessionProfitLoss: null,
   teamA: {
     rate: null,
@@ -114,8 +114,8 @@ const expertMatchDetails = createSlice({
     setTeamSuspended: (state, action) => {
       state.teamSuspended = action.payload;
     },
-    setManualBookmakerId: (state, action) => {
-      state.manualBookmakerId = action.payload;
+    setSelectedBookmaker: (state, action) => {
+      state.selectedBookmaker = action.payload;
     },
     extraReducers: (builder) => {
       // This will handle the reset on logout
@@ -145,7 +145,7 @@ export const {
   setTeamB,
   setTeamC,
   setTeamSuspended,
-  setManualBookmakerId
+  setSelectedBookmaker
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

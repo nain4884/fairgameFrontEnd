@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { GlobalStore } from "../../context/globalStore";
-import { setManualBookmakerId, setSessionBetId } from "../../newStore/reducers/expertMatchDetails";
+import {  setSelectedBookmaker, setSessionBetId } from "../../newStore/reducers/expertMatchDetails";
 
 const MenutItemsComponent = ({
   x,
@@ -182,7 +182,8 @@ const MenutItemsComponent = ({
                         //   handleClose();
                         // }}
                         onClick={(e) => {
-                          dispatch(setManualBookmakerId(element?.id))
+                          sessionStorage.setItem("matchId",x.id)
+                          dispatch(setSelectedBookmaker(x))
                           navigate("/expert/add_book_maker", {
                             state: { id: element.id, match: x },
                           });
