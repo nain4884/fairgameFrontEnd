@@ -342,17 +342,17 @@ export default function Login(props) {
         return false;
       }
 
-      if (recaptchaToken === null) {
-        setLoading(false);
-        setLoginError("reCaptcha required ");
-        return false;
-      } else {
+      // if (recaptchaToken === null) {
+      //   setLoading(false);
+      //   setLoginError("reCaptcha required ");
+      //   return false;
+      // } else {
         setLoading(true);
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
           loginType: location.pathname.split("/")[1],
-          recaptchaToken: recaptchaToken,
+          recaptchaToken: null,
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -423,7 +423,7 @@ export default function Login(props) {
           setLoginError("Incorrect username and password!");
           setLoading(false);
         }
-      }
+      // }
     } catch (e) {
       console.log(e?.message);
       setLoading(false);
