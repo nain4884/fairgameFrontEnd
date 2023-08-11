@@ -909,6 +909,7 @@ console.log("state", match)
               let data = {};
               if (match?.teamC) {
                 data = {
+                  id: Bid,
                   matchId: match?.id,
                   betId: betId,
                   teamA_Back: targetValue,
@@ -924,6 +925,7 @@ console.log("state", match)
                 };
               } else {
                 data = {
+                  id: Bid,
                   matchId: match?.id,
                   betId: betId,
                   teamA_Back: targetValue,
