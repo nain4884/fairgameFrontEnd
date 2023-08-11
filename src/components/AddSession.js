@@ -442,9 +442,9 @@ const AddSession = ({ add, match, Bid }) => {
   // }, [socket]);
 
   const handleSuspend = (back, lay) => {
-    if (Math.abs(lay - back) >= 1) {
-      setIncGap(2);
-    }
+    // if (Math.abs(lay - back) >= 1) {
+    //   setIncGap(2);
+    // }
     if (
       !localTeamSuspended?.teamA_suspend ||
       !localTeamSuspended?.teamB_suspend ||
