@@ -25,7 +25,7 @@ import {
   setTeamSuspended,
 } from "../newStore/reducers/expertMatchDetails";
 
-const AddSession = ({ add, match,Bid }) => {
+const AddSession = ({ add, match, Bid }) => {
   const location = useLocation();
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
@@ -109,9 +109,9 @@ const AddSession = ({ add, match,Bid }) => {
 
   useEffect(() => {
     // alert(JSON.stringify(match))
-  if(Bid){
-    getManuallBookMaker(Bid);
-  }
+    if (Bid) {
+      getManuallBookMaker(Bid);
+    }
   }, [Bid]);
 
   useEffect(() => {
@@ -256,7 +256,6 @@ const AddSession = ({ add, match,Bid }) => {
       sessionBet: false,
       matchType: "cricket",
       match_id: id,
-     
     };
     try {
       let response = await axios.post(`/betting/addBetting`, payload);
@@ -271,7 +270,7 @@ const AddSession = ({ add, match,Bid }) => {
       match_id: matchId,
       bet_id: id,
       marketType: "MANUAL BOOKMAKER",
-      id:Bid
+      id: Bid,
     };
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
@@ -280,8 +279,7 @@ const AddSession = ({ add, match,Bid }) => {
       console.log(e);
     }
   }
-console.log("state", match)
-  // useEffect(() => {
+  console.log("state", match); // useEffect(() => {
   //   if (socket && socket.connected) {
   //     socket.onevent = async (packet) => {
   //       const data = packet.data[1];
@@ -443,7 +441,10 @@ console.log("state", match)
   //   }
   // }, [socket]);
 
-  const handleSuspend = () => {
+  const handleSuspend = (back, lay) => {
+    if (Math.abs(lay - back) >= 1) {
+      setIncGap(2);
+    }
     if (
       !localTeamSuspended?.teamA_suspend ||
       !localTeamSuspended?.teamB_suspend ||
@@ -452,7 +453,7 @@ console.log("state", match)
       socket.emit("updateRate", {
         matchId: match?.id,
         betId: betId,
-        id:Bid,
+        id: Bid,
         teamA_lay: "",
         teamA_Back: "",
         teamA_suspend: true,
@@ -547,7 +548,7 @@ console.log("state", match)
     }
   };
 
-  const handleFocus = (event) => { };
+  const handleFocus = (event) => {};
   const handleHunderedValue = (back, lay) => {
     // alert(back)
     if (back >= 100) {
@@ -574,8 +575,10 @@ console.log("state", match)
     event.target.value = targetValue;
     // if (key == "right") {
     if (key == "d" || key == "right") {
-      handleSuspend();
       let value = targetValue ? targetValue + incGap : incGap;
+      let chckValue = teamA?.lay ? teamA?.lay : value;
+      let l_chckValue = l_teamALayValue ? l_teamALayValue : value;
+      handleSuspend(targetValue, chckValue);
       setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(targetValue, teamA?.lay);
@@ -590,8 +593,6 @@ console.log("state", match)
         });
 
         setLTeamARate(value);
-        let chckValue = teamA?.lay ? teamA?.lay : value;
-        let l_chckValue = l_teamALayValue ? l_teamALayValue : value;
 
         setLocalTeamB((prev) => {
           const newBody = { ...prev, rate: "", lay: "" };
@@ -663,363 +664,364 @@ console.log("state", match)
         setLTeamBRate("");
         setLTeamBLayValue("");
       }
-    } else
-      // if (key == "left") {
-      if (key == "a" || key == "left") {
-        handleSuspend();
-        let value = targetValue - incGap;
-        setPressEnter(false);
-        if (event.target.name === "teamA_rate" && teamA?.rate > 0) {
-          setLocalTeamA((prev) => {
-            const newBody = { ...prev, lay: teamA?.lay - incGap, rate: value };
-            dispatch(setTeamA(newBody));
-            return newBody;
-          });
+    }
+    // if (key == "left") {
+    else if (key == "a" || key == "left") {
+      let value = teamA?.lay ? teamA?.lay : teamA?.rate;
+      handleSuspend(targetValue, value );
+      setPressEnter(false);
+      if (event.target.name === "teamA_rate" && teamA?.rate > 0) {
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: teamA?.lay - incGap, rate: value };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
 
-          setLocalTeamB((prev) => {
-            const newBody = { ...prev, lay: "", rate: "" };
-            dispatch(setTeamB(newBody));
-            return newBody;
-          });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
-          setLTeamARate(value);
-          setLTeamALayValue(l_teamALayValue - incGap);
-          setLTeamBRate("");
-          setLTeamBLayValue("");
+        setLTeamARate(value);
+        setLTeamALayValue(l_teamALayValue - incGap);
+        setLTeamBRate("");
+        setLTeamBLayValue("");
+      }
+
+      if (event.target.name === "teamB_rate" && teamB?.rate > 0) {
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: teamB?.lay - incGap, rate: value };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLTeamBRate(value);
+        setLTeamBLayValue(l_teamBLayValue - incGap);
+        setLTeamARate("");
+        setLTeamALayValue("");
+      }
+      if (event.target.name === "teamC_rate" && teamC?.rate > 0) {
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: teamC?.lay - incGap, rate: value };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLTeamCRate(value);
+        setLTeamCLayValue(l_teamCLayValue - incGap);
+        setLTeamARate("");
+        setLTeamALayValue("");
+        setLTeamBRate("");
+        setLTeamBLayValue("");
+      }
+    }
+    // if (key == "up") {
+    else if (key == "w" || key == "up") {
+      let value = teamA?.lay ? teamA?.lay : teamA?.rate;
+      let l_value = l_teamALayValue ? l_teamALayValue : l_teamARate;
+      handleSuspend(targetValue, value);
+      setPressEnter(false);
+      if (event.target.name === "teamA_rate") {
+        let result = handleHunderedValue(targetValue, teamA?.lay);
+        if (result) {
+          return;
         }
 
-        if (event.target.name === "teamB_rate" && teamB?.rate > 0) {
-          setLocalTeamB((prev) => {
-            const newBody = { ...prev, lay: teamB?.lay - incGap, rate: value };
-            dispatch(setTeamB(newBody));
-            return newBody;
-          });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: value + incGap };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, rate: "", lay: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
-          setLocalTeamA((prev) => {
-            const newBody = { ...prev, lay: "", rate: "" };
-            dispatch(setTeamA(newBody));
-            return newBody;
-          });
-          setLTeamBRate(value);
-          setLTeamBLayValue(l_teamBLayValue - incGap);
-          setLTeamARate("");
-          setLTeamALayValue("");
+        setLTeamALayValue(l_value + incGap);
+        setLTeamBRate("");
+        setLTeamBLayValue("");
+      }
+
+      if (event.target.name === "teamB_rate") {
+        let result = handleHunderedValue(targetValue, teamB?.lay);
+        if (result) {
+          return;
         }
-        if (event.target.name === "teamC_rate" && teamC?.rate > 0) {
-          setLocalTeamC((prev) => {
-            const newBody = { ...prev, lay: teamC?.lay - incGap, rate: value };
-            dispatch(setTeamC(newBody));
-            return newBody;
-          });
+        let value = teamB?.lay ? teamB?.lay : teamB?.rate;
+        let l_value = l_teamBLayValue ? l_teamBLayValue : l_teamBRate;
 
-          setLocalTeamB((prev) => {
-            const newBody = { ...prev, lay: "", rate: "" };
-            dispatch(setTeamB(newBody));
-            return newBody;
-          });
-          setLocalTeamA((prev) => {
-            const newBody = { ...prev, lay: "", rate: "" };
-            dispatch(setTeamA(newBody));
-            return newBody;
-          });
-          setLTeamCRate(value);
-          setLTeamCLayValue(l_teamCLayValue - incGap);
-          setLTeamARate("");
-          setLTeamALayValue("");
-          setLTeamBRate("");
-          setLTeamBLayValue("");
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = {
+            ...prev,
+
+            lay: value + incGap,
+          };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLTeamBLayValue(l_value + incGap);
+        setLTeamARate("");
+        setLTeamALayValue("");
+      }
+      if (event.target.name === "teamC_rate") {
+        let result = handleHunderedValue(targetValue, teamC?.lay);
+        if (result) {
+          return;
         }
-      } else
-        // if (key == "up") {
-        if (key == "w" || key == "up") {
-          handleSuspend();
-          setPressEnter(false);
-          if (event.target.name === "teamA_rate") {
-            let result = handleHunderedValue(targetValue, teamA?.lay);
-            if (result) {
-              return;
-            }
-            let value = teamA?.lay ? teamA?.lay : teamA?.rate;
-            let l_value = l_teamALayValue ? l_teamALayValue : l_teamARate;
+        let value = teamC?.lay ? teamC?.lay : teamC?.rate;
+        let l_value = l_teamCLayValue ? l_teamCLayValue : l_teamCRate;
 
-            setLocalTeamA((prev) => {
-              const newBody = { ...prev, lay: value + incGap };
-              dispatch(setTeamA(newBody));
-              return newBody;
-            });
-            setLocalTeamB((prev) => {
-              const newBody = { ...prev, rate: "", lay: "" };
-              dispatch(setTeamB(newBody));
-              return newBody;
-            });
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: value + incGap };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
 
-            setLTeamALayValue(l_value + incGap);
-            setLTeamBRate("");
-            setLTeamBLayValue("");
-          }
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = {
+            ...prev,
 
-          if (event.target.name === "teamB_rate") {
-            let result = handleHunderedValue(targetValue, teamB?.lay);
-            if (result) {
-              return;
-            }
-            let value = teamB?.lay ? teamB?.lay : teamB?.rate;
-            let l_value = l_teamBLayValue ? l_teamBLayValue : l_teamBRate;
+            lay: "",
+            rate: "",
+          };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLTeamCLayValue(l_value + incGap);
+        setLTeamARate("");
+        setLTeamALayValue("");
+        setLTeamBRate("");
+        setLTeamBLayValue("");
+      }
+    }
+    // if (key == "down") {
+    else if (key == "z" || key == "down") {
+      let value = teamA?.lay ? teamA?.lay : teamA?.rate;
+      handleSuspend(targetValue, value);
+      setPressEnter(false);
+      if (
+        event.target.name === "teamA_rate" &&
+        teamA?.lay - incGap > teamA?.rate
+      ) {
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: teamA?.lay - incGap };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
 
-            setLocalTeamA((prev) => {
-              const newBody = { ...prev, lay: "", rate: "" };
-              dispatch(setTeamA(newBody));
-              return newBody;
-            });
-            setLocalTeamB((prev) => {
-              const newBody = {
-                ...prev,
+        setLTeamALayValue(l_teamALayValue - incGap);
+        setLTeamBRate("");
+        setLTeamBLayValue("");
+      }
 
-                lay: value + incGap,
-              };
-              dispatch(setTeamB(newBody));
-              return newBody;
-            });
-            setLTeamBLayValue(l_value + incGap);
-            setLTeamARate("");
-            setLTeamALayValue("");
-          }
-          if (event.target.name === "teamC_rate") {
-            let result = handleHunderedValue(targetValue, teamC?.lay);
-            if (result) {
-              return;
-            }
-            let value = teamC?.lay ? teamC?.lay : teamC?.rate;
-            let l_value = l_teamCLayValue ? l_teamCLayValue : l_teamCRate;
+      if (
+        event.target.name === "teamB_rate" &&
+        teamB?.lay - incGap > teamB?.rate
+      ) {
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: teamB?.lay - incGap };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLTeamBLayValue(l_teamBLayValue - incGap);
+        setLTeamARate("");
+        setLTeamALayValue("");
+      }
+      if (
+        event.target.name === "teamC_rate" &&
+        teamC?.lay - incGap > teamC?.rate
+      ) {
+        setLocalTeamC((prev) => {
+          const newBody = { ...prev, lay: teamC?.lay - incGap };
+          dispatch(setTeamC(newBody));
+          return newBody;
+        });
+        setLocalTeamA((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamA(newBody));
+          return newBody;
+        });
+        setLocalTeamB((prev) => {
+          const newBody = { ...prev, lay: "", rate: "" };
+          dispatch(setTeamB(newBody));
+          return newBody;
+        });
+        setLTeamCLayValue(l_teamCLayValue - incGap);
+        setLTeamARate("");
+        setLTeamALayValue("");
+        setLTeamBRate("");
+        setLTeamBLayValue("");
+      }
+    } else if (key == "`") {
+      handleSuspend();
+      if (match?.teamC) {
+        if (event.target.name === "teamA_rate") {
+          innerRefTeamB.current.focus();
+        } else if (event.target.name === "teamB_rate") {
+          innerRefTeamC.current.focus();
+        } else if (event.target.name === "teamC_rate") {
+          innerRefTeamA.current.focus();
+        }
+      } else {
+        if (event.target.name === "teamA_rate") {
+          innerRefTeamB.current.focus();
+        } else if (event.target.name === "teamB_rate") {
+          innerRefTeamA.current.focus();
+        }
+      }
+    } else if (key == "enter" || key == "return") {
+      if (isTab == "tab") {
+        let data = {};
+        if (match?.teamC) {
+          data = {
+            id: Bid,
+            matchId: match?.id,
+            betId: betId,
+            teamA_Back: targetValue,
+            teamALayValue: "", //add
+            teamA_suspend: false,
+            teamB_Back: targetValue,
+            teamBLayValue: "", //add
+            teamB_suspend: false,
+            teamC_Back: targetValue,
+            teamCLayValue: "", //add
+            teamC_suspend: false,
+            isTab: true,
+          };
+        } else {
+          data = {
+            id: Bid,
+            matchId: match?.id,
+            betId: betId,
+            teamA_Back: targetValue,
+            teamALayValue: "", //add
+            teamA_suspend: false,
+            teamB_Back: targetValue,
+            teamBLayValue: "", //add
+            teamB_suspend: false,
+            teamC_Back: "", //add
+            teamCLayValue: "", //add
+            teamC_suspend: false,
+            isTab: true,
+          };
+        }
+        // alert(JSON.stringify(data));
+        socket.emit("updateRate", data);
+      } else {
+        if (event.target.name === "teamA_rate") {
+          socket.emit("updateRate", {
+            matchId: match?.id,
+            id: Bid,
+            betId: betId,
+            teamA_lay: teamA?.lay,
+            teamA_Back: teamA?.rate,
+            teamA_suspend: false,
+            teamB_lay: "",
+            teamB_Back: "",
+            teamB_suspend: true,
+            teamC_lay: "",
+            teamC_Back: "",
+            teamC_suspend: true,
+          });
+        }
+        if (event.target.name === "teamB_rate") {
+          socket.emit("updateRate", {
+            matchId: match?.id,
+            id: Bid,
+            betId: betId,
+            teamA_lay: "",
+            teamA_Back: "",
+            teamA_suspend: true,
+            teamB_lay: teamB?.lay,
+            teamB_Back: teamB?.rate,
+            teamB_suspend: false,
+            teamC_lay: "",
+            teamC_Back: "",
+            teamC_suspend: true,
+          });
+        }
+        if (event.target.name === "teamC_rate") {
+          socket.emit("updateRate", {
+            matchId: match?.id,
+            id: Bid,
+            betId: betId,
+            teamA_lay: "",
+            teamA_Back: "",
+            teamA_suspend: true,
+            teamB_lay: "",
+            teamB_Back: "",
+            teamB_suspend: true,
+            teamC_lay: teamC?.lay,
+            teamC_Back: teamC?.rate,
+            teamC_suspend: false,
+          });
+        }
+      }
+      setIsTab("");
+    } else if (key == "tab") {
+      handleSuspend();
 
-            setLocalTeamC((prev) => {
-              const newBody = { ...prev, lay: value + incGap };
-              dispatch(setTeamA(newBody));
-              return newBody;
-            });
+      setLocalTeamA((prev) => {
+        const newBody = { ...prev, lay: "", rate: targetValue };
+        dispatch(setTeamA(newBody));
+        return newBody;
+      });
+      setLocalTeamB((prev) => {
+        const newBody = { ...prev, lay: "", rate: targetValue };
+        dispatch(setTeamB(newBody));
+        return newBody;
+      });
 
-            setLocalTeamA((prev) => {
-              const newBody = { ...prev, lay: "", rate: "" };
-              dispatch(setTeamA(newBody));
-              return newBody;
-            });
-            setLocalTeamB((prev) => {
-              const newBody = {
-                ...prev,
-
-                lay: "",
-                rate: "",
-              };
-              dispatch(setTeamB(newBody));
-              return newBody;
-            });
-            setLTeamCLayValue(l_value + incGap);
-            setLTeamARate("");
-            setLTeamALayValue("");
-            setLTeamBRate("");
-            setLTeamBLayValue("");
-          }
-        } else
-          // if (key == "down") {
-          if (key == "z" || key == "down") {
-            handleSuspend();
-            setPressEnter(false);
-            if (
-              event.target.name === "teamA_rate" &&
-              teamA?.lay - incGap > teamA?.rate
-            ) {
-              setLocalTeamA((prev) => {
-                const newBody = { ...prev, lay: teamA?.lay - incGap };
-                dispatch(setTeamA(newBody));
-                return newBody;
-              });
-              setLocalTeamB((prev) => {
-                const newBody = { ...prev, lay: "", rate: "" };
-                dispatch(setTeamB(newBody));
-                return newBody;
-              });
-
-              setLTeamALayValue(l_teamALayValue - incGap);
-              setLTeamBRate("");
-              setLTeamBLayValue("");
-            }
-
-            if (
-              event.target.name === "teamB_rate" &&
-              teamB?.lay - incGap > teamB?.rate
-            ) {
-              setLocalTeamB((prev) => {
-                const newBody = { ...prev, lay: teamB?.lay - incGap };
-                dispatch(setTeamB(newBody));
-                return newBody;
-              });
-              setLocalTeamA((prev) => {
-                const newBody = { ...prev, lay: "", rate: "" };
-                dispatch(setTeamA(newBody));
-                return newBody;
-              });
-              setLTeamBLayValue(l_teamBLayValue - incGap);
-              setLTeamARate("");
-              setLTeamALayValue("");
-            }
-            if (
-              event.target.name === "teamC_rate" &&
-              teamC?.lay - incGap > teamC?.rate
-            ) {
-              setLocalTeamC((prev) => {
-                const newBody = { ...prev, lay: teamC?.lay - incGap };
-                dispatch(setTeamC(newBody));
-                return newBody;
-              });
-              setLocalTeamA((prev) => {
-                const newBody = { ...prev, lay: "", rate: "" };
-                dispatch(setTeamA(newBody));
-                return newBody;
-              });
-              setLocalTeamB((prev) => {
-                const newBody = { ...prev, lay: "", rate: "" };
-                dispatch(setTeamB(newBody));
-                return newBody;
-              });
-              setLTeamCLayValue(l_teamCLayValue - incGap);
-              setLTeamARate("");
-              setLTeamALayValue("");
-              setLTeamBRate("");
-              setLTeamBLayValue("");
-            }
-          } else if (key == "`") {
-            handleSuspend();
-            if (match?.teamC) {
-              if (event.target.name === "teamA_rate") {
-                innerRefTeamB.current.focus();
-              } else if (event.target.name === "teamB_rate") {
-                innerRefTeamC.current.focus();
-              } else if (event.target.name === "teamC_rate") {
-                innerRefTeamA.current.focus();
-              }
-            } else {
-              if (event.target.name === "teamA_rate") {
-                innerRefTeamB.current.focus();
-              } else if (event.target.name === "teamB_rate") {
-                innerRefTeamA.current.focus();
-              }
-            }
-          } else if (key == "enter" || key == "return") {
-            if (isTab == "tab") {
-              let data = {};
-              if (match?.teamC) {
-                data = {
-                  id: Bid,
-                  matchId: match?.id,
-                  betId: betId,
-                  teamA_Back: targetValue,
-                  teamALayValue: "", //add
-                  teamA_suspend: false,
-                  teamB_Back: targetValue,
-                  teamBLayValue: "", //add
-                  teamB_suspend: false,
-                  teamC_Back: targetValue,
-                  teamCLayValue: "", //add
-                  teamC_suspend: false,
-                  isTab: true,
-                };
-              } else {
-                data = {
-                  id: Bid,
-                  matchId: match?.id,
-                  betId: betId,
-                  teamA_Back: targetValue,
-                  teamALayValue: "", //add
-                  teamA_suspend: false,
-                  teamB_Back: targetValue,
-                  teamBLayValue: "", //add
-                  teamB_suspend: false,
-                  teamC_Back: "", //add
-                  teamCLayValue: "", //add
-                  teamC_suspend: false,
-                  isTab: true,
-                };
-              }
-              // alert(JSON.stringify(data));
-              socket.emit("updateRate", data);
-            } else {
-              if (event.target.name === "teamA_rate") {
-                socket.emit("updateRate", {
-                  matchId: match?.id,
-                  id:Bid,
-                  betId: betId,
-                  teamA_lay: teamA?.lay,
-                  teamA_Back: teamA?.rate,
-                  teamA_suspend: false,
-                  teamB_lay: "",
-                  teamB_Back: "",
-                  teamB_suspend: true,
-                  teamC_lay: "",
-                  teamC_Back: "",
-                  teamC_suspend: true,
-                });
-              }
-              if (event.target.name === "teamB_rate") {
-                socket.emit("updateRate", {
-                  matchId: match?.id,
-                  id:Bid,
-                  betId: betId,
-                  teamA_lay: "",
-                  teamA_Back: "",
-                  teamA_suspend: true,
-                  teamB_lay: teamB?.lay,
-                  teamB_Back: teamB?.rate,
-                  teamB_suspend: false,
-                  teamC_lay: "",
-                  teamC_Back: "",
-                  teamC_suspend: true,
-                });
-              }
-              if (event.target.name === "teamC_rate") {
-                socket.emit("updateRate", {
-                  matchId: match?.id,
-                  id:Bid,
-                  betId: betId,
-                  teamA_lay: "",
-                  teamA_Back: "",
-                  teamA_suspend: true,
-                  teamB_lay: "",
-                  teamB_Back: "",
-                  teamB_suspend: true,
-                  teamC_lay: teamC?.lay,
-                  teamC_Back: teamC?.rate,
-                  teamC_suspend: false,
-                });
-              }
-            }
-            setIsTab("");
-          } else if (key == "tab") {
-            handleSuspend();
-
-            setLocalTeamA((prev) => {
-              const newBody = { ...prev, lay: "", rate: targetValue };
-              dispatch(setTeamA(newBody));
-              return newBody;
-            });
-            setLocalTeamB((prev) => {
-              const newBody = { ...prev, lay: "", rate: targetValue };
-              dispatch(setTeamB(newBody));
-              return newBody;
-            });
-
-            setLocalTeamC((prev) => {
-              const newBody = { ...prev, lay: "", rate: targetValue };
-              dispatch(setTeamC(newBody));
-              return newBody;
-            });
-            setLTeamARate(targetValue);
-            setLTeamBRate(targetValue);
-            setLTeamCRate(targetValue);
-            setLTeamALayValue("");
-            setLTeamBLayValue("");
-            setLTeamCLayValue("");
-            setIsTab("tab");
-          }
+      setLocalTeamC((prev) => {
+        const newBody = { ...prev, lay: "", rate: targetValue };
+        dispatch(setTeamC(newBody));
+        return newBody;
+      });
+      setLTeamARate(targetValue);
+      setLTeamBRate(targetValue);
+      setLTeamCRate(targetValue);
+      setLTeamALayValue("");
+      setLTeamBLayValue("");
+      setLTeamCLayValue("");
+      setIsTab("tab");
+    }
     if (key == "*") {
       handleSuspend();
       if (event.target.name === "teamA_rate") {
@@ -1402,7 +1404,7 @@ console.log("state", match)
     if (key == "shift") {
       socket.emit("updateRate", {
         matchId: match?.id,
-        id:Bid,
+        id: Bid,
         betId: betId,
         teamA_lay: "",
         teamA_Back: "",
