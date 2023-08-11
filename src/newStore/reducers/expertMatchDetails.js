@@ -21,6 +21,7 @@ const initialState = {
     suspended: true,
     lay: null,
     back: null,
+    layLock: false
   },
   teamB: {
     rate: null,
@@ -28,6 +29,7 @@ const initialState = {
     suspended: true,
     lay: null,
     back: null,
+    layLock: false
   },
   teamC: {
     rate: null,
@@ -35,6 +37,7 @@ const initialState = {
     suspended: true,
     lay: null,
     back: null,
+    layLock: false
   },
   teamBall: {
     isABall: false,
