@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { GlobalStore } from "../../context/globalStore";
 import { setSessionBetId } from "../../newStore/reducers/expertMatchDetails";
+import { setBookMakerBetRate } from "../../newStore/reducers/matchDetails";
 
 const MenutItemsComponent = ({
   x,
@@ -143,6 +144,7 @@ const MenutItemsComponent = ({
           </Box>
           <Box
             onClick={(e) => {
+              dispatch(setBookMakerBetRate([]))
               navigate("/expert/add_book_maker", {
                 state: { createSession: true, match: x },
               });
