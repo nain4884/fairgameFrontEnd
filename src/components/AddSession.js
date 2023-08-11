@@ -79,7 +79,7 @@ const AddSession = ({ add, match, Bid }) => {
     suspended: true,
     lay: null,
     back: null,
-    layLock: false
+    layLock: false,
   });
   const [localTeamB, setLocalTeamB] = useState({
     rate: null,
@@ -87,7 +87,7 @@ const AddSession = ({ add, match, Bid }) => {
     suspended: true,
     lay: null,
     back: null,
-    layLock: false
+    layLock: false,
   });
   const [localTeamC, setLocalTeamC] = useState({
     rate: null,
@@ -95,7 +95,7 @@ const AddSession = ({ add, match, Bid }) => {
     suspended: true,
     lay: null,
     back: null,
-    layLock: false
+    layLock: false,
   });
   const [localTeamBall, setLocalTeamBall] = useState({
     isABall: false,
@@ -221,7 +221,7 @@ const AddSession = ({ add, match, Bid }) => {
           return newBody;
         });
 
-        getAllBetsData(response?.data?.data?.bet_id, id);
+        getAllBetsData(response?.data?.data?.bet_id, response?.data?.data?.match_id,response?.data?.data?.marketType);
         const newBody = {
           teamA: response?.data?.data.teamA_rate
             ? response?.data?.data.teamA_rate
@@ -268,11 +268,11 @@ const AddSession = ({ add, match, Bid }) => {
     }
   }
 
-  async function getAllBetsData(id, matchId) {
+  async function getAllBetsData(id, matchId,marketType) {
     let payload = {
       match_id: matchId,
       bet_id: id,
-      marketType: "MANUAL BOOKMAKER",
+      marketType,
       id: Bid,
     };
     try {
@@ -469,7 +469,7 @@ const AddSession = ({ add, match, Bid }) => {
         teamC_Back: "",
         teamC_suspend: true,
         lock: true,
-        layLock:false
+        layLock: false,
       });
     }
   };
@@ -965,7 +965,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_lay: "",
             teamC_Back: "",
             teamC_suspend: true,
-            layLock:false
+            layLock: false,
           });
         }
         if (event.target.name === "teamB_rate") {
@@ -982,7 +982,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_lay: "",
             teamC_Back: "",
             teamC_suspend: true,
-            layLock:false
+            layLock: false,
           });
         }
         if (event.target.name === "teamC_rate") {
@@ -999,7 +999,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_lay: teamC?.lay,
             teamC_Back: teamC?.rate,
             teamC_suspend: false,
-            layLock:false
+            layLock: false,
           });
         }
       }
@@ -1427,7 +1427,7 @@ const AddSession = ({ add, match, Bid }) => {
         teamC_Back: "",
         teamC_suspend: "Ball Started",
         lock: true,
-        layLock:false
+        layLock: false,
       });
     }
     if (key == "plus") {
@@ -1873,7 +1873,7 @@ const AddSession = ({ add, match, Bid }) => {
     }
   };
 
-  console.log(isTab, 'isTab')
+  console.log(isTab, "isTab");
 
   return (
     <>
@@ -2074,10 +2074,7 @@ const AddSession = ({ add, match, Bid }) => {
                 >
                   <TextField
                     className="InputChild"
-                    onChange={
-                      (e) => handleChange(e)
-                      // (i) => setValue1(i.target.value)
-                    }
+                    onChange={handleChange}
                     name={"teamA_rate"}
                     inputRef={innerRefTeamA}
                     onFocus={() => handleFocus(innerRefTeamA)}
@@ -2216,7 +2213,7 @@ const AddSession = ({ add, match, Bid }) => {
                     className="InputChild"
                     variant="standard"
                     value={l_teamBRate}
-                    onChange={(e) => handleChange(e)}
+                    onChange={handleChange}
                     name={"teamB_rate"}
                     inputRef={innerRefTeamB}
                     type="number"
@@ -2354,7 +2351,7 @@ const AddSession = ({ add, match, Bid }) => {
                       className="InputChild"
                       variant="standard"
                       value={l_teamCRate}
-                      onChange={(e) => handleChange(e)}
+                      onChange={handleChange}
                       name={"teamC_rate"}
                       inputRef={innerRefTeamC}
                       type="number"
@@ -2510,7 +2507,10 @@ const AddSession = ({ add, match, Bid }) => {
                   ) : (
                     <Box
                       sx={{
-                        background: teamA?.suspended  ||  teamA?.lay === null ? "#FDF21A" : "#FFB5B5",
+                        background:
+                          teamA?.suspended || teamA?.lay === null
+                            ? "#FDF21A"
+                            : "#FFB5B5",
                         width: "50%",
                         borderLeft: "2px solid white",
                         display: "flex",
@@ -2519,7 +2519,7 @@ const AddSession = ({ add, match, Bid }) => {
                         alignItems: "center",
                       }}
                     >
-                      {!teamA?.suspended && teamA?.lay  ? (
+                      {!teamA?.suspended && teamA?.lay ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
@@ -2584,49 +2584,60 @@ const AddSession = ({ add, match, Bid }) => {
                       )}
                     </Box>
                   )}
-                 {teamB?.layLock ?   <Box
-                    sx={{
-                      background: teamB?.lay===null ? "#FDF21A" : "#FFB5B5",
-                      width: "50%",
-                      borderLeft: "2px solid white",
-                      display: "flex",
-                      height: "55px",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    {teamB?.lay ? (
-                      <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>
-                        {teamB?.lay}
-                      </Typography>
-                    ) : (
-                      <img
-                        src={Lock}
-                        style={{ width: "10px", height: "15px" }}
-                      />
-                    )}
-                  </Box>: <Box
-                    sx={{
-                      background: teamB?.suspended || teamB?.lay===null ? "#FDF21A" : "#FFB5B5",
-                      width: "50%",
-                      borderLeft: "2px solid white",
-                      display: "flex",
-                      height: "55px",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    {!teamB?.suspended && teamB?.lay? (
-                      <Typography sx={{ fontWeight: "600", fontSize: "22px" }}>
-                        {teamB?.suspended ? 0 : teamB?.lay}
-                      </Typography>
-                    ) : (
-                      <img
-                        src={Lock}
-                        style={{ width: "10px", height: "15px" }}
-                      />
-                    )}
-                  </Box>}
+                  {teamB?.layLock ? (
+                    <Box
+                      sx={{
+                        background: teamB?.lay === null ? "#FDF21A" : "#FFB5B5",
+                        width: "50%",
+                        borderLeft: "2px solid white",
+                        display: "flex",
+                        height: "55px",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      {teamB?.lay ? (
+                        <Typography
+                          sx={{ fontWeight: "600", fontSize: "22px" }}
+                        >
+                          {teamB?.lay}
+                        </Typography>
+                      ) : (
+                        <img
+                          src={Lock}
+                          style={{ width: "10px", height: "15px" }}
+                        />
+                      )}
+                    </Box>
+                  ) : (
+                    <Box
+                      sx={{
+                        background:
+                          teamB?.suspended || teamB?.lay === null
+                            ? "#FDF21A"
+                            : "#FFB5B5",
+                        width: "50%",
+                        borderLeft: "2px solid white",
+                        display: "flex",
+                        height: "55px",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      {!teamB?.suspended && teamB?.lay ? (
+                        <Typography
+                          sx={{ fontWeight: "600", fontSize: "22px" }}
+                        >
+                          {teamB?.suspended ? 0 : teamB?.lay}
+                        </Typography>
+                      ) : (
+                        <img
+                          src={Lock}
+                          style={{ width: "10px", height: "15px" }}
+                        />
+                      )}
+                    </Box>
+                  )}
                 </Box>
                 {match?.teamC && (
                   <>
@@ -2685,53 +2696,61 @@ const AddSession = ({ add, match, Bid }) => {
                           )}
                         </Box>
                       )}
-                   {teamC?.layLock ? <Box
-                        sx={{
-                          background: teamC?.lay === null ? "#FDF21A" : "#FFB5B5",
-                          width: "50%",
-                          borderLeft: "2px solid white",
-                          display: "flex",
-                          height: "56px",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        {teamC?.lay ? (
-                          <Typography
-                            sx={{ fontWeight: "600", fontSize: "22px" }}
-                          >
-                            { teamC?.lay}
-                          </Typography>
-                        ) : (
-                          <img
-                            src={Lock}
-                            style={{ width: "10px", height: "15px" }}
-                          />
-                        )}
-                      </Box>  :   <Box
-                        sx={{
-                          background: teamC?.suspended || teamC?.lay===null? "#FDF21A" : "#FFB5B5",
-                          width: "50%",
-                          borderLeft: "2px solid white",
-                          display: "flex",
-                          height: "56px",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        {!teamC?.suspended && teamC?.lay? (
-                          <Typography
-                            sx={{ fontWeight: "600", fontSize: "22px" }}
-                          >
-                            {teamC?.suspended ? 0 : teamC?.lay}
-                          </Typography>
-                        ) : (
-                          <img
-                            src={Lock}
-                            style={{ width: "10px", height: "15px" }}
-                          />
-                        )}
-                      </Box>}
+                      {teamC?.layLock ? (
+                        <Box
+                          sx={{
+                            background:
+                              teamC?.lay === null ? "#FDF21A" : "#FFB5B5",
+                            width: "50%",
+                            borderLeft: "2px solid white",
+                            display: "flex",
+                            height: "56px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          {teamC?.lay ? (
+                            <Typography
+                              sx={{ fontWeight: "600", fontSize: "22px" }}
+                            >
+                              {teamC?.lay}
+                            </Typography>
+                          ) : (
+                            <img
+                              src={Lock}
+                              style={{ width: "10px", height: "15px" }}
+                            />
+                          )}
+                        </Box>
+                      ) : (
+                        <Box
+                          sx={{
+                            background:
+                              teamC?.suspended || teamC?.lay === null
+                                ? "#FDF21A"
+                                : "#FFB5B5",
+                            width: "50%",
+                            borderLeft: "2px solid white",
+                            display: "flex",
+                            height: "56px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          {!teamC?.suspended && teamC?.lay ? (
+                            <Typography
+                              sx={{ fontWeight: "600", fontSize: "22px" }}
+                            >
+                              {teamC?.suspended ? 0 : teamC?.lay}
+                            </Typography>
+                          ) : (
+                            <img
+                              src={Lock}
+                              style={{ width: "10px", height: "15px" }}
+                            />
+                          )}
+                        </Box>
+                      )}
                     </Box>
                   </>
                 )}

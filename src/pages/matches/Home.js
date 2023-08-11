@@ -1104,14 +1104,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
       const allrates = data?.data?.data?.filter((b) =>
-        ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(b?.marketType)
+        ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER","QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"].includes(b?.marketType)
       );
       setIObtes(allrates);
 
       dispatch(setAllBetRate(allrates));
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER" ,"QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"].includes(
             b?.marketType
           )
       );
@@ -1358,6 +1358,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                           "MATCH ODDS",
                           "BOOKMAKER",
                           "MANUAL BOOKMAKER",
+                          "QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"
                         ]?.includes(v.marketType)
                       )}
                       count={
@@ -1366,6 +1367,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                             "MATCH ODDS",
                             "BOOKMAKER",
                             "MANUAL BOOKMAKER",
+                            "QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"
                           ]?.includes(v.marketType)
                         ).length
                       }
@@ -1418,13 +1420,13 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
                 <AllRateSeperate
                   allBetsData={IObets?.filter((v) =>
-                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
+                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER","QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"]?.includes(
                       v.marketType
                     )
                   )}
                   count={
                     IObets?.filter((v) =>
-                      ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
+                      ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER","QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"]?.includes(
                         v.marketType
                       )
                     ).length
