@@ -53,7 +53,7 @@ const MatchSubmit = ({}) => {
 
   useEffect(() => {
     if (multiSelectedMatches) {
-      console.log(multiSelectedMatches,"multiSelectedMatches")
+      console.log(multiSelectedMatches, "multiSelectedMatches");
       setMatchData(multiSelectedMatches);
     }
 
@@ -964,14 +964,29 @@ const MatchSubmit = ({}) => {
                                     typeOfBet={"Match Odds"}
                                   />
                                 )}
-                                {item?.manualBookMakerActive && (
+                                {item?.bookmakers?.map((bookmaker) => {
+                                  if (bookmaker.betStatus === 1) {
+                                    return (
+                                      <Odds
+                                        currentMatch={item}
+                                        session={"manualBookMaker"}
+                                        data={bookmaker}
+                                        minBet={bookmaker?.min_bet || 0}
+                                        maxBet={bookmaker?.max_bet || 0}
+                                        typeOfBet={bookmaker?.marketName}
+                                        matchOddsData={bookmaker}
+                                      />
+                                    );
+                                  }
+                                })}
+                                {/* {item?.manualBookMakerActive && (
                                   <Odds
                                     currentMatch={item}
                                     data={item}
                                     manualBookmakerData={matchOddsDataTemp}
                                     typeOfBet={"Quick Bookmaker"}
                                   />
-                                )}
+                                )} */}
                                 {item?.apiBookMakerActive && (
                                   <BookMarketer
                                     currentMatch={item}
