@@ -667,7 +667,7 @@ const AddSession = ({ add, match, Bid }) => {
     }
     // if (key == "left") {
     else if (key == "a" || key == "left") {
-      let value = teamA?.lay ? teamA?.lay : teamA?.rate;
+      let value = targetValue - incGap;
       handleSuspend(targetValue, value );
       setPressEnter(false);
       if (event.target.name === "teamA_rate" && teamA?.rate > 0) {
