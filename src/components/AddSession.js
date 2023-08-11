@@ -442,9 +442,11 @@ const AddSession = ({ add, match, Bid }) => {
   // }, [socket]);
 
   const handleSuspend = (back, lay) => {
-    // if (Math.abs(lay - back) >= 1) {
-    //   setIncGap(2);
-    // }
+    if (back && lay) {
+      if (Math.abs(lay - back) >= 1) {
+        setIncGap(2);
+      }
+    }
     if (
       !localTeamSuspended?.teamA_suspend ||
       !localTeamSuspended?.teamB_suspend ||
@@ -469,8 +471,8 @@ const AddSession = ({ add, match, Bid }) => {
   };
 
   const handleChange = (event) => {
-    handleSuspend();
     let target = event.target;
+    handleSuspend(target.value);
     if (target.value <= 100) {
       if (target.name === "teamA_rate") {
         setLocalTeamA((prev) => {
@@ -668,7 +670,7 @@ const AddSession = ({ add, match, Bid }) => {
     // if (key == "left") {
     else if (key == "a" || key == "left") {
       let value = targetValue - incGap;
-      handleSuspend(targetValue, value );
+      handleSuspend(targetValue, value);
       setPressEnter(false);
       if (event.target.name === "teamA_rate" && teamA?.rate > 0) {
         setLocalTeamA((prev) => {
@@ -890,7 +892,7 @@ const AddSession = ({ add, match, Bid }) => {
         setLTeamBLayValue("");
       }
     } else if (key == "`") {
-      handleSuspend();
+      handleSuspend(targetValue, teamA?.lay ? teamA?.lay : teamA?.rate);
       if (match?.teamC) {
         if (event.target.name === "teamA_rate") {
           innerRefTeamB.current.focus();
@@ -996,7 +998,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
       setIsTab("");
     } else if (key == "tab") {
-      handleSuspend();
+      handleSuspend(targetValue, teamA?.lay ? teamA?.lay : teamA?.rate);
 
       setLocalTeamA((prev) => {
         const newBody = { ...prev, lay: "", rate: targetValue };
@@ -1023,7 +1025,8 @@ const AddSession = ({ add, match, Bid }) => {
       setIsTab("tab");
     }
     if (key == "*") {
-      handleSuspend();
+      //lay getting undefined
+      handleSuspend(targetValue, teamA?.lay ? teamA?.lay : teamA?.rate);
       if (event.target.name === "teamA_rate") {
         let value = event.target.value ? targetValue + 0.5 : 0;
 
@@ -1284,6 +1287,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == ",") {
+      //team.lay recieving null
       handleSuspend();
       setIncGap(1);
       if (event.target.name === "teamA_rate") {
@@ -1419,7 +1423,7 @@ const AddSession = ({ add, match, Bid }) => {
       });
     }
     if (key == "plus") {
-      handleSuspend();
+      handleSuspend(targetValue, teamA?.lay ? teamA?.lay : teamA?.rate);
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {
@@ -1597,7 +1601,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == "minus") {
-      handleSuspend();
+      handleSuspend(targetValue, teamA?.lay ? teamA?.lay : teamA?.rate);
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {
