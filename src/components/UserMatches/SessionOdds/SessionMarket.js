@@ -35,6 +35,7 @@ const SessionMarket = ({
   title,
   max,
   min,
+  typeOfBet
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
@@ -362,7 +363,7 @@ const SessionMarket = ({
                     >
                       <SessionMarketBox
                         closeModal={sessionOffline?.includes(element.id)}
-                        typeOfBet={"Session"}
+                        typeOfBet={typeOfBet}
                         setFastBetLoading={setFastBetLoading}
                         data={element}
                         sessionMain={session}
