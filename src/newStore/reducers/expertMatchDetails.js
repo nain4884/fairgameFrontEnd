@@ -15,41 +15,43 @@ const initialState = {
   currentOdd: [],
   selectedBookmaker: null,
   sessionProfitLoss: null,
-  teamA: {
-    rate: null,
-    lock: true,
-    suspended: true,
-    lay: null,
-    back: null,
-    layLock: false
+  quickBookmaker: {
+    teamA: {
+      rate: null,
+      lock: true,
+      suspended: true,
+      lay: null,
+      back: null,
+      layLock: false,
+    },
+    teamB: {
+      rate: null,
+      lock: true,
+      suspended: true,
+      lay: null,
+      back: null,
+      layLock: false,
+    },
+    teamC: {
+      rate: null,
+      lock: true,
+      suspended: true,
+      lay: null,
+      back: null,
+      layLock: false,
+    },
+    teamBall: {
+      isABall: false,
+      isBBall: false,
+      isCBall: false,
+    },
+    teamSuspended: {
+      teamA_suspend: true,
+      teamB_suspend: true,
+      teamC_suspend: true,
+    },
+    teamBackUnlock: true,
   },
-  teamB: {
-    rate: null,
-    lock: true,
-    suspended: true,
-    lay: null,
-    back: null,
-    layLock: false
-  },
-  teamC: {
-    rate: null,
-    lock: true,
-    suspended: true,
-    lay: null,
-    back: null,
-    layLock: false
-  },
-  teamBall: {
-    isABall: false,
-    isBBall: false,
-    isCBall: false,
-  },
-  teamSuspended: {
-    teamA_suspend: true,
-    teamB_suspend: true,
-    teamC_suspend: true,
-  },
-  teamBackUnlock: true,
 };
 export const logoutExpertDetails = createAction("auth/logoutReset");
 const expertMatchDetails = createSlice({
@@ -99,24 +101,10 @@ const expertMatchDetails = createSlice({
     setSessionProfitLoss: (state, action) => {
       state.sessionProfitLoss = action.payload;
     },
-    setTeamA: (state, action) => {
-      state.teamA = action.payload;
+    setQuickBookmaker: (state, action) => {
+      state.quickBookmaker = action.payload;
     },
-    setTeamB: (state, action) => {
-      state.teamB = action.payload;
-    },
-    setTeamC: (state, action) => {
-      state.teamC = action.payload;
-    },
-    setTeamBall: (state, action) => {
-      state.teamBall = action.payload;
-    },
-    setTeamBackUnlock: (state, action) => {
-      state.teamBackUnlock = action.payload;
-    },
-    setTeamSuspended: (state, action) => {
-      state.teamSuspended = action.payload;
-    },
+
     setSelectedBookmaker: (state, action) => {
       state.selectedBookmaker = action.payload;
     },
@@ -142,13 +130,8 @@ export const {
   setWConfirmAuth,
   setAConfirmAuth,
   setCurrentOdd,
-  setTeamBackUnlock,
-  setTeamBall,
-  setTeamA,
-  setTeamB,
-  setTeamC,
-  setTeamSuspended,
-  setSelectedBookmaker
+  setQuickBookmaker,
+  setSelectedBookmaker,
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;
