@@ -159,9 +159,7 @@ const AddSession = ({ add, match, Bid }) => {
           matchId: response?.data?.data?.match_id,
           id: response?.data?.data?.id,
           betId: response?.data?.data?.bet_id,
-          marketType: response?.data?.data?.marketType,
-          marketName: response?.data?.data?.marketName,
-          betStatus: response?.data?.data.betStatus,
+          marketType: response?.data?.data?.marketType
         };
         setLocalSelectedBookmaker(body);
         dispatch(setSelectedBookmaker(body));
@@ -202,11 +200,7 @@ const AddSession = ({ add, match, Bid }) => {
           return newBody;
         });
 
-        getAllBetsData(
-          response?.data?.data?.bet_id,
-          response?.data?.data?.match_id,
-          response?.data?.data?.marketType
-        );
+        getAllBetsData(response?.data?.data?.bet_id, response?.data?.data?.match_id, response?.data?.data?.marketType);
         const newBody = {
           teamA: response?.data?.data.teamA_rate
             ? response?.data?.data.teamA_rate
@@ -610,7 +604,7 @@ const AddSession = ({ add, match, Bid }) => {
     }
   };
 
-  const handleFocus = (event) => {};
+  const handleFocus = (event) => { };
   const handleHunderedValue = (back, lay) => {
     // alert(back)
     if (back >= 100) {
@@ -965,7 +959,7 @@ const AddSession = ({ add, match, Bid }) => {
       if (
         event.target.name === "teamA_rate" &&
         localQuickBookmaker?.teamA?.lay - incGap >
-          localQuickBookmaker?.teamA?.rate
+        localQuickBookmaker?.teamA?.rate
       ) {
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -993,7 +987,7 @@ const AddSession = ({ add, match, Bid }) => {
       if (
         event.target.name === "teamB_rate" &&
         localQuickBookmaker?.teamB?.lay - incGap >
-          localQuickBookmaker?.teamB?.rate
+        localQuickBookmaker?.teamB?.rate
       ) {
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -1020,7 +1014,7 @@ const AddSession = ({ add, match, Bid }) => {
       if (
         event.target.name === "teamC_rate" &&
         localQuickBookmaker?.teamC?.lay - incGap >
-          localQuickBookmaker?.teamC?.rate
+        localQuickBookmaker?.teamC?.rate
       ) {
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -2813,7 +2807,7 @@ const AddSession = ({ add, match, Bid }) => {
                       sx={{
                         background:
                           localQuickBookmaker?.teamA?.suspended ||
-                          localQuickBookmaker?.teamA?.lay === null
+                            localQuickBookmaker?.teamA?.lay === null
                             ? "#FDF21A"
                             : "#FFB5B5",
                         width: "50%",
@@ -2825,7 +2819,7 @@ const AddSession = ({ add, match, Bid }) => {
                       }}
                     >
                       {!localQuickBookmaker?.teamA?.suspended &&
-                      localQuickBookmaker?.teamA?.lay ? (
+                        localQuickBookmaker?.teamA?.lay ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
@@ -2933,7 +2927,7 @@ const AddSession = ({ add, match, Bid }) => {
                       sx={{
                         background:
                           localQuickBookmaker?.teamB?.suspended ||
-                          localQuickBookmaker?.teamB?.lay === null
+                            localQuickBookmaker?.teamB?.lay === null
                             ? "#FDF21A"
                             : "#FFB5B5",
                         width: "50%",
@@ -2945,7 +2939,7 @@ const AddSession = ({ add, match, Bid }) => {
                       }}
                     >
                       {!localQuickBookmaker?.teamB?.suspended &&
-                      localQuickBookmaker?.teamB?.lay ? (
+                        localQuickBookmaker?.teamB?.lay ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
@@ -3056,7 +3050,7 @@ const AddSession = ({ add, match, Bid }) => {
                           sx={{
                             background:
                               localQuickBookmaker?.teamC?.suspended ||
-                              localQuickBookmaker?.teamC?.lay === null
+                                localQuickBookmaker?.teamC?.lay === null
                                 ? "#FDF21A"
                                 : "#FFB5B5",
                             width: "50%",
@@ -3068,7 +3062,7 @@ const AddSession = ({ add, match, Bid }) => {
                           }}
                         >
                           {!localQuickBookmaker?.teamC?.suspended &&
-                          localQuickBookmaker?.teamC?.lay ? (
+                            localQuickBookmaker?.teamC?.lay ? (
                             <Typography
                               sx={{ fontWeight: "600", fontSize: "22px" }}
                             >
