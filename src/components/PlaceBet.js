@@ -1,8 +1,4 @@
-import {
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { memo, useEffect, useRef, useState } from "react";
 import { CancelDark } from "../assets";
@@ -127,7 +123,6 @@ const PlaceBet = ({
     );
     return matchOdds?.[0]?.id;
   }
-
   function SubmitPayloadForPlaceBet(
     betOn = "teamA_back",
     marketType = "BOOKMAKER"
@@ -135,8 +130,7 @@ const PlaceBet = ({
     let payload = {
       id: currentMatch?.id,
       matchType: currentMatch?.gameType,
-      // betId: currentMatch?.matchOddsData?.[0]?.id,
-      betId: findBetId(currentMatch),
+      betId: findBetId(currentMatch), // Assuming `findBetId` is a valid function
       bet_type: isBack ? "back" : "lay",
       odds: Number(
         document.getElementsByClassName("OddValue")?.[0]?.textContent
@@ -153,23 +147,24 @@ const PlaceBet = ({
       marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : marketType,
       po: po,
     };
-    if (marketType == "Session") {
-      delete payload.betOn;
-      delete payload.odds;
 
-      payload.matchType = data?.matchType;
-      payload.teamA_name = mainData?.teamA;
-      payload.teamB_name = mainData?.teamB;
-      payload.id = data?.match_id;
-      payload.betId = data?.id;
-      payload.bet_type = isSessionYes ? "yes" : "no";
-      payload.bet_condition = data?.bet_condition;
-      payload.rate_percent = data?.rate_percent;
-      payload.marketType = currentMatch?.bet_condition;
-      payload.odds = Number(selectedValue);
-      payload.sessionBet = true;
-      payload.selectionId = data?.selectionId;
+    if (marketType === "session") {
+      payload = {
+        matchType: data?.matchType,
+        teamA_name: mainData?.teamA,
+        teamB_name: mainData?.teamB,
+        id: data?.match_id,
+        betId: data?.id,
+        bet_type: isSessionYes ? "yes" : "no",
+        bet_condition: data?.bet_condition,
+        rate_percent: data?.rate_percent,
+        marketType: marketType,
+        odds: Number(selectedValue),
+        sessionBet: true,
+        selectionId: data?.selectionId,
+      };
     }
+
     return payload;
   }
 
@@ -228,7 +223,6 @@ const PlaceBet = ({
               rate={Number(newRates?.loss_amount).toFixed(2)}
               color={"#FF4D4D"}
             />
-
           </Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {/* <Box sx={{ width: "5px", marginRight: "20px" }}></Box> */}
@@ -289,8 +283,8 @@ const PlaceBet = ({
                   ? "No"
                   : "Yes"
                 : selectedColorBox == "#FFB5B5" || selectedColorBox == "#F6D0CB"
-                  ? "Lay"
-                  : "Back"
+                ? "Lay"
+                : "Back"
             }
             valueContainerStyle={{ background: type?.color }}
             containerStyle={{ marginLeft: "2px", flex: 1 }}
@@ -313,32 +307,38 @@ const PlaceBet = ({
         {
           <>
             <Box sx={{ display: "flex", marginTop: "15px", marginX: "2px" }}>
-              {buttonList.length > 0 && buttonList?.slice(0, 4)?.map((v, index) => (
-                <NumberData
-                  key={index}
-                  containerStyle={{ marginLeft: "2px", flex: 1 }}
-                  value={v?.value}
-                  lable={v?.lable}
-                  getLatestBetAmount={(value) =>
-                    getLatestBetAmount(value, data)
-                  }
-                  setDefaultValue={setDefaultValue}
-                />
-              ))}
+              {buttonList.length > 0 &&
+                buttonList
+                  ?.slice(0, 4)
+                  ?.map((v, index) => (
+                    <NumberData
+                      key={index}
+                      containerStyle={{ marginLeft: "2px", flex: 1 }}
+                      value={v?.value}
+                      lable={v?.lable}
+                      getLatestBetAmount={(value) =>
+                        getLatestBetAmount(value, data)
+                      }
+                      setDefaultValue={setDefaultValue}
+                    />
+                  ))}
             </Box>
             <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }}>
-              {buttonList.length > 0 && buttonList?.slice(4, 8)?.map((v, index) => (
-                <NumberData
-                  key={index}
-                  containerStyle={{ marginLeft: "2px", flex: 1 }}
-                  value={v.value}
-                  lable={v.lable}
-                  getLatestBetAmount={(value) =>
-                    getLatestBetAmount(value, data)
-                  }
-                  setDefaultValue={setDefaultValue}
-                />
-              ))}
+              {buttonList.length > 0 &&
+                buttonList
+                  ?.slice(4, 8)
+                  ?.map((v, index) => (
+                    <NumberData
+                      key={index}
+                      containerStyle={{ marginLeft: "2px", flex: 1 }}
+                      value={v.value}
+                      lable={v.lable}
+                      getLatestBetAmount={(value) =>
+                        getLatestBetAmount(value, data)
+                      }
+                      setDefaultValue={setDefaultValue}
+                    />
+                  ))}
             </Box>
           </>
         }
