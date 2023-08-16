@@ -135,7 +135,7 @@ const CustomHeader = ({}) => {
     suspended: null,
     lay: null,
     back: null,
-    layLock: false
+    layLock: false,
   });
   const [localTeamB, setLocalTeamB] = useState({
     rate: null,
@@ -143,7 +143,7 @@ const CustomHeader = ({}) => {
     suspended: null,
     lay: null,
     back: null,
-    layLock: false
+    layLock: false,
   });
   const [localTeamC, setLocalTeamC] = useState({
     rate: null,
@@ -151,7 +151,7 @@ const CustomHeader = ({}) => {
     suspended: null,
     lay: null,
     back: null,
-    layLock: false
+    layLock: false,
   });
   const [localTeamBall, setLocalTeamBall] = useState({
     isABall: false,
@@ -336,16 +336,6 @@ const CustomHeader = ({}) => {
                 };
                 dispatch(setManualBookMarkerRates(manualBookmaker));
 
-                setTeamRates((prev) => {
-                  const newBody = {
-                    ...prev,
-                    teamA: data?.teamA_rate ? data?.teamA_rate : 0,
-                    teamB: data?.teamB_rate ? data?.teamB_rate : 0,
-                    teamC: data?.teamC_rate ? data?.teamC_rate : 0,
-                  };
-                  dispatch(setBookmakerTeamRates(newBody));
-                  return newBody;
-                });
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
@@ -383,8 +373,20 @@ const CustomHeader = ({}) => {
             setLocalBookMakerRates((prev) => {
               if (
                 data?.betPlaceData?.match_id === match_id &&
-                data?.betPlaceData?.marketType === "MANUAL BOOKMAKER"
+                data?.betPlaceData?.bet_id === selectedBookmaker?.betId &&
+                selectedBookmaker?.marketType === data?.betPlaceData?.marketType
               ) {
+                
+                setTeamRates((prev) => {
+                  const newBody = {
+                    ...prev,
+                    teamA: data?.teamA_rate ? data?.teamA_rate : 0,
+                    teamB: data?.teamB_rate ? data?.teamB_rate : 0,
+                    teamC: data?.teamC_rate ? data?.teamC_rate : 0,
+                  };
+                  dispatch(setBookmakerTeamRates(newBody));
+                  return newBody;
+                });
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
@@ -857,7 +859,7 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "updateRate_user") {
           const data = packet.data[1];
 
-          if (selectedBookmaker === data?.id) {
+          if (selectedBookmaker?.id === data?.id) {
             if (!data?.lock) {
               if (data?.isTab) {
                 // setIsTeamBackUnlock(false);
@@ -873,7 +875,7 @@ const CustomHeader = ({}) => {
                     suspended: data.teamA_suspend,
                     lock: data?.teamA_suspend,
                     lay: data?.teamA_lay !== "" ? data?.teamA_lay : null,
-                    layLock: true
+                    layLock: true,
                   };
 
                   dispatch(setTeamA(newBody));
@@ -886,7 +888,7 @@ const CustomHeader = ({}) => {
                     suspended: data.teamB_suspend,
                     lock: data?.teamB_suspend,
                     lay: data?.teamB_lay !== "" ? data?.teamB_lay : null,
-                    layLock: true
+                    layLock: true,
                   };
 
                   dispatch(setTeamB(newBody));
@@ -899,7 +901,7 @@ const CustomHeader = ({}) => {
                     suspended: data.teamC_suspend,
                     lock: data?.teamC_suspend,
                     lay: data?.teamC_lay !== "" ? data?.teamC_lay : null,
-                    layLock: true
+                    layLock: true,
                   };
 
                   dispatch(setTeamC(newBody));
@@ -922,7 +924,7 @@ const CustomHeader = ({}) => {
                     suspended: data.teamA_suspend,
                     lock: data?.teamA_suspend,
                     lay: data?.teamA_lay,
-                    layLock:false
+                    layLock: false,
                   };
                   dispatch(setTeamA(newBody));
                   return newBody;
@@ -934,7 +936,7 @@ const CustomHeader = ({}) => {
                     suspended: data.teamB_suspend,
                     lock: data.teamB_suspend,
                     lay: data?.teamB_lay,
-                    layLock:false
+                    layLock: false,
                   };
 
                   dispatch(setTeamB(newBody));
@@ -947,7 +949,7 @@ const CustomHeader = ({}) => {
                     suspended: data.teamC_suspend,
                     lock: data.teamC_suspend,
                     lay: data?.teamC_lay,
-                    layLock:false
+                    layLock: false,
                   };
 
                   dispatch(setTeamC(newBody));
@@ -982,7 +984,7 @@ const CustomHeader = ({}) => {
                   const newBody = {
                     ...prev,
                     suspended: data.teamA_suspend,
-                    layLock:false
+                    layLock: false,
                   };
 
                   dispatch(setTeamA(newBody));
@@ -993,7 +995,7 @@ const CustomHeader = ({}) => {
                     ...prev,
 
                     suspended: data.teamB_suspend,
-                    layLock:false
+                    layLock: false,
                   };
 
                   dispatch(setTeamB(newBody));
@@ -1004,7 +1006,7 @@ const CustomHeader = ({}) => {
                     ...prev,
 
                     suspended: data.teamC_suspend,
-                    layLock:false
+                    layLock: false,
                   };
 
                   dispatch(setTeamC(newBody));

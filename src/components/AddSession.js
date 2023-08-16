@@ -19,6 +19,7 @@ import { BallStart, Lock } from "../assets";
 import ResultComponent from "./ResultComponent";
 import {
   setBookmakerTeamRates,
+  setSelectedBookmaker,
   setTeamA,
   setTeamB,
   setTeamC,
@@ -177,6 +178,12 @@ const AddSession = ({ add, match, Bid }) => {
       } else {
         setCurrentBookmaker(response?.data?.data?.marketName);
         setBetId(response?.data?.data?.bet_id);
+        const body = {
+          id: response?.data?.data?.id,
+          betId: response?.data?.data?.bet_id,
+          marketType:response?.data?.data?.marketType
+        };
+        dispatch(setSelectedBookmaker(body));
         // setTeamARate(response?.data?.data.teamA_Back);
         // setTeamALayValue(response?.data?.data.teamA_lay);
         // setTeamBRate(response?.data?.data.teamB_Back);
@@ -221,7 +228,11 @@ const AddSession = ({ add, match, Bid }) => {
           return newBody;
         });
 
-        getAllBetsData(response?.data?.data?.bet_id, response?.data?.data?.match_id,response?.data?.data?.marketType);
+        getAllBetsData(
+          response?.data?.data?.bet_id,
+          response?.data?.data?.match_id,
+          response?.data?.data?.marketType
+        );
         const newBody = {
           teamA: response?.data?.data.teamA_rate
             ? response?.data?.data.teamA_rate
@@ -268,12 +279,12 @@ const AddSession = ({ add, match, Bid }) => {
     }
   }
 
-  async function getAllBetsData(id, matchId,marketType) {
+  async function getAllBetsData(id, matchId, marketType) {
     let payload = {
       match_id: matchId,
       bet_id: id,
       marketType,
-      id: Bid,
+      // id: Bid,
     };
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
