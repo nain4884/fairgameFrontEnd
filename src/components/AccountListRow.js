@@ -430,7 +430,7 @@ const AccountListRow = ({
         </Box>
       </Box>
 
-      {showUserModal && element.role === "user" && (
+      {showUserModal && element.role !== "expert" && (
         <>
           <Box
             sx={[

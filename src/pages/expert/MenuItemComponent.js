@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { GlobalStore } from "../../context/globalStore";
-import { setSessionBetId } from "../../newStore/reducers/expertMatchDetails";
+import { setSelectedBookmaker, setSessionBetId } from "../../newStore/reducers/expertMatchDetails";
 import { setBookMakerBetRate } from "../../newStore/reducers/matchDetails";
 
 const MenutItemsComponent = ({

@@ -457,7 +457,7 @@ const AddAccount = () => {
   }
 
   useEffect(() => {
-    if (Detail[9].val === "user") {
+    if (Detail[9].val !== "expert") {
       setDetail({
         ...Detail,
         11: {
@@ -762,7 +762,7 @@ const AddAccount = () => {
                 <Input
                   containerStyle={{
                     ...containerStyles,
-                    display: Detail[9].val === "user" ? "none" : "block",
+                    display: Detail[9].val !== "expert" ? "none" : "block",
                   }}
                   titleStyle={titleStyles}
                   inputStyle={imputStyle}
@@ -784,7 +784,7 @@ const AddAccount = () => {
                   <p style={{ color: "#fa1e1e" }}>Field Required</p>
                 )}
 
-                {Detail[9].val === "user" ? (
+                {Detail[9].val !== "expert" ? (
                   <InputMyPartnership
                     inputContainerStyle={{
                       ...inputContainerStyle,
@@ -792,7 +792,7 @@ const AddAccount = () => {
                     }}
                     containerStyle={{
                       ...containerStyles,
-                      display: Detail[9].val === "user" ? "none" : "block",
+                      display: Detail[9].val !== "expert" ? "none" : "block",
                     }}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
@@ -802,7 +802,7 @@ const AddAccount = () => {
                     toFoucs={true}
                     min={0}
                     max={100}
-                    disabled={Detail[9].val === "user"}
+                    disabled={Detail[9].val !== "expert"}
                     setDownlinePar={setDownlinePar}
                     Detail={Detail}
                     value={Detail[11].val}
@@ -817,12 +817,12 @@ const AddAccount = () => {
                   <Input
                     inputContainerStyle={{
                       ...inputContainerStyle,
-                      backgroundColor: Detail[9].val === "user" && "#DEDEDE",
+                      backgroundColor: Detail[9].val !== "expert" && "#DEDEDE",
                       height: { laptop: "45px", mobile: "36px" },
                     }}
                     containerStyle={{
                       ...containerStyles,
-                      display: Detail[9].val === "user" ? "none" : "block",
+                      display: Detail[9].val !== "expert" ? "none" : "block",
                     }}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
@@ -858,7 +858,7 @@ const AddAccount = () => {
               <Input
                 containerStyle={{
                   ...containerStyles,
-                  display: Detail[9].val === "user" ? "none" : "block",
+                  display: Detail[9].val !== "expert" ? "none" : "block",
                 }}
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
@@ -884,7 +884,7 @@ const AddAccount = () => {
                 </p>
               )}
 
-              {Detail[9].val === "user" && (
+              {Detail[9].val !== "expert" && (
                 <>
                   <Box
                     sx={{
