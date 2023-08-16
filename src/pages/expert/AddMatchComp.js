@@ -94,7 +94,8 @@ const AddMatchComp = () => {
   ]);
   const [marketId, setMarketId] = useState(defaultMarketId);
   console.log("Detail", Detail);
-  const createMatch = async () => {
+  const createMatch = async (e) => {
+    e?.preventDefault();
     try {
       let quick_bookmaker = [];
       if (show1) {
@@ -195,7 +196,17 @@ const AddMatchComp = () => {
         });
         return false;
       }
- 
+      if (quick_bookmaker.length === 0) {
+        setError({
+          ...Error,
+
+          4: {
+            ...Error[4],
+            val: true,
+          },
+        });
+        return false;
+      }
 
       let request = new FormData();
       let i;
@@ -205,12 +216,13 @@ const AddMatchComp = () => {
         if (i === 19) request.append(`${Detail[i + 1].field}`, marketId);
       }
       request.append("EventId", Detail[23].val);
+
       request.append("quick_bookmaker", JSON.stringify(quick_bookmaker));
-      request.append("betfair_session_min_bet", Detail[18].val)
-      request.append("bookmaker_manual_min_bet", Detail[18].val)
-      request.append("betfair_bookmaker_min_bet", Detail[18].val)
-      request.append("manaual_session_min_bet", Detail[18].val)
-      request.append("betfair_match_min_bet", Detail[18].val)
+      request.append("betfair_session_min_bet", Detail[18].val);
+      request.append("bookmaker_manual_min_bet", Detail[18].val);
+      request.append("betfair_bookmaker_min_bet", Detail[18].val);
+      request.append("manaual_session_min_bet", Detail[18].val);
+      request.append("betfair_match_min_bet", Detail[18].val);
       console.log("request", quick_bookmaker);
       console.log(Object.fromEntries(request), "request");
       const { data } = await axios.post(`/game-match/addmatch`, request);
@@ -294,6 +306,14 @@ const AddMatchComp = () => {
     }
     if (Detail[4].val !== "") {
       // alert(Detail[24].val)
+      setError({
+        ...Error,
+
+        4: {
+          ...Error[4],
+          val: false,
+        },
+      });
       setnumTimesToShow(Detail[4].val);
       if (Detail[4].val == 1) {
         setshow1(true);
@@ -310,369 +330,381 @@ const AddMatchComp = () => {
       }
     }
 
-    if(Detail[5].val!=="") {
+    if (Detail[5].val !== "") {
       setDetail({
         ...Detail,
         18: {
-          ...Detail[18], val: "100"
-        }
-      })
+          ...Detail[18],
+          val: "100",
+        },
+      });
     }
-  }, [Detail[1].val, Detail[9].val, Detail[13].val, Detail[4].val, Detail[5].val]);
+  }, [
+    Detail[1].val,
+    Detail[9].val,
+    Detail[13].val,
+    Detail[4].val,
+    Detail[5].val,
+  ]);
 
   return (
     <Background>
       {/* <Header /> */}
-      <Box
-        sx={{
-          background: "white",
-          borderRadius: "5px",
-          margin: "10px",
-          p: "10px",
-        }}
-      >
-        <Box sx={{ margin: "15px" }}>
-          <LabelValueComponent
-            title={"Add Match"}
-            notShowSub={true}
-            titleSize={"20px"}
-            headColor={"#000000"}
-          />
-        </Box>
+      <form onSubmit={createMatch}>
         <Box
           sx={{
-            background: "#F8C851",
-            marginTop: "20px",
+            background: "white",
             borderRadius: "5px",
-
+            margin: "10px",
             p: "10px",
-            py: "20px",
           }}
         >
+          <Box sx={{ margin: "15px" }}>
+            <LabelValueComponent
+              title={"Add Match"}
+              notShowSub={true}
+              titleSize={"20px"}
+              headColor={"#000000"}
+            />
+          </Box>
           <Box
             sx={{
-              display: "flex",
-              gap: 1,
-              flexWrap: "wrap",
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "flex-start",
+              background: "#F8C851",
+              marginTop: "20px",
+              borderRadius: "5px",
+
+              p: "10px",
+              py: "20px",
             }}
           >
             <Box
               sx={{
-                position: "relative",
-                width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                display: "flex",
+                gap: 1,
+                flexWrap: "wrap",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "flex-start",
               }}
             >
-              <DropDownSimple
-                valued="Select Game Type..."
-                dropStyle={{
-                  filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                }}
-                valueStyle={{ ...imputStyle, color: "white" }}
-                title={"Game *"}
-                valueContainerStyle={{
-                  height: "45px",
-                  marginX: "0px",
-                  background: "#0B4F26",
-                  border: "1px solid #DEDEDE",
-                  borderRadius: "5px",
-                }}
-                containerStyle={{
-                  width: "100%",
+              <Box
+                sx={{
                   position: "relative",
-                  marginTop: "5px",
+                  width: { mobile: "100%", laptop: "18%", tablet: "24%" },
                 }}
-                titleStyle={{ marginLeft: "0px", color: "#575757" }}
-                data={matchType}
-                dropDownStyle={{
-                  width: "100%",
-                  marginLeft: "0px",
-                  marginTop: "0px",
-                  position: "absolute",
-                }}
-                dropDownTextStyle={imputStyle}
-                Detail={Detail}
-                setError={setError}
-                setDetail={setDetail}
-                place={1}
-              />
-              {Error[1]?.val && (
-                <Typography
-                  color="red"
-                  sx={{
-                    fontSize: {
-                      mobile: "10px",
-                      laptop: "12px",
-                      tablet: "12px",
-                    },
+              >
+                <DropDownSimple
+                  valued="Select Game Type..."
+                  dropStyle={{
+                    filter:
+                      "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
                   }}
-                >
-                  Game Type Required
-                </Typography>
-              )}
-            </Box>
+                  valueStyle={{ ...imputStyle, color: "white" }}
+                  title={"Game *"}
+                  valueContainerStyle={{
+                    height: "45px",
+                    marginX: "0px",
+                    background: "#0B4F26",
+                    border: "1px solid #DEDEDE",
+                    borderRadius: "5px",
+                  }}
+                  containerStyle={{
+                    width: "100%",
+                    position: "relative",
+                    marginTop: "5px",
+                  }}
+                  titleStyle={{ marginLeft: "0px", color: "#575757" }}
+                  data={matchType}
+                  dropDownStyle={{
+                    width: "100%",
+                    marginLeft: "0px",
+                    marginTop: "0px",
+                    position: "absolute",
+                  }}
+                  dropDownTextStyle={imputStyle}
+                  Detail={Detail}
+                  setError={setError}
+                  setDetail={setDetail}
+                  place={1}
+                />
+                {Error[1]?.val && (
+                  <Typography
+                    color="red"
+                    sx={{
+                      fontSize: {
+                        mobile: "10px",
+                        laptop: "12px",
+                        tablet: "12px",
+                      },
+                    }}
+                  >
+                    Game Type Required
+                  </Typography>
+                )}
+              </Box>
 
-            <Box
-              sx={{
-                position: "relative",
-                width: { mobile: "100%", laptop: "18%", tablet: "24%" },
-              }}
-            >
-              <DropDownSimple
-                valued="Select match"
-                dropStyle={{
-                  filter: "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                }}
-                valueStyle={{ ...imputStyle, color: "white" }}
-                title={"Match Name"}
-                valueContainerStyle={{
-                  height: "45px",
-                  marginX: "0px",
-                  background: "#0B4F26",
-                  border: "1px solid #DEDEDE",
-                  borderRadius: "5px",
-                }}
-                containerStyle={{
-                  width: "100%",
+              <Box
+                sx={{
                   position: "relative",
-                  marginTop: "5px",
+                  width: { mobile: "100%", laptop: "18%", tablet: "24%" },
                 }}
-                titleStyle={{ marginLeft: "0px", color: "#575757" }}
-                data={matches}
-                setMarketId={setMarketId}
-                matchesSelect={true}
-                dropDownStyle={{
-                  width: "100%",
-                  marginLeft: "0px",
-                  marginTop: "0px",
-                  position: "absolute",
-                  maxHeight: "500px",
-                  overflow: "auto",
-                }}
-                dropDownTextStyle={imputStyle}
-                Detail={Detail}
-                setDetail={setDetail}
-                place={5}
-              />
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Team A *"}
-                type={"text"}
-                required={true}
-                value="Enter Name of Team A..."
-                InputValType={"InputVal"}
-                place={9}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-              {Error[9]?.val && (
-                <Typography
-                  color="red"
-                  sx={{
-                    fontSize: {
-                      mobile: "10px",
-                      laptop: "12px",
-                      tablet: "12px",
-                    },
+              >
+                <DropDownSimple
+                  valued="Select match"
+                  dropStyle={{
+                    filter:
+                      "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
                   }}
-                >
-                  Team A name Required
-                </Typography>
-              )}
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Team B *"}
-                type={"text"}
-                required={true}
-                value="Enter Name of Team B..."
-                InputValType={"InputVal"}
-                place={13}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-              {Error[13]?.val && (
-                <Typography
-                  color="red"
-                  sx={{
-                    fontSize: {
-                      mobile: "10px",
-                      laptop: "12px",
-                      tablet: "12px",
-                    },
+                  valueStyle={{ ...imputStyle, color: "white" }}
+                  title={"Match Name"}
+                  valueContainerStyle={{
+                    height: "45px",
+                    marginX: "0px",
+                    background: "#0B4F26",
+                    border: "1px solid #DEDEDE",
+                    borderRadius: "5px",
                   }}
-                >
-                  {" "}
-                  Team B name Required
-                </Typography>
-              )}
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              {" "}
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Team C"}
-                type={"text"}
-                value="Enter Name of Team C..."
-                InputValType={"InputVal"}
-                place={17}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
+                  containerStyle={{
+                    width: "100%",
+                    position: "relative",
+                    marginTop: "5px",
+                  }}
+                  titleStyle={{ marginLeft: "0px", color: "#575757" }}
+                  data={matches}
+                  setMarketId={setMarketId}
+                  matchesSelect={true}
+                  dropDownStyle={{
+                    width: "100%",
+                    marginLeft: "0px",
+                    marginTop: "0px",
+                    position: "absolute",
+                    maxHeight: "500px",
+                    overflow: "auto",
+                  }}
+                  dropDownTextStyle={imputStyle}
+                  Detail={Detail}
+                  setDetail={setDetail}
+                  place={5}
+                />
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Team A *"}
+                  type={"text"}
+                  required={true}
+                  value="Enter Name of Team A..."
+                  InputValType={"InputVal"}
+                  place={9}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
+                  }}
+                />
+                {Error[9]?.val && (
+                  <Typography
+                    color="red"
+                    sx={{
+                      fontSize: {
+                        mobile: "10px",
+                        laptop: "12px",
+                        tablet: "12px",
+                      },
+                    }}
+                  >
+                    Team A name Required
+                  </Typography>
+                )}
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Team B *"}
+                  type={"text"}
+                  required={true}
+                  value="Enter Name of Team B..."
+                  InputValType={"InputVal"}
+                  place={13}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
+                  }}
+                />
+                {Error[13]?.val && (
+                  <Typography
+                    color="red"
+                    sx={{
+                      fontSize: {
+                        mobile: "10px",
+                        laptop: "12px",
+                        tablet: "12px",
+                      },
+                    }}
+                  >
+                    {" "}
+                    Team B name Required
+                  </Typography>
+                )}
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                {" "}
+                <LabelValueComponent
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Team C"}
+                  type={"text"}
+                  value="Enter Name of Team C..."
+                  InputValType={"InputVal"}
+                  place={17}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
+                  }}
+                />
+              </Box>
 
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                icon={ArrowDownBlack}
-                valueStyle={{}}
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Start Time"}
-                value="Select Start Time..."
-                InputValType={"DatePickerVal"}
-                place={2}
-                DetailError={{ Error, setDetail, Detail, setError }}
-              />
-              {Error[2]?.val && (
-                <Typography
-                  color="red"
-                  sx={{
-                    fontSize: {
-                      mobile: "10px",
-                      laptop: "12px",
-                      tablet: "12px",
-                    },
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  icon={ArrowDownBlack}
+                  valueStyle={{}}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Start Time"}
+                  value="Select Start Time..."
+                  InputValType={"DatePickerVal"}
+                  place={2}
+                  DetailError={{ Error, setDetail, Detail, setError }}
+                />
+                {Error[2]?.val && (
+                  <Typography
+                    color="red"
+                    sx={{
+                      fontSize: {
+                        mobile: "10px",
+                        laptop: "12px",
+                        tablet: "12px",
+                      },
+                    }}
+                  >
+                    Start Time Required
+                  </Typography>
+                )}
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  icon={Upload}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Image (Optional)"}
+                  value="No File Selected..."
+                  InputValType={"FileSelectVal"}
+                  place={6}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
                   }}
-                >
-                  Start Time Required
-                </Typography>
-              )}
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                icon={Upload}
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Image (Optional)"}
-                value="No File Selected..."
-                InputValType={"FileSelectVal"}
-                place={6}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                icon={Upload}
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Team A Image (Optional)"}
-                value="No File Selected..."
-                InputValType={"FileSelectVal"}
-                place={10}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                icon={Upload}
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Team B Image (Optional)"}
-                value="No File Selected..."
-                InputValType={"FileSelectVal"}
-                place={14}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Min Bet"}
-                type={"Number"}
-                value="Enter your Min Bet..."
-                InputValType={"InputVal"}
-                place={18}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
+                />
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  icon={Upload}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Team A Image (Optional)"}
+                  value="No File Selected..."
+                  InputValType={"FileSelectVal"}
+                  place={10}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  icon={Upload}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Team B Image (Optional)"}
+                  value="No File Selected..."
+                  InputValType={"FileSelectVal"}
+                  place={14}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  required={true}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Min Bet"}
+                  type={"Number"}
+                  value="Enter your Min Bet..."
+                  InputValType={"InputVal"}
+                  place={18}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
+                  }}
+                />
+              </Box>
 
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                valueStyle={{}}
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Betfair Match Max Bet"}
-                type={"Number"}
-                value="Enter your Match Max Bet..."
-                InputValType={"InputVal"}
-                place={3}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "Number",
-                }}
-              />
-            </Box>
-            {/* <Box
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  required={true}
+                  valueStyle={{}}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Betfair Match Max Bet"}
+                  type={"Number"}
+                  value="Enter your Match Max Bet..."
+                  InputValType={"InputVal"}
+                  place={3}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "Number",
+                  }}
+                />
+              </Box>
+              {/* <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
               <LabelValueComponent
@@ -691,45 +723,47 @@ const AddMatchComp = () => {
                 }}
               />
             </Box> */}
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Betfair Session Max Bet"}
-                type={"Number"}
-                value="Betfair Session Max Bet..."
-                InputValType={"InputVal"}
-                place={11}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Betfair Bookmaker Max Bet"}
-                type={"Number"}
-                value="Enter  Bookmaker Max Bet..."
-                InputValType={"InputVal"}
-                place={15}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
-            {/* <Box
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  required={true}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Betfair Session Max Bet"}
+                  type={"Number"}
+                  value="Betfair Session Max Bet..."
+                  InputValType={"InputVal"}
+                  place={11}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  required={true}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Betfair Bookmaker Max Bet"}
+                  type={"Number"}
+                  value="Enter  Bookmaker Max Bet..."
+                  InputValType={"InputVal"}
+                  place={15}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
+                  }}
+                />
+              </Box>
+              {/* <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
               <LabelValueComponent
@@ -748,7 +782,7 @@ const AddMatchComp = () => {
                 }}
               />
             </Box> */}
-            {/* <Box
+              {/* <Box
               sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
             >
               <LabelValueComponent
@@ -767,121 +801,145 @@ const AddMatchComp = () => {
                 }}
               />
             </Box> */}
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Manaual Session Max Bet"}
-                type={"Number"}
-                value="Enter Session Max Bet..."
-                InputValType={"InputVal"}
-                place={19}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
-            <Box
-              sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
-            >
-              <LabelValueComponent
-                containerStyle={{ flex: 1, width: "100%" }}
-                title={"Delay Time Limit"}
-                type={"Number"}
-                value="Enter Delay Time..."
-                InputValType={"InputVal"}
-                place={21}
-                DetailError={{
-                  Error,
-                  setDetail,
-                  Detail,
-                  setError,
-                  type: "String",
-                }}
-              />
-            </Box>
-
-            <Box sx={{ width: "100%" }}>
               <Box
                 sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
               >
-                <DropDownSimple
-                  valued="Select Bookmaker"
-                  dropStyle={{
-                    filter:
-                      "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                <LabelValueComponent
+                  required={true}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Manaual Session Max Bet"}
+                  type={"Number"}
+                  value="Enter Session Max Bet..."
+                  InputValType={"InputVal"}
+                  place={19}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
                   }}
-                  valueStyle={{ ...imputStyle, color: "white" }}
-                  title={"Bookmaker"}
-                  valueContainerStyle={{
-                    height: "45px",
-                    marginX: "0px",
-                    background: "#0B4F26",
-                    border: "1px solid #DEDEDE",
-                    borderRadius: "5px",
+                />
+              </Box>
+              <Box
+                sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
+              >
+                <LabelValueComponent
+                  required={true}
+                  containerStyle={{ flex: 1, width: "100%" }}
+                  title={"Delay Time Limit"}
+                  type={"Number"}
+                  value="Enter Delay Time..."
+                  InputValType={"InputVal"}
+                  place={21}
+                  DetailError={{
+                    Error,
+                    setDetail,
+                    Detail,
+                    setError,
+                    type: "String",
                   }}
-                  containerStyle={{
-                    width: "100%",
-                    position: "relative",
-                    marginTop: "5px",
-                  }}
-                  titleStyle={{ marginLeft: "0px", color: "#575757" }}
-                  data={selectionData}
-                  // setMarketId={setMarketId}
-                  // matchesSelect={true}
-                  dropDownStyle={{
-                    width: "100%",
-                    marginLeft: "0px",
-                    marginTop: "0px",
-                    position: "absolute",
-                    maxHeight: "500px",
-                    overflow: "auto",
-                  }}
-                  dropDownTextStyle={imputStyle}
-                  Detail={Detail}
-                  setDetail={setDetail}
-                  place={4}
                 />
               </Box>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "100%",
-                  gap: 1,
-                }}
-              >
-                {show1 && (
-                  <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
-                    <Box
+              <Box sx={{ width: "100%" }}>
+                <Box
+                  sx={{
+                    width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                  }}
+                >
+                  <DropDownSimple
+                    valued="Select Bookmaker"
+                    dropStyle={{
+                      filter:
+                        "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                    }}
+                    valueStyle={{ ...imputStyle, color: "white" }}
+                    title={"Bookmaker"}
+                    valueContainerStyle={{
+                      height: "45px",
+                      marginX: "0px",
+                      background: "#0B4F26",
+                      border: "1px solid #DEDEDE",
+                      borderRadius: "5px",
+                    }}
+                    containerStyle={{
+                      width: "100%",
+                      position: "relative",
+                      marginTop: "5px",
+                    }}
+                    titleStyle={{ marginLeft: "0px", color: "#575757" }}
+                    data={selectionData}
+                    // setMarketId={setMarketId}
+                    // matchesSelect={true}
+                    dropDownStyle={{
+                      width: "100%",
+                      marginLeft: "0px",
+                      marginTop: "0px",
+                      position: "absolute",
+                      maxHeight: "500px",
+                      overflow: "auto",
+                    }}
+                    dropDownTextStyle={imputStyle}
+                    Detail={Detail}
+                    setError={setError}
+                    setDetail={setDetail}
+                    place={4}
+                  />
+                  {Error[4]?.val && (
+                    <Typography
+                      color="red"
                       sx={{
-                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                        fontSize: {
+                          mobile: "10px",
+                          laptop: "12px",
+                          tablet: "12px",
+                        },
                       }}
                     >
-                      <LabelValueComponent
-                        containerStyle={{ flex: 1, width: "100%" }}
-                        title={"Market Name"}
-                        type={"Text"}
-                        value="Enter Market Name..."
-                        InputValType={"InputVal"}
-                        place={24}
-                        DetailError={{
-                          Error,
-                          setDetail,
-                          Detail,
-                          setError,
-                          type: "String",
-                        }}
-                      />
-                    </Box>
+                      Atleast One Bookmaker Required
+                    </Typography>
+                  )}
+                </Box>
 
-                    {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "100%",
+                    gap: 1,
+                  }}
+                >
+                  {show1 && (
+                    <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
+                      <Box
+                        sx={{
+                          width: {
+                            mobile: "100%",
+                            laptop: "18%",
+                            tablet: "24%",
+                          },
+                        }}
+                      >
+                        <LabelValueComponent
+                          required={true}
+                          containerStyle={{ flex: 1, width: "100%" }}
+                          title={"Market Name"}
+                          type={"Text"}
+                          value="Enter Market Name..."
+                          InputValType={"InputVal"}
+                          place={24}
+                          DetailError={{
+                            Error,
+                            setDetail,
+                            Detail,
+                            setError,
+                            type: "String",
+                          }}
+                        />
+                      </Box>
+
+                      {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
             <LabelValueComponent
               containerStyle={{ flex: 1, width: "100%" }}
               title={"Min Bet"}
@@ -899,54 +957,64 @@ const AddMatchComp = () => {
               />
             </Box> */}
 
-                    <Box
-                      sx={{
-                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
-                      }}
-                    >
-                      <LabelValueComponent
-                        containerStyle={{ flex: 1, width: "100%" }}
-                        title={"Max Limit"}
-                        type={"Number"}
-                        value="Enter Max Bet..."
-                        InputValType={"InputVal"}
-                        place={26}
-                        DetailError={{
-                          Error,
-                          setDetail,
-                          Detail,
-                          setError,
-                          type: "String",
+                      <Box
+                        sx={{
+                          width: {
+                            mobile: "100%",
+                            laptop: "18%",
+                            tablet: "24%",
+                          },
                         }}
-                      />
+                      >
+                        <LabelValueComponent
+                          required={true}
+                          containerStyle={{ flex: 1, width: "100%" }}
+                          title={"Max Limit"}
+                          type={"Number"}
+                          value="Enter Max Bet..."
+                          InputValType={"InputVal"}
+                          place={26}
+                          DetailError={{
+                            Error,
+                            setDetail,
+                            Detail,
+                            setError,
+                            type: "String",
+                          }}
+                        />
+                      </Box>
                     </Box>
-                  </Box>
-                )}
-                {show2 && (
-                  <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
-                    <Box
-                      sx={{
-                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
-                      }}
-                    >
-                      <LabelValueComponent
-                        containerStyle={{ flex: 1, width: "100%" }}
-                        title={"Market Name"}
-                        type={"Text"}
-                        value="Enter Market Name..."
-                        InputValType={"InputVal"}
-                        place={27}
-                        DetailError={{
-                          Error,
-                          setDetail,
-                          Detail,
-                          setError,
-                          type: "String",
+                  )}
+                  {show2 && (
+                    <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
+                      <Box
+                        sx={{
+                          width: {
+                            mobile: "100%",
+                            laptop: "18%",
+                            tablet: "24%",
+                          },
                         }}
-                      />
-                    </Box>
+                      >
+                        <LabelValueComponent
+                          required={true}
+                          containerStyle={{ flex: 1, width: "100%" }}
+                          title={"Market Name"}
+                          type={"Text"}
+                          value="Enter Market Name..."
+                          InputValType={"InputVal"}
+                          place={27}
+                          DetailError={{
+                            Error,
+                            setDetail,
+                            Detail,
+                            setError,
+                            type: "String",
+                          }}
+                        />
+                      </Box>
 
-                    {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
+                      {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
             <LabelValueComponent
               containerStyle={{ flex: 1, width: "100%" }}
               title={"Min Bet"}
@@ -964,54 +1032,64 @@ const AddMatchComp = () => {
             />
           </Box> */}
 
-                    <Box
-                      sx={{
-                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
-                      }}
-                    >
-                      <LabelValueComponent
-                        containerStyle={{ flex: 1, width: "100%" }}
-                        title={"Max Limit"}
-                        type={"Number"}
-                        value="Enter Max Bet..."
-                        InputValType={"InputVal"}
-                        place={29}
-                        DetailError={{
-                          Error,
-                          setDetail,
-                          Detail,
-                          setError,
-                          type: "String",
+                      <Box
+                        sx={{
+                          width: {
+                            mobile: "100%",
+                            laptop: "18%",
+                            tablet: "24%",
+                          },
                         }}
-                      />
+                      >
+                        <LabelValueComponent
+                          required={true}
+                          containerStyle={{ flex: 1, width: "100%" }}
+                          title={"Max Limit"}
+                          type={"Number"}
+                          value="Enter Max Bet..."
+                          InputValType={"InputVal"}
+                          place={29}
+                          DetailError={{
+                            Error,
+                            setDetail,
+                            Detail,
+                            setError,
+                            type: "String",
+                          }}
+                        />
+                      </Box>
                     </Box>
-                  </Box>
-                )}
-                {show3 && (
-                  <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
-                    <Box
-                      sx={{
-                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
-                      }}
-                    >
-                      <LabelValueComponent
-                        containerStyle={{ flex: 1, width: "100%" }}
-                        title={"Market Name"}
-                        type={"Text"}
-                        value="Enter Market Name..."
-                        InputValType={"InputVal"}
-                        place={30}
-                        DetailError={{
-                          Error,
-                          setDetail,
-                          Detail,
-                          setError,
-                          type: "String",
+                  )}
+                  {show3 && (
+                    <Box sx={{ display: "flex", width: "100%", gap: 1 }}>
+                      <Box
+                        sx={{
+                          width: {
+                            mobile: "100%",
+                            laptop: "18%",
+                            tablet: "24%",
+                          },
                         }}
-                      />
-                    </Box>
+                      >
+                        <LabelValueComponent
+                          required={true}
+                          containerStyle={{ flex: 1, width: "100%" }}
+                          title={"Market Name"}
+                          type={"Text"}
+                          value="Enter Market Name..."
+                          InputValType={"InputVal"}
+                          place={30}
+                          DetailError={{
+                            Error,
+                            setDetail,
+                            Detail,
+                            setError,
+                            type: "String",
+                          }}
+                        />
+                      </Box>
 
-                    {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
+                      {/* <Box sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}>
             <LabelValueComponent
               containerStyle={{ flex: 1, width: "100%" }}
               title={"Min Bet"}
@@ -1029,76 +1107,83 @@ const AddMatchComp = () => {
             />
           </Box> */}
 
-                    <Box
-                      sx={{
-                        width: { mobile: "100%", laptop: "18%", tablet: "24%" },
-                      }}
-                    >
-                      <LabelValueComponent
-                        containerStyle={{ flex: 1, width: "100%" }}
-                        title={"Max Limit"}
-                        type={"Number"}
-                        value="Enter Max Bet..."
-                        InputValType={"InputVal"}
-                        place={32}
-                        DetailError={{
-                          Error,
-                          setDetail,
-                          Detail,
-                          setError,
-                          type: "String",
+                      <Box
+                        sx={{
+                          width: {
+                            mobile: "100%",
+                            laptop: "18%",
+                            tablet: "24%",
+                          },
                         }}
-                      />
+                      >
+                        <LabelValueComponent
+                          required={true}
+                          containerStyle={{ flex: 1, width: "100%" }}
+                          title={"Max Limit"}
+                          type={"Number"}
+                          value="Enter Max Bet..."
+                          InputValType={"InputVal"}
+                          place={32}
+                          DetailError={{
+                            Error,
+                            setDetail,
+                            Detail,
+                            setError,
+                            type: "String",
+                          }}
+                        />
+                      </Box>
                     </Box>
-                  </Box>
-                )}
+                  )}
+                </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
-        <Box
-          sx={{ display: "flex", justifyContent: "center", marginY: "30px" }}
-        >
           <Box
-            onClick={() => {
-              createMatch();
-            }}
-            sx={{
-              background: "#10DC61",
-              cursor: "pointer",
-              height: "40px",
-              width: { mobile: "50%", laptop: "15%", tablet: "15%" },
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "5px",
-              border: "2px solid black",
-            }}
+            sx={{ display: "flex", justifyContent: "center", marginY: "30px" }}
           >
-            <Typography sx={{ color: "white" }}>Create</Typography>
-          </Box>
-          <Box
-            onClick={() => {
-              setDetail(stateDetail);
-              navigate("/expert/home");
-            }}
-            sx={{
-              background: "#E32A2A",
-              height: "40px",
-              cursor: "pointer",
-              marginLeft: "20px",
-              display: "flex",
-              width: { mobile: "50%", laptop: "15%", tablet: "15%" },
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "5px",
-              border: "2px solid black",
-            }}
-          >
-            <Typography sx={{ color: "white" }}>Cancel</Typography>
+            <Button
+              type="submit"
+              sx={{
+                background: "#10DC61",
+                cursor: "pointer",
+                height: "40px",
+                width: { mobile: "50%", laptop: "15%", tablet: "15%" },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "5px",
+                border: "2px solid black",
+                "&:hover": {
+                  background: "#10DC61",
+                },
+              }}
+            >
+              <Typography sx={{ color: "white" }}>Create</Typography>
+            </Button>
+            <Box
+              onClick={() => {
+                setDetail(stateDetail);
+                navigate("/expert/home");
+              }}
+              sx={{
+                background: "#E32A2A",
+                height: "40px",
+                cursor: "pointer",
+                marginLeft: "20px",
+                display: "flex",
+                width: { mobile: "50%", laptop: "15%", tablet: "15%" },
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: "5px",
+                border: "2px solid black",
+              }}
+            >
+              <Typography sx={{ color: "white" }}>Cancel</Typography>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </form>
     </Background>
   );
 };

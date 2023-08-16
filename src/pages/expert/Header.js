@@ -336,6 +336,16 @@ const CustomHeader = ({}) => {
                 };
                 dispatch(setManualBookMarkerRates(manualBookmaker));
 
+                setTeamRates((prev) => {
+                  const newBody = {
+                    ...prev,
+                    teamA: data?.teamA_rate ? data?.teamA_rate : 0,
+                    teamB: data?.teamB_rate ? data?.teamB_rate : 0,
+                    teamC: data?.teamC_rate ? data?.teamC_rate : 0,
+                  };
+                  dispatch(setBookmakerTeamRates(newBody));
+                  return newBody;
+                });
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
@@ -376,17 +386,6 @@ const CustomHeader = ({}) => {
                 data?.betPlaceData?.bet_id === selectedBookmaker?.betId &&
                 selectedBookmaker?.marketType === data?.betPlaceData?.marketType
               ) {
-                
-                setTeamRates((prev) => {
-                  const newBody = {
-                    ...prev,
-                    teamA: data?.teamA_rate ? data?.teamA_rate : 0,
-                    teamB: data?.teamB_rate ? data?.teamB_rate : 0,
-                    teamC: data?.teamC_rate ? data?.teamC_rate : 0,
-                  };
-                  dispatch(setBookmakerTeamRates(newBody));
-                  return newBody;
-                });
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
