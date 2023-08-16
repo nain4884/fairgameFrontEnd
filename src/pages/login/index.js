@@ -267,18 +267,20 @@ export default function Login(props) {
         setLoginError("Username and password required");
         setLoading(false);
         return false;
-      } else if (recaptchaToken === null) {
-        setLoading(false);
-        setLoginError("reCaptcha required ");
-        return false;
-      } else {
+      } else
+      // if (recaptchaToken === null) {
+      //   setLoading(false);
+      //   setLoginError("reCaptcha required ");
+      //   return false;
+      // } else 
+      {
         setLoading(true);
         const token = await localStorage.getItem("role4");
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
           loginType: "user",
-          recaptchaToken: recaptchaToken,
+          // recaptchaToken: recaptchaToken,
         });
 
         if (props.allowedRole.includes(data.data.role)) {
