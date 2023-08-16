@@ -18,7 +18,7 @@ const ProfitLossComponent = ({
   handleBet,
   currentPage,
   pageCount,
-  setCurrentPage
+  setCurrentPage,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -28,16 +28,16 @@ const ProfitLossComponent = ({
   const getHandleReport = (eventType) => {
     setEvent(eventType);
     if (!visible) {
-      handleReport(eventType,currentPage);
+      handleReport(eventType, currentPage);
     }
     setVisible(!visible);
   };
 
   function callPage(val) {
     // setCurrentPage(setProfitLossReportPage(parseInt(val)));
-    setCurrentPage(parseInt(val))
+    setCurrentPage(parseInt(val));
 
-    handleReport(event,parseInt(val));
+    handleReport(event, parseInt(val));
   }
 
   const getBetReport = (id) => {
@@ -254,7 +254,7 @@ const ProfitLossComponent = ({
                 right: 5,
               }}
             >
-              (04-11-2022)
+              ({moment(item?.matchDate).format("DD-MM-YYYY")})
             </Typography>
 
             <Box
@@ -447,22 +447,22 @@ const ProfitLossComponent = ({
       {eventData.map((item, index) => {
         return <RowHeader key={index} item={item} index={index} />;
       })}
-     
-       
-       <Box>
-       {visible && reportData.map((item, index) => {
-          return <RowComponent key={index} item={item} index={index + 1} />;
-        })
-       }
-     
-       </Box>
 
-       {visible &&  <Footer
+      <Box>
+        {visible &&
+          reportData.map((item, index) => {
+            return <RowComponent key={index} item={item} index={index + 1} />;
+          })}
+      </Box>
+
+      {visible && (
+        <Footer
           getListOfUser={() => handleReport(event)}
           currentPage={currentPage}
           pages={pageCount}
           callPage={callPage}
-        />}
+        />
+      )}
     </Box>
   );
 };

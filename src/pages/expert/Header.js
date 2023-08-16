@@ -381,7 +381,10 @@ const CustomHeader = ({}) => {
             });
 
             setLocalBookMakerRates((prev) => {
-              if (data?.betPlaceData?.match_id === match_id) {
+              if (
+                data?.betPlaceData?.match_id === match_id &&
+                data?.betPlaceData?.marketType === "MANUAL BOOKMAKER"
+              ) {
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
@@ -581,9 +584,13 @@ const CustomHeader = ({}) => {
               amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
             };
             setLocalSessionBets((prev) => {
-              const updatedData = [body, ...prev];
-              dispatch(setSessionAllBet(updatedData));
-              return updatedData;
+              const prevId = prev?.map((v) => v?.id) || [];
+              if (!prevId?.includes(body?.id)) {
+                const newBody = [body, ...prev];
+                dispatch(setSessionAllBet(newBody));
+                return newBody;
+              }
+              return prev;
             });
           }
 
@@ -765,6 +772,7 @@ const CustomHeader = ({}) => {
                 navigate("/expert/match");
               }
               if (prev.id === value?.match_id && value?.sessionBet) {
+                dispatch(setSessionProfitLoss(value?.profitLoss));
                 const updatedBettings = prev?.bettings?.map((betting) => {
                   if (value?.betId === betting?.id && value?.sessionBet) {
                     return {

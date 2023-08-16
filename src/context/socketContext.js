@@ -140,8 +140,6 @@ export const SocketProvider = ({ children }) => {
     });
 
   const localUserServerEvents = (localSocket, microSocket) => {
-
-
     localSocket.on("logoutUserForce", (event) => {
       try {
         // ResetAllState()
@@ -168,10 +166,21 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("resultDeclareForBet", (event) => {
       const data = event;
       try {
+        
+       
         setCurrentMatch((currentMatch) => {
           if (currentMatch?.id !== data?.match_id) {
             return currentMatch;
           }
+
+
+          if (
+            currentMatch?.id === data?.matchId &&
+            data?.sessionBet === false
+          ) {
+            return navigate("/matches");
+          }
+   
           // Update the bettings array in the current match object
           const updatedBettings = currentMatch?.bettings?.map((betting) => {
             if (betting.id === data.betId) {
@@ -187,7 +196,7 @@ export const SocketProvider = ({ children }) => {
               //   return body;
               // });
 
-              return {...betting,betStatus:2}
+              return { ...betting, betStatus: 2 };
             }
             return betting;
           });
@@ -201,6 +210,12 @@ export const SocketProvider = ({ children }) => {
           return newBody;
         });
 
+        
+        setSessionBets((sessionBets) => {
+          const res = sessionBets?.filter((v) => v?.bet_id !== data?.betId);
+          dispatch(setAllSessionBets(res));
+          return res;
+        });
         setLocalAllMatches((prev) => {
           const filteredMatches = prev.filter(
             (v) => !(v.id === data?.match_id && data.sessionBet === false)
@@ -289,57 +304,61 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("match_bet", (event) => {
       const data = event;
       try {
-        
-          const body = {
-            id: data?.betPlaceData?.id,
-            isActive: true,
-            createAt: data?.betPlaceData?.createAt,
-            updateAt: data?.betPlaceData?.createAt,
-            createdBy: null,
-            deletedAt: null,
-            user_id: null,
-            match_id: data?.betPlaceData?.match_id,
-            bet_id: data?.betPlaceData?.bet_id,
-            result: "pending",
-            team_bet: data?.betPlaceData?.team_bet,
-            odds: data?.betPlaceData?.odds,
-            win_amount: null,
-            loss_amount: null,
-            bet_type: data?.betPlaceData?.bet_type,
-            country: null,
-            ip_address: null,
-            deleted_reason: data?.betPlaceData?.deleted_reason || null,
-            rate: null,
-            marketType: data?.betPlaceData?.marketType,
-            amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-          };
-          if (data?.betPlaceData?.match_id === match_id) {
-            setLocalAllBetRates((prev) => {
+        const body = {
+          id: data?.betPlaceData?.id,
+          isActive: true,
+          createAt: data?.betPlaceData?.createAt,
+          updateAt: data?.betPlaceData?.createAt,
+          createdBy: null,
+          deletedAt: null,
+          user_id: null,
+          match_id: data?.betPlaceData?.match_id,
+          bet_id: data?.betPlaceData?.bet_id,
+          result: "pending",
+          team_bet: data?.betPlaceData?.team_bet,
+          odds: data?.betPlaceData?.odds,
+          win_amount: null,
+          loss_amount: null,
+          bet_type: data?.betPlaceData?.bet_type,
+          country: null,
+          ip_address: null,
+          deleted_reason: data?.betPlaceData?.deleted_reason || null,
+          rate: null,
+          marketType: data?.betPlaceData?.marketType,
+          amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+        };
+        if (data?.betPlaceData?.match_id === match_id) {
+       
+          setLocalAllBetRates((prev) => {
+            const prevId = prev?.map((v) => v?.id) || []
+            if (!prevId?.includes(body?.id)) {
               const newBody = [body, ...prev];
               dispatch(setAllBetRate(newBody));
               return newBody;
-            });
+            }
+            return prev;
+         
+          });
 
-            setLocalCurrentUser((prev) => {
-              const user = {
-                ...prev,
-                current_balance: data.newBalance,
-                exposure: data.exposure,
-              };
-              dispatch(setCurrentUser(user));
-              return user;
-            });
-
-            const manualBookmaker = {
-              matchId: data?.betPlaceData?.match_id,
-              teamA: data.teamA_rate,
-              teamB: data.teamB_rate,
-              teamC: data.teamC_rate,
+          setLocalCurrentUser((prev) => {
+            const user = {
+              ...prev,
+              current_balance: data.newBalance,
+              exposure: data.exposure,
             };
-            dispatch(setManualBookMarkerRates(manualBookmaker));
-          }
-          // alert(JSON.stringify(manualBookmaker));
-        
+            dispatch(setCurrentUser(user));
+            return user;
+          });
+
+          const manualBookmaker = {
+            matchId: data?.betPlaceData?.match_id,
+            teamA: data.teamA_rate,
+            teamB: data.teamB_rate,
+            teamC: data.teamC_rate,
+          };
+          dispatch(setManualBookMarkerRates(manualBookmaker));
+        }
+        // alert(JSON.stringify(manualBookmaker));
       } catch (e) {
         console.log("error", e?.message);
       }
@@ -376,10 +395,13 @@ export const SocketProvider = ({ children }) => {
             return body;
           });
           setSessionBets((prev) => {
-            const newBody = [body, ...prev];
-            console.log(newBody, "newBody");
-            dispatch(setAllSessionBets(newBody));
-            return newBody;
+            const prevId = prev?.map((v) => v?.id) || []
+            if (!prevId?.includes(body?.id)) {
+              const newBody = [body, ...prev];
+              dispatch(setAllSessionBets(newBody));
+              return newBody;
+            }
+            return prev;
           });
           setLocalCurrentUser((prev) => {
             const user = {

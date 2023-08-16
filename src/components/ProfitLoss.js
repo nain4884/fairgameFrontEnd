@@ -270,7 +270,7 @@ const ProfitLossComponent = ({
                 right: 5,
               }}
             >
-              (04-11-2022 d)
+             ({moment(item?.matchDate).format("DD-MM-YYYY")})
             </Typography>
 
             <Box
@@ -297,7 +297,7 @@ const ProfitLossComponent = ({
                   fontWeight: "600",
                 }}
               >
-                ({moment(item.matchDate).format("DD-MM-YYYY")})
+                ({moment(item?.matchDate).format("DD-MM-YYYY")})
               </Typography>
             </Box>
             <StyledImage
