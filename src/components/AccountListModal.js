@@ -116,7 +116,7 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
         sx={[
           {
             marginX: "0.5%",
-            width: { mobile: "96%", laptop: "85%", tablet: "96%" },
+            width: { mobile: "96%", laptop: "90%", tablet: "96%" },
             minHeight: loader && loader1 ? "20%" : "200px",
             borderRadius: "10px",
             borderBottomRightRadius: "0px",
