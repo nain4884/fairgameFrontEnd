@@ -2062,7 +2062,7 @@ const CustomHeader = ({}) => {
           alignItems: "center",
         }}
       >
-        <marquee loop={true}>
+       <marquee loop={true} scrollamount="3">
           <Typography
             sx={{
               color: "text.white",

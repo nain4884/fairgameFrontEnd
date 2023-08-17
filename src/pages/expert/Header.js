@@ -725,8 +725,9 @@ const CustomHeader = ({}) => {
                 navigate("/expert/match");
               }
               if (prev.id === value?.match_id && value?.sessionBet) {
-                dispatch(setSessionProfitLoss(value?.profitLoss));
-
+             
+              
+                
                 const findBet = prev?.bettings?.find(
                   (betting) =>
                     betting?.id === value?.betId
@@ -765,10 +766,11 @@ const CustomHeader = ({}) => {
 
               return prev;
             });
-
+           
             setAllLiveEventSession((prev) => {
               var updatedPrev = prev?.map((item) => {
                 if (item.id === value?.match_id && value?.sessionBet) {
+                  dispatch(setSessionProfitLoss(value?.profitLoss));
                   const updatedBettings = item.bettings.filter(
                     (betting) => betting.id !== value?.betId
                   );
