@@ -176,6 +176,7 @@ const AccountList = () => {
                           key={i}
                           callProfile={true}
                           showOptions={true}
+                          showCReport={true}
                           containerStyle={{ background: "#FFE094" }}
                           profit={element.profit_loss >= 0}
                           fContainerStyle={{ background: "#0B4F26" }}
@@ -190,6 +191,7 @@ const AccountList = () => {
                       return (
                         <AccountListRow
                           key={i}
+                             showCReport={true}
                           callProfile={true}
                           showOptions={true}
                           containerStyle={{ background: "#ECECEC" }}

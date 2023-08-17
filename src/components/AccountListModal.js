@@ -168,7 +168,8 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                       <AccountListRow
                         key={i}
                         callProfile={false}
-                        showOptions={false}
+                        showCReport={false}
+                        showOptions={true}
                         showChildModal={true}
                         containerStyle={{ background: "#FFE094" }}
                         profit={element.profit_loss >= 0}
@@ -184,7 +185,8 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                       <AccountListRow
                         key={i}
                         callProfile={false}
-                        showOptions={false}
+                        showOptions={true}
+                        showCReport={false}
                         showChildModal={true}
                         containerStyle={{ background: "#ECECEC" }}
                         profit={element.profit_loss >= 0}

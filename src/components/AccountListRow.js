@@ -23,6 +23,7 @@ const AccountListRow = ({
   getListOfUser,
   showOptions,
   handleExport,
+  showCReport
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -83,18 +84,18 @@ const AccountListRow = ({
   }
 
   const prevElement = {
-    credit_refer: element.credit_refer,
-    balance: element.balance,
-    profit_loss: element.profit_loss,
-    exposure: element.exposure,
-    available_balance: element.available_balance,
-    exposure_limit: element.exposure_limit,
-    userName: element.userName,
-    percent_profit_loss: element.percent_profit_loss || 0,
-    bet_blocked: element.bet_blocked,
-    all_blocked: element.all_blocked,
+    credit_refer: element?.credit_refer,
+    balance: element?.balance,
+    profit_loss: element?.profit_loss,
+    exposure: element?.exposure,
+    available_balance: element?.available_balance,
+    exposure_limit: element?.exposure_limit,
+    userName: element?.userName,
+    percent_profit_loss: element?.percent_profit_loss || 0,
+    bet_blocked: element?.bet_blocked,
+    all_blocked: element?.all_blocked,
     rateToCalculatePercentage: handleUpline(),
-    totalCommissions: element.TotalComission,
+    totalCommissions: element?.TotalComission,
     role: allRole?.find((role) => role?.id === element?.roleId),
     userId: element?.id,
     matchTypeComission: element?.matchTypeComission,
@@ -114,18 +115,18 @@ const AccountListRow = ({
   const [elementToUDM, setElementToUDM] = useState(prevElement);
   useEffect(() => {
     const prevElement = {
-      credit_refer: element.credit_refer,
-      balance: element.balance,
-      profit_loss: element.profit_loss,
-      exposure: element.exposure,
-      available_balance: element.available_balance,
-      exposure_limit: element.exposure_limit,
-      userName: element.userName,
-      percent_profit_loss: element.percent_profit_loss || 0,
-      bet_blocked: element.bet_blocked,
-      all_blocked: element.all_blocked,
+      credit_refer: element?.credit_refer,
+      balance: element?.balance,
+      profit_loss: element?.profit_loss,
+      exposure: element?.exposure,
+      available_balance: element?.available_balance,
+      exposure_limit: element?.exposure_limit,
+      userName: element?.userName,
+      percent_profit_loss: element?.percent_profit_loss || 0,
+      bet_blocked: element?.bet_blocked,
+      all_blocked: element?.all_blocked,
       rateToCalculatePercentage: handleUpline(),
-      totalCommissions: element.TotalComission,
+      totalCommissions: element?.TotalComission,
       role: allRole?.find((role) => role?.id === element?.roleId),
       userId: element?.id,
       matchTypeComission: element?.matchTypeComission,
@@ -142,10 +143,11 @@ const AccountListRow = ({
   }
   useEffect(() => {
     checkIfElementUpdated(prevElement);
-  }, [element.userName]);
+  }, [element?.userName]);
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
+
   return (
     <>
       <Box
@@ -200,9 +202,9 @@ const AccountListRow = ({
               fTextStyle,
             ]}
           >
-            {element.userName}
+            {element?.userName}
           </Typography>
-          {showOptions && (
+          {showOptions && element?.role !== "expert" && (
             <StyledImage
               onClick={() => {
                 if (!showUserModal) {
@@ -232,7 +234,7 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.credit_refer}
+            {elementToUDM?.credit_refer}
           </Typography>
         </Box>
         <Box
@@ -246,9 +248,9 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {Number(elementToUDM.balance) >= 0
-              ? <><span style={{ visibility: "hidden" }}>-</span>{Number(elementToUDM.balance)}</>
-              : Number(elementToUDM.balance)}
+            {Number(elementToUDM?.balance) >= 0
+              ? <><span style={{ visibility: "hidden" }}>-</span>{Number(elementToUDM?.balance)}</>
+              : Number(elementToUDM?.balance)}
           </Typography>
         </Box>
         <Box
@@ -258,7 +260,7 @@ const AccountListRow = ({
             paddingX: "10px",
             justifyContent: "space-between",
             background:
-              Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
+              Number(elementToUDM?.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -267,9 +269,9 @@ const AccountListRow = ({
           <Typography
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
-            {Number(elementToUDM.profit_loss) >= 0
-              ? <><span style={{ visibility: "hidden" }}>-</span>{elementToUDM.profit_loss}</>
-              : elementToUDM.profit_loss}
+            {Number(elementToUDM?.profit_loss) >= 0
+              ? <><span style={{ visibility: "hidden" }}>-</span>{elementToUDM?.profit_loss}</>
+              : elementToUDM?.profit_loss}
           </Typography>
           <StyledImage
             src={
@@ -292,7 +294,7 @@ const AccountListRow = ({
             paddingX: "10px",
             justifyContent: "space-between",
             background:
-              Number(elementToUDM.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
+              Number(elementToUDM?.profit_loss) >= 0 ? "#27AC1E" : "#E32A2A",
             alignItems: "center",
             height: "45px",
             borderRight: "2px solid white",
@@ -301,9 +303,9 @@ const AccountListRow = ({
           <Typography
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
-            {Number(elementToUDM.percent_profit_loss) >= 0
-              ? <><span style={{ visibility: "hidden" }}>-</span>{elementToUDM.percent_profit_loss}</>
-              : elementToUDM.percent_profit_loss}
+            {Number(elementToUDM?.percent_profit_loss) >= 0
+              ? <><span style={{ visibility: "hidden" }}>-</span>{elementToUDM?.percent_profit_loss}</>
+              : elementToUDM?.percent_profit_loss}
 
           </Typography>
           <StyledImage
@@ -333,7 +335,7 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.totalCommissions}
+            {elementToUDM?.totalCommissions}
           </Typography>
         </Box>
         <Box
@@ -347,7 +349,7 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.exposure}
+            {elementToUDM?.exposure}
           </Typography>
         </Box>
         <Box
@@ -361,10 +363,9 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {Number(elementToUDM.available_balance) >= 0
-              ? <><span style={{ visibility: "hidden" }}>-</span>{Number(elementToUDM.available_balance)}</>
-              : Number(elementToUDM.available_balance)}
-            {console.log(elementToUDM, "elementToUDM")}
+            {Number(elementToUDM?.available_balance) >= 0
+              ? <><span style={{ visibility: "hidden" }}>-</span>{Number(elementToUDM?.available_balance)}</>
+              : Number(elementToUDM?.available_balance)}
           </Typography>
         </Box>
         <Box
@@ -379,7 +380,7 @@ const AccountListRow = ({
           }}
         >
           <StyledImage
-            src={elementToUDM.bet_blocked == 0 ? UnLockIcon : LockIcon}
+            src={elementToUDM?.bet_blocked == 0 ? UnLockIcon : LockIcon}
             sx={{ height: "20px", width: "20px", fill: "#27AC1E" }}
           />
         </Box>
@@ -395,7 +396,7 @@ const AccountListRow = ({
           }}
         >
           <StyledImage
-            src={elementToUDM.all_blocked == 0 ? UnLockIcon : LockIcon}
+            src={elementToUDM?.all_blocked == 0 ? UnLockIcon : LockIcon}
             sx={{ height: "20px", width: "20px", fill: "#27AC1E" }}
           />
         </Box>
@@ -411,7 +412,7 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {elementToUDM.exposure_limit}
+            {elementToUDM?.exposure_limit}
           </Typography>
         </Box>
         <Box
@@ -430,7 +431,7 @@ const AccountListRow = ({
         </Box>
       </Box>
 
-      {showUserModal && element.role !== "expert" && (
+      {showUserModal && element?.role !== "expert" && (
         <>
           <Box
             sx={[
@@ -604,7 +605,7 @@ const AccountListRow = ({
                     </Typography>
                   </Box>
                 </Box>
-                <Box
+                {showCReport && <Box
                   sx={{
                     display: "flex",
                     marginTop: { laptop: "10px", mobile: "0" },
@@ -615,10 +616,10 @@ const AccountListRow = ({
                     width: { desktop: "100%", mobile: "33%" },
                   }}
                   onClick={() => {
-                    if (elementToUDM.totalCommissions !== null) {
+                    if (elementToUDM?.totalCommissions !== null) {
                       setShowCommissionReport({
                         value: true,
-                        id: elementToUDM.userId,
+                        id: elementToUDM?.userId,
                       });
                     } else {
                       return false;
@@ -652,7 +653,7 @@ const AccountListRow = ({
                       width: { laptop: "15px", mobile: "23px" },
                     }}
                   />
-                </Box>
+                </Box>}
               </Box>
             </Box>
 
@@ -797,7 +798,7 @@ const AccountListRow = ({
           }}
         >
           <CommissionReportTable
-            title={element.userName}
+            title={element?.userName}
             id={showCommissionReport?.id}
             show={showCommissionReport?.value}
             setShow={setShowCommissionReport}
