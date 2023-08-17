@@ -275,6 +275,7 @@ export default function UserDetailModal({
               elementToUDM={elementToUDM}
               setElementToUDM={setElementToUDM}
               showDialogModal={showDialogModal}
+              getListOfUser={getListOfUser}
             />
           )}
         </Box>
@@ -2786,6 +2787,7 @@ const LockUnlockComponent = ({
   setElementToUDM,
   prevElement,
   setSelected,
+  getListOfUser
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -2801,6 +2803,7 @@ const LockUnlockComponent = ({
     UpdateLockUnlock(lockUnlockObj)
       .then(({ bool, message }) => {
         toast.success(message);
+        getListOfUser();
         setSelected(e);
         showDialogModal(true, true, message);
       })
