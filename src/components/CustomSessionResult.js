@@ -250,7 +250,8 @@ const CustomSessionResult = ({
               loading={loading}
               id="NR"
               session={true}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setConfirmNoResults(true);
               }}
             />
