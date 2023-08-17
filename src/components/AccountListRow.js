@@ -23,7 +23,7 @@ const AccountListRow = ({
   getListOfUser,
   showOptions,
   handleExport,
-  showCReport
+  showCReport,
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -248,9 +248,14 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {Number(elementToUDM?.balance) >= 0
-              ? <><span style={{ visibility: "hidden" }}>-</span>{Number(elementToUDM?.balance)}</>
-              : Number(elementToUDM?.balance)}
+            {Number(elementToUDM?.balance) >= 0 ? (
+              <>
+                <span style={{ visibility: "hidden" }}>-</span>
+                {Number(elementToUDM?.balance)}
+              </>
+            ) : (
+              Number(elementToUDM?.balance)
+            )}
           </Typography>
         </Box>
         <Box
@@ -269,9 +274,14 @@ const AccountListRow = ({
           <Typography
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
-            {Number(elementToUDM?.profit_loss) >= 0
-              ? <><span style={{ visibility: "hidden" }}>-</span>{elementToUDM?.profit_loss}</>
-              : elementToUDM?.profit_loss}
+            {Number(elementToUDM?.profit_loss) >= 0 ? (
+              <>
+                <span style={{ visibility: "hidden" }}>-</span>
+                {elementToUDM?.profit_loss}
+              </>
+            ) : (
+              elementToUDM?.profit_loss
+            )}
           </Typography>
           <StyledImage
             src={
@@ -303,10 +313,14 @@ const AccountListRow = ({
           <Typography
             sx={{ fontSize: "12px", fontWeight: "600", color: "white" }}
           >
-            {Number(elementToUDM?.percent_profit_loss) >= 0
-              ? <><span style={{ visibility: "hidden" }}>-</span>{elementToUDM?.percent_profit_loss}</>
-              : elementToUDM?.percent_profit_loss}
-
+            {Number(elementToUDM?.percent_profit_loss) >= 0 ? (
+              <>
+                <span style={{ visibility: "hidden" }}>-</span>
+                {elementToUDM?.percent_profit_loss}
+              </>
+            ) : (
+              elementToUDM?.percent_profit_loss
+            )}
           </Typography>
           <StyledImage
             src={
@@ -363,9 +377,14 @@ const AccountListRow = ({
           }}
         >
           <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
-            {Number(elementToUDM?.available_balance) >= 0
-              ? <><span style={{ visibility: "hidden" }}>-</span>{Number(elementToUDM?.available_balance)}</>
-              : Number(elementToUDM?.available_balance)}
+            {Number(elementToUDM?.available_balance) >= 0 ? (
+              <>
+                <span style={{ visibility: "hidden" }}>-</span>
+                {Number(elementToUDM?.available_balance)}
+              </>
+            ) : (
+              Number(elementToUDM?.available_balance)
+            )}
           </Typography>
         </Box>
         <Box
@@ -432,7 +451,7 @@ const AccountListRow = ({
       </Box>
 
       {showUserModal && element?.role !== "expert" && (
-        <>
+        
           <Box
             sx={[
               {
@@ -605,86 +624,90 @@ const AccountListRow = ({
                     </Typography>
                   </Box>
                 </Box>
-                {showCReport && <Box
-                  sx={{
-                    display: "flex",
-                    marginTop: { laptop: "10px", mobile: "0" },
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    marginRight: { laptop: "0", mobile: "5px" },
-                    width: { desktop: "100%", mobile: "33%" },
-                  }}
-                  onClick={() => {
-                    if (elementToUDM?.totalCommissions !== null) {
-                      setShowCommissionReport({
-                        value: true,
-                        id: elementToUDM?.userId,
-                      });
-                    } else {
-                      return false;
-                    }
-                  }}
-                >
-                  <Typography
-                    sx={[
-                      {
-                        fontSize: "12px",
-                        fontWeight: "600",
-                        color: "white",
-                        textAlign: "center",
-                        alignItems: "center",
-                        marginRight: { desktop: "0", mobile: "3px" },
-                      },
-                      fTextStyle,
-                    ]}
-                  >
-                    Commission Details
-                  </Typography>
-                  <StyledImage
-                    src={
-                      fContainerStyle.background == "#F8C851"
-                        ? DownGIcon
-                        : DownIcon
-                    }
+                {showCReport && (
+                  <Box
                     sx={{
-                      height: { laptop: "10px", mobile: "14px" },
+                      display: "flex",
+                      marginTop: { laptop: "10px", mobile: "0" },
+                      justifyContent: "space-between",
+                      alignItems: "center",
                       cursor: "pointer",
-                      width: { laptop: "15px", mobile: "23px" },
+                      marginRight: { laptop: "0", mobile: "5px" },
+                      width: { desktop: "100%", mobile: "33%" },
                     }}
-                  />
-                </Box>}
+                    onClick={() => {
+                      if (elementToUDM?.totalCommissions !== null) {
+                        setShowCommissionReport({
+                          value: true,
+                          id: elementToUDM?.userId,
+                        });
+                      } else {
+                        return false;
+                      }
+                    }}
+                  >
+                    <Typography
+                      sx={[
+                        {
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          color: "white",
+                          textAlign: "center",
+                          alignItems: "center",
+                          marginRight: { desktop: "0", mobile: "3px" },
+                        },
+                        fTextStyle,
+                      ]}
+                    >
+                      Commission Details
+                    </Typography>
+                    <StyledImage
+                      src={
+                        fContainerStyle.background == "#F8C851"
+                          ? DownGIcon
+                          : DownIcon
+                      }
+                      sx={{
+                        height: { laptop: "10px", mobile: "14px" },
+                        cursor: "pointer",
+                        width: { laptop: "15px", mobile: "23px" },
+                      }}
+                    />
+                  </Box>
+                )}
               </Box>
             </Box>
 
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                // paddingX: "10px",
-                alignItems: "center",
-                height: "100%",
-              }}
-            >
-              <UserDetailModal
-                selected={selected}
-                element={element}
-                setSelected={setSelected}
-                updatedUserProfile={updatedUserProfile}
-                getListOfUser={getListOfUser}
-                setShowUserModal={setShowUserModal}
-                backgroundColor={containerStyle?.background}
-                userModal={userModal}
-                setShowSuccessModal={handleChangeShowModalSuccess}
-                setShowModalMessage={setShowModalMessage}
-                elementToUDM={elementToUDM}
-                setElementToUDM={handleSetUDM}
-                prevElement={prevElement}
-              />
-            </Box>
+         
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  visibility: !showCReport &&  "hidden",
+                  // paddingX: "10px",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <UserDetailModal
+                  selected={selected}
+                  element={element}
+                  setSelected={setSelected}
+                  updatedUserProfile={updatedUserProfile}
+                  getListOfUser={getListOfUser}
+                  setShowUserModal={setShowUserModal}
+                  backgroundColor={containerStyle?.background}
+                  userModal={userModal}
+                  setShowSuccessModal={handleChangeShowModalSuccess}
+                  setShowModalMessage={setShowModalMessage}
+                  elementToUDM={elementToUDM}
+                  setElementToUDM={handleSetUDM}
+                  prevElement={prevElement}
+                />
+              </Box>
+          
           </Box>
-          {/*  */}
-        </>
+      
       )}
 
       {/* {showUserModal && element?.role !== "user" && (

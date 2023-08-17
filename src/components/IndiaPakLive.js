@@ -105,12 +105,16 @@ const IndiaPakLive = React.forwardRef(
 
     useEffect(() => {
       if (sessionProfitLoss) {
+        getSessionResult(match?.id);
         setProLoss(sessionProfitLoss);
+      }
+      if ([0, null]?.includes(sessionProfitLoss)) {
+        getSessionResult(match?.id);
       }
       if (currentOdd) {
         setCurrentOdds(currentOdd);
       }
-    }, [sessionProfitLoss,currentOdd]);
+    }, [sessionProfitLoss, currentOdd, match?.id]);
 
     // useEffect(() => {
     //   if (socket && socket.connected) {
@@ -299,7 +303,6 @@ const IndiaPakLive = React.forwardRef(
       }
       setIsCreateSession(createSession);
       getSessionResult(match?.id);
-
     }, [sessionEvent?.id]);
 
     const getSessionResult = async (match_id) => {
@@ -522,7 +525,7 @@ const IndiaPakLive = React.forwardRef(
                             undeclare={true}
                             onClick={() => {
                               setVisible1(false);
-                              // getSessionResult(match?.id);
+                              getSessionResult(match?.id);
                             }}
                             onClickCancel={() => {
                               setVisible1(false);
