@@ -36,12 +36,7 @@ import {
   setSessionAllBet,
   setSessionProfitLoss,
   setBookmakerTeamRates,
-  setTeamA,
-  setTeamBackUnlock,
-  setTeamB,
-  setTeamC,
-  setTeamBall,
-  setTeamSuspended,
+  setQuickBookmaker,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -93,13 +88,8 @@ const CustomHeader = ({}) => {
     sessionAllBet,
     sessionBetId,
     bookmakerTeamRates,
-    teamA,
-    teamB,
-    teamC,
-    teamBall,
-    teamSuspended,
-    teamBackUnlock,
     selectedBookmaker,
+    quickBookmaker,
   } = useSelector((state) => state?.expertMatchDetails);
   const { userAllMatches, selectedMatch, bookMakerBetRates } = useSelector(
     (state) => state?.matchDetails
@@ -129,43 +119,10 @@ const CustomHeader = ({}) => {
   });
   const [localBookMakerRates, setLocalBookMakerRates] = useState([]);
 
-  const [localTeamA, setLocalTeamA] = useState({
-    rate: null,
-    lock: null,
-    suspended: null,
-    lay: null,
-    back: null,
-    layLock: false,
-  });
-  const [localTeamB, setLocalTeamB] = useState({
-    rate: null,
-    lock: null,
-    suspended: null,
-    lay: null,
-    back: null,
-    layLock: false,
-  });
-  const [localTeamC, setLocalTeamC] = useState({
-    rate: null,
-    lock: null,
-    suspended: null,
-    lay: null,
-    back: null,
-    layLock: false,
-  });
-  const [localTeamBall, setLocalTeamBall] = useState({
-    isABall: false,
-    isBBall: false,
-    isCBall: false,
-  });
-
-  const [localTeamSuspended, setLocalTeamSuspended] = useState({
-    teamA_suspend: null,
-    teamB_suspend: null,
-    teamC_suspend: null,
-  });
-  const [localTeamBackUnlock, setLocalTeamBackUnlock] = useState(false);
   const [localSelectedBookmaker, setLocalSelectedBookmaker] = useState(null);
+
+  const [localQuickBookmaker, setLocalQuickBookmaker] =
+    useState(quickBookmaker);
   useEffect(() => {
     if (allBetRates) {
       setLocalAllBetRates(allBetRates);
@@ -209,23 +166,8 @@ const CustomHeader = ({}) => {
       }
     }
 
-    if (teamA) {
-      setLocalTeamA(teamA);
-    }
-    if (teamB) {
-      setLocalTeamB(teamB);
-    }
-    if (teamC) {
-      setLocalTeamC(teamC);
-    }
-    if (teamBall) {
-      setLocalTeamBall(teamBall);
-    }
-    if (teamSuspended) {
-      setLocalTeamSuspended(teamSuspended);
-    }
-    if (teamBackUnlock) {
-      setLocalTeamBackUnlock(teamBackUnlock);
+    if (quickBookmaker) {
+      setLocalQuickBookmaker(quickBookmaker);
     }
 
     if (selectedBookmaker) {
@@ -242,12 +184,6 @@ const CustomHeader = ({}) => {
     userAllMatches,
     bookmakerTeamRates,
     bookMakerBetRates,
-    teamA,
-    teamB,
-    teamC,
-    teamBall,
-    teamSuspended,
-    teamBackUnlock,
     selectedBookmaker,
   ]);
 
@@ -863,182 +799,136 @@ const CustomHeader = ({}) => {
             if (!data?.lock) {
               if (data?.isTab) {
                 // setIsTeamBackUnlock(false);
-                setLocalTeamBackUnlock((prev) => {
-                  dispatch(setTeamBackUnlock(false));
-                  return false;
-                });
-                // setLocalTeamA(data.teamA_Back);
-                setLocalTeamA((prev) => {
+                setLocalQuickBookmaker((prev) => {
                   const newBody = {
                     ...prev,
-                    rate: data.teamA_Back,
-                    suspended: data.teamA_suspend,
-                    lock: data?.teamA_suspend,
-                    lay: data?.teamA_lay !== "" ? data?.teamA_lay : null,
-                    layLock: true,
+                    teamA: {
+                      rate: data.teamA_Back,
+                      suspended: data.teamA_suspend,
+                      lock: data?.teamA_suspend,
+                      lay: data?.teamA_lay !== "" ? data?.teamA_lay : null,
+                      layLock: true,
+                    },
+                    teamB: {
+                      rate: data.teamB_Back,
+                      suspended: data.teamB_suspend,
+                      lock: data?.teamB_suspend,
+                      lay: data?.teamB_lay !== "" ? data?.teamB_lay : null,
+                      layLock: true,
+                    },
+                    teamC: {
+                      rate: data.teamC_Back,
+                      suspended: data.teamC_suspend,
+                      lock: data?.teamC_suspend,
+                      lay: data?.teamC_lay !== "" ? data?.teamC_lay : null,
+                      layLock: true,
+                    },
+                    teamSuspended: {
+                      teamA_suspend: data?.teamA_suspend,
+                      teamB_suspend: data?.teamB_suspend,
+                      teamC_suspend: data?.teamC_suspend,
+                    },
+                    teamBackUnlock: false,
                   };
-
-                  dispatch(setTeamA(newBody));
-                  return newBody;
-                });
-                setLocalTeamB((prev) => {
-                  const newBody = {
-                    ...prev,
-                    rate: data.teamB_Back,
-                    suspended: data.teamB_suspend,
-                    lock: data?.teamB_suspend,
-                    lay: data?.teamB_lay !== "" ? data?.teamB_lay : null,
-                    layLock: true,
-                  };
-
-                  dispatch(setTeamB(newBody));
-                  return newBody;
-                });
-                setLocalTeamC((prev) => {
-                  const newBody = {
-                    ...prev,
-                    rate: data.teamC_Back,
-                    suspended: data.teamC_suspend,
-                    lock: data?.teamC_suspend,
-                    lay: data?.teamC_lay !== "" ? data?.teamC_lay : null,
-                    layLock: true,
-                  };
-
-                  dispatch(setTeamC(newBody));
+                  dispatch(setQuickBookmaker(newBody));
                   return newBody;
                 });
               } else {
-                setLocalTeamBall((prev) => {
+                setLocalQuickBookmaker((prev) => {
                   const newBody = {
                     ...prev,
-                    isABall: false,
-                    isBBall: false,
-                    isCBall: false,
+                    teamA: {
+                      rate: data.teamA_Back,
+                      suspended: data.teamA_suspend,
+                      lock: data?.teamA_suspend,
+                      lay: data?.teamA_lay,
+                      layLock: false,
+                    },
+                    teamB: {
+                      rate: data.teamB_Back,
+                      suspended: data.teamB_suspend,
+                      lock: data.teamB_suspend,
+                      lay: data?.teamB_lay,
+                      layLock: false,
+                    },
+                    teamC: {
+                      rate: data.teamC_Back,
+                      suspended: data.teamC_suspend,
+                      lock: data.teamC_suspend,
+                      lay: data?.teamC_lay,
+                      layLock: false,
+                    },
+                    teamBall: {
+                      isABall: false,
+                      isBBall: false,
+                      isCBall: false,
+                    },
+                    teamSuspended: {
+                      teamA_suspend: data?.teamA_suspend,
+                      teamB_suspend: data?.teamB_suspend,
+                      teamC_suspend: data?.teamC_suspend,
+                    },
                   };
-                  dispatch(setTeamBall(newBody));
-                  return newBody;
-                });
-                setLocalTeamA((prev) => {
-                  const newBody = {
-                    rate: data.teamA_Back,
-                    suspended: data.teamA_suspend,
-                    lock: data?.teamA_suspend,
-                    lay: data?.teamA_lay,
-                    layLock: false,
-                  };
-                  dispatch(setTeamA(newBody));
-                  return newBody;
-                });
-                setLocalTeamB((prev) => {
-                  const newBody = {
-                    ...prev,
-                    rate: data.teamB_Back,
-                    suspended: data.teamB_suspend,
-                    lock: data.teamB_suspend,
-                    lay: data?.teamB_lay,
-                    layLock: false,
-                  };
-
-                  dispatch(setTeamB(newBody));
-                  return newBody;
-                });
-                setLocalTeamC((prev) => {
-                  const newBody = {
-                    ...prev,
-                    rate: data.teamC_Back,
-                    suspended: data.teamC_suspend,
-                    lock: data.teamC_suspend,
-                    lay: data?.teamC_lay,
-                    layLock: false,
-                  };
-
-                  dispatch(setTeamC(newBody));
+                  dispatch(setQuickBookmaker(newBody));
                   return newBody;
                 });
               }
-
-              setLocalTeamSuspended((prev) => {
-                const newBody = {
-                  ...prev,
-                  teamA_suspend: data?.teamA_suspend,
-                  teamB_suspend: data?.teamB_suspend,
-                  teamC_suspend: data?.teamC_suspend,
-                };
-                dispatch(setTeamSuspended(newBody));
-                return newBody;
-              });
             } else {
               if (data.teamA_suspend == "Ball Started") {
-                setLocalTeamBall((prev) => {
+                setLocalQuickBookmaker((prev) => {
                   const newBody = {
                     ...prev,
-                    isABall: true,
-                    isBBall: true,
-                    isCBall: true,
+
+                    teamBall: {
+                      isABall: true,
+                      isBBall: true,
+                      isCBall: true,
+                    },
                   };
-                  dispatch(setTeamBall(newBody));
+                  dispatch(setQuickBookmaker(newBody));
                   return newBody;
                 });
               } else {
-                setLocalTeamA((prev) => {
+                setLocalQuickBookmaker((prev) => {
                   const newBody = {
                     ...prev,
-                    suspended: data.teamA_suspend,
-                    layLock: false,
+                    teamA: {
+                      rate: prev?.teamA?.teamA_Back,
+                      suspended: data.teamA_suspend,
+                      lock: prev?.teamA?.teamA_suspend,
+                      lay: prev?.teamA?.teamA_lay,
+                      layLock: false,
+                    },
+                    teamB: {
+                      rate: prev?.teamB?.teamB_Back,
+                      suspended: data?.teamB_suspend,
+                      lock: prev?.teamB?.teamB_suspend,
+                      lay: prev?.teamB?.teamB_lay,
+                      layLock: false,
+                    },
+                    teamC: {
+                      rate: prev?.teamC?.teamC_Back,
+                      suspended: data.teamC_suspend,
+                      lock: prev?.teamC?.teamC_suspend,
+                      lay: prev?.teamC?.teamC_lay,
+                      layLock: false,
+                    },
+                    teamBall: {
+                      isABall: false,
+                      isBBall: false,
+                      isCBall: false,
+                    },
+                    teamSuspended: {
+                      teamA_suspend: data?.teamA_suspend,
+                      teamB_suspend: data?.teamB_suspend,
+                      teamC_suspend: data?.teamC_suspend,
+                    },
+                    teamBackUnlock: true,
                   };
-
-                  dispatch(setTeamA(newBody));
-                  return newBody;
-                });
-                setLocalTeamB((prev) => {
-                  const newBody = {
-                    ...prev,
-
-                    suspended: data.teamB_suspend,
-                    layLock: false,
-                  };
-
-                  dispatch(setTeamB(newBody));
-                  return newBody;
-                });
-                setLocalTeamC((prev) => {
-                  const newBody = {
-                    ...prev,
-
-                    suspended: data.teamC_suspend,
-                    layLock: false,
-                  };
-
-                  dispatch(setTeamC(newBody));
-                  return newBody;
-                });
-                setLocalTeamBackUnlock((prev) => {
-                  dispatch(setTeamBackUnlock(true));
-                  return true;
-                });
-
-                setLocalTeamBall((prev) => {
-                  const newBody = {
-                    ...prev,
-                    isABall: false,
-                    isBBall: false,
-                    isCBall: false,
-                  };
-                  dispatch(setTeamBall(newBody));
+                  dispatch(setQuickBookmaker(newBody));
                   return newBody;
                 });
               }
-
-              setLocalTeamSuspended((prev) => {
-                const newBody = {
-                  ...prev,
-                  teamA_suspend: data?.teamA_suspend,
-                  teamB_suspend: data?.teamB_suspend,
-                  teamC_suspend: data?.teamC_suspend,
-                };
-                dispatch(setTeamSuspended(newBody));
-                return newBody;
-              });
             }
           }
         }
