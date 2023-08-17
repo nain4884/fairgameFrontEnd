@@ -31,7 +31,10 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import SessionMarketLive from "../expert/SessionMarket/LiveSessionMarket/SessionMarketLive";
 import CustomLoader from "../../components/helper/CustomLoader";
-import { setActiveUsers, setAllBetRate, } from "../../newStore/reducers/expertMatchDetails";
+import {
+  setActiveUsers,
+  setAllBetRate,
+} from "../../newStore/reducers/expertMatchDetails";
 import { setSelected } from "../../store/activeUser";
 let matchOddsCount = 0;
 let marketId = "";
@@ -44,7 +47,9 @@ const MatchScreen = () => {
   const navigate = useNavigate();
   const { axios } = setRole();
   const dispatch = useDispatch();
-  const { allBetRates ,currentOdd } = useSelector((state) => state?.expertMatchDetails);
+  const { allBetRates, currentOdd } = useSelector(
+    (state) => state?.expertMatchDetails
+  );
   const [currentMatch, setCurrentMatch] = useState(null);
   const [IObets, setIObtes] = useState([]);
   const [bookmakerLivedata, setBookmakerLiveData] = useState([]);
@@ -54,29 +59,28 @@ const MatchScreen = () => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [currentOdds, setCurrentOdds] = useState(null);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const [matchLiveSession,setMatchLiveSession]=useState([])
+  const [matchLiveSession, setMatchLiveSession] = useState([]);
 
+  const { selectedMatch } = useSelector((state) => state?.matchDetails);
 
-  const { selectedMatch} = useSelector((state) => state?.matchDetails);
-
-   useEffect(()=>{
+  useEffect(() => {
     if (allBetRates) {
       setIObtes(allBetRates);
     }
     if (selectedMatch) {
       setCurrentMatch(selectedMatch);
     }
-    if(currentOdd){
-      setCurrentOdds(currentOdd)
+    if (currentOdd) {
+      setCurrentOdds(currentOdd);
     }
-   },[selectedMatch,allBetRates,currentOdd])
+  }, [selectedMatch, allBetRates, currentOdd]);
 
   const getSingleMatch = async (val) => {
     try {
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
       const newMatch = { ...data, bettings: data?.bettings?.reverse() };
       setCurrentMatch(newMatch);
-      dispatch(setSelectedMatch(newMatch))
+      dispatch(setSelectedMatch(newMatch));
       marketId = data?.marketId;
       const manualBookmaker = {
         matchId: data?.id,
@@ -502,13 +506,16 @@ const MatchScreen = () => {
 
             // Merge the filteredNewVal with the currentMatch bettings array
 
-            const newBody ={ ...currentMatch, bettings: [...data, ...filteredNewVal] };
-          
-            return newBody
+            const newBody = {
+              ...currentMatch,
+              bettings: [...data, ...filteredNewVal],
+            };
+
+            return newBody;
           }
 
-          const newBody={ ...currentMatch, bettings: newVal }; 
-          return newBody 
+          const newBody = { ...currentMatch, bettings: newVal };
+          return newBody;
         });
       }
     },
@@ -562,16 +569,16 @@ const MatchScreen = () => {
   // console.log(arrayObject,"arrayObject")
 
   const sessionData =
-  currentMatch?.bettings?.length > 0
-    && [...currentMatch?.bettings].filter(
-        (e) =>
-          e?.sessionBet && !e?.id && e?.betStatus === 0
-      )
-      useEffect(()=>{
-        if(sessionData.length>0)
-        {  setMatchLiveSession(sessionData)}
-      },[sessionData])
-      console.log(matchLiveSession,"sessionData")
+    currentMatch?.bettings?.length > 0 &&
+    [...currentMatch?.bettings].filter(
+      (e) => e?.sessionBet && !e?.id && e?.betStatus === 0
+    );
+  useEffect(() => {
+    if (sessionData.length > 0) {
+      setMatchLiveSession(sessionData);
+    }
+  }, [sessionData]);
+  console.log(matchLiveSession, "sessionData");
 
   return (
     <Background>
@@ -629,9 +636,7 @@ const MatchScreen = () => {
                       liveOnly={true}
                       stopAllHide={true}
                       hideResult={true}
-                      sessionData={
-                        matchLiveSession
-                      }
+                      sessionData={matchLiveSession}
                       setMatchLiveSession={setMatchLiveSession}
                       setLocalState={setLocalState}
                       setCurrentMatch={setCurrentMatch}
@@ -667,7 +672,6 @@ const MatchScreen = () => {
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
                     />
-
                   </Box>
                 </Box>
               )}

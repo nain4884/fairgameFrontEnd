@@ -434,15 +434,31 @@ const CustomHeader = ({}) => {
             // });
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id === value?.match_id) {
-                var updatedBettings = currentMatch?.bettings.map((betting) => {
-                  if (
+                const findBet = currentMatch?.bettings?.find(
+                  (betting) =>
                     betting?.selectionId === value?.selectionId ||
                     betting?.id === value?.id
-                  ) {
-                    return { ...betting, betStatus: value?.betStatus };
-                  }
-                  return betting; // Return the unchanged betting object if no match is found
-                });
+                );
+                const body = {
+                  ...findBet,
+                  betStatus: value?.betStatus,
+                };
+                var removedBet = currentMatch?.bettings?.filter(
+                  (betting) =>
+                    betting?.selectionId !== value?.selectionId &&
+                    betting?.id !== value?.id
+                );
+                var updatedBettings = [body, ...removedBet];
+
+                // var updatedBettings = currentMatch?.bettings.map((betting) => {
+                //   if (
+                //     betting?.selectionId === value?.selectionId ||
+                //     betting?.id === value?.id
+                //   ) {
+                //     return { ...betting, betStatus: value?.betStatus };
+                //   }
+                //   return betting; // Return the unchanged betting object if no match is found
+                // });
 
                 // If no match was found, push the value to the bettings array
                 if (
@@ -710,19 +726,38 @@ const CustomHeader = ({}) => {
               }
               if (prev.id === value?.match_id && value?.sessionBet) {
                 dispatch(setSessionProfitLoss(value?.profitLoss));
-                const updatedBettings = prev?.bettings?.map((betting) => {
-                  if (value?.betId === betting?.id && value?.sessionBet) {
-                    return {
-                      ...betting,
-                      betStatus: 2,
-                      betRestult: value.score,
-                      profitLoss: value?.profitLoss,
-                    };
-                  }
-                  return betting;
-                });
 
-                const newBody = { ...prev, bettings: updatedBettings };
+                const findBet = prev?.bettings?.find(
+                  (betting) =>
+                    betting?.id === value?.betId
+                );
+                const body = {
+                  ...findBet,
+                  betStatus: 2,
+                  betRestult: value.score,
+                  profitLoss: value?.profitLoss,
+                };
+                var removedBet = prev?.bettings?.filter(
+                  (betting) =>
+                    betting?.id !== value?.betId
+                );
+                var updatedBettings = [body, ...removedBet];
+                // const updatedBettings = prev?.bettings?.map((betting) => {
+                //   if (value?.betId === betting?.id && value?.sessionBet) {
+                //     return {
+                //       ...betting,
+                //       betStatus: 2,
+                //       betRestult: value.score,
+                //       profitLoss: value?.profitLoss,
+                //     };
+                //   }
+                //   return betting;
+                // });
+
+                const newBody = {
+                  ...prev,
+                  bettings: updatedBettings,
+                };
 
                 dispatch(setSelectedMatch(newBody));
                 return newBody;

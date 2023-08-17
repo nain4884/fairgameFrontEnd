@@ -15,6 +15,7 @@ import { formatNumber } from "../../../components/helper/helper";
 import { useDispatch } from "react-redux";
 import { setSelectedMatch } from "../../../newStore/reducers/expertMatchDetails";
 import CustomSessionResult from "../../../components/CustomSessionResult";
+import useOuterClick from "../../../components/helper/userOuterClick";
 
 const SessionMarketBox = ({
   index,
@@ -42,9 +43,11 @@ const SessionMarketBox = ({
     [0, 2].includes(newData?.betStatus) ? true : false
   );
 
-  const  [loader,setLoader]=useState(false)
+  const [loader, setLoader] = useState(false);
 
-
+  const innerRef1 = useOuterClick((ev) => {
+    setVisible(false);
+  });
   useEffect(() => {
     if (!stop) {
       setLive(true);
@@ -57,6 +60,7 @@ const SessionMarketBox = ({
     const bStatus = betStatusOrder[b?.betStatus] || 0;
     return aStatus - bStatus;
   }
+
   const handleLive = async (status) => {
     try {
       if (status === 1) {
@@ -65,7 +69,7 @@ const SessionMarketBox = ({
       } else {
         setLive(true);
       }
-      setLoader(true)
+      setLoader(true);
       const body = {
         match_id: currentMatch?.id,
         matchType: currentMatch?.gameType,
@@ -88,7 +92,7 @@ const SessionMarketBox = ({
       if (data?.data?.id) {
         if (liveOnly) {
           setLive(true);
-      
+
           // Sort and update the matchSessionData array with the new data
           setMatchSessionData((prev) => {
             const filteredArray = prev?.filter(
@@ -108,19 +112,18 @@ const SessionMarketBox = ({
             return prev;
           });
         }
-        setLoader(false)
-
+        setLoader(false);
       }
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
-      setLoader(false)
+      setLoader(false);
     }
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      {[0,2].includes(newData?.betStatus) && (
+    <div style={{ position: "relative" }} ref={innerRef1}>
+      {[0, 2].includes(newData?.betStatus) && (
         <Box
           sx={{
             margin: "1px",
@@ -175,7 +178,7 @@ const SessionMarketBox = ({
         >
           {newData?.betStatus === 0 && (
             <SmallBox
-            loading={loader}
+              loading={loader}
               hide={true}
               onClick={(e) => {
                 e.preventDefault();
@@ -210,7 +213,7 @@ const SessionMarketBox = ({
               textSize={"8px"}
               // width={"80px"}
               width={"33px"}
-            // title={"Live"}
+              // title={"Live"}
             />
           )}
           {!hideResult && (
@@ -249,7 +252,7 @@ const SessionMarketBox = ({
           </Box>
         )}
         {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
-          newData?.betStatus === 2 ? (
+        newData?.betStatus === 2 ? (
           <Box
             sx={{
               margin: "1px",
@@ -271,7 +274,7 @@ const SessionMarketBox = ({
                 textAlign: "center",
                 lineHeight: "11px",
                 color: "#FFF",
-                fontWeight: '400'
+                fontWeight: "400",
               }}
             >
               {newData?.betStatus === 2

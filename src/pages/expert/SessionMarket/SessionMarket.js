@@ -272,7 +272,7 @@ const SessionMarket = ({
               overflowY: "scroll",
             }}
           >
-                  {console.log("matchSessionData", matchSessionData)}
+            {console.log("matchSessionData", matchSessionData)}
             {matchSessionData?.length > 0 &&
               matchSessionData?.map((match, index) => (
                 <Box
