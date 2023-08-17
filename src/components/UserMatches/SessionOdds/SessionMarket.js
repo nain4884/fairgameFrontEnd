@@ -322,7 +322,7 @@ const SessionMarket = ({
                 </Box>
               </Box>
             )}
-
+{/* 
             {upcoming && matchSessionData?.length > 0 && (
               <Box
                 sx={{
@@ -337,7 +337,7 @@ const SessionMarket = ({
                   background: "rgba(0, 0, 0, .5)",
                 }}
               ></Box>
-            )}
+            )} */}
 
             <Box
               sx={{
@@ -362,7 +362,8 @@ const SessionMarket = ({
                       }}
                     >
                       <SessionMarketBox
-                        closeModal={sessionOffline?.includes(element.id)}
+                       upcoming={upcoming}
+                       closeModal={[0,2]?.includes(element?.betStatus) ? true :false}
                         typeOfBet={typeOfBet}
                         setFastBetLoading={setFastBetLoading}
                         data={element}

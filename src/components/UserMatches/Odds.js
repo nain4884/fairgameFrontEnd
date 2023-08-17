@@ -434,7 +434,7 @@ const Odds = ({
               </Box>
             )}
 
-            {upcoming && (
+            {upcoming && !showBox && (
               <Box
                 sx={{
                   position: "absolute",

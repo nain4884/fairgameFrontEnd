@@ -20,7 +20,8 @@ const SessionMarketBox = ({
   setFastAmount,
   closeModal,
   setFastBetLoading,
-  handleRateChange
+  handleRateChange,
+  upcoming
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -36,7 +37,20 @@ const SessionMarketBox = ({
         justifyContent: "flex-start",
       }}
     >
-      {data?.betStatus === 0 && (
+     {data?.betStatus === 0 && (
+        <Box
+          sx={{
+            margin: "1px",
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            right: 0,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 2,
+          }}
+        ></Box>
+      )}
+     {data?.betStatus === 1 &&  upcoming  && (
         <Box
           sx={{
             margin: "1px",
