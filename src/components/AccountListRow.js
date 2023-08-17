@@ -678,11 +678,12 @@ const AccountListRow = ({
               </Box>
             </Box>
 
-            {showCReport && (
+         
               <Box
                 sx={{
                   width: "100%",
                   display: "flex",
+                  visibility: !showCReport &&  "hidden",
                   // paddingX: "10px",
                   alignItems: "center",
                   height: "100%",
@@ -704,7 +705,7 @@ const AccountListRow = ({
                   prevElement={prevElement}
                 />
               </Box>
-            )}
+          
           </Box>
       
       )}
