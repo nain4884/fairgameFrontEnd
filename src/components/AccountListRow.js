@@ -686,7 +686,7 @@ const AccountListRow = ({
         </>
       )}
 
-      {showUserModal && element?.role !== "user" && (
+      {/* {showUserModal && element?.role !== "user" && (
         <Box
           sx={[
             {
@@ -746,7 +746,7 @@ const AccountListRow = ({
             />
           </Box>
         </Box>
-      )}
+      )} */}
 
       <ModalMUI
         open={showSubUsers?.value}
