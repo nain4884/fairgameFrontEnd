@@ -868,7 +868,6 @@ const CustomHeader = ({}) => {
                       teamB_suspend: data?.teamB_suspend,
                       teamC_suspend: data?.teamC_suspend,
                     },
-                    teamBackUnlock: false,
                   };
                   dispatch(setQuickBookmaker(newBody));
                   return newBody;

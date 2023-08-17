@@ -30,7 +30,6 @@ const AddSession = ({ add, match, Bid }) => {
 
   const {
     bookmakerTeamRates,
-
     quickBookmaker,
   } = useSelector((state) => state?.expertMatchDetails);
   // const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
