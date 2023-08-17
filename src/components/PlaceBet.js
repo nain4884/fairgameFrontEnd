@@ -153,10 +153,9 @@ const PlaceBet = ({
       marketType: marketType === "MATCH ODDS" ? "MATCH ODDS" : marketType,
       po: po,
     };
-    if (marketType == "Session") {
+    if (marketType == "session") {
       delete payload.betOn;
       delete payload.odds;
-
       payload.matchType = data?.matchType;
       payload.teamA_name = mainData?.teamA;
       payload.teamB_name = mainData?.teamB;
@@ -165,7 +164,7 @@ const PlaceBet = ({
       payload.bet_type = isSessionYes ? "yes" : "no";
       payload.bet_condition = data?.bet_condition;
       payload.rate_percent = data?.rate_percent;
-      payload.marketType = currentMatch?.bet_condition;
+      payload.marketType = marketType
       payload.odds = Number(selectedValue);
       payload.sessionBet = true;
       payload.selectionId = data?.selectionId;

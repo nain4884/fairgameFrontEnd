@@ -30,7 +30,7 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [matchOddsLive, setMatchOddsLive] = useState([]);
-  const { socketMicro, socket } = useContext(SocketContext)
+  const { socketMicro, socket } = useContext(SocketContext);
   const dispatch = useDispatch();
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -74,7 +74,7 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
   const upcoming =
     Number(timeLeft.days) === 0 &&
     Number(timeLeft.hours) === 0 &&
-    Number(timeLeft.minutes) <= 59;
+    Number(timeLeft.minutes) <= 30;
 
   // useEffect(() => {
   //   if (socket && socket.connected) {

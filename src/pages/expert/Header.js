@@ -775,8 +775,8 @@ const CustomHeader = ({}) => {
             setAllLiveEventSession((prev) => {
               const body = {
                 bettings: [],
-                bookmakers: value.bookmakerA,
-                gameType: value.match.gameType,
+                bookmakers: value?.match?.bookmakers,
+                gameType: value?.match?.gameType,
                 id: value.match.id,
                 teamA: value.match.teamA,
                 teamB: value.match.teamB,
