@@ -349,6 +349,7 @@ const IndiaPakLive = React.forwardRef(
       // alert(JSON.stringify(payload))
       try {
         let response = await axios.post(`/betting/addBetting`, payload);
+        dispatch(setSelectedSession(response?.data?.data));
         setBetId(response?.data?.data?.id);
         setCheckBetId(true);
         setIsCreateSession(false);

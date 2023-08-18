@@ -477,19 +477,7 @@ const CustomHeader = ({}) => {
               }
               return currentMatch;
             });
-            setTimeout(() => {
-              if (value?.id === sessionBetId) {
-                setLocalSelectedSession((i) => {
-                  
-                  const newBody = {
-                    ...i,
-                    ...value,
-                  };
-                  dispatch(setSelectedSession(newBody));
-                  return newBody;
-                });
-              }
-            }, 1000);
+           
 
             setAllLiveEventSession((prev) => {
               const updatedAllEventSession = prev?.map((match) => {
