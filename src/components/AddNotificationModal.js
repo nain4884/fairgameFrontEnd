@@ -67,6 +67,7 @@ const AddNotificationModal = ({
   //   );
   // };
   console.log(loadingDeleteBet, "loadingDeleteBet");
+
   return (
     <Modal
       open={visible}
@@ -117,7 +118,7 @@ const AddNotificationModal = ({
               {title ? title : "Add Notification"}
             </Typography>
             <img
-              onClick={onClick}
+              onClick={() => setVisible(false)}
               src={CancelDark}
               style={{ width: "25px", height: "25px", cursor: "pointer" }}
             />
@@ -144,13 +145,14 @@ const AddNotificationModal = ({
               InputProps={{
                 disableUnderline: true,
                 sx: {
+                  fontWeight: "700",
                   borderRadius: "5px",
                   paddingY: "5px",
                   paddingX: "1vw",
                   boxShadow: "0px 5px 15px #0000001A",
                   width: "100%",
                   height: "100%",
-                  fontSize: "10px",
+                  fontSize: "12px",
                   overflow: "hidden",
                 },
               }}
