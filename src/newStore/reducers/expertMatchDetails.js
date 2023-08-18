@@ -15,6 +15,7 @@ const initialState = {
   currentOdd: [],
   selectedBookmaker: null,
   sessionProfitLoss: null,
+  selectedSession: null,
   quickBookmaker: {
     teamA: {
       rate: null,
@@ -104,7 +105,9 @@ const expertMatchDetails = createSlice({
     setQuickBookmaker: (state, action) => {
       state.quickBookmaker = action.payload;
     },
-
+    setSelectedSession: (state, action) => {
+      state.selectedSession = action.payload;
+    },
     setSelectedBookmaker: (state, action) => {
       state.selectedBookmaker = action.payload;
     },
@@ -132,6 +135,7 @@ export const {
   setCurrentOdd,
   setQuickBookmaker,
   setSelectedBookmaker,
+  setSelectedSession,
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { GlobalStore } from "../../context/globalStore";
-import { setSelectedBookmaker, setSessionBetId } from "../../newStore/reducers/expertMatchDetails";
+import {
+  setSelectedBookmaker,
+  setSelectedSession,
+  setSessionBetId,
+} from "../../newStore/reducers/expertMatchDetails";
 import { setBookMakerBetRate } from "../../newStore/reducers/matchDetails";
 
 const MenutItemsComponent = ({
@@ -74,7 +78,10 @@ const MenutItemsComponent = ({
                 return (
                   <>
                     {event.bettings.length > 0 && (
-                      <Typography key={event.id} sx={{ fontSize: "12px", fontWeight: "600" }}>
+                      <Typography
+                        key={event.id}
+                        sx={{ fontSize: "12px", fontWeight: "600" }}
+                      >
                         {activeUser == "1"
                           ? "Current Live Session"
                           : "Current Live Bookmaker"}
@@ -83,12 +90,11 @@ const MenutItemsComponent = ({
                     {event.bettings.map((element) => {
                       return (
                         <Box
-                        key={element.id}
+                          key={element.id}
                           onClick={(e) => {
-                          
-                         
                             if (activeUser == "1") {
                               dispatch(setSessionBetId(element?.id));
+
                               navigate("/expert/live", {
                                 state: {
                                   createSession: false,
@@ -123,6 +129,7 @@ const MenutItemsComponent = ({
           <Box
             onClick={(e) => {
               dispatch(setSessionBetId(""));
+              dispatch(setSelectedSession(null));
               navigate("/expert/live", {
                 state: {
                   createSession: true,
@@ -144,7 +151,7 @@ const MenutItemsComponent = ({
           </Box>
           <Box
             // onClick={(e) => {
-              // dispatch(setBookMakerBetRate([]))
+            // dispatch(setBookMakerBetRate([]))
             //   navigate("/expert/add_book_maker", {
             //     state: { createSession: true, match: x },
             //   });
@@ -184,9 +191,13 @@ const MenutItemsComponent = ({
                         //   handleClose();
                         // }}
                         onClick={(e) => {
-                          sessionStorage.setItem("matchId",x.id)
-                          const body={id:element?.id,betId:element?.bet_id,marketType:element?.marketType}
-                          dispatch(setSelectedBookmaker(body))
+                          sessionStorage.setItem("matchId", x.id);
+                          const body = {
+                            id: element?.id,
+                            betId: element?.bet_id,
+                            marketType: element?.marketType,
+                          };
+                          dispatch(setSelectedBookmaker(body));
                           navigate("/expert/add_book_maker", {
                             state: { id: element.id, match: x },
                           });
@@ -195,29 +206,26 @@ const MenutItemsComponent = ({
                         sx={{ marginLeft: "10px", marginTop: "3px" }}
                       >
                         <Typography
-                            sx={{
-                              fontSize: "12px",
-                              marginTop: "3px",
-                              cursor: "pointer",
-                            }}
-                          >
-                            {element.marketName}
-                          </Typography>
-                        </Box>
-                      );
-                    })}
-                  </>
-                );
-              }
-            })}
-          </Box>
+                          sx={{
+                            fontSize: "12px",
+                            marginTop: "3px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {element.marketName}
+                        </Typography>
+                      </Box>
+                    );
+                  })}
+                </>
+              );
+            }
+          })}
+        </Box>
         // </Box>
       )}
     </>
   );
 };
 
-
-
-
-export default MenutItemsComponent
+export default MenutItemsComponent;

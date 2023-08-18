@@ -37,6 +37,7 @@ import {
   setSessionProfitLoss,
   setBookmakerTeamRates,
   setQuickBookmaker,
+  setSelectedSession,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -90,6 +91,7 @@ const CustomHeader = ({}) => {
     bookmakerTeamRates,
     selectedBookmaker,
     quickBookmaker,
+    selectedSession,
   } = useSelector((state) => state?.expertMatchDetails);
   const { userAllMatches, selectedMatch, bookMakerBetRates } = useSelector(
     (state) => state?.matchDetails
@@ -120,6 +122,7 @@ const CustomHeader = ({}) => {
   const [localBookMakerRates, setLocalBookMakerRates] = useState([]);
 
   const [localSelectedBookmaker, setLocalSelectedBookmaker] = useState(null);
+  const [localSelectedSession, setLocalSelectedSession] = useState(null);
 
   const [localQuickBookmaker, setLocalQuickBookmaker] =
     useState(quickBookmaker);
@@ -172,6 +175,9 @@ const CustomHeader = ({}) => {
 
     if (selectedBookmaker) {
       setLocalSelectedBookmaker(selectedBookmaker);
+    }
+    if (selectedSession) {
+      setLocalSelectedSession(selectedSession);
     }
   }, [
     allBetRates,
@@ -725,12 +731,8 @@ const CustomHeader = ({}) => {
                 navigate("/expert/match");
               }
               if (prev.id === value?.match_id && value?.sessionBet) {
-             
-              
-                
                 const findBet = prev?.bettings?.find(
-                  (betting) =>
-                    betting?.id === value?.betId
+                  (betting) => betting?.id === value?.betId
                 );
                 const body = {
                   ...findBet,
@@ -739,8 +741,7 @@ const CustomHeader = ({}) => {
                   profitLoss: value?.profitLoss,
                 };
                 var removedBet = prev?.bettings?.filter(
-                  (betting) =>
-                    betting?.id !== value?.betId
+                  (betting) => betting?.id !== value?.betId
                 );
                 var updatedBettings = [body, ...removedBet];
                 // const updatedBettings = prev?.bettings?.map((betting) => {
@@ -766,11 +767,19 @@ const CustomHeader = ({}) => {
 
               return prev;
             });
-           
+
             setAllLiveEventSession((prev) => {
               var updatedPrev = prev?.map((item) => {
                 if (item.id === value?.match_id && value?.sessionBet) {
                   dispatch(setSessionProfitLoss(value?.profitLoss));
+                  setLocalSelectedSession((i) => {
+                    const newBody = {
+                      ...i,
+                      betStatus: 2,
+                    };
+                    dispatch(setSelectedSession(newBody));
+                    return newBody;
+                  });
                   const updatedBettings = item.bettings.filter(
                     (betting) => betting.id !== value?.betId
                   );

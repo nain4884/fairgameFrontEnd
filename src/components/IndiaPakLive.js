@@ -27,6 +27,7 @@ import {
   setSessionBetId,
   setAllEventSession,
   setSessionProfitLoss,
+  setSelectedSession,
 } from "../newStore/reducers/expertMatchDetails";
 import { removeCurrentUser } from "../newStore/reducers/currentUser";
 import { logout } from "../newStore/reducers/auth";
@@ -58,6 +59,7 @@ const IndiaPakLive = React.forwardRef(
       allEventSession,
       currentOdd,
       sessionProfitLoss,
+      selectedSession,
     } = useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
@@ -114,7 +116,19 @@ const IndiaPakLive = React.forwardRef(
       if (currentOdd) {
         setCurrentOdds(currentOdd);
       }
-    }, [sessionProfitLoss, currentOdd, match?.id]);
+      if (
+        selectedSession?.betStatus === 2 &&
+        sessionBetId === selectedSession?.id
+      ) {
+        setIsDisable(true);
+      }
+    }, [
+      sessionProfitLoss,
+      sessionBetId,
+      currentOdd,
+      match?.id,
+      selectedSession,
+    ]);
 
     // useEffect(() => {
     //   if (socket && socket.connected) {
@@ -353,11 +367,20 @@ const IndiaPakLive = React.forwardRef(
 
     async function getManuallBookMaker(id) {
       try {
+        dispatch(setSelectedSession(null));
         let response = await axios.get(`/betting/getById/${id}`);
         let data = response?.data?.data[0];
+
         let [firstValue, secondValue] = data.rate_percent
           ? data.rate_percent.split("-")
           : "";
+        dispatch(setSelectedSession(data));
+        if (data?.betStatus === 2) {
+          setIsDisable(true);
+        } else {
+          setIsDisable(false);
+        }
+
         setDetail({
           ...Detail,
           no_rate: data.no_rate,
@@ -636,6 +659,7 @@ const IndiaPakLive = React.forwardRef(
                               isNoResult: true,
                             }}
                             onClick={() => {
+                              setIsDisable(true);
                               setVisible2(false);
                               getSessionResult(match?.id);
                             }}
