@@ -104,7 +104,7 @@ const AddAccount = () => {
 
   const matchComissionTypes = ["0.00", "Total Loss", "Entry Wise"];
 
-  console.log("Setting", Detail);
+  console.log("Setting", Detail, error);
   const [profile, setProfile] = useState(currentUser);
   const types = [
     { role: "fairGameAdmin", val: "Fairgame Admin", level: 1 },
@@ -378,16 +378,16 @@ const AddAccount = () => {
     setTypeForAccountType();
   }, [userWallet?.role?.roleName, Detail, error, showSuccessModal]);
 
-  async function checkUserName({ val }) {
+  async function checkUserName({ val2 }) {
     try {
       let body = {
-        userName: val,
+        userName: val2,
       };
       const { data } = await axios.post(
         `fair-game-wallet/checkUserExist`,
         body
       );
-      if (data.data.exist === true) {
+      if (data.data.exist) {
         setError({
           ...error,
           1: {
@@ -396,6 +396,15 @@ const AddAccount = () => {
           },
         });
         setUserAlredyExist("User Already Exist With This Name");
+      } else {
+        setError({
+          ...error,
+          1: {
+            ...error[1],
+            val: false,
+          },
+        });
+        setUserAlredyExist("");
       }
     } catch (e) {
       console.log(e);
@@ -456,7 +465,19 @@ const AddAccount = () => {
       });
     }
   }
-
+  function CheckCreditRefernce({ place, val, val2, setError, error }) {
+    const regex1 = /^[0-9]+$/; // Only allows whole numbers (no decimal)
+    if (!regex1.test(val2) && place === 8) {
+      setError({
+        ...error,
+        [place]: {
+          ...Detail[place],
+          val: "Only allows whole numbers (no decimal)",
+        },
+      });
+      return false;
+    }
+  }
   useEffect(() => {
     if (
       [
@@ -574,10 +595,15 @@ const AddAccount = () => {
                     title={"Username*"}
                     setDetail={setDetail}
                     onKeyDown={(event) => {
-                      if (event.code === "Space") {
+                      if (
+                        event.code === "Space" ||
+                        (event.target.selectionStart === 0 &&
+                          !/[a-zA-Z]/.test(event.key))
+                      ) {
                         event.preventDefault();
                       } else {
-                        const regex = /^[a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
+                        const regex = /^[a-zA-Z0-9]*$/;
+
                         if (!regex.test(event.key)) {
                           event.preventDefault();
                         }
@@ -615,6 +641,11 @@ const AddAccount = () => {
                     setDetail={setDetail}
                     Detail={Detail}
                     required={true}
+                    onKeyDown={(event) => {
+                      if (event.code === "Space") {
+                        event.preventDefault();
+                      }
+                    }}
                     setError={setError}
                     error={error}
                     place={2}
@@ -630,6 +661,11 @@ const AddAccount = () => {
                 {/** handleError={handleError} checkMesasge={true} */}
                 <div style={{ order: 5 }}>
                   <Input
+                    onKeyDown={(event) => {
+                      if (event.code === "Space") {
+                        event.preventDefault();
+                      }
+                    }}
                     containerStyle={containerStyles}
                     img={EyeIcon}
                     img1={EyeSlash}
@@ -777,10 +813,19 @@ const AddAccount = () => {
                     setError={setError}
                     error={error}
                     place={8}
+                    onKeyDown={(event) => {
+                      if (
+                        event.code === "Space" ||
+                        (!(event.key >= "0" && event.key <= "9") &&
+                          event.key !== "Backspace")
+                      ) {
+                        event.preventDefault();
+                      }
+                    }}
                     type={"Number"}
                   />
-                  {error[9]?.val && (
-                    <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                  {error[8]?.val && (
+                    <p style={{ color: "#fa1e1e" }}>{error[8]?.val}</p>
                   )}
                 </div>
               </Box>
@@ -1106,6 +1151,15 @@ const AddAccount = () => {
                     inputStyle={imputStyle}
                     inputContainerStyle={{ ...inputContainerStyle }}
                     title={"Admin Transaction Password*"}
+                    onKeyDown={(event) => {
+                      if (
+                        event.code === "Space" ||
+                        (!(event.key >= "0" && event.key <= "9") &&
+                          event.key !== "Backspace")
+                      ) {
+                        event.preventDefault();
+                      }
+                    }}
                     placeholder={"Ex : 12345"}
                     required={true}
                     setDetail={setDetail}
@@ -1115,7 +1169,7 @@ const AddAccount = () => {
                     place={14}
                     onFocusOut={handleTransPass}
                     toFoucs={true}
-                    onKeyDown={handleEnterKey}
+                    // onKeyDown={handleEnterKey}
                     // okButtonRef={okButtonRef}
                     // onKeyDown={(e) => handleEnterKey(e, okButtonRef)}
                   />

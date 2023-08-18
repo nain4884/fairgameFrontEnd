@@ -8,7 +8,10 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState, useRef } from "react";
-import { onChangeKeyCheck, onChangeKeyCheckNumber } from "./helper/PassKeyCheck";
+import {
+  onChangeKeyCheck,
+  onChangeKeyCheckNumber,
+} from "./helper/PassKeyCheck";
 import { toast } from "react-toastify";
 import { debounce } from "lodash";
 
@@ -45,7 +48,7 @@ const Input = ({
   setDownlinePar,
   condition,
   okButtonRef,
-  autoFocus
+  autoFocus,
 }) => {
   const formRef1 = useRef(null);
   const theme = useTheme();
@@ -211,8 +214,8 @@ const Input = ({
                 showPass && String(title).toLowerCase().includes("password")
                   ? "password"
                   : type === "Number"
-                    ? "number"
-                    : "text",
+                  ? "number"
+                  : "text",
               sx: [
                 { fontSize: { laptop: "12px", mobile: "14px" } },
                 inputStyle,
@@ -228,22 +231,22 @@ const Input = ({
             onChange={(e) => {
               String(title).toLowerCase().includes("password")
                 ? setDetail({
-                  ...Detail,
-                  [place]: {
-                    ...Detail[place],
-                    val: autoMaticFillValue,
-                  },
-                })
+                    ...Detail,
+                    [place]: {
+                      ...Detail[place],
+                      val: autoMaticFillValue,
+                    },
+                  })
                 : setDetail({
-                  ...Detail,
-                  [place]: {
-                    ...Detail[place],
-                    val:
-                      type === "Number"
-                        ? Number(autoMaticFillValue)
-                        : autoMaticFillValue,
-                  },
-                });
+                    ...Detail,
+                    [place]: {
+                      ...Detail[place],
+                      val:
+                        type === "Number"
+                          ? Number(autoMaticFillValue)
+                          : autoMaticFillValue,
+                    },
+                  });
               setError({
                 ...error,
                 [place]: {
@@ -259,14 +262,16 @@ const Input = ({
           />
         ) : (
           <TextField
-             autoFocus={autoFocus}
+            autoFocus={autoFocus}
             variant="standard"
             placeholder={placeholder}
             value={value}
+            type={type ==="Number" ? "number" :"text"}
             // onKeyDown={onKeyDown}
             required={required}
             InputProps={{
-              max: 100,
+              min:0,
+            
               disabled: disabled,
               placeholder: placeholder,
               disableUnderline: true,
@@ -277,8 +282,8 @@ const Input = ({
                 showPass && String(title).toLowerCase().includes("password")
                   ? "password"
                   : type === "Number"
-                    ? "number"
-                    : "text",
+                  ? "number"
+                  : "text",
               sx: [
                 { fontSize: { laptop: "12px", mobile: "14px" } },
                 inputStyle,
@@ -317,15 +322,15 @@ const Input = ({
 
               String(title).toLowerCase().includes("password")
                 ? setDetail({
-                  ...Detail,
-                  [place]: {
-                    ...Detail[place],
-                    val: e.target.value,
-                  },
-                })
+                    ...Detail,
+                    [place]: {
+                      ...Detail[place],
+                      val: e.target.value,
+                    },
+                  })
                 : title === "My Partnership"
-                  ? handleMypartnershipChange(e, place)
-                  : setDetail({
+                ? handleMypartnershipChange(e, place)
+                : setDetail({
                     ...Detail,
                     [place]: {
                       ...Detail[place],
@@ -334,32 +339,36 @@ const Input = ({
                         type === "Number"
                           ? title === "Upline Partnership"
                             ? Number(e.target.value) < 100 &&
-                            Number(e.target.value)
+                              Number(e.target.value)
                             : Number(e.target.value)
                           : e.target.value === "" && place === 11
-                            ? null
-                            : e.target.value,
+                          ? null
+                          : e.target.value,
                     },
                   });
               String(title).toLowerCase().includes("password")
                 ? setError({
-                  ...error,
-                  [place]: {
-                    ...Detail[place],
-                    val:
-                      place === 14 ? "" : condition ? onChangeKeyCheckNumber(e?.target.value) : onChangeKeyCheck(e?.target.value),
-                  },
-                })
+                    ...error,
+                    [place]: {
+                      ...Detail[place],
+                      val:
+                        place === 14
+                          ? ""
+                          : condition
+                          ? onChangeKeyCheckNumber(e?.target.value)
+                          : onChangeKeyCheck(e?.target.value),
+                    },
+                  })
                 : setError({
-                  ...error,
-                  [place]: {
-                    ...Detail[place],
-                    val:
-                      type === "Number"
-                        ? Detail[place].val === 0
-                        : Detail[place].val === "",
-                  },
-                });
+                    ...error,
+                    [place]: {
+                      ...Detail[place],
+                      val:
+                        type === "Number"
+                          ? Detail[place].val === 0
+                          : Detail[place].val === "",
+                    },
+                  });
               // checkMesasge && errorHandle(Detail[place].val)
             }}
             onBlur={(e) => {
