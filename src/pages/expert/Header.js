@@ -765,14 +765,17 @@ const CustomHeader = ({}) => {
               var updatedPrev = prev?.map((item) => {
                 if (item.id === value?.match_id && value?.sessionBet) {
                   dispatch(setSessionProfitLoss(value?.profitLoss));
-                  setLocalSelectedSession((i) => {
-                    const newBody = {
-                      ...i,
-                      betStatus: 2,
-                    };
-                    dispatch(setSelectedSession(newBody));
-                    return newBody;
-                  });
+                  if (sessionBetId === value?.betId) {
+                    setLocalSelectedSession((i) => {
+                      const newBody = {
+                        ...i,
+                        betStatus: 2,
+                      };
+                      dispatch(setSelectedSession(newBody));
+                      return newBody;
+                    });
+                  }
+
                   const updatedBettings = item.bettings.filter(
                     (betting) => betting.id !== value?.betId
                   );
@@ -973,7 +976,7 @@ const CustomHeader = ({}) => {
         }
       };
     }
-  }, [socket, betId, match_id, selectedBookmaker]);
+  }, [socket, betId, match_id, selectedBookmaker, sessionBetId]);
 
   useEffect(() => {
     if (activeUsers !== 0) {
