@@ -769,7 +769,6 @@ const CustomHeader = ({}) => {
               var updatedPrev = prev?.map((item) => {
                 if (item.id === value?.match_id && value?.sessionBet) {
                   dispatch(setSessionProfitLoss(value?.profitLoss));
-                  alert(`${sessionBetId} ++++  ${value?.betId}`);
                   if (sessionBetId === value?.betId) {
                     setLocalSelectedSession((i) => {
                       const newBody = {
