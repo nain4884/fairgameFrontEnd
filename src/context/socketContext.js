@@ -218,8 +218,19 @@ export const SocketProvider = ({ children }) => {
       const data = event;
       try {
         setCurrentMatch((currentMatch) => {
-          //           // if (currentMatch?.id === matchId) {
           if (currentMatch?.id === data?.matchId) {
+            const idToNewBetStatusMap = data?.quick_bookmaker?.reduce(
+              (map, item) => {
+                map[item.id] = item.betStatus;
+                return map;
+              },
+              {}
+            );
+
+            const updatedArray1 = currentMatch?.bookmakers?.map((item) => ({
+              ...item,
+              betStatus: idToNewBetStatusMap[item?.id],
+            }));
             const newBody = {
               ...currentMatch,
               apiBookMakerActive: data?.apiBookMakerActive,
@@ -227,6 +238,7 @@ export const SocketProvider = ({ children }) => {
               apiSessionActive: data?.apiSessionActive,
               manualBookMakerActive: data?.manualBookMakerActive,
               manualSessionActive: data?.manualSessionActive,
+              bookmakers: updatedArray1,
             };
             dispatch(setSelectedMatch(newBody));
             return newBody;
