@@ -57,7 +57,7 @@ const ShowComponent = ({
         >
           <Input
             fullWidth
-            inputProps={ { min: 0  }}
+            inputProps={{ min: 0 }}
             disabled={disable}
             placeholder={`${value}`}
             value={DetailError.Detail[place]?.val}
@@ -137,7 +137,9 @@ const ShowComponent = ({
             valueContainerStyle,
           ]}
         >
-          Upload
+          { ![undefined,""].includes(DetailError.Detail[place].val)
+            ? DetailError.Detail[place].val?.name
+            : "Upload"}
           <input
             hidden
             accept="image/*"
