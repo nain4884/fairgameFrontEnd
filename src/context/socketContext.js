@@ -1035,7 +1035,7 @@ export const SocketProvider = ({ children }) => {
       const data = event;
       try {
         setLocalAllMatches((prev) => {
-          const newBody = [...prev, data.match];
+          const newBody = [...prev, data];
           dispatch(setUserAllMatches(newBody));
           return newBody;
         });

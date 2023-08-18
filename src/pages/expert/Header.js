@@ -821,13 +821,13 @@ const CustomHeader = ({}) => {
             setAllLiveEventSession((prev) => {
               const body = {
                 bettings: [],
-                bookmakers: value?.match?.bookmakers,
-                gameType: value?.match?.gameType,
-                id: value.match.id,
-                teamA: value.match.teamA,
-                teamB: value.match.teamB,
-                teamC: value.match.teamC,
-                title: value.match.title,
+                bookmakers: value?.bookmakers,
+                gameType: value?.gameType,
+                id: value?.id,
+                teamA: value?.teamA,
+                teamB: value?.teamB,
+                teamC: value?.teamC,
+                title: value?.title,
               };
               const newBody = [...prev, body];
               dispatch(setAllEventSession(newBody));
