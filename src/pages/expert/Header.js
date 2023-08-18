@@ -476,6 +476,14 @@ const CustomHeader = ({}) => {
               }
               return currentMatch;
             });
+            setLocalSelectedSession((i) => {
+              const newBody = {
+                ...i,
+                ...value,
+              };
+              dispatch(setSelectedSession(newBody));
+              return newBody;
+            });
 
             setAllLiveEventSession((prev) => {
               const updatedAllEventSession = prev?.map((match) => {
@@ -488,11 +496,13 @@ const CustomHeader = ({}) => {
                     bet_condition: value.bet_condition,
                   };
                   const newBettings = [...match.bettings, betObj];
+
                   return {
                     ...match,
                     bettings: newBettings,
                   };
                 }
+
                 return match;
               });
 
@@ -765,6 +775,7 @@ const CustomHeader = ({}) => {
               var updatedPrev = prev?.map((item) => {
                 if (item.id === value?.match_id && value?.sessionBet) {
                   dispatch(setSessionProfitLoss(value?.profitLoss));
+                  alert(`${sessionBetId} ++++  ${value?.betId}`);
                   if (sessionBetId === value?.betId) {
                     setLocalSelectedSession((i) => {
                       const newBody = {
