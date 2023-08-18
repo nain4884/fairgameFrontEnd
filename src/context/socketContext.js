@@ -730,16 +730,16 @@ export const SocketProvider = ({ children }) => {
                   ) {
                     return {
                       ...bookmaker,
-                      teamA_Back: data?.teamA_Back ? data?.teamA_Back : "",
-                      teamA_lay: data?.teamA_lay ? data?.teamA_lay : "",
+                      teamA_Back: data?.teamA_Back ?? "",
+                      teamA_lay: data?.teamA_lay ?? "",
                       teamA_suspend:
                         data?.teamA_suspend == false ? null : "suspended",
-                      teamB_Back: data?.teamB_Back ? data?.teamB_Back : "",
-                      teamB_lay: data?.teamB_lay ? data?.teamB_lay : "",
+                      teamB_Back: data?.teamB_Back ?? "",
+                      teamB_lay: data?.teamB_lay ?? "",
                       teamB_suspend:
                         data?.teamB_suspend == false ? null : "suspended",
-                      teamC_Back: data?.teamC_Back ? data?.teamC_Back : "",
-                      teamC_lay: data?.teamC_lay ? data?.teamC_lay : "",
+                      teamC_Back: data?.teamC_Back ?? "",
+                      teamC_lay: data?.teamC_lay ?? "",
                       teamC_suspend:
                         data?.teamC_suspend == false ? null : "suspended",
                       teamA_Ball: null,

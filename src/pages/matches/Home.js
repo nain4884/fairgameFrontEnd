@@ -134,7 +134,13 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       setLocalSessionExposure(sessionExposure);
     }
     if (selectedMatch) {
-      setCurrentMatch(selectedMatch);
+      setCurrentMatch((prev) => {
+        const updatedMatch = { ...prev, ...selectedMatch };
+        if (JSON.stringify(updatedMatch) !== JSON.stringify(prev)) {
+          return updatedMatch;
+        }
+        return prev;
+      });
     }
 
     if (manualBookmaker) {
@@ -1104,16 +1110,28 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
       const allrates = data?.data?.data?.filter((b) =>
-        ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER","QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"].includes(b?.marketType)
+        [
+          "MATCH ODDS",
+          "BOOKMAKER",
+          "MANUAL BOOKMAKER",
+          "QuickBookmaker0",
+          "QuickBookmaker1",
+          "QuickBookmaker2",
+        ].includes(b?.marketType)
       );
       setIObtes(allrates);
 
       dispatch(setAllBetRate(allrates));
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER" ,"QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"].includes(
-            b?.marketType
-          )
+          ![
+            "MATCH ODDS",
+            "BOOKMAKER",
+            "MANUAL BOOKMAKER",
+            "QuickBookmaker0",
+            "QuickBookmaker1",
+            "QuickBookmaker2",
+          ].includes(b?.marketType)
       );
       setSessionBets(bets);
       dispatch(setAllSessionBets(bets));
@@ -1358,7 +1376,9 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                           "MATCH ODDS",
                           "BOOKMAKER",
                           "MANUAL BOOKMAKER",
-                          "QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"
+                          "QuickBookmaker0",
+                          "QuickBookmaker1",
+                          "QuickBookmaker2",
                         ]?.includes(v.marketType)
                       )}
                       count={
@@ -1367,7 +1387,9 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                             "MATCH ODDS",
                             "BOOKMAKER",
                             "MANUAL BOOKMAKER",
-                            "QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"
+                            "QuickBookmaker0",
+                            "QuickBookmaker1",
+                            "QuickBookmaker2",
                           ]?.includes(v.marketType)
                         ).length
                       }
@@ -1420,15 +1442,25 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
                 <AllRateSeperate
                   allBetsData={IObets?.filter((v) =>
-                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER","QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"]?.includes(
-                      v.marketType
-                    )
+                    [
+                      "MATCH ODDS",
+                      "BOOKMAKER",
+                      "MANUAL BOOKMAKER",
+                      "QuickBookmaker0",
+                      "QuickBookmaker1",
+                      "QuickBookmaker2",
+                    ]?.includes(v.marketType)
                   )}
                   count={
                     IObets?.filter((v) =>
-                      ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER","QuickBookmaker0","QuickBookmaker1","QuickBookmaker2"]?.includes(
-                        v.marketType
-                      )
+                      [
+                        "MATCH ODDS",
+                        "BOOKMAKER",
+                        "MANUAL BOOKMAKER",
+                        "QuickBookmaker0",
+                        "QuickBookmaker1",
+                        "QuickBookmaker2",
+                      ]?.includes(v.marketType)
                     ).length
                   }
                   mark
