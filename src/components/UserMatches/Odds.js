@@ -434,7 +434,7 @@ const Odds = ({
               </Box>
             )}
 
-            {upcoming && !showBox && (
+            {(upcoming || showBox) && (
               <Box
                 sx={{
                   position: "absolute",
@@ -449,6 +449,7 @@ const Odds = ({
                 }}
               ></Box>
             )}
+           
             {session === "manualBookMaker" ? (
               <>
                 <ManualBoxComponent

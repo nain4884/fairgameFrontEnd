@@ -109,7 +109,7 @@ const BoxComponent = ({
         </Box>
         <MoneyBox color={color} rates={rate} />
       </Box>
-      {showBox && (
+      {/* {showBox && (
         <Box
           sx={{
             background: "rgba(0,0,0,0.5)",
@@ -123,7 +123,7 @@ const BoxComponent = ({
             display: "flex",
           }}
         ></Box>
-      )}
+      )} */}
       {!["ACTIVE", "", undefined, null].includes(status) ||
         newData?.bettings?.length === 0 ||
         livestatus ? (
