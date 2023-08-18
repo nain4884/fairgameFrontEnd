@@ -254,7 +254,7 @@ const ProfitLossComponent = ({
                 right: 5,
               }}
             >
-              (04-11-2022)
+            ({moment(item?.matchDate).format("DD-MM-YYYY")})
             </Typography>
 
             <Box
@@ -270,9 +270,14 @@ const ProfitLossComponent = ({
                   fontSize: { mobile: "10px", laptop: "15px" },
                   color: "white",
                   fontWeight: "600",
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  lineClamp: 2,
                 }}
               >
-                {item.eventName}
+                {item?.eventName}
               </Typography>
               <Typography
                 sx={{
@@ -282,7 +287,7 @@ const ProfitLossComponent = ({
                   fontWeight: "500",
                 }}
               >
-                ({moment(item.matchDate).format("DD-MM-YYYY")})
+                ({moment(item?.matchDate).format("DD-MM-YYYY")})
               </Typography>
             </Box>
             <StyledImage
