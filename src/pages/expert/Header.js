@@ -478,8 +478,9 @@ const CustomHeader = ({}) => {
               return currentMatch;
             });
             setTimeout(() => {
-              if (value?.id === betId) {
+              if (value?.id === sessionBetId) {
                 setLocalSelectedSession((i) => {
+                  
                   const newBody = {
                     ...i,
                     ...value,
