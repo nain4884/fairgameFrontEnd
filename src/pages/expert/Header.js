@@ -65,6 +65,7 @@ import IdleTimer from "../../components/IdleTimer";
 import CustomLoader from "../../components/helper/CustomLoader";
 import ModalMUI from "@mui/material/Modal";
 import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
+import { customSort } from "../../components/helper/util";
 
 var match_id;
 const CustomHeader = ({}) => {
@@ -219,14 +220,6 @@ const CustomHeader = ({}) => {
     .catch((error) => {
       console.error("Error occurred while accessing sessionStorage:", error);
     });
-
-  function customSort(a, b) {
-    // betStatus 1 should come before betStatus 2
-    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
-    const aStatus = betStatusOrder[a?.betStatus] || 0;
-    const bStatus = betStatusOrder[b?.betStatus] || 0;
-    return aStatus - bStatus;
-  }
 
   useEffect(() => {
     if (socket && socket.connected) {

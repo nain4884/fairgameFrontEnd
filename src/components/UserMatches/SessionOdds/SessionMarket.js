@@ -14,6 +14,7 @@ import { currencyFormatter, formatNumber } from "../../helper/helper";
 import Lottie from "lottie-react";
 import { LockIcon } from "../../../admin/assets";
 import SmallCustomLoader from "../../helper/SmallCustomLoader";
+import { customSort } from "../../helper/util";
 const SessionMarket = ({
   data,
   newData,
@@ -41,14 +42,6 @@ const SessionMarket = ({
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [fastBetLoading, setFastBetLoading] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-
-  function customSort(a, b) {
-    // betStatus 1 should come before betStatus 2
-    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
-    const aStatus = betStatusOrder[a?.betStatus] || 0;
-    const bStatus = betStatusOrder[b?.betStatus] || 0;
-    return aStatus - bStatus;
-  }
 
   const matchSessionData = newData?.bettings?.filter((element) => {
     if (newData.apiSessionActive && title === "Session Market") {

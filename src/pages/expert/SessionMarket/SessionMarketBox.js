@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { setSelectedMatch } from "../../../newStore/reducers/expertMatchDetails";
 import CustomSessionResult from "../../../components/CustomSessionResult";
 import useOuterClick from "../../../components/helper/userOuterClick";
+import { customSort } from "../../../components/helper/util";
 
 const SessionMarketBox = ({
   index,
@@ -53,13 +54,6 @@ const SessionMarketBox = ({
       setLive(true);
     }
   }, [stop]);
-
-  function customSort(a, b) {
-    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
-    const aStatus = betStatusOrder[a?.betStatus] || 0;
-    const bStatus = betStatusOrder[b?.betStatus] || 0;
-    return aStatus - bStatus;
-  }
 
   const handleLive = async (status) => {
     try {

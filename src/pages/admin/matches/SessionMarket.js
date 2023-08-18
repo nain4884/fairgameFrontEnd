@@ -9,6 +9,7 @@ import RunsBox from "../../expert/RunsBox";
 import UnlockComponent from "../../../components/UnlockComponent";
 import { LOCKED, LOCKOPEN } from "../../../admin/assets";
 import { ARROWUP } from "../../../assets";
+import { customSort } from "../../../components/helper/util";
 
 const SessionMarket = ({
   currentMatch,
@@ -47,7 +48,7 @@ const SessionMarket = ({
     }
     return total;
   }, 0);
-
+  
   useEffect(() => {
     if (currentMatch?.bettings?.length > 0) {
       const sessionData =
@@ -67,7 +68,7 @@ const SessionMarket = ({
           )
           : 0;
 
-      setMatchSessionData(sessionData.reverse());
+      setMatchSessionData(sessionData.sort(customSort));
     }
   }, [currentMatch]);
 
