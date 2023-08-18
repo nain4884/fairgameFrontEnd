@@ -104,7 +104,7 @@ const AddAccount = () => {
 
   const matchComissionTypes = ["0.00", "Total Loss", "Entry Wise"];
 
-  console.log("Setting", error);
+  console.log("Setting", Detail);
   const [profile, setProfile] = useState(currentUser);
   const types = [
     { role: "fairGameAdmin", val: "Fairgame Admin", level: 1 },
@@ -157,9 +157,9 @@ const AddAccount = () => {
       roleName === "fairGameWallet"
         ? types
         : types?.filter((type) => {
-          const roleLevel = types?.find((t) => t?.role === roleName)?.level;
-          return roleLevel && type?.level > roleLevel;
-        });
+            const roleLevel = types?.find((t) => t?.role === roleName)?.level;
+            return roleLevel && type?.level > roleLevel;
+          });
 
     if (roleName === "fairGameAdmin") {
       typo.push({ role: "expert", val: "Expert", level: 6 });
@@ -172,13 +172,15 @@ const AddAccount = () => {
     if (error[11].val !== "") {
       toast.error(error[11].val);
       return false;
-    } if (error[1].val === "Only a-z, A-Z,and 0-9 characters allowed!. eg. fairGame00" || error[1].val === true) {
+    }
+    if (
+      error[1].val ===
+        "Only a-z, A-Z,and 0-9 characters allowed!. eg. fairGame00" ||
+      error[1].val === true
+    ) {
       toast.error("Field required");
       return false;
-    }
-
-    else {
-
+    } else {
       let payload = {
         userName: "",
         password: "",
@@ -207,7 +209,6 @@ const AddAccount = () => {
             Detail[9].val.split(" ").join("").toLowerCase()
           );
         }
-
 
         if (Detail[14].val === "") {
           setError({
@@ -457,7 +458,36 @@ const AddAccount = () => {
   }
 
   useEffect(() => {
-    if (Detail[9].val !== "expert") {
+    if (
+      [
+        "user",
+        "fairGameAdmin",
+        "admin",
+        "superAdmin",
+        "superMaster",
+        "master",
+      ].includes(Detail[9].val)
+    ) {
+      setDetail({
+        ...Detail,
+        12: {
+          ...Detail[12],
+          val: 100 - Detail[10].val,
+        },
+        11: {
+          ...Detail[11],
+          val: 0,
+        },
+      });
+      setError({
+        ...error,
+        11: {
+          ...error[11],
+          val: "",
+        },
+      });
+    }
+    if (["user"].includes(Detail[9].val)) {
       setDetail({
         ...Detail,
         11: {
@@ -469,7 +499,6 @@ const AddAccount = () => {
           val: 0,
         },
       });
-
       setError({
         ...error,
         11: {
@@ -486,7 +515,7 @@ const AddAccount = () => {
     //   e.preventDefault();
     //   // nextElement.current.focus();
     // }
-  }
+  };
 
   return (
     <>
@@ -592,7 +621,11 @@ const AddAccount = () => {
                     onFocusOut={doSendErrorForPassword}
                     toFoucs={true}
                   />{" "}
-                  {error[2].val && <p className="validCommon" style={{ color: "#fa1e1e" }}>{error[2].val}</p>}
+                  {error[2].val && (
+                    <p className="validCommon" style={{ color: "#fa1e1e" }}>
+                      {error[2].val}
+                    </p>
+                  )}
                 </div>
                 {/** handleError={handleError} checkMesasge={true} */}
                 <div style={{ order: 5 }}>
@@ -762,7 +795,7 @@ const AddAccount = () => {
                 <Input
                   containerStyle={{
                     ...containerStyles,
-                    display: Detail[9].val !== "expert" ? "none" : "block",
+                    display: Detail[9].val === "user" ? "none" : "block",
                   }}
                   titleStyle={titleStyles}
                   inputStyle={imputStyle}
@@ -784,7 +817,7 @@ const AddAccount = () => {
                   <p style={{ color: "#fa1e1e" }}>Field Required</p>
                 )}
 
-                {Detail[9].val !== "expert" ? (
+                {Detail[9].val === "user" ? (
                   <InputMyPartnership
                     inputContainerStyle={{
                       ...inputContainerStyle,
@@ -792,7 +825,7 @@ const AddAccount = () => {
                     }}
                     containerStyle={{
                       ...containerStyles,
-                      display: Detail[9].val !== "expert" ? "none" : "block",
+                      display: Detail[9].val === "user" ? "none" : "block",
                     }}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
@@ -802,7 +835,7 @@ const AddAccount = () => {
                     toFoucs={true}
                     min={0}
                     max={100}
-                    disabled={Detail[9].val !== "expert"}
+                    disabled={Detail[9].val === "user"}
                     setDownlinePar={setDownlinePar}
                     Detail={Detail}
                     value={Detail[11].val}
@@ -817,12 +850,12 @@ const AddAccount = () => {
                   <Input
                     inputContainerStyle={{
                       ...inputContainerStyle,
-                      backgroundColor: Detail[9].val !== "expert" && "#DEDEDE",
+                      backgroundColor: Detail[9].val === "user" && "#DEDEDE",
                       height: { laptop: "45px", mobile: "36px" },
                     }}
                     containerStyle={{
                       ...containerStyles,
-                      display: Detail[9].val !== "expert" ? "none" : "block",
+                      display: Detail[9].val === "user" ? "none" : "block",
                     }}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
@@ -858,7 +891,7 @@ const AddAccount = () => {
               <Input
                 containerStyle={{
                   ...containerStyles,
-                  display: Detail[9].val !== "expert" ? "none" : "block",
+                  display: Detail[9].val === "user" ? "none" : "block",
                 }}
                 titleStyle={titleStyles}
                 inputStyle={imputStyle}
@@ -876,7 +909,7 @@ const AddAccount = () => {
                 place={12}
                 type={"Number"}
                 placeholder={Detail[12].val}
-              // autoMaticFillValue={Detail[12].val}
+                // autoMaticFillValue={Detail[12].val}
               />
               {error[12]?.val && (
                 <p className="validCommon" style={{ color: "#fa1e1e" }}>
@@ -1083,8 +1116,8 @@ const AddAccount = () => {
                     onFocusOut={handleTransPass}
                     toFoucs={true}
                     onKeyDown={handleEnterKey}
-                  // okButtonRef={okButtonRef}
-                  // onKeyDown={(e) => handleEnterKey(e, okButtonRef)}
+                    // okButtonRef={okButtonRef}
+                    // onKeyDown={(e) => handleEnterKey(e, okButtonRef)}
                   />
                 </div>
               </Box>
@@ -1103,9 +1136,10 @@ const AddAccount = () => {
                   marginTop: { mobile: "12px", laptop: "35px" },
                   color: "white",
                   fontSize: "18px",
-      
-                  '&:hover':{
-                    background: "#0B4F26"}
+
+                  "&:hover": {
+                    background: "#0B4F26",
+                  },
                 }}
                 type="submit"
               >
@@ -1121,30 +1155,30 @@ const AddAccount = () => {
         </form>
         {errorShow ===
           "User need to first create the transaction password." && (
-            <Button
-              className="cursor-pointer"
-              sx={{
-                background: "#0B4F26",
-                width: "50%",
-                display: "flex",
-                justifyContent: "center",
-                border: "2px solid black",
-                alignItems: "center",
-                borderRadius: "5px",
-                height: "45px",
-                marginTop: "35px",
-                color: "white",
-                fontSize: "18px",
-              }}
-              onClick={(e) => {
-                navigate(
-                  `/${window.location.pathname.split("/")[1]}/createTransPassword`
-                );
-              }}
-            >
-              Create Trans Password
-            </Button>
-          )}
+          <Button
+            className="cursor-pointer"
+            sx={{
+              background: "#0B4F26",
+              width: "50%",
+              display: "flex",
+              justifyContent: "center",
+              border: "2px solid black",
+              alignItems: "center",
+              borderRadius: "5px",
+              height: "45px",
+              marginTop: "35px",
+              color: "white",
+              fontSize: "18px",
+            }}
+            onClick={(e) => {
+              navigate(
+                `/${window.location.pathname.split("/")[1]}/createTransPassword`
+              );
+            }}
+          >
+            Create Trans Password
+          </Button>
+        )}
       </Box>
       {showSuccessModal && (
         <Modal
