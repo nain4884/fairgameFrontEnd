@@ -193,6 +193,7 @@ const CustomHeader = ({}) => {
     bookMakerBetRates,
     selectedBookmaker,
   ]);
+  console.log(sessionBetId,"sdd",betId)
 
   function getSessionStorageItemAsync(key) {
     return new Promise((resolve, reject) => {
@@ -476,14 +477,18 @@ const CustomHeader = ({}) => {
               }
               return currentMatch;
             });
-            setLocalSelectedSession((i) => {
-              const newBody = {
-                ...i,
-                ...value,
-              };
-              dispatch(setSelectedSession(newBody));
-              return newBody;
-            });
+            setTimeout(() => {
+              if (value?.id === betId) {
+                setLocalSelectedSession((i) => {
+                  const newBody = {
+                    ...i,
+                    ...value,
+                  };
+                  dispatch(setSelectedSession(newBody));
+                  return newBody;
+                });
+              }
+            }, 1000);
 
             setAllLiveEventSession((prev) => {
               const updatedAllEventSession = prev?.map((match) => {
