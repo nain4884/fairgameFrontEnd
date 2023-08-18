@@ -270,6 +270,11 @@ const ProfitLossComponent = ({
                   fontSize: { mobile: "10px", laptop: "15px" },
                   color: "white",
                   fontWeight: "600",
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  lineClamp: 2,
                 }}
               >
                 {item.eventName}
