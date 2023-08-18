@@ -14,7 +14,7 @@ const ListHeaderT = () => {
     >
       <Box
         sx={{
-          width: "60px",
+          width: "100px",
           display: "flex",
           paddingLeft: "10px",
           alignItems: "center",

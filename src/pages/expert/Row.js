@@ -11,6 +11,7 @@ import ButtonWithSwitch from "./ButtonWithSwitch";
 import { toast } from "react-toastify";
 import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
 import ButtonWithSwitchBookmaker from "./ButtonWithSwitchBookmaker";
+import moment from "moment";
 
 const Row = ({ index, containerStyle, data }) => {
   const dispatch = useDispatch();
@@ -163,14 +164,16 @@ const Row = ({ index, containerStyle, data }) => {
       <Box
         sx={{
           display: "flex",
-          width: "60px",
+          width: "100px",
           paddingLeft: "10px",
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
         }}
       >
-        <Typography sx={{ fontSize: "12px" }}>{index}</Typography>
+        <Typography sx={{ fontSize: "12px" }}>({index})</Typography>
+        <Typography sx={{ fontSize: "9px" ,padding:"4px",fontWeight:"700" }}>{moment(data?.startAt).format("DD-MM-YYYY")} <br/>
+        {moment(data?.startAt).format('LT')}</Typography>
       </Box>
       <Box
         sx={{

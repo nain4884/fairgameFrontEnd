@@ -284,6 +284,10 @@ const AddMatchComp = () => {
         },
       });
     }
+  }, [Detail[1].val]);
+
+  
+  useEffect(() => {
     if (Detail[9].val !== "") {
       setError({
         ...Error,
@@ -339,13 +343,7 @@ const AddMatchComp = () => {
         },
       });
     }
-  }, [
-    Detail[1].val,
-    Detail[9].val,
-    Detail[13].val,
-    Detail[4].val,
-    Detail[5].val,
-  ]);
+  }, [Detail[9].val, Detail[13].val, Detail[4].val, Detail[5].val]);
 
   return (
     <Background>
@@ -491,6 +489,7 @@ const AddMatchComp = () => {
                 sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
               >
                 <LabelValueComponent
+                  disable={true}
                   containerStyle={{ flex: 1, width: "100%" }}
                   title={"Team A *"}
                   type={"text"}
@@ -525,6 +524,7 @@ const AddMatchComp = () => {
                 sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
               >
                 <LabelValueComponent
+                  disable={true}
                   containerStyle={{ flex: 1, width: "100%" }}
                   title={"Team B *"}
                   type={"text"}
@@ -561,6 +561,7 @@ const AddMatchComp = () => {
               >
                 {" "}
                 <LabelValueComponent
+                  disable={true}
                   containerStyle={{ flex: 1, width: "100%" }}
                   title={"Team C"}
                   type={"text"}
@@ -581,6 +582,7 @@ const AddMatchComp = () => {
                 sx={{ width: { mobile: "100%", laptop: "18%", tablet: "24%" } }}
               >
                 <LabelValueComponent
+                  disable={true}
                   icon={ArrowDownBlack}
                   valueStyle={{}}
                   containerStyle={{ flex: 1, width: "100%" }}
