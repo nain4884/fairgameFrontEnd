@@ -166,18 +166,19 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("resultDeclareForBet", (event) => {
       const data = event;
       try {
+        setLocalAllMatches((prev) => {
+          const filteredMatches = prev.filter(
+            (v) => !(v.id === data?.match_id && data.sessionBet === false)
+          );
+          dispatch(setUserAllMatches(filteredMatches));
+          return filteredMatches;
+        });
         setCurrentMatch((currentMatch) => {
           if (
             currentMatch?.id === data?.match_id &&
             data?.sessionBet === false
           ) {
-            setLocalAllMatches((prev) => {
-              const filteredMatches = prev.filter(
-                (v) => !(v.id === data?.match_id && data.sessionBet === false)
-              );
-              dispatch(setUserAllMatches(filteredMatches));
-              return filteredMatches;
-            });
+       
             navigate("/matches");
             return currentMatch;
           }
