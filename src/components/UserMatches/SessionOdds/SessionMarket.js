@@ -35,12 +35,20 @@ const SessionMarket = ({
   title,
   max,
   min,
-  typeOfBet
+  typeOfBet,
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [fastBetLoading, setFastBetLoading] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+  function customSort(a, b) {
+    // betStatus 1 should come before betStatus 2
+    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
+    const aStatus = betStatusOrder[a?.betStatus] || 0;
+    const bStatus = betStatusOrder[b?.betStatus] || 0;
+    return aStatus - bStatus;
+  }
 
   const matchSessionData = newData?.bettings?.filter((element) => {
     if (newData.apiSessionActive && title === "Session Market") {
@@ -53,9 +61,11 @@ const SessionMarket = ({
 
     return false; // Default case: no active session types
   });
+
+  const newMatchSessionData = matchSessionData.sort(customSort)
   const [visible, setVisible] = useState(true);
 
-  console.log(sessionOffline,'sessionOffline')
+  console.log(sessionOffline, "sessionOffline");
   return (
     <>
       <Box
@@ -322,7 +332,7 @@ const SessionMarket = ({
                 </Box>
               </Box>
             )}
-{/* 
+            {/* 
             {upcoming && matchSessionData?.length > 0 && (
               <Box
                 sx={{
@@ -349,21 +359,21 @@ const SessionMarket = ({
                 overflowY: "visible",
               }}
             >
-              {matchSessionData?.length > 0 &&
-                matchSessionData?.reverse()?.map((element) => {
+              {newMatchSessionData?.length > 0 &&
+                newMatchSessionData?.map((element) => {
                   return (
                     <Box
                       key={element?.id}
                       sx={{
                         width: "100%",
-                        display: element?.betStatus === 2
-                          ? "none"
-                          : "block",
+                        display: element?.betStatus === 2 ? "none" : "block",
                       }}
                     >
                       <SessionMarketBox
-                       upcoming={upcoming}
-                       closeModal={[0,2]?.includes(element?.betStatus) ? true :false}
+                        upcoming={upcoming}
+                        closeModal={
+                          [0, 2]?.includes(element?.betStatus) ? true : false
+                        }
                         typeOfBet={typeOfBet}
                         setFastBetLoading={setFastBetLoading}
                         data={element}

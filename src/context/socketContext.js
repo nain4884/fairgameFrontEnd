@@ -414,25 +414,40 @@ export const SocketProvider = ({ children }) => {
             return currentMatch;
           }
 
+          const findBet = currentMatch?.bettings?.find(
+            (betting) =>
+              betting?.selectionId === value?.selectionId ||
+              betting?.id === value?.id
+          );
+          const body = {
+            ...findBet,
+            ...value,
+          };
+          var removedBet = currentMatch?.bettings?.filter(
+            (betting) =>
+              betting?.selectionId !== value?.selectionId &&
+              betting?.id !== value?.id
+          );
+          var updatedBettings = [body, ...removedBet];
           // Update the bettings array in the current match object
-          const updatedBettings = currentMatch?.bettings?.map((betting) => {
-            if (betting.id === value.id && value.sessionBet) {
-              // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-              return {
-                ...betting,
-                ...value,
-              };
-            } else if (
-              betting?.id === value?.id &&
-              value.sessionBet === false
-            ) {
-              return {
-                ...betting,
-                ...value,
-              };
-            }
-            return betting;
-          });
+          // const updatedBettings = currentMatch?.bettings?.map((betting) => {
+          //   if (betting.id === value.id && value.sessionBet) {
+          //     // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+          //     return {
+          //       ...betting,
+          //       ...value,
+          //     };
+          //   } else if (
+          //     betting?.id === value?.id &&
+          //     value.sessionBet === false
+          //   ) {
+          //     return {
+          //       ...betting,
+          //       ...value,
+          //     };
+          //   }
+          //   return betting;
+          // });
           var newUpdatedValue = updatedBettings;
           const bettingsIds = updatedBettings?.map((betting) => betting?.id);
 
@@ -1020,7 +1035,7 @@ export const SocketProvider = ({ children }) => {
       const data = event;
       try {
         setLocalAllMatches((prev) => {
-          const newBody = [...prev, data];
+          const newBody = [...prev, data.match];
           dispatch(setUserAllMatches(newBody));
           return newBody;
         });
