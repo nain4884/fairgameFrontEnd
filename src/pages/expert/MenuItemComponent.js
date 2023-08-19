@@ -9,8 +9,9 @@ import {
   setSelectedBookmaker,
   setSelectedSession,
   setSessionBetId,
+  setSessionProfitLoss,
 } from "../../newStore/reducers/expertMatchDetails";
-import { setBookMakerBetRate } from "../../newStore/reducers/matchDetails";
+import { setBookMakerBetRate, setSessionResults } from "../../newStore/reducers/matchDetails";
 
 const MenutItemsComponent = ({
   x,
@@ -129,6 +130,8 @@ const MenutItemsComponent = ({
           <Box
             onClick={(e) => {
               dispatch(setSessionBetId(""));
+              dispatch(setSessionResults([]))
+              dispatch(setSessionProfitLoss(null))
               dispatch(setSelectedSession(null));
               navigate("/expert/live", {
                 state: {
