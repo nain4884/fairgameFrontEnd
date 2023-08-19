@@ -72,7 +72,7 @@ const AddAccount = () => {
     6: { field: "phoneNumber", val: false },
     7: { field: "accountType", val: false },
     8: { field: "creditReference", val: false },
-    9: { field: "roleId", val: true },
+    9: { field: "roleId", val: false },
     10: { field: "uplinePertnerShip", val: false },
     11: { field: "myPertnerShip", val: "" },
     12: { field: "downLinePertnerShip", val: false },
@@ -525,10 +525,7 @@ const AddAccount = () => {
           ...error[11],
           val: "",
         },
-        9: {
-          ...error[9],
-          val: false,
-        },
+        
       });
     }
     if (["user"].includes(Detail[9].val)) {
@@ -579,21 +576,21 @@ const AddAccount = () => {
           style={{ marginTop: "1%" }}
           onSubmit={(e) => {
             e?.preventDefault();
-            function checkValues(data) {
-              for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                  const value = data[key].val;
-                  if (value !== "" && value !== false) {
-                    return true;
-                  }
-                }
-              }
-              return false;
-            }
-            if (checkValues(error)) {
-              toast.error("Fields Required");
-              return false;
-            }
+            // function checkValues(data) {
+            //   for (const key in data) {
+            //     if (data.hasOwnProperty(key)) {
+            //       const value = data[key].val;
+            //       if (value !== "" && value !== false) {
+            //         return true;
+            //       }
+            //     }
+            //   }
+            //   return false;
+            // }
+            // if (checkValues(error)) {
+            //   toast.error("Fields Required");
+            //   return false;
+            // }
             addAccount();
           }}
         >
