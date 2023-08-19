@@ -79,7 +79,7 @@ const MatchScreen = () => {
   const getSingleMatch = async (val) => {
     try {
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
-      const newMatch = { ...data, bettings: data?.bettings?.reverse() };
+      const newMatch = { ...data, bettings: data?.bettings };
       setCurrentMatch(newMatch);
       dispatch(setSelectedMatch(newMatch));
       marketId = data?.marketId;
