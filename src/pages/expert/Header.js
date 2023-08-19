@@ -801,6 +801,7 @@ const CustomHeader = ({}) => {
 
                       setLocalSessionResult((prev) => {
                         if (i?.id === value?.betId) {
+                          dispatch(setSessionAllBet([]));
                           const body = {
                             ...value,
                             bet_id: {
