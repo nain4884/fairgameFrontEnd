@@ -13,8 +13,6 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
     setShow(false);
   });
 
-
-
   useEffect(() => {
     setData((prev) => {
       if (Array.isArray(prev)) {
@@ -35,7 +33,6 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
     });
 
     setProfitLoss(newData?.profitLoss);
-
   }, [newData]);
 
   const handleClick = useCallback(
@@ -59,11 +56,12 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
           return prev;
         }
       });
-
     },
     [setData, newData]
   );
-  const boxWidth = width ? { laptop: "9vw" } : { "@media screen and (max-width: 1300px)": { width: "9vw" } };
+  const boxWidth = width
+    ? { laptop: "9vw" }
+    : { "@media screen and (max-width: 1300px)": { width: "9vw" } };
   return (
     <>
       <Box
@@ -74,7 +72,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
           display: "flex",
           alignItems: "center",
           // top: "4px",
-          top: '2px',
+          top: "2px",
           width: boxWidth,
           borderRadius: "5px",
           height: "26px",
@@ -95,7 +93,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
             display: "flex",
 
             flexDirection: "column",
-            marginLeft: "2px"
+            marginLeft: "2px",
           }}
         >
           <Typography
@@ -104,7 +102,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
               fontWeight: "bold",
               textAlign: "center",
               color: "#FF4D4D",
-              lineHeight: "1"
+              lineHeight: "1",
             }}
           >
             Total Bet
@@ -114,7 +112,7 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
               fontSize: { laptop: ".5vw" },
               fontWeight: "bold",
               color: "#0B4F26",
-              lineHeight: 1
+              lineHeight: 1,
             }}
           >
             {proLoss?.total_bet || 0}
@@ -132,14 +130,18 @@ const PlaceBetComponentWeb = ({ amount, setData, newData, width, height }) => {
         >
           <Typography
             sx={{
-              fontSize: { laptop: !newData?.profitLoss?.max_loss ? "10px" : "10px" },
+              fontSize: {
+                laptop: !newData?.profitLoss?.max_loss ? "10px" : "10px",
+              },
               fontWeight: !newData?.profitLoss?.max_loss ? "bold" : "bold",
               color: "white",
             }}
           >
-
-            {!newData?.profitLoss?.max_loss ? "Profit/Loss" : newData?.profitLoss?.max_loss}
-
+            {newData?.betStatus === 2
+              ? newData?.profitLoss
+              : !newData?.profitLoss?.max_loss
+              ? "Profit/Loss"
+              : newData?.profitLoss?.max_loss}
           </Typography>
           <img
             src={UD}
