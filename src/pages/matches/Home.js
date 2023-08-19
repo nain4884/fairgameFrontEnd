@@ -1011,13 +1011,12 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               suspended: v?.GameStatus,
               selectionId: v?.SelectionId,
             }));
-
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.bettings?.length > 0) {
-                setLSelectedSessionBetting(prev=> {
+                setLSelectedSessionBetting((prev) => {
                   const data = prev?.map((betting) => {
                     var selectedData = newVal?.find(
-                      (data) => data?.selectionId === betting?.selectionId
+                      (nv) => nv?.selectionId === betting?.selectionId
                     );
                     if (selectedData !== undefined) {
                       return {
@@ -1032,9 +1031,9 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                     }
                     return betting;
                   });
-                  dispatch(setSelectedSessionBettings(data))
-                  return data
-                })
+                  // dispatch(setSelectedSessionBettings(data));
+                  return data;
+                });
 
                 const data = currentMatch?.bettings?.map((betting) => {
                   var selectedData = newVal?.find(
