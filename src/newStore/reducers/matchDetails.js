@@ -1,4 +1,4 @@
-import { createSlice,createAction } from "@reduxjs/toolkit";
+import { createSlice, createAction } from "@reduxjs/toolkit";
 
 const initialState = {
   manualBookMarkerRates: [],
@@ -11,6 +11,7 @@ const initialState = {
   bookmakerLive: null,
   sessionOddsLive: [],
   selectedMatch: {},
+  selectedSessionBettings: {},
   sessionAllBetRates: [],
   bookMakerBetRates: [],
   sessionResults: [],
@@ -21,12 +22,11 @@ const initialState = {
   sessionExposure: 0,
   manualBookmaker: [],
   sessionOffline: [],
-  userAllMatches:[],
-  multiSelectedMatches:[]
+  userAllMatches: [],
+  multiSelectedMatches: [],
 };
 
-export const logoutMatchDetails = createAction('auth/logoutReset');
-
+export const logoutMatchDetails = createAction("auth/logoutReset");
 
 const matchDetails = createSlice({
   name: "matchDetails",
@@ -148,6 +148,9 @@ const matchDetails = createSlice({
     removeSelectedMatch: (state, action) => {
       state.selectedMatch = {};
     },
+    setSelectedSessionBettings: (state, action) => {
+      state.selectedSessionBettings = action.payload;
+    },
     setConfirmAuth: (state, action) => {
       state.confirmAuth = action.payload;
     },
@@ -186,6 +189,7 @@ export const {
   setManualBookMarkerRates,
   setSelectedMatch,
   removeSelectedMatch,
+  setSelectedSessionBettings,
   removeManualBookMarkerRates,
   setMatchOdds,
   removeMatchOdds,

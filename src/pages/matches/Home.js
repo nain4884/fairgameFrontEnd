@@ -22,6 +22,7 @@ import {
   setAllBetRate,
   setManualBookmaker,
   setSessionExposure,
+  setSelectedSessionBettings,
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -77,6 +78,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
+  const [LSelectedSessionBetting, setLSelectedSessionBetting] = useState([]);
   const [liveScoreData, setLiveScoreData] = useState();
   const [isHandled, setIsHandled] = useState(false);
   const checkMctchId = useSelector(
@@ -1012,6 +1014,28 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.bettings?.length > 0) {
+                setLSelectedSessionBetting(prev=> {
+                  const data = prev?.map((betting) => {
+                    var selectedData = newVal?.find(
+                      (data) => data?.selectionId === betting?.selectionId
+                    );
+                    if (selectedData !== undefined) {
+                      return {
+                        ...betting,
+                        bet_condition: selectedData?.bet_condition,
+                        no_rate: selectedData?.no_rate,
+                        yes_rate: selectedData?.yes_rate,
+                        rate_percent: selectedData?.rate_percent,
+                        suspended: selectedData?.suspended,
+                        selectionId: selectedData?.selectionId,
+                      };
+                    }
+                    return betting;
+                  });
+                  dispatch(setSelectedSessionBettings(data))
+                  return data
+                })
+
                 const data = currentMatch?.bettings?.map((betting) => {
                   var selectedData = newVal?.find(
                     (data) => data?.selectionId === betting?.selectionId
@@ -1164,6 +1188,11 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       let matchOddsDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
+      let sessionDataTemp = response.data?.bettings?.filter(
+        (element) => element.sessionBet
+      );
+      setLSelectedSessionBetting(sessionDataTemp);
+      dispatch(setSelectedSessionBettings(sessionDataTemp));
       setManualBookmakerData(matchOddsDataTemp);
       dispatch(setManualBookmaker(matchOddsDataTemp));
       dispatch(setSessionExposure(response?.data?.sessionExposure));
@@ -1246,26 +1275,26 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     getThisMatch(matchId);
   };
 
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        // User returned to the web browser
-        if (matchId) {
-          if (socket && socket.connected) {
-            socket.emit("checkConnection");
-          }
-          getThisMatch(matchId);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const handleVisibilityChange = () => {
+  //     if (document.visibilityState === "visible") {
+  //       // User returned to the web browser
+  //       if (matchId) {
+  //         if (socket && socket.connected) {
+  //           socket.emit("checkConnection");
+  //         }
+  //         getThisMatch(matchId);
+  //       }
+  //     }
+  //   };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+  //   document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // Clean up the event listener on component unmount
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
+  //   // Clean up the event listener on component unmount
+  //   return () => {
+  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
+  //   };
+  // }, []);
 
   const getScoreBord = async (eventId) => {
     // alert(1)

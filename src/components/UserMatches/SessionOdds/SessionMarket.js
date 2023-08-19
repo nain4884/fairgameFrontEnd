@@ -37,18 +37,20 @@ const SessionMarket = ({
   max,
   min,
   typeOfBet,
+  apiSessionActive,
+  manualSessionActive,
 }) => {
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [fastBetLoading, setFastBetLoading] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  const matchSessionData = newData?.bettings?.filter((element) => {
-    if (newData.apiSessionActive && title === "Session Market") {
+  const matchSessionData = newData?.filter((element) => {
+    if (apiSessionActive && title === "Session Market") {
       return element.sessionBet === true && element.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
     }
 
-    if (newData.manualSessionActive && title === "Quick Session Market") {
+    if (manualSessionActive && title === "Quick Session Market") {
       return element.sessionBet === true && element.selectionId === null; // Show elements where selectionId is null when manualSessionActive is true
     }
 

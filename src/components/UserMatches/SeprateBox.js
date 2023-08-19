@@ -334,7 +334,8 @@ const SeprateBox = ({
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
       setTimeout(() => {
-        handleRateChange(); //add
+        // handleRateChange(); 
+        //add
         setVisible(true);
         setIsPopoverOpen(false);
       }, 1500);

@@ -24,6 +24,7 @@ import {
   setManualBookMarkerRates,
   setManualBookmaker,
   setSelectedMatch,
+  setSelectedSessionBettings,
   setSessionExposure,
   setSessionOffline,
   setUserAllMatches,
@@ -53,6 +54,7 @@ export const SocketProvider = ({ children }) => {
     sessionOffline,
     manualBookmaker,
     userAllMatches,
+    selectedSessionBettings,
   } = useSelector((state) => state?.matchDetails);
 
   const [localCurrentUser, setLocalCurrentUser] = useState(null);
@@ -62,6 +64,7 @@ export const SocketProvider = ({ children }) => {
   const [localSessionOffline, setLocalSessionOffline] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
   const [localAllmatches, setLocalAllMatches] = useState([]);
+  const [LSelectedSessionBetting, setLSelectedSessionBetting] = useState([]);
 
   useEffect(() => {
     if (allBetRates) {
@@ -85,6 +88,9 @@ export const SocketProvider = ({ children }) => {
     if (userAllMatches) {
       setLocalAllMatches(userAllMatches);
     }
+    if (selectedSessionBettings) {
+      setLSelectedSessionBetting(selectedSessionBettings);
+    }
   }, [
     allBetRates,
     allSessionBets,
@@ -93,6 +99,7 @@ export const SocketProvider = ({ children }) => {
     sessionOffline,
     manualBookmaker,
     userAllMatches,
+    selectedSessionBettings,
   ]);
 
   console.log("nav", location);
@@ -178,7 +185,6 @@ export const SocketProvider = ({ children }) => {
             currentMatch?.id === data?.match_id &&
             data?.sessionBet === false
           ) {
-       
             navigate("/matches");
             return currentMatch;
           }
@@ -186,6 +192,17 @@ export const SocketProvider = ({ children }) => {
             currentMatch?.id === data?.match_id &&
             data?.sessionBet === true
           ) {
+            setLSelectedSessionBetting((prev) => {
+              const updatedBettings = prev?.map((betting) => {
+                if (betting.id === data.betId) {
+                  return { ...betting, betStatus: 2 };
+                }
+                return betting;
+              });
+              dispatch(setSelectedSessionBettings(updatedBettings));
+              return updatedBettings;
+            });
+
             const updatedBettings = currentMatch?.bettings?.map((betting) => {
               if (betting.id === data.betId) {
                 return { ...betting, betStatus: 2 };
@@ -371,6 +388,21 @@ export const SocketProvider = ({ children }) => {
         };
         if (data?.betPlaceData?.match_id === match_id) {
           setCurrentMatch((currentMatch) => {
+            setLSelectedSessionBetting(prev=> {
+              const updatedBettings = prev?.map((betting) => {
+                if (betting?.id === data?.betPlaceData?.bet_id) {
+                   let profitLoss = data?.profitLoss;
+                  return {
+                    ...betting,
+  
+                    profitLoss: profitLoss,
+                  };
+                }
+                return betting;
+              });
+              dispatch(setSelectedSessionBettings(updatedBettings))
+              return updatedBettings
+            })
             const updatedBettings = currentMatch?.bettings?.map((betting) => {
               if (betting?.id === data?.betPlaceData?.bet_id) {
                 // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
@@ -426,6 +458,26 @@ export const SocketProvider = ({ children }) => {
             // If the new bet doesn't belong to the current match, return the current state
             return currentMatch;
           }
+
+          setLSelectedSessionBetting((prev) => {
+            const findBet = prev?.find(
+              (betting) =>
+                betting?.selectionId === value?.selectionId ||
+                betting?.id === value?.id
+            );
+            const body = {
+              ...findBet,
+              ...value,
+            };
+            var removedBet = prev?.filter(
+              (betting) =>
+                betting?.selectionId !== value?.selectionId &&
+                betting?.id !== value?.id
+            );
+            var updatedBettings = [body, ...removedBet];
+            dispatch(setSelectedSessionBettings(updatedBettings));
+            return updatedBettings;
+          });
 
           const findBet = currentMatch?.bettings?.find(
             (betting) =>
