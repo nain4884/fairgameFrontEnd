@@ -266,18 +266,20 @@ const Input = ({
             variant="standard"
             placeholder={placeholder}
             value={value}
-            type={type ==="Number" ? "number" :"text"}
+            type={type === "Number" ? "number" : "text"}
             // onKeyDown={onKeyDown}
             required={required}
             InputProps={{
-              min:0,
-            
+              inputProps: {
+                min: type === "Number" ? 0 : undefined,
+              },
               disabled: disabled,
               placeholder: placeholder,
               disableUnderline: true,
               justifyContent: "center",
               ...inputProps,
               // value: Detail[9]?.val==="user" && Detail[place]?.val,
+
               type:
                 showPass && String(title).toLowerCase().includes("password")
                   ? "password"

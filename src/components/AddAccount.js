@@ -549,10 +549,8 @@ const AddAccount = () => {
           ...error[11],
           val: "",
         },
-        
       });
     }
- 
   }, [Detail[9].val]);
 
   const handleEnterKey = (e, nextElement) => {
@@ -826,12 +824,11 @@ const AddAccount = () => {
                     setDetail={setDetail}
                     place={9}
                   />
-                  {(error[9]?.val &&
-                    Detail[9]?.val === "") && (
-                      <p className="validCommon" style={{ color: "#fa1e1e" }}>
-                        Field Required
-                      </p>
-                    )}
+                  {error[9]?.val && Detail[9]?.val === "" && (
+                    <p className="validCommon" style={{ color: "#fa1e1e" }}>
+                      Field Required
+                    </p>
+                  )}
                 </div>
                 <div style={{ order: 1 }}>
                   <Input
@@ -853,7 +850,9 @@ const AddAccount = () => {
                       if (
                         event.code === "Space" ||
                         (!(event.key >= "0" && event.key <= "9") &&
-                          event.key !== "Backspace")
+                          event.key !== "Backspace" &&
+                          event.code !== "ArrowUp" &&
+                          event.code !== "ArrowDown")
                       ) {
                         event.preventDefault();
                       }
@@ -959,7 +958,9 @@ const AddAccount = () => {
                       if (
                         event.code === "Space" ||
                         (!(event.key >= "0" && event.key <= "9") &&
-                          event.key !== "Backspace")
+                          event.key !== "Backspace" &&
+                          event.code !== "ArrowUp" &&
+                          event.code !== "ArrowDown")
                       ) {
                         event.preventDefault();
                       }
