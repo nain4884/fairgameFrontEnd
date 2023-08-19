@@ -890,12 +890,24 @@ const DepositComponent = ({
                 >
                   <TextField
                     required={true}
+                    onKeyDown={(event) => {
+                      if (
+                        event.code === "Space" ||
+                        (!(event.key >= "0" && event.key <= "9") &&
+                          event.key !== "Backspace" &&
+                          event.code !== "ArrowUp" &&
+                          event.code !== "ArrowDown")
+                      ) {
+                        event.preventDefault();
+                      }
+                    }}
                     value={depositObj.amount}
                     onChange={handleChange}
                     variant="standard"
                     InputProps={{
                       placeholder: "Type Amount...",
                       disableUnderline: true,
+                      inputProps: { min: "0" },
                       style: {
                         fontSize: "15px",
                         height: "45px",
@@ -2297,6 +2309,17 @@ const SetExposureComponent = ({
               }}
             >
               <TextField
+                onKeyDown={(event) => {
+                  if (
+                    event.code === "Space" ||
+                    (!(event.key >= "0" && event.key <= "9") &&
+                      event.key !== "Backspace" &&
+                      event.code !== "ArrowUp" &&
+                      event.code !== "ArrowDown")
+                  ) {
+                    event.preventDefault();
+                  }
+                }}
                 required={true}
                 onChange={(e) => {
                   setExposureObj({
@@ -2315,6 +2338,7 @@ const SetExposureComponent = ({
                 InputProps={{
                   placeholder: "Type Amount...",
                   disableUnderline: true,
+                  inputProps: { min: "0" },
                   style: {
                     fontSize: "15px",
                     height: "45px",
@@ -2787,7 +2811,7 @@ const LockUnlockComponent = ({
   setElementToUDM,
   prevElement,
   setSelected,
-  getListOfUser
+  getListOfUser,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);

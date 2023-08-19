@@ -454,10 +454,22 @@ const MobileViewUserDetails = ({
             <TextField
               required={true}
               value={amount}
+              onKeyDown={(event) => {
+                if (
+                  event.code === "Space" ||
+                  (!(event.key >= "0" && event.key <= "9") &&
+                    event.key !== "Backspace" &&
+                    event.code !== "ArrowUp" &&
+                    event.code !== "ArrowDown")
+                ) {
+                  event.preventDefault();
+                }
+              }}
               onChange={handleChange}
               variant="standard"
               InputProps={{
                 placeholder: "Type Amount...",
+                inputProps: { min: "0" },
                 disableUnderline: true,
                 style: {
                   fontSize: "15px",
