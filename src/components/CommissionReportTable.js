@@ -273,14 +273,14 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           : element?.match_id?.title,
       commissionAmount: element.ComissionAmount,
       commissionType: element.ComissionType,
-      betType: element?.bet_place_id?.bet_type,
-      stack: element?.ComissionType === "match total" ? (element?.ComissionAmount * 100) / element?.userId?.matchComission : element?.bet_place_id?.amount,
-      odds: element?.bet_place_id?.odds,
+      betType: element?.bet_type,
+      stack: element?.ComissionType === "match total" ? (element?.ComissionAmount * 100) / element?.userData?.matchComission : element?.amount,
+      odds: element?.odds,
       isActive: element?.isActive,
-      teamBet: element?.bet_place_id?.team_bet,
-      createAt: element?.createAt,
+      teamBet: element?.team_bet,
+      createAt: element?.updateAt,
       myCommission:element?.myCommission,
-      userName:element?.userId?.userName
+      userName:element?.userData?.userName
     };
     const [elementToUDM, setElementToUDM] = useState(prevElement);
 

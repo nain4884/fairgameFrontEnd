@@ -22,10 +22,8 @@ const ButtonWithSwitch = ({
     } else {
       setChecked(updateMatchStatus[place]?.val);
     }
-  
   }, [notSwitch, place, updateMatchStatus]);
 
-  
   useEffect(() => {
     if (checked) {
       setBackground("#0B4F26");
@@ -101,6 +99,11 @@ const ButtonWithSwitch = ({
             fontSize: "13px",
             marginLeft: "1vw",
             lineHeight: "14px",
+            overflow: "hidden",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            lineClamp: 2,
           },
           titleStyle,
         ]}

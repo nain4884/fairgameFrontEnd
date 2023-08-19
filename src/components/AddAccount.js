@@ -72,7 +72,7 @@ const AddAccount = () => {
     6: { field: "phoneNumber", val: false },
     7: { field: "accountType", val: false },
     8: { field: "creditReference", val: false },
-    9: { field: "roleId", val: false },
+    9: { field: "roleId", val: true },
     10: { field: "uplinePertnerShip", val: false },
     11: { field: "myPertnerShip", val: "" },
     12: { field: "downLinePertnerShip", val: false },
@@ -104,7 +104,7 @@ const AddAccount = () => {
 
   const matchComissionTypes = ["0.00", "Total Loss", "Entry Wise"];
 
-  console.log("Setting", Detail, error);
+  console.log("Setting", error);
   const [profile, setProfile] = useState(currentUser);
   const types = [
     { role: "fairGameAdmin", val: "Fairgame Admin", level: 1 },
@@ -379,6 +379,25 @@ const AddAccount = () => {
   }, [userWallet?.role?.roleName, Detail, error, showSuccessModal]);
 
   async function checkUserName({ val2 }) {
+    if (/^\d+$/.test(val2)) {
+      setDetail({
+        ...Detail,
+        1: {
+          ...Detail[1],
+          val: null,
+        },
+      });
+      setError({
+        ...error,
+        1: {
+          ...error[1],
+          val: "only digits not allowed",
+        },
+      });
+
+      return false;
+    }
+
     try {
       let body = {
         userName: val2,
@@ -506,6 +525,10 @@ const AddAccount = () => {
           ...error[11],
           val: "",
         },
+        9: {
+          ...error[9],
+          val: false,
+        },
       });
     }
     if (["user"].includes(Detail[9].val)) {
@@ -526,8 +549,10 @@ const AddAccount = () => {
           ...error[11],
           val: "",
         },
+        
       });
     }
+ 
   }, [Detail[9].val]);
 
   const handleEnterKey = (e, nextElement) => {
@@ -556,6 +581,21 @@ const AddAccount = () => {
           style={{ marginTop: "1%" }}
           onSubmit={(e) => {
             e?.preventDefault();
+            function checkValues(data) {
+              for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                  const value = data[key].val;
+                  if (value !== "" && value !== false) {
+                    return true;
+                  }
+                }
+              }
+              return false;
+            }
+            if (checkValues(error)) {
+              toast.error("Fields Required");
+              return false;
+            }
             addAccount();
           }}
         >
@@ -595,11 +635,7 @@ const AddAccount = () => {
                     title={"Username*"}
                     setDetail={setDetail}
                     onKeyDown={(event) => {
-                      if (
-                        event.code === "Space" ||
-                        (event.target.selectionStart === 0 &&
-                          !/[a-zA-Z]/.test(event.key))
-                      ) {
+                      if (event.code === "Space") {
                         event.preventDefault();
                       } else {
                         const regex = /^[a-zA-Z0-9]*$/;
@@ -790,12 +826,12 @@ const AddAccount = () => {
                     setDetail={setDetail}
                     place={9}
                   />
-                  {error[9]?.val ||
-                    (Detail[9]?.val === "" && (
+                  {(error[9]?.val &&
+                    Detail[9]?.val === "") && (
                       <p className="validCommon" style={{ color: "#fa1e1e" }}>
                         Field Required
                       </p>
-                    ))}
+                    )}
                 </div>
                 <div style={{ order: 1 }}>
                   <Input
@@ -919,6 +955,15 @@ const AddAccount = () => {
                     error={error}
                     place={11}
                     type={"Number"}
+                    onKeyDown={(event) => {
+                      if (
+                        event.code === "Space" ||
+                        (!(event.key >= "0" && event.key <= "9") &&
+                          event.key !== "Backspace")
+                      ) {
+                        event.preventDefault();
+                      }
+                    }}
                   />
                 )}
 
@@ -1151,15 +1196,15 @@ const AddAccount = () => {
                     inputStyle={imputStyle}
                     inputContainerStyle={{ ...inputContainerStyle }}
                     title={"Admin Transaction Password*"}
-                    onKeyDown={(event) => {
-                      if (
-                        event.code === "Space" ||
-                        (!(event.key >= "0" && event.key <= "9") &&
-                          event.key !== "Backspace")
-                      ) {
-                        event.preventDefault();
-                      }
-                    }}
+                    // onKeyDown={(event) => {
+                    //   if (
+                    //     event.code === "Space" ||
+                    //     (!(event.key >= "0" && event.key <= "9") &&
+                    //       event.key !== "Backspace")
+                    //   ) {
+                    //     event.preventDefault();
+                    //   }
+                    // }}
                     placeholder={"Ex : 12345"}
                     required={true}
                     setDetail={setDetail}
