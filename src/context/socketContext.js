@@ -276,6 +276,19 @@ export const SocketProvider = ({ children }) => {
             // If the new bet doesn't belong to the current match, return the current state
             return currentMatch;
           }
+          setLSelectedSessionBetting((prev) => {
+            const updated = prev?.map((item) => {
+              if (item?.id === data?.betId) {
+                return {
+                  ...item,
+                  ...data,
+                };
+              }
+              return item;
+            });
+            dispatch(setSelectedSessionBettings(updated));
+            return updated;
+          });
           // Update the bettings array in the current match object
           const updatedBettings = currentMatch?.bettings?.map((betting) => {
             if (betting.id === data.betId) {
@@ -388,21 +401,21 @@ export const SocketProvider = ({ children }) => {
         };
         if (data?.betPlaceData?.match_id === match_id) {
           setCurrentMatch((currentMatch) => {
-            setLSelectedSessionBetting(prev=> {
+            setLSelectedSessionBetting((prev) => {
               const updatedBettings = prev?.map((betting) => {
                 if (betting?.id === data?.betPlaceData?.bet_id) {
-                   let profitLoss = data?.profitLoss;
+                  let profitLoss = data?.profitLoss;
                   return {
                     ...betting,
-  
+
                     profitLoss: profitLoss,
                   };
                 }
                 return betting;
               });
-              dispatch(setSelectedSessionBettings(updatedBettings))
-              return updatedBettings
-            })
+              dispatch(setSelectedSessionBettings(updatedBettings));
+              return updatedBettings;
+            });
             const updatedBettings = currentMatch?.bettings?.map((betting) => {
               if (betting?.id === data?.betPlaceData?.bet_id) {
                 // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
@@ -460,23 +473,12 @@ export const SocketProvider = ({ children }) => {
           }
 
           setLSelectedSessionBetting((prev) => {
-            const findBet = prev?.find(
-              (betting) =>
-                betting?.selectionId === value?.selectionId ||
-                betting?.id === value?.id
-            );
-            const body = {
-              ...findBet,
-              ...value,
-            };
-            var removedBet = prev?.filter(
-              (betting) =>
-                betting?.selectionId !== value?.selectionId &&
-                betting?.id !== value?.id
-            );
-            var updatedBettings = [body, ...removedBet];
-            dispatch(setSelectedSessionBettings(updatedBettings));
-            return updatedBettings;
+            const ids = prev?.map((v) => v?.id);
+            if (!ids.includes(value?.id)) {
+              const newres = [value, ...prev];
+              dispatch(setSelectedSessionBettings(newres));
+              return newres;
+            }
           });
 
           const findBet = currentMatch?.bettings?.find(

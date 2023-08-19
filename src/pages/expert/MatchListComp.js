@@ -25,7 +25,6 @@ import { useNavigate } from "react-router-dom";
 import CustomLoader from "../../components/helper/CustomLoader";
 
 const MatchListComp = () => {
-  const [allMatch, setAllMatch] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
@@ -37,13 +36,13 @@ const MatchListComp = () => {
   const [loading, setLoading] = useState(true);
   const { axios } = setRole();
   const navigate = useNavigate();
+  const [allMatch, setAllMatch] = useState(userAllMatches);
 
   useEffect(() => {
     if (userAllMatches) {
       setAllMatch(userAllMatches);
     }
-  }, [userAllMatches, allEventSession]);
-
+  }, [userAllMatches]);
   const getAllMatch = async (title) => {
     try {
       if (title) {
@@ -174,6 +173,15 @@ const MatchListComp = () => {
                     background: (i + 1) % 2 === 0 ? "#ECECEC" : "",
                   }}
                   data={element}
+                  updatedBookmaker={element?.bookmakers?.map(
+                    (bookmaker, index) => {
+                      return {
+                        id: bookmaker?.id,
+                        marketName: bookmaker?.marketName,
+                        betStatus: bookmaker?.betStatus ? true : false,
+                      };
+                    }
+                  )}
                 />
               );
             })}

@@ -94,9 +94,8 @@ const CustomHeader = ({}) => {
     quickBookmaker,
     selectedSession,
   } = useSelector((state) => state?.expertMatchDetails);
-  const { userAllMatches, selectedMatch, bookMakerBetRates } = useSelector(
-    (state) => state?.matchDetails
-  );
+  const { userAllMatches, selectedMatch, bookMakerBetRates, sessionResults } =
+    useSelector((state) => state?.matchDetails);
   const { userExpert } = useSelector((state) => state.auth);
   const { socket, socketMicro } = useContext(SocketContext);
 
@@ -111,6 +110,7 @@ const CustomHeader = ({}) => {
   const [currentMatch, setCurrentMatch] = useState(null);
   const [localCurrentUser, setLocalCurrentUser] = useState(null);
   const [currentOdds, setCurrentOdds] = useState(null);
+  const [localSessionResult, setLocalSessionResult] = useState([]);
   const [betId, setBetId] = useState("");
 
   const [allLiveEventSession, setAllLiveEventSession] = useState([]);
@@ -180,6 +180,9 @@ const CustomHeader = ({}) => {
     if (selectedSession) {
       setLocalSelectedSession(selectedSession);
     }
+    if (sessionResults) {
+      setLocalSessionResult(sessionResults);
+    }
   }, [
     allBetRates,
     selectedMatch,
@@ -193,7 +196,7 @@ const CustomHeader = ({}) => {
     bookMakerBetRates,
     selectedBookmaker,
   ]);
-  console.log(sessionBetId,"sdd",betId)
+  console.log(sessionBetId, "sdd", betId);
 
   function getSessionStorageItemAsync(key) {
     return new Promise((resolve, reject) => {
@@ -285,8 +288,8 @@ const CustomHeader = ({}) => {
                 const body = {
                   id: data?.betPlaceData?.id,
                   isActive: true,
-                  createAt: data?.betPlaceData?.createdAt,
-                  updateAt: data?.betPlaceData?.createdAt,
+                  createAt: data?.betPlaceData?.createAt,
+                  updateAt: data?.betPlaceData?.createAt,
                   createdBy: null,
                   deletedAt: null,
                   user: { userName: data?.betPlaceData?.userName },
@@ -396,6 +399,18 @@ const CustomHeader = ({}) => {
           setLocalAllMatches((prev) => {
             const updated = prev?.map((matches) => {
               if (matches?.id === data?.matchId) {
+                const idToNewBetStatusMap = data?.quick_bookmaker?.reduce(
+                  (map, item) => {
+                    map[item.id] = item.betStatus;
+                    return map;
+                  },
+                  {}
+                );
+
+                const updatedArray1 = matches?.bookmakers?.map((item) => ({
+                  ...item,
+                  betStatus: idToNewBetStatusMap[item?.id],
+                }));
                 const newBody = {
                   ...matches,
                   apiBookMakerActive: data?.apiBookMakerActive,
@@ -403,6 +418,7 @@ const CustomHeader = ({}) => {
                   apiSessionActive: data?.apiSessionActive,
                   manualBookMakerActive: data?.manualBookMakerActive,
                   manualSessionActive: data?.manualSessionActive,
+                  bookmakers: updatedArray1,
                 };
                 return newBody;
               }
@@ -477,7 +493,6 @@ const CustomHeader = ({}) => {
               }
               return currentMatch;
             });
-           
 
             setAllLiveEventSession((prev) => {
               const updatedAllEventSession = prev?.map((match) => {
@@ -731,6 +746,13 @@ const CustomHeader = ({}) => {
                 const findBet = prev?.bettings?.find(
                   (betting) => betting?.id === value?.betId
                 );
+                setLocalAllBetRates((prev) => {
+                  const updatedValues = prev?.filter(
+                    (v) => v?.bet_id !== value?.betId
+                  );
+                  dispatch(setAllBetRate(updatedValues));
+                  return updatedValues;
+                });
                 const body = {
                   ...findBet,
                   betStatus: 2,
@@ -776,6 +798,27 @@ const CustomHeader = ({}) => {
                         betStatus: 2,
                       };
                       dispatch(setSelectedSession(newBody));
+
+                      setLocalSessionResult((prev) => {
+                        if (i?.id === value?.betId) {
+                          const body = {
+                            ...value,
+                            bet_id: {
+                              id: value?.betId,
+
+                              bet_condition: i?.bet_condition,
+                            },
+
+                            profit_loss: value?.profitLoss
+                              ? value?.profitLoss
+                              : "0",
+                          };
+                          const newBody = [...prev, body];
+                          dispatch(setSessionResults(newBody));
+                          return newBody;
+                        }
+                      });
+
                       return newBody;
                     });
                   }

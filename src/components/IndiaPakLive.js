@@ -106,13 +106,13 @@ const IndiaPakLive = React.forwardRef(
     }));
 
     useEffect(() => {
-      if (sessionProfitLoss) {
-        getSessionResult(match?.id);
+      if (sessionProfitLoss || [0, null]?.includes(sessionProfitLoss)) {
+        // getSessionResult(match?.id);
         setProLoss(sessionProfitLoss);
       }
-      if ([0, null]?.includes(sessionProfitLoss)) {
-        getSessionResult(match?.id);
-      }
+      // if ([0, null]?.includes(sessionProfitLoss)) {
+      //   getSessionResult(match?.id);
+      // }
       if (currentOdd) {
         setCurrentOdds(currentOdd);
       }
@@ -321,7 +321,7 @@ const IndiaPakLive = React.forwardRef(
 
     const getSessionResult = async (match_id) => {
       setProLoss(null);
-      dispatch(setSessionAllBet([]));
+      dispatch(setSessionResults([]));
       let response = await axios.get(`/game-match/getResults/${match_id}`);
 
       dispatch(setSessionResults(response?.data?.data || []));
@@ -605,7 +605,7 @@ const IndiaPakLive = React.forwardRef(
                             onClick={() => {
                               setVisible(false);
                               setIsDisable(true);
-                              getSessionResult(match?.id);
+                              // getSessionResult(match?.id);
                             }}
                             onClickCancel={() => {
                               setVisible(false);

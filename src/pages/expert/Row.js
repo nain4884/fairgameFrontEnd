@@ -13,7 +13,7 @@ import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
 import ButtonWithSwitchBookmaker from "./ButtonWithSwitchBookmaker";
 import moment from "moment";
 
-const Row = ({ index, containerStyle, data }) => {
+const Row = ({ index, containerStyle, data, updatedBookmaker }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { axios } = setRole();
@@ -36,29 +36,27 @@ const Row = ({ index, containerStyle, data }) => {
       val: data?.manualBookMakerActive || false,
     },
   });
+  const { userAllMatches } = useSelector((state) => state?.matchDetails);
+
+  const [updateBookmaker, setUpdateBookmaker] = useState([]);
 
   useEffect(() => {
-   
-    setUpdateMatchStatus((prevStatus) => ({
-      ...prevStatus,
-      1: { ...prevStatus[1], val: data?.apiMatchActive || false },
-      2: { ...prevStatus[2], val: data?.apiBookMakerActive },
-      3: { ...prevStatus[3], val: data?.apiSessionActive || false },
-      4: { ...prevStatus[4], val: data?.manualBookMakerActive || false },
-      5: { ...prevStatus[5], val: data?.manualSessionActive || false },
-    }));
-  }, [data]);
+    if (updatedBookmaker) {
+      console.log(updatedBookmaker, "updatedBookmaker");
+      setUpdateBookmaker(updatedBookmaker);
+    }
 
-  const [updateBookmaker, setUpdateBookmaker] = useState(data?.bookmakers ? [
-    ...data?.bookmakers?.map((bookmaker, index) => {
-      return {
-        id: bookmaker?.id,
-        marketName: bookmaker?.marketName,
-        betStatus: bookmaker?.betStatus == 0 || null ? false : true,
-      };
-    }),
-  ] :[]);
-
+    if (data) {
+      setUpdateMatchStatus((prevStatus) => ({
+        ...prevStatus,
+        1: { ...prevStatus[1], val: data?.apiMatchActive || false },
+        2: { ...prevStatus[2], val: data?.apiBookMakerActive },
+        3: { ...prevStatus[3], val: data?.apiSessionActive || false },
+        4: { ...prevStatus[4], val: data?.manualBookMakerActive || false },
+        5: { ...prevStatus[5], val: data?.manualSessionActive || false },
+      }));
+    }
+  }, [data, updatedBookmaker]);
 
   function showDialogModal(isModalOpen, showRight, message, navigateTo, state) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -70,7 +68,7 @@ const Row = ({ index, containerStyle, data }) => {
       );
     }, [500]);
   }
-
+  console.log(updateBookmaker, " data?.bookmakers");
   const { socket, socketMicro } = useContext(SocketContext);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loading, setLoading] = useState({ val: false, id: "" });
@@ -172,8 +170,10 @@ const Row = ({ index, containerStyle, data }) => {
         }}
       >
         <Typography sx={{ fontSize: "12px" }}>({index})</Typography>
-        <Typography sx={{ fontSize: "9px" ,padding:"4px",fontWeight:"700" }}>{moment(data?.startAt).format("DD-MM-YYYY")} <br/>
-        {moment(data?.startAt).format('LT')}</Typography>
+        <Typography sx={{ fontSize: "9px", padding: "4px", fontWeight: "700" }}>
+          {moment(data?.startAt).format("DD-MM-YYYY")} <br />
+          {moment(data?.startAt).format("LT")}
+        </Typography>
       </Box>
       <Box
         sx={{
