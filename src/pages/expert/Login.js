@@ -634,7 +634,7 @@ export default function Login(props) {
             >
               Forgot Password?
             </Typography> */}
-                <ReCAPTCHACustom
+                {/* <ReCAPTCHACustom
                   containerStyle={{
                     marginTop: "20px",
                     display: "flex",
@@ -647,7 +647,7 @@ export default function Login(props) {
                     setRecaptchToken(token);
                     // apply to form data
                   }}
-                />
+                /> */}
 
                 <Box
                   sx={{
