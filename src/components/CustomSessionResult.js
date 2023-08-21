@@ -25,7 +25,6 @@ const CustomSessionResult = ({
   const [loading, setLoading] = useState({ id: "", value: false });
   const [confirmNoResult, setConfirmNoResults] = useState(false);
 
-
   const undeclareResult = async () => {
     try {
       const body = {
@@ -185,6 +184,7 @@ const CustomSessionResult = ({
       {!confirmNoResult ? (
         <>
           <TextField
+            autoFocus
             placeholder="Score"
             variant="standard"
             value={selected}
