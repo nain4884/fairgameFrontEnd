@@ -525,7 +525,6 @@ const AddAccount = () => {
           ...error[11],
           val: "",
         },
-        
       });
     }
     if (["user"].includes(Detail[9].val)) {
@@ -849,7 +848,11 @@ const AddAccount = () => {
                         (!(event.key >= "0" && event.key <= "9") &&
                           event.key !== "Backspace" &&
                           event.code !== "ArrowUp" &&
-                          event.code !== "ArrowDown")
+                          event.code !== "ArrowDown" &&
+                          event.code !== "Enter" &&
+                          event.code !== "Tab" && // Allow Tab key
+                          event.code !== "ArrowRight" && // Allow Right Arrow key
+                          event.code !== "ArrowLeft")
                       ) {
                         event.preventDefault();
                       }
@@ -957,7 +960,11 @@ const AddAccount = () => {
                         (!(event.key >= "0" && event.key <= "9") &&
                           event.key !== "Backspace" &&
                           event.code !== "ArrowUp" &&
-                          event.code !== "ArrowDown")
+                          event.code !== "ArrowDown" &&
+                          event.code !== "Enter" &&
+                          event.code !== "Tab" && // Allow Tab key
+                          event.code !== "ArrowRight" && // Allow Right Arrow key
+                          event.code !== "ArrowLeft")
                       ) {
                         event.preventDefault();
                       }

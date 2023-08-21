@@ -26,6 +26,21 @@ const MobileViewUserDetails = ({
   titleBackgroundColor,
 }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
+  const handleKeyDown=(event)=>{
+    if (
+      event.code === "Space" ||
+      (!(event.key >= "0" && event.key <= "9") &&
+        event.key !== "Backspace" &&
+        event.code !== "ArrowUp" &&
+        event.code !== "ArrowDown" &&
+        event.code !== "Enter" &&
+        event.code !== "Tab" && // Allow Tab key
+        event.code !== "ArrowRight" && // Allow Right Arrow key
+        event.code !== "ArrowLeft")
+    ) {
+      event.preventDefault();
+    }
+  }
   return (
     <Box
       sx={[
@@ -454,17 +469,7 @@ const MobileViewUserDetails = ({
             <TextField
               required={true}
               value={amount}
-              onKeyDown={(event) => {
-                if (
-                  event.code === "Space" ||
-                  (!(event.key >= "0" && event.key <= "9") &&
-                    event.key !== "Backspace" &&
-                    event.code !== "ArrowUp" &&
-                    event.code !== "ArrowDown")
-                ) {
-                  event.preventDefault();
-                }
-              }}
+              onKeyDown={handleKeyDown}
               onChange={handleChange}
               variant="standard"
               InputProps={{

@@ -271,7 +271,7 @@ const Input = ({
             required={required}
             InputProps={{
               inputProps: {
-                min: type === "Number" ? 0 : undefined,
+                min: type === "Number" ? 0 : undefined,           
               },
               disabled: disabled,
               placeholder: placeholder,

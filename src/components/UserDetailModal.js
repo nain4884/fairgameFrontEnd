@@ -78,6 +78,21 @@ export default function UserDetailModal({
     setShowUserModal(false);
   }
 
+  const handleKeyDown=(event)=>{
+    if (
+      event.code === "Space" ||
+      (!(event.key >= "0" && event.key <= "9") &&
+        event.key !== "Backspace" &&
+        event.code !== "ArrowUp" &&
+        event.code !== "ArrowDown" &&
+        event.code !== "Enter" &&
+        event.code !== "Tab" && // Allow Tab key
+        event.code !== "ArrowRight" && // Allow Right Arrow key
+        event.code !== "ArrowLeft")
+    ) {
+      event.preventDefault();
+    }
+  }
   const classes = {
     mainBox: {
       background: backgroundColor ?? "#F8C851",
@@ -149,7 +164,8 @@ export default function UserDetailModal({
           }}
         >
           {selected == 0 && (
-            <DepositComponent
+            <DepositComponent 
+            handleKeyDown={handleKeyDown}
               element={element}
               backgroundColor={backgroundColor}
               selected={selected == 0}
@@ -175,6 +191,7 @@ export default function UserDetailModal({
           )}
           {selected == 1 && (
             <WithDrawComponent
+            handleKeyDown={handleKeyDown}
               element={element}
               selected={selected == 1}
               setSelected={(e) => {
@@ -200,6 +217,7 @@ export default function UserDetailModal({
           )}
           {selected == 2 && (
             <NewCreditComponent
+               handleKeyDown={handleKeyDown}
               selected={selected == 2}
               setSelected={(e) => {
                 setSelected(null);
@@ -221,6 +239,7 @@ export default function UserDetailModal({
           )}
           {selected == 5 && (
             <SetExposureComponent
+               handleKeyDown={handleKeyDown}
               selected={selected == 5}
               setSelected={(e) => {
                 setSelected(null);
@@ -610,6 +629,7 @@ const BoxButtonWithSwitch = ({
 };
 
 const DepositComponent = ({
+  handleKeyDown,
   setShowUserModal,
   backgroundColor,
   userModal,
@@ -757,6 +777,10 @@ const DepositComponent = ({
     }
   };
 
+  
+ 
+
+
   return (
     <>
       {matchesMobile && matchesTablet ? (
@@ -890,17 +914,7 @@ const DepositComponent = ({
                 >
                   <TextField
                     required={true}
-                    onKeyDown={(event) => {
-                      if (
-                        event.code === "Space" ||
-                        (!(event.key >= "0" && event.key <= "9") &&
-                          event.key !== "Backspace" &&
-                          event.code !== "ArrowUp" &&
-                          event.code !== "ArrowDown")
-                      ) {
-                        event.preventDefault();
-                      }
-                    }}
+                    onKeyDown={handleKeyDown}
                     value={depositObj.amount}
                     onChange={handleChange}
                     variant="standard"
@@ -1268,6 +1282,7 @@ const DepositComponent = ({
 };
 
 const WithDrawComponent = ({
+  handleKeyDown,
   setShowUserModal,
   backgroundColor,
   userModal,
@@ -1539,12 +1554,14 @@ const WithDrawComponent = ({
                 >
                   <TextField
                     required={true}
+                    onKeyDown={handleKeyDown}
                     value={withDrawObj.amount}
                     onChange={handleChange}
                     variant="standard"
                     InputProps={{
                       placeholder: "Type Amount...",
                       disableUnderline: true,
+                      inputProps:{min:"0"},
                       style: {
                         fontSize: "15px",
                         height: "45px",
@@ -1911,6 +1928,7 @@ const WithDrawComponent = ({
 };
 
 const NewCreditComponent = ({
+  handleKeyDown,
   setShowUserModal,
   backgroundColor,
   userModal,
@@ -1991,6 +2009,7 @@ const NewCreditComponent = ({
           >
             <TextField
               value={newCreditObj.amount}
+              onKeyDown={handleKeyDown}
               onChange={(e) => {
                 console.log(e.target.value, Number(e.target.value), "Numer");
                 const newPerRate =
@@ -2040,6 +2059,7 @@ const NewCreditComponent = ({
               InputProps={{
                 placeholder: "Type Amount...",
                 disableUnderline: true,
+                inputProps: { min: "0" },
                 style: {
                   fontSize: "15px",
                   height: "45px",
@@ -2221,6 +2241,7 @@ const NewCreditComponent = ({
 };
 
 const SetExposureComponent = ({
+  handleKeyDown,
   setShowUserModal,
   backgroundColor,
   userModal,
@@ -2269,6 +2290,9 @@ const SetExposureComponent = ({
       console.log(e.message);
     }
   };
+
+
+
   return (
     <form onSubmit={handleExposerSubmit}>
       <Box
@@ -2309,17 +2333,7 @@ const SetExposureComponent = ({
               }}
             >
               <TextField
-                onKeyDown={(event) => {
-                  if (
-                    event.code === "Space" ||
-                    (!(event.key >= "0" && event.key <= "9") &&
-                      event.key !== "Backspace" &&
-                      event.code !== "ArrowUp" &&
-                      event.code !== "ArrowDown")
-                  ) {
-                    event.preventDefault();
-                  }
-                }}
+                onKeyDown={handleKeyDown}
                 required={true}
                 onChange={(e) => {
                   setExposureObj({
