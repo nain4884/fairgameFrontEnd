@@ -88,7 +88,8 @@ export default function UserDetailModal({
         event.code !== "Enter" &&
         event.code !== "Tab" && // Allow Tab key
         event.code !== "ArrowRight" && // Allow Right Arrow key
-        event.code !== "ArrowLeft")
+        event.code !== "ArrowLeft"
+        &&  event.code !== "Delete")
     ) {
       event.preventDefault();
     }
