@@ -336,7 +336,7 @@ const CustomHeader = ({}) => {
                     item?.id === value?.match_id &&
                     value?.sessionBet === false
                   ) {
-                    navigate(`${nav}/market_analysis`);
+                    return navigate(`/${nav}/market_analysis`);
                   }
 
                   if (item?.id === value?.match_id) {
