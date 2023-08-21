@@ -1,9 +1,4 @@
-import {
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
@@ -17,6 +12,7 @@ const FastTimePlaceBet = ({
   setShowFastTimeBox,
   fromOdds,
   selectedFastAmount,
+  typeOfBet,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -30,7 +26,7 @@ const FastTimePlaceBet = ({
     if (!fromOdds) {
       // scrollToBottom();
       scrollToFullDiv();
-      setButtonList(buttonData)
+      setButtonList(buttonData);
     }
   }, [selectedValue, fromOdds]);
 
@@ -52,7 +48,7 @@ const FastTimePlaceBet = ({
       if (session === "sessionOdds") {
         setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
       } else if (session === "manualBookMaker") {
-        setFastAmount((prev) => ({ ...prev, mannualBookMaker: 0 }));
+        setFastAmount((prev) => ({ ...prev, [typeOfBet]: 0 }));
       } else if (session === "bookmaker") {
         setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
       }
@@ -63,7 +59,7 @@ const FastTimePlaceBet = ({
         } else if (session === "manualBookMaker") {
           setFastAmount((prev) => ({
             ...prev,
-            mannualBookMaker: Number(value),
+            [typeOfBet]: Number(value),
           }));
         } else if (session === "bookmaker") {
           setFastAmount((prev) => ({ ...prev, bookMaker: Number(value) }));
@@ -151,7 +147,7 @@ const FastTimePlaceBet = ({
               alignItems: "center",
               justifyContent: "center",
               gap: "5px",
-              flexDirection: "row-reverse"
+              flexDirection: "row-reverse",
             }}
           >
             <button
@@ -201,7 +197,6 @@ const FastTimePlaceBet = ({
               </Typography>
             </button>
           </Box>
-
         </Box>
         {
           <>
@@ -213,23 +208,25 @@ const FastTimePlaceBet = ({
                 gap: { mobile: 0, laptop: 1, tablet: 1 },
               }}
             >
-              {buttonList.length > 0 && buttonList?.slice(0, 4)?.map((v, index) => (
-                <NumberData
-                  key={index}
-                  containerStyle={{
-                    marginLeft: "2px",
-                    flex: 1,
-                    background: selectedFastAmount === v && "#FF4949",
-                    borderRadius: "5px",
-                    border: "2px solid white",
-                  }}
-                  value={v.value}
-                  lable={v.lable}
-                  session={session}
-                  setShowFastTimeBox={setShowFastTimeBox}
-                  setFastAmount={setFastAmount}
-                />
-              ))}
+              {buttonList.length > 0 &&
+                buttonList?.slice(0, 4)?.map((v, index) => (
+                  <NumberData
+                    key={index}
+                    containerStyle={{
+                      marginLeft: "2px",
+                      flex: 1,
+                      background: selectedFastAmount === v && "#FF4949",
+                      borderRadius: "5px",
+                      border: "2px solid white",
+                    }}
+                    value={v.value}
+                    lable={v.lable}
+                    session={session}
+                    setShowFastTimeBox={setShowFastTimeBox}
+                    typeOfBet={typeOfBet}
+                    setFastAmount={setFastAmount}
+                  />
+                ))}
             </Box>
             <Box
               sx={{
@@ -240,23 +237,25 @@ const FastTimePlaceBet = ({
                 gap: { mobile: 0, laptop: 1, tablet: 1 },
               }}
             >
-              {buttonList.length > 0 && buttonList?.slice(4, 8)?.map((v, index) => (
-                <NumberData
-                  key={index}
-                  containerStyle={{
-                    marginLeft: "2px",
-                    flex: 1,
-                    background: selectedFastAmount === v && "#FF4949",
-                    borderRadius: "5px",
-                    border: "2px solid white",
-                  }}
-                  value={v.value}
-                  lable={v.lable}
-                  session={session}
-                  setShowFastTimeBox={setShowFastTimeBox}
-                  setFastAmount={setFastAmount}
-                />
-              ))}
+              {buttonList.length > 0 &&
+                buttonList?.slice(4, 8)?.map((v, index) => (
+                  <NumberData
+                    key={index}
+                    containerStyle={{
+                      marginLeft: "2px",
+                      flex: 1,
+                      background: selectedFastAmount === v && "#FF4949",
+                      borderRadius: "5px",
+                      border: "2px solid white",
+                    }}
+                    value={v.value}
+                    lable={v.lable}
+                    session={session}
+                    setShowFastTimeBox={setShowFastTimeBox}
+                    typeOfBet={typeOfBet}
+                    setFastAmount={setFastAmount}
+                  />
+                ))}
             </Box>
           </>
         }
@@ -267,6 +266,7 @@ const FastTimePlaceBet = ({
 
 const NumberData = ({
   value,
+  typeOfBet,
   containerStyle,
   setFastAmount,
   setShowFastTimeBox,
@@ -278,7 +278,7 @@ const NumberData = ({
         if (session === "sessionOdds") {
           setFastAmount((prev) => ({ ...prev, sessionOdds: value }));
         } else if (session === "manualBookMaker") {
-          setFastAmount((prev) => ({ ...prev, mannualBookMaker: value }));
+          setFastAmount((prev) => ({ ...prev, [typeOfBet]: value }));
         } else if (session === "bookmaker") {
           setFastAmount((prev) => ({ ...prev, bookMaker: value }));
         }

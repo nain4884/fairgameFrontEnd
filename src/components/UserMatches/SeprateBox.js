@@ -302,7 +302,7 @@ const SeprateBox = ({
       if (sessionMain === "sessionOdds") {
         setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
       } else if (sessionMain === "manualBookMaker") {
-        setFastAmount((prev) => ({ ...prev, mannualBookMaker: 0 }));
+        setFastAmount((prev) => ({ ...prev, [typeOfBet]: 0 }));
       } else if (sessionMain === "bookmaker") {
         setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
       }

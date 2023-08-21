@@ -151,6 +151,7 @@ const MatchOdds = ({
         if (bookmaker.betStatus === 1) {
           return (
             <Odds
+              key={bookmaker?.id}
               upcoming={!upcoming}
               betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
               newData={data}
@@ -169,7 +170,7 @@ const MatchOdds = ({
               typeOfBet={bookmaker?.marketType}
               matchOddsData={bookmaker}
               setFastAmount={setFastAmount}
-              fastAmount={fastAmount?.mannualBookMaker}
+              fastAmount={fastAmount?.[bookmaker?.marketType]}
               handleRateChange={handleRateChange}
             />
           );

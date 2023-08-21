@@ -238,6 +238,7 @@ const Odds = ({
                 setPlaceBetData={setPlaceBetData}
                 setFastAmount={setFastAmount}
                 setShowFastTimeBox={setShowFastTimeBox}
+                typeOfBet={typeOfBet}
                 data={fastAmount ? currencyFormatter(fastAmount) : ""}
               />
             )}
@@ -300,6 +301,7 @@ const Odds = ({
         {visible && showFastTimeBox && (
           <Box>
             <FastTimePlaceBet
+              typeOfBet={typeOfBet}
               session={session}
               setFastAmount={setFastAmount}
               selectedFastAmount={fastAmount}
@@ -449,7 +451,7 @@ const Odds = ({
                 }}
               ></Box>
             )}
-           
+
             {session === "manualBookMaker" ? (
               <>
                 <ManualBoxComponent
@@ -465,9 +467,7 @@ const Odds = ({
                   showBox={showBox}
                   selectedFastAmount={fastAmount}
                   livestatus={
-                    matchOddsData?.teamA_suspend === "suspended"
-                      ? true
-                      : false
+                    matchOddsData?.teamA_suspend === "suspended" ? true : false
                   }
                   ballStatus={
                     matchOddsData?.teamA_Ball === "ball" ||
@@ -515,9 +515,7 @@ const Odds = ({
                   selectedFastAmount={fastAmount}
                   // livestatus={newData?.status === "SUSPENDED" ? true : false}
                   livestatus={
-                    matchOddsData?.teamB_suspend === "suspended"
-                      ? true
-                      : false
+                    matchOddsData?.teamB_suspend === "suspended" ? true : false
                   }
                   ballStatus={
                     matchOddsData?.teamB_Ball === "ball" ||

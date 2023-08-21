@@ -49,7 +49,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const theme = useTheme();
   const [fastAmount, setFastAmount] = useState({
     bookMaker: 0,
-    mannualBookMaker: 0,
+    // mannualBookMaker: 0,
+    QuickBookmaker0: 0,
+    QuickBookmaker1: 0,
+    QuickBookmaker2: 0,
     sessionOdds: 0,
   });
 
