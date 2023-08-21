@@ -473,12 +473,29 @@ export const SocketProvider = ({ children }) => {
           }
 
           setLSelectedSessionBetting((prev) => {
+            const findBet = prev?.find(
+              (betting) =>
+                betting?.selectionId === value?.selectionId ||
+                betting?.id === value?.id
+            );
+            const body = {
+              ...findBet,
+              ...value,
+            };
+            var removedBet = prev?.filter(
+              (betting) =>
+                betting?.selectionId !== value?.selectionId &&
+                betting?.id !== value?.id
+            );
+            var updatedBettings = [body, ...removedBet];
+
             const ids = prev?.map((v) => v?.id);
             if (!ids.includes(value?.id)) {
               const newres = [value, ...prev];
-              dispatch(setSelectedSessionBettings(newres));
-              return newres;
+              updatedBettings = newres;
             }
+            dispatch(setSelectedSessionBettings(updatedBettings));
+            return updatedBettings;
           });
 
           const findBet = currentMatch?.bettings?.find(

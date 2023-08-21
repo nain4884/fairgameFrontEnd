@@ -876,43 +876,43 @@ const CustomHeader = ({}) => {
             try {
               setCurrentMatch((currentMatch) => {
                 if (currentMatch?.id === data?.match_id) {
-                  const findBet = currentMatch?.bettings?.find(
-                    (betting) =>
-                      betting?.selectionId === data?.selectionId ||
-                      betting?.id === data?.id
-                  );
-                  const body = {
-                    ...findBet,
-                    ...data,
-                  };
-                  var removedBet = currentMatch?.bettings?.filter(
-                    (betting) =>
-                      betting?.selectionId !== data?.selectionId &&
-                      betting?.id !== data?.id
-                  );
-                  var updatedBettings = [body, ...removedBet];
+                  // const findBet = currentMatch?.bettings?.find(
+                  //   (betting) =>
+                  //     betting?.selectionId === data?.selectionId ||
+                  //     betting?.id === data?.id
+                  // );
+                  // const body = {
+                  //   ...findBet,
+                  //   ...data,
+                  // };
+                  // var removedBet = currentMatch?.bettings?.filter(
+                  //   (betting) =>
+                  //     betting?.selectionId !== data?.selectionId &&
+                  //     betting?.id !== data?.id
+                  // );
+                  // var updatedBettings = [body, ...removedBet];
                   // If the new bet doesn't belong to the current match, return the current state
                   // Update the bettings array in the current match object
-                  // const updatedBettings = currentMatch?.bettings?.map(
-                  //   (betting) => {
-                  //     if (betting?.id === data?.id && data?.sessionBet) {
-                  //       // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                  //       return {
-                  //         ...betting,
-                  //         ...data,
-                  //       };
-                  //     } else if (
-                  //       betting?.id === data?.id &&
-                  //       data.sessionBet === false
-                  //     ) {
-                  //       return {
-                  //         ...betting,
-                  //         ...data,
-                  //       };
-                  //     }
-                  //     return betting;
-                  //   }
-                  // );
+                  const updatedBettings = currentMatch?.bettings?.map(
+                    (betting) => {
+                      if (betting?.id === data?.id && data?.sessionBet) {
+                        // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                        return {
+                          ...betting,
+                          ...data,
+                        };
+                      } else if (
+                        betting?.id === data?.id &&
+                        data.sessionBet === false
+                      ) {
+                        return {
+                          ...betting,
+                          ...data,
+                        };
+                      }
+                      return betting;
+                    }
+                  );
                   var newUpdatedValue = updatedBettings;
                   const bettingsIds = updatedBettings?.map(
                     (betting) => betting?.id
@@ -921,7 +921,7 @@ const CustomHeader = ({}) => {
                   if (!bettingsIds?.includes(data.id)) {
                     // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
 
-                    newUpdatedValue = [...newUpdatedValue, data];
+                    newUpdatedValue = [data, ...newUpdatedValue];
                   } else {
                     setLocalSessionOffline((prev) => {
                       if (prev.includes(data.id)) {
@@ -2077,7 +2077,7 @@ const CustomHeader = ({}) => {
           alignItems: "center",
         }}
       >
-       <marquee loop={true} scrollamount="3">
+        <marquee loop={true} scrollamount="3">
           <Typography
             sx={{
               color: "text.white",
