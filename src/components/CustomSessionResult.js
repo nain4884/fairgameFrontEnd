@@ -163,6 +163,23 @@ const CustomSessionResult = ({
     }
   };
 
+  const handleDeclare = () => {
+    if (loading?.value) {
+      return false;
+    }
+    if (selected === "") {
+      toast.warn("Please enter score");
+    } else {
+      declareResult();
+    }
+  };
+
+  const handleInputKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleDeclare();
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -189,6 +206,7 @@ const CustomSessionResult = ({
             variant="standard"
             value={selected}
             onChange={(e) => setSelected(e?.target.value)}
+            onKeyDown={handleInputKeyPress}
             InputProps={{
               disableUnderline: true,
               sx: {
@@ -228,16 +246,7 @@ const CustomSessionResult = ({
                   session={true}
                   title={"Declare"}
                   loading={loading}
-                  onClick={() => {
-                    if (loading?.value) {
-                      return false;
-                    }
-                    if (selected === "") {
-                      toast.warn("Please enter score");
-                    } else {
-                      declareResult();
-                    }
-                  }}
+                  onClick={handleDeclare}
                 />
               ) : null}
             </>
