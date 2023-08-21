@@ -1277,26 +1277,26 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     getThisMatch(matchId);
   };
 
-  // useEffect(() => {
-  //   const handleVisibilityChange = () => {
-  //     if (document.visibilityState === "visible") {
-  //       // User returned to the web browser
-  //       if (matchId) {
-  //         if (socket && socket.connected) {
-  //           socket.emit("checkConnection");
-  //         }
-  //         getThisMatch(matchId);
-  //       }
-  //     }
-  //   };
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        // User returned to the web browser
+        if (matchId) {
+          // if (socket && socket.connected) {
+          //   socket.emit("checkConnection");
+          // }
+          getThisMatch(matchId);
+        }
+      }
+    };
 
-  //   document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
-  //   // Clean up the event listener on component unmount
-  //   return () => {
-  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
-  //   };
-  // }, []);
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const getScoreBord = async (eventId) => {
     // alert(1)
