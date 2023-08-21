@@ -135,6 +135,7 @@ const FastTimePlaceBet = ({
               InputProps={{
                 placeholder: "",
                 disableUnderline: true,
+                inputProps: { min: "0" },
                 type: "number",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
               }}
@@ -185,6 +186,13 @@ const FastTimePlaceBet = ({
                 border: "2px solid white",
               }}
               onClick={() => {
+                if (session === "sessionOdds") {
+                  setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
+                } else if (session === "manualBookMaker") {
+                  setFastAmount((prev) => ({ ...prev, [typeOfBet]: 0 }));
+                } else if (session === "bookmaker") {
+                  setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
+                }
                 setShowFastTimeBox(false);
               }}
             >
