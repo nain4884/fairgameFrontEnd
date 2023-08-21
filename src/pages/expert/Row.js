@@ -41,12 +41,13 @@ const Row = ({ index, containerStyle, data, updatedBookmaker }) => {
   const [updateBookmaker, setUpdateBookmaker] = useState([]);
 
   useEffect(() => {
-    if (updatedBookmaker) {
-      console.log(updatedBookmaker, "updatedBookmaker");
-      setUpdateBookmaker(updatedBookmaker);
-    }
-
     if (data) {
+      const newBody = data?.bookmakers?.map((b) => ({
+        id: b?.id,
+        marketName: b?.marketName,
+        betStatus: [0, null].includes(b?.betStatus) ? false : true,
+      }));
+      setUpdateBookmaker(newBody);
       setUpdateMatchStatus((prevStatus) => ({
         ...prevStatus,
         1: { ...prevStatus[1], val: data?.apiMatchActive || false },
@@ -56,7 +57,7 @@ const Row = ({ index, containerStyle, data, updatedBookmaker }) => {
         5: { ...prevStatus[5], val: data?.manualSessionActive || false },
       }));
     }
-  }, [data, updatedBookmaker]);
+  }, [data]);
 
   function showDialogModal(isModalOpen, showRight, message, navigateTo, state) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -68,7 +69,6 @@ const Row = ({ index, containerStyle, data, updatedBookmaker }) => {
       );
     }, [500]);
   }
-  console.log(updateBookmaker, " data?.bookmakers");
   const { socket, socketMicro } = useContext(SocketContext);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loading, setLoading] = useState({ val: false, id: "" });

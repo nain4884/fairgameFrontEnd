@@ -43,6 +43,7 @@ const MatchListComp = () => {
       setAllMatch(userAllMatches);
     }
   }, [userAllMatches]);
+
   const getAllMatch = async (title) => {
     try {
       if (title) {
@@ -72,6 +73,7 @@ const MatchListComp = () => {
       console.log(e);
     }
   };
+
   useEffect(() => {
     getAllMatch();
   }, [currentPage]);
@@ -173,15 +175,7 @@ const MatchListComp = () => {
                     background: (i + 1) % 2 === 0 ? "#ECECEC" : "",
                   }}
                   data={element}
-                  updatedBookmaker={element?.bookmakers?.map(
-                    (bookmaker, index) => {
-                      return {
-                        id: bookmaker?.id,
-                        marketName: bookmaker?.marketName,
-                        betStatus: bookmaker?.betStatus ? true : false,
-                      };
-                    }
-                  )}
+  
                 />
               );
             })}

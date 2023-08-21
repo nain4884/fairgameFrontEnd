@@ -15,9 +15,7 @@ const ButtonWithSwitchBookmaker = ({
   const [checked, setChecked] = useState(
     notSwitch
       ? false
-      : updateBookmaker.find((item) => id === item.id)?.betStatus == 0 || null
-      ? false
-      : true
+      : updateBookmaker.find((item) => id === item.id)?.betStatus
   );
   useEffect(() => {
     if (checked) {
@@ -26,6 +24,16 @@ const ButtonWithSwitchBookmaker = ({
       setBackground("#FF4D4D");
     }
   }, [checked]);
+
+  useEffect(() => {
+    if (updateBookmaker) {
+      setChecked(
+        notSwitch
+          ? false
+          : updateBookmaker.find((item) => id === item.id)?.betStatus
+      );
+    }
+  }, [updateBookmaker, notSwitch]);
 
   const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 50,
@@ -129,7 +137,7 @@ const ButtonWithSwitchBookmaker = ({
                 }
                 return val;
               });
-             return body
+              return body;
             });
           }}
         />
