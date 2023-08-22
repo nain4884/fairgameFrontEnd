@@ -423,8 +423,10 @@ const AddSession = ({ add, match, Bid }) => {
 
   const handleSuspend = (back, lay) => {
     if (back && lay) {
-      if (Math.abs(lay - back) >= 1) {
+      if (Math.abs(lay - back) > 1) {
         setIncGap(2);
+      } else if (Math.abs(lay - back) == 1) {
+        setIncGap(1);
       }
     }
     if (
@@ -452,14 +454,17 @@ const AddSession = ({ add, match, Bid }) => {
   };
 
   const handleChange = (event) => {
+    handleSuspend();
     let target = event.target;
-    handleSuspend(target.value);
+
     if (target.value <= 100) {
       if (target.name === "teamA_rate") {
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
             teamA: { ...prev?.teamA, rate: target.value },
+            teamB: {...prev?.teamB, rate: "", lay: ""},
+            teamC: {...prev?.teamC, rate: "", lay: ""}
           };
           // dispatch(setQuickBookmaker(newBody));
           return newBody;
@@ -468,11 +473,16 @@ const AddSession = ({ add, match, Bid }) => {
           return {
             ...prev,
             l_teamARate: target?.value,
+            l_teamBRate: "",
+            l_teamBLayValue: "",
+            l_teamCRate: "",
+            l_teamCLayValue: ""
           };
         });
 
         if (target.value !== "") {
           let teamA_lay = parseInt(target.value) + 1;
+          handleSuspend(target.value, teamA_lay);
 
           setLQuickBookMaker((prev) => {
             return {
@@ -522,6 +532,7 @@ const AddSession = ({ add, match, Bid }) => {
         });
         if (target.value !== "") {
           let teamB_lay = parseInt(target.value) + 1;
+          handleSuspend(target.value, teamB_lay);
 
           setLocalQuickBookmaker((prev) => {
             const newBody = {
@@ -570,6 +581,7 @@ const AddSession = ({ add, match, Bid }) => {
         });
         if (target.value !== "") {
           let teamC_lay = parseInt(target.value) + 1;
+          handleSuspend(target.value, teamC_lay);
           setLocalQuickBookmaker((prev) => {
             const newBody = {
               ...prev,
@@ -631,6 +643,7 @@ const AddSession = ({ add, match, Bid }) => {
     event.target.value = targetValue;
     // if (key == "right") {
     if (key == "d" || key == "right") {
+      handleSuspend()
       let value = targetValue ? targetValue + incGap : incGap;
       let chckValue = localQuickBookmaker?.teamA?.lay
         ? localQuickBookmaker?.teamA?.lay
@@ -638,7 +651,6 @@ const AddSession = ({ add, match, Bid }) => {
       let l_chckValue = lQuickBookMaker?.l_teamALayValue
         ? lQuickBookMaker?.l_teamALayValue
         : value;
-      handleSuspend(targetValue, chckValue);
       setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
@@ -648,6 +660,7 @@ const AddSession = ({ add, match, Bid }) => {
         if (result) {
           return;
         }
+        handleSuspend(targetValue, value);
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -752,7 +765,7 @@ const AddSession = ({ add, match, Bid }) => {
       setPressEnter(false);
       if (
         event.target.name === "teamA_rate" &&
-        localQuickBookmaker?.teamA?.rate > 0
+        lQuickBookMaker?.l_teamARate > 0
       ) {
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -780,7 +793,7 @@ const AddSession = ({ add, match, Bid }) => {
 
       if (
         event.target.name === "teamB_rate" &&
-        localQuickBookmaker?.teamB?.rate > 0
+        lQuickBookMaker?.l_teamBRate > 0
       ) {
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -808,7 +821,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
       if (
         event.target.name === "teamC_rate" &&
-        localQuickBookmaker?.teamC?.rate > 0
+        lQuickBookMaker?.l_teamBRate > 0
       ) {
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -840,13 +853,7 @@ const AddSession = ({ add, match, Bid }) => {
     }
     // if (key == "up") {
     else if (key == "w" || key == "up") {
-      let value = localQuickBookmaker?.teamA?.lay
-        ? localQuickBookmaker?.teamA?.lay
-        : localQuickBookmaker?.teamA?.rate;
-      let l_value = lQuickBookMaker?.l_teamALayValue
-        ? lQuickBookMaker?.l_teamALayValue
-        : lQuickBookMaker?.l_teamARate;
-      handleSuspend(targetValue, value);
+      handleSuspend()
       setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
@@ -856,11 +863,18 @@ const AddSession = ({ add, match, Bid }) => {
         if (result) {
           return;
         }
+        let value = localQuickBookmaker?.teamA?.lay
+          ? localQuickBookmaker?.teamA?.lay
+          : localQuickBookmaker?.teamA?.rate;
+        let l_value = lQuickBookMaker?.l_teamALayValue
+          ? lQuickBookMaker?.l_teamALayValue
+          : lQuickBookMaker?.l_teamARate;
+        handleSuspend(targetValue, l_value + 1);
 
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
-            teamA: { ...prev?.teamA, lay: value + incGap },
+            teamA: { ...prev?.teamA, lay: value ? value + 1 : NaN },
             teamB: { ...prev?.teamB, rate: "", lay: "" },
           };
           // dispatch(setQuickBookmaker(newBody));
@@ -870,7 +884,7 @@ const AddSession = ({ add, match, Bid }) => {
         setLQuickBookMaker((prev) => {
           return {
             ...prev,
-            l_teamALayValue: l_value + incGap,
+            l_teamALayValue: l_value ? l_value + 1 : NaN,
             l_teamBRate: "",
             l_teamBLayValue: "",
           };
@@ -891,12 +905,12 @@ const AddSession = ({ add, match, Bid }) => {
         let l_value = lQuickBookMaker?.l_teamBLayValue
           ? lQuickBookMaker?.l_teamBLayValue
           : lQuickBookMaker?.l_teamBRate;
-
+        handleSuspend(targetValue, l_value + 1);
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
             teamA: { ...prev?.teamA, rate: "", lay: "" },
-            teamB: { ...prev?.teamB, lay: value + incGap },
+            teamB: { ...prev?.teamB, lay: value ? value + 1 : NaN },
           };
           // dispatch(setQuickBookmaker(newBody));
           return newBody;
@@ -907,7 +921,7 @@ const AddSession = ({ add, match, Bid }) => {
             ...prev,
             l_teamARate: "",
             l_teamALayValue: "",
-            l_teamBLayValue: l_value + incGap,
+            l_teamBLayValue: l_value ? l_value + 1 : NaN,
           };
         });
       }
@@ -925,13 +939,14 @@ const AddSession = ({ add, match, Bid }) => {
         let l_value = lQuickBookMaker?.l_teamCLayValue
           ? lQuickBookMaker?.l_teamCLayValue
           : lQuickBookMaker?.l_teamCRate;
+        handleSuspend(targetValue, l_value + 1);
 
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
             teamA: { ...prev?.teamA, rate: "", lay: "" },
             teamB: { ...prev?.teamB, rate: "", lay: "" },
-            teamC: { ...prev?.teamC, lay: value + incGap },
+            teamC: { ...prev?.teamC, lay: value ? value + 1 : NaN },
           };
           // dispatch(setQuickBookmaker(newBody));
           return newBody;
@@ -944,29 +959,29 @@ const AddSession = ({ add, match, Bid }) => {
             l_teamALayValue: "",
             l_teamBRate: "",
             l_teamBLayValue: "",
-            l_teamCLayValue: l_value + incGap,
+            l_teamCLayValue: l_value ? l_value + 1 : NaN,
           };
         });
       }
     }
     // if (key == "down") {
     else if (key == "z" || key == "down") {
-      let value = localQuickBookmaker?.teamA?.lay
-        ? localQuickBookmaker?.teamA?.lay
-        : localQuickBookmaker?.teamA?.rate;
-      handleSuspend(targetValue, value);
+      handleSuspend()
       setPressEnter(false);
       if (
         event.target.name === "teamA_rate" &&
-        localQuickBookmaker?.teamA?.lay - incGap >
-        localQuickBookmaker?.teamA?.rate
+        lQuickBookMaker?.l_teamALayValue - 1 > lQuickBookMaker?.l_teamARate
       ) {
+        handleSuspend(
+          lQuickBookMaker?.l_teamARate,
+          lQuickBookMaker?.l_teamALayValue - 1
+        );
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
             teamA: {
               ...prev?.teamA,
-              lay: localQuickBookmaker?.teamA?.lay - incGap,
+              lay: localQuickBookmaker?.teamA?.lay - 1,
             },
             teamB: { ...prev?.teamB, rate: "", lay: "" },
           };
@@ -977,7 +992,7 @@ const AddSession = ({ add, match, Bid }) => {
         setLQuickBookMaker((prev) => {
           return {
             ...prev,
-            l_teamALayValue: lQuickBookMaker?.l_teamALayValue - incGap,
+            l_teamALayValue: lQuickBookMaker?.l_teamALayValue - 1,
             l_teamBRate: "",
             l_teamBLayValue: "",
           };
@@ -986,16 +1001,19 @@ const AddSession = ({ add, match, Bid }) => {
 
       if (
         event.target.name === "teamB_rate" &&
-        localQuickBookmaker?.teamB?.lay - incGap >
-        localQuickBookmaker?.teamB?.rate
+        lQuickBookMaker?.l_teamBLayValue - 1 > lQuickBookMaker?.l_teamBRate
       ) {
+        handleSuspend(
+          lQuickBookMaker?.l_teamBRate,
+          lQuickBookMaker?.l_teamBLayValue - 1
+        );
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
             teamA: { ...prev?.teamA, rate: "", lay: "" },
             teamB: {
               ...prev?.teamB,
-              lay: localQuickBookmaker?.teamB?.lay - incGap,
+              lay: localQuickBookmaker?.teamB?.lay - 1,
             },
           };
           // dispatch(setQuickBookmaker(newBody));
@@ -1006,16 +1024,19 @@ const AddSession = ({ add, match, Bid }) => {
           return {
             ...prev,
             l_teamALayValue: "",
-            l_teamBRate: "",
-            l_teamBLayValue: lQuickBookMaker?.l_teamBLayValue - incGap,
+            l_teamARate: "",
+            l_teamBLayValue: lQuickBookMaker?.l_teamBLayValue - 1,
           };
         });
       }
       if (
         event.target.name === "teamC_rate" &&
-        localQuickBookmaker?.teamC?.lay - incGap >
-        localQuickBookmaker?.teamC?.rate
+        lQuickBookMaker?.l_teamCLayValue - 1 > lQuickBookMaker?.l_teamCRate
       ) {
+        handleSuspend(
+          lQuickBookMaker?.l_teamCRate,
+          lQuickBookMaker?.l_teamCLayValue - 1
+        );
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -1023,7 +1044,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamB: { ...prev?.teamB, rate: "", lay: "" },
             teamC: {
               ...prev?.teamC,
-              lay: localQuickBookmaker?.teamC?.lay - incGap,
+              lay: localQuickBookmaker?.teamC?.lay - 1,
             },
           };
           // dispatch(setQuickBookmaker(newBody));
@@ -1037,17 +1058,12 @@ const AddSession = ({ add, match, Bid }) => {
             l_teamARate: "",
             l_teamBLayValue: "",
             l_teamBRate: "",
-            l_teamCLayValue: lQuickBookMaker?.l_teamCLayValue - incGap,
+            l_teamCLayValue: lQuickBookMaker?.l_teamCLayValue - 1,
           };
         });
       }
     } else if (key == "`") {
-      handleSuspend(
-        targetValue,
-        localQuickBookmaker?.teamA?.lay
-          ? localQuickBookmaker?.teamA?.lay
-          : localQuickBookmaker?.teamA?.rate
-      );
+      handleSuspend()
       if (match?.teamC) {
         if (event.target.name === "teamA_rate") {
           innerRefTeamB.current.focus();
@@ -1065,6 +1081,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
     } else if (key == "enter" || key == "return") {
       if (isTab == "tab") {
+        handleSuspend();
         let data = {};
         if (match?.teamC) {
           data = {
@@ -1109,7 +1126,11 @@ const AddSession = ({ add, match, Bid }) => {
             betId: localSelectedBookmaker?.betId,
             teamA_lay: lQuickBookMaker?.l_teamALayValue,
             teamA_Back: lQuickBookMaker?.l_teamARate,
-            teamA_suspend: false,
+            teamA_suspend:
+              [null, ""].includes(lQuickBookMaker?.l_teamALayValue) ||
+              [null, ""].includes(lQuickBookMaker?.l_teamARate)
+                ? true
+                : false,
             teamB_lay: "",
             teamB_Back: "",
             teamB_suspend: true,
@@ -1129,7 +1150,11 @@ const AddSession = ({ add, match, Bid }) => {
             teamA_suspend: true,
             teamB_lay: lQuickBookMaker?.l_teamBLayValue,
             teamB_Back: lQuickBookMaker?.l_teamBRate,
-            teamB_suspend: false,
+            teamB_suspend:
+              [null, ""].includes(lQuickBookMaker?.l_teamBLayValue) ||
+              [null, ""].includes(lQuickBookMaker?.l_teamBRate)
+                ? true
+                : false,
             teamC_lay: "",
             teamC_Back: "",
             teamC_suspend: true,
@@ -1149,20 +1174,17 @@ const AddSession = ({ add, match, Bid }) => {
             teamB_suspend: true,
             teamC_lay: lQuickBookMaker?.l_teamCLayValue,
             teamC_Back: lQuickBookMaker?.l_teamCRate,
-            teamC_suspend: false,
+            teamC_suspend:
+              [null, ""].includes(lQuickBookMaker?.l_teamCLayValue) ||
+              [null, ""].includes(lQuickBookMaker?.l_teamCRate)
+                ? true
+                : false,
             layLock: false,
           });
         }
       }
       setIsTab("");
     } else if (key == "tab") {
-      handleSuspend(
-        targetValue,
-        localQuickBookmaker?.teamA?.lay
-          ? localQuickBookmaker?.teamA?.lay
-          : localQuickBookmaker?.teamA?.rate
-      );
-
       setLocalQuickBookmaker((prev) => {
         const newBody = {
           ...prev,
@@ -1188,13 +1210,7 @@ const AddSession = ({ add, match, Bid }) => {
       setIsTab("tab");
     }
     if (key == "*") {
-      //lay getting undefined
-      handleSuspend(
-        targetValue,
-        localQuickBookmaker?.teamA?.lay
-          ? localQuickBookmaker?.teamA?.lay
-          : localQuickBookmaker?.teamA?.rate
-      );
+      handleSuspend()
       if (event.target.name === "teamA_rate") {
         let value = event.target.value ? targetValue + 0.5 : 0;
 
@@ -1273,11 +1289,11 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == "ctrl") {
-      handleSuspend();
+      handleSuspend()
       setIncGap(1);
     }
     if (key == "esc") {
-      handleSuspend();
+      handleSuspend()
       setIncGap(1);
       if (event.target.name === "teamA_rate") {
         let teamARateDecimal = localQuickBookmaker?.teamA?.rate % 1; // get the decimal portion of the number
@@ -1378,7 +1394,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == ".") {
-      handleSuspend();
+      handleSuspend()
       setIncGap(1);
       if (event.target.name === "teamA_rate") {
         let teamARateDecimal = localQuickBookmaker?.teamA?.rate % 1; // get the decimal portion of the number
@@ -1515,8 +1531,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == ",") {
-      //team.lay recieving null
-      handleSuspend();
+      handleSuspend()
       setIncGap(1);
       if (event.target.name === "teamA_rate") {
         if (localQuickBookmaker?.teamA?.rate > 0.5) {
@@ -1653,12 +1668,7 @@ const AddSession = ({ add, match, Bid }) => {
       });
     }
     if (key == "plus") {
-      handleSuspend(
-        targetValue,
-        localQuickBookmaker?.teamA?.lay
-          ? localQuickBookmaker?.teamA?.lay
-          : localQuickBookmaker?.teamA?.rate
-      );
+      handleSuspend()
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {
@@ -1855,12 +1865,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == "minus") {
-      handleSuspend(
-        targetValue,
-        localQuickBookmaker?.teamA?.lay
-          ? localQuickBookmaker?.teamA?.lay
-          : localQuickBookmaker?.teamA?.rate
-      );
+      handleSuspend()
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {
@@ -2085,7 +2090,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == "/") {
-      handleSuspend();
+      handleSuspend()
       setIncGap(5);
       if (event.target.name === "teamA_rate") {
         let value = event.target.value ? targetValue : 0;
@@ -2370,6 +2375,7 @@ const AddSession = ({ add, match, Bid }) => {
                     value={lQuickBookMaker?.l_teamARate}
                     InputProps={{
                       disableUnderline: true,
+                      inputProps: { min: "0", max: "100" },
                       sx: {
                         height: "55px",
                         width: "98%",
@@ -2396,6 +2402,7 @@ const AddSession = ({ add, match, Bid }) => {
                   value={lQuickBookMaker?.l_teamALayValue}
                   InputProps={{
                     disableUnderline: true,
+                    inputProps: { min: "0", max: "100" },
                     sx: {
                       height: "55px",
                       width: "97%",
@@ -2508,6 +2515,7 @@ const AddSession = ({ add, match, Bid }) => {
                     // onChange={(i) => setValue2(i.target.value)}
                     InputProps={{
                       disableUnderline: true,
+                      inputProps: { min: "0", max: "100" },
                       sx: {
                         height: "55px",
                         width: "98%",
@@ -2534,6 +2542,7 @@ const AddSession = ({ add, match, Bid }) => {
                   // onChange={(i) => setTeamBLayValue(i.target.value)}
                   InputProps={{
                     disableUnderline: true,
+                    inputProps: { min: "0", max: "100" },
                     sx: {
                       height: "55px",
                       width: "97%",
@@ -2646,6 +2655,7 @@ const AddSession = ({ add, match, Bid }) => {
                       // onChange={(i) => setValue2(i.target.value)}
                       InputProps={{
                         disableUnderline: true,
+                        inputProps: { min: "0", max: "100" },
                         sx: {
                           height: "55px",
                           width: "98%",
@@ -2668,6 +2678,7 @@ const AddSession = ({ add, match, Bid }) => {
                     value={lQuickBookMaker?.l_teamCLayValue}
                     InputProps={{
                       disableUnderline: true,
+                      inputProps: { min: "0", max: "100" },
                       sx: {
                         height: "55px",
                         width: "97%",
