@@ -1034,7 +1034,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                     }
                     return betting;
                   });
-                  // dispatch(setSelectedSessionBettings(data));
+                  dispatch(setSelectedSessionBettings(data));
                   return data;
                 });
 
