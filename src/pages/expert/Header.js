@@ -741,17 +741,20 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "resultDeclareForBet") {
           const value = packet.data[1];
           // matchId = value?.match_id;
+          setLocalSelectedBookmaker((prev) => {
+            if (
+              prev?.matchId === value?.match_id &&
+              value?.sessionBet === false
+            ) {
+              const newBody = { ...prev, betStatus: 2 };
+              dispatch(setSelectedBookmaker(newBody));
+              return newBody;
+            }
+            return prev;
+          });
           try {
             setCurrentMatch((prev) => {
               if (prev.id === value?.match_id && value?.sessionBet === false) {
-                setLocalSelectedBookmaker((prev) => {
-                  if (prev?.matchId === value?.match_id) {
-                    const newBody = { ...prev, betStatus: 2 };
-                    dispatch(setSelectedBookmaker(newBody));
-                    return newBody;
-                  }
-                  return prev;
-                });
                 navigate("/expert/match");
               }
               if (prev.id === value?.match_id && value?.sessionBet) {
