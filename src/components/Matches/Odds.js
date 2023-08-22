@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import SeparateBox from "./SeparateBox";
 import { TEAMLOGO, TEAMLOGO1 } from "../../assets";
 import Divider from "../helper/Divider";
@@ -1156,4 +1156,4 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
   );
 };
 
-export default Odds;
+export default memo(Odds);

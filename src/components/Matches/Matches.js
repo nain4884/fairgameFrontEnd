@@ -1,5 +1,5 @@
 import { Pagination, Box, Typography, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { } from "@mui/material";
 import "../index.css";
 import Odds from "./Odds";
@@ -127,4 +127,4 @@ const MatchesComponent = ({
   );
 };
 
-export default MatchesComponent;
+export default memo(MatchesComponent);
