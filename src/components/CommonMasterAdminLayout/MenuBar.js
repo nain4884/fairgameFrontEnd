@@ -1,5 +1,6 @@
 import { Box, Menu, MenuItem, Typography } from "@mui/material";
 import React from "react";
+import { memo } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -107,4 +108,4 @@ const DropdownMenu1 = ({ anchorEl, open, handleClose,top, nav,menutItems1,title 
   );
 };
 
-export default DropdownMenu1;
+export default memo(DropdownMenu1);

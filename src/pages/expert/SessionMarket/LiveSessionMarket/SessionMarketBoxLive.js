@@ -13,6 +13,7 @@ import { setRole } from "../../../../newStore";
 import Divider from "../../../../components/helper/Divider";
 import { setSelectedMatch } from "../../../../newStore/reducers/matchDetails";
 import { useDispatch, useSelector } from "react-redux";
+import { memo } from "react";
 
 const SessionMarketBoxLive = ({
   index,
@@ -296,4 +297,4 @@ const SessionMarketBoxLive = ({
   );
 };
 
-export default SessionMarketBoxLive;
+export default memo(SessionMarketBoxLive);

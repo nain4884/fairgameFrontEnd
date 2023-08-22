@@ -6,6 +6,7 @@ import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
 import { BallStart } from "../../assets";
 import { useEffect } from "react";
+import { memo } from "react";
 
 const BoxComponent = ({
   name,
@@ -459,4 +460,4 @@ const BoxComponent = ({
   );
 };
 
-export default BoxComponent;
+export default memo(BoxComponent);

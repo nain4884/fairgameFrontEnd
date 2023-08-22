@@ -38,6 +38,7 @@ import {
   setBookmakerTeamRates,
   setQuickBookmaker,
   setSelectedSession,
+  setSelectedBookmaker,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -195,6 +196,9 @@ const CustomHeader = ({}) => {
     bookmakerTeamRates,
     bookMakerBetRates,
     selectedBookmaker,
+    selectedSession,
+    sessionResults,
+    quickBookmaker,
   ]);
   console.log(sessionBetId, "sdd", betId);
 
@@ -740,6 +744,14 @@ const CustomHeader = ({}) => {
           try {
             setCurrentMatch((prev) => {
               if (prev.id === value?.match_id && value?.sessionBet === false) {
+                setLocalSelectedBookmaker((prev) => {
+                  if (prev?.matchId === value?.match_id) {
+                    const newBody = { ...prev, betStatus: 2 };
+                    dispatch(setSelectedBookmaker(newBody));
+                    return newBody;
+                  }
+                  return prev;
+                });
                 navigate("/expert/match");
               }
               if (prev.id === value?.match_id && value?.sessionBet) {

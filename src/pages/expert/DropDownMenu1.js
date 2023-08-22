@@ -1,6 +1,7 @@
 import { Menu } from "@mui/material";
 import { useState } from "react";
 import MenutItemsComponent from "./MenuItemComponent";
+import { memo } from "react";
 
 const DropdownMenu1 = ({
   anchorEl,
@@ -44,4 +45,4 @@ const DropdownMenu1 = ({
   );
 };
 
-export default DropdownMenu1;
+export default memo(DropdownMenu1);

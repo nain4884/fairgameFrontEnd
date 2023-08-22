@@ -17,6 +17,7 @@ import { setSelectedMatch } from "../../../newStore/reducers/expertMatchDetails"
 import CustomSessionResult from "../../../components/CustomSessionResult";
 import useOuterClick from "../../../components/helper/userOuterClick";
 import { customSort } from "../../../components/helper/util";
+import { memo } from "react";
 
 const SessionMarketBox = ({
   index,
@@ -321,4 +322,4 @@ const SessionMarketBox = ({
   );
 };
 
-export default SessionMarketBox;
+export default memo(SessionMarketBox);

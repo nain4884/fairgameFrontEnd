@@ -5,6 +5,7 @@ import MoneyBox from "./MoneyBox";
 import { useTheme } from "@emotion/react";
 import { formatNumber } from "../../components/helper/helper";
 import { apiBasePath } from "../../components/helper/constants";
+import { memo } from "react";
 const BoxComponent = ({
   name,
   data,
@@ -221,4 +222,4 @@ const BoxComponent = ({
     </Box>
   );
 };
-export default BoxComponent;
+export default memo(BoxComponent);

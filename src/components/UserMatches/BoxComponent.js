@@ -9,6 +9,7 @@ import { formatNumber } from "../helper/helper";
 import SeperateBox from "../../pages/expert/SeperateBox";
 import { apiBasePath } from "../helper/constants";
 import { useEffect } from "react";
+import { memo } from "react";
 
 const BoxComponent = ({
   name,
@@ -543,4 +544,4 @@ const BoxComponent = ({
   );
 };
 
-export default BoxComponent;
+export default memo(BoxComponent);

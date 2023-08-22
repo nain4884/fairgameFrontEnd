@@ -316,7 +316,9 @@ const IndiaPakLive = React.forwardRef(
         });
       }
       setIsCreateSession(createSession);
-      getSessionResult(match?.id);
+      if (match?.id) {
+        getSessionResult(match?.id);
+      }
     }, [sessionEvent?.id]);
 
     const getSessionResult = async (match_id) => {

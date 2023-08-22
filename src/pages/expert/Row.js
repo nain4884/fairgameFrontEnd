@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
 import ButtonWithSwitchBookmaker from "./ButtonWithSwitchBookmaker";
 import moment from "moment";
+import { memo } from "react";
 
 const Row = ({ index, containerStyle, data, updatedBookmaker }) => {
   const dispatch = useDispatch();
@@ -252,4 +253,4 @@ const Row = ({ index, containerStyle, data, updatedBookmaker }) => {
     </Box>
   );
 };
-export default Row;
+export default memo(Row);
