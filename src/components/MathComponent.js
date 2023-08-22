@@ -213,7 +213,7 @@ const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
                                     fontWeight: "600",
                                 }}
                             >
-                                {innings?.[0]?.Team || currentMatch?.teamA}
+                                {innings?.[0]?.Team}
                                 {/* {currentMatch?.teamA} */}
                             </Typography>
                         </Box>
@@ -277,7 +277,7 @@ const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
                                     fontWeight: "600",
                                 }}
                             >
-                                {innings?.[1]?.Team || currentMatch?.teamB}
+                                {innings?.[1]?.Team}
                                 {/* {currentMatch?.teamB} */}
                             </Typography>
                         </Box>
