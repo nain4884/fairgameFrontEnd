@@ -24,7 +24,7 @@ import {
 import { useState, useEffect } from "react";
 import { apiBasePath } from "./helper/constants";
 
-const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
+const MatchComponent = ({ currentMatch, liveScoreData, submit }) => {
     console.log("liveScoreData :", liveScoreData)
     const [visible, setVisible] = useState(true);
     const [overscore, setOverscore] = useState('23');
@@ -51,7 +51,7 @@ const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
         <Box
             sx={[
                 {
-                    width: {  tablet:submit? "100%" :"98%", mobile: submit ? "100%" :"98%", laptop: "100%" },
+                    width: { tablet: submit ? "100%" : "98%", mobile: submit ? "100%" : "98%", laptop: "100%" },
                     display: "flex",
                     flexDirection: "column",
                     alignSelf: "center",
@@ -163,7 +163,7 @@ const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
                                     fontWeight: "bold",
                                 }}
                             >
-                                CRR: {isNaN(innings?.[0]?.CRR) ?  0 :innings?.[0]?.CRR }
+                                CRR: {isNaN(innings?.[0]?.CRR) ? 0 : innings?.[0]?.CRR}
                             </Typography>
                             <Typography
                                 sx={{
@@ -213,7 +213,8 @@ const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
                                     fontWeight: "600",
                                 }}
                             >
-                                {innings?.[0]?.Team || currentMatch?.teamA}
+                                {innings?.[0]?.Team}
+                                {/* {innings?.[0]?.Team || currentMatch?.teamA} */}
                                 {/* {currentMatch?.teamA} */}
                             </Typography>
                         </Box>
@@ -277,7 +278,8 @@ const MatchComponent = ({ currentMatch, liveScoreData,submit }) => {
                                     fontWeight: "600",
                                 }}
                             >
-                                {innings?.[1]?.Team || currentMatch?.teamB}
+                                {innings?.[1]?.Team}
+                                {/* {innings?.[1]?.Team || currentMatch?.teamB} */}
                                 {/* {currentMatch?.teamB} */}
                             </Typography>
                         </Box>
