@@ -112,7 +112,7 @@ const SessionMarketBox = ({
           ) : (
             <Typography
               sx={{
-                fontSize: { mobile: "12px", laptop: "22px" },
+                fontSize: { mobile: "12px", laptop: "20px" },
                 textTransform: "uppercase",
                 textAlign: "center",
                 width: "100%",
