@@ -2412,11 +2412,11 @@ const AddSession = ({ add, match, Bid }) => {
                     onFocus={() => handleFocus(innerRefTeamA)}
                     type="number"
                     variant="standard"
-                    fullWidth
+                    // fullWidth
                     value={lQuickBookMaker?.l_teamARate}
                     InputProps={{
                       disableUnderline: true,
-                      inputProps: { min: "0", max: "100" },
+                      // inputProps: { min: "0", max: "100" },
                       sx: {
                         height: "55px",
                         width: "98%",
@@ -2436,7 +2436,7 @@ const AddSession = ({ add, match, Bid }) => {
                   />
                 </KeyboardEventHandler>
                 <TextField
-                  fullWidth
+                  // fullWidth
                   className="InputChild"
                   disabled
                   // onChange={(e) => handleChange(e)}
@@ -2444,7 +2444,7 @@ const AddSession = ({ add, match, Bid }) => {
                   value={lQuickBookMaker?.l_teamALayValue}
                   InputProps={{
                     disableUnderline: true,
-                    inputProps: { min: "0", max: "100" },
+                    // inputProps: { min: "0", max: "100" },
                     sx: {
                       height: "55px",
                       width: "97%",
@@ -2546,7 +2546,7 @@ const AddSession = ({ add, match, Bid }) => {
                   onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
                 >
                   <TextField
-                    fullWidth
+                    // fullWidth
                     className="InputChild"
                     variant="standard"
                     value={lQuickBookMaker?.l_teamBRate}
@@ -2558,7 +2558,7 @@ const AddSession = ({ add, match, Bid }) => {
                     // onChange={(i) => setValue2(i.target.value)}
                     InputProps={{
                       disableUnderline: true,
-                      inputProps: { min: "0", max: "100" },
+                      // inputProps: { min: "0", max: "100" },
                       sx: {
                         height: "55px",
                         width: "98%",
@@ -2581,12 +2581,12 @@ const AddSession = ({ add, match, Bid }) => {
                   className="InputChild"
                   variant="standard"
                   disabled
-                  fullWidth
+                  // fullWidth
                   value={lQuickBookMaker?.l_teamBLayValue}
                   // onChange={(i) => setTeamBLayValue(i.target.value)}
                   InputProps={{
                     disableUnderline: true,
-                    inputProps: { min: "0", max: "100" },
+                    // inputProps: { min: "0", max: "100" },
                     sx: {
                       height: "55px",
                       width: "97%",
@@ -2695,12 +2695,12 @@ const AddSession = ({ add, match, Bid }) => {
                       name={"teamC_rate"}
                       inputRef={innerRefTeamC}
                       type="number"
-                      fullWidth
+                      // fullWidth
                       onFocus={() => handleFocus(innerRefTeamC)}
                       // onChange={(i) => setValue2(i.target.value)}
                       InputProps={{
                         disableUnderline: true,
-                        inputProps: { min: "0", max: "100" },
+                        // inputProps: { min: "0", max: "100" },
                         sx: {
                           height: "55px",
                           width: "98%",
@@ -2720,11 +2720,10 @@ const AddSession = ({ add, match, Bid }) => {
                     className="InputChild"
                     variant="standard"
                     disabled
-                    fullWidth
                     value={lQuickBookMaker?.l_teamCLayValue}
                     InputProps={{
                       disableUnderline: true,
-                      inputProps: { min: "0", max: "100" },
+                      // inputProps: { min: "0", max: "100" },
                       sx: {
                         height: "55px",
                         width: "97%",
