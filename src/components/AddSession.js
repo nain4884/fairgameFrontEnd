@@ -773,7 +773,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamA: {
               ...prev?.teamA,
               rate: value,
-              lay: localQuickBookmaker?.teamA?.lay - incGap,
+              lay: localQuickBookmaker?.teamA?.lay ? localQuickBookmaker?.teamA?.lay - incGap : localQuickBookmaker?.teamA?.rate,
             },
             teamB: { ...prev?.teamB, rate: "", lay: "" },
           };
@@ -784,7 +784,7 @@ const AddSession = ({ add, match, Bid }) => {
           return {
             ...prev,
             l_teamARate: value,
-            l_teamALayValue: lQuickBookMaker?.l_teamALayValue - incGap,
+            l_teamALayValue: lQuickBookMaker?.l_teamALayValue? lQuickBookMaker?.l_teamALayValue - incGap : lQuickBookMaker?.l_teamARate,
             l_teamBRate: "",
             l_teamBLayValue: "",
           };
@@ -802,7 +802,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamB: {
               ...prev?.teamB,
               rate: value,
-              lay: localQuickBookmaker?.teamB?.lay - incGap,
+              lay: localQuickBookmaker?.teamB?.lay ? localQuickBookmaker?.teamB?.lay - incGap : localQuickBookmaker?.teamB?.rate,
             },
           };
           // dispatch(setQuickBookmaker(newBody));
@@ -815,7 +815,7 @@ const AddSession = ({ add, match, Bid }) => {
             l_teamARate: "",
             l_teamALayValue: "",
             l_teamBRate: value,
-            l_teamBLayValue: lQuickBookMaker?.l_teamBLayValue - incGap,
+            l_teamBLayValue: lQuickBookMaker?.l_teamBLayValue? lQuickBookMaker?.l_teamBLayValue - incGap : lQuickBookMaker?.l_teamBRate,
           };
         });
       }
@@ -831,7 +831,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC: {
               ...prev?.teamC,
               rate: value,
-              lay: localQuickBookmaker?.teamC?.lay - incGap,
+              lay: localQuickBookmaker?.teamC?.lay ? localQuickBookmaker?.teamC?.lay - incGap : localQuickBookmaker?.teamC?.rate,
             },
           };
           // dispatch(setQuickBookmaker(newBody));
@@ -846,7 +846,7 @@ const AddSession = ({ add, match, Bid }) => {
             l_teamBRate: "",
             l_teamBLayValue: "",
             l_teamCRate: value,
-            l_teamCLayValue: lQuickBookMaker?.l_teamCLayValue - incGap,
+            l_teamCLayValue: lQuickBookMaker?.l_teamCLayValue? lQuickBookMaker?.l_teamCLayValue - incGap : lQuickBookMaker?.l_teamCRate,
           };
         });
       }
@@ -981,7 +981,7 @@ const AddSession = ({ add, match, Bid }) => {
             ...prev,
             teamA: {
               ...prev?.teamA,
-              lay: localQuickBookmaker?.teamA?.lay - 1,
+              lay: localQuickBookmaker?.teamA?.lay ? localQuickBookmaker?.teamA?.lay - 1 : localQuickBookmaker?.teamA?.rate,
             },
             teamB: { ...prev?.teamB, rate: "", lay: "" },
           };
@@ -992,7 +992,7 @@ const AddSession = ({ add, match, Bid }) => {
         setLQuickBookMaker((prev) => {
           return {
             ...prev,
-            l_teamALayValue: lQuickBookMaker?.l_teamALayValue - 1,
+            l_teamALayValue:  lQuickBookMaker?.l_teamALayValue ? lQuickBookMaker?.l_teamALayValue - 1 : lQuickBookMaker?.l_teamARate,
             l_teamBRate: "",
             l_teamBLayValue: "",
           };
@@ -1013,7 +1013,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamA: { ...prev?.teamA, rate: "", lay: "" },
             teamB: {
               ...prev?.teamB,
-              lay: localQuickBookmaker?.teamB?.lay - 1,
+              lay: localQuickBookmaker?.teamB?.lay ? localQuickBookmaker?.teamB?.lay - 1 : localQuickBookmaker?.teamB?.rate,
             },
           };
           // dispatch(setQuickBookmaker(newBody));
@@ -1025,7 +1025,7 @@ const AddSession = ({ add, match, Bid }) => {
             ...prev,
             l_teamALayValue: "",
             l_teamARate: "",
-            l_teamBLayValue: lQuickBookMaker?.l_teamBLayValue - 1,
+            l_teamBLayValue: lQuickBookMaker?.l_teamBLayValue ? lQuickBookMaker?.l_teamBLayValue - 1 : lQuickBookMaker?.l_teamBRate,
           };
         });
       }
@@ -1044,7 +1044,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamB: { ...prev?.teamB, rate: "", lay: "" },
             teamC: {
               ...prev?.teamC,
-              lay: localQuickBookmaker?.teamC?.lay - 1,
+              lay: localQuickBookmaker?.teamC?.lay ? localQuickBookmaker?.teamC?.lay - 1 : localQuickBookmaker?.teamC?.rate,
             },
           };
           // dispatch(setQuickBookmaker(newBody));
@@ -1058,7 +1058,7 @@ const AddSession = ({ add, match, Bid }) => {
             l_teamARate: "",
             l_teamBLayValue: "",
             l_teamBRate: "",
-            l_teamCLayValue: lQuickBookMaker?.l_teamCLayValue - 1,
+            l_teamCLayValue: lQuickBookMaker?.l_teamCLayValue ? lQuickBookMaker?.l_teamCLayValue - 1 : lQuickBookMaker?.l_teamCRate,
           };
         });
       }
