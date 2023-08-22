@@ -24,6 +24,7 @@ const AccountListRow = ({
   showOptions,
   handleExport,
   showCReport,
+  showUserDetails
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -683,7 +684,7 @@ const AccountListRow = ({
                 sx={{
                   width: "100%",
                   display: "flex",
-                  visibility: !showCReport &&  "hidden",
+                  visibility: !showUserDetails &&  "hidden",
                   // paddingX: "10px",
                   alignItems: "center",
                   height: "100%",

@@ -176,6 +176,7 @@ const AccountList = () => {
                           key={i}
                           callProfile={true}
                           showOptions={true}
+                          showUserDetails={true}
                           showCReport={true}
                           containerStyle={{ background: "#FFE094" }}
                           profit={element.profit_loss >= 0}
@@ -193,6 +194,7 @@ const AccountList = () => {
                           key={i}
                              showCReport={true}
                           callProfile={true}
+                          showUserDetails={true}
                           showOptions={true}
                           containerStyle={{ background: "#ECECEC" }}
                           profit={element.profit_loss >= 0}

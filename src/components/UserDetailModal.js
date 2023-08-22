@@ -348,7 +348,7 @@ export default function UserDetailModal({
             title={"Withdraw"}
             labelStyle={{}}
           />
-          {elementToUDM?.role?.roleName === "user" && (
+          {elementToUDM?.role?.roleName !== "expert" && (
             <BoxButton
               color={"#0B4F26"}
               onClick={(e) => {
