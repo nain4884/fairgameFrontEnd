@@ -2412,6 +2412,7 @@ const AddSession = ({ add, match, Bid }) => {
                     onFocus={() => handleFocus(innerRefTeamA)}
                     type="number"
                     variant="standard"
+                    fullWidth
                     value={lQuickBookMaker?.l_teamARate}
                     InputProps={{
                       disableUnderline: true,
@@ -2435,6 +2436,7 @@ const AddSession = ({ add, match, Bid }) => {
                   />
                 </KeyboardEventHandler>
                 <TextField
+                  fullWidth
                   className="InputChild"
                   disabled
                   // onChange={(e) => handleChange(e)}
@@ -2544,6 +2546,7 @@ const AddSession = ({ add, match, Bid }) => {
                   onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
                 >
                   <TextField
+                    fullWidth
                     className="InputChild"
                     variant="standard"
                     value={lQuickBookMaker?.l_teamBRate}
@@ -2578,6 +2581,7 @@ const AddSession = ({ add, match, Bid }) => {
                   className="InputChild"
                   variant="standard"
                   disabled
+                  fullWidth
                   value={lQuickBookMaker?.l_teamBLayValue}
                   // onChange={(i) => setTeamBLayValue(i.target.value)}
                   InputProps={{
@@ -2691,6 +2695,7 @@ const AddSession = ({ add, match, Bid }) => {
                       name={"teamC_rate"}
                       inputRef={innerRefTeamC}
                       type="number"
+                      fullWidth
                       onFocus={() => handleFocus(innerRefTeamC)}
                       // onChange={(i) => setValue2(i.target.value)}
                       InputProps={{
@@ -2715,6 +2720,7 @@ const AddSession = ({ add, match, Bid }) => {
                     className="InputChild"
                     variant="standard"
                     disabled
+                    fullWidth
                     value={lQuickBookMaker?.l_teamCLayValue}
                     InputProps={{
                       disableUnderline: true,
