@@ -407,7 +407,6 @@ export const SocketProvider = ({ children }) => {
                   let profitLoss = data?.profitLoss;
                   return {
                     ...betting,
-
                     profitLoss: profitLoss,
                   };
                 }

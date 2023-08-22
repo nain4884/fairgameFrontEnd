@@ -64,6 +64,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     selectedMatch,
     manualBookmaker,
     sessionOffline,
+    selectedSessionBettings
   } = useSelector((state) => state?.matchDetails);
   const [IObets, setIObtes] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
@@ -154,6 +155,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     if (sessionOffline) {
       setSessionOff(sessionOffline);
     }
+
+    if(selectedSessionBettings){
+      setLSelectedSessionBetting(selectedSessionBettings)
+    }
   }, [
     allBetRates,
     allSessionBets,
@@ -161,6 +166,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     selectedMatch,
     manualBookmaker,
     sessionOffline,
+    selectedSessionBettings
   ]);
 
   // useEffect(() => {
@@ -1365,6 +1371,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               />
               <div style={{ width: "100%" }}>
                 <MatchOdds
+                  LSelectedSessionBetting={LSelectedSessionBetting}
                   sessionBets={sessionBets}
                   setFastAmount={setFastAmount}
                   fastAmount={fastAmount}
@@ -1450,6 +1457,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               >
                 <MatchOdds
                   sessionBets={sessionBets}
+                  LSelectedSessionBetting={LSelectedSessionBetting}
                   sessionExposer={localSessionExposer}
                   setFastAmount={setFastAmount}
                   fastAmount={fastAmount}

@@ -26,10 +26,9 @@ const MatchOdds = ({
   setFastAmount,
   fastAmount,
   handleRateChange,
+  LSelectedSessionBetting,
 }) => {
-  const { manualBookMarkerRates, selectedSessionBettings } = useSelector(
-    (state) => state?.matchDetails
-  );
+  const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
   const [matchOddRateLive, setMatchOddRateLive] = useState(false);
@@ -249,7 +248,7 @@ const MatchOdds = ({
             data={sessionOddsLive}
             apiSessionActive={data?.apiSessionActive}
             manualSessionActive={data?.manualSessionActive}
-            newData={selectedSessionBettings}
+            newData={LSelectedSessionBetting}
             sessionOffline={sessionOffline}
             sessionExposer={sessionExposer}
             // dataProfit={dataProfit}
@@ -278,7 +277,7 @@ const MatchOdds = ({
             data={sessionOddsLive}
             apiSessionActive={data?.apiSessionActive}
             manualSessionActive={data?.manualSessionActive}
-            newData={selectedSessionBettings}
+            newData={LSelectedSessionBetting}
             sessionOffline={sessionOffline}
             sessionExposer={sessionExposer}
             // dataProfit={dataProfit}
