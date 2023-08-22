@@ -350,8 +350,8 @@ const SessionMarket = ({
                 flexDirection: "column",
                 width: "100%",
                 position: "relative",
-                maxHeight: "387px",
-                overflowY: "visible",
+                // maxHeight: "387px",
+                // overflowY: "visible",
               }}
             >
               {newMatchSessionData?.length > 0 &&
