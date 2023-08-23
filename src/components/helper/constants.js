@@ -1,13 +1,9 @@
 module.exports = {
   // apiBasePath: "http://159.65.154.97:3100/", // server url
   // apiBasePath: "http://159.65.154.97:3300/", // server url
-  // apiBasePath: "http://139.59.88.49:3100/", // server url
-  apiBasePath: "https://3100dev.fairgame.club/",
-
-  // apiMicroBasePath: "http://localhost:3200", // server url
-  apiMicroBasePath: "https://3100dev.fairgame.club",
-  // microServiceApiPath: "http://139.59.88.49:3200",
-  microServiceApiPath: "https://3200dev.fairgame.club",
+  apiBasePath: "http://139.59.88.49:3100/", // server url
+  apiMicroBasePath: "http://localhost:3200", // server url
+  microServiceApiPath: "http://139.59.88.49:3200",
   // imageBasePath: "http://localhost:4000/public/images/", /// server image base pathpath
 
   // thirdPartyAPIBasePath: "http://3.23.22.210:4001/api/", // third party api url
@@ -77,7 +73,7 @@ module.exports = {
   // sessionExpireTime: 30 // 30 sec,
 
   customPageLimit: 15,
-  customTimeOut: 1000 * 60 * 60,// 5 mint in mili seconds user ideal 5 mint after that logout
-  customTimer: 1000 * 60 * 5,// 30 sec in mili seconds remainint timer start and show message  Your session will expire in 30 second
-  sessionExpireTime: 60 * 5 // 30 sec,
+  customTimeOut: 1000 * 60 * 60, // 5 mint in mili seconds user ideal 5 mint after that logout
+  customTimer: 1000 * 60 * 5, // 30 sec in mili seconds remainint timer start and show message  Your session will expire in 30 second
+  sessionExpireTime: 60 * 5, // 30 sec,
 };
