@@ -45,19 +45,6 @@ const SessionMarket = ({
   const [fastBetLoading, setFastBetLoading] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  const matchSessionData = newData?.filter((element) => {
-    if (apiSessionActive && title === "Session Market") {
-      return element.sessionBet === true && element.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
-    }
-
-    if (manualSessionActive && title === "Quick Session Market") {
-      return element.sessionBet === true && element.selectionId === null; // Show elements where selectionId is null when manualSessionActive is true
-    }
-
-    return false; // Default case: no active session types
-  });
-
-  const newMatchSessionData = matchSessionData.sort(customSort)
   const [visible, setVisible] = useState(true);
 
   console.log(sessionOffline, "sessionOffline");
@@ -354,40 +341,43 @@ const SessionMarket = ({
                 // overflowY: "visible",
               }}
             >
-              {newMatchSessionData?.length > 0 &&
-                newMatchSessionData?.map((element) => {
-                  return (
-                    <Box
-                      key={element?.id}
-                      sx={{
-                        width: "100%",
-                        display: element?.betStatus === 2 ? "none" : "block",
-                      }}
-                    >
-                      <SessionMarketBox
-                        upcoming={upcoming}
-                        closeModal={
-                          [0, 2]?.includes(element?.betStatus) ? true : false
-                        }
-                        typeOfBet={typeOfBet}
-                        setFastBetLoading={setFastBetLoading}
-                        data={element}
-                        sessionMain={session}
-                        selectedFastAmount={fastAmount}
-                        setFastAmount={setFastAmount}
-                        mainData={data}
-                        newData={newData}
-                        allRates={{
-                          teamA: teamARates,
-                          teamB: teamBRates,
-                          teamC: teamCRates,
+              {newData?.length > 0 &&
+                newData
+                  ?.slice()
+                  .sort(customSort)
+                  ?.map((element) => {
+                    return (
+                      <Box
+                        key={element?.id}
+                        sx={{
+                          width: "100%",
+                          display: element?.betStatus === 2 ? "none" : "block",
                         }}
-                        handleRateChange={handleRateChange}
-                      />
-                      <Divider />
-                    </Box>
-                  );
-                })}
+                      >
+                        <SessionMarketBox
+                          upcoming={upcoming}
+                          closeModal={
+                            [0, 2]?.includes(element?.betStatus) ? true : false
+                          }
+                          typeOfBet={typeOfBet}
+                          setFastBetLoading={setFastBetLoading}
+                          data={element}
+                          sessionMain={session}
+                          selectedFastAmount={fastAmount}
+                          setFastAmount={setFastAmount}
+                          mainData={data}
+                          newData={newData}
+                          allRates={{
+                            teamA: teamARates,
+                            teamB: teamBRates,
+                            teamC: teamCRates,
+                          }}
+                          handleRateChange={handleRateChange}
+                        />
+                        <Divider />
+                      </Box>
+                    );
+                  })}
             </Box>
           </Box>
         )}

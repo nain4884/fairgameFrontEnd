@@ -112,6 +112,7 @@ const expertMatchDetails = createSlice({
     setSelectedBookmaker: (state, action) => {
       state.selectedBookmaker = action.payload;
     },
+    
     setSessionResultRefresh: (state, action) => {
       state.sessionResultRefresh = action.payload;
     },

@@ -23,6 +23,7 @@ import {
   setManualBookmaker,
   setSessionExposure,
   setSelectedSessionBettings,
+  setQuickSession,
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -38,6 +39,7 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import CustomLoader from "../../components/helper/CustomLoader";
 import { toast } from "react-toastify";
+import { setQuickBookmaker } from "../../newStore/reducers/expertMatchDetails";
 
 // let sessionOffline = [];
 let matchOddsCount = 0;
@@ -65,6 +67,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     manualBookmaker,
     sessionOffline,
     selectedSessionBettings,
+    quickSession,
   } = useSelector((state) => state?.matchDetails);
   const [IObets, setIObtes] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
@@ -83,6 +86,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
   const [LSelectedSessionBetting, setLSelectedSessionBetting] = useState([]);
+  const [localQuickSession, setLocalQuickSession] = useState([]);
   const [liveScoreData, setLiveScoreData] = useState();
   const [isHandled, setIsHandled] = useState(false);
   const checkMctchId = useSelector(
@@ -159,6 +163,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     if (selectedSessionBettings) {
       setLSelectedSessionBetting(selectedSessionBettings);
     }
+
+    if (quickSession) {
+      setLocalQuickSession(quickSession);
+    }
   }, [
     allBetRates,
     allSessionBets,
@@ -167,6 +175,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     manualBookmaker,
     sessionOffline,
     selectedSessionBettings,
+    quickSession,
   ]);
 
   // useEffect(() => {
@@ -1024,37 +1033,25 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               if (currentMatch?.bettings?.length > 0) {
                 setLSelectedSessionBetting((prev) => {
                   const data = prev?.map((betting) => {
-                    var selectedData =
-                      newVal?.length > 0 &&
-                      newVal?.find(
-                        (nv) => nv?.selectionId === betting?.selectionId
-                      );
+                    const selectedData = newVal?.find(
+                      (nv) => nv?.selectionId === betting?.selectionId
+                    );
 
-                    if (selectedData && selectedData !== undefined) {
-                      return {
-                        ...betting,
-                        bet_condition: selectedData?.bet_condition,
-                        no_rate: selectedData?.no_rate,
-                        yes_rate: selectedData?.yes_rate,
-                        rate_percent: selectedData?.rate_percent,
-                        suspended: selectedData?.suspended,
-                        selectionId: selectedData?.selectionId,
-                      };
-                    }
-                    if (betting?.selectionId !== null) {
-                      return {
-                        ...betting,
-                        bet_condition: betting?.bet_condition,
-                        no_rate: 0,
-                        yes_rate: 0,
-                        rate_percent: betting?.rate_percent,
-                        suspended: "",
-                        selectionId: betting?.selectionId,
-                      };
-                    }
-                    return betting;
+                    return {
+                      ...betting,
+                      bet_condition:
+                        selectedData?.bet_condition || betting?.bet_condition,
+                      no_rate: selectedData?.no_rate || 0,
+                      yes_rate: selectedData?.yes_rate || 0,
+                      rate_percent:
+                        selectedData?.rate_percent || betting?.rate_percent,
+                      suspended: selectedData?.suspended || "",
+                      selectionId:
+                        selectedData?.selectionId || betting?.selectionId,
+                    };
                   });
-                  dispatch(setSelectedSessionBettings(data));
+
+                  // dispatch(setSelectedSessionBettings(data));
                   return data;
                 });
 
@@ -1076,6 +1073,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   if (betting?.selectionId !== null) {
                     return {
                       ...betting,
+                      betStatus: betting?.betStatus,
                       bet_condition: betting?.bet_condition,
                       no_rate: 0,
                       yes_rate: 0,
@@ -1222,8 +1220,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         (element) => element.sessionBet === false
       );
       let sessionDataTemp = response.data?.bettings?.filter(
-        (element) => element.sessionBet
+        (element) => element.sessionBet && element.selectionId !== null
       );
+
+      let quickSessionDataTemp = response.data?.bettings?.filter(
+        (element) => element.sessionBet && element.selectionId === null
+      );
+      setLocalQuickSession(quickSessionDataTemp);
+      dispatch(setQuickSession(quickSessionDataTemp));
       setLSelectedSessionBetting(sessionDataTemp);
       dispatch(setSelectedSessionBettings(sessionDataTemp));
       setManualBookmakerData(matchOddsDataTemp);
@@ -1316,7 +1320,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           // if (socket && socket.connected) {
           //   socket.emit("checkConnection");
           // }
-          getThisMatch(matchId);
+          // getThisMatch(matchId);
         }
       }
     };
@@ -1396,6 +1400,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               />
               <div style={{ width: "100%" }}>
                 <MatchOdds
+                  localQuickSession={localQuickSession}
                   LSelectedSessionBetting={LSelectedSessionBetting}
                   sessionBets={sessionBets}
                   setFastAmount={setFastAmount}
@@ -1481,6 +1486,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 }}
               >
                 <MatchOdds
+                  localQuickSession={localQuickSession}
                   sessionBets={sessionBets}
                   LSelectedSessionBetting={LSelectedSessionBetting}
                   sessionExposer={localSessionExposer}

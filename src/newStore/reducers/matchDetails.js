@@ -24,6 +24,7 @@ const initialState = {
   sessionOffline: [],
   userAllMatches: [],
   multiSelectedMatches: [],
+  quickSession:[]
 };
 
 export const logoutMatchDetails = createAction("auth/logoutReset");
@@ -151,6 +152,9 @@ const matchDetails = createSlice({
     setSelectedSessionBettings: (state, action) => {
       state.selectedSessionBettings = action.payload;
     },
+    setQuickSession: (state, action) => {
+      state.quickSession = action.payload;
+    },
     setConfirmAuth: (state, action) => {
       state.confirmAuth = action.payload;
     },
@@ -216,7 +220,8 @@ export const {
   setManualBookmaker,
   setSessionOffline,
   setUserAllMatches,
-  setMultiSelectedMatch
+  setMultiSelectedMatch,
+  setQuickSession
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

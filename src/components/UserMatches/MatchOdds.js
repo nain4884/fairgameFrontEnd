@@ -27,6 +27,7 @@ const MatchOdds = ({
   fastAmount,
   handleRateChange,
   LSelectedSessionBetting,
+  localQuickSession,
 }) => {
   const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
   const [matchOddsData, setMatchOddsData] = useState([]);
@@ -248,7 +249,7 @@ const MatchOdds = ({
             data={sessionOddsLive}
             apiSessionActive={data?.apiSessionActive}
             manualSessionActive={data?.manualSessionActive}
-            newData={LSelectedSessionBetting}
+            newData={localQuickSession}
             sessionOffline={sessionOffline}
             sessionExposer={sessionExposer}
             // dataProfit={dataProfit}
