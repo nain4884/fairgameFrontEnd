@@ -306,7 +306,7 @@ const SeprateBox = ({
       } else if (sessionMain === "bookmaker") {
         setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
       }
-      toast.success(response.data.message);
+      // toast.success(response.data.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
       setVisible(true);
       setFastBetLoading(false);
@@ -318,6 +318,14 @@ const SeprateBox = ({
         loading: false,
         type: true,
       });
+      setTimeout(() => {
+        setCanceled({
+          value: false,
+          msg: "",
+          loading: false,
+          type: false,
+        });
+      }, 2000);
       setIsPopoverOpen(false);
       // navigate("/matchDetail")
     } catch (e) {
@@ -329,15 +337,22 @@ const SeprateBox = ({
         loading: false,
         type: false,
       });
+     
       setBetPalaceError(true);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
       setTimeout(() => {
-        // handleRateChange(); 
+        // handleRateChange();
         //add
         setVisible(true);
         setIsPopoverOpen(false);
+        setCanceled({
+          value: false,
+          msg: "",
+          loading: false,
+          type: false,
+        });
       }, 1500);
     }
   };
@@ -367,8 +382,8 @@ const SeprateBox = ({
       >
         <Box
           onClick={(e) => {
-            if(lock || [0,"0"].includes(value)){
-              return false
+            if (lock || [0, "0"].includes(value)) {
+              return false;
             }
             if (betPlaceLoading) {
               return false;
@@ -413,8 +428,7 @@ const SeprateBox = ({
                   payload.sessionBet = true;
                 }
                 handlePlaceBet(payload, currentMatch, po);
-              }
-              else {
+              } else {
                 setIsPopoverOpen(true);
                 setSelectedCountry(name);
                 setSelectedValue(value);
@@ -428,7 +442,7 @@ const SeprateBox = ({
           }}
           style={{ position: "relative" }}
           sx={{
-            background: lock || [0,"0"].includes(value) ? "#FDF21A" : color,
+            background: lock || [0, "0"].includes(value) ? "#FDF21A" : color,
             border:
               color != "white" ? "1px solid #2626264D" : "0px solid white",
             width: "100%",
@@ -440,7 +454,7 @@ const SeprateBox = ({
             cursor: !empty && !lock && value && value2 && "pointer",
           }}
         >
-          {!empty && (!lock && ![0,"0"].includes(value)) && (
+          {!empty && !lock && ![0, "0"].includes(value) && (
             <Box sx={{ alignItems: "center", justifyContent: "space-around" }}>
               <Typography
                 sx={{
@@ -467,7 +481,7 @@ const SeprateBox = ({
               ) : null}
             </Box>
           )}
-          {(lock || [0,"0"].includes(value)) && (
+          {(lock || [0, "0"].includes(value)) && (
             <img
               src={Lock}
               style={{ width: "10px", height: "15px" }}

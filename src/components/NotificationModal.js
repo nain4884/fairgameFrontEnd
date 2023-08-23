@@ -7,15 +7,15 @@ import SmallCustomLoader from "./helper/SmallCustomLoader";
 
 const NotificationModal = ({ open, handleClose, time }) => {
   try {
-    useEffect(() => {
-      let TimeVal = (time * 1000) + 2000;
-      if (open.value) {
-        setTimeout(() => {
-          handleClose();
-        }, TimeVal);
-      }
-    }, [open.value]);
-    console.log("open", open);
+    // useEffect(() => {
+    //   let TimeVal = (time * 1000) + 2000;
+    //   if (open.value) {
+    //     setTimeout(() => {
+    //       handleClose();
+    //     }, TimeVal);
+    //   }
+    // }, [open.value]);
+    // console.log("open", open);
     return (
       <MUIModal
         sx={{
@@ -27,10 +27,10 @@ const NotificationModal = ({ open, handleClose, time }) => {
         open={open?.value}
         // onClose={handleClose}
         slotProps={{
-        backdrop: {
-          onClick: (event) => event.stopPropagation(),
-        },
-      }}
+          backdrop: {
+            onClick: (event) => event.stopPropagation(),
+          },
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
