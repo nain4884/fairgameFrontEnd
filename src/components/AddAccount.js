@@ -312,7 +312,7 @@ const AddAccount = () => {
   }
 
   const sessionComissionArray = [];
-  for (let i = 0; i <= 4; i += 0.25) {
+  for (let i = 0; i <= 3.5; i += 0.25) {
     sessionComissionArray.push(i?.toFixed(2));
   }
   function handleUpline() {
