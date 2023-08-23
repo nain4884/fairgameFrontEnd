@@ -876,43 +876,43 @@ const CustomHeader = ({}) => {
             try {
               setCurrentMatch((currentMatch) => {
                 if (currentMatch?.id === data?.match_id) {
-                  // const findBet = currentMatch?.bettings?.find(
-                  //   (betting) =>
-                  //     betting?.selectionId === data?.selectionId ||
-                  //     betting?.id === data?.id
-                  // );
-                  // const body = {
-                  //   ...findBet,
-                  //   ...data,
-                  // };
-                  // var removedBet = currentMatch?.bettings?.filter(
-                  //   (betting) =>
-                  //     betting?.selectionId !== data?.selectionId &&
-                  //     betting?.id !== data?.id
-                  // );
-                  // var updatedBettings = [body, ...removedBet];
+                  const findBet = currentMatch?.bettings?.find(
+                    (betting) =>
+                      betting?.selectionId === data?.selectionId ||
+                      betting?.id === data?.id
+                  );
+                  const body = {
+                    ...findBet,
+                    ...data,
+                  };
+                  var removedBet = currentMatch?.bettings?.filter(
+                    (betting) =>
+                      betting?.selectionId !== data?.selectionId &&
+                      betting?.id !== data?.id
+                  );
+                  var updatedBettings = [body, ...removedBet];
                   // If the new bet doesn't belong to the current match, return the current state
                   // Update the bettings array in the current match object
-                  const updatedBettings = currentMatch?.bettings?.map(
-                    (betting) => {
-                      if (betting?.id === data?.id && data?.sessionBet) {
-                        // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                        return {
-                          ...betting,
-                          ...data,
-                        };
-                      } else if (
-                        betting?.id === data?.id &&
-                        data.sessionBet === false
-                      ) {
-                        return {
-                          ...betting,
-                          ...data,
-                        };
-                      }
-                      return betting;
-                    }
-                  );
+                  // const updatedBettings = currentMatch?.bettings?.map(
+                  //   (betting) => {
+                  //     if (betting?.id === data?.id && data?.sessionBet) {
+                  //       // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                  //       return {
+                  //         ...betting,
+                  //         ...data,
+                  //       };
+                  //     } else if (
+                  //       betting?.id === data?.id &&
+                  //       data.sessionBet === false
+                  //     ) {
+                  //       return {
+                  //         ...betting,
+                  //         ...data,
+                  //       };
+                  //     }
+                  //     return betting;
+                  //   }
+                  // );
                   var newUpdatedValue = updatedBettings;
                   const bettingsIds = updatedBettings?.map(
                     (betting) => betting?.id
@@ -952,25 +952,40 @@ const CustomHeader = ({}) => {
               setMatchData((prevMatchData) => {
                 const updated = prevMatchData.map((item) => {
                   if (item?.id === data?.match_id) {
+                    const findBet = currentMatch?.bettings?.find(
+                      (betting) =>
+                        betting?.selectionId === data?.selectionId ||
+                        betting?.id === data?.id
+                    );
+                    const body = {
+                      ...findBet,
+                      ...data,
+                    };
+                    var removedBet = currentMatch?.bettings?.filter(
+                      (betting) =>
+                        betting?.selectionId !== data?.selectionId &&
+                        betting?.id !== data?.id
+                    );
+                    var updatedBettings = [body, ...removedBet];
                     // Update the bettings array in the current match object
-                    const updatedBettings = item?.bettings?.map((betting) => {
-                      if (betting.id === data.id && data.sessionBet) {
-                        // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                        return {
-                          ...betting,
-                          ...data,
-                        };
-                      } else if (
-                        betting?.id === data?.id &&
-                        data.sessionBet === false
-                      ) {
-                        return {
-                          ...betting,
-                          ...data,
-                        };
-                      }
-                      return betting;
-                    });
+                    // const updatedBettings = item?.bettings?.map((betting) => {
+                    //   if (betting.id === data.id && data.sessionBet) {
+                    //     // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                    //     return {
+                    //       ...betting,
+                    //       ...data,
+                    //     };
+                    //   } else if (
+                    //     betting?.id === data?.id &&
+                    //     data.sessionBet === false
+                    //   ) {
+                    //     return {
+                    //       ...betting,
+                    //       ...data,
+                    //     };
+                    //   }
+                    //   return betting;
+                    // });
                     var newUpdatedValue = updatedBettings;
                     const bettingsIds = updatedBettings?.map(
                       (betting) => betting?.id
