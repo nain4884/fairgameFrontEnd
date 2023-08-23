@@ -86,7 +86,7 @@ const ProfitLoss = ({ selected, visible }) => {
           match_id: v.match_id,
           bet_id: v.bet_id,
           result: "pending",
-          team_bet: v.team_bet,
+          team_bet: v.team_bet || v.teamBet,
           odds: v.odds,
           win_amount: null,
           loss_amount: null,

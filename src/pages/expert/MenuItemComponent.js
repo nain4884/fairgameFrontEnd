@@ -10,6 +10,7 @@ import {
   setSelectedSession,
   setSessionBetId,
   setSessionProfitLoss,
+  setSessionResultRefresh,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setBookMakerBetRate, setSessionResults } from "../../newStore/reducers/matchDetails";
 
@@ -95,7 +96,7 @@ const MenutItemsComponent = ({
                           onClick={(e) => {
                             if (activeUser == "1") {
                               dispatch(setSessionBetId(element?.id));
-
+                              dispatch(setSessionResultRefresh(true));
                               navigate("/expert/live", {
                                 state: {
                                   createSession: false,
@@ -133,6 +134,7 @@ const MenutItemsComponent = ({
               dispatch(setSessionResults([]))
               dispatch(setSessionProfitLoss(null))
               dispatch(setSelectedSession(null));
+              dispatch(setSessionResultRefresh(true));
               navigate("/expert/live", {
                 state: {
                   createSession: true,

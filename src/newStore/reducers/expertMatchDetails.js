@@ -16,6 +16,7 @@ const initialState = {
   selectedBookmaker: null,
   sessionProfitLoss: null,
   selectedSession: null,
+  sessionResultRefresh:false,
   quickBookmaker: {
     teamA: {
       rate: null,
@@ -111,6 +112,9 @@ const expertMatchDetails = createSlice({
     setSelectedBookmaker: (state, action) => {
       state.selectedBookmaker = action.payload;
     },
+    setSessionResultRefresh: (state, action) => {
+      state.sessionResultRefresh = action.payload;
+    },
     extraReducers: (builder) => {
       // This will handle the reset on logout
       builder.addCase(logoutExpertDetails, () => initialState);
@@ -136,6 +140,7 @@ export const {
   setQuickBookmaker,
   setSelectedBookmaker,
   setSelectedSession,
+  setSessionResultRefresh
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

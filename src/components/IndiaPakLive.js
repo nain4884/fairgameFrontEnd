@@ -28,6 +28,7 @@ import {
   setAllEventSession,
   setSessionProfitLoss,
   setSelectedSession,
+  setSessionResultRefresh,
 } from "../newStore/reducers/expertMatchDetails";
 import { removeCurrentUser } from "../newStore/reducers/currentUser";
 import { logout } from "../newStore/reducers/auth";
@@ -60,6 +61,7 @@ const IndiaPakLive = React.forwardRef(
       currentOdd,
       sessionProfitLoss,
       selectedSession,
+      sessionResultRefresh,
     } = useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
@@ -316,16 +318,19 @@ const IndiaPakLive = React.forwardRef(
         });
       }
       setIsCreateSession(createSession);
-      if (match?.id) {
-        getSessionResult(match?.id);
-      }
     }, [sessionEvent?.id]);
 
+    useEffect(() => {
+      if (match?.id && sessionResultRefresh) {
+        getSessionResult(match?.id);
+      }
+    }, [match?.id, sessionResultRefresh]);
+
     const getSessionResult = async (match_id) => {
-      setProLoss(null);
+      // setProLoss(null);
       dispatch(setSessionResults([]));
       let response = await axios.get(`/game-match/getResults/${match_id}`);
-
+      dispatch(setSessionResultRefresh(false));
       dispatch(setSessionResults(response?.data?.data || []));
     };
 
@@ -377,6 +382,7 @@ const IndiaPakLive = React.forwardRef(
         let [firstValue, secondValue] = data.rate_percent
           ? data.rate_percent.split("-")
           : "";
+
         dispatch(setSelectedSession(data));
         if (data?.betStatus === 2) {
           setIsDisable(true);

@@ -39,6 +39,8 @@ import {
   setQuickBookmaker,
   setSelectedSession,
   setSelectedBookmaker,
+  setSessionResult,
+  setSessionResultRefresh,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -758,6 +760,7 @@ const CustomHeader = ({}) => {
                 navigate("/expert/match");
               }
               if (prev.id === value?.match_id && value?.sessionBet) {
+                dispatch(setSessionResultRefresh(true));
                 const findBet = prev?.bettings?.find(
                   (betting) => betting?.id === value?.betId
                 );
@@ -805,8 +808,10 @@ const CustomHeader = ({}) => {
             setAllLiveEventSession((prev) => {
               var updatedPrev = prev?.map((item) => {
                 if (item.id === value?.match_id && value?.sessionBet) {
-                  dispatch(setSessionProfitLoss(value?.profitLoss));
+                  dispatch(setSessionResultRefresh(true));
+              
                   if (sessionBetId === value?.betId) {
+                    dispatch(setSessionProfitLoss(value?.profitLoss));
                     setLocalSelectedSession((i) => {
                       const newBody = {
                         ...i,
@@ -816,6 +821,7 @@ const CustomHeader = ({}) => {
 
                       setLocalSessionResult((prev) => {
                         if (i?.id === value?.betId) {
+                        
                           dispatch(setSessionAllBet([]));
                           const body = {
                             ...value,
