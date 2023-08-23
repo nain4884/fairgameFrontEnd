@@ -688,10 +688,10 @@ const MatchSubmit = ({}) => {
                     if (item?.marketId === marketIds[i]) {
                       // Merge the filteredNewVal with the currentMatch bettings array
                       const data = item.bettings?.map((betting) => {
-                        var selectedData = newVal?.find(
+                        var selectedData =  newVal?.length > 0 && newVal?.find(
                           (data) => data?.selectionId === betting?.selectionId
                         );
-                        if (selectedData !== undefined) {
+                        if (selectedData && selectedData !== undefined) {
                           return {
                             ...betting,
                             bet_condition: selectedData?.bet_condition,
@@ -700,6 +700,17 @@ const MatchSubmit = ({}) => {
                             rate_percent: selectedData?.rate_percent,
                             suspended: selectedData?.suspended,
                             selectionId: selectedData?.selectionId,
+                          };
+                        }
+                        if (betting?.selectionId !== null) {
+                          return {
+                            ...betting,
+                            bet_condition: betting?.bet_condition,
+                            no_rate: 0,
+                            yes_rate: 0,
+                            rate_percent: betting?.rate_percent,
+                            suspended: "",
+                            selectionId: betting?.selectionId,
                           };
                         }
                         return betting;

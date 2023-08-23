@@ -100,8 +100,14 @@ const Footer = ({ currentPage, pages, callPage, currenLimit }) => {
     </Box>
   );
 };
-const BetsList = ({ betHistory, pageCount, currentPage, currenLimit, handleGetLimitEntries, handlecallPage }) => {
-
+const BetsList = ({
+  betHistory,
+  pageCount,
+  currentPage,
+  currenLimit,
+  handleGetLimitEntries,
+  handlecallPage,
+}) => {
   const getLimitEntries = (childLimitData) => {
     handleGetLimitEntries(childLimitData);
   };
@@ -135,29 +141,35 @@ const BetsList = ({ betHistory, pageCount, currentPage, currenLimit, handleGetLi
       ]}
     >
       <ListH getLimitEntries={getLimitEntries} />
-      <Box sx={{ overflowX: "scroll" }}>
-        <Box sx={{ overflowX: "scroll", minWidth: "900px" }}>
-          <ListHeaderT />
 
-          {betHistory.map((item, index) => {
-            return (
-              <Row
+      <Box sx={{ overflowX: "scroll", minWidth: "900px" }}>
+        <ListHeaderT />
+
+        {betHistory.map((item, index) => {
+          return (
+            <Row
               key={index}
-                data={item}
-                index={index}
-                containerStyle={{ background: "#FFE094" }}
-                profit={true}
-                fContainerStyle={{ background: "#0B4F26" }}
-                fTextStyle={{ color: "white" }}
-              />
-            );
-          })}
-          {betHistory.length === 0 && (
-            <EmptyRow containerStyle={{ background: "#FFE094" }} />
-          )}
-        </Box>
+              data={item}
+              index={index}
+              containerStyle={{ background: "#FFE094" }}
+              profit={true}
+              fContainerStyle={{ background: "#0B4F26" }}
+              fTextStyle={{ color: "white" }}
+            />
+          );
+        })}
+        {betHistory.length === 0 && (
+          <EmptyRow containerStyle={{ background: "#FFE094" }} />
+        )}
       </Box>
-      <Box sx={{ width: { laptop: "100.25%", mobile: "101%" }, position: "absolute", left: "-2px" }}>
+
+      <Box
+        sx={{
+          width: { laptop: "100.25%", mobile: "101%" },
+          position: "absolute",
+          left: "-2px",
+        }}
+      >
         {/* <Footer /> */}
         <Footer
           currenLimit={currenLimit}
