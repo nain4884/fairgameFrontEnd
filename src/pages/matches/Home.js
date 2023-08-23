@@ -64,7 +64,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     selectedMatch,
     manualBookmaker,
     sessionOffline,
-    selectedSessionBettings
+    selectedSessionBettings,
   } = useSelector((state) => state?.matchDetails);
   const [IObets, setIObtes] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
@@ -156,8 +156,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       setSessionOff(sessionOffline);
     }
 
-    if(selectedSessionBettings){
-      setLSelectedSessionBetting(selectedSessionBettings)
+    if (selectedSessionBettings) {
+      setLSelectedSessionBetting(selectedSessionBettings);
     }
   }, [
     allBetRates,
@@ -166,7 +166,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     selectedMatch,
     manualBookmaker,
     sessionOffline,
-    selectedSessionBettings
+    selectedSessionBettings,
   ]);
 
   // useEffect(() => {
@@ -1024,10 +1024,13 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               if (currentMatch?.bettings?.length > 0) {
                 setLSelectedSessionBetting((prev) => {
                   const data = prev?.map((betting) => {
-                    var selectedData = newVal?.find(
-                      (nv) => nv?.selectionId === betting?.selectionId
-                    );
-                    if (selectedData !== undefined) {
+                    var selectedData =
+                      newVal?.length > 0 &&
+                      newVal?.find(
+                        (nv) => nv?.selectionId === betting?.selectionId
+                      );
+
+                    if (selectedData && selectedData !== undefined) {
                       return {
                         ...betting,
                         bet_condition: selectedData?.bet_condition,
@@ -1036,6 +1039,17 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                         rate_percent: selectedData?.rate_percent,
                         suspended: selectedData?.suspended,
                         selectionId: selectedData?.selectionId,
+                      };
+                    }
+                    if (betting?.selectionId !== null) {
+                      return {
+                        ...betting,
+                        bet_condition: betting?.bet_condition,
+                        no_rate: 0,
+                        yes_rate: 0,
+                        rate_percent: betting?.rate_percent,
+                        suspended: "",
+                        selectionId: betting?.selectionId,
                       };
                     }
                     return betting;
@@ -1048,7 +1062,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   var selectedData = newVal?.find(
                     (data) => data?.selectionId === betting?.selectionId
                   );
-                  if (selectedData !== undefined) {
+                  if (selectedData && selectedData !== undefined) {
                     return {
                       ...betting,
                       bet_condition: selectedData?.bet_condition,
@@ -1057,6 +1071,17 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                       rate_percent: selectedData?.rate_percent,
                       suspended: selectedData?.suspended,
                       selectionId: selectedData?.selectionId,
+                    };
+                  }
+                  if (betting?.selectionId !== null) {
+                    return {
+                      ...betting,
+                      bet_condition: betting?.bet_condition,
+                      no_rate: 0,
+                      yes_rate: 0,
+                      rate_percent: betting?.rate_percent,
+                      suspended: "",
+                      selectionId: betting?.selectionId,
                     };
                   }
                   return betting;
