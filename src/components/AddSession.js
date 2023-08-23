@@ -160,7 +160,8 @@ const AddSession = ({ add, match, Bid }) => {
           id: response?.data?.data?.id,
           betId: response?.data?.data?.bet_id,
           marketType: response?.data?.data?.marketType,
-          marketName: response?.data?.data?.marketName
+          marketName: response?.data?.data?.marketName,
+          betStatus: response?.data?.data.betStatus,
         };
         setLocalSelectedBookmaker(body);
         dispatch(setSelectedBookmaker(body));
