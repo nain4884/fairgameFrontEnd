@@ -426,10 +426,11 @@ const AddSession = ({ add, match, Bid }) => {
   // }, [socket]);
 
   const handleSuspend = (back, lay) => {
+    debugger;
     if (back && lay) {
-      if (Math.abs(lay - back) > 1) {
+      if (Math.abs(lay - back) > 2) {
         setIncGap(2);
-      } else if (Math.abs(lay - back) == 1) {
+      } else if (Math.abs(lay - back) == 2) {
         setIncGap(1);
       }
     }
@@ -458,7 +459,7 @@ const AddSession = ({ add, match, Bid }) => {
   };
 
   const handleChange = (event) => {
-    handleSuspend();
+    // handleSuspend();
     let target = event.target;
 
     if (target.value <= 100) {
@@ -659,14 +660,7 @@ const AddSession = ({ add, match, Bid }) => {
     event.target.value = targetValue;
     // if (key == "right") {
     if (key == "d" || key == "right") {
-      handleSuspend();
       let value = targetValue ? targetValue + incGap : incGap;
-      let chckValue = localQuickBookmaker?.teamA?.lay
-        ? localQuickBookmaker?.teamA?.lay
-        : value;
-      let l_chckValue = lQuickBookMaker?.l_teamALayValue
-        ? lQuickBookMaker?.l_teamALayValue
-        : value;
       setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
@@ -676,7 +670,14 @@ const AddSession = ({ add, match, Bid }) => {
         if (result) {
           return;
         }
-        handleSuspend(targetValue, value);
+
+        let chckValue = localQuickBookmaker?.teamA?.lay
+          ? localQuickBookmaker?.teamA?.lay
+          : value;
+        let l_chckValue = lQuickBookMaker?.l_teamALayValue
+          ? lQuickBookMaker?.l_teamALayValue
+          : value;
+        handleSuspend(targetValue, l_chckValue);
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -706,6 +707,13 @@ const AddSession = ({ add, match, Bid }) => {
           return;
         }
 
+        let chckValue = localQuickBookmaker?.teamB?.lay
+          ? localQuickBookmaker?.teamB?.lay
+          : value;
+        let l_chckValue = lQuickBookMaker?.l_teamBLayValue
+          ? lQuickBookMaker?.l_teamBLayValue
+          : value;
+        handleSuspend(targetValue, l_chckValue);
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -715,13 +723,6 @@ const AddSession = ({ add, match, Bid }) => {
           // dispatch(setQuickBookmaker(newBody));
           return newBody;
         });
-
-        let chckValue = localQuickBookmaker?.teamB?.lay
-          ? localQuickBookmaker?.teamB?.lay
-          : value;
-        let l_chckValue = lQuickBookMaker?.l_teamBLayValue
-          ? lQuickBookMaker?.l_teamBLayValue
-          : value;
 
         setLQuickBookMaker((prev) => {
           return {
@@ -741,6 +742,14 @@ const AddSession = ({ add, match, Bid }) => {
         if (result) {
           return;
         }
+        let chckValue = localQuickBookmaker?.teamC?.lay
+          ? localQuickBookmaker?.teamC?.lay
+          : value;
+
+        let l_chckValue = lQuickBookMaker?.l_teamCLayValue
+          ? lQuickBookMaker?.l_teamCLayValue
+          : value;
+        handleSuspend(targetValue, l_chckValue);
 
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -752,14 +761,6 @@ const AddSession = ({ add, match, Bid }) => {
           // dispatch(setQuickBookmaker(newBody));
           return newBody;
         });
-
-        let chckValue = localQuickBookmaker?.teamC?.lay
-          ? localQuickBookmaker?.teamC?.lay
-          : value;
-
-        let l_chckValue = lQuickBookMaker?.l_teamCLayValue
-          ? lQuickBookMaker?.l_teamCLayValue
-          : value;
 
         setLQuickBookMaker((prev) => {
           return {
@@ -777,12 +778,13 @@ const AddSession = ({ add, match, Bid }) => {
     // if (key == "left") {
     else if (key == "a" || key == "left") {
       let value = targetValue - incGap;
-      handleSuspend(targetValue, value);
+
       setPressEnter(false);
       if (
         event.target.name === "teamA_rate" &&
         lQuickBookMaker?.l_teamARate > 0
       ) {
+        handleSuspend(targetValue, lQuickBookMaker?.l_teamALayValue - incGap);
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -815,6 +817,7 @@ const AddSession = ({ add, match, Bid }) => {
         event.target.name === "teamB_rate" &&
         lQuickBookMaker?.l_teamBRate > 0
       ) {
+        handleSuspend(targetValue, lQuickBookMaker?.l_teamBLayValue - incGap);
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -847,6 +850,7 @@ const AddSession = ({ add, match, Bid }) => {
         event.target.name === "teamC_rate" &&
         lQuickBookMaker?.l_teamBRate > 0
       ) {
+        handleSuspend(targetValue, lQuickBookMaker?.l_teamCLayValue - incGap);
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -881,7 +885,6 @@ const AddSession = ({ add, match, Bid }) => {
     }
     // if (key == "up") {
     else if (key == "w" || key == "up") {
-      handleSuspend();
       setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
@@ -994,7 +997,6 @@ const AddSession = ({ add, match, Bid }) => {
     }
     // if (key == "down") {
     else if (key == "z" || key == "down") {
-      handleSuspend();
       setPressEnter(false);
       if (
         event.target.name === "teamA_rate" &&
@@ -1104,19 +1106,63 @@ const AddSession = ({ add, match, Bid }) => {
       }
     } else if (key == "`") {
       handleSuspend();
+      setIsTab("");
       if (match?.teamC) {
         if (event.target.name === "teamA_rate") {
           innerRefTeamB.current.focus();
+          setLQuickBookMaker((prev) => {
+            return {
+              ...prev,
+              l_teamARate: "",
+              l_teamALayValue: "",
+              l_teamCRate: "",
+              l_teamCLayValue: "",
+            };
+          });
         } else if (event.target.name === "teamB_rate") {
           innerRefTeamC.current.focus();
+          setLQuickBookMaker((prev) => {
+            return {
+              ...prev,
+              l_teamARate: "",
+              l_teamALayValue: "",
+              l_teamBRate: "",
+              l_teamBLayValue: "",
+            };
+          });
         } else if (event.target.name === "teamC_rate") {
           innerRefTeamA.current.focus();
+          setLQuickBookMaker((prev) => {
+            return {
+              ...prev,
+              l_teamBRate: "",
+              l_teamBLayValue: "",
+              l_teamCRate: "",
+              l_teamCLayValue: "",
+            };
+          });
         }
       } else {
         if (event.target.name === "teamA_rate") {
           innerRefTeamB.current.focus();
+          setLQuickBookMaker((prev) => {
+            return {
+              ...prev,
+              l_teamBRate: "",
+              l_teamARate: "",
+              l_teamALayValue: "",
+            };
+          });
         } else if (event.target.name === "teamB_rate") {
           innerRefTeamA.current.focus();
+          setLQuickBookMaker((prev) => {
+            return {
+              ...prev,
+              l_teamARate: "",
+              l_teamBRate: "",
+              l_teamBLayValue: "",
+            };
+          });
         }
       }
     } else if (key == "enter" || key == "return") {
