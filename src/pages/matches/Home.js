@@ -133,10 +133,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   }, []);
 
   useEffect(() => {
-    if (allBetRates.length > 0) {
+    if (allBetRates) {
       setIObtes(allBetRates);
     }
-    if (allSessionBets.length > 0) {
+    if (allSessionBets) {
       setSessionBets(allSessionBets);
     }
 
