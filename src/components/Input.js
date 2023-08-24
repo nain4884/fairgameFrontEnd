@@ -266,12 +266,20 @@ const Input = ({
             variant="standard"
             placeholder={placeholder}
             value={value}
-            type={type === "Number" ? "number" : "text"}
+            type={
+              showPass && String(title).toLowerCase().includes("password")
+                ? "password"
+                : type === "Number"
+                ? "Number"
+                : "text"
+            }
             // onKeyDown={onKeyDown}
             required={required}
             InputProps={{
+              autoComplete: 'new-password', 
               inputProps: {
-                min: type === "Number" ? 0 : undefined,           
+                min: type === "Number" ? "0" : undefined,
+                max: type === "Number" ? "100" : undefined,
               },
               disabled: disabled,
               placeholder: placeholder,
@@ -280,12 +288,6 @@ const Input = ({
               ...inputProps,
               // value: Detail[9]?.val==="user" && Detail[place]?.val,
 
-              type:
-                showPass && String(title).toLowerCase().includes("password")
-                  ? "password"
-                  : type === "Number"
-                  ? "number"
-                  : "text",
               sx: [
                 { fontSize: { laptop: "12px", mobile: "14px" } },
                 inputStyle,
@@ -301,7 +303,22 @@ const Input = ({
               const inputValue = e.target.value;
               const regex = /^[a-zA-Z][a-zA-Z0-9]*$/; // Only allows a-z, A-Z, and 0-9
               const regex1 = /^[0-9]+$/; // Only allows whole numbers (no decimal)
-              if (!regex1.test(inputValue) && place === 11) {
+              if (
+                !regex1.test(inputValue) &&
+                place === 11 &&
+                inputValue <= 100
+              ) {
+                setDetail({
+                  ...Detail,
+                  [place]: {
+                    ...Detail[place],
+                    val: "",
+                  },
+                  [12]: {
+                    ...Detail[12],
+                    val: 100 - Detail[10].val,
+                  },
+                });
                 setError({
                   ...error,
                   [place]: {

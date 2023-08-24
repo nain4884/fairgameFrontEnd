@@ -78,7 +78,7 @@ export default function UserDetailModal({
     setShowUserModal(false);
   }
 
-  const handleKeyDown=(event)=>{
+  const handleKeyDown = (event) => {
     if (
       event.code === "Space" ||
       (!(event.key >= "0" && event.key <= "9") &&
@@ -88,12 +88,30 @@ export default function UserDetailModal({
         event.code !== "Enter" &&
         event.code !== "Tab" && // Allow Tab key
         event.code !== "ArrowRight" && // Allow Right Arrow key
-        event.code !== "ArrowLeft"
-        &&  event.code !== "Delete")
+        event.code !== "ArrowLeft" &&
+        event.code !== "Delete")
     ) {
       event.preventDefault();
     }
-  }
+  };
+
+  const handleKeyDown1 = (event) => {
+    if (
+      event.code === "Space" ||
+      (!(event.key >= "0" && event.key <= "9") &&
+        event.key !== "Backspace" &&
+        event.code !== "ArrowUp" &&
+        event.code !== "ArrowDown" &&
+        event.code !== "Enter" &&
+        event.code !== "Tab" && // Allow Tab key
+        event.code !== "ArrowRight" && // Allow Right Arrow key
+        event.code !== "ArrowLeft" &&
+        event.code !== "Delete" &&
+        event.key !== ".")
+    ) {
+      event.preventDefault();
+    }
+  };
   const classes = {
     mainBox: {
       background: backgroundColor ?? "#F8C851",
@@ -165,8 +183,8 @@ export default function UserDetailModal({
           }}
         >
           {selected == 0 && (
-            <DepositComponent 
-            handleKeyDown={handleKeyDown}
+            <DepositComponent
+              handleKeyDown={handleKeyDown1}
               element={element}
               backgroundColor={backgroundColor}
               selected={selected == 0}
@@ -192,7 +210,7 @@ export default function UserDetailModal({
           )}
           {selected == 1 && (
             <WithDrawComponent
-            handleKeyDown={handleKeyDown}
+              handleKeyDown={handleKeyDown1}
               element={element}
               selected={selected == 1}
               setSelected={(e) => {
@@ -218,7 +236,7 @@ export default function UserDetailModal({
           )}
           {selected == 2 && (
             <NewCreditComponent
-               handleKeyDown={handleKeyDown}
+              handleKeyDown={handleKeyDown}
               selected={selected == 2}
               setSelected={(e) => {
                 setSelected(null);
@@ -240,7 +258,7 @@ export default function UserDetailModal({
           )}
           {selected == 5 && (
             <SetExposureComponent
-               handleKeyDown={handleKeyDown}
+              handleKeyDown={handleKeyDown}
               selected={selected == 5}
               setSelected={(e) => {
                 setSelected(null);
@@ -778,10 +796,6 @@ const DepositComponent = ({
     }
   };
 
-  
- 
-
-
   return (
     <>
       {matchesMobile && matchesTablet ? (
@@ -825,9 +839,11 @@ const DepositComponent = ({
                   ...elementToUDM,
                   profit_loss: prevElement.profit_loss,
                   balance: prevElement.balance,
-                  available_balance: prevElement.available_balances,
+                  available_balance: prevElement.available_balance,
+                  percent_profit_loss: prevElement.percent_profit_loss,
                 });
                 setShowUserModal(false);
+                setSelected(e);
               }}
               // onSubmit={handle}
               initialBalance={initialBalance}
@@ -922,7 +938,8 @@ const DepositComponent = ({
                     InputProps={{
                       placeholder: "Type Amount...",
                       disableUnderline: true,
-                      inputProps: { min: "0" },
+                      autoComplete: 'new-password', 
+                      inputProps: { min: "0", step: "0.01" },
                       style: {
                         fontSize: "15px",
                         height: "45px",
@@ -1066,6 +1083,7 @@ const DepositComponent = ({
                     InputProps={{
                       placeholder: "",
                       disableUnderline: true,
+                      autoComplete: 'new-password', 
                       type: !showPass ? "password" : "text",
                       style: {
                         fontSize: "13px",
@@ -1463,7 +1481,9 @@ const WithDrawComponent = ({
                   profit_loss: prevElement.profit_loss,
                   balance: prevElement.balance,
                   available_balance: prevElement.available_balance,
+                  percent_profit_loss: prevElement.percent_profit_loss,
                 });
+                setSelected(e);
                 setShowUserModal(false);
               }}
               // onSubmit={}
@@ -1562,7 +1582,8 @@ const WithDrawComponent = ({
                     InputProps={{
                       placeholder: "Type Amount...",
                       disableUnderline: true,
-                      inputProps:{min:"0"},
+                      autoComplete: 'new-password', 
+                      inputProps: { min: "0", step: "0.01" },
                       style: {
                         fontSize: "15px",
                         height: "45px",
@@ -1709,6 +1730,7 @@ const WithDrawComponent = ({
                     InputProps={{
                       placeholder: "",
                       disableUnderline: true,
+                      autoComplete: 'new-password', 
                       type: !showPass ? "password" : "text",
                       style: {
                         fontSize: "13px",
@@ -2059,6 +2081,7 @@ const NewCreditComponent = ({
               variant="standard"
               InputProps={{
                 placeholder: "Type Amount...",
+                autoComplete: 'new-password', 
                 disableUnderline: true,
                 inputProps: { min: "0" },
                 style: {
@@ -2117,6 +2140,7 @@ const NewCreditComponent = ({
               InputProps={{
                 placeholder: "",
                 disableUnderline: true,
+                autoComplete: 'new-password', 
                 type: !showPass ? "password" : "text",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
               }}
@@ -2292,8 +2316,6 @@ const SetExposureComponent = ({
     }
   };
 
-
-
   return (
     <form onSubmit={handleExposerSubmit}>
       <Box
@@ -2353,6 +2375,7 @@ const SetExposureComponent = ({
                 InputProps={{
                   placeholder: "Type Amount...",
                   disableUnderline: true,
+                  autoComplete: 'new-password', 
                   inputProps: { min: "0" },
                   style: {
                     fontSize: "15px",
@@ -2411,6 +2434,7 @@ const SetExposureComponent = ({
                 InputProps={{
                   placeholder: "",
                   disableUnderline: true,
+                  autoComplete: 'new-password', 
                   type: !showPass ? "password" : "text",
                   style: {
                     fontSize: "13px",
@@ -2624,6 +2648,7 @@ const ChangePasswordComponent = ({
                   InputProps={{
                     placeholder: "",
                     disableUnderline: true,
+                    autoComplete: 'new-password', 
                     type: !showPass1 ? "password" : "text",
                     style: {
                       fontSize: "13px",
@@ -2738,6 +2763,7 @@ const ChangePasswordComponent = ({
                   InputProps={{
                     placeholder: "",
                     disableUnderline: true,
+                    autoComplete: 'new-password', 
                     type: !showPass ? "password" : "text",
                     style: {
                       fontSize: "13px",
@@ -2980,6 +3006,7 @@ const LockUnlockComponent = ({
                 InputProps={{
                   placeholder: "",
                   disableUnderline: true,
+                  autoComplete: 'new-password', 
                   type: !showPass ? "password" : "text",
                   style: {
                     fontSize: "13px",

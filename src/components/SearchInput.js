@@ -76,7 +76,7 @@ const SearchInput = ({
             onChange={handleInputChange}
             InputProps={{
               disableUnderline: true,
-              autoComplete: "new-password",
+              autoComplete: 'new-password', 
               style: {
                 fontSize: "12px",
                 fontWeight: "600",
