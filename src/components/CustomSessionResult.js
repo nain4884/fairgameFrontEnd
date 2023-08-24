@@ -174,9 +174,24 @@ const CustomSessionResult = ({
     }
   };
 
+  const handleUndeclare = () => {
+    if (loading?.value) {
+      return false;
+    }
+    if (selected === "") {
+      toast.warn("Please enter score");
+    } else {
+      undeclareResult()
+    }
+  }
+
   const handleInputKeyPress = (event) => {
     if (event.key === "Enter") {
-      handleDeclare();
+      if(newData?.betStatus == 1 || 0){
+        handleDeclare();
+      } else if(newData?.betStatus === 2){
+        handleUndeclare()
+      }
     }
   };
 
@@ -226,16 +241,7 @@ const CustomSessionResult = ({
               loading={loading}
               id="UD"
               session={true}
-              onClick={() => {
-                if (loading?.value) {
-                  return false;
-                }
-                if (selected === "") {
-                  toast.warn("Please enter score");
-                } else {
-                  undeclareResult();
-                }
-              }}
+              onClick={handleUndeclare}
             />
           ) : (
             <>
