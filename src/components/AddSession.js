@@ -428,13 +428,16 @@ const AddSession = ({ add, match, Bid }) => {
   // }, [socket]);
 
   const handleSuspend = (back, lay) => {
-    if (back <= 1) {
-      setIncGap(1);
-    } else if (back && lay) {
-      if (Math.abs(lay - back) > 2) {
-        setIncGap(2);
-      } else if (Math.abs(lay - back) == 2) {
+    if (incGap < 1) {
+    } else {
+      if (back <= 1) {
         setIncGap(1);
+      } else if (back && lay) {
+        if (Math.abs(lay - back) > 2) {
+          setIncGap(2);
+        } else if (Math.abs(lay - back) == 2) {
+          setIncGap(1);
+        }
       }
     }
     if (
@@ -636,7 +639,7 @@ const AddSession = ({ add, match, Bid }) => {
     }
   };
 
-  const handleFocus = (event) => {};
+  const handleFocus = (event) => { };
   const handleHunderedValue = (back, lay) => {
     // alert(back)
     if (back >= 100) {
@@ -923,7 +926,7 @@ const AddSession = ({ add, match, Bid }) => {
         setLQuickBookMaker((prev) => {
           return {
             ...prev,
-            l_teamALayValue: l_value ? l_value + 1 : NaN,
+            l_teamALayValue: incGap < 1 ? l_value + incGap : l_value ? l_value + 1 : NaN,
             l_teamBRate: "",
             l_teamBLayValue: "",
           };
@@ -960,7 +963,7 @@ const AddSession = ({ add, match, Bid }) => {
             ...prev,
             l_teamARate: "",
             l_teamALayValue: "",
-            l_teamBLayValue: l_value ? l_value + 1 : NaN,
+            l_teamBLayValue: incGap < 1 ? l_value + incGap : l_value ? l_value + 1 : NaN,
           };
         });
       }
@@ -998,7 +1001,7 @@ const AddSession = ({ add, match, Bid }) => {
             l_teamALayValue: "",
             l_teamBRate: "",
             l_teamBLayValue: "",
-            l_teamCLayValue: l_value ? l_value + 1 : NaN,
+            l_teamCLayValue: incGap < 1 ? l_value + incGap : l_value ? l_value + 1 : NaN,
           };
         });
       }
@@ -1006,8 +1009,8 @@ const AddSession = ({ add, match, Bid }) => {
     else if (key == "z" || key == "down") {
       setPressEnter(false);
       if (
-        event.target.name === "teamA_rate" &&
-        lQuickBookMaker?.l_teamALayValue - 1 > lQuickBookMaker?.l_teamARate
+        (event.target.name === "teamA_rate" &&
+          lQuickBookMaker?.l_teamALayValue - 1 > lQuickBookMaker?.l_teamARate) || lQuickBookMaker?.l_teamALayValue - incGap > lQuickBookMaker?.l_teamARate
       ) {
         handleSuspend(
           lQuickBookMaker?.l_teamARate,
@@ -1031,7 +1034,7 @@ const AddSession = ({ add, match, Bid }) => {
         setLQuickBookMaker((prev) => {
           return {
             ...prev,
-            l_teamALayValue: lQuickBookMaker?.l_teamALayValue
+            l_teamALayValue: incGap < 1 ? lQuickBookMaker?.l_teamALayValue - incGap : lQuickBookMaker?.l_teamALayValue
               ? lQuickBookMaker?.l_teamALayValue - 1
               : lQuickBookMaker?.l_teamARate,
             l_teamBRate: "",
@@ -1041,8 +1044,8 @@ const AddSession = ({ add, match, Bid }) => {
       }
 
       if (
-        event.target.name === "teamB_rate" &&
-        lQuickBookMaker?.l_teamBLayValue - 1 > lQuickBookMaker?.l_teamBRate
+        (event.target.name === "teamB_rate" &&
+          lQuickBookMaker?.l_teamBLayValue - 1 > lQuickBookMaker?.l_teamBRate) || lQuickBookMaker?.l_teamBLayValue - incGap > lQuickBookMaker?.l_teamBRate
       ) {
         handleSuspend(
           lQuickBookMaker?.l_teamBRate,
@@ -1068,15 +1071,15 @@ const AddSession = ({ add, match, Bid }) => {
             ...prev,
             l_teamALayValue: "",
             l_teamARate: "",
-            l_teamBLayValue: lQuickBookMaker?.l_teamBLayValue
+            l_teamBLayValue: incGap < 1 ? lQuickBookMaker?.l_teamBLayValue - incGap : lQuickBookMaker?.l_teamBLayValue
               ? lQuickBookMaker?.l_teamBLayValue - 1
               : lQuickBookMaker?.l_teamBRate,
           };
         });
       }
       if (
-        event.target.name === "teamC_rate" &&
-        lQuickBookMaker?.l_teamCLayValue - 1 > lQuickBookMaker?.l_teamCRate
+        (event.target.name === "teamC_rate" &&
+          lQuickBookMaker?.l_teamCLayValue - 1 > lQuickBookMaker?.l_teamCRate) || lQuickBookMaker?.l_teamCLayValue - incGap > lQuickBookMaker?.l_teamCRate
       ) {
         handleSuspend(
           lQuickBookMaker?.l_teamCRate,
@@ -1105,7 +1108,7 @@ const AddSession = ({ add, match, Bid }) => {
             l_teamARate: "",
             l_teamBLayValue: "",
             l_teamBRate: "",
-            l_teamCLayValue: lQuickBookMaker?.l_teamCLayValue
+            l_teamCLayValue: incGap < 1 ? lQuickBookMaker?.l_teamCLayValue - incGap : lQuickBookMaker?.l_teamCLayValue
               ? lQuickBookMaker?.l_teamCLayValue - 1
               : lQuickBookMaker?.l_teamCRate,
           };
@@ -1221,7 +1224,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamA_Back: lQuickBookMaker?.l_teamARate,
             teamA_suspend:
               [null, ""].includes(lQuickBookMaker?.l_teamALayValue) ||
-              [null, ""].includes(lQuickBookMaker?.l_teamARate)
+                [null, ""].includes(lQuickBookMaker?.l_teamARate)
                 ? true
                 : false,
             teamB_lay: "",
@@ -1245,7 +1248,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamB_Back: lQuickBookMaker?.l_teamBRate,
             teamB_suspend:
               [null, ""].includes(lQuickBookMaker?.l_teamBLayValue) ||
-              [null, ""].includes(lQuickBookMaker?.l_teamBRate)
+                [null, ""].includes(lQuickBookMaker?.l_teamBRate)
                 ? true
                 : false,
             teamC_lay: "",
@@ -1269,7 +1272,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_Back: lQuickBookMaker?.l_teamCRate,
             teamC_suspend:
               [null, ""].includes(lQuickBookMaker?.l_teamCLayValue) ||
-              [null, ""].includes(lQuickBookMaker?.l_teamCRate)
+                [null, ""].includes(lQuickBookMaker?.l_teamCRate)
                 ? true
                 : false,
             layLock: false,
@@ -1302,7 +1305,7 @@ const AddSession = ({ add, match, Bid }) => {
       });
       setIsTab("tab");
     }
-    if (key == "*") {
+    if (key == "*" || key == "l") {
       handleSuspend();
       if (event.target.name === "teamA_rate") {
         let value = event.target.value ? targetValue + 0.5 : 0;
@@ -2453,6 +2456,7 @@ const AddSession = ({ add, match, Bid }) => {
                     "plus",
                     "=",
                     "minus",
+                    "l"
                   ]}
                   isDisabled={false}
                   onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
@@ -2594,6 +2598,7 @@ const AddSession = ({ add, match, Bid }) => {
                     "plus",
                     "=",
                     "minus",
+                    "l"
                   ]}
                   isDisabled={false}
                   onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
@@ -2736,6 +2741,7 @@ const AddSession = ({ add, match, Bid }) => {
                       "plus",
                       "=",
                       "minus",
+                      "l"
                     ]}
                     isDisabled={false}
                     onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
@@ -2916,7 +2922,7 @@ const AddSession = ({ add, match, Bid }) => {
                       sx={{
                         background:
                           localQuickBookmaker?.teamA?.suspended ||
-                          localQuickBookmaker?.teamA?.lay === null
+                            localQuickBookmaker?.teamA?.lay === null
                             ? "#FDF21A"
                             : "#FFB5B5",
                         width: "50%",
@@ -2928,7 +2934,7 @@ const AddSession = ({ add, match, Bid }) => {
                       }}
                     >
                       {!localQuickBookmaker?.teamA?.suspended &&
-                      localQuickBookmaker?.teamA?.lay ? (
+                        localQuickBookmaker?.teamA?.lay ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
@@ -3036,7 +3042,7 @@ const AddSession = ({ add, match, Bid }) => {
                       sx={{
                         background:
                           localQuickBookmaker?.teamB?.suspended ||
-                          localQuickBookmaker?.teamB?.lay === null
+                            localQuickBookmaker?.teamB?.lay === null
                             ? "#FDF21A"
                             : "#FFB5B5",
                         width: "50%",
@@ -3048,7 +3054,7 @@ const AddSession = ({ add, match, Bid }) => {
                       }}
                     >
                       {!localQuickBookmaker?.teamB?.suspended &&
-                      localQuickBookmaker?.teamB?.lay ? (
+                        localQuickBookmaker?.teamB?.lay ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
@@ -3159,7 +3165,7 @@ const AddSession = ({ add, match, Bid }) => {
                           sx={{
                             background:
                               localQuickBookmaker?.teamC?.suspended ||
-                              localQuickBookmaker?.teamC?.lay === null
+                                localQuickBookmaker?.teamC?.lay === null
                                 ? "#FDF21A"
                                 : "#FFB5B5",
                             width: "50%",
@@ -3171,7 +3177,7 @@ const AddSession = ({ add, match, Bid }) => {
                           }}
                         >
                           {!localQuickBookmaker?.teamC?.suspended &&
-                          localQuickBookmaker?.teamC?.lay ? (
+                            localQuickBookmaker?.teamC?.lay ? (
                             <Typography
                               sx={{ fontWeight: "600", fontSize: "22px" }}
                             >
