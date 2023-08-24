@@ -226,6 +226,14 @@ const SeprateBox = ({
         msg: "Please enter amount to place a bet",
         type: false,
       });
+      setTimeout(() => {
+        setCanceled({
+          value: false,
+          msg: "",
+          loading: false,
+          type: false,
+        });
+      }, 1500);
       setBetPlaceLoading(false);
       setFastBetLoading(false);
       return false;
@@ -238,6 +246,14 @@ const SeprateBox = ({
           loading: false,
           type: false,
         });
+        setTimeout(() => {
+          setCanceled({
+            value: false,
+            msg: "",
+            loading: false,
+            type: false,
+          });
+        }, 1500);
         setBetPlaceLoading(false);
         setFastBetLoading(false);
         setBetPalaceError(true);
@@ -253,6 +269,7 @@ const SeprateBox = ({
           loading: true,
           type: false,
         });
+
         setTimeout(() => {
           PlaceBetSubmit(newPayload, po);
         }, delay);
@@ -276,6 +293,14 @@ const SeprateBox = ({
           loading: false,
           type: false,
         });
+        setTimeout(() => {
+          setCanceled({
+            value: false,
+            msg: "",
+            loading: false,
+            type: false,
+          });
+        }, 1500);
         return false;
       }
       if (Number(payload?.odds) !== Number(value)) {
@@ -296,6 +321,14 @@ const SeprateBox = ({
           loading: true,
           type: false,
         });
+        setTimeout(() => {
+          setCanceled({
+            value: false,
+            msg: "",
+            loading: false,
+            type: false,
+          });
+        }, 1500);
       }
       setIsPopoverOpen(false);
       let response = await axios.post(`/betting/placeBet`, payload);
@@ -337,7 +370,7 @@ const SeprateBox = ({
         loading: false,
         type: false,
       });
-     
+
       setBetPalaceError(true);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);

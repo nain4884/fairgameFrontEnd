@@ -56,6 +56,11 @@ const NotificationModal = ({ open, handleClose, time }) => {
           ) : (
             <>
               <img
+                onClick={() => {
+                  if (!open.type) {
+                    handleClose();
+                  }
+                }}
                 src={open.type ? BETPLACED : NOT}
                 style={{ width: "60px", height: "60px", marginTop: "3px" }}
               />
