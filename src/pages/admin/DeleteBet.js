@@ -779,10 +779,12 @@ const DeleteBet = ({}) => {
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.bettings?.length > 0) {
                 const data = currentMatch?.bettings?.map((betting) => {
-                  var selectedData =   newVal?.length > 0 && newVal?.find(
-                    (data) => data?.selectionId === betting?.selectionId
-                  );
-                  if (selectedData &&  selectedData !== undefined) {
+                  var selectedData =
+                    newVal?.length > 0 &&
+                    newVal?.find(
+                      (data) => data?.selectionId === betting?.selectionId
+                    );
+                  if (selectedData && selectedData !== undefined) {
                     return {
                       ...betting,
                       bet_condition: selectedData?.bet_condition,
@@ -883,9 +885,15 @@ const DeleteBet = ({}) => {
       const newBody = {
         ...response.data,
       };
-      setCurrentMatch(newBody);
+      // setCurrentMatch(newBody);
+      const updatedNewData = newBody?.bettings?.map((v) => {
+        if (v?.selectionId) {
+          return { ...v, yes_rate: 0, no_rate: 0, suspended: "" };
+        }
+        return v;
+      });
 
-      dispatch(setSelectedMatch(newBody));
+      dispatch(setSelectedMatch({ ...newBody, bettings: updatedNewData }));
 
       setSessionExposure(response.data.sessionExposure);
       setMarketId(response.data.marketId);
