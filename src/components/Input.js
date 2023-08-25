@@ -285,7 +285,7 @@ const Input = ({
                     ? "Number"
                     : "text",
                 min: type === "Number" ? "0" : undefined,
-                max: type === "Number" ? "100" : undefined,
+                // max: type === "Number" ? "100" : undefined,
               },
               disabled: disabled,
               placeholder: placeholder,
