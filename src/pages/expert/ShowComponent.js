@@ -69,6 +69,12 @@ const ShowComponent = ({
             required={required}
             type={type}
             error={DetailError?.Error[place]?.val}
+            onKeyDown={(e) => {
+              // Check string not start with symbols
+              if (/^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
             onChange={(e) => {
               if (type === "Number") {
                 DetailError.setDetail({
@@ -137,7 +143,7 @@ const ShowComponent = ({
             valueContainerStyle,
           ]}
         >
-          { ![undefined,""].includes(DetailError.Detail[place].val)
+          {![undefined, ""].includes(DetailError.Detail[place].val)
             ? DetailError.Detail[place].val?.name
             : "Upload"}
           <input

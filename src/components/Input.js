@@ -276,8 +276,14 @@ const Input = ({
             // onKeyDown={onKeyDown}
             required={required}
             InputProps={{
-              autoComplete: 'new-password', 
+              autoComplete: "new-password",
               inputProps: {
+                type:
+                  showPass && String(title).toLowerCase().includes("password")
+                    ? "password"
+                    : type === "Number"
+                    ? "Number"
+                    : "text",
                 min: type === "Number" ? "0" : undefined,
                 max: type === "Number" ? "100" : undefined,
               },
@@ -314,7 +320,7 @@ const Input = ({
                     ...Detail[place],
                     val: "",
                   },
-                  [12]: {
+                  12: {
                     ...Detail[12],
                     val: 100 - Detail[10].val,
                   },
