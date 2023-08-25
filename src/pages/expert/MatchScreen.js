@@ -82,7 +82,7 @@ const MatchScreen = () => {
       const newMatch = { ...data, bettings: data?.bettings };
       const updatedbettings = newMatch.bettings.map((v) => {
         if (v.selectionId !== null) {
-          return { ...v, yes_rate: 0, no_rate: 0 };
+          return { ...v, yes_rate: 0, no_rate: 0, suspended: "" };
         }
         return v;
       });

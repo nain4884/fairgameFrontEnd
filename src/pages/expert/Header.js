@@ -464,6 +464,9 @@ const CustomHeader = ({}) => {
                 const body = {
                   ...findBet,
                   betStatus: value?.betStatus,
+                  suspended: "",
+                  yes_rate: 0,
+                  no_rate: 0
                 };
                 var removedBet = currentMatch?.bettings?.filter(
                   (betting) =>
