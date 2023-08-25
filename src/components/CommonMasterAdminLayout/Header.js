@@ -877,18 +877,14 @@ const CustomHeader = ({}) => {
               setCurrentMatch((currentMatch) => {
                 if (currentMatch?.id === data?.match_id) {
                   const findBet = currentMatch?.bettings?.find(
-                    (betting) =>
-                      betting?.selectionId === data?.selectionId ||
-                      betting?.id === data?.id
+                    (betting) => betting?.id === data?.id && data?.sessionBet
                   );
                   const body = {
                     ...findBet,
                     ...data,
                   };
                   var removedBet = currentMatch?.bettings?.filter(
-                    (betting) =>
-                      betting?.selectionId !== data?.selectionId &&
-                      betting?.id !== data?.id
+                    (betting) => betting?.id !== data?.id && data?.sessionBet
                   );
                   var updatedBettings = [body, ...removedBet];
                   // If the new bet doesn't belong to the current match, return the current state
@@ -898,16 +894,16 @@ const CustomHeader = ({}) => {
                   //     if (betting?.id === data?.id && data?.sessionBet) {
                   //       // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                   //       return {
-                  //         ...betting,
                   //         ...data,
+                  //         ...betting,
                   //       };
                   //     } else if (
                   //       betting?.id === data?.id &&
                   //       data.sessionBet === false
                   //     ) {
                   //       return {
-                  //         ...betting,
                   //         ...data,
+                  //         ...betting,
                   //       };
                   //     }
                   //     return betting;
@@ -952,19 +948,15 @@ const CustomHeader = ({}) => {
               setMatchData((prevMatchData) => {
                 const updated = prevMatchData.map((item) => {
                   if (item?.id === data?.match_id) {
-                    const findBet = currentMatch?.bettings?.find(
-                      (betting) =>
-                        betting?.selectionId === data?.selectionId ||
-                        betting?.id === data?.id
+                    const findBet = item?.bettings?.find(
+                      (betting) => betting?.id === data?.id && data?.sessionBet
                     );
                     const body = {
                       ...findBet,
                       ...data,
                     };
-                    var removedBet = currentMatch?.bettings?.filter(
-                      (betting) =>
-                        betting?.selectionId !== data?.selectionId &&
-                        betting?.id !== data?.id
+                    var removedBet = item?.bettings?.filter(
+                      (betting) => betting?.id !== data?.id && data?.sessionBet
                     );
                     var updatedBettings = [body, ...removedBet];
                     // Update the bettings array in the current match object
@@ -972,16 +964,16 @@ const CustomHeader = ({}) => {
                     //   if (betting.id === data.id && data.sessionBet) {
                     //     // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                     //     return {
-                    //       ...betting,
                     //       ...data,
+                    //       ...betting,
                     //     };
                     //   } else if (
                     //     betting?.id === data?.id &&
                     //     data.sessionBet === false
                     //   ) {
                     //     return {
-                    //       ...betting,
                     //       ...data,
+                    //       ...betting,
                     //     };
                     //   }
                     //   return betting;
@@ -993,7 +985,7 @@ const CustomHeader = ({}) => {
 
                     if (!bettingsIds?.includes(data.id)) {
                       // If the value object's id does not match any of the existing bettings' ids, push it into the bettings array
-                      newUpdatedValue = [...newUpdatedValue, data];
+                      newUpdatedValue = [data, ...newUpdatedValue];
                     }
                     // else {
                     // if (!item.sessionOffline) {
