@@ -688,9 +688,11 @@ const MatchSubmit = ({}) => {
                     if (item?.marketId === marketIds[i]) {
                       // Merge the filteredNewVal with the currentMatch bettings array
                       const data = item.bettings?.map((betting) => {
-                        var selectedData =  newVal?.length > 0 && newVal?.find(
-                          (data) => data?.selectionId === betting?.selectionId
-                        );
+                        var selectedData =
+                          newVal?.length > 0 &&
+                          newVal?.find(
+                            (data) => data?.selectionId === betting?.selectionId
+                          );
                         if (selectedData && selectedData !== undefined) {
                           return {
                             ...betting,
@@ -854,8 +856,21 @@ const MatchSubmit = ({}) => {
         `/game-match/multipleMatchDetail`,
         payload
       );
-      setMatchData(response?.data?.data);
-      dispatch(setMultiSelectedMatch(response?.data?.data));
+      // setMatchData(response?.data?.data);
+      const newData = response?.data?.data || [];
+      const updatedData = newData?.map((element) => {
+        if (element?.bettings !== null) {
+          const updatedBettings = element?.bettings?.map((bet) => {
+            if (bet?.selectionId !== null) {
+              return { ...bet, yes_rate: 0, no_rate: 0, suspended: "" };
+            }
+            return bet;
+          });
+          return { ...element, bettings: updatedBettings };
+        }
+        return element;
+      });
+      dispatch(setMultiSelectedMatch(updatedData));
       setTimeout(() => {
         setLoading(false);
       }, 1000);
