@@ -54,6 +54,8 @@ const initialState = {
     },
     teamBackUnlock: true,
   },
+
+  sessionExpertOdds:[]
 };
 export const logoutExpertDetails = createAction("auth/logoutReset");
 const expertMatchDetails = createSlice({
@@ -116,6 +118,9 @@ const expertMatchDetails = createSlice({
     setSessionResultRefresh: (state, action) => {
       state.sessionResultRefresh = action.payload;
     },
+    setSessionExpertOdds : (state, action) => {
+      state.sessionExpertOdds = action.payload;
+    },
     extraReducers: (builder) => {
       // This will handle the reset on logout
       builder.addCase(logoutExpertDetails, () => initialState);
@@ -141,7 +146,8 @@ export const {
   setQuickBookmaker,
   setSelectedBookmaker,
   setSelectedSession,
-  setSessionResultRefresh
+  setSessionResultRefresh,
+  setSessionExpertOdds
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

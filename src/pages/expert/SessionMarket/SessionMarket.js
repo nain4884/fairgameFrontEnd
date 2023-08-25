@@ -30,11 +30,12 @@ const SessionMarket = ({
 
   useEffect(() => {
     if (sessionData?.length > 0) {
-      console.log("sessionData", sessionData);
+  
       setMatchSessionData(sessionData.sort(customSort));
       // scrollToMessage();
     }
   }, [sessionData]);
+  
   const [visible, setVisible] = useState(true);
 
   const handleLive = async () => {

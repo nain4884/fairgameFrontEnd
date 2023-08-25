@@ -246,7 +246,7 @@ const SessionMarketBox = ({
             />
           </Box>
         )}
-        {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
+        {!["ACTIVE", "", undefined, null,0].includes(newData?.suspended) ||
         newData?.betStatus === 2 ? (
           <Box
             sx={{

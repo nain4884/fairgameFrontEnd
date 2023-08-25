@@ -41,6 +41,7 @@ import {
   setSelectedBookmaker,
   setSessionResult,
   setSessionResultRefresh,
+  setSessionExpertOdds,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -96,6 +97,7 @@ const CustomHeader = ({}) => {
     selectedBookmaker,
     quickBookmaker,
     selectedSession,
+    sessionExpertOdds,
   } = useSelector((state) => state?.expertMatchDetails);
   const { userAllMatches, selectedMatch, bookMakerBetRates, sessionResults } =
     useSelector((state) => state?.matchDetails);
@@ -130,6 +132,7 @@ const CustomHeader = ({}) => {
 
   const [localQuickBookmaker, setLocalQuickBookmaker] =
     useState(quickBookmaker);
+  const [localSessionExpertOdds, setLocalSessionExpertOdds] = useState([]);
   useEffect(() => {
     if (allBetRates) {
       setLocalAllBetRates(allBetRates);
@@ -186,6 +189,9 @@ const CustomHeader = ({}) => {
     if (sessionResults) {
       setLocalSessionResult(sessionResults);
     }
+    if (sessionExpertOdds) {
+      setLocalSessionExpertOdds(sessionExpertOdds);
+    }
   }, [
     allBetRates,
     selectedMatch,
@@ -200,6 +206,7 @@ const CustomHeader = ({}) => {
     selectedBookmaker,
     selectedSession,
     sessionResults,
+    sessionExpertOdds,
     quickBookmaker,
   ]);
   console.log(sessionBetId, "sdd", betId);
@@ -456,50 +463,74 @@ const CustomHeader = ({}) => {
             // });
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id === value?.match_id) {
-                const findBet = currentMatch?.bettings?.find(
-                  (betting) =>
-                    betting?.selectionId === value?.selectionId ||
-                    betting?.id === value?.id
-                );
-                const body = {
-                  ...findBet,
-                  betStatus: value?.betStatus,
-                  suspended: "",
-                  yes_rate: 0,
-                  no_rate: 0
-                };
-                var removedBet = currentMatch?.bettings?.filter(
-                  (betting) =>
-                    betting?.selectionId !== value?.selectionId &&
-                    betting?.id !== value?.id
-                );
-                var updatedBettings = [body, ...removedBet];
-
-                // var updatedBettings = currentMatch?.bettings.map((betting) => {
-                //   if (
-                //     betting?.selectionId === value?.selectionId ||
-                //     betting?.id === value?.id
-                //   ) {
-                //     return { ...betting, betStatus: value?.betStatus };
-                //   }
-                //   return betting; // Return the unchanged betting object if no match is found
-                // });
-
-                // If no match was found, push the value to the bettings array
-                if (
-                  value.selectionId &&
-                  !updatedBettings.some((betting) => betting.id === value.id)
-                ) {
-                  updatedBettings.unshift(value);
-                }
-                const newBody = {
-                  ...currentMatch,
-                  bettings: updatedBettings.sort(customSort),
-                };
-                dispatch(setSelectedMatch(newBody));
-
-                return newBody;
+                setLocalSessionExpertOdds((prev) => {
+                  const findBet = prev?.find(
+                    (betting) =>
+                      betting?.selectionId === value?.selectionId ||
+                      betting?.id === value?.id
+                  );
+                  const body = {
+                    ...findBet,
+                    betStatus: value?.betStatus,
+                    suspended: "",
+                    yes_rate: 0,
+                    no_rate: 0,
+                  };
+                  var removedBet = prev?.filter(
+                    (betting) =>
+                      betting?.selectionId !== value?.selectionId &&
+                      betting?.id !== value?.id
+                  );
+                  var updatedBettings = [body, ...removedBet];
+                  const newBody = updatedBettings?.sort(customSort);
+                  dispatch(setSessionExpertOdds(newBody));
+                  return newBody;
+                });
               }
+              // const findBet = currentMatch?.bettings?.find(
+              //   (betting) =>
+              //     betting?.selectionId === value?.selectionId ||
+              //     betting?.id === value?.id
+              // );
+              // const body = {
+              //   ...findBet,
+              //   betStatus: value?.betStatus,
+              //   suspended: "",
+              //   yes_rate: 0,
+              //   no_rate: 0
+              // };
+              // var removedBet = currentMatch?.bettings?.filter(
+              //   (betting) =>
+              //     betting?.selectionId !== value?.selectionId &&
+              //     betting?.id !== value?.id
+              // );
+              // var updatedBettings = [body, ...removedBet];
+
+              // var updatedBettings = currentMatch?.bettings.map((betting) => {
+              //   if (
+              //     betting?.selectionId === value?.selectionId ||
+              //     betting?.id === value?.id
+              //   ) {
+              //     return { ...betting, betStatus: value?.betStatus };
+              //   }
+              //   return betting; // Return the unchanged betting object if no match is found
+              // });
+
+              // // If no match was found, push the value to the bettings array
+              // if (
+              //   value.selectionId &&
+              //   !updatedBettings.some((betting) => betting.id === value.id)
+              // ) {
+              //   updatedBettings.unshift(value);
+              // }
+              // const newBody = {
+              //   ...currentMatch,
+              //   bettings: updatedBettings?.sort(customSort),
+              // };
+              // dispatch(setSelectedMatch(newBody));
+
+              //   return newBody;
+              // }
               return currentMatch;
             });
 
@@ -510,8 +541,10 @@ const CustomHeader = ({}) => {
                   [undefined, null].includes(value?.selectionId)
                 ) {
                   // Check if the value.id already exists in match.bettings
-                  const existingBet = match.bettings.find((bet) => bet.id === value.id);
-            
+                  const existingBet = match.bettings.find(
+                    (bet) => bet.id === value.id
+                  );
+
                   // If it doesn't exist, push the new bet
                   if (!existingBet) {
                     const betObj = {
@@ -519,19 +552,19 @@ const CustomHeader = ({}) => {
                       bet_condition: value.bet_condition,
                     };
                     const newBettings = [...match.bettings, betObj];
-            
+
                     return {
                       ...match,
                       bettings: newBettings,
                     };
                   }
                 }
-            
+
                 return match;
               });
-            
+
               dispatch(setAllEventSession(updatedAllEventSession));
-            
+
               return updatedAllEventSession;
             });
           } catch (e) {
@@ -593,63 +626,85 @@ const CustomHeader = ({}) => {
             });
 
             setCurrentMatch((currentMatch) => {
-              setLocalAllBetRates((IObets) => {
-                const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
 
-                if (currentMatch?.id === data?.betPlaceData?.match_id) {
-                  const body = {
-                    id: data?.betPlaceData?.id,
-                    isActive: true,
-                    createAt: data?.betPlaceData?.createAt,
-                    updateAt: data?.betPlaceData?.createAt,
-                    createdBy: null,
-                    deletedAt: null,
-                    user: { userName: data?.betPlaceData?.userName },
-                    user_id: null,
-                    match_id: data?.betPlaceData?.match_id,
-                    bet_id: data?.betPlaceData?.bet_id,
-                    result: "pending",
-                    team_bet: data?.betPlaceData?.team_bet,
-                    odds: data?.betPlaceData?.odds,
-                    win_amount: null,
-                    loss_amount: null,
-                    bet_type: data?.betPlaceData?.bet_type,
-                    country: null,
-                    ip_address: null,
-                    deleted_reason: data?.betPlaceData?.deleted_reason || null,
-                    rate: data?.betPlaceData?.rate,
-                    marketType: data?.betPlaceData?.marketType,
-                    myStack: data?.betPlaceData?.myStack,
-                    amount:
-                      data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-                  };
-                  const newBody = [body, ...updatedIObets];
-                  dispatch(setAllBetRate(newBody));
-                  return newBody;
-                }
-                dispatch(setAllBetRate(updatedIObets));
-                return updatedIObets;
-              });
+              if(currentMatch?.id===data?.betPlaceData?.match_id){
 
-              const updatedBettings = currentMatch?.bettings?.map((betting) => {
-                if (betting?.id === data?.betPlaceData?.bet_id) {
-                  // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-                  let profitLoss = data?.profitLoss;
+                setLocalAllBetRates((IObets) => {
+                  const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
+  
+                  if (currentMatch?.id === data?.betPlaceData?.match_id) {
+                    const body = {
+                      id: data?.betPlaceData?.id,
+                      isActive: true,
+                      createAt: data?.betPlaceData?.createAt,
+                      updateAt: data?.betPlaceData?.createAt,
+                      createdBy: null,
+                      deletedAt: null,
+                      user: { userName: data?.betPlaceData?.userName },
+                      user_id: null,
+                      match_id: data?.betPlaceData?.match_id,
+                      bet_id: data?.betPlaceData?.bet_id,
+                      result: "pending",
+                      team_bet: data?.betPlaceData?.team_bet,
+                      odds: data?.betPlaceData?.odds,
+                      win_amount: null,
+                      loss_amount: null,
+                      bet_type: data?.betPlaceData?.bet_type,
+                      country: null,
+                      ip_address: null,
+                      deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                      rate: data?.betPlaceData?.rate,
+                      marketType: data?.betPlaceData?.marketType,
+                      myStack: data?.betPlaceData?.myStack,
+                      amount:
+                        data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+                    };
+                    const newBody = [body, ...updatedIObets];
+                    dispatch(setAllBetRate(newBody));
+                    return newBody;
+                  }
+                  dispatch(setAllBetRate(updatedIObets));
+                  return updatedIObets;
+                });
 
-                  return {
-                    ...betting,
-                    profitLoss: profitLoss,
-                  };
-                }
-                return betting;
-              });
-              // Return the updated current match object
-              const newBody = {
-                ...currentMatch,
-                bettings: updatedBettings,
-              };
-              dispatch(setSelectedMatch(newBody));
-              return newBody;
+                setLocalSessionExpertOdds((prev)=>{
+                  const updatedBettings = prev?.map((betting) => {
+                    if (betting?.id === data?.betPlaceData?.bet_id) {
+                      // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+                      let profitLoss = data?.profitLoss;
+    
+                      return {
+                        ...betting,
+                        profitLoss: profitLoss,
+                      };
+                    }
+                    return betting;
+                  });
+                 dispatch(setSessionExpertOdds(updatedBettings))
+                  return updatedBettings
+                })
+              }
+        
+            
+              // const updatedBettings = currentMatch?.bettings?.map((betting) => {
+              //   if (betting?.id === data?.betPlaceData?.bet_id) {
+              //     // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
+              //     let profitLoss = data?.profitLoss;
+
+              //     return {
+              //       ...betting,
+              //       profitLoss: profitLoss,
+              //     };
+              //   }
+              //   return betting;
+              // });
+              // // Return the updated current match object
+              // const newBody = {
+              //   ...currentMatch,
+              //   bettings: updatedBettings,
+              // };
+              // dispatch(setSelectedMatch(newBody));
+              // return newBody;
             });
           } catch (e) {
             console.log("error", e?.message);
@@ -770,9 +825,6 @@ const CustomHeader = ({}) => {
               }
               if (prev.id === value?.match_id && value?.sessionBet) {
                 dispatch(setSessionResultRefresh(true));
-                const findBet = prev?.bettings?.find(
-                  (betting) => betting?.id === value?.betId
-                );
                 setLocalAllBetRates((prev) => {
                   const updatedValues = prev?.filter(
                     (v) => v?.bet_id !== value?.betId
@@ -780,16 +832,25 @@ const CustomHeader = ({}) => {
                   dispatch(setAllBetRate(updatedValues));
                   return updatedValues;
                 });
-                const body = {
-                  ...findBet,
-                  betStatus: 2,
-                  betRestult: value.score,
-                  profitLoss: value?.profitLoss,
-                };
-                var removedBet = prev?.bettings?.filter(
-                  (betting) => betting?.id !== value?.betId
-                );
-                var updatedBettings = [body, ...removedBet];
+
+                setLocalSessionExpertOdds((prev)=>{
+                  const findBet = prev?.find(
+                    (betting) => betting?.id === value?.betId
+                  );
+                  const body = {
+                    ...findBet,
+                    betStatus: 2,
+                    betRestult: value.score,
+                    profitLoss: value?.profitLoss,
+                  };
+                  var removedBet = prev?.filter(
+                    (betting) => betting?.id !== value?.betId
+                  );
+                  var updatedBettings = [body, ...removedBet];
+                  dispatch(setSessionExpertOdds(updatedBettings))
+                  return updatedBettings
+                })
+             
                 // const updatedBettings = prev?.bettings?.map((betting) => {
                 //   if (value?.betId === betting?.id && value?.sessionBet) {
                 //     return {
@@ -802,13 +863,13 @@ const CustomHeader = ({}) => {
                 //   return betting;
                 // });
 
-                const newBody = {
-                  ...prev,
-                  bettings: updatedBettings,
-                };
+                // const newBody = {
+                //   ...prev,
+                //   bettings: updatedBettings,
+                // };
 
-                dispatch(setSelectedMatch(newBody));
-                return newBody;
+                // dispatch(setSelectedMatch(newBody));
+                // return newBody;
               }
 
               return prev;
@@ -818,7 +879,7 @@ const CustomHeader = ({}) => {
               var updatedPrev = prev?.map((item) => {
                 if (item.id === value?.match_id && value?.sessionBet) {
                   dispatch(setSessionResultRefresh(true));
-              
+
                   if (sessionBetId === value?.betId) {
                     dispatch(setSessionProfitLoss(value?.profitLoss));
                     setLocalSelectedSession((i) => {
@@ -830,7 +891,6 @@ const CustomHeader = ({}) => {
 
                       setLocalSessionResult((prev) => {
                         if (i?.id === value?.betId) {
-                        
                           dispatch(setSessionAllBet([]));
                           const body = {
                             ...value,
