@@ -128,10 +128,10 @@ const ProfitLoss = () => {
     if (search?.id) {
       payload.userId = search?.id;
     }
-    if (startDate && search?.id) {
+    if (startDate) {
       payload.from = moment(startDate).format("YYYY-MM-DD");
     }
-    if (endDate && search?.id) {
+    if (endDate) {
       payload.to = moment(endDate).format("YYYY-MM-DD");
     }
     let { axios } = setRole();
@@ -139,20 +139,16 @@ const ProfitLoss = () => {
       const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
       // console.log(data.data[0], 'datadatadatadata')
       setEventData(data?.data);
-   
     } catch (e) {
-   
       console.log(e);
     }
   }
 
-
-
-  const handleReport = (eventType,pageno) => {
-    getReport(eventType,pageno);
+  const handleReport = (eventType, pageno) => {
+    getReport(eventType, pageno);
   };
 
-  const getReport = async (eventType,pageno) => {
+  const getReport = async (eventType, pageno) => {
     var payload = {
       gameType: eventType,
       skip: pageno,
