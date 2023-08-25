@@ -1054,45 +1054,45 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   // dispatch(setSelectedSessionBettings(data));
                   return data;
                 });
-
-                const data = currentMatch?.bettings?.map((betting) => {
-                  var selectedData = newVal?.find(
-                    (data) => data?.selectionId === betting?.selectionId
-                  );
-                  if (selectedData && selectedData !== undefined) {
-                    return {
-                      ...betting,
-                      bet_condition: selectedData?.bet_condition,
-                      no_rate: selectedData?.no_rate,
-                      yes_rate: selectedData?.yes_rate,
-                      rate_percent: selectedData?.rate_percent,
-                      suspended: selectedData?.suspended,
-                      selectionId: selectedData?.selectionId,
-                    };
-                  }
-                  if (betting?.selectionId !== null) {
-                    return {
-                      ...betting,
-                      betStatus: betting?.betStatus,
-                      bet_condition: betting?.bet_condition,
-                      no_rate: 0,
-                      yes_rate: 0,
-                      rate_percent: betting?.rate_percent,
-                      suspended: "",
-                      selectionId: betting?.selectionId,
-                    };
-                  }
-                  return betting;
-                });
-
-                // Merge the filteredNewVal with the currentMatch bettings array
-
-                return {
-                  ...currentMatch,
-                  bettings: data,
-                };
               }
               return currentMatch;
+              //   const data = currentMatch?.bettings?.map((betting) => {
+              //     var selectedData = newVal?.find(
+              //       (data) => data?.selectionId === betting?.selectionId
+              //     );
+              //     if (selectedData && selectedData !== undefined) {
+              //       return {
+              //         ...betting,
+              //         bet_condition: selectedData?.bet_condition,
+              //         no_rate: selectedData?.no_rate,
+              //         yes_rate: selectedData?.yes_rate,
+              //         rate_percent: selectedData?.rate_percent,
+              //         suspended: selectedData?.suspended,
+              //         selectionId: selectedData?.selectionId,
+              //       };
+              //     }
+              //     if (betting?.selectionId !== null) {
+              //       return {
+              //         ...betting,
+              //         bet_condition: betting?.bet_condition,
+              //         no_rate: 0,
+              //         yes_rate: 0,
+              //         rate_percent: betting?.rate_percent,
+              //         suspended: "",
+              //         selectionId: betting?.selectionId,
+              //       };
+              //     }
+              //     return betting;
+              //   });
+
+              //   // Merge the filteredNewVal with the currentMatch bettings array
+
+              //   return {
+              //     ...currentMatch,
+              //     bettings: data,
+              //   };
+              // }
+              // return currentMatch;
             });
           }
           // dispatch(setSessionOddsLive(body));
@@ -1226,11 +1226,15 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       let quickSessionDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet && element.selectionId === null
       );
-      setLocalQuickSession(quickSessionDataTemp);
+
+      const updateLiveSesssion = sessionDataTemp?.map((v) => ({
+        ...v,
+        yes_rate: 0,
+        no_rate: 0,
+        suspended: "",
+      }));
       dispatch(setQuickSession(quickSessionDataTemp));
-      setLSelectedSessionBetting(sessionDataTemp);
-      dispatch(setSelectedSessionBettings(sessionDataTemp));
-      setManualBookmakerData(matchOddsDataTemp);
+      dispatch(setSelectedSessionBettings(updateLiveSesssion));
       dispatch(setManualBookmaker(matchOddsDataTemp));
       dispatch(setSessionExposure(response?.data?.sessionExposure));
       setLocalSessionExposure(response?.data?.sessionExposure);
@@ -1414,7 +1418,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   sessionOffline={sessionOff}
                   // dataProfit={currentMatchProfit}
                   allBetsData={sessionBets}
-                  manualBookmakerData={manualBookmakerData}
+                  // manualBookmakerData={manualBookmakerData}
                   handleRateChange={handleRateChange}
                 />
               </div>
@@ -1499,7 +1503,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   data={currentMatch}
                   // dataProfit={currentMatchProfit}
                   allBetsData={allSessionBets}
-                  manualBookmakerData={manualBookmakerData}
+                  // manualBookmakerData={manualBookmakerData}
                   handleRateChange={handleRateChange}
                 />
               </Box>

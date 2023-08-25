@@ -24,7 +24,8 @@ const initialState = {
   sessionOffline: [],
   userAllMatches: [],
   multiSelectedMatches: [],
-  quickSession:[]
+  quickSession:[],
+  liveSessionStatus:[]
 };
 
 export const logoutMatchDetails = createAction("auth/logoutReset");
@@ -181,6 +182,9 @@ const matchDetails = createSlice({
     },
     setMultiSelectedMatch: (state, action) => {
       state.multiSelectedMatches = action.payload;
+    },
+    setLiveSessionStatus: (state, action) => {
+      state.liveSessionStatus = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -221,7 +225,8 @@ export const {
   setSessionOffline,
   setUserAllMatches,
   setMultiSelectedMatch,
-  setQuickSession
+  setQuickSession,
+  setLiveSessionStatus
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

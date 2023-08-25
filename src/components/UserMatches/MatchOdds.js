@@ -22,10 +22,10 @@ const MatchOdds = ({
   sessionExposer,
   sessionBets,
   sessionOffline,
-  manualBookmakerData,
   setFastAmount,
   fastAmount,
   handleRateChange,
+
   LSelectedSessionBetting,
   localQuickSession,
 }) => {
@@ -33,6 +33,10 @@ const MatchOdds = ({
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
   const [matchOddRateLive, setMatchOddRateLive] = useState(false);
+
+  // const [localSession, setLocalSession] = useState([]);
+  // const [localQuickSession, setLocalQuickSession] = useState([]);
+
   useEffect(() => {
     if (data) {
       const matchOdds = data?.bettings?.filter(
@@ -43,6 +47,14 @@ const MatchOdds = ({
       setMatchOddRateLive(data?.matchOddRateLive);
     }
   }, [data]);
+  // useEffect(() => {
+  //   if (selectedSessionBettings) {
+  //     setLocalSession(selectedSessionBettings);
+  //   }
+  //   if (quickSession) {
+  //     setLocalQuickSession(quickSession);
+  //   }
+  // }, [selectedSessionBettings, quickSession]);
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 

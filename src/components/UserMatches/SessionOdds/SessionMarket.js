@@ -44,6 +44,10 @@ const SessionMarket = ({
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [fastBetLoading, setFastBetLoading] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  // const [localData, setLocalData] = useState(newData);
+  // useEffect(() => {
+  //   setLocalData(newData);
+  // }, [newData]);
 
   const [visible, setVisible] = useState(true);
 

@@ -516,48 +516,52 @@ export const SocketProvider = ({ children }) => {
           }
           if (value?.selectionId) {
             setLSelectedSessionBetting((prev) => {
-            //   const updatedValue = prev.map((v) => {
-            //     if (v.selectionId === value.selectionId && v.id === value.id) {
-            //       return { ...v, betStatus: value.betStatus };
-            //     }
-            //     return v;
-            //   });
+              //   const updatedValue = prev.map((v) => {
+              //     if (v.selectionId === value.selectionId && v.id === value.id) {
+              //       return { ...v, betStatus: value.betStatus };
+              //     }
+              //     return v;
+              //   });
 
-            //   const existingEntry = updatedValue.find(
-            //     (v) => v.selectionId === value.selectionId && v.id === value.id
-            //   );
+              //   const existingEntry = updatedValue.find(
+              //     (v) => v.selectionId === value.selectionId && v.id === value.id
+              //   );
 
-            //   if (!existingEntry) {
-            //     updatedValue.unshift(value);
-            //   }
+              //   if (!existingEntry) {
+              //     updatedValue.unshift(value);
+              //   }
 
-            //   dispatch(setSelectedSessionBettings(updatedValue));
-            //   return updatedValue;
-            // });
+              //   dispatch(setSelectedSessionBettings(updatedValue));
+              //   return updatedValue;
+              // });
+              const findBet = prev?.find(
+                (betting) =>
+                  betting?.selectionId === value?.selectionId &&
+                  betting?.id === value?.id
+              );
+              
+              const body = {
+                ...findBet,
+                ...value,
+                yes_rate: 0,
+                no_rate: 0,
+                suspended:""
+              };
+              var removedBet = prev?.filter(
+                (betting) =>
+                  betting?.selectionId !== value?.selectionId &&
+                  betting?.id !== value?.id
+              );
+              var updatedBettings = [body, ...removedBet];
 
-            const findBet = prev?.find(
-              (betting) =>
-                betting?.selectionId === value?.selectionId &&
-                betting?.id === value?.id
-            );
-            const body = {
-              ...findBet,
-              ...value,
-            };
-            var removedBet = prev?.filter(
-              (betting) =>
-                betting?.selectionId !== value?.selectionId &&
-                betting?.id !== value?.id
-            );
-            var updatedBettings = [body, ...removedBet];
-
-            const ids = prev?.map((v) => v?.id);
-            if (!ids.includes(value?.id)) {
-              const newres = [value, ...prev];
-              updatedBettings = newres;
-            }
-            dispatch(setSelectedSessionBettings(updatedBettings));
-            return updatedBettings;
+              const ids = prev?.map((v) => v?.id);
+              if (!ids.includes(value?.id)) {
+                const newres = [value, ...prev];
+             
+                updatedBettings = newres;
+              }
+              dispatch(setSelectedSessionBettings(updatedBettings));
+              return updatedBettings;
             });
           } else {
             setLocalQuickSession((prev) => {

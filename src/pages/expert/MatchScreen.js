@@ -80,8 +80,14 @@ const MatchScreen = () => {
     try {
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
       const newMatch = { ...data, bettings: data?.bettings };
-      setCurrentMatch(newMatch);
-      dispatch(setSelectedMatch(newMatch));
+      const updatedbettings = newMatch.bettings.map((v) => {
+        if (v.selectionId !== null) {
+          return { ...v, yes_rate: 0, no_rate: 0 };
+        }
+        return v;
+      });
+      // setCurrentMatch(updatedbettings);
+      dispatch(setSelectedMatch({...newMatch,bettings:updatedbettings}));
       marketId = data?.marketId;
       const manualBookmaker = {
         matchId: data?.id,
@@ -471,9 +477,11 @@ const MatchScreen = () => {
         setCurrentMatch((currentMatch) => {
           if (currentMatch?.bettings?.length > 0) {
             const data = currentMatch?.bettings?.map((betting) => {
-              var selectedData =  newVal?.length > 0 &&  newVal?.find(
-                (data) => data?.selectionId === betting?.selectionId
-              );
+              var selectedData =
+                newVal?.length > 0 &&
+                newVal?.find(
+                  (data) => data?.selectionId === betting?.selectionId
+                );
               if (selectedData && selectedData !== undefined) {
                 return {
                   ...betting,
@@ -582,7 +590,7 @@ const MatchScreen = () => {
       setMatchLiveSession(sessionData);
     }
   }, [sessionData]);
-  console.log(matchLiveSession, "sessionData");
+  console.log(currentMatch, "sessionData");
 
   return (
     <Background>

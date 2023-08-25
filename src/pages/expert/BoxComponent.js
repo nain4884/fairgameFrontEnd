@@ -181,7 +181,7 @@ const BoxComponent = ({
             <Box
               sx={{ width: ".45%", display: "flex", background: "pink" }}
             ></Box>
-            <SeperateBox
+          <SeperateBox
               currentMatch={currentMatch}
               back={true}
               align={align}
