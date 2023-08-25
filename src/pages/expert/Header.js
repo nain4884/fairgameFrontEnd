@@ -506,23 +506,29 @@ const CustomHeader = ({}) => {
                   match.id === value?.match_id &&
                   [undefined, null].includes(value?.selectionId)
                 ) {
-                  const betObj = {
-                    id: value.id,
-                    bet_condition: value.bet_condition,
-                  };
-                  const newBettings = [...match.bettings, betObj];
-
-                  return {
-                    ...match,
-                    bettings: newBettings,
-                  };
+                  // Check if the value.id already exists in match.bettings
+                  const existingBet = match.bettings.find((bet) => bet.id === value.id);
+            
+                  // If it doesn't exist, push the new bet
+                  if (!existingBet) {
+                    const betObj = {
+                      id: value.id,
+                      bet_condition: value.bet_condition,
+                    };
+                    const newBettings = [...match.bettings, betObj];
+            
+                    return {
+                      ...match,
+                      bettings: newBettings,
+                    };
+                  }
                 }
-
+            
                 return match;
               });
-
+            
               dispatch(setAllEventSession(updatedAllEventSession));
-
+            
               return updatedAllEventSession;
             });
           } catch (e) {
