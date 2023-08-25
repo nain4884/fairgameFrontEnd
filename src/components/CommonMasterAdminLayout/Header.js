@@ -997,7 +997,7 @@ const CustomHeader = ({}) => {
                   // Return the updated current match object
                   const filterdUpdatedValue = newUpdatedValue?.map((v) => {
                     if (v.selectionId !== null) {
-                      return { ...v, yes_rate: 0, no_rate: 0 };
+                      return { ...v, yes_rate: 0, no_rate: 0 ,suspended:""};
                     }
                     return v;
                   });
@@ -1078,7 +1078,7 @@ const CustomHeader = ({}) => {
                     // Return the updated current match object
                     const filterdUpdatedValue = newUpdatedValue?.map((v) => {
                       if (v.selectionId !== null) {
-                        return { ...v, yes_rate: 0, no_rate: 0 };
+                        return { ...v, yes_rate: 0, no_rate: 0 ,suspended:""};
                       }
                       return v;
                     });
