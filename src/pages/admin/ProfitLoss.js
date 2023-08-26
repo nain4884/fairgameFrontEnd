@@ -109,6 +109,7 @@ const ProfitLoss = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const { profitLossReportPage } = useSelector((state) => state?.adminMatches);
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
     // alert(1)
     getEventList();
@@ -157,10 +158,10 @@ const ProfitLoss = () => {
     if (search?.id) {
       payload.userId = search?.id;
     }
-    if (startDate && search?.id) {
+    if (startDate ) {
       payload.from = moment(startDate).format("YYYY-MM-DD");
     }
-    if (endDate && search?.id) {
+    if (endDate) {
       payload.to = moment(endDate).format("YYYY-MM-DD");
     }
     let { axios } = setRole();
@@ -226,6 +227,8 @@ const ProfitLoss = () => {
 
   const handleClick = (e) => {
     try {
+      setVisible(false)
+
       getEventList();
     } catch (e) {
       console.log("error", e?.message);
@@ -273,6 +276,8 @@ const ProfitLoss = () => {
           <Box sx={{ width: "99%", marginX: ".5%" }}>
             <ProfitLossComponent
               // loading
+              visible={visible}
+              setVisible={setVisible}
               eventData={eventData}
               reportData={reportData}
               betData={betData}
