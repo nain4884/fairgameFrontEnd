@@ -597,18 +597,21 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "allApiSessionStop") {
           const value = packet.data[1];
           try {
-            setLocalSessionExpertOdds((currentMatch) => {
+            setCurrentMatch((currentMatch) => {
               if (currentMatch?.id === value?.matchId) {
-                const updatedBettings = currentMatch?.map((v) => ({
-                  ...v,
-                  betStatus: 0,
-                }));
+                setLocalSessionExpertOdds((prev) => {
+                  const updatedBettings = prev?.map((betting) => {
+                    if (betting?.selectionId !== null) {
+                      return { ...betting, betStatus: 0 };
+                    }
+                    return betting;
+                  });
+                  const newBody = updatedBettings.sort(customSort);
 
-                const newBody = updatedBettings.sort(customSort);
+                  dispatch(setSessionExpertOdds(newBody));
 
-                dispatch(setSessionExpertOdds(newBody));
-
-                return newBody;
+                  return newBody;
+                });
               }
               return currentMatch;
             });

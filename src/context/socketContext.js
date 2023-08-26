@@ -695,10 +695,12 @@ export const SocketProvider = ({ children }) => {
             return currentMatch;
           }
           setLSelectedSessionBetting((prev) => {
-            const updatedBettings = prev?.map((betting) => ({
-              ...betting,
-              betStatus: 0,
-            }));
+            const updatedBettings = prev?.map((betting) => {
+              if (betting?.selectionId !== null) {
+                return { ...betting, betStatus: 0 };
+              }
+              return betting;
+            });
 
             dispatch(setSelectedSessionBettings(updatedBettings));
             return updatedBettings;

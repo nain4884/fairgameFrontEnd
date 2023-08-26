@@ -999,7 +999,7 @@ const CustomHeader = ({}) => {
                   // Return the updated current match object
                   const filterdUpdatedValue = newUpdatedValue?.map((v) => {
                     if (v.selectionId !== null) {
-                      return { ...v, yes_rate: 0, no_rate: 0 ,suspended:""};
+                      return { ...v, yes_rate: 0, no_rate: 0, suspended: "" };
                     }
                     return v;
                   });
@@ -1080,7 +1080,7 @@ const CustomHeader = ({}) => {
                     // Return the updated current match object
                     const filterdUpdatedValue = newUpdatedValue?.map((v) => {
                       if (v.selectionId !== null) {
-                        return { ...v, yes_rate: 0, no_rate: 0 ,suspended:""};
+                        return { ...v, yes_rate: 0, no_rate: 0, suspended: "" };
                       }
                       return v;
                     });
@@ -1108,7 +1108,12 @@ const CustomHeader = ({}) => {
               setCurrentMatch((currentMatch) => {
                 if (currentMatch?.id === data?.matchId) {
                   const updatedBettings = currentMatch?.bettings?.map(
-                    (betting) => ({ ...betting, betStatus: 0 })
+                    (betting) => {
+                      if (betting?.selectionId !== null) {
+                        return { ...betting, betStatus: 0 };
+                      }
+                      return betting;
+                    }
                   );
 
                   const newBody = {
@@ -1125,10 +1130,14 @@ const CustomHeader = ({}) => {
               setMatchData((prevMatchData) => {
                 const updated = prevMatchData.map((item) => {
                   if (item?.id === data?.matchId) {
-                    const updatedBettings = item?.bettings?.map((betting) => ({
-                      ...betting,
-                      betStatus: 0,
-                    }));
+                    const updatedBettings = item?.bettings?.map(
+                      (betting) => {
+                        if (betting?.selectionId !== null) {
+                          return { ...betting, betStatus: 0 };
+                        }
+                        return betting;
+                      }
+                    );
 
                     return {
                       ...item,
