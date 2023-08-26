@@ -22,25 +22,17 @@ const SessionMarket = ({
   sessionData,
   setIObtes,
   setData,
+  setLocalSessionExpertOdds,
 }) => {
   const theme = useTheme();
   const [stop, setStop] = useState(true);
   const { axios } = setRole();
-  const [matchSessionData, setMatchSessionData] = useState([]);
 
-  useEffect(() => {
-    if (sessionData?.length > 0) {
-  
-      setMatchSessionData(sessionData.sort(customSort));
-      // scrollToMessage();
-    }
-  }, [sessionData]);
-  
   const [visible, setVisible] = useState(true);
 
   const handleLive = async () => {
     try {
-      const bettingsToUpdate = matchSessionData?.filter(
+      const bettingsToUpdate = sessionData?.filter(
         (v) => v?.sessionBet === true && v?.id && v?.betStatus === 1
       );
 
@@ -64,8 +56,8 @@ const SessionMarket = ({
       });
 
       const results = await Promise.all(promises);
-      setMatchSessionData((matchSessionData) => {
-        const updatedBettings = matchSessionData?.map((betting) => {
+      setLocalSessionExpertOdds((prev) => {
+        const updatedBettings = prev?.map((betting) => {
           const updatedBetting = results?.find(
             (result) =>
               (betting.selectionId &&
@@ -124,7 +116,7 @@ const SessionMarket = ({
               marginLeft: "7px",
             }}
           >
-            {title}
+            {title} 
           </Typography>
           {!stopAllHide && (
             <Stop
@@ -266,9 +258,9 @@ const SessionMarket = ({
               overflowY: "scroll",
             }}
           >
-            {console.log("matchSessionData", matchSessionData)}
-            {matchSessionData?.length > 0 &&
-              matchSessionData?.map((match, index) => (
+            {console.log("matchSessionData", sessionData)}
+            {sessionData?.length > 0 &&
+              sessionData?.map((match, index) => (
                 <Box
                   key={index}
                   //  ref={messageRef}
@@ -280,7 +272,7 @@ const SessionMarket = ({
                     hideResult={hideResult}
                     hideTotalBet={hideTotalBet}
                     // updateSessionData={updateSessionData}
-                    setMatchSessionData={setMatchSessionData}
+                    setMatchSessionData={setLocalSessionExpertOdds}
                     setLocalState={(val) => setLocalState(val)}
                     currentMatch={currentMatch}
                     setCurrentMatch={setCurrentMatch}

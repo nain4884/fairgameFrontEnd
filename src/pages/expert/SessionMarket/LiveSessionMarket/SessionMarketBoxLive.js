@@ -79,17 +79,17 @@ const SessionMarketBoxLive = ({
       if (data?.data?.id) {
         if (liveOnly) {
           setLive(true);
-          setMatchSessionData((prev) =>
-            prev?.filter((v) => v?.selectionId !== data?.data?.selectionId)
-          );
-        } else {
-          setMatchSessionData((prev) => {
-            const exists = prev.some((v) => v?.id === data?.data?.id);
-            if (!exists) {
-              return [...prev, data.data];
-            }
-            return prev;
-          });
+        //   setMatchSessionData((prev) =>
+        //     prev?.filter((v) => v?.selectionId !== data?.data?.selectionId)
+        //   );
+        // } else {
+        //   setMatchSessionData((prev) => {
+        //     const exists = prev.some((v) => v?.id === data?.data?.id);
+        //     if (!exists) {
+        //       return [...prev, data.data];
+        //     }
+        //     return prev;
+        //   });
         }
 
         setMatchLiveSession((prev) =>

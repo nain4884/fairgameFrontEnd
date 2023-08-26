@@ -463,7 +463,10 @@ const CustomHeader = ({}) => {
             // });
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id === value?.match_id) {
+            
                 setLocalSessionExpertOdds((prev) => {
+              
+
                   const findBet = prev?.find(
                     (betting) =>
                       betting?.selectionId === value?.selectionId ||
@@ -626,12 +629,10 @@ const CustomHeader = ({}) => {
             });
 
             setCurrentMatch((currentMatch) => {
-
-              if(currentMatch?.id===data?.betPlaceData?.match_id){
-
+              if (currentMatch?.id === data?.betPlaceData?.match_id) {
                 setLocalAllBetRates((IObets) => {
                   const updatedIObets = Array.isArray(IObets) ? IObets : []; // Ensure IObets is an array
-  
+
                   if (currentMatch?.id === data?.betPlaceData?.match_id) {
                     const body = {
                       id: data?.betPlaceData?.id,
@@ -652,7 +653,8 @@ const CustomHeader = ({}) => {
                       bet_type: data?.betPlaceData?.bet_type,
                       country: null,
                       ip_address: null,
-                      deleted_reason: data?.betPlaceData?.deleted_reason || null,
+                      deleted_reason:
+                        data?.betPlaceData?.deleted_reason || null,
                       rate: data?.betPlaceData?.rate,
                       marketType: data?.betPlaceData?.marketType,
                       myStack: data?.betPlaceData?.myStack,
@@ -667,12 +669,12 @@ const CustomHeader = ({}) => {
                   return updatedIObets;
                 });
 
-                setLocalSessionExpertOdds((prev)=>{
+                setLocalSessionExpertOdds((prev) => {
                   const updatedBettings = prev?.map((betting) => {
                     if (betting?.id === data?.betPlaceData?.bet_id) {
                       // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
                       let profitLoss = data?.profitLoss;
-    
+
                       return {
                         ...betting,
                         profitLoss: profitLoss,
@@ -680,12 +682,11 @@ const CustomHeader = ({}) => {
                     }
                     return betting;
                   });
-                 dispatch(setSessionExpertOdds(updatedBettings))
-                  return updatedBettings
-                })
+                  dispatch(setSessionExpertOdds(updatedBettings));
+                  return updatedBettings;
+                });
               }
-        
-            
+
               // const updatedBettings = currentMatch?.bettings?.map((betting) => {
               //   if (betting?.id === data?.betPlaceData?.bet_id) {
               //     // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
@@ -833,7 +834,7 @@ const CustomHeader = ({}) => {
                   return updatedValues;
                 });
 
-                setLocalSessionExpertOdds((prev)=>{
+                setLocalSessionExpertOdds((prev) => {
                   const findBet = prev?.find(
                     (betting) => betting?.id === value?.betId
                   );
@@ -847,10 +848,10 @@ const CustomHeader = ({}) => {
                     (betting) => betting?.id !== value?.betId
                   );
                   var updatedBettings = [body, ...removedBet];
-                  dispatch(setSessionExpertOdds(updatedBettings))
-                  return updatedBettings
-                })
-             
+                  dispatch(setSessionExpertOdds(updatedBettings));
+                  return updatedBettings;
+                });
+
                 // const updatedBettings = prev?.bettings?.map((betting) => {
                 //   if (value?.betId === betting?.id && value?.sessionBet) {
                 //     return {
