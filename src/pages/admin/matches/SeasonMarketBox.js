@@ -79,24 +79,70 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
                 setData={setData}
               />
           }
-          <SeperateBox
-            session={true}
-            back={true}
-            value={newData?.no_rate}
-            value2={formatNumber(newData?.rate_percent?.split("-")[0])}
-            lock={newData?.suspended === "suspended" || [0,"0"].includes(newData?.no_rate)}
-            color={"#F6D0CB"}
-          />
-          <Box
-            sx={{ width: "3px", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox
-            session={true}
-            value={newData?.yes_rate}
-            value2={formatNumber(newData?.rate_percent?.split("-")[1])}
-            lock={newData?.suspended === "suspended" || [0,"0"].includes(newData?.yes_rate)}
-            color={"#B3E0FF"}
-          />
+             {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ? (
+            <Box
+              sx={{
+                background: "rgba(0,0,0,1)",
+                // marginLeft: "-2px",
+                height: "38px",
+                // position: "absolute",
+                marginLeft: { laptop: "20%", tablet: "0%", mobile: "0%" },
+                // right: 0,
+                width: { laptop: "36.5%", tablet: "60%", mobile: "60.5%" },
+                justifyContent: { mobile: "center", laptop: "center" },
+                alignItems: "center",
+                display: "flex",
+                zIndex: 1,
+              }}
+            >
+              {newData?.suspended == "Ball Started" ? (
+                <img
+                  src={BallStart}
+                  style={{ width: "113px", height: "32px" }}
+                />
+              ) : (
+                <Typography
+                  sx={{
+                    fontSize: { mobile: "12px", laptop: "18px" },
+                    textTransform: "uppercase",
+                    textAlign: "center",
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "400",
+                  }}
+                >
+                  {newData?.suspended}
+                </Typography>
+              )}
+            </Box>
+          ) : (
+            <>
+              <SeperateBox
+                session={true}
+                back={true}
+                value={newData?.no_rate}
+                value2={formatNumber(newData?.rate_percent?.split("-")[0])}
+                lock={
+                  newData?.suspended === "suspended" ||
+                  [0, "0"].includes(newData?.no_rate)
+                }
+                color={"#F6D0CB"}
+              />
+              <Box
+                sx={{ width: "3px", display: "flex", background: "pink" }}
+              ></Box>
+              <SeperateBox
+                session={true}
+                value={newData?.yes_rate}
+                value2={formatNumber(newData?.rate_percent?.split("-")[1])}
+                lock={
+                  newData?.suspended === "suspended" ||
+                  [0, "0"].includes(newData?.yes_rate)
+                }
+                color={"#B3E0FF"}
+              />
+            </>
+          )}
           <Box
             sx={{ width: ".45%", display: "flex", background: "pink" }}
           ></Box>
