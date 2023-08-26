@@ -23,9 +23,10 @@ const ProfitLossComponent = ({
   pageCount,
   getListOfUser,
   setCurrentPage,
+  visible,setVisible
 }) => {
   const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
+
   const [show, setShow] = useState(false);
   const [selectedId, setSelectedId] = useState("");
   const [event, setEvent] = useState("");

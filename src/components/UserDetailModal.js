@@ -79,6 +79,10 @@ export default function UserDetailModal({
   }
 
   const handleKeyDown = (event) => {
+    if ((event.ctrlKey || event.metaKey) && (event.key === "c" || event.key === "v")) {
+      return;
+    }
+  
     if (
       event.code === "Space" ||
       (!(event.key >= "0" && event.key <= "9") &&
@@ -96,6 +100,9 @@ export default function UserDetailModal({
   };
 
   const handleKeyDown1 = (event) => {
+    if ((event.ctrlKey || event.metaKey) && (event.key === "c" || event.key === "v")) {
+      return;
+    }
     if (
       event.code === "Space" ||
       (!(event.key >= "0" && event.key <= "9") &&
@@ -523,7 +530,7 @@ export default function UserDetailModal({
                     .catch(({ bool, message }) => {
                       toast.error(message);
                       setDeleteModal(false);
-                      showDialogModal(true, false, message);
+                      // showDialogModal(true, false, message);
                     });
                 }}
               >
@@ -559,7 +566,7 @@ export default function UserDetailModal({
                     .catch(({ bool, message }) => {
                       toast.error(message);
                       setConfirmDeleteModal(false);
-                      showDialogModal(true, false, message);
+                      // showDialogModal(true, false, message);
                     });
                 }}
               >
@@ -763,14 +770,13 @@ const DepositComponent = ({
             setLoading(false);
             showDialogModal(true, true, message);
             setDepositObj(defaultDepositObj);
-
             setSelected(e);
           })
           .catch(({ bool, message }) => {
             toast.error(message);
-            setSelected(e);
+            // setSelected(e);
             setLoading(false);
-            showDialogModal(true, false, message);
+            // showDialogModal(true, false, message);
 
             setElementToUDM({
               ...elementToUDM,
@@ -784,7 +790,7 @@ const DepositComponent = ({
       }
     } catch (e) {
       console.log(e?.message);
-      setSelected(e);
+      // setSelected(e);
       setElementToUDM({
         ...elementToUDM,
         profit_loss: prevElement.profit_loss,
@@ -1245,7 +1251,7 @@ const DepositComponent = ({
                             setSelected(e);
                             toast.error(message);
                             setLoading(false);
-                            showDialogModal(true, false, message);
+                            // showDialogModal(true, false, message);
                           });
                       }
                     } catch (e) {
@@ -1419,13 +1425,13 @@ const WithDrawComponent = ({
               available_balance: prevElement.available_balance,
             });
             toast.error(message);
-            setSelected(e);
+            // setSelected(e);
             setLoading(false);
-            showDialogModal(true, false, message);
+            // showDialogModal(true, false, message);
           });
       }
     } catch (e) {
-      setSelected(e);
+      // setSelected(e);
       setLoading(false);
       setElementToUDM({
         ...elementToUDM,
@@ -1891,9 +1897,9 @@ const WithDrawComponent = ({
                               percent_profit_loss:
                                 prevElement.percent_profit_loss,
                             });
-                            setSelected(e);
+                            // setSelected(e);
                             setLoading(false);
-                            showDialogModal(true, false, message);
+                            // showDialogModal(true, false, message);
                           });
                       }
                     } catch (e) {
@@ -1904,7 +1910,7 @@ const WithDrawComponent = ({
                         available_balance: prevElement.available_balance,
                         percent_profit_loss: prevElement.percent_profit_loss,
                       });
-                      setSelected(e);
+                      // setSelected(e);
                       setLoading(false);
                       console.log(e.message);
                     }
@@ -1992,7 +1998,35 @@ const NewCreditComponent = ({
     }
     return percent_profit_loss.toFixed(2);
   };
+
+  const handleSubmit=(e)=>{
+  e.preventDefault()
+      try {
+        if (!loading) {
+          setLoading(true);
+          UpdateAvailableBalance(newCreditObj)
+            .then(({ bool, message }) => {
+              toast.success(message);
+              getListOfUser();
+              showDialogModal(true, true, message);
+              setLoading(false);
+              setSelected(e);
+            })
+            .catch(({ bool, message }) => {
+              toast.error(message);
+              // showDialogModal(true, false, message);
+              setLoading(false);
+            });
+        }
+      } catch (e) {
+        setLoading(false);
+        console.log(e.message);
+      }
+    
+  }
   return (
+    <form onSubmit={handleSubmit}>
+
     <Box
       sx={{
         display: "flex",
@@ -2002,7 +2036,7 @@ const NewCreditComponent = ({
         gap: 2,
       }}
     >
-      <Box sx={{ width: "100%" }}>
+     <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
@@ -2031,6 +2065,7 @@ const NewCreditComponent = ({
             }}
           >
             <TextField
+              required={true}
               value={newCreditObj.amount}
               onKeyDown={handleKeyDown}
               onChange={(e) => {
@@ -2129,6 +2164,7 @@ const NewCreditComponent = ({
             }}
           >
             <TextField
+              required={true}
               onChange={(e) => {
                 setNewCreditObj({
                   ...newCreditObj,
@@ -2205,29 +2241,8 @@ const NewCreditComponent = ({
             loading={loading}
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
-            onClick={(e) => {
-              try {
-                if (!loading) {
-                  setLoading(true);
-                  UpdateAvailableBalance(newCreditObj)
-                    .then(({ bool, message }) => {
-                      toast.success(message);
-                      getListOfUser();
-                      showDialogModal(true, true, message);
-                      setLoading(false);
-                      setSelected(e);
-                    })
-                    .catch(({ bool, message }) => {
-                      toast.error(message);
-                      showDialogModal(true, false, message);
-                      setLoading(false);
-                    });
-                }
-              } catch (e) {
-                setLoading(false);
-                console.log(e.message);
-              }
-            }}
+            type="submit"
+            // onClick={handleSubmit}
             title={"Submit"}
           />
         </Box>
@@ -2262,6 +2277,7 @@ const NewCreditComponent = ({
         </Box>
       </Box>
     </Box>
+     </form>
   );
 };
 
@@ -2306,7 +2322,7 @@ const SetExposureComponent = ({
           })
           .catch(({ bool, message }) => {
             toast.error(message);
-            showDialogModal(true, false, message);
+            // showDialogModal(true, false, message);
             setLoading(false);
           });
       }
@@ -2578,7 +2594,7 @@ const ChangePasswordComponent = ({
       })
       .catch(({ bool, message }) => {
         toast.error(message);
-        showDialogModal(true, false, message);
+        // showDialogModal(true, false, message);
       });
   };
 
@@ -2874,7 +2890,7 @@ const LockUnlockComponent = ({
       })
       .catch(({ bool, message }) => {
         toast.error(message);
-        showDialogModal(true, false, message);
+        // showDialogModal(true, false, message);
       });
   };
   return (
