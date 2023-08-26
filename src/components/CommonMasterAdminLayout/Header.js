@@ -1099,6 +1099,60 @@ const CustomHeader = ({}) => {
             }
           }
 
+          if (packet.data[0] === "allApiSessionStop") {
+            const data = packet.data[1];
+            // matchId = value?.match_id;
+            try {
+              setCurrentMatch((currentMatch) => {
+                if (currentMatch?.id === data?.matchId) {
+                  const updatedBettings = currentMatch?.bettings?.map(
+                    (betting) => {
+                      if (betting?.selectionId !== null) {
+                        return { ...betting, betStatus: 0 };
+                      }
+                      return betting;
+                    }
+                  );
+
+                  const newBody = {
+                    ...currentMatch,
+                    bettings: updatedBettings,
+                  };
+                  dispatch(setSelectedMatch(newBody));
+                  return newBody;
+                }
+
+                return currentMatch;
+              });
+
+              setMatchData((prevMatchData) => {
+                const updated = prevMatchData.map((item) => {
+                  if (item?.id === data?.matchId) {
+                    const updatedBettings = item?.bettings?.map(
+                      (betting) => {
+                        if (betting?.selectionId !== null) {
+                          return { ...betting, betStatus: 0 };
+                        }
+                        return betting;
+                      }
+                    );
+
+                    return {
+                      ...item,
+                      bettings: updatedBettings,
+                    };
+                  }
+                  return item;
+                });
+
+                dispatch(setMultiSelectedMatch(updated));
+                return updated;
+              });
+            } catch (err) {
+              console.log(err?.message);
+            }
+          }
+
           if (packet.data[0] === "matchOddRateLive") {
             // Bookmaker Market live and stop disable condition
             const value = packet.data[1];

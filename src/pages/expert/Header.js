@@ -507,8 +507,10 @@ const CustomHeader = ({}) => {
                   [undefined, null].includes(value?.selectionId)
                 ) {
                   // Check if the value.id already exists in match.bettings
-                  const existingBet = match.bettings.find((bet) => bet.id === value.id);
-            
+                  const existingBet = match.bettings.find(
+                    (bet) => bet.id === value.id
+                  );
+
                   // If it doesn't exist, push the new bet
                   if (!existingBet) {
                     const betObj = {
@@ -516,20 +518,45 @@ const CustomHeader = ({}) => {
                       bet_condition: value.bet_condition,
                     };
                     const newBettings = [...match.bettings, betObj];
-            
+
                     return {
                       ...match,
                       bettings: newBettings,
                     };
                   }
                 }
-            
+
                 return match;
               });
-            
+
               dispatch(setAllEventSession(updatedAllEventSession));
-            
+
               return updatedAllEventSession;
+            });
+          } catch (e) {
+            console.log(e.message);
+          }
+        }
+        if (packet.data[0] === "allApiSessionStop") {
+          const value = packet.data[1];
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id === value?.matchId) {
+                const updatedBettings = currentMatch?.map((betting) => {
+                  if (betting?.selectionId !== null) {
+                    return { ...betting, betStatus: 0 };
+                  }
+                  return betting;
+                });
+                const newBody = {
+                  ...currentMatch,
+                  bettings: updatedBettings.sort(customSort),
+                };
+                dispatch(setSelectedMatch(newBody));
+
+                return newBody;
+              }
+              return currentMatch;
             });
           } catch (e) {
             console.log(e.message);
@@ -815,7 +842,7 @@ const CustomHeader = ({}) => {
               var updatedPrev = prev?.map((item) => {
                 if (item.id === value?.match_id && value?.sessionBet) {
                   dispatch(setSessionResultRefresh(true));
-              
+
                   if (sessionBetId === value?.betId) {
                     dispatch(setSessionProfitLoss(value?.profitLoss));
                     setLocalSelectedSession((i) => {
@@ -827,7 +854,6 @@ const CustomHeader = ({}) => {
 
                       setLocalSessionResult((prev) => {
                         if (i?.id === value?.betId) {
-                        
                           dispatch(setSessionAllBet([]));
                           const body = {
                             ...value,
