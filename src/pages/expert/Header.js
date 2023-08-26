@@ -463,32 +463,51 @@ const CustomHeader = ({}) => {
             // });
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id === value?.match_id) {
-            
                 setLocalSessionExpertOdds((prev) => {
-              
-
-                  const findBet = prev?.find(
-                    (betting) =>
+                  var updatedBettings = prev?.map((betting) => {
+                    if (
                       betting?.selectionId === value?.selectionId ||
                       betting?.id === value?.id
-                  );
-                  const body = {
-                    ...findBet,
-                    betStatus: value?.betStatus,
-                    suspended: "",
-                    yes_rate: 0,
-                    no_rate: 0,
-                  };
-                  var removedBet = prev?.filter(
-                    (betting) =>
-                      betting?.selectionId !== value?.selectionId &&
-                      betting?.id !== value?.id
-                  );
-                  var updatedBettings = [body, ...removedBet];
+                    ) {
+                      return { ...betting, betStatus: value?.betStatus };
+                    }
+                    return betting; // Return the unchanged betting object if no match is found
+                  });
+
+                  // If no match was found, push the value to the bettings array
+                  if (
+                    value.selectionId &&
+                    !updatedBettings.some((betting) => betting.id === value.id)
+                  ) {
+                    updatedBettings.unshift(value);
+                  }
                   const newBody = updatedBettings?.sort(customSort);
                   dispatch(setSessionExpertOdds(newBody));
                   return newBody;
                 });
+
+                //   const findBet = prev?.find(
+                //     (betting) =>
+                //       betting?.selectionId === value?.selectionId ||
+                //       betting?.id === value?.id
+                //   );
+                //   const body = {
+                //     ...findBet,
+                //     betStatus: value?.betStatus,
+                //     suspended: "",
+                //     yes_rate: 0,
+                //     no_rate: 0,
+                //   };
+                //   var removedBet = prev?.filter(
+                //     (betting) =>
+                //       betting?.selectionId !== value?.selectionId &&
+                //       betting?.id !== value?.id
+                //   );
+                //   var updatedBettings = [body, ...removedBet];
+                //   const newBody = updatedBettings?.sort(customSort);
+                //   dispatch(setSessionExpertOdds(newBody));
+                //   return newBody;
+                // });
               }
               // const findBet = currentMatch?.bettings?.find(
               //   (betting) =>
@@ -569,6 +588,29 @@ const CustomHeader = ({}) => {
               dispatch(setAllEventSession(updatedAllEventSession));
 
               return updatedAllEventSession;
+            });
+          } catch (e) {
+            console.log(e.message);
+          }
+        }
+
+        if (packet.data[0] === "allApiSessionStop") {
+          const value = packet.data[1];
+          try {
+            setLocalSessionExpertOdds((currentMatch) => {
+              if (currentMatch?.id === value?.matchId) {
+                const updatedBettings = currentMatch?.map((v) => ({
+                  ...v,
+                  betStatus: 0,
+                }));
+
+                const newBody = updatedBettings.sort(customSort);
+
+                dispatch(setSessionExpertOdds(newBody));
+
+                return newBody;
+              }
+              return currentMatch;
             });
           } catch (e) {
             console.log(e.message);

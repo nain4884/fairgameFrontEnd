@@ -18,22 +18,22 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
           background: "white",
           height: "38px",
           width: "100%",
-          position:"relative"
+          position: "relative",
         }}
       >
-     {newData?.betStatus === 0 && (
-        <Box
-          sx={{
-            margin: "1px",
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            right: 0,
-            background: "rgba(0,0,0,0.5)",
-            zIndex: 2,
-          }}
-        ></Box>
-      )}
+        {newData?.betStatus === 0 && (
+          <Box
+            sx={{
+              margin: "1px",
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              right: 0,
+              background: "rgba(0,0,0,0.5)",
+              zIndex: 2,
+            }}
+          ></Box>
+        )}
         <Box
           sx={{
             display: "flex",
@@ -65,38 +65,87 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
             alignItems: "center",
           }}
         >
-          {
-            matchesMobile ? <PlaceBetComponent
+          {matchesMobile ? (
+            <PlaceBetComponent
               // amount={index == 2}
               newData={newData}
               // setData={setData}
               setData={setData}
-            /> :
-              <PlaceBetComponentWeb
-                // amount={index == 2}
-                newData={newData}
-                // setData={setData}
-                setData={setData}
+            />
+          ) : (
+            <PlaceBetComponentWeb
+              // amount={index == 2}
+              newData={newData}
+              // setData={setData}
+              setData={setData}
+            />
+          )}
+
+          {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ? (
+            <Box
+              sx={{
+                background: "rgba(0,0,0,1)",
+                // marginLeft: "-2px",
+                height: "38px",
+                // position: "absolute",
+                marginLeft: { laptop: "20%", tablet: "0%", mobile: "0%" },
+                // right: 0,
+                width: { laptop: "36.5%", tablet: "60%", mobile: "60.5%" },
+                justifyContent: { mobile: "center", laptop: "center" },
+                alignItems: "center",
+                display: "flex",
+                zIndex: 1,
+              }}
+            >
+              {newData?.suspended == "Ball Started" ? (
+                <img
+                  src={BallStart}
+                  style={{ width: "113px", height: "32px" }}
+                />
+              ) : (
+                <Typography
+                  sx={{
+                    fontSize: { mobile: "12px", laptop: "18px" },
+                    textTransform: "uppercase",
+                    textAlign: "center",
+                    width: "100%",
+                    color: "white",
+                    fontWeight: "400",
+                  }}
+                >
+                  {newData?.suspended}
+                </Typography>
+              )}
+            </Box>
+          ) : (
+            <>
+              <SeperateBox
+                session={true}
+                back={true}
+                value={newData?.no_rate}
+                value2={formatNumber(newData?.rate_percent?.split("-")[0])}
+                lock={
+                  newData?.suspended === "suspended" ||
+                  [0, "0"].includes(newData?.no_rate)
+                }
+                color={"#F6D0CB"}
               />
-          }
-          <SeperateBox
-            session={true}
-            back={true}
-            value={newData?.no_rate}
-            value2={formatNumber(newData?.rate_percent?.split("-")[0])}
-            lock={newData?.suspended === "suspended" || [0,"0"].includes(newData?.no_rate)}
-            color={"#F6D0CB"}
-          />
-          <Box
-            sx={{ width: "3px", display: "flex", background: "pink" }}
-          ></Box>
-          <SeperateBox
-            session={true}
-            value={newData?.yes_rate}
-            value2={formatNumber(newData?.rate_percent?.split("-")[1])}
-            lock={newData?.suspended === "suspended" || [0,"0"].includes(newData?.yes_rate)}
-            color={"#B3E0FF"}
-          />
+              <Box
+                sx={{ width: "3px", display: "flex", background: "pink" }}
+              ></Box>
+              <SeperateBox
+                session={true}
+                value={newData?.yes_rate}
+                value2={formatNumber(newData?.rate_percent?.split("-")[1])}
+                lock={
+                  newData?.suspended === "suspended" ||
+                  [0, "0"].includes(newData?.yes_rate)
+                }
+                color={"#B3E0FF"}
+              />
+            </>
+          )}
+
           <Box
             sx={{ width: ".45%", display: "flex", background: "pink" }}
           ></Box>

@@ -809,7 +809,7 @@ const CustomHeader = ({}) => {
                     bettings: updatedBettings.sort(customSort),
                   };
                   dispatch(setSelectedMatch(newBody));
-  
+
                   return newBody;
                 }
                 return currentMatch;
@@ -872,7 +872,9 @@ const CustomHeader = ({}) => {
                     var updatedBettings = [body, ...removedBet];
                     if (
                       value.selectionId &&
-                      !updatedBettings.some((betting) => betting.id === value.id)
+                      !updatedBettings.some(
+                        (betting) => betting.id === value.id
+                      )
                     ) {
                       updatedBettings.unshift(value);
                     }
@@ -881,11 +883,11 @@ const CustomHeader = ({}) => {
                       bettings: updatedBettings.sort(customSort),
                     };
                     dispatch(setSelectedMatch(newBody));
-    
+
                     return newBody;
                   }
                   return currentMatch;
-                    // If the new bet doesn't belong to the current match, return the current state
+                  // If the new bet doesn't belong to the current match, return the current state
                   //   const updatedBettings = currentMatch?.bettings?.map(
                   //     (betting) => {
                   //       if (betting.id === value.betId) {
@@ -1086,6 +1088,51 @@ const CustomHeader = ({}) => {
                       ...item,
                       bettings: filterdUpdatedValue,
                       sessionOffline: item.sessionOffline,
+                    };
+                  }
+                  return item;
+                });
+
+                dispatch(setMultiSelectedMatch(updated));
+                return updated;
+              });
+            } catch (err) {
+              console.log(err?.message);
+            }
+          }
+
+          if (packet.data[0] === "allApiSessionStop") {
+            const data = packet.data[1];
+            // matchId = value?.match_id;
+            try {
+              setCurrentMatch((currentMatch) => {
+                if (currentMatch?.id === data?.matchId) {
+                  const updatedBettings = currentMatch?.bettings?.map(
+                    (betting) => ({ ...betting, betStatus: 0 })
+                  );
+
+                  const newBody = {
+                    ...currentMatch,
+                    bettings: updatedBettings,
+                  };
+                  dispatch(setSelectedMatch(newBody));
+                  return newBody;
+                }
+
+                return currentMatch;
+              });
+
+              setMatchData((prevMatchData) => {
+                const updated = prevMatchData.map((item) => {
+                  if (item?.id === data?.matchId) {
+                    const updatedBettings = item?.bettings?.map((betting) => ({
+                      ...betting,
+                      betStatus: 0,
+                    }));
+
+                    return {
+                      ...item,
+                      bettings: updatedBettings,
                     };
                   }
                   return item;

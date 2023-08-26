@@ -537,7 +537,6 @@ export const SocketProvider = ({ children }) => {
               const ids = prev?.map((v) => v?.id);
               if (!ids.includes(value?.id)) {
                 const newres = [value, ...prev];
-
                 updatedBettings = newres;
               }
               dispatch(setSelectedSessionBettings(updatedBettings));
@@ -686,6 +685,29 @@ export const SocketProvider = ({ children }) => {
       }
     });
 
+    localSocket.on("allApiSessionStop", (event) => {
+      const value = event;
+      // matchId = value?.match_id;
+      try {
+        setCurrentMatch((currentMatch) => {
+          if (currentMatch?.id !== value?.matchId) {
+            // If the new bet doesn't belong to the current match, return the current state
+            return currentMatch;
+          }
+          setLSelectedSessionBetting((prev) => {
+            const updatedBettings = prev?.map((betting) => ({
+              ...betting,
+              betStatus: 0,
+            }));
+
+            dispatch(setSelectedSessionBettings(updatedBettings));
+            return updatedBettings;
+          });
+        });
+      } catch (err) {
+        console.log(err?.message);
+      }
+    });
     // The `message` event listener is not being overridden.
     localSocket.on("matchOddRateLive", (event) => {
       const value = event;
