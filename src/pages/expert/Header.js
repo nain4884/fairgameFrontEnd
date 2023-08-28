@@ -593,6 +593,31 @@ const CustomHeader = ({}) => {
             console.log(e.message);
           }
         }
+        if (packet.data[0] === "allApiSessionStop") {
+          const value = packet.data[1];
+          try {
+            setCurrentMatch((currentMatch) => {
+              if (currentMatch?.id === value?.matchId) {
+                const updatedBettings = currentMatch?.map((betting) => {
+                  if (betting?.selectionId !== null) {
+                    return { ...betting, betStatus: 0 };
+                  }
+                  return betting;
+                });
+                const newBody = {
+                  ...currentMatch,
+                  bettings: updatedBettings.sort(customSort),
+                };
+                dispatch(setSelectedMatch(newBody));
+
+                return newBody;
+              }
+              return currentMatch;
+            });
+          } catch (e) {
+            console.log(e.message);
+          }
+        }
 
         if (packet.data[0] === "allApiSessionStop") {
           const value = packet.data[1];

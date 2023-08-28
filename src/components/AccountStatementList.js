@@ -23,6 +23,8 @@ const AccountStatementList = ({ user, visible, selected }) => {
   const [data, setData] = useState("");
   const [isDated, setIsDated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
   const handleChildData = (childData) => {
     setData(childData);
   };
@@ -34,21 +36,17 @@ const AccountStatementList = ({ user, visible, selected }) => {
     setCurrenLimit(parseInt(val));
     setIsDated(true);
   }
-  async function getAccountStatement(from, to) {
+  async function getAccountStatement() {
     const userId = currentUser.id;
-
-    if (from && to) {
-      var payload = {
-        limit: pageLimit,
-        skip: currentPage * pageLimit,
-        fromDate: moment(from).format("YYYY-MM-DD"),
-        toDate: moment(to).format("YYYY-MM-DD"),
-      };
-    } else {
-      var payload = {
-        limit: pageLimit,
-        skip: currentPage * pageLimit,
-      };
+    var payload = {
+      limit: pageLimit,
+      skip: currentPage * pageLimit,
+    };
+    if (fromDate) {
+      payload.fromDate = moment(fromDate).format("YYYY-MM-DD");
+    }
+    if (toDate) {
+      payload.toDate = moment(toDate).format("YYYY-MM-DD");
     }
     let { axios } = setRole();
     try {
@@ -195,6 +193,10 @@ const AccountStatementList = ({ user, visible, selected }) => {
         <>
           <Box sx={{ marginX: { mobile: "2vw", laptop: "1vw" } }}>
             <YellowHeader
+              setFromDate={setFromDate}
+              fromDate={fromDate}
+              toDate={toDate}
+              setToDate={setToDate}
               onChildData={handleChildData}
               getAccountStatement={getAccountStatement}
             />
@@ -218,7 +220,7 @@ const AccountStatementList = ({ user, visible, selected }) => {
                   laptop: "0px",
                   tablet: "10px",
                 },
-                background: "#F8C851"
+                background: "#F8C851",
               },
             ]}
           >
@@ -227,39 +229,39 @@ const AccountStatementList = ({ user, visible, selected }) => {
               <ListHeaderT />
               {decodedTokenUser?.role === "user,visible"
                 ? transactionHistory?.map((item) => (
-                  <Row
-                    key={item?.id}
-                    index={item?.id}
-                    containerStyle={{ background: "#FFE094" }}
-                    profit={true}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    date={item?.createAt}
-                    description={item?.description}
-                    closing={item?.current_amount}
-                    trans_type={item?.trans_type}
-                    amount={item?.amount}
-                    fromuserName={item?.action_by?.userName}
-                    touserName={item?.user?.userName}
-                  />
-                ))
+                    <Row
+                      key={item?.id}
+                      index={item?.id}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={true}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      date={item?.createAt}
+                      description={item?.description}
+                      closing={item?.current_amount}
+                      trans_type={item?.trans_type}
+                      amount={item?.amount}
+                      fromuserName={item?.action_by?.userName}
+                      touserName={item?.user?.userName}
+                    />
+                  ))
                 : transactionHistory.map((item) => (
-                  <Row
-                    key={item?.id}
-                    index={item?.id}
-                    containerStyle={{ background: "#FFE094" }}
-                    profit={true}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    date={item?.createAt}
-                    closing={item?.current_amount}
-                    trans_type={item?.trans_type}
-                    amount={item?.amount}
-                    description={item?.description}
-                    fromuserName={item?.action_by?.userName}
-                    touserName={item?.user?.userName}
-                  />
-                ))}
+                    <Row
+                      key={item?.id}
+                      index={item?.id}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={true}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      date={item?.createAt}
+                      closing={item?.current_amount}
+                      trans_type={item?.trans_type}
+                      amount={item?.amount}
+                      description={item?.description}
+                      fromuserName={item?.action_by?.userName}
+                      touserName={item?.user?.userName}
+                    />
+                  ))}
 
               {transactionHistory?.length === 0 && (
                 <EmptyRow containerStyle={{ background: "#FFE094" }} />
@@ -307,7 +309,15 @@ const ListH = ({ getLimitEntries }) => {
           Entries
         </Typography>
       </Box>
-      <SearchInput show={true} width={"100%"} placeholder={"Search..."} inputContainerStyle={{ width: { mobile: "50vw", laptop: "17vw" }, marginLeft: "auto" }} />
+      <SearchInput
+        show={true}
+        width={"100%"}
+        placeholder={"Search..."}
+        inputContainerStyle={{
+          width: { mobile: "50vw", laptop: "17vw" },
+          marginLeft: "auto",
+        }}
+      />
     </Box>
   );
 };
@@ -563,7 +573,7 @@ const Row = ({
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
-          background: index % 2 != 0 ? "#FFE094" : "#ECECEC",
+          background: trans_type === "credit_refer" ? "#F8C851" : "#FFE094",
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "500" }}>

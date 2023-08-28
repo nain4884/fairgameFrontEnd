@@ -5,6 +5,8 @@ import { setRole } from "../../newStore";
 import { useEffect, useState } from "react";
 import constants from "../../components/helper/constants";
 import EventListing from "../../components/EventListing";
+import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
+import moment from "moment";
 
 const ProfitLoss = ({ selected, visible }) => {
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
@@ -16,6 +18,8 @@ const ProfitLoss = ({ selected, visible }) => {
   const [betData, setBetData] = useState([]);
   const [sessionBetData, setSessionBetData] = useState([]);
   let { axios } = setRole();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   useEffect(() => {
     // alert(1)
@@ -24,6 +28,12 @@ const ProfitLoss = ({ selected, visible }) => {
 
   async function getEventList() {
     var payload = {};
+    if (startDate) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
+    }
+    if (endDate) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
+    }
     try {
       const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
       // console.log(data.data[0], 'datadatadatadata')
@@ -33,16 +43,22 @@ const ProfitLoss = ({ selected, visible }) => {
     }
   }
 
-  const handleReport = (eventType,pageno) => {
-    getReport(eventType,pageno);
+  const handleReport = (eventType, pageno) => {
+    getReport(eventType, pageno);
   };
 
-  const getReport = async (eventType,pageno) => {
+  const getReport = async (eventType, pageno) => {
     var payload = {
       skip: pageno,
       limit: pageLimit,
       gameType: eventType,
     };
+    if(startDate) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
+    }
+    if(endDate) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
+    }
     try {
       const { data } = await axios.post(`/betting/profitLossReport`, payload);
       // console.log(data.data[0], 'datadatadatadata')l
@@ -107,11 +123,30 @@ const ProfitLoss = ({ selected, visible }) => {
       console.log(e);
     }
   }
+
+  const handleClick = (e) => {
+    try {
+      // setVisible(false)
+
+      getEventList();
+    } catch (e) {
+      console.log("error", e?.message);
+    }
+  };
+
   return (
-    <Box sx={{width: "100%", paddingX: "1vw"}}>
+    <Box sx={{ width: "100%", paddingX: "1vw" }}>
       {visible ? (
         <>
-       
+        <YellowHeaderProfitLoss 
+        title="PROFIT/LOSS"
+            type="user"
+            onClick={handleClick}
+            setEndDate={setEndDate}
+            endDate={endDate}
+            startDate={startDate}
+            setStartDate={setStartDate}
+          />
           <Typography
             sx={{
               fontSize: { mobile: "12px", laptop: "15px" },
@@ -138,6 +173,7 @@ const ProfitLoss = ({ selected, visible }) => {
         </>
       ) : (
         <Background>
+        
           <Typography
             sx={{
               fontSize: { mobile: "12px", laptop: "15px" },
@@ -158,8 +194,8 @@ const ProfitLoss = ({ selected, visible }) => {
             handleReport={handleReport}
             handleBet={handleBet}
             currentPage={currentPage}
-              pageCount={pageCount}
-              setCurrentPage={setCurrentPage}
+            pageCount={pageCount}
+            setCurrentPage={setCurrentPage}
           />
         </Background>
       )}

@@ -32,6 +32,43 @@ const SessionMarket = ({
 
   const handleLive = async () => {
     try {
+      // const bettingsToUpdate = matchSessionData?.filter(
+      //   (v) => v?.sessionBet === true && v?.id && v?.betStatus === 1
+      // );
+
+      // const promises = bettingsToUpdate?.map(async (betting) => {
+      //   const body = {
+      //     match_id: currentMatch?.id,
+      //     matchType: currentMatch?.gameType,
+      //     id: betting?.id ? betting?.id : "",
+      //     selectionId: betting?.selectionId,
+      //     betStatus: 0,
+      //     sessionBet: true,
+      //     bet_condition: betting?.bet_condition,
+      //     no_rate: betting?.no_rate,
+      //     yes_rate: betting?.yes_rate,
+      //     rate_percent: betting?.rate_percent,
+      //     suspended: betting?.suspended,
+      //   };
+
+      //   const { data } = await axios.post("betting/addBetting", body);
+      //   return data?.data;
+      // });
+
+      // const results = await Promise.all(promises);
+      // setMatchSessionData((matchSessionData) => {
+      //   const updatedBettings = matchSessionData?.map((betting) => {
+      //     const updatedBetting = results?.find(
+      //       (result) =>
+      //         (betting.selectionId &&
+      //           betting.selectionId === result.selectionId) ||
+      //         (betting.id && betting.id === result.id)
+      //     );
+
+      //     return updatedBetting ? updatedBetting : betting;
+      //   });
+      //   return updatedBettings;
+      // });
 
       const { data } = await axios.post("game-match/stopAllSession", {
         matchId: currentMatch?.id,

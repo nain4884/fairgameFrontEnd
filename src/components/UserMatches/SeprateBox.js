@@ -290,14 +290,14 @@ const SeprateBox = ({
         setCanceled({
           value: true,
           msg: "Rate changed",
-          loading: false,
+          loading: true,
           type: false,
         });
         setTimeout(() => {
           setCanceled({
-            value: false,
+            value: true,
             msg: "",
-            loading: false,
+            loading: true,
             type: false,
           });
         }, 1500);
@@ -309,7 +309,7 @@ const SeprateBox = ({
         setCanceled({
           value: true,
           msg: "Rate changed",
-          loading: false,
+          loading: true,
           type: false,
         });
         return false;
@@ -323,9 +323,9 @@ const SeprateBox = ({
         });
         setTimeout(() => {
           setCanceled({
-            value: false,
+            value: true,
             msg: "",
-            loading: false,
+            loading: true,
             type: false,
           });
         }, 1500);
@@ -347,7 +347,7 @@ const SeprateBox = ({
       setPreviousValue(0);
       setCanceled({
         value: true,
-        msg: response.data.message,
+        msg: response?.data?.message,
         loading: false,
         type: true,
       });
