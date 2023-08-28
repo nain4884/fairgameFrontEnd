@@ -573,7 +573,7 @@ const Row = ({
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
-          background: index % 2 != 0 ? "#FFE094" : "#ECECEC",
+          background: trans_type === "credit_refer" ? "#F8C851" : "#FFE094",
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "500" }}>
