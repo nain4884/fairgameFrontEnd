@@ -110,6 +110,7 @@ const ProfitLoss = () => {
   const [endDate, setEndDate] = useState(null);
   const { profitLossReportPage } = useSelector((state) => state?.adminMatches);
   const [visible, setVisible] = useState(false);
+  const [sessionBets, setSessionBet] = useState([]);
   useEffect(() => {
     // alert(1)
     getEventList();
@@ -213,7 +214,12 @@ const ProfitLoss = () => {
         payload
       );
       setBetData(data?.data?.filter((v) => v.sessionBet !== true));
-      setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
+      if (value?.type === "session_bet" && value.betId === "") {
+      
+        setSessionBet(data?.data[0]);
+      } else {
+        setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
+      }
     } catch (e) {
       console.log(e);
     }
@@ -292,6 +298,7 @@ const ProfitLoss = () => {
               reportData={reportData}
               betData={betData}
               sessionBetData={sessionBetData}
+              sessionBets={sessionBets}
               handleReport={handleReport}
               handleBet={handleBet}
               currentPage={currentPage}

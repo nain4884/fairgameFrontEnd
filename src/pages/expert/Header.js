@@ -543,7 +543,7 @@ const CustomHeader = ({}) => {
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.id === value?.matchId) {
                 const updatedBettings = currentMatch?.map((betting) => {
-                  if (betting?.selectionId !== null) {
+                  if (betting?.selectionId !== null && betting.betStatus!==2) {
                     return { ...betting, betStatus: 0 };
                   }
                   return betting;
