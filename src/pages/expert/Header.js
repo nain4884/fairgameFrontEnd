@@ -550,7 +550,7 @@ const CustomHeader = ({}) => {
                 if (currentMatch?.id === value?.matchId) {
                   setLocalSessionExpertOdds((prev) => {
                     const updatedBettings = prev?.map((betting) => {
-                      if (betting?.selectionId !== null) {
+                      if (betting?.selectionId !== null && betting?.betStatus!==2) {
                         return { ...betting, betStatus: 0 };
                       }
                       return betting;

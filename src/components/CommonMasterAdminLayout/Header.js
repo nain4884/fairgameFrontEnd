@@ -1109,7 +1109,10 @@ const CustomHeader = ({}) => {
                 if (currentMatch?.id === data?.matchId) {
                   const updatedBettings = currentMatch?.bettings?.map(
                     (betting) => {
-                      if (betting?.selectionId !== null) {
+                      if (
+                        betting?.selectionId !== null &&
+                        betting?.betStatus !== 2
+                      ) {
                         return { ...betting, betStatus: 0 };
                       }
                       return betting;
@@ -1130,14 +1133,12 @@ const CustomHeader = ({}) => {
               setMatchData((prevMatchData) => {
                 const updated = prevMatchData.map((item) => {
                   if (item?.id === data?.matchId) {
-                    const updatedBettings = item?.bettings?.map(
-                      (betting) => {
-                        if (betting?.selectionId !== null) {
-                          return { ...betting, betStatus: 0 };
-                        }
-                        return betting;
+                    const updatedBettings = item?.bettings?.map((betting) => {
+                      if (betting?.selectionId !== null) {
+                        return { ...betting, betStatus: 0 };
                       }
-                    );
+                      return betting;
+                    });
 
                     return {
                       ...item,
