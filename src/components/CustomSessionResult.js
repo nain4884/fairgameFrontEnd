@@ -186,13 +186,17 @@ const CustomSessionResult = ({
   }
 
   const handleInputKeyPress = (event) => {
-    if (event.key === "Enter") {
-      if(newData?.betStatus == 1 || 0){
-        handleDeclare();
-      } else if(newData?.betStatus === 2){
-        handleUndeclare()
+    try {
+      if (event.key === "Enter") {
+          if (newData?.betStatus === 1 || newData?.betStatus === 0) {
+              handleDeclare();
+          } else if (newData?.betStatus === 2) {
+              handleUndeclare();
+          }
       }
-    }
+  } catch (error) {
+      console.error("Error in handleInputKeyPress:", error);
+  }
   };
 
   return (
