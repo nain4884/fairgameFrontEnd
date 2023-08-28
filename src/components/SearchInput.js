@@ -76,7 +76,7 @@ const SearchInput = ({
             onChange={handleInputChange}
             InputProps={{
               disableUnderline: true,
-              autoComplete: 'new-password', 
+              autoComplete: "new-password",
               style: {
                 fontSize: "12px",
                 fontWeight: "600",
@@ -119,6 +119,9 @@ const SearchInput = ({
           />
         )}
         <Box
+          // onClick={() => {
+           
+          // }}
           sx={[
             {
               height: "30px",
@@ -130,6 +133,7 @@ const SearchInput = ({
               alignItems: "center",
               backgroundColor: "primary.main",
               marginRight: -0.3,
+              cursor: "pointer",
             },
             searchContainerStyle,
           ]}
