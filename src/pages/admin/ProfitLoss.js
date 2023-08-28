@@ -177,17 +177,22 @@ const ProfitLoss = () => {
     }
   };
 
-  const handleBet = (id) => {
+  const handleBet = (value) => {
     // alert(id)
-    getBets(id);
+    getBets(value);
   };
 
-  async function getBets(id) {
+  async function getBets(value) {
     setBetData([]);
     setSessionBetData([]);
     var payload = {
-      match_id: id,
+      [value?.type === "session_bet" ? "matchId" : "match_id"]: value?.match_id,
+      eventType: value?.eventType,
     };
+    if (value?.betId !== "") {
+      payload.bet_id = value?.betId;
+      payload.sessionBet = true;
+    }
     if (search?.id) {
       payload.userId = search?.id;
     }
@@ -200,7 +205,11 @@ const ProfitLoss = () => {
     let { axios } = setRole();
     try {
       const { data } = await axios.post(
-        `/betting/getResultBetProfitLoss`,
+        `/betting/${
+          value?.type === "session_bet"
+            ? "sessionProfitLossReport"
+            : "getResultBetProfitLoss"
+        }`,
         payload
       );
       setBetData(data?.data?.filter((v) => v.sessionBet !== true));

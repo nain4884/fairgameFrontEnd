@@ -23,38 +23,39 @@ const ProfitLossComponent = ({
   pageCount,
   getListOfUser,
   setCurrentPage,
-  visible,setVisible
+  visible,
+  setVisible,
 }) => {
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
+  const [selectedId, setSelectedId] = useState({ type: "", id: "", betId: "" });
   const [event, setEvent] = useState("");
 
   const getHandleReport = (eventType) => {
     setEvent(eventType);
     if (!visible) {
-      handleReport(eventType,currentPage);
+      handleReport(eventType, currentPage);
     }
     setVisible(!visible);
   };
 
   function callPage(val) {
     // setCurrentPage(setProfitLossReportPage(parseInt(val)));
-    setCurrentPage(parseInt(val))
+    setCurrentPage(parseInt(val));
 
-    handleReport(event,parseInt(val));
+    handleReport(event, parseInt(val));
   }
 
-  const getBetReport = (id) => {
-    if (selectedId == id) {
-      handleBet(id);
+  const getBetReport = (value) => {
+    if (selectedId?.id === value?.match_id) {
+      handleBet(value);
       setShow(false);
-      setSelectedId("");
+      setSelectedId({ type: "", id: "", betId: "" });
     } else {
-      handleBet(id);
+      handleBet(value);
       setShow(true);
-      setSelectedId(id);
+      setSelectedId({ type: value?.type, id: value?.match_id, betId: value?.betId });
     }
   };
 
@@ -218,7 +219,6 @@ const ProfitLossComponent = ({
     return (
       <Box key={index} sx={{ width: "100%" }}>
         <Box
-          onClick={() => getBetReport(item?.matchId)}
           // onClick={() => {
           //     // setShow(!show)
           // }}
@@ -271,7 +271,7 @@ const ProfitLossComponent = ({
                 right: 5,
               }}
             >
-             ({moment(item?.matchDate).format("DD-MM-YYYY")})
+              ({moment(item?.matchDate).format("DD-MM-YYYY")})
             </Typography>
 
             <Box
@@ -306,19 +306,16 @@ const ProfitLossComponent = ({
                 ({moment(item?.matchDate).format("DD-MM-YYYY")})
               </Typography>
             </Box>
-            <StyledImage
-              src={ArrowDown}
-              sx={{
-                width: { laptop: "20px", mobile: "10px" },
-                height: { laptop: "10px", mobile: "6px" },
-                transform:
-                  selectedId === item?.matchId
-                    ? "rotate(180deg)"
-                    : "rotate(0deg)",
-              }}
-            />
           </Box>
           <Box
+            onClick={() =>
+              getBetReport({
+                eventType: item?.eventType,
+                match_id: item?.matchId,
+                type: "all_bet",
+                betId:""
+              })
+            }
             sx={{
               background: item.rateProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
               paddingX: "2px",
@@ -356,7 +353,13 @@ const ProfitLossComponent = ({
                 }}
               />
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
               >
@@ -369,9 +372,29 @@ const ProfitLossComponent = ({
                   Number(item.rateProfitLoss).toFixed(2)
                 )}
               </Typography>
+              <StyledImage
+                src={ArrowDown}
+                sx={{
+                  width: { laptop: "20px", mobile: "10px" },
+                  height: { laptop: "10px", mobile: "6px" },
+                  transform:
+                    selectedId?.id === item?.matchId &&
+                    selectedId?.type === "all_bet"
+                      ? "rotate(180deg)"
+                      : "rotate(0deg)",
+                }}
+              />
             </Box>
           </Box>
           <Box
+            onClick={() =>
+              getBetReport({
+                eventType: item?.eventType,
+                match_id: item?.matchId,
+                type: "session_bet",
+                betId:""
+              })
+            }
             sx={{
               background: item.sessionProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
               paddingX: "2px",
@@ -409,7 +432,13 @@ const ProfitLossComponent = ({
                 }}
               />
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <Typography
                 sx={{ fontSize: "15px", fontWeight: "700", color: "white" }}
               >
@@ -423,10 +452,22 @@ const ProfitLossComponent = ({
                 )}
                 {/* {Number(item.sessionProfitLoss).toFixed(2)} */}
               </Typography>
+              <StyledImage
+                src={ArrowDown}
+                sx={{
+                  width: { laptop: "20px", mobile: "10px" },
+                  height: { laptop: "10px", mobile: "6px" },
+                  transform:
+                    selectedId?.id === item?.matchId &&
+                    selectedId?.type === "session_bet"
+                      ? "rotate(180deg)"
+                      : "rotate(0deg)",
+                }}
+              />
             </Box>
           </Box>
         </Box>
-        {selectedId === item?.matchId && (
+        {selectedId?.id === item?.matchId && (
           <Box
             sx={{
               width: { mobile: "100%", laptop: "100%" },
@@ -436,17 +477,21 @@ const ProfitLossComponent = ({
               flexDirection: { laptop: "row", mobile: "column" },
             }}
           >
-            <BetHistory betHistory={true} betData={betData} admin profit />
+            {selectedId?.type === "all_bet" && (
+              <BetHistory betHistory={true} betData={betData} admin profit />
+            )}
 
             <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
-            <SessionBetHistory
-              mark
-              mark2
-              betHistory={true}
-              betData={sessionBetData}
-              admin
-              profit
-            />
+            {
+              <SessionBetHistory
+                mark
+                mark2
+                betHistory={true}
+                betData={sessionBetData}
+                admin
+                profit
+              />
+            }
           </Box>
         )}
       </Box>
@@ -457,12 +502,12 @@ const ProfitLossComponent = ({
       {eventData.map((item, index) => {
         return <RowHeader key={index} item={item} index={index} />;
       })}
-      <Box >
-      {visible &&
-        reportData.map((item, index) => {
-          return <RowComponent key={index} item={item} index={index + 1} />;
-        })}
-        </Box>
+      <Box>
+        {visible &&
+          reportData.map((item, index) => {
+            return <RowComponent key={index} item={item} index={index + 1} />;
+          })}
+      </Box>
       {visible && (
         <Footer
           getListOfUser={() => handleReport(event)}
