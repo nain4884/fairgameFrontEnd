@@ -246,7 +246,7 @@ const SessionMarketBox = ({
             />
           </Box>
         )}
-        {!["ACTIVE", "", undefined, null,0].includes(newData?.suspended) ||
+        {!["ACTIVE", "", undefined, null, 0].includes(newData?.suspended) ||
         newData?.betStatus === 2 ? (
           <Box
             sx={{
@@ -296,7 +296,7 @@ const SessionMarketBox = ({
               back={true}
               value={newData?.no_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[0])}
-              lock={newData?.suspended === "suspended"}
+              // lock={newData?.suspended === "suspended"}
               color={"#F6D0CB"}
             />
 
@@ -308,7 +308,7 @@ const SessionMarketBox = ({
               session={true}
               value={newData?.yes_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[1])}
-              lock={newData?.suspended === "suspended"}
+              // lock={newData?.suspended === "suspended"}
               color={"#B3E0FF"}
             />
           </Box>
