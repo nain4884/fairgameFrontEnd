@@ -187,7 +187,7 @@ const ProfitLoss = () => {
     setSessionBetData([]);
     var payload = {
       [value?.type === "session_bet" ? "matchId" : "match_id"]: value?.match_id,
-      eventType: value?.eventType,
+      gameType: value?.eventType,
     };
     if (value?.betId !== "") {
       payload.bet_id = value?.betId;
