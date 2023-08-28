@@ -24,6 +24,7 @@ import {
   setSessionExposure,
   setSelectedSessionBettings,
   setQuickSession,
+  setQuickBookmaker,
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -39,7 +40,6 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import CustomLoader from "../../components/helper/CustomLoader";
 import { toast } from "react-toastify";
-import { setQuickBookmaker } from "../../newStore/reducers/expertMatchDetails";
 
 // let sessionOffline = [];
 let matchOddsCount = 0;
@@ -1197,6 +1197,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         no_rate: 0,
         suspended: "",
       }));
+      dispatch(setQuickBookmaker(response?.data?.bookmakers))
       dispatch(setQuickSession(quickSessionDataTemp));
       dispatch(setSelectedSessionBettings(updateLiveSesssion));
       dispatch(setManualBookmaker(matchOddsDataTemp));

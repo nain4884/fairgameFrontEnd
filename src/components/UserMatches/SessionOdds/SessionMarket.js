@@ -15,6 +15,7 @@ import Lottie from "lottie-react";
 import { LockIcon } from "../../../admin/assets";
 import SmallCustomLoader from "../../helper/SmallCustomLoader";
 import { customSort } from "../../helper/util";
+import { useSelector } from "react-redux";
 const SessionMarket = ({
   data,
   newData,
@@ -43,7 +44,11 @@ const SessionMarket = ({
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [fastBetLoading, setFastBetLoading] = useState(false);
+  const { selectedSessionBettings } = useSelector(
+    (state) => state?.matchDetails
+  );
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const [localSessionBettings, setLocalSessionBettings] = useState([]);
   // const [localData, setLocalData] = useState(newData);
   // useEffect(() => {
   //   setLocalData(newData);
@@ -51,7 +56,12 @@ const SessionMarket = ({
 
   const [visible, setVisible] = useState(true);
 
-  console.log(sessionOffline, "sessionOffline");
+  useEffect(() => {
+    if (selectedSessionBettings) {
+      setLocalSessionBettings(selectedSessionBettings);
+    }
+  }, [selectedSessionBettings]);
+
   return (
     <>
       <Box
@@ -345,8 +355,8 @@ const SessionMarket = ({
                 // overflowY: "visible",
               }}
             >
-              {newData?.length > 0 &&
-                newData
+              {localSessionBettings?.length > 0 &&
+                localSessionBettings
                   ?.slice()
                   .sort(customSort)
                   ?.map((element) => {
@@ -370,7 +380,6 @@ const SessionMarket = ({
                           selectedFastAmount={fastAmount}
                           setFastAmount={setFastAmount}
                           mainData={data}
-                          newData={newData}
                           allRates={{
                             teamA: teamARates,
                             teamB: teamBRates,

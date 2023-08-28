@@ -16,6 +16,7 @@ import { LockIcon } from "../../../admin/assets";
 import SmallCustomLoader from "../../helper/SmallCustomLoader";
 import { customSort } from "../../helper/util";
 import QuickSessionMarketBox from "./QuickSessionMarketBox";
+import { useSelector } from "react-redux";
 const QuickSessionMarket = ({
   data,
   newData,
@@ -45,12 +46,20 @@ const QuickSessionMarket = ({
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [fastBetLoading, setFastBetLoading] = useState(false);
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const { quickSession } = useSelector((state) => state?.matchDetails);
+  const [localQuickSession, setLocalQuickSession] = useState([]);
   // const [localData, setLocalData] = useState(newData);
   // useEffect(() => {
   //   setLocalData(newData);
   // }, [newData]);
 
   const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (quickSession) {
+      setLocalQuickSession(quickSession);
+    }
+  }, [quickSession]);
 
   console.log(sessionOffline, "sessionOffline");
   return (
@@ -346,8 +355,8 @@ const QuickSessionMarket = ({
                 // overflowY: "visible",
               }}
             >
-              {newData?.length > 0 &&
-                newData
+              {localQuickSession?.length > 0 &&
+                localQuickSession
                   ?.slice()
                   .sort(customSort)
                   ?.map((element) => {
@@ -371,7 +380,6 @@ const QuickSessionMarket = ({
                           selectedFastAmount={fastAmount}
                           setFastAmount={setFastAmount}
                           mainData={data}
-                          newData={newData}
                           allRates={{
                             teamA: teamARates,
                             teamB: teamBRates,

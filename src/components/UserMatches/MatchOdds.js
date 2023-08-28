@@ -30,10 +30,13 @@ const MatchOdds = ({
   LSelectedSessionBetting,
   localQuickSession,
 }) => {
-  const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
+  const { manualBookMarkerRates, quickBookmaker } = useSelector(
+    (state) => state?.matchDetails
+  );
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
   const [matchOddRateLive, setMatchOddRateLive] = useState(false);
+  const [localQuickBookmaker, setLocalQuickBookmaker] = useState([false]);
 
   // const [localSession, setLocalSession] = useState([]);
   // const [localQuickSession, setLocalQuickSession] = useState([]);
@@ -48,14 +51,12 @@ const MatchOdds = ({
       setMatchOddRateLive(data?.matchOddRateLive);
     }
   }, [data]);
-  // useEffect(() => {
-  //   if (selectedSessionBettings) {
-  //     setLocalSession(selectedSessionBettings);
-  //   }
-  //   if (quickSession) {
-  //     setLocalQuickSession(quickSession);
-  //   }
-  // }, [selectedSessionBettings, quickSession]);
+
+  useEffect(() => {
+    if (quickBookmaker) {
+      setLocalQuickBookmaker(quickBookmaker);
+    }
+  }, [quickBookmaker]);
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
@@ -131,7 +132,7 @@ const MatchOdds = ({
       )}
 
       {data?.manualBookMakerActive &&
-        data?.bookmakers?.map((bookmaker, idx) => {
+        localQuickBookmaker?.map((bookmaker, idx) => {
           return (
             <Odds
               key={idx}
@@ -160,7 +161,7 @@ const MatchOdds = ({
         })}
 
       {/* Manual Bookmaker */}
-      {data?.bookmakers?.map((bookmaker) => {
+      {localQuickBookmaker?.map((bookmaker) => {
         if (bookmaker.betStatus === 1) {
           return (
             <Odds

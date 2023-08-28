@@ -12,7 +12,6 @@ const QuickSessionMarketBox = ({
   index,
   typeOfBet,
   data,
-  newData,
   selectedFastAmount,
   mainData,
   allRates,

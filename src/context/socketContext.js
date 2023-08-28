@@ -23,6 +23,7 @@ import {
   setAllSessionBets,
   setManualBookMarkerRates,
   setManualBookmaker,
+  setQuickBookmaker,
   setQuickSession,
   setSelectedMatch,
   setSelectedSessionBettings,
@@ -57,6 +58,7 @@ export const SocketProvider = ({ children }) => {
     userAllMatches,
     selectedSessionBettings,
     quickSession,
+    quickBookmaker,
   } = useSelector((state) => state?.matchDetails);
 
   const [localCurrentUser, setLocalCurrentUser] = useState(null);
@@ -68,6 +70,8 @@ export const SocketProvider = ({ children }) => {
   const [localAllmatches, setLocalAllMatches] = useState([]);
   const [LSelectedSessionBetting, setLSelectedSessionBetting] = useState([]);
   const [localQuickSession, setLocalQuickSession] = useState([]);
+  const [localQuickBookmaker, setLocalQuickBookmaker] =
+    useState(quickBookmaker);
 
   useEffect(() => {
     if (allBetRates) {
@@ -97,6 +101,9 @@ export const SocketProvider = ({ children }) => {
     if (quickSession) {
       setLocalQuickSession(quickSession);
     }
+    if (quickBookmaker) {
+      setLocalQuickBookmaker(quickBookmaker);
+    }
   }, [
     allBetRates,
     allSessionBets,
@@ -107,6 +114,7 @@ export const SocketProvider = ({ children }) => {
     userAllMatches,
     selectedSessionBettings,
     quickSession,
+    quickBookmaker,
   ]);
 
   console.log("nav", location);
@@ -882,149 +890,251 @@ export const SocketProvider = ({ children }) => {
       try {
         if (!data?.lock) {
           if (data?.isTab) {
-            setCurrentMatch((currentMatches) => {
-              const updatedBookmaker = currentMatches?.bookmakers?.map(
-                (bookmaker) => {
-                  if (
-                    bookmaker?.id === data?.id &&
-                    bookmaker?.match_id === currentMatches?.id
-                  ) {
-                    return {
-                      ...bookmaker,
-                      teamA_Back: data?.teamA_Back,
-                      teamA_lay: "",
-                      teamB_Back: data?.teamB_Back,
-                      teamB_lay: "",
-                      teamC_Back: data?.teamC_Back,
-                      teamC_lay: "",
-                      teamA_suspend: "live",
-                      teamB_suspend: "live",
-                      teamC_suspend: "live",
-                    };
-                  }
-                  return bookmaker;
+            // setCurrentMatch((currentMatches) => {
+            setLocalQuickBookmaker((bookmaker) => {
+              const updatedBookmaker = bookmaker.map((prev) => {
+                if (prev?.id === data?.id && prev?.match_id === data?.matchId) {
+                  return {
+                    ...prev,
+                    teamA_Back: data?.teamA_Back,
+                    teamA_lay: "",
+                    teamB_Back: data?.teamB_Back,
+                    teamB_lay: "",
+                    teamC_Back: data?.teamC_Back,
+                    teamC_lay: "",
+                    teamA_suspend: "live",
+                    teamB_suspend: "live",
+                    teamC_suspend: "live",
+                  };
                 }
-              );
-              const newBody = {
-                ...currentMatches,
-                bookmakers: updatedBookmaker,
-              };
-              dispatch(setSelectedMatch(newBody));
-              return newBody;
+                return prev;
+              });
+              dispatch(setQuickBookmaker(updatedBookmaker));
+              return updatedBookmaker;
             });
+            //   const updatedBookmaker = currentMatches?.bookmakers?.map(
+            //     (bookmaker) => {
+            //       if (
+            //         bookmaker?.id === data?.id &&
+            //         bookmaker?.match_id === currentMatches?.id
+            //       ) {
+            //         return {
+            //           ...bookmaker,
+            //           teamA_Back: data?.teamA_Back,
+            //           teamA_lay: "",
+            //           teamB_Back: data?.teamB_Back,
+            //           teamB_lay: "",
+            //           teamC_Back: data?.teamC_Back,
+            //           teamC_lay: "",
+            //           teamA_suspend: "live",
+            //           teamB_suspend: "live",
+            //           teamC_suspend: "live",
+            //         };
+            //       }
+            //       return bookmaker;
+            //     }
+            //   );
+            //   const newBody = {
+            //     ...currentMatches,
+            //     bookmakers: updatedBookmaker,
+            //   };
+            //   dispatch(setSelectedMatch(newBody));
+            //   return newBody;
+            // });
           } else {
-            setCurrentMatch((currentMatches) => {
-              const updatedBookmaker = currentMatches?.bookmakers?.map(
-                (bookmaker) => {
-                  if (
-                    bookmaker?.id === data?.id &&
-                    bookmaker?.match_id === currentMatches?.id
-                  ) {
-                    return {
-                      ...bookmaker,
-                      teamA_Back: data?.teamA_Back ?? "",
-                      teamA_lay: data?.teamA_lay ?? "",
-                      teamA_suspend:
-                        data?.teamA_suspend == false ? null : "suspended",
-                      teamB_Back: data?.teamB_Back ?? "",
-                      teamB_lay: data?.teamB_lay ?? "",
-                      teamB_suspend:
-                        data?.teamB_suspend == false ? null : "suspended",
-                      teamC_Back: data?.teamC_Back ?? "",
-                      teamC_lay: data?.teamC_lay ?? "",
-                      teamC_suspend:
-                        data?.teamC_suspend == false ? null : "suspended",
-                      teamA_Ball: null,
-                      teamB_Ball: null,
-                      teamC_Ball: null,
-                    };
-                  }
-                  return bookmaker;
+            // setCurrentMatch((currentMatches) => {
+            setLocalQuickBookmaker((bookmaker) => {
+              const updatedBookmaker = bookmaker.map((prev) => {
+                if (prev?.id === data?.id && prev?.match_id === data?.matchId) {
+                  return {
+                    ...prev,
+                    teamA_Back: data?.teamA_Back ?? "",
+                    teamA_lay: data?.teamA_lay ?? "",
+                    teamA_suspend:
+                      data?.teamA_suspend == false ? null : "suspended",
+                    teamB_Back: data?.teamB_Back ?? "",
+                    teamB_lay: data?.teamB_lay ?? "",
+                    teamB_suspend:
+                      data?.teamB_suspend == false ? null : "suspended",
+                    teamC_Back: data?.teamC_Back ?? "",
+                    teamC_lay: data?.teamC_lay ?? "",
+                    teamC_suspend:
+                      data?.teamC_suspend == false ? null : "suspended",
+                    teamA_Ball: null,
+                    teamB_Ball: null,
+                    teamC_Ball: null,
+                  };
                 }
-              );
-              const newBody = {
-                ...currentMatches,
-                bookmakers: updatedBookmaker,
-              };
-              dispatch(setSelectedMatch(newBody));
-              return newBody;
+                return prev;
+              });
+              dispatch(setQuickBookmaker(updatedBookmaker));
+              return updatedBookmaker;
             });
+            // const updatedBookmaker = currentMatches?.bookmakers?.map(
+            //   (bookmaker) => {
+            //     if (
+            //       bookmaker?.id === data?.id &&
+            //       bookmaker?.match_id === currentMatches?.id
+            //     ) {
+            //       return {
+            //         ...bookmaker,
+            //         teamA_Back: data?.teamA_Back ?? "",
+            //         teamA_lay: data?.teamA_lay ?? "",
+            //         teamA_suspend:
+            //           data?.teamA_suspend == false ? null : "suspended",
+            //         teamB_Back: data?.teamB_Back ?? "",
+            //         teamB_lay: data?.teamB_lay ?? "",
+            //         teamB_suspend:
+            //           data?.teamB_suspend == false ? null : "suspended",
+            //         teamC_Back: data?.teamC_Back ?? "",
+            //         teamC_lay: data?.teamC_lay ?? "",
+            //         teamC_suspend:
+            //           data?.teamC_suspend == false ? null : "suspended",
+            //         teamA_Ball: null,
+            //         teamB_Ball: null,
+            //         teamC_Ball: null,
+            //       };
+            //     }
+            //     return bookmaker;
+            //   }
+            // );
+            // const newBody = {
+            //   ...currentMatches,
+            //   bookmakers: updatedBookmaker,
+            // };
+            // dispatch(setSelectedMatch(newBody));
+            // return newBody;
+            // });
           }
         } else {
           if (data.teamA_suspend == "Ball Started") {
             try {
-              setCurrentMatch((currentMatches) => {
-                const updatedBookmaker = currentMatches?.bookmakers?.map(
-                  (bookmaker) => {
-                    if (
-                      bookmaker?.id === data?.id &&
-                      bookmaker?.match_id === currentMatches?.id
-                    ) {
-                      return {
-                        ...bookmaker,
-                        teamA_suspend: data?.teamA_suspend
-                          ? "suspended"
-                          : data?.teamA_suspend,
-                        teamB_suspend: data?.teamB_suspend
-                          ? "suspended"
-                          : data?.teamB_suspend,
-                        teamC_suspend: data?.teamC_suspend
-                          ? "suspended"
-                          : data?.teamC_suspend,
-                        teamA_Ball: "ball",
-                        teamB_Ball: "ball",
-                        teamC_Ball: "ball",
-                      };
-                    }
-                    return bookmaker;
+              // setCurrentMatch((currentMatches) => {
+              setLocalQuickBookmaker((bookmaker) => {
+                const updatedBookmaker = bookmaker.map((prev) => {
+                  if (
+                    prev?.id === data?.id &&
+                    prev?.match_id === data?.matchId
+                  ) {
+                    return {
+                      ...prev,
+                      teamA_suspend: data?.teamA_suspend
+                        ? "suspended"
+                        : data?.teamA_suspend,
+                      teamB_suspend: data?.teamB_suspend
+                        ? "suspended"
+                        : data?.teamB_suspend,
+                      teamC_suspend: data?.teamC_suspend
+                        ? "suspended"
+                        : data?.teamC_suspend,
+                      teamA_Ball: "ball",
+                      teamB_Ball: "ball",
+                      teamC_Ball: "ball",
+                    };
                   }
-                );
-                const newBody = {
-                  ...currentMatches,
-                  bookmakers: updatedBookmaker,
-                };
-                dispatch(setSelectedMatch(newBody));
-                return newBody;
+                  return prev;
+                });
+                dispatch(setQuickBookmaker(updatedBookmaker));
+                return updatedBookmaker;
               });
+              // const updatedBookmaker = currentMatches?.bookmakers?.map(
+              //   (bookmaker) => {
+              //     if (
+              //       bookmaker?.id === data?.id &&
+              //       bookmaker?.match_id === currentMatches?.id
+              //     ) {
+              //       return {
+              //         ...bookmaker,
+              //         teamA_suspend: data?.teamA_suspend
+              //           ? "suspended"
+              //           : data?.teamA_suspend,
+              //         teamB_suspend: data?.teamB_suspend
+              //           ? "suspended"
+              //           : data?.teamB_suspend,
+              //         teamC_suspend: data?.teamC_suspend
+              //           ? "suspended"
+              //           : data?.teamC_suspend,
+              //         teamA_Ball: "ball",
+              //         teamB_Ball: "ball",
+              //         teamC_Ball: "ball",
+              //       };
+              //     }
+              //     return bookmaker;
+              //   }
+              // );
+              // const newBody = {
+              //   ...currentMatches,
+              //   bookmakers: updatedBookmaker,
+              // // };
+              // dispatch(setSelectedMatch(newBody));
+              // return newBody;
+              // });
             } catch (err) {
               console.log(err?.message);
             }
           } else {
             try {
-              setCurrentMatch((currentMatches) => {
-                // alert(JSON.stringify(currentMatches[0]));
-                const updatedBookmaker = currentMatches?.bookmakers?.map(
-                  (bookmaker) => {
-                    if (
-                      bookmaker?.id === data?.id &&
-                      bookmaker?.match_id === currentMatches?.id
-                    ) {
-                      return {
-                        ...bookmaker,
-                        teamA_suspend: data?.teamA_suspend
-                          ? "suspended"
-                          : data?.teamA_suspend,
-                        teamB_suspend: data?.teamB_suspend
-                          ? "suspended"
-                          : data?.teamB_suspend,
-                        teamC_suspend: data?.teamC_suspend
-                          ? "suspended"
-                          : data?.teamC_suspend,
-                        teamA_Ball: null,
-                        teamB_Ball: null,
-                        teamC_Ball: null,
-                      };
-                    }
-                    return bookmaker;
+              // setCurrentMatch((currentMatches) => {
+              // alert(JSON.stringify(currentMatches[0]));
+              setLocalQuickBookmaker((bookmaker) => {
+                const updatedBookmaker = bookmaker.map((prev) => {
+                  if (
+                    prev?.id === data?.id &&
+                    prev?.match_id === data?.matchId
+                  ) {
+                    return {
+                      ...prev,
+                      teamA_suspend: data?.teamA_suspend
+                        ? "suspended"
+                        : data?.teamA_suspend,
+                      teamB_suspend: data?.teamB_suspend
+                        ? "suspended"
+                        : data?.teamB_suspend,
+                      teamC_suspend: data?.teamC_suspend
+                        ? "suspended"
+                        : data?.teamC_suspend,
+                      teamA_Ball: null,
+                      teamB_Ball: null,
+                      teamC_Ball: null,
+                    };
                   }
-                );
-                const newBody = {
-                  ...currentMatches,
-                  bookmakers: updatedBookmaker,
-                };
-                dispatch(setSelectedMatch(newBody));
-                return newBody;
+                  return prev;
+                });
+                dispatch(setQuickBookmaker(updatedBookmaker));
+                return updatedBookmaker;
               });
+              // const updatedBookmaker = currentMatches?.bookmakers?.map(
+              //   (bookmaker) => {
+              //     if (
+              //       bookmaker?.id === data?.id &&
+              //       bookmaker?.match_id === currentMatches?.id
+              //     ) {
+              //       return {
+              //         ...bookmaker,
+              //         teamA_suspend: data?.teamA_suspend
+              //           ? "suspended"
+              //           : data?.teamA_suspend,
+              //         teamB_suspend: data?.teamB_suspend
+              //           ? "suspended"
+              //           : data?.teamB_suspend,
+              //         teamC_suspend: data?.teamC_suspend
+              //           ? "suspended"
+              //           : data?.teamC_suspend,
+              //         teamA_Ball: null,
+              //         teamB_Ball: null,
+              //         teamC_Ball: null,
+              //       };
+              //     }
+              //     return bookmaker;
+              //   }
+              // );
+              // const newBody = {
+              //   ...currentMatches,
+              //   bookmakers: updatedBookmaker,
+              // };
+              // dispatch(setSelectedMatch(newBody));
+              // return newBody;
+              // });
             } catch (err) {
               console.log(err?.message);
             }

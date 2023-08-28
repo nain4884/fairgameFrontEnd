@@ -12,7 +12,6 @@ const SessionMarketBox = ({
   index,
   typeOfBet,
   data,
-  newData,
   selectedFastAmount,
   mainData,
   allRates,
