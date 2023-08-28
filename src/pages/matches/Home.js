@@ -973,6 +973,49 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   //   }
   // }, [socket]);
 
+  const handleSession = (val) => {
+      if (val !== null && matchId === checkMctchId) {
+        var newVal = val?.map((v) => ({
+          bet_condition: v?.RunnerName,
+          betStatus: 0,
+          sessionBet: true,
+          no_rate: v?.LayPrice1,
+          yes_rate: v?.BackPrice1,
+          rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
+          suspended: v?.GameStatus,
+          selectionId: v?.SelectionId,
+        }));
+        setCurrentMatch((currentMatch) => {
+          if (currentMatch?.bettings?.length > 0) {
+            setLSelectedSessionBetting((prev) => {
+              const data = prev?.map((betting) => {
+                const selectedData = newVal?.find(
+                  (nv) => nv?.selectionId === betting?.selectionId
+                );
+
+                return {
+                  ...betting,
+                  bet_condition:
+                    selectedData?.bet_condition || betting?.bet_condition,
+                  no_rate: selectedData?.no_rate || 0,
+                  yes_rate: selectedData?.yes_rate || 0,
+                  rate_percent:
+                    selectedData?.rate_percent || betting?.rate_percent,
+                  suspended: selectedData?.suspended || "",
+                  selectionId:
+                    selectedData?.selectionId || betting?.selectionId,
+                };
+              });
+
+              // dispatch(setSelectedSessionBettings(data));
+              return data;
+            });
+          }
+          return currentMatch;
+        });
+      }
+    }
+
   useEffect(() => {
     try {
       if (socketMicro && socketMicro.connected && marketId) {
@@ -1017,86 +1060,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           setSessionLock(false);
         });
 
-        socketMicro.on(`session${marketId}`, (val) => {
-          if (val !== null && matchId === checkMctchId) {
-            var newVal = val?.map((v) => ({
-              bet_condition: v?.RunnerName,
-              betStatus: 0,
-              sessionBet: true,
-              no_rate: v?.LayPrice1,
-              yes_rate: v?.BackPrice1,
-              rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
-              suspended: v?.GameStatus,
-              selectionId: v?.SelectionId,
-            }));
-            setCurrentMatch((currentMatch) => {
-              if (currentMatch?.bettings?.length > 0) {
-                setLSelectedSessionBetting((prev) => {
-                  const data = prev?.map((betting) => {
-                    const selectedData = newVal?.find(
-                      (nv) => nv?.selectionId === betting?.selectionId
-                    );
-
-                    return {
-                      ...betting,
-                      bet_condition:
-                        selectedData?.bet_condition || betting?.bet_condition,
-                      no_rate: selectedData?.no_rate || 0,
-                      yes_rate: selectedData?.yes_rate || 0,
-                      rate_percent:
-                        selectedData?.rate_percent || betting?.rate_percent,
-                      suspended: selectedData?.suspended || "",
-                      selectionId:
-                        selectedData?.selectionId || betting?.selectionId,
-                    };
-                  });
-
-                  // dispatch(setSelectedSessionBettings(data));
-                  return data;
-                });
-              }
-              return currentMatch;
-              //   const data = currentMatch?.bettings?.map((betting) => {
-              //     var selectedData = newVal?.find(
-              //       (data) => data?.selectionId === betting?.selectionId
-              //     );
-              //     if (selectedData && selectedData !== undefined) {
-              //       return {
-              //         ...betting,
-              //         bet_condition: selectedData?.bet_condition,
-              //         no_rate: selectedData?.no_rate,
-              //         yes_rate: selectedData?.yes_rate,
-              //         rate_percent: selectedData?.rate_percent,
-              //         suspended: selectedData?.suspended,
-              //         selectionId: selectedData?.selectionId,
-              //       };
-              //     }
-              //     if (betting?.selectionId !== null) {
-              //       return {
-              //         ...betting,
-              //         bet_condition: betting?.bet_condition,
-              //         no_rate: 0,
-              //         yes_rate: 0,
-              //         rate_percent: betting?.rate_percent,
-              //         suspended: "",
-              //         selectionId: betting?.selectionId,
-              //       };
-              //     }
-              //     return betting;
-              //   });
-
-              //   // Merge the filteredNewVal with the currentMatch bettings array
-
-              //   return {
-              //     ...currentMatch,
-              //     bettings: data,
-              //   };
-              // }
-              // return currentMatch;
-            });
-          }
-          // dispatch(setSessionOddsLive(body));
-        });
+        socketMicro.on(`session${marketId}`, handleSession);
         socketMicro.on(`matchOdds${marketId}`, (val) => {
           // matchodds Market live and stop disable condition
           if (val !== null) {

@@ -13,6 +13,7 @@ import { memo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import moment from "moment";
+import QuickSessionMarket from "./SessionOdds/QuickSessionMarket";
 const MatchOdds = ({
   data,
   matchOddsLive,
@@ -248,7 +249,7 @@ const MatchOdds = ({
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
       {data?.manualSessionActive && (
         <>
-          <SessionMarket
+          <QuickSessionMarket
             min={data?.manaual_session_min_bet || 0}
             max={data?.manaual_session_max_bet || 0}
             title={"Quick Session Market"}
