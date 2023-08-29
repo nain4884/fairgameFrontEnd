@@ -25,6 +25,7 @@ const AccountStatementList = ({ user, visible, selected }) => {
   const [loading, setLoading] = useState(false);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
+  const [localUserName, setLocaluserName] = useState("");
   const handleChildData = (childData) => {
     setData(childData);
   };
@@ -36,14 +37,14 @@ const AccountStatementList = ({ user, visible, selected }) => {
     setCurrenLimit(parseInt(val));
     setIsDated(true);
   }
-  async function getAccountStatement(userName) {
+  async function getAccountStatement(value) {
     const userId = currentUser.id;
     var payload = {
       limit: pageLimit,
       skip: currentPage * pageLimit,
     };
-    if (userName) {
-      payload.userName = userName;
+    if (localUserName) {
+      payload.userName = localUserName;
     }
     if (fromDate) {
       payload.fromDate = moment(fromDate).format("YYYY-MM-DD");
@@ -76,7 +77,7 @@ const AccountStatementList = ({ user, visible, selected }) => {
 
   useEffect(() => {
     getAccountStatement();
-  }, [currentPage, pageLimit]);
+  }, [currentPage, pageLimit, localUserName]);
 
   const Footer = ({ currentPage, pages, callPage, currenLimit }) => {
     return (
@@ -192,99 +193,99 @@ const AccountStatementList = ({ user, visible, selected }) => {
         />
       </Box>
 
-        <Box
-          sx={[
-            {
-              marginX: { mobile: "2vw", laptop: "1vw" },
-              minHeight: "100px",
-              borderRadius: "2px",
-              border: "2px solid white",
-              width: "97.5%",
-              borderTopRightRadius: {
-                mobile: "10px",
-                laptop: "0px",
-                tablet: "10px",
-              },
-              borderTopLeftRadius: {
-                mobile: "10px",
-                laptop: "0px",
-                tablet: "10px",
-              },
-              background: "#F8C851",
+      <Box
+        sx={[
+          {
+            marginX: { mobile: "2vw", laptop: "1vw" },
+            minHeight: "100px",
+            borderRadius: "2px",
+            border: "2px solid white",
+            width: "97.5%",
+            borderTopRightRadius: {
+              mobile: "10px",
+              laptop: "0px",
+              tablet: "10px",
             },
-          ]}
-        >
-          <ListH
-            getLimitEntries={getLimitEntries}
-            getAccountStatement={getAccountStatement}
-          />
-        
-      {loading ? (
-        <Box
-          sx={{
-            minHeight: "60vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            borderTopLeftRadius: {
+              mobile: "10px",
+              laptop: "0px",
+              tablet: "10px",
+            },
+            background: "#F8C851",
+          },
+        ]}
+      >
+        <ListH
+          getLimitEntries={getLimitEntries}
+          getAccountStatement={(value) => {
+            setLocaluserName(value);
           }}
-        >
-          <CustomLoader text="" />
-        </Box>
-      ) : (  
-      <>
-          <Box sx={{ overflowX: "scroll", width: "100%" }}>
-            <ListHeaderT />
-            {decodedTokenUser?.role === "user,visible"
-              ? transactionHistory?.map((item) => (
-                  <Row
-                    key={item?.id}
-                    index={item?.id}
-                    containerStyle={{ background: "#FFE094" }}
-                    profit={true}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    date={item?.createAt}
-                    description={item?.description}
-                    closing={item?.current_amount}
-                    trans_type={item?.trans_type}
-                    amount={item?.amount}
-                    fromuserName={item?.action_by?.userName}
-                    touserName={item?.user?.userName}
-                  />
-                ))
-              : transactionHistory.map((item) => (
-                  <Row
-                    key={item?.id}
-                    index={item?.id}
-                    containerStyle={{ background: "#FFE094" }}
-                    profit={true}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    date={item?.createAt}
-                    closing={item?.current_amount}
-                    trans_type={item?.trans_type}
-                    amount={item?.amount}
-                    description={item?.description}
-                    fromuserName={item?.action_by?.userName}
-                    touserName={item?.user?.userName}
-                  />
-                ))}
+        />
 
-            {transactionHistory?.length === 0 && (
-              <EmptyRow containerStyle={{ background: "#FFE094" }} />
-            )}
+        {loading ? (
+          <Box
+            sx={{
+              minHeight: "60vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CustomLoader text="" />
           </Box>
-          <Footer
-            currenLimit={currenLimit}
-            currentPage={currentPage}
-            pages={pageCount}
-            callPage={callPage}
-          />
-      </>
-                 )}
-        </Box>
- 
-      
+        ) : (
+          <>
+            <Box sx={{ overflowX: "scroll", width: "100%" }}>
+              <ListHeaderT />
+              {decodedTokenUser?.role === "user,visible"
+                ? transactionHistory?.map((item) => (
+                    <Row
+                      key={item?.id}
+                      index={item?.id}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={true}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      date={item?.createAt}
+                      description={item?.description}
+                      closing={item?.current_amount}
+                      trans_type={item?.trans_type}
+                      amount={item?.amount}
+                      fromuserName={item?.action_by?.userName}
+                      touserName={item?.user?.userName}
+                    />
+                  ))
+                : transactionHistory.map((item) => (
+                    <Row
+                      key={item?.id}
+                      index={item?.id}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={true}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      date={item?.createAt}
+                      closing={item?.current_amount}
+                      trans_type={item?.trans_type}
+                      amount={item?.amount}
+                      description={item?.description}
+                      fromuserName={item?.action_by?.userName}
+                      touserName={item?.user?.userName}
+                    />
+                  ))}
+
+              {transactionHistory?.length === 0 && (
+                <EmptyRow containerStyle={{ background: "#FFE094" }} />
+              )}
+            </Box>
+            <Footer
+              currenLimit={currenLimit}
+              currentPage={currentPage}
+              pages={pageCount}
+              callPage={callPage}
+            />
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
