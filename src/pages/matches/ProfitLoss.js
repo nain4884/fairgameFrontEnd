@@ -20,7 +20,7 @@ const ProfitLoss = ({ selected, visible }) => {
   let { axios } = setRole();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-
+  const [sessionBets, setSessionBet] = useState([]);
   useEffect(() => {
     // alert(1)
     getEventList();
@@ -53,10 +53,10 @@ const ProfitLoss = ({ selected, visible }) => {
       limit: pageLimit,
       gameType: eventType,
     };
-    if(startDate) {
+    if (startDate) {
       payload.from = moment(startDate).format("YYYY-MM-DD");
     }
-    if(endDate) {
+    if (endDate) {
       payload.to = moment(endDate).format("YYYY-MM-DD");
     }
     try {
@@ -71,21 +71,35 @@ const ProfitLoss = ({ selected, visible }) => {
     }
   };
 
-  const handleBet = (id) => {
+  const handleBet = (value) => {
     // alert(id)
-    getBets(id);
+    getBets(value);
   };
 
-  async function getBets(id) {
+  async function getBets(value) {
     setBetData([]);
     setSessionBetData([]);
     var payload = {
-      match_id: id,
+      [value?.type === "session_bet" ? "matchId" : "match_id"]: value?.match_id,
+      gameType: value?.eventType,
     };
-
+    if (value?.betId !== "") {
+      payload.betId = value?.betId;
+      payload.sessionBet = true;
+    }
+    if (startDate) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
+    }
+    if (endDate) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
+    }
     try {
       const { data } = await axios.post(
-        `/betting/getResultBetProfitLoss`,
+        `/betting/${
+          value?.type === "session_bet"
+            ? "sessionProfitLossReport"
+            : "getResultBetProfitLoss"
+        }`,
         payload
       );
       const newData = data?.data?.filter((v) => v.sessionBet !== true);
@@ -116,9 +130,13 @@ const ProfitLoss = ({ selected, visible }) => {
         }))
       );
 
-      const newRes = data?.data?.filter((v) => v.sessionBet === true);
+      if (value?.type === "session_bet" && value.betId === "") {
+        setSessionBet(data?.data[0]);
+      } else {
+        const newRes = data?.data?.filter((v) => v.sessionBet === true);
 
-      setSessionBetData(newRes?.map((v) => ({ ...v, bet_type: v.betType })));
+        setSessionBetData(newRes?.map((v) => ({ ...v, bet_type: v.betType })));
+      }
     } catch (e) {
       console.log(e);
     }
@@ -138,8 +156,8 @@ const ProfitLoss = ({ selected, visible }) => {
     <Box sx={{ width: "100%", paddingX: "1vw" }}>
       {visible ? (
         <>
-        <YellowHeaderProfitLoss 
-        title="PROFIT/LOSS"
+          <YellowHeaderProfitLoss
+            title="PROFIT/LOSS"
             type="user"
             onClick={handleClick}
             setEndDate={setEndDate}
@@ -160,6 +178,7 @@ const ProfitLoss = ({ selected, visible }) => {
             {"PROFIT/LOSS REPORT"}
           </Typography>
           <ProfitLossComponent
+            sessionBets={sessionBets}
             eventData={eventData}
             reportData={reportData}
             betData={betData}
@@ -173,7 +192,6 @@ const ProfitLoss = ({ selected, visible }) => {
         </>
       ) : (
         <Background>
-        
           <Typography
             sx={{
               fontSize: { mobile: "12px", laptop: "15px" },
@@ -187,6 +205,7 @@ const ProfitLoss = ({ selected, visible }) => {
             {"PROFIT/LOSS REPORT"}
           </Typography>
           <ProfitLossComponent
+            sessionBets={sessionBets}
             eventData={eventData}
             reportData={reportData}
             betData={betData}

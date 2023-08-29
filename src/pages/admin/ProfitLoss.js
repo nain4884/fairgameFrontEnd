@@ -191,7 +191,7 @@ const ProfitLoss = () => {
       gameType: value?.eventType,
     };
     if (value?.betId !== "") {
-      payload.bet_id = value?.betId;
+      payload.betId = value?.betId;
       payload.sessionBet = true;
     }
     if (search?.id) {
