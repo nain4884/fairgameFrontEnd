@@ -231,10 +231,12 @@ const BetHistory = ({
                           width: "20%",
                           margin: { mobile: "1px", laptop: "1px" },
                           display: "flex",
-                          background: "black",
+                          background: "rgba(0, 0, 0, 0.5)",
                           justifyContent: "center",
                           alignItems: "center",
                           zIndex: 999,
+                          position: "absolute",
+                          right:0
                         }}
                       >
                         <StyledImage

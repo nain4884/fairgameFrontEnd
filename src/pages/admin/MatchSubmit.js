@@ -892,7 +892,9 @@ const MatchSubmit = ({}) => {
       dispatch(setAllBetRate(data?.data?.data));
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER", "QuickBookmaker0",
+          "QuickBookmaker1",
+          "QuickBookmaker2",].includes(
             b?.marketType
           )
       );

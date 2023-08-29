@@ -219,7 +219,7 @@ const SessionBetSeperate = ({
                             display: "flex",
                             laptop: profit ? "100 % " : "100% ",
                           },
-                          background: "rgba(0, 0, 0, 0.5)",
+                          background: "rgba(0, 0, 0, 0.6)",
                           height: "45px",
                           position: "absolute",
                         }}
@@ -322,6 +322,45 @@ const SessionBetSeperate = ({
                           alignItems: "center",
                           paddingX: "2px",
                           zIndex: 999,
+                        }}
+                      >
+                        <StyledImage
+                          sx={{
+                            width: { mobile: "15px", laptop: "20px" },
+                            height: { laptop: "20px", mobile: "14px" },
+                            marginRight: "5px",
+                          }}
+                          src={DELETE}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: { mobile: "7px", laptop: ".5vw" },
+                            color: "white",
+                            fontWeight: "700",
+                            width: { laptop: "65%", mobile: "55%" },
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
+                          {"\n"}
+                          {i?.deleted_reason}
+                        </Typography>
+                      </Box>
+                    )}
+                    { i?.deleted_reason && betHistory && (
+                      <Box
+                        sx={{
+                          height: "40px",
+                          width: "30%",
+                          margin: { mobile: "1px", laptop: "1px" },
+                          display: "flex",
+                          // background: "black",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          paddingX: "2px",
+                          zIndex: 999,
+                          position:"absolute",
+                          right:0
                         }}
                       >
                         <StyledImage

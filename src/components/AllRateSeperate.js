@@ -31,6 +31,7 @@ const AllRateSeperate = ({
   const { currentUser } = useSelector((state) => state?.currentUser);
 
   const [visible, setVisible] = useState(true);
+  
   return (
     <>
       <Box
@@ -206,7 +207,7 @@ const AllRateSeperate = ({
               ]?.map((i, k) => {
                 const num = allBetsData.length - k;
                 const formattedNum = num < 10 ? "0" + num : num.toString();
-
+                console.log("profit",i ,k)
                 return (
                   <Box
                     key={k}
@@ -251,8 +252,8 @@ const AllRateSeperate = ({
                             display: "flex",
                             laptop: profit ? "100 % " : "100% ",
                           },
-                          background: "rgba(0, 0, 0, 0.5)",
-                          height: "30px",
+                          background: "rgba(0, 0, 0, 0.6)",
+                          height: "100%",
                           position: "absolute",
                         }}
                       >
@@ -301,7 +302,24 @@ const AllRateSeperate = ({
                         </Box>
                       </Box>
                     )}
-
+                    {i?.deleted_reason && profit && (
+                      <Box
+                        sx={{
+                          width: {
+                            mobile: profit ? "100%" : "100%",
+                            alignItems: "flex-end",
+                            justifyContent: "center",
+                            display: "flex",
+                            laptop: profit ? "100 % " : "100% ",
+                          },
+                          background: "rgba(0, 0, 0, 0.6)",
+                          height: "100%",
+                          position: "absolute",
+                        }}
+                      >
+                        <Box sx={{ width: mark2 ? "20%" : "35%" }}></Box>
+                      </Box>
+                    )}
                     {profit && !i?.deleted_reason && (
                       <Box
                         sx={{
@@ -357,6 +375,43 @@ const AllRateSeperate = ({
                           justifyContent: "center",
                           alignItems: "center",
                           zIndex: 999,
+                        }}
+                      >
+                        <StyledImage
+                          sx={{
+                            width: { mobile: "15px", laptop: "20px" },
+                            height: { laptop: "20px", mobile: "14px" },
+                            marginRight: "5px",
+                          }}
+                          src={DELETE}
+                        />
+                        <Typography
+                          sx={{
+                            fontSize: { mobile: "7px", laptop: ".5vw" },
+                            color: "white",
+                            fontWeight: "700",
+                            width: { laptop: "65%", mobile: "55%" },
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
+                          {"\n"} {i?.deleted_reason}
+                        </Typography>
+                      </Box>
+                    )}
+                    { i?.deleted_reason && betHistory && (
+                      <Box
+                        sx={{
+                          height: "40px",
+                          width: "30%",
+                          // margin: { mobile: "1px", laptop: "1px" },
+                          display: "flex",
+                          // background: "black",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          zIndex: 999,
+                          position:"absolute",
+                          right:0
                         }}
                       >
                         <StyledImage

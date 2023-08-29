@@ -80,7 +80,7 @@ const ProfitLoss = ({ selected, visible }) => {
     setBetData([]);
     setSessionBetData([]);
     var payload = {
-      [value?.type === "session_bet" ? "matchId" : "match_id"]: value?.match_id,
+      [value?.type === "session_bet" && value?.betId==='' ? "matchId" : "match_id"]: value?.match_id,
       gameType: value?.eventType,
     };
     if (value?.betId !== "") {
@@ -96,7 +96,7 @@ const ProfitLoss = ({ selected, visible }) => {
     try {
       const { data } = await axios.post(
         `/betting/${
-          value?.type === "session_bet"
+          value?.type === "session_bet" && value?.betId==='' 
             ? "sessionProfitLossReport"
             : "getResultBetProfitLoss"
         }`,
@@ -127,6 +127,7 @@ const ProfitLoss = ({ selected, visible }) => {
           marketType: v.marketType,
           myProfitLoss: v.myProfitLoss,
           amount: v.amount,
+          deleted_reason:v.deleted_reason
         }))
       );
 

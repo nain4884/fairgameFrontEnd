@@ -39,11 +39,23 @@ const ProfitLossComponent = ({
   });
   const [event, setEvent] = useState("");
 
+  console.log(selectedId,"selectedId")
+
   const getHandleReport = (eventType) => {
     setEvent(eventType);
+    if (visible) {
+      setSelectedId((prev) => ({
+        ...prev,
+        type: "",
+        id: "",
+        betId: "",
+        sessionBet: false,
+      }));
+    }
     if (!visible) {
       handleReport(eventType, currentPage);
     }
+
     setVisible(!visible);
   };
 
@@ -60,14 +72,15 @@ const ProfitLossComponent = ({
     //   // setShow(false);
     //   // setSelectedId({ type: "", id: "", betId: "", sessionBet:false });
     // } else {
-    handleBet(value);
-    setShow(true);
     setSelectedId({
       type: value?.type,
-      id: value?.match_id,
+      id: value?.match_id || value?.matchid,
       betId: value?.betId,
       sessionBet: value?.sessionBet,
     });
+    
+    handleBet(value);
+
     // }
   };
 
@@ -75,7 +88,9 @@ const ProfitLossComponent = ({
     return (
       <Box
         key={index}
-        onClick={() => getHandleReport(item?.eventType)}
+        onClick={() => {
+          getHandleReport(item?.eventType);
+        }}
         sx={{
           width: "100%",
           height: { laptop: "60px", mobile: "50px" },
@@ -323,22 +338,22 @@ const ProfitLossComponent = ({
           </Box>
           <Box
             onClick={() => {
-              if (selectedId.type === "all_bet") {
-                setSelectedId((prev) => ({
-                  ...prev,
-                  type: "",
-                  betId: "",
-                  sessionBet: false,
-                }));
-              } else {
-                getBetReport({
-                  eventType: item?.eventType,
-                  match_id: item?.matchId,
-                  type: "all_bet",
-                  betId: "",
-                  sessionBet: false,
-                });
-              }
+              // if (selectedId.type === "all_bet") {
+              //   setSelectedId((prev) => ({
+              //     ...prev,
+              //     type: "",
+              //     betId: "",
+              //     sessionBet: false,
+              //   }));
+              // } else {
+              getBetReport({
+                eventType: item?.eventType,
+                match_id: item?.matchId,
+                type: "all_bet",
+                betId: "",
+                sessionBet: false,
+              });
+              // }
             }}
             sx={{
               background: item.rateProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
@@ -412,23 +427,23 @@ const ProfitLossComponent = ({
           </Box>
           <Box
             onClick={() => {
-              if (selectedId?.type === "session_bet") {
-                setSelectedId((prev) => ({
-                  ...prev,
-                  type: "",
+              // if (selectedId?.type === "session_bet") {
+              //   setSelectedId((prev) => ({
+              //     ...prev,
+              //     type: "",
 
-                  betId: "",
-                  sessionBet: false,
-                }));
-              } else {
-                getBetReport({
-                  eventType: item?.eventType,
-                  match_id: item?.matchId,
-                  type: "session_bet",
-                  betId: "",
-                  sessionBet: false,
-                });
-              }
+              //     betId: "",
+              //     sessionBet: false,
+              //   }));
+              // } else {
+              getBetReport({
+                eventType: item?.eventType,
+                match_id: item?.matchId,
+                type: "session_bet",
+                betId: "",
+                sessionBet: false,
+              });
+              // }
             }}
             sx={{
               background: item.sessionProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
@@ -572,9 +587,23 @@ const ProfitLossComponent = ({
     return (
       <Box key={index} sx={{ width: "100%" }}>
         <Box
-          // onClick={() => {
-          //     // setShow(!show)
-          // }}
+          onClick={() => {
+            // if (selectedId?.type === "session_bet" && selectedId?.sessionBet) {
+            //   setSelectedId((prev) => ({
+            //     ...prev,
+            //     betId: "",
+            //     sessionBet: false,
+            //   }));
+            // } else {
+            getBetReport({
+              eventType: item?.eventType,
+              match_id: item?.matchid,
+              type: "session_bet",
+              betId: item?.betid,
+              sessionBet: true,
+            });
+            // }
+          }}
           sx={{
             width: "100%",
             height: "45px",
@@ -624,7 +653,7 @@ const ProfitLossComponent = ({
                 right: 5,
               }}
             >
-              ({moment(item?.matchDate).format("DD-MM-YYYY")})
+              ({moment(item?.betDate).format("DD-MM-YYYY")})
             </Typography>
 
             <Box
@@ -656,32 +685,12 @@ const ProfitLossComponent = ({
                   fontWeight: "600",
                 }}
               >
-                ({moment(item?.matchDate).format("DD-MM-YYYY")})
+                ({moment(item?.betDate).format("DD-MM-YYYY")})
               </Typography>
             </Box>
           </Box>
 
           <Box
-            onClick={() => {
-              if (
-                selectedId?.type === "session_bet" &&
-                selectedId?.sessionBet
-              ) {
-                setSelectedId((prev) => ({
-                  ...prev,
-                  betId: "",
-                  sessionBet: false,
-                }));
-              } else {
-                getBetReport({
-                  eventType: item?.eventType,
-                  match_id: item?.matchId,
-                  type: "session_bet",
-                  betId: item?.betId,
-                  sessionBet: true,
-                });
-              }
-            }}
             sx={{
               background: item?.sessionProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
               paddingX: "2px",
@@ -745,9 +754,7 @@ const ProfitLossComponent = ({
                   width: { laptop: "20px", mobile: "10px" },
                   height: { laptop: "10px", mobile: "6px" },
                   transform:
-                    selectedId?.id === item?.matchId &&
-                    selectedId?.type === "session_bet" &&
-                    selectedId?.sessionBet
+                    selectedId?.betId === item?.betid
                       ? "rotate(90deg)"
                       : "rotate(270deg)",
                 }}
@@ -755,21 +762,18 @@ const ProfitLossComponent = ({
             </Box>
           </Box>
         </Box>
-        {selectedId?.id === item?.matchId &&
-          selectedId?.type === "session_bet" &&
-          selectedId?.sessionBet &&
-          matchesMobile && (
-            <Box sx={{ width: "100%", display: "flex", gap: 1 }}>
-              <SessionBetHistory
-                mark
-                mark2
-                betHistory={true}
-                betData={sessionBetData}
-                admin
-                profit
-              />
-            </Box>
-          )}
+        {selectedId?.betId === item?.betid && matchesMobile && (
+          <Box sx={{ width: "100%", display: "flex", gap: 1 }}>
+            <SessionBetHistory
+              mark
+              mark2
+              betHistory={true}
+              betData={sessionBetData}
+              admin
+              profit
+            />
+          </Box>
+        )}
       </Box>
     );
   };
