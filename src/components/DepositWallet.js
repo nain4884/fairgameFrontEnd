@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Input } from ".";
 import { EyeIcon } from "../admin/assets";
 import { Background, DailogModal } from ".";
@@ -99,12 +99,11 @@ export default function DepositWallet() {
       console.log(e);
     }
   }
-  const CustomButton = ({ color, title, onClick }) => {
+  const CustomButton = ({ color, title, onClick, type }) => {
     return (
-      <Box
-        onClick={() => {
-          onClick();
-        }}
+      <Button
+        type={type}
+        onClick={onClick}
         sx={{
           width: "45%",
           height: "45px",
@@ -114,6 +113,9 @@ export default function DepositWallet() {
           background: color,
           borderRadius: "5px",
           marginTop: "16px",
+          "&:hover": {
+            background: color,
+          }
         }}
       >
         <Typography
@@ -126,7 +128,7 @@ export default function DepositWallet() {
         >
           {title}
         </Typography>
-      </Box>
+      </Button>
     );
   };
   return (
@@ -142,7 +144,10 @@ export default function DepositWallet() {
             alignSelf: "start",
           }}
         >
-          {window.location.pathname.split("/")[2] === "deposit" ? "Deposit to" : "Withdraw from"} Wallet
+          {window.location.pathname.split("/")[2] === "deposit"
+            ? "Deposit to"
+            : "Withdraw from"}{" "}
+          Wallet
         </Typography>
         <Box
           sx={{
@@ -249,240 +254,268 @@ export default function DepositWallet() {
                     ? balance
                     : window.location.pathname.split("/")[2] === "withdraw" &&
                       (Detail[2].val !== 0 || isNaN(Detail[2].val))
-                      ? -Detail[2].val + balance
-                      : Detail[2].val + balance}
+                    ? -Detail[2].val + balance
+                    : Detail[2].val + balance}
                 </Typography>
               </Box>{" "}
             </Box>
           </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              gap: 1,
-              width: "100%",
-              flexDirection: { mobile: "column", tablet: "row", laptop: "row" },
-              alignItems: "center",
-              justifyContent: {
-                mobile: "flex-start",
-                tablet: "flex-start",
-                laptop: "flex-start",
-              },
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit();
             }}
           >
-            <Box sx={{ width: "50%" }}>
-
+            <>
               <Box
                 sx={{
                   display: "flex",
-                  width: "100%",
-                  marginTop: "10px",
                   gap: 1,
+                  width: "100%",
                   flexDirection: {
                     mobile: "column",
                     tablet: "row",
                     laptop: "row",
                   },
+                  alignItems: "center",
+                  justifyContent: {
+                    mobile: "flex-start",
+                    tablet: "flex-start",
+                    laptop: "flex-start",
+                  },
                 }}
               >
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: { mobile: "18px", tablet: "45px", laptop: "45px" },
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{ color: "black", fontSize: "14px", fontWeight: "600" }}
+                <Box sx={{ width: "50%" }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      marginTop: "10px",
+                      gap: 1,
+                      flexDirection: {
+                        mobile: "column",
+                        tablet: "row",
+                        laptop: "row",
+                      },
+                    }}
                   >
-                    {(
-                      window.location.pathname.split("/")[2] + " Points"
-                    ).toUpperCase()}
-                  </Typography>
-                </Box>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        height: {
+                          mobile: "18px",
+                          tablet: "45px",
+                          laptop: "45px",
+                        },
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: "black",
+                          fontSize: "14px",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {(
+                          window.location.pathname.split("/")[2] + " Points"
+                        ).toUpperCase()}
+                      </Typography>
+                    </Box>
 
-                <Box
-                  sx={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                  }}
-                >
+                    <Box
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Input
+                        placeholder="Type Amount..."
+                        required={true}
+                        titleStyle={{ display: "none" }}
+                        inputStyle={{
+                          paddingTop: 0,
+                          marginTop: 0,
+                          color: "white",
+                          fontSize: "20px",
+                          fontWeight: "600",
+                        }}
+                        inputProps={{ color: "white", padding: 0, margin: 0 }}
+                        inputContainerStyle={{
+                          minHeight: "45px",
+                          width: "100%",
+                          background: "#0B4F26",
+                          border: "2px solid #FFFFFF4D",
+                          borderRadius: "5px",
+                          marginTop: 0,
+                        }}
+                        title={"Remark (Optional)"}
+                        setDetail={setDetail}
+                        Detail={Detail}
+                        setError={setError}
+                        error={error}
+                        place={2}
+                        type={"Number"}
+                      />
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      width: "100%",
+                      marginTop: "10px",
+                      gap: 1,
+                      flexDirection: {
+                        mobile: "column",
+                        tablet: "row",
+                        laptop: "row",
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        width: "100%",
+                        marginTop: "10px",
+                        gap: 1,
+                        flexDirection: {
+                          mobile: "column",
+                          tablet: "row",
+                          laptop: "row",
+                        },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: "100%",
+                          height: {
+                            mobile: "18px",
+                            tablet: "45px",
+                            laptop: "45px",
+                          },
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            color: "black",
+                            fontSize: "14px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Transaction Password
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Input
+                        placeholder=""
+                        required={true}
+                        imgstyle={{ marginRight: 0 }}
+                        img={EyeIcon}
+                        titleStyle={{ display: "none" }}
+                        inputStyle={{
+                          paddingTop: 0,
+                          marginTop: 0,
+                          color: "black",
+                          fontSize: "20px",
+                          fontWeight: "600",
+                        }}
+                        inputProps={{ color: "white", padding: 0, margin: 0 }}
+                        inputContainerStyle={{
+                          minHeight: "45px",
+                          width: "100%",
+                          background: "#FFFFFF",
+                          border: "2px solid #26262633",
+                          borderRadius: "5px",
+                          marginTop: 0,
+                        }}
+                        title={"Admin Transaction Password"}
+                        setDetail={setDetail}
+                        Detail={Detail}
+                        setError={setError}
+                        error={error}
+                        place={3}
+                      />
+                    </Box>
+                  </Box>
+                </Box>
+                <Box sx={{ width: "50%" }}>
                   <Input
-                    placeholder="Type Amount..."
+                    placeholder="Remark (Optional)"
                     titleStyle={{ display: "none" }}
                     inputStyle={{
-                      paddingTop: 0,
-                      marginTop: 0,
-                      color: "white",
-                      fontSize: "20px",
-                      fontWeight: "600",
-                    }}
-                    inputProps={{ color: "white", padding: 0, margin: 0 }}
-                    inputContainerStyle={{
-                      minHeight: "45px",
+                      paddingTop: "10px",
                       width: "100%",
-                      background: "#0B4F26",
-                      border: "2px solid #FFFFFF4D",
+                      fontWeight: "600",
+                      color: "black",
+                      maxHeight: "120px",
+                    }}
+                    inputProps={{
+                      multiline: true,
+                      rows: 5,
+                      color: "black",
+
+                      fontSize: "600",
+                    }}
+                    inputContainerStyle={{
+                      minHeight: "110px",
+                      width: "100%",
+                      background: "#FFECBC",
+                      border: "2px solid #26262633",
                       borderRadius: "5px",
-                      marginTop: 0,
                     }}
                     title={"Remark (Optional)"}
                     setDetail={setDetail}
                     Detail={Detail}
                     setError={setError}
                     error={error}
-                    place={2}
-                    type={"Number"}
+                    place={4}
                   />
                 </Box>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  width: "100%",
-                  marginTop: "10px",
-                  gap: 1,
-                  flexDirection: {
-                    mobile: "column",
-                    tablet: "row",
-                    laptop: "row",
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    marginTop: "10px",
-                    gap: 1,
-                    flexDirection: {
-                      mobile: "column",
-                      tablet: "row",
-                      laptop: "row",
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: "100%",
-                      height: { mobile: "18px", tablet: "45px", laptop: "45px" },
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Typography
-                      sx={{ color: "black", fontSize: "14px", fontWeight: "600" }}
-                    >
-                      Transaction Password
-                    </Typography>
-                  </Box>
-                </Box>
 
+              <Box sx={{ width: "100%" }}>
                 <Box
                   sx={{
                     width: "100%",
                     display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Input
-                    placeholder=""
-                    imgstyle={{ marginRight: 0 }}
-                    img={EyeIcon}
-                    titleStyle={{ display: "none" }}
-                    inputStyle={{
-                      paddingTop: 0,
-                      marginTop: 0,
-                      color: "black",
-                      fontSize: "20px",
-                      fontWeight: "600",
+                  <CustomButton
+                    onClick={() => {
+                      navigate(
+                        `/${
+                          window.location.pathname.split("/")[1]
+                        }/list_of_clients`
+                      ); //${window.location.pathname.split("/")[1]}/list_of_clients
                     }}
-                    inputProps={{ color: "white", padding: 0, margin: 0 }}
-                    inputContainerStyle={{
-                      minHeight: "45px",
-                      width: "100%",
-                      background: "#FFFFFF",
-                      border: "2px solid #26262633",
-                      borderRadius: "5px",
-                      marginTop: 0,
-                    }}
-                    title={"Admin Transaction Password"}
-                    setDetail={setDetail}
-                    Detail={Detail}
-                    setError={setError}
-                    error={error}
-                    place={3}
+                    title={"Cancel"}
+                    color={"#E32A2A"}
+                  />
+                  <CustomButton
+                    type={"submit"}
+                    title={"Submit"}
+                    color={"#0B4F26"}
                   />
                 </Box>
               </Box>
-            </Box>
-            <Box sx={{ width: "50%" }}>
-              <Input
-                placeholder="Remark (Optional)"
-                titleStyle={{ display: "none" }}
-                inputStyle={{
-                  paddingTop: "10px",
-                  width: "100%",
-                  fontWeight: "600",
-                  color: "black",
-                  maxHeight: "120px"
-                }}
-                inputProps={{
-                  multiline: true,
-                  rows: 5,
-                  color: "black",
-
-                  fontSize: "600",
-                }}
-                inputContainerStyle={{
-                  minHeight: "110px",
-                  width: "100%",
-                  background: "#FFECBC",
-                  border: "2px solid #26262633",
-                  borderRadius: "5px",
-                }}
-                title={"Remark (Optional)"}
-                setDetail={setDetail}
-                Detail={Detail}
-                setError={setError}
-                error={error}
-                place={4}
-              />
-            </Box>
-
-          </Box>
-
-          <Box sx={{ width: "100%" }}>
-
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <CustomButton
-                onClick={() => {
-                  navigate(
-                    `/${window.location.pathname.split("/")[1]}/list_of_clients`
-                  ); //${window.location.pathname.split("/")[1]}/list_of_clients
-                }}
-                title={"Cancel"}
-                color={"#E32A2A"}
-              />
-              <CustomButton
-                onClick={() => {
-                  submit();
-                }}
-                title={"Submit"}
-                color={"#0B4F26"}
-              />
-            </Box>
-          </Box>
+            </>
+          </form>
         </Box>
 
         <DailogModal />
