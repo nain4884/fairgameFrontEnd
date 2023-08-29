@@ -26,7 +26,6 @@ const MatchOdds = ({
   setFastAmount,
   fastAmount,
   handleRateChange,
-
   LSelectedSessionBetting,
   localQuickSession,
 }) => {
@@ -180,7 +179,7 @@ const MatchOdds = ({
               teamCRates={teamRates?.teamC}
               min={bookmaker?.min_bet || 0}
               max={bookmaker?.max_bet || 0}
-              title={bookmaker.marketName}
+              title={bookmaker?.marketName}
               typeOfBet={bookmaker?.marketType}
               matchOddsData={bookmaker}
               setFastAmount={setFastAmount}

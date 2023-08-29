@@ -530,10 +530,11 @@ export const SocketProvider = ({ children }) => {
 
               const body = {
                 ...findBet,
-                ...value,
-                yes_rate: 0,
-                no_rate: 0,
-                suspended: "",
+                betStatus: value?.betStatus,
+                rate_percent: value?.rate_percent,
+                yes_rate: value?.yes_rate,
+                no_rate: value?.no_rate,
+                suspended: value?.suspended,
               };
               var removedBet = prev?.filter(
                 (betting) =>
