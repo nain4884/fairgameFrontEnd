@@ -470,7 +470,7 @@ const CustomHeader = ({}) => {
                 var updatedBettings = [body, ...removedBet];
 
                 const ids = prev?.map((v) => v?.id);
-                if (!ids.includes(value?.id)) {
+                if (!ids.includes(value?.id) && value?.selectionId) {
                   const newres = [value, ...prev];
                   updatedBettings = newres;
                 }

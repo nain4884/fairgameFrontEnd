@@ -1,12 +1,12 @@
 module.exports = {
   // apiBasePath: "http://159.65.154.97:3100/", // server url
   // apiBasePath: "http://159.65.154.97:3300/", // server url
-  apiBasePath: "http://139.59.88.49:3100/", // server url
-  apiMicroBasePath: "http://localhost:3200", // server url
-  microServiceApiPath: "http://139.59.88.49:3200",
-  // apiBasePath: "https://3100dev.fairgame.club/", // server url
-  // apiMicroBasePath: "https://3100dev.fairgame.club", // server url
-  // microServiceApiPath: "https://3200dev.fairgame.club",
+  // apiBasePath: "http://139.59.88.49:3100/", // server url
+  // apiMicroBasePath: "http://localhost:3200", // server url
+  // microServiceApiPath: "http://139.59.88.49:3200",
+  apiBasePath: "https://3100dev.fairgame.club/", // server url
+  apiMicroBasePath: "https://3100dev.fairgame.club", // server url
+  microServiceApiPath: "https://3200dev.fairgame.club",
   // imageBasePath: "http://localhost:4000/public/images/", /// server image base pathpath
 
   // thirdPartyAPIBasePath: "http://3.23.22.210:4001/api/", // third party api url
