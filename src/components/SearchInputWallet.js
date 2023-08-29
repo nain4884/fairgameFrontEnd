@@ -26,7 +26,6 @@ const SearchInput = ({
             fontSize: "10px",
             fontWeight: "500",
             color: "black",
-            textTransform:"lowercase",
             "&:hover": {
               cursor: "pointer",
               background: "#3498ff33",
