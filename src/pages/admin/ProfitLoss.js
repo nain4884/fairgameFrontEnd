@@ -110,6 +110,7 @@ const ProfitLoss = () => {
   const [endDate, setEndDate] = useState(null);
   const { profitLossReportPage } = useSelector((state) => state?.adminMatches);
   const [visible, setVisible] = useState(false);
+  const [sessionBets, setSessionBet] = useState([]);
   useEffect(() => {
     // alert(1)
     getEventList();
@@ -177,17 +178,22 @@ const ProfitLoss = () => {
     }
   };
 
-  const handleBet = (id) => {
+  const handleBet = (value) => {
     // alert(id)
-    getBets(id);
+    getBets(value);
   };
 
-  async function getBets(id) {
+  async function getBets(value) {
     setBetData([]);
     setSessionBetData([]);
     var payload = {
-      match_id: id,
+      [value?.type === "session_bet" ? "matchId" : "match_id"]: value?.match_id,
+      gameType: value?.eventType,
     };
+    if (value?.betId !== "") {
+      payload.bet_id = value?.betId;
+      payload.sessionBet = true;
+    }
     if (search?.id) {
       payload.userId = search?.id;
     }
@@ -200,11 +206,20 @@ const ProfitLoss = () => {
     let { axios } = setRole();
     try {
       const { data } = await axios.post(
-        `/betting/getResultBetProfitLoss`,
+        `/betting/${
+          value?.type === "session_bet"
+            ? "sessionProfitLossReport"
+            : "getResultBetProfitLoss"
+        }`,
         payload
       );
       setBetData(data?.data?.filter((v) => v.sessionBet !== true));
-      setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
+      if (value?.type === "session_bet" && value.betId === "") {
+      
+        setSessionBet(data?.data[0]);
+      } else {
+        setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
+      }
     } catch (e) {
       console.log(e);
     }
@@ -283,6 +298,7 @@ const ProfitLoss = () => {
               reportData={reportData}
               betData={betData}
               sessionBetData={sessionBetData}
+              sessionBets={sessionBets}
               handleReport={handleReport}
               handleBet={handleBet}
               currentPage={currentPage}

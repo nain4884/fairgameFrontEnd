@@ -1134,7 +1134,7 @@ const CustomHeader = ({}) => {
                 const updated = prevMatchData.map((item) => {
                   if (item?.id === data?.matchId) {
                     const updatedBettings = item?.bettings?.map((betting) => {
-                      if (betting?.selectionId !== null) {
+                      if (betting?.selectionId !== null && betting.betStatus!==2) {
                         return { ...betting, betStatus: 0 };
                       }
                       return betting;
