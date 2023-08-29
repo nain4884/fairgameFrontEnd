@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import StyledImage from "./StyledImage";
@@ -11,6 +11,7 @@ import moment from "moment";
 import Footer from "./Footer";
 import { useDispatch } from "react-redux";
 import { setProfitLossReportPage } from "../newStore/reducers/adminMatches";
+import { useTheme } from "@emotion/react";
 
 const ProfitLossComponent = ({
   eventData,
@@ -28,9 +29,14 @@ const ProfitLossComponent = ({
   sessionBets,
 }) => {
   const dispatch = useDispatch();
-  console.log(sessionBets, "setSessionBet");
+
   const [show, setShow] = useState(false);
-  const [selectedId, setSelectedId] = useState({ type: "", id: "", betId: "" });
+  const [selectedId, setSelectedId] = useState({
+    type: "",
+    id: "",
+    betId: "",
+    sessionBet: false,
+  });
   const [event, setEvent] = useState("");
 
   const getHandleReport = (eventType) => {
@@ -49,19 +55,20 @@ const ProfitLossComponent = ({
   }
 
   const getBetReport = (value) => {
-    if (selectedId?.id === value?.match_id) {
-      handleBet(value);
-      setShow(false);
-      setSelectedId({ type: "", id: "", betId: "" });
-    } else {
-      handleBet(value);
-      setShow(true);
-      setSelectedId({
-        type: value?.type,
-        id: value?.match_id,
-        betId: value?.betId,
-      });
-    }
+    // if (selectedId?.id === value?.match_id) {
+    //   handleBet(value);
+    //   // setShow(false);
+    //   // setSelectedId({ type: "", id: "", betId: "", sessionBet:false });
+    // } else {
+    handleBet(value);
+    setShow(true);
+    setSelectedId({
+      type: value?.type,
+      id: value?.match_id,
+      betId: value?.betId,
+      sessionBet: value?.sessionBet,
+    });
+    // }
   };
 
   const RowHeader = ({ item, index }) => {
@@ -221,6 +228,8 @@ const ProfitLossComponent = ({
     );
   };
   const RowComponent = ({ item, index }) => {
+    const theme = useTheme();
+    const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     return (
       <Box key={index} sx={{ width: "100%" }}>
         <Box
@@ -313,14 +322,24 @@ const ProfitLossComponent = ({
             </Box>
           </Box>
           <Box
-            onClick={() =>
-              getBetReport({
-                eventType: item?.eventType,
-                match_id: item?.matchId,
-                type: "all_bet",
-                betId: "",
-              })
-            }
+            onClick={() => {
+              if (selectedId.type === "all_bet") {
+                setSelectedId((prev) => ({
+                  ...prev,
+                  type: "",
+                  betId: "",
+                  sessionBet: false,
+                }));
+              } else {
+                getBetReport({
+                  eventType: item?.eventType,
+                  match_id: item?.matchId,
+                  type: "all_bet",
+                  betId: "",
+                  sessionBet: false,
+                });
+              }
+            }}
             sx={{
               background: item.rateProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
               paddingX: "2px",
@@ -392,14 +411,25 @@ const ProfitLossComponent = ({
             </Box>
           </Box>
           <Box
-            onClick={() =>
-              getBetReport({
-                eventType: item?.eventType,
-                match_id: item?.matchId,
-                type: "session_bet",
-                betId: "",
-              })
-            }
+            onClick={() => {
+              if (selectedId?.type === "session_bet") {
+                setSelectedId((prev) => ({
+                  ...prev,
+                  type: "",
+
+                  betId: "",
+                  sessionBet: false,
+                }));
+              } else {
+                getBetReport({
+                  eventType: item?.eventType,
+                  match_id: item?.matchId,
+                  type: "session_bet",
+                  betId: "",
+                  sessionBet: false,
+                });
+              }
+            }}
             sx={{
               background: item.sessionProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
               paddingX: "2px",
@@ -478,6 +508,7 @@ const ProfitLossComponent = ({
               width: { mobile: "100%", laptop: "100%" },
               marginTop: { mobile: ".25vh" },
               // marginLeft: { laptop: "4%" },
+
               display: "flex",
               flexDirection: { laptop: "row", mobile: "column" },
             }}
@@ -489,8 +520,16 @@ const ProfitLossComponent = ({
             <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
 
             {selectedId?.type === "session_bet" && (
-              <Box>
-                <Box>
+              <Box sx={{ width: "100%", display: "flex", gap: 1 }}>
+                <Box
+                  sx={{
+                    width: { mobile: "100%", laptop: "50%", tablet: "100%" },
+                    maxHeight: "51vh",
+                    overflowY: "scroll",
+                    marginY: { mobile: ".2vh", laptop: "1vh" },
+                    padding: 0.2,
+                  }}
+                >
                   {sessionBets?.length > 0 &&
                     sessionBets?.map((item, index) => {
                       return (
@@ -503,8 +542,12 @@ const ProfitLossComponent = ({
                     })}
                 </Box>
 
-                {selectedId?.betId !== "" && (
-                  <Box>
+                {selectedId?.betId !== "" && !matchesMobile && (
+                  <Box
+                    sx={{
+                      width: { mobile: "100%", laptop: "49%", tablet: "100%" },
+                    }}
+                  >
                     <SessionBetHistory
                       mark
                       mark2
@@ -524,6 +567,8 @@ const ProfitLossComponent = ({
   };
 
   const SessionComponent = ({ item, index }) => {
+    const theme = useTheme();
+    const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
     return (
       <Box key={index} sx={{ width: "100%" }}>
         <Box
@@ -556,7 +601,7 @@ const ProfitLossComponent = ({
           </Box>
           <Box
             sx={{
-              width: { mobile: "40%", laptop: "80%" },
+              width: { mobile: "65%", laptop: "80%", tablet: "65%" },
               position: "relative",
               height: "100%",
               paddingY: "4px",
@@ -617,14 +662,26 @@ const ProfitLossComponent = ({
           </Box>
 
           <Box
-            onClick={() =>
-              getBetReport({
-                eventType: item?.eventType,
-                match_id: item?.matchId,
-                type: "session_bet",
-                betId: item?.betId,
-              })
-            }
+            onClick={() => {
+              if (
+                selectedId?.type === "session_bet" &&
+                selectedId?.sessionBet
+              ) {
+                setSelectedId((prev) => ({
+                  ...prev,
+                  betId: "",
+                  sessionBet: false,
+                }));
+              } else {
+                getBetReport({
+                  eventType: item?.eventType,
+                  match_id: item?.matchId,
+                  type: "session_bet",
+                  betId: item?.betId,
+                  sessionBet: true,
+                });
+              }
+            }}
             sx={{
               background: item?.sessionProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
               paddingX: "2px",
@@ -690,14 +747,29 @@ const ProfitLossComponent = ({
                   transform:
                     selectedId?.id === item?.matchId &&
                     selectedId?.type === "session_bet" &&
-                    selectedId?.betId === item?.betId
-                      ? "rotate(180deg)"
-                      : "rotate(0deg)",
+                    selectedId?.sessionBet
+                      ? "rotate(90deg)"
+                      : "rotate(270deg)",
                 }}
               />
             </Box>
           </Box>
         </Box>
+        {selectedId?.id === item?.matchId &&
+          selectedId?.type === "session_bet" &&
+          selectedId?.sessionBet &&
+          matchesMobile && (
+            <Box sx={{ width: "100%", display: "flex", gap: 1 }}>
+              <SessionBetHistory
+                mark
+                mark2
+                betHistory={true}
+                betData={sessionBetData}
+                admin
+                profit
+              />
+            </Box>
+          )}
       </Box>
     );
   };
