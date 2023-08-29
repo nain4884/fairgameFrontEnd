@@ -540,7 +540,8 @@ const ProfitLossComponent = ({
                   sx={{
                     width: { mobile: "100%", laptop: "50%", tablet: "100%" },
                     maxHeight: "51vh",
-                    overflowY: "scroll",
+                    overflow:"hidden",
+                    overflowY: "auto",
                     marginY: { mobile: ".2vh", laptop: "1vh" },
                     padding: 0.2,
                   }}
