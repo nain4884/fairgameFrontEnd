@@ -209,7 +209,7 @@ const SessionBetSeperate = ({
                       </Typography>
                     </Box>
                     <RowComponent header={false} data={i} />
-                    {betHistory && i?.deleted_reason && (
+                    { i?.deleted_reason && (
                       <Box
                         sx={{
                           width: {

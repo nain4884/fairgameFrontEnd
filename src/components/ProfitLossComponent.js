@@ -566,7 +566,7 @@ const ProfitLossComponent = ({
                     }}
                   >
                     <SessionBetSeperate
-                      betHistory={true}
+                      betHistory={false}
                       allBetsData={sessionBetData}
                       profit
                       isArrow={true}
@@ -765,7 +765,7 @@ const ProfitLossComponent = ({
         {selectedId?.betId === item?.betid && matchesMobile && (
           <Box sx={{ width: "100%", display: "flex", gap: 1 }}>
             <SessionBetSeperate
-              betHistory={true}
+              betHistory={false}
               allBetsData={sessionBetData}
               profit
               isArrow={true}
