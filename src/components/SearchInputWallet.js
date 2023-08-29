@@ -26,6 +26,7 @@ const SearchInput = ({
             fontSize: "10px",
             fontWeight: "500",
             color: "black",
+            textTransform:"lowercase",
             "&:hover": {
               cursor: "pointer",
               background: "#3498ff33",
@@ -74,16 +75,19 @@ const SearchInput = ({
         <TextField
           variant="standard"
           placeholder={"Search"}
-          value={search?.userName}
+          value={search?.userName?.toLowerCase()}
           onChange={(e) => {
+         
             setSearch(e.target?.value);
             setOpen(true);
           }}
           InputProps={{
             disableUnderline: true,
+            textTransform:"lowercase",
             style: { fontSize: "11px", fontWeight: "500" },
           }}
           sx={{
+            textTransform:"lowercase",
             borderColor: "white",
             display: "flex",
             flex: 1,
