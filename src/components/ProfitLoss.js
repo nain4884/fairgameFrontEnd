@@ -39,6 +39,8 @@ const ProfitLossComponent = ({
   });
   const [event, setEvent] = useState("");
 
+  console.log(selectedId,"selectedId")
+
   const getHandleReport = (eventType) => {
     setEvent(eventType);
     if (visible) {
@@ -72,11 +74,11 @@ const ProfitLossComponent = ({
     // } else {
     setSelectedId({
       type: value?.type,
-      id: value?.match_id,
+      id: value?.match_id || value?.matchid,
       betId: value?.betId,
       sessionBet: value?.sessionBet,
     });
-    setShow(true);
+    
     handleBet(value);
 
     // }
@@ -595,7 +597,7 @@ const ProfitLossComponent = ({
             // } else {
             getBetReport({
               eventType: item?.eventType,
-              match_id: item?.matchId,
+              match_id: item?.matchid,
               type: "session_bet",
               betId: item?.betid,
               sessionBet: true,

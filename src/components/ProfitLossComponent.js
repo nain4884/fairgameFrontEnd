@@ -31,6 +31,7 @@ const ProfitLossComponent = ({
     betId: "",
     sessionBet: false,
   });
+  console.log(selectedId,"selectedId")
   const [event, setEvent] = useState("");
   const getHandleReport = (eventType) => {
     setEvent(eventType);
@@ -529,7 +530,7 @@ const ProfitLossComponent = ({
           >
             {selectedId?.type === "all_bet" && (
               <AllRateSeperate
-                betHistory={true}
+                betHistory={false}
                 count={betData?.length}
                 allBetsData={betData}
                 profit
@@ -596,7 +597,7 @@ const ProfitLossComponent = ({
             // } else {
               getBetReport({
                 eventType: item?.eventType,
-                match_id: item?.matchId,
+                match_id:item?.matchid || item?.matchId,
                 type: "session_bet",
                 betId: item?.betid,
                 sessionBet: true,
