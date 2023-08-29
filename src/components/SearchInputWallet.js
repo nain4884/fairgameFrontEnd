@@ -75,7 +75,7 @@ const SearchInput = ({
         <TextField
           variant="standard"
           placeholder={"Search"}
-          value={search?.userName?.toLowerCase()}
+          value={search?.userName}
           onChange={(e) => {
          
             setSearch(e.target?.value);
