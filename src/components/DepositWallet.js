@@ -10,6 +10,7 @@ import { setRole } from "../newStore";
 import { pageLimit } from "./helper/constants";
 import { setUserData } from "../newStore/reducers/auth";
 import { toast } from "react-toastify";
+import { setCurrentUser } from "../newStore/reducers/currentUser";
 
 export default function DepositWallet() {
   const { axios } = setRole();
@@ -24,6 +25,7 @@ export default function DepositWallet() {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [userId, setUserId] = useState(currentUser?.id);
   const [balance, setBalance] = useState(currentUser?.current_balance);
+  const [credit, setCredit] = useState(currentUser?.credit_refer);
   const [error, setError] = useState({
     1: { field: "Previous_Balance", val: false },
     2: { field: "amount", val: false },
@@ -40,8 +42,10 @@ export default function DepositWallet() {
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
+      dispatch(setCurrentUser(data.data));
       setUserId(data.data.id);
       setBalance(data.data.current_balance);
+      setCredit(data.data.credit_refer);
     } catch (e) {
       console.log(e);
     }
@@ -214,7 +218,9 @@ export default function DepositWallet() {
                   Previous Balance
                 </Typography>
                 <Typography sx={{ color: "white", fontWeight: "600" }}>
-                  {balance}
+                  {window.location.pathname.split("/")[2] === "credit_reference"
+                    ? credit
+                    : balance}
                 </Typography>
               </Box>
             </Box>
@@ -254,7 +260,9 @@ export default function DepositWallet() {
                   New Balance
                 </Typography>
                 <Typography sx={{ color: "#10DC61", fontWeight: "600" }}>
-                  {isNaN(Detail[2].val)
+                  {window.location.pathname.split("/")[2] === "credit_reference"
+                    ? Detail[2].val
+                    : isNaN(Detail[2].val)
                     ? balance
                     : window.location.pathname.split("/")[2] === "withdraw" &&
                       (Detail[2].val !== 0 || isNaN(Detail[2].val))
