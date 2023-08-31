@@ -21,6 +21,7 @@ const ProfitLoss = ({ selected, visible }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [sessionBets, setSessionBet] = useState([]);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     // alert(1)
     getEventList();
@@ -48,6 +49,7 @@ const ProfitLoss = ({ selected, visible }) => {
   };
 
   const getReport = async (eventType, pageno) => {
+    setReportData([]);
     var payload = {
       skip: pageno,
       limit: pageLimit,
@@ -78,9 +80,14 @@ const ProfitLoss = ({ selected, visible }) => {
 
   async function getBets(value) {
     setBetData([]);
+    if (value?.type === "session_bet" && value?.betId === "") {
+      setSessionBet([]);
+    }
     setSessionBetData([]);
     var payload = {
-      [value?.type === "session_bet" && value?.betId==='' ? "matchId" : "match_id"]: value?.match_id,
+      [value?.type === "session_bet" && value?.betId === ""
+        ? "matchId"
+        : "match_id"]: value?.match_id,
       gameType: value?.eventType,
     };
     if (value?.betId !== "") {
@@ -96,7 +103,7 @@ const ProfitLoss = ({ selected, visible }) => {
     try {
       const { data } = await axios.post(
         `/betting/${
-          value?.type === "session_bet" && value?.betId==='' 
+          value?.type === "session_bet" && value?.betId === ""
             ? "sessionProfitLossReport"
             : "getResultBetProfitLoss"
         }`,
@@ -127,7 +134,7 @@ const ProfitLoss = ({ selected, visible }) => {
           marketType: v.marketType,
           myProfitLoss: v.myProfitLoss,
           amount: v.amount,
-          deleted_reason:v.deleted_reason
+          deleted_reason: v.deleted_reason,
         }))
       );
 
@@ -145,8 +152,7 @@ const ProfitLoss = ({ selected, visible }) => {
 
   const handleClick = (e) => {
     try {
-      // setVisible(false)
-
+      setShow(false);
       getEventList();
     } catch (e) {
       console.log("error", e?.message);
@@ -180,6 +186,8 @@ const ProfitLoss = ({ selected, visible }) => {
           </Typography>
           <ProfitLossComponent
             sessionBets={sessionBets}
+            show={show}
+            setShow={setShow}
             eventData={eventData}
             reportData={reportData}
             betData={betData}
@@ -207,6 +215,8 @@ const ProfitLoss = ({ selected, visible }) => {
           </Typography>
           <ProfitLossComponent
             sessionBets={sessionBets}
+            show={show}
+            setShow={setShow}
             eventData={eventData}
             reportData={reportData}
             betData={betData}

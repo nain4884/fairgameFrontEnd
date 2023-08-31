@@ -21,10 +21,10 @@ const ProfitLossComponent = ({
   pageCount,
   setCurrentPage,
   sessionBets,
+  setShow,
+  show
 }) => {
-  const [visible, setVisible] = useState(false);
   console.log(sessionBets, "setSessionBet");
-  const [show, setShow] = useState(false);
   const [selectedId, setSelectedId] = useState({
     type: "",
     id: "",
@@ -35,7 +35,7 @@ const ProfitLossComponent = ({
   const [event, setEvent] = useState("");
   const getHandleReport = (eventType) => {
     setEvent(eventType);
-    if(visible){
+    if(show){
       setSelectedId((prev) => ({
         ...prev,
         type: "",
@@ -44,10 +44,17 @@ const ProfitLossComponent = ({
         sessionBet: false,
       }));
     }
-    if (!visible) {
+    if (!show) {
+      setSelectedId((prev) => ({
+        ...prev,
+        type: "",
+        id: "",
+        betId: "",
+        sessionBet: false,
+      }));
       handleReport(eventType, currentPage);
     }
-    setVisible(!visible);
+    setShow(!show);
   };
 
   function callPage(val) {
@@ -69,7 +76,6 @@ const ProfitLossComponent = ({
       betId: value?.betId,
       sessionBet: value?.sessionBet,
     });
-    setShow(true);
     handleBet(value);
 
     // }
@@ -123,7 +129,7 @@ const ProfitLossComponent = ({
             src={ArrowDown}
             sx={{
               width: { laptop: "20px", mobile: "10px" },
-              transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+              transform: show ? "rotate(180deg)" : "rotate(0deg)",
               height: { laptop: "10px", mobile: "6px" },
             }}
           />
@@ -783,13 +789,13 @@ const ProfitLossComponent = ({
       })}
 
       <Box>
-        {visible &&
+        {show &&
           reportData.map((item, index) => {
             return <RowComponent key={index} item={item} index={index + 1} />;
           })}
       </Box>
 
-      {visible && (
+      {show && (
         <Footer
           getListOfUser={() => handleReport(event)}
           currentPage={currentPage}
