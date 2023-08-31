@@ -126,6 +126,10 @@ const ProfitLoss = () => {
   // }, [profitLossReportPage]);
 
   async function getEventList() {
+    setEventData([])
+    setBetData([]);
+    setSessionBet([])
+    setSessionBetData([]);
     var payload = {};
     if (search?.id) {
       payload.userId = search?.id;
@@ -147,6 +151,7 @@ const ProfitLoss = () => {
   }
 
   const handleReport = (eventType, pageno) => {
+    setReportData([])
     getReport(eventType, pageno);
   };
 
@@ -185,6 +190,9 @@ const ProfitLoss = () => {
 
   async function getBets(value) {
     setBetData([]);
+    if(value?.type === "session_bet" && value?.betId===''){
+      setSessionBet([])
+    }
     setSessionBetData([]);
     var payload = {
       [value?.type === "session_bet" && value?.betId===''  ? "matchId" : "match_id"]: value?.match_id,

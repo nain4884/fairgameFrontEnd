@@ -73,6 +73,8 @@ export default function DepositWallet() {
     let trans_type;
     if (window.location.pathname.split("/")[2] === "deposit") {
       trans_type = "add";
+    } else if (window.location.pathname.split("/")[2] === "credit_reference") {
+      trans_type = "credit_refer";
     } else {
       trans_type = window.location.pathname.split("/")[2];
     }
@@ -115,7 +117,7 @@ export default function DepositWallet() {
           marginTop: "16px",
           "&:hover": {
             background: color,
-          }
+          },
         }}
       >
         <Typography
@@ -146,7 +148,9 @@ export default function DepositWallet() {
         >
           {window.location.pathname.split("/")[2] === "deposit"
             ? "Deposit to"
-            : "Withdraw from"}{" "}
+            : window.location.pathname.split("/")[2] === "withdraw"
+            ? "Withdraw from"
+            : "Edit Credit Reference of"}{" "}
           Wallet
         </Typography>
         <Box
@@ -319,9 +323,12 @@ export default function DepositWallet() {
                           fontWeight: "600",
                         }}
                       >
-                        {(
-                          window.location.pathname.split("/")[2] + " Points"
-                        ).toUpperCase()}
+                        {window.location.pathname.split("/")[2] ===
+                        "credit_reference"
+                          ? "NEW CREDIT REFERENCE POINTS"
+                          : (
+                              window.location.pathname.split("/")[2] + " Points"
+                            ).toUpperCase()}
                       </Typography>
                     </Box>
 

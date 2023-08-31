@@ -39,20 +39,25 @@ const ProfitLossComponent = ({
   });
   const [event, setEvent] = useState("");
 
-  console.log(selectedId,"selectedId")
+  console.log(selectedId, "selectedId");
 
   const getHandleReport = (eventType) => {
     setEvent(eventType);
     if (visible) {
-      setSelectedId((prev) => ({
-        ...prev,
+      setSelectedId({
         type: "",
         id: "",
         betId: "",
         sessionBet: false,
-      }));
+      });
     }
     if (!visible) {
+      setSelectedId({
+        type: "",
+        id: "",
+        betId: "",
+        sessionBet: false,
+      });
       handleReport(eventType, currentPage);
     }
 
@@ -78,7 +83,7 @@ const ProfitLossComponent = ({
       betId: value?.betId,
       sessionBet: value?.sessionBet,
     });
-    
+
     handleBet(value);
 
     // }
@@ -540,7 +545,7 @@ const ProfitLossComponent = ({
                   sx={{
                     width: { mobile: "100%", laptop: "50%", tablet: "100%" },
                     maxHeight: "51vh",
-                    overflow:"hidden",
+                    overflow: "hidden",
                     overflowY: "auto",
                     marginY: { mobile: ".2vh", laptop: "1vh" },
                     padding: 0.2,

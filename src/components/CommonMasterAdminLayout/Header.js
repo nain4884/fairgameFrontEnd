@@ -2094,6 +2094,7 @@ const CustomHeader = ({}) => {
   const menutItems2 = [
     { title: "Deposit", link: "/wallet/deposit" },
     { title: "Withdraw", link: "/wallet/withdraw" },
+    { title: "Change Credit Reference", link: "/wallet/credit_reference" },
   ];
 
   return (
