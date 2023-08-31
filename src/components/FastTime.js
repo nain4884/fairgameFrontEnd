@@ -9,6 +9,7 @@ const FastTime = ({
   session,
   setFastAmount,
   setPlaceBetData,
+  typeOfBet
 }) => {
   return (
     <Box
@@ -27,7 +28,7 @@ const FastTime = ({
             if (session === "sessionOdds") {
               setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
             } else if (session === "manualBookMaker") {
-              setFastAmount((prev) => ({ ...prev, mannualBookMaker: 0 }));
+              setFastAmount((prev) => ({ ...prev, [typeOfBet]: 0 }));
             } else if (session === "bookmaker") {
               setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
             }

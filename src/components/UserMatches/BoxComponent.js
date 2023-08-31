@@ -9,6 +9,7 @@ import { formatNumber } from "../helper/helper";
 import SeperateBox from "../../pages/expert/SeperateBox";
 import { apiBasePath } from "../helper/constants";
 import { useEffect } from "react";
+import { memo } from "react";
 
 const BoxComponent = ({
   name,
@@ -109,7 +110,7 @@ const BoxComponent = ({
         </Box>
         <MoneyBox color={color} rates={rate} />
       </Box>
-      {showBox && (
+      {/* {showBox && (
         <Box
           sx={{
             background: "rgba(0,0,0,0.5)",
@@ -123,7 +124,7 @@ const BoxComponent = ({
             display: "flex",
           }}
         ></Box>
-      )}
+      )} */}
       {!["ACTIVE", "", undefined, null].includes(status) ||
         newData?.bettings?.length === 0 ||
         livestatus ? (
@@ -543,4 +544,4 @@ const BoxComponent = ({
   );
 };
 
-export default BoxComponent;
+export default memo(BoxComponent);

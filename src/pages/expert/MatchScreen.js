@@ -31,8 +31,14 @@ import { removeSocket } from "../../components/helper/removeSocket";
 import { GlobalStore } from "../../context/globalStore";
 import SessionMarketLive from "../expert/SessionMarket/LiveSessionMarket/SessionMarketLive";
 import CustomLoader from "../../components/helper/CustomLoader";
-import { setActiveUsers, setAllBetRate, } from "../../newStore/reducers/expertMatchDetails";
+import {
+  setActiveUsers,
+  setAllBetRate,
+  setSessionExpertOdds,
+} from "../../newStore/reducers/expertMatchDetails";
 import { setSelected } from "../../store/activeUser";
+import { customSort } from "../../components/helper/util";
+import _ from "lodash";
 let matchOddsCount = 0;
 let marketId = "";
 let profitLoss;
@@ -44,7 +50,9 @@ const MatchScreen = () => {
   const navigate = useNavigate();
   const { axios } = setRole();
   const dispatch = useDispatch();
-  const { allBetRates ,currentOdd } = useSelector((state) => state?.expertMatchDetails);
+  const { allBetRates, currentOdd, sessionExpertOdds } = useSelector(
+    (state) => state?.expertMatchDetails
+  );
   const [currentMatch, setCurrentMatch] = useState(null);
   const [IObets, setIObtes] = useState([]);
   const [bookmakerLivedata, setBookmakerLiveData] = useState([]);
@@ -54,29 +62,53 @@ const MatchScreen = () => {
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [currentOdds, setCurrentOdds] = useState(null);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const [matchLiveSession,setMatchLiveSession]=useState([])
+  const [matchLiveSession, setMatchLiveSession] = useState([]);
+  const [localSessionExpertOdds, setLocalSessionExpertOdds] = useState([]);
 
+  const { selectedMatch } = useSelector((state) => state?.matchDetails);
 
-  const { selectedMatch} = useSelector((state) => state?.matchDetails);
-
-   useEffect(()=>{
+  useEffect(() => {
     if (allBetRates) {
       setIObtes(allBetRates);
     }
     if (selectedMatch) {
       setCurrentMatch(selectedMatch);
     }
-    if(currentOdd){
-      setCurrentOdds(currentOdd)
+    if (currentOdd) {
+      setCurrentOdds(currentOdd);
     }
-   },[selectedMatch,allBetRates,currentOdd])
+    if (currentOdd) {
+      setCurrentOdds(currentOdd);
+    }
+    if (sessionExpertOdds) {
+      setLocalSessionExpertOdds(sessionExpertOdds);
+    }
+  }, [selectedMatch, allBetRates, currentOdd, sessionExpertOdds]);
 
   const getSingleMatch = async (val) => {
     try {
       const { data } = await axios.get(`game-match/matchDetail/${val}`);
-      const newMatch = { ...data, bettings: data?.bettings?.reverse() };
-      setCurrentMatch(newMatch);
-      dispatch(setSelectedMatch(newMatch))
+      const newMatch = { ...data, bettings: data?.bettings };
+      const updatedbettings = newMatch.bettings.map((v) => {
+        if (v.selectionId !== null) {
+          return {
+            ...v,
+            yes_rate: "0",
+            no_rate: "0",
+            suspended: "",
+          };
+        }
+        return v;
+      });
+      // setCurrentMatch(updatedbettings);
+      const sessionList = newMatch?.bettings?.map((v) => ({
+        ...v,
+        no_rate: "0",
+        yes_rate: "0",
+        suspended: "",
+      }));
+      dispatch(setSessionExpertOdds(sessionList));
+      dispatch(setSelectedMatch({ ...newMatch, bettings: updatedbettings }));
       marketId = data?.marketId;
       const manualBookmaker = {
         matchId: data?.id,
@@ -98,20 +130,13 @@ const MatchScreen = () => {
     }
   }, [state?.id]);
 
+  const [liveSessionData, setLiveSessionData] = useState([]);
   // useEffect(() => {
   //   if (localState?.id) {
   //     setCurrentMatch((currentMatch) => ({ ...currentMatch, ...localState }));
   //     setLocalState(null);
   //   }
   // }, [localState]);
-
-  function customSort(a, b) {
-    // betStatus 1 should come before betStatus 2
-    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
-    const aStatus = betStatusOrder[a?.betStatus] || 0;
-    const bStatus = betStatusOrder[b?.betStatus] || 0;
-    return aStatus - bStatus;
-  }
 
   // useEffect(() => {
   //   if (socket && socket.connected && currentMatch !== null) {
@@ -459,7 +484,6 @@ const MatchScreen = () => {
   const handleSession = useCallback(
     (val) => {
       if (state?.marketId === marketId) {
-        // add this check ignore duplicate rates
         var newVal = val?.map((v) => ({
           bet_condition: v?.RunnerName,
           betStatus: 0,
@@ -470,50 +494,44 @@ const MatchScreen = () => {
           suspended: v?.GameStatus,
           selectionId: v?.SelectionId,
         }));
+        setLiveSessionData(newVal);
 
-        setCurrentMatch((currentMatch) => {
-          if (currentMatch?.bettings?.length > 0) {
-            const data = currentMatch?.bettings?.map((betting) => {
-              var selectedData = newVal?.find(
-                (data) => data?.selectionId === betting?.selectionId
-              );
-              if (selectedData !== undefined) {
-                return {
-                  ...betting,
-                  bet_condition: selectedData?.bet_condition,
-                  no_rate: selectedData?.no_rate,
-                  yes_rate: selectedData?.yes_rate,
-                  rate_percent: selectedData?.rate_percent,
-                  suspended: selectedData?.suspended,
-                  selectionId: selectedData?.selectionId,
-                };
-              }
-              return betting;
-            });
-
-            const filteredNewVal =
-              newVal?.filter((newData) => {
-                const hasMatch = currentMatch?.bettings.some(
-                  (betting) => betting.selectionId === newData.selectionId
-                );
-                // Return false to exclude newData from filteredNewVal if a match is found
-                return !hasMatch;
-              }) || [];
-
-            // Merge the filteredNewVal with the currentMatch bettings array
-
-            const newBody ={ ...currentMatch, bettings: [...data, ...filteredNewVal] };
-          
-            return newBody
+        setLocalSessionExpertOdds((prev) => {
+          if (!prev) {
+            return prev; // Return early if prev is null or undefined
           }
 
-          const newBody={ ...currentMatch, bettings: newVal }; 
-          return newBody 
+          const updatedOdds = prev.map((betting) => {
+            const selectedData = newVal.find(
+              (nv) => nv?.selectionId === betting.selectionId
+            );
+
+            if (selectedData) {
+              return {
+                ...betting,
+                bet_condition: selectedData.bet_condition,
+                no_rate: selectedData.no_rate,
+                yes_rate: selectedData.yes_rate,
+                rate_percent: selectedData.rate_percent,
+                suspended: selectedData.suspended,
+                selectionId: selectedData.selectionId,
+              };
+            }
+            return {
+              ...betting,
+              no_rate: "0",
+              yes_rate: "0",
+              suspended: "",
+            }; // Keep unchanged if no match found
+          });
+          dispatch(setSessionExpertOdds(updatedOdds));
+          return updatedOdds;
         });
       }
     },
     [state?.marketId, marketId]
   );
+  const debouncedHandleSession = _.debounce(handleSession, 300);
 
   useEffect(() => {
     if (socketMicro?.connected && state?.marketId && marketId) {
@@ -527,7 +545,7 @@ const MatchScreen = () => {
       });
       activateLiveMatchMarket(state?.marketId);
       sessionStorage.setItem("marketId", state?.marketId);
-      socketMicro.on(`session${state?.marketId}`, handleSession);
+      socketMicro.on(`session${state?.marketId}`, debouncedHandleSession);
       socketMicro.on(`matchOdds${state?.marketId}`, handleMatchOdds);
       socketMicro.on(`bookmaker${state?.marketId}`, handleBookmaker);
     }
@@ -552,27 +570,14 @@ const MatchScreen = () => {
     }
   }
 
-  const arrayObject =
-    currentMatch?.bettings?.length > 0
-      ? currentMatch?.bettings?.filter(
-          (element) => element?.sessionBet && element?.id
-        )
-      : [];
+  const arrayObject = localSessionExpertOdds?.filter(
+    (element) => element?.sessionBet && element?.id
+  );
 
-  // console.log(arrayObject,"arrayObject")
-
-  const sessionData =
-  currentMatch?.bettings?.length > 0
-    && [...currentMatch?.bettings].filter(
-        (e) =>
-          e?.sessionBet && !e?.id && e?.betStatus === 0
-      )
-      useEffect(()=>{
-        if(sessionData.length>0)
-        {  setMatchLiveSession(sessionData)}
-      },[sessionData])
-      console.log(matchLiveSession,"sessionData")
-
+  const idx = localSessionExpertOdds?.map(
+    (v) => v?.selectionId && v?.selectionId
+  );
+  console.log(idx, "dx");
   return (
     <Background>
       {/* <CHeader /> */}
@@ -629,10 +634,10 @@ const MatchScreen = () => {
                       liveOnly={true}
                       stopAllHide={true}
                       hideResult={true}
-                      sessionData={
-                        matchLiveSession
-                      }
-                      setMatchLiveSession={setMatchLiveSession}
+                      sessionData={liveSessionData?.filter(
+                        (v) => !idx?.includes(v?.selectionId)
+                      )}
+                      setMatchLiveSession={setLiveSessionData}
                       setLocalState={setLocalState}
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
@@ -666,8 +671,8 @@ const MatchScreen = () => {
                       setLocalState={setLocalState}
                       setCurrentMatch={setCurrentMatch}
                       currentMatch={currentMatch}
+                      setLocalSessionExpertOdds={setLocalSessionExpertOdds}
                     />
-
                   </Box>
                 </Box>
               )}

@@ -27,6 +27,8 @@ import {
   setSessionBetId,
   setAllEventSession,
   setSessionProfitLoss,
+  setSelectedSession,
+  setSessionResultRefresh,
 } from "../newStore/reducers/expertMatchDetails";
 import { removeCurrentUser } from "../newStore/reducers/currentUser";
 import { logout } from "../newStore/reducers/auth";
@@ -58,6 +60,8 @@ const IndiaPakLive = React.forwardRef(
       allEventSession,
       currentOdd,
       sessionProfitLoss,
+      selectedSession,
+      sessionResultRefresh,
     } = useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
@@ -104,13 +108,29 @@ const IndiaPakLive = React.forwardRef(
     }));
 
     useEffect(() => {
-      if (sessionProfitLoss) {
+      if (sessionProfitLoss || [0, null]?.includes(sessionProfitLoss)) {
+        // getSessionResult(match?.id);
         setProLoss(sessionProfitLoss);
       }
+      // if ([0, null]?.includes(sessionProfitLoss)) {
+      //   getSessionResult(match?.id);
+      // }
       if (currentOdd) {
         setCurrentOdds(currentOdd);
       }
-    }, [sessionProfitLoss,currentOdd]);
+      if (
+        selectedSession?.betStatus === 2 &&
+        sessionBetId === selectedSession?.id
+      ) {
+        setIsDisable(true);
+      }
+    }, [
+      sessionProfitLoss,
+      sessionBetId,
+      currentOdd,
+      match?.id,
+      selectedSession,
+    ]);
 
     // useEffect(() => {
     //   if (socket && socket.connected) {
@@ -298,15 +318,19 @@ const IndiaPakLive = React.forwardRef(
         });
       }
       setIsCreateSession(createSession);
-      getSessionResult(match?.id);
-
     }, [sessionEvent?.id]);
 
-    const getSessionResult = async (match_id) => {
-      setProLoss(null);
-      dispatch(setSessionAllBet([]));
-      let response = await axios.get(`/game-match/getResults/${match_id}`);
+    useEffect(() => {
+      if (match?.id && sessionResultRefresh) {
+        getSessionResult(match?.id);
+      }
+    }, [match?.id, sessionResultRefresh]);
 
+    const getSessionResult = async (match_id) => {
+      // setProLoss(null);
+      dispatch(setSessionResults([]));
+      let response = await axios.get(`/game-match/getResults/${match_id}`);
+      dispatch(setSessionResultRefresh(false));
       dispatch(setSessionResults(response?.data?.data || []));
     };
 
@@ -332,6 +356,7 @@ const IndiaPakLive = React.forwardRef(
       // alert(JSON.stringify(payload))
       try {
         let response = await axios.post(`/betting/addBetting`, payload);
+        dispatch(setSelectedSession(response?.data?.data));
         setBetId(response?.data?.data?.id);
         setCheckBetId(true);
         setIsCreateSession(false);
@@ -350,11 +375,21 @@ const IndiaPakLive = React.forwardRef(
 
     async function getManuallBookMaker(id) {
       try {
+        dispatch(setSelectedSession(null));
         let response = await axios.get(`/betting/getById/${id}`);
         let data = response?.data?.data[0];
+
         let [firstValue, secondValue] = data.rate_percent
           ? data.rate_percent.split("-")
           : "";
+
+        dispatch(setSelectedSession(data));
+        if (data?.betStatus === 2) {
+          setIsDisable(true);
+        } else {
+          setIsDisable(false);
+        }
+
         setDetail({
           ...Detail,
           no_rate: data.no_rate,
@@ -522,7 +557,7 @@ const IndiaPakLive = React.forwardRef(
                             undeclare={true}
                             onClick={() => {
                               setVisible1(false);
-                              // getSessionResult(match?.id);
+                              getSessionResult(match?.id);
                             }}
                             onClickCancel={() => {
                               setVisible1(false);
@@ -633,6 +668,7 @@ const IndiaPakLive = React.forwardRef(
                               isNoResult: true,
                             }}
                             onClick={() => {
+                              setIsDisable(true);
                               setVisible2(false);
                               getSessionResult(match?.id);
                             }}
@@ -1509,7 +1545,7 @@ const RunsAmountBox = ({
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
                 const getColor = (value) => {
-                  if (value > 1) {
+                  if (value >= 1) {
                     return "#10DC61";
                   } else if (value === v?.profit_loss && value > 1) {
                     return "#F8C851";

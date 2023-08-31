@@ -343,88 +343,87 @@ export default function Login(props) {
       }
 
       // if (recaptchaToken === null) {
-        // setLoading(false);
-        // setLoginError("reCaptcha required ");
+      //   setLoading(false);
+      //   setLoginError("reCaptcha required ");
       //   return false;
-      // } 
-      else {
-        setLoading(true);
-        let { data } = await axios.post(`/auth/login`, {
-          username: loginDetail[1].val,
-          password: loginDetail[2].val,
-          loginType: location.pathname.split("/")[1],
-          // recaptchaToken: recaptchaToken,
-        });
+      // } else {
+      setLoading(true);
+      let { data } = await axios.post(`/auth/login`, {
+        username: loginDetail[1].val,
+        password: loginDetail[2].val,
+        loginType: location.pathname.split("/")[1],
+        recaptchaToken: null,
+      });
 
-        if (props.allowedRole.includes(data.data.role)) {
-          let foundRoles = await axios.get(`/role`);
-          let roles = foundRoles.data;
-          dispatch(setAllRoles(roles));
-          let roleDetail = roles.find(findThisRole);
-          function findThisRole(role) {
-            return role.id === data.data.roleId;
-          }
-          if (roleDetail) data.data.role = roleDetail;
-          if (data.message === "User login successfully.") {
-            removeSocket();
-            setLoading(false);
-            dispatch(
-              setUpdatedTransPasswords(data.data.isTransPasswordCreated)
-            );
-
-            dispatch(signIn(data.data));
-            setRole(data.data.access_token);
-            if (
-              ["master", "admin", "superMaster", "superAdmin"].includes(
-                data.data.role.roleName
-              )
-            ) {
-              if (data?.data?.forceChangePassword) {
-                setIsChangePassword(true);
-              } else {
-                setGlobalStore((prev) => ({
-                  ...prev,
-                  adminWT: data.data.access_token,
-                }));
-                localStorage.setItem("JWTadmin", data.data.access_token);
-                handleNavigate("/admin/list_of_clients", "admin");
-              }
-            } else if (
-              ["fairGameWallet", "fairGameAdmin"].includes(
-                data.data.role.roleName
-              )
-            ) {
-              if (data?.data?.forceChangePassword) {
-                setIsChangePassword(true);
-              } else {
-                setGlobalStore((prev) => ({
-                  ...prev,
-                  walletWT: data.data.access_token,
-                }));
-                localStorage.setItem("JWTwallet", data.data.access_token);
-                handleNavigate("/wallet/list_of_clients", "wallet");
-              }
-            } else if (["expert"].includes(data.data.role.roleName)) {
-              if (data?.data?.forceChangePassword) {
-                setIsChangePassword(true);
-              } else {
-                setGlobalStore((prev) => ({
-                  ...prev,
-                  expertJWT: data.data.access_token,
-                }));
-                localStorage.setItem("JWTexpert", data.data.access_token);
-                handleNavigate("/expert/match", "expert");
-              }
-            } else {
-              setLoginError("Incorrect username and password!");
-              setLoading(false);
-            }
-          }
-        } else {
-          setLoginError("Incorrect username and password!");
-          setLoading(false);
+      if (props.allowedRole.includes(data.data.role)) {
+        let foundRoles = await axios.get(`/role`);
+        let roles = foundRoles.data;
+        dispatch(setAllRoles(roles));
+        let roleDetail = roles.find(findThisRole);
+        function findThisRole(role) {
+          return role.id === data.data.roleId;
         }
+        if (roleDetail) data.data.role = roleDetail;
+        if (data.message === "User login successfully.") {
+          removeSocket();
+          setLoading(false);
+          dispatch(
+            setUpdatedTransPasswords(data.data.isTransPasswordCreated)
+          );
+
+          dispatch(signIn(data.data));
+          setRole(data.data.access_token);
+          if (
+            ["master", "admin", "superMaster", "superAdmin"].includes(
+              data.data.role.roleName
+            )
+          ) {
+            if (data?.data?.forceChangePassword) {
+              setIsChangePassword(true);
+            } else {
+              setGlobalStore((prev) => ({
+                ...prev,
+                adminWT: data.data.access_token,
+              }));
+              localStorage.setItem("JWTadmin", data.data.access_token);
+              handleNavigate("/admin/list_of_clients", "admin");
+            }
+          } else if (
+            ["fairGameWallet", "fairGameAdmin"].includes(
+              data.data.role.roleName
+            )
+          ) {
+            if (data?.data?.forceChangePassword) {
+              setIsChangePassword(true);
+            } else {
+              setGlobalStore((prev) => ({
+                ...prev,
+                walletWT: data.data.access_token,
+              }));
+              localStorage.setItem("JWTwallet", data.data.access_token);
+              handleNavigate("/wallet/list_of_clients", "wallet");
+            }
+          } else if (["expert"].includes(data.data.role.roleName)) {
+            if (data?.data?.forceChangePassword) {
+              setIsChangePassword(true);
+            } else {
+              setGlobalStore((prev) => ({
+                ...prev,
+                expertJWT: data.data.access_token,
+              }));
+              localStorage.setItem("JWTexpert", data.data.access_token);
+              handleNavigate("/expert/match", "expert");
+            }
+          } else {
+            setLoginError("Incorrect username and password!");
+            setLoading(false);
+          }
+        }
+      } else {
+        setLoginError("Incorrect username and password!");
+        setLoading(false);
       }
+      // }
     } catch (e) {
       console.log(e?.message);
       setLoading(false);
@@ -706,7 +705,7 @@ export default function Login(props) {
               </Box>
             </form>
           ) : (
-            <ChangePassword changePassword={changePassword} setRecaptchToken={setRecaptchToken}/>
+            <ChangePassword changePassword={changePassword} setRecaptchToken={setRecaptchToken} />
           )}
         </Box>
       </Box>

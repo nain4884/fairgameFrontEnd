@@ -8,7 +8,7 @@ import { setRole } from "../../newStore";
 const ChangeButtonValue = ({ selected, visible }) => {
   const { axios } = setRole();
   const [id, setId] = useState("");
-  const [loader,setLoader]=useState(false)
+  const [loader, setLoader] = useState(false);
   const [valueLabel, setValueLabel] = useState([
     { lable: "", value: "" },
     { lable: "", value: "" },
@@ -19,7 +19,6 @@ const ChangeButtonValue = ({ selected, visible }) => {
     { lable: "", value: "" },
     { lable: "", value: "" },
   ]);
-
 
   useEffect(() => {
     getButtonList();
@@ -38,7 +37,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
   const getButtonList = async () => {
     try {
       const { data } = await axios.get("/users/getButtonValues");
-      setId(data?.data?.id)
+      setId(data?.data?.id);
       const initialData = data?.data?.buttons; // Replace this with your initial data
       const jsonObject = JSON.parse(initialData);
       // Update the state using the spread operator to keep the existing objects
@@ -59,7 +58,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
   };
 
   const setButtonList = async () => {
-    setLoader(true)
+    setLoader(true);
     const convertedData = valueLabel.reduce((result, item) => {
       if (item.value) {
         result[item.lable] = item.value;
@@ -68,16 +67,16 @@ const ChangeButtonValue = ({ selected, visible }) => {
     }, {});
     var payload = {
       buttons: convertedData,
-      id: id
+      id: id,
     };
     try {
       const { data } = await axios.post("/users/setButtonValues", payload);
       toast.success(data?.message);
-      setLoader(false)
+      setLoader(false);
     } catch (e) {
       toast.error(e.response.data.message);
       console.log("error", e.message);
-      setLoader(false)
+      setLoader(false);
     }
   };
 
@@ -101,103 +100,117 @@ const ChangeButtonValue = ({ selected, visible }) => {
 
   return (
     <Box>
-      {visible ? <>
-
-        <Box
-          sx={{
-            width: { mobile: "96vw", laptop: "35vw", tablet: "35vw" },
-            minWidth: { laptop: "450px", tablet: "450px", mobile: "0px" },
-            marginTop: "10px",
-            marginX: { mobile: "2vw", laptop: "1vw" },
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { laptop: "18px", mobile: "20px" },
-              fontWeight: "700",
-            }}
-          >
-            Change Button Values
-          </Typography>
+      {visible ? (
+        <>
           <Box
             sx={{
-              width: "100%",
-              minHeight: "200px",
-              background: "#F8C851",
-              borderRadius: "5px",
-              padding: "20px",
+              width: { mobile: "96vw", laptop: "35vw", tablet: "35vw" },
+              minWidth: { laptop: "450px", tablet: "450px", mobile: "0px" },
               marginTop: "10px",
+              marginX: { mobile: "2vw", laptop: "1vw" },
             }}
           >
-            <Box sx={{ display: "flex" }}>
-              <Box sx={{ flex: 1 }}>
-                <Typography
-                  sx={{
-                    color: "#202020",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Price Lable
-                </Typography>
-                {valueLabel.map((item, index) => {
-                  return <LabelButton key={index} value={item} index={index} onChange={handleLabelChange} />
-                }
-                )}
-              </Box>
-              <Box sx={{ flex: 1, marginLeft: "10px" }}>
-                <Typography
-                  sx={{
-                    color: "#202020",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                  }}
-                >
-                  Price Value
-                </Typography>
-                {valueLabel.map((item, index) => {
-                  return <ValButton key={index} value={item} index={index} onChange={handleLabelChange} />;
-                })}
-              </Box>
-            </Box>
-            <Box
-              onClick={setButtonList}
+            <Typography
               sx={{
-                height: "50px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                mx: "auto",
-                marginTop: "50px",
-                marginBottom: "40px",
-                width: "80%",
-                background: "#0B4F26",
-                borderRadius: "5px",
-                cursor:"pointer"
+                color: "white",
+                fontSize: { laptop: "18px", mobile: "20px" },
+                fontWeight: "700",
               }}
             >
-              <Typography
-                sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
-                color={"white"}
+              Change Button Values
+            </Typography>
+            <Box
+              sx={{
+                width: "100%",
+                minHeight: "200px",
+                background: "#F8C851",
+                borderRadius: "5px",
+                padding: "20px",
+                marginTop: "10px",
+              }}
+            >
+              <Box sx={{ display: "flex" }}>
+                <Box sx={{ flex: 1 }}>
+                  <Typography
+                    sx={{
+                      color: "#202020",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Price Lable
+                  </Typography>
+                  {valueLabel.map((item, index) => {
+                    return (
+                      <LabelButton
+                        key={index}
+                        value={item}
+                        index={index}
+                        onChange={handleLabelChange}
+                      />
+                    );
+                  })}
+                </Box>
+                <Box sx={{ flex: 1, marginLeft: "10px" }}>
+                  <Typography
+                    sx={{
+                      color: "#202020",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                    }}
+                  >
+                    Price Value
+                  </Typography>
+                  {valueLabel.map((item, index) => {
+                    return (
+                      <ValButton
+                        key={index}
+                        value={item}
+                        index={index}
+                        onChange={handleLabelChange}
+                      />
+                    );
+                  })}
+                </Box>
+              </Box>
+              <Box
+                onClick={setButtonList}
+                sx={{
+                  height: "50px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mx: "auto",
+                  marginTop: "50px",
+                  marginBottom: "40px",
+                  width: "80%",
+                  background: "#0B4F26",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
               >
-               {loader ? (
-        <CircularProgress
-          sx={{
-            color: "#FFF",
-          }}
-          size={20}
-          thickness={4}
-          value={60}
-        />
-      ) : (
-        "Update"
-      )} 
-              </Typography>
+                <Typography
+                  sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
+                  color={"white"}
+                >
+                  {loader ? (
+                    <CircularProgress
+                      sx={{
+                        color: "#FFF",
+                      }}
+                      size={20}
+                      thickness={4}
+                      value={60}
+                    />
+                  ) : (
+                    "Update"
+                  )}
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </> :
+        </>
+      ) : (
         <Background>
           <Box
             sx={{
@@ -237,16 +250,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
                   >
                     Price Lable
                   </Typography>
-                  {[
-                    "0",
-                    "1",
-                    "2",
-                    "3",
-                    "4",
-                    "5",
-                    "6",
-                    "7",
-                  ].map((x, idx) => {
+                  {["0", "1", "2", "3", "4", "5", "6", "7"].map((x, idx) => {
                     return <ValButton key={idx} value={x} />;
                   })}
                 </Box>
@@ -283,7 +287,6 @@ const ChangeButtonValue = ({ selected, visible }) => {
                 </Box>
               </Box>
               <Box
-
                 sx={{
                   height: "50px",
                   display: "flex",
@@ -306,7 +309,8 @@ const ChangeButtonValue = ({ selected, visible }) => {
               </Box>
             </Box>
           </Box>
-        </Background>}
+        </Background>
+      )}
     </Box>
   );
 };
@@ -331,6 +335,11 @@ const LabelButton = ({ value, index, onChange }) => {
         value={value.lable}
         onChange={handleChange}
         variant="outlined"
+        onKeyDown={(event) => {
+          if (event.code === "Space") {
+            event.preventDefault();
+          }
+        }}
         size="small"
         fullWidth
         sx={{ fontSize: "14px", fontWeight: "600" }}
@@ -366,7 +375,23 @@ const ValButton = ({ value, index, onChange }) => {
         size="small"
         fullWidth
         sx={{ fontSize: "14px", fontWeight: "600" }}
+        onKeyDown={(event) => {
+          if (
+            event.code === "Space" ||
+            (!(event.key >= "0" && event.key <= "9") &&
+              event.key !== "Backspace" &&
+              event.code !== "ArrowUp" &&
+              event.code !== "ArrowDown" &&
+              event.code !== "Enter" &&
+              event.code !== "Tab" && // Allow Tab key
+              event.code !== "ArrowRight" && // Allow Right Arrow key
+              event.code !== "ArrowLeft")
+          ) {
+            event.preventDefault();
+          }
+        }}
         inputProps={{
+          min: "0",
           onBlur: (event) => event.target.blur(),
         }}
       />

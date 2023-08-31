@@ -76,14 +76,17 @@ const SearchInput = ({
           placeholder={"Search"}
           value={search?.userName}
           onChange={(e) => {
+         
             setSearch(e.target?.value);
             setOpen(true);
           }}
           InputProps={{
             disableUnderline: true,
+            textTransform:"lowercase",
             style: { fontSize: "11px", fontWeight: "500" },
           }}
           sx={{
+            textTransform:"lowercase",
             borderColor: "white",
             display: "flex",
             flex: 1,

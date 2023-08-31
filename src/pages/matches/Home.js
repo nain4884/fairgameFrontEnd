@@ -8,6 +8,7 @@ import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { SocketContext } from "../../context/socketContext";
 import { setRole } from "../../newStore";
 import { useEffect } from "react";
+import _ from "lodash";
 import {
   removeCurrentUser,
   setCurrentUser,
@@ -22,6 +23,9 @@ import {
   setAllBetRate,
   setManualBookmaker,
   setSessionExposure,
+  setSelectedSessionBettings,
+  setQuickSession,
+  setQuickBookmaker,
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -48,7 +52,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const theme = useTheme();
   const [fastAmount, setFastAmount] = useState({
     bookMaker: 0,
-    mannualBookMaker: 0,
+    // mannualBookMaker: 0,
+    QuickBookmaker0: 0,
+    QuickBookmaker1: 0,
+    QuickBookmaker2: 0,
     sessionOdds: 0,
   });
 
@@ -60,6 +67,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     selectedMatch,
     manualBookmaker,
     sessionOffline,
+    selectedSessionBettings,
+    quickSession,
   } = useSelector((state) => state?.matchDetails);
   const [IObets, setIObtes] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
@@ -77,6 +86,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
   const [manualBookmakerData, setManualBookmakerData] = useState([]);
+  const [LSelectedSessionBetting, setLSelectedSessionBetting] = useState([]);
+  const [localQuickSession, setLocalQuickSession] = useState([]);
   const [liveScoreData, setLiveScoreData] = useState();
   const [isHandled, setIsHandled] = useState(false);
   const checkMctchId = useSelector(
@@ -123,10 +134,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   }, []);
 
   useEffect(() => {
-    if (allBetRates.length > 0) {
+    if (allBetRates) {
       setIObtes(allBetRates);
     }
-    if (allSessionBets.length > 0) {
+    if (allSessionBets) {
       setSessionBets(allSessionBets);
     }
 
@@ -134,7 +145,13 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       setLocalSessionExposure(sessionExposure);
     }
     if (selectedMatch) {
-      setCurrentMatch(selectedMatch);
+      setCurrentMatch((prev) => {
+        const updatedMatch = { ...prev, ...selectedMatch };
+        if (JSON.stringify(updatedMatch) !== JSON.stringify(prev)) {
+          return updatedMatch;
+        }
+        return prev;
+      });
     }
 
     if (manualBookmaker) {
@@ -143,6 +160,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     if (sessionOffline) {
       setSessionOff(sessionOffline);
     }
+
+    if (selectedSessionBettings) {
+      setLSelectedSessionBetting(selectedSessionBettings);
+    }
+
+    if (quickSession) {
+      setLocalQuickSession(quickSession);
+    }
   }, [
     allBetRates,
     allSessionBets,
@@ -150,6 +175,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     selectedMatch,
     manualBookmaker,
     sessionOffline,
+    selectedSessionBettings,
+    quickSession,
   ]);
 
   // useEffect(() => {
@@ -947,6 +974,56 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   //   }
   // }, [socket]);
 
+  const handleSession = (val) => {
+    if (val !== null && matchId === checkMctchId) {
+      var newVal = val?.map((v) => ({
+        bet_condition: v?.RunnerName,
+        betStatus: 0,
+        sessionBet: true,
+        no_rate: v?.LayPrice1,
+        yes_rate: v?.BackPrice1,
+        rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
+        suspended: v?.GameStatus,
+        selectionId: v?.SelectionId,
+      }));
+      setCurrentMatch((currentMatch) => {
+        if (currentMatch?.bettings?.length > 0) {
+          setLSelectedSessionBetting((prev) => {
+            const data = prev?.map((betting) => {
+              const selectedData = newVal?.find(
+                (nv) => nv?.selectionId === betting?.selectionId
+              );
+
+              return {
+                ...betting,
+                bet_condition:
+                  selectedData?.bet_condition || betting?.bet_condition,
+                no_rate:
+                  selectedData?.no_rate !== undefined
+                    ? selectedData.no_rate
+                    : 0,
+                yes_rate:
+                  selectedData?.yes_rate !== undefined
+                    ? selectedData.yes_rate
+                    : 0,
+                rate_percent:
+                  selectedData?.rate_percent || betting?.rate_percent,
+                suspended: selectedData?.suspended || "",
+                selectionId: selectedData?.selectionId || betting?.selectionId,
+              };
+            });
+
+            dispatch(setSelectedSessionBettings(data));
+            return data;
+          });
+        }
+        return currentMatch;
+      });
+    }
+  };
+
+  const debounceSession = _.debounce(handleSession, 300);
+
   useEffect(() => {
     try {
       if (socketMicro && socketMicro.connected && marketId) {
@@ -991,51 +1068,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           setSessionLock(false);
         });
 
-        socketMicro.on(`session${marketId}`, (val) => {
-          if (val !== null && matchId === checkMctchId) {
-            var newVal = val?.map((v) => ({
-              bet_condition: v?.RunnerName,
-              betStatus: 0,
-              sessionBet: true,
-              no_rate: v?.LayPrice1,
-              yes_rate: v?.BackPrice1,
-              rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
-              suspended: v?.GameStatus,
-              selectionId: v?.SelectionId,
-            }));
-
-            setCurrentMatch((currentMatch) => {
-              if (currentMatch?.bettings?.length > 0) {
-                const data = currentMatch?.bettings?.map((betting) => {
-                  var selectedData = newVal?.find(
-                    (data) => data?.selectionId === betting?.selectionId
-                  );
-                  if (selectedData !== undefined) {
-                    return {
-                      ...betting,
-                      bet_condition: selectedData?.bet_condition,
-                      no_rate: selectedData?.no_rate,
-                      yes_rate: selectedData?.yes_rate,
-                      rate_percent: selectedData?.rate_percent,
-                      suspended: selectedData?.suspended,
-                      selectionId: selectedData?.selectionId,
-                    };
-                  }
-                  return betting;
-                });
-
-                // Merge the filteredNewVal with the currentMatch bettings array
-
-                return {
-                  ...currentMatch,
-                  bettings: data,
-                };
-              }
-              return currentMatch;
-            });
-          }
-          // dispatch(setSessionOddsLive(body));
-        });
+        socketMicro.on(`session${marketId}`, debounceSession);
         socketMicro.on(`matchOdds${marketId}`, (val) => {
           // matchodds Market live and stop disable condition
           if (val !== null) {
@@ -1104,16 +1137,28 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     try {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
       const allrates = data?.data?.data?.filter((b) =>
-        ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(b?.marketType)
+        [
+          "MATCH ODDS",
+          "BOOKMAKER",
+          "MANUAL BOOKMAKER",
+          "QuickBookmaker0",
+          "QuickBookmaker1",
+          "QuickBookmaker2",
+        ].includes(b?.marketType)
       );
       setIObtes(allrates);
 
       dispatch(setAllBetRate(allrates));
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-            b?.marketType
-          )
+          ![
+            "MATCH ODDS",
+            "BOOKMAKER",
+            "MANUAL BOOKMAKER",
+            "QuickBookmaker0",
+            "QuickBookmaker1",
+            "QuickBookmaker2",
+          ].includes(b?.marketType)
       );
       setSessionBets(bets);
       dispatch(setAllSessionBets(bets));
@@ -1146,7 +1191,23 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       let matchOddsDataTemp = response.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
-      setManualBookmakerData(matchOddsDataTemp);
+      let sessionDataTemp = response.data?.bettings?.filter(
+        (element) => element.sessionBet && element.selectionId !== null
+      );
+
+      let quickSessionDataTemp = response.data?.bettings?.filter(
+        (element) => element.sessionBet && element.selectionId === null
+      );
+
+      const updateLiveSesssion = sessionDataTemp?.map((v) => ({
+        ...v,
+        yes_rate: 0,
+        no_rate: 0,
+        suspended: "",
+      }));
+      dispatch(setQuickBookmaker(response?.data?.bookmakers));
+      dispatch(setQuickSession(quickSessionDataTemp));
+      dispatch(setSelectedSessionBettings(updateLiveSesssion));
       dispatch(setManualBookmaker(matchOddsDataTemp));
       dispatch(setSessionExposure(response?.data?.sessionExposure));
       setLocalSessionExposure(response?.data?.sessionExposure);
@@ -1233,10 +1294,10 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       if (document.visibilityState === "visible") {
         // User returned to the web browser
         if (matchId) {
-          if (socket && socket.connected) {
-            socket.emit("checkConnection");
-          }
-          getThisMatch(matchId);
+          // if (socket && socket.connected) {
+          //   socket.emit("checkConnection");
+          // }
+          // getThisMatch(matchId);
         }
       }
     };
@@ -1316,6 +1377,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               />
               <div style={{ width: "100%" }}>
                 <MatchOdds
+                  localQuickSession={localQuickSession}
+                  LSelectedSessionBetting={LSelectedSessionBetting}
                   sessionBets={sessionBets}
                   setFastAmount={setFastAmount}
                   fastAmount={fastAmount}
@@ -1328,7 +1391,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   sessionOffline={sessionOff}
                   // dataProfit={currentMatchProfit}
                   allBetsData={sessionBets}
-                  manualBookmakerData={manualBookmakerData}
+                  // manualBookmakerData={manualBookmakerData}
                   handleRateChange={handleRateChange}
                 />
               </div>
@@ -1358,6 +1421,9 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                           "MATCH ODDS",
                           "BOOKMAKER",
                           "MANUAL BOOKMAKER",
+                          "QuickBookmaker0",
+                          "QuickBookmaker1",
+                          "QuickBookmaker2",
                         ]?.includes(v.marketType)
                       )}
                       count={
@@ -1366,6 +1432,9 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                             "MATCH ODDS",
                             "BOOKMAKER",
                             "MANUAL BOOKMAKER",
+                            "QuickBookmaker0",
+                            "QuickBookmaker1",
+                            "QuickBookmaker2",
                           ]?.includes(v.marketType)
                         ).length
                       }
@@ -1394,7 +1463,9 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 }}
               >
                 <MatchOdds
+                  localQuickSession={localQuickSession}
                   sessionBets={sessionBets}
+                  LSelectedSessionBetting={LSelectedSessionBetting}
                   sessionExposer={localSessionExposer}
                   setFastAmount={setFastAmount}
                   fastAmount={fastAmount}
@@ -1405,7 +1476,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   data={currentMatch}
                   // dataProfit={currentMatchProfit}
                   allBetsData={allSessionBets}
-                  manualBookmakerData={manualBookmakerData}
+                  // manualBookmakerData={manualBookmakerData}
                   handleRateChange={handleRateChange}
                 />
               </Box>
@@ -1418,15 +1489,25 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
                 <AllRateSeperate
                   allBetsData={IObets?.filter((v) =>
-                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
-                      v.marketType
-                    )
+                    [
+                      "MATCH ODDS",
+                      "BOOKMAKER",
+                      "MANUAL BOOKMAKER",
+                      "QuickBookmaker0",
+                      "QuickBookmaker1",
+                      "QuickBookmaker2",
+                    ]?.includes(v.marketType)
                   )}
                   count={
                     IObets?.filter((v) =>
-                      ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"]?.includes(
-                        v.marketType
-                      )
+                      [
+                        "MATCH ODDS",
+                        "BOOKMAKER",
+                        "MANUAL BOOKMAKER",
+                        "QuickBookmaker0",
+                        "QuickBookmaker1",
+                        "QuickBookmaker2",
+                      ]?.includes(v.marketType)
                     ).length
                   }
                   mark

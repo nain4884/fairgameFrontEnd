@@ -13,6 +13,7 @@ import { setRole } from "../../../../newStore";
 import Divider from "../../../../components/helper/Divider";
 import { setSelectedMatch } from "../../../../newStore/reducers/matchDetails";
 import { useDispatch, useSelector } from "react-redux";
+import { memo } from "react";
 
 const SessionMarketBoxLive = ({
   index,
@@ -78,17 +79,17 @@ const SessionMarketBoxLive = ({
       if (data?.data?.id) {
         if (liveOnly) {
           setLive(true);
-          setMatchSessionData((prev) =>
-            prev?.filter((v) => v?.selectionId !== data?.data?.selectionId)
-          );
-        } else {
-          setMatchSessionData((prev) => {
-            const exists = prev.some((v) => v?.id === data?.data?.id);
-            if (!exists) {
-              return [...prev, data.data];
-            }
-            return prev;
-          });
+        //   setMatchSessionData((prev) =>
+        //     prev?.filter((v) => v?.selectionId !== data?.data?.selectionId)
+        //   );
+        // } else {
+        //   setMatchSessionData((prev) => {
+        //     const exists = prev.some((v) => v?.id === data?.data?.id);
+        //     if (!exists) {
+        //       return [...prev, data.data];
+        //     }
+        //     return prev;
+        //   });
         }
 
         setMatchLiveSession((prev) =>
@@ -296,4 +297,4 @@ const SessionMarketBoxLive = ({
   );
 };
 
-export default SessionMarketBoxLive;
+export default memo(SessionMarketBoxLive);

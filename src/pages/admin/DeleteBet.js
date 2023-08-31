@@ -779,10 +779,12 @@ const DeleteBet = ({}) => {
             setCurrentMatch((currentMatch) => {
               if (currentMatch?.bettings?.length > 0) {
                 const data = currentMatch?.bettings?.map((betting) => {
-                  var selectedData = newVal?.find(
-                    (data) => data?.selectionId === betting?.selectionId
-                  );
-                  if (selectedData !== undefined) {
+                  var selectedData =
+                    newVal?.length > 0 &&
+                    newVal?.find(
+                      (data) => data?.selectionId === betting?.selectionId
+                    );
+                  if (selectedData && selectedData !== undefined) {
                     return {
                       ...betting,
                       bet_condition: selectedData?.bet_condition,
@@ -791,6 +793,17 @@ const DeleteBet = ({}) => {
                       rate_percent: selectedData?.rate_percent,
                       suspended: selectedData?.suspended,
                       selectionId: selectedData?.selectionId,
+                    };
+                  }
+                  if (betting?.selectionId !== null) {
+                    return {
+                      ...betting,
+                      bet_condition: betting?.bet_condition,
+                      no_rate: 0,
+                      yes_rate: 0,
+                      rate_percent: betting?.rate_percent,
+                      suspended: "",
+                      selectionId: betting?.selectionId,
                     };
                   }
                   return betting;
@@ -867,17 +880,20 @@ const DeleteBet = ({}) => {
         (element) => element.sessionBet === false
       );
 
-
       setManualBookmakerData(matchOddsDataTemp);
-      dispatch(setManualBookmaker(matchOddsDataTemp))
-      const newBody ={
+      dispatch(setManualBookmaker(matchOddsDataTemp));
+      const newBody = {
         ...response.data,
-      }
-      setCurrentMatch(newBody);
+      };
+      // setCurrentMatch(newBody);
+      const updatedNewData = newBody?.bettings?.map((v) => {
+        if (v?.selectionId) {
+          return { ...v, yes_rate: 0, no_rate: 0, suspended: "" };
+        }
+        return v;
+      });
 
-      dispatch(
-        setSelectedMatch(newBody)
-      );
+      dispatch(setSelectedMatch({ ...newBody, bettings: updatedNewData }));
 
       setSessionExposure(response.data.sessionExposure);
       setMarketId(response.data.marketId);
@@ -904,14 +920,14 @@ const DeleteBet = ({}) => {
       dispatch(setAllBetRate(data?.data?.data));
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER", "QuickBookmaker0",
+          "QuickBookmaker1",
+          "QuickBookmaker2",].includes(
             b?.marketType
           )
       );
       setSessionBets(bets || []);
-      dispatch(setAllSessionBets(bets))
-
-      
+      dispatch(setAllSessionBets(bets));
     } catch (e) {
       console.log(e);
     }
@@ -1016,16 +1032,34 @@ const DeleteBet = ({}) => {
                       : []
                   }
                   typeOfBet={"Match Odds"}
+                  minBet={currentMatch?.betfair_match_min_bet}
+                  maxBet={currentMatch?.betfair_match_max_bet}
                 />
               )}
-              {currentMatch?.manualBookMakerActive && (
+              {currentMatch?.bookmakers?.map((bookmaker) => {
+                if (bookmaker.betStatus === 1) {
+                  return (
+                    <Odds
+                      currentMatch={currentMatch}
+                      session={"manualBookMaker"}
+                      data={bookmaker}
+                      minBet={bookmaker?.min_bet || 0}
+                      maxBet={bookmaker?.max_bet || 0}
+                      typeOfBet={bookmaker?.marketName}
+                      matchOddsData={bookmaker}
+                    />
+                  );
+                }
+              })}
+              {/* {currentMatch?.manualBookMakerActive && (
                 <Odds
                   currentMatch={currentMatch}
                   data={currentMatch}
                   manualBookmakerData={manualBookmakerData}
                   typeOfBet={"Quick Bookmaker"}
                 />
-              )}
+              )} */}
+
               {currentMatch?.apiBookMakerActive && (
                 <BookMarketer
                   currentMatch={currentMatch}

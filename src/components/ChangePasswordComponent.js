@@ -11,7 +11,7 @@ export const ChangePasswordComponent = ({
   passLoader,
   width,
   changePassword,
-  setRecaptchToken
+  setRecaptchToken,
 }) => {
   const [passwordDetail, setPasswordDetail] = useState({
     2: { field: "oldPassword", val: "" },
@@ -26,7 +26,7 @@ export const ChangePasswordComponent = ({
 
   const handleChange = (e) => {
     e.preventDefault();
-    setRecaptchToken(null)
+    // setRecaptchToken(null)
     if (
       !error[3].val &&
       !error[4].val &&
@@ -35,15 +35,11 @@ export const ChangePasswordComponent = ({
       passwordDetail[4].val !== ""
     ) {
       changePassword(passwordDetail);
-      
     }
   };
   const handleEnterKeyPress = (e) => {
     if (e.key === "Enter") {
-      // Check if the Enter key is pressed
-      e.preventDefault();
-      // loginButtonRef.current.click(); // Trigger the click event on the CustomButton
-      handleChange();
+      handleChange(e);
     }
   };
   return (

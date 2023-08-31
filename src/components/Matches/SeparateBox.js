@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import { Lock } from "../../assets";
 
 const SeparateBox = ({ color, empty, value, value2, lock }) => {
@@ -49,4 +49,4 @@ const SeparateBox = ({ color, empty, value, value2, lock }) => {
   );
 };
 
-export default SeparateBox;
+export default memo(SeparateBox);

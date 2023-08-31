@@ -5,6 +5,7 @@ import { Popover } from "react-tiny-popover";
 import { useDispatch } from 'react-redux';
 import { setColorValue } from '../../store/selectedColorBox';
 import { Lock } from '../../assets';
+import { memo } from 'react';
 
 const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, session, back }) => {
   const theme = useTheme();
@@ -73,4 +74,4 @@ const SeperateBox = ({ color, empty, value, width, currentMatch, value2, lock, s
 };
 
 
-export default SeperateBox
+export default memo(SeperateBox)

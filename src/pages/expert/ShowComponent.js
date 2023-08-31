@@ -3,19 +3,23 @@ import { StyledImage } from "../../components";
 import { DatePicker } from "rsuite";
 
 const containerStyles = {
+  width: "100%",
   marginTop: "10px",
 };
 const titleStyles = {
+  width: "100%",
   color: "#202020",
   fontSize: { mobile: "12px", laptop: "12px" },
   fontWeight: "600",
   marginLeft: "0px",
 };
 const imputStyle = {
+  width: "100%",
   fontSize: { mobile: "14px", laptop: "14px", fontWeight: "600" },
   textTransform: "capitalize",
 };
 const inputContainerStyle = {
+  width: "100%",
   borderRadius: "5px",
   border: "1px solid #DEDEDE",
 };
@@ -31,6 +35,7 @@ const ShowComponent = ({
   DetailError,
   title,
   type,
+  disable,
 }) => {
   switch (InputValType) {
     case "InputVal":
@@ -38,6 +43,7 @@ const ShowComponent = ({
         <Box
           sx={[
             {
+              width: "100%",
               height: "40px",
               borderRadius: "5px",
               px: "10px",
@@ -50,6 +56,9 @@ const ShowComponent = ({
           ]}
         >
           <Input
+            fullWidth
+            inputProps={{ min: 0 }}
+            disabled={disable}
             placeholder={`${value}`}
             value={DetailError.Detail[place]?.val}
             containerStyle={containerStyles}
@@ -60,17 +69,31 @@ const ShowComponent = ({
             required={required}
             type={type}
             error={DetailError?.Error[place]?.val}
+            onKeyDown={(e) => {
+              // Check string not start with symbols
+              if (/^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
             onChange={(e) => {
-              DetailError.setDetail({
-                ...DetailError.Detail,
-                [place]: {
-                  ...DetailError.Detail[place],
-                  val:
-                    type === "Number"
-                      ? parseInt(e.target.value)
-                      : e.target.value.toString(),
-                },
-              });
+              if (type === "Number") {
+                DetailError.setDetail({
+                  ...DetailError.Detail,
+                  [place]: {
+                    ...DetailError.Detail[place],
+                    val: parseInt(e.target.value),
+                  },
+                });
+              } else {
+                DetailError.setDetail({
+                  ...DetailError.Detail,
+                  [place]: {
+                    ...DetailError.Detail[place],
+                    val: e.target.value.toString(),
+                  },
+                });
+              }
+
               DetailError.setError({
                 ...DetailError.error,
                 [place]: {
@@ -120,7 +143,9 @@ const ShowComponent = ({
             valueContainerStyle,
           ]}
         >
-          Upload
+          {![undefined, ""].includes(DetailError.Detail[place].val)
+            ? DetailError.Detail[place].val?.name
+            : "Upload"}
           <input
             hidden
             accept="image/*"
@@ -138,6 +163,7 @@ const ShowComponent = ({
     case "DatePickerVal":
       return (
         <DatePicker
+          disabled={disable}
           style={{ width: "100%" }}
           format="yyyy-MM-dd HH:mm"
           value={DetailError?.Detail[2]?.val} //(DetailError?.Detail[2]?.val)
@@ -168,9 +194,7 @@ const ShowComponent = ({
             valueContainerStyle,
           ]}
         >
-          <Typography sx={[valueStyle, imputStyle]}>
-            {value}
-          </Typography>
+          <Typography sx={[valueStyle, imputStyle]}>{value}</Typography>
           {icon && (
             <StyledImage src={icon} sx={{ height: "12px", width: "12px" }} />
           )}

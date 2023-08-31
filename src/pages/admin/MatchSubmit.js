@@ -53,7 +53,7 @@ const MatchSubmit = ({}) => {
 
   useEffect(() => {
     if (multiSelectedMatches) {
-      console.log(multiSelectedMatches,"multiSelectedMatches")
+      console.log(multiSelectedMatches, "multiSelectedMatches");
       setMatchData(multiSelectedMatches);
     }
 
@@ -688,10 +688,12 @@ const MatchSubmit = ({}) => {
                     if (item?.marketId === marketIds[i]) {
                       // Merge the filteredNewVal with the currentMatch bettings array
                       const data = item.bettings?.map((betting) => {
-                        var selectedData = newVal?.find(
-                          (data) => data?.selectionId === betting?.selectionId
-                        );
-                        if (selectedData !== undefined) {
+                        var selectedData =
+                          newVal?.length > 0 &&
+                          newVal?.find(
+                            (data) => data?.selectionId === betting?.selectionId
+                          );
+                        if (selectedData && selectedData !== undefined) {
                           return {
                             ...betting,
                             bet_condition: selectedData?.bet_condition,
@@ -700,6 +702,17 @@ const MatchSubmit = ({}) => {
                             rate_percent: selectedData?.rate_percent,
                             suspended: selectedData?.suspended,
                             selectionId: selectedData?.selectionId,
+                          };
+                        }
+                        if (betting?.selectionId !== null) {
+                          return {
+                            ...betting,
+                            bet_condition: betting?.bet_condition,
+                            no_rate: 0,
+                            yes_rate: 0,
+                            rate_percent: betting?.rate_percent,
+                            suspended: "",
+                            selectionId: betting?.selectionId,
                           };
                         }
                         return betting;
@@ -843,8 +856,21 @@ const MatchSubmit = ({}) => {
         `/game-match/multipleMatchDetail`,
         payload
       );
-      setMatchData(response?.data?.data);
-      dispatch(setMultiSelectedMatch(response?.data?.data));
+      // setMatchData(response?.data?.data);
+      const newData = response?.data?.data || [];
+      const updatedData = newData?.map((element) => {
+        if (element?.bettings !== null) {
+          const updatedBettings = element?.bettings?.map((bet) => {
+            if (bet?.selectionId !== null) {
+              return { ...bet, yes_rate: 0, no_rate: 0, suspended: "" };
+            }
+            return bet;
+          });
+          return { ...element, bettings: updatedBettings };
+        }
+        return element;
+      });
+      dispatch(setMultiSelectedMatch(updatedData));
       setTimeout(() => {
         setLoading(false);
       }, 1000);
@@ -866,7 +892,9 @@ const MatchSubmit = ({}) => {
       dispatch(setAllBetRate(data?.data?.data));
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER", "QuickBookmaker0",
+          "QuickBookmaker1",
+          "QuickBookmaker2",].includes(
             b?.marketType
           )
       );
@@ -921,6 +949,7 @@ const MatchSubmit = ({}) => {
                     let sessionBetsData = sessionBets?.filter(
                       (element) => element?.match_id === item?.id
                     );
+
                     return (
                       <>
                         {index === 0 ? (
@@ -964,14 +993,44 @@ const MatchSubmit = ({}) => {
                                     typeOfBet={"Match Odds"}
                                   />
                                 )}
-                                {item?.manualBookMakerActive && (
+                                {item?.bookmakers?.map((bookmaker) => {
+                                  if (bookmaker.betStatus === 1) {
+                                    return (
+                                      <Odds
+                                        currentMatch={item}
+                                        session={"manualBookMaker"}
+                                        data={bookmaker}
+                                        minBet={bookmaker?.min_bet || 0}
+                                        maxBet={bookmaker?.max_bet || 0}
+                                        typeOfBet={bookmaker?.marketName}
+                                        matchOddsData={bookmaker}
+                                      />
+                                    );
+                                  }
+                                })}
+                                {/* {item?.manualBookMakerActive && (
                                   <Odds
                                     currentMatch={item}
                                     data={item}
                                     manualBookmakerData={matchOddsDataTemp}
                                     typeOfBet={"Quick Bookmaker"}
                                   />
-                                )}
+                                )} */}
+                                {item?.bookmakers?.map((bookmaker) => {
+                                  if (bookmaker.betStatus === 1) {
+                                    return (
+                                      <Odds
+                                        currentMatch={item}
+                                        session={"manualBookMaker"}
+                                        data={bookmaker}
+                                        minBet={bookmaker?.min_bet || 0}
+                                        maxBet={bookmaker?.max_bet || 0}
+                                        typeOfBet={bookmaker?.marketName}
+                                        matchOddsData={bookmaker}
+                                      />
+                                    );
+                                  }
+                                })}
                                 {item?.apiBookMakerActive && (
                                   <BookMarketer
                                     currentMatch={item}
@@ -1082,7 +1141,7 @@ const MatchSubmit = ({}) => {
                                 typeOfBet={"Match Odds"}
                               />
                             )}
-                            {item?.manualBookMakerActive && (
+                            {/* {item?.manualBookMakerActive && (
                               <Odds
                                 currentMatch={item}
                                 data={item}
@@ -1090,7 +1149,22 @@ const MatchSubmit = ({}) => {
                                 typeOfBet={"Quick Bookmaker"}
                                 // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
                               />
-                            )}
+                            )} */}
+                            {item?.bookmakers?.map((bookmaker) => {
+                              if (bookmaker.betStatus === 1) {
+                                return (
+                                  <Odds
+                                    currentMatch={item}
+                                    session={"manualBookMaker"}
+                                    data={bookmaker}
+                                    minBet={bookmaker?.min_bet || 0}
+                                    maxBet={bookmaker?.max_bet || 0}
+                                    typeOfBet={bookmaker?.marketName}
+                                    matchOddsData={bookmaker}
+                                  />
+                                );
+                              }
+                            })}
                             {item?.apiBookMakerActive && (
                               <BookMarketer
                                 currentMatch={item}
@@ -1175,6 +1249,7 @@ const MatchSubmit = ({}) => {
                     let sessionBetsData = sessionBets?.filter(
                       (element) => element?.match_id === item?.id
                     );
+                    console.log("sdsdfsf", item, index);
                     return (
                       <Box
                         key={item?.id}
@@ -1207,14 +1282,30 @@ const MatchSubmit = ({}) => {
                             typeOfBet={"Match Odds"}
                           />
                         )}
-                        {item?.manualBookMakerActive && (
+                        {/* {item?.manualBookMakerActive && (
                           <Odds
                             currentMatch={item}
                             data={item}
                             manualBookmakerData={matchOddsDataTemp}
                             typeOfBet={"Quick Bookmaker"}
                           />
-                        )}
+                        )} */}
+                        {item?.bookmakers?.map((bookmaker) => {
+                          if (bookmaker.betStatus === 1) {
+                            return (
+                              <Odds
+                                currentMatch={item}
+                                session={"manualBookMaker"}
+                                data={bookmaker}
+                                minBet={bookmaker?.min_bet || 0}
+                                maxBet={bookmaker?.max_bet || 0}
+                                typeOfBet={bookmaker?.marketName}
+                                matchOddsData={bookmaker}
+                              />
+                            );
+                          }
+                        })}
+
                         {item?.apiBookMakerActive && (
                           <BookMarketer
                             currentMatch={item}

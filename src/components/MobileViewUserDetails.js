@@ -26,6 +26,23 @@ const MobileViewUserDetails = ({
   titleBackgroundColor,
 }) => {
   const { currentUser } = useSelector((state) => state?.currentUser);
+  const handleKeyDown = (event) => {
+    if (
+      event.code === "Space" ||
+      (!(event.key >= "0" && event.key <= "9") &&
+        event.key !== "Backspace" &&
+        event.code !== "ArrowUp" &&
+        event.code !== "ArrowDown" &&
+        event.code !== "Enter" &&
+        event.code !== "Tab" && // Allow Tab key
+        event.code !== "ArrowRight" && // Allow Right Arrow key
+        event.code !== "ArrowLeft" &&
+        event.code !== "Delete" &&
+        event.key !== ".")
+    ) {
+      event.preventDefault();
+    }
+  };
   return (
     <Box
       sx={[
@@ -87,7 +104,7 @@ const MobileViewUserDetails = ({
         </Box>
         <Button
           sx={{ color: "", fontSize: "30px", color: "#fff" }}
-          onClick={setSelected}
+          onClick={onCancel}
         >
           &times;
         </Button>
@@ -454,10 +471,13 @@ const MobileViewUserDetails = ({
             <TextField
               required={true}
               value={amount}
+              onKeyDown={handleKeyDown}
               onChange={handleChange}
               variant="standard"
               InputProps={{
                 placeholder: "Type Amount...",
+                autoComplete: 'new-password', 
+                inputProps: { min: "0" , step: "0.01" },
                 disableUnderline: true,
                 style: {
                   fontSize: "15px",
@@ -599,6 +619,7 @@ const MobileViewUserDetails = ({
               InputProps={{
                 placeholder: "",
                 disableUnderline: true,
+                autoComplete: 'new-password', 
                 type: !showPass ? "password" : "text",
                 style: {
                   fontSize: "13px",

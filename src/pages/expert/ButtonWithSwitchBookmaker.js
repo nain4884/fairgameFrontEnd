@@ -1,29 +1,22 @@
 import { Box, Switch, Typography, styled } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const ButtonWithSwitch = ({
+const ButtonWithSwitchBookmaker = ({
   title,
   containerStyle,
   titleStyle,
-  updateMatchStatus,
-  setUpdateMatchStatus,
-  place,
+  updateBookmaker,
+  setUpdateBookmaker,
+  id,
   notSwitch,
 }) => {
   const [background, setBackground] = useState("#0B4F26");
 
   const [checked, setChecked] = useState(
-    notSwitch ? false : updateMatchStatus[place]?.val
+    notSwitch
+      ? false
+      : updateBookmaker.find((item) => id === item.id)?.betStatus
   );
-
-  useEffect(() => {
-    if (notSwitch) {
-      setChecked(false);
-    } else {
-      setChecked(updateMatchStatus[place]?.val);
-    }
-  }, [notSwitch, place, updateMatchStatus]);
-
   useEffect(() => {
     if (checked) {
       setBackground("#0B4F26");
@@ -31,6 +24,16 @@ const ButtonWithSwitch = ({
       setBackground("#FF4D4D");
     }
   }, [checked]);
+
+  useEffect(() => {
+    if (updateBookmaker) {
+      setChecked(
+        notSwitch
+          ? false
+          : updateBookmaker.find((item) => id === item.id)?.betStatus
+      );
+    }
+  }, [updateBookmaker, notSwitch]);
 
   const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 50,
@@ -99,11 +102,6 @@ const ButtonWithSwitch = ({
             fontSize: "13px",
             marginLeft: "1vw",
             lineHeight: "14px",
-            overflow: "hidden",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            lineClamp: 2,
           },
           titleStyle,
         ]}
@@ -115,7 +113,7 @@ const ButtonWithSwitch = ({
           sx={{
             marginRight: "10px",
             color: notSwitch
-              ? Number(updateMatchStatus) > 0
+              ? Number(updateBookmaker) > 0
                 ? "#46E080"
                 : "#FF4D4D"
               : "white",
@@ -125,19 +123,21 @@ const ButtonWithSwitch = ({
             lineHeight: "14px",
           }}
         >
-          {updateMatchStatus}
+          {updateBookmaker}
         </Typography>
       ) : (
         <MaterialUISwitch
           checked={checked}
           onChange={(e) => {
             setChecked(!checked);
-            setUpdateMatchStatus({
-              ...updateMatchStatus,
-              [place]: {
-                ...updateMatchStatus[place],
-                val: !checked,
-              },
+            setUpdateBookmaker((pre) => {
+              const body = pre?.map((val) => {
+                if (val.id === id) {
+                  return { ...val, betStatus: !checked };
+                }
+                return val;
+              });
+              return body;
             });
           }}
         />
@@ -146,4 +146,4 @@ const ButtonWithSwitch = ({
   );
 };
 
-export default ButtonWithSwitch;
+export default ButtonWithSwitchBookmaker;

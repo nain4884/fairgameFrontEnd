@@ -16,6 +16,7 @@ const LabelValueComponent = ({
     notShowSub,
     titleSize,
     headColor,
+    disable
   }) => {
     return (
       <Box className="beFairMatch" sx={[containerStyle]}>
@@ -30,6 +31,7 @@ const LabelValueComponent = ({
         </Typography>
         {!notShowSub && (
           <ShowComponent
+          disable={disable}
             title={title}
             required={required}
             InputValType={InputValType}

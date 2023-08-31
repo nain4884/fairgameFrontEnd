@@ -109,6 +109,8 @@ const ProfitLoss = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const { profitLossReportPage } = useSelector((state) => state?.adminMatches);
+  const [visible, setVisible] = useState(false);
+  const [sessionBets, setSessionBet] = useState([]);
   useEffect(() => {
     // alert(1)
     getEventList();
@@ -124,14 +126,18 @@ const ProfitLoss = () => {
   // }, [profitLossReportPage]);
 
   async function getEventList() {
+    setEventData([])
+    setBetData([]);
+    setSessionBet([])
+    setSessionBetData([]);
     var payload = {};
     if (search?.id) {
       payload.userId = search?.id;
     }
-    if (startDate && search?.id) {
+    if (startDate) {
       payload.from = moment(startDate).format("YYYY-MM-DD");
     }
-    if (endDate && search?.id) {
+    if (endDate) {
       payload.to = moment(endDate).format("YYYY-MM-DD");
     }
     let { axios } = setRole();
@@ -139,20 +145,17 @@ const ProfitLoss = () => {
       const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
       // console.log(data.data[0], 'datadatadatadata')
       setEventData(data?.data);
-   
     } catch (e) {
-   
       console.log(e);
     }
   }
 
-
-
-  const handleReport = (eventType,pageno) => {
-    getReport(eventType,pageno);
+  const handleReport = (eventType, pageno) => {
+    setReportData([])
+    getReport(eventType, pageno);
   };
 
-  const getReport = async (eventType,pageno) => {
+  const getReport = async (eventType, pageno) => {
     var payload = {
       gameType: eventType,
       skip: pageno,
@@ -161,10 +164,10 @@ const ProfitLoss = () => {
     if (search?.id) {
       payload.userId = search?.id;
     }
-    if (startDate && search?.id) {
+    if (startDate) {
       payload.from = moment(startDate).format("YYYY-MM-DD");
     }
-    if (endDate && search?.id) {
+    if (endDate) {
       payload.to = moment(endDate).format("YYYY-MM-DD");
     }
     let { axios } = setRole();
@@ -180,34 +183,51 @@ const ProfitLoss = () => {
     }
   };
 
-  const handleBet = (id) => {
+  const handleBet = (value) => {
     // alert(id)
-    getBets(id);
+    getBets(value);
   };
 
-  async function getBets(id) {
+  async function getBets(value) {
     setBetData([]);
+    if(value?.type === "session_bet" && value?.betId===''){
+      setSessionBet([])
+    }
     setSessionBetData([]);
     var payload = {
-      match_id: id,
+      [value?.type === "session_bet" && value?.betId===''  ? "matchId" : "match_id"]: value?.match_id,
+      gameType: value?.eventType,
     };
+    if (value?.betId !== "") {
+      payload.bet_id = value?.betId;
+      payload.sessionBet = true;
+    }
     if (search?.id) {
       payload.userId = search?.id;
     }
-    if (startDate && search?.id) {
+    if (startDate) {
       payload.from = moment(startDate).format("YYYY-MM-DD");
     }
-    if (endDate && search?.id) {
+    if (endDate) {
       payload.to = moment(endDate).format("YYYY-MM-DD");
     }
     let { axios } = setRole();
     try {
       const { data } = await axios.post(
-        `/betting/getResultBetProfitLoss`,
+        `/betting/${
+          value?.type === "session_bet" && value?.betId==='' 
+            ? "sessionProfitLossReport"
+            : "getResultBetProfitLoss"
+        }`,
         payload
       );
       setBetData(data?.data?.filter((v) => v.sessionBet !== true));
-      setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
+      if (value?.type === "session_bet" && value.betId === "") {
+      
+        setSessionBet(data?.data[0]);
+      } else {
+        setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
+      }
     } catch (e) {
       console.log(e);
     }
@@ -230,6 +250,8 @@ const ProfitLoss = () => {
 
   const handleClick = (e) => {
     try {
+      setVisible(false);
+
       getEventList();
     } catch (e) {
       console.log("error", e?.message);
@@ -252,6 +274,7 @@ const ProfitLoss = () => {
       ) : (
         <>
           <YellowHeaderProfitLoss
+            title="Profit/Loss"
             onClick={handleClick}
             clientData={allClinets}
             setSearch={setSearch}
@@ -277,10 +300,13 @@ const ProfitLoss = () => {
           <Box sx={{ width: "99%", marginX: ".5%" }}>
             <ProfitLossComponent
               // loading
+              visible={visible}
+              setVisible={setVisible}
               eventData={eventData}
               reportData={reportData}
               betData={betData}
               sessionBetData={sessionBetData}
+              sessionBets={sessionBets}
               handleReport={handleReport}
               handleBet={handleBet}
               currentPage={currentPage}

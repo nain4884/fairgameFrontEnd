@@ -18,7 +18,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
     let { axios } = setRole();
     try {
       const { data } = await axios.get(
-        `/game-match/getCommisionReport/${id}?&pageNo=${currentPage}&pageLimit=${pageLimit}`
+        `/fair-game-wallet/getCommisionReport/${id}?&pageNo=${currentPage}&pageLimit=${pageLimit}`
       );
       setData(data?.data);
       setPageCount(
@@ -64,6 +64,25 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           borderBottom: "2px solid white",
         }}
       >
+        <Box
+          sx={{
+            width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "35px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px", lineHeight: 1 },
+            }}
+          >
+            User Name
+          </Typography>
+        </Box>
         <Box
           sx={{
             width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
@@ -218,6 +237,25 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             Commission Amount
           </Typography>
         </Box>
+        <Box
+          sx={{
+            width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
+            display: "flex",
+            paddingLeft: "10px",
+            alignItems: "center",
+            height: "35px",
+            borderRight: "2px solid white",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { mobile: "10px", laptop: "12px", tablet: "12px", lineHeight: 1 },
+            }}
+          >
+           My Commission
+          </Typography>
+        </Box>
       </Box>
     );
   };
@@ -235,12 +273,14 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
           : element?.match_id?.title,
       commissionAmount: element.ComissionAmount,
       commissionType: element.ComissionType,
-      betType: element?.bet_place_id?.bet_type,
-      stack: element?.ComissionType === "match total" ? (element?.ComissionAmount * 100) / element?.userId?.matchComission : element?.bet_place_id?.amount,
-      odds: element?.bet_place_id?.odds,
+      betType: element?.bet_type,
+      stack: element?.ComissionType === "match total" ? (element?.ComissionAmount * 100) / element?.userData?.matchComission : element?.amount,
+      odds: element?.odds,
       isActive: element?.isActive,
-      teamBet: element?.bet_place_id?.team_bet,
-      createAt: element?.createAt,
+      teamBet: element?.team_bet,
+      createAt: element?.updateAt,
+      myCommission:element?.myCommission,
+      userName:element?.userData?.userName
     };
     const [elementToUDM, setElementToUDM] = useState(prevElement);
 
@@ -249,7 +289,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
     }
     useEffect(() => {
       checkIfElementUpdated(prevElement);
-    }, [element.ComissionType]);
+    }, [element?.ComissionType]);
     return (
       <>
         {!elementToUDM?.isActive && (
@@ -278,6 +318,37 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             containerStyle,
           ]}
         >
+         <Box
+            sx={[
+              {
+                width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
+                display: "flex",
+                paddingX: "10px",
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: "45px",
+                borderRight: "2px solid white",
+              },
+              fContainerStyle,
+            ]}
+          >
+            <Typography
+              sx={[
+                {
+                  fontSize: { mobile: "10px", laptop: "12px", tablet: "10px" },
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  textTransform: "capitalize",
+                  color:
+                    ["#319E5B", "#303030"].includes(
+                      fContainerStyle.background
+                    ) && "white",
+                }, fTextStyle
+              ]}
+            >
+              {elementToUDM?.userName}
+            </Typography>
+          </Box>
           <Box
             sx={[
               {
@@ -340,7 +411,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                 },
               ]}
             >
-              {elementToUDM.title}
+              {elementToUDM?.title}
             </Typography>
           </Box>
           <Box
@@ -357,7 +428,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
               sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
             >
               {/* {elementToUDM.teamBet} */}
-              {elementToUDM.createAt
+              {elementToUDM?.createAt
                 ? `${moment(elementToUDM?.createAt).format("L")}  ${moment(
                   elementToUDM?.createAt
                 ).format("LT")}`
@@ -377,7 +448,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             <Typography
               sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
             >
-              {elementToUDM.teamBet}
+              {elementToUDM?.teamBet}
             </Typography>
           </Box>
           <Box
@@ -393,7 +464,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             <Typography
               sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
             >
-              {elementToUDM.odds}
+              {elementToUDM?.odds}
             </Typography>
           </Box>
           <Box
@@ -410,7 +481,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             <Typography
               sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
             >
-              {elementToUDM.betType}
+              {elementToUDM?.betType}
             </Typography>
           </Box>
           <Box
@@ -426,7 +497,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             <Typography
               sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
             >
-              {elementToUDM.stack}
+              {elementToUDM?.stack}
             </Typography>
           </Box>
 
@@ -443,7 +514,23 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
             <Typography
               sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
             >
-              {elementToUDM.commissionAmount}
+              {elementToUDM?.commissionAmount}
+            </Typography>
+          </Box>
+           <Box
+            sx={{
+              width: { laptop: "12.5%", tablet: "12.5%", mobile: "12.5%" },
+              display: "flex",
+              paddingLeft: "10px",
+              alignItems: "center",
+              height: "45px",
+              borderRight: "2px solid white",
+            }}
+          >
+            <Typography
+              sx={[{ fontSize: "12px", fontWeight: "600" }, fTextStyle]}
+            >
+              {elementToUDM?.myCommission}
             </Typography>
           </Box>
         </Box>

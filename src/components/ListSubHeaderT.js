@@ -139,7 +139,7 @@ const ListSubHeaderT = ({ data }) => {
         <Typography
           sx={{ color: "white", fontSize: "12px", fontWeight: "600" }}
         >
-          {data?.totalCommissions}
+          {data?.totalcomission}
         </Typography>
       </Box>
       <Box

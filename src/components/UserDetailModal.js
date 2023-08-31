@@ -78,6 +78,47 @@ export default function UserDetailModal({
     setShowUserModal(false);
   }
 
+  const handleKeyDown = (event) => {
+    if ((event.ctrlKey || event.metaKey) && (event.key === "c" || event.key === "v")) {
+      return;
+    }
+  
+    if (
+      event.code === "Space" ||
+      (!(event.key >= "0" && event.key <= "9") &&
+        event.key !== "Backspace" &&
+        event.code !== "ArrowUp" &&
+        event.code !== "ArrowDown" &&
+        event.code !== "Enter" &&
+        event.code !== "Tab" && // Allow Tab key
+        event.code !== "ArrowRight" && // Allow Right Arrow key
+        event.code !== "ArrowLeft" &&
+        event.code !== "Delete")
+    ) {
+      event.preventDefault();
+    }
+  };
+
+  const handleKeyDown1 = (event) => {
+    if ((event.ctrlKey || event.metaKey) && (event.key === "c" || event.key === "v")) {
+      return;
+    }
+    if (
+      event.code === "Space" ||
+      (!(event.key >= "0" && event.key <= "9") &&
+        event.key !== "Backspace" &&
+        event.code !== "ArrowUp" &&
+        event.code !== "ArrowDown" &&
+        event.code !== "Enter" &&
+        event.code !== "Tab" && // Allow Tab key
+        event.code !== "ArrowRight" && // Allow Right Arrow key
+        event.code !== "ArrowLeft" &&
+        event.code !== "Delete" &&
+        event.key !== ".")
+    ) {
+      event.preventDefault();
+    }
+  };
   const classes = {
     mainBox: {
       background: backgroundColor ?? "#F8C851",
@@ -150,6 +191,7 @@ export default function UserDetailModal({
         >
           {selected == 0 && (
             <DepositComponent
+              handleKeyDown={handleKeyDown1}
               element={element}
               backgroundColor={backgroundColor}
               selected={selected == 0}
@@ -175,6 +217,7 @@ export default function UserDetailModal({
           )}
           {selected == 1 && (
             <WithDrawComponent
+              handleKeyDown={handleKeyDown1}
               element={element}
               selected={selected == 1}
               setSelected={(e) => {
@@ -200,6 +243,7 @@ export default function UserDetailModal({
           )}
           {selected == 2 && (
             <NewCreditComponent
+              handleKeyDown={handleKeyDown}
               selected={selected == 2}
               setSelected={(e) => {
                 setSelected(null);
@@ -221,6 +265,7 @@ export default function UserDetailModal({
           )}
           {selected == 5 && (
             <SetExposureComponent
+              handleKeyDown={handleKeyDown}
               selected={selected == 5}
               setSelected={(e) => {
                 setSelected(null);
@@ -275,6 +320,7 @@ export default function UserDetailModal({
               elementToUDM={elementToUDM}
               setElementToUDM={setElementToUDM}
               showDialogModal={showDialogModal}
+              getListOfUser={getListOfUser}
             />
           )}
         </Box>
@@ -327,7 +373,7 @@ export default function UserDetailModal({
             title={"Withdraw"}
             labelStyle={{}}
           />
-          {elementToUDM?.role?.roleName === "user" && (
+          {elementToUDM?.role?.roleName !== "expert" && (
             <BoxButton
               color={"#0B4F26"}
               onClick={(e) => {
@@ -484,7 +530,7 @@ export default function UserDetailModal({
                     .catch(({ bool, message }) => {
                       toast.error(message);
                       setDeleteModal(false);
-                      showDialogModal(true, false, message);
+                      // showDialogModal(true, false, message);
                     });
                 }}
               >
@@ -520,7 +566,7 @@ export default function UserDetailModal({
                     .catch(({ bool, message }) => {
                       toast.error(message);
                       setConfirmDeleteModal(false);
-                      showDialogModal(true, false, message);
+                      // showDialogModal(true, false, message);
                     });
                 }}
               >
@@ -609,6 +655,7 @@ const BoxButtonWithSwitch = ({
 };
 
 const DepositComponent = ({
+  handleKeyDown,
   setShowUserModal,
   backgroundColor,
   userModal,
@@ -723,14 +770,13 @@ const DepositComponent = ({
             setLoading(false);
             showDialogModal(true, true, message);
             setDepositObj(defaultDepositObj);
-
             setSelected(e);
           })
           .catch(({ bool, message }) => {
             toast.error(message);
-            setSelected(e);
+            // setSelected(e);
             setLoading(false);
-            showDialogModal(true, false, message);
+            // showDialogModal(true, false, message);
 
             setElementToUDM({
               ...elementToUDM,
@@ -744,7 +790,7 @@ const DepositComponent = ({
       }
     } catch (e) {
       console.log(e?.message);
-      setSelected(e);
+      // setSelected(e);
       setElementToUDM({
         ...elementToUDM,
         profit_loss: prevElement.profit_loss,
@@ -799,9 +845,11 @@ const DepositComponent = ({
                   ...elementToUDM,
                   profit_loss: prevElement.profit_loss,
                   balance: prevElement.balance,
-                  available_balance: prevElement.available_balances,
+                  available_balance: prevElement.available_balance,
+                  percent_profit_loss: prevElement.percent_profit_loss,
                 });
                 setShowUserModal(false);
+                setSelected(e);
               }}
               // onSubmit={handle}
               initialBalance={initialBalance}
@@ -889,12 +937,15 @@ const DepositComponent = ({
                 >
                   <TextField
                     required={true}
+                    onKeyDown={handleKeyDown}
                     value={depositObj.amount}
                     onChange={handleChange}
                     variant="standard"
                     InputProps={{
                       placeholder: "Type Amount...",
                       disableUnderline: true,
+                      autoComplete: 'new-password', 
+                      inputProps: { min: "0", step: "0.01" },
                       style: {
                         fontSize: "15px",
                         height: "45px",
@@ -1038,6 +1089,7 @@ const DepositComponent = ({
                     InputProps={{
                       placeholder: "",
                       disableUnderline: true,
+                      autoComplete: 'new-password', 
                       type: !showPass ? "password" : "text",
                       style: {
                         fontSize: "13px",
@@ -1199,7 +1251,7 @@ const DepositComponent = ({
                             setSelected(e);
                             toast.error(message);
                             setLoading(false);
-                            showDialogModal(true, false, message);
+                            // showDialogModal(true, false, message);
                           });
                       }
                     } catch (e) {
@@ -1255,6 +1307,7 @@ const DepositComponent = ({
 };
 
 const WithDrawComponent = ({
+  handleKeyDown,
   setShowUserModal,
   backgroundColor,
   userModal,
@@ -1372,13 +1425,13 @@ const WithDrawComponent = ({
               available_balance: prevElement.available_balance,
             });
             toast.error(message);
-            setSelected(e);
+            // setSelected(e);
             setLoading(false);
-            showDialogModal(true, false, message);
+            // showDialogModal(true, false, message);
           });
       }
     } catch (e) {
-      setSelected(e);
+      // setSelected(e);
       setLoading(false);
       setElementToUDM({
         ...elementToUDM,
@@ -1434,7 +1487,9 @@ const WithDrawComponent = ({
                   profit_loss: prevElement.profit_loss,
                   balance: prevElement.balance,
                   available_balance: prevElement.available_balance,
+                  percent_profit_loss: prevElement.percent_profit_loss,
                 });
+                setSelected(e);
                 setShowUserModal(false);
               }}
               // onSubmit={}
@@ -1526,12 +1581,15 @@ const WithDrawComponent = ({
                 >
                   <TextField
                     required={true}
+                    onKeyDown={handleKeyDown}
                     value={withDrawObj.amount}
                     onChange={handleChange}
                     variant="standard"
                     InputProps={{
                       placeholder: "Type Amount...",
                       disableUnderline: true,
+                      autoComplete: 'new-password', 
+                      inputProps: { min: "0", step: "0.01" },
                       style: {
                         fontSize: "15px",
                         height: "45px",
@@ -1678,6 +1736,7 @@ const WithDrawComponent = ({
                     InputProps={{
                       placeholder: "",
                       disableUnderline: true,
+                      autoComplete: 'new-password', 
                       type: !showPass ? "password" : "text",
                       style: {
                         fontSize: "13px",
@@ -1838,9 +1897,9 @@ const WithDrawComponent = ({
                               percent_profit_loss:
                                 prevElement.percent_profit_loss,
                             });
-                            setSelected(e);
+                            // setSelected(e);
                             setLoading(false);
-                            showDialogModal(true, false, message);
+                            // showDialogModal(true, false, message);
                           });
                       }
                     } catch (e) {
@@ -1851,7 +1910,7 @@ const WithDrawComponent = ({
                         available_balance: prevElement.available_balance,
                         percent_profit_loss: prevElement.percent_profit_loss,
                       });
-                      setSelected(e);
+                      // setSelected(e);
                       setLoading(false);
                       console.log(e.message);
                     }
@@ -1898,6 +1957,7 @@ const WithDrawComponent = ({
 };
 
 const NewCreditComponent = ({
+  handleKeyDown,
   setShowUserModal,
   backgroundColor,
   userModal,
@@ -1938,7 +1998,35 @@ const NewCreditComponent = ({
     }
     return percent_profit_loss.toFixed(2);
   };
+
+  const handleSubmit=(e)=>{
+  e.preventDefault()
+      try {
+        if (!loading) {
+          setLoading(true);
+          UpdateAvailableBalance(newCreditObj)
+            .then(({ bool, message }) => {
+              toast.success(message);
+              getListOfUser();
+              showDialogModal(true, true, message);
+              setLoading(false);
+              setSelected(e);
+            })
+            .catch(({ bool, message }) => {
+              toast.error(message);
+              // showDialogModal(true, false, message);
+              setLoading(false);
+            });
+        }
+      } catch (e) {
+        setLoading(false);
+        console.log(e.message);
+      }
+    
+  }
   return (
+    <form onSubmit={handleSubmit}>
+
     <Box
       sx={{
         display: "flex",
@@ -1948,7 +2036,7 @@ const NewCreditComponent = ({
         gap: 2,
       }}
     >
-      <Box sx={{ width: "100%" }}>
+     <Box sx={{ width: "100%" }}>
         <Box
           sx={{
             display: "flex",
@@ -1977,7 +2065,9 @@ const NewCreditComponent = ({
             }}
           >
             <TextField
+              required={true}
               value={newCreditObj.amount}
+              onKeyDown={handleKeyDown}
               onChange={(e) => {
                 console.log(e.target.value, Number(e.target.value), "Numer");
                 const newPerRate =
@@ -2026,7 +2116,9 @@ const NewCreditComponent = ({
               variant="standard"
               InputProps={{
                 placeholder: "Type Amount...",
+                autoComplete: 'new-password', 
                 disableUnderline: true,
+                inputProps: { min: "0" },
                 style: {
                   fontSize: "15px",
                   height: "45px",
@@ -2072,6 +2164,7 @@ const NewCreditComponent = ({
             }}
           >
             <TextField
+              required={true}
               onChange={(e) => {
                 setNewCreditObj({
                   ...newCreditObj,
@@ -2083,6 +2176,7 @@ const NewCreditComponent = ({
               InputProps={{
                 placeholder: "",
                 disableUnderline: true,
+                autoComplete: 'new-password', 
                 type: !showPass ? "password" : "text",
                 style: { fontSize: "13px", height: "45px", fontWeight: "600" },
               }}
@@ -2147,29 +2241,8 @@ const NewCreditComponent = ({
             loading={loading}
             containerStyle={{ width: "150px", height: "35px" }}
             isSelected={true}
-            onClick={(e) => {
-              try {
-                if (!loading) {
-                  setLoading(true);
-                  UpdateAvailableBalance(newCreditObj)
-                    .then(({ bool, message }) => {
-                      toast.success(message);
-                      getListOfUser();
-                      showDialogModal(true, true, message);
-                      setLoading(false);
-                      setSelected(e);
-                    })
-                    .catch(({ bool, message }) => {
-                      toast.error(message);
-                      showDialogModal(true, false, message);
-                      setLoading(false);
-                    });
-                }
-              } catch (e) {
-                setLoading(false);
-                console.log(e.message);
-              }
-            }}
+            type="submit"
+            // onClick={handleSubmit}
             title={"Submit"}
           />
         </Box>
@@ -2204,10 +2277,12 @@ const NewCreditComponent = ({
         </Box>
       </Box>
     </Box>
+     </form>
   );
 };
 
 const SetExposureComponent = ({
+  handleKeyDown,
   setShowUserModal,
   backgroundColor,
   userModal,
@@ -2247,7 +2322,7 @@ const SetExposureComponent = ({
           })
           .catch(({ bool, message }) => {
             toast.error(message);
-            showDialogModal(true, false, message);
+            // showDialogModal(true, false, message);
             setLoading(false);
           });
       }
@@ -2256,6 +2331,7 @@ const SetExposureComponent = ({
       console.log(e.message);
     }
   };
+
   return (
     <form onSubmit={handleExposerSubmit}>
       <Box
@@ -2296,6 +2372,7 @@ const SetExposureComponent = ({
               }}
             >
               <TextField
+                onKeyDown={handleKeyDown}
                 required={true}
                 onChange={(e) => {
                   setExposureObj({
@@ -2314,6 +2391,8 @@ const SetExposureComponent = ({
                 InputProps={{
                   placeholder: "Type Amount...",
                   disableUnderline: true,
+                  autoComplete: 'new-password', 
+                  inputProps: { min: "0" },
                   style: {
                     fontSize: "15px",
                     height: "45px",
@@ -2371,6 +2450,7 @@ const SetExposureComponent = ({
                 InputProps={{
                   placeholder: "",
                   disableUnderline: true,
+                  autoComplete: 'new-password', 
                   type: !showPass ? "password" : "text",
                   style: {
                     fontSize: "13px",
@@ -2514,7 +2594,7 @@ const ChangePasswordComponent = ({
       })
       .catch(({ bool, message }) => {
         toast.error(message);
-        showDialogModal(true, false, message);
+        // showDialogModal(true, false, message);
       });
   };
 
@@ -2584,6 +2664,7 @@ const ChangePasswordComponent = ({
                   InputProps={{
                     placeholder: "",
                     disableUnderline: true,
+                    autoComplete: 'new-password', 
                     type: !showPass1 ? "password" : "text",
                     style: {
                       fontSize: "13px",
@@ -2698,6 +2779,7 @@ const ChangePasswordComponent = ({
                   InputProps={{
                     placeholder: "",
                     disableUnderline: true,
+                    autoComplete: 'new-password', 
                     type: !showPass ? "password" : "text",
                     style: {
                       fontSize: "13px",
@@ -2786,6 +2868,7 @@ const LockUnlockComponent = ({
   setElementToUDM,
   prevElement,
   setSelected,
+  getListOfUser,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -2801,12 +2884,13 @@ const LockUnlockComponent = ({
     UpdateLockUnlock(lockUnlockObj)
       .then(({ bool, message }) => {
         toast.success(message);
+        getListOfUser();
         setSelected(e);
         showDialogModal(true, true, message);
       })
       .catch(({ bool, message }) => {
         toast.error(message);
-        showDialogModal(true, false, message);
+        // showDialogModal(true, false, message);
       });
   };
   return (
@@ -2938,6 +3022,7 @@ const LockUnlockComponent = ({
                 InputProps={{
                   placeholder: "",
                   disableUnderline: true,
+                  autoComplete: 'new-password', 
                   type: !showPass ? "password" : "text",
                   style: {
                     fontSize: "13px",

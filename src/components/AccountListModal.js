@@ -116,7 +116,7 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
         sx={[
           {
             marginX: "0.5%",
-            width: { mobile: "96%", laptop: "85%", tablet: "96%" },
+            width: { mobile: "96%", laptop: "90%", tablet: "96%" },
             minHeight: loader && loader1 ? "20%" : "200px",
             borderRadius: "10px",
             borderBottomRightRadius: "0px",
@@ -168,7 +168,9 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                       <AccountListRow
                         key={i}
                         callProfile={false}
-                        showOptions={false}
+                        showCReport={true}
+                        showUserDetails={false}
+                        showOptions={true}
                         showChildModal={true}
                         containerStyle={{ background: "#FFE094" }}
                         profit={element.profit_loss >= 0}
@@ -184,7 +186,9 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                       <AccountListRow
                         key={i}
                         callProfile={false}
-                        showOptions={false}
+                        showUserDetails={false}
+                        showOptions={true}
+                        showCReport={true}
                         showChildModal={true}
                         containerStyle={{ background: "#ECECEC" }}
                         profit={element.profit_loss >= 0}

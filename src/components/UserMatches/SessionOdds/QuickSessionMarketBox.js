@@ -8,7 +8,7 @@ import { memo } from "react";
 import { formatNumber } from "../../helper/helper";
 import { BallStart } from "../../../assets";
 
-const SessionMarketBox = ({
+const QuickSessionMarketBox = ({
   index,
   typeOfBet,
   data,
@@ -225,4 +225,4 @@ const SessionMarketBox = ({
   );
 };
 
-export default memo(SessionMarketBox);
+export default memo(QuickSessionMarketBox);

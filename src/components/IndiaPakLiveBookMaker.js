@@ -5,7 +5,7 @@ import "./index.css";
 import { memo } from "react";
 import AddSession from "./AddSession";
 
-const IndiaPakLiveBookMaker = ({ add, match }) => {
+const IndiaPakLiveBookMaker = ({ add, match ,Bid }) => {
   return (
     <Box
       sx={{
@@ -52,7 +52,7 @@ const IndiaPakLiveBookMaker = ({ add, match }) => {
             flexDirection: "column",
           }}
         >
-          <AddSession add={add} match={match} />
+          <AddSession add={add} match={match}  Bid={Bid}/>
         </Box>
       </Box>
     </Box>

@@ -21,7 +21,7 @@ import { setRole } from "../../newStore";
 import NotificationModal from "../NotificationModal";
 import { toast } from "react-toastify";
 
-const SeprateBox = ({
+const ManualSeprateBox = ({
   color,
   po,
   empty,
@@ -321,6 +321,14 @@ const SeprateBox = ({
           loading: true,
           type: false,
         });
+        setTimeout(() => {
+          setCanceled({
+            value: true,
+            msg: "",
+            loading: true,
+            type: false,
+          });
+        }, 1500);
       }
       setIsPopoverOpen(false);
       let response = await axios.post(`/betting/placeBet`, payload);
@@ -350,7 +358,7 @@ const SeprateBox = ({
           loading: false,
           type: false,
         });
-      }, 1500);
+      }, 2000);
       setIsPopoverOpen(false);
       // navigate("/matchDetail")
     } catch (e) {
@@ -621,4 +629,4 @@ const SeprateBox = ({
   );
 };
 
-export default memo(SeprateBox);
+export default memo(ManualSeprateBox);

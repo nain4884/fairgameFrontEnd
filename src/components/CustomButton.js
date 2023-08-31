@@ -1,9 +1,10 @@
 import { Button, CircularProgress } from "@mui/material";
 
-export default function CustomButton({ onClick, title, buttonStyle, loading }) {
+export default function CustomButton({ onClick, title, buttonStyle, loading, type }) {
   return (
     <Button 
       onClick={onClick}
+      type={type}
       variant="contained"
       color="secondary"
       sx={[

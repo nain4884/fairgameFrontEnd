@@ -23,6 +23,9 @@ const AccountStatementList = ({ user, visible, selected }) => {
   const [data, setData] = useState("");
   const [isDated, setIsDated] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [fromDate, setFromDate] = useState(null);
+  const [toDate, setToDate] = useState(null);
+  const [localUserName, setLocaluserName] = useState("");
   const handleChildData = (childData) => {
     setData(childData);
   };
@@ -34,21 +37,20 @@ const AccountStatementList = ({ user, visible, selected }) => {
     setCurrenLimit(parseInt(val));
     setIsDated(true);
   }
-  async function getAccountStatement(from, to) {
+  async function getAccountStatement(value) {
     const userId = currentUser.id;
-
-    if (from && to) {
-      var payload = {
-        limit: pageLimit,
-        skip: currentPage * pageLimit,
-        fromDate: moment(from).format("YYYY-MM-DD"),
-        toDate: moment(to).format("YYYY-MM-DD"),
-      };
-    } else {
-      var payload = {
-        limit: pageLimit,
-        skip: currentPage * pageLimit,
-      };
+    var payload = {
+      limit: pageLimit,
+      skip: currentPage * pageLimit,
+    };
+    if (localUserName) {
+      payload.userName = localUserName;
+    }
+    if (fromDate) {
+      payload.fromDate = moment(fromDate).format("YYYY-MM-DD");
+    }
+    if (toDate) {
+      payload.toDate = moment(toDate).format("YYYY-MM-DD");
     }
     let { axios } = setRole();
     try {
@@ -75,7 +77,7 @@ const AccountStatementList = ({ user, visible, selected }) => {
 
   useEffect(() => {
     getAccountStatement();
-  }, [currentPage, pageLimit]);
+  }, [currentPage, pageLimit, localUserName]);
 
   const Footer = ({ currentPage, pages, callPage, currenLimit }) => {
     return (
@@ -180,86 +182,96 @@ const AccountStatementList = ({ user, visible, selected }) => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      {loading ? (
-        <Box
-          sx={{
-            minHeight: "60vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <CustomLoader text="" />
-        </Box>
-      ) : (
-        <>
-          <Box sx={{ marginX: { mobile: "2vw", laptop: "1vw" } }}>
-            <YellowHeader
-              onChildData={handleChildData}
-              getAccountStatement={getAccountStatement}
-            />
-          </Box>
+      <Box sx={{ marginX: { mobile: "2vw", laptop: "1vw" } }}>
+        <YellowHeader
+          setFromDate={setFromDate}
+          fromDate={fromDate}
+          toDate={toDate}
+          setToDate={setToDate}
+          onChildData={handleChildData}
+          getAccountStatement={getAccountStatement}
+        />
+      </Box>
 
+      <Box
+        sx={[
+          {
+            marginX: { mobile: "2vw", laptop: "1vw" },
+            minHeight: "100px",
+            borderRadius: "2px",
+            border: "2px solid white",
+            width: "97.5%",
+            borderTopRightRadius: {
+              mobile: "10px",
+              laptop: "0px",
+              tablet: "10px",
+            },
+            borderTopLeftRadius: {
+              mobile: "10px",
+              laptop: "0px",
+              tablet: "10px",
+            },
+            background: "#F8C851",
+          },
+        ]}
+      >
+        <ListH
+          getLimitEntries={getLimitEntries}
+          getAccountStatement={(value) => {
+            setLocaluserName(value);
+          }}
+        />
+
+        {loading ? (
           <Box
-            sx={[
-              {
-                marginX: { mobile: "2vw", laptop: "1vw" },
-                minHeight: "100px",
-                borderRadius: "2px",
-                border: "2px solid white",
-                width: "97.5%",
-                borderTopRightRadius: {
-                  mobile: "10px",
-                  laptop: "0px",
-                  tablet: "10px",
-                },
-                borderTopLeftRadius: {
-                  mobile: "10px",
-                  laptop: "0px",
-                  tablet: "10px",
-                },
-                background: "#F8C851"
-              },
-            ]}
+            sx={{
+              minHeight: "60vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <ListH getLimitEntries={getLimitEntries} />
+            <CustomLoader text="" />
+          </Box>
+        ) : (
+          <>
             <Box sx={{ overflowX: "scroll", width: "100%" }}>
               <ListHeaderT />
               {decodedTokenUser?.role === "user,visible"
                 ? transactionHistory?.map((item) => (
-                  <Row
-                    key={item?.id}
-                    index={item?.id}
-                    containerStyle={{ background: "#FFE094" }}
-                    profit={true}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    date={item?.createAt}
-                    description={item?.description}
-                    closing={item?.current_amount}
-                    trans_type={item?.trans_type}
-                    amount={item?.amount}
-                    fromuserName={item?.action_by?.userName}
-                    touserName={item?.user?.userName}
-                  />
-                ))
+                    <Row
+                      key={item?.id}
+                      index={item?.id}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={true}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      date={item?.createAt}
+                      description={item?.description}
+                      closing={item?.current_amount}
+                      trans_type={item?.trans_type}
+                      amount={item?.amount}
+                      fromuserName={item?.action_by?.userName}
+                      touserName={item?.user?.userName}
+                    />
+                  ))
                 : transactionHistory.map((item) => (
-                  <Row
-                    key={item?.id}
-                    index={item?.id}
-                    containerStyle={{ background: "#FFE094" }}
-                    profit={true}
-                    fContainerStyle={{ background: "#0B4F26" }}
-                    fTextStyle={{ color: "white" }}
-                    date={item?.createAt}
-                    closing={item?.current_amount}
-                    trans_type={item?.trans_type}
-                    amount={item?.amount}
-                    description={item?.description}
-                    fromuserName={item?.action_by?.userName}
-                    touserName={item?.user?.userName}
-                  />
-                ))}
+                    <Row
+                      key={item?.id}
+                      index={item?.id}
+                      containerStyle={{ background: "#FFE094" }}
+                      profit={true}
+                      fContainerStyle={{ background: "#0B4F26" }}
+                      fTextStyle={{ color: "white" }}
+                      date={item?.createAt}
+                      closing={item?.current_amount}
+                      trans_type={item?.trans_type}
+                      amount={item?.amount}
+                      description={item?.description}
+                      fromuserName={item?.action_by?.userName}
+                      touserName={item?.user?.userName}
+                    />
+                  ))}
 
               {transactionHistory?.length === 0 && (
                 <EmptyRow containerStyle={{ background: "#FFE094" }} />
@@ -271,14 +283,14 @@ const AccountStatementList = ({ user, visible, selected }) => {
               pages={pageCount}
               callPage={callPage}
             />
-          </Box>
-        </>
-      )}
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
 
-const ListH = ({ getLimitEntries }) => {
+const ListH = ({ getLimitEntries, getAccountStatement }) => {
   return (
     <Box
       sx={{
@@ -307,7 +319,16 @@ const ListH = ({ getLimitEntries }) => {
           Entries
         </Typography>
       </Box>
-      <SearchInput show={true} width={"100%"} placeholder={"Search..."} inputContainerStyle={{ width: { mobile: "50vw", laptop: "17vw" }, marginLeft: "auto" }} />
+      <SearchInput
+        show={true}
+        getListOfUser={getAccountStatement}
+        width={"100%"}
+        placeholder={"Search..."}
+        inputContainerStyle={{
+          width: { mobile: "50vw", laptop: "17vw" },
+          marginLeft: "auto",
+        }}
+      />
     </Box>
   );
 };
@@ -563,7 +584,7 @@ const Row = ({
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
-          background: index % 2 != 0 ? "#FFE094" : "#ECECEC",
+          background: trans_type === "credit_refer" ? "#F8C851" : "#FFE094",
         }}
       >
         <Typography sx={{ fontSize: "12px", fontWeight: "500" }}>

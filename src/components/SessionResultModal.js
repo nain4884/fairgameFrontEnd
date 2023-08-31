@@ -20,7 +20,7 @@ const SessionResultModal = ({
   currentMatch,
   visible,
   setIObtes,
-  onClickCancel
+  onClickCancel,
 }) => {
   const { socket, socketMicro } = useContext(SocketContext);
   const [selected, setSelected] = useState("");
@@ -28,7 +28,6 @@ const SessionResultModal = ({
   const [loading, setLoading] = useState({ id: "", value: false });
 
   const { sessionResults } = useSelector((state) => state?.matchDetails);
-
 
   const innerRef = useOuterClick((ev) => {
     onClick();
@@ -106,7 +105,7 @@ const SessionResultModal = ({
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
         onClick();
-             
+
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
             (betting, index) => {
@@ -240,7 +239,7 @@ const SessionResultModal = ({
       >
         {newData?.betStatus !== 3 ? (
           <TextField
-
+            autoFocus
             placeholder="Enter score"
             variant="standard"
             value={selected}
@@ -272,7 +271,6 @@ const SessionResultModal = ({
           </Typography>
         )}
         <Box
-
           sx={{
             display: "flex",
             paddingY: "5px",

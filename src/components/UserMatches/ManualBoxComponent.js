@@ -6,8 +6,10 @@ import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
 import { BallStart } from "../../assets";
 import { useEffect } from "react";
+import { memo } from "react";
+import ManualSeparateBox from "./ManualSeparateBox";
 
-const BoxComponent = ({
+const ManualBoxComponent = ({
   name,
   color,
   data,
@@ -259,7 +261,7 @@ const BoxComponent = ({
                 }}
               >
                 {!matchesMobile && (
-                  <SeprateBox
+                  <ManualSeparateBox
                     closeModal={ballStatus}
                     setFastBetLoading={setFastBetLoading}
                     placeBetData={placeBetData}
@@ -293,7 +295,7 @@ const BoxComponent = ({
                   sx={{ width: ".25%", display: "flex", background: "pink" }}
                 ></Box>
                 {!matchesMobile && (
-                  <SeprateBox
+                  <ManualSeparateBox
                     closeModal={ballStatus}
                     setFastBetLoading={setFastBetLoading}
                     placeBetData={placeBetData}
@@ -328,7 +330,7 @@ const BoxComponent = ({
                   sx={{ width: ".25%", display: "flex", background: "pink" }}
                 ></Box>
 
-                <SeprateBox
+                <ManualSeparateBox
                   closeModal={ballStatus}
                   setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
@@ -358,7 +360,7 @@ const BoxComponent = ({
                   sx={{ width: ".25%", display: "flex", background: "pink" }}
                 ></Box>
 
-                <SeprateBox
+                <ManualSeparateBox
                   closeModal={ballStatus}
                   setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
@@ -384,7 +386,7 @@ const BoxComponent = ({
                   handleRateChange={handleRateChange}
                 />
                 {!matchesMobile && (
-                  <SeprateBox
+                  <ManualSeparateBox
                     closeModal={ballStatus}
                     setFastBetLoading={setFastBetLoading}
                     placeBetData={placeBetData}
@@ -416,7 +418,7 @@ const BoxComponent = ({
                   />
                 )}
                 {!matchesMobile && (
-                  <SeprateBox
+                  <ManualSeparateBox
                     closeModal={ballStatus}
                     setFastBetLoading={setFastBetLoading}
                     placeBetData={placeBetData}
@@ -459,4 +461,4 @@ const BoxComponent = ({
   );
 };
 
-export default BoxComponent;
+export default memo(ManualBoxComponent);

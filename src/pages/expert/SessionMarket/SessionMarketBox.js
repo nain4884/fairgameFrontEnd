@@ -15,6 +15,9 @@ import { formatNumber } from "../../../components/helper/helper";
 import { useDispatch } from "react-redux";
 import { setSelectedMatch } from "../../../newStore/reducers/expertMatchDetails";
 import CustomSessionResult from "../../../components/CustomSessionResult";
+import useOuterClick from "../../../components/helper/userOuterClick";
+import { customSort } from "../../../components/helper/util";
+import { memo } from "react";
 
 const SessionMarketBox = ({
   index,
@@ -42,21 +45,17 @@ const SessionMarketBox = ({
     [0, 2].includes(newData?.betStatus) ? true : false
   );
 
-  const  [loader,setLoader]=useState(false)
+  const [loader, setLoader] = useState(false);
 
-
+  const innerRef1 = useOuterClick((ev) => {
+    setVisible(false);
+  });
   useEffect(() => {
     if (!stop) {
       setLive(true);
     }
   }, [stop]);
 
-  function customSort(a, b) {
-    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
-    const aStatus = betStatusOrder[a?.betStatus] || 0;
-    const bStatus = betStatusOrder[b?.betStatus] || 0;
-    return aStatus - bStatus;
-  }
   const handleLive = async (status) => {
     try {
       if (status === 1) {
@@ -65,7 +64,7 @@ const SessionMarketBox = ({
       } else {
         setLive(true);
       }
-      setLoader(true)
+      setLoader(true);
       const body = {
         match_id: currentMatch?.id,
         matchType: currentMatch?.gameType,
@@ -88,7 +87,7 @@ const SessionMarketBox = ({
       if (data?.data?.id) {
         if (liveOnly) {
           setLive(true);
-      
+
           // Sort and update the matchSessionData array with the new data
           setMatchSessionData((prev) => {
             const filteredArray = prev?.filter(
@@ -108,19 +107,18 @@ const SessionMarketBox = ({
             return prev;
           });
         }
-        setLoader(false)
-
+        setLoader(false);
       }
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
-      setLoader(false)
+      setLoader(false);
     }
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      {[0,2].includes(newData?.betStatus) && (
+    <div style={{ position: "relative" }} ref={innerRef1}>
+      {[0, 2].includes(newData?.betStatus) && (
         <Box
           sx={{
             margin: "1px",
@@ -175,7 +173,7 @@ const SessionMarketBox = ({
         >
           {newData?.betStatus === 0 && (
             <SmallBox
-            loading={loader}
+              loading={loader}
               hide={true}
               onClick={(e) => {
                 e.preventDefault();
@@ -210,7 +208,7 @@ const SessionMarketBox = ({
               textSize={"8px"}
               // width={"80px"}
               width={"33px"}
-            // title={"Live"}
+              // title={"Live"}
             />
           )}
           {!hideResult && (
@@ -248,8 +246,8 @@ const SessionMarketBox = ({
             />
           </Box>
         )}
-        {!["ACTIVE", "", undefined, null].includes(newData?.suspended) ||
-          newData?.betStatus === 2 ? (
+        {!["ACTIVE", "", undefined, null, 0].includes(newData?.suspended) ||
+        newData?.betStatus === 2 ? (
           <Box
             sx={{
               margin: "1px",
@@ -271,7 +269,7 @@ const SessionMarketBox = ({
                 textAlign: "center",
                 lineHeight: "11px",
                 color: "#FFF",
-                fontWeight: '400'
+                fontWeight: "400",
               }}
             >
               {newData?.betStatus === 2
@@ -298,7 +296,7 @@ const SessionMarketBox = ({
               back={true}
               value={newData?.no_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[0])}
-              lock={newData?.suspended === "suspended"}
+              // lock={newData?.suspended === "suspended"}
               color={"#F6D0CB"}
             />
 
@@ -310,7 +308,7 @@ const SessionMarketBox = ({
               session={true}
               value={newData?.yes_rate}
               value2={formatNumber(newData?.rate_percent?.split("-")[1])}
-              lock={newData?.suspended === "suspended"}
+              // lock={newData?.suspended === "suspended"}
               color={"#B3E0FF"}
             />
           </Box>
@@ -324,4 +322,4 @@ const SessionMarketBox = ({
   );
 };
 
-export default SessionMarketBox;
+export default memo(SessionMarketBox);

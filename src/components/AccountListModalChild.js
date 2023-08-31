@@ -119,6 +119,7 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
                 return (
                   <AccountListRow
                     key={i}
+                    showCReport={false}
                     showOptions={false}
                     containerStyle={{ background: "#FFE094" }}
                     profit={element.profit_loss >= 0}
@@ -131,7 +132,9 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
                 );
               } else {
                 return (
-                  <AccountListRow
+                  <AccountListRow 
+                    key={i}
+                    showCReport={false}
                     showOptions={false}
                     containerStyle={{ background: "#ECECEC" }}
                     profit={element.profit_loss >= 0}

@@ -1,6 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { memo, useContext, useEffect, useState } from "react";
 import SeparateBox from "./SeparateBox";
 import { TEAMLOGO, TEAMLOGO1 } from "../../assets";
 import Divider from "../helper/Divider";
@@ -30,7 +30,7 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [matchOddsLive, setMatchOddsLive] = useState([]);
-  const { socketMicro, socket } = useContext(SocketContext)
+  const { socketMicro, socket } = useContext(SocketContext);
   const dispatch = useDispatch();
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -74,7 +74,7 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
   const upcoming =
     Number(timeLeft.days) === 0 &&
     Number(timeLeft.hours) === 0 &&
-    Number(timeLeft.minutes) <= 59;
+    Number(timeLeft.minutes) <= 30;
 
   // useEffect(() => {
   //   if (socket && socket.connected) {
@@ -1156,4 +1156,4 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
   );
 };
 
-export default Odds;
+export default memo(Odds);

@@ -238,6 +238,7 @@ const Odds = ({
                 setPlaceBetData={setPlaceBetData}
                 setFastAmount={setFastAmount}
                 setShowFastTimeBox={setShowFastTimeBox}
+                typeOfBet={typeOfBet}
                 data={fastAmount ? currencyFormatter(fastAmount) : ""}
               />
             )}
@@ -300,6 +301,7 @@ const Odds = ({
         {visible && showFastTimeBox && (
           <Box>
             <FastTimePlaceBet
+              typeOfBet={typeOfBet}
               session={session}
               setFastAmount={setFastAmount}
               selectedFastAmount={fastAmount}
@@ -434,7 +436,7 @@ const Odds = ({
               </Box>
             )}
 
-            {upcoming && (
+            {(upcoming || showBox) && (
               <Box
                 sx={{
                   position: "absolute",
@@ -449,7 +451,8 @@ const Odds = ({
                 }}
               ></Box>
             )}
-            {typeOfBet == "MANUAL BOOKMAKER" ? (
+
+            {session === "manualBookMaker" ? (
               <>
                 <ManualBoxComponent
                   setFastBetLoading={setFastBetLoading}
@@ -464,13 +467,11 @@ const Odds = ({
                   showBox={showBox}
                   selectedFastAmount={fastAmount}
                   livestatus={
-                    matchOddsData?.[0]?.teamA_suspend === "suspended"
-                      ? true
-                      : false
+                    matchOddsData?.teamA_suspend === "suspended" ? true : false
                   }
                   ballStatus={
-                    matchOddsData?.[0]?.teamA_Ball === "ball" ||
-                    matchOddsData?.[0]?.teamA_suspend == "Ball Started"
+                    matchOddsData?.teamA_Ball === "ball" ||
+                    matchOddsData?.teamA_suspend == "Ball Started"
                       ? true
                       : false
                   }
@@ -490,8 +491,8 @@ const Odds = ({
                   typeOfBet={typeOfBet}
                   isRound={isRound}
                   matchOddsData={{
-                    back: matchOddsData?.[0]?.teamA_Back,
-                    lay: matchOddsData?.[0]?.teamA_lay,
+                    back: matchOddsData?.teamA_Back,
+                    lay: matchOddsData?.teamA_lay,
                   }}
                   isBall={true}
                   isTeamC={newData?.teamC}
@@ -514,13 +515,11 @@ const Odds = ({
                   selectedFastAmount={fastAmount}
                   // livestatus={newData?.status === "SUSPENDED" ? true : false}
                   livestatus={
-                    matchOddsData?.[0]?.teamB_suspend === "suspended"
-                      ? true
-                      : false
+                    matchOddsData?.teamB_suspend === "suspended" ? true : false
                   }
                   ballStatus={
-                    matchOddsData?.[0]?.teamB_Ball === "ball" ||
-                    matchOddsData?.[0]?.teamB_suspend == "Ball Started"
+                    matchOddsData?.teamB_Ball === "ball" ||
+                    matchOddsData?.teamB_suspend == "Ball Started"
                       ? true
                       : false
                   }
@@ -538,8 +537,8 @@ const Odds = ({
                   typeOfBet={typeOfBet}
                   isRound={isRound}
                   matchOddsData={{
-                    back: matchOddsData?.[0]?.teamB_Back,
-                    lay: matchOddsData?.[0]?.teamB_lay,
+                    back: matchOddsData?.teamB_Back,
+                    lay: matchOddsData?.teamB_lay,
                   }}
                   isBall={false}
                   isTeamC={newData?.teamC}
@@ -562,13 +561,13 @@ const Odds = ({
                       time={true}
                       // livestatus={newData?.status === "SUSPENDED" ? true : false}
                       livestatus={
-                        matchOddsData?.[0]?.teamC_suspend === "suspended"
+                        matchOddsData?.teamC_suspend === "suspended"
                           ? true
                           : false
                       }
                       ballStatus={
-                        matchOddsData?.[0]?.teamC_Ball === "ball" ||
-                        matchOddsData?.[0]?.teamC_suspend == "Ball Started"
+                        matchOddsData?.teamC_Ball === "ball" ||
+                        matchOddsData?.teamC_suspend == "Ball Started"
                           ? true
                           : false
                       }
@@ -589,8 +588,8 @@ const Odds = ({
                       typeOfBet={typeOfBet}
                       isRound={isRound}
                       matchOddsData={{
-                        back: matchOddsData?.[0]?.teamC_Back,
-                        lay: matchOddsData?.[0]?.teamC_lay,
+                        back: matchOddsData?.teamC_Back,
+                        lay: matchOddsData?.teamC_lay,
                       }}
                       isBall={false}
                       isTeamC={newData?.teamC}

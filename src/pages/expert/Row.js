@@ -6,12 +6,15 @@ import { SocketContext } from "../../context/socketContext";
 import { setDailogData } from "../../store/dailogModal";
 import { setRole } from "../../newStore";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ButtonWithSwitch from "./ButtonWithSwitch";
 import { toast } from "react-toastify";
 import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
+import ButtonWithSwitchBookmaker from "./ButtonWithSwitchBookmaker";
+import moment from "moment";
+import { memo } from "react";
 
-const Row = ({ index, containerStyle, data }) => {
+const Row = ({ index, containerStyle, data, updatedBookmaker }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { axios } = setRole();
@@ -34,18 +37,28 @@ const Row = ({ index, containerStyle, data }) => {
       val: data?.manualBookMakerActive || false,
     },
   });
+  const { userAllMatches } = useSelector((state) => state?.matchDetails);
+
+  const [updateBookmaker, setUpdateBookmaker] = useState([]);
 
   useEffect(() => {
-    setUpdateMatchStatus((prevStatus) => ({
-      ...prevStatus,
-      1: { ...prevStatus[1], val: data?.apiMatchActive || false },
-      2: { ...prevStatus[2], val: data?.apiBookMakerActive },
-      3: { ...prevStatus[3], val: data?.apiSessionActive || false },
-      4: { ...prevStatus[4], val: data?.manualBookMakerActive || false },
-      5: { ...prevStatus[5], val: data?.manualSessionActive || false },
-    }));
+    if (data) {
+      const newBody = data?.bookmakers?.map((b) => ({
+        id: b?.id,
+        marketName: b?.marketName,
+        betStatus: [0, null].includes(b?.betStatus) ? false : true,
+      }));
+      setUpdateBookmaker(newBody);
+      setUpdateMatchStatus((prevStatus) => ({
+        ...prevStatus,
+        1: { ...prevStatus[1], val: data?.apiMatchActive || false },
+        2: { ...prevStatus[2], val: data?.apiBookMakerActive },
+        3: { ...prevStatus[3], val: data?.apiSessionActive || false },
+        4: { ...prevStatus[4], val: data?.manualBookMakerActive || false },
+        5: { ...prevStatus[5], val: data?.manualSessionActive || false },
+      }));
+    }
   }, [data]);
-
 
   function showDialogModal(isModalOpen, showRight, message, navigateTo, state) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -57,7 +70,6 @@ const Row = ({ index, containerStyle, data }) => {
       );
     }, [500]);
   }
-
   const { socket, socketMicro } = useContext(SocketContext);
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loading, setLoading] = useState({ val: false, id: "" });
@@ -83,6 +95,12 @@ const Row = ({ index, containerStyle, data }) => {
       apiSessionActive: false,
       manualBookMakerActive: false,
       manualSessionActive: false,
+      quick_bookmaker: updateBookmaker?.map((bookmaker) => {
+        return {
+          id: bookmaker.id,
+          betStatus: bookmaker.betStatus === false ? 0 : 1,
+        };
+      }),
     };
     let i;
     for (i = 0; i < 5; i++) {
@@ -145,14 +163,18 @@ const Row = ({ index, containerStyle, data }) => {
       <Box
         sx={{
           display: "flex",
-          width: "60px",
+          width: "100px",
           paddingLeft: "10px",
           alignItems: "center",
           height: "45px",
           borderRight: "2px solid white",
         }}
       >
-        <Typography sx={{ fontSize: "12px" }}>{index}</Typography>
+        <Typography sx={{ fontSize: "12px" }}>({index})</Typography>
+        <Typography sx={{ fontSize: "9px", padding: "4px", fontWeight: "700" }}>
+          {moment(data?.startAt).format("DD-MM-YYYY")} <br />
+          {moment(data?.startAt).format("LT")}
+        </Typography>
       </Box>
       <Box
         sx={{
@@ -185,13 +207,25 @@ const Row = ({ index, containerStyle, data }) => {
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={3}
           />
-          <ButtonWithSwitch
+          {updateBookmaker?.map((bookmaker, idx) => {
+            return (
+              <ButtonWithSwitchBookmaker
+                key={idx}
+                title={bookmaker.marketName}
+                containerStyle={{ width: "14%" }}
+                updateBookmaker={updateBookmaker}
+                setUpdateBookmaker={setUpdateBookmaker}
+                id={bookmaker.id}
+              />
+            );
+          })}
+          {/* <ButtonWithSwitch
             title={`Quick\nBookmaker`}
             containerStyle={{ width: "14%" }}
             updateMatchStatus={updateMatchStatus}
             setUpdateMatchStatus={setUpdateMatchStatus}
             place={4}
-          />
+          /> */}
           <ButtonWithSwitch
             title={`Manual\nSession`}
             containerStyle={{ width: "14%" }}
@@ -219,4 +253,4 @@ const Row = ({ index, containerStyle, data }) => {
     </Box>
   );
 };
-export default Row;
+export default memo(Row);

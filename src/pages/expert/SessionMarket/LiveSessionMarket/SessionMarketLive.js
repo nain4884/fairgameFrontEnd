@@ -75,7 +75,7 @@ const SessionMarketLive = ({
               marginLeft: "7px",
             }}
           >
-            {title}
+            {title} 
           </Typography>
         </Box>
 

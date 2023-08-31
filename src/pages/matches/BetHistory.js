@@ -43,7 +43,9 @@ const BetHistory = ({ selected, visible }) => {
       }, 1000);
       setCount(
         data?.data[0]?.filter((b) =>
-          ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+          ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER", "QuickBookmaker0",
+          "QuickBookmaker1",
+          "QuickBookmaker2",].includes(
             b?.marketType
           )
         ).length || 0
@@ -67,8 +69,6 @@ const BetHistory = ({ selected, visible }) => {
 
   return (
     <>
-
-
       <Background>
         {loading ? (
           <Box
@@ -115,15 +115,25 @@ const BetHistory = ({ selected, visible }) => {
                   mark2
                   mark
                   allBetsData={allBets?.filter((b) =>
-                    ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                      b?.marketType
-                    )
+                    [
+                      "MATCH ODDS",
+                      "BOOKMAKER",
+                      "MANUAL BOOKMAKER",
+                      "QuickBookmaker0",
+                      "QuickBookmaker1",
+                      "QuickBookmaker2",
+                    ].includes(b?.marketType)
                   )}
                   count={
                     allBets?.filter((b) =>
-                      ["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                        b?.marketType
-                      )
+                      [
+                        "MATCH ODDS",
+                        "BOOKMAKER",
+                        "MANUAL BOOKMAKER",
+                        "QuickBookmaker0",
+                        "QuickBookmaker1",
+                        "QuickBookmaker2",
+                      ].includes(b?.marketType)
                     ).length || 0
                   }
                   setPageCountOuter={setPageCount}
@@ -134,9 +144,14 @@ const BetHistory = ({ selected, visible }) => {
                   betHistory={true}
                   allBetsData={allBets?.filter(
                     (b) =>
-                      !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
-                        b?.marketType
-                      )
+                      ![
+                        "MATCH ODDS",
+                        "BOOKMAKER",
+                        "MANUAL BOOKMAKER",
+                        "QuickBookmaker0",
+                        "QuickBookmaker1",
+                        "QuickBookmaker2",
+                      ].includes(b?.marketType)
                   )}
                   mark
                 />

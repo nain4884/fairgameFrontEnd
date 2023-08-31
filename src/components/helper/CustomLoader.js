@@ -3,6 +3,7 @@ import React from "react";
 import { HourGlass } from "../../assets";
 import { Box, Typography } from "@mui/material";
 import "./styles.css";
+import { memo } from "react";
 const CustomLoader = ({ text ,height,width }) => {
   return (
     <Box
@@ -32,4 +33,4 @@ const CustomLoader = ({ text ,height,width }) => {
   );
 };
 
-export default CustomLoader;
+export default memo(CustomLoader);

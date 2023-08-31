@@ -13,6 +13,7 @@ import { memo } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import moment from "moment";
+import QuickSessionMarket from "./SessionOdds/QuickSessionMarket";
 const MatchOdds = ({
   data,
   matchOddsLive,
@@ -22,15 +23,23 @@ const MatchOdds = ({
   sessionExposer,
   sessionBets,
   sessionOffline,
-  manualBookmakerData,
   setFastAmount,
   fastAmount,
   handleRateChange,
+  LSelectedSessionBetting,
+  localQuickSession,
 }) => {
-  const { manualBookMarkerRates } = useSelector((state) => state?.matchDetails);
+  const { manualBookMarkerRates, quickBookmaker } = useSelector(
+    (state) => state?.matchDetails
+  );
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
   const [matchOddRateLive, setMatchOddRateLive] = useState(false);
+  const [localQuickBookmaker, setLocalQuickBookmaker] = useState([false]);
+
+  // const [localSession, setLocalSession] = useState([]);
+  // const [localQuickSession, setLocalQuickSession] = useState([]);
+
   useEffect(() => {
     if (data) {
       const matchOdds = data?.bettings?.filter(
@@ -41,6 +50,12 @@ const MatchOdds = ({
       setMatchOddRateLive(data?.matchOddRateLive);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (quickBookmaker) {
+      setLocalQuickBookmaker(quickBookmaker);
+    }
+  }, [quickBookmaker]);
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
@@ -81,7 +96,7 @@ const MatchOdds = ({
   const upcoming =
     Number(timeLeft.days) === 0 &&
     Number(timeLeft.hours) === 0 &&
-    Number(timeLeft.minutes) <= 59;
+    Number(timeLeft.minutes) <= 10;
 
   const teamRates =
     manualBookMarkerRates?.length > 0
@@ -89,7 +104,6 @@ const MatchOdds = ({
       : { teamA: 0, teamB: 0, teamC: 0 };
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-
       {data?.apiMatchActive && (
         <Odds
           upcoming={!upcoming}
@@ -115,8 +129,68 @@ const MatchOdds = ({
           handleRateChange={handleRateChange}
         />
       )}
+
+      {data?.manualBookMakerActive &&
+        localQuickBookmaker?.map((bookmaker, idx) => {
+          return (
+            <Odds
+              key={idx}
+              upcoming={!upcoming}
+              betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
+              newData={data}
+              lock={false}
+              showDely={false}
+              session={"manualBookMaker"}
+              showFast={true}
+              suspended={false}
+              data={data}
+              teamARates={teamRates?.teamA}
+              teamBRates={teamRates?.teamB}
+              teamCRates={teamRates?.teamC}
+              min={bookmaker?.min_bet || 0}
+              max={bookmaker?.max_bet || 0}
+              title={bookmaker.marketName}
+              typeOfBet={"MANUAL BOOKMAKER"}
+              matchOddsData={bookmaker}
+              setFastAmount={setFastAmount}
+              fastAmount={fastAmount?.mannualBookMaker}
+              handleRateChange={handleRateChange}
+            />
+          );
+        })}
+
       {/* Manual Bookmaker */}
-      {data?.manualBookMakerActive && (
+      {localQuickBookmaker?.map((bookmaker) => {
+        if (bookmaker.betStatus === 1) {
+          return (
+            <Odds
+              key={bookmaker?.id}
+              upcoming={!upcoming}
+              betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
+              newData={data}
+              lock={false}
+              showDely={false}
+              session={"manualBookMaker"}
+              showFast={true}
+              suspended={false}
+              data={data}
+              teamARates={teamRates?.teamA}
+              teamBRates={teamRates?.teamB}
+              teamCRates={teamRates?.teamC}
+              min={bookmaker?.min_bet || 0}
+              max={bookmaker?.max_bet || 0}
+              title={bookmaker?.marketName}
+              typeOfBet={bookmaker?.marketType}
+              matchOddsData={bookmaker}
+              setFastAmount={setFastAmount}
+              fastAmount={fastAmount?.[bookmaker?.marketType]}
+              handleRateChange={handleRateChange}
+            />
+          );
+        }
+      })}
+
+      {/* {data?.manualBookMakerActive && (
         <Odds
           upcoming={!upcoming}
           betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
@@ -139,7 +213,7 @@ const MatchOdds = ({
           fastAmount={fastAmount?.mannualBookMaker}
           handleRateChange={handleRateChange}
         />
-      )}
+      )} */}
       {data?.apiBookMakerActive && (
         <Odds
           upcoming={!upcoming}
@@ -173,10 +247,9 @@ const MatchOdds = ({
         />
       )}
       {/*`${match.bettings[0].teamA_Back ? match.bettings[0].teamA_Back - 2 : 50 - 2}`*/}
-
       {data?.manualSessionActive && (
         <>
-          <SessionMarket
+          <QuickSessionMarket
             min={data?.manaual_session_min_bet || 0}
             max={data?.manaual_session_max_bet || 0}
             title={"Quick Session Market"}
@@ -185,8 +258,11 @@ const MatchOdds = ({
             showFast={true}
             session={"sessionOdds"}
             sessionBets={sessionBets}
+            typeOfBet={"session"}
             data={sessionOddsLive}
-            newData={data}
+            apiSessionActive={data?.apiSessionActive}
+            manualSessionActive={data?.manualSessionActive}
+            newData={localQuickSession}
             sessionOffline={sessionOffline}
             sessionExposer={sessionExposer}
             // dataProfit={dataProfit}
@@ -200,20 +276,22 @@ const MatchOdds = ({
           />
         </>
       )}
-
       {data?.apiSessionActive && (
         <>
           <SessionMarket
             min={data?.betfair_session_min_bet || 0}
             max={data?.betfair_session_max_bet || 0}
             title={"Session Market"}
+            typeOfBet={"session"}
             upcoming={!upcoming}
             betLock={data?.blockMarket?.SESSION?.block}
             showFast={false}
             session={"sessionOdds"}
             sessionBets={sessionBets}
             data={sessionOddsLive}
-            newData={data}
+            apiSessionActive={data?.apiSessionActive}
+            manualSessionActive={data?.manualSessionActive}
+            newData={LSelectedSessionBetting}
             sessionOffline={sessionOffline}
             sessionExposer={sessionExposer}
             // dataProfit={dataProfit}

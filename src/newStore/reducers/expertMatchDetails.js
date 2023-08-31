@@ -13,39 +13,49 @@ const initialState = {
   aConfirmAuth: false,
   allBetRates: [],
   currentOdd: [],
+  selectedBookmaker: null,
   sessionProfitLoss: null,
-  teamA: {
-    rate: null,
-    lock: true,
-    suspended: true,
-    lay: null,
-    back: null,
+  selectedSession: null,
+  sessionResultRefresh:false,
+  quickBookmaker: {
+    teamA: {
+      rate: null,
+      lock: true,
+      suspended: true,
+      lay: null,
+      back: null,
+      layLock: false,
+    },
+    teamB: {
+      rate: null,
+      lock: true,
+      suspended: true,
+      lay: null,
+      back: null,
+      layLock: false,
+    },
+    teamC: {
+      rate: null,
+      lock: true,
+      suspended: true,
+      lay: null,
+      back: null,
+      layLock: false,
+    },
+    teamBall: {
+      isABall: false,
+      isBBall: false,
+      isCBall: false,
+    },
+    teamSuspended: {
+      teamA_suspend: true,
+      teamB_suspend: true,
+      teamC_suspend: true,
+    },
+    teamBackUnlock: true,
   },
-  teamB: {
-    rate: null,
-    lock: true,
-    suspended: true,
-    lay: null,
-    back: null,
-  },
-  teamC: {
-    rate: null,
-    lock: true,
-    suspended: true,
-    lay: null,
-    back: null,
-  },
-  teamBall: {
-    isABall: false,
-    isBBall: false,
-    isCBall: false,
-  },
-  teamSuspended: {
-    teamA_suspend: true,
-    teamB_suspend: true,
-    teamC_suspend: true,
-  },
-  teamBackUnlock: true,
+
+  sessionExpertOdds:[]
 };
 export const logoutExpertDetails = createAction("auth/logoutReset");
 const expertMatchDetails = createSlice({
@@ -95,23 +105,21 @@ const expertMatchDetails = createSlice({
     setSessionProfitLoss: (state, action) => {
       state.sessionProfitLoss = action.payload;
     },
-    setTeamA: (state, action) => {
-      state.teamA = action.payload;
+    setQuickBookmaker: (state, action) => {
+      state.quickBookmaker = action.payload;
     },
-    setTeamB: (state, action) => {
-      state.teamB = action.payload;
+    setSelectedSession: (state, action) => {
+      state.selectedSession = action.payload;
     },
-    setTeamC: (state, action) => {
-      state.teamC = action.payload;
+    setSelectedBookmaker: (state, action) => {
+      state.selectedBookmaker = action.payload;
     },
-    setTeamBall: (state, action) => {
-      state.teamBall = action.payload;
+    
+    setSessionResultRefresh: (state, action) => {
+      state.sessionResultRefresh = action.payload;
     },
-    setTeamBackUnlock: (state, action) => {
-      state.teamBackUnlock = action.payload;
-    },
-    setTeamSuspended: (state, action) => {
-      state.teamSuspended = action.payload;
+    setSessionExpertOdds : (state, action) => {
+      state.sessionExpertOdds = action.payload;
     },
     extraReducers: (builder) => {
       // This will handle the reset on logout
@@ -135,12 +143,11 @@ export const {
   setWConfirmAuth,
   setAConfirmAuth,
   setCurrentOdd,
-  setTeamBackUnlock,
-  setTeamBall,
-  setTeamA,
-  setTeamB,
-  setTeamC,
-  setTeamSuspended,
+  setQuickBookmaker,
+  setSelectedBookmaker,
+  setSelectedSession,
+  setSessionResultRefresh,
+  setSessionExpertOdds
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;

@@ -3250,7 +3250,7 @@ const NewMatchScreen = () => {
   const getSingleMatch = async (val) => {
     try {
       const data = await axios.get(`/game-match/matchDetail/${val}`);
-
+      console.log("yayy",data)
       let matchOddsDataTemp = data.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
@@ -3284,7 +3284,9 @@ const NewMatchScreen = () => {
       setSingleIObtes(data?.data?.data);
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER"].includes(
+          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER", "QuickBookmaker0",
+                            "QuickBookmaker1",
+                            "QuickBookmaker2",].includes(
             b?.marketType
           )
       );

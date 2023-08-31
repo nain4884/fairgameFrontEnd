@@ -1,4 +1,4 @@
-import { createSlice,createAction } from "@reduxjs/toolkit";
+import { createSlice, createAction } from "@reduxjs/toolkit";
 
 const initialState = {
   manualBookMarkerRates: [],
@@ -11,6 +11,7 @@ const initialState = {
   bookmakerLive: null,
   sessionOddsLive: [],
   selectedMatch: {},
+  selectedSessionBettings: {},
   sessionAllBetRates: [],
   bookMakerBetRates: [],
   sessionResults: [],
@@ -21,12 +22,14 @@ const initialState = {
   sessionExposure: 0,
   manualBookmaker: [],
   sessionOffline: [],
-  userAllMatches:[],
-  multiSelectedMatches:[]
+  userAllMatches: [],
+  multiSelectedMatches: [],
+  quickSession: [],
+  quickBookmaker: [],
+  liveSessionStatus: [],
 };
 
-export const logoutMatchDetails = createAction('auth/logoutReset');
-
+export const logoutMatchDetails = createAction("auth/logoutReset");
 
 const matchDetails = createSlice({
   name: "matchDetails",
@@ -119,7 +122,9 @@ const matchDetails = createSlice({
     setSessionResults: (state, action) => {
       state.sessionResults = action.payload;
     },
-
+    setQuickBookmaker: (state, action) => {
+      state.quickBookmaker = action.payload;
+    },
     setAddBetRates: (state, action) => {
       // const body= [...state.items,action.payload];
       // console.log(body,"BODY")
@@ -148,6 +153,12 @@ const matchDetails = createSlice({
     removeSelectedMatch: (state, action) => {
       state.selectedMatch = {};
     },
+    setSelectedSessionBettings: (state, action) => {
+      state.selectedSessionBettings = action.payload;
+    },
+    setQuickSession: (state, action) => {
+      state.quickSession = action.payload;
+    },
     setConfirmAuth: (state, action) => {
       state.confirmAuth = action.payload;
     },
@@ -174,7 +185,10 @@ const matchDetails = createSlice({
     },
     setMultiSelectedMatch: (state, action) => {
       state.multiSelectedMatches = action.payload;
-    }
+    },
+    setLiveSessionStatus: (state, action) => {
+      state.liveSessionStatus = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // This will handle the reset on logout
@@ -186,6 +200,7 @@ export const {
   setManualBookMarkerRates,
   setSelectedMatch,
   removeSelectedMatch,
+  setSelectedSessionBettings,
   removeManualBookMarkerRates,
   setMatchOdds,
   removeMatchOdds,
@@ -212,7 +227,10 @@ export const {
   setManualBookmaker,
   setSessionOffline,
   setUserAllMatches,
-  setMultiSelectedMatch
+  setMultiSelectedMatch,
+  setQuickSession,
+  setLiveSessionStatus,
+  setQuickBookmaker
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

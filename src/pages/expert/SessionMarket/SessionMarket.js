@@ -9,6 +9,7 @@ import { memo } from "react";
 import { toast } from "react-toastify";
 import { setRole } from "../../../newStore";
 import { ARROWUP } from "../../../assets";
+import { customSort } from "../../../components/helper/util";
 const SessionMarket = ({
   currentMatch,
   liveOnly,
@@ -21,69 +22,59 @@ const SessionMarket = ({
   sessionData,
   setIObtes,
   setData,
+  setLocalSessionExpertOdds,
 }) => {
   const theme = useTheme();
   const [stop, setStop] = useState(true);
   const { axios } = setRole();
-  const [matchSessionData, setMatchSessionData] = useState([]);
 
-  function customSort(a, b) {
-    // betStatus 1 should come before betStatus 2
-    const betStatusOrder = { 1: 0, 0: 1, 2: 2 };
-    const aStatus = betStatusOrder[a?.betStatus] || 0;
-    const bStatus = betStatusOrder[b?.betStatus] || 0;
-    return aStatus - bStatus;
-  }
-
-  useEffect(() => {
-    if (sessionData?.length > 0) {
-      console.log("sessionData", sessionData);
-      setMatchSessionData(sessionData.sort(customSort));
-      // scrollToMessage();
-    }
-  }, [sessionData]);
   const [visible, setVisible] = useState(true);
 
   const handleLive = async () => {
     try {
-      const bettingsToUpdate = matchSessionData?.filter(
-        (v) => v?.sessionBet === true && v?.id && v?.betStatus === 1
-      );
+      // const bettingsToUpdate = matchSessionData?.filter(
+      //   (v) => v?.sessionBet === true && v?.id && v?.betStatus === 1
+      // );
 
-      const promises = bettingsToUpdate?.map(async (betting) => {
-        const body = {
-          match_id: currentMatch?.id,
-          matchType: currentMatch?.gameType,
-          id: betting?.id ? betting?.id : "",
-          selectionId: betting?.selectionId,
-          betStatus: 0,
-          sessionBet: true,
-          bet_condition: betting?.bet_condition,
-          no_rate: betting?.no_rate,
-          yes_rate: betting?.yes_rate,
-          rate_percent: betting?.rate_percent,
-          suspended: betting?.suspended,
-        };
+      // const promises = bettingsToUpdate?.map(async (betting) => {
+      //   const body = {
+      //     match_id: currentMatch?.id,
+      //     matchType: currentMatch?.gameType,
+      //     id: betting?.id ? betting?.id : "",
+      //     selectionId: betting?.selectionId,
+      //     betStatus: 0,
+      //     sessionBet: true,
+      //     bet_condition: betting?.bet_condition,
+      //     no_rate: betting?.no_rate,
+      //     yes_rate: betting?.yes_rate,
+      //     rate_percent: betting?.rate_percent,
+      //     suspended: betting?.suspended,
+      //   };
 
-        const { data } = await axios.post("betting/addBetting", body);
-        return data?.data;
-      });
+      //   const { data } = await axios.post("betting/addBetting", body);
+      //   return data?.data;
+      // });
 
-      const results = await Promise.all(promises);
-      setMatchSessionData((matchSessionData) => {
-        const updatedBettings = matchSessionData?.map((betting) => {
-          const updatedBetting = results?.find(
-            (result) =>
-              (betting.selectionId &&
-                betting.selectionId === result.selectionId) ||
-              (betting.id && betting.id === result.id)
-          );
+      // const results = await Promise.all(promises);
+      // setMatchSessionData((matchSessionData) => {
+      //   const updatedBettings = matchSessionData?.map((betting) => {
+      //     const updatedBetting = results?.find(
+      //       (result) =>
+      //         (betting.selectionId &&
+      //           betting.selectionId === result.selectionId) ||
+      //         (betting.id && betting.id === result.id)
+      //     );
 
-          return updatedBetting ? updatedBetting : betting;
-        });
-        return updatedBettings;
+      //     return updatedBetting ? updatedBetting : betting;
+      //   });
+      //   return updatedBettings;
+      // });
+
+      const { data } = await axios.post("game-match/stopAllSession", {
+        matchId: currentMatch?.id,
       });
       setStop(false);
+
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
@@ -130,7 +121,7 @@ const SessionMarket = ({
               marginLeft: "7px",
             }}
           >
-            {title}
+            {title} 
           </Typography>
           {!stopAllHide && (
             <Stop
@@ -272,9 +263,9 @@ const SessionMarket = ({
               overflowY: "scroll",
             }}
           >
-                  {console.log("matchSessionData", matchSessionData)}
-            {matchSessionData?.length > 0 &&
-              matchSessionData?.map((match, index) => (
+            {console.log("matchSessionData", sessionData)}
+            {sessionData?.length > 0 &&
+              sessionData?.map((match, index) => (
                 <Box
                   key={index}
                   //  ref={messageRef}
@@ -286,7 +277,7 @@ const SessionMarket = ({
                     hideResult={hideResult}
                     hideTotalBet={hideTotalBet}
                     // updateSessionData={updateSessionData}
-                    setMatchSessionData={setMatchSessionData}
+                    setMatchSessionData={setLocalSessionExpertOdds}
                     setLocalState={(val) => setLocalState(val)}
                     currentMatch={currentMatch}
                     setCurrentMatch={setCurrentMatch}

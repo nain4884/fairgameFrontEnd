@@ -24,9 +24,6 @@ const CustomSessionResult = ({
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
   const [confirmNoResult, setConfirmNoResults] = useState(false);
-  const innerRef = useOuterClick((ev) => {
-    onClick();
-  });
 
   const undeclareResult = async () => {
     try {
@@ -46,28 +43,28 @@ const CustomSessionResult = ({
           betId: newData?.id,
         });
 
-        setLocalState(() => {
-          const updatedBettings = currentMatch?.bettings.map(
-            (betting, index) => {
-              if (betting?.id === newData?.id) {
-                setLive(true);
-                return {
-                  ...newData,
-                  betStatus: 2,
-                  betRestult: data?.data?.score,
-                  suspended: "",
-                };
-              }
-              return betting;
-            }
-          );
-          const newBody = {
-            ...currentMatch,
-            bettings: updatedBettings,
-          };
-          dispatch(setSelectedMatch(newBody));
-          return newBody;
-        });
+        // setLocalState(() => {
+        //   const updatedBettings = currentMatch?.bettings.map(
+        //     (betting, index) => {
+        //       if (betting?.id === newData?.id) {
+        //         setLive(true);
+        //         return {
+        //           ...newData,
+        //           betStatus: 2,
+        //           betRestult: data?.data?.score,
+        //           suspended: "",
+        //         };
+        //       }
+        //       return betting;
+        //     }
+        //   );
+        //   const newBody = {
+        //     ...currentMatch,
+        //     bettings: updatedBettings,
+        //   };
+        //   // dispatch(setSelectedMatch(newBody));
+        //   return newBody;
+        // });
       }
       onClick();
       toast.success(data?.message);
@@ -166,9 +163,44 @@ const CustomSessionResult = ({
     }
   };
 
+  const handleDeclare = () => {
+    if (loading?.value) {
+      return false;
+    }
+    if (selected === "") {
+      toast.warn("Please enter score");
+    } else {
+      declareResult();
+    }
+  };
+
+  const handleUndeclare = () => {
+    if (loading?.value) {
+      return false;
+    }
+    if (selected === "") {
+      toast.warn("Please enter score");
+    } else {
+      undeclareResult()
+    }
+  }
+
+  const handleInputKeyPress = (event) => {
+    try {
+      if (event.key === "Enter") {
+          if (newData?.betStatus === 1 || newData?.betStatus === 0) {
+              handleDeclare();
+          } else if (newData?.betStatus === 2) {
+              handleUndeclare();
+          }
+      }
+  } catch (error) {
+      console.error("Error in handleInputKeyPress:", error);
+  }
+  };
+
   return (
     <Box
-      // ref={innerRef}
       sx={{
         width: "38%",
 
@@ -188,10 +220,12 @@ const CustomSessionResult = ({
       {!confirmNoResult ? (
         <>
           <TextField
+            autoFocus
             placeholder="Score"
             variant="standard"
             value={selected}
             onChange={(e) => setSelected(e?.target.value)}
+            onKeyDown={handleInputKeyPress}
             InputProps={{
               disableUnderline: true,
               sx: {
@@ -211,16 +245,7 @@ const CustomSessionResult = ({
               loading={loading}
               id="UD"
               session={true}
-              onClick={() => {
-                if (loading?.value) {
-                  return false;
-                }
-                if (selected === "") {
-                  toast.warn("Please enter score");
-                } else {
-                  undeclareResult();
-                }
-              }}
+              onClick={handleUndeclare}
             />
           ) : (
             <>
@@ -231,16 +256,7 @@ const CustomSessionResult = ({
                   session={true}
                   title={"Declare"}
                   loading={loading}
-                  onClick={() => {
-                    if (loading?.value) {
-                      return false;
-                    }
-                    if (selected === "") {
-                      toast.warn("Please enter score");
-                    } else {
-                      declareResult();
-                    }
-                  }}
+                  onClick={handleDeclare}
                 />
               ) : null}
             </>
@@ -253,7 +269,8 @@ const CustomSessionResult = ({
               loading={loading}
               id="NR"
               session={true}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setConfirmNoResults(true);
               }}
             />

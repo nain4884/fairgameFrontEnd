@@ -15,8 +15,9 @@ import Lottie from "lottie-react";
 import { LockIcon } from "../../../admin/assets";
 import SmallCustomLoader from "../../helper/SmallCustomLoader";
 import { customSort } from "../../helper/util";
+import QuickSessionMarketBox from "./QuickSessionMarketBox";
 import { useSelector } from "react-redux";
-const SessionMarket = ({
+const QuickSessionMarket = ({
   data,
   newData,
   showFast,
@@ -44,11 +45,9 @@ const SessionMarket = ({
   const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [fastBetLoading, setFastBetLoading] = useState(false);
-  const { selectedSessionBettings } = useSelector(
-    (state) => state?.matchDetails
-  );
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [localSessionBettings, setLocalSessionBettings] = useState([]);
+  const { quickSession } = useSelector((state) => state?.matchDetails);
+  const [localQuickSession, setLocalQuickSession] = useState([]);
   // const [localData, setLocalData] = useState(newData);
   // useEffect(() => {
   //   setLocalData(newData);
@@ -57,11 +56,12 @@ const SessionMarket = ({
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (selectedSessionBettings) {
-      setLocalSessionBettings(selectedSessionBettings);
+    if (quickSession) {
+      setLocalQuickSession(quickSession);
     }
-  }, [selectedSessionBettings]);
+  }, [quickSession]);
 
+  console.log(sessionOffline, "sessionOffline");
   return (
     <>
       <Box
@@ -355,8 +355,8 @@ const SessionMarket = ({
                 // overflowY: "visible",
               }}
             >
-              {localSessionBettings?.length > 0 &&
-                localSessionBettings
+              {localQuickSession?.length > 0 &&
+                localQuickSession
                   ?.slice()
                   .sort(customSort)
                   ?.map((element) => {
@@ -368,7 +368,7 @@ const SessionMarket = ({
                           display: element?.betStatus === 2 ? "none" : "block",
                         }}
                       >
-                        <SessionMarketBox
+                        <QuickSessionMarketBox
                           upcoming={upcoming}
                           closeModal={
                             [0, 2]?.includes(element?.betStatus) ? true : false
@@ -411,4 +411,4 @@ const SessionMarket = ({
   );
 };
 
-export default memo(SessionMarket);
+export default memo(QuickSessionMarket);

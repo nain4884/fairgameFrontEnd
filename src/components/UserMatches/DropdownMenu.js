@@ -63,7 +63,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
           {list?.length > 0 ? (
             list?.map((v) => {
               const getColor = (value) => {
-                if (value > 1) {
+                if (value >= 1) {
                   return "#10DC61";
                 } else if (value === v?.profit_loss && value > 1) {
                   return "#F8C851";

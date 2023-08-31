@@ -5,6 +5,8 @@ import { setRole } from "../../newStore";
 import { useEffect, useState } from "react";
 import constants from "../../components/helper/constants";
 import EventListing from "../../components/EventListing";
+import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
+import moment from "moment";
 
 const ProfitLoss = ({ selected, visible }) => {
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
@@ -16,7 +18,10 @@ const ProfitLoss = ({ selected, visible }) => {
   const [betData, setBetData] = useState([]);
   const [sessionBetData, setSessionBetData] = useState([]);
   let { axios } = setRole();
-
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [sessionBets, setSessionBet] = useState([]);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     // alert(1)
     getEventList();
@@ -24,6 +29,12 @@ const ProfitLoss = ({ selected, visible }) => {
 
   async function getEventList() {
     var payload = {};
+    if (startDate) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
+    }
+    if (endDate) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
+    }
     try {
       const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
       // console.log(data.data[0], 'datadatadatadata')
@@ -33,16 +44,23 @@ const ProfitLoss = ({ selected, visible }) => {
     }
   }
 
-  const handleReport = (eventType,pageno) => {
-    getReport(eventType,pageno);
+  const handleReport = (eventType, pageno) => {
+    getReport(eventType, pageno);
   };
 
-  const getReport = async (eventType,pageno) => {
+  const getReport = async (eventType, pageno) => {
+    setReportData([]);
     var payload = {
       skip: pageno,
       limit: pageLimit,
       gameType: eventType,
     };
+    if (startDate) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
+    }
+    if (endDate) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
+    }
     try {
       const { data } = await axios.post(`/betting/profitLossReport`, payload);
       // console.log(data.data[0], 'datadatadatadata')l
@@ -55,21 +73,40 @@ const ProfitLoss = ({ selected, visible }) => {
     }
   };
 
-  const handleBet = (id) => {
+  const handleBet = (value) => {
     // alert(id)
-    getBets(id);
+    getBets(value);
   };
 
-  async function getBets(id) {
+  async function getBets(value) {
     setBetData([]);
+    if (value?.type === "session_bet" && value?.betId === "") {
+      setSessionBet([]);
+    }
     setSessionBetData([]);
     var payload = {
-      match_id: id,
+      [value?.type === "session_bet" && value?.betId === ""
+        ? "matchId"
+        : "match_id"]: value?.match_id,
+      gameType: value?.eventType,
     };
-
+    if (value?.betId !== "") {
+      payload.bet_id = value?.betId;
+      payload.sessionBet = true;
+    }
+    if (startDate) {
+      payload.from = moment(startDate).format("YYYY-MM-DD");
+    }
+    if (endDate) {
+      payload.to = moment(endDate).format("YYYY-MM-DD");
+    }
     try {
       const { data } = await axios.post(
-        `/betting/getResultBetProfitLoss`,
+        `/betting/${
+          value?.type === "session_bet" && value?.betId === ""
+            ? "sessionProfitLossReport"
+            : "getResultBetProfitLoss"
+        }`,
         payload
       );
       const newData = data?.data?.filter((v) => v.sessionBet !== true);
@@ -86,7 +123,7 @@ const ProfitLoss = ({ selected, visible }) => {
           match_id: v.match_id,
           bet_id: v.bet_id,
           result: "pending",
-          team_bet: v.team_bet,
+          team_bet: v.team_bet || v.teamBet,
           odds: v.odds,
           win_amount: null,
           loss_amount: null,
@@ -97,21 +134,44 @@ const ProfitLoss = ({ selected, visible }) => {
           marketType: v.marketType,
           myProfitLoss: v.myProfitLoss,
           amount: v.amount,
+          deleted_reason: v.deleted_reason,
         }))
       );
 
-      const newRes = data?.data?.filter((v) => v.sessionBet === true);
+      if (value?.type === "session_bet" && value.betId === "") {
+        setSessionBet(data?.data[0]);
+      } else {
+        const newRes = data?.data?.filter((v) => v.sessionBet === true);
 
-      setSessionBetData(newRes?.map((v) => ({ ...v, bet_type: v.betType })));
+        setSessionBetData(newRes?.map((v) => ({ ...v, bet_type: v.betType })));
+      }
     } catch (e) {
       console.log(e);
     }
   }
+
+  const handleClick = (e) => {
+    try {
+      setShow(false);
+      getEventList();
+    } catch (e) {
+      console.log("error", e?.message);
+    }
+  };
+
   return (
-    <Box sx={{width: "100%", paddingX: "1vw"}}>
+    <Box sx={{ width: "100%", paddingX: "1vw" }}>
       {visible ? (
         <>
-       
+          <YellowHeaderProfitLoss
+            title="PROFIT/LOSS"
+            type="user"
+            onClick={handleClick}
+            setEndDate={setEndDate}
+            endDate={endDate}
+            startDate={startDate}
+            setStartDate={setStartDate}
+          />
           <Typography
             sx={{
               fontSize: { mobile: "12px", laptop: "15px" },
@@ -125,6 +185,9 @@ const ProfitLoss = ({ selected, visible }) => {
             {"PROFIT/LOSS REPORT"}
           </Typography>
           <ProfitLossComponent
+            sessionBets={sessionBets}
+            show={show}
+            setShow={setShow}
             eventData={eventData}
             reportData={reportData}
             betData={betData}
@@ -151,6 +214,9 @@ const ProfitLoss = ({ selected, visible }) => {
             {"PROFIT/LOSS REPORT"}
           </Typography>
           <ProfitLossComponent
+            sessionBets={sessionBets}
+            show={show}
+            setShow={setShow}
             eventData={eventData}
             reportData={reportData}
             betData={betData}
@@ -158,8 +224,8 @@ const ProfitLoss = ({ selected, visible }) => {
             handleReport={handleReport}
             handleBet={handleBet}
             currentPage={currentPage}
-              pageCount={pageCount}
-              setCurrentPage={setCurrentPage}
+            pageCount={pageCount}
+            setCurrentPage={setCurrentPage}
           />
         </Background>
       )}
