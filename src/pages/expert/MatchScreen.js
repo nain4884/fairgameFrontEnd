@@ -130,6 +130,28 @@ const MatchScreen = () => {
     }
   }, [state?.id]);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        // User returned to the web browser
+        if (state?.id) {
+          // if (socket && socket.connected) {
+          //   socket.emit("checkConnection");
+          // }
+          getSingleMatch(state?.id);
+          getAllBetsData(state?.id);
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
   const [liveSessionData, setLiveSessionData] = useState([]);
   // useEffect(() => {
   //   if (localState?.id) {
