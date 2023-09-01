@@ -1297,7 +1297,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           // if (socket && socket.connected) {
           //   socket.emit("checkConnection");
           // }
-          // getThisMatch(matchId);
+          getThisMatch(matchId);
         }
       }
     };
