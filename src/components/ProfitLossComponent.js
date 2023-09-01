@@ -527,7 +527,12 @@ const ProfitLossComponent = ({
               <StyledImage
                 onClick={(e) => {
                   e.stopPropagation();
-                  setShowSessions((prev) => !prev);
+                  if (
+                    selectedId?.id === item?.matchId &&
+                    selectedId?.type === "session_bet"
+                  ) {
+                    setShowSessions((prev) => !prev);
+                  }
                 }}
                 src={ArrowDown}
                 sx={{
@@ -806,7 +811,9 @@ const ProfitLossComponent = ({
               <StyledImage
                 onClick={(e) => {
                   e.stopPropagation();
-                  setShowSessionBets((prev) => !prev);
+                  if (selectedId?.betId === item?.betid) {
+                    setShowSessionBets((prev) => !prev);
+                  }
                 }}
                 src={ArrowDown}
                 sx={{
