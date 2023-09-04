@@ -1411,9 +1411,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                     width: "98%",
                   }}
                 >
-                  {matchDetail?.manualSessionActive && (
-                    <SessionBetSeperate allBetsData={sessionBets} mark />
-                  )}
+                  <SessionBetSeperate allBetsData={sessionBets} mark />
                   {IObets.length > 0 && (
                     <AllRateSeperate
                       allBetsData={IObets?.filter((v) =>
@@ -1512,10 +1510,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   }
                   mark
                 />
-                {(matchDetail?.manualSessionActive ||
-                  matchDetail?.apiSessionActive) && (
-                  <SessionBetSeperate allBetsData={sessionBets} mark />
-                )}
+                <SessionBetSeperate allBetsData={sessionBets} mark />
               </Box>
             </Box>
           )}

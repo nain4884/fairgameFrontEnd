@@ -244,13 +244,14 @@ const FullAllBets = ({
                   style={{ display: "flex", position: "relative" }}
                   onClick={(e) => {
                     let x = [...selectedData];
-                    if (x.includes(k)) {
+                    if (x.length > 0 && x.includes(i?.values[0]?.id)) {
                       const updatedSelectedBetData = selectedBetData.filter(
                         (id) => id !== i?.values[0].id
                       );
                       setSelectedBetData(updatedSelectedBetData);
                       x.splice(x.indexOf(k), 1);
-                      setSelectedData([...x]);
+                      const updatedX = x.filter((v) => v !== i?.values[0]?.id);
+                      setSelectedData([...x, updatedX]);
                       e.stopPropagation();
                     } else {
                       if (!i?.values[0].deleted_reason) {
@@ -259,7 +260,7 @@ const FullAllBets = ({
                           ...selectedBetData,
                           i?.values[0].id,
                         ]);
-                        x.push(k);
+                        x.push(i?.values[0]?.id);
                         setSelectedData([...x]);
                       }
                     }
@@ -289,7 +290,7 @@ const FullAllBets = ({
                         {formattedNum}
                       </Typography>
                     )}
-                    {mode && !selectedData.includes(k) && (
+                    {mode && !selectedData.includes(i?.values[0]?.id) && (
                       <Box
                         sx={{
                           width: "15px",
@@ -299,7 +300,7 @@ const FullAllBets = ({
                         }}
                       ></Box>
                     )}
-                    {mode && selectedData.includes(k) && (
+                    {mode && selectedData.includes(i?.values[0]?.id) && (
                       <Box sx={{}}>
                         <img
                           src={CHECK}
