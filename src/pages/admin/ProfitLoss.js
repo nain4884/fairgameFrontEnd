@@ -126,10 +126,6 @@ const ProfitLoss = () => {
   // }, [profitLossReportPage]);
 
   async function getEventList() {
-    setEventData([])
-    setBetData([]);
-    setSessionBet([])
-    setSessionBetData([]);
     var payload = {};
     if (search?.id) {
       payload.userId = search?.id;
@@ -151,11 +147,11 @@ const ProfitLoss = () => {
   }
 
   const handleReport = (eventType, pageno) => {
-    setReportData([])
     getReport(eventType, pageno);
   };
 
   const getReport = async (eventType, pageno) => {
+    setReportData([]);
     var payload = {
       gameType: eventType,
       skip: pageno,
@@ -190,12 +186,14 @@ const ProfitLoss = () => {
 
   async function getBets(value) {
     setBetData([]);
-    if(value?.type === "session_bet" && value?.betId===''){
-      setSessionBet([])
+    if (value?.type === "session_bet" && value?.betId === "") {
+      setSessionBet([]);
     }
     setSessionBetData([]);
     var payload = {
-      [value?.type === "session_bet" && value?.betId===''  ? "matchId" : "match_id"]: value?.match_id,
+      [value?.type === "session_bet" && value?.betId === ""
+        ? "matchId"
+        : "match_id"]: value?.match_id,
       gameType: value?.eventType,
     };
     if (value?.betId !== "") {
@@ -215,15 +213,41 @@ const ProfitLoss = () => {
     try {
       const { data } = await axios.post(
         `/betting/${
-          value?.type === "session_bet" && value?.betId==='' 
+          value?.type === "session_bet" && value?.betId === ""
             ? "sessionProfitLossReport"
             : "getResultBetProfitLoss"
         }`,
         payload
       );
-      setBetData(data?.data?.filter((v) => v.sessionBet !== true));
+      const newData = data?.data?.filter((v) => v.sessionBet !== true);
+
+      setBetData(
+        newData?.map((v) => ({
+          id: v.id,
+          isActive: true,
+          createAt: v.createAt,
+          updateAt: v.createAt,
+          createdBy: null,
+          deletedAt: null,
+          user_id: null,
+          match_id: v.match_id,
+          bet_id: v.bet_id,
+          result: "pending",
+          team_bet: v.team_bet || v.teamBet,
+          odds: v.odds,
+          win_amount: null,
+          loss_amount: null,
+          bet_type: v.betType,
+          country: null,
+          ip_address: null,
+          rate: null,
+          marketType: v.marketType,
+          myProfitLoss: v.myProfitLoss,
+          amount: v.amount,
+          deleted_reason: v.deleted_reason,
+        }))
+      );
       if (value?.type === "session_bet" && value.betId === "") {
-      
         setSessionBet(data?.data[0]);
       } else {
         setSessionBetData(data?.data?.filter((v) => v.sessionBet === true));
