@@ -920,11 +920,14 @@ const DeleteBet = ({}) => {
       dispatch(setAllBetRate(data?.data?.data));
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER", "QuickBookmaker0",
-          "QuickBookmaker1",
-          "QuickBookmaker2",].includes(
-            b?.marketType
-          )
+          ![
+            "MATCH ODDS",
+            "BOOKMAKER",
+            "MANUAL BOOKMAKER",
+            "QuickBookmaker0",
+            "QuickBookmaker1",
+            "QuickBookmaker2",
+          ].includes(b?.marketType)
       );
       setSessionBets(bets || []);
       dispatch(setAllSessionBets(bets));
@@ -939,6 +942,22 @@ const DeleteBet = ({}) => {
       getAllBetsData(matchId);
     }
   }, [matchId]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        if (matchId !== undefined) {
+          getThisMatch(matchId);
+          getAllBetsData(matchId);
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const handleDeleteBet = async (value) => {
     let data = {

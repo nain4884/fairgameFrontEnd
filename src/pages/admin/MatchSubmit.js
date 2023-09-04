@@ -73,6 +73,22 @@ const MatchSubmit = ({}) => {
     }
   }, [matchIds]);
 
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        if (matchIds !== undefined) {
+          getAllBetsData();
+          getThisMatch();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [matchIds]);
+
   // useEffect(() => {
   //   if (socket && socket.connected) {
   //     socket.on("newMessage", (value) => {
@@ -892,11 +908,14 @@ const MatchSubmit = ({}) => {
       dispatch(setAllBetRate(data?.data?.data));
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER", "QuickBookmaker0",
-          "QuickBookmaker1",
-          "QuickBookmaker2",].includes(
-            b?.marketType
-          )
+          ![
+            "MATCH ODDS",
+            "BOOKMAKER",
+            "MANUAL BOOKMAKER",
+            "QuickBookmaker0",
+            "QuickBookmaker1",
+            "QuickBookmaker2",
+          ].includes(b?.marketType)
       );
       setSessionBets(bets || []);
       dispatch(setAllSessionBets(bets));
