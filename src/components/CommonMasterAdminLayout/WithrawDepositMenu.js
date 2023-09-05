@@ -16,10 +16,11 @@ const DropdownMenu2 = ({
   fTextStyle,
   getWalletAccountDetails,
 }) => {
+  const navigate = useNavigate();
   useEffect(() => {
     getWalletAccountDetails();
-  }, []);
-  const navigate = useNavigate();
+  }, [open]);
+
   const classes = {
     Menusx: {
       marginTop: { mobile: "15px", laptop: "30px", tablet: "18px" },

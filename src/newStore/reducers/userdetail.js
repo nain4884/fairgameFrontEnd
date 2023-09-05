@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   details: null,
   isModalOpen: false,
-  walletAccountDetails: null,
 };
 
 const userDetailSlice = createSlice({
@@ -16,13 +15,10 @@ const userDetailSlice = createSlice({
     setModalOpen: (state, action) => {
       state.isModalOpen = action.payload;
     },
-    setWalletAccountDetails: (state, action) => {
-      state.walletAccountDetails = action.payload;
-    },
   },
 });
 
-export const { setUserDet, setModalOpen, setWalletAccountDetails } =
+export const { setUserDet, setModalOpen } =
   userDetailSlice.actions;
 
 export default userDetailSlice.reducer;

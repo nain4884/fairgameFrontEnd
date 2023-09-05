@@ -13,7 +13,6 @@ import ListHeaderT from "./ListHeaderT";
 import { saveAs } from "file-saver";
 import CustomLoader from "./helper/CustomLoader";
 import Footer from "./Footer";
-import { setWalletAccountDetails } from "../newStore/reducers/userdetail";
 
 const AccountList = () => {
   const dispatch = useDispatch();
@@ -34,7 +33,6 @@ const AccountList = () => {
 
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [pageLimit, setPageLimit] = useState(constants.listOfClientCountLimit);
-  const [walletAccountDetail, setWalletAccountDetail] = useState(null);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { currentPageNo } = useSelector((state) => state?.auth);
   const [loading, setLoading] = useState(false);
@@ -46,7 +44,6 @@ const AccountList = () => {
           username ? `userName=${username}` : ""
         }&page=${currentPageNo}&limit=${pageLimit}`
       );
-      getWalletAccountDetails();
       if (data?.data?.data) {
         data?.data?.data.map((element) => {
           let roleDetail = roles.find(findThisRole);
@@ -74,19 +71,6 @@ const AccountList = () => {
       console.log(e);
     }
   }
-
-  const getWalletAccountDetails = async () => {
-    try {
-      const resp = await axios.get(`/fair-game-wallet/getWalletAccountDetails`);
-      if (resp.status == 200) {
-        dispatch(setWalletAccountDetails(resp?.data?.data));
-        setWalletAccountDetail(resp?.data?.data);
-      }
-    } catch (err) {
-      console.log(err);
-      console.log(err);
-    }
-  };
 
   function callPage(val) {
     dispatch(setPage(parseInt(val)));
