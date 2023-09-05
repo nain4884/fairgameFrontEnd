@@ -35,7 +35,7 @@ const MatchOdds = ({
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
   const [matchOddRateLive, setMatchOddRateLive] = useState(false);
-  const [localQuickBookmaker, setLocalQuickBookmaker] = useState([false]);
+  const [localQuickBookmaker, setLocalQuickBookmaker] = useState([]);
 
   // const [localSession, setLocalSession] = useState([]);
   // const [localQuickSession, setLocalQuickSession] = useState([]);
@@ -224,7 +224,7 @@ const MatchOdds = ({
           showDely={true}
           lock={
             data?.bookmakerLive?.length > 0 &&
-            data?.bookmakerLive[0]?.betStatus === 0
+              data?.bookmakerLive[0]?.betStatus === 0
               ? true
               : false
           }
