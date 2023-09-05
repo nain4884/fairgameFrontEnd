@@ -282,6 +282,7 @@ export const SocketProvider = ({ children }) => {
               manualSessionActive: data?.manualSessionActive,
               bookmakers: updatedArray1,
             };
+            dispatch(setQuickBookmaker(updatedArray1));
             dispatch(setSelectedMatch(newBody));
             return newBody;
           }
