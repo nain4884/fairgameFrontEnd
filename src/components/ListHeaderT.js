@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-const ListHeaderT = () => {
+const ListHeaderT = ({userName}) => {
     return (
       <Box
         sx={{
@@ -25,7 +25,7 @@ const ListHeaderT = () => {
           }}
         >
           <Typography sx={{ color: "white", fontSize: { laptop: "12px", mobile: "9px" }, }}>
-            User Details
+            {userName ?? "User Details"}
           </Typography>
         </Box>
         <Box

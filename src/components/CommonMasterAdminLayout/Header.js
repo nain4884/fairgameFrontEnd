@@ -118,9 +118,11 @@ const CustomHeader = ({}) => {
     userAllMatches,
     multiSelectedMatches,
   } = useSelector((state) => state?.matchDetails);
+  const  walletAccountDetails = useSelector((state) => state?.userdetail);
   const { currentOdd } = useSelector((state) => state?.expertMatchDetails);
 
   const { socket, socketMicro } = useContext(SocketContext);
+  const [walletAccountDetail, setWalletAccountDetail] = useState(null);
   const [notificationData, setNotificationData] = useState(null);
   const [localAllmatches, setLocalAllMatches] = useState([]);
   const [currentMatch, setCurrentMatch] = useState(null);
@@ -160,6 +162,9 @@ const CustomHeader = ({}) => {
     if (multiSelectedMatches) {
       setMatchData(multiSelectedMatches);
     }
+    if (walletAccountDetails) {
+      setWalletAccountDetail(walletAccountDetails);
+    }
   }, [
     allBetRates,
     allSessionBets,
@@ -170,6 +175,7 @@ const CustomHeader = ({}) => {
     userAllMatches,
     currentOdd,
     multiSelectedMatches,
+    walletAccountDetails,
   ]);
 
   function getSessionStorageItemAsync(key) {
@@ -1134,7 +1140,10 @@ const CustomHeader = ({}) => {
                 const updated = prevMatchData.map((item) => {
                   if (item?.id === data?.matchId) {
                     const updatedBettings = item?.bettings?.map((betting) => {
-                      if (betting?.selectionId !== null && betting.betStatus!==2) {
+                      if (
+                        betting?.selectionId !== null &&
+                        betting.betStatus !== 2
+                      ) {
                         return { ...betting, betStatus: 0 };
                       }
                       return betting;
@@ -1955,9 +1964,21 @@ const CustomHeader = ({}) => {
     }
   };
 
+  const getWalletAccountDetails = async () => {
+    try {
+      const resp = await axios.get(`/fair-game-wallet/getWalletAccountDetails`);
+      if (resp.status == 200) {
+        setWalletAccountDetail(resp?.data?.data);
+      }
+    } catch (err) {
+      console.log(err);
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     handleGetNotification();
-
+    getWalletAccountDetails();
     getUserDetail(nav);
   }, []);
   const [balance, setBalance] = useState(0);
@@ -2192,6 +2213,8 @@ const CustomHeader = ({}) => {
         open={Boolean(anchor1)}
         anchorEl={anchor1}
         menutItems2={menutItems2}
+        walletAccountDetail={walletAccountDetail}
+        getWalletAccountDetails={getWalletAccountDetails}
         // setShow={setShow}
         title={"Wallet"}
         handleClose={() => {

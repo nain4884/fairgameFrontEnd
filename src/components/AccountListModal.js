@@ -122,6 +122,7 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
             borderBottomRightRadius: "0px",
             borderBottomLeftRadius: "0px",
             overflow: "hidden",
+            overflowY: "auto",
             border: "2px solid white",
             background: "#F8C851",
           },

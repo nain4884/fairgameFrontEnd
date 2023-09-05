@@ -1,18 +1,19 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Excel, Pdf, } from "../admin/assets";
+import { Excel, Pdf } from "../admin/assets";
 import SearchInput from "./SearchInput";
 import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
 import constants from "./helper/constants";
-import { setPage, } from "../newStore/reducers/auth";
+import { setPage } from "../newStore/reducers/auth";
 import AccountListRow from "./AccountListRow";
 import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
 import { saveAs } from "file-saver";
 import CustomLoader from "./helper/CustomLoader";
 import Footer from "./Footer";
+import { setWalletAccountDetails } from "../newStore/reducers/userdetail";
 
 const AccountList = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const AccountList = () => {
 
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [pageLimit, setPageLimit] = useState(constants.listOfClientCountLimit);
+  const [walletAccountDetail, setWalletAccountDetail] = useState(null);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const { currentPageNo } = useSelector((state) => state?.auth);
   const [loading, setLoading] = useState(false);
@@ -40,9 +42,11 @@ const AccountList = () => {
   async function getListOfUser(username) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?${username ? `userName=${username}` : ""
+        `/fair-game-wallet/getAllUser?${
+          username ? `userName=${username}` : ""
         }&page=${currentPageNo}&limit=${pageLimit}`
       );
+      getWalletAccountDetails();
       if (data?.data?.data) {
         data?.data?.data.map((element) => {
           let roleDetail = roles.find(findThisRole);
@@ -58,7 +62,7 @@ const AccountList = () => {
         setPageCount(
           Math.ceil(
             parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-            pageLimit
+              pageLimit
           )
         );
         getUerLogged();
@@ -70,6 +74,20 @@ const AccountList = () => {
       console.log(e);
     }
   }
+
+  const getWalletAccountDetails = async () => {
+    try {
+      const resp = await axios.get(`/fair-game-wallet/getWalletAccountDetails`);
+      if (resp.status == 200) {
+        dispatch(setWalletAccountDetails(resp?.data?.data));
+        setWalletAccountDetail(resp?.data?.data);
+      }
+    } catch (err) {
+      console.log(err);
+      console.log(err);
+    }
+  };
+
   function callPage(val) {
     dispatch(setPage(parseInt(val)));
   }
@@ -88,7 +106,8 @@ const AccountList = () => {
         percent_profit_loss: profitLoss?.toFixed(2),
         totalCommissions: "",
         exposurelimit: "",
-        availablebalancesum: data?.data?.avabalancesum - data?.data?.exposuresum,
+        availablebalancesum:
+          data?.data?.avabalancesum - data?.data?.exposuresum,
         // availablebalancesum: data?.data?.balancesum,
       });
     } catch (e) {
@@ -124,7 +143,6 @@ const AccountList = () => {
 
   return (
     <>
-
       {loading ? (
         <Box
           sx={{
@@ -192,7 +210,7 @@ const AccountList = () => {
                       return (
                         <AccountListRow
                           key={i}
-                             showCReport={true}
+                          showCReport={true}
                           callProfile={true}
                           showUserDetails={true}
                           showOptions={true}
@@ -224,7 +242,6 @@ const AccountList = () => {
     </>
   );
 };
-
 
 const ListH = ({ getListOfUser, setPageCount, handleExport }) => {
   return (
