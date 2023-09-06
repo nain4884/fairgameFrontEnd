@@ -57,6 +57,7 @@ import {
   setManualBookMarkerRates,
   setSelectedMatch,
   setSessionResults,
+  setUpdateAdminPlayList,
   setUserAllMatches,
 } from "../../newStore/reducers/matchDetails";
 import { a } from "@react-spring/web";
@@ -73,7 +74,7 @@ import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
 import { customSort } from "../../components/helper/util";
 
 var match_id;
-const CustomHeader = ({ }) => {
+const CustomHeader = ({}) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -550,7 +551,10 @@ const CustomHeader = ({ }) => {
                 if (currentMatch?.id === value?.matchId) {
                   setLocalSessionExpertOdds((prev) => {
                     const updatedBettings = prev?.map((betting) => {
-                      if (betting?.selectionId !== null && betting?.betStatus !== 2) {
+                      if (
+                        betting?.selectionId !== null &&
+                        betting?.betStatus !== 2
+                      ) {
                         return { ...betting, betStatus: 0 };
                       }
                       return betting;
@@ -927,6 +931,7 @@ const CustomHeader = ({ }) => {
 
               return newUpdatedPrev;
             });
+            dispatch(setUpdateAdminPlayList());
 
             // setLocalAllMatches((prev) => {
             //   const filteredMatches = prev.filter(
@@ -946,6 +951,7 @@ const CustomHeader = ({ }) => {
             setLocalAllMatches((prev) => {
               const newBody = [value, ...prev];
               dispatch(setUserAllMatches(newBody));
+              dispatch(setUpdateAdminPlayList());
               return newBody;
             });
 
@@ -1186,7 +1192,7 @@ const CustomHeader = ({ }) => {
   }, []);
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => { };
+    const handleBeforeUnload = (event) => {};
 
     const handleLoad = (event) => {
       let jwtS = sessionStorage.getItem("JWTexpert");
@@ -1346,7 +1352,7 @@ const CustomHeader = ({ }) => {
         <AddNotificationModal
           setVisible={setVisible}
           visible={visible}
-          onClick={() => { }}
+          onClick={() => {}}
           onDone={(value) => {
             handleAddNotification(value);
           }}
@@ -1597,8 +1603,8 @@ const CustomHeader = ({ }) => {
                   activeUser == 1
                     ? "Session"
                     : activeUser == 2
-                      ? "Bookmaker"
-                      : "Betfair"
+                    ? "Bookmaker"
+                    : "Betfair"
                 }
                 value1={localCurrentUser?.userName || ""}
               />

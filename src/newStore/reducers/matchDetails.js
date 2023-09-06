@@ -27,6 +27,7 @@ const initialState = {
   quickSession: [],
   quickBookmaker: [],
   liveSessionStatus: [],
+  updateAdminPlayList: false
 };
 
 export const logoutMatchDetails = createAction("auth/logoutReset");
@@ -189,6 +190,9 @@ const matchDetails = createSlice({
     setLiveSessionStatus: (state, action) => {
       state.liveSessionStatus = action.payload;
     },
+    setUpdateAdminPlayList: (state) => {
+      state.updateAdminPlayList = !state.updateAdminPlayList
+    }
   },
   extraReducers: (builder) => {
     // This will handle the reset on logout
@@ -230,7 +234,8 @@ export const {
   setMultiSelectedMatch,
   setQuickSession,
   setLiveSessionStatus,
-  setQuickBookmaker
+  setQuickBookmaker,
+  setUpdateAdminPlayList
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

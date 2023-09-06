@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { } from "@mui/material";
 // import "../index.css";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import constants from "./helper/constants";
 import { setRole } from "../newStore";
 import CustomLoader from "./helper/CustomLoader";
@@ -25,9 +25,11 @@ const AdminInPlay = () => {
   const dispatch = useDispatch();
   const { axios } = setRole();
 
+  const updateAdminPlayList = useSelector(state=>state.matchDetails)
+
   useEffect(() => {
     getAllMatch();
-  }, [currentPage]);
+  }, [currentPage, updateAdminPlayList]);
 
   // useEffect(() => {
   //   if (socket && socket.connected) {
