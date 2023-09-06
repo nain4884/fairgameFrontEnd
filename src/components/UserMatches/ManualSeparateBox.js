@@ -321,14 +321,6 @@ const ManualSeprateBox = ({
           loading: true,
           type: false,
         });
-        setTimeout(() => {
-          setCanceled({
-            value: true,
-            msg: "",
-            loading: true,
-            type: false,
-          });
-        }, 1500);
       }
       setIsPopoverOpen(false);
       let response = await axios.post(`/betting/placeBet`, payload);
@@ -358,7 +350,7 @@ const ManualSeprateBox = ({
           loading: false,
           type: false,
         });
-      }, 2000);
+      }, 1500);
       setIsPopoverOpen(false);
       // navigate("/matchDetail")
     } catch (e) {
