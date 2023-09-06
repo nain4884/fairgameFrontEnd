@@ -34,14 +34,14 @@ const SessionComponentMatches = ({
             setShowSessionBets((prev) => !prev);
           } else {
             setShowSessionBets(true);
+            getBetReport({
+              eventType: item?.eventType,
+              match_id: item?.matchid || item?.matchId,
+              type: "session_bet",
+              betId: item?.betid,
+              sessionBet: true,
+            });
           }
-          getBetReport({
-            eventType: item?.eventType,
-            match_id: item?.matchid || item?.matchId,
-            type: "session_bet",
-            betId: item?.betid,
-            sessionBet: true,
-          });
           // }
         }}
         sx={{

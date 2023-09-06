@@ -144,14 +144,14 @@ const RowComponentMatches = ({
               setShowBets((prev) => !prev);
             } else {
               setShowBets(true);
+              getBetReport({
+                eventType: item?.eventType,
+                match_id: item?.matchId,
+                type: "all_bet",
+                betId: "",
+                sessionBet: false,
+              });
             }
-            getBetReport({
-              eventType: item?.eventType,
-              match_id: item?.matchId,
-              type: "all_bet",
-              betId: "",
-              sessionBet: false,
-            });
             // }
           }}
           sx={{
@@ -248,14 +248,14 @@ const RowComponentMatches = ({
               setShowSessions((prev) => !prev);
             } else {
               setShowSessions(true);
+              getBetReport({
+                eventType: item?.eventType,
+                match_id: item?.matchId,
+                type: "session_bet",
+                betId: "",
+                sessionBet: false,
+              });
             }
-            getBetReport({
-              eventType: item?.eventType,
-              match_id: item?.matchId,
-              type: "session_bet",
-              betId: "",
-              sessionBet: false,
-            });
             // }
           }}
           sx={{
