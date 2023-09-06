@@ -15,10 +15,13 @@ const DropdownMenu2 = ({
   fContainerStyle,
   fTextStyle,
   getWalletAccountDetails,
+  currentUser,
 }) => {
   const navigate = useNavigate();
   useEffect(() => {
-    getWalletAccountDetails();
+    if (currentUser?.userName === "FAIRGAMEWALLET") {
+      getWalletAccountDetails();
+    }
   }, [open]);
 
   const classes = {

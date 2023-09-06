@@ -118,7 +118,6 @@ const CustomHeader = ({}) => {
     userAllMatches,
     multiSelectedMatches,
   } = useSelector((state) => state?.matchDetails);
-  const  walletAccountDetails = useSelector((state) => state?.userdetail);
   const { currentOdd } = useSelector((state) => state?.expertMatchDetails);
 
   const { socket, socketMicro } = useContext(SocketContext);
@@ -162,9 +161,6 @@ const CustomHeader = ({}) => {
     if (multiSelectedMatches) {
       setMatchData(multiSelectedMatches);
     }
-    if (walletAccountDetails) {
-      setWalletAccountDetail(walletAccountDetails);
-    }
   }, [
     allBetRates,
     allSessionBets,
@@ -175,7 +171,6 @@ const CustomHeader = ({}) => {
     userAllMatches,
     currentOdd,
     multiSelectedMatches,
-    walletAccountDetails,
   ]);
 
   function getSessionStorageItemAsync(key) {
@@ -1978,7 +1973,6 @@ const CustomHeader = ({}) => {
 
   useEffect(() => {
     handleGetNotification();
-    getWalletAccountDetails();
     getUserDetail(nav);
   }, []);
   const [balance, setBalance] = useState(0);
@@ -2215,6 +2209,7 @@ const CustomHeader = ({}) => {
         menutItems2={menutItems2}
         walletAccountDetail={walletAccountDetail}
         getWalletAccountDetails={getWalletAccountDetails}
+        currentUser={currentUser}
         // setShow={setShow}
         title={"Wallet"}
         handleClose={() => {
