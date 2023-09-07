@@ -297,18 +297,6 @@ const Odds = ({
             </Box>
           </Box>
         </Box>
-
-        {visible && showFastTimeBox && (
-          <Box>
-            <FastTimePlaceBet
-              typeOfBet={typeOfBet}
-              session={session}
-              setFastAmount={setFastAmount}
-              selectedFastAmount={fastAmount}
-              setShowFastTimeBox={setShowFastTimeBox}
-            />
-          </Box>
-        )}
         {visible && (
           <Box
             sx={{ color: "black", position: "relative", overflow: "hidden" }}
@@ -706,6 +694,17 @@ const Odds = ({
                 )}
               </>
             )}
+          </Box>
+        )}
+        {visible && showFastTimeBox && (
+          <Box>
+            <FastTimePlaceBet
+              typeOfBet={typeOfBet}
+              session={session}
+              setFastAmount={setFastAmount}
+              selectedFastAmount={fastAmount}
+              setShowFastTimeBox={setShowFastTimeBox}
+            />
           </Box>
         )}
       </Box>
