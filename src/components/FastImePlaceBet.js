@@ -96,15 +96,17 @@ const FastTimePlaceBet = ({
           overflow: "hidden",
           display: "flex",
 
-          justifyContent: "center",
-          flexDirection: "column",
+          // justifyContent: "center",
+          flexDirection: "row",
+          alignItems: "center",
+          paddingY: "8px",
         }}
       >
         {matchesMobile && (
           <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }} />
         )}
 
-        <Box
+        {/* <Box
           sx={{
             display: "flex",
             justifyContent: "space-between",
@@ -205,19 +207,22 @@ const FastTimePlaceBet = ({
               </Typography>
             </button>
           </Box>
-        </Box>
+        </Box> */}
         {
           <>
             <Box
               sx={{
                 display: "flex",
-                marginTop: "15px",
+                // marginTop: "15px",
                 marginX: "2px",
-                gap: { mobile: 0, laptop: 1, tablet: 1 },
+                flexWrap: "wrap",
+                maxWidth: "50%",
+                flex: 1,
+                gap: { mobile: "3px", laptop: 1, tablet: 1 },
               }}
             >
               {buttonList.length > 0 &&
-                buttonList?.slice(0, 4)?.map((v, index) => (
+                buttonList?.map((v, index) => (
                   <NumberData
                     key={index}
                     containerStyle={{
@@ -233,19 +238,10 @@ const FastTimePlaceBet = ({
                     setShowFastTimeBox={setShowFastTimeBox}
                     typeOfBet={typeOfBet}
                     setFastAmount={setFastAmount}
+                    backgroundColor={"#A7DCFF"}
                   />
                 ))}
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                marginY: "8px",
-                marginX: "2px",
-
-                gap: { mobile: 0, laptop: 1, tablet: 1 },
-              }}
-            >
-              {buttonList.length > 0 &&
+              {/* {buttonList.length > 0 &&
                 buttonList?.slice(4, 8)?.map((v, index) => (
                   <NumberData
                     key={index}
@@ -262,9 +258,84 @@ const FastTimePlaceBet = ({
                     setShowFastTimeBox={setShowFastTimeBox}
                     typeOfBet={typeOfBet}
                     setFastAmount={setFastAmount}
+                    backgroundColor={"#A7DCFF"}
+                  />
+                ))} */}
+            </Box>
+            {/* <Box
+              sx={{
+                display: "flex",
+                marginY: "8px",
+                marginX: "2px",
+
+                gap: { mobile: 0, laptop: 1, tablet: 1 },
+              }}
+            >
+              
+            </Box> */}
+            <Box
+              sx={{
+                display: "flex",
+                // marginY: "8px",
+                marginX: "2px",
+                flexWrap: "wrap",
+                maxWidth: "50%",
+                flex: 1,
+                gap: { mobile: "3px", laptop: 1, tablet: 1 },
+              }}
+            >
+              {buttonList.length > 0 &&
+                buttonList?.map((v, index) => (
+                  <NumberData
+                    key={index}
+                    containerStyle={{
+                      marginLeft: "2px",
+                      flex: 1,
+                      background: selectedFastAmount === v && "#FF4949",
+                      borderRadius: "5px",
+                      border: "2px solid white",
+                    }}
+                    value={v.value}
+                    lable={v.lable}
+                    session={session}
+                    setShowFastTimeBox={setShowFastTimeBox}
+                    typeOfBet={typeOfBet}
+                    setFastAmount={setFastAmount}
+                    backgroundColor={"#FFB5B5"}
                   />
                 ))}
+              {/* {buttonList.length > 0 &&
+                buttonList?.slice(4, 8)?.map((v, index) => (
+                  <NumberData
+                    key={index}
+                    containerStyle={{
+                      marginLeft: "2px",
+                      flex: 1,
+                      background: selectedFastAmount === v && "#FF4949",
+                      borderRadius: "5px",
+                      border: "2px solid white",
+                    }}
+                    value={v.value}
+                    lable={v.lable}
+                    session={session}
+                    setShowFastTimeBox={setShowFastTimeBox}
+                    typeOfBet={typeOfBet}
+                    setFastAmount={setFastAmount}
+                    backgroundColor={"#FFB5B5"}
+                  />
+                ))} */}
             </Box>
+            {/* <Box
+              sx={{
+                display: "flex",
+                marginY: "8px",
+                marginX: "2px",
+
+                gap: { mobile: 0, laptop: 1, tablet: 1 },
+              }}
+            >
+              
+            </Box> */}
           </>
         }
       </Box>
@@ -279,6 +350,7 @@ const NumberData = ({
   setFastAmount,
   setShowFastTimeBox,
   session,
+  backgroundColor,
 }) => {
   return (
     <Box
@@ -300,8 +372,8 @@ const NumberData = ({
           justifyContent: "center",
           alignItems: "center",
           height: "35px",
-          minWidth: "18%",
-          background: "#0B4F26",
+          minWidth: "22%",
+          background: `${backgroundColor}`,
         },
         containerStyle,
       ]}
