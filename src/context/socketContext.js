@@ -898,6 +898,7 @@ export const SocketProvider = ({ children }) => {
                 if (prev?.id === data?.id && prev?.match_id === data?.matchId) {
                   return {
                     ...prev,
+                    isTab: data?.isTab ? data?.isTab : false,
                     teamA: data?.teamA,
                     teamB: data?.teamB,
                     teamC: data?.teamC,
@@ -910,6 +911,7 @@ export const SocketProvider = ({ children }) => {
                     teamA_suspend: "live",
                     teamB_suspend: "live",
                     teamC_suspend: "live",
+                    isSingle: data?.isSingle,
                   };
                 }
                 return prev;

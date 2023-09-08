@@ -464,6 +464,7 @@ const AddSession = ({ add, match, Bid }) => {
         teamC_suspend: true,
         lock: true,
         layLock: false,
+        isSingle: true,
       });
     }
   };
@@ -1238,6 +1239,9 @@ const AddSession = ({ add, match, Bid }) => {
         if (match?.teamC) {
           data = {
             id: Bid,
+            teamA: match?.teamA,
+            teamB: match?.teamB,
+            teamC: match?.teamC,
             matchId: match?.id,
             betId: localSelectedBookmaker?.betId,
             teamA_Back: targetValue,
@@ -1250,11 +1254,15 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_lay: "", //add
             teamC_suspend: false,
             isTab: true,
+            isSingle: false,
           };
         } else {
           data = {
             id: Bid,
             matchId: match?.id,
+            teamA: match?.teamA,
+            teamB: match?.teamB,
+            teamC: match?.teamC,
             betId: localSelectedBookmaker?.betId,
             teamA_Back: targetValue,
             teamA_lay: "", //add
@@ -1266,6 +1274,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_lay: "", //add
             teamC_suspend: false,
             isTab: true,
+            isSingle: true,
           };
         }
         // alert(JSON.stringify(data));
@@ -1293,6 +1302,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_Back: "",
             teamC_suspend: true,
             layLock: false,
+            isSingle: true,
           });
         }
         if (event.target.name === "teamB_rate") {
@@ -1317,6 +1327,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_Back: "",
             teamC_suspend: true,
             layLock: false,
+            isSingle: true,
           });
         }
         if (event.target.name === "teamC_rate") {
@@ -1341,6 +1352,7 @@ const AddSession = ({ add, match, Bid }) => {
                 ? true
                 : false,
             layLock: false,
+            isSingle: true,
           });
         }
       }
