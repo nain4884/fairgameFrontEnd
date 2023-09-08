@@ -4,7 +4,7 @@ import { DELETE, MyBet, ARROWUP } from "../assets";
 import userAxios from "../axios/userAxios";
 import {
   ARROWDOWN,
-  // ARROWUP 
+  // ARROWUP
 } from "../expert/assets";
 import StyledImage from "./StyledImage";
 import { useSelector } from "react-redux";
@@ -33,7 +33,7 @@ const SessionBetSeperate = ({
   mark2,
   allBetsData,
   betHistory,
-  isArrow
+  isArrow,
 }) => {
   //  {console.warn("allBetsData qq:",allBetsData)}
   console.log("betHistory", betHistory);
@@ -52,7 +52,7 @@ const SessionBetSeperate = ({
             marginTop: { mobile: "0" },
             borderRadius: "2px",
             background: "white",
-            padding: '1px',
+            padding: "1px",
             alignSelf: {
               mobile: "center",
               tablet: "center",
@@ -86,7 +86,8 @@ const SessionBetSeperate = ({
                 marginLeft: "7px",
               }}
             >
-              Session Bets:  {allBetsData?.length < 10 ? 0 : ""}{allBetsData?.length || 0}
+              Session Bets: {allBetsData?.length < 10 ? 0 : ""}
+              {allBetsData?.length || 0}
             </Typography>
           </Box>
 
@@ -99,7 +100,6 @@ const SessionBetSeperate = ({
           >
             <div className="slanted"></div>
           </Box>
-
 
           <Box
             sx={{
@@ -128,7 +128,7 @@ const SessionBetSeperate = ({
         </Box>
         {visible && (
           <>
-            <Box sx={{ display: "flex", flexDirection: "row", gap: '1px' }}>
+            <Box sx={{ display: "flex", flexDirection: "row", gap: "1px" }}>
               <Box
                 sx={{
                   // margin: { mobile: "1px", laptop: "0.5px" },
@@ -148,7 +148,7 @@ const SessionBetSeperate = ({
               </Box>
               <RowComponent
                 header={true}
-                data={["Matched Bet", "Odds", "Yes/No", "Stake"]}
+                data={["Matched Bet", "Username", "Odds", "Yes/No", "Stake"]}
               />
               {profit && (
                 <Box
@@ -163,7 +163,11 @@ const SessionBetSeperate = ({
                   }}
                 >
                   <Typography
-                    sx={{ fontWeight: "400", fontSize: { mobile: "10px", laptop: ".7vw" }, color: "white" }}
+                    sx={{
+                      fontWeight: "400",
+                      fontSize: { mobile: "10px", laptop: ".7vw" },
+                      color: "white",
+                    }}
                   >
                     {"Profit/Loss"}
                   </Typography>
@@ -178,6 +182,7 @@ const SessionBetSeperate = ({
               }}
             >
               {allBetsData?.map((i, k) => {
+                console.log(allBetsData, "allBetsData");
                 const num = allBetsData.length - k;
                 const formattedNum = num < 10 ? "0" + num : num.toString();
                 return (
@@ -187,7 +192,7 @@ const SessionBetSeperate = ({
                       display: "flex",
                       flexDirection: "row",
                       position: "relative",
-                      gap: '1px'
+                      gap: "1px",
                     }}
                   >
                     <Box
@@ -203,13 +208,17 @@ const SessionBetSeperate = ({
                       }}
                     >
                       <Typography
-                        sx={{ color: "white", fontSize: "10px", fontWeight: "500" }}
+                        sx={{
+                          color: "white",
+                          fontSize: "10px",
+                          fontWeight: "500",
+                        }}
                       >
                         {formattedNum}
                       </Typography>
                     </Box>
                     <RowComponent header={false} data={i} />
-                    { i?.deleted_reason && (
+                    {i?.deleted_reason && (
                       <Box
                         sx={{
                           width: {
@@ -262,7 +271,8 @@ const SessionBetSeperate = ({
                                 textTransform: "uppercase",
                               }}
                             >
-                              Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
+                              Bet{" "}
+                              <span style={{ color: "#e41b23" }}>deleted</span>{" "}
                               due to ${i?.deleted_reason}
                             </Typography>
                           )}
@@ -275,7 +285,8 @@ const SessionBetSeperate = ({
                           height: "40px",
                           width: "30%",
                           // margin: { mobile: "1px", laptop: "1px", my: 0 },
-                          background: i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
+                          background:
+                            i.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
                         }}
                       >
                         <Box
@@ -284,7 +295,7 @@ const SessionBetSeperate = ({
                             justifyContent: "space-between",
                             alignItems: "center",
                             px: "10px",
-                            height: "100%"
+                            height: "100%",
                           }}
                         >
                           <Typography
@@ -294,19 +305,25 @@ const SessionBetSeperate = ({
                               fontWeight: "700",
                             }}
                           >
-                            {Number(i.myProfitLoss) >= 0 ? <><span style={{ visibility: "hidden" }}>-</span>{Number(i.myProfitLoss).toFixed(2)}</>
-                              : Number(i.myProfitLoss).toFixed(2)}
+                            {Number(i.myProfitLoss) >= 0 ? (
+                              <>
+                                <span style={{ visibility: "hidden" }}>-</span>
+                                {Number(i.myProfitLoss).toFixed(2)}
+                              </>
+                            ) : (
+                              Number(i.myProfitLoss).toFixed(2)
+                            )}
                             {/* {Number(i.myProfitLoss).toFixed(2)} */}
                           </Typography>
-                          {!isArrow && <StyledImage
-
-                            sx={{
-                              width: { mobile: "12px", laptop: "15px" },
-                              height: { mobile: "12px", laptop: "15px" },
-                            }}
-                            src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
-                          />
-                          }
+                          {!isArrow && (
+                            <StyledImage
+                              sx={{
+                                width: { mobile: "12px", laptop: "15px" },
+                                height: { mobile: "12px", laptop: "15px" },
+                              }}
+                              src={i.myProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                            />
+                          )}
                         </Box>
                       </Box>
                     )}
@@ -341,13 +358,13 @@ const SessionBetSeperate = ({
                             textTransform: "uppercase",
                           }}
                         >
-                          Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
-                          {"\n"}
+                          Bet <span style={{ color: "#e41b23" }}>Deleted</span>{" "}
+                          Due {"\n"}
                           {i?.deleted_reason}
                         </Typography>
                       </Box>
                     )}
-                    { i?.deleted_reason && betHistory && (
+                    {i?.deleted_reason && betHistory && (
                       <Box
                         sx={{
                           height: "40px",
@@ -359,8 +376,8 @@ const SessionBetSeperate = ({
                           alignItems: "center",
                           paddingX: "2px",
                           zIndex: 999,
-                          position:"absolute",
-                          right:0
+                          position: "absolute",
+                          right: 0,
                         }}
                       >
                         <StyledImage
@@ -380,8 +397,8 @@ const SessionBetSeperate = ({
                             textTransform: "uppercase",
                           }}
                         >
-                          Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
-                          {"\n"}
+                          Bet <span style={{ color: "#e41b23" }}>Deleted</span>{" "}
+                          Due {"\n"}
                           {i?.deleted_reason}
                         </Typography>
                       </Box>
@@ -427,8 +444,8 @@ const RowComponent = ({ header, data }) => {
         justifyContent: "space-between",
         alignItems: "center",
         display: "flex",
-        gap: '1px',
-        // marginTop: "1px" 
+        gap: "1px",
+        // marginTop: "1px"
         marginBottom: { mobile: "1px", laptop: "1px" },
       }}
     >
@@ -443,6 +460,11 @@ const RowComponent = ({ header, data }) => {
           />
           <SingleBox
             color={getColor()}
+            data={data?.username}
+            header={header}
+          />
+          <SingleBox
+            color={getColor()}
             data={data?.odds}
             header={header}
             isPercent={true}
@@ -452,7 +474,7 @@ const RowComponent = ({ header, data }) => {
                 : data?.rate?.split("-")[1]
             )}
           />
-          <SingleBox color={getColor()} data={data?.bet_type} header={header} />
+          <SingleBox color={getColor()} data={data?.betType} header={header} />
           <SingleBox
             color={getColor()}
             data={data?.stack || data?.stake || data?.amount}
@@ -471,6 +493,7 @@ const RowComponent = ({ header, data }) => {
           <SingleBox color={getColor()} data={data[1]} header={header} />
           <SingleBox color={getColor()} data={data[2]} header={header} />
           <SingleBox color={getColor()} data={data[3]} header={header} />
+          <SingleBox color={getColor()} data={data[4]} header={header} />
         </>
       )}
     </Box>
@@ -578,7 +601,11 @@ const SingleBox = ({
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "11px", laptop: "13px", textTransform: 'capitalize' },
+            fontSize: {
+              mobile: "11px",
+              laptop: "13px",
+              textTransform: "capitalize",
+            },
             color: "black",
           }}
         >

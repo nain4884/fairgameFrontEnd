@@ -4,10 +4,7 @@ import { useState } from "react";
 import { DELETE, ARROWUP } from "../assets";
 import userAxios from "../axios/userAxios";
 
-import {
-  ARROWDOWN,
-  ARROWUPPROFIT
-} from "../expert/assets";
+import { ARROWDOWN, ARROWUPPROFIT } from "../expert/assets";
 import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -19,7 +16,7 @@ const AllRateSeperate = ({
   allBetsData,
   count,
   betHistory,
-  isArrow
+  isArrow,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -31,7 +28,7 @@ const AllRateSeperate = ({
   const { currentUser } = useSelector((state) => state?.currentUser);
 
   const [visible, setVisible] = useState(true);
-  
+
   return (
     <>
       <Box
@@ -47,7 +44,7 @@ const AllRateSeperate = ({
             marginBottom: { laptop: ".5vh", mobile: "2px" },
             borderRadius: "2px",
             background: "white",
-            padding: '1px',
+            padding: "1px",
 
             alignSelf: {
               mobile: "center",
@@ -82,7 +79,8 @@ const AllRateSeperate = ({
                 marginLeft: "7px",
               }}
             >
-              All Rate Bets: {count < 10 ? 0 : ""}{count || 0}
+              All Rate Bets: {count < 10 ? 0 : ""}
+              {count || 0}
             </Typography>
           </Box>
           <Box
@@ -142,7 +140,7 @@ const AllRateSeperate = ({
         </Box>
         {visible && (
           <>
-            <Box sx={{ display: "flex", flexDirection: "row", gap: '1px' }}>
+            <Box sx={{ display: "flex", flexDirection: "row", gap: "1px" }}>
               <Box
                 sx={{
                   height: "25px",
@@ -162,7 +160,14 @@ const AllRateSeperate = ({
               </Box>
               <RowComponent
                 header={true}
-                data={["Market", "Favourite", "B/Lay", "Odds", "Stake"]}
+                data={[
+                  "Market",
+                  "Username",
+                  "Favourite",
+                  "B/Lay",
+                  "Odds",
+                  "Stake",
+                ]}
               />
 
               {profit && (
@@ -178,7 +183,11 @@ const AllRateSeperate = ({
                   }}
                 >
                   <Typography
-                    sx={{ fontWeight: "400", fontSize: { mobile: "10px", laptop: ".7vw" }, color: "white" }}
+                    sx={{
+                      fontWeight: "400",
+                      fontSize: { mobile: "10px", laptop: ".7vw" },
+                      color: "white",
+                    }}
                   >
                     {"Profit/Loss"}
                   </Typography>
@@ -207,7 +216,7 @@ const AllRateSeperate = ({
               ]?.map((i, k) => {
                 const num = allBetsData.length - k;
                 const formattedNum = num < 10 ? "0" + num : num.toString();
-                console.log("profit",i ,k)
+                console.log("profit", i, k);
                 return (
                   <Box
                     key={k}
@@ -215,9 +224,8 @@ const AllRateSeperate = ({
                       display: "flex",
                       flexDirection: "row",
                       position: "relative",
-                      gap: '1px',
+                      gap: "1px",
                       // marginBottom: { mobile: "1px", laptop: "1px" },
-
                     }}
                   >
                     <Box
@@ -295,7 +303,8 @@ const AllRateSeperate = ({
                                 textTransform: "uppercase",
                               }}
                             >
-                              Bet <span style={{ color: "#e41b23" }}>deleted</span>{" "}
+                              Bet{" "}
+                              <span style={{ color: "#e41b23" }}>deleted</span>{" "}
                               due to ${i?.deleted_reason}
                             </Typography>
                           )}
@@ -327,7 +336,8 @@ const AllRateSeperate = ({
                           width: "30%",
                           // margin: { mobile: "1px", laptop: "1px" },
                           // display: "flex",
-                          background: i?.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
+                          background:
+                            i?.myProfitLoss > 0 ? "#10DC61" : "#E32A2A",
                           // justifyContent: "center",
                           // alignItems: "center",
                         }}
@@ -338,7 +348,7 @@ const AllRateSeperate = ({
                             justifyContent: "space-between",
                             alignItems: "center",
                             height: "100%",
-                            px: "5px"
+                            px: "5px",
                           }}
                         >
                           <Typography
@@ -348,19 +358,28 @@ const AllRateSeperate = ({
                               fontWeight: "700",
                             }}
                           >
-                            {Number(i.myProfitLoss) >= 0 ? <><span style={{ visibility: "hidden" }}>-</span>{Number(i.myProfitLoss).toFixed(2)}</>
-                              : Number(i.myProfitLoss).toFixed(2)}
+                            {Number(i.myProfitLoss) >= 0 ? (
+                              <>
+                                <span style={{ visibility: "hidden" }}>-</span>
+                                {Number(i.myProfitLoss).toFixed(2)}
+                              </>
+                            ) : (
+                              Number(i.myProfitLoss).toFixed(2)
+                            )}
                             {/* {Number(i?.myProfitLoss).toFixed(2) || ""} */}
                           </Typography>
 
-                          {!matchesMobile && !isArrow && <StyledImage
-                            sx={{
-                              width: { mobile: "12px", laptop: "15px" },
-                              height: { mobile: "5px", laptop: "7px" },
-                            }}
-                            src={i?.myProfitLoss > 0 ? ARROWUPPROFIT : ARROWDOWN}
-                          />
-                          }
+                          {!matchesMobile && !isArrow && (
+                            <StyledImage
+                              sx={{
+                                width: { mobile: "12px", laptop: "15px" },
+                                height: { mobile: "5px", laptop: "7px" },
+                              }}
+                              src={
+                                i?.myProfitLoss > 0 ? ARROWUPPROFIT : ARROWDOWN
+                              }
+                            />
+                          )}
                         </Box>
                       </Box>
                     )}
@@ -394,12 +413,12 @@ const AllRateSeperate = ({
                             textTransform: "uppercase",
                           }}
                         >
-                          Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
-                          {"\n"} {i?.deleted_reason}
+                          Bet <span style={{ color: "#e41b23" }}>Deleted</span>{" "}
+                          Due {"\n"} {i?.deleted_reason}
                         </Typography>
                       </Box>
                     )}
-                    { i?.deleted_reason && betHistory && (
+                    {i?.deleted_reason && betHistory && (
                       <Box
                         sx={{
                           height: "40px",
@@ -410,8 +429,8 @@ const AllRateSeperate = ({
                           justifyContent: "center",
                           alignItems: "center",
                           zIndex: 999,
-                          position:"absolute",
-                          right:0
+                          position: "absolute",
+                          right: 0,
                         }}
                       >
                         <StyledImage
@@ -431,8 +450,8 @@ const AllRateSeperate = ({
                             textTransform: "uppercase",
                           }}
                         >
-                          Bet <span style={{ color: "#e41b23" }}>Deleted</span> Due{" "}
-                          {"\n"} {i?.deleted_reason}
+                          Bet <span style={{ color: "#e41b23" }}>Deleted</span>{" "}
+                          Due {"\n"} {i?.deleted_reason}
                         </Typography>
                       </Box>
                     )}
@@ -451,7 +470,7 @@ const AllRateSeperate = ({
       </Box>
 
       {/* --------- */}
-      <style >
+      <style>
         {`
                 /* width */
                 .myScroll::-webkit-scrollbar {
@@ -510,18 +529,27 @@ const RowComponent = ({ header, data }) => {
         justifyContent: "space-between",
         alignItems: "center",
         display: "flex",
-        gap: '1px',
+        gap: "1px",
         marginBottom: { mobile: "1px", laptop: "1px" },
-
       }}
     >
       {!header && (
         <>
           <SingleBox
             color={getColor}
-            data={data?.marketType == "MANUAL BOOKMAKER" ? "Quick Bookmaker" : data?.marketType}
+            data={
+              data?.marketType == "MANUAL BOOKMAKER"
+                ? "Quick Bookmaker"
+                : data?.marketType
+            }
             first={true}
             header={header}
+          />
+          <SingleBox
+            color={getColor()}
+            data={data?.username}
+            header={header}
+            boxWidth="50%"
           />
           <SingleBox
             color={getColor()}
@@ -530,8 +558,18 @@ const RowComponent = ({ header, data }) => {
             header={header}
             time={getTime(data.createAt)}
           />
-          <SingleBox color={getColor()} data={data?.bet_type} header={header} boxWidth="50%" />
-          <SingleBox color={getColor()} data={data?.odds} header={header} boxWidth="50%" />
+          <SingleBox
+            color={getColor()}
+            data={data?.bet_type}
+            header={header}
+            boxWidth="50%"
+          />
+          <SingleBox
+            color={getColor()}
+            data={data?.odds}
+            header={header}
+            boxWidth="50%"
+          />
           <SingleBox
             color={getColor()}
             data={data?.rate || data?.amount}
@@ -543,11 +581,42 @@ const RowComponent = ({ header, data }) => {
       )}
       {header && (
         <>
-          <SingleBox color={getColor} data={data[0]} header={header} boxWidth="100%" />
-          <SingleBox color={getColor()} data={data[1]} header={header} boxWidth="100%" />
-          <SingleBox color={getColor()} data={data[2]} header={header} boxWidth="50%" />
-          <SingleBox color={getColor()} data={data[3]} header={header} boxWidth="50%" />
-          <SingleBox color={getColor()} data={data[4]} header={header} boxWidth="100%" />
+          <SingleBox
+            color={getColor}
+            data={data[0]}
+            header={header}
+            boxWidth="100%"
+          />
+          <SingleBox
+            color={getColor()}
+            data={data[1]}
+            header={header}
+            boxWidth="50%"
+          />
+          <SingleBox
+            color={getColor()}
+            data={data[2]}
+            header={header}
+            boxWidth="100%"
+          />
+          <SingleBox
+            color={getColor()}
+            data={data[3]}
+            header={header}
+            boxWidth="50%"
+          />
+          <SingleBox
+            color={getColor()}
+            data={data[4]}
+            header={header}
+            boxWidth="50%"
+          />
+          <SingleBox
+            color={getColor()}
+            data={data[5]}
+            header={header}
+            boxWidth="100%"
+          />
         </>
       )}
     </Box>
@@ -651,7 +720,16 @@ const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
     </Box>
   );
 };
-const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) => {
+const SingleBox = ({
+  data,
+  header,
+  color,
+  up,
+  first,
+  time,
+  width,
+  boxWidth,
+}) => {
   return !header ? (
     first ? (
       <Box
@@ -747,7 +825,12 @@ const SingleBox = ({ data, header, color, up, first, time, width, boxWidth }) =>
         <Typography
           sx={{
             fontWeight: "700",
-            fontSize: { mobile: "10px", tablet: "10px", laptop: "12px", textTransform: 'capitalize' },
+            fontSize: {
+              mobile: "10px",
+              tablet: "10px",
+              laptop: "12px",
+              textTransform: "capitalize",
+            },
             color: "black",
           }}
         >

@@ -245,6 +245,7 @@ const ProfitLoss = () => {
           myProfitLoss: v.myProfitLoss,
           amount: v.amount,
           deleted_reason: v.deleted_reason,
+          username: v.username,
         }))
       );
       if (value?.type === "session_bet" && value.betId === "") {
