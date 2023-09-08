@@ -6,6 +6,7 @@ import "../components/index.css";
 import { toast } from "react-toastify";
 import { currencyFormatter } from "./helper/helper";
 import { setRole } from "../newStore";
+import NotificationModal from "./NotificationModal";
 const FastTimePlaceBet = ({
   session,
   setFastAmount,
@@ -21,6 +22,13 @@ const FastTimePlaceBet = ({
   const { geoLocation } = useSelector((state) => state.auth);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+  const [canceled, setCanceled] = useState({
+    value: false,
+    msg: "",
+    loading: false,
+    type: false,
+  });
 
   const { buttonData } = useSelector((state) => state?.matchDetails);
   const [buttonList, setButtonList] = useState(buttonData);
@@ -55,6 +63,12 @@ const FastTimePlaceBet = ({
 
   const handleAmountClick = async (payload, session, value) => {
     try {
+      setCanceled({
+        value: true,
+        msg: "Rate changed",
+        loading: true,
+        type: false,
+      });
       let newPayload = {
         ...payload,
         country: ip?.country_name || null,
@@ -62,8 +76,36 @@ const FastTimePlaceBet = ({
       };
       let response = await axios.post(`/betting/placeBet`, newPayload);
       console.log("responseresponse", response);
+      setCanceled({
+        value: true,
+        msg: response?.data?.message,
+        loading: false,
+        type: true,
+      });
+      setTimeout(() => {
+        setCanceled({
+          value: false,
+          msg: "",
+          loading: false,
+          type: false,
+        });
+      }, 1500);
     } catch (e) {
       console.log(e);
+      setCanceled({
+        value: true,
+        msg: e.response.data.message,
+        loading: false,
+        type: false,
+      });
+      setTimeout(() => {
+        setCanceled({
+          value: false,
+          msg: "",
+          loading: false,
+          type: false,
+        });
+      }, 1500);
     }
   };
 
@@ -633,6 +675,26 @@ const FastTimePlaceBet = ({
             }
           </Box>
         </Box>
+      )}
+      {canceled.value && (
+        <NotificationModal
+          // time={
+          //   typeOfBet == "MATCH ODDS"
+          //     ? currentMatch?.delaySecond
+          //       ? currentMatch?.delaySecond
+          //       : 0
+          //     : 0
+          // }
+          open={canceled}
+          handleClose={() =>
+            setCanceled({
+              value: false,
+              msg: "",
+              loading: false,
+              type: false,
+            })
+          }
+        />
       )}
     </>
   );
