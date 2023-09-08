@@ -889,6 +889,7 @@ export const SocketProvider = ({ children }) => {
 
     localSocket.on("updateRate_user", (event) => {
       const data = event;
+      console.log("updateRate_user",data)
       try {
         if (!data?.lock) {
           if (data?.isTab) {
@@ -916,6 +917,7 @@ export const SocketProvider = ({ children }) => {
                 }
                 return prev;
               });
+              console.log("updatedBookmaker", updatedBookmaker)
               dispatch(setQuickBookmaker(updatedBookmaker));
               return updatedBookmaker;
             });
@@ -970,6 +972,7 @@ export const SocketProvider = ({ children }) => {
                     teamA_Ball: null,
                     teamB_Ball: null,
                     teamC_Ball: null,
+                    isSingle: data?.isSingle,
                   };
                 }
                 return prev;

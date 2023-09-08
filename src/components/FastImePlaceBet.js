@@ -99,6 +99,8 @@ const FastTimePlaceBet = ({
     }
   };
 
+  console.log("matchOddsData", matchOddsData?.isSingle);
+
   return (
     <>
       {session === "manualBookMaker" && (
@@ -135,7 +137,7 @@ const FastTimePlaceBet = ({
             )}
             {
               <>
-                {matchOddsData?.isSingle === false && (
+                {matchOddsData?.isSingle == false ? (
                   // ||
                   //   ((matchOddsData?.teamA_suspend === null || false) &&
                   //     (matchOddsData?.teamB_suspend === null || false))
@@ -312,11 +314,7 @@ const FastTimePlaceBet = ({
                       </Box>
                     </Box>
                   </>
-                )}
-                {matchOddsData?.isSingle === true && (
-                  // ||
-                  //   (![null, ""].includes(matchOddsData?.teamA_suspend) ||
-                  //     ![null, ""].includes(matchOddsData?.teamB_suspend))
+                ) : (
                   <>
                     <Box
                       sx={{
