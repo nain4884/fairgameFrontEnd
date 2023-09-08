@@ -135,6 +135,7 @@ const ProfitLoss = ({ selected, visible }) => {
           myProfitLoss: v.myProfitLoss,
           amount: v.amount,
           deleted_reason: v.deleted_reason,
+          username: v.username,
         }))
       );
 
