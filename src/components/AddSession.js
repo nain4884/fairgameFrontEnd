@@ -1274,7 +1274,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_lay: "", //add
             teamC_suspend: false,
             isTab: true,
-            isSingle: true,
+            isSingle: false,
           };
         }
         // alert(JSON.stringify(data));
