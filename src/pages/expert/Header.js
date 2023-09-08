@@ -1077,7 +1077,7 @@ const CustomHeader = ({}) => {
                     ...prev,
                     teamA: {
                       rate: prev?.teamA?.teamA_Back,
-                      suspended: prev?.teamA?.teamA_suspend,
+                      suspended: data?.teamA_suspend,
                       lock: prev?.teamA?.teamA_suspend,
                       lay: prev?.teamA?.teamA_lay,
                       layLock: false,
