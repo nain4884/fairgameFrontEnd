@@ -898,6 +898,9 @@ export const SocketProvider = ({ children }) => {
                 if (prev?.id === data?.id && prev?.match_id === data?.matchId) {
                   return {
                     ...prev,
+                    teamA: data?.teamA,
+                    teamB: data?.teamB,
+                    teamC: data?.teamC,
                     teamA_Back: data?.teamA_Back,
                     teamA_lay: "",
                     teamB_Back: data?.teamB_Back,
@@ -1337,7 +1340,7 @@ export const SocketProvider = ({ children }) => {
   const localServerSocket = () => {
     // if (!socket && checkSocket !== "true") {
     const newSocket = io(`${apiBasePath}`, {
-      transports: ["polling"],
+      transports: ["websocket"],
       headers: {
         Authorization: `${token}`,
       },
@@ -1375,7 +1378,7 @@ export const SocketProvider = ({ children }) => {
 
   const mircoServerSocket = () => {
     const newMicroSocket = io(`${microServiceApiPath}`, {
-      transports: ["polling"],
+      transports: ["websocket"],
       headers: {
         Authorization: `${token}`,
       },

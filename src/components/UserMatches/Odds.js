@@ -704,6 +704,7 @@ const Odds = ({
               setFastAmount={setFastAmount}
               selectedFastAmount={fastAmount}
               setShowFastTimeBox={setShowFastTimeBox}
+              matchOddsData={matchOddsData}
             />
           </Box>
         )}

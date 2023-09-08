@@ -24,6 +24,7 @@ import {
 } from "../newStore/reducers/expertMatchDetails";
 
 const AddSession = ({ add, match, Bid }) => {
+  console.log("matchmatch", match);
   const location = useLocation();
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
@@ -449,6 +450,9 @@ const AddSession = ({ add, match, Bid }) => {
         matchId: match?.id,
         betId: localSelectedBookmaker?.betId,
         id: Bid,
+        teamA: match?.teamA,
+        teamB: match?.teamB,
+        teamC: match?.teamC,
         teamA_lay: "",
         teamA_Back: "",
         teamA_suspend: true,
@@ -1271,6 +1275,9 @@ const AddSession = ({ add, match, Bid }) => {
           socket.emit("updateRate", {
             matchId: match?.id,
             id: Bid,
+            teamA: match?.teamA,
+            teamB: match?.teamB,
+            teamC: match?.teamC,
             betId: localSelectedBookmaker?.betId,
             teamA_lay: lQuickBookMaker?.l_teamALayValue,
             teamA_Back: lQuickBookMaker?.l_teamARate,
@@ -1293,6 +1300,9 @@ const AddSession = ({ add, match, Bid }) => {
             matchId: match?.id,
             id: Bid,
             betId: localSelectedBookmaker?.betId,
+            teamA: match?.teamA,
+            teamB: match?.teamB,
+            teamC: match?.teamC,
             teamA_lay: "",
             teamA_Back: "",
             teamA_suspend: true,
@@ -1312,6 +1322,9 @@ const AddSession = ({ add, match, Bid }) => {
         if (event.target.name === "teamC_rate") {
           socket.emit("updateRate", {
             matchId: match?.id,
+            teamA: match?.teamA,
+            teamB: match?.teamB,
+            teamC: match?.teamC,
             id: Bid,
             betId: localSelectedBookmaker?.betId,
             teamA_lay: "",
