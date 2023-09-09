@@ -36,7 +36,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-            pageLimit
+          pageLimit
         )
       );
       setTimeout(() => {
@@ -57,7 +57,8 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
         // `/game-match/getMatchListDeclearResult`
         `/fair-game-wallet/getCommisionReport/${id}/${match_id}`
       );
-      console.log("datadata", data);
+      // console.log("datadata", data);
+      // alert(JSON.stringify(data?.data.length));
       setCommisionReport(data?.data);
     } catch (e) {
       console.log(e);
@@ -97,6 +98,7 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                 match_id: element?.match_id,
                 user_id: id,
               });
+              setCommisionReport([])
               setShowCommisionReport(true);
               getCommisionReport(element?.match_id);
             }
@@ -190,54 +192,55 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
                 marginTop: { mobile: ".25vh" },
                 marginLeft: { laptop: "4%" },
                 display: "flex",
-                flexDirection: { laptop: "row", mobile: "column" },
+                // flexDirection: { laptop: "row", mobile: "column" },
+                flexDirection: { laptop: "column", mobile: "column" },
               }}
             >
               <ListHeaderT />
-              {/* <Box
+              <Box
                 sx={{
                   // display: matchesBreakPoint ? "inline-block" : "block",
                   width: "100%",
                   position: "relative",
                 }}
-              > */}
-                {/* {data1?.map((element, i) => (
-              <AccountListRow
-                key={i}
-                showOptions={false}
-                showChildModal={true}
-                containerStyle={{
-                  background:
-                    element?.ComissionType === "commission setteled"
-                      ? "#135a2e"
-                      : ["back", "yes"].includes(
-                          element?.bet_place_id?.bet_type
-                        )
-                      ? "#B3E0FF"
-                      : ["lay", "no"].includes(element?.bet_place_id?.bet_type)
-                      ? "#FF9292"
-                      : "#FFE094 ",
-                }}
-                profit={element.profit_loss >= 0}
-                fContainerStyle={{
-                  background:
-                    element?.ComissionType === "session"
-                      ? "#319E5B"
-                      : element?.ComissionType === "commission setteled"
-                      ? "#135a2e"
-                      : "#F1C550",
-                }}
-                fTextStyle={{
-                  color:
-                    ["commission setteled"].includes(element?.ComissionType) &&
-                    "white",
-                }}
-                element={element}
-                getListOfUser={getListOfUser}
-                currentPage={currentPage}
-              />
-            ))} */}
-              {/* </Box> */}
+              >
+                {commisionReport.length > 1 && commisionReport.map((element, i) => (
+                  <AccountListRow
+                    key={i}
+                    showOptions={false}
+                    showChildModal={true}
+                    containerStyle={{
+                      background:
+                        element?.ComissionType === "commission setteled"
+                          ? "#135a2e"
+                          : ["back", "yes"].includes(
+                            element?.bet_place_id?.bet_type
+                          )
+                            ? "#B3E0FF"
+                            : ["lay", "no"].includes(element?.bet_place_id?.bet_type)
+                              ? "#FF9292"
+                              : "#FFE094 ",
+                    }}
+                    profit={element.profit_loss >= 0}
+                    fContainerStyle={{
+                      background:
+                        element?.ComissionType === "session"
+                          ? "#319E5B"
+                          : element?.ComissionType === "commission setteled"
+                            ? "#135a2e"
+                            : "#F1C550",
+                    }}
+                    fTextStyle={{
+                      color:
+                        ["commission setteled"].includes(element?.ComissionType) &&
+                        "white",
+                    }}
+                    element={element}
+                  // getListOfUser={getListOfUser}
+                  // currentPage={currentPage}
+                  />
+                ))}
+              </Box>
             </Box>
           </>
         )}
@@ -649,8 +652,8 @@ const CommissionReportTable = ({ id, show, setShow, title }) => {
               {/* {elementToUDM.teamBet} */}
               {elementToUDM?.createAt
                 ? `${moment(elementToUDM?.createAt).format("L")}  ${moment(
-                    elementToUDM?.createAt
-                  ).format("LT")}`
+                  elementToUDM?.createAt
+                ).format("LT")}`
                 : ""}
             </Typography>
           </Box>
