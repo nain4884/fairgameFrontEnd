@@ -61,7 +61,16 @@ const FastTimePlaceBet = ({
     }
   };
 
-  const handleAmountClick = async (payload, session, value) => {
+  const handleAmountClick = async (payload, session, value, teamSuspend) => {
+    if (teamSuspend === "suspended" || payload?.odds == 0) {
+      setCanceled({
+        value: true,
+        msg: "Market Suspended",
+        loading: false,
+        type: false,
+      });
+      return;
+    }
     try {
       setCanceled({
         value: true,
@@ -179,7 +188,7 @@ const FastTimePlaceBet = ({
             )}
             {
               <>
-                {matchOddsData?.isSingle == false ? (
+                {matchOddsData?.isSingle === false || matchOddsData?.teamB_suspend !== "suspended" ? (
                   // ||
                   //   ((matchOddsData?.teamA_suspend === null || false) &&
                   //     (matchOddsData?.teamB_suspend === null || false))
@@ -219,7 +228,7 @@ const FastTimePlaceBet = ({
                             width: "100%",
                           }}
                         >
-                          {matchOddsData?.teamA}
+                          {matchOddsData?.teamA} {matchOddsData?.teamB_suspend}
                         </Typography>
                       </Box>
                       <Box
@@ -252,6 +261,7 @@ const FastTimePlaceBet = ({
                               type={"back"}
                               session={session}
                               betOnTeam={matchOddsData?.teamA}
+                              teamSuspend={matchOddsData?.teamA_suspend}
                               odds={matchOddsData?.teamA_Back}
                               typeOfBet={typeOfBet}
                               placeIndex={
@@ -259,8 +269,8 @@ const FastTimePlaceBet = ({
                                   ? 0
                                   : matchOddsData?.marketType ===
                                     "QuickBookmaker1"
-                                  ? 1
-                                  : 2
+                                    ? 1
+                                    : 2
                               }
                               backgroundColor={"#A7DCFF"}
                               matchOddsData={matchOddsData}
@@ -338,6 +348,7 @@ const FastTimePlaceBet = ({
                               type={"back"}
                               session={session}
                               betOnTeam={matchOddsData?.teamB}
+                              teamSuspend={matchOddsData?.teamB_suspend}
                               odds={matchOddsData?.teamB_Back}
                               typeOfBet={typeOfBet}
                               placeIndex={
@@ -345,8 +356,8 @@ const FastTimePlaceBet = ({
                                   ? 0
                                   : matchOddsData?.marketType ===
                                     "QuickBookmaker1"
-                                  ? 1
-                                  : 2
+                                    ? 1
+                                    : 2
                               }
                               backgroundColor={"#A7DCFF"}
                               matchOddsData={matchOddsData}
@@ -389,6 +400,12 @@ const FastTimePlaceBet = ({
                                 ? matchOddsData?.teamB
                                 : matchOddsData?.teamA
                             }
+                            teamSuspend={
+                              [null, ""].includes(matchOddsData?.teamA_Back)
+                                ? matchOddsData?.teamB_suspend
+                                : matchOddsData?.teamA_suspend
+                              // matchOddsData?.teamB_suspend
+                            }
                             odds={
                               [null, ""].includes(matchOddsData?.teamA_Back)
                                 ? matchOddsData?.teamB_Back
@@ -402,8 +419,8 @@ const FastTimePlaceBet = ({
                                 ? 0
                                 : matchOddsData?.marketType ===
                                   "QuickBookmaker1"
-                                ? 1
-                                : 2
+                                  ? 1
+                                  : 2
                             }
                             handleAmountClick={handleAmountClick}
                           />
@@ -440,6 +457,12 @@ const FastTimePlaceBet = ({
                                 ? matchOddsData?.teamB
                                 : matchOddsData?.teamA
                             }
+                            teamSuspend={
+                              [null, ""].includes(matchOddsData?.teamA_Back)
+                                ? matchOddsData?.teamB_suspend
+                                : matchOddsData?.teamA_suspend
+                              // matchOddsData?.teamB_suspend
+                            }
                             odds={
                               [null, ""].includes(matchOddsData?.teamA_lay)
                                 ? matchOddsData?.teamB_lay
@@ -453,8 +476,8 @@ const FastTimePlaceBet = ({
                                 ? 0
                                 : matchOddsData?.marketType ===
                                   "QuickBookmaker1"
-                                ? 1
-                                : 2
+                                  ? 1
+                                  : 2
                             }
                             handleAmountClick={handleAmountClick}
                           />
@@ -716,6 +739,7 @@ const NumberData = ({
   odds,
   setMinWidth,
   placeIndex,
+  teamSuspend
 }) => {
   return (
     <Box
@@ -743,7 +767,7 @@ const NumberData = ({
             teamC_name: matchOddsData?.teamC,
             team_bet: betOnTeam,
           };
-          handleAmountClick(payload, session, Number(value));
+          handleAmountClick(payload, session, Number(value), teamSuspend);
         }
       }}
       sx={[

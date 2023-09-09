@@ -300,7 +300,7 @@ const IndiaPakLive = React.forwardRef(
     //   }
     // }, [socket, betId, sessionAllBet, allEventSession]);
 
-    console.log(Detail, "details");
+    // console.log(Detail, "details");
     useEffect(() => {
       if (sessionEvent?.id || sessionBetId) {
         if (sessionBetId) {
@@ -497,6 +497,7 @@ const IndiaPakLive = React.forwardRef(
               setLock={setLock}
               isBall={{ isBall, setIsBall }}
               isCreateSession={isCreateSession}
+              sessionBetId={sessionBetId}
               match={match}
               isPercent={{ isPercent, setIsPercent }}
               live={live}
@@ -758,6 +759,7 @@ const AddSession = ({
   setLock,
   isBall,
   isCreateSession,
+  sessionBetId,
   match,
   isPercent,
   live,
@@ -901,7 +903,7 @@ const AddSession = ({
       }
     } else if (key == "shift") {
       isBall.setIsBall(true);
-      if (!isCreateSession) {
+      if (!isCreateSession || sessionBetId) {
         socket.emit("updateSessionRate", {
           match_id: match?.id,
           betId: betId,
@@ -978,7 +980,7 @@ const AddSession = ({
         ln_rate_percent: 100,
       });
     } else if (key == "enter") {
-      if (!isCreateSession) {
+      if (!isCreateSession || sessionBetId) {
         let rate_percent =
           Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
         let data = {
@@ -1544,95 +1546,95 @@ const RunsAmountBox = ({
         <Box ref={containerRef} sx={{ maxHeight: "42vh", overflowY: "auto" }}>
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
-                const getColor = (value) => {
-                  if (value >= 1) {
-                    return "#10DC61";
-                  } else if (value === v?.profit_loss && value > 1) {
-                    return "#F8C851";
-                  } else {
-                    return "#DC3545";
-                  }
-                };
-                const getSVG = (value) => {
-                  if (value > 1) {
-                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                  } else if (value === v?.profit_loss && value > 1) {
-                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                  } else {
-                    return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
-                  }
-                };
-                return (
+              const getColor = (value) => {
+                if (value >= 1) {
+                  return "#10DC61";
+                } else if (value === v?.profit_loss && value > 1) {
+                  return "#F8C851";
+                } else {
+                  return "#DC3545";
+                }
+              };
+              const getSVG = (value) => {
+                if (value > 1) {
+                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                } else if (value === v?.profit_loss && value > 1) {
+                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                } else {
+                  return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+                }
+              };
+              return (
+                <Box
+                  id={`${betId}_${v?.odds}`}
+                  key={v?.odds}
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    height: "25px",
+                    borderTop: "1px solid #306A47",
+                  }}
+                >
                   <Box
-                    id={`${betId}_${v?.odds}`}
-                    key={v?.odds}
                     sx={{
+                      width: "35%",
                       display: "flex",
-                      width: "100%",
-                      height: "25px",
-                      borderTop: "1px solid #306A47",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    <Box
+                    <Typography
                       sx={{
-                        width: "35%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        color: "#306A47",
+                        fontWeight: "bold",
+                        fontSize: "12px",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          color: "#306A47",
-                          fontWeight: "bold",
-                          fontSize: "12px",
-                        }}
-                      >
-                        {v?.odds}
-                      </Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        width: "65%",
-                        display: "flex",
-                        borderLeft: `1px solid #306A47`,
-                        background: getColor(v?.profit_loss),
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        paddingRight: "7px",
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          fontWeight: "500",
-                          fontSize: "16px",
-                          color: "white",
-                          width: "40px",
-                        }}
-                      >
-                        {Number(v?.profit_loss) >= 0 ? (
-                          <>
-                            <span style={{ visibility: "hidden" }}>-</span>
-                            {v?.profit_loss}
-                          </>
-                        ) : (
-                          v?.profit_loss
-                        )}
-                      </Typography>
-                      <StyledImage
-                        src={getSVG(v?.profit_loss)}
-                        sx={{
-                          height: "15px",
-                          marginLeft: "5px",
-                          filter:
-                            "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                          width: "15px",
-                        }}
-                      />
-                    </Box>
+                      {v?.odds}
+                    </Typography>
                   </Box>
-                );
-              })
+                  <Box
+                    sx={{
+                      width: "65%",
+                      display: "flex",
+                      borderLeft: `1px solid #306A47`,
+                      background: getColor(v?.profit_loss),
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingRight: "7px",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: "16px",
+                        color: "white",
+                        width: "40px",
+                      }}
+                    >
+                      {Number(v?.profit_loss) >= 0 ? (
+                        <>
+                          <span style={{ visibility: "hidden" }}>-</span>
+                          {v?.profit_loss}
+                        </>
+                      ) : (
+                        v?.profit_loss
+                      )}
+                    </Typography>
+                    <StyledImage
+                      src={getSVG(v?.profit_loss)}
+                      sx={{
+                        height: "15px",
+                        marginLeft: "5px",
+                        filter:
+                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                        width: "15px",
+                      }}
+                    />
+                  </Box>
+                </Box>
+              );
+            })
             : null}
         </Box>
       </Box>
