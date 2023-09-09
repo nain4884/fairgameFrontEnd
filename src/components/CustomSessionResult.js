@@ -188,15 +188,15 @@ const CustomSessionResult = ({
   const handleInputKeyPress = (event) => {
     try {
       if (event.key === "Enter") {
-          if (newData?.betStatus === 1 || newData?.betStatus === 0) {
-              handleDeclare();
-          } else if (newData?.betStatus === 2) {
-              handleUndeclare();
-          }
+        if (newData?.betStatus === 1 || newData?.betStatus === 0) {
+          handleDeclare();
+        } else if (newData?.betStatus === 2) {
+          handleUndeclare();
+        }
       }
-  } catch (error) {
+    } catch (error) {
       console.error("Error in handleInputKeyPress:", error);
-  }
+    }
   };
 
   return (
@@ -224,7 +224,11 @@ const CustomSessionResult = ({
             placeholder="Score"
             variant="standard"
             value={selected}
-            onChange={(e) => setSelected(e?.target.value)}
+            // onChange={(e) => setSelected(e?.target.value)}
+            onChange={(e) => {
+              const numericValue = e.target.value.replace(/[^0-9]/g, '');
+              setSelected(numericValue);
+            }}
             onKeyDown={handleInputKeyPress}
             InputProps={{
               disableUnderline: true,
