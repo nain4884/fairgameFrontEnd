@@ -188,7 +188,8 @@ const FastTimePlaceBet = ({
             )}
             {
               <>
-                {matchOddsData?.isSingle === false || matchOddsData?.teamB_suspend !== "suspended" ? (
+                {/* {matchOddsData?.isSingle === false || matchOddsData?.teamB_suspend !== "suspended" ? ( */}
+                {matchOddsData?.isSingle === false || (matchOddsData.teamA_suspend === null && matchOddsData.teamB_suspend === null) ? (
                   // ||
                   //   ((matchOddsData?.teamA_suspend === null || false) &&
                   //     (matchOddsData?.teamB_suspend === null || false))
