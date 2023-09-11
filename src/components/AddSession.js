@@ -470,6 +470,7 @@ const AddSession = ({ add, match, Bid }) => {
   };
 
   const handleChange = (event) => {
+    setIsTab("");
     // handleSuspend();
     let target = event.target;
 
@@ -943,10 +944,10 @@ const AddSession = ({ add, match, Bid }) => {
                 incGap < 1
                   ? value + incGap
                   : value === 0
-                    ? 1
-                    : value
-                      ? value + 1
-                      : NaN,
+                  ? 1
+                  : value
+                  ? value + 1
+                  : NaN,
             },
             teamB: { ...prev?.teamB, rate: "", lay: "" },
             teamC: { ...prev?.teamC, rate: "", lay: "" },
@@ -962,10 +963,10 @@ const AddSession = ({ add, match, Bid }) => {
               incGap < 1
                 ? l_value + incGap
                 : l_value === 0
-                  ? 1
-                  : l_value
-                    ? l_value + 1
-                    : NaN,
+                ? 1
+                : l_value
+                ? l_value + 1
+                : NaN,
             l_teamBRate: "",
             l_teamBLayValue: "",
             l_teamCRate: "",
@@ -999,10 +1000,10 @@ const AddSession = ({ add, match, Bid }) => {
                 incGap < 1
                   ? value + incGap
                   : value === 0
-                    ? 1
-                    : value
-                      ? value + 1
-                      : NaN,
+                  ? 1
+                  : value
+                  ? value + 1
+                  : NaN,
             },
             teamC: { ...prev?.teamC, rate: "", lay: "" },
           };
@@ -1019,10 +1020,10 @@ const AddSession = ({ add, match, Bid }) => {
               incGap < 1
                 ? l_value + incGap
                 : l_value === 0
-                  ? 1
-                  : l_value
-                    ? l_value + 1
-                    : NaN,
+                ? 1
+                : l_value
+                ? l_value + 1
+                : NaN,
             l_teamCRate: "",
             l_teamCLayValue: "",
           };
@@ -1055,10 +1056,10 @@ const AddSession = ({ add, match, Bid }) => {
                 incGap < 1
                   ? value + incGap
                   : value === 0
-                    ? 1
-                    : value
-                      ? value + 1
-                      : NaN,
+                  ? 1
+                  : value
+                  ? value + 1
+                  : NaN,
             },
           };
           // dispatch(setQuickBookmaker(newBody));
@@ -1076,20 +1077,21 @@ const AddSession = ({ add, match, Bid }) => {
               incGap < 1
                 ? l_value + incGap
                 : l_value === 0
-                  ? 1
-                  : l_value
-                    ? l_value + 1
-                    : NaN,
+                ? 1
+                : l_value
+                ? l_value + 1
+                : NaN,
           };
         });
       }
     } else if (key == "z" || key == "down") {
       handleSuspend();
       setPressEnter(false);
+      setIsTab("");
       if (
         (event.target.name === "teamA_rate" &&
           lQuickBookMaker?.l_teamALayValue - 1 >
-          lQuickBookMaker?.l_teamARate) ||
+            lQuickBookMaker?.l_teamARate) ||
         lQuickBookMaker?.l_teamALayValue - incGap > lQuickBookMaker?.l_teamARate
       ) {
         handleSuspend(
@@ -1119,8 +1121,8 @@ const AddSession = ({ add, match, Bid }) => {
               incGap < 1
                 ? lQuickBookMaker?.l_teamALayValue - incGap
                 : lQuickBookMaker?.l_teamALayValue
-                  ? lQuickBookMaker?.l_teamALayValue - 1
-                  : lQuickBookMaker?.l_teamARate,
+                ? lQuickBookMaker?.l_teamALayValue - 1
+                : lQuickBookMaker?.l_teamARate,
             l_teamBRate: "",
             l_teamBLayValue: "",
             l_teamCRate: "",
@@ -1132,7 +1134,7 @@ const AddSession = ({ add, match, Bid }) => {
       if (
         (event.target.name === "teamB_rate" &&
           lQuickBookMaker?.l_teamBLayValue - 1 >
-          lQuickBookMaker?.l_teamBRate) ||
+            lQuickBookMaker?.l_teamBRate) ||
         lQuickBookMaker?.l_teamBLayValue - incGap > lQuickBookMaker?.l_teamBRate
       ) {
         handleSuspend(
@@ -1164,8 +1166,8 @@ const AddSession = ({ add, match, Bid }) => {
               incGap < 1
                 ? lQuickBookMaker?.l_teamBLayValue - incGap
                 : lQuickBookMaker?.l_teamBLayValue
-                  ? lQuickBookMaker?.l_teamBLayValue - 1
-                  : lQuickBookMaker?.l_teamBRate,
+                ? lQuickBookMaker?.l_teamBLayValue - 1
+                : lQuickBookMaker?.l_teamBRate,
             l_teamCRate: "",
             l_teamCLayValue: "",
           };
@@ -1174,7 +1176,7 @@ const AddSession = ({ add, match, Bid }) => {
       if (
         (event.target.name === "teamC_rate" &&
           lQuickBookMaker?.l_teamCLayValue - 1 >
-          lQuickBookMaker?.l_teamCRate) ||
+            lQuickBookMaker?.l_teamCRate) ||
         lQuickBookMaker?.l_teamCLayValue - incGap > lQuickBookMaker?.l_teamCRate
       ) {
         handleSuspend(
@@ -1208,8 +1210,8 @@ const AddSession = ({ add, match, Bid }) => {
               incGap < 1
                 ? lQuickBookMaker?.l_teamCLayValue - incGap
                 : lQuickBookMaker?.l_teamCLayValue
-                  ? lQuickBookMaker?.l_teamCLayValue - 1
-                  : lQuickBookMaker?.l_teamCRate,
+                ? lQuickBookMaker?.l_teamCLayValue - 1
+                : lQuickBookMaker?.l_teamCRate,
           };
         });
       }
@@ -1334,7 +1336,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamA_Back: lQuickBookMaker?.l_teamARate,
             teamA_suspend:
               [null, ""].includes(lQuickBookMaker?.l_teamALayValue) ||
-                [null, ""].includes(lQuickBookMaker?.l_teamARate)
+              [null, ""].includes(lQuickBookMaker?.l_teamARate)
                 ? true
                 : false,
             teamB_lay: "",
@@ -1362,7 +1364,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamB_Back: lQuickBookMaker?.l_teamBRate,
             teamB_suspend:
               [null, ""].includes(lQuickBookMaker?.l_teamBLayValue) ||
-                [null, ""].includes(lQuickBookMaker?.l_teamBRate)
+              [null, ""].includes(lQuickBookMaker?.l_teamBRate)
                 ? true
                 : false,
             teamC_lay: "",
@@ -1390,7 +1392,7 @@ const AddSession = ({ add, match, Bid }) => {
             teamC_Back: lQuickBookMaker?.l_teamCRate,
             teamC_suspend:
               [null, ""].includes(lQuickBookMaker?.l_teamCLayValue) ||
-                [null, ""].includes(lQuickBookMaker?.l_teamCRate)
+              [null, ""].includes(lQuickBookMaker?.l_teamCRate)
                 ? true
                 : false,
             layLock: false,
@@ -1398,7 +1400,7 @@ const AddSession = ({ add, match, Bid }) => {
           });
         }
       }
-      setIsTab("");
+      // setIsTab("");
     } else if (key == "tab") {
       handleSuspend();
       setLocalQuickBookmaker((prev) => {
@@ -1427,6 +1429,7 @@ const AddSession = ({ add, match, Bid }) => {
     }
     if (key == "*" || key == "l") {
       handleSuspend();
+      setIsTab("");
       if (event.target.name === "teamA_rate") {
         let value = event.target.value ? targetValue + 0.5 : 0;
 
@@ -1513,10 +1516,12 @@ const AddSession = ({ add, match, Bid }) => {
     if (key == "ctrl") {
       handleSuspend();
       setIncGap(1);
+      setIsTab("");
     }
     if (key == "esc") {
       handleSuspend();
       setIncGap(1);
+      setIsTab("");
       if (event.target.name === "teamA_rate") {
         let teamARateDecimal = lQuickBookMaker?.l_teamARate % 1; // get the decimal portion of the number
         let teamALayValueDecimal = lQuickBookMaker?.l_teamALayValue % 1; // get the decimal portion of the number
@@ -1636,10 +1641,15 @@ const AddSession = ({ add, match, Bid }) => {
     if (key == ".") {
       handleSuspend();
       setIncGap(1);
+      setIsTab("");
       if (event.target.name === "teamA_rate") {
         // alert(checkLayValue)
-        let teamARateDecimal = localQuickBookmaker?.teamA?.rate ? localQuickBookmaker?.teamA?.rate : targetValue % 1; // get the decimal portion of the number
-        let teamALayValueDecimal = localQuickBookmaker?.teamA?.lay ? localQuickBookmaker?.teamA?.lay : targetValue % 1; // get the decimal portion of the number
+        let teamARateDecimal = localQuickBookmaker?.teamA?.rate
+          ? localQuickBookmaker?.teamA?.rate
+          : targetValue % 1; // get the decimal portion of the number
+        let teamALayValueDecimal = localQuickBookmaker?.teamA?.lay
+          ? localQuickBookmaker?.teamA?.lay
+          : targetValue % 1; // get the decimal portion of the number
         let value;
         let layValue;
         // alert(teamARateDecimal)
@@ -1647,27 +1657,27 @@ const AddSession = ({ add, match, Bid }) => {
           value = localQuickBookmaker?.teamA?.rate
             ? Math.round(localQuickBookmaker?.teamA?.rate)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         } else {
           value = localQuickBookmaker?.teamA?.rate
             ? Math.round(localQuickBookmaker?.teamA?.rate)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         }
         if (teamALayValueDecimal >= 0.5) {
           layValue = localQuickBookmaker?.teamA?.lay
             ? Math.round(localQuickBookmaker?.teamA?.lay)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         } else {
           layValue = localQuickBookmaker?.teamA?.lay
             ? Math.round(localQuickBookmaker?.teamA?.lay)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         }
 
         setLocalQuickBookmaker((prev) => {
@@ -1701,27 +1711,27 @@ const AddSession = ({ add, match, Bid }) => {
           value = localQuickBookmaker?.teamB?.rate
             ? Math.round(localQuickBookmaker?.teamB?.rate)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         } else {
           value = localQuickBookmaker?.teamB?.rate
             ? Math.round(localQuickBookmaker?.teamB?.rate)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         }
         if (teamBLayValueDecimal >= 0.5) {
           layValue = localQuickBookmaker?.teamB?.lay
             ? Math.round(localQuickBookmaker?.teamB?.lay)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         } else {
           layValue = localQuickBookmaker?.teamB?.lay
             ? Math.round(localQuickBookmaker?.teamB?.lay)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         }
 
         setLocalQuickBookmaker((prev) => {
@@ -1755,27 +1765,27 @@ const AddSession = ({ add, match, Bid }) => {
           value = localQuickBookmaker?.teamC?.rate
             ? Math.round(localQuickBookmaker?.teamC?.rate)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         } else {
           value = localQuickBookmaker?.teamC?.rate
             ? Math.round(localQuickBookmaker?.teamC?.rate)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         }
         if (teamCLayValueDecimal >= 0.5) {
           layValue = localQuickBookmaker?.teamC?.lay
             ? Math.round(localQuickBookmaker?.teamC?.lay)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         } else {
           layValue = localQuickBookmaker?.teamC?.lay
             ? Math.round(localQuickBookmaker?.teamC?.lay)
             : targetValue
-              ? targetValue
-              : 0;
+            ? targetValue
+            : 0;
         }
 
         setLocalQuickBookmaker((prev) => {
@@ -1805,6 +1815,7 @@ const AddSession = ({ add, match, Bid }) => {
     if (key == ",") {
       handleSuspend();
       setIncGap(1);
+      setIsTab("");
       if (event.target.name === "teamA_rate") {
         if (localQuickBookmaker?.teamA?.rate > 0.5 || targetValue > 0.5) {
           let teamARateDecimal = localQuickBookmaker?.teamA?.rate % 1; // get the decimal portion of the number
@@ -1813,29 +1824,29 @@ const AddSession = ({ add, match, Bid }) => {
           let layValue;
           if (teamARateDecimal >= 0.5) {
             value = localQuickBookmaker?.teamA?.rate
-              ? Math.round(localQuickBookmaker?.teamA?.rate)//
+              ? Math.round(localQuickBookmaker?.teamA?.rate) //
               : targetValue
-                ? targetValue //
-                : 0;
+              ? targetValue //
+              : 0;
           } else {
             value = localQuickBookmaker?.teamA?.rate
               ? Math.round(localQuickBookmaker?.teamA?.rate)
               : targetValue
-                ? targetValue
-                : 0;
+              ? targetValue
+              : 0;
           }
           if (teamALayValueDecimal >= 0.5) {
             layValue = localQuickBookmaker?.teamA?.rate
-              ? Math.round(localQuickBookmaker?.teamA?.rate)//
+              ? Math.round(localQuickBookmaker?.teamA?.rate) //
               : targetValue
-                ? targetValue //
-                : 0;
+              ? targetValue //
+              : 0;
           } else {
             layValue = localQuickBookmaker?.teamA?.rate
               ? Math.round(localQuickBookmaker?.teamA?.rate) //
               : targetValue
-                ? targetValue //
-                : 0;
+              ? targetValue //
+              : 0;
           }
 
           setLocalQuickBookmaker((prev) => {
@@ -1871,15 +1882,15 @@ const AddSession = ({ add, match, Bid }) => {
             value = localQuickBookmaker?.teamB?.rate
               ? Math.round(localQuickBookmaker?.teamB?.rate) //
               : targetValue
-                ? targetValue //
-                : 0;
+              ? targetValue //
+              : 0;
           } else {
             // value = Math.round(localQuickBookmaker?.teamB?.rate);
             value = localQuickBookmaker?.teamB?.rate
               ? Math.round(localQuickBookmaker?.teamB?.rate)
               : targetValue
-                ? targetValue
-                : 0;
+              ? targetValue
+              : 0;
           }
 
           if (teamBLayValueDecimal >= 0.5) {
@@ -1887,15 +1898,15 @@ const AddSession = ({ add, match, Bid }) => {
             layValue = localQuickBookmaker?.teamB?.rate
               ? Math.round(localQuickBookmaker?.teamB?.rate) //
               : targetValue
-                ? targetValue //
-                : 0;
+              ? targetValue //
+              : 0;
           } else {
             // layValue = Math.round(localQuickBookmaker?.teamB?.rate);
             layValue = localQuickBookmaker?.teamB?.rate
               ? Math.round(localQuickBookmaker?.teamB?.rate) //
               : targetValue
-                ? targetValue//
-                : 0;
+              ? targetValue //
+              : 0;
           }
 
           setLocalQuickBookmaker((prev) => {
@@ -1933,15 +1944,15 @@ const AddSession = ({ add, match, Bid }) => {
             value = localQuickBookmaker?.teamC?.rate
               ? Math.round(localQuickBookmaker?.teamC?.rate) //
               : targetValue
-                ? targetValue //
-                : 0;
+              ? targetValue //
+              : 0;
           } else {
             // value = Math.round(localQuickBookmaker?.teamC?.rate);
             value = localQuickBookmaker?.teamC?.rate
               ? Math.round(localQuickBookmaker?.teamC?.rate)
               : targetValue
-                ? targetValue
-                : 0;
+              ? targetValue
+              : 0;
           }
 
           if (teamCLayValueDecimal >= 0.5) {
@@ -1949,15 +1960,15 @@ const AddSession = ({ add, match, Bid }) => {
             layValue = localQuickBookmaker?.teamC?.rate
               ? Math.round(localQuickBookmaker?.teamC?.rate) //
               : targetValue
-                ? targetValue //
-                : 0;
+              ? targetValue //
+              : 0;
           } else {
             // layValue = Math.round(localQuickBookmaker?.teamC?.lay);
             layValue = localQuickBookmaker?.teamC?.rate
               ? Math.round(localQuickBookmaker?.teamC?.rate) //
               : targetValue
-                ? targetValue //
-                : 0;
+              ? targetValue //
+              : 0;
           }
 
           setLocalQuickBookmaker((prev) => {
@@ -2002,30 +2013,33 @@ const AddSession = ({ add, match, Bid }) => {
         lock: true,
         layLock: false,
       });
-      // setLocalQuickBookmaker((prev) => {
-      //   const newBody = {
-      //     ...prev,
-      //     teamA: { ...prev?.teamA, lay: targetValue + 1, rate: targetValue },
-      //     teamB: { ...prev?.teamB, rate: "", lay: "" },
-      //     teamC: { ...prev?.teamC, lay: "", rate: "" },
-      //   };
-      //   // dispatch(setQuickBookmaker(newBody));
-      //   return newBody;
-      // });
-      // setLQuickBookMaker((prev) => {
-      //   return {
-      //     ...prev,
-      //     l_teamARate: targetValue,
-      //     l_teamALayValue: targetValue + 1,
-      //     l_teamBRate: "",
-      //     l_teamBLayValue: "",
-      //     l_teamCRate: "",
-      //     l_teamCLayValue: "",
-      //   };
-      // });
+      setLocalQuickBookmaker((prev) => {
+        const newBody = {
+          ...prev,
+          teamA: { ...prev?.teamA, lay: "", rate: targetValue },
+          teamB: { ...prev?.teamB, rate: targetValue, lay: "" },
+          teamC: { ...prev?.teamC, lay: "", rate: targetValue },
+        };
+        //   // dispatch(setQuickBookmaker(newBody));
+        return newBody;
+      });
+      setLQuickBookMaker((prev) => {
+        return {
+          ...prev,
+          l_teamARate: targetValue,
+          l_teamALayValue: "",
+          l_teamBRate: targetValue,
+          l_teamBLayValue: "",
+          l_teamCRate: targetValue,
+          l_teamCLayValue: "",
+        };
+      });
     }
     if (key == "plus") {
-      // handleSuspend();
+      if(isTab == "tab"){
+        handleSuspend();
+        setIsTab("");
+      }
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {
@@ -2293,6 +2307,7 @@ const AddSession = ({ add, match, Bid }) => {
     }
     if (key == "minus") {
       // handleSuspend();
+      setIsTab("");
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {
@@ -2591,6 +2606,7 @@ const AddSession = ({ add, match, Bid }) => {
     if (key == "/") {
       handleSuspend();
       setIncGap(5);
+      setIsTab("");
       if (event.target.name === "teamA_rate") {
         let value = event.target.value ? targetValue : 0;
 
@@ -3331,7 +3347,7 @@ const AddSession = ({ add, match, Bid }) => {
                       sx={{
                         background:
                           localQuickBookmaker?.teamA?.suspended ||
-                            localQuickBookmaker?.teamA?.lay === null
+                          localQuickBookmaker?.teamA?.lay === null
                             ? "#FDF21A"
                             : "#FFB5B5",
                         width: "50%",
@@ -3343,7 +3359,7 @@ const AddSession = ({ add, match, Bid }) => {
                       }}
                     >
                       {!localQuickBookmaker?.teamA?.suspended &&
-                        localQuickBookmaker?.teamA?.lay ? (
+                      localQuickBookmaker?.teamA?.lay ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
@@ -3451,7 +3467,7 @@ const AddSession = ({ add, match, Bid }) => {
                       sx={{
                         background:
                           localQuickBookmaker?.teamB?.suspended ||
-                            localQuickBookmaker?.teamB?.lay === null
+                          localQuickBookmaker?.teamB?.lay === null
                             ? "#FDF21A"
                             : "#FFB5B5",
                         width: "50%",
@@ -3463,7 +3479,7 @@ const AddSession = ({ add, match, Bid }) => {
                       }}
                     >
                       {!localQuickBookmaker?.teamB?.suspended &&
-                        localQuickBookmaker?.teamB?.lay ? (
+                      localQuickBookmaker?.teamB?.lay ? (
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "22px" }}
                         >
@@ -3574,7 +3590,7 @@ const AddSession = ({ add, match, Bid }) => {
                           sx={{
                             background:
                               localQuickBookmaker?.teamC?.suspended ||
-                                localQuickBookmaker?.teamC?.lay === null
+                              localQuickBookmaker?.teamC?.lay === null
                                 ? "#FDF21A"
                                 : "#FFB5B5",
                             width: "50%",
@@ -3586,7 +3602,7 @@ const AddSession = ({ add, match, Bid }) => {
                           }}
                         >
                           {!localQuickBookmaker?.teamC?.suspended &&
-                            localQuickBookmaker?.teamC?.lay ? (
+                          localQuickBookmaker?.teamC?.lay ? (
                             <Typography
                               sx={{ fontWeight: "600", fontSize: "22px" }}
                             >

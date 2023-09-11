@@ -69,6 +69,14 @@ const FastTimePlaceBet = ({
         loading: false,
         type: false,
       });
+      setTimeout(() => {
+        setCanceled({
+          value: false,
+          msg: "",
+          loading: false,
+          type: false,
+        });
+      }, 1500);
       return;
     }
     try {
