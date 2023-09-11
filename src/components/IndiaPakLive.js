@@ -809,6 +809,7 @@ const AddSession = ({
         isYesPercent: true,
       });
       if (targetValue > 0) {
+        // debugger
         let value = targetValue ? targetValue - 1 : 1;
         let yesValue =
           Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
@@ -943,7 +944,12 @@ const AddSession = ({
         isNoPercent: true,
         isYesPercent: true,
       });
-      let value = Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate + 1 : 0;
+      let value =
+        Detail?.Detail?.no_rate === 0 || null
+          ? 1
+          : Detail?.Detail?.no_rate
+          ? Detail?.Detail?.no_rate + 1
+          : 0;
       Detail.setDetail({
         ...Detail.Detail,
         no_rate: value,
@@ -981,26 +987,28 @@ const AddSession = ({
       });
     } else if (key == "enter") {
       if (!isCreateSession || sessionBetId) {
-        let rate_percent =
-          Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
-        let data = {
-          match_id: match?.id,
-          betId: betId,
-          betStatus: 1,
-          no_rate: Detail.Detail.no_rate,
-          yes_rate: Detail.Detail.yes_rate,
-          suspended: "ACTIVE",
-          rate_percent: rate_percent,
-        };
-        setLock({
-          ...lock,
-          isNo: false,
-          isYes: false,
-          isNoPercent: false,
-          isYesPercent: false,
-        });
-        isBall.setIsBall(false);
-        socket.emit("updateSessionRate", data);
+        if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+          let rate_percent =
+            Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+          let data = {
+            match_id: match?.id,
+            betId: betId,
+            betStatus: 1,
+            no_rate: Detail.Detail.no_rate,
+            yes_rate: Detail.Detail.yes_rate,
+            suspended: "ACTIVE",
+            rate_percent: rate_percent,
+          };
+          setLock({
+            ...lock,
+            isNo: false,
+            isYes: false,
+            isNoPercent: false,
+            isYesPercent: false,
+          });
+          isBall.setIsBall(false);
+          socket.emit("updateSessionRate", data);
+        }
       }
     }
   };
@@ -1149,9 +1157,7 @@ const AddSession = ({
                       disabled={isDisable}
                       onChange={(e) => handleChange(e)}
                       type="Number"
-                      value={
-                        Detail.Detail.l_no_rate ? Detail.Detail.l_no_rate : ""
-                      }
+                      value={Detail?.Detail?.l_no_rate}
                       variant="standard"
                       InputProps={{
                         disableUnderline: true,
@@ -1181,9 +1187,7 @@ const AddSession = ({
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                   <TextField
                     type="Number"
-                    value={
-                      Detail.Detail.l_yes_rate ? Detail.Detail.l_yes_rate : ""
-                    }
+                    value={Detail?.Detail?.l_yes_rate}
                     variant="standard"
                     disabled={isDisable}
                     InputProps={{
@@ -1546,95 +1550,95 @@ const RunsAmountBox = ({
         <Box ref={containerRef} sx={{ maxHeight: "42vh", overflowY: "auto" }}>
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
-              const getColor = (value) => {
-                if (value >= 1) {
-                  return "#10DC61";
-                } else if (value === v?.profit_loss && value > 1) {
-                  return "#F8C851";
-                } else {
-                  return "#DC3545";
-                }
-              };
-              const getSVG = (value) => {
-                if (value > 1) {
-                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                } else if (value === v?.profit_loss && value > 1) {
-                  return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
-                } else {
-                  return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
-                }
-              };
-              return (
-                <Box
-                  id={`${betId}_${v?.odds}`}
-                  key={v?.odds}
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    height: "25px",
-                    borderTop: "1px solid #306A47",
-                  }}
-                >
+                const getColor = (value) => {
+                  if (value >= 1) {
+                    return "#10DC61";
+                  } else if (value === v?.profit_loss && value > 1) {
+                    return "#F8C851";
+                  } else {
+                    return "#DC3545";
+                  }
+                };
+                const getSVG = (value) => {
+                  if (value > 1) {
+                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                  } else if (value === v?.profit_loss && value > 1) {
+                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                  } else {
+                    return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+                  }
+                };
+                return (
                   <Box
+                    id={`${betId}_${v?.odds}`}
+                    key={v?.odds}
                     sx={{
-                      width: "35%",
                       display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      width: "100%",
+                      height: "25px",
+                      borderTop: "1px solid #306A47",
                     }}
                   >
-                    <Typography
+                    <Box
                       sx={{
-                        color: "#306A47",
-                        fontWeight: "bold",
-                        fontSize: "12px",
+                        width: "35%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                       }}
                     >
-                      {v?.odds}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      width: "65%",
-                      display: "flex",
-                      borderLeft: `1px solid #306A47`,
-                      background: getColor(v?.profit_loss),
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      paddingRight: "7px",
-                    }}
-                  >
-                    <Typography
+                      <Typography
+                        sx={{
+                          color: "#306A47",
+                          fontWeight: "bold",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {v?.odds}
+                      </Typography>
+                    </Box>
+                    <Box
                       sx={{
-                        fontWeight: "500",
-                        fontSize: "16px",
-                        color: "white",
-                        width: "40px",
+                        width: "65%",
+                        display: "flex",
+                        borderLeft: `1px solid #306A47`,
+                        background: getColor(v?.profit_loss),
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        paddingRight: "7px",
                       }}
                     >
-                      {Number(v?.profit_loss) >= 0 ? (
-                        <>
-                          <span style={{ visibility: "hidden" }}>-</span>
-                          {v?.profit_loss}
-                        </>
-                      ) : (
-                        v?.profit_loss
-                      )}
-                    </Typography>
-                    <StyledImage
-                      src={getSVG(v?.profit_loss)}
-                      sx={{
-                        height: "15px",
-                        marginLeft: "5px",
-                        filter:
-                          "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                        width: "15px",
-                      }}
-                    />
+                      <Typography
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "16px",
+                          color: "white",
+                          width: "40px",
+                        }}
+                      >
+                        {Number(v?.profit_loss) >= 0 ? (
+                          <>
+                            <span style={{ visibility: "hidden" }}>-</span>
+                            {v?.profit_loss}
+                          </>
+                        ) : (
+                          v?.profit_loss
+                        )}
+                      </Typography>
+                      <StyledImage
+                        src={getSVG(v?.profit_loss)}
+                        sx={{
+                          height: "15px",
+                          marginLeft: "5px",
+                          filter:
+                            "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                          width: "15px",
+                        }}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              );
-            })
+                );
+              })
             : null}
         </Box>
       </Box>
