@@ -2426,7 +2426,7 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == "minus") {
-      // handleSuspend();
+      handleSuspend();
       setIsTab("");
       if (incGap != 5) {
         setIncGap(1);
