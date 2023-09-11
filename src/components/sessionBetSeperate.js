@@ -460,7 +460,7 @@ const RowComponent = ({ header, data }) => {
           />
           <SingleBox
             color={getColor()}
-            data={data?.username}
+            data={data?.username || data?.userName || data?.user?.userName}
             header={header}
           />
           <SingleBox
@@ -474,7 +474,7 @@ const RowComponent = ({ header, data }) => {
                 : data?.rate?.split("-")[1]
             )}
           />
-          <SingleBox color={getColor()} data={data?.betType} header={header} />
+          <SingleBox color={getColor()} data={data?.betType || data?.bet_type} header={header} />
           <SingleBox
             color={getColor()}
             data={data?.stack || data?.stake || data?.amount}

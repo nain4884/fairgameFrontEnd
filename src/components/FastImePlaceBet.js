@@ -16,8 +16,9 @@ const FastTimePlaceBet = ({
   selectedFastAmount,
   typeOfBet,
   matchOddsData,
+  data,
 }) => {
-  console.log(matchOddsData, "matchOddsData");
+  console.log(data, "sessionData");
   const { axios } = setRole();
   const { geoLocation } = useSelector((state) => state.auth);
   const theme = useTheme();
@@ -197,7 +198,9 @@ const FastTimePlaceBet = ({
             {
               <>
                 {/* {matchOddsData?.isSingle === false || matchOddsData?.teamB_suspend !== "suspended" ? ( */}
-                {matchOddsData?.isSingle === false || (matchOddsData.teamA_suspend === null && matchOddsData.teamB_suspend === null) ? (
+                {matchOddsData?.isSingle === false ||
+                (matchOddsData.teamA_suspend === null &&
+                  matchOddsData.teamB_suspend === null) ? (
                   // ||
                   //   ((matchOddsData?.teamA_suspend === null || false) &&
                   //     (matchOddsData?.teamB_suspend === null || false))
@@ -278,8 +281,8 @@ const FastTimePlaceBet = ({
                                   ? 0
                                   : matchOddsData?.marketType ===
                                     "QuickBookmaker1"
-                                    ? 1
-                                    : 2
+                                  ? 1
+                                  : 2
                               }
                               backgroundColor={"#A7DCFF"}
                               matchOddsData={matchOddsData}
@@ -365,8 +368,8 @@ const FastTimePlaceBet = ({
                                   ? 0
                                   : matchOddsData?.marketType ===
                                     "QuickBookmaker1"
-                                    ? 1
-                                    : 2
+                                  ? 1
+                                  : 2
                               }
                               backgroundColor={"#A7DCFF"}
                               matchOddsData={matchOddsData}
@@ -428,8 +431,8 @@ const FastTimePlaceBet = ({
                                 ? 0
                                 : matchOddsData?.marketType ===
                                   "QuickBookmaker1"
-                                  ? 1
-                                  : 2
+                                ? 1
+                                : 2
                             }
                             handleAmountClick={handleAmountClick}
                           />
@@ -485,8 +488,8 @@ const FastTimePlaceBet = ({
                                 ? 0
                                 : matchOddsData?.marketType ===
                                   "QuickBookmaker1"
-                                  ? 1
-                                  : 2
+                                ? 1
+                                : 2
                             }
                             handleAmountClick={handleAmountClick}
                           />
@@ -521,14 +524,17 @@ const FastTimePlaceBet = ({
               width: { mobile: "100%", laptop: "100%" },
               overflow: "hidden",
               display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
+
+              // justifyContent: "center",
+              flexDirection: "row",
+              alignItems: "center",
+              paddingY: "8px",
             }}
           >
             {matchesMobile && (
               <Box sx={{ display: "flex", marginTop: "2px", marginX: "2px" }} />
             )}
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -639,10 +645,86 @@ const FastTimePlaceBet = ({
                   </Typography>
                 </button>
               </Box>
-            </Box>
+            </Box> */}
             {
               <>
-                <Box
+                <>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      // marginTop: "15px",
+                      marginX: "2px",
+                      flexWrap: "wrap",
+                      maxWidth: "50%",
+                      flex: 1,
+                      gap: { mobile: "3px", laptop: 1, tablet: 1 },
+                    }}
+                  >
+                    {buttonList.length > 0 &&
+                      buttonList?.map((v, index) => (
+                        <NumberData
+                          key={index}
+                          containerStyle={{
+                            marginLeft: "2px",
+                            flex: 1,
+                            background: selectedFastAmount === v && "#FF4949",
+                            borderRadius: "5px",
+                            border: "2px solid white",
+                          }}
+                          value={v.value}
+                          lable={v.lable}
+                          type={"back"}
+                          session={session}
+                          teamSuspend={data?.suspended}
+                          odds={data?.no_rate}
+                          typeOfBet={typeOfBet}
+                          backgroundColor={"#FFB5B5"}
+                          data={data}
+                          placeIndex={2}
+                          handleAmountClick={handleAmountClick}
+                          setShowFastTimeBox={setShowFastTimeBox}
+                        />
+                      ))}
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      // marginY: "8px",
+                      marginX: "2px",
+                      flexWrap: "wrap",
+                      maxWidth: "50%",
+                      flex: 1,
+                      gap: { mobile: "3px", laptop: 1, tablet: 1 },
+                    }}
+                  >
+                    {buttonList.length > 0 &&
+                      buttonList?.map((v, index) => (
+                        <NumberData
+                          key={index}
+                          containerStyle={{
+                            marginLeft: "2px",
+                            flex: 1,
+                            background: selectedFastAmount === v && "#FF4949",
+                            borderRadius: "5px",
+                            border: "2px solid white",
+                          }}
+                          value={v.value}
+                          lable={v.lable}
+                          type={"lay"}
+                          session={session}
+                          teamSuspend={data?.suspended}
+                          odds={data?.yes_rate}
+                          typeOfBet={typeOfBet}
+                          backgroundColor={"#A7DCFF"}
+                          data={data}
+                          placeIndex={1}
+                          handleAmountClick={handleAmountClick}
+                          setShowFastTimeBox={setShowFastTimeBox}
+                        />
+                      ))}
+                  </Box>
+                </>
+                {/* <Box
                   sx={{
                     display: "flex",
                     marginTop: "15px",
@@ -669,6 +751,7 @@ const FastTimePlaceBet = ({
                         typeOfBet={typeOfBet}
                         setFastAmount={setFastAmount}
                         setMinWidth={"no"}
+                        data={data}
                       />
                     ))}
                 </Box>
@@ -700,9 +783,10 @@ const FastTimePlaceBet = ({
                         typeOfBet={typeOfBet}
                         setFastAmount={setFastAmount}
                         setMinWidth={"no"}
+                        data={data}
                       />
                     ))}
-                </Box>
+                </Box> */}
               </>
             }
           </Box>
@@ -748,14 +832,33 @@ const NumberData = ({
   odds,
   setMinWidth,
   placeIndex,
-  teamSuspend
+  teamSuspend,
+  data,
 }) => {
   return (
     <Box
       onClick={() => {
         if (session === "sessionOdds") {
-          setFastAmount((prev) => ({ ...prev, sessionOdds: value }));
-          setShowFastTimeBox(false);
+          const payload = {
+            betId: data?.id,
+            bet_condition: data?.bet_condition,
+            bet_type: backgroundColor === "#A7DCFF" ? "yes" : "no",
+            id: data?.match_id,
+            marketType: typeOfBet,
+            matchType: data?.matchType,
+            odds: odds,
+            place_index: placeIndex,
+            po: placeIndex,
+            rate_percent: data?.rate_percent,
+            teamA_name: matchOddsData?.teamA,
+            teamB_name: matchOddsData?.teamB,
+            selectionId: data?.selectionId,
+            stack: Number(value),
+            stake: Number(value),
+            sessionBet: true,
+          };
+          handleAmountClick(payload, session, Number(value), teamSuspend);
+          // setShowFastTimeBox(false);
         } else if (session === "bookmaker") {
           setFastAmount((prev) => ({ ...prev, bookMaker: value }));
           setShowFastTimeBox(false);

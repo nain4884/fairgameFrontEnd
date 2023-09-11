@@ -9,7 +9,10 @@ const FastTime = ({
   session,
   setFastAmount,
   setPlaceBetData,
-  typeOfBet
+  typeOfBet,
+  data1,
+  setSelectedItem,
+  selectedItem,
 }) => {
   return (
     <Box
@@ -54,7 +57,12 @@ const FastTime = ({
             if (setPlaceBetData !== undefined) {
               setPlaceBetData(null);
             }
-            setShowFastTimeBox((prev) => !prev);
+            if (selectedItem == data1?.id) {
+              setShowFastTimeBox((prev) => !prev);
+            } else {
+              setShowFastTimeBox(true);
+              setSelectedItem(data1?.id);
+            }
           }}
         />
       )}

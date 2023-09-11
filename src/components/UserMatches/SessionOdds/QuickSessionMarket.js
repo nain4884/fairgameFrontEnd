@@ -48,6 +48,7 @@ const QuickSessionMarket = ({
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { quickSession } = useSelector((state) => state?.matchDetails);
   const [localQuickSession, setLocalQuickSession] = useState([]);
+  const [selectedItem, setSelectedItem] = useState("");
   // const [localData, setLocalData] = useState(newData);
   // useEffect(() => {
   //   setLocalData(newData);
@@ -111,14 +112,14 @@ const QuickSessionMarket = ({
             >
               {title}
             </Typography>
-            {showFast && (
+            {/* {showFast && (
               <FastTime
                 session={session}
                 setFastAmount={setFastAmount}
                 setShowFastTimeBox={setShowFastTimeBox}
                 data={fastAmount ? currencyFormatter(fastAmount) : ""}
               />
-            )}
+            )} */}
           </Box>
           <Box
             sx={{
@@ -178,7 +179,7 @@ const QuickSessionMarket = ({
             </Box>
           </Box>
         </Box>
-        {showFastTimeBox && (
+        {/* {showFastTimeBox && (
           <Box>
             <FastTimePlaceBet
               session={session}
@@ -187,7 +188,7 @@ const QuickSessionMarket = ({
               setShowFastTimeBox={setShowFastTimeBox}
             />
           </Box>
-        )}
+        )} */}
         {visible && (
           <Box sx={{ width: "100%", position: "relative" }}>
             {
@@ -377,8 +378,12 @@ const QuickSessionMarket = ({
                           setFastBetLoading={setFastBetLoading}
                           data={element}
                           sessionMain={session}
+                          setShowFastTimeBox={setShowFastTimeBox}
                           selectedFastAmount={fastAmount}
                           setFastAmount={setFastAmount}
+                          showFastTimeBox={showFastTimeBox}
+                          setSelectedItem={setSelectedItem}
+                          selectedItem={selectedItem}
                           mainData={data}
                           allRates={{
                             teamA: teamARates,
