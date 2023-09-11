@@ -645,7 +645,7 @@ const AddSession = ({ add, match, Bid }) => {
     }
   };
 
-  const handleFocus = (event) => { };
+  const handleFocus = (event) => {};
   const handleHunderedValue = (back, lay) => {
     // alert(back)
     if (back >= 100) {
@@ -1680,6 +1680,26 @@ const AddSession = ({ add, match, Bid }) => {
             : 0;
         }
 
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamA_lay: value + 1.5,
+          teamA_Back: value,
+          teamA_suspend: false,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -1734,6 +1754,26 @@ const AddSession = ({ add, match, Bid }) => {
             : 0;
         }
 
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamB_lay: value + 1.5,
+          teamB_Back: value,
+          teamB_suspend: false,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -1787,6 +1827,26 @@ const AddSession = ({ add, match, Bid }) => {
             ? targetValue
             : 0;
         }
+
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamC_lay: value + 1.5,
+          teamC_Back: value,
+          teamC_suspend: false,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
 
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -1849,6 +1909,26 @@ const AddSession = ({ add, match, Bid }) => {
               : 0;
           }
 
+          socket.emit("updateRate", {
+            matchId: match?.id,
+            id: Bid,
+            teamA: match?.teamA,
+            teamB: match?.teamB,
+            teamC: match?.teamC,
+            betId: localSelectedBookmaker?.betId,
+            teamC_lay: "",
+            teamC_Back: "",
+            teamC_suspend: true,
+            teamB_lay: "",
+            teamB_Back: "",
+            teamB_suspend: true,
+            teamA_lay: value + 1,
+            teamA_Back: value - 0.5,
+            teamA_suspend: false,
+            layLock: false,
+            isSingle: true,
+          });
+
           setLocalQuickBookmaker((prev) => {
             const newBody = {
               ...prev,
@@ -1908,6 +1988,26 @@ const AddSession = ({ add, match, Bid }) => {
               ? targetValue //
               : 0;
           }
+
+          socket.emit("updateRate", {
+            matchId: match?.id,
+            id: Bid,
+            teamA: match?.teamA,
+            teamB: match?.teamB,
+            teamC: match?.teamC,
+            betId: localSelectedBookmaker?.betId,
+            teamC_lay: "",
+            teamC_Back: "",
+            teamC_suspend: true,
+            teamA_lay: "",
+            teamA_Back: "",
+            teamA_suspend: true,
+            teamB_lay: value + 1,
+            teamB_Back: value - 0.5,
+            teamB_suspend: false,
+            layLock: false,
+            isSingle: true,
+          });
 
           setLocalQuickBookmaker((prev) => {
             const newBody = {
@@ -1970,6 +2070,26 @@ const AddSession = ({ add, match, Bid }) => {
               ? targetValue //
               : 0;
           }
+
+          socket.emit("updateRate", {
+            matchId: match?.id,
+            id: Bid,
+            teamA: match?.teamA,
+            teamB: match?.teamB,
+            teamC: match?.teamC,
+            betId: localSelectedBookmaker?.betId,
+            teamB_lay: "",
+            teamB_Back: "",
+            teamB_suspend: true,
+            teamA_lay: "",
+            teamA_Back: "",
+            teamA_suspend: true,
+            teamC_lay: value + 1,
+            teamC_Back: value - 0.5,
+            teamC_suspend: false,
+            layLock: false,
+            isSingle: true,
+          });
 
           setLocalQuickBookmaker((prev) => {
             const newBody = {
@@ -2036,7 +2156,7 @@ const AddSession = ({ add, match, Bid }) => {
       });
     }
     if (key == "plus") {
-      if(isTab == "tab"){
+      if (isTab == "tab") {
         handleSuspend();
         setIsTab("");
       }
