@@ -394,6 +394,7 @@ export const SocketProvider = ({ children }) => {
           rate: null,
           marketType: data?.betPlaceData?.marketType,
           amount: data?.betPlaceData?.stack || data?.betPlaceData?.stake,
+          username: data?.betPlaceData?.userName
         };
         if (data?.betPlaceData?.match_id === match_id) {
           setLocalAllBetRates((prev) => {
@@ -1345,7 +1346,7 @@ export const SocketProvider = ({ children }) => {
   const localServerSocket = () => {
     // if (!socket && checkSocket !== "true") {
     const newSocket = io(`${apiBasePath}`, {
-      transports: ["polling"],
+      transports: ["websocket"],
       headers: {
         Authorization: `${token}`,
       },
@@ -1383,7 +1384,7 @@ export const SocketProvider = ({ children }) => {
 
   const mircoServerSocket = () => {
     const newMicroSocket = io(`${microServiceApiPath}`, {
-      transports: ["polling"],
+      transports: ["websocket"],
       headers: {
         Authorization: `${token}`,
       },

@@ -18,7 +18,6 @@ const FastTimePlaceBet = ({
   matchOddsData,
   data,
 }) => {
-  console.log(data, "sessionData");
   const { axios } = setRole();
   const { geoLocation } = useSelector((state) => state.auth);
   const theme = useTheme();
@@ -62,8 +61,8 @@ const FastTimePlaceBet = ({
     }
   };
 
-  const handleAmountClick = async (payload, session, value, teamSuspend) => {
-    if (teamSuspend === "suspended" || payload?.odds == 0) {
+  const handleAmountClick = async (payload, session, odds, teamSuspend) => {
+    if ([null, 0, "", "0"].includes(odds) || odds <= 0) {
       setCanceled({
         value: true,
         msg: "Market Suspended",
@@ -240,7 +239,7 @@ const FastTimePlaceBet = ({
                             width: "100%",
                           }}
                         >
-                          {matchOddsData?.teamA} {matchOddsData?.teamB_suspend}
+                          {matchOddsData?.teamA}
                         </Typography>
                       </Box>
                       <Box
@@ -859,7 +858,7 @@ const NumberData = ({
             stake: Number(value),
             sessionBet: true,
           };
-          handleAmountClick(payload, session, Number(value), teamSuspend);
+          handleAmountClick(payload, session, odds, teamSuspend);
           // setShowFastTimeBox(false);
         } else if (session === "bookmaker") {
           setFastAmount((prev) => ({ ...prev, bookMaker: value }));
@@ -881,7 +880,7 @@ const NumberData = ({
             teamC_name: matchOddsData?.teamC,
             team_bet: betOnTeam,
           };
-          handleAmountClick(payload, session, Number(value), teamSuspend);
+          handleAmountClick(payload, session, odds, teamSuspend);
         }
       }}
       sx={[

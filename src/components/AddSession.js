@@ -199,6 +199,18 @@ const AddSession = ({ add, match, Bid }) => {
               teamC_suspend: response?.data?.data.teamC_suspend ? true : false,
             },
           };
+
+          setLQuickBookMaker((prev) => {
+            const newBody = {
+              ...prev,
+              l_teamARate: response?.data?.data.teamA_Back ?? "",
+              l_teamALayValue: response?.data?.data?.teamA_lay ?? "",
+              l_teamBRate: response?.data?.data.teamA_Back ?? "",
+              l_teamBLayValue: response?.data?.data.teamA_Back ?? "",
+              l_teamCRate: response?.data?.data.teamA_Back ?? "",
+              l_teamCLayValue: response?.data?.data.teamA_Back ?? "",
+            };
+          });
           dispatch(setQuickBookmaker(newBody));
           return newBody;
         });
