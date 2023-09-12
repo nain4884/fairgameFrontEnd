@@ -22,7 +22,7 @@ const FastTime = ({
         alignItems: "center",
         justifyContent: "flex-end",
         cursor: "pointer",
-        width: "100%",
+        width: "20%",
       }}
     >
       {data ? (

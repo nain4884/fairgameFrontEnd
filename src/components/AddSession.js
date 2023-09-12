@@ -1639,9 +1639,11 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == ".") {
-      handleSuspend();
+      if (isTab == "tab") {
+        handleSuspend();
+        setIsTab("");
+      }
       setIncGap(1);
-      setIsTab("");
       if (event.target.name === "teamA_rate") {
         // alert(checkLayValue)
         let teamARateDecimal = localQuickBookmaker?.teamA?.rate
@@ -1873,9 +1875,11 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == ",") {
-      handleSuspend();
+      if (isTab == "tab") {
+        handleSuspend();
+        setIsTab("");
+      }
       setIncGap(1);
-      setIsTab("");
       if (event.target.name === "teamA_rate") {
         if (localQuickBookmaker?.teamA?.rate > 0.5 || targetValue > 0.5) {
           let teamARateDecimal = localQuickBookmaker?.teamA?.rate % 1; // get the decimal portion of the number
@@ -2426,8 +2430,10 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == "minus") {
-      handleSuspend();
-      setIsTab("");
+      if (isTab == "tab") {
+        handleSuspend();
+        setIsTab("");
+      }
       if (incGap != 5) {
         setIncGap(1);
         if (event.target.name === "teamA_rate") {

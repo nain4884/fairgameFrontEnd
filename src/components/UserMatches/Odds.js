@@ -696,7 +696,7 @@ const Odds = ({
             )}
           </Box>
         )}
-        {visible && showFastTimeBox && (
+        {visible && showFastTimeBox && !upcoming && (
           <Box>
             <FastTimePlaceBet
               typeOfBet={typeOfBet}
