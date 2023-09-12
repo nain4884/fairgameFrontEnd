@@ -823,7 +823,6 @@ const CustomHeader = ({}) => {
           });
           try {
             setCurrentMatch((prev) => {
-              // debugger
               // if (prev.id === value?.match_id && value?.sessionBet === false) {
               //   navigate("/expert/match");
               // }

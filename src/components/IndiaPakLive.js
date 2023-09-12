@@ -816,7 +816,6 @@ const AddSession = ({
         isYesPercent: true,
       });
       if (targetValue > 0) {
-        // debugger
         let value = targetValue ? targetValue - 1 : 1;
         let yesValue =
           Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
