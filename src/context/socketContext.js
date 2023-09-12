@@ -1346,7 +1346,7 @@ export const SocketProvider = ({ children }) => {
   const localServerSocket = () => {
     // if (!socket && checkSocket !== "true") {
     const newSocket = io(`${apiBasePath}`, {
-      transports: ["websocket"],
+      transports: ["polling"],
       headers: {
         Authorization: `${token}`,
       },
@@ -1384,7 +1384,7 @@ export const SocketProvider = ({ children }) => {
 
   const mircoServerSocket = () => {
     const newMicroSocket = io(`${microServiceApiPath}`, {
-      transports: ["websocket"],
+      transports: ["polling"],
       headers: {
         Authorization: `${token}`,
       },
