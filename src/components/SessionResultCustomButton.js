@@ -17,6 +17,7 @@ const CustomButton = ({ id, title, color, loading, onClick, session }) => {
         justifyContent: "center",
         alignItems: "center",
         display: "flex",
+        textTransform: "none"
       }}
     >
       <Typography sx={{ fontSize: "12px", fontWeight: "500", color: "white" }}>
