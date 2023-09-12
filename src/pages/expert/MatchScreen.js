@@ -50,9 +50,8 @@ const MatchScreen = () => {
   const navigate = useNavigate();
   const { axios } = setRole();
   const dispatch = useDispatch();
-  const { allBetRates, currentOdd, sessionExpertOdds } = useSelector(
-    (state) => state?.expertMatchDetails
-  );
+  const { allBetRates, currentOdd, sessionExpertOdds, declaredMatchDetail } =
+    useSelector((state) => state?.expertMatchDetails);
   const [currentMatch, setCurrentMatch] = useState(null);
   const [IObets, setIObtes] = useState([]);
   const [bookmakerLivedata, setBookmakerLiveData] = useState([]);
@@ -84,6 +83,15 @@ const MatchScreen = () => {
       setLocalSessionExpertOdds(sessionExpertOdds);
     }
   }, [selectedMatch, allBetRates, currentOdd, sessionExpertOdds]);
+
+  useEffect(() => {
+    if (
+      declaredMatchDetail?.match_id === currentMatch?.id &&
+      declaredMatchDetail?.sessionBet === false
+    ) {
+      navigate("/expert/match");
+    }
+  }, [declaredMatchDetail]);
 
   const getSingleMatch = async (val) => {
     try {

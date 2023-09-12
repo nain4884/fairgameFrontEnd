@@ -180,6 +180,10 @@ const SessionResultModal = ({
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <Box
       // ref={innerRef}
@@ -224,116 +228,118 @@ const SessionResultModal = ({
         />
       </Box>
 
-      <Box
-        sx={{
-          width: "100%",
-          flexWrap: "wrap",
-          padding: "8px",
-          flexDirection: "row",
-          display: "flex",
-          alignSelf: "center",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-        ref={myDivRef}
-      >
-        {newData?.betStatus !== 3 ? (
-          <TextField
-            autoFocus
-            placeholder="Enter score"
-            variant="standard"
-            value={selected}
-            onChange={(e) => setSelected(e?.target.value)}
-            InputProps={{
-              disableUnderline: true,
-              sx: {
-                alignSelf: "center",
-                border: "1px solid #303030",
-                borderRadius: "5px",
-                paddingY: "5px",
-                paddingX: "1vw",
-              },
-            }}
-          />
-        ) : (
-          <Typography
-            sx={{
-              color: "#0B4F26",
-              fontSize: "13px",
-              fontWeight: "500",
-              fontWeight: "600",
-              textAlign: "center",
-              paddingTop: "20px",
-              paddingBottom: "20px",
-            }}
-          >
-            Are you sure to set No Result ?
-          </Typography>
-        )}
+      <form onSubmit={handleSubmit}>
         <Box
           sx={{
-            display: "flex",
-            paddingY: "5px",
             width: "100%",
-            gap: 1,
-            marginTop: 2,
-            marginBottom: 2,
+            flexWrap: "wrap",
+            padding: "8px",
+            flexDirection: "row",
+            display: "flex",
+            alignSelf: "center",
+            alignItems: "center",
+            justifyContent: "center",
           }}
+          ref={myDivRef}
         >
-          {newData?.betStatus === 2 ? (
-            <SessionResultCustomButton
-              color={"#FF4D4D"}
-              title={"Un Declare"}
-              loading={loading}
-              id="UD"
-              onClick={() => {
-                if (loading?.value) {
-                  return false;
-                }
-
-                undeclareResult();
+          {newData?.betStatus !== 3 ? (
+            <TextField
+              autoFocus
+              placeholder="Enter score"
+              variant="standard"
+              value={selected}
+              onChange={(e) => setSelected(e?.target.value)}
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  alignSelf: "center",
+                  border: "1px solid #303030",
+                  borderRadius: "5px",
+                  paddingY: "5px",
+                  paddingX: "1vw",
+                },
               }}
             />
           ) : (
-            <>
-              {newData?.betStatus !== 3 ? (
-                <SessionResultCustomButton
-                  color={"#0B4F26"}
-                  id="DR"
-                  title={"Declare"}
-                  loading={loading}
-                  onClick={() => {
-                    if (loading?.value) {
-                      return false;
-                    }
-                    if (selected !== "" || !isNaN(selected)) {
-                      declareResult();
-                    } else {
-                      toast.warn("Please enter score");
-                    }
-                  }}
-                />
-              ) : null}
-            </>
-          )}
-
-          {newData?.betStatus !== 2 && newData?.isNoResult && (
-            <SessionResultCustomButton
-              color={"rgb(106 90 90)"}
-              title={newData?.betStatus !== 3 ? "No Result" : "Yes"}
-              loading={loading}
-              id="NR"
-              onClick={() => {
-                if (loading?.value) {
-                  return false;
-                }
-
-                noResultDeclare();
+            <Typography
+              sx={{
+                color: "#0B4F26",
+                fontSize: "13px",
+                fontWeight: "500",
+                fontWeight: "600",
+                textAlign: "center",
+                paddingTop: "20px",
+                paddingBottom: "20px",
               }}
-            />
+            >
+              Are you sure to set No Result ?
+            </Typography>
           )}
+          <Box
+            sx={{
+              display: "flex",
+              paddingY: "5px",
+              width: "100%",
+              gap: 1,
+              marginTop: 2,
+              marginBottom: 2,
+            }}
+          >
+            {newData?.betStatus === 2 ? (
+              <SessionResultCustomButton
+                color={"#FF4D4D"}
+                title={"Un Declare"}
+                loading={loading}
+                id="UD"
+                onClick={() => {
+                  if (loading?.value) {
+                    return false;
+                  }
+
+                  undeclareResult();
+                }}
+              />
+            ) : (
+              <>
+                {newData?.betStatus !== 3 ? (
+                  <SessionResultCustomButton
+                    color={"#0B4F26"}
+                    id="DR"
+                    title={"Declare"}
+                    loading={loading}
+                    onClick={() => {
+                      if (loading?.value) {
+                        return false;
+                      }
+                      if (selected !== "" || !isNaN(selected)) {
+                        declareResult();
+                      } else {
+                        toast.warn("Please enter score");
+                      }
+                    }}
+                  />
+                ) : null}
+              </>
+            )}
+
+            {newData?.betStatus !== 2 && newData?.isNoResult && (
+              <SessionResultCustomButton
+                color={"rgb(106 90 90)"}
+                title={newData?.betStatus !== 3 ? "No Result" : "Yes"}
+                loading={loading}
+                id="NR"
+                onClick={() => {
+                  if (loading?.value) {
+                    return false;
+                  }
+
+                  noResultDeclare();
+                }}
+              />
+            )}
+          </Box>
         </Box>
-      </Box>
+      </form>
     </Box>
   );
 };

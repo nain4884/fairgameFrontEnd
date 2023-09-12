@@ -43,6 +43,7 @@ import {
   setSessionResult,
   setSessionResultRefresh,
   setSessionExpertOdds,
+  setDeclaredMatchDetails,
 } from "../../newStore/reducers/expertMatchDetails";
 import { setRole } from "../../newStore";
 import { removeSocket } from "../../components/helper/removeSocket";
@@ -808,6 +809,7 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "resultDeclareForBet") {
           const value = packet.data[1];
           // matchId = value?.match_id;
+          dispatch(setDeclaredMatchDetails(value))
           setLocalSelectedBookmaker((prev) => {
             if (
               prev?.matchId === value?.match_id &&
@@ -821,9 +823,10 @@ const CustomHeader = ({}) => {
           });
           try {
             setCurrentMatch((prev) => {
-              if (prev.id === value?.match_id && value?.sessionBet === false) {
-                navigate("/expert/match");
-              }
+              // debugger
+              // if (prev.id === value?.match_id && value?.sessionBet === false) {
+              //   navigate("/expert/match");
+              // }
               if (prev.id === value?.match_id && value?.sessionBet) {
                 dispatch(setSessionResultRefresh(true));
                 setLocalAllBetRates((prev) => {

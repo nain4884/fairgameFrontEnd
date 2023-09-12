@@ -62,6 +62,7 @@ const IndiaPakLive = React.forwardRef(
       sessionProfitLoss,
       selectedSession,
       sessionResultRefresh,
+      declaredMatchDetail
     } = useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
@@ -131,6 +132,12 @@ const IndiaPakLive = React.forwardRef(
       match?.id,
       selectedSession,
     ]);
+
+    useEffect(()=> {
+      if(declaredMatchDetail?.match_id === selectedSession?.match_id && declaredMatchDetail?.sessionBet === false){
+        navigate("/expert/match");
+      }
+    }, [declaredMatchDetail])
 
     // useEffect(() => {
     //   if (socket && socket.connected) {

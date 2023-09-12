@@ -6,7 +6,7 @@ import KeyboardEventHandler from "react-keyboard-event-handler";
 import { BALLSTART } from "../expert/assets";
 import BookButtton from "./BookButton";
 import BookButton from "./BookButton";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext } from "react";
@@ -29,7 +29,7 @@ const AddSession = ({ add, match, Bid }) => {
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
 
-  const { bookmakerTeamRates, quickBookmaker, selectedBookmaker } = useSelector(
+  const { bookmakerTeamRates, quickBookmaker, selectedBookmaker, declaredMatchDetail } = useSelector(
     (state) => state?.expertMatchDetails
   );
   // const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
@@ -47,6 +47,7 @@ const AddSession = ({ add, match, Bid }) => {
     l_teamCLayValue: "",
   });
   const [incGap, setIncGap] = useState(1);
+  const navigate = useNavigate()
   const [pressEnter, setPressEnter] = useState(false);
 
   const [isTab, setIsTab] = useState("");
@@ -134,6 +135,12 @@ const AddSession = ({ add, match, Bid }) => {
     quickBookmaker,
     selectedBookmaker,
   ]);
+
+  useEffect(()=> {
+    if(declaredMatchDetail?.match_id === selectedBookmaker?.matchId && declaredMatchDetail?.sessionBet === false){
+      navigate("/expert/match");
+    }
+  }, [declaredMatchDetail])
 
   const bookRatioB = (teamARates, teamBRates) => {
     const bookRatio = teamBRates != 0 ? teamARates / teamBRates || 0 : 0;

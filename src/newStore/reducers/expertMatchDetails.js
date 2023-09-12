@@ -16,7 +16,8 @@ const initialState = {
   selectedBookmaker: null,
   sessionProfitLoss: null,
   selectedSession: null,
-  sessionResultRefresh:false,
+  sessionResultRefresh: false,
+  declaredMatchDetails: null,
   quickBookmaker: {
     teamA: {
       rate: null,
@@ -55,7 +56,7 @@ const initialState = {
     teamBackUnlock: true,
   },
 
-  sessionExpertOdds:[]
+  sessionExpertOdds: [],
 };
 export const logoutExpertDetails = createAction("auth/logoutReset");
 const expertMatchDetails = createSlice({
@@ -114,12 +115,15 @@ const expertMatchDetails = createSlice({
     setSelectedBookmaker: (state, action) => {
       state.selectedBookmaker = action.payload;
     },
-    
+
     setSessionResultRefresh: (state, action) => {
       state.sessionResultRefresh = action.payload;
     },
-    setSessionExpertOdds : (state, action) => {
+    setSessionExpertOdds: (state, action) => {
       state.sessionExpertOdds = action.payload;
+    },
+    setDeclaredMatchDetails: (state, action) => {
+      state.declaredMatchDetails = action.payload;
     },
     extraReducers: (builder) => {
       // This will handle the reset on logout
@@ -147,7 +151,8 @@ export const {
   setSelectedBookmaker,
   setSelectedSession,
   setSessionResultRefresh,
-  setSessionExpertOdds
+  setSessionExpertOdds,
+  setDeclaredMatchDetails
 } = expertMatchDetails.actions;
 
 export default expertMatchDetails.reducer;
