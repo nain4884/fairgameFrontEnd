@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { memo } from "react";
 
 const MatchOddsResultCustomButton = ({
@@ -7,23 +7,27 @@ const MatchOddsResultCustomButton = ({
   id,
   loading,
   onClick,
-  customStyle
+  customStyle,
 }) => {
   return (
-    <Box
+    <Button
+      autoFocus={true}
+      type="submit"
       onClick={onClick}
       sx={[
         {
-        width: "45%",
-        height: "40px",
-        borderRadius: "5px",
-        background: color,
-        cursor: "pointer",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
+          width: "45%",
+          height: "40px",
+          borderRadius: "5px",
+          background: color,
+          cursor: "pointer",
+          justifyContent: "center",
+          alignItems: "center",
+          display: "flex",
+          textTransform: "none",
+          "&:hover": { backgroundColor: color },
         },
-        customStyle
+        customStyle,
       ]}
     >
       <Typography sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}>
@@ -40,7 +44,7 @@ const MatchOddsResultCustomButton = ({
           title
         )}
       </Typography>
-    </Box>
+    </Button>
   );
 };
 

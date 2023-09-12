@@ -16,7 +16,7 @@ const ResultComponent = ({
   betId,
   matchId,
   betStatus,
-  stopAt
+  stopAt,
 }) => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(teamA);
@@ -58,6 +58,10 @@ const ResultComponent = ({
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
   };
   const teamData =
     draw === "draw"
@@ -103,6 +107,7 @@ const ResultComponent = ({
         />
       </Box>
       <Box sx={{ padding: 0 }}>
+      <form onSubmit={handleSubmit}>
         <Box
           sx={{
             width: "100%",
@@ -150,47 +155,49 @@ const ResultComponent = ({
             );
           })}
         </Box>
-        <Box
-          sx={{
-            width: "100%",
-            // height: "60px",
-            paddingY: "10px",
-            justifyContent: "space-evenly",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            background: "#000",
-          }}
-        >
-          {betStatus === 2 || stopAt ? (
-            <MatchOddsResultCustomButton
-              color={"#FF4D4D"}
-              loading={loading}
-              id="UD"
-              title={"Un Declare"}
-              onClick={() => {
-                if (loading?.value) {
-                  return false;
-                }
-                undeclareResult();
-              }}
-            />
-          ) : (
-            <MatchOddsResultCustomButton
-              id="DR"
-              color={"#0B4F26"}
-              loading={loading}
-              title={"Declare"}
-              onClick={() => {
-                if (loading?.value) {
-                  return false;
-                }
+        
+          <Box
+            sx={{
+              width: "100%",
+              // height: "60px",
+              paddingY: "10px",
+              justifyContent: "space-evenly",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              background: "#000",
+            }}
+          >
+            {betStatus === 2 || stopAt ? (
+              <MatchOddsResultCustomButton
+                color={"#FF4D4D"}
+                loading={loading}
+                id="UD"
+                title={"Un Declare"}
+                onClick={() => {
+                  if (loading?.value) {
+                    return false;
+                  }
+                  undeclareResult();
+                }}
+              />
+            ) : (
+              <MatchOddsResultCustomButton
+                id="DR"
+                color={"#0B4F26"}
+                loading={loading}
+                title={"Declare"}
+                onClick={() => {
+                  if (loading?.value) {
+                    return false;
+                  }
 
-                declareResult();
-              }}
-            />
-          )}
-        </Box>
+                  declareResult();
+                }}
+              />
+            )}
+          </Box>
+        </form>
       </Box>
     </Box>
   );
