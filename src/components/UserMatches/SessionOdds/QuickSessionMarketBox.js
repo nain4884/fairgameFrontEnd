@@ -87,6 +87,7 @@ const QuickSessionMarketBox = ({
               marginLeft: "7px",
               fontWeight: "600",
               textAlign: "start",
+              width: '40%'
             }}
           >
             {data?.bet_condition}

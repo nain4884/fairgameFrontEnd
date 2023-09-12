@@ -20,9 +20,9 @@ const FastTime = ({
       sx={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "flex-end",
+        justifyContent: "flex-start",
         cursor: "pointer",
-        width: "20%",
+        width: "60%",
       }}
     >
       {data ? (
