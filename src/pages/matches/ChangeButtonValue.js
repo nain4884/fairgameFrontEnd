@@ -7,9 +7,22 @@ import { setRole } from "../../newStore";
 
 const ChangeButtonValue = ({ selected, visible }) => {
   const { axios } = setRole();
-  const [id, setId] = useState("");
+  const [matchId, setMatchId] = useState("");
+  const [sessionId, setSessionId] = useState("");
   const [loader, setLoader] = useState(false);
+  const [loader1, setLoader1] = useState(false);
   const [valueLabel, setValueLabel] = useState([
+    { lable: "", value: "" },
+    { lable: "", value: "" },
+    { lable: "", value: "" },
+    { lable: "", value: "" },
+    { lable: "", value: "" },
+    { lable: "", value: "" },
+    { lable: "", value: "" },
+    { lable: "", value: "" },
+  ]);
+
+  const [valueLabel1, setValueLabel1] = useState([
     { lable: "", value: "" },
     { lable: "", value: "" },
     { lable: "", value: "" },
@@ -37,27 +50,66 @@ const ChangeButtonValue = ({ selected, visible }) => {
   const getButtonList = async () => {
     try {
       const { data } = await axios.get("/users/getButtonValues");
-      setId(data?.data?.id);
-      const initialData = data?.data?.buttons; // Replace this with your initial data
-      const jsonObject = JSON.parse(initialData);
-      // Update the state using the spread operator to keep the existing objects
-      const updatedState = valueLabel.map((item, index) => {
-        return {
-          ...item,
-          lable: Object.keys(jsonObject)[index],
-          value: Object.values(jsonObject)[index],
-        };
-      });
-      updatedState.sort(customSort);
-      // Now update the state with the updatedState
-      setValueLabel(updatedState);
+      if (data?.data[0]?.type === "Match") {
+        setMatchId(data?.data[0]?.id);
+        const initialData = data?.data[0]?.buttons;
+        const jsonObject = JSON.parse(initialData);
+        const updatedState = valueLabel.map((item, index) => {
+          return {
+            ...item,
+            lable: Object.keys(jsonObject)[index],
+            value: Object.values(jsonObject)[index],
+          };
+        });
+        updatedState.sort(customSort);
+        setValueLabel(updatedState);
+        //separate
+        setSessionId(data?.data[1]?.id);
+        const initialData1 = data?.data[1]?.buttons;
+        const jsonObject1 = JSON.parse(initialData1);
+        const updatedState1 = valueLabel.map((item, index) => {
+          return {
+            ...item,
+            lable: Object.keys(jsonObject1)[index],
+            value: Object.values(jsonObject1)[index],
+          };
+        });
+        updatedState1.sort(customSort);
+        setValueLabel1(updatedState1);
+      } else if (data?.data[0]?.type === "Session") {
+        setSessionId(data?.data[0]?.id);
+        const initialData = data?.data[0]?.buttons;
+        const jsonObject = JSON.parse(initialData);
+        const updatedState = valueLabel.map((item, index) => {
+          return {
+            ...item,
+            lable: Object.keys(jsonObject)[index],
+            value: Object.values(jsonObject)[index],
+          };
+        });
+        updatedState.sort(customSort);
+        setValueLabel1(updatedState);
+        //separate
+        setMatchId(data?.data[1]?.id);
+        const initialData1 = data?.data[1]?.buttons;
+        const jsonObject1 = JSON.parse(initialData1);
+        const updatedState1 = valueLabel.map((item, index) => {
+          return {
+            ...item,
+            lable: Object.keys(jsonObject1)[index],
+            value: Object.values(jsonObject1)[index],
+          };
+        });
+        updatedState1.sort(customSort);
+        setValueLabel(updatedState1);
+      }
     } catch (e) {
       toast.error(e.response.data.message);
       console.log("error", e.message);
     }
   };
 
-  const setButtonList = async () => {
+  const setMatchButtonList = async () => {
     setLoader(true);
     const convertedData = valueLabel.reduce((result, item) => {
       if (item.value) {
@@ -67,7 +119,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
     }, {});
     var payload = {
       buttons: convertedData,
-      id: id,
+      id: matchId,
     };
     try {
       const { data } = await axios.post("/users/setButtonValues", payload);
@@ -77,6 +129,29 @@ const ChangeButtonValue = ({ selected, visible }) => {
       toast.error(e.response.data.message);
       console.log("error", e.message);
       setLoader(false);
+    }
+  };
+
+  const setSessionButtonList = async () => {
+    setLoader1(true);
+    const convertedData = valueLabel1.reduce((result, item) => {
+      if (item.value) {
+        result[item.lable] = item.value;
+      }
+      return result;
+    }, {});
+    var payload = {
+      buttons: convertedData,
+      id: sessionId,
+    };
+    try {
+      const { data } = await axios.post("/users/setButtonValues", payload);
+      toast.success(data?.message);
+      setLoader1(false);
+    } catch (e) {
+      toast.error(e.response.data.message);
+      console.log("error", e.message);
+      setLoader1(false);
     }
   };
 
@@ -94,123 +169,355 @@ const ChangeButtonValue = ({ selected, visible }) => {
         return updatedValues1;
       });
     }
+  };
 
-    // alert(JSON.stringify(valueLabel))
+  const handleLabel1Change = (index, newValue, type) => {
+    if (type == "label") {
+      setValueLabel1((prevValues) => {
+        const updatedValues = [...prevValues];
+        updatedValues[index].lable = newValue;
+        return updatedValues;
+      });
+    } else {
+      setValueLabel1((prevValues) => {
+        const updatedValues1 = [...prevValues];
+        updatedValues1[index].value = newValue;
+        return updatedValues1;
+      });
+    }
   };
 
   return (
-    <Box>
-      {visible ? (
-        <>
-          <Box
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { mobile: "column", laptop: "row", tablet: "column" },
+      }}
+    >
+      {/* {visible ? ( */}
+      <>
+        <Box
+          sx={{
+            flex: 1,
+            width: { mobile: "96vw", laptop: "35vw", tablet: "35vw" },
+            minWidth: { laptop: "450px", tablet: "450px", mobile: "0px" },
+            marginTop: "10px",
+            marginX: { mobile: "2vw", laptop: "1vw" },
+          }}
+        >
+          <Typography
             sx={{
-              width: { mobile: "96vw", laptop: "35vw", tablet: "35vw" },
-              minWidth: { laptop: "450px", tablet: "450px", mobile: "0px" },
-              marginTop: "10px",
-              marginX: { mobile: "2vw", laptop: "1vw" },
+              color: "white",
+              fontSize: { laptop: "18px", mobile: "20px" },
+              fontWeight: "700",
             }}
           >
-            <Typography
-              sx={{
-                color: "white",
-                fontSize: { laptop: "18px", mobile: "20px" },
-                fontWeight: "700",
-              }}
-            >
-              Change Button Values
-            </Typography>
-            <Box
-              sx={{
-                width: "100%",
-                minHeight: "200px",
-                background: "#F8C851",
-                borderRadius: "5px",
-                padding: "20px",
-                marginTop: "10px",
-              }}
-            >
-              <Box sx={{ display: "flex" }}>
-                <Box sx={{ flex: 1 }}>
-                  <Typography
-                    sx={{
-                      color: "#202020",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    Price Lable
-                  </Typography>
-                  {valueLabel.map((item, index) => {
-                    return (
-                      <LabelButton
-                        key={index}
-                        value={item}
-                        index={index}
-                        onChange={handleLabelChange}
-                      />
-                    );
-                  })}
-                </Box>
-                <Box sx={{ flex: 1, marginLeft: "10px" }}>
-                  <Typography
-                    sx={{
-                      color: "#202020",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    Price Value
-                  </Typography>
-                  {valueLabel.map((item, index) => {
-                    return (
-                      <ValButton
-                        key={index}
-                        value={item}
-                        index={index}
-                        onChange={handleLabelChange}
-                      />
-                    );
-                  })}
-                </Box>
-              </Box>
-              <Box
-                onClick={setButtonList}
-                sx={{
-                  height: "50px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  mx: "auto",
-                  marginTop: "50px",
-                  marginBottom: "40px",
-                  width: "80%",
-                  background: "#0B4F26",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
+            Change Match Button Values
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              minHeight: "200px",
+              background: "#F8C851",
+              borderRadius: "5px",
+              padding: "20px",
+              marginTop: "10px",
+            }}
+          >
+            <Box sx={{ display: "flex" }}>
+              <Box sx={{ flex: 1 }}>
                 <Typography
-                  sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
-                  color={"white"}
+                  sx={{
+                    color: "#202020",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
                 >
-                  {loader ? (
-                    <CircularProgress
-                      sx={{
-                        color: "#FFF",
-                      }}
-                      size={20}
-                      thickness={4}
-                      value={60}
-                    />
-                  ) : (
-                    "Update"
-                  )}
+                  Price Lable
                 </Typography>
+                {valueLabel.map((item, index) => {
+                  return (
+                    <LabelButton
+                      key={index}
+                      value={item}
+                      index={index}
+                      onChange={handleLabelChange}
+                    />
+                  );
+                })}
+              </Box>
+              <Box sx={{ flex: 1, marginLeft: "10px" }}>
+                <Typography
+                  sx={{
+                    color: "#202020",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Price Value
+                </Typography>
+                {valueLabel.map((item, index) => {
+                  return (
+                    <ValButton
+                      key={index}
+                      value={item}
+                      index={index}
+                      onChange={handleLabelChange}
+                    />
+                  );
+                })}
               </Box>
             </Box>
+            <Box
+              onClick={setMatchButtonList}
+              sx={{
+                height: "50px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mx: "auto",
+                marginTop: "50px",
+                marginBottom: "40px",
+                width: "80%",
+                background: "#0B4F26",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              <Typography
+                sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
+                color={"white"}
+              >
+                {loader ? (
+                  <CircularProgress
+                    sx={{
+                      color: "#FFF",
+                    }}
+                    size={20}
+                    thickness={4}
+                    value={60}
+                  />
+                ) : (
+                  "Update"
+                )}
+              </Typography>
+            </Box>
           </Box>
-        </>
-      ) : (
+        </Box>
+      </>
+      {/* // ) : (
+      //   <Background>
+      //     <Box
+      //       sx={{
+      //         width: { mobile: "96vw", laptop: "35vw", tablet: "35vw" },
+      //         minWidth: { laptop: "450px", tablet: "450px", mobile: "0px" },
+      //         marginTop: "10px",
+      //         marginX: { mobile: "2vw", laptop: "5vw" },
+      //       }}
+      //     >
+      //       <Typography
+      //         sx={{
+      //           color: "white",
+      //           fontSize: { laptop: "18px", mobile: "20px" },
+      //           fontWeight: "700",
+      //         }}
+      //       >
+      //         Change Button Values
+      //       </Typography>
+      //       <Box
+      //         sx={{
+      //           width: "100%",
+      //           minHeight: "200px",
+      //           background: "#F8C851",
+      //           borderRadius: "5px",
+      //           padding: "20px",
+      //           marginTop: "10px",
+      //         }}
+      //       >
+      //         <Box sx={{ display: "flex" }}>
+      //           <Box sx={{ flex: 1 }}>
+      //             <Typography
+      //               sx={{
+      //                 color: "#202020",
+      //                 fontSize: "14px",
+      //                 fontWeight: "600",
+      //               }}
+      //             >
+      //               Price Lable
+      //             </Typography>
+      //             {["0", "1", "2", "3", "4", "5", "6", "7"].map((x, idx) => {
+      //               return <ValButton key={idx} value={x} />;
+      //             })}
+      //           </Box>
+      //           <Box sx={{ flex: 1, marginLeft: "10px" }}>
+      //             <Typography
+      //               sx={{
+      //                 color: "#202020",
+      //                 fontSize: "14px",
+      //                 fontWeight: "600",
+      //               }}
+      //             >
+      //               Price Value
+      //             </Typography>
+      //             {[
+      //               // "100",
+      //               // "5000",
+      //               // "10000",
+      //               // "25000",
+      //               // "50000",
+      //               // "100000",
+      //               // "200000",
+      //               // "500000",
+      //               "0",
+      //               "1",
+      //               "2",
+      //               "3",
+      //               "4",
+      //               "5",
+      //               "6",
+      //               "7",
+      //             ].map((x, idx) => {
+      //               return <ValButton key={idx} value={x} />;
+      //             })}
+      //           </Box>
+      //         </Box>
+      //         <Box
+      //           sx={{
+      //             height: "50px",
+      //             display: "flex",
+      //             justifyContent: "center",
+      //             alignItems: "center",
+      //             mx: "auto",
+      //             marginTop: "50px",
+      //             marginBottom: "40px",
+      //             width: "80%",
+      //             background: "#0B4F26",
+      //             borderRadius: "5px",
+      //           }}
+      //         >
+      //           <Typography
+      //             sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
+      //             color={"white"}
+      //           >
+      //             Update
+      //           </Typography>
+      //         </Box>
+      //       </Box>
+      //     </Box>
+      //   </Background>
+      // )} */}
+      {/* {visible ? ( */}
+      <>
+        <Box
+          sx={{
+            flex: 1,
+            width: { mobile: "96vw", laptop: "35vw", tablet: "35vw" },
+            minWidth: { laptop: "450px", tablet: "450px", mobile: "0px" },
+            marginTop: "10px",
+            marginX: { mobile: "2vw", laptop: "1vw" },
+          }}
+        >
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: { laptop: "18px", mobile: "20px" },
+              fontWeight: "700",
+            }}
+          >
+            Change Session Button Values
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              minHeight: "200px",
+              background: "#F8C851",
+              borderRadius: "5px",
+              padding: "20px",
+              marginTop: "10px",
+            }}
+          >
+            <Box sx={{ display: "flex" }}>
+              <Box sx={{ flex: 1 }}>
+                <Typography
+                  sx={{
+                    color: "#202020",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Price Lable
+                </Typography>
+                {valueLabel1.map((item, index) => {
+                  return (
+                    <LabelButton
+                      key={index}
+                      value={item}
+                      index={index}
+                      onChange={handleLabel1Change}
+                    />
+                  );
+                })}
+              </Box>
+              <Box sx={{ flex: 1, marginLeft: "10px" }}>
+                <Typography
+                  sx={{
+                    color: "#202020",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                  }}
+                >
+                  Price Value
+                </Typography>
+                {valueLabel1.map((item, index) => {
+                  return (
+                    <ValButton
+                      key={index}
+                      value={item}
+                      index={index}
+                      onChange={handleLabel1Change}
+                    />
+                  );
+                })}
+              </Box>
+            </Box>
+            <Box
+              onClick={setSessionButtonList}
+              sx={{
+                height: "50px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mx: "auto",
+                marginTop: "50px",
+                marginBottom: "40px",
+                width: "80%",
+                background: "#0B4F26",
+                borderRadius: "5px",
+                cursor: "pointer",
+              }}
+            >
+              <Typography
+                sx={{ fontSize: { laptop: "18px", mobile: "20px" } }}
+                color={"white"}
+              >
+                {loader1 ? (
+                  <CircularProgress
+                    sx={{
+                      color: "#FFF",
+                    }}
+                    size={20}
+                    thickness={4}
+                    value={60}
+                  />
+                ) : (
+                  "Update"
+                )}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
+      </>
+      {/* ) : (
         <Background>
           <Box
             sx={{
@@ -310,7 +617,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
             </Box>
           </Box>
         </Background>
-      )}
+      )} */}
     </Box>
   );
 };
@@ -368,6 +675,7 @@ const ValButton = ({ value, index, onChange }) => {
       }}
     >
       <TextField
+        required={true}
         value={value.value}
         onChange={handleChange}
         variant="outlined"

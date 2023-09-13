@@ -18,7 +18,8 @@ const initialState = {
   confirmAuth: false,
   betData: {},
   updateDetData: "",
-  buttonData: [],
+  matchButtonData: [],
+  sessionButtonData: [],
   sessionExposure: 0,
   manualBookmaker: [],
   sessionOffline: [],
@@ -27,7 +28,7 @@ const initialState = {
   quickSession: [],
   quickBookmaker: [],
   liveSessionStatus: [],
-  updateAdminPlayList: false
+  updateAdminPlayList: false,
 };
 
 export const logoutMatchDetails = createAction("auth/logoutReset");
@@ -169,8 +170,11 @@ const matchDetails = createSlice({
     setUpdateBetData: (state, action) => {
       state.updateDetData = action.payload;
     },
-    setButtonData: (state, action) => {
-      state.buttonData = action.payload;
+    setMatchButtonData: (state, action) => {
+      state.matchButtonData = action.payload;
+    },
+    setSessionButtonData: (state, action) => {
+      state.sessionButtonData = action.payload;
     },
     setSessionExposure: (state, action) => {
       state.sessionExposure = action.payload;
@@ -191,8 +195,8 @@ const matchDetails = createSlice({
       state.liveSessionStatus = action.payload;
     },
     setUpdateAdminPlayList: (state) => {
-      state.updateAdminPlayList = !state.updateAdminPlayList
-    }
+      state.updateAdminPlayList = !state.updateAdminPlayList;
+    },
   },
   extraReducers: (builder) => {
     // This will handle the reset on logout
@@ -226,7 +230,8 @@ export const {
   setConfirmAuth,
   setBetData,
   setUpdateBetData,
-  setButtonData,
+  setMatchButtonData,
+  setSessionButtonData,
   setSessionExposure,
   setManualBookmaker,
   setSessionOffline,
@@ -235,7 +240,7 @@ export const {
   setQuickSession,
   setLiveSessionStatus,
   setQuickBookmaker,
-  setUpdateAdminPlayList
+  setUpdateAdminPlayList,
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

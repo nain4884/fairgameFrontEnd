@@ -19,13 +19,14 @@ import {
   setAllSessionBets,
   setManualBookMarkerRates,
   setSelectedMatch,
-  setButtonData,
   setAllBetRate,
   setManualBookmaker,
   setSessionExposure,
   setSelectedSessionBettings,
   setQuickSession,
   setQuickBookmaker,
+  setMatchButtonData,
+  setSessionButtonData,
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -1259,16 +1260,56 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   }
 
   const getButtonList = async () => {
+    dispatch(setMatchButtonData([]));
+    dispatch(setSessionButtonData([]));
     try {
       const { data } = await axios.get("/users/getButtonValues");
-      const initialData = data?.data?.buttons; // Replace this with your initial data
-      const jsonObject = JSON.parse(initialData);
-      const resultArray = Object.entries(jsonObject).map(([lable, value]) => ({
-        lable: lable,
-        value: value,
-      }));
-      resultArray.sort(customSort);
-      dispatch(setButtonData(resultArray));
+      if (data?.data[0]?.type === "Match") {
+        const initialData = data?.data[0]?.buttons;
+        const jsonObject = JSON.parse(initialData);
+        const resultArray = Object.entries(jsonObject).map(
+          ([lable, value]) => ({
+            lable: lable,
+            value: value,
+          })
+        );
+        resultArray.sort(customSort);
+        dispatch(setMatchButtonData(resultArray));
+        //separate
+        const initialData1 = data?.data[1]?.buttons; // Replace this with your initial data
+        const jsonObject1 = JSON.parse(initialData1);
+        const resultArray1 = Object.entries(jsonObject1).map(
+          ([lable, value]) => ({
+            lable: lable,
+            value: value,
+          })
+        );
+        resultArray1.sort(customSort);
+        dispatch(setSessionButtonData(resultArray1));
+      } else if (data?.data[0]?.type === "Session") {
+        const initialData = data?.data[0]?.buttons; // Replace this with your initial data
+        const jsonObject = JSON.parse(initialData);
+        const resultArray = Object.entries(jsonObject).map(
+          ([lable, value]) => ({
+            lable: lable,
+            value: value,
+          })
+        );
+        resultArray.sort(customSort);
+        dispatch(setSessionButtonData(resultArray));
+
+        //separate
+        const initialData1 = data?.data[1]?.buttons; // Replace this with your initial data
+        const jsonObject1 = JSON.parse(initialData1);
+        const resultArray1 = Object.entries(jsonObject1).map(
+          ([lable, value]) => ({
+            lable: lable,
+            value: value,
+          })
+        );
+        resultArray1.sort(customSort);
+        dispatch(setMatchButtonData(resultArray1));
+      }
       // setButtonData(resultArray);
     } catch (e) {
       toast.error(e.response.data.message);

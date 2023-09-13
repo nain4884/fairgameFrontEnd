@@ -30,8 +30,11 @@ const FastTimePlaceBet = ({
     type: false,
   });
 
-  const { buttonData } = useSelector((state) => state?.matchDetails);
-  const [buttonList, setButtonList] = useState(buttonData);
+  const { matchButtonData, sessionButtonData } = useSelector(
+    (state) => state?.matchDetails
+  );
+  const [matchButtonList, setMatchButtonList] = useState(matchButtonData);
+  const [sessionButtonList, setSessionButtonList] = useState(sessionButtonData);
 
   const myDivRef = useRef(null);
 
@@ -39,7 +42,8 @@ const FastTimePlaceBet = ({
     if (!fromOdds) {
       // scrollToBottom();
       scrollToFullDiv();
-      setButtonList(buttonData);
+      setMatchButtonList(matchButtonData);
+      setSessionButtonList(sessionButtonData);
     }
   }, [selectedValue, fromOdds]);
 
@@ -255,8 +259,8 @@ const FastTimePlaceBet = ({
                           gap: { mobile: "3px", laptop: 1, tablet: 1 },
                         }}
                       >
-                        {buttonList.length > 0 &&
-                          buttonList?.map((v, index) => (
+                        {matchButtonList.length > 0 &&
+                          matchButtonList?.map((v, index) => (
                             <NumberData
                               key={index}
                               containerStyle={{
@@ -342,8 +346,8 @@ const FastTimePlaceBet = ({
                           gap: { mobile: "3px", laptop: 1, tablet: 1 },
                         }}
                       >
-                        {buttonList.length > 0 &&
-                          buttonList?.map((v, index) => (
+                        {matchButtonList.length > 0 &&
+                          matchButtonList?.map((v, index) => (
                             <NumberData
                               key={index}
                               containerStyle={{
@@ -391,8 +395,8 @@ const FastTimePlaceBet = ({
                         gap: { mobile: "3px", laptop: 1, tablet: 1 },
                       }}
                     >
-                      {buttonList.length > 0 &&
-                        buttonList?.map((v, index) => (
+                      {matchButtonList.length > 0 &&
+                        matchButtonList?.map((v, index) => (
                           <NumberData
                             key={index}
                             containerStyle={{
@@ -448,8 +452,8 @@ const FastTimePlaceBet = ({
                         gap: { mobile: "3px", laptop: 1, tablet: 1 },
                       }}
                     >
-                      {buttonList.length > 0 &&
-                        buttonList?.map((v, index) => (
+                      {matchButtonList.length > 0 &&
+                        matchButtonList?.map((v, index) => (
                           <NumberData
                             key={index}
                             containerStyle={{
@@ -659,8 +663,8 @@ const FastTimePlaceBet = ({
                       gap: { mobile: "3px", laptop: 1, tablet: 1 },
                     }}
                   >
-                    {buttonList.length > 0 &&
-                      buttonList?.map((v, index) => (
+                    {sessionButtonList.length > 0 &&
+                      sessionButtonList?.map((v, index) => (
                         <NumberData
                           key={index}
                           containerStyle={{
@@ -697,8 +701,8 @@ const FastTimePlaceBet = ({
                       gap: { mobile: "3px", laptop: 1, tablet: 1 },
                     }}
                   >
-                    {buttonList.length > 0 &&
-                      buttonList?.map((v, index) => (
+                    {sessionButtonList.length > 0 &&
+                      sessionButtonList?.map((v, index) => (
                         <NumberData
                           key={index}
                           containerStyle={{
