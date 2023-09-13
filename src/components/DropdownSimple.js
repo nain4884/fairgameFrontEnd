@@ -30,7 +30,7 @@ const DropDownSimple = ({
   setMarketId,
   openDrop,
   selectValueStyle,
-
+  type,
   defaultValue,
   matchesSelect,
 }) => {
@@ -66,6 +66,7 @@ const DropDownSimple = ({
     eventDetail,
     CompetitionName,
     EventId,
+    type,
   }) => {
     return (
       <Box
@@ -74,7 +75,7 @@ const DropDownSimple = ({
           function setDetailWithRunners() {
             let allrunners = [];
             eventDetail.Runners.map((runner) => {
-              allrunners.push(runner.RunnerName);
+              allrunners.push(runner?.runnerName);
             });
             setDetail({
               ...Detail,
@@ -111,6 +112,23 @@ const DropDownSimple = ({
           {
             eventDetail
               ? setDetailWithRunners()
+              : type === "tournament"
+              ? setDetail({
+                  ...Detail,
+                  [place]: {
+                    ...Detail[place],
+                    val:
+                      item === "Total Loss"
+                        ? "totalLoss"
+                        : item === "Entry Wise"
+                        ? "BetLoss"
+                        : item,
+                  },
+                  34: {
+                    ...Detail[34],
+                    val: EventId,
+                  },
+                })
               : setDetail({
                   ...Detail,
                   [place]: {
@@ -155,6 +173,7 @@ const DropDownSimple = ({
     eventDetail,
     CompetitionName,
     EventId,
+    type,
   }) => {
     return (
       <Item
@@ -164,6 +183,7 @@ const DropDownSimple = ({
         mId={mId}
         matchesSelect={matchesSelect}
         eventDetail={eventDetail}
+        type={type}
       />
     );
   };
@@ -271,6 +291,7 @@ const DropDownSimple = ({
                     matchesSelect={matchesSelect}
                     CompetitionName={i.CompetitionName}
                     eventDetail={i.EventDetail}
+                    type={type}
                   />
                 );
               })

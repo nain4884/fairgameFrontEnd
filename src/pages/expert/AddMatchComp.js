@@ -52,6 +52,8 @@ const stateDetail = {
   30: { field: "MarketName3", val: "" },
   31: { field: "MarketMinBet3", val: "" },
   32: { field: "MarketMaxBet3", val: "" },
+  33: { field: "tournament", val: "" },
+  34: { field: "tournamentId", val: "" },
 };
 
 const AddMatchComp = () => {
@@ -87,10 +89,15 @@ const AddMatchComp = () => {
     20: { field: "marketId", val: false },
     21: { field: "delaySecond", val: false },
     22: { field: "CompetitionName", val: false },
+    23: { field: "tournament", val: "" },
   });
   const selectionData = [1, 2, 3];
   const [matches, setMatches] = useState([
     { EventName: "No Matches Available", MarketId: defaultMarketId },
+  ]);
+
+  const [tournamentList, setTournamentList] = useState([
+    { EventName: "No Tournaments Available", MarketId: defaultMarketId },
   ]);
   const [marketId, setMarketId] = useState(defaultMarketId);
   console.log("Detail", Detail);
@@ -141,7 +148,7 @@ const AddMatchComp = () => {
         ];
       }
       if (
-        (Detail[1].val === "") & (Detail[9].val === "") &&
+        (Detail[1].val === "") && (Detail[9].val === "") &&
         Detail[13].val === ""
       ) {
         setError({
@@ -223,6 +230,8 @@ const AddMatchComp = () => {
       request.append("betfair_bookmaker_min_bet", Detail[18].val);
       request.append("manaual_session_min_bet", Detail[18].val);
       request.append("betfair_match_min_bet", Detail[18].val);
+      request.append("competitionId", Detail[34].val);
+      request.append("competitionName", Detail[33].val);
       console.log("request", quick_bookmaker);
       console.log(Object.fromEntries(request), "request");
       const { data } = await axios.post(`/game-match/addmatch`, request);
@@ -246,23 +255,42 @@ const AddMatchComp = () => {
     }
   };
 
+  const getAllLiveTournaments = async () => {
+    try {
+      const { data } = await microServiceAxios.get(`/competitionList`);
+      console.log("getAllLiveTournaments", data);
+      let tournamentList = [];
+      data.forEach((tournament) => {
+        tournamentList.push({
+          EventName: tournament?.competition?.name,
+          EventId: tournament?.competition?.id,
+          competitionRegion: tournament?.competitionRegion,
+          marketCount: tournament?.marketCount,
+        });
+      });
+      setTournamentList(tournamentList);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const getAllLiveMatches = async () => {
     try {
       const { data } = await microServiceAxios.get(
-        `/matchList?sports=${Detail[1].val}`
+        `/eventList/${Detail[34].val}`
       );
       let matchesList = [];
       data.forEach((match) => {
         matchesList.push({
-          EventName: match.EventName,
-          EventId: match.EventId,
-          MarketId: match.MarketId,
-          CompetitionId: match.CompetitionId,
-          CompetitionName: match.CompetitionName,
+          EventName: match?.event?.name,
+          EventId: match?.event?.name,
+          MarketId: match?.marketId,
+          CompetitionId: match?.competition?.id,
+          CompetitionName: match?.competition?.name,
           EventDetail: {
-            EventDate: match.EventDate,
-            Runners: match.Runners,
-            Runnercount: match.Runnercount,
+            EventDate: match?.event?.openDate,
+            Runners: match?.runners,
+            // Runnercount: match?.runners,
           },
         });
       });
@@ -274,7 +302,7 @@ const AddMatchComp = () => {
 
   useEffect(() => {
     if (Detail[1].val !== "") {
-      getAllLiveMatches();
+      getAllLiveTournaments();
       setError({
         ...Error,
 
@@ -286,7 +314,20 @@ const AddMatchComp = () => {
     }
   }, [Detail[1].val]);
 
-  
+  useEffect(() => {
+    if (Detail[33].val !== "") {
+      getAllLiveMatches();
+      setError({
+        ...Error,
+
+        23: {
+          ...Error[23],
+          val: false,
+        },
+      });
+    }
+  }, [Detail[33].val]);
+
   useEffect(() => {
     if (Detail[9].val !== "") {
       setError({
@@ -448,6 +489,52 @@ const AddMatchComp = () => {
                 }}
               >
                 <DropDownSimple
+                  valued="Select tournament"
+                  dropStyle={{
+                    filter:
+                      "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
+                  }}
+                  valueStyle={{ ...imputStyle, color: "white" }}
+                  title={"Tournament Name"}
+                  valueContainerStyle={{
+                    height: "45px",
+                    marginX: "0px",
+                    background: "#0B4F26",
+                    border: "1px solid #DEDEDE",
+                    borderRadius: "5px",
+                  }}
+                  containerStyle={{
+                    width: "100%",
+                    position: "relative",
+                    marginTop: "5px",
+                  }}
+                  type={"tournament"}
+                  titleStyle={{ marginLeft: "0px", color: "#575757" }}
+                  data={tournamentList}
+                  setMarketId={setMarketId}
+                  matchesSelect={true}
+                  dropDownStyle={{
+                    width: "100%",
+                    marginLeft: "0px",
+                    marginTop: "0px",
+                    position: "absolute",
+                    maxHeight: "500px",
+                    overflow: "auto",
+                  }}
+                  dropDownTextStyle={imputStyle}
+                  Detail={Detail}
+                  setDetail={setDetail}
+                  place={33}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  position: "relative",
+                  width: { mobile: "100%", laptop: "18%", tablet: "24%" },
+                }}
+              >
+                <DropDownSimple
                   valued="Select match"
                   dropStyle={{
                     filter:
@@ -467,6 +554,7 @@ const AddMatchComp = () => {
                     position: "relative",
                     marginTop: "5px",
                   }}
+                  type={"cricket"}
                   titleStyle={{ marginLeft: "0px", color: "#575757" }}
                   data={matches}
                   setMarketId={setMarketId}
