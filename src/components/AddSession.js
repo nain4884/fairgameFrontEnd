@@ -2165,27 +2165,6 @@ const AddSession = ({ add, match, Bid }) => {
         lock: true,
         layLock: false,
       });
-      setLocalQuickBookmaker((prev) => {
-        const newBody = {
-          ...prev,
-          teamA: { ...prev?.teamA, lay: "", rate: targetValue },
-          teamB: { ...prev?.teamB, rate: targetValue, lay: "" },
-          teamC: { ...prev?.teamC, lay: "", rate: targetValue },
-        };
-        //   // dispatch(setQuickBookmaker(newBody));
-        return newBody;
-      });
-      setLQuickBookMaker((prev) => {
-        return {
-          ...prev,
-          l_teamARate: targetValue,
-          l_teamALayValue: "",
-          l_teamBRate: targetValue,
-          l_teamBLayValue: "",
-          l_teamCRate: targetValue,
-          l_teamCLayValue: "",
-        };
-      });
     }
     if (key == "plus") {
       if (isTab == "tab") {
