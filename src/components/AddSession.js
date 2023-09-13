@@ -29,9 +29,12 @@ const AddSession = ({ add, match, Bid }) => {
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
 
-  const { bookmakerTeamRates, quickBookmaker, selectedBookmaker, declaredMatchDetail } = useSelector(
-    (state) => state?.expertMatchDetails
-  );
+  const {
+    bookmakerTeamRates,
+    quickBookmaker,
+    selectedBookmaker,
+    declaredMatchDetail,
+  } = useSelector((state) => state?.expertMatchDetails);
   // const { bookMakerBetRates } = useSelector((state) => state?.matchDetails);
   // console.log('match', match)
   const { socket, socketMicro } = useContext(SocketContext);
@@ -47,7 +50,7 @@ const AddSession = ({ add, match, Bid }) => {
     l_teamCLayValue: "",
   });
   const [incGap, setIncGap] = useState(1);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [pressEnter, setPressEnter] = useState(false);
 
   const [isTab, setIsTab] = useState("");
@@ -136,11 +139,14 @@ const AddSession = ({ add, match, Bid }) => {
     selectedBookmaker,
   ]);
 
-  useEffect(()=> {
-    if(declaredMatchDetail?.match_id === selectedBookmaker?.matchId && declaredMatchDetail?.sessionBet === false){
+  useEffect(() => {
+    if (
+      declaredMatchDetail?.match_id === selectedBookmaker?.matchId &&
+      declaredMatchDetail?.sessionBet === false
+    ) {
       navigate("/expert/match");
     }
-  }, [declaredMatchDetail])
+  }, [declaredMatchDetail]);
 
   const bookRatioB = (teamARates, teamBRates) => {
     const bookRatio = teamBRates != 0 ? teamARates / teamBRates || 0 : 0;
@@ -816,6 +822,9 @@ const AddSession = ({ add, match, Bid }) => {
       handleSuspend();
       setIsTab("");
       let value = targetValue - incGap;
+      if (value < 0) {
+        return;
+      }
       setPressEnter(false);
       if (
         event.target.name === "teamA_rate" &&
@@ -2201,6 +2210,10 @@ const AddSession = ({ add, match, Bid }) => {
             value = parseFloat(event.target.value) + 0.5;
           }
 
+          if (!value) {
+            return;
+          }
+
           socket.emit("updateRate", {
             matchId: match?.id,
             id: Bid,
@@ -2258,6 +2271,10 @@ const AddSession = ({ add, match, Bid }) => {
             value = parseFloat(event.target.value) + 0.5;
           }
 
+          if (!value) {
+            return;
+          }
+
           socket.emit("updateRate", {
             matchId: match?.id,
             id: Bid,
@@ -2313,6 +2330,10 @@ const AddSession = ({ add, match, Bid }) => {
             value = parseFloat(event.target.value) + 1;
           } else {
             value = parseFloat(event.target.value) + 0.5;
+          }
+
+          if (!value || value + 1 > 99.5) {
+            return;
           }
           socket.emit("updateRate", {
             matchId: match?.id,
@@ -2449,6 +2470,9 @@ const AddSession = ({ add, match, Bid }) => {
       }
     }
     if (key == "minus") {
+      // if (targetValue === null || "" || NaN) {
+      //   return;
+      // }
       if (isTab == "tab") {
         handleSuspend();
         setIsTab("");
@@ -2471,6 +2495,10 @@ const AddSession = ({ add, match, Bid }) => {
             value = parseFloat(event.target.value) - 0.5;
           }
 
+          if (!value) {
+            return;
+          }
+
           socket.emit("updateRate", {
             matchId: match?.id,
             id: Bid,
@@ -2478,8 +2506,8 @@ const AddSession = ({ add, match, Bid }) => {
             teamB: match?.teamB,
             teamC: match?.teamC,
             betId: localSelectedBookmaker?.betId,
-            teamA_lay: value + 1,
-            teamA_Back: value,
+            teamA_lay: value ? value + 1 : "",
+            teamA_Back: value ? value : "",
             teamA_suspend: false,
             teamB_lay: "",
             teamB_Back: "",
@@ -2505,8 +2533,8 @@ const AddSession = ({ add, match, Bid }) => {
           setLQuickBookMaker((prev) => {
             return {
               ...prev,
-              l_teamARate: value,
-              l_teamALayValue: value + 1,
+              l_teamARate: value ? value : "",
+              l_teamALayValue: value ? value + 1 : "",
               l_teamBRate: "",
               l_teamBLayValue: "",
               l_teamCRate: "",
@@ -2527,6 +2555,10 @@ const AddSession = ({ add, match, Bid }) => {
             value = parseFloat(event.target.value) - 1;
           } else {
             value = parseFloat(event.target.value) - 0.5;
+          }
+
+          if (!value) {
+            return;
           }
 
           socket.emit("updateRate", {
@@ -2585,6 +2617,10 @@ const AddSession = ({ add, match, Bid }) => {
             value = parseFloat(event.target.value) - 1;
           } else {
             value = parseFloat(event.target.value) - 0.5;
+          }
+
+          if (!value) {
+            return;
           }
 
           socket.emit("updateRate", {
