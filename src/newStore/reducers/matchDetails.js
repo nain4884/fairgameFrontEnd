@@ -18,6 +18,7 @@ const initialState = {
   confirmAuth: false,
   betData: {},
   updateDetData: "",
+  buttonData: [],
   matchButtonData: [],
   sessionButtonData: [],
   sessionExposure: 0,
@@ -102,6 +103,9 @@ const matchDetails = createSlice({
     },
     setSessionOdds: (state, action) => {
       state.sessionOdds = action.payload;
+    },
+    setButtonData: (state, action) => {
+      state.buttonData = action.payload;
     },
     setSessionOddsLive: (state, action) => {
       state.sessionOddsLive = action.payload;
@@ -241,6 +245,7 @@ export const {
   setLiveSessionStatus,
   setQuickBookmaker,
   setUpdateAdminPlayList,
+  setButtonData,
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

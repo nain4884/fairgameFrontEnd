@@ -35,7 +35,7 @@ const PlaceBet = ({
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
-  const { buttonData } = useSelector((state) => state?.matchDetails);
+  const { buttonData, matchButtonData } = useSelector((state) => state?.matchDetails);
   const [newRates, setNewRates] = useState({
     loss_amount: 0,
     win_amount: 0,
@@ -49,13 +49,13 @@ const PlaceBet = ({
 
   const { geoLocation } = useSelector((state) => state.auth);
   const [ip, setIP] = useState(geoLocation);
-  const [buttonList, setButtonList] = useState(buttonData);
+  const [buttonList, setButtonList] = useState(matchButtonData);
 
   useEffect(() => {
     if (geoLocation) {
       setIP(geoLocation);
       // getButtonList();
-      setButtonList(buttonData);
+      setButtonList(matchButtonData);
     }
   }, [geoLocation]);
   const myDivRef = useRef(null);
