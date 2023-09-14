@@ -809,7 +809,7 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "resultDeclareForBet") {
           const value = packet.data[1];
           // matchId = value?.match_id;
-          dispatch(setDeclaredMatchDetails(value))
+          dispatch(setDeclaredMatchDetails(value));
           setLocalSelectedBookmaker((prev) => {
             if (
               prev?.matchId === value?.match_id &&
@@ -988,24 +988,24 @@ const CustomHeader = ({}) => {
                   const newBody = {
                     ...prev,
                     teamA: {
-                      rate: data?.teamA_Back,
+                      rate: data?.teamA_Back ?? "",
                       suspended: data?.teamA_suspend,
                       lock: data?.teamA_suspend,
-                      lay: data?.teamA_lay !== "" ? data?.teamA_lay : null,
+                      lay: data?.teamA_lay ?? "",
                       layLock: true,
                     },
                     teamB: {
-                      rate: data?.teamB_Back,
+                      rate: data?.teamB_Back ?? "",
                       suspended: data?.teamB_suspend,
                       lock: data?.teamB_suspend,
-                      lay: data?.teamB_lay !== "" ? data?.teamB_lay : null,
+                      lay: data?.teamB_lay ?? "",
                       layLock: true,
                     },
                     teamC: {
-                      rate: data?.teamC_Back,
+                      rate: data?.teamC_Back ?? "",
                       suspended: data?.teamC_suspend,
                       lock: data?.teamC_suspend,
-                      lay: data?.teamC_lay !== "" ? data?.teamC_lay : null,
+                      lay: data?.teamC_lay ?? "",
                       layLock: true,
                     },
                     teamSuspended: {
@@ -1023,24 +1023,24 @@ const CustomHeader = ({}) => {
                   const newBody = {
                     ...prev,
                     teamA: {
-                      rate: data?.teamA_Back,
+                      rate: data?.teamA_Back ?? "",
                       suspended: data?.teamA_suspend,
                       lock: data?.teamA_suspend,
-                      lay: data?.teamA_lay,
+                      lay: data?.teamA_lay ?? "",
                       layLock: false,
                     },
                     teamB: {
-                      rate: data?.teamB_Back,
+                      rate: data?.teamB_Back ?? "",
                       suspended: data?.teamB_suspend,
                       lock: data?.teamB_suspend,
-                      lay: data?.teamB_lay,
+                      lay: data?.teamB_lay ?? "",
                       layLock: false,
                     },
                     teamC: {
-                      rate: data?.teamC_Back,
+                      rate: data?.teamC_Back ?? "",
                       suspended: data?.teamC_suspend,
                       lock: data?.teamC_suspend,
-                      lay: data?.teamC_lay,
+                      lay: data?.teamC_lay ?? "",
                       layLock: false,
                     },
                     teamBall: {
@@ -1078,24 +1078,24 @@ const CustomHeader = ({}) => {
                   const newBody = {
                     ...prev,
                     teamA: {
-                      rate: prev?.teamA?.teamA_Back,
+                      rate: prev?.teamA?.teamA_Back ?? "",
                       suspended: data?.teamA_suspend,
                       lock: prev?.teamA?.teamA_suspend,
-                      lay: prev?.teamA?.teamA_lay,
+                      lay: prev?.teamA?.teamA_lay ?? "",
                       layLock: false,
                     },
                     teamB: {
-                      rate: prev?.teamB?.teamB_Back,
+                      rate: prev?.teamB?.teamB_Back ?? "",
                       suspended: data?.teamB_suspend,
                       lock: prev?.teamB?.teamB_suspend,
-                      lay: prev?.teamB?.teamB_lay,
+                      lay: prev?.teamB?.teamB_lay ?? "",
                       layLock: false,
                     },
                     teamC: {
-                      rate: prev?.teamC?.teamC_Back,
+                      rate: prev?.teamC?.teamC_Back ?? "",
                       suspended: data?.teamC_suspend,
                       lock: prev?.teamC?.teamC_suspend,
-                      lay: prev?.teamC?.teamC_lay,
+                      lay: prev?.teamC?.teamC_lay ?? "",
                       layLock: false,
                     },
                     teamBall: {

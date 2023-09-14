@@ -176,6 +176,10 @@ const PlaceBet = ({
     return payload;
   }
 
+  const handleSubmit = (e)=> {
+    e.preventDefault()
+  }
+
   return (
     <Box
       // ref={refs}
@@ -196,6 +200,7 @@ const PlaceBet = ({
       ]}
     >
       <Box sx={{ background: "#F8C851", width: "100%", overflow: "hidden" }}>
+        <form onSubmit={handleSubmit}>
         <Box
           sx={[
             {
@@ -365,6 +370,7 @@ const PlaceBet = ({
           />
           <button
             // style={classes.CustomButton_Btn("#262626")}
+            type="submit"
             style={{
               color: "#fff",
               backgroundColor: "#262626",
@@ -381,6 +387,7 @@ const PlaceBet = ({
             Submit
           </button>
         </Box>
+        </form>
       </Box>
     </Box>
   );
