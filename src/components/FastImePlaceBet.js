@@ -823,6 +823,7 @@ const FastTimePlaceBet = ({
 
 const NumberData = ({
   value,
+  lable,
   typeOfBet,
   containerStyle,
   setFastAmount,
@@ -908,7 +909,7 @@ const NumberData = ({
           fontWeight: "600",
         }}
       >
-        {currencyFormatter(value)}
+        {currencyFormatter(lable)}
       </Typography>
     </Box>
   );
