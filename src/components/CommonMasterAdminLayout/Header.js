@@ -787,21 +787,23 @@ const CustomHeader = ({}) => {
                   const findBet = currentMatch?.bettings?.find(
                     (betting) =>
                       betting?.selectionId === value?.selectionId ||
-                      betting?.id === value?.id
+                      betting?.id === value?.betId
                   );
                   const body = {
                     ...findBet,
-                    betStatus: value?.betStatus,
+                    ...value,
                   };
                   var removedBet = currentMatch?.bettings?.filter(
                     (betting) =>
                       betting?.selectionId !== value?.selectionId &&
-                      betting?.id !== value?.id
+                      betting?.id !== value?.betId
                   );
                   var updatedBettings = [body, ...removedBet];
                   if (
                     value.selectionId &&
-                    !updatedBettings.some((betting) => betting.id === value.id)
+                    !updatedBettings.some(
+                      (betting) => betting.id === value.betId
+                    )
                   ) {
                     updatedBettings.unshift(value);
                   }
@@ -859,22 +861,22 @@ const CustomHeader = ({}) => {
                     const findBet = currentMatch?.bettings?.find(
                       (betting) =>
                         betting?.selectionId === value?.selectionId ||
-                        betting?.id === value?.id
+                        betting?.id === value?.betId
                     );
                     const body = {
                       ...findBet,
-                      betStatus: value?.betStatus,
+                      ...value,
                     };
                     var removedBet = currentMatch?.bettings?.filter(
                       (betting) =>
                         betting?.selectionId !== value?.selectionId &&
-                        betting?.id !== value?.id
+                        betting?.id !== value?.betId
                     );
                     var updatedBettings = [body, ...removedBet];
                     if (
                       value.selectionId &&
                       !updatedBettings.some(
-                        (betting) => betting.id === value.id
+                        (betting) => betting.id === value.betId
                       )
                     ) {
                       updatedBettings.unshift(value);
@@ -883,8 +885,6 @@ const CustomHeader = ({}) => {
                       ...currentMatch,
                       bettings: updatedBettings.sort(customSort),
                     };
-                    dispatch(setSelectedMatch(newBody));
-
                     return newBody;
                   }
                   return currentMatch;
