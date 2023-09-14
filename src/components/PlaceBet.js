@@ -35,7 +35,7 @@ const PlaceBet = ({
 }) => {
   const [defaultValue, setDefaultValue] = useState(" ");
   const [currentOdds, setCurrentOdds] = useState(selectedValue);
-  const { buttonData, matchButtonData } = useSelector((state) => state?.matchDetails);
+  const { matchButtonData, sessionButtonData } = useSelector((state) => state?.matchDetails);
   const [newRates, setNewRates] = useState({
     loss_amount: 0,
     win_amount: 0,
@@ -55,9 +55,13 @@ const PlaceBet = ({
     if (geoLocation) {
       setIP(geoLocation);
       // getButtonList();
-      setButtonList(matchButtonData);
+      if(season){
+        setButtonList(sessionButtonData);
+      } else {
+        setButtonList(matchButtonData);
+      }
     }
-  }, [geoLocation]);
+  }, [geoLocation, matchButtonData, sessionButtonData]);
   const myDivRef = useRef(null);
 
   // function customSort(a, b) {
