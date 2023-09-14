@@ -62,7 +62,7 @@ const IndiaPakLive = React.forwardRef(
       sessionProfitLoss,
       selectedSession,
       sessionResultRefresh,
-      declaredMatchDetail
+      declaredMatchDetail,
     } = useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
@@ -133,11 +133,14 @@ const IndiaPakLive = React.forwardRef(
       selectedSession,
     ]);
 
-    useEffect(()=> {
-      if(declaredMatchDetail?.match_id === selectedSession?.match_id && declaredMatchDetail?.sessionBet === false){
+    useEffect(() => {
+      if (
+        declaredMatchDetail?.match_id === selectedSession?.match_id &&
+        declaredMatchDetail?.sessionBet === false
+      ) {
         navigate("/expert/match");
       }
-    }, [declaredMatchDetail])
+    }, [declaredMatchDetail]);
 
     // useEffect(() => {
     //   if (socket && socket.connected) {
@@ -776,7 +779,7 @@ const AddSession = ({
     event.preventDefault();
     let targetValue = parseFloat(event.target.value);
     event.target.value = targetValue;
-    if (key == "right") {
+    if (key == "d" || key == "right") {
       incGap.setIncGap(1);
       isPercent.setIsPercent("");
       handleSuspend();
@@ -805,7 +808,7 @@ const AddSession = ({
         ly_rate_percent: 100,
         ln_rate_percent: 100,
       });
-    } else if (key == "left") {
+    } else if (key == "a" || key == "left") {
       isPercent.setIsPercent("");
       handleSuspend();
       setLock({
@@ -833,7 +836,7 @@ const AddSession = ({
           ln_rate_percent: 100,
         });
       }
-    } else if (key == "up") {
+    } else if (key == "w" || key == "up") {
       handleSuspend();
       setLock({
         ...lock,
@@ -868,7 +871,7 @@ const AddSession = ({
           });
         }
       }
-    } else if (key == "down") {
+    } else if (key == "z" || key == "down") {
       handleSuspend();
       setLock({
         ...lock,
@@ -1137,6 +1140,10 @@ const AddSession = ({
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                   <KeyboardEventHandler
                     handleKeys={[
+                      "a",
+                      "d",
+                      "w",
+                      "z",
                       "up",
                       "down",
                       "left",
@@ -1224,6 +1231,10 @@ const AddSession = ({
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                   <KeyboardEventHandler
                     handleKeys={[
+                      "a",
+                      "d",
+                      "w",
+                      "z",
                       "up",
                       "down",
                       "left",
