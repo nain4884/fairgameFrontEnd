@@ -63,10 +63,9 @@ const ResultComponent = ({
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-  const teamData =
-    draw === "draw"
-      ? [`${teamA}`, `${teamB}`, `${tie}`, `${draw}`]
-      : [`${teamA}`, `${teamB}`, `${tie}`];
+  const teamData = draw
+    ? [`${teamA}`, `${teamB}`, `${draw}`, `${tie}`]
+    : [`${teamA}`, `${teamB}`, `${tie}`];
   return (
     <Box
       sx={{
@@ -107,55 +106,55 @@ const ResultComponent = ({
         />
       </Box>
       <Box sx={{ padding: 0 }}>
-      <form onSubmit={handleSubmit}>
-        <Box
-          sx={{
-            width: "100%",
-            flexWrap: "wrap",
-            flexDirection: "row",
-            display: "flex",
-            alignSelf: "center",
-            alignItems: "center",
-            justifyContent: "center",
-            px: "10px",
-            py: "5px",
-          }}
-        >
-          {teamData.map((i, k) => {
-            return (
-              <Box
-                key={k}
-                onClick={() => {
-                  setSelected(i);
-                }}
-                sx={{
-                  width: "40%",
-                  marginY: "5px",
-                  marginX: "5px",
-                  borderRadius: "3px",
-                  border: "2px solid #2626261A",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "50px",
-                  cursor: "pointer",
-                  background: selected === i ? "#0B4F26" : "#F8C851",
-                }}
-              >
-                <Typography
+        <form onSubmit={handleSubmit}>
+          <Box
+            sx={{
+              width: "100%",
+              flexWrap: "wrap",
+              flexDirection: "row",
+              display: "flex",
+              alignSelf: "center",
+              alignItems: "center",
+              justifyContent: "center",
+              px: "10px",
+              py: "5px",
+            }}
+          >
+            {teamData.map((i, k) => {
+              return (
+                <Box
+                  key={k}
+                  onClick={() => {
+                    setSelected(i);
+                  }}
                   sx={{
-                    fontSize: "14px",
-                    fontWeight: "700",
-                    color: selected === i ? "white" : "black",
+                    width: "40%",
+                    marginY: "5px",
+                    marginX: "5px",
+                    borderRadius: "3px",
+                    border: "2px solid #2626261A",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "50px",
+                    cursor: "pointer",
+                    background: selected === i ? "#0B4F26" : "#F8C851",
                   }}
                 >
-                  {i}
-                </Typography>
-              </Box>
-            );
-          })}
-        </Box>
-        
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      color: selected === i ? "white" : "black",
+                    }}
+                  >
+                    {i}
+                  </Typography>
+                </Box>
+              );
+            })}
+          </Box>
+
           <Box
             sx={{
               width: "100%",
