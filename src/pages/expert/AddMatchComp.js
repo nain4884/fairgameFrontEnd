@@ -148,7 +148,8 @@ const AddMatchComp = () => {
         ];
       }
       if (
-        (Detail[1].val === "") && (Detail[9].val === "") &&
+        Detail[1].val === "" &&
+        Detail[9].val === "" &&
         Detail[13].val === ""
       ) {
         setError({
@@ -257,6 +258,37 @@ const AddMatchComp = () => {
 
   const getAllLiveTournaments = async () => {
     try {
+      setDetail({
+        ...Detail,
+        33: {
+          ...Detail[33],
+          val: "Select tournament"
+        },
+        5: {
+          ...Detail[5],
+          val: "Select match"
+        },
+        22: {
+          ...Detail[22],
+          val: ""
+        },
+        9:{
+          ...Detail[9],
+          val: ""
+        },
+        13:{
+          ...Detail[13],
+          val: ""
+        },
+        17:{
+          ...Detail[17],
+          val: ""
+        },
+        2:{
+          ...Detail[2],
+          val: new Date()
+        }
+      })
       const { data } = await microServiceAxios.get(`/competitionList`);
       console.log("getAllLiveTournaments", data);
       let tournamentList = [];
@@ -276,6 +308,33 @@ const AddMatchComp = () => {
 
   const getAllLiveMatches = async () => {
     try {
+      setDetail({
+        ...Detail,
+        5: {
+          ...Detail[5],
+          val: "Select match"
+        },
+        22: {
+          ...Detail[22],
+          val: ""
+        },
+        9:{
+          ...Detail[9],
+          val: ""
+        },
+        13:{
+          ...Detail[13],
+          val: ""
+        },
+        17:{
+          ...Detail[17],
+          val: ""
+        },
+        2:{
+          ...Detail[2],
+          val: new Date()
+        }
+      })
       const { data } = await microServiceAxios.get(
         `/eventList/${Detail[34].val}`
       );

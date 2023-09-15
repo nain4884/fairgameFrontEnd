@@ -240,7 +240,7 @@ const DropDownSimple = ({
               },
             }}
           >
-            {value === "0" ? "0.00" : value}
+            {value === "0" ? "0.00" : Detail[place].val !==  "" ? Detail[place].val: value }
           </Typography>
           {place === 5 && (
             <Typography sx={{ fontSize: "10px !important" }}>
