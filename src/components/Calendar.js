@@ -27,9 +27,6 @@ const Calendar = ({
         },
         containerStyle,
       ]}
-      onClick={() => {
-        setOpen(!open);
-      }}
     >
       <Typography
         sx={{ fontSize: "12px", fontWeight: "600", marginBottom: ".3vh" }}
@@ -38,12 +35,12 @@ const Calendar = ({
       </Typography>
       <Box sx={[{ position: "absolute", height: "35px" }, pickerStyles]}>
         <DatePicker
-      
+          onClickOutside={() => setOpen(false)}
           open={open}
           placeholderText="select"
           selected={startDate}
+          onSelect={() => setOpen(false)}
           onChange={(date) => {
-            setOpen(false);
             setStartDate(date);
           }}
           {...DatePickerProps}

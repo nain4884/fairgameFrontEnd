@@ -240,11 +240,17 @@ const DropDownSimple = ({
               },
             }}
           >
-            {value === "0" ? "0.00" : Detail[place].val !==  "" ? Detail[place].val: value }
+            {value === "0"
+              ? "0.00"
+              : place
+              ? Detail[place]?.val !== ""
+                ? Detail[place]?.val
+                : value
+              : value}
           </Typography>
           {place === 5 && (
             <Typography sx={{ fontSize: "10px !important" }}>
-              {Detail[22].val}
+              {Detail[22]?.val}
             </Typography>
           )}
         </Box>
@@ -281,7 +287,7 @@ const DropDownSimple = ({
           ]}
         >
           {matchesSelect
-            ? data.map((i, idx) => {
+            ? data?.map((i, idx) => {
                 return (
                   <Block
                     key={idx}
@@ -295,7 +301,7 @@ const DropDownSimple = ({
                   />
                 );
               })
-            : data.map((i, idx) => {
+            : data?.map((i, idx) => {
                 return <Block key={idx} i={i} />;
               })}
         </Box>
