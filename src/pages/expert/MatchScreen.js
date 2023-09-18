@@ -132,23 +132,31 @@ const MatchScreen = () => {
     }
   };
   useEffect(() => {
-    if (state?.id) {
-      getSingleMatch(state.id);
-      getAllBetsData(state?.id);
+    try {
+      if (state?.id) {
+        getSingleMatch(state.id);
+        getAllBetsData(state?.id);
+      }
+    } catch (e) {
+      console.log(e);
     }
   }, [state?.id]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        // User returned to the web browser
-        if (state?.id) {
-          // if (socket && socket.connected) {
-          //   socket.emit("checkConnection");
-          // }
-          getSingleMatch(state?.id);
-          getAllBetsData(state?.id);
+      try {
+        if (document.visibilityState === "visible") {
+          // User returned to the web browser
+          if (state?.id) {
+            // if (socket && socket.connected) {
+            //   socket.emit("checkConnection");
+            // }
+            getSingleMatch(state?.id);
+            getAllBetsData(state?.id);
+          }
         }
+      } catch (e) {
+        console.log(e?.message, "message");
       }
     };
 
@@ -156,7 +164,14 @@ const MatchScreen = () => {
 
     // Clean up the event listener on component unmount
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      try {
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange
+        );
+      } catch (e) {
+        console.log(e?.message, "message");
+      }
     };
   }, []);
 
@@ -487,16 +502,20 @@ const MatchScreen = () => {
 
   const handleMatchOdds = useCallback(
     (val) => {
-      if (val?.length === 0 || val === null) {
-        matchOddsCount += 1;
-        if (matchOddsCount >= 3) {
-          socketMicro.emit("disconnect_market", { id: state?.marketId });
+      try {
+        if (val?.length === 0 || val === null) {
+          matchOddsCount += 1;
+          if (matchOddsCount >= 3) {
+            socketMicro.emit("disconnect_market", { id: state?.marketId });
+          }
+        } else {
+          setMatchOddsLive(val[0]);
+          if (val[0]?.status === "CLOSED") {
+            socketMicro.emit("disconnect_market", { id: state?.marketId });
+          }
         }
-      } else {
-        setMatchOddsLive(val[0]);
-        if (val[0]?.status === "CLOSED") {
-          socketMicro.emit("disconnect_market", { id: state?.marketId });
-        }
+      } catch (e) {
+        console.log(e);
       }
     },
     [state?.marketId, socketMicro]
@@ -504,8 +523,12 @@ const MatchScreen = () => {
 
   const handleBookmaker = useCallback(
     (val) => {
-      if (val.length > 0) {
-        setBookmakerLiveData(val[0]);
+      try {
+        if (val.length > 0) {
+          setBookmakerLiveData(val[0]);
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     [state?.marketId]
@@ -513,50 +536,54 @@ const MatchScreen = () => {
 
   const handleSession = useCallback(
     (val) => {
-      if (state?.marketId === marketId) {
-        var newVal = val?.map((v) => ({
-          bet_condition: v?.RunnerName,
-          betStatus: 0,
-          sessionBet: true,
-          no_rate: v?.LayPrice1,
-          yes_rate: v?.BackPrice1,
-          rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
-          suspended: v?.GameStatus,
-          selectionId: v?.SelectionId,
-        }));
-        setLiveSessionData(newVal);
+      try {
+        if (state?.marketId === marketId) {
+          var newVal = val?.map((v) => ({
+            bet_condition: v?.RunnerName,
+            betStatus: 0,
+            sessionBet: true,
+            no_rate: v?.LayPrice1,
+            yes_rate: v?.BackPrice1,
+            rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
+            suspended: v?.GameStatus,
+            selectionId: v?.SelectionId,
+          }));
+          setLiveSessionData(newVal);
 
-        setLocalSessionExpertOdds((prev) => {
-          if (!prev) {
-            return prev; // Return early if prev is null or undefined
-          }
+          setLocalSessionExpertOdds((prev) => {
+            if (!prev) {
+              return prev; // Return early if prev is null or undefined
+            }
 
-          const updatedOdds = prev.map((betting) => {
-            const selectedData = newVal.find(
-              (nv) => nv?.selectionId === betting.selectionId
-            );
+            const updatedOdds = prev.map((betting) => {
+              const selectedData = newVal.find(
+                (nv) => nv?.selectionId === betting.selectionId
+              );
 
-            if (selectedData) {
+              if (selectedData) {
+                return {
+                  ...betting,
+                  bet_condition: selectedData.bet_condition,
+                  no_rate: selectedData.no_rate,
+                  yes_rate: selectedData.yes_rate,
+                  rate_percent: selectedData.rate_percent,
+                  suspended: selectedData.suspended,
+                  selectionId: selectedData.selectionId,
+                };
+              }
               return {
                 ...betting,
-                bet_condition: selectedData.bet_condition,
-                no_rate: selectedData.no_rate,
-                yes_rate: selectedData.yes_rate,
-                rate_percent: selectedData.rate_percent,
-                suspended: selectedData.suspended,
-                selectionId: selectedData.selectionId,
-              };
-            }
-            return {
-              ...betting,
-              no_rate: "0",
-              yes_rate: "0",
-              suspended: "",
-            }; // Keep unchanged if no match found
+                no_rate: "0",
+                yes_rate: "0",
+                suspended: "",
+              }; // Keep unchanged if no match found
+            });
+            dispatch(setSessionExpertOdds(updatedOdds));
+            return updatedOdds;
           });
-          dispatch(setSessionExpertOdds(updatedOdds));
-          return updatedOdds;
-        });
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     [state?.marketId, marketId]
@@ -564,26 +591,34 @@ const MatchScreen = () => {
   const debouncedHandleSession = _.debounce(handleSession, 300);
 
   useEffect(() => {
-    if (socketMicro?.connected && state?.marketId && marketId) {
-      socketMicro.emit("init", { id: state?.marketId });
-      setInterval(() => {
+    try {
+      if (socketMicro?.connected && state?.marketId && marketId) {
         socketMicro.emit("init", { id: state?.marketId });
-      }, 3000);
-      socketMicro.on("reconnect", () => {
-        socket.emit("init", { id: state?.marketId });
+        setInterval(() => {
+          socketMicro.emit("init", { id: state?.marketId });
+        }, 3000);
+        socketMicro.on("reconnect", () => {
+          socket.emit("init", { id: state?.marketId });
+          activateLiveMatchMarket(state?.marketId);
+        });
         activateLiveMatchMarket(state?.marketId);
-      });
-      activateLiveMatchMarket(state?.marketId);
-      sessionStorage.setItem("marketId", state?.marketId);
-      socketMicro.on(`session${state?.marketId}`, debouncedHandleSession);
-      socketMicro.on(`matchOdds${state?.marketId}`, handleMatchOdds);
-      socketMicro.on(`bookmaker${state?.marketId}`, handleBookmaker);
+        sessionStorage.setItem("marketId", state?.marketId);
+        socketMicro.on(`session${state?.marketId}`, debouncedHandleSession);
+        socketMicro.on(`matchOdds${state?.marketId}`, handleMatchOdds);
+        socketMicro.on(`bookmaker${state?.marketId}`, handleBookmaker);
+      }
+    } catch (e) {
+      console.log(e);
     }
 
     return () => {
-      socketMicro?.emit("disconnect_market", { id: marketId });
-      setMatchOddsLive([]);
-      matchOddsCount = 0;
+      try {
+        socketMicro?.emit("disconnect_market", { id: marketId });
+        setMatchOddsLive([]);
+        matchOddsCount = 0;
+      } catch (e) {
+        console.log(e);
+      }
     };
   }, [socketMicro, state?.marketId, marketId, localState]);
 

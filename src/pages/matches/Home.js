@@ -127,47 +127,55 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   }
 
   useEffect(() => {
-    if (geoLocation === null) {
-      FetchIpAddress().then((res) => {
-        dispatch(setGeoLocation(res));
-      });
+    try {
+      if (geoLocation === null) {
+        FetchIpAddress().then((res) => {
+          dispatch(setGeoLocation(res));
+        });
+      }
+    } catch (e) {
+      console.log(e);
     }
   }, []);
 
   useEffect(() => {
-    if (allBetRates) {
-      setIObtes(allBetRates);
-    }
-    if (allSessionBets) {
-      setSessionBets(allSessionBets);
-    }
+    try {
+      if (allBetRates) {
+        setIObtes(allBetRates);
+      }
+      if (allSessionBets) {
+        setSessionBets(allSessionBets);
+      }
 
-    if (sessionExposure) {
-      setLocalSessionExposure(sessionExposure);
-    }
-    if (selectedMatch) {
-      setCurrentMatch((prev) => {
-        const updatedMatch = { ...prev, ...selectedMatch };
-        if (JSON.stringify(updatedMatch) !== JSON.stringify(prev)) {
-          return updatedMatch;
-        }
-        return prev;
-      });
-    }
+      if (sessionExposure) {
+        setLocalSessionExposure(sessionExposure);
+      }
+      if (selectedMatch) {
+        setCurrentMatch((prev) => {
+          const updatedMatch = { ...prev, ...selectedMatch };
+          if (JSON.stringify(updatedMatch) !== JSON.stringify(prev)) {
+            return updatedMatch;
+          }
+          return prev;
+        });
+      }
 
-    if (manualBookmaker) {
-      setManualBookmakerData(manualBookmaker);
-    }
-    if (sessionOffline) {
-      setSessionOff(sessionOffline);
-    }
+      if (manualBookmaker) {
+        setManualBookmakerData(manualBookmaker);
+      }
+      if (sessionOffline) {
+        setSessionOff(sessionOffline);
+      }
 
-    if (selectedSessionBettings) {
-      setLSelectedSessionBetting(selectedSessionBettings);
-    }
+      if (selectedSessionBettings) {
+        setLSelectedSessionBetting(selectedSessionBettings);
+      }
 
-    if (quickSession) {
-      setLocalQuickSession(quickSession);
+      if (quickSession) {
+        setLocalQuickSession(quickSession);
+      }
+    } catch (e) {
+      console.log(e);
     }
   }, [
     allBetRates,
@@ -976,50 +984,55 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   // }, [socket]);
 
   const handleSession = (val) => {
-    if (val !== null && matchId === checkMctchId) {
-      var newVal = val?.map((v) => ({
-        bet_condition: v?.RunnerName,
-        betStatus: 0,
-        sessionBet: true,
-        no_rate: v?.LayPrice1,
-        yes_rate: v?.BackPrice1,
-        rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
-        suspended: v?.GameStatus,
-        selectionId: v?.SelectionId,
-      }));
-      setCurrentMatch((currentMatch) => {
-        if (currentMatch?.bettings?.length > 0) {
-          setLSelectedSessionBetting((prev) => {
-            const data = prev?.map((betting) => {
-              const selectedData = newVal?.find(
-                (nv) => nv?.selectionId === betting?.selectionId
-              );
+    try {
+      if (val !== null && matchId === checkMctchId) {
+        var newVal = val?.map((v) => ({
+          bet_condition: v?.RunnerName,
+          betStatus: 0,
+          sessionBet: true,
+          no_rate: v?.LayPrice1,
+          yes_rate: v?.BackPrice1,
+          rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
+          suspended: v?.GameStatus,
+          selectionId: v?.SelectionId,
+        }));
+        setCurrentMatch((currentMatch) => {
+          if (currentMatch?.bettings?.length > 0) {
+            setLSelectedSessionBetting((prev) => {
+              const data = prev?.map((betting) => {
+                const selectedData = newVal?.find(
+                  (nv) => nv?.selectionId === betting?.selectionId
+                );
 
-              return {
-                ...betting,
-                bet_condition:
-                  selectedData?.bet_condition || betting?.bet_condition,
-                no_rate:
-                  selectedData?.no_rate !== undefined
-                    ? selectedData.no_rate
-                    : 0,
-                yes_rate:
-                  selectedData?.yes_rate !== undefined
-                    ? selectedData.yes_rate
-                    : 0,
-                rate_percent:
-                  selectedData?.rate_percent || betting?.rate_percent,
-                suspended: selectedData?.suspended || "",
-                selectionId: selectedData?.selectionId || betting?.selectionId,
-              };
+                return {
+                  ...betting,
+                  bet_condition:
+                    selectedData?.bet_condition || betting?.bet_condition,
+                  no_rate:
+                    selectedData?.no_rate !== undefined
+                      ? selectedData.no_rate
+                      : 0,
+                  yes_rate:
+                    selectedData?.yes_rate !== undefined
+                      ? selectedData.yes_rate
+                      : 0,
+                  rate_percent:
+                    selectedData?.rate_percent || betting?.rate_percent,
+                  suspended: selectedData?.suspended || "",
+                  selectionId:
+                    selectedData?.selectionId || betting?.selectionId,
+                };
+              });
+
+              dispatch(setSelectedSessionBettings(data));
+              return data;
             });
-
-            dispatch(setSelectedSessionBettings(data));
-            return data;
-          });
-        }
-        return currentMatch;
-      });
+          }
+          return currentMatch;
+        });
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -1072,43 +1085,55 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         socketMicro.on(`session${marketId}`, debounceSession);
         socketMicro.on(`matchOdds${marketId}`, (val) => {
           // matchodds Market live and stop disable condition
-          if (val !== null) {
-            if (val.length === 0) {
-              matchOddsCount += 1;
-              if (matchOddsCount >= 3) {
-                socketMicro.emit("disconnect_market", {
-                  id: marketId,
-                });
-                setMacthOddsLive([]);
-              }
-            } else {
-              setMacthOddsLive(val[0]);
-              if (val[0]?.status === "CLOSED") {
-                socketMicro.emit("disconnect_market", {
-                  id: marketId,
-                });
-                setMacthOddsLive([]);
+          try {
+            if (val !== null) {
+              if (val.length === 0) {
+                matchOddsCount += 1;
+                if (matchOddsCount >= 3) {
+                  socketMicro.emit("disconnect_market", {
+                    id: marketId,
+                  });
+                  setMacthOddsLive([]);
+                }
+              } else {
+                setMacthOddsLive(val[0]);
+                if (val[0]?.status === "CLOSED") {
+                  socketMicro.emit("disconnect_market", {
+                    id: marketId,
+                  });
+                  setMacthOddsLive([]);
+                }
               }
             }
+          } catch (e) {
+            console.log(e);
           }
         });
         socketMicro.on(`bookmaker${marketId}`, (val) => {
-          if (val !== null) {
-            if (val.length > 0) {
-              setBookmakerLive(val[0]);
-            } else {
-              setBookmakerLive([]);
+          try {
+            if (val !== null) {
+              if (val.length > 0) {
+                setBookmakerLive(val[0]);
+              } else {
+                setBookmakerLive([]);
+              }
             }
+          } catch (e) {
+            console.log(e);
           }
         });
         socketMicro.on(`liveScore${eventId}`, (val) => {
-          if (val !== null) {
-            setLiveScoreData(val);
-            if (val) {
+          try {
+            if (val !== null) {
               setLiveScoreData(val);
-            } else {
-              setLiveScoreData();
+              if (val) {
+                setLiveScoreData(val);
+              } else {
+                setLiveScoreData();
+              }
             }
+          } catch (e) {
+            console.log(e);
           }
         });
       } else {
@@ -1120,13 +1145,17 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       console.log("error", e);
     }
     return () => {
-      socketMicro?.emit("disconnect_market", {
-        id: marketId,
-      });
-      socketMicro?.emit("leaveScore", { id: eventId });
-      setMacthOddsLive([]);
-      setBookmakerLive([]);
-      setSessionLock(false);
+      try {
+        socketMicro?.emit("disconnect_market", {
+          id: marketId,
+        });
+        socketMicro?.emit("leaveScore", { id: eventId });
+        setMacthOddsLive([]);
+        setBookmakerLive([]);
+        setSessionLock(false);
+      } catch (e) {
+        console.log(e);
+      }
     };
   }, [socketMicro, marketId]);
 
@@ -1318,12 +1347,16 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   };
 
   useEffect(() => {
-    if (matchId) {
-      getThisMatch(matchId);
+    try {
+      if (matchId) {
+        getThisMatch(matchId);
+      }
+      // getAllBetsData();
+      getAllBetsData1();
+      getButtonList();
+    } catch (e) {
+      console.log(e);
     }
-    // getAllBetsData();
-    getAllBetsData1();
-    getButtonList();
   }, [matchId]);
 
   const handleRateChange = async () => {
@@ -1332,14 +1365,18 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        // User returned to the web browser
-        if (matchId) {
-          // if (socket && socket.connected) {
-          //   socket.emit("checkConnection");
-          // }
-          getThisMatch(matchId);
+      try {
+        if (document.visibilityState === "visible") {
+          // User returned to the web browser
+          if (matchId) {
+            // if (socket && socket.connected) {
+            //   socket.emit("checkConnection");
+            // }
+            getThisMatch(matchId);
+          }
         }
+      } catch (e) {
+        console.log(e);
       }
     };
 
@@ -1347,7 +1384,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
     // Clean up the event listener on component unmount
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      try {
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange
+        );
+      } catch (e) {
+        console.log(e);
+      }
     };
   }, []);
 
