@@ -497,9 +497,12 @@ const AddSession = ({ add, match, Bid }) => {
   const handleChange = (event) => {
     setIsTab("");
     // handleSuspend();
+    // if(event.target.value >=100){
+    //   return
+    // }
     let target = event.target;
 
-    if (target.value <= 100) {
+    if (target.value < 100) {
       if (target.name === "teamA_rate") {
         setLocalQuickBookmaker((prev) => {
           const newBody = {
@@ -673,10 +676,10 @@ const AddSession = ({ add, match, Bid }) => {
   const handleFocus = (event) => {};
   const handleHunderedValue = (back, lay) => {
     // alert(back)
-    if (back >= 100) {
+    if (back >= 98.5) {
       return true;
     }
-    if (lay >= 100) {
+    if (lay >= 99.5) {
       return true;
     }
     return false;
@@ -952,7 +955,7 @@ const AddSession = ({ add, match, Bid }) => {
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
           targetValue,
-          localQuickBookmaker?.teamA?.lay
+          lQuickBookMaker?.l_teamALayValue
         );
         if (result) {
           return;
@@ -1008,7 +1011,7 @@ const AddSession = ({ add, match, Bid }) => {
       if (event.target.name === "teamB_rate") {
         let result = handleHunderedValue(
           targetValue,
-          localQuickBookmaker?.teamB?.lay
+          lQuickBookMaker?.l_teamBLayValue
         );
         if (result) {
           return;
@@ -1062,7 +1065,7 @@ const AddSession = ({ add, match, Bid }) => {
       if (event.target.name === "teamC_rate") {
         let result = handleHunderedValue(
           targetValue,
-          localQuickBookmaker?.teamC?.lay
+          lQuickBookMaker?.l_teamCLayValue
         );
         if (result) {
           return;
