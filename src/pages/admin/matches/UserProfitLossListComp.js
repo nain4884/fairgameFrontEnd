@@ -2,16 +2,9 @@ import React from "react";
 import SeperateBox from "./SeperateBox";
 import { Box, Typography } from "@mui/material";
 import Divider from "../../../components/helper/Divider";
-import { useEffect } from "react";
 
-const UserProfitLossListComp = ({ element, setShowTeamC }) => {
-  useEffect(() => {
-    if (![0, null, "0"].includes(element?.teamC_rate)) {
-      setShowTeamC(true);
-    } else {
-      setShowTeamC(false);
-    }
-  }, []);
+const UserProfitLossListComp = ({ element, showTeamC }) => {
+  
   return (
     <>
       <Box
@@ -68,18 +61,22 @@ const UserProfitLossListComp = ({ element, setShowTeamC }) => {
               color={"#ffffff"}
               widthh={10}
             />
-            {element?.teamC_rate && ![0, null, "0"].includes(element?.teamC_rate) && (
-              <>
-                <Box
-                  sx={{ width: "3px", display: "flex", background: "#ffffff" }}
-                ></Box>
-                <SeperateBox
-                  value={element?.teamC_rate}
-                  color={"#ffffff"}
-                  widthh={10}
-                />
-              </>
-            )}
+            {showTeamC && (
+                <>
+                  <Box
+                    sx={{
+                      width: "3px",
+                      display: "flex",
+                      background: "#ffffff",
+                    }}
+                  ></Box>
+                  <SeperateBox
+                    value={element?.teamC_rate ?? "N/A"}
+                    color={"#ffffff"}
+                    widthh={10}
+                  />
+                </>
+              )}
           </>
           <Box
             sx={{ width: ".45%", display: "flex", background: "pink" }}

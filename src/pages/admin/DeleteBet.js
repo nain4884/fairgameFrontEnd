@@ -72,7 +72,6 @@ const DeleteBet = ({}) => {
   const [popData, setPopData] = useState("");
   const [sessionExposer, setSessionExposure] = useState(0);
   const [sessionOff, setSessionOff] = useState([]);
-  const [userProfitLoss, setUserProfitLoss] = useState([]);
   // const [localQuickSession, setLocalQuickSession] = useState([]);
   // const [localSelectedSessionBettings, setLocalSelectedSessionBettings] =
   //   useState([]);
@@ -973,22 +972,10 @@ const DeleteBet = ({}) => {
     }
   }
 
-  const getChildProfitLoss = async (matchId) => {
-    try {
-      const { data } = await axios.get(
-        `/game-match/getChildProfitLoss/${matchId}`
-      );
-      setUserProfitLoss(data?.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   useEffect(() => {
     if (matchId !== undefined) {
       getThisMatch(matchId);
       getAllBetsData(matchId);
-      getChildProfitLoss(matchId);
     }
   }, [matchId]);
 
@@ -1171,12 +1158,7 @@ const DeleteBet = ({}) => {
                 />
               )}
               {matchesMobile && (
-                <UserProfitLoss
-                  title={"User Profit Loss"}
-                  newData={userProfitLoss}
-                  matchId={matchId}
-                  getChildProfitLoss={getChildProfitLoss}
-                />
+                <UserProfitLoss title={"User Profit Loss"} matchId={matchId} />
               )}
               {/* {matchesMobile && */}
               {url.includes("wallet") && IOSinglebets.length > 0 && (
@@ -1326,12 +1308,7 @@ const DeleteBet = ({}) => {
                     min={currentMatch?.betfair_session_min_bet}
                   />
                 )}
-                <UserProfitLoss
-                  title={"User Profit Loss"}
-                  newData={userProfitLoss}
-                  matchId={matchId}
-                  getChildProfitLoss={getChildProfitLoss}
-                />
+                <UserProfitLoss title={"User Profit Loss"} matchId={matchId} />
               </Box>
             )}
           </Box>

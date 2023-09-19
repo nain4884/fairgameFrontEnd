@@ -1,16 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import Divider from "../../../components/helper/Divider";
 import { useTheme } from "@emotion/react";
 import UserProfitLossListComp from "./UserProfitLossListComp";
 import { useState } from "react";
 import { Refresh } from "../../../assets";
+import { setRole } from "../../../newStore";
 
-const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
+const UserProfitLoss = ({ title, matchId }) => {
+  const { axios } = setRole();
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const [showTeamC, setShowTeamC] = useState(false);
+  const [userProfitLoss, setUserProfitLoss] = useState([]);
+
+  const getChildProfitLoss = async (matchId) => {
+    try {
+      const { data } = await axios.get(
+        `/game-match/getChildProfitLoss/${matchId}`
+      );
+      setUserProfitLoss(data?.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    if (matchId !== undefined) {
+      getChildProfitLoss(matchId);
+    }
+  }, [matchId]);
 
   return (
     <>
@@ -158,7 +178,7 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                     fontWeight: "600",
                   }}
                 >
-                  {newData?.teamA}
+                  {userProfitLoss?.teamA}
                 </Typography>
               </Box>
               <Box
@@ -182,10 +202,10 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                     fontWeight: "600",
                   }}
                 >
-                  {newData?.teamB}
+                  {userProfitLoss?.teamB}
                 </Typography>
               </Box>
-              {newData?.teamC && showTeamC && (
+              {userProfitLoss?.teamC && (
                 <>
                   <Box
                     sx={{
@@ -212,7 +232,7 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                         fontWeight: "600",
                       }}
                     >
-                      {newData?.teamC}
+                      {userProfitLoss?.teamC}
                     </Typography>
                   </Box>
                 </>
@@ -228,8 +248,8 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
               position: "relative",
             }}
           >
-            {newData?.childProfitLoss?.length > 0 &&
-              newData?.childProfitLoss?.map((element) => {
+            {userProfitLoss?.childProfitLoss?.length > 0 &&
+              userProfitLoss?.childProfitLoss?.map((element) => {
                 return (
                   <Box
                     key={element?.id}
@@ -241,7 +261,7 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                     <UserProfitLossListComp
                       key={element?.id}
                       element={element}
-                      setShowTeamC={setShowTeamC}
+                      showTeamC={userProfitLoss?.teamC ? true : false}
                     />
                     <Divider />
                   </Box>

@@ -22,6 +22,7 @@ import {
 } from "../../newStore/reducers/matchDetails";
 import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
+import UserProfitLoss from "./matches/UserProfitLoss";
 
 let matchOddsCount = 0;
 const MatchSubmit = ({}) => {
@@ -44,6 +45,7 @@ const MatchSubmit = ({}) => {
   const [isHandled, setIsHandled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState();
+
   const { multiSelectedMatches, allBetRates, allSessionBets } = useSelector(
     (state) => state?.matchDetails
   );
@@ -1000,6 +1002,10 @@ const MatchSubmit = ({}) => {
                                   {item?.teamA} V/S {item?.teamB}
                                   {index}
                                 </Typography>
+                                <UserProfitLoss
+                                  title={"User Profit Loss"}
+                                  matchId={item?.id}
+                                />
                                 {item?.apiMatchActive && (
                                   <Odds
                                     currentMatch={item}
@@ -1146,6 +1152,10 @@ const MatchSubmit = ({}) => {
                             >
                               {item?.teamA} V/S {item?.teamB}
                             </Typography>
+                            <UserProfitLoss
+                              title={"User Profit Loss"}
+                              matchId={item?.id}
+                            />
                             {item?.apiMatchActive && (
                               <Odds
                                 currentMatch={item}
@@ -1289,6 +1299,10 @@ const MatchSubmit = ({}) => {
                         >
                           {item?.teamA} V/S {item?.teamB}
                         </Typography>
+                        <UserProfitLoss
+                          title={"User Profit Loss"}
+                          matchId={item?.id}
+                        />
                         {item?.apiMatchActive && (
                           <Odds
                             currentMatch={item}
