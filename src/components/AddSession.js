@@ -459,7 +459,9 @@ const AddSession = ({ add, match, Bid }) => {
       if (back <= 1 || lay > 98) {
         setIncGap(1);
       } else if (back && lay) {
-        if (Math.abs(lay - back) > 2 && lay <= 98) {
+        if (Math.abs(lay - back) > 5 && lay <= 96) {
+          setIncGap(4);
+        } else if (Math.abs(lay - back) > 2 && lay <= 98) {
           setIncGap(2);
         } else if (Math.abs(lay - back) == 2) {
           setIncGap(1);
