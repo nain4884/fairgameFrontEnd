@@ -18,7 +18,10 @@ import { setRole } from "../../newStore";
 import {
   setAllBetRate,
   setManualBookmaker,
+  setQuickBookmaker,
+  setQuickSession,
   setSelectedMatch,
+  setSelectedSessionBettings,
 } from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
 import CustomLoader from "../../components/helper/CustomLoader";
@@ -27,6 +30,7 @@ import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import { setAllSessionBets } from "../../newStore/reducers/matchDetails";
 import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
+import UserProfitLoss from "./matches/UserProfitLoss";
 
 let matchOddsCount = 0;
 const DeleteBet = ({}) => {
@@ -51,6 +55,8 @@ const DeleteBet = ({}) => {
     manualBookmaker,
     allBetRates,
     allSessionBets,
+    // quickSession,
+    // selectedSessionBettings,
   } = useSelector((state) => state?.matchDetails);
   const { currentOdd } = useSelector((state) => state?.expertMatchDetails);
   const [currentMatch, setCurrentMatch] = useState([]);
@@ -66,6 +72,10 @@ const DeleteBet = ({}) => {
   const [popData, setPopData] = useState("");
   const [sessionExposer, setSessionExposure] = useState(0);
   const [sessionOff, setSessionOff] = useState([]);
+  const [userProfitLoss, setUserProfitLoss] = useState([]);
+  // const [localQuickSession, setLocalQuickSession] = useState([]);
+  // const [localSelectedSessionBettings, setLocalSelectedSessionBettings] =
+  //   useState([]);
 
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
@@ -95,6 +105,12 @@ const DeleteBet = ({}) => {
     if (allBetRates) {
       setSingleIObtes(allBetRates);
     }
+    // if (quickSession) {
+    //   setLocalQuickSession(quickSession);
+    // }
+    // if (selectedSessionBettings) {
+    //   setLocalSelectedSessionBettings(selectedSessionBettings);
+    // }
   }, [
     selectedMatch,
     sessionOffline,
@@ -102,6 +118,8 @@ const DeleteBet = ({}) => {
     allSessionBets,
     currentOdd,
     allBetRates,
+    // quickSession,
+    // selectedSessionBettings,
   ]);
 
   // useEffect(() => {
@@ -880,6 +898,25 @@ const DeleteBet = ({}) => {
         (element) => element.sessionBet === false
       );
 
+      // let sessionDataTemp = response.data?.bettings?.filter(
+      //   (element) => element.sessionBet && element.selectionId !== null
+      // );
+
+      // let quickSessionDataTemp = response.data?.bettings?.filter(
+      //   (element) => element.sessionBet && element.selectionId === null
+      // );
+
+      // const updateLiveSesssion = sessionDataTemp?.map((v) => ({
+      //   ...v,
+      //   yes_rate: 0,
+      //   no_rate: 0,
+      //   suspended: "",
+      // }));
+
+      // // dispatch(setQuickBookmaker(response?.data?.bookmakers));
+      // dispatch(setQuickSession(quickSessionDataTemp));
+      // dispatch(setSelectedSessionBettings(updateLiveSesssion));
+
       setManualBookmakerData(matchOddsDataTemp);
       dispatch(setManualBookmaker(matchOddsDataTemp));
       const newBody = {
@@ -936,10 +973,22 @@ const DeleteBet = ({}) => {
     }
   }
 
+  const getChildProfitLoss = async (matchId) => {
+    try {
+      const { data } = await axios.get(
+        `/game-match/getChildProfitLoss/${matchId}`
+      );
+      setUserProfitLoss(data?.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     if (matchId !== undefined) {
       getThisMatch(matchId);
       getAllBetsData(matchId);
+      getChildProfitLoss(matchId);
     }
   }, [matchId]);
 
@@ -1096,6 +1145,7 @@ const DeleteBet = ({}) => {
                   sessionExposer={sessionExposer}
                   currentMatch={currentMatch}
                   sessionBets={sessionBets?.length}
+                  // newData={localQuickSession}
                   data={[]}
                   sessionOffline={sessionOff}
                   setPopData={setPopData}
@@ -1110,6 +1160,7 @@ const DeleteBet = ({}) => {
                   currentMatch={currentMatch}
                   sessionBets={sessionBets?.length}
                   sessionExposer={sessionExposer}
+                  // newData={localSelectedSessionBettings}
                   data={[]}
                   sessionOffline={sessionOff}
                   setPopData={setPopData}
@@ -1118,6 +1169,12 @@ const DeleteBet = ({}) => {
                   min={currentMatch?.betfair_session_min_bet}
                 />
               )}
+              <UserProfitLoss
+                title={"User Profit Loss"}
+                newData={userProfitLoss}
+                matchId={matchId}
+                getChildProfitLoss={getChildProfitLoss}
+              />
               {/* {matchesMobile && */}
               {url.includes("wallet") && IOSinglebets.length > 0 && (
                 <Box
@@ -1241,6 +1298,7 @@ const DeleteBet = ({}) => {
                     currentMatch={currentMatch}
                     sessionBets={sessionBets?.length}
                     sessionExposer={currentMatch?.sessionExposure}
+                    // sessionData={localQuickSession}
                     data={[]}
                     sessionOffline={sessionOff}
                     setPopData={setPopData}
@@ -1256,6 +1314,7 @@ const DeleteBet = ({}) => {
                     currentMatch={currentMatch}
                     sessionBets={sessionBets?.length}
                     sessionExposer={currentMatch?.sessionExposure}
+                    // sessionData={localSelectedSessionBettings}
                     data={[]}
                     sessionOffline={sessionOff}
                     setPopData={setPopData}
@@ -1264,6 +1323,12 @@ const DeleteBet = ({}) => {
                     min={currentMatch?.betfair_session_min_bet}
                   />
                 )}
+                <UserProfitLoss
+                  title={"User Profit Loss"}
+                  newData={userProfitLoss}
+                  matchId={matchId}
+                  getChildProfitLoss={getChildProfitLoss}
+                />
               </Box>
             )}
           </Box>

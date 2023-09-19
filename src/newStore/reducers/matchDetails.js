@@ -11,7 +11,7 @@ const initialState = {
   bookmakerLive: null,
   sessionOddsLive: [],
   selectedMatch: {},
-  selectedSessionBettings: {},
+  selectedSessionBettings: [],
   sessionAllBetRates: [],
   bookMakerBetRates: [],
   sessionResults: [],
@@ -25,6 +25,8 @@ const initialState = {
   sessionOffline: [],
   userAllMatches: [],
   multiSelectedMatches: [],
+  multiSelectedLiveSessions: [],
+  multiQuickSessions: [],
   quickSession: [],
   quickBookmaker: [],
   liveSessionStatus: [],
@@ -191,6 +193,12 @@ const matchDetails = createSlice({
     setMultiSelectedMatch: (state, action) => {
       state.multiSelectedMatches = action.payload;
     },
+    setMultiSelectedLiveSessions: (state, action) => {
+      state.multiSelectedLiveSessions = action.payload;
+    },
+    setMultiQuickSessions: (state, action) => {
+      state.multiQuickSessions = action.payload;
+    },
     setLiveSessionStatus: (state, action) => {
       state.liveSessionStatus = action.payload;
     },
@@ -241,6 +249,8 @@ export const {
   setLiveSessionStatus,
   setQuickBookmaker,
   setUpdateAdminPlayList,
+  setMultiSelectedLiveSessions,
+  setMultiQuickSessions,
 } = matchDetails.actions;
 
 export default matchDetails.reducer;
