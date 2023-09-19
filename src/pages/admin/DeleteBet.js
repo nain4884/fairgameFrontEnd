@@ -1169,12 +1169,14 @@ const DeleteBet = ({}) => {
                   min={currentMatch?.betfair_session_min_bet}
                 />
               )}
-              <UserProfitLoss
-                title={"User Profit Loss"}
-                newData={userProfitLoss}
-                matchId={matchId}
-                getChildProfitLoss={getChildProfitLoss}
-              />
+              {matchesMobile && (
+                <UserProfitLoss
+                  title={"User Profit Loss"}
+                  newData={userProfitLoss}
+                  matchId={matchId}
+                  getChildProfitLoss={getChildProfitLoss}
+                />
+              )}
               {/* {matchesMobile && */}
               {url.includes("wallet") && IOSinglebets.length > 0 && (
                 <Box
