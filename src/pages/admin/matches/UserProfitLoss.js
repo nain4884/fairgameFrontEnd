@@ -144,7 +144,7 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                 sx={{
                   background: "#f1c550",
                   border: "1px solid #2626264D",
-                  width: { laptop: "5.02vw", mobile: "30.06%" },
+                  width: { laptop: "10vw", mobile: "30.06%" },
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
@@ -158,7 +158,7 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                     fontWeight: "600",
                   }}
                 >
-                  Team A
+                  {newData?.teamA}
                 </Typography>
               </Box>
               <Box
@@ -168,7 +168,7 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                 sx={{
                   background: "#f1c550",
                   border: "1px solid #2626264D",
-                  width: { laptop: "5.05vw", mobile: "30%" },
+                  width: { laptop: "10vw", mobile: "30%" },
                   height: "100%",
                   display: "flex",
                   justifyContent: "center",
@@ -182,10 +182,10 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                     fontWeight: "600",
                   }}
                 >
-                  Team B
+                  {newData?.teamB}
                 </Typography>
               </Box>
-              {showTeamC && (
+              {newData?.teamC && showTeamC && (
                 <>
                   <Box
                     sx={{
@@ -198,7 +198,7 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                     sx={{
                       background: "#f1c550",
                       border: "1px solid #2626264D",
-                      width: { laptop: "5.05vw", mobile: "30%" },
+                      width: { laptop: "10vw", mobile: "30%" },
                       height: "100%",
                       display: "flex",
                       justifyContent: "center",
@@ -212,7 +212,7 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
                         fontWeight: "600",
                       }}
                     >
-                      Team C
+                      {newData?.teamC}
                     </Typography>
                   </Box>
                 </>
@@ -228,8 +228,8 @@ const UserProfitLoss = ({ title, newData, matchId, getChildProfitLoss }) => {
               position: "relative",
             }}
           >
-            {newData?.length > 0 &&
-              newData?.map((element) => {
+            {newData?.childProfitLoss?.length > 0 &&
+              newData?.childProfitLoss?.map((element) => {
                 return (
                   <Box
                     key={element?.id}

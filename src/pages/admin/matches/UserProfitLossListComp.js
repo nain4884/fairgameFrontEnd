@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const UserProfitLossListComp = ({ element, setShowTeamC }) => {
   useEffect(() => {
-    if (![0, null].includes(element?.teamC_rate)) {
+    if (![0, null, "0"].includes(element?.teamC_rate)) {
       setShowTeamC(true);
     } else {
       setShowTeamC(false);
@@ -58,6 +58,7 @@ const UserProfitLossListComp = ({ element, setShowTeamC }) => {
             <SeperateBox
               value={element?.teamA_rate ?? "N/A"}
               color={"#ffffff"}
+              widthh={10}
             />
             <Box
               sx={{ width: "3px", display: "flex", background: "#ffffff" }}
@@ -65,13 +66,18 @@ const UserProfitLossListComp = ({ element, setShowTeamC }) => {
             <SeperateBox
               value={element?.teamB_rate ?? "N/A"}
               color={"#ffffff"}
+              widthh={10}
             />
-            {![0, null].includes(element?.teamC_rate) && (
+            {element?.teamC_rate && ![0, null, "0"].includes(element?.teamC_rate) && (
               <>
                 <Box
                   sx={{ width: "3px", display: "flex", background: "#ffffff" }}
                 ></Box>
-                <SeperateBox value={element?.teamC_rate} color={"#ffffff"} />
+                <SeperateBox
+                  value={element?.teamC_rate}
+                  color={"#ffffff"}
+                  widthh={10}
+                />
               </>
             )}
           </>

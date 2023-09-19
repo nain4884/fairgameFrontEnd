@@ -6,7 +6,16 @@ import { useTheme } from "@emotion/react";
 import { Popover } from "react-tiny-popover";
 import { Lock } from "../../../assets";
 
-const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
+const SeperateBox = ({
+  color,
+  empty,
+  value,
+  value2,
+  lock,
+  session,
+  back,
+  widthh,
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const dispatch = useDispatch();
@@ -31,7 +40,7 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
             background: lock ? "#FDF21A" : color,
             border:
               color != "white" ? "1px solid #2626264D" : "0px solid white",
-            width: { mobile: "30%", laptop: "5vw" },
+            width: { mobile: "30%", laptop: widthh ? `${widthh}vw` : "5vw" },
             height: "94%",
             display: "flex",
             justifyContent: "center",
@@ -57,7 +66,7 @@ const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
                   marginTop: -0.4,
                   color: color == "white" ? "white" : "black",
                   textAlign: "center",
-                  fontWeight: "600"
+                  fontWeight: "600",
                 }}
               >
                 {value2}
