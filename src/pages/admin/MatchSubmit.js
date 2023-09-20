@@ -1000,7 +1000,6 @@ const MatchSubmit = ({}) => {
                                   }}
                                 >
                                   {item?.teamA} V/S {item?.teamB}
-                                  {index}
                                 </Typography>
                                 <UserProfitLoss
                                   title={"User Profit Loss"}
