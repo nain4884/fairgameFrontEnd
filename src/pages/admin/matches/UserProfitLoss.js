@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import Divider from "../../../components/helper/Divider";
 import { useTheme } from "@emotion/react";
 import UserProfitLossListComp from "./UserProfitLossListComp";
@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Refresh } from "../../../assets";
 import { setRole } from "../../../newStore";
 
-const UserProfitLoss = ({ title, matchId }) => {
+const UserProfitLoss = ({ title, matchId, setShowUserProfitLoss, single }) => {
   const { axios } = setRole();
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -81,6 +81,22 @@ const UserProfitLoss = ({ title, matchId }) => {
             >
               {title}
             </Typography>
+            {single === "multiple" && (
+              <img
+                onClick={(event) => {
+                  event.preventDefault();
+                  getChildProfitLoss(matchId);
+                }}
+                src={Refresh}
+                style={{
+                  width: "25px",
+                  height: "25px",
+                  marginRight: "5px",
+                  marginLeft: "5px",
+                  cursor: "pointer",
+                }}
+              />
+            )}
           </Box>
           <Box
             sx={{
@@ -99,19 +115,30 @@ const UserProfitLoss = ({ title, matchId }) => {
               justifyContent: "flex-end",
             }}
           >
-            <img
-              onClick={() => {
-                getChildProfitLoss(matchId);
-              }}
-              src={Refresh}
-              style={{
-                width: "25px",
-                height: "25px",
-                marginRight: "5px",
-                marginLeft: "5px",
-                cursor: "pointer",
-              }}
-            />
+            {single === "multiple" ? (
+              <Button
+                sx={{ color: "#f1c40f", fontSize: "30px", minWidth: 0, padding: "0px 8px" }}
+                onClick={() => {
+                  setShowUserProfitLoss(false);
+                }}
+              >
+                &times;
+              </Button>
+            ) : (
+              <img
+                onClick={() => {
+                  getChildProfitLoss(matchId);
+                }}
+                src={Refresh}
+                style={{
+                  width: "25px",
+                  height: "25px",
+                  marginRight: "5px",
+                  marginLeft: "5px",
+                  cursor: "pointer",
+                }}
+              />
+            )}
           </Box>
         </Box>
         <Box
