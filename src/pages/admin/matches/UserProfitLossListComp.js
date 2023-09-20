@@ -4,7 +4,6 @@ import { Box, Typography } from "@mui/material";
 import Divider from "../../../components/helper/Divider";
 
 const UserProfitLossListComp = ({ element, showTeamC }) => {
-  
   return (
     <>
       <Box
@@ -49,7 +48,8 @@ const UserProfitLossListComp = ({ element, showTeamC }) => {
         >
           <>
             <SeperateBox
-              value={element?.teamA_rate ?? "N/A"}
+              value2={element?.teamA_rate ?? "N/A"}
+              value={element?.teamA_partnership ?? "N/A"}
               color={"#ffffff"}
               widthh={10}
             />
@@ -57,26 +57,28 @@ const UserProfitLossListComp = ({ element, showTeamC }) => {
               sx={{ width: "3px", display: "flex", background: "#ffffff" }}
             ></Box>
             <SeperateBox
-              value={element?.teamB_rate ?? "N/A"}
+              value2={element?.teamB_rate ?? "N/A"}
+              value={element?.teamB_partnership ?? "N/A"}
               color={"#ffffff"}
               widthh={10}
             />
             {showTeamC && (
-                <>
-                  <Box
-                    sx={{
-                      width: "3px",
-                      display: "flex",
-                      background: "#ffffff",
-                    }}
-                  ></Box>
-                  <SeperateBox
-                    value={element?.teamC_rate ?? "N/A"}
-                    color={"#ffffff"}
-                    widthh={10}
-                  />
-                </>
-              )}
+              <>
+                <Box
+                  sx={{
+                    width: "3px",
+                    display: "flex",
+                    background: "#ffffff",
+                  }}
+                ></Box>
+                <SeperateBox
+                  value2={element?.teamC_rate ?? "N/A"}
+                  value={element?.teamC_partnership ?? "N/A"}
+                  color={"#ffffff"}
+                  widthh={10}
+                />
+              </>
+            )}
           </>
           <Box
             sx={{ width: ".45%", display: "flex", background: "pink" }}
