@@ -954,70 +954,236 @@ const MatchSubmit = ({}) => {
       ) : (
         <>
           {location?.state?.match == 3 && (
-            <Box
-              sx={{
-                display: "flex",
-                // flexDirection: "row",
-                flexDirection: { matchesMobile: "column", laptop: "row" },
-                flex: 1,
-                height: "100%",
-                marginLeft: "0.5%",
-              }}
-            >
+            <>
               <Box
                 sx={{
                   display: "flex",
-                  flexWrap: "wrap",
-                  width: "100%",
+                  // flexDirection: "row",
+                  flexDirection: { matchesMobile: "column", laptop: "row" },
+                  flex: 1,
+                  height: "100%",
+                  marginLeft: "0.5%",
                 }}
               >
-                {matchData?.length > 0 &&
-                  matchData?.map((item, index) => {
-                    let matchOddsDataTemp = item?.bettings?.filter(
-                      (element) => element?.sessionBet === false
-                    );
-                    let IObetsData = IObets?.filter(
-                      (element) => element?.match_id === item?.id
-                    );
-                    let sessionBetsData = sessionBets?.filter(
-                      (element) => element?.match_id === item?.id
-                    );
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    width: "100%",
+                  }}
+                >
+                  {matchData?.length > 0 &&
+                    matchData?.map((item, index) => {
+                      let matchOddsDataTemp = item?.bettings?.filter(
+                        (element) => element?.sessionBet === false
+                      );
+                      let IObetsData = IObets?.filter(
+                        (element) => element?.match_id === item?.id
+                      );
+                      let sessionBetsData = sessionBets?.filter(
+                        (element) => element?.match_id === item?.id
+                      );
 
-                    return (
-                      <>
-                        {index === 0 ? (
-                          <>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexWrap: "wrap",
-                                width: "100%",
-                              }}
-                            >
+                      return (
+                        <>
+                          {index === 0 ? (
+                            <>
                               <Box
                                 sx={{
-                                  flex: 1,
-                                  flexDirection: "column",
-                                  minHeight: "100px",
                                   display: "flex",
+                                  flexWrap: "wrap",
+                                  width: "100%",
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    flex: 1,
+                                    flexDirection: "column",
+                                    minHeight: "100px",
+                                    display: "flex",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontSize: "16px",
+                                      width: "100%",
+                                      color: "white",
+                                      fontWeight: "700",
+                                      paddingTop: "2%",
+                                      alignSelf: "start",
+                                    }}
+                                  >
+                                    {item?.teamA} V/S {item?.teamB}
+                                    <Button
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        handleClicked(item?.id);
+                                      }}
+                                      sx={{
+                                        backgroundColor: "#F8C851",
+                                        fontSize: "10px",
+                                        color: "black",
+                                        fontWeight: "700",
+                                        float: "right",
+                                        border: " 1px solid white",
+                                        marginBottom: "2px",
+                                        alignSelf: "start",
+                                        "&:hover": {
+                                          backgroundColor: "#F8C851",
+                                        },
+                                      }}
+                                    >
+                                      User Profit Loss
+                                    </Button>
+                                  </Typography>
+                                  {item?.apiMatchActive && (
+                                    <Odds
+                                      currentMatch={item}
+                                      matchOddsLive={item?.matchOddsLive}
+                                      data={
+                                        item?.matchOddsLive?.runners?.length > 0
+                                          ? item?.matchOddsLive?.runners
+                                          : []
+                                      }
+                                      typeOfBet={"Match Odds"}
+                                    />
+                                  )}
+                                  {item?.bookmakers?.map((bookmaker) => {
+                                    if (bookmaker.betStatus === 1) {
+                                      return (
+                                        <Odds
+                                          currentMatch={item}
+                                          session={"manualBookMaker"}
+                                          data={bookmaker}
+                                          minBet={bookmaker?.min_bet || 0}
+                                          maxBet={bookmaker?.max_bet || 0}
+                                          typeOfBet={bookmaker?.marketName}
+                                          matchOddsData={bookmaker}
+                                        />
+                                      );
+                                    }
+                                  })}
+                                  {/* {item?.manualBookMakerActive && (
+                                  <Odds
+                                    currentMatch={item}
+                                    data={item}
+                                    manualBookmakerData={matchOddsDataTemp}
+                                    typeOfBet={"Quick Bookmaker"}
+                                  />
+                                )} */}
+                                  {item?.bookmakers?.map((bookmaker) => {
+                                    if (bookmaker.betStatus === 1) {
+                                      return (
+                                        <Odds
+                                          currentMatch={item}
+                                          session={"manualBookMaker"}
+                                          data={bookmaker}
+                                          minBet={bookmaker?.min_bet || 0}
+                                          maxBet={bookmaker?.max_bet || 0}
+                                          typeOfBet={bookmaker?.marketName}
+                                          matchOddsData={bookmaker}
+                                        />
+                                      );
+                                    }
+                                  })}
+                                  {item?.apiBookMakerActive && (
+                                    <BookMarketer
+                                      currentMatch={item}
+                                      bookmakerLive={item?.bookmakerLive}
+                                      data={
+                                        item?.bookmakerLive?.runners?.length > 0
+                                          ? item?.bookmakerLive?.runners
+                                          : []
+                                      }
+                                    />
+                                  )}
+
+                                  {item?.manualSessionActive && (
+                                    <SessionMarket
+                                      title={"Quick Session Market"}
+                                      currentOdds={currentOdds}
+                                      currentMatch={item}
+                                      data={[]}
+                                      sessionOffline={item?.sessionOffline}
+                                      sessionExposer={item?.sessionExposure}
+                                      sessionBets={sessionBetsData?.length}
+                                      setPopData={setPopData}
+                                      popData={popData}
+                                      max={item?.manaual_session_max_bet}
+                                      min={item?.manaual_session_min_bet}
+                                    />
+                                  )}
+                                  {item?.apiSessionActive && (
+                                    <SessionMarket
+                                      title={"Session Market"}
+                                      currentOdds={currentOdds}
+                                      currentMatch={item}
+                                      data={[]}
+                                      sessionOffline={item?.sessionOffline}
+                                      sessionExposer={item?.sessionExposure}
+                                      sessionBets={sessionBetsData?.length}
+                                      setPopData={setPopData}
+                                      popData={popData}
+                                      max={item?.betfair_session_max_bet}
+                                      min={item?.betfair_session_min_bet}
+                                    />
+                                  )}
+                                </Box>
+                                <Box
+                                  sx={{
+                                    flex: 1,
+                                    flexDirection: "column",
+                                    display: "flex",
+                                    minHeight: "100px",
+                                    marginX: "0.5%",
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "flex-end",
+                                      width: "100%",
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{
+                                        width: "150px",
+                                        marginY: ".75%",
+                                        height: "35px",
+                                      }}
+                                    ></Box>
+                                  </Box>
+                                  <FullAllBets
+                                    IObets={IObetsData}
+                                    mode={mode}
+                                    tag={false}
+                                    setSelectedBetData={setSelectedBetData}
+                                    selectedBetData={selectedBetData}
+                                  />
+                                </Box>
+                              </Box>
+                            </>
+                          ) : (
+                            <>
+                              <Box
+                                sx={{
+                                  maxWidth: matchesMobile ? "99%" : "49.5%",
+                                  flex: matchesMobile ? "0 0 99%" : "0 0 49.5%",
+                                  marginRight: "0.5%",
                                 }}
                               >
                                 <Typography
                                   sx={{
                                     fontSize: "16px",
-                                    width: "100%",
                                     color: "white",
                                     fontWeight: "700",
-                                    paddingTop: "2%",
+                                    paddingTop: "0.7%",
                                     alignSelf: "start",
                                   }}
                                 >
                                   {item?.teamA} V/S {item?.teamB}
                                   <Button
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      handleClicked(item?.id);
-                                    }}
+                                    onClick={() => handleClicked(item?.id)}
                                     sx={{
                                       backgroundColor: "#F8C851",
                                       fontSize: "10px",
@@ -1033,14 +1199,12 @@ const MatchSubmit = ({}) => {
                                     User Profit Loss
                                   </Button>
                                 </Typography>
-                                <UserProfitLoss
-                                  title={"User Profit Loss"}
-                                  matchId={item?.id}
-                                />
                                 {item?.apiMatchActive && (
                                   <Odds
                                     currentMatch={item}
+                                    // matchOddsLive={matchOddsLive}
                                     matchOddsLive={item?.matchOddsLive}
+                                    // data={[]}
                                     data={
                                       item?.matchOddsLive?.runners?.length > 0
                                         ? item?.matchOddsLive?.runners
@@ -1049,29 +1213,15 @@ const MatchSubmit = ({}) => {
                                     typeOfBet={"Match Odds"}
                                   />
                                 )}
-                                {item?.bookmakers?.map((bookmaker) => {
-                                  if (bookmaker.betStatus === 1) {
-                                    return (
-                                      <Odds
-                                        currentMatch={item}
-                                        session={"manualBookMaker"}
-                                        data={bookmaker}
-                                        minBet={bookmaker?.min_bet || 0}
-                                        maxBet={bookmaker?.max_bet || 0}
-                                        typeOfBet={bookmaker?.marketName}
-                                        matchOddsData={bookmaker}
-                                      />
-                                    );
-                                  }
-                                })}
                                 {/* {item?.manualBookMakerActive && (
-                                  <Odds
-                                    currentMatch={item}
-                                    data={item}
-                                    manualBookmakerData={matchOddsDataTemp}
-                                    typeOfBet={"Quick Bookmaker"}
-                                  />
-                                )} */}
+                              <Odds
+                                currentMatch={item}
+                                data={item}
+                                manualBookmakerData={matchOddsDataTemp}
+                                typeOfBet={"Quick Bookmaker"}
+                                // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
+                              />
+                            )} */}
                                 {item?.bookmakers?.map((bookmaker) => {
                                   if (bookmaker.betStatus === 1) {
                                     return (
@@ -1104,9 +1254,8 @@ const MatchSubmit = ({}) => {
                                     title={"Quick Session Market"}
                                     currentOdds={currentOdds}
                                     currentMatch={item}
-                                    data={[]}
+                                    sessionExposer={item.sessionExposure}
                                     sessionOffline={item?.sessionOffline}
-                                    sessionExposer={item?.sessionExposure}
                                     sessionBets={sessionBetsData?.length}
                                     setPopData={setPopData}
                                     popData={popData}
@@ -1119,9 +1268,8 @@ const MatchSubmit = ({}) => {
                                     title={"Session Market"}
                                     currentOdds={currentOdds}
                                     currentMatch={item}
-                                    data={[]}
-                                    sessionOffline={item?.sessionOffline}
                                     sessionExposer={item?.sessionExposure}
+                                    sessionOffline={item?.sessionOffline}
                                     sessionBets={sessionBetsData?.length}
                                     setPopData={setPopData}
                                     popData={popData}
@@ -1129,237 +1277,51 @@ const MatchSubmit = ({}) => {
                                     min={item?.betfair_session_min_bet}
                                   />
                                 )}
-                              </Box>
-                              <Box
-                                sx={{
-                                  flex: 1,
-                                  flexDirection: "column",
-                                  display: "flex",
-                                  minHeight: "100px",
-                                  marginX: "0.5%",
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "flex-end",
-                                    width: "100%",
-                                  }}
-                                >
-                                  <Box
-                                    sx={{
-                                      width: "150px",
-                                      marginY: ".75%",
-                                      height: "35px",
-                                    }}
-                                  ></Box>
-                                </Box>
                                 <FullAllBets
+                                  tag={true}
                                   IObets={IObetsData}
-                                  mode={mode}
-                                  tag={false}
                                   setSelectedBetData={setSelectedBetData}
                                   selectedBetData={selectedBetData}
                                 />
                               </Box>
-                            </Box>
-                            <ModalMUI
-                              open={showUserProfitLoss}
-                              aria-labelledby="modal-modal-title"
-                              aria-describedby="modal-modal-description"
-                            >
-                              <Box
-                                sx={{
-                                  width: "100%",
-                                  height: "100%",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  flexDirection: "column",
-                                  alignSelf: "center",
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    alignSelf: "center",
-                                    width: "50%",
-                                  }}
-                                >
-                                  <UserProfitLoss
-                                    title={"User Profit Loss"}
-                                    matchId={storedMatchid}
-                                    setShowUserProfitLoss={
-                                      setShowUserProfitLoss
-                                    }
-                                    single={"multiple"}
-                                  />
-                                </Box>
-                              </Box>
-                            </ModalMUI>
-                          </>
-                        ) : (
-                          <>
-                            <Box
-                              sx={{
-                                maxWidth: matchesMobile ? "99%" : "49.5%",
-                                flex: matchesMobile ? "0 0 99%" : "0 0 49.5%",
-                                marginRight: "0.5%",
-                              }}
-                            >
-                              <Typography
-                                sx={{
-                                  fontSize: "16px",
-                                  color: "white",
-                                  fontWeight: "700",
-                                  paddingTop: "0.7%",
-                                  alignSelf: "start",
-                                }}
-                              >
-                                {item?.teamA} V/S {item?.teamB}
-                                <Button
-                                  onClick={() => handleClicked(item?.id)}
-                                  sx={{
-                                    backgroundColor: "#F8C851",
-                                    fontSize: "10px",
-                                    color: "black",
-                                    fontWeight: "700",
-                                    float: "right",
-                                    border: " 1px solid white",
-                                    marginBottom: "2px",
-                                    alignSelf: "start",
-                                    "&:hover": { backgroundColor: "#F8C851" },
-                                  }}
-                                >
-                                  User Profit Loss
-                                </Button>
-                              </Typography>
-                              <UserProfitLoss
-                                title={"User Profit Loss"}
-                                matchId={item?.id}
-                              />
-                              {item?.apiMatchActive && (
-                                <Odds
-                                  currentMatch={item}
-                                  // matchOddsLive={matchOddsLive}
-                                  matchOddsLive={item?.matchOddsLive}
-                                  // data={[]}
-                                  data={
-                                    item?.matchOddsLive?.runners?.length > 0
-                                      ? item?.matchOddsLive?.runners
-                                      : []
-                                  }
-                                  typeOfBet={"Match Odds"}
-                                />
-                              )}
-                              {/* {item?.manualBookMakerActive && (
-                              <Odds
-                                currentMatch={item}
-                                data={item}
-                                manualBookmakerData={matchOddsDataTemp}
-                                typeOfBet={"Quick Bookmaker"}
-                                // data={matchOddsLive?.length > 0 ? matchOddsLive[0] : []}
-                              />
-                            )} */}
-                              {item?.bookmakers?.map((bookmaker) => {
-                                if (bookmaker.betStatus === 1) {
-                                  return (
-                                    <Odds
-                                      currentMatch={item}
-                                      session={"manualBookMaker"}
-                                      data={bookmaker}
-                                      minBet={bookmaker?.min_bet || 0}
-                                      maxBet={bookmaker?.max_bet || 0}
-                                      typeOfBet={bookmaker?.marketName}
-                                      matchOddsData={bookmaker}
-                                    />
-                                  );
-                                }
-                              })}
-                              {item?.apiBookMakerActive && (
-                                <BookMarketer
-                                  currentMatch={item}
-                                  bookmakerLive={item?.bookmakerLive}
-                                  data={
-                                    item?.bookmakerLive?.runners?.length > 0
-                                      ? item?.bookmakerLive?.runners
-                                      : []
-                                  }
-                                />
-                              )}
-
-                              {item?.manualSessionActive && (
-                                <SessionMarket
-                                  title={"Quick Session Market"}
-                                  currentOdds={currentOdds}
-                                  currentMatch={item}
-                                  sessionExposer={item.sessionExposure}
-                                  sessionOffline={item?.sessionOffline}
-                                  sessionBets={sessionBetsData?.length}
-                                  setPopData={setPopData}
-                                  popData={popData}
-                                  max={item?.manaual_session_max_bet}
-                                  min={item?.manaual_session_min_bet}
-                                />
-                              )}
-                              {item?.apiSessionActive && (
-                                <SessionMarket
-                                  title={"Session Market"}
-                                  currentOdds={currentOdds}
-                                  currentMatch={item}
-                                  sessionExposer={item?.sessionExposure}
-                                  sessionOffline={item?.sessionOffline}
-                                  sessionBets={sessionBetsData?.length}
-                                  setPopData={setPopData}
-                                  popData={popData}
-                                  max={item?.betfair_session_max_bet}
-                                  min={item?.betfair_session_min_bet}
-                                />
-                              )}
-                              <FullAllBets
-                                tag={true}
-                                IObets={IObetsData}
-                                setSelectedBetData={setSelectedBetData}
-                                selectedBetData={selectedBetData}
-                              />
-                            </Box>
-                            <ModalMUI
-                              open={showUserProfitLoss}
-                              aria-labelledby="modal-modal-title"
-                              aria-describedby="modal-modal-description"
-                            >
-                              <Box
-                                sx={{
-                                  width: "100%",
-                                  height: "100%",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  flexDirection: "column",
-                                  alignSelf: "center",
-                                }}
-                              >
-                                <Box
-                                  sx={{
-                                    alignSelf: "center",
-                                    width: "50%",
-                                  }}
-                                >
-                                  <UserProfitLoss
-                                    title={"User Profit Loss"}
-                                    matchId={storedMatchid}
-                                    setShowUserProfitLoss={
-                                      setShowUserProfitLoss
-                                    }
-                                    single={"multiple"}
-                                  />
-                                </Box>
-                              </Box>
-                            </ModalMUI>
-                          </>
-                        )}
-                      </>
-                    );
-                  })}
+                            </>
+                          )}
+                        </>
+                      );
+                    })}
+                </Box>
               </Box>
-            </Box>
+              <ModalMUI
+                open={showUserProfitLoss}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                    alignSelf: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      alignSelf: "center",
+                      width: "50%",
+                    }}
+                  >
+                    <UserProfitLoss
+                      title={"User Profit Loss"}
+                      matchId={storedMatchid}
+                      setShowUserProfitLoss={setShowUserProfitLoss}
+                      single={"multiple"}
+                    />
+                  </Box>
+                </Box>
+              </ModalMUI>
+            </>
           )}
 
           {(location?.state?.match === 4 || location?.state?.match === 2) && (
