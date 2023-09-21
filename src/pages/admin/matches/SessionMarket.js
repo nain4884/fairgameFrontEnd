@@ -27,7 +27,8 @@ const SessionMarket = ({
   title,
   min,
   max,
-  sessionExposer
+  sessionExposer,
+  sessionData,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -41,31 +42,43 @@ const SessionMarket = ({
     });
   }, [popData]);
 
-
   const totalSessionBet = currentMatch?.bettings?.reduce((total, betting) => {
-    if (betting?.sessionBet && betting?.betStatus===1 && betting?.profitLoss && betting?.profitLoss?.total_bet) {
+    if (
+      betting?.sessionBet &&
+      betting?.betStatus === 1 &&
+      betting?.profitLoss &&
+      betting?.profitLoss?.total_bet
+    ) {
       return total + betting?.profitLoss?.total_bet;
     }
     return total;
   }, 0);
-  
+
   useEffect(() => {
     if (currentMatch?.bettings?.length > 0) {
       const sessionData =
         currentMatch?.bettings?.length > 0
-          ? currentMatch?.bettings?.filter(
-            (element) => {
-              if (currentMatch?.apiSessionActive && title === "Session Market") {
-                return element?.sessionBet === true && element?.selectionId !== null; // Show elements where selectionId is not null when apiSessionActive is true
+          ? currentMatch?.bettings?.filter((element) => {
+              if (
+                currentMatch?.apiSessionActive &&
+                title === "Session Market"
+              ) {
+                return (
+                  element?.sessionBet === true && element?.selectionId !== null
+                ); // Show elements where selectionId is not null when apiSessionActive is true
               }
 
-              if (currentMatch?.manualSessionActive && title === "Quick Session Market") {
-                return element?.sessionBet === true && element?.selectionId === null; // Show elements where selectionId is null when manualSessionActive is true
+              if (
+                currentMatch?.manualSessionActive &&
+                title === "Quick Session Market"
+              ) {
+                return (
+                  element?.sessionBet === true && element?.selectionId === null
+                ); // Show elements where selectionId is null when manualSessionActive is true
               }
 
               return false; // Default case: no active session types
-            }
-          )
+            })
           : 0;
 
       setMatchSessionData(sessionData.sort(customSort));
@@ -188,7 +201,9 @@ const SessionMarket = ({
                     lineHeight: 1,
                   }}
                 >
-                  { !isNaN(sessionExposer) ?  Number(sessionExposer).toFixed(2) : "" }
+                  {!isNaN(sessionExposer)
+                    ? Number(sessionExposer).toFixed(2)
+                    : ""}
                 </Typography>
               </Box>
             </Box>
@@ -355,31 +370,31 @@ const SessionMarket = ({
                 position: "relative",
               }}
             >
-              {matchSessionData?.length > 0 &&
+              {sessionData?.length > 0 &&
                 // matchSessionData?.reverse()?.map((element, index) => {
-                matchSessionData?.map((element, index) => {
-                  return (
-                    <Box
-                      key={element?.id}
-                      sx={{
-                        width: "100%",
-                        display: element?.betStatus===2
-                          ? "none"
-                          : "block",
-                      }}
-                    >
-                      
-                      <SeasonMarketBox
-                        newData={element}
-                        setMatchSessionData={setMatchSessionData}
-                        index={index}
-                        // setData={setData}
-                        setData={setData}
-                      />
-                      <Divider />
-                    </Box>
-                  );
-                })}
+                sessionData
+                  .slice()
+                  .sort(customSort)
+                  ?.map((element, index) => {
+                    return (
+                      <Box
+                        key={element?.id}
+                        sx={{
+                          width: "100%",
+                          display: element?.betStatus === 2 ? "none" : "block",
+                        }}
+                      >
+                        <SeasonMarketBox
+                          newData={element}
+                          setMatchSessionData={setMatchSessionData}
+                          index={index}
+                          // setData={setData}
+                          setData={setData}
+                        />
+                        <Divider />
+                      </Box>
+                    );
+                  })}
             </Box>
             {showUnlock && (
               <Box
@@ -430,7 +445,7 @@ const SessionMarket = ({
                 item={v}
                 // setData={setData}
                 setData={setData}
-              // popData={popData}
+                // popData={popData}
               />
             );
           })}

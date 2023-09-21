@@ -31,6 +31,7 @@ import { setAllSessionBets } from "../../newStore/reducers/matchDetails";
 import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
 import UserProfitLoss from "./matches/UserProfitLoss";
+import _ from "lodash";
 
 let matchOddsCount = 0;
 const DeleteBet = ({}) => {
@@ -55,8 +56,8 @@ const DeleteBet = ({}) => {
     manualBookmaker,
     allBetRates,
     allSessionBets,
-    // quickSession,
-    // selectedSessionBettings,
+    quickSession,
+    selectedSessionBettings,
   } = useSelector((state) => state?.matchDetails);
   const { currentOdd } = useSelector((state) => state?.expertMatchDetails);
   const [currentMatch, setCurrentMatch] = useState([]);
@@ -72,9 +73,9 @@ const DeleteBet = ({}) => {
   const [popData, setPopData] = useState("");
   const [sessionExposer, setSessionExposure] = useState(0);
   const [sessionOff, setSessionOff] = useState([]);
-  // const [localQuickSession, setLocalQuickSession] = useState([]);
-  // const [localSelectedSessionBettings, setLocalSelectedSessionBettings] =
-  //   useState([]);
+  const [localQuickSession, setLocalQuickSession] = useState([]);
+  const [localSelectedSessionBettings, setLocalSelectedSessionBettings] =
+    useState([]);
 
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
@@ -104,12 +105,12 @@ const DeleteBet = ({}) => {
     if (allBetRates) {
       setSingleIObtes(allBetRates);
     }
-    // if (quickSession) {
-    //   setLocalQuickSession(quickSession);
-    // }
-    // if (selectedSessionBettings) {
-    //   setLocalSelectedSessionBettings(selectedSessionBettings);
-    // }
+    if (quickSession) {
+      setLocalQuickSession(quickSession);
+    }
+    if (selectedSessionBettings) {
+      setLocalSelectedSessionBettings(selectedSessionBettings);
+    }
   }, [
     selectedMatch,
     sessionOffline,
@@ -117,8 +118,8 @@ const DeleteBet = ({}) => {
     allSessionBets,
     currentOdd,
     allBetRates,
-    // quickSession,
-    // selectedSessionBettings,
+    quickSession,
+    selectedSessionBettings,
   ]);
 
   // useEffect(() => {
@@ -756,6 +757,92 @@ const DeleteBet = ({}) => {
   //   }
   // }, [socket]);
 
+  const debouncedSession = _.debounce((val) => {
+    if (val !== null && matchId === checkMctchId) {
+      var newVal = val?.map((v) => ({
+        bet_condition: v?.RunnerName,
+        betStatus: 0,
+        sessionBet: true,
+        no_rate: v?.LayPrice1,
+        yes_rate: v?.BackPrice1,
+        rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
+        suspended: v?.GameStatus,
+        selectionId: v?.SelectionId,
+      }));
+
+      setCurrentMatch((currentMatch) => {
+        if (currentMatch?.bettings?.length > 0) {
+          setLocalSelectedSessionBettings((prev) => {
+            const data = prev?.map((betting) => {
+              const selectedData = newVal?.find(
+                (nv) => nv?.selectionId === betting?.selectionId
+              );
+              return {
+                ...betting,
+                bet_condition:
+                  selectedData?.bet_condition || betting?.bet_condition,
+                no_rate:
+                  selectedData?.no_rate !== undefined
+                    ? selectedData.no_rate
+                    : 0,
+                yes_rate:
+                  selectedData?.yes_rate !== undefined
+                    ? selectedData.yes_rate
+                    : 0,
+                rate_percent:
+                  selectedData?.rate_percent || betting?.rate_percent,
+                suspended: selectedData?.suspended || "",
+                selectionId: selectedData?.selectionId || betting?.selectionId,
+              };
+            });
+            dispatch(setSelectedSessionBettings(data));
+            return data;
+          });
+          const data = currentMatch?.bettings?.map((betting) => {
+            var selectedData =
+              newVal?.length > 0 &&
+              newVal?.find(
+                (data) => data?.selectionId === betting?.selectionId
+              );
+            if (selectedData && selectedData !== undefined) {
+              return {
+                ...betting,
+                bet_condition: selectedData?.bet_condition,
+                no_rate: selectedData?.no_rate,
+                yes_rate: selectedData?.yes_rate,
+                rate_percent: selectedData?.rate_percent,
+                suspended: selectedData?.suspended,
+                selectionId: selectedData?.selectionId,
+              };
+            }
+            if (betting?.selectionId !== null) {
+              return {
+                ...betting,
+                bet_condition: betting?.bet_condition,
+                no_rate: 0,
+                yes_rate: 0,
+                rate_percent: betting?.rate_percent,
+                suspended: "",
+                selectionId: betting?.selectionId,
+              };
+            }
+            return betting;
+          });
+
+          // Merge the filteredNewVal with the currentMatch bettings array
+
+          return {
+            ...currentMatch,
+            bettings: data,
+          };
+        }
+        return currentMatch;
+      });
+    }
+
+    // dispatch(setSessionOddsLive(body));
+  }, 300);
+
   useEffect(() => {
     try {
       if (socketMicro && socketMicro.connected && marketId) {
@@ -780,65 +867,7 @@ const DeleteBet = ({}) => {
           setSessionLock(false);
         });
 
-        socketMicro.on(`session${marketId}`, (val) => {
-          if (val !== null && matchId === checkMctchId) {
-            var newVal = val?.map((v) => ({
-              bet_condition: v?.RunnerName,
-              betStatus: 0,
-              sessionBet: true,
-              no_rate: v?.LayPrice1,
-              yes_rate: v?.BackPrice1,
-              rate_percent: `${v?.LaySize1}-${v?.BackSize1}`,
-              suspended: v?.GameStatus,
-              selectionId: v?.SelectionId,
-            }));
-
-            setCurrentMatch((currentMatch) => {
-              if (currentMatch?.bettings?.length > 0) {
-                const data = currentMatch?.bettings?.map((betting) => {
-                  var selectedData =
-                    newVal?.length > 0 &&
-                    newVal?.find(
-                      (data) => data?.selectionId === betting?.selectionId
-                    );
-                  if (selectedData && selectedData !== undefined) {
-                    return {
-                      ...betting,
-                      bet_condition: selectedData?.bet_condition,
-                      no_rate: selectedData?.no_rate,
-                      yes_rate: selectedData?.yes_rate,
-                      rate_percent: selectedData?.rate_percent,
-                      suspended: selectedData?.suspended,
-                      selectionId: selectedData?.selectionId,
-                    };
-                  }
-                  if (betting?.selectionId !== null) {
-                    return {
-                      ...betting,
-                      bet_condition: betting?.bet_condition,
-                      no_rate: 0,
-                      yes_rate: 0,
-                      rate_percent: betting?.rate_percent,
-                      suspended: "",
-                      selectionId: betting?.selectionId,
-                    };
-                  }
-                  return betting;
-                });
-
-                // Merge the filteredNewVal with the currentMatch bettings array
-
-                return {
-                  ...currentMatch,
-                  bettings: data,
-                };
-              }
-              return currentMatch;
-            });
-          }
-
-          // dispatch(setSessionOddsLive(body));
-        });
+        socketMicro.on(`session${marketId}`, debouncedSession);
         socketMicro.on(`matchOdds${marketId}`, (val) => {
           // matchodds Market live and stop disable condition
           if (val !== null) {
@@ -897,24 +926,23 @@ const DeleteBet = ({}) => {
         (element) => element.sessionBet === false
       );
 
-      // let sessionDataTemp = response.data?.bettings?.filter(
-      //   (element) => element.sessionBet && element.selectionId !== null
-      // );
+      let sessionDataTemp = response.data?.bettings?.filter(
+        (element) => element.sessionBet && element.selectionId !== null
+      );
 
-      // let quickSessionDataTemp = response.data?.bettings?.filter(
-      //   (element) => element.sessionBet && element.selectionId === null
-      // );
+      let quickSessionDataTemp = response.data?.bettings?.filter(
+        (element) => element.sessionBet && element.selectionId === null
+      );
 
-      // const updateLiveSesssion = sessionDataTemp?.map((v) => ({
-      //   ...v,
-      //   yes_rate: 0,
-      //   no_rate: 0,
-      //   suspended: "",
-      // }));
+      const updateLiveSesssion = sessionDataTemp?.map((v) => ({
+        ...v,
+        yes_rate: 0,
+        no_rate: 0,
+        suspended: "",
+      }));
 
-      // // dispatch(setQuickBookmaker(response?.data?.bookmakers));
-      // dispatch(setQuickSession(quickSessionDataTemp));
-      // dispatch(setSelectedSessionBettings(updateLiveSesssion));
+      dispatch(setQuickSession(quickSessionDataTemp));
+      dispatch(setSelectedSessionBettings(updateLiveSesssion));
 
       setManualBookmakerData(matchOddsDataTemp);
       dispatch(setManualBookmaker(matchOddsDataTemp));
@@ -1132,8 +1160,8 @@ const DeleteBet = ({}) => {
                   sessionExposer={sessionExposer}
                   currentMatch={currentMatch}
                   sessionBets={sessionBets?.length}
-                  // newData={localQuickSession}
-                  data={[]}
+                  sessionData={localQuickSession}
+                  // data={[]}
                   sessionOffline={sessionOff}
                   setPopData={setPopData}
                   popData={popData}
@@ -1147,8 +1175,8 @@ const DeleteBet = ({}) => {
                   currentMatch={currentMatch}
                   sessionBets={sessionBets?.length}
                   sessionExposer={sessionExposer}
-                  // newData={localSelectedSessionBettings}
-                  data={[]}
+                  sessionData={localSelectedSessionBettings}
+                  // data={[]}
                   sessionOffline={sessionOff}
                   setPopData={setPopData}
                   popData={popData}
@@ -1282,8 +1310,8 @@ const DeleteBet = ({}) => {
                     currentMatch={currentMatch}
                     sessionBets={sessionBets?.length}
                     sessionExposer={currentMatch?.sessionExposure}
-                    // sessionData={localQuickSession}
-                    data={[]}
+                    sessionData={localQuickSession}
+                    // data={[]}
                     sessionOffline={sessionOff}
                     setPopData={setPopData}
                     popData={popData}
@@ -1298,8 +1326,8 @@ const DeleteBet = ({}) => {
                     currentMatch={currentMatch}
                     sessionBets={sessionBets?.length}
                     sessionExposer={currentMatch?.sessionExposure}
-                    // sessionData={localSelectedSessionBettings}
-                    data={[]}
+                    sessionData={localSelectedSessionBettings}
+                    // data={[]}
                     sessionOffline={sessionOff}
                     setPopData={setPopData}
                     popData={popData}
