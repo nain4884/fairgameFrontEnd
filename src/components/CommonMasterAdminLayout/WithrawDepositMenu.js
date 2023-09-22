@@ -741,6 +741,8 @@ const DropdownMenu2 = ({
                       setSelected(null);
                       setShowUserModal(false);
                     }}
+                    walletAccountDetail={walletAccountDetail}
+                    setWalletAccountDetail={setWalletAccountDetail}
                     backgroundColor={backgroundColor}
                     setShowUserModal={setShowUserModal}
                     userModal={userModal}

@@ -25,21 +25,29 @@ const LockUnlockComponent = ({
   setElementToUDM,
   prevElement,
   setSelected,
-  getListOfUser,
+  walletAccountDetail,
+  setWalletAccountDetail,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [userId, setUserId] = useState(currentUser?.id);
   const defaultLockUnlockObj = {
     userId: currentUser?.id,
-    all_blocked: userModal.all_blocked,
+    all_blocked: walletAccountDetail?.all_blocked,
     adminTransPassword: "",
-    bet_blocked: userModal.bet_blocked,
+    bet_blocked: walletAccountDetail?.bet_blocked,
   };
 
   const UpdateLockUnlock = (body) => {
     const newBody = { ...body, userId: userId };
     const { axios } = setRole();
+    setWalletAccountDetail((prev) => {
+      return {
+        ...prev,
+        all_blocked: body?.all_blocked,
+        bet_blocked: body?.bet_blocked,
+      };
+    });
     return new Promise(async (resolve, reject) => {
       try {
         const { data, status } = await axios.post(
@@ -131,11 +139,12 @@ const LockUnlockComponent = ({
               <Box sx={{ width: "48%", display: "flex", alignItems: "center" }}>
                 <BoxButtonWithSwitch
                   title={"User"}
-                  val={lockUnlockObj.all_blocked}
+                  val={lockUnlockObj?.all_blocked}
                   setLockUnlockObj={setLockUnlockObj}
                   lockUnlockObj={lockUnlockObj}
                   elementToUDM={elementToUDM}
                   setElementToUDM={setElementToUDM}
+                  setWalletAccountDetail={setWalletAccountDetail}
                 />
               </Box>
               <Box
@@ -148,11 +157,12 @@ const LockUnlockComponent = ({
               >
                 <BoxButtonWithSwitch
                   title={"Bet"}
-                  val={lockUnlockObj.bet_blocked}
+                  val={lockUnlockObj?.bet_blocked}
                   setLockUnlockObj={setLockUnlockObj}
                   lockUnlockObj={lockUnlockObj}
                   elementToUDM={elementToUDM}
                   setElementToUDM={setElementToUDM}
+                  setWalletAccountDetail={setWalletAccountDetail}
                 />
               </Box>
             </Box>
@@ -197,7 +207,6 @@ const LockUnlockComponent = ({
                   setLockUnlockObj({
                     ...lockUnlockObj,
                     adminTransPassword: e.target.value,
-                    userId: prevElement?.userId,
                   });
                 }}
                 sx={{ width: "100%", height: "45px" }}
@@ -289,15 +298,12 @@ const LockUnlockComponent = ({
               isSelected={true}
               onClick={(e) => {
                 setSelected(e);
-                console.log(
-                  "elementToUDM.bet_blocked, elementToUDM.all_blocked",
-                  elementToUDM.bet_blocked,
-                  elementToUDM.all_blocked
-                );
-                setElementToUDM({
-                  ...elementToUDM,
-                  bet_blocked: prevElement.bet_blocked,
-                  all_blocked: prevElement.all_blocked,
+                setWalletAccountDetail((prev) => {
+                  return {
+                    ...prev,
+                    bet_blocked: walletAccountDetail.bet_blocked,
+                    all_blocked: walletAccountDetail.all_blocked,
+                  };
                 });
               }}
               title={"Cancel"}
