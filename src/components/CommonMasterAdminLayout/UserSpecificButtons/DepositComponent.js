@@ -6,7 +6,7 @@ import {
   useTheme,
 } from "@mui/material";
 import ModalMUI from "@mui/material/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import MobileViewUserDetails from "../../MobileViewUserDetails";
 import BoxButton from "../../BoxButton";
@@ -19,20 +19,10 @@ const DepositComponent = ({
   handleKeyDown,
   setShowUserModal,
   backgroundColor,
-  setShowSuccessModal,
-  setShowModalMessage,
-  prevElement,
-  navigate,
   elementToUDM,
-  setElementToUDM,
-  dispatch,
   showDialogModal,
-  getListOfUser,
-  updatedUserProfile,
   setSelected,
   selected,
-  percent_profit_loss,
-  element,
   titleBackgroundColor,
 }) => {
   const [showPass, setShowPass] = useState(false);
@@ -53,31 +43,6 @@ const DepositComponent = ({
   };
   const [loading, setLoading] = useState(false);
   const [depositObj, setDepositObj] = useState(defaultDepositObj);
-  const activeWalletAmount = useSelector(
-    (state) => state?.rootReducer?.user?.amount
-  );
-
-  const calculatePercentProfitLoss = (val, e) => {
-    try {
-      const rateToCalculatePercentage = val.rateToCalculatePercentage;
-      const inputValue = Number(
-        isNaN(Number(e.target.value)) ? 0 : e.target.value
-      );
-      const profitLoss = prevElement.profit_loss;
-
-      let percent_profit_loss;
-
-      if (rateToCalculatePercentage === 0) {
-        percent_profit_loss = profitLoss;
-      } else {
-        const newVal = profitLoss + inputValue;
-        percent_profit_loss = newVal * (rateToCalculatePercentage / 100);
-      }
-      return percent_profit_loss.toFixed(2);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const UpdateAvailableBalance = async (body) => {
     try {
@@ -109,20 +74,6 @@ const DepositComponent = ({
         ...depositObj,
         amount: e.target.value < 0 ? 0 : e.target.value,
       });
-
-      setElementToUDM({
-        ...elementToUDM,
-        percent_profit_loss: calculatePercentProfitLoss(prevElement, e),
-        profit_loss:
-          Number(prevElement?.profit_loss) +
-          Number(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)),
-        // balance:
-        //   Number(prevElement.balance) +
-        //   Number(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)),
-        available_balance:
-          Number(prevElement.available_balance) +
-          Number(isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)),
-      });
       if (e.target.value) {
         const newUserbalance = {
           ...currentUser,
@@ -131,13 +82,7 @@ const DepositComponent = ({
 
         setInitialBalance(newUserbalance?.current_balance);
       } else {
-        const newUserbalance = {
-          ...currentUser,
-          current_balance: initialBalance,
-        };
-
         setTimeout(() => {
-          // dispatch(setCurrentUser(newUserbalance));
           setInitialBalance(currentUser?.current_balance);
         }, 51);
       }
@@ -156,8 +101,6 @@ const DepositComponent = ({
         UpdateAvailableBalance(depositObj)
           .then(({ bool, message }) => {
             toast.success(message);
-            // getListOfUser();
-            // updatedUserProfile();
             setLoading(false);
             showDialogModal(true, true, message);
             setDepositObj(defaultDepositObj);
@@ -165,33 +108,20 @@ const DepositComponent = ({
           })
           .catch(({ bool, message }) => {
             toast.error(message);
-            // setSelected(e);
             setLoading(false);
-            // showDialogModal(true, false, message);
-
-            setElementToUDM({
-              ...elementToUDM,
-              profit_loss: prevElement?.profit_loss,
-              balance: prevElement.balance,
-
-              percent_profit_loss: prevElement?.percent_profit_loss,
-              available_balance: prevElement?.available_balances,
-            });
           });
       }
     } catch (e) {
       console.log(e?.message);
-      // setSelected(e);
-      setElementToUDM({
-        ...elementToUDM,
-        profit_loss: prevElement?.profit_loss,
-        balance: prevElement.balance,
-        percent_profit_loss: prevElement.percent_profit_loss,
-        available_balance: prevElement.available_balances,
-      });
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (userId) {
+      setUserId(userId);
+    }
+  }, [userId]);
 
   return (
     <>
@@ -210,7 +140,6 @@ const DepositComponent = ({
           <form onSubmit={handleDepositeSubmit}>
             <MobileViewUserDetails
               elementToUDM={elementToUDM}
-              element={element}
               userName={elementToUDM?.userName}
               title={"Deposit Amount"}
               setSelected={setSelected}
@@ -226,19 +155,10 @@ const DepositComponent = ({
                 setDepositObj({ ...depositObj, remark: e.target.value });
               }}
               amount={depositObj.amount}
-              profit_loss={elementToUDM?.profit_loss}
-              percent_profit_loss={elementToUDM?.percent_profit_loss}
               setShowPass={setShowPass}
               showPass={showPass}
               onCancel={(e) => {
                 setDepositObj(defaultDepositObj);
-                setElementToUDM({
-                  ...elementToUDM,
-                  profit_loss: prevElement?.profit_loss,
-                  balance: prevElement?.balance,
-                  available_balance: prevElement?.available_balance,
-                  percent_profit_loss: prevElement?.percent_profit_loss,
-                });
                 setShowUserModal(false);
                 setSelected(e);
               }}
@@ -585,13 +505,6 @@ const DepositComponent = ({
                   isSelected={true}
                   onClick={(e) => {
                     setDepositObj(defaultDepositObj);
-                    setElementToUDM({
-                      ...elementToUDM,
-                      profit_loss: prevElement?.profit_loss,
-                      balance: prevElement?.balance,
-                      percent_profit_loss: prevElement?.percent_profit_loss,
-                      available_balance: prevElement?.available_balances,
-                    });
                     setSelected(e);
                   }}
                   title={"Cancel"}
@@ -627,33 +540,18 @@ const DepositComponent = ({
                         UpdateAvailableBalance(depositObj)
                           .then(({ bool, message }) => {
                             toast.success(message);
-                            getListOfUser();
                             setSelected(e);
-                            updatedUserProfile();
                             setLoading(false);
                             showDialogModal(true, true, message);
                           })
                           .catch(({ bool, message }) => {
-                            setElementToUDM({
-                              ...elementToUDM,
-                              profit_loss: prevElement.profit_loss,
-                              balance: prevElement.balance,
-                              available_balance: prevElement.available_balances,
-                            });
                             setSelected(e);
                             toast.error(message);
                             setLoading(false);
-                            // showDialogModal(true, false, message);
                           });
                       }
                     } catch (e) {
                       console.log(e?.message);
-                      setElementToUDM({
-                        ...elementToUDM,
-                        profit_loss: prevElement.profit_loss,
-                        balance: prevElement.balance,
-                        available_balance: prevElement.available_balances,
-                      });
                       setSelected(e);
                       setLoading(false);
                     }
@@ -679,12 +577,6 @@ const DepositComponent = ({
                   isSelected={true}
                   onClick={(e) => {
                     setDepositObj(defaultDepositObj);
-                    setElementToUDM({
-                      ...elementToUDM,
-                      profit_loss: prevElement?.profit_loss,
-                      balance: prevElement?.balance,
-                      available_balance: prevElement?.available_balances,
-                    });
                     setSelected(e);
                   }}
                   title={"Cancel"}

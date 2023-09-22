@@ -49,6 +49,7 @@ const DropdownMenu2 = ({
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { allRole } = useSelector((state) => state.auth);
   const [settlementUserModal, setSettlementUserModal] = useState(false);
+  const [userId, setUserId] = useState(currentUser?.id);
 
   // function handleUpline() {
   //   const {
@@ -239,6 +240,12 @@ const DropdownMenu2 = ({
       event.preventDefault();
     }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserId(currentUser?.id);
+    }
+  }, [currentUser]);
 
   return (
     <>
@@ -634,10 +641,11 @@ const DropdownMenu2 = ({
                   width: {
                     mobile: "auto",
                     tablet: "90%",
-                    laptop: "80%",
-                    marginLeft: "0",
+                    laptop: "100%",
+                    marginLeft: "12px",
                   },
                   padding: "5px",
+                  paddingTop: "1rem",
                 }}
               >
                 {selected == 0 && (
@@ -713,7 +721,7 @@ const DropdownMenu2 = ({
                     showDialogModal={showDialogModal}
                   />
                 )}
-                {selected == 3 && (
+                {/* {selected == 3 && (
                   <ChangePasswordComponent
                     selected={selected == 3}
                     setSelected={(e) => {
@@ -729,7 +737,7 @@ const DropdownMenu2 = ({
                     navigate={navigate}
                     showDialogModal={showDialogModal}
                   />
-                )}
+                )} */}
                 {selected == 4 && (
                   <LockUnlockComponent
                     selected={selected == 4}
@@ -766,8 +774,9 @@ const DropdownMenu2 = ({
                   gap: { mobile: 0.5 },
                   flexWrap: "wrap",
                   justifyContent: "center",
-                  width: { mobile: "90vw", laptop: "77%", tablet: "100%" },
-                  marginTop: "9px",
+                  width: { mobile: "78vw", laptop: "100%", tablet: "100%" },
+                  padding: "0 15px 0 9px",
+                  marginLeft: "5px",
                 }}
               >
                 <BoxButton
@@ -778,7 +787,7 @@ const DropdownMenu2 = ({
                   title={"Deposit"}
                   isSelected={selected == 0}
                   containerStyle={{
-                    marginLeft: { laptop: "10px", mobile: "0" },
+                    // marginLeft: { laptop: "8px", mobile: "0" },
                     flex: 1,
                     borderColor: "white",
                   }}
@@ -793,7 +802,7 @@ const DropdownMenu2 = ({
                     setSelected(1);
                   }}
                   containerStyle={{
-                    marginLeft: { laptop: "10px", mobile: "0" },
+                    // marginLeft: { laptop: "10px", mobile: "0" },
                     flex: 1,
                     borderColor: "white",
                   }}
@@ -808,11 +817,11 @@ const DropdownMenu2 = ({
                   color={"#0B4F26"}
                   onClick={(e) => {
                     e?.preventDefault();
-                    // setSettalmentModal(true);
+                    setSettlementUserModal(true);
                   }}
                   title={"C_Settlement"}
                   containerStyle={{
-                    marginLeft: { laptop: "10px", mobile: "0" },
+                    // marginLeft: { laptop: "10px", mobile: "0" },
                     flex: 1,
                     borderColor: "white",
                   }}
@@ -821,7 +830,7 @@ const DropdownMenu2 = ({
                   }}
                   labelStyle={{}}
                 />
-                <BoxButton
+                {/* <BoxButton
                   color={"#0B4F26"}
                   onClick={() => {
                     setSelected(3);
@@ -836,7 +845,7 @@ const DropdownMenu2 = ({
                   titleStyle={{
                     fontSize: { mobile: "12px" },
                   }}
-                />
+                /> */}
                 <BoxButton
                   color={"#0B4F26"}
                   onClick={() => {
@@ -844,7 +853,7 @@ const DropdownMenu2 = ({
                   }}
                   title={"Lock/Unlock"}
                   containerStyle={{
-                    marginLeft: { laptop: "10px", mobile: "0" },
+                    // marginLeft: { laptop: "10px", mobile: "0" },
                     flex: 1,
                     borderColor: "white",
                   }}
@@ -862,7 +871,7 @@ const DropdownMenu2 = ({
                   isSelected={selected == 2}
                   labelStyle={{}}
                   containerStyle={{
-                    marginLeft: { laptop: "10px", mobile: "0" },
+                    // marginLeft: { laptop: "10px", mobile: "0" },
                     flex: 1,
                     borderColor: "white",
                   }}
@@ -888,7 +897,7 @@ const DropdownMenu2 = ({
                     <Button
                       sx={{ color: "#E32A2A" }}
                       onClick={(e) => {
-                        handleSettlement(elementToUDM?.userId);
+                        handleSettlement(userId);
                       }}
                     >
                       Yes

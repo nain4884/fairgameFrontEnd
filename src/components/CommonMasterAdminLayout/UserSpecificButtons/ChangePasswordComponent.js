@@ -11,21 +11,20 @@ import {
   EyeSlashWhite,
 } from "../../../admin/assets";
 import { onChangeKeyCheck } from "../../helper/PassKeyCheck";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const ChangePasswordComponent = ({
-  setShowUserModal,
   userModal,
-  setShowSuccessModal,
-  setShowModalMessage,
-  navigate,
-  dispatch,
   showDialogModal,
   setSelected,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [showPass1, setShowPass1] = useState(false);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const [userId, setUserId] = useState(currentUser?.id);
   const defaultChangePasswordObj = {
-    userId: "",
+    userId: userId,
     password: "",
     adminTransPassword: "",
   };
@@ -34,12 +33,13 @@ const ChangePasswordComponent = ({
   );
 
   const UpdatePassword = (body) => {
+    let newBody = { ...body, userId: userId };
     const { axios } = setRole();
     return new Promise(async (resolve, reject) => {
       try {
         const { data, status } = await axios.post(
           `/fair-game-wallet/updatePassword`,
-          body
+          newBody
         );
         resolve({
           bool: data.message === "User update successfully." || status == 200,
@@ -64,6 +64,12 @@ const ChangePasswordComponent = ({
         toast.error(message);
       });
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserId(currentUser?.id);
+    }
+  }, [currentUser]);
 
   return (
     <form onSubmit={handleChangePassword}>

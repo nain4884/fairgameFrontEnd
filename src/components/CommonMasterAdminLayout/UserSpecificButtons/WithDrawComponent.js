@@ -5,7 +5,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setRole } from "../../../newStore";
@@ -24,28 +24,23 @@ const WithDrawComponent = ({
   setShowModalMessage,
   prevElement,
   elementToUDM,
-  setElementToUDM,
   dispatch,
   showDialogModal,
   getListOfUser,
   updatedUserProfile,
   selected,
   setSelected,
-  element,
   titleBackgroundColor,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const [userId, setUserId] = useState(currentUser?.id);
+  const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const matchesTablet = useMediaQuery(theme.breakpoints.down("tablet"));
   const [initialBalance, setInitialBalance] = useState(
     currentUser?.current_balance
-  );
-  const activeWalletAmount = useSelector(
-    (state) => state?.rootReducer?.user?.amount
   );
   const defaultWithDrawObj = {
     userId: userId,
@@ -55,42 +50,12 @@ const WithDrawComponent = ({
     remark: "",
   };
   const [withDrawObj, setWithDrawObj] = useState(defaultWithDrawObj);
-  const calculatePercentProfitLoss = (val, e) => {
-    const rateToCalculatePercentage = val.rateToCalculatePercentage;
-    const inputValue = Number(
-      isNaN(Number(e.target.value)) ? 0 : e.target.value
-    );
-    const profitLoss = prevElement.profit_loss;
-
-    let percent_profit_loss;
-
-    if (rateToCalculatePercentage === 0) {
-      percent_profit_loss = profitLoss;
-    } else {
-      const newVal = profitLoss - inputValue;
-      percent_profit_loss = newVal * (rateToCalculatePercentage / 100);
-    }
-    return percent_profit_loss.toFixed(2);
-  };
   const handleChange = (e) => {
     setWithDrawObj({
       ...withDrawObj,
       // amount: e.target.value < 0 ? 0 : Number(e.target.value),
       amount: e.target.value < 0 ? 0 : e.target.value,
       userId: userModal.id,
-    });
-    setElementToUDM({
-      ...elementToUDM,
-      percent_profit_loss: calculatePercentProfitLoss(prevElement, e),
-      profit_loss:
-        prevElement.profit_loss -
-        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
-      balance:
-        prevElement.balance -
-        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
-      available_balance:
-        prevElement.available_balance -
-        Number(isNaN(Number(e.target.value)) ? 0 : e.target.value),
     });
 
     if (e.target.value) {
@@ -113,12 +78,13 @@ const WithDrawComponent = ({
   };
 
   const UpdateAvailableBalance = async (body) => {
+    let newBody = { ...body, userId: userId };
     const { axios } = setRole();
     return new Promise(async (resolve, reject) => {
       try {
         const { data, status } = await axios.post(
           `/fair-game-wallet/updateBalance`,
-          body
+          newBody
         );
         resolve({
           bool:
@@ -140,39 +106,27 @@ const WithDrawComponent = ({
         UpdateAvailableBalance(withDrawObj)
           .then(({ bool, message }) => {
             toast.success(message);
-            updatedUserProfile();
-            getListOfUser();
             setSelected(e);
             setLoading(false);
             showDialogModal(true, true, message);
           })
           .catch(({ bool, message }) => {
-            setElementToUDM({
-              ...elementToUDM,
-              profit_loss: prevElement.profit_loss,
-              balance: prevElement.balance,
-              percent_profit_loss: prevElement.percent_profit_loss,
-              available_balance: prevElement.available_balance,
-            });
             toast.error(message);
-            // setSelected(e);
             setLoading(false);
-            // showDialogModal(true, false, message);
           });
       }
     } catch (e) {
-      // setSelected(e);
       setLoading(false);
-      setElementToUDM({
-        ...elementToUDM,
-        profit_loss: prevElement.profit_loss,
-        balance: prevElement.balance,
-        percent_profit_loss: prevElement.percent_profit_loss,
-        available_balance: prevElement.available_balance,
-      });
       console.log(e.message);
     }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserId(currentUser?.id);
+    }
+  }, [currentUser]);
+
   return (
     <>
       {matchesMobile && matchesTablet ? (
@@ -190,7 +144,6 @@ const WithDrawComponent = ({
           <form onSubmit={handleWithdrawAmount}>
             <MobileViewUserDetails
               elementToUDM={elementToUDM}
-              element={element}
               userName={elementToUDM?.userName}
               title={"Withdraw Amount"}
               setSelected={setSelected}
@@ -206,19 +159,10 @@ const WithDrawComponent = ({
                 setWithDrawObj({ ...withDrawObj, remark: e.target.value });
               }}
               amount={withDrawObj.amount}
-              profit_loss={elementToUDM?.profit_loss}
-              percent_profit_loss={elementToUDM?.percent_profit_loss}
               setShowPass={setShowPass}
               showPass={showPass}
               onCancel={(e) => {
                 setWithDrawObj(defaultWithDrawObj);
-                setElementToUDM({
-                  ...elementToUDM,
-                  profit_loss: prevElement.profit_loss,
-                  balance: prevElement.balance,
-                  available_balance: prevElement.available_balance,
-                  percent_profit_loss: prevElement.percent_profit_loss,
-                });
                 setSelected(e);
                 setShowUserModal(false);
               }}
@@ -571,13 +515,6 @@ const WithDrawComponent = ({
                   isSelected={true}
                   onClick={(e) => {
                     setWithDrawObj(defaultWithDrawObj);
-                    setElementToUDM({
-                      ...elementToUDM,
-                      profit_loss: prevElement.profit_loss,
-                      balance: prevElement.balance,
-                      available_balance: prevElement.available_balance,
-                      percent_profit_loss: prevElement.percent_profit_loss,
-                    });
                     setSelected(e);
                   }}
                   title={"Cancel"}
@@ -620,28 +557,10 @@ const WithDrawComponent = ({
                           })
                           .catch(({ bool, message }) => {
                             toast.error(message);
-                            setElementToUDM({
-                              ...elementToUDM,
-                              profit_loss: prevElement.profit_loss,
-                              balance: prevElement.balance,
-                              available_balance: prevElement.available_balance,
-                              percent_profit_loss:
-                                prevElement.percent_profit_loss,
-                            });
-                            // setSelected(e);
                             setLoading(false);
-                            // showDialogModal(true, false, message);
                           });
                       }
                     } catch (e) {
-                      setElementToUDM({
-                        ...elementToUDM,
-                        profit_loss: prevElement.profit_loss,
-                        balance: prevElement.balance,
-                        available_balance: prevElement.available_balance,
-                        percent_profit_loss: prevElement.percent_profit_loss,
-                      });
-                      // setSelected(e);
                       setLoading(false);
                       console.log(e.message);
                     }
@@ -667,13 +586,6 @@ const WithDrawComponent = ({
                   isSelected={true}
                   onClick={(e) => {
                     setWithDrawObj(defaultWithDrawObj);
-                    setElementToUDM({
-                      ...elementToUDM,
-                      profit_loss: prevElement.profit_loss,
-                      balance: prevElement.balance,
-                      available_balance: prevElement.available_balance,
-                      percent_profit_loss: prevElement.percent_profit_loss,
-                    });
                     setSelected(e);
                   }}
                   title={"Cancel"}

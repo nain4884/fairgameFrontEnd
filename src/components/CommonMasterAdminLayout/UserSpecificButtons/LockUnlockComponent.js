@@ -15,6 +15,7 @@ import {
 } from "../../../admin/assets";
 import { setRole } from "../../../newStore";
 import BoxButtonWithSwitch from "./BoxButtonWithSwitch";
+import { useEffect } from "react";
 
 const LockUnlockComponent = ({
   setShowUserModal,
@@ -28,6 +29,7 @@ const LockUnlockComponent = ({
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
+  const [userId, setUserId] = useState(currentUser?.id);
   const defaultLockUnlockObj = {
     userId: currentUser?.id,
     all_blocked: userModal.all_blocked,
@@ -36,12 +38,13 @@ const LockUnlockComponent = ({
   };
 
   const UpdateLockUnlock = (body) => {
+    const newBody = { ...body, userId: userId };
     const { axios } = setRole();
     return new Promise(async (resolve, reject) => {
       try {
         const { data, status } = await axios.post(
           `/fair-game-wallet/lockUnclockUser`,
-          body
+          newBody
         );
         resolve({
           bool: data.message === "User update successfully." || status == 200,
@@ -60,15 +63,19 @@ const LockUnlockComponent = ({
     UpdateLockUnlock(lockUnlockObj)
       .then(({ bool, message }) => {
         toast.success(message);
-        getListOfUser();
         setSelected(e);
         showDialogModal(true, true, message);
       })
       .catch(({ bool, message }) => {
         toast.error(message);
-        // showDialogModal(true, false, message);
       });
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserId(currentUser?.id);
+    }
+  }, [currentUser]);
   return (
     <form onSubmit={handleLockSubmit}>
       <Box

@@ -6,20 +6,15 @@ import BoxButton from "../../BoxButton";
 
 import { EyeIcon, EyeSlash } from "../../../admin/assets";
 import { setRole } from "../../../newStore";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const SetCreditReferenceComponent = ({
   handleKeyDown,
-  setShowUserModal,
   backgroundColor,
   userModal,
-  setShowSuccessModal,
-  setShowModalMessage,
   elementToUDM,
-  setElementToUDM,
-  prevElement,
-  dispatch,
   showDialogModal,
-  getListOfUser,
   setSelected,
 }) => {
   const [showPass, setShowPass] = useState(false);
@@ -31,32 +26,18 @@ const SetCreditReferenceComponent = ({
     adminTransPassword: "",
     remark: "",
   };
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const [userId, setUserId] = useState(currentUser?.id);
   const [newCreditObj, setNewCreditObj] = useState(defaultNewCreditObj);
-  const calculatePercentProfitLoss = (val, e) => {
-    const rateToCalculatePercentage = val.rateToCalculatePercentage;
-    const inputValue = Number(
-      isNaN(Number(e.target.value)) ? 0 : e.target.value
-    );
-    const profitLoss = val.profit_loss;
-
-    let percent_profit_loss;
-
-    if (rateToCalculatePercentage === 0) {
-      percent_profit_loss = profitLoss;
-    } else {
-      const newVal = profitLoss - inputValue;
-      percent_profit_loss = newVal * (rateToCalculatePercentage / 100);
-    }
-    return percent_profit_loss.toFixed(2);
-  };
 
   const UpdateAvailableBalance = async (body) => {
+    const newBody = { ...body, userId: userId };
     const { axios } = setRole();
     return new Promise(async (resolve, reject) => {
       try {
         const { data, status } = await axios.post(
           `/fair-game-wallet/updateBalance`,
-          body
+          newBody
         );
         resolve({
           bool:
@@ -78,14 +59,12 @@ const SetCreditReferenceComponent = ({
         UpdateAvailableBalance(newCreditObj)
           .then(({ bool, message }) => {
             toast.success(message);
-            getListOfUser();
             showDialogModal(true, true, message);
             setLoading(false);
             setSelected(e);
           })
           .catch(({ bool, message }) => {
             toast.error(message);
-            // showDialogModal(true, false, message);
             setLoading(false);
           });
       }
@@ -94,6 +73,13 @@ const SetCreditReferenceComponent = ({
       console.log(e.message);
     }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      setUserId(currentUser?.id);
+    }
+  }, [currentUser]);
+
   return (
     <form onSubmit={handleSubmit}>
       <Box
@@ -151,34 +137,11 @@ const SetCreditReferenceComponent = ({
                       amount: Number(e.target.value),
                       userId: userModal.id,
                     });
-                    setElementToUDM({
-                      ...elementToUDM,
-                      percent_profit_loss:
-                        (elementToUDM.profit_loss +
-                          elementToUDM.credit_refer -
-                          Number(e.target.value)) *
-                        (elementToUDM?.rateToCalculatePercentage / 100),
-                      credit_refer: Number(e.target.value),
-                      profit_loss:
-                        elementToUDM.profit_loss +
-                        elementToUDM.credit_refer -
-                        Number(e.target.value),
-                    });
                   } else {
                     setNewCreditObj({
                       ...newCreditObj,
                       amount: Number(e.target.value),
                       userId: userModal.id,
-                    });
-                    setElementToUDM({
-                      ...elementToUDM,
-                      credit_refer: isNaN(Number(e.target.value))
-                        ? 0
-                        : Number(e.target.value),
-                      profit_loss: newPerRate,
-                      percent_profit_loss:
-                        newPerRate *
-                        (elementToUDM?.rateToCalculatePercentage / 100),
                     });
                   }
                 }}
@@ -346,12 +309,6 @@ const SetCreditReferenceComponent = ({
               isSelected={true}
               onClick={(e) => {
                 setNewCreditObj(defaultNewCreditObj);
-                setElementToUDM({
-                  ...elementToUDM,
-                  credit_refer: prevElement.credit_refer,
-                  profit_loss: prevElement.profit_loss,
-                  percent_profit_loss: prevElement.percent_profit_loss,
-                });
                 setSelected(e);
               }}
               title={"Cancel"}
