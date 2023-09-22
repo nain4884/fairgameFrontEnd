@@ -24,6 +24,8 @@ const DepositComponent = ({
   setSelected,
   selected,
   titleBackgroundColor,
+  prevElement,
+  setWalletAccountDetail,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const theme = useTheme();
@@ -96,6 +98,14 @@ const DepositComponent = ({
     try {
       let payload = depositObj;
       payload.amount = parseFloat(payload.amount);
+      setWalletAccountDetail((prev) => {
+        return {
+          ...prev,
+          balance: +prev?.balance + +payload?.amount,
+          available_balance: +prev?.available_balance + +payload?.amount
+        };
+      });
+
       if (!loading) {
         setLoading(true);
         UpdateAvailableBalance(depositObj)

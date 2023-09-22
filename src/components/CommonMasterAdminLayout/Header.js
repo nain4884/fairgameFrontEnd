@@ -2376,6 +2376,7 @@ const CustomHeader = ({}) => {
         anchorEl={anchor1}
         menutItems2={menutItems2}
         walletAccountDetail={walletAccountDetail}
+        setWalletAccountDetail={setWalletAccountDetail}
         getWalletAccountDetails={getWalletAccountDetails}
         currentUser={currentUser}
         // setShow={setShow}

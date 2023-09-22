@@ -16,6 +16,7 @@ const SetCreditReferenceComponent = ({
   elementToUDM,
   showDialogModal,
   setSelected,
+  setWalletAccountDetail
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,6 +34,12 @@ const SetCreditReferenceComponent = ({
   const UpdateAvailableBalance = async (body) => {
     const newBody = { ...body, userId: userId };
     const { axios } = setRole();
+    setWalletAccountDetail((prev)=> {
+      return {
+        ...prev,
+        credit_refer: body?.amount
+      }
+    })
     return new Promise(async (resolve, reject) => {
       try {
         const { data, status } = await axios.post(

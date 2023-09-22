@@ -31,6 +31,7 @@ const WithDrawComponent = ({
   selected,
   setSelected,
   titleBackgroundColor,
+  setWalletAccountDetail,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -103,6 +104,13 @@ const WithDrawComponent = ({
     try {
       if (!loading) {
         setLoading(true);
+        setWalletAccountDetail((prev) => {
+          return {
+            ...prev,
+            balance: +prev?.balance - +withDrawObj?.amount,
+            available_balance: +prev?.available_balance - +withDrawObj?.amount,
+          };
+        });
         UpdateAvailableBalance(withDrawObj)
           .then(({ bool, message }) => {
             toast.success(message);

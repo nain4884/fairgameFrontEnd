@@ -40,6 +40,7 @@ const DropdownMenu2 = ({
   getListOfUser,
   updatedUserProfile,
   element,
+  setWalletAccountDetail
 }) => {
   const navigate = useNavigate();
   const { axios } = setRole();
@@ -574,11 +575,7 @@ const DropdownMenu2 = ({
                   }}
                 >
                   <StyledImage
-                    src={
-                      walletAccountDetail?.bet_blocked == 0
-                        ? UnLockIcon
-                        : LockIcon
-                    }
+                    src={walletAccountDetail?.bet_blocked == 0 ? UnLockIcon : LockIcon}
                     sx={{ height: "20px", width: "20px", fill: "#27AC1E" }}
                   />
                 </Box>
@@ -594,11 +591,7 @@ const DropdownMenu2 = ({
                   }}
                 >
                   <StyledImage
-                    src={
-                      walletAccountDetail?.all_blocked == 0
-                        ? UnLockIcon
-                        : LockIcon
-                    }
+                    src={walletAccountDetail?.all_blocked == 0 ? UnLockIcon : LockIcon}
                     sx={{ height: "20px", width: "20px", fill: "#27AC1E" }}
                   />
                 </Box>
@@ -658,6 +651,7 @@ const DropdownMenu2 = ({
                       setSelected(null);
                       setShowUserModal(false);
                     }}
+                    setWalletAccountDetail={setWalletAccountDetail}
                     setShowUserModal={setShowUserModal}
                     updatedUserProfile={updatedUserProfile}
                     getListOfUser={getListOfUser}
@@ -682,6 +676,7 @@ const DropdownMenu2 = ({
                       setSelected(null);
                       setShowUserModal(false);
                     }}
+                    setWalletAccountDetail={setWalletAccountDetail}
                     backgroundColor={backgroundColor}
                     setShowUserModal={setShowUserModal}
                     userModal={userModal}
@@ -707,6 +702,7 @@ const DropdownMenu2 = ({
                       setSelected(null);
                       setShowUserModal(false);
                     }}
+                    setWalletAccountDetail={setWalletAccountDetail}
                     backgroundColor={backgroundColor}
                     setShowUserModal={setShowUserModal}
                     userModal={userModal}
