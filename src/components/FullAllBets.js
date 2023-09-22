@@ -251,11 +251,10 @@ const FullAllBets = ({
                       setSelectedBetData(updatedSelectedBetData);
                       x.splice(x.indexOf(k), 1);
                       const updatedX = x.filter((v) => v !== i?.values[0]?.id);
-                      setSelectedData([...x, updatedX]);
+                      setSelectedData(updatedX);
                       e.stopPropagation();
                     } else {
                       if (!i?.values[0].deleted_reason) {
-                        setSelectedBetData(i?.values[0].id);
                         setSelectedBetData([
                           ...selectedBetData,
                           i?.values[0].id,
