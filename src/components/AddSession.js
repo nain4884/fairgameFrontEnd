@@ -453,6 +453,23 @@ const AddSession = ({ add, match, Bid }) => {
   //   }
   // }, [socket]);
 
+  const handleGap = (back, lay) => {
+    if (incGap < 1) {
+    } else {
+      if (back <= 1 || lay > 98) {
+        setIncGap(1);
+      } else if (back && lay) {
+        if (Math.abs(lay - back) > 5 && lay <= 96) {
+          setIncGap(4);
+        } else if (Math.abs(lay - back) > 2 && lay <= 98) {
+          setIncGap(2);
+        } else if (Math.abs(lay - back) == 2) {
+          setIncGap(1);
+        }
+      }
+    }
+  };
+
   const handleSuspend = (back, lay) => {
     if (incGap < 1) {
     } else {
@@ -700,7 +717,7 @@ const AddSession = ({ add, match, Bid }) => {
     event.preventDefault();
     let targetValue = parseFloat(event.target.value);
     event.target.value = targetValue;
-    if (key == "d" || key == "right") {
+    if (key == "right") {
       handleSuspend();
       setIsTab("");
       let value = targetValue ? targetValue + incGap : incGap;
@@ -823,7 +840,7 @@ const AddSession = ({ add, match, Bid }) => {
           };
         });
       }
-    } else if (key == "a" || key == "left") {
+    } else if (key == "left") {
       handleSuspend();
       setIsTab("");
       let value = targetValue - incGap;
@@ -948,7 +965,7 @@ const AddSession = ({ add, match, Bid }) => {
           };
         });
       }
-    } else if (key == "w" || key == "up") {
+    } else if (key == "up") {
       handleSuspend();
       if (isTab == "tab") {
         setIsTab("");
@@ -1119,7 +1136,7 @@ const AddSession = ({ add, match, Bid }) => {
           };
         });
       }
-    } else if (key == "z" || key == "down") {
+    } else if (key == "down") {
       handleSuspend();
       setPressEnter(false);
       setIsTab("");
@@ -1218,6 +1235,809 @@ const AddSession = ({ add, match, Bid }) => {
           lQuickBookMaker?.l_teamCRate,
           lQuickBookMaker?.l_teamCLayValue - 1
         );
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: "", lay: "" },
+            teamB: { ...prev?.teamB, rate: "", lay: "" },
+            teamC: {
+              ...prev?.teamC,
+              lay: localQuickBookmaker?.teamC?.lay
+                ? localQuickBookmaker?.teamC?.lay - 1
+                : localQuickBookmaker?.teamC?.rate,
+            },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamALayValue: "",
+            l_teamARate: "",
+            l_teamBLayValue: "",
+            l_teamBRate: "",
+            l_teamCLayValue:
+              incGap < 1
+                ? lQuickBookMaker?.l_teamCLayValue - incGap
+                : lQuickBookMaker?.l_teamCLayValue
+                ? lQuickBookMaker?.l_teamCLayValue - 1
+                : lQuickBookMaker?.l_teamCRate,
+          };
+        });
+      }
+    } else if (key == "d") {
+      setIsTab("");
+      let value = targetValue ? targetValue + incGap : incGap;
+      setPressEnter(false);
+      if (event.target.name === "teamA_rate") {
+        let result = handleHunderedValue(
+          targetValue,
+          localQuickBookmaker?.teamA?.lay
+        );
+        if (result) {
+          return;
+        }
+
+        let chckValue = localQuickBookmaker?.teamA?.lay
+          ? localQuickBookmaker?.teamA?.lay
+          : value;
+        let l_chckValue = lQuickBookMaker?.l_teamALayValue
+          ? lQuickBookMaker?.l_teamALayValue
+          : value;
+        handleGap(targetValue + incGap, l_chckValue + incGap);
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamA_lay: l_chckValue + incGap,
+          teamA_Back: value,
+          teamA_suspend: false,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: value, lay: chckValue + incGap },
+            teamB: { ...prev?.teamB, rate: "", lay: "" },
+            teamC: { ...prev?.teamC, rate: "", lay: "" },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamARate: value,
+            l_teamALayValue: l_chckValue + incGap,
+            l_teamBRate: "",
+            l_teamBLayValue: "",
+            l_teamCRate: "",
+            l_teamCLayValue: "",
+          };
+        });
+      }
+
+      if (event.target.name === "teamB_rate") {
+        let result = handleHunderedValue(
+          targetValue,
+          localQuickBookmaker?.teamB?.lay
+        );
+        if (result) {
+          return;
+        }
+
+        let chckValue = localQuickBookmaker?.teamB?.lay
+          ? localQuickBookmaker?.teamB?.lay
+          : value;
+        let l_chckValue = lQuickBookMaker?.l_teamBLayValue
+          ? lQuickBookMaker?.l_teamBLayValue
+          : value;
+        handleGap(targetValue + incGap, l_chckValue + incGap);
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamB_lay: l_chckValue + incGap,
+          teamB_Back: value,
+          teamB_suspend: false,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: "", lay: "" },
+            teamB: { ...prev?.teamB, rate: value, lay: chckValue + incGap },
+            teamC: { ...prev?.teamC, rate: "", lay: "" },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamARate: "",
+            l_teamALayValue: "",
+            l_teamBRate: value,
+            l_teamBLayValue: l_chckValue + incGap,
+            l_teamCRate: "",
+            l_teamCLayValue: "",
+          };
+        });
+      }
+      if (event.target.name === "teamC_rate") {
+        let result = handleHunderedValue(
+          targetValue,
+          localQuickBookmaker?.teamC?.lay
+        );
+        if (result) {
+          return;
+        }
+        let chckValue = localQuickBookmaker?.teamC?.lay
+          ? localQuickBookmaker?.teamC?.lay
+          : value;
+
+        let l_chckValue = lQuickBookMaker?.l_teamCLayValue
+          ? lQuickBookMaker?.l_teamCLayValue
+          : value;
+        handleGap(targetValue + incGap, l_chckValue + incGap);
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamC_lay: l_chckValue + incGap,
+          teamC_Back: value,
+          teamC_suspend: false,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: "", lay: "" },
+            teamB: { ...prev?.teamB, rate: "", lay: "" },
+            teamC: { ...prev?.teamC, rate: value, lay: chckValue + incGap },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamARate: "",
+            l_teamALayValue: "",
+            l_teamBRate: "",
+            l_teamBLayValue: "",
+            l_teamCRate: value,
+            l_teamCLayValue: l_chckValue + incGap,
+          };
+        });
+      }
+    } else if (key == "a") {
+      setIsTab("");
+      let value = targetValue - incGap;
+      if (value < 0) {
+        return;
+      }
+      setPressEnter(false);
+      if (
+        event.target.name === "teamA_rate" &&
+        lQuickBookMaker?.l_teamARate > 0
+      ) {
+        handleGap(
+          targetValue - incGap,
+          lQuickBookMaker?.l_teamALayValue - incGap
+        );
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamA_lay: lQuickBookMaker?.l_teamALayValue
+            ? lQuickBookMaker?.l_teamALayValue - incGap
+            : lQuickBookMaker?.l_teamARate,
+          teamA_Back: value,
+          teamA_suspend: false,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: {
+              ...prev?.teamA,
+              rate: value,
+              lay: localQuickBookmaker?.teamA?.lay
+                ? localQuickBookmaker?.teamA?.lay - incGap
+                : localQuickBookmaker?.teamA?.rate,
+            },
+            teamB: { ...prev?.teamB, rate: "", lay: "" },
+            teamC: { ...prev?.teamC, rate: "", lay: "" },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamARate: value,
+            l_teamALayValue: lQuickBookMaker?.l_teamALayValue
+              ? lQuickBookMaker?.l_teamALayValue - incGap
+              : lQuickBookMaker?.l_teamARate,
+            l_teamBRate: "",
+            l_teamBLayValue: "",
+            l_teamCRate: "",
+            l_teamCLayValue: "",
+          };
+        });
+      }
+
+      if (
+        event.target.name === "teamB_rate" &&
+        lQuickBookMaker?.l_teamBRate > 0
+      ) {
+        handleGap(
+          targetValue - incGap,
+          lQuickBookMaker?.l_teamBLayValue - incGap
+        );
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamB_lay: lQuickBookMaker?.l_teamBLayValue
+            ? lQuickBookMaker?.l_teamBLayValue - incGap
+            : lQuickBookMaker?.l_teamBRate,
+          teamB_Back: value,
+          teamB_suspend: false,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: "", lay: "" },
+            teamB: {
+              ...prev?.teamB,
+              rate: value,
+              lay: localQuickBookmaker?.teamB?.lay
+                ? localQuickBookmaker?.teamB?.lay - incGap
+                : localQuickBookmaker?.teamB?.rate,
+            },
+            teamC: { ...prev?.teamC, rate: "", lay: "" },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamARate: "",
+            l_teamALayValue: "",
+            l_teamBRate: value,
+            l_teamBLayValue: lQuickBookMaker?.l_teamBLayValue
+              ? lQuickBookMaker?.l_teamBLayValue - incGap
+              : lQuickBookMaker?.l_teamBRate,
+            l_teamCRate: "",
+            l_teamCLayValue: "",
+          };
+        });
+      }
+      if (
+        event.target.name === "teamC_rate" &&
+        lQuickBookMaker?.l_teamBRate > 0
+      ) {
+        handleGap(
+          targetValue - incGap,
+          lQuickBookMaker?.l_teamCLayValue - incGap
+        );
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamC_lay: lQuickBookMaker?.l_teamCLayValue
+            ? lQuickBookMaker?.l_teamCLayValue - incGap
+            : lQuickBookMaker?.l_teamCRate,
+          teamC_Back: value,
+          teamC_suspend: false,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: "", lay: "" },
+            teamB: { ...prev?.teamB, rate: "", lay: "" },
+            teamC: {
+              ...prev?.teamC,
+              rate: value,
+              lay: localQuickBookmaker?.teamC?.lay
+                ? localQuickBookmaker?.teamC?.lay - incGap
+                : localQuickBookmaker?.teamC?.rate,
+            },
+          };
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamARate: "",
+            l_teamALayValue: "",
+            l_teamBRate: "",
+            l_teamBLayValue: "",
+            l_teamCRate: value,
+            l_teamCLayValue: lQuickBookMaker?.l_teamCLayValue
+              ? lQuickBookMaker?.l_teamCLayValue - incGap
+              : lQuickBookMaker?.l_teamCRate,
+          };
+        });
+      }
+    } else if (key == "w") {
+      if (isTab == "tab") {
+        setIsTab("");
+      }
+      setPressEnter(false);
+      if (event.target.name === "teamA_rate") {
+        let result = handleHunderedValue(
+          targetValue,
+          lQuickBookMaker?.l_teamALayValue
+        );
+        if (result) {
+          return;
+        }
+        let value = localQuickBookmaker?.teamA?.lay
+          ? localQuickBookmaker?.teamA?.lay
+          : localQuickBookmaker?.teamA?.rate;
+        let l_value = lQuickBookMaker?.l_teamALayValue
+          ? lQuickBookMaker?.l_teamALayValue
+          : lQuickBookMaker?.l_teamARate;
+        handleGap(targetValue, l_value + 1);
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamA_lay:
+            incGap < 1
+              ? l_value + incGap
+              : l_value === 0
+              ? 1
+              : l_value
+              ? l_value + 1
+              : NaN,
+          teamA_Back: lQuickBookMaker?.l_teamARate,
+          teamA_suspend: false,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: {
+              ...prev?.teamA,
+              lay:
+                incGap < 1
+                  ? value + incGap
+                  : value === 0
+                  ? 1
+                  : value
+                  ? value + 1
+                  : NaN,
+            },
+            teamB: { ...prev?.teamB, rate: "", lay: "" },
+            teamC: { ...prev?.teamC, rate: "", lay: "" },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamALayValue:
+              incGap < 1
+                ? l_value + incGap
+                : l_value === 0
+                ? 1
+                : l_value
+                ? l_value + 1
+                : NaN,
+            l_teamBRate: "",
+            l_teamBLayValue: "",
+            l_teamCRate: "",
+            l_teamCLayValue: "",
+          };
+        });
+      }
+
+      if (event.target.name === "teamB_rate") {
+        let result = handleHunderedValue(
+          targetValue,
+          lQuickBookMaker?.l_teamBLayValue
+        );
+        if (result) {
+          return;
+        }
+        let value = localQuickBookmaker?.teamB?.lay
+          ? localQuickBookmaker?.teamB?.lay
+          : localQuickBookmaker?.teamB?.rate;
+        let l_value = lQuickBookMaker?.l_teamBLayValue
+          ? lQuickBookMaker?.l_teamBLayValue
+          : lQuickBookMaker?.l_teamBRate;
+        handleGap(targetValue, l_value + 1);
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamB_lay:
+            incGap < 1
+              ? l_value + incGap
+              : l_value === 0
+              ? 1
+              : l_value
+              ? l_value + 1
+              : NaN,
+          teamB_Back: lQuickBookMaker?.l_teamBRate,
+          teamB_suspend: false,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: "", lay: "" },
+            teamB: {
+              ...prev?.teamB,
+              lay:
+                incGap < 1
+                  ? value + incGap
+                  : value === 0
+                  ? 1
+                  : value
+                  ? value + 1
+                  : NaN,
+            },
+            teamC: { ...prev?.teamC, rate: "", lay: "" },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamARate: "",
+            l_teamALayValue: "",
+            l_teamBLayValue:
+              incGap < 1
+                ? l_value + incGap
+                : l_value === 0
+                ? 1
+                : l_value
+                ? l_value + 1
+                : NaN,
+            l_teamCRate: "",
+            l_teamCLayValue: "",
+          };
+        });
+      }
+      if (event.target.name === "teamC_rate") {
+        let result = handleHunderedValue(
+          targetValue,
+          lQuickBookMaker?.l_teamCLayValue
+        );
+        if (result) {
+          return;
+        }
+        let value = localQuickBookmaker?.teamC?.lay
+          ? localQuickBookmaker?.teamC?.lay
+          : localQuickBookmaker?.teamC?.rate;
+        let l_value = lQuickBookMaker?.l_teamCLayValue
+          ? lQuickBookMaker?.l_teamCLayValue
+          : lQuickBookMaker?.l_teamCRate;
+        handleGap(targetValue, l_value + 1);
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamC_lay:
+            incGap < 1
+              ? l_value + incGap
+              : l_value === 0
+              ? 1
+              : l_value
+              ? l_value + 1
+              : NaN,
+          teamC_Back: lQuickBookMaker?.l_teamCRate,
+          teamC_suspend: false,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: "", lay: "" },
+            teamB: { ...prev?.teamB, rate: "", lay: "" },
+            teamC: {
+              ...prev?.teamC,
+              lay:
+                incGap < 1
+                  ? value + incGap
+                  : value === 0
+                  ? 1
+                  : value
+                  ? value + 1
+                  : NaN,
+            },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamARate: "",
+            l_teamALayValue: "",
+            l_teamBRate: "",
+            l_teamBLayValue: "",
+            l_teamCLayValue:
+              incGap < 1
+                ? l_value + incGap
+                : l_value === 0
+                ? 1
+                : l_value
+                ? l_value + 1
+                : NaN,
+          };
+        });
+      }
+    } else if (key == "z") {
+      setPressEnter(false);
+      setIsTab("");
+      if (
+        (event.target.name === "teamA_rate" &&
+          lQuickBookMaker?.l_teamALayValue - 1 >
+            lQuickBookMaker?.l_teamARate) ||
+        lQuickBookMaker?.l_teamALayValue - incGap > lQuickBookMaker?.l_teamARate
+      ) {
+        handleGap(
+          lQuickBookMaker?.l_teamARate,
+          lQuickBookMaker?.l_teamALayValue - 1
+        );
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamA_lay: lQuickBookMaker?.l_teamALayValue
+            ? lQuickBookMaker?.l_teamALayValue - 1
+            : lQuickBookMaker?.l_teamALayValue,
+          teamA_Back: lQuickBookMaker?.l_teamARate,
+          teamA_suspend: false,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: {
+              ...prev?.teamA,
+              lay: localQuickBookmaker?.teamA?.lay
+                ? localQuickBookmaker?.teamA?.lay - 1
+                : localQuickBookmaker?.teamA?.rate,
+            },
+            teamB: { ...prev?.teamB, rate: "", lay: "" },
+            teamC: { ...prev?.teamC, rate: "", lay: "" },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamALayValue:
+              incGap < 1
+                ? lQuickBookMaker?.l_teamALayValue - incGap
+                : lQuickBookMaker?.l_teamALayValue
+                ? lQuickBookMaker?.l_teamALayValue - 1
+                : lQuickBookMaker?.l_teamARate,
+            l_teamBRate: "",
+            l_teamBLayValue: "",
+            l_teamCRate: "",
+            l_teamCLayValue: "",
+          };
+        });
+      }
+
+      if (
+        (event.target.name === "teamB_rate" &&
+          lQuickBookMaker?.l_teamBLayValue - 1 >
+            lQuickBookMaker?.l_teamBRate) ||
+        lQuickBookMaker?.l_teamBLayValue - incGap > lQuickBookMaker?.l_teamBRate
+      ) {
+        handleGap(
+          lQuickBookMaker?.l_teamBRate,
+          lQuickBookMaker?.l_teamBLayValue - 1
+        );
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamB_lay: lQuickBookMaker?.l_teamBLayValue
+            ? lQuickBookMaker?.l_teamBLayValue - 1
+            : lQuickBookMaker?.l_teamBRate,
+          teamB_Back: lQuickBookMaker?.l_teamBRate,
+          teamB_suspend: false,
+          teamC_lay: "",
+          teamC_Back: "",
+          teamC_suspend: true,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
+        setLocalQuickBookmaker((prev) => {
+          const newBody = {
+            ...prev,
+            teamA: { ...prev?.teamA, rate: "", lay: "" },
+            teamB: {
+              ...prev?.teamB,
+              lay: localQuickBookmaker?.teamB?.lay
+                ? localQuickBookmaker?.teamB?.lay - 1
+                : localQuickBookmaker?.teamB?.rate,
+            },
+            teamC: { ...prev?.teamC, rate: "", lay: "" },
+          };
+          // dispatch(setQuickBookmaker(newBody));
+          return newBody;
+        });
+
+        setLQuickBookMaker((prev) => {
+          return {
+            ...prev,
+            l_teamALayValue: "",
+            l_teamARate: "",
+            l_teamBLayValue:
+              incGap < 1
+                ? lQuickBookMaker?.l_teamBLayValue - incGap
+                : lQuickBookMaker?.l_teamBLayValue
+                ? lQuickBookMaker?.l_teamBLayValue - 1
+                : lQuickBookMaker?.l_teamBRate,
+            l_teamCRate: "",
+            l_teamCLayValue: "",
+          };
+        });
+      }
+      if (
+        (event.target.name === "teamC_rate" &&
+          lQuickBookMaker?.l_teamCLayValue - 1 >
+            lQuickBookMaker?.l_teamCRate) ||
+        lQuickBookMaker?.l_teamCLayValue - incGap > lQuickBookMaker?.l_teamCRate
+      ) {
+        handleGap(
+          lQuickBookMaker?.l_teamCRate,
+          lQuickBookMaker?.l_teamCLayValue - 1
+        );
+        socket.emit("updateRate", {
+          matchId: match?.id,
+          id: Bid,
+          teamA: match?.teamA,
+          teamB: match?.teamB,
+          teamC: match?.teamC,
+          betId: localSelectedBookmaker?.betId,
+          teamC_lay: lQuickBookMaker?.l_teamCLayValue
+            ? lQuickBookMaker?.l_teamCLayValue - 1
+            : lQuickBookMaker?.l_teamCRate,
+          teamC_Back: lQuickBookMaker?.l_teamCRate,
+          teamC_suspend: false,
+          teamA_lay: "",
+          teamA_Back: "",
+          teamA_suspend: true,
+          teamB_lay: "",
+          teamB_Back: "",
+          teamB_suspend: true,
+          layLock: false,
+          isSingle: true,
+        });
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
