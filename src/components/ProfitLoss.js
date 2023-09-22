@@ -19,6 +19,8 @@ const ProfitLossComponent = ({
   visible,
   setVisible,
   sessionBets,
+  user,
+  data,
 }) => {
   const dispatch = useDispatch();
   const [selectedId, setSelectedId] = useState({
@@ -105,6 +107,9 @@ const ProfitLossComponent = ({
                 sessionBetData={sessionBetData}
                 sessionBets={sessionBets}
                 getBetReport={getBetReport}
+                getListOfUser={getListOfUser}
+                user={user}
+                data={data}
               />
             );
           })}
