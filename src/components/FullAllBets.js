@@ -243,16 +243,16 @@ const FullAllBets = ({
                   key={k}
                   style={{ display: "flex", position: "relative" }}
                   onClick={(e) => {
+                    e.stopPropagation();
                     let x = [...selectedData];
                     if (x.length > 0 && x.includes(i?.values[0]?.id)) {
                       const updatedSelectedBetData = selectedBetData.filter(
                         (id) => id !== i?.values[0].id
                       );
                       setSelectedBetData(updatedSelectedBetData);
-                      x.splice(x.indexOf(k), 1);
                       const updatedX = x.filter((v) => v !== i?.values[0]?.id);
+                      x = updatedX;
                       setSelectedData(updatedX);
-                      e.stopPropagation();
                     } else {
                       if (!i?.values[0].deleted_reason) {
                         setSelectedBetData([
