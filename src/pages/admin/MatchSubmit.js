@@ -1309,7 +1309,7 @@ const MatchSubmit = ({}) => {
                   <Box
                     sx={{
                       alignSelf: "center",
-                      width: "50%",
+                      width: { mobile: "90%", laptop: "50%" },
                     }}
                   >
                     <UserProfitLoss
@@ -1500,7 +1500,7 @@ const MatchSubmit = ({}) => {
                   <Box
                     sx={{
                       alignSelf: "center",
-                      width: "50%",
+                      width: { mobile: "90%", laptop: "50%" },
                     }}
                   >
                     <UserProfitLoss
