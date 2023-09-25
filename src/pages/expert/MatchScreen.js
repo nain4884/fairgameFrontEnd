@@ -85,11 +85,15 @@ const MatchScreen = () => {
   }, [selectedMatch, allBetRates, currentOdd, sessionExpertOdds]);
 
   useEffect(() => {
-    if (
-      declaredMatchDetail?.match_id === currentMatch?.id &&
-      declaredMatchDetail?.sessionBet === false
-    ) {
-      navigate("/expert/match");
+    try {
+      if (
+        declaredMatchDetail?.match_id === currentMatch?.id &&
+        declaredMatchDetail?.sessionBet === false
+      ) {
+        navigate("/expert/match");
+      }
+    } catch (e) {
+      console.log(e);
     }
   }, [declaredMatchDetail]);
 

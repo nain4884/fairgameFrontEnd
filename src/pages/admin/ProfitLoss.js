@@ -97,6 +97,7 @@ const ProfitLoss = () => {
 
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
+  const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currenLimit, setCurrenLimit] = useState(1);
   const [eventData, setEventData] = useState([]);
@@ -111,6 +112,8 @@ const ProfitLoss = () => {
   const { profitLossReportPage } = useSelector((state) => state?.adminMatches);
   const [visible, setVisible] = useState(false);
   const [sessionBets, setSessionBet] = useState([]);
+  const { currentPageNo } = useSelector((state) => state?.auth);
+  let { axios } = setRole();
   useEffect(() => {
     // alert(1)
     getEventList();
@@ -136,7 +139,6 @@ const ProfitLoss = () => {
     if (endDate) {
       payload.to = moment(endDate).format("YYYY-MM-DD");
     }
-    let { axios } = setRole();
     try {
       const { data } = await axios.post(`/betting/totalProfitLoss`, payload);
       // console.log(data.data[0], 'datadatadatadata')
@@ -183,6 +185,27 @@ const ProfitLoss = () => {
     // alert(id)
     getBets(value);
   };
+
+  async function getListOfUser(username) {
+    try {
+      const { data } = await axios.get(
+        `/fair-game-wallet/getAllUser?${
+          username ? `userName=${username}` : ""
+        }&page=${currentPageNo}&limit=${pageLimit}`
+      );
+      if (data?.data?.data) {
+        setData(data?.data?.data);
+        setPageCount(
+          Math.ceil(
+            parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
+              pageLimit
+          )
+        );
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   async function getBets(value) {
     setBetData([]);
@@ -261,8 +284,6 @@ const ProfitLoss = () => {
   async function getAllClients() {
     setBetData([]);
     setSessionBetData([]);
-
-    let { axios } = setRole();
     try {
       const { data } = await axios.get(`/users/getAllClients`);
       if (data.data.length > 0) {
@@ -326,6 +347,8 @@ const ProfitLoss = () => {
             <ProfitLossComponent
               // loading
               visible={visible}
+              getListOfUser={getListOfUser}
+              data={data}
               setVisible={setVisible}
               eventData={eventData}
               reportData={reportData}
@@ -337,6 +360,7 @@ const ProfitLoss = () => {
               currentPage={currentPage}
               pageCount={pageCount}
               setCurrentPage={setCurrentPage}
+              user={"admin"}
             />
           </Box>
         </>
