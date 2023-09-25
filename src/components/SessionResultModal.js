@@ -26,6 +26,7 @@ const SessionResultModal = ({
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
+  const [error, setError] = useState("");
 
   const { sessionResults } = useSelector((state) => state?.matchDetails);
 
@@ -243,23 +244,35 @@ const SessionResultModal = ({
           ref={myDivRef}
         >
           {newData?.betStatus !== 3 ? (
-            <TextField
-              autoFocus
-              placeholder="Enter score"
-              variant="standard"
-              value={selected}
-              onChange={(e) => setSelected(e?.target.value)}
-              InputProps={{
-                disableUnderline: true,
-                sx: {
-                  alignSelf: "center",
-                  border: "1px solid #303030",
-                  borderRadius: "5px",
-                  paddingY: "5px",
-                  paddingX: "1vw",
-                },
-              }}
-            />
+            <>
+              <TextField
+                autoFocus
+                placeholder="Enter score"
+                variant="standard"
+                value={selected}
+                onChange={(e) => {
+                  setError("");
+                  setSelected(e?.target.value);
+                }}
+                InputProps={{
+                  disableUnderline: true,
+                  sx: {
+                    alignSelf: "center",
+                    border: "1px solid #303030",
+                    borderRadius: "5px",
+                    paddingY: "5px",
+                    paddingX: "1vw",
+                  },
+                }}
+              />
+              {error && (
+                <Box
+                  style={{ color: "red", marginTop: "8px", fontSize: "11px" }}
+                >
+                  {error}
+                </Box>
+              )}
+            </>
           ) : (
             <Typography
               sx={{
@@ -295,8 +308,14 @@ const SessionResultModal = ({
                   if (loading?.value) {
                     return false;
                   }
-
-                  undeclareResult();
+                  if (selected && /^\d+$/.test(selected)) {
+                    undeclareResult();
+                  } else if (selected === "") {
+                    setError("Please enter score");
+                  } else {
+                    // toast.warn("Please enter score");
+                    setError("Input field should contain numbers only");
+                  }
                 }}
               />
             ) : (
@@ -311,10 +330,13 @@ const SessionResultModal = ({
                       if (loading?.value) {
                         return false;
                       }
-                      if (selected !== "" || !isNaN(selected)) {
+                      if (selected !== "" && /^\d+$/.test(selected)) {
                         declareResult();
+                      } else if (selected === "") {
+                        setError("Please enter score");
                       } else {
-                        toast.warn("Please enter score");
+                        // toast.warn("Please enter score");
+                        setError("Input field should contain numbers only");
                       }
                     }}
                   />
