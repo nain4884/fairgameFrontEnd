@@ -3305,7 +3305,7 @@ const AddSession = ({ add, match, Bid }) => {
         setIsTab("");
       }
       if (incGap != 5) {
-        setIncGap(1);
+        setIncGap(0.5);
         if (event.target.name === "teamA_rate") {
           let result = handleZeroValue(
             targetValue,

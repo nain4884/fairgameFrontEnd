@@ -1185,7 +1185,7 @@ const DeleteBet = ({}) => {
                 />
               )}
               {matchesMobile && (
-                <UserProfitLoss title={"User Profit Loss"} matchId={matchId} />
+                <UserProfitLoss single={"single"} title={"User Profit Loss"} matchId={matchId} />
               )}
               {/* {matchesMobile && */}
               {url.includes("wallet") && IOSinglebets.length > 0 && (
@@ -1335,7 +1335,7 @@ const DeleteBet = ({}) => {
                     min={currentMatch?.betfair_session_min_bet}
                   />
                 )}
-                <UserProfitLoss title={"User Profit Loss"} matchId={matchId} />
+                <UserProfitLoss single={"single"} title={"User Profit Loss"} matchId={matchId} />
               </Box>
             )}
           </Box>

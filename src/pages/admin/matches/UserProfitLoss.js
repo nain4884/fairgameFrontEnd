@@ -43,6 +43,7 @@ const UserProfitLoss = ({ title, matchId, setShowUserProfitLoss, single }) => {
           flexDirection: "column",
           marginBottom: "3px",
           width: "100%",
+          maxHeight: single === "single" ? "29rem" : null,
           alignSelf: {
             mobile: "center",
             tablet: "center",
@@ -117,7 +118,12 @@ const UserProfitLoss = ({ title, matchId, setShowUserProfitLoss, single }) => {
           >
             {single === "multiple" ? (
               <Button
-                sx={{ color: "#f1c40f", fontSize: "30px", minWidth: 0, padding: "0px 8px" }}
+                sx={{
+                  color: "#f1c40f",
+                  fontSize: "30px",
+                  minWidth: 0,
+                  padding: "0px 8px",
+                }}
                 onClick={() => {
                   setShowUserProfitLoss(false);
                 }}
