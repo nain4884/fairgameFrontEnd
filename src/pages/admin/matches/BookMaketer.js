@@ -236,7 +236,7 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
           </Box>
         </>
       )}
-      {showUnlock && <Box sx={{ position: 'absolute', width: '100%', background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left: '20%', zIndex: 999 }}>
+      {showUnlock && <Box sx={{ position: 'absolute', width: {mobile: "90%", laptop: "100%"}, background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left : {mobile: "10%", laptop: "20%"}, zIndex: 999 }}>
         <UnlockComponent
           unlock={locked}
           title={(locked ? "Unlock " : "Lock ") + "Bookmaker Market"}

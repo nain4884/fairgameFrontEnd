@@ -143,7 +143,7 @@ const SessionMarket = ({
               <img
                 onClick={() =>
                   selft || selft == undefined
-                    ? handleShowLock(true, "SESSION")
+                    ? handleShowLock(true, `${title}`)
                     : ""
                 }
                 src={locked ? LOCKED : LOCKOPEN}
@@ -400,18 +400,39 @@ const SessionMarket = ({
               <Box
                 sx={{
                   position: "absolute",
-                  width: "100%",
+                  width: { mobile: "90%", laptop: "100%" },
                   background: "transparent",
                   alignSelf: "center",
                   position: "absolute",
                   marginTop: "38px",
-                  left: "20%",
+                  left: { mobile: "10%", laptop: "20%" },
                   zIndex: 999,
                 }}
               >
                 <UnlockComponent
                   unlock={locked}
-                  title={(locked ? "Unlock " : "Lock ") + "Session Market"}
+                  title={(locked ? "Unlock " : "Lock ") + title}
+                  handleHide={handleHide}
+                  onSubmit={onSubmit}
+                />
+              </Box>
+            )}
+            {showUnlock && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  width: { mobile: "90%", laptop: "100%" },
+                  background: "transparent",
+                  alignSelf: "center",
+                  position: "absolute",
+                  marginTop: "38px",
+                  left: { mobile: "10%", laptop: "20%" },
+                  zIndex: 999,
+                }}
+              >
+                <UnlockComponent
+                  unlock={locked}
+                  title={(locked ? "Unlock " : "Lock ") + title}
                   handleHide={handleHide}
                   onSubmit={onSubmit}
                 />

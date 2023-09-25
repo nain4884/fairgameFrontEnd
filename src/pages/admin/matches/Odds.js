@@ -463,12 +463,12 @@ const Odds = ({
         <Box
           sx={{
             position: "absolute",
-            width: "100%",
+            width: {mobile: "90%", laptop: "100%"},
             background: "transparent",
             alignSelf: "center",
             position: "absolute",
             marginTop: "38px",
-            left: "20%",
+            left: {mobile: "10%", laptop: "20%"},
             zIndex: 999,
           }}
         >
@@ -491,12 +491,12 @@ const Odds = ({
         <Box
           sx={{
             position: "absolute",
-            width: "100%",
+            width: {mobile: "90%", laptop: "100%"},
             background: "transparent",
             alignSelf: "center",
             position: "absolute",
             marginTop: "38px",
-            left: "20%",
+            left: {mobile: "10%", laptop: "20%"},
             zIndex: 999,
           }}
         >

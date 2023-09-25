@@ -2438,6 +2438,7 @@ const NewMatchScreen = () => {
   const [isMatchLock, setIsMatchLock] = useState(false);
   const [isBookmakerLock, setIsBookmakerLock] = useState(false);
   const [isManualLock, setIsManualLock] = useState(false);
+  const [isQuickSessionLock, setIsQuickSessionLock] = useState(false);
   const [isSessionLock, setIsSessionLock] = useState(false);
   const [liveScoreData, setLiveScoreData] = useState();
   const [eventId, setEventId] = useState("");
@@ -3250,7 +3251,7 @@ const NewMatchScreen = () => {
   const getSingleMatch = async (val) => {
     try {
       const data = await axios.get(`/game-match/matchDetail/${val}`);
-      console.log("yayy",data)
+      console.log("yayy", data);
       let matchOddsDataTemp = data.data?.bettings?.filter(
         (element) => element.sessionBet === false
       );
@@ -3284,11 +3285,14 @@ const NewMatchScreen = () => {
       setSingleIObtes(data?.data?.data);
       const bets = data?.data?.data?.filter(
         (b) =>
-          !["MATCH ODDS", "BOOKMAKER", "MANUAL BOOKMAKER", "QuickBookmaker0",
-                            "QuickBookmaker1",
-                            "QuickBookmaker2",].includes(
-            b?.marketType
-          )
+          ![
+            "MATCH ODDS",
+            "BOOKMAKER",
+            "MANUAL BOOKMAKER",
+            "QuickBookmaker0",
+            "QuickBookmaker1",
+            "QuickBookmaker2",
+          ].includes(b?.marketType)
       );
       setSessionBets(bets || []);
     } catch (e) {
@@ -3354,6 +3358,7 @@ const NewMatchScreen = () => {
           },
         }));
         setIsSessionLock(false);
+        setIsQuickSessionLock(false);
       }
     } catch (e) {
       console.log(e?.message, "message");
@@ -3367,8 +3372,10 @@ const NewMatchScreen = () => {
       setIsManualLock(true);
     } else if (type === "BOOKMAKER") {
       setIsBookmakerLock(true);
-    } else if (type === "SESSION") {
+    } else if (type === "Session Market") {
       setIsSessionLock(true);
+    } else if (type === "Quick Session Market") {
+      setIsQuickSessionLock(true);
     }
   };
   const handleHide = async () => {
@@ -3376,6 +3383,7 @@ const NewMatchScreen = () => {
     setIsManualLock(false);
     setIsBookmakerLock(false);
     setIsSessionLock(false);
+    setIsQuickSessionLock(false);
   };
 
   return (
@@ -3470,7 +3478,7 @@ const NewMatchScreen = () => {
               handleBlock={handleBlock}
               handleHide={handleHide}
               handleShowLock={handleShowLock}
-              showUnlock={isSessionLock}
+              showUnlock={isQuickSessionLock}
               max={currentMatch?.manaual_session_max_bet}
               min={currentMatch?.manaual_session_min_bet}
               // sessionOffline={sessionOffline}
