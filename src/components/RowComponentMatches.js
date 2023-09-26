@@ -21,7 +21,7 @@ const RowComponentMatches = ({
   getBetReport,
   user,
   data,
-  getListOfUser,
+  getUserProfitLoss,
 }) => {
   const [showBets, setShowBets] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
@@ -41,7 +41,7 @@ const RowComponentMatches = ({
           ) {
             setShowListOfUsers((prev) => !prev);
           } else {
-            getListOfUser();
+            // getUserProfitLoss(item?.matchId);
             setShowListOfUsers(true);
             getBetReport({
               eventType: item?.eventType,
@@ -137,7 +137,7 @@ const RowComponentMatches = ({
               ({moment(item.matchDate).format("DD-MM-YYYY")})
             </Typography>
           </Box>
-          {user === "admin" && (
+          {/* {user === "admin" && (
             <StyledImage
               src={ArrowDown}
               sx={{
@@ -151,7 +151,7 @@ const RowComponentMatches = ({
                     : "rotate(0deg)",
               }}
             />
-          )}
+          )} */}
           {/* <StyledImage
               src={ArrowDown}
               sx={{
@@ -376,7 +376,7 @@ const RowComponentMatches = ({
       </Box>
       {selectedId?.id === item?.matchId && (
         <>
-          {selectedId?.type === "users_list" && showListOfUsers && (
+          {/* {selectedId?.type === "users_list" && showListOfUsers && (
             <>
               <Box
                 sx={{
@@ -437,7 +437,7 @@ const RowComponentMatches = ({
                 </Box>
               </Box>
             </>
-          )}
+          )} */}
           {selectedId?.type === "all_bet" && showBets && (
             <>
               <Box

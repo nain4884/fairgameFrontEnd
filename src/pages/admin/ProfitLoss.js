@@ -186,11 +186,11 @@ const ProfitLoss = () => {
     getBets(value);
   };
 
-  async function getListOfUser(username) {
+  async function getUserProfitLoss(matchId) {
     try {
       const { data } = await axios.get(
-        `/fair-game-wallet/getAllUser?${
-          username ? `userName=${username}` : ""
+        `/fair-game-wallet/getUserProfitLoss?${ //matchId and userId
+          matchId ? `matchId=${matchId}` : ""
         }&page=${currentPageNo}&limit=${pageLimit}`
       );
       if (data?.data?.data) {
@@ -347,7 +347,7 @@ const ProfitLoss = () => {
             <ProfitLossComponent
               // loading
               visible={visible}
-              getListOfUser={getListOfUser}
+              getUserProfitLoss={getUserProfitLoss}
               data={data}
               setVisible={setVisible}
               eventData={eventData}

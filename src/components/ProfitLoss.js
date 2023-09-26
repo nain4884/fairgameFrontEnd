@@ -14,7 +14,7 @@ const ProfitLossComponent = ({
   handleBet,
   currentPage,
   pageCount,
-  getListOfUser,
+  getUserProfitLoss,
   setCurrentPage,
   visible,
   setVisible,
@@ -107,7 +107,7 @@ const ProfitLossComponent = ({
                 sessionBetData={sessionBetData}
                 sessionBets={sessionBets}
                 getBetReport={getBetReport}
-                getListOfUser={getListOfUser}
+                getUserProfitLoss={getUserProfitLoss}
                 user={user}
                 data={data}
               />

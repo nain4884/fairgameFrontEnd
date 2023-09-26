@@ -97,4 +97,4 @@ const SmallBoxSeason = ({ color, allBetsData, sessionBets, totalAmount }) => {
   );
 };
 
-export default SmallBoxSeason;
+export default React.memo(SmallBoxSeason);
