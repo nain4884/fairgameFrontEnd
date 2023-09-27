@@ -3014,294 +3014,294 @@ const AddSession = ({ add, match, Bid }) => {
         layLock: false,
       });
     }
-    if (key == "plus") {
-      if (isTab == "tab") {
-        handleSuspend();
-        setIsTab("");
-      }
-      if (incGap != 5) {
-        setIncGap(1);
-        if (event.target.name === "teamA_rate") {
-          let result = handleHunderedValue(
-            targetValue,
-            localQuickBookmaker?.teamA?.lay
-          );
-          if (result) {
-            return;
-          }
-          let teamARateDecimal = localQuickBookmaker?.teamA?.rate % 1; // get the decimal portion of the number
-          let value;
-          if (teamARateDecimal >= 0.5) {
-            value = parseFloat(event.target.value) + 1;
-          } else {
-            value = parseFloat(event.target.value) + 0.5;
-          }
+    // if (key == "plus") {
+    //   if (isTab == "tab") {
+    //     handleSuspend();
+    //     setIsTab("");
+    //   }
+    //   if (incGap != 5) {
+    //     setIncGap(1);
+    //     if (event.target.name === "teamA_rate") {
+    //       let result = handleHunderedValue(
+    //         targetValue,
+    //         localQuickBookmaker?.teamA?.lay
+    //       );
+    //       if (result) {
+    //         return;
+    //       }
+    //       let teamARateDecimal = localQuickBookmaker?.teamA?.rate % 1; // get the decimal portion of the number
+    //       let value;
+    //       if (teamARateDecimal >= 0.5) {
+    //         value = parseFloat(event.target.value) + 1;
+    //       } else {
+    //         value = parseFloat(event.target.value) + 0.5;
+    //       }
 
-          if (!value) {
-            return;
-          }
+    //       if (!value) {
+    //         return;
+    //       }
 
-          socket.emit("updateRate", {
-            matchId: match?.id,
-            id: Bid,
-            teamA: match?.teamA,
-            teamB: match?.teamB,
-            teamC: match?.teamC,
-            betId: localSelectedBookmaker?.betId,
-            teamA_lay: value + 1,
-            teamA_Back: value,
-            teamA_suspend: false,
-            teamB_lay: "",
-            teamB_Back: "",
-            teamB_suspend: true,
-            teamC_lay: "",
-            teamC_Back: "",
-            teamC_suspend: true,
-            layLock: false,
-            isSingle: true,
-          });
-          setLocalQuickBookmaker((prev) => {
-            const newBody = {
-              ...prev,
-              teamA: { ...prev?.teamA, lay: value + 1, rate: value },
-              teamB: { ...prev?.teamB, rate: "", lay: "" },
-              teamC: { ...prev?.teamC, lay: "", rate: "" },
-            };
-            // dispatch(setQuickBookmaker(newBody));
-            return newBody;
-          });
+    //       socket.emit("updateRate", {
+    //         matchId: match?.id,
+    //         id: Bid,
+    //         teamA: match?.teamA,
+    //         teamB: match?.teamB,
+    //         teamC: match?.teamC,
+    //         betId: localSelectedBookmaker?.betId,
+    //         teamA_lay: value + 1,
+    //         teamA_Back: value,
+    //         teamA_suspend: false,
+    //         teamB_lay: "",
+    //         teamB_Back: "",
+    //         teamB_suspend: true,
+    //         teamC_lay: "",
+    //         teamC_Back: "",
+    //         teamC_suspend: true,
+    //         layLock: false,
+    //         isSingle: true,
+    //       });
+    //       setLocalQuickBookmaker((prev) => {
+    //         const newBody = {
+    //           ...prev,
+    //           teamA: { ...prev?.teamA, lay: value + 1, rate: value },
+    //           teamB: { ...prev?.teamB, rate: "", lay: "" },
+    //           teamC: { ...prev?.teamC, lay: "", rate: "" },
+    //         };
+    //         // dispatch(setQuickBookmaker(newBody));
+    //         return newBody;
+    //       });
 
-          setLQuickBookMaker((prev) => {
-            return {
-              ...prev,
-              l_teamARate: value,
-              l_teamALayValue: value + 1,
-              l_teamBRate: "",
-              l_teamBLayValue: "",
-              l_teamCRate: "",
-              l_teamCLayValue: "",
-            };
-          });
-        } else if (event.target.name === "teamB_rate") {
-          let result = handleHunderedValue(
-            targetValue,
-            localQuickBookmaker?.teamB?.lay
-          );
-          if (result) {
-            return;
-          }
-          let teamBRateDecimal = localQuickBookmaker?.teamB?.rate % 1; // get the decimal portion of the number
-          let value;
-          if (teamBRateDecimal >= 0.5) {
-            value = parseFloat(event.target.value) + 1;
-          } else {
-            value = parseFloat(event.target.value) + 0.5;
-          }
+    //       setLQuickBookMaker((prev) => {
+    //         return {
+    //           ...prev,
+    //           l_teamARate: value,
+    //           l_teamALayValue: value + 1,
+    //           l_teamBRate: "",
+    //           l_teamBLayValue: "",
+    //           l_teamCRate: "",
+    //           l_teamCLayValue: "",
+    //         };
+    //       });
+    //     } else if (event.target.name === "teamB_rate") {
+    //       let result = handleHunderedValue(
+    //         targetValue,
+    //         localQuickBookmaker?.teamB?.lay
+    //       );
+    //       if (result) {
+    //         return;
+    //       }
+    //       let teamBRateDecimal = localQuickBookmaker?.teamB?.rate % 1; // get the decimal portion of the number
+    //       let value;
+    //       if (teamBRateDecimal >= 0.5) {
+    //         value = parseFloat(event.target.value) + 1;
+    //       } else {
+    //         value = parseFloat(event.target.value) + 0.5;
+    //       }
 
-          if (!value) {
-            return;
-          }
+    //       if (!value) {
+    //         return;
+    //       }
 
-          socket.emit("updateRate", {
-            matchId: match?.id,
-            id: Bid,
-            teamA: match?.teamA,
-            teamB: match?.teamB,
-            teamC: match?.teamC,
-            betId: localSelectedBookmaker?.betId,
-            teamB_lay: value + 1,
-            teamB_Back: value,
-            teamB_suspend: false,
-            teamA_lay: "",
-            teamA_Back: "",
-            teamA_suspend: true,
-            teamC_lay: "",
-            teamC_Back: "",
-            teamC_suspend: true,
-            layLock: false,
-            isSingle: true,
-          });
-          setLocalQuickBookmaker((prev) => {
-            const newBody = {
-              ...prev,
-              teamA: { ...prev?.teamA, lay: "", rate: "" },
-              teamB: { ...prev?.teamB, lay: value + 1, rate: value },
-              teamC: { ...prev?.teamC, lay: "", rate: "" },
-            };
-            // dispatch(setQuickBookmaker(newBody));
-            return newBody;
-          });
+    //       socket.emit("updateRate", {
+    //         matchId: match?.id,
+    //         id: Bid,
+    //         teamA: match?.teamA,
+    //         teamB: match?.teamB,
+    //         teamC: match?.teamC,
+    //         betId: localSelectedBookmaker?.betId,
+    //         teamB_lay: value + 1,
+    //         teamB_Back: value,
+    //         teamB_suspend: false,
+    //         teamA_lay: "",
+    //         teamA_Back: "",
+    //         teamA_suspend: true,
+    //         teamC_lay: "",
+    //         teamC_Back: "",
+    //         teamC_suspend: true,
+    //         layLock: false,
+    //         isSingle: true,
+    //       });
+    //       setLocalQuickBookmaker((prev) => {
+    //         const newBody = {
+    //           ...prev,
+    //           teamA: { ...prev?.teamA, lay: "", rate: "" },
+    //           teamB: { ...prev?.teamB, lay: value + 1, rate: value },
+    //           teamC: { ...prev?.teamC, lay: "", rate: "" },
+    //         };
+    //         // dispatch(setQuickBookmaker(newBody));
+    //         return newBody;
+    //       });
 
-          setLQuickBookMaker((prev) => {
-            return {
-              ...prev,
-              l_teamARate: "",
-              l_teamALayValue: "",
-              l_teamBRate: value,
-              l_teamBLayValue: value + 1,
-              l_teamCRate: "",
-              l_teamCLayValue: "",
-            };
-          });
-        } else if (event.target.name === "teamC_rate") {
-          let result = handleHunderedValue(
-            targetValue,
-            localQuickBookmaker?.teamC?.lay
-          );
-          if (result) {
-            return;
-          }
-          let teamCRateDecimal = localQuickBookmaker?.teamC?.rate % 1; // get the decimal portion of the number
-          let value;
-          if (teamCRateDecimal >= 0.5) {
-            value = parseFloat(event.target.value) + 1;
-          } else {
-            value = parseFloat(event.target.value) + 0.5;
-          }
+    //       setLQuickBookMaker((prev) => {
+    //         return {
+    //           ...prev,
+    //           l_teamARate: "",
+    //           l_teamALayValue: "",
+    //           l_teamBRate: value,
+    //           l_teamBLayValue: value + 1,
+    //           l_teamCRate: "",
+    //           l_teamCLayValue: "",
+    //         };
+    //       });
+    //     } else if (event.target.name === "teamC_rate") {
+    //       let result = handleHunderedValue(
+    //         targetValue,
+    //         localQuickBookmaker?.teamC?.lay
+    //       );
+    //       if (result) {
+    //         return;
+    //       }
+    //       let teamCRateDecimal = localQuickBookmaker?.teamC?.rate % 1; // get the decimal portion of the number
+    //       let value;
+    //       if (teamCRateDecimal >= 0.5) {
+    //         value = parseFloat(event.target.value) + 1;
+    //       } else {
+    //         value = parseFloat(event.target.value) + 0.5;
+    //       }
 
-          if (!value || value + 1 > 99.5) {
-            return;
-          }
-          socket.emit("updateRate", {
-            matchId: match?.id,
-            id: Bid,
-            teamA: match?.teamA,
-            teamB: match?.teamB,
-            teamC: match?.teamC,
-            betId: localSelectedBookmaker?.betId,
-            teamC_lay: value + 1,
-            teamC_Back: value,
-            teamC_suspend: false,
-            teamA_lay: "",
-            teamA_Back: "",
-            teamA_suspend: true,
-            teamB_lay: "",
-            teamB_Back: "",
-            teamB_suspend: true,
-            layLock: false,
-            isSingle: true,
-          });
+    //       if (!value || value + 1 > 99.5) {
+    //         return;
+    //       }
+    //       socket.emit("updateRate", {
+    //         matchId: match?.id,
+    //         id: Bid,
+    //         teamA: match?.teamA,
+    //         teamB: match?.teamB,
+    //         teamC: match?.teamC,
+    //         betId: localSelectedBookmaker?.betId,
+    //         teamC_lay: value + 1,
+    //         teamC_Back: value,
+    //         teamC_suspend: false,
+    //         teamA_lay: "",
+    //         teamA_Back: "",
+    //         teamA_suspend: true,
+    //         teamB_lay: "",
+    //         teamB_Back: "",
+    //         teamB_suspend: true,
+    //         layLock: false,
+    //         isSingle: true,
+    //       });
 
-          setLocalQuickBookmaker((prev) => {
-            const newBody = {
-              ...prev,
-              teamA: { ...prev?.teamA, lay: "", rate: "" },
-              teamB: { ...prev?.teamB, lay: "", rate: "" },
-              teamC: { ...prev?.teamC, lay: value + 1, rate: value },
-            };
-            // dispatch(setQuickBookmaker(newBody));
-            return newBody;
-          });
+    //       setLocalQuickBookmaker((prev) => {
+    //         const newBody = {
+    //           ...prev,
+    //           teamA: { ...prev?.teamA, lay: "", rate: "" },
+    //           teamB: { ...prev?.teamB, lay: "", rate: "" },
+    //           teamC: { ...prev?.teamC, lay: value + 1, rate: value },
+    //         };
+    //         // dispatch(setQuickBookmaker(newBody));
+    //         return newBody;
+    //       });
 
-          setLQuickBookMaker((prev) => {
-            return {
-              ...prev,
-              l_teamARate: "",
-              l_teamALayValue: "",
-              l_teamBRate: "",
-              l_teamBLayValue: "",
-              l_teamCRate: value,
-              l_teamCLayValue: value + 1,
-            };
-          });
-        }
-      } else {
-        if (event.target.name === "teamA_rate") {
-          let value = Math.round(localQuickBookmaker?.teamA?.rate) + incGap;
+    //       setLQuickBookMaker((prev) => {
+    //         return {
+    //           ...prev,
+    //           l_teamARate: "",
+    //           l_teamALayValue: "",
+    //           l_teamBRate: "",
+    //           l_teamBLayValue: "",
+    //           l_teamCRate: value,
+    //           l_teamCLayValue: value + 1,
+    //         };
+    //       });
+    //     }
+    //   } else {
+    //     if (event.target.name === "teamA_rate") {
+    //       let value = Math.round(localQuickBookmaker?.teamA?.rate) + incGap;
 
-          setLocalQuickBookmaker((prev) => {
-            const newBody = {
-              ...prev,
-              teamA: {
-                ...prev?.teamA,
-                lay: value ? value + incGap : incGap,
-                rate: value ? value : 1,
-              },
-              teamB: { ...prev?.teamB, rate: "", lay: "" },
-              teamC: { ...prev?.teamC, rate: "", lay: "" },
-            };
-            // dispatch(setQuickBookmaker(newBody));
-            return newBody;
-          });
+    //       setLocalQuickBookmaker((prev) => {
+    //         const newBody = {
+    //           ...prev,
+    //           teamA: {
+    //             ...prev?.teamA,
+    //             lay: value ? value + incGap : incGap,
+    //             rate: value ? value : 1,
+    //           },
+    //           teamB: { ...prev?.teamB, rate: "", lay: "" },
+    //           teamC: { ...prev?.teamC, rate: "", lay: "" },
+    //         };
+    //         // dispatch(setQuickBookmaker(newBody));
+    //         return newBody;
+    //       });
 
-          setLQuickBookMaker((prev) => {
-            return {
-              ...prev,
-              l_teamARate: value ? value : 1,
-              l_teamALayValue: value ? value + incGap : incGap,
-              l_teamBRate: "",
-              l_teamBLayValue: "",
-              l_teamCRate: "",
-              l_teamCLayValue: "",
-            };
-          });
-        } else if (event.target.name === "teamB_rate") {
-          let value = Math.round(localQuickBookmaker?.teamB?.rate) + incGap;
+    //       setLQuickBookMaker((prev) => {
+    //         return {
+    //           ...prev,
+    //           l_teamARate: value ? value : 1,
+    //           l_teamALayValue: value ? value + incGap : incGap,
+    //           l_teamBRate: "",
+    //           l_teamBLayValue: "",
+    //           l_teamCRate: "",
+    //           l_teamCLayValue: "",
+    //         };
+    //       });
+    //     } else if (event.target.name === "teamB_rate") {
+    //       let value = Math.round(localQuickBookmaker?.teamB?.rate) + incGap;
 
-          setLocalQuickBookmaker((prev) => {
-            const newBody = {
-              ...prev,
-              teamA: { ...prev?.teamA, rate: "", lay: "" },
-              teamB: {
-                ...prev?.teamB,
-                lay: value ? value + incGap : incGap,
-                rate: value ? value : 1,
-              },
-              teamC: { ...prev?.teamC, rate: "", lay: "" },
-            };
-            // dispatch(setQuickBookmaker(newBody));
-            return newBody;
-          });
+    //       setLocalQuickBookmaker((prev) => {
+    //         const newBody = {
+    //           ...prev,
+    //           teamA: { ...prev?.teamA, rate: "", lay: "" },
+    //           teamB: {
+    //             ...prev?.teamB,
+    //             lay: value ? value + incGap : incGap,
+    //             rate: value ? value : 1,
+    //           },
+    //           teamC: { ...prev?.teamC, rate: "", lay: "" },
+    //         };
+    //         // dispatch(setQuickBookmaker(newBody));
+    //         return newBody;
+    //       });
 
-          setLQuickBookMaker((prev) => {
-            return {
-              ...prev,
-              l_teamARate: "",
-              l_teamALayValue: "",
-              l_teamBRate: value ? value : 1,
-              l_teamBLayValue: value ? value + incGap : incGap,
-              l_teamCRate: "",
-              l_teamCLayValue: "",
-            };
-          });
-        } else if (event.target.name === "teamC_rate") {
-          let value = Math.round(localQuickBookmaker?.teamC?.rate) + incGap;
+    //       setLQuickBookMaker((prev) => {
+    //         return {
+    //           ...prev,
+    //           l_teamARate: "",
+    //           l_teamALayValue: "",
+    //           l_teamBRate: value ? value : 1,
+    //           l_teamBLayValue: value ? value + incGap : incGap,
+    //           l_teamCRate: "",
+    //           l_teamCLayValue: "",
+    //         };
+    //       });
+    //     } else if (event.target.name === "teamC_rate") {
+    //       let value = Math.round(localQuickBookmaker?.teamC?.rate) + incGap;
 
-          setLocalQuickBookmaker((prev) => {
-            const newBody = {
-              ...prev,
-              teamA: { ...prev?.teamA, rate: "", lay: "" },
-              teamB: { ...prev?.teamB, rate: "", lay: "" },
-              teamC: {
-                ...prev?.teamC,
-                lay: value ? value + incGap : incGap,
-                rate: value ? value : 1,
-              },
-            };
-            // dispatch(setQuickBookmaker(newBody));
-            return newBody;
-          });
+    //       setLocalQuickBookmaker((prev) => {
+    //         const newBody = {
+    //           ...prev,
+    //           teamA: { ...prev?.teamA, rate: "", lay: "" },
+    //           teamB: { ...prev?.teamB, rate: "", lay: "" },
+    //           teamC: {
+    //             ...prev?.teamC,
+    //             lay: value ? value + incGap : incGap,
+    //             rate: value ? value : 1,
+    //           },
+    //         };
+    //         // dispatch(setQuickBookmaker(newBody));
+    //         return newBody;
+    //       });
 
-          setLQuickBookMaker((prev) => {
-            return {
-              ...prev,
-              l_teamARate: "",
-              l_teamALayValue: "",
-              l_teamBRate: "",
-              l_teamBLayValue: "",
-              l_teamCRate: value ? value : 1,
-              l_teamCLayValue: value ? value + incGap : incGap,
-            };
-          });
-        }
-      }
-    }
+    //       setLQuickBookMaker((prev) => {
+    //         return {
+    //           ...prev,
+    //           l_teamARate: "",
+    //           l_teamALayValue: "",
+    //           l_teamBRate: "",
+    //           l_teamBLayValue: "",
+    //           l_teamCRate: value ? value : 1,
+    //           l_teamCLayValue: value ? value + incGap : incGap,
+    //         };
+    //       });
+    //     }
+    //   }
+    // }
     if (key == "minus") {
       // if (targetValue === null || "" || NaN) {
       //   return;
       // }
+      handleSuspend();
       if (isTab == "tab") {
-        handleSuspend();
         setIsTab("");
       }
       if (incGap != 5) {
@@ -3326,25 +3326,25 @@ const AddSession = ({ add, match, Bid }) => {
             return;
           }
 
-          socket.emit("updateRate", {
-            matchId: match?.id,
-            id: Bid,
-            teamA: match?.teamA,
-            teamB: match?.teamB,
-            teamC: match?.teamC,
-            betId: localSelectedBookmaker?.betId,
-            teamA_lay: value ? value + 1 : "",
-            teamA_Back: value ? value : "",
-            teamA_suspend: false,
-            teamB_lay: "",
-            teamB_Back: "",
-            teamB_suspend: true,
-            teamC_lay: "",
-            teamC_Back: "",
-            teamC_suspend: true,
-            layLock: false,
-            isSingle: true,
-          });
+          // socket.emit("updateRate", {
+          //   matchId: match?.id,
+          //   id: Bid,
+          //   teamA: match?.teamA,
+          //   teamB: match?.teamB,
+          //   teamC: match?.teamC,
+          //   betId: localSelectedBookmaker?.betId,
+          //   teamA_lay: value ? value + 1 : "",
+          //   teamA_Back: value ? value : "",
+          //   teamA_suspend: false,
+          //   teamB_lay: "",
+          //   teamB_Back: "",
+          //   teamB_suspend: true,
+          //   teamC_lay: "",
+          //   teamC_Back: "",
+          //   teamC_suspend: true,
+          //   layLock: false,
+          //   isSingle: true,
+          // });
 
           setLocalQuickBookmaker((prev) => {
             const newBody = {
@@ -3388,25 +3388,25 @@ const AddSession = ({ add, match, Bid }) => {
             return;
           }
 
-          socket.emit("updateRate", {
-            matchId: match?.id,
-            id: Bid,
-            teamA: match?.teamA,
-            teamB: match?.teamB,
-            teamC: match?.teamC,
-            betId: localSelectedBookmaker?.betId,
-            teamB_lay: value + 1,
-            teamB_Back: value,
-            teamB_suspend: false,
-            teamA_lay: "",
-            teamA_Back: "",
-            teamA_suspend: true,
-            teamC_lay: "",
-            teamC_Back: "",
-            teamC_suspend: true,
-            layLock: false,
-            isSingle: true,
-          });
+          // socket.emit("updateRate", {
+          //   matchId: match?.id,
+          //   id: Bid,
+          //   teamA: match?.teamA,
+          //   teamB: match?.teamB,
+          //   teamC: match?.teamC,
+          //   betId: localSelectedBookmaker?.betId,
+          //   teamB_lay: value + 1,
+          //   teamB_Back: value,
+          //   teamB_suspend: false,
+          //   teamA_lay: "",
+          //   teamA_Back: "",
+          //   teamA_suspend: true,
+          //   teamC_lay: "",
+          //   teamC_Back: "",
+          //   teamC_suspend: true,
+          //   layLock: false,
+          //   isSingle: true,
+          // });
 
           setLocalQuickBookmaker((prev) => {
             const newBody = {
@@ -3450,25 +3450,25 @@ const AddSession = ({ add, match, Bid }) => {
             return;
           }
 
-          socket.emit("updateRate", {
-            matchId: match?.id,
-            id: Bid,
-            teamA: match?.teamA,
-            teamB: match?.teamB,
-            teamC: match?.teamC,
-            betId: localSelectedBookmaker?.betId,
-            teamC_lay: value + 1,
-            teamC_Back: value,
-            teamC_suspend: false,
-            teamB_lay: "",
-            teamB_Back: "",
-            teamB_suspend: true,
-            teamA_lay: "",
-            teamA_Back: "",
-            teamA_suspend: true,
-            layLock: false,
-            isSingle: true,
-          });
+          // socket.emit("updateRate", {
+          //   matchId: match?.id,
+          //   id: Bid,
+          //   teamA: match?.teamA,
+          //   teamB: match?.teamB,
+          //   teamC: match?.teamC,
+          //   betId: localSelectedBookmaker?.betId,
+          //   teamC_lay: value + 1,
+          //   teamC_Back: value,
+          //   teamC_suspend: false,
+          //   teamB_lay: "",
+          //   teamB_Back: "",
+          //   teamB_suspend: true,
+          //   teamA_lay: "",
+          //   teamA_Back: "",
+          //   teamA_suspend: true,
+          //   layLock: false,
+          //   isSingle: true,
+          // });
 
           setLocalQuickBookmaker((prev) => {
             const newBody = {
