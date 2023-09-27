@@ -10,6 +10,7 @@ import SessionComponentMatches from "./SessionComponentMatches";
 import SessionBetSeperate from "./sessionBetSeperate";
 import AllRateSeperate from "./AllRateSeperate";
 import AllUserListSeparate from "./AllUserListSeparate";
+import { setRole } from "../newStore";
 
 const RowComponentMatches = ({
   item,
@@ -20,7 +21,7 @@ const RowComponentMatches = ({
   sessionBets,
   getBetReport,
   user,
-  data,
+  userProfitLoss,
   getUserProfitLoss,
 }) => {
   const [showBets, setShowBets] = useState(false);
@@ -29,6 +30,24 @@ const RowComponentMatches = ({
   const [showListOfUsers, setShowListOfUsers] = useState(false);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [childUserList, setChildUserList] = useState([]);
+  const [showChildUserList, setShowChildUserList] = useState(false);
+
+  let { axios } = setRole();
+
+  const getChildUserList = async (user) => {
+    try {
+      const { data } = await axios.post(
+        `/betting/getUserProfitLoss?userId=${user}&match_id=${item?.matchId}`
+      );
+      if (data?.data) {
+        setChildUserList(data?.data);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -41,8 +60,8 @@ const RowComponentMatches = ({
           ) {
             setShowListOfUsers((prev) => !prev);
           } else {
-            // getUserProfitLoss(item?.matchId);
             setShowListOfUsers(true);
+            getUserProfitLoss(item?.matchId);
             getBetReport({
               eventType: item?.eventType,
               match_id: item?.matchId,
@@ -137,7 +156,7 @@ const RowComponentMatches = ({
               ({moment(item.matchDate).format("DD-MM-YYYY")})
             </Typography>
           </Box>
-          {/* {user === "admin" && (
+          {user === "admin" && (
             <StyledImage
               src={ArrowDown}
               sx={{
@@ -151,7 +170,7 @@ const RowComponentMatches = ({
                     : "rotate(0deg)",
               }}
             />
-          )} */}
+          )}
           {/* <StyledImage
               src={ArrowDown}
               sx={{
@@ -376,7 +395,7 @@ const RowComponentMatches = ({
       </Box>
       {selectedId?.id === item?.matchId && (
         <>
-          {/* {selectedId?.type === "users_list" && showListOfUsers && (
+          {selectedId?.type === "users_list" && showListOfUsers && (
             <>
               <Box
                 sx={{
@@ -390,54 +409,39 @@ const RowComponentMatches = ({
                 <Box Box sx={{ width: "100%", display: "flex", gap: 1 }}>
                   <Box
                     sx={{
-                      width: { mobile: "100%", laptop: "50%", tablet: "100%" },
-                      maxHeight: "51vh",
+                      width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                      // maxHeight: "51vh",
                       overflow: "hidden",
-                      overflowY: "auto",
+                      // overflowY: "auto",
                       marginY: { mobile: ".2vh", laptop: "1vh" },
                       padding: 0.2,
                     }}
                   >
-                    {data?.length > 0 &&
-                      data?.map((item, index) => {
+                    {userProfitLoss?.length > 0 &&
+                      userProfitLoss?.map((profitLoss, index) => {
                         return (
                           <AllUserListSeparate
                             key={index}
-                            item={item}
+                            item={profitLoss}
                             index={index + 1}
-                            showSessionBets={showSessionBets}
-                            setShowSessionBets={setShowSessionBets}
+                            matchId={item?.matchId}
+                            childUserList={childUserList}
+                            showListOfUsers={showListOfUsers}
+                            selectedUserId={selectedUserId}
+                            getChildUserList={getChildUserList}
+                            showChildUserList={showChildUserList}
+                            setShowChildUserList={setShowChildUserList}
+                            setSelectedUserId={setSelectedUserId}
                             getBetReport={getBetReport}
-                            selectedId={selectedId}
                             sessionBetData={sessionBetData}
                           />
                         );
                       })}
                   </Box>
-                  {selectedId?.betId !== "" &&
-                    !matchesMobile &&
-                    showSessionBets && (
-                      <Box
-                        sx={{
-                          width: {
-                            mobile: "100%",
-                            laptop: "49%",
-                            tablet: "100%",
-                          },
-                        }}
-                      >
-                        <SessionBetSeperate
-                          betHistory={false}
-                          allBetsData={sessionBetData}
-                          profit
-                          isArrow={true}
-                        />
-                      </Box>
-                    )}
                 </Box>
               </Box>
             </>
-          )} */}
+          )}
           {selectedId?.type === "all_bet" && showBets && (
             <>
               <Box

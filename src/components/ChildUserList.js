@@ -6,39 +6,18 @@ import { StyledImage } from ".";
 import { ArrowDown } from "../assets";
 import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import SessionBetSeperate from "./sessionBetSeperate";
-import ChildUserList from "./ChildUserList";
 import { useState } from "react";
 
-const AllUserListSeparate = ({
-  item,
-  index,
-  getBetReport,
-  showListOfUsers,
-  sessionBetData,
-  getChildUserList,
-  selectedId,
-  setShowChildUserList,
-  showChildUserList,
-  selectedUserId,
-  childUserList,
-  setSelectedUserId,
-  matchId,
-}) => {
+const ChildUserList = ({ item, index, selectedId, sessionBetData }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [showSessionResultList, setShowSessionResultList] = useState(false);
+  const [showSessionList, setShowSessionList] = useState(false);
 
   return (
     <Box key={index} sx={{ width: "100%" }}>
       <Box
         onClick={() => {
-          setSelectedUserId(item?.userId);
-          if (item?.role !== "user") {
-            setShowChildUserList((prev) => !prev);
-            getChildUserList(item?.userId);
-          } else if (item?.role === "user") {
-            setShowSessionResultList((prev) => !prev);
-          }
+          setShowSessionList((prev) => !prev);
         }}
         sx={{
           width: "100%",
@@ -114,20 +93,6 @@ const AllUserListSeparate = ({
               {item?.userName}
             </Typography>
           </Box>
-          {item?.role !== "user" && (
-            <StyledImage
-              onClick={() => {}}
-              src={ArrowDown}
-              sx={{
-                width: { laptop: "20px", mobile: "10px" },
-                height: { laptop: "10px", mobile: "6px" },
-                transform:
-                  selectedUserId === item?.userId && showChildUserList
-                    ? "rotate(180deg)"
-                    : "rotate(0deg)",
-              }}
-            />
-          )}
         </Box>
 
         <Box
@@ -235,46 +200,7 @@ const AllUserListSeparate = ({
           </Box>
         </Box>
       </Box>
-      {showChildUserList &&
-        selectedUserId === item?.userId &&
-        item?.role !== "user" && (
-          <>
-            <Box
-              sx={{
-                width: { mobile: "100%", laptop: "96%" },
-                marginTop: { mobile: ".25vh" },
-                marginLeft: { laptop: "4%" },
-                display: "flex",
-                flexDirection: { laptop: "row", mobile: "column" },
-              }}
-            >
-              <Box Box sx={{ width: "100%", display: "flex", gap: 1 }}>
-                <Box
-                  sx={{
-                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-                    maxHeight: "51vh",
-                    overflow: "hidden",
-                    // overflowY: "auto",
-                    marginY: { mobile: ".2vh", laptop: "1vh" },
-                    padding: 0.2,
-                  }}
-                >
-                  {childUserList?.length > 0 &&
-                    childUserList.map((item, index) => {
-                      return (
-                        <ChildUserList
-                          key={index}
-                          item={item}
-                          index={index + 1}
-                        />
-                      );
-                    })}
-                </Box>
-              </Box>
-            </Box>
-          </>
-        )}
-      {showSessionResultList && item?.role === "user" && (
+      {showSessionList && item?.role === "user" && (
         <Box
           sx={{
             width: { mobile: "100%", laptop: "96%" },
@@ -309,4 +235,4 @@ const AllUserListSeparate = ({
   );
 };
 
-export default memo(AllUserListSeparate);
+export default memo(ChildUserList);
