@@ -262,33 +262,33 @@ const AddMatchComp = () => {
         ...Detail,
         33: {
           ...Detail[33],
-          val: "Select tournament"
+          val: "Select tournament",
         },
         5: {
           ...Detail[5],
-          val: "Select match"
+          val: "Select match",
         },
         22: {
           ...Detail[22],
-          val: ""
+          val: "",
         },
-        9:{
+        9: {
           ...Detail[9],
-          val: ""
+          val: "",
         },
-        13:{
+        13: {
           ...Detail[13],
-          val: ""
+          val: "",
         },
-        17:{
+        17: {
           ...Detail[17],
-          val: ""
+          val: "",
         },
-        2:{
+        2: {
           ...Detail[2],
-          val: new Date()
-        }
-      })
+          val: new Date(),
+        },
+      });
       const { data } = await microServiceAxios.get(`/competitionList`);
       console.log("getAllLiveTournaments", data);
       let tournamentList = [];
@@ -312,29 +312,32 @@ const AddMatchComp = () => {
         ...Detail,
         5: {
           ...Detail[5],
-          val: "Select match"
+          val: "Select match",
         },
         22: {
           ...Detail[22],
-          val: ""
+          val: "",
         },
-        9:{
+        9: {
           ...Detail[9],
-          val: ""
+          val: "",
         },
-        13:{
+        13: {
           ...Detail[13],
-          val: ""
+          val: "",
         },
-        17:{
+        17: {
           ...Detail[17],
-          val: ""
+          val: "",
         },
-        2:{
+        2: {
           ...Detail[2],
-          val: new Date()
-        }
-      })
+          val: new Date(),
+        },
+      });
+      if (Detail[34].val === "") {
+        return;
+      }
       const { data } = await microServiceAxios.get(
         `/eventList/${Detail[34].val}`
       );
