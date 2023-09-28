@@ -38,9 +38,11 @@ const RowComponentMatches = ({
 
   const getChildUserList = async (user) => {
     try {
-      const { data } = await axios.post(
-        `/betting/getUserProfitLoss?userId=${user}&match_id=${item?.matchId}`
-      );
+      let payload = {
+        userId: user,
+        match_id: item?.matchId,
+      };
+      const { data } = await axios.post(`/betting/getUserProfitLoss`, payload);
       if (data?.data) {
         setChildUserList(data?.data);
       }

@@ -196,9 +196,11 @@ const ProfitLoss = () => {
 
   async function getUserProfitLoss(matchId) {
     try {
-      const { data } = await axios.post(
-        `/betting/getUserProfitLoss?userId=${currentUserId}&match_id=${matchId}`
-      );
+      let payload = {
+        userId: currentUserId,
+        match_id: matchId,
+      };
+      const { data } = await axios.post(`/betting/getUserProfitLoss`, payload);
       if (data?.data) {
         setUserProfitLoss(data?.data);
         setPageCount(
