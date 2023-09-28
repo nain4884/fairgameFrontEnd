@@ -541,7 +541,7 @@ const MatchScreen = () => {
   const handleSession = useCallback(
     (val) => {
       try {
-        if (state?.marketId === marketId) {
+        if (val !== null && state?.marketId === marketId) {
           var newVal = val?.map((v) => ({
             bet_condition: v?.RunnerName,
             betStatus: 0,
