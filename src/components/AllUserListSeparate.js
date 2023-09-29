@@ -353,9 +353,9 @@ const AllUserListSeparate = ({
         <>
           <Box
             sx={{
-              width: { mobile: "100%", laptop: "96%" },
+              width: { mobile: "100%", laptop: "99%" },
               marginTop: { mobile: ".25vh" },
-              marginLeft: { laptop: "4%" },
+              marginLeft: { laptop: "1%" },
               display: "flex",
               flexDirection: { laptop: "row", mobile: "column" },
             }}
@@ -364,7 +364,7 @@ const AllUserListSeparate = ({
               <Box
                 sx={{
                   width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-                  maxHeight: "51vh",
+                  // maxHeight: "51vh",
                   overflow: "hidden",
                   // overflowY: "auto",
                   marginY: { mobile: ".2vh", laptop: "1vh" },
@@ -400,8 +400,8 @@ const AllUserListSeparate = ({
             <Box
               sx={{
                 width: { mobile: "50%", laptop: "50%", tablet: "50%" },
-                // maxHeight: "51vh",
-                // overflow: "hidden",
+                maxHeight: "51vh",
+                overflow: "hidden",
                 // overflowY: "auto",
                 marginY: { mobile: ".2vh", laptop: "1vh" },
                 padding: 0.2,
