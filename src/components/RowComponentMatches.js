@@ -35,10 +35,7 @@ const RowComponentMatches = ({
       <Box
         onClick={(e) => {
           e.stopPropagation();
-          if (
-            selectedId?.id === item?.matchId &&
-            selectedId?.type === "users_list"
-          ) {
+          if (selectedId?.id === item?.matchId) {
             setShowListOfUsers((prev) => !prev);
           } else {
             setShowListOfUsers(true);
@@ -46,7 +43,7 @@ const RowComponentMatches = ({
             getBetReport({
               eventType: item?.eventType,
               match_id: item?.matchId,
-              type: "users_list",
+              type: "",
               betId: "",
               sessionBet: false,
             });
@@ -144,9 +141,7 @@ const RowComponentMatches = ({
                 width: { laptop: "20px", mobile: "10px" },
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
-                  selectedId?.id === item?.matchId &&
-                  showListOfUsers &&
-                  selectedId?.type === "users_list"
+                  selectedId?.id === item?.matchId && showListOfUsers
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}
@@ -376,13 +371,13 @@ const RowComponentMatches = ({
       </Box>
       {selectedId?.id === item?.matchId && (
         <>
-          {selectedId?.type === "users_list" && showListOfUsers && (
+          {showListOfUsers && (
             <>
               <Box
                 sx={{
-                  width: { mobile: "100%", laptop: "96%" },
+                  width: { mobile: "100%", laptop: "99%" },
                   marginTop: { mobile: ".25vh" },
-                  marginLeft: { laptop: "4%" },
+                  marginLeft: { laptop: "1%" },
                   display: "flex",
                   flexDirection: { laptop: "row", mobile: "column" },
                 }}
