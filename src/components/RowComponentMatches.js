@@ -10,7 +10,6 @@ import SessionComponentMatches from "./SessionComponentMatches";
 import SessionBetSeperate from "./sessionBetSeperate";
 import AllRateSeperate from "./AllRateSeperate";
 import AllUserListSeparate from "./AllUserListSeparate";
-import { setRole } from "../newStore";
 
 const RowComponentMatches = ({
   item,
@@ -30,26 +29,6 @@ const RowComponentMatches = ({
   const [showListOfUsers, setShowListOfUsers] = useState(false);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [selectedUserId, setSelectedUserId] = useState("");
-  const [childUserList, setChildUserList] = useState([]);
-  const [showChildUserList, setShowChildUserList] = useState(false);
-
-  let { axios } = setRole();
-
-  const getChildUserList = async (user) => {
-    try {
-      let payload = {
-        userId: user,
-        match_id: item?.matchId,
-      };
-      const { data } = await axios.post(`/betting/getUserProfitLoss`, payload);
-      if (data?.data) {
-        setChildUserList(data?.data);
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -427,13 +406,7 @@ const RowComponentMatches = ({
                             item={profitLoss}
                             index={index + 1}
                             matchId={item?.matchId}
-                            childUserList={childUserList}
                             showListOfUsers={showListOfUsers}
-                            selectedUserId={selectedUserId}
-                            getChildUserList={getChildUserList}
-                            showChildUserList={showChildUserList}
-                            setShowChildUserList={setShowChildUserList}
-                            setSelectedUserId={setSelectedUserId}
                             getBetReport={getBetReport}
                             sessionBetData={sessionBetData}
                           />

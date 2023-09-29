@@ -8,6 +8,8 @@ import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import SessionBetSeperate from "./sessionBetSeperate";
 import ChildUserList from "./ChildUserList";
 import { useState } from "react";
+import { useEffect } from "react";
+import { setRole } from "../newStore";
 
 const AllUserListSeparate = ({
   item,
@@ -15,30 +17,49 @@ const AllUserListSeparate = ({
   getBetReport,
   showListOfUsers,
   sessionBetData,
-  getChildUserList,
   selectedId,
-  setShowChildUserList,
-  showChildUserList,
-  selectedUserId,
-  childUserList,
-  setSelectedUserId,
   matchId,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [showSessionResultList, setShowSessionResultList] = useState(false);
+  const [showChildUserList, setShowChildUserList] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState("");
+  const [data1, setData] = useState([]);
+
+  const [showSubUsers, setSubSusers] = useState({
+    value: false,
+    id: "",
+  });
 
   return (
     <Box key={index} sx={{ width: "100%" }}>
       <Box
         onClick={() => {
-          setSelectedUserId(item?.userId);
-          if (item?.role !== "user") {
-            setShowChildUserList((prev) => !prev);
-            getChildUserList(item?.userId);
-          } else if (item?.role === "user") {
-            setShowSessionResultList((prev) => !prev);
+          if (!["user"].includes(item?.role)) {
+            if (showSubUsers?.value && showSubUsers?.id === item?.userId) {
+              setSubSusers({
+                value: false,
+                id: "",
+              });
+              setShowChildUserList(false);
+            } else {
+              setSubSusers({
+                value: true,
+                id: item?.userId,
+              });
+            }
+            setShowChildUserList(true);
+          } else {
+            setShowSessionResultList(true);
           }
+          // if (item?.role !== "user") {
+          //   setShowChildUserList(true);
+          //   setSelectedUserId(item?.userId);
+          // } else if (item?.role === "user") {
+          //   setShowSessionResultList((prev) => !prev);
+          //   setSelectedUserId(item?.userId);
+          // }
         }}
         sx={{
           width: "100%",
@@ -122,7 +143,7 @@ const AllUserListSeparate = ({
                 width: { laptop: "20px", mobile: "10px" },
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
-                  selectedUserId === item?.userId && showChildUserList
+                  showSubUsers?.id === item?.userId && showChildUserList
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}
@@ -235,45 +256,42 @@ const AllUserListSeparate = ({
           </Box>
         </Box>
       </Box>
-      {showChildUserList &&
-        selectedUserId === item?.userId &&
-        item?.role !== "user" && (
-          <>
-            <Box
-              sx={{
-                width: { mobile: "100%", laptop: "96%" },
-                marginTop: { mobile: ".25vh" },
-                marginLeft: { laptop: "4%" },
-                display: "flex",
-                flexDirection: { laptop: "row", mobile: "column" },
-              }}
-            >
-              <Box Box sx={{ width: "100%", display: "flex", gap: 1 }}>
-                <Box
-                  sx={{
-                    width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-                    maxHeight: "51vh",
-                    overflow: "hidden",
-                    // overflowY: "auto",
-                    marginY: { mobile: ".2vh", laptop: "1vh" },
-                    padding: 0.2,
-                  }}
-                >
-                  {childUserList?.length > 0 &&
-                    childUserList.map((item, index) => {
-                      return (
-                        <ChildUserList
-                          key={index}
-                          item={item}
-                          index={index + 1}
-                        />
-                      );
-                    })}
-                </Box>
+      {showSubUsers?.value && (
+        <>
+          <Box
+            sx={{
+              width: { mobile: "100%", laptop: "96%" },
+              marginTop: { mobile: ".25vh" },
+              marginLeft: { laptop: "4%" },
+              display: "flex",
+              flexDirection: { laptop: "row", mobile: "column" },
+            }}
+          >
+            <Box Box sx={{ width: "100%", display: "flex", gap: 1 }}>
+              <Box
+                sx={{
+                  width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                  maxHeight: "51vh",
+                  overflow: "hidden",
+                  // overflowY: "auto",
+                  marginY: { mobile: ".2vh", laptop: "1vh" },
+                  padding: 0.2,
+                }}
+              >
+                <ChildUserList
+                  id={showSubUsers?.id}
+                  show={showSubUsers?.value}
+                  setShow={setSubSusers}
+                  matchId={matchId}
+                  getBetReport={getBetReport}
+                  sessionBetData={sessionBetData}
+                />
               </Box>
             </Box>
-          </>
-        )}
+          </Box>
+        </>
+      )}
+
       {showSessionResultList && item?.role === "user" && (
         <Box
           sx={{
