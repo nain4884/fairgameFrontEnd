@@ -42,7 +42,8 @@ const AllUserListSeparate = ({
       let payload = {
         gameType: item?.eventType,
         userId: item?.userId,
-        matchId: matchId,
+        // matchId: matchId,
+        match_id: matchId,
       };
       let payload2 = {
         gameType: item?.eventType,
@@ -230,7 +231,7 @@ const AllUserListSeparate = ({
           </Box>
           {item?.role !== "user" && (
             <StyledImage
-              onClick={() => {}}
+              onClick={() => { }}
               src={ArrowDown}
               sx={{
                 width: { laptop: "20px", mobile: "10px" },

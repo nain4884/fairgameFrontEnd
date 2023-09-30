@@ -276,7 +276,7 @@ const UserProfitLoss = ({ title, matchId, setShowUserProfitLoss, single }) => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              maxHeight: "160px",
+              maxHeight: single === "single" ? "400" : "160px",
               width: "100%",
               position: "relative",
             }}

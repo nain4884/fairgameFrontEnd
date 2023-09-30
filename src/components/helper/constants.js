@@ -11,7 +11,7 @@ module.exports = {
   // apiBasePath: "http://localhost:3100/", // server url
   // apiMicroBasePath: "http://localhost:3100", // server url
   // microServiceApiPath: "http://localhost:3200",
-  
+
   // thirdPartyAPIBasePath: "http://3.23.22.210:4001/api/", // third party api url
 
   //---------------------------------------User Roles--------------------------------------------------\\

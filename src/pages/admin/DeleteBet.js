@@ -34,7 +34,7 @@ import UserProfitLoss from "./matches/UserProfitLoss";
 import _ from "lodash";
 
 let matchOddsCount = 0;
-const DeleteBet = ({}) => {
+const DeleteBet = ({ }) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
@@ -1335,7 +1335,7 @@ const DeleteBet = ({}) => {
                     min={currentMatch?.betfair_session_min_bet}
                   />
                 )}
-                <UserProfitLoss single={"single"} title={"User Profit Loss"} matchId={matchId} />
+                <UserProfitLoss single={"single"} title={"User Profit Loss 1"} matchId={matchId} />
               </Box>
             )}
           </Box>

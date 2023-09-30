@@ -40,8 +40,6 @@ const RowComponentMatches = ({
     }
   }, [auth]);
 
-  console.log("activeUser", )
-
   return (
     <Box sx={{ width: "100%" }}>
       <Box
@@ -270,8 +268,8 @@ const RowComponentMatches = ({
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
                   selectedId?.id === item?.matchId &&
-                  selectedId?.type === "all_bet" &&
-                  showBets
+                    selectedId?.type === "all_bet" &&
+                    showBets
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}
@@ -374,8 +372,8 @@ const RowComponentMatches = ({
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
                   selectedId?.id === item?.matchId &&
-                  selectedId?.type === "session_bet" &&
-                  showSessions
+                    selectedId?.type === "session_bet" &&
+                    showSessions
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}
