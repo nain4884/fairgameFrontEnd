@@ -206,7 +206,7 @@ const ProfitLoss = () => {
         setPageCount(
           Math.ceil(
             parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
-              pageLimit
+            pageLimit
           )
         );
       }
@@ -243,10 +243,9 @@ const ProfitLoss = () => {
     let { axios } = setRole();
     try {
       const { data } = await axios.post(
-        `/betting/${
-          value?.type === "session_bet" && value?.betId === ""
-            ? "sessionProfitLossReport"
-            : "getResultBetProfitLoss"
+        `/betting/${value?.type === "session_bet" && value?.betId === ""
+          ? "sessionProfitLossReport"
+          : "getResultBetProfitLoss"
         }`,
         payload
       );

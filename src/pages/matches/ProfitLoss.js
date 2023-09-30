@@ -102,10 +102,9 @@ const ProfitLoss = ({ selected, visible }) => {
     }
     try {
       const { data } = await axios.post(
-        `/betting/${
-          value?.type === "session_bet" && value?.betId === ""
-            ? "sessionProfitLossReport"
-            : "getResultBetProfitLoss"
+        `/betting/${value?.type === "session_bet" && value?.betId === ""
+          ? "sessionProfitLossReport"
+          : "getResultBetProfitLoss"
         }`,
         payload
       );
