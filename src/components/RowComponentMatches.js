@@ -10,6 +10,8 @@ import SessionComponentMatches from "./SessionComponentMatches";
 import SessionBetSeperate from "./sessionBetSeperate";
 import AllRateSeperate from "./AllRateSeperate";
 import AllUserListSeparate from "./AllUserListSeparate";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const RowComponentMatches = ({
   item,
@@ -27,26 +29,36 @@ const RowComponentMatches = ({
   const [showSessions, setShowSessions] = useState(false);
   const [showSessionBets, setShowSessionBets] = useState(false);
   const [showListOfUsers, setShowListOfUsers] = useState(false);
+  const auth = useSelector((state) => state?.auth);
+  const [activeUser, setActiveUser] = useState(auth);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+  useEffect(() => {
+    if (auth) {
+      setActiveUser(auth?.user);
+    }
+  }, [auth]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Box
         onClick={(e) => {
           e.stopPropagation();
-          if (selectedId?.id === item?.matchId) {
-            setShowListOfUsers((prev) => !prev);
-          } else {
-            setShowListOfUsers(true);
-            getUserProfitLoss(item?.matchId);
-            getBetReport({
-              eventType: item?.eventType,
-              match_id: item?.matchId,
-              type: "",
-              betId: "",
-              sessionBet: false,
-            });
+          if (!Object.keys(activeUser).length) {
+            if (selectedId?.id === item?.matchId) {
+              setShowListOfUsers((prev) => !prev);
+            } else {
+              setShowListOfUsers(true);
+              getUserProfitLoss(item?.matchId);
+              getBetReport({
+                eventType: item?.eventType,
+                match_id: item?.matchId,
+                type: "",
+                betId: "",
+                sessionBet: false,
+              });
+            }
           }
         }}
         sx={{
@@ -256,8 +268,8 @@ const RowComponentMatches = ({
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
                   selectedId?.id === item?.matchId &&
-                  selectedId?.type === "all_bet" &&
-                  showBets
+                    selectedId?.type === "all_bet" &&
+                    showBets
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}
@@ -360,8 +372,8 @@ const RowComponentMatches = ({
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
                   selectedId?.id === item?.matchId &&
-                  selectedId?.type === "session_bet" &&
-                  showSessions
+                    selectedId?.type === "session_bet" &&
+                    showSessions
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}

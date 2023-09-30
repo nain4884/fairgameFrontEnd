@@ -230,7 +230,7 @@ const AllUserListSeparate = ({
           </Box>
           {item?.role !== "user" && (
             <StyledImage
-              onClick={() => {}}
+              onClick={() => { }}
               src={ArrowDown}
               sx={{
                 width: { laptop: "20px", mobile: "10px" },
@@ -353,9 +353,9 @@ const AllUserListSeparate = ({
         <>
           <Box
             sx={{
-              width: { mobile: "100%", laptop: "96%" },
+              width: { mobile: "100%", laptop: "99%" },
               marginTop: { mobile: ".25vh" },
-              marginLeft: { laptop: "4%" },
+              marginLeft: { laptop: "1%" },
               display: "flex",
               flexDirection: { laptop: "row", mobile: "column" },
             }}
