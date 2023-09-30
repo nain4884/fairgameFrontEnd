@@ -31,7 +31,7 @@ const CustomSessionResult = ({
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
-        score: selected,
+        // score: selected,
       };
       setLoading({ id: "UD", value: true });
       const { data } = await axios.post("/game-match/undeclareresult", body);
@@ -178,11 +178,11 @@ const CustomSessionResult = ({
     if (loading?.value) {
       return false;
     }
-    if (selected === "") {
-      toast.warn("Please enter score");
-    } else {
-      undeclareResult()
-    }
+    // if (selected === "") {
+    //   toast.warn("Please enter score");
+    // } else {
+    undeclareResult()
+    // }
   }
 
   const handleInputKeyPress = (event) => {
@@ -219,7 +219,7 @@ const CustomSessionResult = ({
     >
       {!confirmNoResult ? (
         <>
-          <TextField
+          {newData?.betStatus !== 2 && <TextField
             autoFocus
             placeholder="Score"
             variant="standard"
@@ -241,7 +241,7 @@ const CustomSessionResult = ({
                 height: "28px",
               },
             }}
-          />
+          />}
           {newData?.betStatus === 2 ? (
             <SessionResultCustomButton
               color={"#FF4D4D"}

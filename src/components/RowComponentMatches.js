@@ -30,22 +30,25 @@ const RowComponentMatches = ({
   const [showSessionBets, setShowSessionBets] = useState(false);
   const [showListOfUsers, setShowListOfUsers] = useState(false);
   const auth = useSelector((state) => state?.auth);
-  const [activeUser, setActiveUser] = useState(auth);
+  // const [activeUser, setActiveUser] = useState(auth);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
-  useEffect(() => {
-    if (auth) {
-      setActiveUser(auth?.user);
-    }
-  }, [auth]);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+
+  // useEffect(() => {
+  //   // alert(JSON.stringify(currentUser.role))
+  //   if (auth) {
+  //     setActiveUser(auth?.user);
+  //   }
+  // }, [auth]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Box
         onClick={(e) => {
           e.stopPropagation();
-          if (!Object.keys(activeUser).length) {
+          if (currentUser.role !== "user") {
             if (selectedId?.id === item?.matchId) {
               setShowListOfUsers((prev) => !prev);
             } else {
