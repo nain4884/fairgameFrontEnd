@@ -7,7 +7,7 @@ import constants from "../../components/helper/constants";
 import EventListing from "../../components/EventListing";
 import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
 import moment from "moment";
-
+//dsda
 const ProfitLoss = ({ selected, visible }) => {
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
