@@ -11,6 +11,8 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { setRole } from "../newStore";
 import AllRateSeperate from "./AllRateSeperate";
+import ModalMUI from "@mui/material/Modal";
+import SessionComponentMatches from "./SessionComponentMatches";
 
 const AllUserListSeparate = ({
   item,
@@ -20,16 +22,23 @@ const AllUserListSeparate = ({
   sessionBetData,
   selectedId,
   matchId,
+  bet1Data,
+  activeUser,
+  sessionBets,
+  user,
+  userId,
 }) => {
   const theme = useTheme();
   let { axios } = setRole();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [showSessionResultList, setShowSessionResultList] = useState(false);
   const [showChildUserList, setShowChildUserList] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const [betData, setBetData] = useState([]);
   const [sessionData, setSessionData] = useState([]);
-  const [data1, setData] = useState([]);
+  const [showBets, setShowBets] = useState(false);
+  const [showSessions, setShowSessions] = useState(false);
+  const [showSessionBets, setShowSessionBets] = useState(false);
 
   const [showSubUsers, setSubSusers] = useState({
     value: false,
@@ -122,39 +131,39 @@ const AllUserListSeparate = ({
   return (
     <Box key={index} sx={{ width: "100%" }}>
       <Box
-        onClick={() => {
-          if (!["user"].includes(item?.role)) {
-            if (showSubUsers?.value && showSubUsers?.id === item?.userId) {
-              setSubSusers({
-                ...showSubUsers,
-                value: false,
-                id: "",
-              });
-              setShowChildUserList(false);
-            } else {
-              setSubSusers({
-                ...showSubUsers,
-                value: true,
-                id: item?.userId,
-              });
-              setShowChildUserList(true);
-            }
-          } else {
-            if (showSessionResultList) {
-              setShowSessionResultList((prev) => !prev);
-            } else {
-              getBetAndSessionData();
-              setShowSessionResultList(true);
-            }
-          }
-          // if (item?.role !== "user") {
-          //   setShowChildUserList(true);
-          //   setSelectedUserId(item?.userId);
-          // } else if (item?.role === "user") {
-          //   setShowSessionResultList((prev) => !prev);
-          //   setSelectedUserId(item?.userId);
-          // }
-        }}
+        // onClick={() => {
+        //   if (!["user"].includes(item?.role)) {
+        //     if (showSubUsers?.value && showSubUsers?.id === item?.userId) {
+        //       setSubSusers({
+        //         ...showSubUsers,
+        //         value: false,
+        //         id: "",
+        //       });
+        //       setShowChildUserList(false);
+        //     } else {
+        //       setSubSusers({
+        //         ...showSubUsers,
+        //         value: true,
+        //         id: item?.userId,
+        //       });
+        //       setShowChildUserList(true);
+        //     }
+        //   } else {
+        //     if (showSessionResultList) {
+        //       setShowSessionResultList((prev) => !prev);
+        //     } else {
+        //       getBetAndSessionData();
+        //       setShowSessionResultList(true);
+        //     }
+        //   }
+        //   // if (item?.role !== "user") {
+        //   //   setShowChildUserList(true);
+        //   //   setSelectedUserId(item?.userId);
+        //   // } else if (item?.role === "user") {
+        //   //   setShowSessionResultList((prev) => !prev);
+        //   //   setSelectedUserId(item?.userId);
+        //   // }
+        // }}
         sx={{
           width: "100%",
           height: "45px",
@@ -208,6 +217,11 @@ const AllUserListSeparate = ({
           </Typography>
 
           <Box
+            onClick={(e) => {
+              e.stopPropagation();
+              // getBetAndSessionData();
+              setShowModal((prev) => !prev);
+            }}
             sx={{
               flexDirection: "row",
               display: "flex",
@@ -231,7 +245,35 @@ const AllUserListSeparate = ({
           </Box>
           {item?.role !== "user" && (
             <StyledImage
-              onClick={() => { }}
+              onClick={() => {
+                if (!["user"].includes(item?.role)) {
+                  if (
+                    showSubUsers?.value &&
+                    showSubUsers?.id === item?.userId
+                  ) {
+                    setSubSusers({
+                      ...showSubUsers,
+                      value: false,
+                      id: "",
+                    });
+                    setShowChildUserList(false);
+                  } else {
+                    setSubSusers({
+                      ...showSubUsers,
+                      value: true,
+                      id: item?.userId,
+                    });
+                    setShowChildUserList(true);
+                  }
+                } else {
+                  if (showSessionResultList) {
+                    setShowSessionResultList((prev) => !prev);
+                  } else {
+                    getBetAndSessionData();
+                    setShowSessionResultList(true);
+                  }
+                }
+              }}
               src={ArrowDown}
               sx={{
                 width: { laptop: "20px", mobile: "10px" },
@@ -350,6 +392,444 @@ const AllUserListSeparate = ({
           </Box>
         </Box>
       </Box>
+      <ModalMUI
+        open={showModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          sx={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignSelf: "center",
+          }}
+        >
+          <Box
+            sx={{
+              alignSelf: "center",
+              width: { mobile: "90%", laptop: "90%" },
+            }}
+          >
+            <>
+              <Box
+                sx={[
+                  {
+                    width: { mobile: "96%", laptop: "100%", tablet: "100%" },
+                    // marginX: "0.5%",
+                    minHeight: "200px",
+                    display: "flex",
+                    flexDirection: "column",
+                    // justifyContent: "space-between",
+                    borderRadius: "10px",
+                    borderBottomRightRadius: "0px",
+                    borderBottomLeftRadius: "0px",
+                    overflow: "hidden",
+                    border: "2px solid white",
+                  },
+                  (theme) => ({
+                    backgroundImage: `${theme.palette.primary.headerGradient}`,
+                  }),
+                ]}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <Box
+                    display={"flex"}
+                    sx={{
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%",
+                      px: "10px",
+                      py: "6px",
+                      backgroundColor: "#F8C851",
+                    }}
+                  >
+                    <Box
+                      display={"flex"}
+                      alignItems="center"
+                      sx={{ alignItems: "center" }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: {
+                            mobile: "14px",
+                            laptop: "18px",
+                            tablet: "18px",
+                          },
+                          color: "#000",
+                          marginRight: {
+                            mobile: "10px",
+                            laptop: "20px",
+                            tablet: "20px",
+                          },
+                        }}
+                      >
+                        Profit/Loss Per User
+                      </Typography>
+                    </Box>
+                    <Typography
+                      sx={{
+                        color: "#000",
+                        fontSize: "30px",
+                        cursor: "pointer",
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowModal((prev) => !prev);
+                      }}
+                    >
+                      &times;
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "50px",
+                      background: "white",
+                      display: "flex",
+                      padding: 0.1,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: { mobile: "40%", laptop: "60%" },
+                        position: "relative",
+                        height: "100%",
+                        paddingY: "4px",
+                        alignItems: { laptop: "center", mobile: "center" },
+                        display: "flex",
+                        paddingX: "10px",
+                        background: "#0B4F26",
+                        marginLeft: 0.1,
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box
+                        // onClick={() => {
+                        //   setShowModal((prev) => !prev);
+                        // }}
+                        sx={{
+                          flexDirection: "row",
+                          display: "flex",
+                          alignItems: "center",
+                          marginTop: { mobile: "5px", laptop: "0" },
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: { mobile: "10px", laptop: "15px" },
+                            color: "white",
+                            fontWeight: "600",
+                            overflow: "hidden",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            lineClamp: 2,
+                          }}
+                        >
+                          {item?.userName}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (showBets) {
+                          setShowBets((prev) => !prev);
+                        } else {
+                          if (showSessions) {
+                            setShowSessions(false);
+                          }
+                          setShowBets((prev) => !prev);
+                          getBetReport({
+                            eventType: item?.eventType,
+                            match_id: matchId,
+                            userId: item?.userId,
+                            type: "all_bet",
+                            betId: "",
+                            sessionBet: false,
+                          });
+                        }
+                        // }
+                      }}
+                      sx={{
+                        background:
+                          item.rateProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
+                        paddingX: "2px",
+                        width: { mobile: "25%", laptop: "30%" },
+                        height: "100%",
+                        marginLeft: 0.1,
+                        justifyContent: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                        paddingLeft: "10px",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: { laptop: "12px", mobile: "8px" },
+                            fontWeight: "500",
+                            color: "white",
+                          }}
+                        >
+                          Rate Profit/Loss
+                        </Typography>
+                        <StyledImage
+                          src={item.rateProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                          sx={{
+                            width: { laptop: "25px", mobile: "15px" },
+                            height: { laptop: "12px", mobile: "8px" },
+                          }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: { mobile: "10px", laptop: "14px" },
+                            fontWeight: "700",
+                            color: "white",
+                          }}
+                        >
+                          {/* {" "}
+                      {Number(item?.rateProfitLoss) >= 0 ? (
+                        <>
+                          <span style={{ visibility: "hidden" }}>-</span>
+                          {Number(item?.rateProfitLoss).toFixed(2)}
+                        </>
+                      ) : (
+                        Number(item?.rateProfitLoss).toFixed(2)
+                      )}{" "} */}
+                          0
+                        </Typography>
+                        <StyledImage
+                          src={ArrowDown}
+                          sx={{
+                            width: { laptop: "20px", mobile: "10px" },
+                            height: { laptop: "10px", mobile: "6px" },
+                            transform:
+                              showSubUsers?.id === item?.userId &&
+                              selectedId?.type === "all_bet" &&
+                              showBets
+                                ? "rotate(180deg)"
+                                : "rotate(0deg)",
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                    <Box
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (showSessions) {
+                          setShowSessions((prev) => !prev);
+                        } else {
+                          if (showBets) {
+                            setShowBets(false);
+                          }
+                          setShowSessions((prev) => !prev);
+                          getBetReport({
+                            eventType: item?.eventType,
+                            match_id: matchId,
+                            userId: item?.userId,
+                            type: "session_bet",
+                            betId: "",
+                            sessionBet: false,
+                          });
+                        }
+                        // }
+                      }}
+                      sx={{
+                        background:
+                          item.sessionProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
+                        paddingX: "2px",
+                        width: { mobile: "25%", laptop: "30%" },
+                        height: "100%",
+                        marginLeft: 0.1,
+                        justifyContent: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                        paddingLeft: "10px",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: "100%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: { laptop: "12px", mobile: "8px" },
+                            fontWeight: "500",
+                            color: "white",
+                          }}
+                        >
+                          Session Profit/Loss
+                        </Typography>
+                        <StyledImage
+                          src={item.sessionProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                          sx={{
+                            width: { laptop: "25px", mobile: "15px" },
+                            height: { laptop: "12px", mobile: "8px" },
+                          }}
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontSize: { mobile: "10px", laptop: "14px" },
+                            fontWeight: "700",
+                            color: "white",
+                          }}
+                        >
+                          {/* {Number(item?.sessionProfitLoss) >= 0 ? (
+                        <>
+                          <span style={{ visibility: "hidden" }}>-</span>
+                          {Number(item?.sessionProfitLoss).toFixed(2)}
+                        </>
+                      ) : (
+                        Number(item?.sessionProfitLoss).toFixed(2)
+                      )} */}
+                          0
+                        </Typography>
+                        <StyledImage
+                          src={ArrowDown}
+                          sx={{
+                            width: { laptop: "20px", mobile: "10px" },
+                            height: { laptop: "10px", mobile: "6px" },
+                            transform:
+                              showSubUsers?.id === item?.userId &&
+                              selectedId?.type === "session_bet" &&
+                              showSessions
+                                ? "rotate(180deg)"
+                                : "rotate(0deg)",
+                          }}
+                        />
+                      </Box>
+                    </Box>
+                  </Box>
+                  {/* {selectedId?.id === item?.matchId && ( */}
+                  <>
+                    {showBets && (
+                      <>
+                        <Box
+                          sx={{
+                            width: { mobile: "100%", laptop: "100%" },
+                            marginTop: { mobile: ".25vh" },
+                            // marginLeft: { laptop: "4%" },
+                            display: "flex",
+                            flexDirection: { laptop: "row", mobile: "column" },
+                          }}
+                        >
+                          <AllRateSeperate
+                            betHistory={false}
+                            count={bet1Data?.length}
+                            allBetsData={bet1Data}
+                            profit
+                          />
+                        </Box>
+                        <Box sx={{ width: { laptop: "1vw", mobile: 0 } }}></Box>
+                      </>
+                    )}
+                    {showSessions && (
+                      <Box
+                        sx={{
+                          width: { mobile: "100%", laptop: "100%" },
+                          marginTop: { mobile: ".25vh" },
+                          // marginLeft: { laptop: "4%" },
+                          display: "flex",
+                          flexDirection: { laptop: "row", mobile: "column" },
+                        }}
+                      >
+                        <Box
+                          Box
+                          sx={{ width: "100%", display: "flex", gap: 1 }}
+                        >
+                          <Box
+                            sx={{
+                              width: {
+                                mobile: "100%",
+                                laptop: "50%",
+                                tablet: "100%",
+                              },
+                              maxHeight: "51vh",
+                              overflow: "hidden",
+                              overflowY: "auto",
+                              marginY: { mobile: ".2vh", laptop: "1vh" },
+                              padding: 0.2,
+                            }}
+                          >
+                            {sessionBets?.length > 0 &&
+                              sessionBets?.map((item1, index) => {
+                                return (
+                                  <SessionComponentMatches
+                                    key={index}
+                                    item={item1}
+                                    index={index + 1}
+                                    userId={item?.userId}
+                                    showSessionBets={showSessionBets}
+                                    setShowSessionBets={setShowSessionBets}
+                                    getBetReport={getBetReport}
+                                    selectedId={selectedId}
+                                    sessionBetData={sessionBetData}
+                                  />
+                                );
+                              })}
+                          </Box>
+                          {selectedId?.betId !== "" &&
+                            !matchesMobile &&
+                            showSessionBets && (
+                              <Box
+                                sx={{
+                                  width: {
+                                    mobile: "100%",
+                                    laptop: "49%",
+                                    tablet: "100%",
+                                  },
+                                }}
+                              >
+                                <SessionBetSeperate
+                                  betHistory={false}
+                                  allBetsData={sessionBetData}
+                                  profit
+                                  isArrow={true}
+                                />
+                              </Box>
+                            )}
+                        </Box>
+                      </Box>
+                    )}
+                  </>
+                  {/* )} */}
+                </Box>
+              </Box>
+            </>
+          </Box>
+        </Box>
+      </ModalMUI>
       {showSubUsers?.value && (
         <>
           <Box
