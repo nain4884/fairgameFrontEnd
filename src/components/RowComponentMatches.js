@@ -268,8 +268,8 @@ const RowComponentMatches = ({
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
                   selectedId?.id === item?.matchId &&
-                    selectedId?.type === "all_bet" &&
-                    showBets
+                  selectedId?.type === "all_bet" &&
+                  showBets
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}
@@ -372,8 +372,8 @@ const RowComponentMatches = ({
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
                   selectedId?.id === item?.matchId &&
-                    selectedId?.type === "session_bet" &&
-                    showSessions
+                  selectedId?.type === "session_bet" &&
+                  showSessions
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}
@@ -413,9 +413,12 @@ const RowComponentMatches = ({
                             item={profitLoss}
                             index={index + 1}
                             matchId={item?.matchId}
+                            userId={item?.userId}
                             showListOfUsers={showListOfUsers}
                             getBetReport={getBetReport}
                             sessionBetData={sessionBetData}
+                            sessionBets={sessionBets}
+                            user={user}
                           />
                         );
                       })}
