@@ -502,6 +502,9 @@ const AllUserListSeparate = ({
                       ) {
                         setShowBets((prev) => !prev);
                       } else {
+                        if(showSessions){
+                          setShowSessions(false)
+                        }
                         setShowBets((prev) => !prev);
                         getBetReport({
                           eventType: item?.eventType,
@@ -600,6 +603,9 @@ const AllUserListSeparate = ({
                       ) {
                         setShowSessions((prev) => !prev);
                       } else {
+                        if(showBets){
+                          setShowBets(false)
+                        }
                         setShowSessions((prev) => !prev);
                         getBetReport({
                           eventType: item?.eventType,
