@@ -410,7 +410,7 @@ const AllUserListSeparate = ({
           <Box
             sx={{
               alignSelf: "center",
-              width: { mobile: "90%", laptop: "50%" },
+              width: { mobile: "90%", laptop: "80%" },
             }}
           >
             <Box
@@ -497,7 +497,7 @@ const AllUserListSeparate = ({
                     onClick={(e) => {
                       e.stopPropagation();
                       if (
-                        userId === item?.userId &&
+                        showSubUsers?.id === item?.userId &&
                         selectedId?.type === "all_bet"
                       ) {
                         setShowBets((prev) => !prev);
