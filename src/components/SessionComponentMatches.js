@@ -12,6 +12,7 @@ const SessionComponentMatches = ({
   index,
   showSessionBets,
   setShowSessionBets,
+  userId,
   getBetReport,
   selectedId,
   sessionBetData,
@@ -37,6 +38,7 @@ const SessionComponentMatches = ({
             getBetReport({
               eventType: item?.eventType,
               match_id: item?.matchid || item?.matchId,
+              userId: userId,
               type: "session_bet",
               betId: item?.betid,
               sessionBet: true,

@@ -233,6 +233,8 @@ const ProfitLoss = () => {
     }
     if (search?.id) {
       payload.userId = search?.id;
+    } else if (value?.userId) {
+      payload.userId = value?.userId;
     }
     if (startDate) {
       payload.from = moment(startDate).format("YYYY-MM-DD");

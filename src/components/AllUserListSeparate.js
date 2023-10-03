@@ -536,10 +536,7 @@ const AllUserListSeparate = ({
                     <Box
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (
-                          showSubUsers?.id === item?.userId &&
-                          selectedId?.type === "all_bet"
-                        ) {
+                        if (showBets) {
                           setShowBets((prev) => !prev);
                         } else {
                           if (showSessions) {
@@ -549,6 +546,7 @@ const AllUserListSeparate = ({
                           getBetReport({
                             eventType: item?.eventType,
                             match_id: matchId,
+                            userId: item?.userId,
                             type: "all_bet",
                             betId: "",
                             sessionBet: false,
@@ -637,10 +635,7 @@ const AllUserListSeparate = ({
                     <Box
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (
-                          showSubUsers?.id === item?.userId &&
-                          selectedId?.type === "session_bet"
-                        ) {
+                        if (showSessions) {
                           setShowSessions((prev) => !prev);
                         } else {
                           if (showBets) {
@@ -650,6 +645,7 @@ const AllUserListSeparate = ({
                           getBetReport({
                             eventType: item?.eventType,
                             match_id: matchId,
+                            userId: item?.userId,
                             type: "session_bet",
                             betId: "",
                             sessionBet: false,
@@ -787,12 +783,13 @@ const AllUserListSeparate = ({
                             }}
                           >
                             {sessionBets?.length > 0 &&
-                              sessionBets?.map((item, index) => {
+                              sessionBets?.map((item1, index) => {
                                 return (
                                   <SessionComponentMatches
                                     key={index}
-                                    item={item}
+                                    item={item1}
                                     index={index + 1}
+                                    userId={item?.userId}
                                     showSessionBets={showSessionBets}
                                     setShowSessionBets={setShowSessionBets}
                                     getBetReport={getBetReport}
