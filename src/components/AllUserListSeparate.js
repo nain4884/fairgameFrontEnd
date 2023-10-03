@@ -22,6 +22,7 @@ const AllUserListSeparate = ({
   sessionBetData,
   selectedId,
   matchId,
+  bet1Data,
   activeUser,
   sessionBets,
   user,
@@ -703,8 +704,8 @@ const AllUserListSeparate = ({
                       >
                         <AllRateSeperate
                           betHistory={false}
-                          count={betData?.length}
-                          allBetsData={betData}
+                          count={bet1Data?.length}
+                          allBetsData={bet1Data}
                           profit
                         />
                       </Box>

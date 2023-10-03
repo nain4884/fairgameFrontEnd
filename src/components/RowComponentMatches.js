@@ -418,6 +418,7 @@ const RowComponentMatches = ({
                             getBetReport={getBetReport}
                             sessionBetData={sessionBetData}
                             sessionBets={sessionBets}
+                            bet1Data={betData}
                             user={user}
                           />
                         );
