@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 
 const ButtonWithSwitch = ({
   title,
+  id,
   containerStyle,
   titleStyle,
   updateMatchStatus,
   setUpdateMatchStatus,
   place,
   notSwitch,
+  onClick,
 }) => {
   const [background, setBackground] = useState("#0B4F26");
 
@@ -75,6 +77,11 @@ const ButtonWithSwitch = ({
   }));
   return (
     <Box
+      onClick={() => {
+        if (notSwitch) {
+          onClick(id);
+        }
+      }}
       sx={[
         {
           height: "35px",
