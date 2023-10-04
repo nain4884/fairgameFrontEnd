@@ -130,17 +130,14 @@ const AllUserListSeparate = ({
   };
 
   const getChildUserReport = async () => {
-    // setReportData([]);
-    var payload = {
-      gameType: item?.eventType,
-      userId: item?.userId,
-      match_id: matchId,
-      skip: 0,
-      limit: 1,
-    };
     try {
+      const { eventType, userId } = item;
+      const payload = {
+        gameType: eventType,
+        userId,
+        match_id: matchId,
+      };
       const { data } = await axios.post(`/betting/profitLossReport`, payload);
-      console.log(data?.data[0], "data?.data");
       setChildUserReport(data?.data[0][0]);
     } catch (e) {
       console.log(e);
