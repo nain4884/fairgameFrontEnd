@@ -54,7 +54,7 @@ const RowComponentMatches = ({
               getBetReport({
                 eventType: item?.eventType,
                 match_id: item?.matchId,
-                type: "",
+                type: "users_list",
                 betId: "",
                 sessionBet: false,
               });
