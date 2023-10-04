@@ -899,6 +899,7 @@ const AllUserListSeparate = ({
                   role={showSubUsers?.role}
                   getBetReport={getBetReport}
                   sessionBetData={sessionBetData}
+                  sessionBets={sessionBets}
                 />
               </Box>
             </Box>
