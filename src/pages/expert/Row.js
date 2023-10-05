@@ -389,6 +389,22 @@ const Row = ({
                   <Typography
                     sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}
                   >
+                    COMMISSION
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    background: "#303030",
+                    width: "20%",
+                    borderLeft: "2px solid white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}
+                  >
                     PROFIT/LOSS
                   </Typography>
                 </Box>
@@ -434,7 +450,24 @@ const Row = ({
                         <Typography
                           sx={{ fontWeight: "600", fontSize: "14px" }}
                         >
-                          {item.score}
+                          {item?.score}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          background: "#ECECEC",
+                          width: "20%",
+                          display: "flex",
+                          height: "30px",
+                          borderLeft: "2px solid white",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography
+                          sx={{ fontWeight: "600", fontSize: "14px" }}
+                        >
+                          {item?.commission ?? "NaN"}
                         </Typography>
                       </Box>
                       {profit_loss > 0 ? (
