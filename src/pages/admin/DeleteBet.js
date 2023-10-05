@@ -1335,7 +1335,7 @@ const DeleteBet = ({ }) => {
                     min={currentMatch?.betfair_session_min_bet}
                   />
                 )}
-                <UserProfitLoss single={"single"} title={"User Profit Loss 1"} matchId={matchId} />
+                <UserProfitLoss single={"single"} title={"User Profit Loss"} matchId={matchId} />
               </Box>
             )}
           </Box>

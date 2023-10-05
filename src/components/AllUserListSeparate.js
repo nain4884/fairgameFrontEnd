@@ -39,6 +39,7 @@ const AllUserListSeparate = ({
   const [showBets, setShowBets] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
   const [showSessionBets, setShowSessionBets] = useState(false);
+  const [childUserReport, setChildUserReport] = useState(null);
 
   const [showSubUsers, setSubSusers] = useState({
     value: false,
@@ -123,6 +124,21 @@ const AllUserListSeparate = ({
           username: v.username,
         }))
       );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getChildUserReport = async () => {
+    try {
+      const { eventType, userId } = item;
+      const payload = {
+        gameType: eventType,
+        userId,
+        match_id: matchId,
+      };
+      const { data } = await axios.post(`/betting/profitLossReport`, payload);
+      setChildUserReport(data?.data[0][0]);
     } catch (e) {
       console.log(e);
     }
@@ -219,8 +235,8 @@ const AllUserListSeparate = ({
           <Box
             onClick={(e) => {
               e.stopPropagation();
-              // getBetAndSessionData();
               setShowModal((prev) => !prev);
+              getChildUserReport();
             }}
             sx={{
               flexDirection: "row",
@@ -478,6 +494,9 @@ const AllUserListSeparate = ({
                       onClick={(e) => {
                         e.stopPropagation();
                         setShowModal((prev) => !prev);
+                        setShowBets(false);
+                        setShowSessionBets(false);
+                        setShowSessions(false);
                       }}
                     >
                       &times;
@@ -556,7 +575,9 @@ const AllUserListSeparate = ({
                       }}
                       sx={{
                         background:
-                          item.rateProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
+                          childUserReport?.rateProfitLoss > 0
+                            ? "#27AC1E"
+                            : "#E32A2A",
                         paddingX: "2px",
                         width: { mobile: "25%", laptop: "30%" },
                         height: "100%",
@@ -585,7 +606,11 @@ const AllUserListSeparate = ({
                           Rate Profit/Loss
                         </Typography>
                         <StyledImage
-                          src={item.rateProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                          src={
+                            childUserReport?.rateProfitLoss > 0
+                              ? ARROWUP
+                              : ARROWDOWN
+                          }
                           sx={{
                             width: { laptop: "25px", mobile: "15px" },
                             height: { laptop: "12px", mobile: "8px" },
@@ -606,16 +631,20 @@ const AllUserListSeparate = ({
                             color: "white",
                           }}
                         >
-                          {/* {" "}
-                      {Number(item?.rateProfitLoss) >= 0 ? (
-                        <>
-                          <span style={{ visibility: "hidden" }}>-</span>
-                          {Number(item?.rateProfitLoss).toFixed(2)}
-                        </>
-                      ) : (
-                        Number(item?.rateProfitLoss).toFixed(2)
-                      )}{" "} */}
-                          0
+                          {childUserReport?.rateProfitLoss ? (
+                            Number(childUserReport?.rateProfitLoss) >= 0 ? (
+                              <>
+                                <span style={{ visibility: "hidden" }}>-</span>
+                                {Number(
+                                  childUserReport?.rateProfitLoss
+                                ).toFixed(2)}
+                              </>
+                            ) : (
+                              Number(childUserReport?.rateProfitLoss).toFixed(2)
+                            )
+                          ) : (
+                            0.0
+                          )}
                         </Typography>
                         <StyledImage
                           src={ArrowDown}
@@ -641,6 +670,9 @@ const AllUserListSeparate = ({
                           if (showBets) {
                             setShowBets(false);
                           }
+                          if (showSessionBets) {
+                            setShowSessionBets(false);
+                          }
                           setShowSessions((prev) => !prev);
                           getBetReport({
                             eventType: item?.eventType,
@@ -655,7 +687,9 @@ const AllUserListSeparate = ({
                       }}
                       sx={{
                         background:
-                          item.sessionProfitLoss > 0 ? "#27AC1E" : "#E32A2A",
+                          childUserReport?.sessionProfitLoss > 0
+                            ? "#27AC1E"
+                            : "#E32A2A",
                         paddingX: "2px",
                         width: { mobile: "25%", laptop: "30%" },
                         height: "100%",
@@ -684,7 +718,11 @@ const AllUserListSeparate = ({
                           Session Profit/Loss
                         </Typography>
                         <StyledImage
-                          src={item.sessionProfitLoss > 0 ? ARROWUP : ARROWDOWN}
+                          src={
+                            childUserReport?.sessionProfitLoss > 0
+                              ? ARROWUP
+                              : ARROWDOWN
+                          }
                           sx={{
                             width: { laptop: "25px", mobile: "15px" },
                             height: { laptop: "12px", mobile: "8px" },
@@ -705,15 +743,22 @@ const AllUserListSeparate = ({
                             color: "white",
                           }}
                         >
-                          {/* {Number(item?.sessionProfitLoss) >= 0 ? (
-                        <>
-                          <span style={{ visibility: "hidden" }}>-</span>
-                          {Number(item?.sessionProfitLoss).toFixed(2)}
-                        </>
-                      ) : (
-                        Number(item?.sessionProfitLoss).toFixed(2)
-                      )} */}
-                          0
+                          {childUserReport?.rateProfitLoss ? (
+                            Number(childUserReport?.sessionProfitLoss) >= 0 ? (
+                              <>
+                                <span style={{ visibility: "hidden" }}>-</span>
+                                {Number(
+                                  childUserReport?.sessionProfitLoss
+                                ).toFixed(2)}
+                              </>
+                            ) : (
+                              Number(
+                                childUserReport?.sessionProfitLoss
+                              ).toFixed(2)
+                            )
+                          ) : (
+                            0.0
+                          )}
                         </Typography>
                         <StyledImage
                           src={ArrowDown}
@@ -857,9 +902,11 @@ const AllUserListSeparate = ({
                   show={showSubUsers?.value}
                   setShow={showSubUsers}
                   matchId={matchId}
+                  bet1Data={bet1Data}
                   role={showSubUsers?.role}
                   getBetReport={getBetReport}
                   sessionBetData={sessionBetData}
+                  sessionBets={sessionBets}
                 />
               </Box>
             </Box>

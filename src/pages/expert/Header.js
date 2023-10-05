@@ -938,13 +938,20 @@ const CustomHeader = ({}) => {
             });
             dispatch(setUpdateAdminPlayList());
 
-            // setLocalAllMatches((prev) => {
-            //   const filteredMatches = prev.filter(
-            //     (v) => !(v.id === value?.match_id && value.sessionBet === false)
-            //   );
-            //   dispatch(setUserAllMatches(filteredMatches));
-            //   return filteredMatches;
-            // });
+            setLocalAllMatches((prev) => {
+              const updatedMatch = prev.map((v) => {
+                if (v?.id === value?.match_id && value.sessionBet === false) {
+                  return {
+                    ...v,
+                    stopAt: value?.stopAt ?? "2023-09-29T05:01:37.373Z",
+                    matchProfitLoss: value?.matchProfitLoss ?? "0.00",
+                  };
+                }
+                return v;
+              });
+              dispatch(setUserAllMatches(updatedMatch));
+              return updatedMatch;
+            });
           } catch (err) {
             console.log(err?.message);
           }
