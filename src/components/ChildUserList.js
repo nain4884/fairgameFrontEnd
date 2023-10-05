@@ -6,7 +6,14 @@ import { useEffect } from "react";
 import { setRole } from "../newStore";
 import AllUserListSeparate from "./AllUserListSeparate";
 
-const ChildUserList = ({ id, matchId, getBetReport, sessionBetData, sessionBets }) => {
+const ChildUserList = ({
+  id,
+  matchId,
+  getBetReport,
+  sessionBetData,
+  sessionBets,
+  bet1Data,
+}) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   let { axios } = setRole();
@@ -43,6 +50,7 @@ const ChildUserList = ({ id, matchId, getBetReport, sessionBetData, sessionBets 
               matchId={matchId}
               getBetReport={getBetReport}
               sessionBetData={sessionBetData}
+              bet1Data={bet1Data}
               sessionBets={sessionBets}
             />
           );

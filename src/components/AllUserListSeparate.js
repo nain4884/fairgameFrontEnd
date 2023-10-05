@@ -494,6 +494,9 @@ const AllUserListSeparate = ({
                       onClick={(e) => {
                         e.stopPropagation();
                         setShowModal((prev) => !prev);
+                        setShowBets(false);
+                        setShowSessionBets(false);
+                        setShowSessions(false);
                       }}
                     >
                       &times;
@@ -666,6 +669,9 @@ const AllUserListSeparate = ({
                         } else {
                           if (showBets) {
                             setShowBets(false);
+                          }
+                          if (showSessionBets) {
+                            setShowSessionBets(false);
                           }
                           setShowSessions((prev) => !prev);
                           getBetReport({
@@ -896,6 +902,7 @@ const AllUserListSeparate = ({
                   show={showSubUsers?.value}
                   setShow={showSubUsers}
                   matchId={matchId}
+                  bet1Data={bet1Data}
                   role={showSubUsers?.role}
                   getBetReport={getBetReport}
                   sessionBetData={sessionBetData}
