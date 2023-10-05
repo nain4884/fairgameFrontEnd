@@ -526,17 +526,21 @@ export const SocketProvider = ({ children }) => {
                     betting?.id === value?.id
                 );
 
-                const updatedBettings = [
-                  { ...findBet, ...value },
-                  ...prev.filter(
-                    (betting) =>
-                      betting?.selectionId !== value?.selectionId ||
-                      betting?.id !== value?.id
-                  ),
-                ];
+                const body = {
+                  ...findBet,
+                  ...value,
+                };
+                var removedBet = prev?.filter(
+                  (betting) =>
+                    betting?.selectionId !== value?.selectionId &&
+                    betting?.id !== value?.id
+                );
+                var updatedBettings = [body, ...removedBet];
 
-                if (!prev?.map((v) => v?.id).includes(value?.id)) {
-                  updatedBettings.unshift(value);
+                const ids = prev?.map((v) => v?.id);
+                if (!ids.includes(value?.id)) {
+                  const newres = [value, ...prev];
+                  updatedBettings = newres;
                 }
                 dispatch(setSelectedSessionBettings(updatedBettings));
                 return updatedBettings;
@@ -546,13 +550,19 @@ export const SocketProvider = ({ children }) => {
                 const findBet = prev?.find(
                   (betting) => betting?.id === value?.id
                 );
-                const updatedBettings = [
-                  { ...findBet, ...value },
-                  ...prev.filter((betting) => betting?.id !== value?.id),
-                ];
+                const body = {
+                  ...findBet,
+                  ...value,
+                };
+                var removedBet = prev?.filter(
+                  (betting) => betting?.id !== value?.id
+                );
+                var updatedBettings = [body, ...removedBet];
 
-                if (!prev?.map((v) => v?.id).includes(value?.id)) {
-                  updatedBettings.unshift(value);
+                const ids = prev?.map((v) => v?.id);
+                if (!ids.includes(value?.id)) {
+                  const newres = [value, ...prev];
+                  updatedBettings = newres;
                 }
                 dispatch(setQuickSession(updatedBettings));
                 return updatedBettings;
@@ -668,7 +678,7 @@ export const SocketProvider = ({ children }) => {
           };
           setManualBookmakerData((prev) => {
             if (prev.length === 0 && value?.sessionBet) {
-              const body = [betData];
+              const body = [...prev, betData];
               dispatch(setManualBookmaker(body));
               return body;
             }
