@@ -455,10 +455,11 @@ const Row = ({
                       </Box>
                       <Box
                         sx={{
-                          background: "#FFFFFF",
+                          background: "#ECECEC",
                           width: "20%",
                           display: "flex",
                           height: "30px",
+                          borderLeft: "2px solid white",
                           justifyContent: "center",
                           alignItems: "center",
                         }}
