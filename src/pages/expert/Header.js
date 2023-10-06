@@ -944,7 +944,7 @@ const CustomHeader = ({}) => {
                   return {
                     ...v,
                     stopAt: value?.stopAt ?? "2023-09-29T05:01:37.373Z",
-                    matchProfitLoss: value?.matchProfitLoss ?? "0.00",
+                    matchProfitLoss: value?.profitLoss,
                   };
                 }
                 return v;
@@ -956,6 +956,25 @@ const CustomHeader = ({}) => {
             console.log(err?.message);
           }
         }
+
+        // if (packet.data[0] === "undeclearResult") {
+        //   try {
+        //     const value = packet.data[1];
+        //     setLocalSelectedBookmaker((prev) => {
+        //       if (
+        //         prev?.matchId === value?.match_id &&
+        //         value?.sessionBet === false
+        //       ) {
+        //         const newBody = { ...prev, betStatus: 1 };
+        //         dispatch(setSelectedBookmaker(newBody));
+        //         return newBody;
+        //       }
+        //       return prev;
+        //     });
+        //   } catch (e) {
+        //     console.error(e);
+        //   }
+        // }
         if (packet.data[0] === "newMatchAdded") {
           const value = packet.data[1];
           // matchId = value?.match_id;
