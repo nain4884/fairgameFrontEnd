@@ -354,7 +354,7 @@ const Row = ({
             <Box
               sx={{
                 border: "2px solid #FFFFFF",
-                overflow: "auto",
+                overflowY: "auto",
                 maxHeight: "30rem",
               }}
             >
