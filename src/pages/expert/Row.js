@@ -351,7 +351,13 @@ const Row = ({
                 &times;
               </Typography>
             </Box>
-            <Box sx={{ border: "2px solid #FFFFFF" }}>
+            <Box
+              sx={{
+                border: "2px solid #FFFFFF",
+                overflowY: "auto",
+                maxHeight: "30rem",
+              }}
+            >
               <Box sx={{ display: "flex" }}>
                 <Box sx={{ background: "#319E5B", width: "60%", px: "5px" }}>
                   <Typography
