@@ -27,17 +27,16 @@ const CustomSessionResult = ({
 
   const undeclareResult = async () => {
     try {
+      setLoading({ id: "UD", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
         score: selected,
       };
-      setLoading({ id: "UD", value: true });
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        setLoading({ id: "", value: false });
         socket.emit("resultDeclareForBet", {
           match_id: newData?.match_id,
           betId: newData?.id,
@@ -59,30 +58,31 @@ const CustomSessionResult = ({
         //     }
         //   );
         //   const newBody = {
-        //     ...currentMatch,
-        //     bettings: updatedBettings,
-        //   };
-        //   // dispatch(setSelectedMatch(newBody));
-        //   return newBody;
-        // });
-      }
-      onClick();
-      toast.success(data?.message);
-    } catch (e) {
-      setLoading({ id: "", value: false });
-      toast.error(e?.response?.data?.message);
+          //     ...currentMatch,
+          //     bettings: updatedBettings,
+          //   };
+          //   // dispatch(setSelectedMatch(newBody));
+          //   return newBody;
+          // });
+        }
+        onClick();
+        setLoading({ id: "", value: false });
+        toast.success(data?.message);
+      } catch (e) {
+        setLoading({ id: "", value: false });
+        toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
   };
   const declareResult = async () => {
     try {
+      setLoading({ id: "DR", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
         score: selected,
       };
-      setLoading({ id: "DR", value: true });
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
         onClick();
@@ -120,12 +120,12 @@ const CustomSessionResult = ({
 
   const noResultDeclare = async () => {
     try {
+      setLoading({ id: "NR", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
       };
-      setLoading({ id: "NR", value: true });
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
       if (data?.statusCode !== 500) {
         onClick();
