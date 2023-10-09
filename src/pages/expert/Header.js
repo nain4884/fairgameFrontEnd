@@ -943,7 +943,7 @@ const CustomHeader = ({}) => {
                 if (v?.id === value?.match_id && value.sessionBet === false) {
                   return {
                     ...v,
-                    stopAt: value?.stopAt ?? "2023-09-29T05:01:37.373Z",
+                    stopAt: value?.stopAt,
                     matchProfitLoss: value?.profitLoss,
                   };
                 }

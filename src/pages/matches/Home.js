@@ -146,10 +146,6 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       if (allSessionBets) {
         setSessionBets(allSessionBets);
       }
-
-      if (sessionExposure) {
-        setLocalSessionExposure(sessionExposure);
-      }
       if (selectedMatch) {
         setCurrentMatch((prev) => {
           const updatedMatch = { ...prev, ...selectedMatch };
@@ -174,6 +170,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       if (quickSession) {
         setLocalQuickSession(quickSession);
       }
+      setLocalSessionExposure(sessionExposure);
     } catch (e) {
       console.log(e);
     }

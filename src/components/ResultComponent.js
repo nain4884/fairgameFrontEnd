@@ -24,16 +24,16 @@ const ResultComponent = ({
   const [loading, setLoading] = useState({ id: "", value: false });
   const undeclareResult = async () => {
     try {
+      setLoading({ id: "UD", value: true });
       const body = {
         betId: betId?.[0]?.id,
         match_id: betId?.[0]?.match_id,
         selectOption: selected,
       };
-      setLoading({ id: "UD", value: true });
       const { data } = await axios.post("/game-match/undeclareresult", body);
-      toast.success(data?.message);
-      setLoading({ id: "", value: false });
       onClick();
+      setLoading({ id: "", value: false });
+      toast.success(data?.message);
     } catch (e) {
       toast.error(e?.response?.data?.message);
       setLoading({ id: "", value: false });
@@ -42,16 +42,16 @@ const ResultComponent = ({
   };
   const declareResult = async () => {
     try {
+      setLoading({ id: "DR", value: true });
       const body = {
         betId: betId?.[0]?.id,
         match_id: betId?.[0]?.match_id,
         selectOption: selected,
       };
-      setLoading({ id: "DR", value: true });
       const { data } = await axios.post("/game-match/declearResult", body);
       onClick();
-      toast.success(data?.message);
       setLoading({ id: "", value: false });
+      toast.success(data?.message);
       navigate("/expert/match");
     } catch (e) {
       setLoading({ id: "", value: false });
