@@ -1127,8 +1127,8 @@ const AddSession = ({
     } else if (key == "d") {
       incGap.setIncGap(1);
       isPercent.setIsPercent("");
-      handleSuspend();
-      
+      // handleSuspend();
+
       let value =
         Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
           ? targetValue
@@ -1175,8 +1175,8 @@ const AddSession = ({
       }
     } else if (key == "a") {
       isPercent.setIsPercent("");
-      handleSuspend();
-     
+      // handleSuspend();
+
       if (targetValue > 0) {
         let value = targetValue ? targetValue - 1 : 1;
         let yesValue =
@@ -1221,9 +1221,9 @@ const AddSession = ({
           }
         }
       }
-    } else if (key == "q") {
-      handleSuspend();
-      
+    } else if (key == "e") {
+      // handleSuspend();
+
       if (targetValue > 0) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
@@ -1283,7 +1283,9 @@ const AddSession = ({
           if (!isCreateSession || sessionBetId) {
             if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
               let rate_percent =
-                Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+                Detail.Detail.n_rate_percent +
+                "-" +
+                Detail.Detail.y_rate_percent;
               let data = {
                 match_id: match?.id,
                 betId: betId,
@@ -1306,9 +1308,9 @@ const AddSession = ({
           }
         }
       }
-    } else if (key == "e") {
-      handleSuspend();
-      
+    } else if (key == "q") {
+      // handleSuspend();
+
       if (targetValue > 0) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
@@ -1329,11 +1331,15 @@ const AddSession = ({
           if (!isCreateSession || sessionBetId) {
             if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
               let rate_percent =
-                parseInt(parseInt(Detail.Detail.n_rate_percent) -
-                parseInt(incGap.incGap)) +
+                parseInt(
+                  parseInt(Detail.Detail.n_rate_percent) -
+                    parseInt(incGap.incGap)
+                ) +
                 "-" +
-                parseInt(parseInt(Detail.Detail.y_rate_percent) +
-                  parseInt(incGap.incGap));
+                parseInt(
+                  parseInt(Detail.Detail.y_rate_percent) +
+                    parseInt(incGap.incGap)
+                );
               let data = {
                 match_id: match?.id,
                 betId: betId,
@@ -1368,32 +1374,33 @@ const AddSession = ({
               l_yes_rate: value - incGap.incGap,
             });
 
-            
-          // live changes
-          if (!isCreateSession || sessionBetId) {
-            if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
-              let rate_percent =
-                Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
-              let data = {
-                match_id: match?.id,
-                betId: betId,
-                betStatus: 1,
-                no_rate: Detail.Detail.no_rate,
-                yes_rate: value - incGap.incGap,
-                suspended: "ACTIVE",
-                rate_percent: rate_percent,
-              };
-              setLock({
-                ...lock,
-                isNo: false,
-                isYes: false,
-                isNoPercent: false,
-                isYesPercent: false,
-              });
-              isBall.setIsBall(false);
-              socket.emit("updateSessionRate", data);
+            // live changes
+            if (!isCreateSession || sessionBetId) {
+              if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+                let rate_percent =
+                  Detail.Detail.n_rate_percent +
+                  "-" +
+                  Detail.Detail.y_rate_percent;
+                let data = {
+                  match_id: match?.id,
+                  betId: betId,
+                  betStatus: 1,
+                  no_rate: Detail.Detail.no_rate,
+                  yes_rate: value - incGap.incGap,
+                  suspended: "ACTIVE",
+                  rate_percent: rate_percent,
+                };
+                setLock({
+                  ...lock,
+                  isNo: false,
+                  isYes: false,
+                  isNoPercent: false,
+                  isYesPercent: false,
+                });
+                isBall.setIsBall(false);
+                socket.emit("updateSessionRate", data);
+              }
             }
-          }
           }
         }
       }
