@@ -1228,9 +1228,9 @@ const AddSession = ({
           }
         }
       }
-    } else if (key == "e") {
+    } else if (key == "q") {
       isPercent.setIsPercent("percent");
-      
+
       let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
       Detail.setDetail({
         ...Detail.Detail,
@@ -1244,7 +1244,6 @@ const AddSession = ({
         ln_rate_percent: 110,
       });
       incGap.setIncGap(5);
-
 
       if (!isCreateSession || sessionBetId) {
         if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
@@ -1269,7 +1268,7 @@ const AddSession = ({
           socket.emit("updateSessionRate", data);
         }
       }
-    } else if (key == "q") {
+    } else if (key == "e") {
       isPercent.setIsPercent("percent");
 
       let value =
