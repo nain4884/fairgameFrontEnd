@@ -1879,19 +1879,25 @@ const RunsAmountBox = ({
 
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
-    console.log(`Scroll to`, element, id);
-    if (element) {
-      if (element && containerRef.current) {
-        containerRef.current.scrollTop =
-          element.offsetTop - containerRef.current.offsetTop;
-      }
+    const container = containerRef.current;
 
-      // element.scrollIntoView({
-      //   behavior: "smooth",
-      //   block: "center",
-      //   inline: "center",
-      // });
+    if (element && container) {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = element.getBoundingClientRect();
+      const scrollY =
+        targetRect.top -
+        containerRect.top -
+        containerRect.height / 2 +
+        targetRect.height / 2;
+      container.scrollTo({ top: scrollY, behavior: "smooth" });
     }
+
+    // element.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "center",
+    //   inline: "center",
+    // });
+    // }
   };
 
   useEffect(() => {
