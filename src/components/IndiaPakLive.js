@@ -575,7 +575,7 @@ const IndiaPakLive = React.forwardRef(
                 sx={{ width: "100%" }}
               >
                 {rates?.map((item) => (
-                  <Grid item xs={2} sm={2}>
+                  <Grid item xs={2} md={2}>
                     <Box
                       onClick={(e) => {
                         e.preventDefault();
@@ -597,7 +597,7 @@ const IndiaPakLive = React.forwardRef(
                         }
                       }}
                       sx={{
-                        width: "80px",
+                        width: "46px",
                         position: "relative",
                         display: "flex",
                         background: "#0B4F26",
@@ -606,14 +606,14 @@ const IndiaPakLive = React.forwardRef(
                         height: "35px",
                         borderRadius: "5px",
                         cursor: "pointer",
-                        p: 1,
+                        // p: 1,
                       }}
                     >
                       <Typography
                         sx={{
                           color: "white",
                           fontWeight: "500",
-                          fontSize: "12px",
+                          fontSize: "9px",
                         }}
                       >
                         {item?.name}
