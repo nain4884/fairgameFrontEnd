@@ -34,7 +34,7 @@ import UserProfitLoss from "./matches/UserProfitLoss";
 import _ from "lodash";
 
 let matchOddsCount = 0;
-const DeleteBet = ({ }) => {
+const DeleteBet = ({}) => {
   const dispatch = useDispatch();
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
@@ -59,6 +59,9 @@ const DeleteBet = ({ }) => {
     quickSession,
     selectedSessionBettings,
   } = useSelector((state) => state?.matchDetails);
+  const [mode, setMode] = useState(false);
+  const [selectedBetData, setSelectedBetData] = useState([]);
+  const [manualSessions, setManualSessions] = useState([]);
   const { currentOdd } = useSelector((state) => state?.expertMatchDetails);
   const [currentMatch, setCurrentMatch] = useState([]);
   const [matchOddsLive, setMacthOddsLive] = useState([]);
@@ -75,11 +78,11 @@ const DeleteBet = ({ }) => {
   const [sessionOff, setSessionOff] = useState([]);
   const [localQuickSession, setLocalQuickSession] = useState([]);
   const [localSelectedSessionBettings, setLocalSelectedSessionBettings] =
-    useState([]);
-
+  useState([]);
+  
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
-  );
+    );
   const url = window.location.href;
   const navigate = useNavigate();
 
@@ -1042,8 +1045,30 @@ const DeleteBet = ({ }) => {
     }
   };
 
-  const [mode, setMode] = useState(false);
-  const [selectedBetData, setSelectedBetData] = useState([]);
+  // useEffect(() => {
+  //   if (checkMctchId === matchId) {
+  //     let payload = {
+  //       matchId: checkMctchId,
+  //     };
+  //     const fetchManualSession = async () => {
+  //       try {
+  //         const { data } = await axios.post(
+  //           "/betting/getManualSessions",
+  //           payload
+  //         );
+  //         setManualSessions(data?.data);
+  //       } catch (error) {
+  //         console.error("Error fetching data:", error);
+  //       }
+  //     };
+
+  //     fetchManualSession();
+
+  //     const intervalId = setInterval(fetchManualSession, 300);
+
+  //     return () => clearInterval(intervalId);
+  //   }
+  // }, []);
 
   return (
     <Background>
@@ -1185,7 +1210,11 @@ const DeleteBet = ({ }) => {
                 />
               )}
               {matchesMobile && (
-                <UserProfitLoss single={"single"} title={"User Profit Loss"} matchId={matchId} />
+                <UserProfitLoss
+                  single={"single"}
+                  title={"User Profit Loss"}
+                  matchId={matchId}
+                />
               )}
               {/* {matchesMobile && */}
               {url.includes("wallet") && IOSinglebets.length > 0 && (
@@ -1335,7 +1364,11 @@ const DeleteBet = ({ }) => {
                     min={currentMatch?.betfair_session_min_bet}
                   />
                 )}
-                <UserProfitLoss single={"single"} title={"User Profit Loss"} matchId={matchId} />
+                <UserProfitLoss
+                  single={"single"}
+                  title={"User Profit Loss"}
+                  matchId={matchId}
+                />
               </Box>
             )}
           </Box>

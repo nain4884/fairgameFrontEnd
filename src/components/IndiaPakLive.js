@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Grid, TextField, Typography, useTheme } from "@mui/material";
 import {
   useState,
   useEffect,
@@ -82,6 +82,33 @@ const IndiaPakLive = React.forwardRef(
       ln_rate_percent: "",
       suspended: "ACTIVE",
     };
+    const rates = [
+      { name: "90-110", value: "90-110" },
+      { name: "95-110", value: "95-110" },
+      { name: "95-115", value: "95-115" },
+      { name: "85-115", value: "85-115" },
+      { name: "75-125", value: "75-125" },
+      { name: "80-120", value: "80-120" },
+      { name: "80-130", value: "80-130" },
+      { name: "90-140", value: "90-140" },
+      { name: "85-100", value: "85-100" },
+      { name: "80-100", value: "80-100" },
+      { name: "70-100", value: "70-100" },
+      { name: "60-90", value: "60-90" },
+      { name: "50-80", value: "50-80" },
+      { name: "40-70", value: "40-70" },
+      { name: "30-60", value: "30-60" },
+      { name: "25-50", value: "25-50" },
+      { name: "100-115", value: "100-115" },
+      { name: "100-120", value: "100-120" },
+      { name: "100-130", value: "100-130" },
+      { name: "100-150", value: "100-150" },
+      { name: "130-200", value: "130-200" },
+      { name: "150-250", value: "150-250" },
+      { name: "200-350", value: "200-350" },
+      { name: "250-400", value: "250-400" },
+    ];
+
     const [Detail, setDetail] = useState(stateDetail);
     const [incGap, setIncGap] = useState(1);
     const [visible, setVisible] = useState(false);
@@ -100,6 +127,8 @@ const IndiaPakLive = React.forwardRef(
     const [live, setLive] = useState(true);
     const [proLoss, setProLoss] = useState(proLoss1);
     const [isDisable, setIsDisable] = useState(false);
+
+    const inputRef = useRef(null);
 
     useImperativeHandle(ref, () => ({
       childFunction(item) {
@@ -470,6 +499,29 @@ const IndiaPakLive = React.forwardRef(
         console.log(err?.message);
       }
     };
+
+    const handleLiveChange = (y_rate_percent, n_rate_percent) => {
+      let rate_percent = n_rate_percent + "-" + y_rate_percent;
+      let data = {
+        match_id: match?.id,
+        betId: betId,
+        betStatus: 1,
+        no_rate: Detail.no_rate,
+        yes_rate: Detail.yes_rate,
+        suspended: "ACTIVE",
+        rate_percent: rate_percent,
+      };
+
+      setLock({
+        ...lock,
+        isNo: false,
+        isYes: false,
+        isNoPercent: false,
+        isYesPercent: false,
+      });
+      setIsBall(false);
+      socket.emit("updateSessionRate", data);
+    };
     return (
       <Box
         sx={{
@@ -504,6 +556,7 @@ const IndiaPakLive = React.forwardRef(
               socket={socket}
               sessionEvent={sessionEvent}
               lock={lock}
+              inputRef={inputRef}
               setLock={setLock}
               isBall={{ isBall, setIsBall }}
               isCreateSession={isCreateSession}
@@ -513,6 +566,63 @@ const IndiaPakLive = React.forwardRef(
               live={live}
               isDisable={isDisable}
             />
+            <Box sx={{ mt: 2, border: "1px solid black", p: 1 }}>
+              <Grid
+                container
+                spacing={1}
+                alignItems={"center"}
+                justifyContent={"center"}
+                sx={{ width: "100%" }}
+              >
+                {rates?.map((item) => (
+                  <Grid item xs={2} sm={2}>
+                    <Box
+                      onClick={(e) => {
+                        e.preventDefault();
+
+                        const [y_rate_percent, n_rate_percent] =
+                          item?.value?.split("-");
+                        setDetail({
+                          ...Detail,
+
+                          ly_rate_percent: y_rate_percent,
+                          ln_rate_percent: n_rate_percent,
+                          y_rate_percent: y_rate_percent,
+                          n_rate_percent: n_rate_percent,
+                        });
+                        handleLiveChange(y_rate_percent, n_rate_percent);
+                        if (inputRef.current) {
+                          console.log("yes");
+                          inputRef.current.focus();
+                        }
+                      }}
+                      sx={{
+                        width: "80px",
+                        position: "relative",
+                        display: "flex",
+                        background: "#0B4F26",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "35px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                        p: 1,
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: "white",
+                          fontWeight: "500",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {item?.name}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
             <Box
               sx={{
                 display: "flex",
@@ -740,6 +850,7 @@ const IndiaPakLive = React.forwardRef(
               )}
             </Box>
           </Box>
+
           <Box sx={{ marginLeft: "15px", width: "30%" }}>
             {!isCreateSession || sessionBetId ? (
               <RunsAmountBox
@@ -763,6 +874,7 @@ const AddSession = ({
   betId,
   Detail,
   sessionEvent,
+  inputRef,
   incGap,
   socket,
   lock,
@@ -779,7 +891,7 @@ const AddSession = ({
     event.preventDefault();
     let targetValue = parseFloat(event.target.value);
     event.target.value = targetValue;
-    if (key == "d" || key == "right") {
+    if (key == "right") {
       incGap.setIncGap(1);
       isPercent.setIsPercent("");
       handleSuspend();
@@ -808,7 +920,7 @@ const AddSession = ({
         ly_rate_percent: 100,
         ln_rate_percent: 100,
       });
-    } else if (key == "a" || key == "left") {
+    } else if (key == "left") {
       isPercent.setIsPercent("");
       handleSuspend();
       setLock({
@@ -1019,8 +1131,228 @@ const AddSession = ({
           socket.emit("updateSessionRate", data);
         }
       }
+    } else if (key == "d") {
+      incGap.setIncGap(1);
+      isPercent.setIsPercent("");
+      // handleSuspend();
+
+      let value =
+        Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
+          ? targetValue
+          : targetValue + 1;
+      let yesValue = Detail?.Detail?.yes_rate
+        ? Detail?.Detail?.yes_rate
+        : value;
+      Detail.setDetail({
+        ...Detail.Detail,
+        no_rate: value,
+        yes_rate: yesValue + 1,
+        y_rate_percent: 100,
+        n_rate_percent: 100,
+        l_no_rate: value,
+        l_yes_rate: yesValue + 1,
+        ly_rate_percent: 100,
+        ln_rate_percent: 100,
+      });
+
+      // changing to live
+      if (!isCreateSession || sessionBetId) {
+        if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+          let rate_percent =
+            Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+          let data = {
+            match_id: match?.id,
+            betId: betId,
+            betStatus: 1,
+            no_rate: value,
+            yes_rate: yesValue + 1,
+            suspended: "ACTIVE",
+            rate_percent: rate_percent,
+          };
+          setLock({
+            ...lock,
+            isNo: false,
+            isYes: false,
+            isNoPercent: false,
+            isYesPercent: false,
+          });
+          isBall.setIsBall(false);
+          socket.emit("updateSessionRate", data);
+        }
+      }
+    } else if (key == "a") {
+      isPercent.setIsPercent("");
+      // handleSuspend();
+
+      if (targetValue > 0) {
+        let value = targetValue ? targetValue - 1 : 1;
+        let yesValue =
+          Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
+            ? Detail?.Detail?.yes_rate + 1
+            : Detail?.Detail?.yes_rate;
+        Detail.setDetail({
+          ...Detail.Detail,
+          no_rate: value,
+          yes_rate: yesValue - 1,
+          y_rate_percent: 100,
+          n_rate_percent: 100,
+          l_no_rate: value,
+          l_yes_rate: yesValue - 1,
+          ly_rate_percent: 100,
+          ln_rate_percent: 100,
+        });
+
+        // changing to live
+        if (!isCreateSession || sessionBetId) {
+          if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+            let rate_percent =
+              Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+            let data = {
+              match_id: match?.id,
+              betId: betId,
+              betStatus: 1,
+              no_rate: value,
+              yes_rate: yesValue - 1,
+              suspended: "ACTIVE",
+              rate_percent: rate_percent,
+            };
+            setLock({
+              ...lock,
+              isNo: false,
+              isYes: false,
+              isNoPercent: false,
+              isYesPercent: false,
+            });
+            isBall.setIsBall(false);
+            socket.emit("updateSessionRate", data);
+          }
+        }
+      }
+    } else if (key == "q") {
+      isPercent.setIsPercent("percent");
+
+      let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
+      Detail.setDetail({
+        ...Detail.Detail,
+        no_rate: value,
+        yes_rate: value,
+        y_rate_percent: 90,
+        n_rate_percent: 110,
+        l_no_rate: value,
+        l_yes_rate: value,
+        ly_rate_percent: 90,
+        ln_rate_percent: 110,
+      });
+      incGap.setIncGap(5);
+
+      if (!isCreateSession || sessionBetId) {
+        if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+          let rate_percent = 110 + "-" + 90;
+          let data = {
+            match_id: match?.id,
+            betId: betId,
+            betStatus: 1,
+            no_rate: value,
+            yes_rate: value,
+            suspended: "ACTIVE",
+            rate_percent: rate_percent,
+          };
+          setLock({
+            ...lock,
+            isNo: false,
+            isYes: false,
+            isNoPercent: false,
+            isYesPercent: false,
+          });
+          isBall.setIsBall(false);
+          socket.emit("updateSessionRate", data);
+        }
+      }
+    } else if (key == "e") {
+      isPercent.setIsPercent("percent");
+
+      let value =
+        Detail?.Detail?.no_rate === 0 || null
+          ? 1
+          : Detail?.Detail?.no_rate
+          ? Detail?.Detail?.no_rate + 1
+          : 0;
+      Detail.setDetail({
+        ...Detail.Detail,
+        no_rate: value,
+        yes_rate: value,
+        y_rate_percent: 90,
+        n_rate_percent: 110,
+        l_no_rate: value,
+        l_yes_rate: value,
+        ly_rate_percent: 90,
+        ln_rate_percent: 110,
+      });
+      incGap.setIncGap(5);
+
+      if (!isCreateSession || sessionBetId) {
+        if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+          let rate_percent = 110 + "-" + 90;
+          let data = {
+            match_id: match?.id,
+            betId: betId,
+            betStatus: 1,
+            no_rate: value,
+            yes_rate: value,
+            suspended: "ACTIVE",
+            rate_percent: rate_percent,
+          };
+          setLock({
+            ...lock,
+            isNo: false,
+            isYes: false,
+            isNoPercent: false,
+            isYesPercent: false,
+          });
+          isBall.setIsBall(false);
+          socket.emit("updateSessionRate", data);
+        }
+      }
+    } else {
+      if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
+        let value = Detail?.Detail?.yes_rate
+          ? Detail?.Detail?.yes_rate
+          : Detail?.Detail?.no_rate;
+        Detail.setDetail({
+          ...Detail.Detail,
+          yes_rate: value - incGap.incGap,
+          l_yes_rate: value - incGap.incGap,
+        });
+
+        // live changes
+        if (!isCreateSession || sessionBetId) {
+          if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+            let rate_percent =
+              Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+            let data = {
+              match_id: match?.id,
+              betId: betId,
+              betStatus: 1,
+              no_rate: Detail.Detail.no_rate,
+              yes_rate: value - incGap.incGap,
+              suspended: "ACTIVE",
+              rate_percent: rate_percent,
+            };
+            setLock({
+              ...lock,
+              isNo: false,
+              isYes: false,
+              isNoPercent: false,
+              isYesPercent: false,
+            });
+            isBall.setIsBall(false);
+            socket.emit("updateSessionRate", data);
+          }
+        }
+      }
     }
   };
+
   const handleChange = (event) => {
     setLock({
       ...lock,
@@ -1105,6 +1437,7 @@ const AddSession = ({
                 bet_condition: e.target.value,
               });
             }}
+            autoComplete="off"
             disabled={betId ? true : false}
             value={Detail.Detail.bet_condition}
             variant="standard"
@@ -1145,6 +1478,8 @@ const AddSession = ({
                       "w",
                       "z",
                       "up",
+                      "q",
+                      "e",
                       "down",
                       "left",
                       "right",
@@ -1170,6 +1505,8 @@ const AddSession = ({
                       disabled={isDisable}
                       onChange={(e) => handleChange(e)}
                       type="Number"
+                      autoComplete="off"
+                      inputRef={inputRef}
                       value={Detail?.Detail?.l_no_rate}
                       variant="standard"
                       InputProps={{
@@ -1200,6 +1537,7 @@ const AddSession = ({
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                   <TextField
                     type="Number"
+                    autoComplete="off"
                     value={Detail?.Detail?.l_yes_rate}
                     variant="standard"
                     disabled={isDisable}
@@ -1235,6 +1573,8 @@ const AddSession = ({
                       "d",
                       "w",
                       "z",
+                      "q",
+                      "e",
                       "up",
                       "down",
                       "left",
@@ -1265,6 +1605,7 @@ const AddSession = ({
                           ? Detail?.Detail?.ln_rate_percent
                           : ""
                       }
+                      autoComplete="off"
                       variant="standard"
                       InputProps={{
                         disableUnderline: true,
@@ -1294,6 +1635,7 @@ const AddSession = ({
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                   <TextField
                     disabled={isDisable}
+                    autoComplete="off"
                     type="Number"
                     value={
                       Detail.Detail.ly_rate_percent
@@ -1490,19 +1832,25 @@ const RunsAmountBox = ({
 
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
-    console.log(`Scroll to`, element, id);
-    if (element) {
-      if (element && containerRef.current) {
-        containerRef.current.scrollTop =
-          element.offsetTop - containerRef.current.offsetTop;
-      }
+    const container = containerRef.current;
 
-      // element.scrollIntoView({
-      //   behavior: "smooth",
-      //   block: "center",
-      //   inline: "center",
-      // });
+    if (element && container) {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = element.getBoundingClientRect();
+      const scrollY =
+        targetRect.top -
+        containerRect.top -
+        containerRect.height / 2 +
+        targetRect.height / 2;
+      container.scrollTo({ top: scrollY, behavior: "smooth" });
     }
+
+    // element.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "center",
+    //   inline: "center",
+    // });
+    // }
   };
 
   useEffect(() => {
