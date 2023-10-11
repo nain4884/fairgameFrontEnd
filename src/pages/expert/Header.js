@@ -826,9 +826,9 @@ const CustomHeader = ({}) => {
           });
           try {
             setCurrentMatch((prev) => {
-              // if (prev.id === value?.match_id && value?.sessionBet === false) {
-              //   navigate("/expert/match");
-              // }
+              if (prev.id === value?.match_id && value?.sessionBet === false) {
+                navigate("/expert/match");
+              }
               if (prev.id === value?.match_id && value?.sessionBet) {
                 dispatch(setSessionResultRefresh(true));
                 setLocalAllBetRates((prev) => {
