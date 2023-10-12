@@ -59,10 +59,10 @@ const SessionResultModal = ({
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        socket.emit("resultDeclareForBet", {
-          match_id: newData?.match_id,
-          betId: newData?.id,
-        });
+        // socket.emit("resultDeclareForBet", {
+        //   match_id: newData?.match_id,
+        //   betId: newData?.id,
+        // });
 
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(

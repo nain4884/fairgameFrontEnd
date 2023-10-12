@@ -957,24 +957,59 @@ const CustomHeader = ({}) => {
           }
         }
 
-        // if (packet.data[0] === "undeclearResult") {
-        //   try {
-        //     const value = packet.data[1];
-        //     setLocalSelectedBookmaker((prev) => {
-        //       if (
-        //         prev?.matchId === value?.match_id &&
-        //         value?.sessionBet === false
-        //       ) {
-        //         const newBody = { ...prev, betStatus: 1 };
-        //         dispatch(setSelectedBookmaker(newBody));
-        //         return newBody;
-        //       }
-        //       return prev;
-        //     });
-        //   } catch (e) {
-        //     console.error(e);
-        //   }
-        // }
+        if (packet.data[0] === "undeclearResult") {
+          const value = packet.data[1];
+          try {
+            // setLocalSelectedBookmaker((prev) => {
+            //   if (
+            //     prev?.matchId === value?.match_id &&
+            //     value?.sessionBet === false
+            //   ) {
+            //     dispatch(setSessionResultRefresh(true));
+            //     const newBody = { ...prev, betStatus: 1 };
+            //     dispatch(setSelectedBookmaker(newBody));
+            //     return newBody;
+            //   }
+            //   return prev;
+            // });
+            setAllLiveEventSession((prev) => {
+              var updatedPrev = prev?.map((item) => {
+                if (item.id === value?.match_id && value?.sessionBet) {
+                  dispatch(setSessionResultRefresh(true));
+
+                  if (sessionBetId === value?.betId) {
+                    setLocalSelectedSession((i) => {
+                      const newBody = {
+                        ...i,
+                        betStatus: 1,
+                      };
+                      dispatch(setSelectedSession(newBody));
+                      dispatch(setSessionProfitLoss(newBody?.profitLoss));
+                      return newBody;
+                    });
+                  }
+
+                  const updatedBettings = [
+                    ...item?.bettings,
+                    {
+                      id: localSelectedSession?.id,
+                      bet_condition: localSelectedSession?.bet_condition,
+                    },
+                  ];
+
+                  return { ...item, bettings: updatedBettings };
+                }
+
+                return item;
+              });
+
+              return updatedPrev;
+            });
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
         if (packet.data[0] === "newMatchAdded") {
           const value = packet.data[1];
           // matchId = value?.match_id;

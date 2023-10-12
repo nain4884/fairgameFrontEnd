@@ -154,6 +154,12 @@ const IndiaPakLive = React.forwardRef(
       ) {
         setIsDisable(true);
       }
+      if (
+        selectedSession?.betStatus === 1 &&
+        sessionBetId === selectedSession?.id
+      ) {
+        setIsDisable(false);
+      }
     }, [
       sessionProfitLoss,
       sessionBetId,
@@ -522,6 +528,17 @@ const IndiaPakLive = React.forwardRef(
       setIsBall(false);
       socket.emit("updateSessionRate", data);
     };
+
+    useEffect(() => {
+      if (sessionEvent?.id || sessionBetId) {
+        if (sessionBetId) {
+          getAllBetsData(sessionBetId);
+        } else {
+          getAllBetsData(sessionEvent?.id);
+        }
+      }
+    }, [sessionResultRefresh]);
+
     return (
       <Box
         sx={{
