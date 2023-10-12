@@ -78,11 +78,11 @@ const DeleteBet = ({}) => {
   const [sessionOff, setSessionOff] = useState([]);
   const [localQuickSession, setLocalQuickSession] = useState([]);
   const [localSelectedSessionBettings, setLocalSelectedSessionBettings] =
-  useState([]);
-  
+    useState([]);
+
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
-    );
+  );
   const url = window.location.href;
   const navigate = useNavigate();
 
@@ -1046,9 +1046,9 @@ const DeleteBet = ({}) => {
   };
 
   // useEffect(() => {
-  //   if (checkMctchId === matchId) {
+  //   if (matchId) {
   //     let payload = {
-  //       matchId: checkMctchId,
+  //       matchId: matchId,
   //     };
   //     const fetchManualSession = async () => {
   //       try {
