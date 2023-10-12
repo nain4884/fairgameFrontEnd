@@ -1159,7 +1159,7 @@ const AddSession = ({
       if (!isCreateSession || sessionBetId) {
         if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
           let rate_percent =
-            Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+            100 + "-" + 100;
           let data = {
             match_id: match?.id,
             betId: betId,
@@ -1206,7 +1206,7 @@ const AddSession = ({
         if (!isCreateSession || sessionBetId) {
           if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
             let rate_percent =
-              Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+              100 + "-" + 100;
             let data = {
               match_id: match?.id,
               betId: betId,
