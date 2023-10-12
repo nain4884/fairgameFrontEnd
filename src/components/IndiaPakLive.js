@@ -579,12 +579,11 @@ const IndiaPakLive = React.forwardRef(
                     <Box
                       onClick={(e) => {
                         e.preventDefault();
-                        console.log(Detail);
                         if (
-                          (Detail?.l_no_rate != NaN ||
-                            Detail?.l_yes_rate != NaN) &&
-                          Detail?.l_no_rate!=null &&
-                          Detail?.l_yes_rate!=null
+                          (!isNaN(Detail?.l_no_rate) ||
+                            !isNaN(Detail?.l_yes_rate)) &&
+                          Detail?.l_no_rate != null &&
+                          Detail?.l_yes_rate != null
                         ) {
                           const [y_rate_percent, n_rate_percent] =
                             item?.value?.split("-");
@@ -598,7 +597,6 @@ const IndiaPakLive = React.forwardRef(
                           });
                           handleLiveChange(y_rate_percent, n_rate_percent);
                           if (inputRef.current) {
-                            console.log("yes");
                             inputRef.current.focus();
                           }
                         }
@@ -608,10 +606,10 @@ const IndiaPakLive = React.forwardRef(
                         position: "relative",
                         display: "flex",
                         background:
-                          Detail?.l_no_rate == NaN ||
-                          Detail?.l_yes_rate == NaN ||
-                          Detail?.l_no_rate==null ||
-                          !Detail?.l_yes_rate==null
+                          isNaN(Detail?.l_no_rate) ||
+                          isNaN(Detail?.l_yes_rate) ||
+                          Detail?.l_no_rate == null ||
+                          Detail?.l_yes_rate == null
                             ? "#696969"
                             : "#0B4F26",
                         justifyContent: "center",
@@ -1608,27 +1606,27 @@ const AddSession = ({
                     isDisabled={false}
                     onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
                   > */}
-                    <TextField
-                      type="Number"
-                      disabled={isDisable}
-                      value={
-                        Detail?.Detail?.ln_rate_percent
-                          ? Detail?.Detail?.ln_rate_percent
-                          : ""
-                      }
-                      autoComplete="off"
-                      variant="standard"
-                      InputProps={{
-                        disableUnderline: true,
-                        style: {
-                          fontSize: "14px",
-                          marginLeft: "5px",
-                          height: "45px",
-                          fontWeight: "600",
-                          color: "black",
-                        },
-                      }}
-                    />
+                  <TextField
+                    type="Number"
+                    disabled={isDisable}
+                    value={
+                      Detail?.Detail?.ln_rate_percent
+                        ? Detail?.Detail?.ln_rate_percent
+                        : ""
+                    }
+                    autoComplete="off"
+                    variant="standard"
+                    InputProps={{
+                      disableUnderline: true,
+                      style: {
+                        fontSize: "14px",
+                        marginLeft: "5px",
+                        height: "45px",
+                        fontWeight: "600",
+                        color: "black",
+                      },
+                    }}
+                  />
                   {/* </KeyboardEventHandler> */}
                 </Typography>
               </Box>
