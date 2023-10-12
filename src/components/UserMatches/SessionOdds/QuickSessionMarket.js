@@ -74,30 +74,30 @@ const QuickSessionMarket = ({
     }
   }, [quickSession]);
 
-  useEffect(() => {
-    if (checkMctchId === id) {
-      let payload = {
-        matchId: checkMctchId,
-      };
-      const fetchManualSession = async () => {
-        try {
-          const { data } = await axios.post(
-            "/betting/getManualSessions",
-            payload
-          );
-          setManualSessions(data?.data);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
+  // useEffect(() => {
+  //   if (checkMctchId === id) {
+  //     let payload = {
+  //       matchId: checkMctchId,
+  //     };
+  //     const fetchManualSession = async () => {
+  //       try {
+  //         const { data } = await axios.post(
+  //           "/betting/getManualSessions",
+  //           payload
+  //         );
+  //         setManualSessions(data?.data);
+  //       } catch (error) {
+  //         console.error("Error fetching data:", error);
+  //       }
+  //     };
 
-      fetchManualSession();
+  //     fetchManualSession();
 
-      const intervalId = setInterval(fetchManualSession, 300);
+  //     const intervalId = setInterval(fetchManualSession, 300);
 
-      return () => clearInterval(intervalId);
-    }
-  }, []);
+  //     return () => clearInterval(intervalId);
+  //   }
+  // }, []);
 
   console.log(sessionOffline, "sessionOffline");
   return (
@@ -393,8 +393,8 @@ const QuickSessionMarket = ({
                 // overflowY: "visible",
               }}
             >
-              {manualSessions?.length > 0 &&
-                manualSessions
+              {localQuickSession?.length > 0 &&
+                localQuickSession
                   ?.slice()
                   .sort(customSort)
                   ?.map((element) => {
