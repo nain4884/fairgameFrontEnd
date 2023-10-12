@@ -579,28 +579,41 @@ const IndiaPakLive = React.forwardRef(
                     <Box
                       onClick={(e) => {
                         e.preventDefault();
+                        console.log(Detail);
+                        if (
+                          (Detail?.l_no_rate != NaN ||
+                            Detail?.l_yes_rate != NaN) &&
+                          Detail?.l_no_rate!=null &&
+                          Detail?.l_yes_rate!=null
+                        ) {
+                          const [y_rate_percent, n_rate_percent] =
+                            item?.value?.split("-");
+                          setDetail({
+                            ...Detail,
 
-                        const [y_rate_percent, n_rate_percent] =
-                          item?.value?.split("-");
-                        setDetail({
-                          ...Detail,
-
-                          ly_rate_percent: y_rate_percent,
-                          ln_rate_percent: n_rate_percent,
-                          y_rate_percent: y_rate_percent,
-                          n_rate_percent: n_rate_percent,
-                        });
-                        handleLiveChange(y_rate_percent, n_rate_percent);
-                        if (inputRef.current) {
-                          console.log("yes");
-                          inputRef.current.focus();
+                            ly_rate_percent: y_rate_percent,
+                            ln_rate_percent: n_rate_percent,
+                            y_rate_percent: y_rate_percent,
+                            n_rate_percent: n_rate_percent,
+                          });
+                          handleLiveChange(y_rate_percent, n_rate_percent);
+                          if (inputRef.current) {
+                            console.log("yes");
+                            inputRef.current.focus();
+                          }
                         }
                       }}
                       sx={{
                         width: "80px",
                         position: "relative",
                         display: "flex",
-                        background: "#0B4F26",
+                        background:
+                          Detail?.l_no_rate == NaN ||
+                          Detail?.l_yes_rate == NaN ||
+                          Detail?.l_no_rate==null ||
+                          !Detail?.l_yes_rate==null
+                            ? "#696969"
+                            : "#0B4F26",
                         justifyContent: "center",
                         alignItems: "center",
                         height: "35px",
@@ -1158,8 +1171,7 @@ const AddSession = ({
       // changing to live
       if (!isCreateSession || sessionBetId) {
         if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
-          let rate_percent =
-            100 + "-" + 100;
+          let rate_percent = 100 + "-" + 100;
           let data = {
             match_id: match?.id,
             betId: betId,
@@ -1205,8 +1217,7 @@ const AddSession = ({
         // changing to live
         if (!isCreateSession || sessionBetId) {
           if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
-            let rate_percent =
-              100 + "-" + 100;
+            let rate_percent = 100 + "-" + 100;
             let data = {
               match_id: match?.id,
               betId: betId,
