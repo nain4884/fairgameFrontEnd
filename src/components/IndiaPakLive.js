@@ -1578,7 +1578,7 @@ const AddSession = ({
                 }}
               >
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                  <KeyboardEventHandler
+                  {/* <KeyboardEventHandler
                     handleKeys={[
                       "a",
                       "d",
@@ -1607,7 +1607,7 @@ const AddSession = ({
                     ]}
                     isDisabled={false}
                     onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
-                  >
+                  > */}
                     <TextField
                       type="Number"
                       disabled={isDisable}
@@ -1629,7 +1629,7 @@ const AddSession = ({
                         },
                       }}
                     />
-                  </KeyboardEventHandler>
+                  {/* </KeyboardEventHandler> */}
                 </Typography>
               </Box>
               <Box
