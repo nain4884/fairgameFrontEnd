@@ -1095,7 +1095,7 @@ const AddSession = ({
       });
       incGap.setIncGap(5);
     } else if (key == "esc") {
-      isPercent.setIsPercent("percent");
+      isPercent.setIsPercent("");
       incGap.setIncGap(1);
       handleSuspend();
       setLock({
@@ -1363,6 +1363,8 @@ const AddSession = ({
   };
 
   const handleChange = (event) => {
+    isPercent.setIsPercent("");
+    incGap.setIncGap(1);
     setLock({
       ...lock,
       isNo: true,
