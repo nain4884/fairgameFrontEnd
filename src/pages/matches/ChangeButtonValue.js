@@ -705,7 +705,7 @@ const ValButton = ({ value, index, onChange }) => {
           }
         }}
         inputProps={{
-          min: "0",
+          min: "1",
           onBlur: (event) => event.target.blur(),
         }}
       />

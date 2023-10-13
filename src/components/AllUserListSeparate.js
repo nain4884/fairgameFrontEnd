@@ -890,7 +890,7 @@ const AllUserListSeparate = ({
               <Box
                 sx={{
                   width: { mobile: "100%", laptop: "100%", tablet: "100%" },
-                  maxHeight: "51vh",
+                  // maxHeight: "51vh",
                   overflow: "hidden",
                   // overflowY: "auto",
                   marginY: { mobile: ".2vh", laptop: "1vh" },
@@ -928,8 +928,8 @@ const AllUserListSeparate = ({
             <Box
               sx={{
                 width: { mobile: "50%", laptop: "50%", tablet: "50%" },
-                // maxHeight: "51vh",
-                // overflow: "hidden",
+                maxHeight: "51vh",
+                overflow: "hidden",
                 // overflowY: "auto",
                 marginY: { mobile: ".2vh", laptop: "1vh" },
                 padding: 0.2,

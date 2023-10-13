@@ -813,6 +813,46 @@ export const SocketProvider = ({ children }) => {
       }
     });
 
+    localSocket.on("undeclearResult", (event) => {
+      const data = event;
+      try {
+        setLocalCurrentUser((prev) => {
+          const user = {
+            ...prev,
+            current_balance: data?.current_balance,
+            exposure: data.exposure,
+          };
+          dispatch(setCurrentUser(user));
+          return user;
+        });
+
+        // setCurrentMatch((currentMatch) => {
+        //   if (currentMatch?.matchId !== data?.matchId) {
+        //     // If the new bet doesn't belong to the current match, return the current state
+        //     return currentMatch;
+        //   }
+
+        //   const updatedBettings = currentMatch?.bettings?.filter(
+        //     (betting) => betting?.id !== data?.betId
+        //   );
+        //   const newBody = {
+        //     ...currentMatch,
+        //     bettings: updatedBettings,
+        //   };
+
+        //   dispatch(setSelectedMatch(newBody));
+        //   return newBody;
+        // });
+        dispatch(setSessionExposure(data?.sessionExposure));
+        // setSessionBets((sessionBets) => {
+        //   const res = sessionBets?.filter((v) => v?.bet_id !== data?.betId);
+        //   dispatch(setAllSessionBets(res));
+        //   return res;
+        // });
+      } catch (e) {
+        console.log("error :", e?.message);
+      }
+    });
     localSocket.on("sessionNoResult", (event) => {
       const data = event;
       try {

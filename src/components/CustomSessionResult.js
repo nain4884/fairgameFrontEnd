@@ -32,15 +32,15 @@ const CustomSessionResult = ({
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
-        score: selected,
+        // score: selected,
       };
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        socket.emit("resultDeclareForBet", {
-          match_id: newData?.match_id,
-          betId: newData?.id,
-        });
+        // socket.emit("resultDeclareForBet", {
+        //   match_id: newData?.match_id,
+        //   betId: newData?.id,
+        // });
 
         // setLocalState(() => {
         //   const updatedBettings = currentMatch?.bettings.map(
@@ -58,19 +58,19 @@ const CustomSessionResult = ({
         //     }
         //   );
         //   const newBody = {
-          //     ...currentMatch,
-          //     bettings: updatedBettings,
-          //   };
-          //   // dispatch(setSelectedMatch(newBody));
-          //   return newBody;
-          // });
-        }
-        onClick();
-        setLoading({ id: "", value: false });
-        toast.success(data?.message);
-      } catch (e) {
-        setLoading({ id: "", value: false });
-        toast.error(e?.response?.data?.message);
+        //     ...currentMatch,
+        //     bettings: updatedBettings,
+        //   };
+        //   // dispatch(setSelectedMatch(newBody));
+        //   return newBody;
+        // });
+      }
+      onClick();
+      setLoading({ id: "", value: false });
+      toast.success(data?.message);
+    } catch (e) {
+      setLoading({ id: "", value: false });
+      toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
   };
@@ -178,12 +178,12 @@ const CustomSessionResult = ({
     if (loading?.value) {
       return false;
     }
-    if (selected === "") {
-      toast.warn("Please enter score");
-    } else {
-      undeclareResult()
-    }
-  }
+    // if (selected === "") {
+    //   toast.warn("Please enter score");
+    // } else {
+    undeclareResult();
+    // }
+  };
 
   const handleInputKeyPress = (event) => {
     try {
@@ -219,29 +219,31 @@ const CustomSessionResult = ({
     >
       {!confirmNoResult ? (
         <>
-          <TextField
-            autoFocus
-            placeholder="Score"
-            variant="standard"
-            value={selected}
-            // onChange={(e) => setSelected(e?.target.value)}
-            onChange={(e) => {
-              const numericValue = e.target.value.replace(/[^0-9]/g, '');
-              setSelected(numericValue);
-            }}
-            onKeyDown={handleInputKeyPress}
-            InputProps={{
-              disableUnderline: true,
-              sx: {
-                alignSelf: "center",
-                border: "1px solid #303030",
-                borderRadius: "5px",
-                paddingY: "5px",
-                paddingX: "0.5vw",
-                height: "28px",
-              },
-            }}
-          />
+          {newData?.betStatus !== 2 && (
+            <TextField
+              autoFocus
+              placeholder="Score"
+              variant="standard"
+              value={selected}
+              // onChange={(e) => setSelected(e?.target.value)}
+              onChange={(e) => {
+                const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                setSelected(numericValue);
+              }}
+              onKeyDown={handleInputKeyPress}
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  alignSelf: "center",
+                  border: "1px solid #303030",
+                  borderRadius: "5px",
+                  paddingY: "5px",
+                  paddingX: "0.5vw",
+                  height: "28px",
+                },
+              }}
+            />
+          )}
           {newData?.betStatus === 2 ? (
             <SessionResultCustomButton
               color={"#FF4D4D"}

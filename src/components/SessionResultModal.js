@@ -54,15 +54,16 @@ const SessionResultModal = ({
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
-        score: selected,
+        bet_condition: newData?.bet_condition,
+        // score: selected,
       };
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        socket.emit("resultDeclareForBet", {
-          match_id: newData?.match_id,
-          betId: newData?.id,
-        });
+        // socket.emit("resultDeclareForBet", {
+        //   match_id: newData?.match_id,
+        //   betId: newData?.id,
+        // });
 
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
@@ -243,7 +244,21 @@ const SessionResultModal = ({
           }}
           ref={myDivRef}
         >
-          {newData?.betStatus !== 3 ? (
+          {newData?.betStatus === 2 ? (
+            <Typography
+              sx={{
+                color: "#0B4F26",
+                fontSize: "13px",
+                fontWeight: "500",
+                fontWeight: "600",
+                textAlign: "center",
+                paddingTop: "20px",
+                paddingBottom: "20px",
+              }}
+            >
+              Are you sure to Undeclare Result ?
+            </Typography>
+          ) : newData?.betStatus !== 3 && newData?.betStatus !== 2 ? (
             <>
               <TextField
                 autoFocus
@@ -308,14 +323,14 @@ const SessionResultModal = ({
                   if (loading?.value) {
                     return false;
                   }
-                  if (selected && /^\d+$/.test(selected)) {
-                    undeclareResult();
-                  } else if (selected === "") {
-                    setError("Please enter score");
-                  } else {
-                    // toast.warn("Please enter score");
-                    setError("Input field should contain numbers only");
-                  }
+                  undeclareResult();
+                  // if (selected && /^\d+$/.test(selected)) {
+                  // } else if (selected === "") {
+                  //   setError("Please enter score");
+                  // } else {
+                  //   // toast.warn("Please enter score");
+                  //   setError("Input field should contain numbers only");
+                  // }
                 }}
               />
             ) : (

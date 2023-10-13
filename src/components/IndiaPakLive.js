@@ -154,6 +154,12 @@ const IndiaPakLive = React.forwardRef(
       ) {
         setIsDisable(true);
       }
+      if (
+        selectedSession?.betStatus === 1 &&
+        sessionBetId === selectedSession?.id
+      ) {
+        setIsDisable(false);
+      }
     }, [
       sessionProfitLoss,
       sessionBetId,
@@ -415,6 +421,7 @@ const IndiaPakLive = React.forwardRef(
     async function getManuallBookMaker(id) {
       try {
         dispatch(setSelectedSession(null));
+        dispatch(setSessionBetId(id));
         let response = await axios.get(`/betting/getById/${id}`);
         let data = response?.data?.data[0];
 
@@ -522,6 +529,17 @@ const IndiaPakLive = React.forwardRef(
       setIsBall(false);
       socket.emit("updateSessionRate", data);
     };
+
+    useEffect(() => {
+      if (sessionEvent?.id || sessionBetId) {
+        if (sessionBetId) {
+          getAllBetsData(sessionBetId);
+        } else {
+          getAllBetsData(sessionEvent?.id);
+        }
+      }
+    }, [sessionResultRefresh]);
+
     return (
       <Box
         sx={{
@@ -685,6 +703,7 @@ const IndiaPakLive = React.forwardRef(
                               id: betId,
                               match_id: match?.id,
                               betStatus: 2,
+                              bet_condition: Detail?.bet_condition,
                             }}
                             undeclare={true}
                             onClick={() => {
