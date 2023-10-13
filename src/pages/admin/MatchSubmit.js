@@ -1101,6 +1101,7 @@ const MatchSubmit = ({}) => {
                                   {item?.manualSessionActive && (
                                     <SessionMarket
                                       title={"Quick Session Market"}
+                                      match={"multiple"}
                                       currentOdds={currentOdds}
                                       currentMatch={item}
                                       data={[]}
@@ -1116,6 +1117,7 @@ const MatchSubmit = ({}) => {
                                   {item?.apiSessionActive && (
                                     <SessionMarket
                                       title={"Session Market"}
+                                      match={"multiple"}
                                       currentOdds={currentOdds}
                                       currentMatch={item}
                                       data={[]}
@@ -1252,6 +1254,7 @@ const MatchSubmit = ({}) => {
                                 {item?.manualSessionActive && (
                                   <SessionMarket
                                     title={"Quick Session Market"}
+                                    match={"multiple"}
                                     currentOdds={currentOdds}
                                     currentMatch={item}
                                     sessionExposer={item.sessionExposure}
@@ -1266,6 +1269,7 @@ const MatchSubmit = ({}) => {
                                 {item?.apiSessionActive && (
                                   <SessionMarket
                                     title={"Session Market"}
+                                    match={"multiple"}
                                     currentOdds={currentOdds}
                                     currentMatch={item}
                                     sessionExposer={item?.sessionExposure}
@@ -1445,6 +1449,7 @@ const MatchSubmit = ({}) => {
                             {item?.manualSessionActive && (
                               <SessionMarket
                                 title={"Quick Session Market"}
+                                match={"multiple"}
                                 currentMatch={item}
                                 currentOdds={currentOdds}
                                 sessionOffline={item?.sessionOffline}
@@ -1459,6 +1464,7 @@ const MatchSubmit = ({}) => {
                             {item?.apiSessionActive && (
                               <SessionMarket
                                 title={"Session Market"}
+                                match={"multiple"}
                                 currentMatch={item}
                                 currentOdds={currentOdds}
                                 sessionOffline={item?.sessionOffline}

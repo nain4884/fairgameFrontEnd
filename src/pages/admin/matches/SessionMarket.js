@@ -29,6 +29,7 @@ const SessionMarket = ({
   max,
   sessionExposer,
   sessionData,
+  match,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -53,6 +54,8 @@ const SessionMarket = ({
     }
     return total;
   }, 0);
+
+  const dataToIterate = match === "multiple" ? matchSessionData : sessionData;
 
   useEffect(() => {
     if (currentMatch?.bettings?.length > 0) {
@@ -370,9 +373,9 @@ const SessionMarket = ({
                 position: "relative",
               }}
             >
-              {sessionData?.length > 0 &&
+              {dataToIterate?.length > 0 &&
                 // matchSessionData?.reverse()?.map((element, index) => {
-                sessionData
+                  dataToIterate
                   .slice()
                   .sort(customSort)
                   ?.map((element, index) => {
