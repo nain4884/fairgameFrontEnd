@@ -878,7 +878,7 @@ const IndiaPakLive = React.forwardRef(
     );
   }
 );
-export default IndiaPakLive;
+export default React.memo(IndiaPakLive);
 
 const AddSession = ({
   createSession,
@@ -1844,12 +1844,14 @@ const RunsAmountBox = ({
     if (element && container) {
       const containerRect = container.getBoundingClientRect();
       const targetRect = element.getBoundingClientRect();
-      const scrollY =
+      const scrollTo =
         targetRect.top -
         containerRect.top -
-        containerRect.height / 2 +
-        targetRect.height / 2;
-      container.scrollTo({ top: scrollY, behavior: "smooth" });
+        (containerRect.height - targetRect.height) / 2;
+      container.scrollTo({
+        top: container.scrollTop + scrollTo,
+        behavior: "smooth", // You can use 'auto' if you don't want smooth scrolling
+      });
     }
 
     // element.scrollIntoView({
