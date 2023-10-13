@@ -31,6 +31,7 @@ const initialState = {
   quickBookmaker: [],
   liveSessionStatus: [],
   updateAdminPlayList: false,
+  refreshForBets: false,
 };
 
 export const logoutMatchDetails = createAction("auth/logoutReset");
@@ -205,6 +206,9 @@ const matchDetails = createSlice({
     setUpdateAdminPlayList: (state) => {
       state.updateAdminPlayList = !state.updateAdminPlayList;
     },
+    setRefreshForBets: (state, action) => {
+      state.refreshForBets = action.payload;
+    },
   },
   extraReducers: (builder) => {
     // This will handle the reset on logout
@@ -251,6 +255,7 @@ export const {
   setUpdateAdminPlayList,
   setMultiSelectedLiveSessions,
   setMultiQuickSessions,
+  setRefreshForBets,
 } = matchDetails.actions;
 
 export default matchDetails.reducer;

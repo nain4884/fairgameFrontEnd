@@ -27,6 +27,7 @@ import {
   setQuickBookmaker,
   setMatchButtonData,
   setSessionButtonData,
+  setRefreshForBets,
 } from "../../newStore/reducers/matchDetails";
 import { microServiceApiPath } from "../../components/helper/constants";
 import Axios from "axios";
@@ -70,6 +71,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     sessionOffline,
     selectedSessionBettings,
     quickSession,
+    refreshForBets,
   } = useSelector((state) => state?.matchDetails);
   const [IObets, setIObtes] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
@@ -1183,8 +1185,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       );
       setSessionBets(bets);
       dispatch(setAllSessionBets(bets));
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     } catch (e) {
       console.log(e);
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     }
   }
 
@@ -1349,6 +1357,12 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       console.log(e);
     }
   }, [matchId]);
+
+  useEffect(() => {
+    if (refreshForBets) {
+      getAllBetsData1();
+    }
+  }, [refreshForBets]);
 
   const handleRateChange = async () => {
     getThisMatch(matchId);
