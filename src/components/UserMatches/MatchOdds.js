@@ -14,6 +14,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import moment from "moment";
 import QuickSessionMarket from "./SessionOdds/QuickSessionMarket";
+import { useLocation } from "react-router-dom";
+import { setRole } from "../../newStore";
 const MatchOdds = ({
   data,
   matchOddsLive,
@@ -36,6 +38,13 @@ const MatchOdds = ({
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
   const [matchOddRateLive, setMatchOddRateLive] = useState(false);
   const [localQuickBookmaker, setLocalQuickBookmaker] = useState([]);
+  const [bookmakerHttp, setBookmakerHttp] = useState([]);
+  const [manualSessions, setManualSessions] = useState([]);
+  const [sessionExposerHttp, setSessionExposerHttp] = useState([])
+  const location = useLocation();
+  const { axios } = setRole();
+
+  const matchId = location?.state?.matchId;
 
   // const [localSession, setLocalSession] = useState([]);
   // const [localQuickSession, setLocalQuickSession] = useState([]);
@@ -102,6 +111,31 @@ const MatchOdds = ({
     manualBookMarkerRates?.length > 0
       ? manualBookMarkerRates?.find((v) => v?.matchId === data?.id)
       : { teamA: 0, teamB: 0, teamC: 0 };
+
+  useEffect(() => {
+    if (matchId) {
+      let payload = {
+        matchId: matchId,
+      };
+      const fetchManualRate = async () => {
+        try {
+          const { data } = await axios.post("/betting/getManualRate", payload);
+          setManualSessions(data?.data?.manualSessionRate);
+          setBookmakerHttp(data?.data?.manualBookRate);
+          setSessionExposerHttp(data?.data?.sessionExposure)
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchManualRate();
+
+      const intervalId = setInterval(fetchManualRate, 300);
+
+      return () => clearInterval(intervalId);
+    }
+  }, []);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       {data?.apiMatchActive && (
@@ -131,7 +165,7 @@ const MatchOdds = ({
       )}
 
       {data?.manualBookMakerActive &&
-        localQuickBookmaker?.map((bookmaker, idx) => {
+        bookmakerHttp?.map((bookmaker, idx) => {
           return (
             <Odds
               key={idx}
@@ -160,7 +194,7 @@ const MatchOdds = ({
         })}
 
       {/* Manual Bookmaker */}
-      {localQuickBookmaker?.map((bookmaker) => {
+      {bookmakerHttp?.map((bookmaker) => {
         if (bookmaker.betStatus === 1) {
           return (
             <Odds
@@ -262,9 +296,9 @@ const MatchOdds = ({
             data={sessionOddsLive}
             apiSessionActive={data?.apiSessionActive}
             manualSessionActive={data?.manualSessionActive}
-            newData={localQuickSession}
+            newData={manualSessions}
             sessionOffline={sessionOffline}
-            sessionExposer={sessionExposer}
+            sessionExposer={sessionExposerHttp}
             // dataProfit={dataProfit}
             teamARates={teamRates?.teamA}
             teamBRates={teamRates?.teamB}

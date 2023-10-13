@@ -52,7 +52,6 @@ const QuickSessionMarket = ({
   const { quickSession } = useSelector((state) => state?.matchDetails);
   const [localQuickSession, setLocalQuickSession] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
-  const [manualSessions, setManualSessions] = useState([]);
   const checkMctchId = useSelector(
     (state) => state?.matchDetails?.selectedMatch?.id
   );
@@ -73,31 +72,6 @@ const QuickSessionMarket = ({
       setLocalQuickSession(quickSession);
     }
   }, [quickSession]);
-
-  // useEffect(() => {
-  //   if (checkMctchId === id) {
-  //     let payload = {
-  //       matchId: checkMctchId,
-  //     };
-  //     const fetchManualSession = async () => {
-  //       try {
-  //         const { data } = await axios.post(
-  //           "/betting/getManualSessions",
-  //           payload
-  //         );
-  //         setManualSessions(data?.data);
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //       }
-  //     };
-
-  //     fetchManualSession();
-
-  //     const intervalId = setInterval(fetchManualSession, 300);
-
-  //     return () => clearInterval(intervalId);
-  //   }
-  // }, []);
 
   console.log(sessionOffline, "sessionOffline");
   return (
@@ -393,8 +367,8 @@ const QuickSessionMarket = ({
                 // overflowY: "visible",
               }}
             >
-              {localQuickSession?.length > 0 &&
-                localQuickSession
+              {newData?.length > 0 &&
+                newData
                   ?.slice()
                   .sort(customSort)
                   ?.map((element) => {

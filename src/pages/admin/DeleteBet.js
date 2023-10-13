@@ -75,8 +75,10 @@ const DeleteBet = ({}) => {
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState("");
   const [sessionExposer, setSessionExposure] = useState(0);
+  const [sessionExposerHttp, setSessionExposureHttp] = useState(0);
   const [sessionOff, setSessionOff] = useState([]);
   const [localQuickSession, setLocalQuickSession] = useState([]);
+  const [bookmakerHttp, setBookmakerHttp] = useState([]);
   const [localSelectedSessionBettings, setLocalSelectedSessionBettings] =
     useState([]);
 
@@ -1045,30 +1047,30 @@ const DeleteBet = ({}) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (matchId) {
-  //     let payload = {
-  //       matchId: matchId,
-  //     };
-  //     const fetchManualSession = async () => {
-  //       try {
-  //         const { data } = await axios.post(
-  //           "/betting/getManualSessions",
-  //           payload
-  //         );
-  //         setManualSessions(data?.data);
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //       }
-  //     };
+  useEffect(() => {
+    if (matchId) {
+      let payload = {
+        matchId: matchId,
+      };
+      const fetchManualRate = async () => {
+        try {
+          const { data } = await axios.post("/betting/getManualRate", payload);
+          setManualSessions(data?.data?.manualSessionRate);
+          setBookmakerHttp(data?.data?.manualBookRate);
+          setSessionExposureHttp(data?.data?.sessionExposure)
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchManualRate();
 
-  //     fetchManualSession();
+      const intervalId = setInterval(fetchManualRate, 300);
 
-  //     const intervalId = setInterval(fetchManualSession, 300);
-
-  //     return () => clearInterval(intervalId);
-  //   }
-  // }, []);
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, []);
 
   return (
     <Background>
@@ -1144,7 +1146,7 @@ const DeleteBet = ({}) => {
                   maxBet={currentMatch?.betfair_match_max_bet}
                 />
               )}
-              {currentMatch?.bookmakers?.map((bookmaker) => {
+              {bookmakerHttp?.map((bookmaker) => {
                 if (bookmaker.betStatus === 1) {
                   return (
                     <Odds
@@ -1182,10 +1184,10 @@ const DeleteBet = ({}) => {
               {currentMatch?.manualSessionActive && matchesMobile && (
                 <SessionMarket
                   title={"Quick Session Market"}
-                  sessionExposer={sessionExposer}
+                  sessionExposer={sessionExposerHttp}
                   currentMatch={currentMatch}
                   sessionBets={sessionBets?.length}
-                  sessionData={localQuickSession}
+                  sessionData={manualSessions}
                   // data={[]}
                   sessionOffline={sessionOff}
                   setPopData={setPopData}
