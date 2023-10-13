@@ -991,10 +991,7 @@ const CustomHeader = ({}) => {
 
                   const updatedBettings = [
                     ...item?.bettings,
-                    {
-                      id: localSelectedSession?.id,
-                      bet_condition: localSelectedSession?.bet_condition,
-                    },
+                    { id: value?.betId, bet_condition: value?.bet_condition },
                   ];
 
                   return { ...item, bettings: updatedBettings };
@@ -1002,7 +999,7 @@ const CustomHeader = ({}) => {
 
                 return item;
               });
-
+              dispatch(setAllEventSession(updatedPrev));
               return updatedPrev;
             });
           } catch (e) {

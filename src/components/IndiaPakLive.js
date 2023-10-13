@@ -421,6 +421,7 @@ const IndiaPakLive = React.forwardRef(
     async function getManuallBookMaker(id) {
       try {
         dispatch(setSelectedSession(null));
+        dispatch(setSessionBetId(id));
         let response = await axios.get(`/betting/getById/${id}`);
         let data = response?.data?.data[0];
 
@@ -691,6 +692,7 @@ const IndiaPakLive = React.forwardRef(
                               id: betId,
                               match_id: match?.id,
                               betStatus: 2,
+                              bet_condition: Detail?.bet_condition,
                             }}
                             undeclare={true}
                             onClick={() => {

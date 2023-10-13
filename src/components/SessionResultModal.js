@@ -54,6 +54,7 @@ const SessionResultModal = ({
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
+        bet_condition: newData?.bet_condition,
         // score: selected,
       };
       const { data } = await axios.post("/game-match/undeclareresult", body);
