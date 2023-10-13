@@ -590,12 +590,12 @@ const IndiaPakLive = React.forwardRef(
                           setDetail({
                             ...Detail,
 
-                            ly_rate_percent: y_rate_percent,
-                            ln_rate_percent: n_rate_percent,
-                            y_rate_percent: y_rate_percent,
-                            n_rate_percent: n_rate_percent,
+                            ly_rate_percent: parseInt(y_rate_percent),
+                            ln_rate_percent: parseInt(n_rate_percent),
+                            y_rate_percent: parseInt(y_rate_percent),
+                            n_rate_percent: parseInt(n_rate_percent),
                           });
-                          handleLiveChange(y_rate_percent, n_rate_percent);
+                          handleLiveChange(parseInt(y_rate_percent), parseInt(n_rate_percent));
                           if (inputRef.current) {
                             inputRef.current.focus();
                           }
