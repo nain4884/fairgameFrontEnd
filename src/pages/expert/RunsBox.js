@@ -20,9 +20,11 @@ const RunsBox = ({ item, setData, currentOdds }) => {
       const scrollY =
         targetRect.top -
         containerRect.top -
-        containerRect.height / 2 +
-        targetRect.height / 2;
-      container.scrollTo({ top: scrollY, behavior: "smooth" });
+        (containerRect.height - targetRect.height) / 2;
+      container.scrollTo({
+        top: container.scrollTop + scrollY,
+        behavior: "smooth",
+      });
     }
   };
 
