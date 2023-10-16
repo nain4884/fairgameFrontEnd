@@ -19,6 +19,7 @@ import {
   setAllBetRate,
   setAllSessionBets,
   setMultiSelectedMatch,
+  setRefreshForBets,
 } from "../../newStore/reducers/matchDetails";
 import { GlobalStore } from "../../context/globalStore";
 import { logout } from "../../newStore/reducers/auth";
@@ -50,9 +51,8 @@ const MatchSubmit = ({}) => {
   const [storedMatchid, setStoredMatchId] = useState("");
   const [manualRateHttp, setManualRateHttp] = useState([]);
 
-  const { multiSelectedMatches, allBetRates, allSessionBets } = useSelector(
-    (state) => state?.matchDetails
-  );
+  const { multiSelectedMatches, allBetRates, allSessionBets, refreshForBets } =
+    useSelector((state) => state?.matchDetails);
 
   const navigate = useNavigate();
   // matchIds
@@ -925,8 +925,14 @@ const MatchSubmit = ({}) => {
       );
       setSessionBets(bets || []);
       dispatch(setAllSessionBets(bets));
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     } catch (e) {
       console.log(e);
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     }
   }
 
@@ -965,6 +971,12 @@ const MatchSubmit = ({}) => {
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (refreshForBets) {
+      getAllBetsData();
+    }
+  }, [refreshForBets]);
 
   return (
     <Background>
@@ -1163,7 +1175,9 @@ const MatchSubmit = ({}) => {
                                       currentMatch={item}
                                       data={[]}
                                       sessionOffline={item?.sessionOffline}
-                                      sessionExposer={item?.sessionExposure}
+                                      sessionExposer={
+                                        manualSessionHttp?.sessionExposure
+                                      }
                                       sessionBets={sessionBetsData?.length}
                                       setPopData={setPopData}
                                       popData={popData}
@@ -1320,7 +1334,9 @@ const MatchSubmit = ({}) => {
                                     match={"multiple"}
                                     currentOdds={currentOdds}
                                     currentMatch={item}
-                                    sessionExposer={item?.sessionExposure}
+                                    sessionExposer={
+                                      manualSessionHttp?.sessionExposure
+                                    }
                                     sessionOffline={item?.sessionOffline}
                                     sessionBets={sessionBetsData?.length}
                                     setPopData={setPopData}
@@ -1527,7 +1543,9 @@ const MatchSubmit = ({}) => {
                                 currentMatch={item}
                                 currentOdds={currentOdds}
                                 sessionOffline={item?.sessionOffline}
-                                sessionExposer={item?.sessionExposure}
+                                sessionExposer={
+                                  manualSessionHttp?.sessionExposure
+                                }
                                 sessionBets={sessionBetsData?.length}
                                 setPopData={setPopData}
                                 popData={popData}

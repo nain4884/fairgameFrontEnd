@@ -172,7 +172,7 @@ const SessionMarket = ({
             }}
           >
             <Box sx={{ gap: "4px", display: "flex" }}>
-              <SmallBoxSeason total={totalSessionBet || 0} />
+              <SmallBoxSeason total={sessionBets || 0} />
               {/* static code */}
               <Box
                 sx={{

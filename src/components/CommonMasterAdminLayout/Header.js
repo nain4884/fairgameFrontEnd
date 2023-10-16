@@ -423,6 +423,27 @@ const CustomHeader = ({}) => {
                 }
                 return currentMatch;
               });
+              setMatchData((prevMatchData) => {
+                const updated = prevMatchData.map((item) => {
+                  if (item?.id === data?.matchId) {
+                    dispatch(setRefreshForBets(true));
+                    dispatch(setSessionExposure(data?.sessionExposure));
+                    setLocalCurrentUser((prev) => {
+                      const user = {
+                        ...prev,
+                        current_balance: data?.current_balance,
+                        exposure: data?.exposure,
+                      };
+                      dispatch(setCurrentUser(user));
+                      return user;
+                    });
+                    return item;
+                  }
+                  return item;
+                });
+                dispatch(setMultiSelectedMatch(updated));
+                return updated;
+              });
             } catch (e) {
               console.error("error", e);
             }
