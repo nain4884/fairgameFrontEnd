@@ -26,6 +26,7 @@ import {
   setManualBookmaker,
   setQuickBookmaker,
   setQuickSession,
+  setRefreshForBets,
   setSelectedMatch,
   setSelectedSessionBettings,
   setSessionExposure,
@@ -254,6 +255,31 @@ export const SocketProvider = ({ children }) => {
         });
       } catch (e) {
         console.log("error :", e?.message);
+      }
+    });
+
+    localSocket.on("undeclearResult", (event) => {
+      const data = event;
+      try {
+        setCurrentMatch((currentMatch) => {
+          if (currentMatch?.id === data?.match_id || data?.id) {
+            dispatch(setRefreshForBets(true));
+            dispatch(setSessionExposure(data?.sessionExposure));
+            setLocalCurrentUser((prev) => {
+              const user = {
+                ...prev,
+                current_balance: data?.current_balance,
+                exposure: data.exposure,
+              };
+              dispatch(setCurrentUser(user));
+              return user;
+            });
+            return currentMatch;
+          }
+          return currentMatch;
+        });
+      } catch (e) {
+        console.error("error: ", e?.message);
       }
     });
 
@@ -808,47 +834,6 @@ export const SocketProvider = ({ children }) => {
           dispatch(setAllSessionBets(res));
           return res;
         });
-      } catch (e) {
-        console.log("error :", e?.message);
-      }
-    });
-
-    localSocket.on("undeclearResult", (event) => {
-      const data = event;
-      try {
-        setLocalCurrentUser((prev) => {
-          const user = {
-            ...prev,
-            current_balance: data?.current_balance,
-            exposure: data.exposure,
-          };
-          dispatch(setCurrentUser(user));
-          return user;
-        });
-
-        // setCurrentMatch((currentMatch) => {
-        //   if (currentMatch?.matchId !== data?.matchId) {
-        //     // If the new bet doesn't belong to the current match, return the current state
-        //     return currentMatch;
-        //   }
-
-        //   const updatedBettings = currentMatch?.bettings?.filter(
-        //     (betting) => betting?.id !== data?.betId
-        //   );
-        //   const newBody = {
-        //     ...currentMatch,
-        //     bettings: updatedBettings,
-        //   };
-
-        //   dispatch(setSelectedMatch(newBody));
-        //   return newBody;
-        // });
-        dispatch(setSessionExposure(data?.sessionExposure));
-        // setSessionBets((sessionBets) => {
-        //   const res = sessionBets?.filter((v) => v?.bet_id !== data?.betId);
-        //   dispatch(setAllSessionBets(res));
-        //   return res;
-        // });
       } catch (e) {
         console.log("error :", e?.message);
       }

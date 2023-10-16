@@ -20,6 +20,7 @@ import {
   setManualBookmaker,
   setQuickBookmaker,
   setQuickSession,
+  setRefreshForBets,
   setSelectedMatch,
   setSelectedSessionBettings,
 } from "../../newStore/reducers/matchDetails";
@@ -58,6 +59,7 @@ const DeleteBet = ({}) => {
     allSessionBets,
     quickSession,
     selectedSessionBettings,
+    refreshForBets,
   } = useSelector((state) => state?.matchDetails);
   const [mode, setMode] = useState(false);
   const [selectedBetData, setSelectedBetData] = useState([]);
@@ -1000,8 +1002,14 @@ const DeleteBet = ({}) => {
       );
       setSessionBets(bets || []);
       dispatch(setAllSessionBets(bets));
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     } catch (e) {
       console.log(e);
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     }
   }
 
@@ -1011,6 +1019,12 @@ const DeleteBet = ({}) => {
       getAllBetsData(matchId);
     }
   }, [matchId]);
+
+  useEffect(() => {
+    if (refreshForBets) {
+      getAllBetsData(matchId);
+    }
+  }, [refreshForBets]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -1057,7 +1071,7 @@ const DeleteBet = ({}) => {
           const { data } = await axios.post("/betting/getManualRate", payload);
           setManualSessions(data?.data?.manualSessionRate);
           setBookmakerHttp(data?.data?.manualBookRate);
-          setSessionExposureHttp(data?.data?.sessionExposure)
+          setSessionExposureHttp(data?.data?.sessionExposure);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -1201,7 +1215,7 @@ const DeleteBet = ({}) => {
                   title={"Session Market"}
                   currentMatch={currentMatch}
                   sessionBets={sessionBets?.length}
-                  sessionExposer={sessionExposer}
+                  sessionExposer={sessionExposerHttp}
                   sessionData={localSelectedSessionBettings}
                   // data={[]}
                   sessionOffline={sessionOff}
@@ -1340,8 +1354,8 @@ const DeleteBet = ({}) => {
                     currentOdds={currentOdds}
                     currentMatch={currentMatch}
                     sessionBets={sessionBets?.length}
-                    sessionExposer={currentMatch?.sessionExposure}
-                    sessionData={localQuickSession}
+                    sessionExposer={sessionExposerHttp}
+                    sessionData={manualSessions}
                     // data={[]}
                     sessionOffline={sessionOff}
                     setPopData={setPopData}
@@ -1356,7 +1370,7 @@ const DeleteBet = ({}) => {
                     currentOdds={currentOdds}
                     currentMatch={currentMatch}
                     sessionBets={sessionBets?.length}
-                    sessionExposer={currentMatch?.sessionExposure}
+                    sessionExposer={sessionExposerHttp}
                     sessionData={localSelectedSessionBettings}
                     // data={[]}
                     sessionOffline={sessionOff}

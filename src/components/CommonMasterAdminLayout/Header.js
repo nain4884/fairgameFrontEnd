@@ -60,6 +60,7 @@ import {
   logoutMatchDetails,
   setSelectedSessionBettings,
   setQuickSession,
+  setRefreshForBets,
 } from "../../newStore/reducers/matchDetails";
 import { toast } from "react-toastify";
 import { memo } from "react";
@@ -399,6 +400,31 @@ const CustomHeader = ({}) => {
               });
             } catch (err) {
               console.log(err?.message);
+            }
+          }
+
+          if (packet.data[0] === "undeclearResult") {
+            const data = packet.data[1];
+            try {
+              setCurrentMatch((currentMatch) => {
+                if (currentMatch?.id === data?.match_id || data?.id) {
+                  dispatch(setRefreshForBets(true));
+                  dispatch(setSessionExposure(data?.sessionExposure));
+                  setLocalCurrentUser((prev) => {
+                    const user = {
+                      ...prev,
+                      current_balance: data?.current_balance,
+                      exposure: data?.exposure,
+                    };
+                    dispatch(setCurrentUser(user));
+                    return user;
+                  });
+                  return currentMatch;
+                }
+                return currentMatch;
+              });
+            } catch (e) {
+              console.error("error", e);
             }
           }
 

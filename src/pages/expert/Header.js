@@ -957,7 +957,7 @@ const CustomHeader = ({}) => {
           }
         }
 
-        if (packet.data[0] === "undeclearResult") {
+        if (packet.data[0] === "undeclearResultBet") {
           const value = packet.data[1];
           try {
             // setLocalSelectedBookmaker((prev) => {
