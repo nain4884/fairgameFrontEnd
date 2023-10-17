@@ -613,7 +613,10 @@ const IndiaPakLive = React.forwardRef(
                             y_rate_percent: parseInt(y_rate_percent),
                             n_rate_percent: parseInt(n_rate_percent),
                           });
-                          handleLiveChange(parseInt(y_rate_percent), parseInt(n_rate_percent));
+                          handleLiveChange(
+                            parseInt(y_rate_percent),
+                            parseInt(n_rate_percent)
+                          );
                           if (inputRef.current) {
                             inputRef.current.focus();
                           }
@@ -703,7 +706,6 @@ const IndiaPakLive = React.forwardRef(
                               id: betId,
                               match_id: match?.id,
                               betStatus: 2,
-                              bet_condition: Detail?.bet_condition,
                             }}
                             undeclare={true}
                             onClick={() => {
