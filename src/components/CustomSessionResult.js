@@ -24,6 +24,7 @@ const CustomSessionResult = ({
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
   const [confirmNoResult, setConfirmNoResults] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const undeclareResult = async () => {
     try {
@@ -67,9 +68,11 @@ const CustomSessionResult = ({
       }
       onClick();
       setLoading({ id: "", value: false });
+      setShowPopup(false);
       toast.success(data?.message);
     } catch (e) {
       setLoading({ id: "", value: false });
+      setShowPopup(false);
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
@@ -181,7 +184,8 @@ const CustomSessionResult = ({
     // if (selected === "") {
     //   toast.warn("Please enter score");
     // } else {
-    undeclareResult();
+    setShowPopup(true);
+    // undeclareResult();
     // }
   };
 
@@ -244,27 +248,64 @@ const CustomSessionResult = ({
               }}
             />
           )}
-          {newData?.betStatus === 2 ? (
-            <SessionResultCustomButton
-              color={"#FF4D4D"}
-              title={"Un Declare"}
-              loading={loading}
-              id="UD"
-              session={true}
-              onClick={handleUndeclare}
-            />
+          {!showPopup ? (
+            <>
+              {newData?.betStatus === 2 ? (
+                <SessionResultCustomButton
+                  color={"#FF4D4D"}
+                  title={"Un Declare"}
+                  loading={loading}
+                  id="UD"
+                  session={true}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowPopup(true);
+                  }}
+                />
+              ) : (
+                <>
+                  {newData?.betStatus !== 3 ? (
+                    <SessionResultCustomButton
+                      color={"#0B4F26"}
+                      id="DR"
+                      session={true}
+                      title={"Declare"}
+                      loading={loading}
+                      onClick={handleDeclare}
+                    />
+                  ) : null}
+                </>
+              )}
+            </>
           ) : (
             <>
-              {newData?.betStatus !== 3 ? (
+              <Typography
+                sx={{
+                  color: "#0B4F26",
+                  fontSize: "12px",
+                  fontWeight: "500",
+                  height: "28px",
+                  lineHeight: 1.2,
+                  textAlign: "center",
+                }}
+              >
+                Are you sure to Undeclare Result ?
+              </Typography>
+              {newData?.betStatus === 2 && (
                 <SessionResultCustomButton
-                  color={"#0B4F26"}
-                  id="DR"
-                  session={true}
-                  title={"Declare"}
+                  color={"rgb(106 90 90)"}
+                  title={"Yes"}
                   loading={loading}
-                  onClick={handleDeclare}
+                  id="NR"
+                  session={true}
+                  onClick={() => {
+                    if (loading?.value) {
+                      return false;
+                    }
+                    undeclareResult();
+                  }}
                 />
-              ) : null}
+              )}
             </>
           )}
 

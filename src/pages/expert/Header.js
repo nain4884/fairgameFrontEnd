@@ -972,9 +972,38 @@ const CustomHeader = ({}) => {
             //   }
             //   return prev;
             // });
+            setCurrentMatch((prev) => {
+              if (prev?.id === value?.match_id && value?.sessionBet === false) {
+                const newBody = {
+                  ...prev,
+                  stopAt: null,
+                };
+                dispatch(setSelectedMatch(newBody));
+                return newBody;
+              }
+              return prev;
+            });
+            setLocalSessionExpertOdds((prev) => {
+              const findBet = prev?.find(
+                (betting) => betting?.id === value?.betId
+              );
+              const body = {
+                ...findBet,
+                betStatus: 1,
+                betRestult: value?.score,
+                profitLoss: value?.profitLoss,
+              };
+              var removedBet = prev?.filter(
+                (betting) => betting?.id !== value?.betId
+              );
+              var updatedBettings = [body, ...removedBet];
+              dispatch(setSessionExpertOdds(updatedBettings));
+              return updatedBettings;
+            });
+
             setAllLiveEventSession((prev) => {
               var updatedPrev = prev?.map((item) => {
-                if (item.id === value?.match_id && value?.sessionBet) {
+                if (item?.id === value?.match_id && value?.sessionBet) {
                   dispatch(setSessionResultRefresh(true));
 
                   if (sessionBetId === value?.betId) {
