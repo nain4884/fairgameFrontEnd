@@ -262,7 +262,10 @@ export const SocketProvider = ({ children }) => {
       const data = event;
       try {
         setCurrentMatch((currentMatch) => {
-          if (currentMatch?.id === data?.match_id || data?.id) {
+          if (
+            currentMatch?.id === data?.match_id ||
+            (data?.id && data?.selectionId === null)
+          ) {
             dispatch(setRefreshForBets(true));
             dispatch(setSessionExposure(data?.sessionExposure));
             setLocalCurrentUser((prev) => {
@@ -274,6 +277,52 @@ export const SocketProvider = ({ children }) => {
               dispatch(setCurrentUser(user));
               return user;
             });
+            return currentMatch;
+          }
+          return currentMatch;
+        });
+      } catch (e) {
+        console.error("error: ", e?.message);
+      }
+    });
+
+    localSocket.on("undeclearResultBet", (event) => {
+      const data = event;
+      try {
+        setCurrentMatch((currentMatch) => {
+          if (currentMatch?.id === data?.match_id || data?.id) {
+            dispatch(setRefreshForBets(true));
+            if (data?.selectionId) {
+              setLSelectedSessionBetting((prev) => {
+                const findBet = prev?.find(
+                  (betting) => betting?.id === data?.betId
+                );
+
+                if (!findBet) {
+                  const body = {
+                    ...data,
+                    id: data?.betId,
+                    betStatus: 1,
+                    no_rate: 0,
+                    yes_rate: 0,
+                  };
+                  var updatedBettings = [body, ...prev];
+                  dispatch(setSelectedSessionBettings(updatedBettings));
+                  return updatedBettings;
+                } else {
+                  const body = {
+                    ...findBet,
+                    betStatus: 1,
+                  };
+                  var removedBet = prev?.filter(
+                    (betting) => betting?.id !== data?.betId
+                  );
+                  var updatedBettings = [body, ...removedBet];
+                  dispatch(setSelectedSessionBettings(updatedBettings));
+                  return updatedBettings;
+                }
+              });
+            }
             return currentMatch;
           }
           return currentMatch;
