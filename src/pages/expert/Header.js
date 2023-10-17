@@ -583,6 +583,17 @@ const CustomHeader = ({}) => {
           const data = packet.data[1];
           if (betId === data?.betPlaceData?.bet_id) {
             let profitLoss = data?.profitLoss;
+            setLocalSelectedSession((i) => {
+              if (i?.id === data?.betPlaceData?.bet_id) {
+                const newBody = {
+                  ...i,
+                  profitLoss: profitLoss,
+                };
+                dispatch(setSelectedSession(newBody));
+                return newBody;
+              }
+              return i;
+            });
             dispatch(setSessionProfitLoss(profitLoss));
             const body = {
               id: data?.betPlaceData?.id,
@@ -1008,13 +1019,16 @@ const CustomHeader = ({}) => {
 
                   if (sessionBetId === value?.betId) {
                     setLocalSelectedSession((i) => {
-                      const newBody = {
-                        ...i,
-                        betStatus: 1,
-                      };
-                      dispatch(setSelectedSession(newBody));
-                      dispatch(setSessionProfitLoss(newBody?.profitLoss));
-                      return newBody;
+                      if (i?.id === value?.betId) {
+                        const newBody = {
+                          ...i,
+                          betStatus: 1,
+                        };
+                        dispatch(setSelectedSession(newBody));
+                        dispatch(setSessionProfitLoss(newBody?.profitLoss));
+                        return newBody;
+                      }
+                      return i;
                     });
                   }
 
