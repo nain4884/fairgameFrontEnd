@@ -33,6 +33,7 @@ const DropDownSimple = ({
   type,
   defaultValue,
   matchesSelect,
+  disable,
 }) => {
   const [value, setValue] = useState(valued ?? data[0]);
 
@@ -67,83 +68,86 @@ const DropDownSimple = ({
     CompetitionName,
     EventId,
     type,
+    disable,
   }) => {
     return (
       <Box
         onClick={() => {
-          setValue(item);
-          function setDetailWithRunners() {
-            let allrunners = [];
-            eventDetail.Runners.map((runner) => {
-              allrunners.push(runner?.runnerName);
-            });
-            setDetail({
-              ...Detail,
-              [place]: {
-                ...Detail[place],
-                val: item,
-              },
-              2: {
-                ...Detail[2],
-                val: new Date(eventDetail?.EventDate),
-              },
-              9: {
-                ...Detail[9],
-                val: allrunners[0],
-              },
-              13: {
-                ...Detail[13],
-                val: allrunners[1],
-              },
-              22: {
-                ...Detail[22],
-                val: CompetitionName,
-              },
-              23: {
-                ...Detail[23],
-                val: EventId,
-              },
-              17: {
-                ...Detail[17],
-                val: allrunners[2] ? allrunners[2] : "",
-              },
-            });
+          if (!disable) {
+            setValue(item);
+            function setDetailWithRunners() {
+              let allrunners = [];
+              eventDetail.Runners.map((runner) => {
+                allrunners.push(runner?.runnerName);
+              });
+              setDetail({
+                ...Detail,
+                [place]: {
+                  ...Detail[place],
+                  val: item,
+                },
+                2: {
+                  ...Detail[2],
+                  val: new Date(eventDetail?.EventDate),
+                },
+                9: {
+                  ...Detail[9],
+                  val: allrunners[0],
+                },
+                13: {
+                  ...Detail[13],
+                  val: allrunners[1],
+                },
+                22: {
+                  ...Detail[22],
+                  val: CompetitionName,
+                },
+                23: {
+                  ...Detail[23],
+                  val: EventId,
+                },
+                17: {
+                  ...Detail[17],
+                  val: allrunners[2] ? allrunners[2] : "",
+                },
+              });
+            }
+            {
+              eventDetail
+                ? setDetailWithRunners()
+                : type === "tournament"
+                ? setDetail({
+                    ...Detail,
+                    [place]: {
+                      ...Detail[place],
+                      val:
+                        item === "Total Loss"
+                          ? "totalLoss"
+                          : item === "Entry Wise"
+                          ? "BetLoss"
+                          : item,
+                    },
+                    34: {
+                      ...Detail[34],
+                      val: EventId,
+                    },
+                  })
+                : setDetail({
+                    ...Detail,
+                    [place]: {
+                      ...Detail[place],
+                      val:
+                        item === "Total Loss"
+                          ? "totalLoss"
+                          : item === "Entry Wise"
+                          ? "BetLoss"
+                          : item,
+                    },
+                  });
+            }
+            matchesSelect && setMarketId(mId);
+            setOpen(false);
           }
-          {
-            eventDetail
-              ? setDetailWithRunners()
-              : type === "tournament"
-              ? setDetail({
-                  ...Detail,
-                  [place]: {
-                    ...Detail[place],
-                    val:
-                      item === "Total Loss"
-                        ? "totalLoss"
-                        : item === "Entry Wise"
-                        ? "BetLoss"
-                        : item,
-                  },
-                  34: {
-                    ...Detail[34],
-                    val: EventId,
-                  },
-                })
-              : setDetail({
-                  ...Detail,
-                  [place]: {
-                    ...Detail[place],
-                    val:
-                      item === "Total Loss"
-                        ? "totalLoss"
-                        : item === "Entry Wise"
-                        ? "BetLoss"
-                        : item,
-                  },
-                });
-          }
-          matchesSelect && setMarketId(mId);
-          setOpen(false);
         }}
         sx={[
           {
@@ -174,6 +178,7 @@ const DropDownSimple = ({
     CompetitionName,
     EventId,
     type,
+    disbale,
   }) => {
     return (
       <Item
@@ -184,6 +189,7 @@ const DropDownSimple = ({
         matchesSelect={matchesSelect}
         eventDetail={eventDetail}
         type={type}
+        disable={disable}
       />
     );
   };
@@ -204,7 +210,9 @@ const DropDownSimple = ({
       </Typography>
       <Box
         onClick={() => {
-          setOpen(!open);
+          if (!disable) {
+            setOpen(!open);
+          }
         }}
         sx={[
           {
@@ -298,11 +306,12 @@ const DropDownSimple = ({
                     CompetitionName={i.CompetitionName}
                     eventDetail={i.EventDetail}
                     type={type}
+                    disable={disable}
                   />
                 );
               })
             : data?.map((i, idx) => {
-                return <Block key={idx} i={i} />;
+                return <Block key={idx} i={i} disable={disable} />;
               })}
         </Box>
       )}

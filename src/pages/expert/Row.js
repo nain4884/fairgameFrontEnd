@@ -274,6 +274,15 @@ const Row = ({
             )}
           </Box>
           <CusButton
+            onClick={() => {
+              let id = data?.id;
+              navigate(`/expert/edit_match`, {
+                state: { id: data.id },
+              });
+            }}
+            title={"Edit"}
+          />
+          <CusButton
             loading={loading.id === data.id}
             onClick={() => {
               submitMatchUpdation();
