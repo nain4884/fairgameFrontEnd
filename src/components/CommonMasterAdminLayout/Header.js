@@ -449,6 +449,96 @@ const CustomHeader = ({}) => {
             }
           }
 
+          if (packet.data[0] === "undeclearResultBet") {
+            const data = packet.data[1];
+            try {
+              setCurrentMatch((currentMatch) => {
+                if (currentMatch?.id === data?.match_id || data?.id) {
+                  dispatch(setRefreshForBets(true));
+                  if (data?.selectionId) {
+                    setLSelectedSessionBetting((prev) => {
+                      const findBet = prev?.find(
+                        (betting) => betting?.id === data?.betId
+                      );
+
+                      if (!findBet) {
+                        const body = {
+                          ...data,
+                          id: data?.betId,
+                          betStatus: 1,
+                          no_rate: 0,
+                          yes_rate: 0,
+                        };
+                        var updatedBettings = [body, ...prev];
+                        dispatch(setSelectedSessionBettings(updatedBettings));
+                        return updatedBettings;
+                      } else {
+                        const body = {
+                          ...findBet,
+                          betStatus: 1,
+                        };
+                        var removedBet = prev?.filter(
+                          (betting) => betting?.id !== data?.betId
+                        );
+                        var updatedBettings = [body, ...removedBet];
+                        dispatch(setSelectedSessionBettings(updatedBettings));
+                        return updatedBettings;
+                      }
+                    });
+                  }
+                  return currentMatch;
+                }
+                return currentMatch;
+              });
+              setMatchData((prevMatchData) => {
+                try {
+                  const updated = prevMatchData.map((item) => {
+                    if (item?.id === data?.match_id && data?.selectionId) {
+                      const findBet = item?.bettings?.find(
+                        (betting) => betting?.id === data?.betId
+                      );
+
+                      if (!findBet) {
+                        const body = {
+                          ...data,
+                          id: data?.betId,
+                          betStatus: 1,
+                          no_rate: 0,
+                          yes_rate: 0,
+                        };
+                        var updatedBetting = [body, ...item?.bettings];
+                        return {
+                          ...item,
+                          bettings: updatedBetting,
+                        };
+                      } else {
+                        const body = {
+                          ...findBet,
+                          betStatus: 1,
+                        };
+                        var removedBet = item?.bettings?.filter(
+                          (betting) => betting?.id !== data?.betId
+                        );
+                        var updatedBetting = [body, ...removedBet];
+                        return {
+                          ...item,
+                          bettings: updatedBetting,
+                        };
+                      }
+                    }
+                    return item;
+                  });
+                  dispatch(setMultiSelectedMatch(updated));
+                  return updated;
+                } catch (e) {
+                  console.log("error: ", e?.message);
+                }
+              });
+            } catch (e) {
+              console.error("error: ", e?.message);
+            }
+          }
+
           if (packet.data[0] === "updateMatchActiveStatus") {
             const value = packet.data[1];
             setCurrentMatch((currentMatch) => {

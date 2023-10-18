@@ -1031,13 +1031,14 @@ const CustomHeader = ({}) => {
                       return i;
                     });
                   }
+                  if (!value?.selectionId) {
+                    const updatedBettings = [
+                      ...item?.bettings,
+                      { id: value?.betId, bet_condition: value?.bet_condition },
+                    ];
 
-                  const updatedBettings = [
-                    ...item?.bettings,
-                    { id: value?.betId, bet_condition: value?.bet_condition },
-                  ];
-
-                  return { ...item, bettings: updatedBettings };
+                    return { ...item, bettings: updatedBettings };
+                  }
                 }
 
                 return item;

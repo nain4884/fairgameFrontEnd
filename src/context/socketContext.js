@@ -262,10 +262,7 @@ export const SocketProvider = ({ children }) => {
       const data = event;
       try {
         setCurrentMatch((currentMatch) => {
-          if (
-            currentMatch?.id === data?.match_id ||
-            (data?.id && data?.selectionId === null)
-          ) {
+          if (currentMatch?.id === data?.match_id || data?.id) {
             dispatch(setRefreshForBets(true));
             dispatch(setSessionExposure(data?.sessionExposure));
             setLocalCurrentUser((prev) => {

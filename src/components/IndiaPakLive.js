@@ -66,6 +66,7 @@ const IndiaPakLive = React.forwardRef(
     } = useSelector((state) => state?.expertMatchDetails);
 
     const [currentOdds, setCurrentOdds] = useState(null);
+    const [loading, setLoading] = useState(false);
     const stateDetail = {
       match_id: match?.id,
       matchType: match?.gameType,
@@ -380,26 +381,27 @@ const IndiaPakLive = React.forwardRef(
     };
 
     async function doSubmitSessionBet(rate_percent) {
-      dispatch(setSessionAllBet([]));
-      var payload = {};
-      if (!isBall) {
-        payload = { ...Detail, rate_percent };
-      } else {
-        payload = {
-          match_id: Detail?.match_id,
-          matchType: Detail?.matchType,
-          sessionBet: true,
-          betStatus: 1,
-          bet_condition: Detail?.bet_condition,
-          no_rate: Detail?.no_rate,
-          yes_rate: Detail?.yes_rate,
-          y_rate_percent: Detail?.y_rate_percent,
-          n_rate_percent: Detail?.n_rate_percent,
-          suspended: "Ball Started",
-        };
-      }
-      // alert(JSON.stringify(payload))
       try {
+        setLoading(true);
+        dispatch(setSessionAllBet([]));
+        var payload = {};
+        if (!isBall) {
+          payload = { ...Detail, rate_percent };
+        } else {
+          payload = {
+            match_id: Detail?.match_id,
+            matchType: Detail?.matchType,
+            sessionBet: true,
+            betStatus: 1,
+            bet_condition: Detail?.bet_condition,
+            no_rate: Detail?.no_rate,
+            yes_rate: Detail?.yes_rate,
+            y_rate_percent: Detail?.y_rate_percent,
+            n_rate_percent: Detail?.n_rate_percent,
+            suspended: "Ball Started",
+          };
+        }
+        // alert(JSON.stringify(payload))
         let response = await axios.post(`/betting/addBetting`, payload);
         dispatch(setSelectedSession(response?.data?.data));
         setBetId(response?.data?.data?.id);
@@ -412,7 +414,9 @@ const IndiaPakLive = React.forwardRef(
           isNoPercent: false,
           isYesPercent: false,
         });
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
         toast.error(e?.response?.data?.message);
         // console.log(e.response.data.message);
       }
@@ -837,9 +841,13 @@ const IndiaPakLive = React.forwardRef(
               ) : (
                 <Box
                   onClick={(e) => {
-                    doSubmitSessionBet(
-                      Detail.n_rate_percent + "-" + Detail.y_rate_percent
-                    );
+                    if (loading) {
+                      return true;
+                    } else {
+                      doSubmitSessionBet(
+                        Detail.n_rate_percent + "-" + Detail.y_rate_percent
+                      );
+                    }
                   }}
                   sx={{
                     width: "30%",
@@ -857,7 +865,7 @@ const IndiaPakLive = React.forwardRef(
                   <Typography
                     sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
                   >
-                    Submit
+                    {loading ? "Loading" : "Submit"}
                   </Typography>
                   <Box
                     sx={{
