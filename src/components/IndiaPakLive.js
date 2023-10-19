@@ -128,6 +128,7 @@ const IndiaPakLive = React.forwardRef(
     const [live, setLive] = useState(true);
     const [proLoss, setProLoss] = useState(proLoss1);
     const [isDisable, setIsDisable] = useState(false);
+    const [showUndeclare, setShowUndeclare] = useState(false);
 
     const inputRef = useRef(null);
 
@@ -154,6 +155,9 @@ const IndiaPakLive = React.forwardRef(
         sessionBetId === selectedSession?.id
       ) {
         setIsDisable(true);
+      }
+      if (selectedSession?.betRestult === "No Result") {
+        setShowUndeclare(false);
       }
       if (
         selectedSession?.betStatus === 1 &&
@@ -602,16 +606,15 @@ const IndiaPakLive = React.forwardRef(
                       onClick={(e) => {
                         e.preventDefault();
                         if (
-                          (!isNaN(Detail?.l_no_rate) ||
-                            !isNaN(Detail?.l_yes_rate)) &&
+                          !isNaN(Detail?.l_no_rate) &&
                           Detail?.l_no_rate != null &&
-                          Detail?.l_yes_rate != null
+                          selectedSession !== null &&
+                          selectedSession?.betRestult !== "No Result"
                         ) {
                           const [y_rate_percent, n_rate_percent] =
                             item?.value?.split("-");
                           setDetail({
                             ...Detail,
-
                             ly_rate_percent: parseInt(y_rate_percent),
                             ln_rate_percent: parseInt(n_rate_percent),
                             y_rate_percent: parseInt(y_rate_percent),
@@ -631,12 +634,12 @@ const IndiaPakLive = React.forwardRef(
                         position: "relative",
                         display: "flex",
                         background:
-                          isNaN(Detail?.l_no_rate) ||
-                          isNaN(Detail?.l_yes_rate) ||
-                          Detail?.l_no_rate == null ||
-                          Detail?.l_yes_rate == null
-                            ? "#696969"
-                            : "#0B4F26",
+                          !isNaN(Detail?.l_no_rate) &&
+                          Detail?.l_no_rate !== null &&
+                          selectedSession !== null &&
+                          selectedSession?.betRestult !== "No Result"
+                            ? "#0B4F26"
+                            : "#696969",
                         justifyContent: "center",
                         alignItems: "center",
                         height: "35px",
@@ -668,7 +671,7 @@ const IndiaPakLive = React.forwardRef(
             >
               {!isCreateSession || sessionBetId ? (
                 <>
-                  {isDisable && (
+                  {isDisable && showUndeclare && (
                     <Box
                       onClick={(e) => {
                         setVisible1(true);
@@ -727,6 +730,7 @@ const IndiaPakLive = React.forwardRef(
                   {!isDisable && (
                     <Box
                       onClick={(e) => {
+                        setShowUndeclare(true);
                         setVisible(true);
                         e.stopPropagation();
                       }}
@@ -827,6 +831,7 @@ const IndiaPakLive = React.forwardRef(
                             onClick={() => {
                               setIsDisable(true);
                               setVisible2(false);
+                              setShowUndeclare(false);
                               getSessionResult(match?.id);
                             }}
                             onClickCancel={() => {

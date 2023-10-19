@@ -898,11 +898,17 @@ const CustomHeader = ({}) => {
                   dispatch(setSessionResultRefresh(true));
 
                   if (sessionBetId === value?.betId) {
-                    dispatch(setSessionProfitLoss(value?.profitLoss));
+                    dispatch(
+                      setSessionProfitLoss(
+                        value?.profitLoss ? value?.profitLoss : "0"
+                      )
+                    );
                     setLocalSelectedSession((i) => {
                       const newBody = {
                         ...i,
                         betStatus: 2,
+                        betRestult:
+                          value?.score === "No Result" ? value?.score : null,
                       };
                       dispatch(setSelectedSession(newBody));
 
