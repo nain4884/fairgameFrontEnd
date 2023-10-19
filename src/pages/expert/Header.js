@@ -1062,10 +1062,21 @@ const CustomHeader = ({}) => {
           // matchId = value?.match_id;
           try {
             setLocalAllMatches((prev) => {
-              const newBody = [value, ...prev];
-              dispatch(setUserAllMatches(newBody));
-              dispatch(setUpdateAdminPlayList());
-              return newBody;
+              const matchIndex = prev.findIndex(
+                (match) => match.id === value.id
+              );
+              if (matchIndex !== -1) {
+                const newBody = [...prev];
+                newBody[matchIndex] = value;
+                dispatch(setUserAllMatches(newBody));
+                dispatch(setUpdateAdminPlayList());
+                return newBody;
+              } else {
+                const newBody = [value, ...prev];
+                dispatch(setUserAllMatches(newBody));
+                dispatch(setUpdateAdminPlayList());
+                return newBody;
+              }
             });
 
             setAllLiveEventSession((prev) => {
@@ -1079,9 +1090,19 @@ const CustomHeader = ({}) => {
                 teamC: value?.teamC,
                 title: value?.title,
               };
-              const newBody = [...prev, body];
-              dispatch(setAllEventSession(newBody));
-              return newBody;
+              const matchIndex = prev.findIndex(
+                (match) => match.id === value.id
+              );
+              if (matchIndex !== -1) {
+                const newBody = [...prev];
+                newBody[matchIndex] = body;
+                dispatch(setAllEventSession(newBody));
+                return newBody;
+              } else {
+                const newBody = [...prev, body];
+                dispatch(setAllEventSession(newBody));
+                return newBody;
+              }
             });
           } catch (err) {
             console.log(err?.message);

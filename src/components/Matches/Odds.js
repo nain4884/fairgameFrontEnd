@@ -156,21 +156,23 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
       }, 3000);
       activateLiveMatchMarket();
       socketMicro.on(`matchOdds${match?.marketId}`, (val) => {
-        if (val?.length === 0) {
-          matchOddsCount += 1;
-          if (matchOddsCount >= 3) {
-            socketMicro.emit("disconnect_market", {
-              id: match?.marketId,
-            });
-            // socketMicro.disconnect();
-          }
-        } else {
-          // dispatch(setMatchOddsLive(val[0]));
-          setMatchOddsLive(val[0]);
-          if (val[0]?.status === "CLOSED") {
-            socketMicro.emit("disconnect_market", {
-              id: match?.marketId,
-            });
+        if (val !== null) {
+          if (val?.length === 0) {
+            matchOddsCount += 1;
+            if (matchOddsCount >= 3) {
+              socketMicro.emit("disconnect_market", {
+                id: match?.marketId,
+              });
+              // socketMicro.disconnect();
+            }
+          } else {
+            // dispatch(setMatchOddsLive(val[0]));
+            setMatchOddsLive(val[0]);
+            if (val[0]?.status === "CLOSED") {
+              socketMicro.emit("disconnect_market", {
+                id: match?.marketId,
+              });
+            }
           }
         }
       });

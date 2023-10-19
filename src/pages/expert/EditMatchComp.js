@@ -275,9 +275,9 @@ const EditMatchComp = () => {
           17: {
             ...Detail[17],
             val:
-              response?.data?.teamC !== "null" || null
-                ? response?.data?.teamC
-                : "",
+              response?.data?.teamC === "null" || response?.data?.teamC === null
+                ? ""
+                : response?.data?.teamC,
           },
           2: {
             ...Detail[2],
@@ -1439,7 +1439,7 @@ const EditMatchComp = () => {
                 },
               }}
             >
-              <Typography sx={{ color: "white" }}>Edit</Typography>
+              <Typography sx={{ color: "white" }}>Update</Typography>
             </Button>
             <Box
               onClick={() => {
