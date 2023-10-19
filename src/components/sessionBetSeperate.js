@@ -469,7 +469,8 @@ const RowComponent = ({ header, data }) => {
             header={header}
             isPercent={true}
             rate={formatNumber(
-              data?.bet_type || data?.betType == "no"
+              data?.bet_type === "no" ||
+              data?.betType === "no"
                 ? data?.rate?.split("-")[0]
                 : data?.rate?.split("-")[1]
             )}
