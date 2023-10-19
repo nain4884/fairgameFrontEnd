@@ -1431,9 +1431,17 @@ export const SocketProvider = ({ children }) => {
       const data = event;
       try {
         setLocalAllMatches((prev) => {
-          const newBody = [...prev, data];
-          dispatch(setUserAllMatches(newBody));
-          return newBody;
+          const matchIndex = prev.findIndex((match) => match?.id === data?.id);
+          if (matchIndex !== -1) {
+            const newBody = [...prev];
+            newBody[matchIndex] = data;
+            dispatch(setUserAllMatches(newBody));
+            return newBody;
+          } else {
+            const newBody = [data, ...prev];
+            dispatch(setUserAllMatches(newBody));
+            return newBody;
+          }
         });
       } catch (e) {
         console.log("error :", e?.message);
