@@ -155,6 +155,7 @@ const IndiaPakLive = React.forwardRef(
         sessionBetId === selectedSession?.id
       ) {
         setIsDisable(true);
+        setShowUndeclare(true)
       }
       if (selectedSession?.betRestult === "No Result") {
         setShowUndeclare(false);
