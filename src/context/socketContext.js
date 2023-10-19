@@ -1430,6 +1430,25 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("newMatchAdded", (event) => {
       const data = event;
       try {
+        setCurrentMatch((prev) => {
+          if (prev?.id === data?.id) {
+            const newBody = {
+              ...prev,
+              betfair_match_min_bet: data?.betfair_match_min_bet,
+              betfair_match_max_bet: data?.betfair_match_max_bet,
+              betfair_bookmaker_min_bet: data?.betfair_bookmaker_min_bet,
+              betfair_bookmaker_max_bet: data?.betfair_bookmaker_max_bet,
+              manaual_session_min_bet: data?.manaual_session_min_bet,
+              manaual_session_max_bet: data?.manaual_session_max_bet,
+              betfair_session_min_bet: data?.betfair_session_min_bet,
+              betfair_session_max_bet: data?.betfair_session_max_bet,
+              delaySecond: data?.delaySecond,
+            };
+            dispatch(setSelectedMatch(newBody));
+            return newBody;
+          }
+          return prev;
+        });
         setLocalAllMatches((prev) => {
           const matchIndex = prev.findIndex((match) => match?.id === data?.id);
           if (matchIndex !== -1) {

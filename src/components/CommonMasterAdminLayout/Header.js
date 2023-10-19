@@ -308,6 +308,47 @@ const CustomHeader = ({}) => {
                 return newBody;
               }
             });
+            setCurrentMatch((prev) => {
+              if (prev?.id === data?.id) {
+                const newBody = {
+                  ...prev,
+                  betfair_match_min_bet: data?.betfair_match_min_bet,
+                  betfair_match_max_bet: data?.betfair_match_max_bet,
+                  betfair_bookmaker_min_bet: data?.betfair_bookmaker_min_bet,
+                  betfair_bookmaker_max_bet: data?.betfair_bookmaker_max_bet,
+                  manaual_session_min_bet: data?.manaual_session_min_bet,
+                  manaual_session_max_bet: data?.manaual_session_max_bet,
+                  betfair_session_min_bet: data?.betfair_session_min_bet,
+                  betfair_session_max_bet: data?.betfair_session_max_bet,
+                  delaySecond: data?.delaySecond,
+                };
+                dispatch(setSelectedMatch(newBody));
+                return newBody;
+              }
+              return prev;
+            });
+            setMatchData((prev) => {
+              const updated = prev?.map((match) => {
+                if (match?.id === data?.id) {
+                  const newBody = {
+                    ...match,
+                    betfair_match_min_bet: data?.betfair_match_min_bet,
+                    betfair_match_max_bet: data?.betfair_match_max_bet,
+                    betfair_bookmaker_min_bet: data?.betfair_bookmaker_min_bet,
+                    betfair_bookmaker_max_bet: data?.betfair_bookmaker_max_bet,
+                    manaual_session_min_bet: data?.manaual_session_min_bet,
+                    manaual_session_max_bet: data?.manaual_session_max_bet,
+                    betfair_session_min_bet: data?.betfair_session_min_bet,
+                    betfair_session_max_bet: data?.betfair_session_max_bet,
+                    delaySecond: data?.delaySecond,
+                  };
+                  return newBody;
+                }
+                return match;
+              });
+              dispatch(setMultiSelectedMatch(updated));
+              return updated;
+            });
           }
           if (packet.data[0] === "resultDeclareForBet") {
             const value = packet.data[1];
