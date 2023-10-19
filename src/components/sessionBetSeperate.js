@@ -469,12 +469,16 @@ const RowComponent = ({ header, data }) => {
             header={header}
             isPercent={true}
             rate={formatNumber(
-              data?.bet_type == "no"
+              data?.bet_type || data?.betType == "no"
                 ? data?.rate?.split("-")[0]
                 : data?.rate?.split("-")[1]
             )}
           />
-          <SingleBox color={getColor()} data={data?.betType || data?.bet_type} header={header} />
+          <SingleBox
+            color={getColor()}
+            data={data?.betType || data?.bet_type}
+            header={header}
+          />
           <SingleBox
             color={getColor()}
             data={data?.stack || data?.stake || data?.amount}
