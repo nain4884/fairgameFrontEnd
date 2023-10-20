@@ -826,44 +826,46 @@ const AddAccount = () => {
                     </p>
                   )}
                 </div>
-                <div style={{ order: 1 }}>
-                  <Input
-                    containerStyle={containerStyles}
-                    titleStyle={titleStyles}
-                    inputStyle={imputStyle}
-                    inputContainerStyle={{
-                      ...inputContainerStyle,
-                      height: { laptop: "45px", mobile: "36px" },
-                    }}
-                    title={"Credit Reference*"}
-                    setDetail={setDetail}
-                    required={true}
-                    Detail={Detail}
-                    setError={setError}
-                    error={error}
-                    place={8}
-                    onKeyDown={(event) => {
-                      if (
-                        event.code === "Space" ||
-                        (!(event.key >= "0" && event.key <= "9") &&
-                          event.key !== "Backspace" &&
-                          event.code !== "ArrowUp" &&
-                          event.code !== "ArrowDown" &&
-                          event.code !== "Enter" &&
-                          event.code !== "Tab" && // Allow Tab key
-                          event.code !== "ArrowRight" && // Allow Right Arrow key
-                          event.code !== "ArrowLeft" &&
-                          event.code !== "Delete")
-                      ) {
-                        event.preventDefault();
-                      }
-                    }}
-                    type={"Number"}
-                  />
-                  {error[8]?.val && (
-                    <p style={{ color: "#fa1e1e" }}>{error[8]?.val}</p>
-                  )}
-                </div>
+                {Detail[9].val !== "expert" && (
+                  <div style={{ order: 1 }}>
+                    <Input
+                      containerStyle={containerStyles}
+                      titleStyle={titleStyles}
+                      inputStyle={imputStyle}
+                      inputContainerStyle={{
+                        ...inputContainerStyle,
+                        height: { laptop: "45px", mobile: "36px" },
+                      }}
+                      title={"Credit Reference*"}
+                      setDetail={setDetail}
+                      required={true}
+                      Detail={Detail}
+                      setError={setError}
+                      error={error}
+                      place={8}
+                      onKeyDown={(event) => {
+                        if (
+                          event.code === "Space" ||
+                          (!(event.key >= "0" && event.key <= "9") &&
+                            event.key !== "Backspace" &&
+                            event.code !== "ArrowUp" &&
+                            event.code !== "ArrowDown" &&
+                            event.code !== "Enter" &&
+                            event.code !== "Tab" && // Allow Tab key
+                            event.code !== "ArrowRight" && // Allow Right Arrow key
+                            event.code !== "ArrowLeft" &&
+                            event.code !== "Delete")
+                        ) {
+                          event.preventDefault();
+                        }
+                      }}
+                      type={"Number"}
+                    />
+                    {error[8]?.val && (
+                      <p style={{ color: "#fa1e1e" }}>{error[8]?.val}</p>
+                    )}
+                  </div>
+                )}
               </Box>
               <Box
                 sx={{
