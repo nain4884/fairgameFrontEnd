@@ -1033,6 +1033,7 @@ const DeleteBet = ({}) => {
           getThisMatch(matchId);
           getAllBetsData(matchId);
           setVisible(false);
+          setMode(false);
         }
       }
     };
@@ -1102,7 +1103,7 @@ const DeleteBet = ({}) => {
         </Box>
       ) : (
         <>
-          {visible && (
+          {visible && selectedBetData.length > 0 && (
             <AddNotificationModal
               value={value}
               title={"Add Remark"}
@@ -1279,7 +1280,9 @@ const DeleteBet = ({}) => {
                   <Box
                     onClick={() => {
                       if (mode) {
-                        setVisible(true);
+                        if (selectedBetData.length > 0) {
+                          setVisible(true);
+                        }
                       } else {
                         setMode(!mode);
                       }
