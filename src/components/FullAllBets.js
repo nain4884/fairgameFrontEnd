@@ -622,7 +622,7 @@ const LargeBox = ({ item, k }) => {
           wordWrap: "break-word",
           textAlign: "center",
           lineHeight: 1,
-          whiteSpace: "inherit",
+          whiteSpace: { mobile: "nowrap", laptop: "inherit" },
           textOverflow: "ellipsis",
           maxWidth: { mobile: "43px", laptop: "initial" },
         }}

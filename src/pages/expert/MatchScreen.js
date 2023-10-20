@@ -12,6 +12,7 @@ import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
   setManualBookMarkerRates,
+  setRefreshForBets,
   setSelectedMatch,
 } from "../../newStore/reducers/matchDetails";
 
@@ -64,7 +65,9 @@ const MatchScreen = () => {
   const [matchLiveSession, setMatchLiveSession] = useState([]);
   const [localSessionExpertOdds, setLocalSessionExpertOdds] = useState([]);
 
-  const { selectedMatch } = useSelector((state) => state?.matchDetails);
+  const { selectedMatch, refreshForBets } = useSelector(
+    (state) => state?.matchDetails
+  );
 
   useEffect(() => {
     if (allBetRates) {
@@ -145,6 +148,12 @@ const MatchScreen = () => {
       console.log(e);
     }
   }, [state?.id]);
+
+  useEffect(() => {
+    if (refreshForBets) {
+      getAllBetsData(state?.id);
+    }
+  }, [refreshForBets]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -541,7 +550,7 @@ const MatchScreen = () => {
   const handleSession = useCallback(
     (val) => {
       try {
-        if (state?.marketId === marketId) {
+        if (val !== null && state?.marketId === marketId) {
           var newVal = val?.map((v) => ({
             bet_condition: v?.RunnerName,
             betStatus: 0,
@@ -634,7 +643,13 @@ const MatchScreen = () => {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
       setIObtes(data?.data?.data || []);
       dispatch(setAllBetRate(data?.data?.data || []));
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     } catch (e) {
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
       console.log(e);
     }
   }

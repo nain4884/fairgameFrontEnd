@@ -8,6 +8,9 @@ module.exports = {
   apiMicroBasePath: "https://3100dev.fairgame.club", // server url
   microServiceApiPath: "https://3200dev.fairgame.club",
   // imageBasePath: "http://localhost:4000/public/images/", /// server image base pathpath
+  // apiBasePath: "http://localhost:3100/", // server url
+  // apiMicroBasePath: "http://localhost:3100", // server url
+  // microServiceApiPath: "http://localhost:3200",
 
   // thirdPartyAPIBasePath: "http://3.23.22.210:4001/api/", // third party api url
 

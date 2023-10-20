@@ -24,24 +24,24 @@ const CustomSessionResult = ({
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
   const [confirmNoResult, setConfirmNoResults] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const undeclareResult = async () => {
     try {
+      setLoading({ id: "UD", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
-        score: selected,
+        // score: selected,
       };
-      setLoading({ id: "UD", value: true });
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        setLoading({ id: "", value: false });
-        socket.emit("resultDeclareForBet", {
-          match_id: newData?.match_id,
-          betId: newData?.id,
-        });
+        // socket.emit("resultDeclareForBet", {
+        //   match_id: newData?.match_id,
+        //   betId: newData?.id,
+        // });
 
         // setLocalState(() => {
         //   const updatedBettings = currentMatch?.bettings.map(
@@ -67,22 +67,25 @@ const CustomSessionResult = ({
         // });
       }
       onClick();
+      setLoading({ id: "", value: false });
+      setShowPopup(false);
       toast.success(data?.message);
     } catch (e) {
       setLoading({ id: "", value: false });
+      setShowPopup(false);
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
   };
   const declareResult = async () => {
     try {
+      setLoading({ id: "DR", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
         score: selected,
       };
-      setLoading({ id: "DR", value: true });
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
         onClick();
@@ -120,12 +123,12 @@ const CustomSessionResult = ({
 
   const noResultDeclare = async () => {
     try {
+      setLoading({ id: "NR", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
       };
-      setLoading({ id: "NR", value: true });
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
       if (data?.statusCode !== 500) {
         onClick();
@@ -178,12 +181,13 @@ const CustomSessionResult = ({
     if (loading?.value) {
       return false;
     }
-    if (selected === "") {
-      toast.warn("Please enter score");
-    } else {
-      undeclareResult()
-    }
-  }
+    // if (selected === "") {
+    //   toast.warn("Please enter score");
+    // } else {
+    setShowPopup(true);
+    // undeclareResult();
+    // }
+  };
 
   const handleInputKeyPress = (event) => {
     try {
@@ -219,50 +223,89 @@ const CustomSessionResult = ({
     >
       {!confirmNoResult ? (
         <>
-          <TextField
-            autoFocus
-            placeholder="Score"
-            variant="standard"
-            value={selected}
-            // onChange={(e) => setSelected(e?.target.value)}
-            onChange={(e) => {
-              const numericValue = e.target.value.replace(/[^0-9]/g, '');
-              setSelected(numericValue);
-            }}
-            onKeyDown={handleInputKeyPress}
-            InputProps={{
-              disableUnderline: true,
-              sx: {
-                alignSelf: "center",
-                border: "1px solid #303030",
-                borderRadius: "5px",
-                paddingY: "5px",
-                paddingX: "0.5vw",
-                height: "28px",
-              },
-            }}
-          />
-          {newData?.betStatus === 2 ? (
-            <SessionResultCustomButton
-              color={"#FF4D4D"}
-              title={"Un Declare"}
-              loading={loading}
-              id="UD"
-              session={true}
-              onClick={handleUndeclare}
+          {newData?.betStatus !== 2 && (
+            <TextField
+              autoFocus
+              placeholder="Score"
+              variant="standard"
+              value={selected}
+              // onChange={(e) => setSelected(e?.target.value)}
+              onChange={(e) => {
+                const numericValue = e.target.value.replace(/[^0-9]/g, "");
+                setSelected(numericValue);
+              }}
+              onKeyDown={handleInputKeyPress}
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  alignSelf: "center",
+                  border: "1px solid #303030",
+                  borderRadius: "5px",
+                  paddingY: "5px",
+                  paddingX: "0.5vw",
+                  height: "28px",
+                },
+              }}
             />
+          )}
+          {!showPopup ? (
+            <>
+              {newData?.betStatus === 2 ? (
+                <SessionResultCustomButton
+                  color={"#FF4D4D"}
+                  title={"Un Declare"}
+                  loading={loading}
+                  id="UD"
+                  session={true}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowPopup(true);
+                  }}
+                />
+              ) : (
+                <>
+                  {newData?.betStatus !== 3 ? (
+                    <SessionResultCustomButton
+                      color={"#0B4F26"}
+                      id="DR"
+                      session={true}
+                      title={"Declare"}
+                      loading={loading}
+                      onClick={handleDeclare}
+                    />
+                  ) : null}
+                </>
+              )}
+            </>
           ) : (
             <>
-              {newData?.betStatus !== 3 ? (
+              <Typography
+                sx={{
+                  color: "#0B4F26",
+                  fontSize: "12px",
+                  fontWeight: "500",
+                  height: "28px",
+                  lineHeight: 1.2,
+                  textAlign: "center",
+                }}
+              >
+                Are you sure to Undeclare Result ?
+              </Typography>
+              {newData?.betStatus === 2 && (
                 <SessionResultCustomButton
-                  color={"#0B4F26"}
-                  id="DR"
-                  session={true}
-                  title={"Declare"}
+                  color={"rgb(106 90 90)"}
+                  title={"Yes"}
                   loading={loading}
-                  onClick={handleDeclare}
+                  id="NR"
+                  session={true}
+                  onClick={() => {
+                    if (loading?.value) {
+                      return false;
+                    }
+                    undeclareResult();
+                  }}
                 />
-              ) : null}
+              )}
             </>
           )}
 

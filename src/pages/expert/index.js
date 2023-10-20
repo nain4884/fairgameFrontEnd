@@ -17,6 +17,7 @@ import PageNotFound from "../../components/PageNotFound";
 import ChangePassword from "./ChangePassword.js";
 import Header from "./Header";
 import AddMatchComp from "./AddMatchComp";
+import EditMatchComp from "./EditMatchComp";
 
 const ExportRoutes = () => {
   const location = useLocation();
@@ -76,6 +77,14 @@ const ExportRoutes = () => {
           element={
             <ExpertPrivateRoute>
               <AddMatchComp />
+            </ExpertPrivateRoute>
+          }
+        />
+        <Route
+          path="/edit_match"
+          element={
+            <ExpertPrivateRoute>
+              <EditMatchComp />
             </ExpertPrivateRoute>
           }
         />

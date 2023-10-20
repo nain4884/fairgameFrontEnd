@@ -26,6 +26,7 @@ import {
   setManualBookmaker,
   setQuickBookmaker,
   setQuickSession,
+  setRefreshForBets,
   setSelectedMatch,
   setSelectedSessionBettings,
   setSessionExposure,
@@ -257,6 +258,77 @@ export const SocketProvider = ({ children }) => {
       }
     });
 
+    localSocket.on("undeclearResult", (event) => {
+      const data = event;
+      try {
+        setCurrentMatch((currentMatch) => {
+          if (currentMatch?.id === data?.match_id || data?.id) {
+            dispatch(setRefreshForBets(true));
+            dispatch(setSessionExposure(data?.sessionExposure));
+            setLocalCurrentUser((prev) => {
+              const user = {
+                ...prev,
+                current_balance: data?.current_balance,
+                exposure: data.exposure,
+              };
+              dispatch(setCurrentUser(user));
+              return user;
+            });
+            return currentMatch;
+          }
+          return currentMatch;
+        });
+      } catch (e) {
+        console.error("error: ", e?.message);
+      }
+    });
+
+    localSocket.on("undeclearResultBet", (event) => {
+      const data = event;
+      try {
+        setCurrentMatch((currentMatch) => {
+          if (currentMatch?.id === data?.match_id || data?.id) {
+            dispatch(setRefreshForBets(true));
+            if (data?.selectionId) {
+              setLSelectedSessionBetting((prev) => {
+                const findBet = prev?.find(
+                  (betting) => betting?.id === data?.betId
+                );
+
+                if (!findBet) {
+                  const body = {
+                    ...data,
+                    id: data?.betId,
+                    betStatus: 1,
+                    no_rate: 0,
+                    yes_rate: 0,
+                  };
+                  var updatedBettings = [body, ...prev];
+                  dispatch(setSelectedSessionBettings(updatedBettings));
+                  return updatedBettings;
+                } else {
+                  const body = {
+                    ...findBet,
+                    betStatus: 1,
+                  };
+                  var removedBet = prev?.filter(
+                    (betting) => betting?.id !== data?.betId
+                  );
+                  var updatedBettings = [body, ...removedBet];
+                  dispatch(setSelectedSessionBettings(updatedBettings));
+                  return updatedBettings;
+                }
+              });
+            }
+            return currentMatch;
+          }
+          return currentMatch;
+        });
+      } catch (e) {
+        console.error("error: ", e?.message);
+      }
+    });
+
     localSocket.on("updateMatchActiveStatus", (event) => {
       const data = event;
       try {
@@ -299,33 +371,26 @@ export const SocketProvider = ({ children }) => {
       try {
         setCurrentMatch((currentMatch) => {
           if (currentMatch?.id !== data?.match_id) {
-            // If the new bet doesn't belong to the current match, return the current state
             return currentMatch;
           }
-          setLSelectedSessionBetting((prev) => {
-            const updated = prev?.map((item) => {
+
+          const updateItem = (prev) => {
+            return prev?.map((item) => {
               if (item?.id === data?.betId) {
-                return {
-                  ...item,
-                  ...data,
-                };
+                return { ...item, ...data };
               }
               return item;
             });
+          };
+
+          setLSelectedSessionBetting((prev) => {
+            const updated = updateItem(prev);
             dispatch(setSelectedSessionBettings(updated));
             return updated;
           });
 
           setLocalQuickSession((prev) => {
-            const updated = prev?.map((item) => {
-              if (item?.id === data?.betId) {
-                return {
-                  ...item,
-                  ...data,
-                };
-              }
-              return item;
-            });
+            const updated = updateItem(prev);
             dispatch(setQuickSession(updated));
             return updated;
           });
@@ -684,7 +749,7 @@ export const SocketProvider = ({ children }) => {
             yes_rate: null,
           };
           setManualBookmakerData((prev) => {
-            if (prev.length == 0 && value?.sessionBet) {
+            if (prev.length === 0 && value?.sessionBet) {
               const body = [...prev, betData];
               dispatch(setManualBookmaker(body));
               return body;
@@ -819,7 +884,6 @@ export const SocketProvider = ({ children }) => {
         console.log("error :", e?.message);
       }
     });
-
     localSocket.on("sessionNoResult", (event) => {
       const data = event;
       try {
@@ -897,28 +961,42 @@ export const SocketProvider = ({ children }) => {
           if (data?.isTab) {
             // setCurrentMatch((currentMatches) => {
             setLocalQuickBookmaker((bookmaker) => {
+              const {
+                id,
+                matchId,
+                isTab,
+                teamA,
+                teamB,
+                teamC,
+                teamA_Back,
+                teamB_Back,
+                teamC_Back,
+                isSingle,
+              } = data;
+
               const updatedBookmaker = bookmaker.map((prev) => {
-                if (prev?.id === data?.id && prev?.match_id === data?.matchId) {
+                if (prev?.id === id && prev?.match_id === matchId) {
                   return {
                     ...prev,
-                    isTab: data?.isTab ? data?.isTab : false,
-                    teamA: data?.teamA,
-                    teamB: data?.teamB,
-                    teamC: data?.teamC,
-                    teamA_Back: data?.teamA_Back,
+                    isTab: isTab || false,
+                    teamA,
+                    teamB,
+                    teamC,
+                    teamA_Back,
                     teamA_lay: "",
-                    teamB_Back: data?.teamB_Back,
+                    teamB_Back,
                     teamB_lay: "",
-                    teamC_Back: data?.teamC_Back,
+                    teamC_Back,
                     teamC_lay: "",
                     teamA_suspend: "live",
                     teamB_suspend: "live",
                     teamC_suspend: "live",
-                    isSingle: data?.isSingle,
+                    isSingle,
                   };
                 }
                 return prev;
               });
+
               dispatch(setQuickBookmaker(updatedBookmaker));
               return updatedBookmaker;
             });
@@ -954,30 +1032,43 @@ export const SocketProvider = ({ children }) => {
           } else {
             // setCurrentMatch((currentMatches) => {
             setLocalQuickBookmaker((bookmaker) => {
+              const {
+                id,
+                matchId,
+                teamA_Back,
+                teamA_lay,
+                teamA_suspend,
+                teamB_Back,
+                teamB_lay,
+                teamB_suspend,
+                teamC_Back,
+                teamC_lay,
+                teamC_suspend,
+                isSingle,
+              } = data;
+
               const updatedBookmaker = bookmaker.map((prev) => {
-                if (prev?.id === data?.id && prev?.match_id === data?.matchId) {
+                if (prev?.id === id && prev?.match_id === matchId) {
                   return {
                     ...prev,
-                    teamA_Back: data?.teamA_Back ?? "",
-                    teamA_lay: data?.teamA_lay ?? "",
-                    teamA_suspend:
-                      data?.teamA_suspend == false ? null : "suspended",
-                    teamB_Back: data?.teamB_Back ?? "",
-                    teamB_lay: data?.teamB_lay ?? "",
-                    teamB_suspend:
-                      data?.teamB_suspend == false ? null : "suspended",
-                    teamC_Back: data?.teamC_Back ?? "",
-                    teamC_lay: data?.teamC_lay ?? "",
-                    teamC_suspend:
-                      data?.teamC_suspend == false ? null : "suspended",
+                    teamA_Back: teamA_Back ?? "",
+                    teamA_lay: teamA_lay ?? "",
+                    teamA_suspend: teamA_suspend === false ? null : "suspended",
+                    teamB_Back: teamB_Back ?? "",
+                    teamB_lay: teamB_lay ?? "",
+                    teamB_suspend: teamB_suspend === false ? null : "suspended",
+                    teamC_Back: teamC_Back ?? "",
+                    teamC_lay: teamC_lay ?? "",
+                    teamC_suspend: teamC_suspend === false ? null : "suspended",
                     teamA_Ball: null,
                     teamB_Ball: null,
                     teamC_Ball: null,
-                    isSingle: data?.isSingle,
+                    isSingle: isSingle,
                   };
                 }
                 return prev;
               });
+
               dispatch(setQuickBookmaker(updatedBookmaker));
               return updatedBookmaker;
             });
@@ -1022,22 +1113,27 @@ export const SocketProvider = ({ children }) => {
             try {
               // setCurrentMatch((currentMatches) => {
               setLocalQuickBookmaker((bookmaker) => {
+                const {
+                  id,
+                  matchId,
+                  teamA_suspend,
+                  teamB_suspend,
+                  teamC_suspend,
+                } = data;
+
                 const updatedBookmaker = bookmaker.map((prev) => {
-                  if (
-                    prev?.id === data?.id &&
-                    prev?.match_id === data?.matchId
-                  ) {
+                  if (prev?.id === id && prev?.match_id === matchId) {
                     return {
                       ...prev,
-                      teamA_suspend: data?.teamA_suspend
+                      teamA_suspend: teamA_suspend
                         ? "suspended"
-                        : data?.teamA_suspend,
-                      teamB_suspend: data?.teamB_suspend
+                        : teamA_suspend,
+                      teamB_suspend: teamB_suspend
                         ? "suspended"
-                        : data?.teamB_suspend,
-                      teamC_suspend: data?.teamC_suspend
+                        : teamB_suspend,
+                      teamC_suspend: teamC_suspend
                         ? "suspended"
-                        : data?.teamC_suspend,
+                        : teamC_suspend,
                       teamA_Ball: "ball",
                       teamB_Ball: "ball",
                       teamC_Ball: "ball",
@@ -1045,6 +1141,7 @@ export const SocketProvider = ({ children }) => {
                   }
                   return prev;
                 });
+
                 dispatch(setQuickBookmaker(updatedBookmaker));
                 return updatedBookmaker;
               });
@@ -1088,22 +1185,21 @@ export const SocketProvider = ({ children }) => {
               // setCurrentMatch((currentMatches) => {
               // alert(JSON.stringify(currentMatches[0]));
               setLocalQuickBookmaker((bookmaker) => {
+                const {
+                  id,
+                  matchId,
+                  teamA_suspend,
+                  teamB_suspend,
+                  teamC_suspend,
+                } = data;
+
                 const updatedBookmaker = bookmaker.map((prev) => {
-                  if (
-                    prev?.id === data?.id &&
-                    prev?.match_id === data?.matchId
-                  ) {
+                  if (prev?.id === id && prev?.match_id === matchId) {
                     return {
                       ...prev,
-                      teamA_suspend: data?.teamA_suspend
-                        ? "suspended"
-                        : data?.teamA_suspend,
-                      teamB_suspend: data?.teamB_suspend
-                        ? "suspended"
-                        : data?.teamB_suspend,
-                      teamC_suspend: data?.teamC_suspend
-                        ? "suspended"
-                        : data?.teamC_suspend,
+                      teamA_suspend: teamA_suspend ? "suspended" : null,
+                      teamB_suspend: teamB_suspend ? "suspended" : null,
+                      teamC_suspend: teamC_suspend ? "suspended" : null,
                       teamA_Ball: null,
                       teamB_Ball: null,
                       teamC_Ball: null,
@@ -1111,9 +1207,11 @@ export const SocketProvider = ({ children }) => {
                   }
                   return prev;
                 });
+
                 dispatch(setQuickBookmaker(updatedBookmaker));
                 return updatedBookmaker;
               });
+
               // const updatedBookmaker = currentMatches?.bookmakers?.map(
               //   (bookmaker) => {
               //     if (
@@ -1332,10 +1430,37 @@ export const SocketProvider = ({ children }) => {
     localSocket.on("newMatchAdded", (event) => {
       const data = event;
       try {
+        setCurrentMatch((prev) => {
+          if (prev?.id === data?.id) {
+            const newBody = {
+              ...prev,
+              betfair_match_min_bet: data?.betfair_match_min_bet,
+              betfair_match_max_bet: data?.betfair_match_max_bet,
+              betfair_bookmaker_min_bet: data?.betfair_bookmaker_min_bet,
+              betfair_bookmaker_max_bet: data?.betfair_bookmaker_max_bet,
+              manaual_session_min_bet: data?.manaual_session_min_bet,
+              manaual_session_max_bet: data?.manaual_session_max_bet,
+              betfair_session_min_bet: data?.betfair_session_min_bet,
+              betfair_session_max_bet: data?.betfair_session_max_bet,
+              delaySecond: data?.delaySecond,
+            };
+            dispatch(setSelectedMatch(newBody));
+            return newBody;
+          }
+          return prev;
+        });
         setLocalAllMatches((prev) => {
-          const newBody = [...prev, data];
-          dispatch(setUserAllMatches(newBody));
-          return newBody;
+          const matchIndex = prev.findIndex((match) => match?.id === data?.id);
+          if (matchIndex !== -1) {
+            const newBody = [...prev];
+            newBody[matchIndex] = data;
+            dispatch(setUserAllMatches(newBody));
+            return newBody;
+          } else {
+            const newBody = [data, ...prev];
+            dispatch(setUserAllMatches(newBody));
+            return newBody;
+          }
         });
       } catch (e) {
         console.log("error :", e?.message);

@@ -10,6 +10,8 @@ import SessionComponentMatches from "./SessionComponentMatches";
 import SessionBetSeperate from "./sessionBetSeperate";
 import AllRateSeperate from "./AllRateSeperate";
 import AllUserListSeparate from "./AllUserListSeparate";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const RowComponentMatches = ({
   item,
@@ -20,36 +22,46 @@ const RowComponentMatches = ({
   sessionBets,
   getBetReport,
   user,
-  data,
+  userProfitLoss,
   getUserProfitLoss,
 }) => {
   const [showBets, setShowBets] = useState(false);
   const [showSessions, setShowSessions] = useState(false);
   const [showSessionBets, setShowSessionBets] = useState(false);
   const [showListOfUsers, setShowListOfUsers] = useState(false);
+  const auth = useSelector((state) => state?.auth);
+  // const [activeUser, setActiveUser] = useState(auth);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+
+  const { currentUser } = useSelector((state) => state?.currentUser);
+
+  // useEffect(() => {
+  //   // alert(JSON.stringify(currentUser.role))
+  //   if (auth) {
+  //     setActiveUser(auth?.user);
+  //   }
+  // }, [auth]);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Box
         onClick={(e) => {
           e.stopPropagation();
-          if (
-            selectedId?.id === item?.matchId &&
-            selectedId?.type === "users_list"
-          ) {
-            setShowListOfUsers((prev) => !prev);
-          } else {
-            // getUserProfitLoss(item?.matchId);
-            setShowListOfUsers(true);
-            getBetReport({
-              eventType: item?.eventType,
-              match_id: item?.matchId,
-              type: "users_list",
-              betId: "",
-              sessionBet: false,
-            });
+          if (currentUser.role !== "user") {
+            if (selectedId?.id === item?.matchId) {
+              setShowListOfUsers((prev) => !prev);
+            } else {
+              setShowListOfUsers(true);
+              getUserProfitLoss(item?.matchId);
+              getBetReport({
+                eventType: item?.eventType,
+                match_id: item?.matchId,
+                type: "users_list",
+                betId: "",
+                sessionBet: false,
+              });
+            }
           }
         }}
         sx={{
@@ -137,21 +149,19 @@ const RowComponentMatches = ({
               ({moment(item.matchDate).format("DD-MM-YYYY")})
             </Typography>
           </Box>
-          {/* {user === "admin" && (
+          {user === "admin" && (
             <StyledImage
               src={ArrowDown}
               sx={{
                 width: { laptop: "20px", mobile: "10px" },
                 height: { laptop: "10px", mobile: "6px" },
                 transform:
-                  selectedId?.id === item?.matchId &&
-                  showListOfUsers &&
-                  selectedId?.type === "users_list"
+                  selectedId?.id === item?.matchId && showListOfUsers
                     ? "rotate(180deg)"
                     : "rotate(0deg)",
               }}
             />
-          )} */}
+          )}
           {/* <StyledImage
               src={ArrowDown}
               sx={{
@@ -376,13 +386,13 @@ const RowComponentMatches = ({
       </Box>
       {selectedId?.id === item?.matchId && (
         <>
-          {/* {selectedId?.type === "users_list" && showListOfUsers && (
+          {showListOfUsers && (
             <>
               <Box
                 sx={{
-                  width: { mobile: "100%", laptop: "96%" },
+                  width: { mobile: "100%", laptop: "99%" },
                   marginTop: { mobile: ".25vh" },
-                  marginLeft: { laptop: "4%" },
+                  marginLeft: { laptop: "1%" },
                   display: "flex",
                   flexDirection: { laptop: "row", mobile: "column" },
                 }}
@@ -390,54 +400,37 @@ const RowComponentMatches = ({
                 <Box Box sx={{ width: "100%", display: "flex", gap: 1 }}>
                   <Box
                     sx={{
-                      width: { mobile: "100%", laptop: "50%", tablet: "100%" },
-                      maxHeight: "51vh",
+                      width: { mobile: "100%", laptop: "100%", tablet: "100%" },
+                      // maxHeight: "51vh",
                       overflow: "hidden",
-                      overflowY: "auto",
+                      // overflowY: "auto",
                       marginY: { mobile: ".2vh", laptop: "1vh" },
                       padding: 0.2,
                     }}
                   >
-                    {data?.length > 0 &&
-                      data?.map((item, index) => {
+                    {userProfitLoss?.length > 0 &&
+                      userProfitLoss?.map((profitLoss, index) => {
                         return (
                           <AllUserListSeparate
                             key={index}
-                            item={item}
+                            item={profitLoss}
                             index={index + 1}
-                            showSessionBets={showSessionBets}
-                            setShowSessionBets={setShowSessionBets}
+                            matchId={item?.matchId}
+                            userId={item?.userId}
+                            showListOfUsers={showListOfUsers}
                             getBetReport={getBetReport}
-                            selectedId={selectedId}
                             sessionBetData={sessionBetData}
+                            sessionBets={sessionBets}
+                            bet1Data={betData}
+                            user={user}
                           />
                         );
                       })}
                   </Box>
-                  {selectedId?.betId !== "" &&
-                    !matchesMobile &&
-                    showSessionBets && (
-                      <Box
-                        sx={{
-                          width: {
-                            mobile: "100%",
-                            laptop: "49%",
-                            tablet: "100%",
-                          },
-                        }}
-                      >
-                        <SessionBetSeperate
-                          betHistory={false}
-                          allBetsData={sessionBetData}
-                          profit
-                          isArrow={true}
-                        />
-                      </Box>
-                    )}
                 </Box>
               </Box>
             </>
-          )} */}
+          )}
           {selectedId?.type === "all_bet" && showBets && (
             <>
               <Box

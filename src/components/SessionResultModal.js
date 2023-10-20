@@ -49,21 +49,20 @@ const SessionResultModal = ({
   }, [visible]);
   const undeclareResult = async () => {
     try {
+      setLoading({ id: "UD", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
-        score: selected,
+        // score: selected,
       };
-      setLoading({ id: "UD", value: true });
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        setLoading({ id: "", value: false });
-        socket.emit("resultDeclareForBet", {
-          match_id: newData?.match_id,
-          betId: newData?.id,
-        });
+        // socket.emit("resultDeclareForBet", {
+        //   match_id: newData?.match_id,
+        //   betId: newData?.id,
+        // });
 
         setLocalState(() => {
           const updatedBettings = currentMatch?.bettings.map(
@@ -87,6 +86,7 @@ const SessionResultModal = ({
         });
       }
       onClick();
+      setLoading({ id: "", value: false });
       toast.success(data?.message);
     } catch (e) {
       setLoading({ id: "", value: false });
@@ -96,13 +96,13 @@ const SessionResultModal = ({
   };
   const declareResult = async () => {
     try {
+      setLoading({ id: "DR", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
         score: selected,
       };
-      setLoading({ id: "DR", value: true });
       const { data } = await axios.post("/game-match/declearResult", body);
       if (data?.statusCode !== 500) {
         onClick();
@@ -140,12 +140,12 @@ const SessionResultModal = ({
 
   const noResultDeclare = async () => {
     try {
+      setLoading({ id: "NR", value: true });
       const body = {
         betId: newData?.id,
         match_id: newData?.match_id,
         sessionBet: true,
       };
-      setLoading({ id: "NR", value: true });
       const { data } = await axios.post("/game-match/NoResultDeclare", body);
       if (data?.statusCode !== 500) {
         onClick();
@@ -243,7 +243,21 @@ const SessionResultModal = ({
           }}
           ref={myDivRef}
         >
-          {newData?.betStatus !== 3 ? (
+          {newData?.betStatus === 2 ? (
+            <Typography
+              sx={{
+                color: "#0B4F26",
+                fontSize: "13px",
+                fontWeight: "500",
+                fontWeight: "600",
+                textAlign: "center",
+                paddingTop: "20px",
+                paddingBottom: "20px",
+              }}
+            >
+              Are you sure to Undeclare Result ?
+            </Typography>
+          ) : newData?.betStatus !== 3 && newData?.betStatus !== 2 ? (
             <>
               <TextField
                 autoFocus
@@ -308,14 +322,14 @@ const SessionResultModal = ({
                   if (loading?.value) {
                     return false;
                   }
-                  if (selected && /^\d+$/.test(selected)) {
-                    undeclareResult();
-                  } else if (selected === "") {
-                    setError("Please enter score");
-                  } else {
-                    // toast.warn("Please enter score");
-                    setError("Input field should contain numbers only");
-                  }
+                  undeclareResult();
+                  // if (selected && /^\d+$/.test(selected)) {
+                  // } else if (selected === "") {
+                  //   setError("Please enter score");
+                  // } else {
+                  //   // toast.warn("Please enter score");
+                  //   setError("Input field should contain numbers only");
+                  // }
                 }}
               />
             ) : (

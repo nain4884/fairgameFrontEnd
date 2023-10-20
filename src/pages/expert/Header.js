@@ -56,6 +56,7 @@ import {
   removeSelectedMatch,
   setBookMakerBetRate,
   setManualBookMarkerRates,
+  setRefreshForBets,
   setSelectedMatch,
   setSessionResults,
   setUpdateAdminPlayList,
@@ -583,6 +584,17 @@ const CustomHeader = ({}) => {
           const data = packet.data[1];
           if (betId === data?.betPlaceData?.bet_id) {
             let profitLoss = data?.profitLoss;
+            setLocalSelectedSession((i) => {
+              if (i?.id === data?.betPlaceData?.bet_id) {
+                const newBody = {
+                  ...i,
+                  profitLoss: profitLoss,
+                };
+                dispatch(setSelectedSession(newBody));
+                return newBody;
+              }
+              return i;
+            });
             dispatch(setSessionProfitLoss(profitLoss));
             const body = {
               id: data?.betPlaceData?.id,
@@ -826,9 +838,9 @@ const CustomHeader = ({}) => {
           });
           try {
             setCurrentMatch((prev) => {
-              // if (prev.id === value?.match_id && value?.sessionBet === false) {
-              //   navigate("/expert/match");
-              // }
+              if (prev.id === value?.match_id && value?.sessionBet === false) {
+                navigate("/expert/match");
+              }
               if (prev.id === value?.match_id && value?.sessionBet) {
                 dispatch(setSessionResultRefresh(true));
                 setLocalAllBetRates((prev) => {
@@ -887,11 +899,17 @@ const CustomHeader = ({}) => {
                   dispatch(setSessionResultRefresh(true));
 
                   if (sessionBetId === value?.betId) {
-                    dispatch(setSessionProfitLoss(value?.profitLoss));
+                    dispatch(
+                      setSessionProfitLoss(
+                        value?.profitLoss ? value?.profitLoss : "0"
+                      )
+                    );
                     setLocalSelectedSession((i) => {
                       const newBody = {
                         ...i,
                         betStatus: 2,
+                        betRestult:
+                          value?.score === "No Result" ? value?.score : null,
                       };
                       dispatch(setSelectedSession(newBody));
 
@@ -938,26 +956,128 @@ const CustomHeader = ({}) => {
             });
             dispatch(setUpdateAdminPlayList());
 
-            // setLocalAllMatches((prev) => {
-            //   const filteredMatches = prev.filter(
-            //     (v) => !(v.id === value?.match_id && value.sessionBet === false)
-            //   );
-            //   dispatch(setUserAllMatches(filteredMatches));
-            //   return filteredMatches;
-            // });
+            setLocalAllMatches((prev) => {
+              const updatedMatch = prev.map((v) => {
+                if (v?.id === value?.match_id && value.sessionBet === false) {
+                  return {
+                    ...v,
+                    stopAt: value?.stopAt,
+                    matchProfitLoss: value?.profitLoss,
+                  };
+                }
+                return v;
+              });
+              dispatch(setUserAllMatches(updatedMatch));
+              return updatedMatch;
+            });
           } catch (err) {
             console.log(err?.message);
           }
         }
+
+        if (packet.data[0] === "undeclearResultBet") {
+          const value = packet.data[1];
+          try {
+            // setLocalSelectedBookmaker((prev) => {
+            //   if (
+            //     prev?.matchId === value?.match_id &&
+            //     value?.sessionBet === false
+            //   ) {
+            //     dispatch(setSessionResultRefresh(true));
+            //     const newBody = { ...prev, betStatus: 1 };
+            //     dispatch(setSelectedBookmaker(newBody));
+            //     return newBody;
+            //   }
+            //   return prev;
+            // });
+            setCurrentMatch((prev) => {
+              if (prev?.id === value?.match_id && value?.sessionBet === false) {
+                const newBody = {
+                  ...prev,
+                  stopAt: null,
+                };
+                dispatch(setSelectedMatch(newBody));
+                return newBody;
+              }
+              return prev;
+            });
+            setLocalSessionExpertOdds((prev) => {
+              const findBet = prev?.find(
+                (betting) => betting?.id === value?.betId
+              );
+              const body = {
+                ...findBet,
+                betStatus: 1,
+                betRestult: value?.score,
+                profitLoss: value?.profitLoss,
+              };
+              var removedBet = prev?.filter(
+                (betting) => betting?.id !== value?.betId
+              );
+              var updatedBettings = [body, ...removedBet];
+              dispatch(setSessionExpertOdds(updatedBettings));
+              return updatedBettings;
+            });
+
+            setAllLiveEventSession((prev) => {
+              var updatedPrev = prev?.map((item) => {
+                if (item?.id === value?.match_id && value?.sessionBet) {
+                  dispatch(setSessionResultRefresh(true));
+                  dispatch(setRefreshForBets(true));
+                  if (sessionBetId === value?.betId) {
+                    setLocalSelectedSession((i) => {
+                      if (i?.id === value?.betId) {
+                        const newBody = {
+                          ...i,
+                          betStatus: 1,
+                        };
+                        dispatch(setSelectedSession(newBody));
+                        dispatch(setSessionProfitLoss(newBody?.profitLoss));
+                        return newBody;
+                      }
+                      return i;
+                    });
+                  }
+                  if (!value?.selectionId) {
+                    const updatedBettings = [
+                      ...item?.bettings,
+                      { id: value?.betId, bet_condition: value?.bet_condition },
+                    ];
+
+                    return { ...item, bettings: updatedBettings };
+                  }
+                }
+
+                return item;
+              });
+              dispatch(setAllEventSession(updatedPrev));
+              return updatedPrev;
+            });
+          } catch (e) {
+            console.error(e);
+          }
+        }
+
         if (packet.data[0] === "newMatchAdded") {
           const value = packet.data[1];
           // matchId = value?.match_id;
           try {
             setLocalAllMatches((prev) => {
-              const newBody = [value, ...prev];
-              dispatch(setUserAllMatches(newBody));
-              dispatch(setUpdateAdminPlayList());
-              return newBody;
+              const matchIndex = prev.findIndex(
+                (match) => match.id === value.id
+              );
+              if (matchIndex !== -1) {
+                const newBody = [...prev];
+                newBody[matchIndex] = value;
+                dispatch(setUserAllMatches(newBody));
+                dispatch(setUpdateAdminPlayList());
+                return newBody;
+              } else {
+                const newBody = [value, ...prev];
+                dispatch(setUserAllMatches(newBody));
+                dispatch(setUpdateAdminPlayList());
+                return newBody;
+              }
             });
 
             setAllLiveEventSession((prev) => {
@@ -971,9 +1091,19 @@ const CustomHeader = ({}) => {
                 teamC: value?.teamC,
                 title: value?.title,
               };
-              const newBody = [...prev, body];
-              dispatch(setAllEventSession(newBody));
-              return newBody;
+              const matchIndex = prev.findIndex(
+                (match) => match.id === value.id
+              );
+              if (matchIndex !== -1) {
+                const newBody = [...prev];
+                newBody[matchIndex] = body;
+                dispatch(setAllEventSession(newBody));
+                return newBody;
+              } else {
+                const newBody = [...prev, body];
+                dispatch(setAllEventSession(newBody));
+                return newBody;
+              }
             });
           } catch (err) {
             console.log(err?.message);

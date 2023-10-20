@@ -12,11 +12,19 @@ const RunsBox = ({ item, setData, currentOdds }) => {
 
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
-    if (element) {
-      if (element && containerRef.current) {
-        containerRef.current.scrollTop =
-          element.offsetTop - containerRef.current.offsetTop;
-      }
+    const container = containerRef.current;
+
+    if (element && container) {
+      const containerRect = container.getBoundingClientRect();
+      const targetRect = element.getBoundingClientRect();
+      const scrollY =
+        targetRect.top -
+        containerRect.top -
+        (containerRect.height - targetRect.height) / 2;
+      container.scrollTo({
+        top: container.scrollTop + scrollY,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -26,7 +34,7 @@ const RunsBox = ({ item, setData, currentOdds }) => {
         scrollToElement(`${item?.id}_${currentOdds?.odds}`);
       }, 500);
     }
-  }, [currentOdds]);
+  }, [currentOdds, item?.id]);
 
   return (
     <Box

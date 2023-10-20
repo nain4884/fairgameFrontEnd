@@ -156,6 +156,9 @@ const ChangeButtonValue = ({ selected, visible }) => {
   };
 
   const handleLabelChange = (index, newValue, type) => {
+    if (newValue !== "" && newValue <= 0) {
+      return;
+    }
     if (type == "label") {
       setValueLabel((prevValues) => {
         const updatedValues = [...prevValues];
@@ -172,6 +175,9 @@ const ChangeButtonValue = ({ selected, visible }) => {
   };
 
   const handleLabel1Change = (index, newValue, type) => {
+    if (newValue !== "" && newValue <= 0) {
+      return;
+    }
     if (type == "label") {
       setValueLabel1((prevValues) => {
         const updatedValues = [...prevValues];
@@ -699,7 +705,7 @@ const ValButton = ({ value, index, onChange }) => {
           }
         }}
         inputProps={{
-          min: "0",
+          min: "1",
           onBlur: (event) => event.target.blur(),
         }}
       />

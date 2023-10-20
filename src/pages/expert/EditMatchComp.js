@@ -5,7 +5,7 @@ import { StyledImage } from "../../components";
 import { defaultMarketId, matchType } from "../../components/helper/constants";
 import { toast } from "react-toastify";
 import { setRole } from "../../newStore";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import microServiceAxios from "../../axios/microServiceAxios";
 import { DatePicker } from "rsuite";
 import DropDownSimple from "../../components/DropdownSimple";
@@ -56,14 +56,17 @@ const stateDetail = {
   34: { field: "tournamentId", val: "" },
 };
 
-const AddMatchComp = () => {
+const EditMatchComp = () => {
   const [Detail, setDetail] = useState(stateDetail);
   const [numTimesToShow, setnumTimesToShow] = useState(0);
+  const [matchDetail, setMatchDetail] = useState({});
   const [show1, setshow1] = useState(false);
   const [show2, setshow2] = useState(false);
   const [show3, setshow3] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { state } = useLocation();
+  console.log(state, "statestate");
 
   const { axios } = setRole();
   const [Error, setError] = useState({
@@ -224,7 +227,7 @@ const AddMatchComp = () => {
         if (i === 19) request.append(`${Detail[i + 1].field}`, marketId);
       }
       request.append("EventId", Detail[23].val);
-
+      request.append("id", state?.id);
       request.append("quick_bookmaker", JSON.stringify(quick_bookmaker));
       request.append("betfair_session_min_bet", Detail[18].val);
       request.append("bookmaker_manual_min_bet", Detail[18].val);
@@ -243,6 +246,118 @@ const AddMatchComp = () => {
       }
     } catch (e) {
       toast.error(e.response.data.message);
+      console.log(e);
+    }
+  };
+
+  const getMatchDetail = async (id) => {
+    try {
+      let response = await axios.get(`game-match/matchDetail/${id}`);
+      if (response?.status === 200) {
+        setDetail({
+          ...Detail,
+          1: {
+            ...Detail[1],
+            val: response?.data?.gameType,
+          },
+          5: {
+            ...Detail[5],
+            val: response?.data?.title,
+          },
+          9: {
+            ...Detail[9],
+            val: response?.data?.teamA,
+          },
+          13: {
+            ...Detail[13],
+            val: response?.data?.teamB,
+          },
+          17: {
+            ...Detail[17],
+            val:
+              response?.data?.teamC === "null" || response?.data?.teamC === null
+                ? ""
+                : response?.data?.teamC,
+          },
+          2: {
+            ...Detail[2],
+            val: new Date(response?.data?.startAt),
+          },
+          22: {
+            ...Detail[22],
+            val: response?.data?.competitionName,
+          },
+          18: {
+            ...Detail[18],
+            val: "100",
+          },
+          2: {
+            ...Detail[2],
+            val: new Date(response?.data?.startAt),
+          },
+          3: {
+            ...Detail[3],
+            val: response?.data?.betfair_match_max_bet,
+          },
+          11: {
+            ...Detail[11],
+            val: response?.data?.betfair_session_max_bet,
+          },
+          15: {
+            ...Detail[15],
+            val: response?.data?.betfair_bookmaker_max_bet,
+          },
+          19: {
+            ...Detail[19],
+            val: response?.data?.manaual_session_max_bet,
+          },
+          21: {
+            ...Detail[21],
+            val: response?.data?.delaySecond,
+          },
+          4: {
+            ...Detail[4],
+            val: response?.data?.bookmakers.length,
+          },
+          33: {
+            ...Detail[33],
+            val: response?.data?.competitionName,
+          },
+          24: {
+            ...Detail[24],
+            val: response?.data?.bookmakers[0]?.marketName,
+          },
+          26: {
+            ...Detail[26],
+            val: response?.data?.bookmakers[0]?.max_bet,
+          },
+          27: {
+            ...Detail[2],
+            val: response?.data?.bookmakers[1]?.marketName,
+          },
+          29: {
+            ...Detail[29],
+            val: response?.data?.bookmakers[1]?.max_bet,
+          },
+          30: {
+            ...Detail[30],
+            val: response?.data?.bookmakers[2]?.marketName,
+          },
+          32: {
+            ...Detail[32],
+            val: response?.data?.bookmakers[2]?.max_bet,
+          },
+          34: {
+            ...Detail[34],
+            val: response?.data?.competitionId,
+          },
+          23: {
+            ...Detail[23],
+            val: response?.data?.EventId,
+          },
+        });
+      }
+    } catch (e) {
       console.log(e);
     }
   };
@@ -330,10 +445,6 @@ const AddMatchComp = () => {
           ...Detail[17],
           val: "",
         },
-        2: {
-          ...Detail[2],
-          val: new Date(),
-        },
       });
       if (Detail[34].val === "") {
         return;
@@ -363,32 +474,42 @@ const AddMatchComp = () => {
   };
 
   useEffect(() => {
-    if (Detail[1].val !== "") {
-      getAllLiveTournaments();
-      setError({
-        ...Error,
-
-        1: {
-          ...Error[1],
-          val: false,
-        },
-      });
+    try {
+      if (state?.id) {
+        getMatchDetail(state?.id);
+      }
+    } catch (e) {
+      console.log(e);
     }
-  }, [Detail[1].val]);
+  }, [state?.id]);
 
-  useEffect(() => {
-    if (Detail[33].val !== "") {
-      getAllLiveMatches();
-      setError({
-        ...Error,
+  //   useEffect(() => {
+  //     if (Detail[1].val !== "") {
+  //       getAllLiveTournaments();
+  //       setError({
+  //         ...Error,
 
-        23: {
-          ...Error[23],
-          val: false,
-        },
-      });
-    }
-  }, [Detail[33].val]);
+  //         1: {
+  //           ...Error[1],
+  //           val: false,
+  //         },
+  //       });
+  //     }
+  //   }, [Detail[1].val]);
+
+  //   useEffect(() => {
+  //     if (Detail[33].val !== "") {
+  //       getAllLiveMatches();
+  //       setError({
+  //         ...Error,
+
+  //         23: {
+  //           ...Error[23],
+  //           val: false,
+  //         },
+  //       });
+  //     }
+  //   }, [Detail[33].val]);
 
   useEffect(() => {
     if (Detail[9].val !== "") {
@@ -462,7 +583,7 @@ const AddMatchComp = () => {
         >
           <Box sx={{ margin: "15px" }}>
             <LabelValueComponent
-              title={"Add Match"}
+              title={"Edit Match"}
               notShowSub={true}
               titleSize={"20px"}
               headColor={"#000000"}
@@ -495,6 +616,7 @@ const AddMatchComp = () => {
                 }}
               >
                 <DropDownSimple
+                  disable={true}
                   valued="Select Game Type..."
                   dropStyle={{
                     filter:
@@ -551,6 +673,7 @@ const AddMatchComp = () => {
                 }}
               >
                 <DropDownSimple
+                  disable={true}
                   valued="Select tournament"
                   dropStyle={{
                     filter:
@@ -597,6 +720,7 @@ const AddMatchComp = () => {
                 }}
               >
                 <DropDownSimple
+                  disable={true}
                   valued="Select match"
                   dropStyle={{
                     filter:
@@ -1001,6 +1125,7 @@ const AddMatchComp = () => {
                   }}
                 >
                   <DropDownSimple
+                    disable={true}
                     valued="Select Bookmaker"
                     dropStyle={{
                       filter:
@@ -1074,6 +1199,7 @@ const AddMatchComp = () => {
                         }}
                       >
                         <LabelValueComponent
+                          disable={true}
                           required={true}
                           containerStyle={{ flex: 1, width: "100%" }}
                           title={"Market Name"}
@@ -1149,6 +1275,7 @@ const AddMatchComp = () => {
                         }}
                       >
                         <LabelValueComponent
+                          disable={true}
                           required={true}
                           containerStyle={{ flex: 1, width: "100%" }}
                           title={"Market Name"}
@@ -1224,6 +1351,7 @@ const AddMatchComp = () => {
                         }}
                       >
                         <LabelValueComponent
+                          disable={true}
                           required={true}
                           containerStyle={{ flex: 1, width: "100%" }}
                           title={"Market Name"}
@@ -1311,7 +1439,7 @@ const AddMatchComp = () => {
                 },
               }}
             >
-              <Typography sx={{ color: "white" }}>Create</Typography>
+              <Typography sx={{ color: "white" }}>Update</Typography>
             </Button>
             <Box
               onClick={() => {
@@ -1340,4 +1468,4 @@ const AddMatchComp = () => {
   );
 };
 
-export default AddMatchComp;
+export default EditMatchComp;

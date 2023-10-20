@@ -20,6 +20,7 @@ import {
   setManualBookmaker,
   setQuickBookmaker,
   setQuickSession,
+  setRefreshForBets,
   setSelectedMatch,
   setSelectedSessionBettings,
 } from "../../newStore/reducers/matchDetails";
@@ -58,7 +59,11 @@ const DeleteBet = ({}) => {
     allSessionBets,
     quickSession,
     selectedSessionBettings,
+    refreshForBets,
   } = useSelector((state) => state?.matchDetails);
+  const [mode, setMode] = useState(false);
+  const [selectedBetData, setSelectedBetData] = useState([]);
+  const [manualSessions, setManualSessions] = useState([]);
   const { currentOdd } = useSelector((state) => state?.expertMatchDetails);
   const [currentMatch, setCurrentMatch] = useState([]);
   const [matchOddsLive, setMacthOddsLive] = useState([]);
@@ -72,8 +77,10 @@ const DeleteBet = ({}) => {
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState("");
   const [sessionExposer, setSessionExposure] = useState(0);
+  const [sessionExposerHttp, setSessionExposureHttp] = useState(0);
   const [sessionOff, setSessionOff] = useState([]);
   const [localQuickSession, setLocalQuickSession] = useState([]);
+  const [bookmakerHttp, setBookmakerHttp] = useState([]);
   const [localSelectedSessionBettings, setLocalSelectedSessionBettings] =
     useState([]);
 
@@ -995,8 +1002,14 @@ const DeleteBet = ({}) => {
       );
       setSessionBets(bets || []);
       dispatch(setAllSessionBets(bets));
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     } catch (e) {
       console.log(e);
+      setTimeout(() => {
+        dispatch(setRefreshForBets(false));
+      }, 1000);
     }
   }
 
@@ -1006,6 +1019,12 @@ const DeleteBet = ({}) => {
       getAllBetsData(matchId);
     }
   }, [matchId]);
+
+  useEffect(() => {
+    if (refreshForBets) {
+      getAllBetsData(matchId);
+    }
+  }, [refreshForBets]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -1042,8 +1061,30 @@ const DeleteBet = ({}) => {
     }
   };
 
-  const [mode, setMode] = useState(false);
-  const [selectedBetData, setSelectedBetData] = useState([]);
+  useEffect(() => {
+    if (matchId) {
+      let payload = {
+        matchId: matchId,
+      };
+      const fetchManualRate = async () => {
+        try {
+          const { data } = await axios.post("/betting/getManualRate", payload);
+          setManualSessions(data?.data?.manualSessionRate);
+          setBookmakerHttp(data?.data?.manualBookRate);
+          setSessionExposureHttp(data?.data?.sessionExposure);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+      fetchManualRate();
+
+      const intervalId = setInterval(fetchManualRate, 300);
+
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, []);
 
   return (
     <Background>
@@ -1119,7 +1160,7 @@ const DeleteBet = ({}) => {
                   maxBet={currentMatch?.betfair_match_max_bet}
                 />
               )}
-              {currentMatch?.bookmakers?.map((bookmaker) => {
+              {bookmakerHttp?.map((bookmaker) => {
                 if (bookmaker.betStatus === 1) {
                   return (
                     <Odds
@@ -1157,10 +1198,10 @@ const DeleteBet = ({}) => {
               {currentMatch?.manualSessionActive && matchesMobile && (
                 <SessionMarket
                   title={"Quick Session Market"}
-                  sessionExposer={sessionExposer}
+                  sessionExposer={sessionExposerHttp}
                   currentMatch={currentMatch}
                   sessionBets={sessionBets?.length}
-                  sessionData={localQuickSession}
+                  sessionData={manualSessions}
                   // data={[]}
                   sessionOffline={sessionOff}
                   setPopData={setPopData}
@@ -1174,7 +1215,7 @@ const DeleteBet = ({}) => {
                   title={"Session Market"}
                   currentMatch={currentMatch}
                   sessionBets={sessionBets?.length}
-                  sessionExposer={sessionExposer}
+                  sessionExposer={sessionExposerHttp}
                   sessionData={localSelectedSessionBettings}
                   // data={[]}
                   sessionOffline={sessionOff}
@@ -1185,7 +1226,11 @@ const DeleteBet = ({}) => {
                 />
               )}
               {matchesMobile && (
-                <UserProfitLoss single={"single"} title={"User Profit Loss"} matchId={matchId} />
+                <UserProfitLoss
+                  single={"single"}
+                  title={"User Profit Loss"}
+                  matchId={matchId}
+                />
               )}
               {/* {matchesMobile && */}
               {url.includes("wallet") && IOSinglebets.length > 0 && (
@@ -1309,8 +1354,8 @@ const DeleteBet = ({}) => {
                     currentOdds={currentOdds}
                     currentMatch={currentMatch}
                     sessionBets={sessionBets?.length}
-                    sessionExposer={currentMatch?.sessionExposure}
-                    sessionData={localQuickSession}
+                    sessionExposer={sessionExposerHttp}
+                    sessionData={manualSessions}
                     // data={[]}
                     sessionOffline={sessionOff}
                     setPopData={setPopData}
@@ -1325,7 +1370,7 @@ const DeleteBet = ({}) => {
                     currentOdds={currentOdds}
                     currentMatch={currentMatch}
                     sessionBets={sessionBets?.length}
-                    sessionExposer={currentMatch?.sessionExposure}
+                    sessionExposer={sessionExposerHttp}
                     sessionData={localSelectedSessionBettings}
                     // data={[]}
                     sessionOffline={sessionOff}
@@ -1335,7 +1380,11 @@ const DeleteBet = ({}) => {
                     min={currentMatch?.betfair_session_min_bet}
                   />
                 )}
-                <UserProfitLoss single={"single"} title={"User Profit Loss"} matchId={matchId} />
+                <UserProfitLoss
+                  single={"single"}
+                  title={"User Profit Loss"}
+                  matchId={matchId}
+                />
               </Box>
             )}
           </Box>

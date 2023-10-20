@@ -7,7 +7,7 @@ import constants from "../../components/helper/constants";
 import EventListing from "../../components/EventListing";
 import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
 import moment from "moment";
-
+//dsda
 const ProfitLoss = ({ selected, visible }) => {
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
@@ -102,10 +102,9 @@ const ProfitLoss = ({ selected, visible }) => {
     }
     try {
       const { data } = await axios.post(
-        `/betting/${
-          value?.type === "session_bet" && value?.betId === ""
-            ? "sessionProfitLossReport"
-            : "getResultBetProfitLoss"
+        `/betting/${value?.type === "session_bet" && value?.betId === ""
+          ? "sessionProfitLossReport"
+          : "getResultBetProfitLoss"
         }`,
         payload
       );

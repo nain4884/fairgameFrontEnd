@@ -97,7 +97,7 @@ const ProfitLoss = () => {
 
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const [data, setData] = useState([]);
+  const [userProfitLoss, setUserProfitLoss] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currenLimit, setCurrenLimit] = useState(1);
   const [eventData, setEventData] = useState([]);
@@ -110,6 +110,8 @@ const ProfitLoss = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const { profitLossReportPage } = useSelector((state) => state?.adminMatches);
+  const { currentUser } = useSelector((state) => state?.currentUser);
+  const [currentUserId, setCurrentUserId] = useState("");
   const [visible, setVisible] = useState(false);
   const [sessionBets, setSessionBet] = useState([]);
   const { currentPageNo } = useSelector((state) => state?.auth);
@@ -121,6 +123,12 @@ const ProfitLoss = () => {
   useEffect(() => {
     getAllClients();
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      setCurrentUserId(currentUser?.id);
+    }
+  }, [currentUser]);
 
   // useEffect(() => {
   //   if (profitLossReportPage) {
@@ -188,13 +196,13 @@ const ProfitLoss = () => {
 
   async function getUserProfitLoss(matchId) {
     try {
-      const { data } = await axios.get(
-        `/fair-game-wallet/getUserProfitLoss?${ //matchId and userId
-          matchId ? `matchId=${matchId}` : ""
-        }&page=${currentPageNo}&limit=${pageLimit}`
-      );
-      if (data?.data?.data) {
-        setData(data?.data?.data);
+      let payload = {
+        userId: currentUserId,
+        match_id: matchId,
+      };
+      const { data } = await axios.post(`/betting/getUserProfitLoss`, payload);
+      if (data?.data) {
+        setUserProfitLoss(data?.data);
         setPageCount(
           Math.ceil(
             parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /
@@ -225,6 +233,8 @@ const ProfitLoss = () => {
     }
     if (search?.id) {
       payload.userId = search?.id;
+    } else if (value?.userId) {
+      payload.userId = value?.userId;
     }
     if (startDate) {
       payload.from = moment(startDate).format("YYYY-MM-DD");
@@ -348,7 +358,7 @@ const ProfitLoss = () => {
               // loading
               visible={visible}
               getUserProfitLoss={getUserProfitLoss}
-              data={data}
+              userProfitLoss={userProfitLoss}
               setVisible={setVisible}
               eventData={eventData}
               reportData={reportData}

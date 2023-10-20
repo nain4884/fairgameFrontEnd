@@ -17,6 +17,9 @@ import SmallCustomLoader from "../../helper/SmallCustomLoader";
 import { customSort } from "../../helper/util";
 import QuickSessionMarketBox from "./QuickSessionMarketBox";
 import { useSelector } from "react-redux";
+import { setRole } from "../../../newStore";
+import { useLocation } from "react-router-dom";
+
 const QuickSessionMarket = ({
   data,
   newData,
@@ -49,6 +52,14 @@ const QuickSessionMarket = ({
   const { quickSession } = useSelector((state) => state?.matchDetails);
   const [localQuickSession, setLocalQuickSession] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
+  const checkMctchId = useSelector(
+    (state) => state?.matchDetails?.selectedMatch?.id
+  );
+
+  const location = useLocation();
+  const id = location?.state?.matchId;
+
+  const { axios } = setRole();
   // const [localData, setLocalData] = useState(newData);
   // useEffect(() => {
   //   setLocalData(newData);
@@ -356,8 +367,8 @@ const QuickSessionMarket = ({
                 // overflowY: "visible",
               }}
             >
-              {localQuickSession?.length > 0 &&
-                localQuickSession
+              {newData?.length > 0 &&
+                newData
                   ?.slice()
                   .sort(customSort)
                   ?.map((element) => {
