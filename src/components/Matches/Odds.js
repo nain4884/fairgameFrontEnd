@@ -38,11 +38,11 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
   const { axios } = setRole();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
-    }, 0);
-    return () => clearTimeout(timer);
-  });
+    }, 100);
+    return () => clearInterval(timer);
+  }, []);
 
   function calculateTimeLeft() {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
