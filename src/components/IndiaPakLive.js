@@ -1152,7 +1152,7 @@ const AddSession = ({
         ly_rate_percent: 100,
         ln_rate_percent: 100,
       });
-    } else if (key == "enter") {
+    } else if (key == "enter" || "return") {
       if (!isCreateSession || sessionBetId) {
         if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
           let rate_percent =
@@ -1529,19 +1529,19 @@ const AddSession = ({
                       "down",
                       "left",
                       "right",
-                      "tab",
+                      // "tab",
                       "shift",
-                      "`",
+                      // "`",
                       ",",
                       ".",
-                      "/",
+                      // "/",
                       "enter",
                       "return",
                       "esc",
-                      "*",
-                      "plus",
-                      "=",
-                      "minus",
+                      // "*",
+                      // "plus",
+                      // "=",
+                      // "minus",
                     ]}
                     isDisabled={false}
                     onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
