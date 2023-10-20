@@ -1032,6 +1032,7 @@ const DeleteBet = ({}) => {
         if (matchId !== undefined) {
           getThisMatch(matchId);
           getAllBetsData(matchId);
+          setVisible(false);
         }
       }
     };
