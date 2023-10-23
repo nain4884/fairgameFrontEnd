@@ -1152,7 +1152,8 @@ const AddSession = ({
         ly_rate_percent: 100,
         ln_rate_percent: 100,
       });
-    } else if (key == "enter" || "return") {
+    } else if (key == "enter" || key=="return") {
+      
       if (!isCreateSession || sessionBetId) {
         if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
           let rate_percent =
