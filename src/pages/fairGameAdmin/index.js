@@ -26,6 +26,7 @@ import PageNotFound from "../../components/PageNotFound";
 import AdminInPlay from "../../components/AdminInplay";
 import { HomeSlide } from "../../components";
 import EmptyComponent from "../../components/EmptyComponent";
+import EditAccountScreen from "../admin/EditAccountScreen";
 const AdminRoutes = () => {
   const location = useLocation();
 
@@ -99,6 +100,7 @@ const AdminRoutes = () => {
         <Route exact path="/general_report" element={<GeneralReport />} />
         <Route exact path="/profit_loss" element={<ProfitLoss />} />
         <Route exact path="/add_account" element={<AddAccountScreen />} />
+        <Route exact path="/edit_account" element={<EditAccountScreen />} />
         <Route exact path="/current_bet" element={<CurrentBets />} />
         <Route exact path="/reports" element={<Reports />} />
         <Route exact path="/walletsettings" element={<Reports />} />

@@ -13,6 +13,8 @@ import AccountListModal from "./AccountListModal";
 import Modal from "./Modal";
 import ModalMUI from "@mui/material/Modal";
 import CommissionReportTable from "./CommissionReportTable";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { useNavigate } from "react-router-dom";
 
 const AccountListRow = ({
   containerStyle,
@@ -24,7 +26,7 @@ const AccountListRow = ({
   showOptions,
   handleExport,
   showCReport,
-  showUserDetails
+  showUserDetails,
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -32,6 +34,8 @@ const AccountListRow = ({
   const [showModalMessage, setShowModalMessage] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selected, setSelected] = useState(null);
+
+  const navigate = useNavigate();
 
   const { axios } = setRole();
   const { allRole } = useSelector((state) => state.auth);
@@ -205,6 +209,25 @@ const AccountListRow = ({
           >
             {element?.userName}
           </Typography>
+          {showOptions && element?.role === "user" && (
+            <EditOutlinedIcon
+              fontSize="medium"
+              onClick={() => {
+                navigate(`/wallet/edit_account`, {
+                  state: {
+                    id: element?.id,
+                  },
+                });
+              }}
+              sx={{
+                color:
+                  fContainerStyle.background == "#F8C851"
+                    ? "#0B4F26"
+                    : "#FFFFFF",
+                cursor: "pointer",
+              }}
+            />
+          )}
           {showOptions && element?.role !== "expert" && (
             <StyledImage
               onClick={() => {
@@ -452,136 +475,65 @@ const AccountListRow = ({
       </Box>
 
       {showUserModal && element?.role !== "expert" && (
-        
+        <Box
+          sx={[
+            {
+              width: "100%",
+              display: "flex",
+              height: "100%",
+              background: "#0B4F26",
+              alignItems: "center",
+              overflow: "hidden",
+              flexDirection: { mobile: "column", laptop: "row" },
+            },
+            containerStyle,
+          ]}
+        >
           <Box
             sx={[
               {
-                width: "100%",
-                display: "flex",
-                height: "100%",
-                background: "#0B4F26",
-                alignItems: "center",
-                overflow: "hidden",
-                flexDirection: { mobile: "column", laptop: "row" },
+                width: {
+                  laptop: "11vw",
+                  tablet: "25vw",
+                  mobile: "96vw",
+                },
+                alignSelf: "stretch",
+                justifyContent: "space-between",
+                borderRight: "2px solid white",
               },
-              containerStyle,
+              fContainerStyle,
             ]}
           >
             <Box
-              sx={[
-                {
-                  width: {
-                    laptop: "11vw",
-                    tablet: "25vw",
-                    mobile: "96vw",
-                  },
-                  alignSelf: "stretch",
-                  justifyContent: "space-between",
-                  borderRight: "2px solid white",
-                },
-                fContainerStyle,
-              ]}
+              sx={{
+                width: "100% ",
+                height: "100%",
+                padding: "10px",
+                display: { laptop: "block", mobile: "flex" },
+                justifyContent: "space-between",
+                alignItems: selected === null && "center",
+                overflow: "hidden",
+                borderBottom: "2px solid white",
+              }}
             >
-              <Box
-                sx={{
-                  width: "100% ",
-                  height: "100%",
-                  padding: "10px",
-                  display: { laptop: "block", mobile: "flex" },
-                  justifyContent: "space-between",
-                  alignItems: selected === null && "center",
-                  overflow: "hidden",
-                  borderBottom: "2px solid white",
-                }}
-              >
-                <Box sx={{ width: { laptop: "100%", mobile: "50%" } }}>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      width: "100%",
-                      alignItems: "center",
-                      justifyContent: {
-                        laptop: "flex-start",
-                        mobile: "flex-start",
-                      },
-                    }}
-                  >
-                    {elementToUDM?.matchTypeComission ? (
-                      <>
-                        <Typography
-                          sx={[
-                            {
-                              fontSize: "12px",
-                              fontWeight: "600",
-                              color: "white",
-                              textAlign: { laptop: "left", mobile: "left" },
-                              width: { laptop: "100px", mobile: "100px" },
-                            },
-                            fTextStyle,
-                          ]}
-                        >
-                          {elementToUDM?.matchTypeComission} Com
-                        </Typography>
-                        <Typography
-                          sx={[
-                            {
-                              fontSize: "12px",
-                              fontWeight: "600",
-                              color: "white",
-                              textAlign: "center",
-                              marginRight: "1px",
-                            },
-                            fTextStyle,
-                          ]}
-                        >
-                          {":"}{" "}
-                          {elementToUDM?.matchComission
-                            ? elementToUDM?.matchComission
-                            : 0}
-                        </Typography>
-                      </>
-                    ) : (
-                      <>
-                        <Typography
-                          sx={[
-                            {
-                              fontSize: "12px",
-
-                              fontWeight: "600",
-                              color: "white",
-                              textAlign: { laptop: "left", mobile: "left" },
-                              width: { laptop: "100px", mobile: "100px" },
-                            },
-                            fTextStyle,
-                          ]}
-                        >
-                          Match Com
-                        </Typography>
-                        <Typography
-                          sx={[
-                            {
-                              fontSize: "12px",
-
-                              fontWeight: "600",
-                              color: "white",
-                              textAlign: "left",
-                            },
-                            fTextStyle,
-                          ]}
-                        >
-                          : 0
-                        </Typography>
-                      </>
-                    )}
-                  </Box>
-
-                  <Box sx={{ display: "flex" }}>
-                    <Box sx={{ display: "flex" }}>
+              <Box sx={{ width: { laptop: "100%", mobile: "50%" } }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    width: "100%",
+                    alignItems: "center",
+                    justifyContent: {
+                      laptop: "flex-start",
+                      mobile: "flex-start",
+                    },
+                  }}
+                >
+                  {elementToUDM?.matchTypeComission ? (
+                    <>
                       <Typography
                         sx={[
                           {
                             fontSize: "12px",
-
                             fontWeight: "600",
                             color: "white",
                             textAlign: { laptop: "left", mobile: "left" },
@@ -590,7 +542,7 @@ const AccountListRow = ({
                           fTextStyle,
                         ]}
                       >
-                        Session Com
+                        {elementToUDM?.matchTypeComission} Com
                       </Typography>
                       <Typography
                         sx={[
@@ -604,49 +556,64 @@ const AccountListRow = ({
                           fTextStyle,
                         ]}
                       >
-                        {": "}
+                        {":"}{" "}
+                        {elementToUDM?.matchComission
+                          ? elementToUDM?.matchComission
+                          : 0}
                       </Typography>
-                    </Box>
+                    </>
+                  ) : (
+                    <>
+                      <Typography
+                        sx={[
+                          {
+                            fontSize: "12px",
+
+                            fontWeight: "600",
+                            color: "white",
+                            textAlign: { laptop: "left", mobile: "left" },
+                            width: { laptop: "100px", mobile: "100px" },
+                          },
+                          fTextStyle,
+                        ]}
+                      >
+                        Match Com
+                      </Typography>
+                      <Typography
+                        sx={[
+                          {
+                            fontSize: "12px",
+
+                            fontWeight: "600",
+                            color: "white",
+                            textAlign: "left",
+                          },
+                          fTextStyle,
+                        ]}
+                      >
+                        : 0
+                      </Typography>
+                    </>
+                  )}
+                </Box>
+
+                <Box sx={{ display: "flex" }}>
+                  <Box sx={{ display: "flex" }}>
                     <Typography
                       sx={[
                         {
                           fontSize: "12px",
+
                           fontWeight: "600",
                           color: "white",
-                          textAlign: "left",
-                          marginLeft: "3px",
+                          textAlign: { laptop: "left", mobile: "left" },
+                          width: { laptop: "100px", mobile: "100px" },
                         },
                         fTextStyle,
                       ]}
                     >
-                      {elementToUDM?.sessionComisssion
-                        ? elementToUDM?.sessionComisssion
-                        : 0}
+                      Session Com
                     </Typography>
-                  </Box>
-                </Box>
-                {showCReport && (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      marginTop: { laptop: "10px", mobile: "0" },
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      cursor: "pointer",
-                      marginRight: { laptop: "0", mobile: "5px" },
-                      width: { desktop: "100%", mobile: "33%" },
-                    }}
-                    onClick={() => {
-                      if (elementToUDM?.totalCommissions !== null) {
-                        setShowCommissionReport({
-                          value: true,
-                          id: elementToUDM?.userId,
-                        });
-                      } else {
-                        return false;
-                      }
-                    }}
-                  >
                     <Typography
                       sx={[
                         {
@@ -654,61 +621,113 @@ const AccountListRow = ({
                           fontWeight: "600",
                           color: "white",
                           textAlign: "center",
-                          alignItems: "center",
-                          marginRight: { desktop: "0", mobile: "3px" },
+                          marginRight: "1px",
                         },
                         fTextStyle,
                       ]}
                     >
-                      Commission Details
+                      {": "}
                     </Typography>
-                    <StyledImage
-                      src={
-                        fContainerStyle.background == "#F8C851"
-                          ? DownGIcon
-                          : DownIcon
-                      }
-                      sx={{
-                        height: { laptop: "10px", mobile: "14px" },
-                        cursor: "pointer",
-                        width: { laptop: "15px", mobile: "23px" },
-                      }}
-                    />
                   </Box>
-                )}
+                  <Typography
+                    sx={[
+                      {
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        color: "white",
+                        textAlign: "left",
+                        marginLeft: "3px",
+                      },
+                      fTextStyle,
+                    ]}
+                  >
+                    {elementToUDM?.sessionComisssion
+                      ? elementToUDM?.sessionComisssion
+                      : 0}
+                  </Typography>
+                </Box>
               </Box>
+              {showCReport && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    marginTop: { laptop: "10px", mobile: "0" },
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    marginRight: { laptop: "0", mobile: "5px" },
+                    width: { desktop: "100%", mobile: "33%" },
+                  }}
+                  onClick={() => {
+                    if (elementToUDM?.totalCommissions !== null) {
+                      setShowCommissionReport({
+                        value: true,
+                        id: elementToUDM?.userId,
+                      });
+                    } else {
+                      return false;
+                    }
+                  }}
+                >
+                  <Typography
+                    sx={[
+                      {
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        color: "white",
+                        textAlign: "center",
+                        alignItems: "center",
+                        marginRight: { desktop: "0", mobile: "3px" },
+                      },
+                      fTextStyle,
+                    ]}
+                  >
+                    Commission Details
+                  </Typography>
+                  <StyledImage
+                    src={
+                      fContainerStyle.background == "#F8C851"
+                        ? DownGIcon
+                        : DownIcon
+                    }
+                    sx={{
+                      height: { laptop: "10px", mobile: "14px" },
+                      cursor: "pointer",
+                      width: { laptop: "15px", mobile: "23px" },
+                    }}
+                  />
+                </Box>
+              )}
             </Box>
-
-         
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  visibility: !showUserDetails &&  "hidden",
-                  // paddingX: "10px",
-                  alignItems: "center",
-                  height: "100%",
-                }}
-              >
-                <UserDetailModal
-                  selected={selected}
-                  element={element}
-                  setSelected={setSelected}
-                  updatedUserProfile={updatedUserProfile}
-                  getListOfUser={getListOfUser}
-                  setShowUserModal={setShowUserModal}
-                  backgroundColor={containerStyle?.background}
-                  userModal={userModal}
-                  setShowSuccessModal={handleChangeShowModalSuccess}
-                  setShowModalMessage={setShowModalMessage}
-                  elementToUDM={elementToUDM}
-                  setElementToUDM={handleSetUDM}
-                  prevElement={prevElement}
-                />
-              </Box>
-          
           </Box>
-      
+
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              visibility: !showUserDetails && "hidden",
+              // paddingX: "10px",
+              alignItems: "center",
+              height: "100%",
+            }}
+          >
+            <UserDetailModal
+              selected={selected}
+              element={element}
+              setSelected={setSelected}
+              updatedUserProfile={updatedUserProfile}
+              getListOfUser={getListOfUser}
+              setShowUserModal={setShowUserModal}
+              backgroundColor={containerStyle?.background}
+              userModal={userModal}
+              setShowSuccessModal={handleChangeShowModalSuccess}
+              setShowModalMessage={setShowModalMessage}
+              elementToUDM={elementToUDM}
+              setElementToUDM={handleSetUDM}
+              prevElement={prevElement}
+            />
+          </Box>
+        </Box>
       )}
 
       {/* {showUserModal && element?.role !== "user" && (

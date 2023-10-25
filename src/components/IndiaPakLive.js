@@ -1003,7 +1003,7 @@ const AddSession = ({
         isNoPercent: true,
         isYesPercent: true,
       });
-      if (targetValue > 0) {
+      if (targetValue >= 0) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
             ...Detail.Detail,
@@ -1038,7 +1038,7 @@ const AddSession = ({
         isNoPercent: true,
         isYesPercent: true,
       });
-      if (targetValue > 0) {
+      if (targetValue >= 0) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
             ...Detail.Detail,
@@ -1152,8 +1152,7 @@ const AddSession = ({
         ly_rate_percent: 100,
         ln_rate_percent: 100,
       });
-    } else if (key == "enter" || key=="return") {
-      
+    } else if (key == "enter" || key == "return") {
       if (!isCreateSession || sessionBetId) {
         if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
           let rate_percent =
@@ -1277,6 +1276,9 @@ const AddSession = ({
       isPercent.setIsPercent("percent");
 
       let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
+      if (value <= 0) {
+        return;
+      }
       Detail.setDetail({
         ...Detail.Detail,
         no_rate: value,
@@ -1291,7 +1293,7 @@ const AddSession = ({
       incGap.setIncGap(5);
 
       if (!isCreateSession || sessionBetId) {
-        if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+        if (value) {
           let rate_percent = 110 + "-" + 90;
           let data = {
             match_id: match?.id,
@@ -1336,7 +1338,7 @@ const AddSession = ({
       incGap.setIncGap(5);
 
       if (!isCreateSession || sessionBetId) {
-        if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+        if (value) {
           let rate_percent = 110 + "-" + 90;
           let data = {
             match_id: match?.id,
