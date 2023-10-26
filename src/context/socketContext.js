@@ -1457,7 +1457,7 @@ export const SocketProvider = ({ children }) => {
             dispatch(setUserAllMatches(newBody));
             return newBody;
           } else {
-            const newBody = [data, ...prev];
+            const newBody = [...prev, data];
             dispatch(setUserAllMatches(newBody));
             return newBody;
           }
