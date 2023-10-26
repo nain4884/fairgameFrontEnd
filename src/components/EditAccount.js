@@ -169,126 +169,30 @@ const EditAccount = () => {
     setTypeToShow(typo?.map((v) => v.role));
   };
 
-  const addAccount = async () => {
-    if (error[11].val !== "") {
-      toast.error(error[11].val);
-      return false;
-    }
-    if (
-      error[1].val ===
-        "Only a-z, A-Z,and 0-9 characters allowed!. eg. fairGame00" ||
-      error[1].val === true
-    ) {
-      toast.error("Field required");
-      return false;
-    } else {
+  const editAccount = async () => {
+    try {
       let payload = {
-        userName: "",
-        password: "",
-        confirmPassword: "",
-        fullName: "",
-        city: "",
-        phoneNumber: 0,
-        roleId: "",
-        remark: "",
-        adminTransPassword: "",
-        myPartnership: 0,
-        credit_refer: 0,
+        id: state?.id,
+        adminTransPassword: Detail[14].val,
+        sessionComisssion:
+          Detail[16].val === "" || Detail[16].val === 0
+            ? null
+            : parseFloat(Detail[16].val),
+        matchTypeComission: Detail[17].val === "0.00" ? null : Detail[17].val,
+        matchComission: Detail[18].val === "0.00" ? null : Detail[18].val,
       };
-      if (["admin", "wallet"].includes(locationPath)) {
-        // payload.a_partnership=Detail[10].val
-        payload = {
-          ...payload,
-          sm_partnership: Detail[11].val,
-          m_partnership: Detail[12].val,
-        };
+      let response;
+      response = await axios.post(`/fair-game-wallet/adduser`, payload);
+      if (response.status == 200) {
+        setSuccessShow(response.data.message);
+        handleChangeShowModalSuccess(true);
+        setIsDisable(true);
       }
-      try {
-        function checkRoleId(age) {
-          return (
-            age.role.split(" ").join("").toLowerCase() ===
-            Detail[9].val.split(" ").join("").toLowerCase()
-          );
-        }
-
-        if (Detail[14].val === "") {
-          setError({
-            ...error,
-            14: {
-              ...error[14],
-              val: "error",
-            },
-          });
-          return false;
-        }
-        if (Detail[11].val > 100) {
-          setMyPartnershipsError(true);
-          return false;
-        }
-        if (myPartnershipsError) {
-          return false;
-        }
-        if (
-          Detail[17].val !== null &&
-          Detail[17].val !== "0.00" &&
-          Detail[18].val === null
-        ) {
-          setError({
-            ...error,
-            18: {
-              ...error[18],
-              val: "Field is required",
-            },
-          });
-          return false;
-        }
-        if (
-          !(
-            Detail[3].val === 0 ||
-            Detail[3].val === "" ||
-            Detail[9].val === 0 ||
-            Detail[9].val === "" ||
-            Detail[14].val === 0 ||
-            Detail[14].val === "" ||
-            Detail[11].val === null
-          )
-        ) {
-          //Detail[2].val === 0 || Detail[2].val === "" ||
-          payload = {
-            ...payload,
-            userName: Detail[1].val,
-            password: Detail[2].val,
-            confirmPassword: Detail[3].val,
-            fullName: Detail[4].val,
-            city: Detail[5].val,
-            phoneNumber: Detail[6].val,
-            roleId: roles.filter(checkRoleId)[0].roleId,
-            remark: Detail[13].val,
-            adminTransPassword: Detail[14].val,
-            myPartnership: Detail[11].val,
-            credit_refer: Detail[8].val,
-            sessionComisssion:
-              Detail[16].val === "" || Detail[16].val === 0
-                ? null
-                : parseFloat(Detail[16].val),
-            matchTypeComission:
-              Detail[17].val === "0.00" ? null : Detail[17].val,
-            matchComission: Detail[18].val === "0.00" ? null : Detail[18].val,
-          };
-          let response;
-          response = await axios.post(`/fair-game-wallet/adduser`, payload);
-          if (response.status == 200) {
-            setSuccessShow(response.data.message);
-            handleChangeShowModalSuccess(true);
-            setIsDisable(true);
-          }
-        }
-      } catch (e) {
-        console.log(e);
-        setSuccessShow("");
-        toast.error(e?.response?.data?.message);
-        setErrorShow(e?.response?.data?.message);
-      }
+    } catch (e) {
+      console.log(e);
+      setSuccessShow("");
+      toast.error(e?.response?.data?.message);
+      setErrorShow(e?.response?.data?.message);
     }
   };
 
@@ -502,62 +406,128 @@ const EditAccount = () => {
   const getUserDetailEdit = async (id) => {
     try {
       const { data } = await axios.get(`users/profile/${id}`);
-      console.log("dataToEdit", data)
+      if (data?.data?.matchTypeComission !== null) {
+        setShowMatchCommision(true);
+      } else {
+        setShowMatchCommision(false);
+      }
+
+      const role = allRole.find((v) => v?.id === data?.data?.roleId);
+      console.log(role, "role")
+      setDetail({
+        ...Detail,
+        1: {
+          ...Detail[1],
+          val: data?.data?.userName,
+        },
+        4: {
+          ...Detail[4],
+          val: data?.data?.fullName,
+        },
+        5: {
+          ...Detail[5],
+          val: data?.data?.city,
+        },
+        6: {
+          ...Detail[6],
+          val: parseInt(data?.data?.phoneNumber),
+        },
+        8: {
+          ...Detail[8],
+          val: data?.data?.credit_refer,
+        },
+        9: {
+          ...Detail[9],
+          val: role?.roleName,
+        },
+        10: {
+          ...Detail[10],
+          val: data?.data?.fw_partnership,
+        },
+        11: {
+          ...Detail[11],
+          val: data?.data?.fa_partnership,
+        },
+        12: {
+          ...Detail[12],
+          val: data?.data?.sa_partnership,
+        },
+        13: {
+          ...Detail[13],
+          val: data?.data?.remark,
+        },
+        15: {
+          ...Detail[15],
+          val: data?.data?.m_partnership,
+        },
+        16: {
+          ...Detail[16],
+          val: data?.data?.sessionComisssion,
+        },
+        17: {
+          ...Detail[17],
+          val: data?.data?.matchTypeComission,
+        },
+        18: {
+          ...Detail[18],
+          val: data?.data?.matchComission,
+        },
+      });
     } catch (e) {
       console.error(e);
     }
   };
-  useEffect(() => {
-    if (
-      [
-        "user",
-        "fairGameAdmin",
-        "admin",
-        "superAdmin",
-        "superMaster",
-        "master",
-      ].includes(Detail[9].val)
-    ) {
-      setDetail({
-        ...Detail,
-        12: {
-          ...Detail[12],
-          val: 100 - Detail[10].val,
-        },
-        11: {
-          ...Detail[11],
-          val: 0,
-        },
-      });
-      setError({
-        ...error,
-        11: {
-          ...error[11],
-          val: "",
-        },
-      });
-    }
-    if (["user"].includes(Detail[9].val)) {
-      setDetail({
-        ...Detail,
-        11: {
-          ...Detail[11],
-          val: 100 - Detail[10].val,
-        },
-        12: {
-          ...Detail[12],
-          val: 0,
-        },
-      });
-      setError({
-        ...error,
-        11: {
-          ...error[11],
-          val: "",
-        },
-      });
-    }
-  }, [Detail[9].val]);
+  // useEffect(() => {
+  //   if (
+  //     [
+  //       "user",
+  //       "fairGameAdmin",
+  //       "admin",
+  //       "superAdmin",
+  //       "superMaster",
+  //       "master",
+  //     ].includes(Detail[9].val)
+  //   ) {
+  //     setDetail({
+  //       ...Detail,
+  //       12: {
+  //         ...Detail[12],
+  //         val: 100 - Detail[10].val,
+  //       },
+  //       11: {
+  //         ...Detail[11],
+  //         val: 0,
+  //       },
+  //     });
+  //     setError({
+  //       ...error,
+  //       11: {
+  //         ...error[11],
+  //         val: "",
+  //       },
+  //     });
+  //   }
+  //   if (["user"].includes(Detail[9].val)) {
+  //     setDetail({
+  //       ...Detail,
+  //       11: {
+  //         ...Detail[11],
+  //         val: 100 - Detail[10].val,
+  //       },
+  //       12: {
+  //         ...Detail[12],
+  //         val: 0,
+  //       },
+  //     });
+  //     setError({
+  //       ...error,
+  //       11: {
+  //         ...error[11],
+  //         val: "",
+  //       },
+  //     });
+  //   }
+  // }, [Detail[9].val]);
 
   useEffect(() => {
     try {
@@ -588,7 +558,7 @@ const EditAccount = () => {
             marginLeft: "4px",
           }}
         >
-          Add Account
+          Edit Account
         </Typography>
         <form
           ref={formRef}
@@ -610,7 +580,7 @@ const EditAccount = () => {
             //   toast.error("Fields Required");
             //   return false;
             // }
-            addAccount();
+            editAccount();
           }}
         >
           <Box
@@ -664,6 +634,7 @@ const EditAccount = () => {
                     error={error}
                     place={1}
                     required={true}
+                    value={Detail[1]?.val}
                     onFocusOut={checkUserName}
                     toFoucs={true}
                     disabled={true}
@@ -692,6 +663,7 @@ const EditAccount = () => {
                     setDetail={setDetail}
                     Detail={Detail}
                     required={true}
+                    value={Detail[2]?.val}
                     onKeyDown={(event) => {
                       if (event.code === "Space") {
                         event.preventDefault();
@@ -732,6 +704,7 @@ const EditAccount = () => {
                     setDetail={setDetail}
                     required={true}
                     Detail={Detail}
+                    value={Detail[3]?.val}
                     setError={setError}
                     error={error}
                     place={3}
@@ -776,6 +749,7 @@ const EditAccount = () => {
                     Detail={Detail}
                     setError={setError}
                     error={error}
+                    value={Detail[5]?.val}
                     place={5}
                   />
                 </div>
@@ -794,6 +768,7 @@ const EditAccount = () => {
                     Detail={Detail}
                     setError={setError}
                     error={error}
+                    value={Detail[6]?.val}
                     place={6}
                     type={"Number"}
                   />
@@ -841,6 +816,7 @@ const EditAccount = () => {
                     dropDownTextStyle={imputStyle}
                     Detail={Detail}
                     setDetail={setDetail}
+                    valued={Detail[9]?.val}
                     place={9}
                     disable={true}
                   />
@@ -866,6 +842,7 @@ const EditAccount = () => {
                       Detail={Detail}
                       setError={setError}
                       error={error}
+                      value={Detail[8]?.val}
                       place={8}
                       onKeyDown={(event) => {
                         if (
@@ -919,13 +896,14 @@ const EditAccount = () => {
                   error={error}
                   disabled={true}
                   place={10}
+                  value={Detail[10]?.val}
                   autoMaticFillValue={`${Detail[10]?.val}`}
                 />
                 {error[10].val && (
                   <p style={{ color: "#fa1e1e" }}>Field Required</p>
                 )}
 
-                {Detail[9].val === "user" ? (
+                {Detail[9]?.val === "user" ? (
                   <InputMyPartnership
                     inputContainerStyle={{
                       ...inputContainerStyle,
@@ -979,8 +957,10 @@ const EditAccount = () => {
                     // placeholder={Detail[11].val}
                     setError={setError}
                     required={true}
+                    disabled={true}
                     error={error}
                     place={11}
+                    value={Detail[11]?.val}
                     type={"Number"}
                     onKeyDown={(event) => {
                       if (
@@ -1031,6 +1011,7 @@ const EditAccount = () => {
                 setError={setError}
                 error={error}
                 place={12}
+                value={Detail[12]?.val}
                 type={"Number"}
                 placeholder={Detail[12].val}
                 // autoMaticFillValue={Detail[12].val}
@@ -1041,7 +1022,7 @@ const EditAccount = () => {
                 </p>
               )}
 
-              {Detail[9].val !== "expert" && (
+              {Detail[9]?.val !== "expert" && (
                 <>
                   <Box
                     sx={{
@@ -1085,6 +1066,7 @@ const EditAccount = () => {
                       }}
                       dropDownTextStyle={{ ...imputStyle, lineHeight: 1 }}
                       Detail={Detail}
+                      value={Detail[17]?.val}
                       setDetail={setDetail}
                       place={17}
                     />
@@ -1096,8 +1078,8 @@ const EditAccount = () => {
                     {Detail[17].val !== null && Detail[17].val !== "0.00" && (
                       <>
                         <DropDownSimple
-                          openDrop={showMatchCommision}
-                          defaultValue={"0.00"}
+                          // openDrop={false}
+                          // defaultValue={"0.00"}
                           dropStyle={{
                             filter:
                               "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
@@ -1128,8 +1110,12 @@ const EditAccount = () => {
                             overflow: "scroll",
                           }}
                           Detail={Detail}
+                          value={Detail[18]?.val}
                           setDetail={setDetail}
                           place={18}
+                          selectValueStyle={{
+                            selectValueStyle,
+                          }}
                         />
                         {error[18].val && (
                           <p
@@ -1176,6 +1162,7 @@ const EditAccount = () => {
                       dropDownTextStyle={{ ...imputStyle }}
                       Detail={Detail}
                       setDetail={setDetail}
+                      value={Detail[16]?.val}
                       place={16}
                       selectValueStyle={{
                         selectValueStyle,
@@ -1219,6 +1206,7 @@ const EditAccount = () => {
                   Detail={Detail}
                   setError={setError}
                   error={error}
+                  value={Detail[13]?.val}
                   place={13}
                 />
                 <div>
