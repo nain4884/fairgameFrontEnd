@@ -411,9 +411,7 @@ const EditAccount = () => {
       } else {
         setShowMatchCommision(false);
       }
-
       const role = allRole.find((v) => v?.id === data?.data?.roleId);
-      console.log(role, "role")
       setDetail({
         ...Detail,
         1: {

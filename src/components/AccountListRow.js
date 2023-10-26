@@ -209,7 +209,7 @@ const AccountListRow = ({
           >
             {element?.userName}
           </Typography>
-          {showOptions && (
+          {showOptions && element?.role === "user" && (
             <EditOutlinedIcon
               fontSize="medium"
               onClick={() => {
