@@ -530,7 +530,7 @@ const IndiaPakLive = React.forwardRef(
 
       setLock({
         ...lock,
-        isNo: false,
+        isNo: Detail.no_rate > 0 ? false : true,
         isYes: false,
         isNoPercent: false,
         isYesPercent: false,
