@@ -124,10 +124,7 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
                 back={true}
                 value={newData?.no_rate}
                 value2={formatNumber(newData?.rate_percent?.split("-")[0])}
-                lock={
-                  newData?.suspended === "suspended" ||
-                  [0, "0"].includes(newData?.no_rate)
-                }
+                lock={[null, 0, "0"].includes(newData?.no_rate) ? true : false}
                 color={"#F6D0CB"}
               />
               <Box
@@ -137,10 +134,7 @@ const SeasonMarketBox = ({ index, setMatchSessionData, newData, setData }) => {
                 session={true}
                 value={newData?.yes_rate}
                 value2={formatNumber(newData?.rate_percent?.split("-")[1])}
-                lock={
-                  newData?.suspended === "suspended" ||
-                  [0, "0"].includes(newData?.yes_rate)
-                }
+                lock={[null, 0, "0"].includes(newData?.yes_rate) ? true : false}
                 color={"#B3E0FF"}
               />
             </>

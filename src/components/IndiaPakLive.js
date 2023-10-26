@@ -1154,7 +1154,12 @@ const AddSession = ({
       });
     } else if (key == "enter" || key == "return") {
       if (!isCreateSession || sessionBetId) {
-        if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+        if (
+          Detail?.Detail?.no_rate >= 0 &&
+          Detail?.Detail?.yes_rate &&
+          Detail.Detail.n_rate_percent &&
+          Detail.Detail.y_rate_percent
+        ) {
           let rate_percent =
             Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
           let data = {
@@ -1168,7 +1173,7 @@ const AddSession = ({
           };
           setLock({
             ...lock,
-            isNo: false,
+            isNo: Detail.Detail.no_rate > 0 ? false : true,
             isYes: false,
             isNoPercent: false,
             isYesPercent: false,
@@ -1276,8 +1281,15 @@ const AddSession = ({
       isPercent.setIsPercent("percent");
 
       let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
-      if (value <= 0) {
-        return;
+      if (value === 0) {
+        handleSuspend();
+        setLock({
+          ...lock,
+          isNo: true,
+          isYes: true,
+          isNoPercent: true,
+          isYesPercent: true,
+        });
       }
       Detail.setDetail({
         ...Detail.Detail,
@@ -1418,12 +1430,12 @@ const AddSession = ({
       ...Detail.Detail,
       no_rate: targetValue,
       yes_rate: targetValue + 1,
-      y_rate_percent: checkValue ? 100 : "",
-      n_rate_percent: checkValue ? 100 : "",
+      y_rate_percent: checkValue >= 0 ? 100 : "",
+      n_rate_percent: checkValue >= 0 ? 100 : "",
       l_no_rate: targetValue,
       l_yes_rate: targetValue + 1,
-      ly_rate_percent: checkValue ? 100 : "",
-      ln_rate_percent: checkValue ? 100 : "",
+      ly_rate_percent: checkValue >= 0 ? 100 : "",
+      ln_rate_percent: checkValue >= 0 ? 100 : "",
     });
   };
 
@@ -1588,7 +1600,7 @@ const AddSession = ({
                     autoComplete="off"
                     value={Detail?.Detail?.l_yes_rate}
                     variant="standard"
-                    disabled={isDisable}
+                    disabled={true}
                     InputProps={{
                       disableUnderline: true,
                       style: {
@@ -1646,7 +1658,7 @@ const AddSession = ({
                   > */}
                   <TextField
                     type="Number"
-                    disabled={isDisable}
+                    disabled={true}
                     value={
                       Detail?.Detail?.ln_rate_percent
                         ? Detail?.Detail?.ln_rate_percent
@@ -1681,7 +1693,7 @@ const AddSession = ({
               >
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
                   <TextField
-                    disabled={isDisable}
+                    disabled={true}
                     autoComplete="off"
                     type="Number"
                     value={
