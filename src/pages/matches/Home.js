@@ -29,7 +29,10 @@ import {
   setSessionButtonData,
   setRefreshForBets,
 } from "../../newStore/reducers/matchDetails";
-import { microServiceApiPath } from "../../components/helper/constants";
+import {
+  apiMatchScore,
+  microServiceApiPath,
+} from "../../components/helper/constants";
 import Axios from "axios";
 import { MatchOdds } from "../../components";
 import MatchComponent from "../../components/MathComponent";
@@ -1115,20 +1118,20 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
             console.log(e);
           }
         });
-        socketMicro.on(`liveScore${eventId}`, (val) => {
-          try {
-            if (val !== null) {
-              setLiveScoreData(val);
-              if (val) {
-                setLiveScoreData(val);
-              } else {
-                setLiveScoreData();
-              }
-            }
-          } catch (e) {
-            console.log(e);
-          }
-        });
+        // socketMicro.on(`liveScore${eventId}`, (val) => {
+        //   try {
+        //     if (val !== null) {
+        //       setLiveScoreData(val);
+        //       if (val) {
+        //         setLiveScoreData(val);
+        //       } else {
+        //         setLiveScoreData();
+        //       }
+        //     }
+        //   } catch (e) {
+        //     console.log(e);
+        //   }
+        // });
       } else {
         setMacthOddsLive([]);
         setBookmakerLive([]);
@@ -1412,6 +1415,27 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       console.log("Error:", e?.message);
     }
   };
+
+  useEffect(() => {
+    if (marketId) {
+      const fetchMatchScore = async () => {
+        try {
+          const { data } = await axios.get(
+            `${apiMatchScore}/score/getMatchScore/${marketId}`
+          );
+          setLiveScoreData(data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchMatchScore();
+
+      const intervalId = setInterval(fetchMatchScore, 300);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [marketId]);
 
   // useEffect(() => {
   //   const interval = setInterval(() => {
