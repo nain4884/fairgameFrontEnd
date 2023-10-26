@@ -48,7 +48,73 @@ const MatchComponent = ({ currentMatch, liveScoreData, submit }) => {
   }, [liveScoreData]);
 
   return (
-    <>{ReactHtmlParser(liveScoreData)}</>
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          height: 38,
+          flexDirection: "row",
+          width: "100%",
+          alignSelf: "center",
+        }}
+      >
+        <Box
+          sx={{
+            flex: 1,
+            background: "#f1c550",
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: { laptop: "13px", tablet: "10px", mobile: "10px" },
+              fontWeight: "bold",
+              marginLeft: "7px",
+            }}
+          >
+            Live Scoreboard
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            flex: 0.1,
+            background: "#262626",
+            // '#262626'
+          }}
+        >
+          <div className="slanted"></div>
+        </Box>
+
+        <Box
+          sx={{
+            flex: 1,
+            background: "#262626",
+            // '#262626' ,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <img
+            onClick={() => {
+              setVisible(!visible);
+            }}
+            src={ARROWUP}
+            style={{
+              transform: visible ? "rotate(180deg)" : "rotate(0deg)",
+              width: "15px",
+              height: "15px",
+              marginRight: "5px",
+              marginLeft: "5px",
+            }}
+          />
+        </Box>
+      </Box>
+      {visible && ReactHtmlParser(liveScoreData)}
+    </>
     // <Box
     //     sx={[
     //         {
