@@ -140,13 +140,13 @@ const EditAccount = () => {
     } else {
       setShowMatchCommision(false);
     }
-    setDetail({
-      ...Detail,
-      18: {
-        ...Detail[18],
-        val: null,
-      },
-    });
+    // setDetail({
+    //   ...Detail,
+    //   18: {
+    //     ...Detail[18],
+    //     val: null,
+    //   },
+    // });
   }, [Detail[17].val]);
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
@@ -544,6 +544,8 @@ const EditAccount = () => {
     //   // nextElement.current.focus();
     // }
   };
+
+  console.log("Detail[18].val", Detail[18].val)
 
   return (
     <>
@@ -1076,8 +1078,7 @@ const EditAccount = () => {
                     {Detail[17].val !== null && Detail[17].val !== "0.00" && (
                       <>
                         <DropDownSimple
-                          // openDrop={false}
-                          // defaultValue={"0.00"}
+                        //  openDrop={showMatchCommision}
                           dropStyle={{
                             filter:
                               "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
