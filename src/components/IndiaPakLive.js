@@ -1542,9 +1542,9 @@ const AddSession = ({
                       "return",
                       "esc",
                       // "*",
-                      // "plus",
+                      "plus",
                       // "=",
-                      // "minus",
+                      "minus",
                     ]}
                     isDisabled={false}
                     onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
