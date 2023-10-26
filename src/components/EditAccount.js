@@ -464,7 +464,12 @@ const EditAccount = () => {
         },
         17: {
           ...Detail[17],
-          val: data?.data?.matchTypeComission,
+          val:
+            data?.data?.matchTypeComission === "Total Loss"
+              ? "totalLoss"
+              : data?.data?.matchTypeComission === "Entry Wise"
+              ? "BetLoss"
+              : data?.data?.matchTypeComission,
         },
         18: {
           ...Detail[18],
@@ -544,8 +549,6 @@ const EditAccount = () => {
     //   // nextElement.current.focus();
     // }
   };
-
-  console.log("Detail[18].val", Detail[18].val)
 
   return (
     <>
@@ -1078,7 +1081,7 @@ const EditAccount = () => {
                     {Detail[17].val !== null && Detail[17].val !== "0.00" && (
                       <>
                         <DropDownSimple
-                        //  openDrop={showMatchCommision}
+                          //  openDrop={showMatchCommision}
                           dropStyle={{
                             filter:
                               "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
