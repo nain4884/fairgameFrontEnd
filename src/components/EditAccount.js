@@ -1,10 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Input from "./Input";
 import { EyeIcon, EyeSlash } from "../admin/assets";
 import DropDownSimple from "./DropdownSimple";
 import { useLocation, useNavigate } from "react-router-dom";
-import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 import Modal from "./Modal";
 import { setRole } from "../newStore";
 import { useSelector } from "react-redux";
@@ -35,13 +34,11 @@ var matchComissionArray = [];
 
 const EditAccount = () => {
   const formRef = useRef(null);
-  const okButtonRef = useRef(null);
   const { axios, locPath, JWT, roleName } = setRole();
   const navigate = useNavigate();
   const { userWallet, allRole } = useSelector((state) => state.auth);
   const [errorShow, setErrorShow] = useState("");
   const [successShow, setSuccessShow] = useState("");
-  const [locationPath, setLocationPath] = useState(locPath);
   const { state } = useLocation();
   const [myPartnershipsError, setMyPartnershipsError] = useState(false);
   const [Detail, setDetail] = useState({
@@ -84,9 +81,6 @@ const EditAccount = () => {
     17: { field: "matchTypeComission", val: false },
     18: { field: "matchComission", val: false },
   });
-  const [roles, setRoles] = useState(
-    allRole?.map((v) => ({ role: v.roleName, roleId: v.id }))
-  );
   const [userAlreadyExist, setUserAlredyExist] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -140,13 +134,6 @@ const EditAccount = () => {
     } else {
       setShowMatchCommision(false);
     }
-    // setDetail({
-    //   ...Detail,
-    //   18: {
-    //     ...Detail[18],
-    //     val: null,
-    //   },
-    // });
   }, [Detail[17].val]);
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
@@ -194,17 +181,6 @@ const EditAccount = () => {
       toast.error(e?.response?.data?.message);
       setErrorShow(e?.response?.data?.message);
     }
-  };
-
-  const setDownParterShipVal = (val1, val2) => {
-    let val3 = 100 - val1 - val2;
-    setDetail({
-      ...Detail,
-      12: {
-        ...Detail[12],
-        val: parseInt(val3),
-      },
-    });
   };
 
   async function getUserDetail() {
@@ -389,19 +365,6 @@ const EditAccount = () => {
       });
     }
   }
-  function CheckCreditRefernce({ place, val, val2, setError, error }) {
-    const regex1 = /^[0-9]+$/; // Only allows whole numbers (no decimal)
-    if (!regex1.test(val2) && place === 8) {
-      setError({
-        ...error,
-        [place]: {
-          ...Detail[place],
-          val: "Only allows whole numbers (no decimal)",
-        },
-      });
-      return false;
-    }
-  }
 
   const getUserDetailEdit = async (id) => {
     try {
@@ -480,57 +443,6 @@ const EditAccount = () => {
       console.error(e);
     }
   };
-  // useEffect(() => {
-  //   if (
-  //     [
-  //       "user",
-  //       "fairGameAdmin",
-  //       "admin",
-  //       "superAdmin",
-  //       "superMaster",
-  //       "master",
-  //     ].includes(Detail[9].val)
-  //   ) {
-  //     setDetail({
-  //       ...Detail,
-  //       12: {
-  //         ...Detail[12],
-  //         val: 100 - Detail[10].val,
-  //       },
-  //       11: {
-  //         ...Detail[11],
-  //         val: 0,
-  //       },
-  //     });
-  //     setError({
-  //       ...error,
-  //       11: {
-  //         ...error[11],
-  //         val: "",
-  //       },
-  //     });
-  //   }
-  //   if (["user"].includes(Detail[9].val)) {
-  //     setDetail({
-  //       ...Detail,
-  //       11: {
-  //         ...Detail[11],
-  //         val: 100 - Detail[10].val,
-  //       },
-  //       12: {
-  //         ...Detail[12],
-  //         val: 0,
-  //       },
-  //     });
-  //     setError({
-  //       ...error,
-  //       11: {
-  //         ...error[11],
-  //         val: "",
-  //       },
-  //     });
-  //   }
-  // }, [Detail[9].val]);
 
   useEffect(() => {
     try {
@@ -541,14 +453,6 @@ const EditAccount = () => {
       console.log(e);
     }
   }, [state?.id]);
-
-  const handleEnterKey = (e, nextElement) => {
-    // if (e.key === "Enter") {
-    //   console.log("Enter key pressed,:,", nextElement)
-    //   e.preventDefault();
-    //   // nextElement.current.focus();
-    // }
-  };
 
   return (
     <>
@@ -568,21 +472,6 @@ const EditAccount = () => {
           style={{ marginTop: "1%" }}
           onSubmit={(e) => {
             e?.preventDefault();
-            // function checkValues(data) {
-            //   for (const key in data) {
-            //     if (data.hasOwnProperty(key)) {
-            //       const value = data[key].val;
-            //       if (value !== "" && value !== false) {
-            //         return true;
-            //       }
-            //     }
-            //   }
-            //   return false;
-            // }
-            // if (checkValues(error)) {
-            //   toast.error("Fields Required");
-            //   return false;
-            // }
             editAccount();
           }}
         >
@@ -650,75 +539,6 @@ const EditAccount = () => {
                     </p>
                   )}
                 </div>
-                {/* <div style={{ order: 3 }}>
-                  <Input
-                    containerStyle={containerStyles}
-                    img={EyeIcon}
-                    img1={EyeSlash}
-                    titleStyle={titleStyles}
-                    inputStyle={imputStyle}
-                    inputContainerStyle={{
-                      ...inputContainerStyle,
-                      height: { laptop: "45px", mobile: "36px" },
-                    }}
-                    title={"User Password*"}
-                    placeholder={"Ex : Abc@12"}
-                    setDetail={setDetail}
-                    Detail={Detail}
-                    required={true}
-                    value={Detail[2]?.val}
-                    onKeyDown={(event) => {
-                      if (event.code === "Space") {
-                        event.preventDefault();
-                      }
-                    }}
-                    setError={setError}
-                    error={error}
-                    place={2}
-                    onFocusOut={doSendErrorForPassword}
-                    toFoucs={true}
-                    disabled={true}
-                  />{" "}
-                  {error[2].val && (
-                    <p className="validCommon" style={{ color: "#fa1e1e" }}>
-                      {error[2].val}
-                    </p>
-                  )}
-                </div> */}
-                {/** handleError={handleError} checkMesasge={true} */}
-                {/* <div style={{ order: 5 }}>
-                  <Input
-                    onKeyDown={(event) => {
-                      if (event.code === "Space") {
-                        event.preventDefault();
-                      }
-                    }}
-                    containerStyle={containerStyles}
-                    img={EyeIcon}
-                    img1={EyeSlash}
-                    titleStyle={titleStyles}
-                    inputStyle={imputStyle}
-                    inputContainerStyle={{
-                      ...inputContainerStyle,
-                      height: { laptop: "45px", mobile: "36px" },
-                    }}
-                    title={"Confirm User Password*"}
-                    placeholder={"Ex : Abc@12"}
-                    setDetail={setDetail}
-                    required={true}
-                    Detail={Detail}
-                    value={Detail[3]?.val}
-                    setError={setError}
-                    error={error}
-                    place={3}
-                    disabled={true}
-                  />
-                  {Detail[2]?.val !== Detail[3]?.val && (
-                    <p className="validCommon" style={{ color: "#fa1e1e" }}>
-                      Password Doesn't Match
-                    </p>
-                  )}
-                </div> */}
                 <div style={{ order: 2 }}>
                   <Input
                     containerStyle={containerStyles}
@@ -1331,4 +1151,4 @@ const EditAccount = () => {
   );
 };
 
-export default EditAccount;
+export default React.memo(EditAccount);
