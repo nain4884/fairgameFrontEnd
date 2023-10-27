@@ -937,7 +937,9 @@ const AddSession = ({
     event.preventDefault();
     let targetValue = parseFloat(event.target.value);
     event.target.value = targetValue;
-    if (key == "right") {
+    if(key == "minus" || key == "plus") {
+      return;
+    } else if (key == "right") {
       incGap.setIncGap(1);
       isPercent.setIsPercent("");
       handleSuspend();
@@ -1004,7 +1006,7 @@ const AddSession = ({
         isYesPercent: true,
       });
       let gap = +Detail?.Detail?.y_rate_percent - +incGap.incGap;
-      if (targetValue >= 0  && gap >=5) {
+      if (targetValue >= 0 && gap >= 5) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
             ...Detail.Detail,
@@ -1041,7 +1043,7 @@ const AddSession = ({
       });
 
       let gap = +Detail?.Detail?.n_rate_percent - +incGap.incGap;
-      if (targetValue >= 0 && gap >=5 ) {
+      if (targetValue >= 0 && gap >= 5) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
             ...Detail.Detail,
@@ -1375,7 +1377,7 @@ const AddSession = ({
           socket.emit("updateSessionRate", data);
         }
       }
-    } else {
+    }  else {
       if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
         let value = Detail?.Detail?.yes_rate
           ? Detail?.Detail?.yes_rate
