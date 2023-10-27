@@ -1003,7 +1003,8 @@ const AddSession = ({
         isNoPercent: true,
         isYesPercent: true,
       });
-      if (targetValue >= 0) {
+      let gap = +Detail?.Detail?.y_rate_percent - +incGap.incGap;
+      if (targetValue >= 0  && gap >=5) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
             ...Detail.Detail,
@@ -1038,7 +1039,9 @@ const AddSession = ({
         isNoPercent: true,
         isYesPercent: true,
       });
-      if (targetValue >= 0) {
+
+      let gap = +Detail?.Detail?.n_rate_percent - +incGap.incGap;
+      if (targetValue >= 0 && gap >=5 ) {
         if (isPercent.isPercent == "percent") {
           Detail.setDetail({
             ...Detail.Detail,
