@@ -650,7 +650,7 @@ const EditAccount = () => {
                     </p>
                   )}
                 </div>
-                <div style={{ order: 3 }}>
+                {/* <div style={{ order: 3 }}>
                   <Input
                     containerStyle={containerStyles}
                     img={EyeIcon}
@@ -684,9 +684,9 @@ const EditAccount = () => {
                       {error[2].val}
                     </p>
                   )}
-                </div>
+                </div> */}
                 {/** handleError={handleError} checkMesasge={true} */}
-                <div style={{ order: 5 }}>
+                {/* <div style={{ order: 5 }}>
                   <Input
                     onKeyDown={(event) => {
                       if (event.code === "Space") {
@@ -718,7 +718,7 @@ const EditAccount = () => {
                       Password Doesn't Match
                     </p>
                   )}
-                </div>
+                </div> */}
                 <div style={{ order: 2 }}>
                   <Input
                     containerStyle={containerStyles}
