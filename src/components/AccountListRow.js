@@ -14,7 +14,7 @@ import Modal from "./Modal";
 import ModalMUI from "@mui/material/Modal";
 import CommissionReportTable from "./CommissionReportTable";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AccountListRow = ({
   containerStyle,
@@ -36,6 +36,9 @@ const AccountListRow = ({
   const [selected, setSelected] = useState(null);
 
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  console.log("pathnamepathname", pathname.split("/")[1]);
 
   const { axios } = setRole();
   const { allRole } = useSelector((state) => state.auth);
@@ -213,7 +216,7 @@ const AccountListRow = ({
             <EditOutlinedIcon
               fontSize="medium"
               onClick={() => {
-                navigate(`/wallet/edit_account`, {
+                navigate(`/${pathname.split("/")[1]}/edit_account`, {
                   state: {
                     id: element?.id,
                   },

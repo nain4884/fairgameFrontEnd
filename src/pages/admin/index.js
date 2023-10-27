@@ -21,6 +21,7 @@ import ForgotPassword from "../ForgotPassword/index.js";
 import Verification from "../Varification/index.js";
 import NewPassword from "../NewPassword/index.js";
 import jwtDecode from "jwt-decode";
+import EditAccountScreen from "./EditAccountScreen.js";
 const MasterRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   useEffect(() => {
@@ -84,6 +85,15 @@ const MasterRoutes = () => {
           element={
             <AdminPrivateRoute>
               <AddAccount />
+            </AdminPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/edit_account"
+          element={
+            <AdminPrivateRoute>
+              <EditAccountScreen />
             </AdminPrivateRoute>
           }
         />

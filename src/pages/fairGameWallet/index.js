@@ -22,6 +22,7 @@ import ForgotPassword from "../ForgotPassword";
 import Verification from "../Varification";
 import NewPassword from "../NewPassword";
 import jwtDecode from "jwt-decode";
+import EditAccountScreen from "../admin/EditAccountScreen";
 const FairGameWalletRoutes = () => {
   const { tokenAdmin } = useContext(AuthContext);
   useEffect(() => {
@@ -78,6 +79,7 @@ const FairGameWalletRoutes = () => {
         <Route exact path="/general_report" element={<GeneralReport />} />
         <Route exact path="/profit_loss" element={<ProfitLoss />} />
         <Route exact path="/add_account" element={<AddAccountScreen />} />
+        <Route exact path="/edit_account" element={<EditAccountScreen />} />
         <Route exact path="/current_bet" element={<CurrentBets />} />
         <Route exact path="/reports" element={<Reports />} />
         <Route exact path="/game_report" element={<Reports />} />

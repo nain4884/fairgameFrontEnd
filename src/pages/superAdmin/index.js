@@ -17,6 +17,7 @@ import DepositWallet from "../../components/DepositWallet";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../../Authprovider";
 import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
+import EditAccountScreen from "../admin/EditAccountScreen";
 const FairGameWalletRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   useEffect(() => {
@@ -40,6 +41,7 @@ const FairGameWalletRoutes = () => {
         <Route exact path="/general_report" element={<GeneralReport />} />
         <Route exact path="/profit_loss" element={<ProfitLoss />} />
         <Route exact path="/add_account" element={<AddAccountScreen />} />
+        <Route exact path="/edit_account" element={<EditAccountScreen />} />
         <Route exact path="/current_bet" element={<CurrentBets />} />
         <Route exact path="/reports" element={<Reports />} />
         <Route exact path="/game_report" element={<Reports />} />

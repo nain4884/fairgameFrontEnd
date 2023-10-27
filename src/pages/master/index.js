@@ -26,6 +26,7 @@ import PageNotFound from "../../components/PageNotFound";
 import { HomeSlide } from "../../components";
 import AdminInPlay from "../../components/AdminInplay";
 import EmptyComponent from "../../components/EmptyComponent";
+import EditAccountScreen from "../admin/EditAccountScreen";
 const MasterRoutes = () => {
   const location = useLocation();
 
@@ -124,6 +125,15 @@ const MasterRoutes = () => {
           element={
             <MasterPrivateRoute>
               <AddAccountScreen />
+            </MasterPrivateRoute>
+          }
+        />
+        <Route
+          exact
+          path="/edit_account"
+          element={
+            <MasterPrivateRoute>
+              <EditAccountScreen />
             </MasterPrivateRoute>
           }
         />
