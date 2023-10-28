@@ -116,72 +116,6 @@ export default function Login(props) {
     }
   }, [eConfirmAuth]);
 
-  // useEffect(() => {
-  //   let checkLocalStorage;
-  //   let checkSessionStorage;
-  //   const mobileDevice =
-  //     navigator.userAgent.match(/Android/i) ||
-  //     navigator.userAgent.match(/webOS/i) ||
-  //     navigator.userAgent.match(/iPhone/i) ||
-  //     navigator.userAgent.match(/iPad/i) ||
-  //     navigator.userAgent.match(/iPod/i) ||
-  //     navigator.userAgent.match(/BlackBerry/i) ||
-  //     navigator.userAgent.match(/Windows Phone/i);
-
-  //   if (mobileDevice) {
-  //     if (location.pathname.split("/")[1] === "admin") {
-  //       checkLocalStorage = localStorage.getItem("role1");
-  //       checkSessionStorage = sessionStorage.getItem("JWTadmin");
-  //       if (checkSessionStorage === null && checkLocalStorage !== null) {
-  //         localStorage.removeItem("role1", "role1");
-  //       }
-  //     }
-  //     if (location.pathname.split("/")[1] === "wallet") {
-  //       checkLocalStorage = localStorage.getItem("role2");
-  //       checkSessionStorage = sessionStorage.getItem("JWTwallet");
-  //       if (checkSessionStorage === null && checkLocalStorage !== null) {
-  //         localStorage.removeItem("role2", "role2");
-  //       }
-  //     }
-
-  //     if (location.pathname.split("/")[1] === "expert") {
-  //       let checkLoStorage = localStorage.getItem("role3");
-  //       let checkSeStorage = sessionStorage.getItem("JWTexpert");
-  //       if (checkSeStorage === null && checkLoStorage !== null) {
-  //         localStorage.removeItem("role3", "role3");
-  //       }
-  //     }
-  //   }
-  //   if (location.pathname.split("/")[1] === "admin") {
-  //     checkLocalStorage = localStorage.getItem("role1");
-  //     checkSessionStorage = sessionStorage.getItem("JWTadmin");
-  //     if (checkSessionStorage && checkLocalStorage === null) {
-  //       localStorage.setItem("role1", "role1");
-  //     }
-  //   }
-  //   if (location.pathname.split("/")[1] === "wallet") {
-  //     checkLocalStorage = localStorage.getItem("role2");
-  //     checkSessionStorage = sessionStorage.getItem("JWTwallet");
-  //     if (checkSessionStorage && checkLocalStorage === null) {
-  //       localStorage.setItem("role2", "role2");
-  //     }
-  //   }
-
-  //   if (location.pathname.split("/")[1] === "expert") {
-  //     let checkLoStorage = localStorage.getItem("role3");
-  //     let checkSeStorage = sessionStorage.getItem("JWTexpert");
-  //     if (checkSeStorage && checkLoStorage === null) {
-  //       localStorage.setItem("role3", "role3");
-  //     }
-  //     if (checkSeStorage && checkLoStorage) {
-  //       navigate(`/${location.pathname.split("/")[1]}/match`);
-  //     }
-  //   }
-  //   if (checkLocalStorage && checkSessionStorage) {
-  //     navigate(`/${location.pathname.split("/")[1]}/list_of_clients`);
-  //   }
-  // }, [location.pathname.split("/")[1], localStorage]);
-
   const getLocalToken = (val) => {
     if (
       ["admin", "master", "superAdmin", "supperMaster"].some((v) =>
@@ -367,9 +301,7 @@ export default function Login(props) {
         if (data.message === "User login successfully.") {
           removeSocket();
           setLoading(false);
-          dispatch(
-            setUpdatedTransPasswords(data.data.isTransPasswordCreated)
-          );
+          dispatch(setUpdatedTransPasswords(data.data.isTransPasswordCreated));
 
           dispatch(signIn(data.data));
           setRole(data.data.access_token);
@@ -619,36 +551,6 @@ export default function Login(props) {
                 {error[2].val && (
                   <p style={{ color: "#fa1e1e" }}>Field Required</p>
                 )}
-                {/* <Typography
-              onClick={() => {
-                navigate("/forget_password");
-              }}
-              sx={{
-                color: theme.palette.button.main,
-                fontSize: { laptop: "10px", mobile: "12px" },
-                textAlign: "right",
-                marginRight: "10px",
-                marginTop: ".5em",
-                fontWeight: "600",
-              }}
-            >
-              Forgot Password?
-            </Typography> */}
-                {/* <ReCAPTCHACustom
-                  containerStyle={{
-                    marginTop: "20px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                  }}
-                  onSubmitWithReCAPTCHA={(token) => {
-                    console.log(token, "token");
-                    setRecaptchToken(token);
-                    // apply to form data
-                  }}
-                /> */}
-
                 <Box
                   sx={{
                     display: "flex",
@@ -686,18 +588,6 @@ export default function Login(props) {
                       "Login"
                     )}
                   </Button>
-                  {/* <CustomButton
-                onClick={() => {
-                  if (!loading) {
-                    loginToAccount();
-                  } else {
-                    return false;
-                  }
-                }}
-                loading={loading}
-                buttonStyle={{ background: theme.palette.button.main }}
-                title="Login"
-              /> */}
                 </Box>
                 {loginError !== "" && (
                   <Alert severity="warning">{loginError}</Alert>
@@ -705,7 +595,10 @@ export default function Login(props) {
               </Box>
             </form>
           ) : (
-            <ChangePassword changePassword={changePassword} setRecaptchToken={setRecaptchToken} />
+            <ChangePassword
+              changePassword={changePassword}
+              setRecaptchToken={setRecaptchToken}
+            />
           )}
         </Box>
       </Box>
