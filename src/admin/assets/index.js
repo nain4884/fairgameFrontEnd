@@ -1,7 +1,7 @@
 export { default as ARROWUP } from './arrowUp.png'
 export { default as ARROWDOWN } from './arrowDown.png'
 export { default as ARROWUPPROFIT } from './arrowUp.png'
-export { default as BACKIMAGE } from '../../expert/assets/back.png'
+export { default as BACKIMAGE } from '../../expert/assets/back.webp'
 export { default as LOCKOPEN } from './lockopen.png'
 export { default as LOCKED } from './locked.png'
 export { default as EYE } from './eye.png'

@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setDailogData } from "../../store/dailogModal";
-import Back from '../../expert/assets/back.png'
+import Back from '../../expert/assets/back.webp'
 
 export default function Live() {
     const childRef = useRef(null);
