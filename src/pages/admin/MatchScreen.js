@@ -6,28 +6,18 @@ import React, {
   useEffect,
 } from "react";
 import { useTheme } from "@emotion/react";
-import { Typography, useMediaQuery, Box, Menu, MenuItem } from "@mui/material";
-import {
-  BallStart,
-  Header,
-  INDIA,
-  Info,
-  Lock,
-  Logout,
-  PAKISTAN,
-  TIME,
-  UD,
-} from "../../assets/index";
+import { Typography, useMediaQuery, Box, Menu } from "@mui/material";
+import { BallStart, Lock, TIME, UD } from "../../assets/index";
 import "../../components/index.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setColorValue } from "../../store/selectedColorBox";
 import { StyledImage } from "../../components";
 import { Popover } from "react-tiny-popover";
-import { BACKIMAGE, LOCKED, LOCKOPEN } from "../../admin/assets";
+import { LOCKED, LOCKOPEN } from "../../admin/assets";
 import LiveMatchComponent from "../../components/LiveMatchComponent";
 import LiveMatchAdmin from "../../components/LiveMatchAdmin";
 import AllBets from "../../components/AllBets";
-import { Background, Header as CHeader } from "../../components/index";
+import { Background } from "../../components/index";
 import UnlockComponent from "../../components/UnlockComponent";
 import { useLocation } from "react-router-dom";
 import { setRole } from "../../newStore";
@@ -46,7 +36,6 @@ import MatchComponent from "../../components/MathComponent";
 import Axios from "axios";
 
 let matchOddsCount = 0;
-let sessionOffline = [];
 const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));

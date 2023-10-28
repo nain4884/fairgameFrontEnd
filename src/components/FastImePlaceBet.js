@@ -1,9 +1,8 @@
-import { TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Typography, useMediaQuery, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import "../components/index.css";
-import { toast } from "react-toastify";
 import { currencyFormatter } from "./helper/helper";
 import { setRole } from "../newStore";
 import NotificationModal from "./NotificationModal";
@@ -130,39 +129,39 @@ const FastTimePlaceBet = ({
     }
   };
 
-  const handleChange = (e) => {
-    const value = e.target.value.trim();
+  // const handleChange = (e) => {
+  //   const value = e.target.value.trim();
 
-    if (value === "") {
-      if (session === "sessionOdds") {
-        setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
-      } else if (session === "manualBookMaker") {
-        setFastAmount((prev) => ({ ...prev, [typeOfBet]: 0 }));
-      } else if (session === "bookmaker") {
-        setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
-      }
-    } else {
-      if (Number(value) <= 500000) {
-        if (session === "sessionOdds") {
-          setFastAmount((prev) => ({ ...prev, sessionOdds: Number(value) }));
-        } else if (session === "manualBookMaker") {
-          setFastAmount((prev) => ({
-            ...prev,
-            [typeOfBet]: Number(value),
-          }));
-        } else if (session === "bookmaker") {
-          setFastAmount((prev) => ({ ...prev, bookMaker: Number(value) }));
-        }
-      } else {
-        toast.warning(
-          `Value must be between less then 500000
-          `
-        );
-      }
-    }
-  };
+  //   if (value === "") {
+  //     if (session === "sessionOdds") {
+  //       setFastAmount((prev) => ({ ...prev, sessionOdds: 0 }));
+  //     } else if (session === "manualBookMaker") {
+  //       setFastAmount((prev) => ({ ...prev, [typeOfBet]: 0 }));
+  //     } else if (session === "bookmaker") {
+  //       setFastAmount((prev) => ({ ...prev, bookMaker: 0 }));
+  //     }
+  //   } else {
+  //     if (Number(value) <= 500000) {
+  //       if (session === "sessionOdds") {
+  //         setFastAmount((prev) => ({ ...prev, sessionOdds: Number(value) }));
+  //       } else if (session === "manualBookMaker") {
+  //         setFastAmount((prev) => ({
+  //           ...prev,
+  //           [typeOfBet]: Number(value),
+  //         }));
+  //       } else if (session === "bookmaker") {
+  //         setFastAmount((prev) => ({ ...prev, bookMaker: Number(value) }));
+  //       }
+  //     } else {
+  //       toast.warning(
+  //         `Value must be between less then 500000
+  //         `
+  //       );
+  //     }
+  //   }
+  // };
 
-  console.log("matchOddsData", matchOddsData?.isSingle);
+  // console.log("matchOddsData", matchOddsData?.isSingle);
 
   return (
     <>

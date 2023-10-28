@@ -1,15 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Divider from "../../../components/helper/Divider";
 import { Box, Typography } from "@mui/material";
 import Stop from "../Stop";
 import { useState } from "react";
-import { useTheme } from "@emotion/react";
 import SessionMarketBox from "./SessionMarketBox";
 import { memo } from "react";
 import { toast } from "react-toastify";
 import { setRole } from "../../../newStore";
 import { ARROWUP } from "../../../assets";
-import { customSort } from "../../../components/helper/util";
 const SessionMarket = ({
   currentMatch,
   liveOnly,
@@ -24,7 +22,6 @@ const SessionMarket = ({
   setData,
   setLocalSessionExpertOdds,
 }) => {
-  const theme = useTheme();
   const [stop, setStop] = useState(true);
   const { axios } = setRole();
 
@@ -35,8 +32,8 @@ const SessionMarket = ({
       const { data } = await axios.post("game-match/stopAllSession", {
         matchId: currentMatch?.id,
       });
+      console.log("data", data);
       setStop(false);
-
     } catch (err) {
       toast.error(err.response.data.message);
       console.log(err?.message);
@@ -83,7 +80,7 @@ const SessionMarket = ({
               marginLeft: "7px",
             }}
           >
-            {title} 
+            {title}
           </Typography>
           {!stopAllHide && (
             <Stop
@@ -118,6 +115,7 @@ const SessionMarket = ({
               setVisible(!visible);
             }}
             src={ARROWUP}
+            alt={"Up Arrow"}
             style={{
               transform: visible ? "rotate(180deg)" : "rotate(0deg)",
               width: "15px",

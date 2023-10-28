@@ -1,9 +1,6 @@
 import {
-  Card,
-  Typography,
   Box,
   useTheme,
-  useMediaQuery,
   Dialog,
   DialogTitle,
   DialogActions,
@@ -14,9 +11,8 @@ import {
 import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { eye, eyeLock, mail } from "../../assets";
-import { Input, CustomButton, AuthLogo } from "../../components";
+import { Input, AuthLogo } from "../../components";
 import AuthBackground from "../../components/AuthBackground";
-import { ReCAPTCHACustom } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { GlobalStore } from "../../context/globalStore";
 import { setRole } from "../../newStore";
@@ -38,7 +34,6 @@ import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
-  setConfirmAuth,
 } from "../../newStore/reducers/matchDetails";
 
 var newtoken = "";

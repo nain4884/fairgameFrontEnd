@@ -1,14 +1,10 @@
 import { Box, TextField, Typography } from "@mui/material";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { CancelDark } from "../assets";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
 import { memo } from "react";
 import SessionResultCustomButton from "./SessionResultCustomButton";
-import { SocketContext } from "..//context/socketContext";
-import useOuterClick from "./helper/userOuterClick";
-import { setSelectedMatch } from "../newStore/reducers/matchDetails";
-import { useDispatch } from "react-redux";
 
 const CustomSessionResult = ({
   onClick,
@@ -18,8 +14,6 @@ const CustomSessionResult = ({
   currentMatch,
   setIObtes,
 }) => {
-  const { socket, socketMicro } = useContext(SocketContext);
-  const dispatch = useDispatch();
   const [selected, setSelected] = useState("");
   const { axios } = setRole();
   const [loading, setLoading] = useState({ id: "", value: false });
@@ -333,7 +327,7 @@ const CustomSessionResult = ({
           e.stopPropagation();
           onClick();
         }}
-        src={CancelDark}
+        src={CancelDark} alt="Cancel"
         style={{ width: "25px", height: "25px", cursor: "pointer" }}
       />
     </Box>

@@ -1,9 +1,6 @@
 import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
-import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import moment from "moment";
+import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { CalendarImage } from "../admin/assets";
 import CustomButton from "../admin/components/CustomButton";
 import { toast } from "react-toastify";
 import Calendar from "./Calendar";

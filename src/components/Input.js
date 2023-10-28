@@ -1,18 +1,10 @@
-import {
-  TextField,
-  Typography,
-  useTheme,
-  useMediaQuery,
-  createStyles,
-  withStyles,
-} from "@mui/material";
+import { TextField, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import {
   onChangeKeyCheck,
   onChangeKeyCheckNumber,
 } from "./helper/PassKeyCheck";
-import { toast } from "react-toastify";
 import { debounce } from "lodash";
 
 const Input = ({

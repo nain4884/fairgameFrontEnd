@@ -9,7 +9,6 @@ import { Background, DailogModal } from "../../components/index";
 import { useLocation, useNavigate } from "react-router-dom";
 import FullAllBets from "../../components/FullAllBets";
 import AddNotificationModal from "../../components/AddNotificationModal";
-import { setDailogData } from "../../store/dailogModal";
 import Odds from "./matches/Odds";
 import SessionMarket from "./matches/SessionMarket";
 import BookMarketer from "./matches/BookMaketer";
@@ -18,7 +17,6 @@ import { setRole } from "../../newStore";
 import {
   setAllBetRate,
   setManualBookmaker,
-  setQuickBookmaker,
   setQuickSession,
   setRefreshForBets,
   setSelectedMatch,
@@ -26,18 +24,14 @@ import {
 } from "../../newStore/reducers/matchDetails";
 import { SocketContext } from "../../context/socketContext";
 import CustomLoader from "../../components/helper/CustomLoader";
-import { removeSocket } from "../../components/helper/removeSocket";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 import { setAllSessionBets } from "../../newStore/reducers/matchDetails";
 import { GlobalStore } from "../../context/globalStore";
-import { logout } from "../../newStore/reducers/auth";
 import UserProfitLoss from "./matches/UserProfitLoss";
 import _ from "lodash";
 
 let matchOddsCount = 0;
 const DeleteBet = ({}) => {
   const dispatch = useDispatch();
-  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const { socket, socketMicro } = useContext(SocketContext);
@@ -72,7 +66,6 @@ const DeleteBet = ({}) => {
   const [sessionBets, setSessionBets] = useState([]);
   const [matchDetail, setMatchDetail] = useState();
   const [sessionLock, setSessionLock] = useState(false);
-  const [isHandled, setIsHandled] = useState(false);
   const [currentOdds, setCurrentOdds] = useState(null);
   const [loading, setLoading] = useState(false);
   const [popData, setPopData] = useState("");

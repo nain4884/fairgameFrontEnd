@@ -23,26 +23,16 @@ import BookMarketer from "./BookMarketer";
 import SessionMarket from "./SessionMarket/SessionMarket";
 import RunsBox from "./RunsBox";
 import MatchOdds from "./MatchOdds/MatchOdds";
-import {
-  removeCurrentUser,
-  setCurrentUser,
-} from "../../newStore/reducers/currentUser";
-import { logout } from "../../newStore/reducers/auth";
-import { removeSocket } from "../../components/helper/removeSocket";
-import { GlobalStore } from "../../context/globalStore";
 import SessionMarketLive from "../expert/SessionMarket/LiveSessionMarket/SessionMarketLive";
 import CustomLoader from "../../components/helper/CustomLoader";
 import {
-  setActiveUsers,
   setAllBetRate,
   setSessionExpertOdds,
 } from "../../newStore/reducers/expertMatchDetails";
-import { setSelected } from "../../store/activeUser";
 import { customSort } from "../../components/helper/util";
 import _ from "lodash";
 let matchOddsCount = 0;
 let marketId = "";
-let profitLoss;
 const MatchScreen = () => {
   const [data, setData] = useState([]);
   const { socket, socketMicro } = useContext(SocketContext);
@@ -59,10 +49,7 @@ const MatchScreen = () => {
   const [matchOddsLive, setMatchOddsLive] = useState([]);
   const [localState, setLocalState] = useState(null);
   const [liveData, setLiveData] = useState([]);
-  const { currentUser } = useSelector((state) => state?.currentUser);
   const [currentOdds, setCurrentOdds] = useState(null);
-  const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const [matchLiveSession, setMatchLiveSession] = useState([]);
   const [localSessionExpertOdds, setLocalSessionExpertOdds] = useState([]);
 
   const { selectedMatch, refreshForBets } = useSelector(

@@ -8,7 +8,6 @@ import { ARROWDOWN, ARROWUP } from "../expert/assets";
 import SessionBetSeperate from "./sessionBetSeperate";
 import ChildUserList from "./ChildUserList";
 import { useState } from "react";
-import { useEffect } from "react";
 import { setRole } from "../newStore";
 import AllRateSeperate from "./AllRateSeperate";
 import ModalMUI from "@mui/material/Modal";

@@ -36,7 +36,7 @@ const ManualBoxComponent = ({
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const { ex, status } = data ?? {};
+  const { status } = data ?? {};
   useEffect(() => {
     if (livestatus || status !== "ACTIVE" || showBox) {
       setPlaceBetData(null);

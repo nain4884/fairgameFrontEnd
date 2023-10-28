@@ -8,9 +8,6 @@ import { SocketContext } from "../../context/socketContext";
 import Axios from "axios";
 import { formatNumber } from "../helper/helper";
 import moment from "moment-timezone";
-import { useDispatch, useSelector } from "react-redux";
-import { GlobalStore } from "../../context/globalStore";
-import { setRole } from "../../newStore";
 let matchOddsCount = 0;
 const Odds = ({ onClick, top, blur, match }) => {
   const theme = useTheme();

@@ -1,26 +1,17 @@
 import { Box, Pagination, Typography } from "@mui/material";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ARROWUP, BACKIMAGE, CHECK } from "../admin/assets/index";
-import StyledImage from "./StyledImage";
 import constants from "./helper/constants";
 import { setRole } from "../newStore";
 import { toast } from "react-toastify";
 import LiveMarketComponent from "./LiveMarketComponent";
 import CustomBox from "./CustomBox";
 import CustomLoader from "./helper/CustomLoader";
-import { SocketContext } from "../context/socketContext";
-import { removeSocket } from "../components/helper/removeSocket";
-import { removeCurrentUser } from "../newStore/reducers/currentUser";
-import { removeManualBookMarkerRates, setUserAllMatches } from "../newStore/reducers/matchDetails";
+import { setUserAllMatches } from "../newStore/reducers/matchDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { GlobalStore } from "../context/globalStore";
-import { logout } from "../newStore/reducers/auth";
 
 const MarketAnalysis = () => {
-  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const dispatch = useDispatch();
-  const { socket } = useContext(SocketContext);
   const { pathname } = useLocation();
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState([]);
@@ -31,7 +22,7 @@ const MarketAnalysis = () => {
   const [marketIds, setMarketIds] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(constants.pageLimit);
+  const [pageLimit] = useState(constants.pageLimit);
   const { userAllMatches } = useSelector((state) => state?.matchDetails);
 
   const navigate = useNavigate();

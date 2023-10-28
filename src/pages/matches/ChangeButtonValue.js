@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { Box, Typography, TextField, CircularProgress } from "@mui/material";
-import { Background } from "../../components";
-import EventListing from "../../components/EventListing";
 import { toast } from "react-toastify";
 import { setRole } from "../../newStore";
 
@@ -159,7 +157,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
     if (newValue !== "" && newValue <= 0) {
       return;
     }
-    if (type == "label") {
+    if (type === "label") {
       setValueLabel((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index].lable = newValue;
@@ -178,7 +176,7 @@ const ChangeButtonValue = ({ selected, visible }) => {
     if (newValue !== "" && newValue <= 0) {
       return;
     }
-    if (type == "label") {
+    if (type === "label") {
       setValueLabel1((prevValues) => {
         const updatedValues = [...prevValues];
         updatedValues[index].lable = newValue;
