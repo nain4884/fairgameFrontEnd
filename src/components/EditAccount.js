@@ -555,6 +555,7 @@ const EditAccount = () => {
                     setError={setError}
                     error={error}
                     place={4}
+                    disabled={true}
                   />
                 </div>
                 <div style={{ order: 4 }}>
@@ -574,6 +575,7 @@ const EditAccount = () => {
                     error={error}
                     value={Detail[5]?.val}
                     place={5}
+                    disabled={true}
                   />
                 </div>
                 <div style={{ order: 6 }}>
@@ -594,6 +596,7 @@ const EditAccount = () => {
                     value={Detail[6]?.val}
                     place={6}
                     type={"Number"}
+                    disabled={true}
                   />
                 </div>
               </Box>
@@ -1030,6 +1033,7 @@ const EditAccount = () => {
                   error={error}
                   value={Detail[13]?.val}
                   place={13}
+                  disabled={true}
                 />
                 <div>
                   <Input
