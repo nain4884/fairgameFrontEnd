@@ -7,7 +7,6 @@ import {
   MenuItem,
   Drawer,
   AppBar,
-  Toolbar,
 } from "@mui/material";
 import React, {
   useCallback,
@@ -21,10 +20,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowDown, Draw, logo, Logout, Money, MoneyBag } from "../../assets";
 import SearchInput from "../../components/SearchInput";
 import SessionTimeOut from "../../components/SessionTimeOut";
-import SideBar from "../../components/SideBar";
 import StyledImage from "../../components/StyledImage";
-import { stateActions } from "../../store/stateActions";
-import { ARROWDROPDOWN, Down, DropDown } from "../assets";
+import { Down } from "../assets";
 import { setActiveAdmin } from "../../store/admin";
 import SideBarAdmin from "./SideBarAdmin";
 import { logout } from "../../newStore/reducers/auth";
@@ -49,7 +46,7 @@ const CustomHeader = ({}) => {
   const [anchor, setAnchor] = React.useState(null);
   const [balance, setBalance] = useState(currentUser?.current_balance);
   const [fullName, setFullName] = useState(currentUser?.userName);
-  const { axios, JWT } = setRole();
+  const { axios } = setRole();
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");

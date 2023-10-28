@@ -1,41 +1,22 @@
-import { memo, useContext, useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import ListH from "./ListH";
 import ListHeaderT from "./ListHeaderT";
 import Row from "./Row";
 import { Box, Pagination } from "@mui/material";
 import { setRole } from "../../newStore";
 import constants from "../../components/helper/constants";
-import { SocketContext } from "../../context/socketContext";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setAllEventSession,
-  setAllMatchs,
-} from "../../newStore/reducers/expertMatchDetails";
-import {
-  removeManualBookMarkerRates,
-  removeSelectedMatch,
-  setAllMatches,
-  setUserAllMatches,
-} from "../../newStore/reducers/matchDetails";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
-import { logout } from "../../newStore/reducers/auth";
-import { GlobalStore } from "../../context/globalStore";
-import { removeSocket } from "../../components/helper/removeSocket";
-import { useNavigate } from "react-router-dom";
+import { setUserAllMatches } from "../../newStore/reducers/matchDetails";
 import CustomLoader from "../../components/helper/CustomLoader";
 
 const MatchListComp = () => {
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
-  const { socket, socketMicro } = useContext(SocketContext);
+  const [pageLimit] = useState(constants.customPageLimit);
   const dispatch = useDispatch();
   const { userAllMatches } = useSelector((state) => state?.matchDetails);
-  const { allEventSession } = useSelector((state) => state?.expertMatchDetails);
-  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const [loading, setLoading] = useState(true);
   const { axios } = setRole();
-  const navigate = useNavigate();
   const [allMatch, setAllMatch] = useState(userAllMatches);
 
   useEffect(() => {
@@ -81,60 +62,7 @@ const MatchListComp = () => {
   function callPage(e, value) {
     setCurrentPage(parseInt(value));
   }
-  // useEffect(() => {
-  //   if (socket && socket.connected) {
-  //     socket.onevent = async (packet) => {
-  //       if (packet.data[0] === "logoutUserForce") {
-  //         dispatch(removeManualBookMarkerRates());
-  //         dispatch(removeCurrentUser());
-  //         dispatch(logout({ roleType: "role3" }));
-  //         dispatch(removeSelectedMatch());
-  //         setGlobalStore((prev) => ({
-  //           ...prev,
-  //           expertJWT: "",
-  //           // isSession: true,
-  //         }));
-  //         // await axios.get("auth/logout");
-  //         removeSocket();
-  //         navigate("/expert");
-  //         socketMicro.disconnect();
-  //         socket.disconnect();
-  //       }
 
-  //       if (packet.data[0] === "newMatchAdded") {
-  //         getAllMatch();
-  //       }
-  //       if (packet.data[0] === "resultDeclareForBet") {
-  //         getAllMatch();
-  //       }
-  //       if (packet.data[0] === "newBetAdded") {
-  //         const value = packet.data[1];
-  //         try {
-  //           const updatedAllEventSession = allEventSession.map(
-  //             (currentMatch) => {
-  //               if (currentMatch.id === value?.match_id) {
-  //                 const betObj = {
-  //                   id: value.id,
-  //                   bet_condition: value.bet_condition,
-  //                 };
-  //                 const newBettings = [...currentMatch.bettings, betObj];
-  //                 return {
-  //                   ...currentMatch,
-  //                   bettings: newBettings,
-  //                 };
-  //               }
-  //               return currentMatch;
-  //             }
-  //           );
-  //           dispatch(setAllEventSession(updatedAllEventSession));
-  //         } catch (err) {
-  //           console.log(err?.message);
-  //         }
-  //       }
-  //     };
-  //   }
-  // }, [socket]);
-  // const currentElements = allMatch;
   return (
     <>
       {loading ? (
@@ -175,7 +103,6 @@ const MatchListComp = () => {
                     background: (i + 1) % 2 === 0 ? "#ECECEC" : "",
                   }}
                   data={element}
-  
                 />
               );
             })}

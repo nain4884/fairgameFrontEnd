@@ -32,18 +32,18 @@ import ModalMUI from "@mui/material/Modal";
 import MobileViewUserDetails from "./MobileViewUserDetails";
 import BoxButton from "./BoxButton";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "35vw",
-  minWidth: "500px",
-  overflow: "hidden",
-  background: "white",
-  border: "2px solid white",
-  borderRadius: "10px",
-};
+// const style = {
+//   position: "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: "35vw",
+//   minWidth: "500px",
+//   overflow: "hidden",
+//   background: "white",
+//   border: "2px solid white",
+//   borderRadius: "10px",
+// };
 
 export default function UserDetailModal({
   setShowUserModal,
@@ -61,7 +61,6 @@ export default function UserDetailModal({
   setSelected,
   element,
 }) {
-  const isModalOpen = useSelector((state) => state.userdetail)?.isModalOpen;
   const { axios } = setRole();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -698,9 +697,6 @@ const DepositComponent = ({
   };
   const [loading, setLoading] = useState(false);
   const [depositObj, setDepositObj] = useState(defaultDepositObj);
-  const activeWalletAmount = useSelector(
-    (state) => state?.rootReducer?.user?.amount
-  );
 
   const calculatePercentProfitLoss = (val, e) => {
     const rateToCalculatePercentage = val.rateToCalculatePercentage;
@@ -749,10 +745,10 @@ const DepositComponent = ({
 
       setInitialBalance(newUserbalance?.current_balance);
     } else {
-      const newUserbalance = {
-        ...currentUser,
-        current_balance: initialBalance,
-      };
+      // const newUserbalance = {
+      //   ...currentUser,
+      //   current_balance: initialBalance,
+      // };
 
       setTimeout(() => {
         // dispatch(setCurrentUser(newUserbalance));
@@ -1139,7 +1135,6 @@ const DepositComponent = ({
                     backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
                   display: "flex",
                   alignItems: "center",
-                  borderRadius: "5px",
                   border: "2px solid #26262633",
                   minHeight: "80px",
                   maxHeight: "115px",
@@ -1341,9 +1336,6 @@ const WithDrawComponent = ({
   const [initialBalance, setInitialBalance] = useState(
     currentUser?.current_balance
   );
-  const activeWalletAmount = useSelector(
-    (state) => state?.rootReducer?.user?.amount
-  );
   const defaultWithDrawObj = {
     userId: "",
     amount: "",
@@ -1398,10 +1390,10 @@ const WithDrawComponent = ({
 
       setInitialBalance(newUserbalance?.current_balance);
     } else {
-      const newUserbalance = {
-        ...currentUser,
-        current_balance: initialBalance,
-      };
+      // const newUserbalance = {
+      //   ...currentUser,
+      //   current_balance: initialBalance,
+      // };
 
       setTimeout(() => {
         setInitialBalance(currentUser?.current_balance);
@@ -1781,7 +1773,6 @@ const WithDrawComponent = ({
 
               <Box
                 sx={{
-                  borderRadius: "5px",
                   flex: 1,
                   background:
                     backgroundColor == "#ECECEC" ? "#ECECEC" : "#FFECBC",
@@ -1989,23 +1980,23 @@ const NewCreditComponent = ({
     remark: "",
   };
   const [newCreditObj, setNewCreditObj] = useState(defaultNewCreditObj);
-  const calculatePercentProfitLoss = (val, e) => {
-    const rateToCalculatePercentage = val.rateToCalculatePercentage;
-    const inputValue = Number(
-      isNaN(Number(e.target.value)) ? 0 : e.target.value
-    );
-    const profitLoss = val.profit_loss;
+  // const calculatePercentProfitLoss = (val, e) => {
+  //   const rateToCalculatePercentage = val.rateToCalculatePercentage;
+  //   const inputValue = Number(
+  //     isNaN(Number(e.target.value)) ? 0 : e.target.value
+  //   );
+  //   const profitLoss = val.profit_loss;
 
-    let percent_profit_loss;
+  //   let percent_profit_loss;
 
-    if (rateToCalculatePercentage === 0) {
-      percent_profit_loss = profitLoss;
-    } else {
-      const newVal = profitLoss - inputValue;
-      percent_profit_loss = newVal * (rateToCalculatePercentage / 100);
-    }
-    return percent_profit_loss.toFixed(2);
-  };
+  //   if (rateToCalculatePercentage === 0) {
+  //     percent_profit_loss = profitLoss;
+  //   } else {
+  //     const newVal = profitLoss - inputValue;
+  //     percent_profit_loss = newVal * (rateToCalculatePercentage / 100);
+  //   }
+  //   return percent_profit_loss.toFixed(2);
+  // };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -2159,7 +2150,6 @@ const NewCreditComponent = ({
             </Typography>
             <Box
               sx={{
-                borderRadius: "px",
                 width: { mobile: "100%", laptop: "60%", tablet: "60%" },
                 height: "45px",
                 background: "white",
@@ -2208,7 +2198,6 @@ const NewCreditComponent = ({
         <Box sx={{ display: "flex", overflow: "hidden", width: "100%" }}>
           <Box
             sx={{
-              borderRadius: "5px",
               flex: 1,
               background: backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
               display: "flex",
@@ -2446,7 +2435,6 @@ const SetExposureComponent = ({
             </Typography>
             <Box
               sx={{
-                borderRadius: "px",
                 width: { mobile: "100%", laptop: "60%", tablet: "60%" },
                 height: "45px",
                 background: "white",
@@ -2495,7 +2483,6 @@ const SetExposureComponent = ({
         <Box sx={{ display: "flex", overflow: "hidden", width: "100%" }}>
           <Box
             sx={{
-              borderRadius: "5px",
               flex: 1,
               background: backgroundColor == "#ECECEC" ? "white" : "#FFECBC",
               display: "flex",
@@ -2659,7 +2646,6 @@ const ChangePasswordComponent = ({
               </Typography>
               <Box
                 sx={{
-                  borderRadius: "px",
                   width: { mobile: "100%", laptop: "32.5", tablet: "60%" },
                   height: "45px",
                   background: "#0B4F26",
@@ -2776,7 +2762,6 @@ const ChangePasswordComponent = ({
 
               <Box
                 sx={{
-                  borderRadius: "px",
                   width: { mobile: "100%", laptop: "60%", tablet: "60%" },
                   height: "45px",
                   background: "white",
@@ -2955,7 +2940,6 @@ const LockUnlockComponent = ({
             </Typography>
             <Box
               sx={{
-                borderRadius: "px",
                 width: { mobile: "100%", laptop: "65%", tablet: "65%" },
                 height: "45px",
                 // background: "white",
@@ -3018,7 +3002,6 @@ const LockUnlockComponent = ({
             </Typography>
             <Box
               sx={{
-                borderRadius: "px",
                 width: { mobile: "100%", laptop: "65%", tablet: "65%" },
                 height: "45px",
                 background: "white",
@@ -3147,48 +3130,48 @@ const LockUnlockComponent = ({
   );
 };
 
-const LabelAndValue = ({
-  label,
-  value,
-  containerStyle,
-  icon,
-  ticon,
-  labelStyle,
-  valueStyle,
-  onClick,
-}) => {
-  return (
-    <Box
-      onClick={onClick}
-      display={"flex"}
-      sx={[
-        {
-          background: "#F8C851",
-          height: "45px",
-          border: "2px solid #0B4F2626",
-          px: "10px",
-          borderRadius: "5px",
-          alignItems: "center",
-          justifyContent: "space-between",
-        },
-        containerStyle,
-      ]}
-    >
-      <Box sx={{ flexDirection: "column" }}>
-        {Boolean(label) && (
-          <Typography sx={[{ fontSize: "10px", color: "#303030" }, labelStyle]}>
-            {label}
-          </Typography>
-        )}
-        <Typography sx={[{ fontWeight: "600", fontSize: "15px" }, valueStyle]}>
-          {value}
-          {ticon}
-        </Typography>
-      </Box>
-      {icon}
-    </Box>
-  );
-};
+// const LabelAndValue = ({
+//   label,
+//   value,
+//   containerStyle,
+//   icon,
+//   ticon,
+//   labelStyle,
+//   valueStyle,
+//   onClick,
+// }) => {
+//   return (
+//     <Box
+//       onClick={onClick}
+//       display={"flex"}
+//       sx={[
+//         {
+//           background: "#F8C851",
+//           height: "45px",
+//           border: "2px solid #0B4F2626",
+//           px: "10px",
+//           borderRadius: "5px",
+//           alignItems: "center",
+//           justifyContent: "space-between",
+//         },
+//         containerStyle,
+//       ]}
+//     >
+//       <Box sx={{ flexDirection: "column" }}>
+//         {Boolean(label) && (
+//           <Typography sx={[{ fontSize: "10px", color: "#303030" }, labelStyle]}>
+//             {label}
+//           </Typography>
+//         )}
+//         <Typography sx={[{ fontWeight: "600", fontSize: "15px" }, valueStyle]}>
+//           {value}
+//           {ticon}
+//         </Typography>
+//       </Box>
+//       {icon}
+//     </Box>
+//   );
+// };
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 72,

@@ -1,37 +1,23 @@
-import {
-  Typography,
-  Box,
-  useMediaQuery,
-  useTheme,
-  Menu,
-  MenuItem,
-  Drawer,
-  AppBar,
-  Toolbar,
-} from "@mui/material";
+import { Box, useMediaQuery, useTheme, AppBar } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ArrowDown, Draw, logo, Logout, Money, MoneyBag } from "../../assets";
-import SearchInput from "../../components/SearchInput";
+import { Draw, logo } from "../../assets";
 import StyledImage from "../../components/StyledImage";
-import { NotiBadge, Down, Users, ArrowLeft } from "../../expert/assets";
+import { NotiBadge, Users } from "../../expert/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelected } from "../../store/activeUser";
-import { stateActions } from "../../store/stateActions";
 import SessionTimeOut from "../../components/helper/SessionTimeOut";
 import AddNotificationModal from "../../components/AddNotificationModal";
 import { ThisUseModal } from "../../components/Modal";
 import _ from "lodash";
-import { logout, logoutAuth } from "../../newStore/reducers/auth";
+import { logoutAuth } from "../../newStore/reducers/auth";
 import {
   logoutCurrentUser,
-  removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
 import {
   setAllMatchs,
   setAllEventSession,
-  setEConfirmAuth,
   setCurrentOdd,
   logoutExpertDetails,
   setSessionAllBet,
@@ -40,7 +26,6 @@ import {
   setQuickBookmaker,
   setSelectedSession,
   setSelectedBookmaker,
-  setSessionResult,
   setSessionResultRefresh,
   setSessionExpertOdds,
   setDeclaredMatchDetails,
@@ -62,7 +47,6 @@ import {
   setUpdateAdminPlayList,
   setUserAllMatches,
 } from "../../newStore/reducers/matchDetails";
-import { a } from "@react-spring/web";
 import ButtonHead from "./ButtonHead";
 import ActiveUsers from "./ActiveUsers";
 import BoxProfile from "./BoxProfile";
@@ -76,19 +60,18 @@ import { setAllBetRate } from "../../newStore/reducers/expertMatchDetails";
 import { customSort } from "../../components/helper/util";
 
 var match_id;
-const CustomHeader = ({}) => {
+const CustomHeader = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [mobileOpen, setMobileOpen] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [anchor, setAnchor] = React.useState(null);
+  const [anchor, setAnchor] = useState(null);
   const [isTransPasswordExist, setIsTransPasswordExist] = useState(false);
   const activeUser = useSelector((state) => state?.activeUser?.activeUser);
   const currentSelected = useSelector((state) => state?.activeUser?.selected);
   const dispatch = useDispatch();
   const location = useLocation();
-  const [active, setActiveAdmin] = useState(0);
   const {
     allEventSession,
     activeUsers,
@@ -109,9 +92,7 @@ const CustomHeader = ({}) => {
   const { socket, socketMicro } = useContext(SocketContext);
 
   const [allMatchData, setAllMatchData] = useState([]);
-  const [balance, setBalance] = useState(0);
   const [onlineUser, setOnlineUser] = useState(activeUsers);
-  const [fullName, setFullName] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [firstTimeLoader, setFirstTimeLoader] = useState(true);
   const [localAllBetRates, setLocalAllBetRates] = useState([]);
@@ -325,7 +306,6 @@ const CustomHeader = ({}) => {
                   deleted_reason: data?.betPlaceData?.deleted_reason || null,
                   marketType: data?.betPlaceData?.marketType,
                   myStack: data?.betPlaceData?.myStack,
-                  myStack: data?.betPlaceData?.myStack,
                   amount:
                     data?.betPlaceData?.stack || data?.betPlaceData?.stake,
                 };
@@ -480,33 +460,6 @@ const CustomHeader = ({}) => {
                   }
                   dispatch(setSessionExpertOdds(updatedBettings));
                   return updatedBettings;
-                  // var updatedBettings = prev?.map((betting) => {
-                  //   if (
-                  //     betting?.selectionId === value?.selectionId ||
-                  //     betting?.id === value?.id
-                  //   ) {
-                  //     return {
-                  //       ...betting,
-                  //       betStatus: value?.betStatus,
-                  //       yes_rate: value?.yes_rate,
-                  //       no_rate: value?.no_rate,
-                  //       suspended: value?.suspended,
-                  //       rate_percent: value?.rate_percent,
-                  //     };
-                  //   }
-                  //   return betting; // Return the unchanged betting object if no match is found
-                  // });
-
-                  // // If no match was found, push the value to the bettings array
-                  // if (
-                  //   value.selectionId &&
-                  //   !updatedBettings.some((betting) => betting.id === value.id)
-                  // ) {
-                  //   updatedBettings.unshift(value);
-                  // }
-                  // const newBody = updatedBettings?.sort(customSort);
-                  // dispatch(setSessionExpertOdds(newBody));
-                  // return newBody;
                 });
               }
 
@@ -702,26 +655,6 @@ const CustomHeader = ({}) => {
                   return updatedBettings;
                 });
               }
-
-              // const updatedBettings = currentMatch?.bettings?.map((betting) => {
-              //   if (betting?.id === data?.betPlaceData?.bet_id) {
-              //     // If the betting ID matches the new bet ID and the new bet is a session bet, update the betting object
-              //     let profitLoss = data?.profitLoss;
-
-              //     return {
-              //       ...betting,
-              //       profitLoss: profitLoss,
-              //     };
-              //   }
-              //   return betting;
-              // });
-              // // Return the updated current match object
-              // const newBody = {
-              //   ...currentMatch,
-              //   bettings: updatedBettings,
-              // };
-              // dispatch(setSelectedMatch(newBody));
-              // return newBody;
             });
           } catch (e) {
             console.log("error", e?.message);
@@ -868,26 +801,6 @@ const CustomHeader = ({}) => {
                   dispatch(setSessionExpertOdds(updatedBettings));
                   return updatedBettings;
                 });
-
-                // const updatedBettings = prev?.bettings?.map((betting) => {
-                //   if (value?.betId === betting?.id && value?.sessionBet) {
-                //     return {
-                //       ...betting,
-                //       betStatus: 2,
-                //       betRestult: value.score,
-                //       profitLoss: value?.profitLoss,
-                //     };
-                //   }
-                //   return betting;
-                // });
-
-                // const newBody = {
-                //   ...prev,
-                //   bettings: updatedBettings,
-                // };
-
-                // dispatch(setSelectedMatch(newBody));
-                // return newBody;
               }
 
               return prev;
@@ -978,18 +891,6 @@ const CustomHeader = ({}) => {
         if (packet.data[0] === "undeclearResultBet") {
           const value = packet.data[1];
           try {
-            // setLocalSelectedBookmaker((prev) => {
-            //   if (
-            //     prev?.matchId === value?.match_id &&
-            //     value?.sessionBet === false
-            //   ) {
-            //     dispatch(setSessionResultRefresh(true));
-            //     const newBody = { ...prev, betStatus: 1 };
-            //     dispatch(setSelectedBookmaker(newBody));
-            //     return newBody;
-            //   }
-            //   return prev;
-            // });
             setCurrentMatch((prev) => {
               if (prev?.id === value?.match_id && value?.sessionBet === false) {
                 const newBody = {
@@ -1264,7 +1165,7 @@ const CustomHeader = ({}) => {
     setAllMatchData(allMatch);
   }, [allMatch]);
 
-  let { transPass, axios, role, JWT } = setRole();
+  let { axios } = setRole();
 
   const { globalStore, setGlobalStore } = useContext(GlobalStore);
 

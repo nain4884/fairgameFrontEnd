@@ -1,6 +1,5 @@
 import {
   Card,
-  Typography,
   Box,
   useTheme,
   useMediaQuery,
@@ -11,16 +10,10 @@ import {
   Alert,
   CircularProgress,
 } from "@mui/material";
-import { useContext, useEffect, useState, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { eye, eyeLock, mail } from "../../assets";
-import {
-  Input,
-  CustomButton,
-  AuthLogo,
-  AuthBackground,
-  ReCAPTCHACustom,
-} from "../../components";
+import { Input, AuthLogo, AuthBackground } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   apiBasePath,
@@ -43,13 +36,11 @@ import { removeCurrentUser } from "../../newStore/reducers/currentUser";
 // import ChangePasswordComponent from "./ChangePasswordComponent";
 
 export default function Login(props) {
-  const loginButtonRef = useRef(null);
   let { axios } = setRole();
-  const location = useLocation();
   const theme = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const { setGlobalStore } = useContext(GlobalStore);
   const { socket, socketMicro } = useContext(SocketContext);
   const { confirmAuth } = useSelector((state) => state?.matchDetails);
   const [loading, setLoading] = useState(false);
@@ -62,7 +53,6 @@ export default function Login(props) {
     1: { field: "username", val: false },
     2: { field: "password", val: false },
   });
-  const [OTP, setOTP] = useState("");
   const [isChangePassword, setIsChangePassword] = useState(false);
 
   const [loginError, setLoginError] = useState("");
@@ -267,15 +257,15 @@ export default function Login(props) {
         setLoginError("Username and password required");
         setLoading(false);
         return false;
-      } else
+      }
       // if (recaptchaToken === null) {
       //   setLoading(false);
       //   setLoginError("reCaptcha required ");
       //   return false;
-      // } else 
-      {
+      // } else
+      else {
         setLoading(true);
-        const token = await localStorage.getItem("role4");
+        // const token = await localStorage.getItem("role4");
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
@@ -563,7 +553,11 @@ export default function Login(props) {
               </Box>
             </form>
           ) : (
-            <ChangePassword width="300px" changePassword={changePassword} setRecaptchToken={setRecaptchToken} />
+            <ChangePassword
+              width="300px"
+              changePassword={changePassword}
+              setRecaptchToken={setRecaptchToken}
+            />
           )}
         </Card>
       </Box>

@@ -1,11 +1,10 @@
-import { Box, Grid, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import {
   useState,
   useEffect,
   useContext,
   useRef,
   useImperativeHandle,
-  forwardRef,
 } from "react";
 import React from "react";
 import StyledImage from "./StyledImage";
@@ -17,47 +16,24 @@ import { setRole } from "../newStore";
 import { Lock, BallStart } from "../assets";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setSessionResults,
-  removeManualBookMarkerRates,
-  removeSelectedMatch,
-} from "../newStore/reducers/matchDetails";
+import { setSessionResults } from "../newStore/reducers/matchDetails";
 import {
   setSessionAllBet,
   setSessionBetId,
-  setAllEventSession,
   setSessionProfitLoss,
   setSelectedSession,
   setSessionResultRefresh,
 } from "../newStore/reducers/expertMatchDetails";
-import { removeCurrentUser } from "../newStore/reducers/currentUser";
-import { logout } from "../newStore/reducers/auth";
-import { GlobalStore } from "../context/globalStore";
 import { useNavigate } from "react-router-dom";
-import { removeSocket } from "./helper/removeSocket";
 
 const IndiaPakLive = React.forwardRef(
-  (
-    {
-      createSession,
-      match,
-      sessionEvent,
-      proLoss1,
-      setCheckBetId,
-      childFunction,
-    },
-    ref
-  ) => {
+  ({ createSession, match, sessionEvent, proLoss1, setCheckBetId }, ref) => {
     const navigate = useNavigate();
-    const { setGlobalStore } = useContext(GlobalStore);
-    const childRef = useRef(null);
     const { socket } = useContext(SocketContext);
     const { axios } = setRole();
     const dispatch = useDispatch();
     const {
-      sessionAllBet,
       sessionBetId,
-      allEventSession,
       currentOdd,
       sessionProfitLoss,
       selectedSession,
@@ -183,175 +159,6 @@ const IndiaPakLive = React.forwardRef(
       }
     }, [declaredMatchDetail]);
 
-    // useEffect(() => {
-    //   if (socket && socket.connected) {
-    //     socket.onevent = async (packet) => {
-    //       if (packet.data[0] === "session_bet") {
-    //         const data = packet.data[1];
-    //         try {
-    //           setCurrentOdds({
-    //             bet_id: data?.betPlaceData?.bet_id,
-    //             odds: data?.betPlaceData?.odds,
-    //             match_id: data?.betPlaceData?.match_id,
-    //           });
-    //           if (betId === data?.betPlaceData?.bet_id) {
-    //             let profitLoss = data?.profitLoss;
-    //             setProLoss(profitLoss);
-    //             const body = {
-    //               id: data?.betPlaceData?.id,
-    //               isActive: true,
-    //               createAt: data?.betPlaceData?.createAt,
-    //               updateAt: data?.betPlaceData?.createdAt,
-    //               createdBy: null,
-    //               deletedAt: null,
-    //               user: { userName: data?.betPlaceData?.userName },
-    //               user_id: null,
-    //               match_id: data?.betPlaceData?.match_id,
-    //               bet_id: data?.betPlaceData?.bet_id,
-    //               result: "pending",
-    //               team_bet: data?.betPlaceData?.team_bet,
-    //               odds: data?.betPlaceData?.odds,
-    //               win_amount: null,
-    //               loss_amount: null,
-    //               bet_type: data?.betPlaceData?.bet_type,
-    //               country: null,
-    //               deleted_reason: data?.betPlaceData?.deleted_reason || null,
-    //               ip_address: null,
-    //               rate: data?.betPlaceData?.rate,
-    //               marketType: data?.betPlaceData?.marketType,
-    //               myStack: data?.betPlaceData?.myStack,
-    //               amount:
-    //                 data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-    //             };
-    //             if (sessionAllBet.length === 0) {
-    //               const updatedData = [body];
-    //               dispatch(setSessionAllBet(updatedData));
-    //             } else {
-    //               const updatedData = [body, ...sessionAllBet];
-    //               dispatch(setSessionAllBet(updatedData));
-    //             }
-    //           }
-    //         } catch (err) {
-    //           console.log(err?.message);
-    //         }
-    //       }
-    //       if (packet.data[0] === "newBetAdded") {
-    //         const value = packet.data[1];
-    //         try {
-    //           const updatedAllEventSession = allEventSession.map(
-    //             (currentMatch) => {
-    //               if (currentMatch.id === value?.match_id) {
-    //                 const betObj = {
-    //                   id: value.id,
-    //                   bet_condition: value.bet_condition,
-    //                 };
-    //                 const newBettings = [...currentMatch.bettings, betObj];
-    //                 return {
-    //                   ...currentMatch,
-    //                   bettings: newBettings,
-    //                 };
-    //               }
-    //               return currentMatch;
-    //             }
-    //           );
-    //           dispatch(setAllEventSession(updatedAllEventSession));
-    //         } catch (err) {
-    //           console.log(err?.message);
-    //         }
-    //       }
-    //       if (packet.data[0] === "resultDeclareForBet") {
-    //         const value = packet.data[1];
-
-    //         try {
-    //           const updatedAllEventSession = allEventSession.map(
-    //             (currentMatch) => {
-    //               if (currentMatch.id === value?.match_id) {
-    //                 const filteredBettings = currentMatch.bettings.filter(
-    //                   (bet) => bet.id !== value?.betId
-    //                 );
-    //                 getSessionResult(currentMatch.id);
-    //                 return {
-    //                   ...currentMatch,
-    //                   bettings: filteredBettings,
-    //                 };
-    //               }
-    //               return currentMatch;
-    //             }
-    //           );
-
-    //           dispatch(setAllEventSession(updatedAllEventSession));
-    //           setBetId(value?.betId);
-    //           setCheckBetId(true);
-    //           setIsCreateSession(true);
-    //           dispatch(setSessionBetId(value?.betId));
-    //           setVisible(false);
-    //           setIsDisable(true);
-    //         } catch (err) {
-    //           console.log(err?.message);
-    //         }
-    //       }
-    //       if (packet.data[0] === "sessionDeleteBet") {
-    //         const value = packet.data[1];
-    //         try {
-    //           const updatedAllBet = sessionAllBet.map((currentMatch) => {
-    //             if (currentMatch.match_id === value?.matchId) {
-    //               if (value?.betPlaceData.includes(currentMatch.id)) {
-    //                 return {
-    //                   ...currentMatch,
-    //                   deleted_reason: value?.deleted_reason,
-    //                 };
-    //               }
-    //             }
-    //             return currentMatch;
-    //           });
-
-    //           dispatch(setSessionAllBet(updatedAllBet));
-    //           let profitLoss = value?.profitLoss;
-    //           setProLoss(profitLoss);
-    //         } catch (err) {
-    //           console.log(err?.message);
-    //         }
-    //       }
-    //       if (packet.data[0] === "updateSessionRate_user") {
-    //         // match_id
-    //         const value = packet.data[1];
-    //         if (match?.id == value?.match_id && betId == value?.betId) {
-    //           if (value.suspended == "suspended") {
-    //             setLock({
-    //               ...lock,
-    //               isNo: true,
-    //               isYes: true,
-    //               isNoPercent: true,
-    //               isYesPercent: true,
-    //             });
-    //           } else {
-    //             let [firstValue, secondValue] = value.rate_percent
-    //               ? value.rate_percent.split("-")
-    //               : "";
-    //             if (value.suspended != "Ball Started") {
-    //               setDetail((prev) => ({
-    //                 ...prev,
-    //                 no_rate: value.no_rate,
-    //                 yes_rate: value.yes_rate,
-    //                 n_rate_percent: firstValue,
-    //                 y_rate_percent: secondValue,
-    //               }));
-    //               setLock({
-    //                 ...lock,
-    //                 isNo: false,
-    //                 isYes: false,
-    //                 isNoPercent: false,
-    //                 isYesPercent: false,
-    //               });
-    //             }
-    //           }
-    //         }
-    //       }
-    //     };
-    //   }
-    // }, [socket, betId, sessionAllBet, allEventSession]);
-
-    // console.log(Detail, "details");
     useEffect(() => {
       if (sessionEvent?.id || sessionBetId) {
         if (sessionBetId) {
@@ -598,7 +405,7 @@ const IndiaPakLive = React.forwardRef(
                 container
                 spacing={1}
                 alignItems={"center"}
-                justifyContent={"center"}
+                justify={"center"}
                 sx={{ width: "100%" }}
               >
                 {rates?.map((item) => (
@@ -937,7 +744,7 @@ const AddSession = ({
     event.preventDefault();
     let targetValue = parseFloat(event.target.value);
     event.target.value = targetValue;
-    if(key == "minus" || key == "plus") {
+    if (key == "minus" || key == "plus") {
       return;
     } else if (key == "right") {
       incGap.setIncGap(1);
@@ -1012,12 +819,10 @@ const AddSession = ({
             ...Detail.Detail,
             no_rate: Detail?.Detail?.no_rate,
             yes_rate: Detail?.Detail?.yes_rate,
-            y_rate_percent: 100,
             y_rate_percent: Detail?.Detail?.y_rate_percent - incGap.incGap,
             n_rate_percent: Detail?.Detail?.n_rate_percent + incGap.incGap,
             l_no_rate: Detail?.Detail?.no_rate,
             l_yes_rate: Detail?.Detail?.yes_rate,
-            ly_rate_percent: 100,
             ly_rate_percent: Detail?.Detail?.y_rate_percent - incGap.incGap,
             ln_rate_percent: Detail?.Detail?.n_rate_percent + incGap.incGap,
           });
@@ -1049,12 +854,10 @@ const AddSession = ({
             ...Detail.Detail,
             no_rate: Detail?.Detail?.no_rate,
             yes_rate: Detail?.Detail?.yes_rate,
-            y_rate_percent: 100,
             y_rate_percent: Detail?.Detail?.y_rate_percent + incGap.incGap,
             n_rate_percent: Detail?.Detail?.n_rate_percent - incGap.incGap,
             l_no_rate: Detail?.Detail?.no_rate,
             l_yes_rate: Detail?.Detail?.yes_rate,
-            ly_rate_percent: 100,
             ly_rate_percent: Detail?.Detail?.y_rate_percent + incGap.incGap,
             ln_rate_percent: Detail?.Detail?.n_rate_percent - incGap.incGap,
           });
@@ -1377,7 +1180,7 @@ const AddSession = ({
           socket.emit("updateSessionRate", data);
         }
       }
-    }  else {
+    } else {
       if (Detail?.Detail?.yes_rate - incGap.incGap > Detail?.Detail?.no_rate) {
         let value = Detail?.Detail?.yes_rate
           ? Detail?.Detail?.yes_rate
@@ -1428,7 +1231,6 @@ const AddSession = ({
       isYesPercent: true,
     });
     handleSuspend();
-    let target = event.target;
     let targetValue = parseFloat(event.target.value);
     let checkValue = parseFloat(event.target.value);
     Detail.setDetail({
@@ -1749,6 +1551,7 @@ const AddSession = ({
                     ) : (
                       <img
                         src={Lock}
+                        alt="Lock"
                         style={{ width: "10px", height: "15px" }}
                       />
                     )}
@@ -1778,6 +1581,7 @@ const AddSession = ({
                     ) : (
                       <img
                         src={Lock}
+                        alt="Lock"
                         style={{ width: "10px", height: "15px" }}
                       />
                     )}
@@ -1807,6 +1611,7 @@ const AddSession = ({
                     ) : (
                       <img
                         src={Lock}
+                        alt="Lock"
                         style={{ width: "10px", height: "15px" }}
                       />
                     )}
@@ -1835,6 +1640,7 @@ const AddSession = ({
                     ) : (
                       <img
                         src={Lock}
+                        alt="Lock"
                         style={{ width: "10px", height: "15px" }}
                       />
                     )}
@@ -1853,7 +1659,11 @@ const AddSession = ({
                   alignItems: "center",
                 }}
               >
-                <img src={BallStart} style={{ width: "80%", height: "30%" }} />
+                <img
+                  src={BallStart}
+                  alt="BallStart"
+                  style={{ width: "80%", height: "30%" }}
+                />
               </Box>
             )}
           </Box>
@@ -1882,16 +1692,7 @@ const AddSession = ({
   );
 };
 
-const RunsAmountBox = ({
-  anchorEl,
-  currentOdds,
-  betId,
-  open,
-  handleClose,
-  proLoss,
-}) => {
-  const theme = useTheme();
-
+const RunsAmountBox = ({ currentOdds, betId, proLoss }) => {
   const containerRef = useRef(null);
 
   const scrollToElement = (id) => {
@@ -1907,16 +1708,9 @@ const RunsAmountBox = ({
         (containerRect.height - targetRect.height) / 2;
       container.scrollTo({
         top: container.scrollTop + scrollTo,
-        behavior: "smooth", // You can use 'auto' if you don't want smooth scrolling
+        behavior: "smooth",
       });
     }
-
-    // element.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "center",
-    //   inline: "center",
-    // });
-    // }
   };
 
   useEffect(() => {

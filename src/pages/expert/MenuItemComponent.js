@@ -3,8 +3,6 @@ import { StyledImage } from "../../components";
 import { ArrowLeft } from "../../expert/assets";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { GlobalStore } from "../../context/globalStore";
 import {
   setSelectedBookmaker,
   setSelectedSession,
@@ -12,7 +10,7 @@ import {
   setSessionProfitLoss,
   setSessionResultRefresh,
 } from "../../newStore/reducers/expertMatchDetails";
-import { setBookMakerBetRate, setSessionResults } from "../../newStore/reducers/matchDetails";
+import { setSessionResults } from "../../newStore/reducers/matchDetails";
 
 const MenutItemsComponent = ({
   x,
@@ -22,7 +20,6 @@ const MenutItemsComponent = ({
   handleClose,
   allLiveEventSession,
 }) => {
-  const { globalStore, setGlobalStore } = useContext(GlobalStore);
   const activeUser = useSelector((state) => state?.activeUser?.activeUser);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -76,7 +73,7 @@ const MenutItemsComponent = ({
         >
           {allLiveEventSession?.length > 0 &&
             allLiveEventSession?.map((event) => {
-              if (event.id == x.id)
+              if (event.id == x.id) {
                 return (
                   <>
                     {event.bettings.length > 0 && (
@@ -125,14 +122,15 @@ const MenutItemsComponent = ({
                     })}
                   </>
                 );
+              } else return null;
             })}
           {/* <Typography sx={{ fontSize: "12px", }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 1"}</Typography>
                   <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography> */}
           <Box
             onClick={(e) => {
               dispatch(setSessionBetId(""));
-              dispatch(setSessionResults([]))
-              dispatch(setSessionProfitLoss(null))
+              dispatch(setSessionResults([]));
+              dispatch(setSessionProfitLoss(null));
               dispatch(setSelectedSession(null));
               dispatch(setSessionResultRefresh(true));
               navigate("/expert/live", {
@@ -224,7 +222,7 @@ const MenutItemsComponent = ({
                   })}
                 </>
               );
-            }
+            } else return null;
           })}
         </Box>
         // </Box>

@@ -1,17 +1,13 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
-import EventListing from "./EventListing";
 import Input from "./Input";
 import { eye, eyeLock } from "../assets";
 import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 import { useState } from "react";
 
 export const ChangePasswordComponent = ({
-  visible,
-  selected,
   passLoader,
   width,
   changePassword,
-  setRecaptchToken,
 }) => {
   const [passwordDetail, setPasswordDetail] = useState({
     2: { field: "oldPassword", val: "" },
@@ -152,7 +148,7 @@ export const ChangePasswordComponent = ({
             sx={{
               height: "50px",
               display: "flex",
-              justifyContent: "center",
+              justify: "center",
               alignItems: "center",
               mx: "auto",
               marginTop: "60px",

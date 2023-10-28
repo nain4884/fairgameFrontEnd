@@ -34,13 +34,13 @@ var matchComissionArray = [];
 
 const EditAccount = () => {
   const formRef = useRef(null);
-  const { axios, locPath, JWT, roleName } = setRole();
+  const { axios, roleName } = setRole();
   const navigate = useNavigate();
   const { userWallet, allRole } = useSelector((state) => state.auth);
   const [errorShow, setErrorShow] = useState("");
   const [successShow, setSuccessShow] = useState("");
   const { state } = useLocation();
-  const [myPartnershipsError, setMyPartnershipsError] = useState(false);
+  const [myPartnershipsError] = useState(false);
   const [Detail, setDetail] = useState({
     1: { field: "userName", val: "" },
     2: { field: "password", val: "" },
@@ -619,7 +619,6 @@ const EditAccount = () => {
                     valueStyle={{ ...imputStyle, color: "white" }}
                     title={"Account Type*"}
                     valueContainerStyle={{
-                      height: "45px",
                       marginX: "0px",
                       background: "#0B4F26",
                       border: "1px solid #DEDEDE",
@@ -870,7 +869,6 @@ const EditAccount = () => {
                       valueStyle={{ ...imputStyle, color: "white" }}
                       title={"Match Commission Type"}
                       valueContainerStyle={{
-                        height: "45px",
                         marginX: "0px",
                         background: "#0B4F26",
                         border: "1px solid #DEDEDE",
@@ -961,7 +959,6 @@ const EditAccount = () => {
                       valueStyle={{ ...imputStyle, color: "white" }}
                       title={"Session Commission (%)"}
                       valueContainerStyle={{
-                        height: "45px",
                         marginX: "0px",
 
                         background: "#0B4F26",
