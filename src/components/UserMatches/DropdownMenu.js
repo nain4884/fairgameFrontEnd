@@ -1,12 +1,8 @@
-import { useTheme } from "@emotion/react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import StyledImage from "../StyledImage";
 
-const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
-  const theme = useTheme();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-
+const DropdownMenu = ({ list }) => {
   return (
     <Box
       sx={{
@@ -53,7 +49,12 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
             }}
           >
             <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "12px", width: "62px" }}
+              sx={{
+                color: "#306A47",
+                fontWeight: "bold",
+                fontSize: "12px",
+                width: "62px",
+              }}
             >
               Amount
             </Typography>
@@ -126,7 +127,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
                         fontWeight: "500",
                         fontSize: "12px",
                         color: "white",
-                        width: "40px"
+                        width: "40px",
                       }}
                     >
                       {Number(v?.profit_loss) >= 0 ? (
@@ -161,8 +162,7 @@ const DropdownMenu = ({ anchorEl, open, handleClose, list }) => {
                   height: "25px",
                   borderTop: "1px solid #306A47",
                 }}
-              >
-              </Box>{" "}
+              ></Box>{" "}
             </>
           )}
         </Box>

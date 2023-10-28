@@ -64,35 +64,6 @@ const PlaceBet = ({
   }, [geoLocation, matchButtonData, sessionButtonData]);
   const myDivRef = useRef(null);
 
-  // function customSort(a, b) {
-  //   if (a.lable === "1k") {
-  //     return -1; // "1k" comes first
-  //   } else if (b.lable === "1k") {
-  //     return 1; // "1k" comes first
-  //   } else {
-  //     // For other labels, maintain their original order
-  //     return 0;
-  //   }
-  // }
-
-  // const getButtonList = async () => {
-  //   try {
-
-  //     const { data } = await axios.get("/users/getButtonValues");
-  //     const initialData = data?.data?.buttons; // Replace this with your initial data
-  //     const jsonObject = JSON.parse(initialData);
-  //     const resultArray = Object.entries(jsonObject).map(([label, value]) => ({
-  //       label: label,
-  //       value: value,
-  //     }));
-  //     resultArray.sort(customSort);
-  //     setButtonData(resultArray);
-  //   } catch (e) {
-  //     toast.error(e.response.data.message);
-  //     console.log("error", e.message);
-  //   }
-  // };
-
   const getLatestBetAmount = async (value, newData) => {
     try {
       const title = season ? betType : isBack ? "back" : "lay";

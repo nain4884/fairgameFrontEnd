@@ -2,7 +2,6 @@ import { Box, Typography, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setRole } from "../../newStore";
-import { ArrowDown, drawerBackground } from "../../assets";
 import { ARROWDROPDOWN } from "../../admin/assets";
 
 const colors = ["#F8C851", "#FFDA7D", "#FFE7AD", "#FFF1CF", "#FFF8E6"];

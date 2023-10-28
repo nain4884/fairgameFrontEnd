@@ -1,13 +1,8 @@
 import React from "react";
-
 import { Box } from "@mui/material";
-
 import "../../index.css";
-
 import { useSelector } from "react-redux";
-
 import Odds from "./Odds";
-
 import SessionMarket from "./SessionOdds/SessionMarket";
 import { memo } from "react";
 import { useEffect } from "react";
@@ -16,6 +11,7 @@ import moment from "moment";
 import QuickSessionMarket from "./SessionOdds/QuickSessionMarket";
 import { useLocation } from "react-router-dom";
 import { setRole } from "../../newStore";
+
 const MatchOdds = ({
   data,
   matchOddsLive,
@@ -29,7 +25,6 @@ const MatchOdds = ({
   fastAmount,
   handleRateChange,
   LSelectedSessionBetting,
-  localQuickSession,
 }) => {
   const { manualBookMarkerRates, quickBookmaker } = useSelector(
     (state) => state?.matchDetails
@@ -40,14 +35,11 @@ const MatchOdds = ({
   const [localQuickBookmaker, setLocalQuickBookmaker] = useState([]);
   const [bookmakerHttp, setBookmakerHttp] = useState([]);
   const [manualSessions, setManualSessions] = useState([]);
-  const [sessionExposerHttp, setSessionExposerHttp] = useState([])
+  const [sessionExposerHttp, setSessionExposerHttp] = useState([]);
   const location = useLocation();
   const { axios } = setRole();
 
   const matchId = location?.state?.matchId;
-
-  // const [localSession, setLocalSession] = useState([]);
-  // const [localQuickSession, setLocalQuickSession] = useState([]);
 
   useEffect(() => {
     if (data) {
@@ -122,7 +114,7 @@ const MatchOdds = ({
           const { data } = await axios.post("/betting/getManualRate", payload);
           setManualSessions(data?.data?.manualSessionRate);
           setBookmakerHttp(data?.data?.manualBookRate);
-          setSessionExposerHttp(data?.data?.sessionExposure)
+          setSessionExposerHttp(data?.data?.sessionExposure);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
@@ -223,31 +215,6 @@ const MatchOdds = ({
           );
         }
       })}
-
-      {/* {data?.manualBookMakerActive && (
-        <Odds
-          upcoming={!upcoming}
-          betLock={data?.blockMarket?.MANUALBOOKMAKER?.block}
-          newData={data}
-          lock={false}
-          showDely={false}
-          session={"manualBookMaker"}
-          showFast={true}
-          suspended={false}
-          data={data}
-          teamARates={teamRates?.teamA}
-          teamBRates={teamRates?.teamB}
-          teamCRates={teamRates?.teamC}
-          min={data?.bookmaker_manual_min_bet || 0}
-          max={data?.bookmaker_manual_max_bet || 0}
-          title={"Quick Bookmaker"}
-          typeOfBet={"MANUAL BOOKMAKER"}
-          matchOddsData={manualBookmakerData}
-          setFastAmount={setFastAmount}
-          fastAmount={fastAmount?.mannualBookMaker}
-          handleRateChange={handleRateChange}
-        />
-      )} */}
       {data?.apiBookMakerActive && (
         <Odds
           upcoming={!upcoming}

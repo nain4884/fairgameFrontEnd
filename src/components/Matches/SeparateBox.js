@@ -5,7 +5,6 @@ import { Lock } from "../../assets";
 
 const SeparateBox = ({ color, empty, value, value2, lock }) => {
   const theme = useTheme();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const classes = {
     container: {

@@ -3,10 +3,7 @@ import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import MoneyBox from "./MoneyBox";
 import SeprateBox from "./SeprateBox";
-import { INDIA, PAKISTAN } from "../../assets";
-import Divider from "../helper/Divider";
 import { formatNumber } from "../helper/helper";
-import SeperateBox from "../../pages/expert/SeperateBox";
 import { apiBasePath } from "../helper/constants";
 import { useEffect } from "react";
 import { memo } from "react";
@@ -15,16 +12,12 @@ const BoxComponent = ({
   name,
   color,
   data,
-  team,
   typeOfBet,
-  align,
   selectedFastAmount,
   rate,
   allRates,
-  lock,
   teamImage,
   newData,
-  suspendedData,
   showBox,
   livestatus,
   isRound,
@@ -110,21 +103,6 @@ const BoxComponent = ({
         </Box>
         <MoneyBox color={color} rates={rate} />
       </Box>
-      {/* {showBox && (
-        <Box
-          sx={{
-            background: "rgba(0,0,0,0.5)",
-            height: "40px",
-            position: "absolute",
-            right: 0,
-            zIndex: 10,
-            width: { laptop: "60%", mobile: "40%" },
-            justifyContent: { mobile: "flex-end", laptop: "center" },
-            alignItems: "center",
-            display: "flex",
-          }}
-        ></Box>
-      )} */}
       {!["ACTIVE", "", undefined, null].includes(status) ||
         newData?.bettings?.length === 0 ||
         livestatus ? (

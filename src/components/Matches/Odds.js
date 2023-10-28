@@ -2,40 +2,22 @@ import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import React, { memo, useContext, useEffect, useState } from "react";
 import SeparateBox from "./SeparateBox";
-import { TEAMLOGO, TEAMLOGO1 } from "../../assets";
 import Divider from "../helper/Divider";
-import constants, {
-  apiBasePath,
-  microServiceApiPath,
-} from "../helper/constants";
-import MatchOdds from "../../pages/expert/MatchOdds/MatchOdds";
+import { apiBasePath, microServiceApiPath } from "../helper/constants";
 import { SocketContext } from "../../context/socketContext";
 import Axios from "axios";
 import { formatNumber } from "../helper/helper";
 import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  removeCurrentUser,
-  setCurrentUser,
-} from "../../newStore/reducers/currentUser";
-import { setConfirmAuth } from "../../newStore/reducers/matchDetails";
-import { logout } from "../../newStore/reducers/auth";
 import { GlobalStore } from "../../context/globalStore";
 import { setRole } from "../../newStore";
-import { removeSocket } from "../helper/removeSocket";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
 let matchOddsCount = 0;
-const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
+const Odds = ({ onClick, top, blur, match }) => {
   const theme = useTheme();
-  const navigate = useNavigate();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [matchOddsLive, setMatchOddsLive] = useState([]);
-  const { socketMicro, socket } = useContext(SocketContext);
-  const dispatch = useDispatch();
+  const { socketMicro } = useContext(SocketContext);
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  const { currentUser } = useSelector((state) => state?.currentUser);
-  const { globalStore, setGlobalStore } = useContext(GlobalStore);
-  const { axios } = setRole();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -75,71 +57,6 @@ const Odds = ({ onClick, top, blur, match, handleUpdateMatch }) => {
     Number(timeLeft.days) === 0 &&
     Number(timeLeft.hours) === 0 &&
     Number(timeLeft.minutes) <= 30;
-
-  // useEffect(() => {
-  //   if (socket && socket.connected) {
-  //     socket.onevent = async (packet) => {
-  //       if (packet.data[0] === "logoutUserForce") {
-  //         dispatch(removeCurrentUser());
-  //         // dispatch(removeManualBookMarkerRates())
-  //         // dispatch(removeSelectedMatch());
-  //         dispatch(logout({ roleType: "role4" }));
-  //         setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
-  //         // await axios.get("auth/logout");
-  //         removeSocket();
-
-  //         socket.disconnect();
-  //         socketMicro.disconnect();
-  //         navigate(`/`);
-  //       }
-  //       if (packet.data[0] === "userBalanceUpdate") {
-  //         const data = packet.data[1];
-  //         const user = {
-  //           ...currentUser,
-  //           current_balance: data?.currentBalacne,
-  //         };
-  //         dispatch(setCurrentUser(user));
-
-  //         //currentBalacne
-  //       }
-  //       if (packet.data[0] === "newMatchAdded") {
-  //         handleUpdateMatch();
-  //       }
-  //       if (packet.data[0] === "resultDeclareForBet") {
-  //         handleUpdateMatch();
-  //       }
-  //       if (packet.data[0] === "sessionResult") {
-  //         const value = packet.data[1];
-  //         // matchId = value?.match_id;
-  //         try {
-  //           const user = {
-  //             ...currentUser,
-  //             current_balance: value.current_balance,
-  //             exposure: value.exposure,
-  //           };
-  //           dispatch(setCurrentUser(user));
-  //         } catch (err) {
-  //           console.log(err?.message);
-  //         }
-  //       }
-  //       // if (packet.data[0] === "matchResult") {
-  //       //   const value = packet.data[1];
-  //       //   try {
-  //       //     const user = {
-  //       //       ...currentUser,
-  //       //       current_balance: value.current_balance,
-  //       //       exposure: value.exposure,
-  //       //     };
-
-  //       //     dispatch(setCurrentUser(user));
-  //       //   } catch (err) {
-  //       //     console.log(err?.message);
-  //       //   }
-  //       // }
-
-  //     };
-  //   }
-  // }, [socket]);
 
   const activateLiveMatchMarket = async () => {
     try {

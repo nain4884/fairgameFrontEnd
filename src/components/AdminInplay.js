@@ -31,26 +31,6 @@ const AdminInPlay = () => {
     getAllMatch();
   }, [currentPage, updateAdminPlayList]);
 
-  // useEffect(() => {
-  //   if (socket && socket.connected) {
-  //     socket.on("newMessage", (value) => {
-  //       console.log(value);
-  //     });
-
-  //     socket.onevent = async (packet) => {
-
-  //       if (packet.data[0] === "newMatchAdded") {
-  //         getAllMatch();
-  //       }
-  //       if (packet.data[0] === "resultDeclareForBet") {
-  //         getAllMatch();
-  //       }
-
-
-  //     };
-  //   }
-  // }, [socket]);
-
   async function getAllMatch() {
     try {
       setLoader(true);

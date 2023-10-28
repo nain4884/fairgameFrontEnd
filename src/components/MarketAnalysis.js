@@ -41,34 +41,6 @@ const MarketAnalysis = () => {
       setMatchData(userAllMatches);
     }
   }, [userAllMatches]);
-  // useEffect(() => {
-  //   if (socket && socket.connected) {
-  //     socket.on("newMessage", (value) => {
-  //       console.log(value);
-  //     });
-
-  //     socket.onevent = async (packet) => {
-
-  //       if (packet.data[0] === "newMatchAdded") {
-  //         getAllMatch();
-  //       }
-  //       if (packet.data[0] === "resultDeclareForBet") {
-  //         getAllMatch();
-  //       }
-  //       if (packet.data[0] === "logoutUserForce") {
-  //         dispatch(logout({ roleType: "role2" }));
-  //         setGlobalStore((prev) => ({ ...prev, walletWT: "" }));
-  //         dispatch(removeManualBookMarkerRates());
-  //         dispatch(removeCurrentUser());
-  //         // dispatch(removeSelectedMatch());
-  //         removeSocket();
-  //         navigate("/wallet");
-  //         await axios.get("auth/logout");
-  //         socket.disconnect();
-  //       }
-  //     };
-  //   }
-  // }, [socket]);
 
   const handleClick = (value) => {
     setMax(value);

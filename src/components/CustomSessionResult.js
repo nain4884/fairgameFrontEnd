@@ -38,33 +38,6 @@ const CustomSessionResult = ({
       const { data } = await axios.post("/game-match/undeclareresult", body);
       if (data?.statusCode !== 500) {
         onClick();
-        // socket.emit("resultDeclareForBet", {
-        //   match_id: newData?.match_id,
-        //   betId: newData?.id,
-        // });
-
-        // setLocalState(() => {
-        //   const updatedBettings = currentMatch?.bettings.map(
-        //     (betting, index) => {
-        //       if (betting?.id === newData?.id) {
-        //         setLive(true);
-        //         return {
-        //           ...newData,
-        //           betStatus: 2,
-        //           betRestult: data?.data?.score,
-        //           suspended: "",
-        //         };
-        //       }
-        //       return betting;
-        //     }
-        //   );
-        //   const newBody = {
-        //     ...currentMatch,
-        //     bettings: updatedBettings,
-        //   };
-        //   // dispatch(setSelectedMatch(newBody));
-        //   return newBody;
-        // });
       }
       onClick();
       setLoading({ id: "", value: false });

@@ -33,41 +33,6 @@ const AddNotificationModal = ({
       setVisible(false);
     }
   };
-  // const CustomButton = ({ title, color, loadingDeleteBet }) => {
-  //   return (
-  //     <Box
-  //       onClick={handleDone}
-  //       sx={{
-  //         width: "35%",
-  //         height: "35px",
-  //         borderRadius: "5px",
-  //         background: color,
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         display: "flex",
-  //         cursor: "pointer",
-  //       }}
-  //     >
-  //       <Typography
-  //         sx={{ fontSize: "16px", fontWeight: "500", color: "white" }}
-  //       >
-  //         {!loadingDeleteBet ? (
-  //           <CircularProgress
-  //             sx={{
-  //               color: "#FFF",
-  //             }}
-  //             size={20}
-  //             thickness={4}
-  //             value={60}
-  //           />
-  //         ) : (
-  //           title
-  //         )}
-  //       </Typography>
-  //     </Box>
-  //   );
-  // };
-  console.log(loadingDeleteBet, "loadingDeleteBet");
 
   return (
     <Modal

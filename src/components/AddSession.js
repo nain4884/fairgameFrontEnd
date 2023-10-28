@@ -166,9 +166,6 @@ const AddSession = ({ add, match, Bid }) => {
       if (response?.data?.data?.length === 0) {
         doSubmitSessionBet(id);
       } else {
-        // setCurrentBookmaker(response?.data?.data?.marketName);
-        // setBetId(response?.data?.data?.bet_id);
-        // setBetStatus(response?.data?.data.betStatus);
         const body = {
           matchId: response?.data?.data?.match_id,
           id: response?.data?.data?.id,
@@ -179,12 +176,6 @@ const AddSession = ({ add, match, Bid }) => {
         };
         setLocalSelectedBookmaker(body);
         dispatch(setSelectedBookmaker(body));
-        // setTeamARate(response?.data?.data.teamA_Back);
-        // setTeamALayValue(response?.data?.data.teamA_lay);
-        // setTeamBRate(response?.data?.data.teamB_Back);
-        // setTeamBLayValue(response?.data?.data.teamB_lay);
-        // setTeamCRate(response?.data?.data.teamC_Back);
-        // setTeamCLayValue(response?.data?.data.teamC_lay);
         setLocalQuickBookmaker((prev) => {
           const newBody = {
             ...prev,
@@ -291,167 +282,6 @@ const AddSession = ({ add, match, Bid }) => {
       console.log(e);
     }
   }
-  console.log("state", match); // useEffect(() => {
-  //   if (socket && socket.connected) {
-  //     socket.onevent = async (packet) => {
-  //       const data = packet.data[1];
-  //       if (packet.data[0] === "match_bet") {
-  //         const data = packet.data[1];
-  //         try {
-  //           if (data?.betPlaceData?.match_id === match?.id) {
-  //             setteamRates({
-  //               teamA: data?.teamA_rate ? data?.teamA_rate : 0,
-  //               teamB: data?.teamB_rate ? data?.teamB_rate : 0,
-  //               teamC: data?.teamC_rate ? data?.teamC_rate : 0,
-  //             });
-  //             // dispatch(setBookMakerBetRate((prev) => [body, ...prev]));
-
-  //             if (
-  //               data &&
-  //               data?.betPlaceData?.marketType == "MANUAL BOOKMAKER"
-  //             ) {
-  //               const body = {
-  //                 id: data?.betPlaceData?.id,
-  //                 isActive: true,
-  //                 createAt: data?.betPlaceData?.createAt,
-  //                 updateAt: data?.betPlaceData?.createAt,
-  //                 createdBy: null,
-  //                 deletedAt: null,
-  //                 user_id: null,
-  //                 match_id: data?.betPlaceData?.match_id,
-  //                 bet_id: data?.betPlaceData?.bet_id,
-  //                 result: "pending",
-  //                 team_bet: data?.betPlaceData?.team_bet,
-  //                 odds: data?.betPlaceData?.odds,
-  //                 win_amount: null,
-  //                 loss_amount: null,
-  //                 bet_type: data?.betPlaceData?.bet_type,
-  //                 country: null,
-  //                 ip_address: null,
-  //                 rate: null,
-  //                 deleted_reason: data?.betPlaceData?.deleted_reason || null,
-  //                 userName: data?.betPlaceData?.userName,
-  //                 myStack: data?.betPlaceData?.myStack,
-  //                 marketType: data?.betPlaceData?.marketType,
-  //                 amount:
-  //                   data?.betPlaceData?.stack || data?.betPlaceData?.stake,
-  //               };
-  //               // dispatch(setBookmakerTeamRates(teamRates));
-  //               dispatch(
-  //                 setBookMakerBetRate((prev) => {
-  //                   // Create a new array by adding `body` at the beginning and spreading the previous values
-  //                   const newData = [body, ...prev];
-
-  //                   // Modify the `newData` array if needed
-
-  //                   // Return the modified `newData` array
-  //                   return newData;
-  //                 })
-  //               );
-  //             }
-  //           }
-  //         } catch (err) {
-  //           console.log(err?.message);
-  //         }
-  //       }
-
-  //       if (packet.data[0] === "updateRate_user") {
-  //         if (data?.matchId === match?.id) {
-  //           if (!data?.lock) {
-  //             if (data?.isTab) {
-  //               setIsTeamBackUnlock(false);
-  //               setTeamARate(data.teamA_Back);
-  //               setTeamBRate(data.teamB_Back);
-  //               setTeamCRate(data.teamC_Back);
-  //             } else {
-  //               setTeamBall((prevState) => ({
-  //                 ...prevState,
-  //                 isABall: false,
-  //                 isBBall: false,
-  //                 isCBall: false,
-  //               }));
-  //               setIsTeamALock(data?.teamA_suspend);
-  //               setIsTeamBLock(data?.teamB_suspend);
-  //               setIsTeamCLock(data?.teamC_suspend);
-
-  //               setIsTeamASuspend(data?.teamA_suspend);
-  //               setTeamARate(data?.teamA_Back);
-  //               setTeamALayValue(data?.teamA_lay);
-
-  //               setIsTeamBSuspend(data?.teamB_suspend);
-  //               setTeamBRate(data?.teamB_Back);
-  //               setTeamBLayValue(data?.teamB_lay);
-
-  //               setIsTeamCSuspend(data.teamC_suspend);
-  //               setTeamCRate(data.teamC_Back);
-  //               setTeamCLayValue(data.teamC_lay);
-  //             }
-
-  //             setTeamSuspend((prevState) => ({
-  //               ...prevState,
-  //               teamA_suspend: data?.teamA_suspend,
-  //               teamB_suspend: data?.teamB_suspend,
-  //               teamC_suspend: data?.teamC_suspend,
-  //             }));
-  //           } else {
-  //             if (data.teamA_suspend == "Ball Started") {
-  //               setTeamBall((prevState) => ({
-  //                 ...prevState,
-  //                 isABall: true,
-  //                 isBBall: true,
-  //                 isCBall: true,
-  //               }));
-  //             } else {
-  //               setIsTeamASuspend(data?.teamA_suspend);
-  //               setIsTeamBSuspend(data?.teamB_suspend);
-  //               setIsTeamCSuspend(data?.teamC_suspend);
-  //               setIsTeamBackUnlock(true);
-  //               setTeamBall((prevState) => ({
-  //                 ...prevState,
-  //                 isABall: false,
-  //                 isBBall: false,
-  //                 isCBall: false,
-  //               }));
-  //             }
-  //             setTeamSuspend((prevState) => ({
-  //               ...prevState,
-  //               teamA_suspend: data?.teamA_suspend,
-  //               teamB_suspend: data?.teamB_suspend,
-  //               teamC_suspend: data?.teamC_suspend,
-  //             }));
-  //           }
-  //         }
-  //       }
-
-  //       if (packet.data[0] === "matchDeleteBet") {
-  //         const value = packet.data[1];
-  //         try {
-  //           const updatedAllBet = bookMakerBetRates.map((currentMatch) => {
-  //             if (currentMatch.match_id === value?.matchId) {
-  //               if (value?.betPlaceIds.includes(currentMatch.id)) {
-  //                 return {
-  //                   ...currentMatch,
-  //                   deleted_reason: value?.deleted_reason,
-  //                 };
-  //               }
-  //             }
-  //             return currentMatch;
-  //           });
-
-  //           dispatch(setBookMakerBetRate(updatedAllBet));
-  //           // setBookMakerBetRate
-  //           setteamRates({
-  //             teamA: value?.teamA_rate ? value?.teamA_rate : 0,
-  //             teamB: value?.teamB_rate ? value?.teamB_rate : 0,
-  //             teamC: value?.teamC_rate ? value?.teamC_rate : 0,
-  //           });
-  //         } catch (err) {
-  //           console.log(err?.message);
-  //         }
-  //       }
-  //     };
-  //   }
-  // }, [socket]);
 
   const handleGap = (back, lay) => {
     if (incGap < 1) {
@@ -3326,26 +3156,6 @@ const AddSession = ({ add, match, Bid }) => {
             return;
           }
 
-          // socket.emit("updateRate", {
-          //   matchId: match?.id,
-          //   id: Bid,
-          //   teamA: match?.teamA,
-          //   teamB: match?.teamB,
-          //   teamC: match?.teamC,
-          //   betId: localSelectedBookmaker?.betId,
-          //   teamA_lay: value ? value + 1 : "",
-          //   teamA_Back: value ? value : "",
-          //   teamA_suspend: false,
-          //   teamB_lay: "",
-          //   teamB_Back: "",
-          //   teamB_suspend: true,
-          //   teamC_lay: "",
-          //   teamC_Back: "",
-          //   teamC_suspend: true,
-          //   layLock: false,
-          //   isSingle: true,
-          // });
-
           setLocalQuickBookmaker((prev) => {
             const newBody = {
               ...prev,
@@ -3388,26 +3198,6 @@ const AddSession = ({ add, match, Bid }) => {
             return;
           }
 
-          // socket.emit("updateRate", {
-          //   matchId: match?.id,
-          //   id: Bid,
-          //   teamA: match?.teamA,
-          //   teamB: match?.teamB,
-          //   teamC: match?.teamC,
-          //   betId: localSelectedBookmaker?.betId,
-          //   teamB_lay: value + 1,
-          //   teamB_Back: value,
-          //   teamB_suspend: false,
-          //   teamA_lay: "",
-          //   teamA_Back: "",
-          //   teamA_suspend: true,
-          //   teamC_lay: "",
-          //   teamC_Back: "",
-          //   teamC_suspend: true,
-          //   layLock: false,
-          //   isSingle: true,
-          // });
-
           setLocalQuickBookmaker((prev) => {
             const newBody = {
               ...prev,
@@ -3449,26 +3239,6 @@ const AddSession = ({ add, match, Bid }) => {
           if (!value) {
             return;
           }
-
-          // socket.emit("updateRate", {
-          //   matchId: match?.id,
-          //   id: Bid,
-          //   teamA: match?.teamA,
-          //   teamB: match?.teamB,
-          //   teamC: match?.teamC,
-          //   betId: localSelectedBookmaker?.betId,
-          //   teamC_lay: value + 1,
-          //   teamC_Back: value,
-          //   teamC_suspend: false,
-          //   teamB_lay: "",
-          //   teamB_Back: "",
-          //   teamB_suspend: true,
-          //   teamA_lay: "",
-          //   teamA_Back: "",
-          //   teamA_suspend: true,
-          //   layLock: false,
-          //   isSingle: true,
-          // });
 
           setLocalQuickBookmaker((prev) => {
             const newBody = {

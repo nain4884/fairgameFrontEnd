@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,6 @@ import {
 } from "../../newStore/reducers/matchDetails";
 import { setRole } from "../../newStore";
 import NotificationModal from "../NotificationModal";
-import { toast } from "react-toastify";
 
 const ManualSeprateBox = ({
   color,
@@ -46,18 +45,16 @@ const ManualSeprateBox = ({
   placeBetData,
   setFastBetLoading,
   closeModal,
-  handleRateChange,
   updateRate,
 }) => {
   const theme = useTheme();
   const { axios } = setRole();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isBack, setIsBack] = React.useState(false);
-  const [isSessionYes, setIsSessionYes] = React.useState(false);
-  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
+  const [isBack, setIsBack] = useState(false);
+  const [isSessionYes, setIsSessionYes] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");

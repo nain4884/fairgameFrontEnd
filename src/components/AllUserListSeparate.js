@@ -147,39 +147,6 @@ const AllUserListSeparate = ({
   return (
     <Box key={index} sx={{ width: "100%" }}>
       <Box
-        // onClick={() => {
-        //   if (!["user"].includes(item?.role)) {
-        //     if (showSubUsers?.value && showSubUsers?.id === item?.userId) {
-        //       setSubSusers({
-        //         ...showSubUsers,
-        //         value: false,
-        //         id: "",
-        //       });
-        //       setShowChildUserList(false);
-        //     } else {
-        //       setSubSusers({
-        //         ...showSubUsers,
-        //         value: true,
-        //         id: item?.userId,
-        //       });
-        //       setShowChildUserList(true);
-        //     }
-        //   } else {
-        //     if (showSessionResultList) {
-        //       setShowSessionResultList((prev) => !prev);
-        //     } else {
-        //       getBetAndSessionData();
-        //       setShowSessionResultList(true);
-        //     }
-        //   }
-        //   // if (item?.role !== "user") {
-        //   //   setShowChildUserList(true);
-        //   //   setSelectedUserId(item?.userId);
-        //   // } else if (item?.role === "user") {
-        //   //   setShowSessionResultList((prev) => !prev);
-        //   //   setSelectedUserId(item?.userId);
-        //   // }
-        // }}
         sx={{
           width: "100%",
           height: "45px",

@@ -2,7 +2,6 @@ import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import MoneyBox from "./MoneyBox";
-import SeprateBox from "./SeprateBox";
 import { apiBasePath } from "../helper/constants";
 import { BallStart } from "../../assets";
 import { useEffect } from "react";
@@ -15,16 +14,12 @@ const ManualBoxComponent = ({
   data,
   team,
   typeOfBet,
-  align,
   rate,
   allRates,
-  lock,
   teamImage,
   newData,
-  suspendedData,
   showBox,
   livestatus,
-  isRound,
   matchOddsData,
   ballStatus,
   isBall,
@@ -37,7 +32,7 @@ const ManualBoxComponent = ({
   placeBetData,
   setFastBetLoading,
   isTeamC,
-  handleRateChange
+  handleRateChange,
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
@@ -61,8 +56,8 @@ const ManualBoxComponent = ({
             ? 0
             : Math.round(getValue)
           : getValue >= 100
-            ? 100
-            : Math.round(getValue);
+          ? 100
+          : Math.round(getValue);
       let returnValue;
       if (type == "back") {
         let check = value % 1;
@@ -84,8 +79,8 @@ const ManualBoxComponent = ({
             ? 0
             : Math.round(getValue)
           : getValue >= 100
-            ? 100
-            : Math.round(getValue);
+          ? 100
+          : Math.round(getValue);
       let returnValue;
       if (type == "back") {
         let check = value % 1;
@@ -127,24 +122,6 @@ const ManualBoxComponent = ({
             alignItems: "center",
           }}
         >
-          {/* {name != "DRAW" ? (
-            <></>
-          ) : (
-            <img
-              src={name == "INDIA" ? INDIA : PAKISTAN}
-              style={{
-                width: "22px",
-                height: "25px",
-                marginLeft: "10px",
-                backgroundSize: "contains",
-              }}
-              alt="draw"
-            />
-            <Box
-              sx={{ width: "22px", height: "25px", marginLeft: "10px" }}
-            ></Box>
-          )} */}
-
           {teamImage != null && (
             <>
               <img
@@ -170,7 +147,7 @@ const ManualBoxComponent = ({
               marginLeft: "10px",
               marginRight: "10px",
               width: { mobile: "113px", table: "100%", laptop: "100%" },
-              textTransform: "capitalize"
+              textTransform: "capitalize",
             }}
           >
             {name}
@@ -217,8 +194,8 @@ const ManualBoxComponent = ({
             ></Box>
           )}
           {!["ACTIVE", "", undefined, null].includes(status) ||
-            newData?.bettings?.length === 0 ||
-            livestatus ? (
+          newData?.bettings?.length === 0 ||
+          livestatus ? (
             <Box
               sx={{
                 background: "rgba(0,0,0,1)",
@@ -275,7 +252,13 @@ const ManualBoxComponent = ({
                     back={true}
                     currentMatch={newData}
                     // lock={lock}
-                    lock={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 2, "back") > 0 ? false : true : true}
+                    lock={
+                      matchOddsData?.back
+                        ? handleDecimal(matchOddsData?.back, 2, "back") > 0
+                          ? false
+                          : true
+                        : true
+                    }
                     rates={allRates}
                     value={
                       matchOddsData?.back
@@ -309,7 +292,13 @@ const ManualBoxComponent = ({
                     back={true}
                     currentMatch={newData}
                     // lock={lock}
-                    lock={matchOddsData?.back ? handleDecimal(matchOddsData?.back, 1, "back") > 0 ? false : true : true}
+                    lock={
+                      matchOddsData?.back
+                        ? handleDecimal(matchOddsData?.back, 1, "back") > 0
+                          ? false
+                          : true
+                        : true
+                    }
                     rates={allRates}
                     // value={matchOddsData?.back ? matchOddsData?.back - 1 : 0}
                     value={
@@ -401,7 +390,13 @@ const ManualBoxComponent = ({
                     currentMatch={newData}
                     rates={allRates}
                     // lock={lock}
-                    lock={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 1, "") > 0 ? false : true : true}
+                    lock={
+                      matchOddsData?.lay
+                        ? handleDecimal(matchOddsData?.lay, 1, "") > 0
+                          ? false
+                          : true
+                        : true
+                    }
                     // value={matchOddsData?.lay ? matchOddsData?.lay + 1 : 0}
                     value={
                       matchOddsData?.lay
@@ -433,7 +428,13 @@ const ManualBoxComponent = ({
                     currentMatch={newData}
                     rates={allRates}
                     // lock={lock}
-                    lock={matchOddsData?.lay ? handleDecimal(matchOddsData?.lay, 2, "") > 0 ? false : true : true}
+                    lock={
+                      matchOddsData?.lay
+                        ? handleDecimal(matchOddsData?.lay, 2, "") > 0
+                          ? false
+                          : true
+                        : true
+                    }
                     // value={matchOddsData?.lay ? matchOddsData?.lay + 2 : 0}
                     value={
                       matchOddsData?.lay
