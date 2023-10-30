@@ -82,6 +82,9 @@ const CustomSessionResult = ({
       setLoading({ id: "", value: false });
       toast.success(data?.message);
     } catch (e) {
+      if (e?.response?.data?.statusCode === 403) {
+        onClick();
+      }
       setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
@@ -327,7 +330,8 @@ const CustomSessionResult = ({
           e.stopPropagation();
           onClick();
         }}
-        src={CancelDark} alt="Cancel"
+        src={CancelDark}
+        alt="Cancel"
         style={{ width: "25px", height: "25px", cursor: "pointer" }}
       />
     </Box>
