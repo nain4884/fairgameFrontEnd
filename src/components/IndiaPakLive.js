@@ -25,6 +25,14 @@ import {
   setSessionResultRefresh,
 } from "../newStore/reducers/expertMatchDetails";
 import { useNavigate } from "react-router-dom";
+import styled from "@emotion/styled";
+
+const CustomDisableInput = styled(TextField)(() => ({
+  ".MuiInputBase-input.Mui-disabled": {
+    WebkitTextFillColor: "#000 !important",
+    color: "#000",
+  },
+}));
 
 const IndiaPakLive = React.forwardRef(
   ({ createSession, match, sessionEvent, proLoss1, setCheckBetId }, ref) => {
@@ -1402,7 +1410,7 @@ const AddSession = ({
                 }}
               >
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                  <TextField
+                  <CustomDisableInput
                     type="Number"
                     autoComplete="off"
                     value={Detail?.Detail?.l_yes_rate}
@@ -1463,7 +1471,7 @@ const AddSession = ({
                     isDisabled={false}
                     onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
                   > */}
-                  <TextField
+                  <CustomDisableInput
                     type="Number"
                     disabled={true}
                     value={
@@ -1499,7 +1507,7 @@ const AddSession = ({
                 }}
               >
                 <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
-                  <TextField
+                  <CustomDisableInput
                     disabled={true}
                     autoComplete="off"
                     type="Number"
