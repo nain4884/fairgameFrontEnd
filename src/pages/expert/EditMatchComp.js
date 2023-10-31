@@ -235,7 +235,7 @@ const EditMatchComp = () => {
       request.append("manaual_session_min_bet", Detail[18].val);
       request.append("betfair_match_min_bet", Detail[18].val);
       request.append("competitionId", Detail[34].val);
-      request.append("competitionName", Detail[33].val);
+      request.append("competitionName", Detail[22].val);
       console.log("request", quick_bookmaker);
       console.log(Object.fromEntries(request), "request");
       const { data } = await axios.post(`/game-match/addmatch`, request);
@@ -355,7 +355,12 @@ const EditMatchComp = () => {
             ...Detail[23],
             val: response?.data?.EventId,
           },
+          20: {
+            ...Detail[20],
+            val: response?.data?.marketId,
+          },
         });
+        setMarketId(response?.data?.marketId);
       }
     } catch (e) {
       console.log(e);

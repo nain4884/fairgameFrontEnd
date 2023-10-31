@@ -180,6 +180,7 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                         element={element}
                         getListOfUser={getListOfUser}
                         currentPage={currentPage}
+                        show={show}
                       />
                     );
                   } else {
@@ -198,6 +199,7 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                         element={element}
                         getListOfUser={getListOfUser}
                         currentPage={currentPage}
+                        show={show}
                       />
                     );
                   }

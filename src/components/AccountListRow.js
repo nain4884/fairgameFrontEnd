@@ -27,6 +27,7 @@ const AccountListRow = ({
   handleExport,
   showCReport,
   showUserDetails,
+  show
 }) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState({});
@@ -212,7 +213,7 @@ const AccountListRow = ({
           >
             {element?.userName}
           </Typography>
-          {showOptions && element?.role === "user" && (
+          {showOptions && element?.role === "user" && !show && (
             <EditOutlinedIcon
               fontSize="medium"
               onClick={() => {
