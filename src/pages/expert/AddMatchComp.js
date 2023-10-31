@@ -216,6 +216,18 @@ const AddMatchComp = () => {
         return false;
       }
 
+      if (Detail[18].val <= 0) {
+        setError({
+          ...Error,
+
+          18: {
+            ...Error[18],
+            val: true,
+          },
+        });
+        return false;
+      }
+
       let request = new FormData();
       let i;
       for (i = 0; i < 21; i++) {
@@ -436,7 +448,9 @@ const AddMatchComp = () => {
         setshow3(true);
       }
     }
+  }, [Detail[9].val, Detail[13].val, Detail[4].val]);
 
+  useEffect(() => {
     if (Detail[5].val !== "") {
       setDetail({
         ...Detail,
@@ -446,7 +460,7 @@ const AddMatchComp = () => {
         },
       });
     }
-  }, [Detail[9].val, Detail[13].val, Detail[4].val, Detail[5].val]);
+  }, [Detail[5].val]);
 
   return (
     <Background>

@@ -218,6 +218,17 @@ const EditMatchComp = () => {
         });
         return false;
       }
+      if (Detail[18].val <= 0) {
+        setError({
+          ...Error,
+
+          18: {
+            ...Error[18],
+            val: true,
+          },
+        });
+        return false;
+      }
 
       let request = new FormData();
       let i;
@@ -289,7 +300,7 @@ const EditMatchComp = () => {
           },
           18: {
             ...Detail[18],
-            val: "100",
+            val: response?.data?.betfair_match_min_bet,
           },
           2: {
             ...Detail[2],
@@ -562,17 +573,7 @@ const EditMatchComp = () => {
         setshow3(true);
       }
     }
-
-    if (Detail[5].val !== "") {
-      setDetail({
-        ...Detail,
-        18: {
-          ...Detail[18],
-          val: "100",
-        },
-      });
-    }
-  }, [Detail[9].val, Detail[13].val, Detail[4].val, Detail[5].val]);
+  }, [Detail[9].val, Detail[13].val, Detail[4].val]);
 
   return (
     <Background>
