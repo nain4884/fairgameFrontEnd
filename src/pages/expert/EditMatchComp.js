@@ -12,7 +12,7 @@ import DropDownSimple from "../../components/DropdownSimple";
 import { ArrowDownBlack, Upload } from "../../expert/assets";
 import LabelValueComponent from "./LabelValueComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
+import { setAllEventSession, setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
 
 const imputStyle = {
   fontSize: { mobile: "14px", laptop: "14px", fontWeight: "600" },
@@ -381,6 +381,7 @@ const EditMatchComp = () => {
   const getAllMatch = async () => {
     try {
       let response = await axios.get(`/game-match/getLiveMatchSession`);
+      dispatch(setAllEventSession(response.data.data[0]));
       dispatch(setAllMatchs(response.data.data[0]));
     } catch (e) {
       console.log(e);
