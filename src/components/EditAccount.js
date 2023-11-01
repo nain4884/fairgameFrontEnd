@@ -52,14 +52,14 @@ const EditAccount = () => {
     8: { field: "creditReference", val: 0 },
     9: { field: "roleId", val: "" },
     10: { field: "uplinePertnerShip", val: 0 },
-    11: { field: "myPertnerShip", val: null },
+    11: { field: "myPertnerShip", val: "" },
     12: { field: "downLinePertnerShip", val: 0 },
     13: { field: "remark", val: "" },
     14: { field: "adminTransPassword", val: "" },
     15: { field: "myPartnership", val: 0 },
-    16: { field: "sessionComisssion", val: null },
-    17: { field: "matchTypeComission", val: null },
-    18: { field: "matchComission", val: null },
+    16: { field: "sessionComisssion", val: "" },
+    17: { field: "matchTypeComission", val: "" },
+    18: { field: "matchComission", val: "" },
   });
   const [error, setError] = useState({
     1: { field: "userName", val: false },
@@ -583,7 +583,7 @@ const EditAccount = () => {
                     containerStyle={containerStyles}
                     titleStyle={titleStyles}
                     inputStyle={imputStyle}
-                    placeholder={"Mobile (Optional)"}
+                    // placeholder={"Mobile (Optional)"}
                     inputContainerStyle={{
                       ...inputContainerStyle,
                       height: { laptop: "45px", mobile: "36px" },
@@ -595,7 +595,7 @@ const EditAccount = () => {
                     error={error}
                     value={Detail[6]?.val}
                     place={6}
-                    type={"Number"}
+                    type="number"
                     disabled={true}
                   />
                 </div>
@@ -685,7 +685,7 @@ const EditAccount = () => {
                           event.preventDefault();
                         }
                       }}
-                      type={"Number"}
+                      type="number"
                       disabled={true}
                     />
                     {error[8]?.val && (
@@ -755,7 +755,7 @@ const EditAccount = () => {
                     error={error}
                     place={11}
                     required={true}
-                    type={"Number"}
+                    type="number"
                   />
                 ) : (
                   <Input
@@ -786,7 +786,7 @@ const EditAccount = () => {
                     error={error}
                     place={11}
                     value={Detail[11]?.val}
-                    type={"Number"}
+                    type="number"
                     onKeyDown={(event) => {
                       if (
                         event.code === "Space" ||
@@ -837,8 +837,8 @@ const EditAccount = () => {
                 error={error}
                 place={12}
                 value={Detail[12]?.val}
-                type={"Number"}
-                placeholder={Detail[12].val}
+                type="number"
+                // placeholder={Detail[12].val}
                 // autoMaticFillValue={Detail[12].val}
               />
               {error[12]?.val && (
@@ -1072,7 +1072,7 @@ const EditAccount = () => {
                   background: "#0B4F26",
                   width: "100%",
                   display: "flex",
-                  justifyContent: "center",
+                  justify: "center",
                   border: "2px solid black",
                   alignItems: "center",
                   borderRadius: "5px",
@@ -1105,7 +1105,7 @@ const EditAccount = () => {
               background: "#0B4F26",
               width: "50%",
               display: "flex",
-              justifyContent: "center",
+              justify: "center",
               border: "2px solid black",
               alignItems: "center",
               borderRadius: "5px",

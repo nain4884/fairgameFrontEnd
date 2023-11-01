@@ -54,14 +54,14 @@ const AddAccount = () => {
     8: { field: "creditReference", val: 0 },
     9: { field: "roleId", val: "" },
     10: { field: "uplinePertnerShip", val: 0 },
-    11: { field: "myPertnerShip", val: null },
+    11: { field: "myPertnerShip", val: "" },
     12: { field: "downLinePertnerShip", val: 0 },
     13: { field: "remark", val: "" },
     14: { field: "adminTransPassword", val: "" },
     15: { field: "myPartnership", val: 0 },
-    16: { field: "sessionComisssion", val: null },
-    17: { field: "matchTypeComission", val: null },
-    18: { field: "matchComission", val: null },
+    16: { field: "sessionComisssion", val: "" },
+    17: { field: "matchTypeComission", val: "" },
+    18: { field: "matchComission", val: "" },
   });
   const [error, setError] = useState({
     1: { field: "userName", val: false },

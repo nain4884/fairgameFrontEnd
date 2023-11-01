@@ -14,7 +14,7 @@ const dailogModalSlice = createSlice({
     },
     reducers: {
         setDailogData: (state, action) => {
-            state.isModalOpen = action.payload.isModalOpen
+            state.isModalOpen = action.payload.isModalOpen ?? false
             state.showRight = action.payload.showRight ?? false
             state.bodyText = action.payload.bodyText ?? ""
         },
