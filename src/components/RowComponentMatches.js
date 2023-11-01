@@ -397,7 +397,7 @@ const RowComponentMatches = ({
                   flexDirection: { laptop: "row", mobile: "column" },
                 }}
               >
-                <Box Box sx={{ width: "100%", display: "flex", gap: 1 }}>
+                <Box sx={{ width: "100%", display: "flex", gap: 1 }}>
                   <Box
                     sx={{
                       width: { mobile: "100%", laptop: "100%", tablet: "100%" },
@@ -462,7 +462,7 @@ const RowComponentMatches = ({
                 flexDirection: { laptop: "row", mobile: "column" },
               }}
             >
-              <Box Box sx={{ width: "100%", display: "flex", gap: 1 }}>
+              <Box sx={{ width: "100%", display: "flex", gap: 1 }}>
                 <Box
                   sx={{
                     width: { mobile: "100%", laptop: "50%", tablet: "100%" },
