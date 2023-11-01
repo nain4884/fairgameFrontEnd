@@ -282,7 +282,6 @@ const Input = ({
               disabled: disabled,
               placeholder: placeholder,
               disableUnderline: true,
-              justifyContent: "center",
               ...inputProps,
               // value: Detail[9]?.val==="user" && Detail[place]?.val,
 

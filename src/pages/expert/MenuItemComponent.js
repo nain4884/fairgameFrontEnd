@@ -175,9 +175,10 @@ const MenutItemsComponent = ({
             if (event.id === x.id) {
               return (
                 <>
-                  {event?.bookmakers?.map((element) => {
+                  {event?.bookmakers?.map((element, indexes) => {
                     return (
                       <Box
+                        key={element.id}
                         // onClick={(e) => {
                         //   if (activeUser == "1") {
                         //     dispatch(setSessionBetId(""));
