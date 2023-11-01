@@ -10,7 +10,7 @@ const DailogModal = ({ }) => {
         <Modal
             onClose={() => dispatch(setDailogData({ isModalOpen: false }))}
             sx={{ alignItems: 'center', justifyContent: 'center', display: 'flex', outline: 'none' }}
-            open={dailogModal?.isModalOpen}
+            open={dailogModal?.isModalOpen||false}
             disableAutoFocus={true}
         >
             <Box sx={{ width: '260px', minHeight: "85px", borderRadius: "6px", flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: 'white', alignSelf: 'center', display: 'flex', paddingTop: "15px", paddingBottom: '5px', position: 'absolute', top: '35%', zIndex: 999 }}>

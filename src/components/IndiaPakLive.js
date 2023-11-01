@@ -416,8 +416,8 @@ const IndiaPakLive = React.forwardRef(
                 justify={"center"}
                 sx={{ width: "100%" }}
               >
-                {rates?.map((item) => (
-                  <Grid item xs={2} md={2}>
+                {rates?.map((item,index) => (
+                  <Grid item xs={2} md={2} key={index}>
                     <Box
                       onClick={(e) => {
                         e.preventDefault();
