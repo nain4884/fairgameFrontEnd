@@ -1,6 +1,4 @@
-import React from 'react'
-import { useEffect } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 function useOuterClick(callback) {
     const callbackRef = useRef(); // initialize mutable ref, which stores callback

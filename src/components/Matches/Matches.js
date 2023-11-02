@@ -1,9 +1,7 @@
-import { Pagination, Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, Pagination } from "@mui/material";
 import { memo, useEffect, useState } from "react";
-import { } from "@mui/material";
-import "../index.css";
-import Odds from "./Odds";
 import { useDispatch, useSelector } from "react-redux";
+import { setRole } from "../../newStore";
 import {
   setAllBetRate,
   setAllSessionBets,
@@ -12,9 +10,10 @@ import {
   setSessionOddsLive,
   setUserAllMatches,
 } from "../../newStore/reducers/matchDetails";
-import { setRole } from "../../newStore";
-import constants from "../helper/constants";
 import CustomLoader from "../helper/CustomLoader";
+import constants from "../helper/constants";
+import "../index.css";
+import Odds from "./Odds";
 
 const MatchesComponent = ({
   doNavigateWithState,

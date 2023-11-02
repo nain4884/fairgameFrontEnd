@@ -1,6 +1,13 @@
 import React, { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-
+import Matches from "./pages/matches";
+import MasterRoutes from "./pages/master";
+import ExpertRoutes from "./pages/expert";
+import ForgotPassword from "./pages/ForgotPassword";
+import Verification from "./pages/Varification";
+import NewPassword from "./pages/NewPassword";
+import AdminRoutes from "./pages/fairGameAdmin";
+import USerRoutes from "./pages/matches/UserRoutes";
 import ModalMUI from "@mui/material/Modal";
 import { AuthProvider } from "./Authprovider";
 import PageNotFound from "./components/PageNotFound";

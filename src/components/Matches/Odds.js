@@ -1,13 +1,13 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
+import Axios from "axios";
+import moment from "moment-timezone";
 import React, { memo, useContext, useEffect, useState } from "react";
-import SeparateBox from "./SeparateBox";
+import { SocketContext } from "../../context/socketContext";
 import Divider from "../helper/Divider";
 import { apiBasePath, microServiceApiPath } from "../helper/constants";
-import { SocketContext } from "../../context/socketContext";
-import Axios from "axios";
 import { formatNumber } from "../helper/helper";
-import moment from "moment-timezone";
+import SeparateBox from "./SeparateBox";
 let matchOddsCount = 0;
 const Odds = ({ onClick, top, blur, match }) => {
   const theme = useTheme();

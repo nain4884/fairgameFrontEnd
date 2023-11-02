@@ -1,7 +1,6 @@
-import React from "react";
 import { Box, Typography } from "@mui/material";
+import React, { memo } from "react";
 import "./styles.css";
-import { memo } from "react";
 const CustomLoader = ({ text, height, width }) => {
   return (
     <Box

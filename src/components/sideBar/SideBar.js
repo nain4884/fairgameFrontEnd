@@ -90,6 +90,7 @@ const SideBar = ({ mobileShow }) => {
             }}
           >
             <img
+              alt="down"
               style={{
                 width: "15px",
                 height: "8px",

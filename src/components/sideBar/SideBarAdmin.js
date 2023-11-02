@@ -5,98 +5,9 @@ import { setRole } from "../../newStore";
 import { ARROWDROPDOWN } from "../../admin/assets";
 
 const colors = ["#F8C851", "#FFDA7D", "#FFE7AD", "#FFF1CF", "#FFF8E6"];
-const datas = [
-  {
-    title: "Cricket",
-    values: [
-      {
-        title: "01, November, 2022",
-        values: [
-          {
-            title: "India vs Bangladesh",
-            values: [
-              {
-                title: "Match Odds 3",
-                values: false,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        title: "01, November, 2022",
-        values: [
-          {
-            title: "India vs Bangladesh",
-            values: [
-              {
-                title: "Match Odds 3",
-                values: false,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
 
-  {
-    title: "Football",
-    values: [],
-  },
-  {
-    title: "Tennis",
-    values: [],
-  },
-  {
-    title: "Ice hockey",
-    values: [],
-  },
-];
-const MinusBox = () => {
-  return (
-    <Box
-      sx={{
-        borderRadius: "10px",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
-        width: "15px",
-        height: "15px",
-        background: "black",
-      }}
-    >
-      <Typography
-        sx={{ fontSize: "12px", fontWeight: "600", color: "#FDCB52" }}
-      >
-        -
-      </Typography>
-    </Box>
-  );
-};
-const PlusBox = () => {
-  return (
-    <Box
-      sx={{
-        borderRadius: "10px",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
-        width: "15px",
-        height: "15px",
-        background: "black",
-      }}
-    >
-      <Typography
-        sx={{ fontSize: "12px", fontWeight: "600", color: "#FDCB52" }}
-      >
-        +
-      </Typography>
-    </Box>
-  );
-};
+
 const MainBox = ({ title, width, color, under, selected, sub }) => {
-  const theme = useTheme();
   return (
     <Box
       sx={{
@@ -159,6 +70,7 @@ const MainBox = ({ title, width, color, under, selected, sub }) => {
         }}
       >
         <img
+        alt="arrow dropdown"
           style={{
             width: "15px",
             height: "8px",
@@ -215,45 +127,7 @@ const RenderDates = ({ i, handleDrawerToggle }) => {
     </Box>
   );
 };
-const RenderValues = ({ i, handleDrawerToggle }) => {
-  const [selected, setSelected] = useState(false);
 
-  return (
-    <Box
-      onClick={(event) => {
-        event.stopPropagation();
-
-        setSelected(!selected);
-      }}
-      sx={{
-        width: "100%",
-        display: "flex",
-        alignSelf: "flex-end",
-        flexDirection: "column",
-      }}
-    >
-      <MainBox
-        sub={i?.sub}
-        selected={selected}
-        under={true}
-        color={colors[3]}
-        width={75}
-        title={i.title}
-      />
-      {selected &&
-        i?.values?.map((value, index) => {
-          return (
-            <RenderBets
-              handleDrawerToggle={handleDrawerToggle}
-              i={value}
-              k={index}
-              key={index}
-            />
-          );
-        })}
-    </Box>
-  );
-};
 const RenderBets = ({ i, handleDrawerToggle }) => {
   // alert(JSON.stringify(i))
   const navigate = useNavigate();
@@ -497,6 +371,7 @@ const SideBarAdmin = ({ handleDrawerToggle }) => {
             }}
           >
             <img
+            alt="arrow dropdown"
               style={{
                 width: "15px",
                 height: "8px",
