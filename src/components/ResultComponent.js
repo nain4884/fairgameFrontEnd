@@ -58,7 +58,7 @@ const ResultComponent = ({
       //   onClick();
       // }
       setLoading({ id: "", value: false });
-      toast.error(e?.response?.data?.message);
+      // toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
     }
   };
