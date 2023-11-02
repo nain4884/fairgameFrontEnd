@@ -2,18 +2,15 @@ import React, { useEffect } from "react";
 import Divider from "../../helper/Divider";
 import SessionMarketBox from "./SessionMarketBox";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import { FASTTIME, HourGlass, Info, ARROWUP } from "../../../assets";
-
+import { ARROWUP } from "../../../assets";
 import { useTheme } from "@emotion/react";
 import SmallBoxSeason from "../SmallBoxSeason";
 import { memo } from "react";
 import { useState } from "react";
 import FastTimePlaceBet from "../../FastImePlaceBet";
 import FastTime from "../../FastTime";
-import { currencyFormatter, formatNumber } from "../../helper/helper";
-import Lottie from "lottie-react";
+import { currencyFormatter } from "../../helper/helper";
 import { LockIcon } from "../../../admin/assets";
-import SmallCustomLoader from "../../helper/SmallCustomLoader";
 import { customSort } from "../../helper/util";
 import { useSelector } from "react-redux";
 const SessionMarket = ({

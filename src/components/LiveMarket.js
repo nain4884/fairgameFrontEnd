@@ -1,14 +1,10 @@
 import { useTheme } from "@emotion/react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Lottie from "lottie-react";
-import EventListing from "../../components/EventListing";
 import MatchesComponent from "../../components/Matches/Matches";
-import { HourGlass } from "../../assets";
-import { memo, useEffect } from "react";
-import CustomLoader from "../../components/helper/CustomLoader";
+import { memo } from "react";
 
 const LiveMarket = ({ selected, setLoader, loader }) => {
   const [id, setId] = useState("");

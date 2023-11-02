@@ -1,7 +1,5 @@
 import { Box, Modal, Typography } from "@mui/material";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { HourGlass } from "../assets";
-import Lottie from "lottie-react";
 import React from "react";
 
 const CountDownTimer = ({ visible, setVisible, time }) => {
