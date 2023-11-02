@@ -1,9 +1,6 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material"
-import { Background, Header } from "../../components";
+import { useMediaQuery, useTheme } from "@mui/material";
+import { Background } from "../../components";
 import AccountStatementList from "../../components/AccountStatementList";
-import YellowHeader from "../../components/yellowheader";
-import YellowHeaderMobile from "../../components/YellowHeaderMobile";
-import YellowHeaderAdmin from "../../components/YellowHeaderAdmin";
 
 const AccountStatement = () => {
     const theme = useTheme()

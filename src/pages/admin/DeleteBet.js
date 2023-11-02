@@ -1,33 +1,30 @@
-import React from "react";
-import { Typography, Box, useMediaQuery } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import "../../components/index.css";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+import _ from "lodash";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useContext } from "react";
-import { DeleteIcon } from "../../admin/assets";
-import { Background, DailogModal } from "../../components/index";
 import { useLocation, useNavigate } from "react-router-dom";
-import FullAllBets from "../../components/FullAllBets";
+import { DeleteIcon } from "../../admin/assets";
 import AddNotificationModal from "../../components/AddNotificationModal";
-import Odds from "./matches/Odds";
-import SessionMarket from "./matches/SessionMarket";
-import BookMarketer from "./matches/BookMaketer";
-import { useEffect } from "react";
+import FullAllBets from "../../components/FullAllBets";
+import CustomLoader from "../../components/helper/CustomLoader";
+import { Background, DailogModal } from "../../components/index";
+import "../../components/index.css";
+import { SocketContext } from "../../context/socketContext";
 import { setRole } from "../../newStore";
 import {
   setAllBetRate,
+  setAllSessionBets,
   setManualBookmaker,
   setQuickSession,
   setRefreshForBets,
   setSelectedMatch,
   setSelectedSessionBettings,
 } from "../../newStore/reducers/matchDetails";
-import { SocketContext } from "../../context/socketContext";
-import CustomLoader from "../../components/helper/CustomLoader";
-import { setAllSessionBets } from "../../newStore/reducers/matchDetails";
-import { GlobalStore } from "../../context/globalStore";
+import BookMarketer from "./matches/BookMaketer";
+import Odds from "./matches/Odds";
+import SessionMarket from "./matches/SessionMarket";
 import UserProfitLoss from "./matches/UserProfitLoss";
-import _ from "lodash";
 
 let matchOddsCount = 0;
 const DeleteBet = ({}) => {

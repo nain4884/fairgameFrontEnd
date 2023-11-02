@@ -5,15 +5,15 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import ModalMUI from "@mui/material/Modal";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { EyeIcon, EyeSlash } from "../../../admin/assets";
 import { setRole } from "../../../newStore";
+import BoxButton from "../../BoxButton";
 import MobileViewUserDetails from "../../MobileViewUserDetails";
 import StyledImage from "../../StyledImage";
-import BoxButton from "../../BoxButton";
-import { EyeIcon, EyeSlash } from "../../../admin/assets";
-import ModalMUI from "@mui/material/Modal";
 
 const WithDrawComponent = ({
   handleKeyDown,
@@ -67,11 +67,7 @@ const WithDrawComponent = ({
 
       setInitialBalance(newUserbalance?.current_balance);
     } else {
-      const newUserbalance = {
-        ...currentUser,
-        current_balance: initialBalance,
-      };
-
+      
       setTimeout(() => {
         setInitialBalance(currentUser?.current_balance);
       }, 51);

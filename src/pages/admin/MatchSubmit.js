@@ -1,30 +1,26 @@
-import { useEffect, useState, useContext } from "react";
-import { Typography, Box, useMediaQuery, Button } from "@mui/material";
 import { useTheme } from "@emotion/react";
-import "../../components/index.css";
-import { Background } from "../../components/index";
-import FullAllBets from "../../components/FullAllBets";
+import { Box, Button, Typography, useMediaQuery } from "@mui/material";
+import ModalMUI from "@mui/material/Modal";
+import { useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import Odds from "./matches/Odds";
-import BookMarketer from "./matches/BookMaketer";
-import SessionMarket from "./matches/SessionMarket";
-import { setRole } from "../../newStore";
-import { SocketContext } from "../../context/socketContext";
-import { useSelector, useDispatch } from "react-redux";
+import FullAllBets from "../../components/FullAllBets";
 import CustomLoader from "../../components/helper/CustomLoader";
-import { removeSocket } from "../../components/helper/removeSocket";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+import { Background } from "../../components/index";
+import "../../components/index.css";
+import { GlobalStore } from "../../context/globalStore";
+import { SocketContext } from "../../context/socketContext";
+import { setRole } from "../../newStore";
 import {
-  removeManualBookMarkerRates,
   setAllBetRate,
   setAllSessionBets,
   setMultiSelectedMatch,
-  setRefreshForBets,
+  setRefreshForBets
 } from "../../newStore/reducers/matchDetails";
-import { GlobalStore } from "../../context/globalStore";
-import { logout } from "../../newStore/reducers/auth";
+import BookMarketer from "./matches/BookMaketer";
+import Odds from "./matches/Odds";
+import SessionMarket from "./matches/SessionMarket";
 import UserProfitLoss from "./matches/UserProfitLoss";
-import ModalMUI from "@mui/material/Modal";
 
 let matchOddsCount = 0;
 const MatchSubmit = ({}) => {

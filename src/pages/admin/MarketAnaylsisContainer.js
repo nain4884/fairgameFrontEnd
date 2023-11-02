@@ -1,4 +1,4 @@
-import { Background, Header, MarketAnalysis } from "../../components";
+import { Background, MarketAnalysis } from "../../components";
 
 export default function MarketAnaylsisContainer() {
     return (

@@ -1,17 +1,17 @@
-import React from "react";
-import "./App.css";
-import Main from "./main";
 import { ThemeProvider } from "@mui/system";
-import theme from "./theme";
+import React from "react";
 import { Provider } from "react-redux";
-import store, { setRole } from "./newStore";
-import { SocketProvider } from "./context/socketContext";
-import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import "./App.css";
+import { SocketProvider } from "./context/socketContext";
+import Main from "./main";
+import store from "./newStore";
+import theme from "./theme";
 
+import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
 import { GlobalStore } from "./context/globalStore";
 
 let persistor = persistStore(store);

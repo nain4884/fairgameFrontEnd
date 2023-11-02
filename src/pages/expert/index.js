@@ -1,23 +1,21 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { memo } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import PageNotFound from "../../components/PageNotFound";
+import ForgotPassword from "../ForgotPassword";
+import NewPassword from "../NewPassword";
+import Verification from "../Varification";
+import AddBet from "./AddBet";
+import AddBookMakerMarket from "./AddBookMakerMarket";
+import AddMatchComp from "./AddMatchComp";
+import BetFairOdds from "./BetFairOdds";
+import BookMakerMarket from "./BookMakerMarket";
+import ChangePassword from "./ChangePassword.js";
+import EditMatchComp from "./EditMatchComp";
+import Header from "./Header";
 import Home1 from "./Home1";
 import Live from "./Live";
-import BetFairOdds from "./BetFairOdds";
-import MatchScreen from "./MatchScreen";
-import BookMakerMarket from "./BookMakerMarket";
-import AddBookMakerMarket from "./AddBookMakerMarket";
 import Login from "./Login";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../../Authprovider";
-import AddBet from "./AddBet";
-import { memo } from "react";
-import ForgotPassword from "../ForgotPassword";
-import Verification from "../Varification";
-import NewPassword from "../NewPassword";
-import PageNotFound from "../../components/PageNotFound";
-import ChangePassword from "./ChangePassword.js";
-import Header from "./Header";
-import AddMatchComp from "./AddMatchComp";
-import EditMatchComp from "./EditMatchComp";
+import MatchScreen from "./MatchScreen";
 
 const ExportRoutes = () => {
   const location = useLocation();

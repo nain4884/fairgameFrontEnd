@@ -1,9 +1,18 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import ChangePassword from "./ChangePassword.js";
+import jwtDecode from "jwt-decode";
+import { useContext, useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { AuthContext } from "../../Authprovider";
+import MatchSubmit1 from "../../components/MatchSubmit1.js";
+import ForgotPassword from "../ForgotPassword/index.js";
+import NewPassword from "../NewPassword/index.js";
+import Verification from "../Varification/index.js";
+import Login from "../login/index.js";
 import AccountStatement from "./AccountStatement.js";
 import AddAccount from "./AddAccount";
+import ChangePassword from "./ChangePassword.js";
 import CurrentBets from "./CurrentBets.js";
 import DeleteBet from "./DeleteBet.js";
+import EditAccountScreen from "./EditAccountScreen.js";
 import GeneralReport from "./GeneralReport.js";
 import Home from "./List_Of_Clients.js";
 import MarketAnaylsisContainer from "./MarketAnaylsisContainer.js";
@@ -12,16 +21,6 @@ import MatchSubmit from "./MatchSubmit.js";
 import ProfitLoss from "./ProfitLoss.js";
 import Reports from "./Reports.js";
 import TotalBets from "./TotalBets.js";
-import MatchSubmit1 from "../../components/MatchSubmit1.js";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../../Authprovider";
-import CustomHeader from "../../components/CommonMasterAdminLayout/Header.js";
-import Login from "../login/index.js";
-import ForgotPassword from "../ForgotPassword/index.js";
-import Verification from "../Varification/index.js";
-import NewPassword from "../NewPassword/index.js";
-import jwtDecode from "jwt-decode";
-import EditAccountScreen from "./EditAccountScreen.js";
 const MasterRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   useEffect(() => {

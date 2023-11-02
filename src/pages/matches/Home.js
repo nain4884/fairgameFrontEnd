@@ -626,7 +626,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
       return () => clearInterval(intervalId);
     }
-  }, [marketId, axios]);
+  }, [marketId]);
 
   return (
     <Box
@@ -667,10 +667,12 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 flexDirection: "column",
               }}
             >
-              <MatchComponent
-                currentMatch={currentMatch}
-                liveScoreData={liveScoreData}
-              />
+              <div style={{ width: "100%" }}>
+                <MatchComponent
+                  currentMatch={currentMatch}
+                  liveScoreData={liveScoreData}
+                />
+              </div>
               <div style={{ width: "100%" }}>
                 <MatchOdds
                   localQuickSession={localQuickSession}

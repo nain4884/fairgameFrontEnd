@@ -1,25 +1,21 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import _ from "lodash";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import {
   apiBasePath,
-  apiMicroBasePath,
-  microServiceApiPath,
+  microServiceApiPath
 } from "../components/helper/constants";
+import { removeSocket } from "../components/helper/removeSocket";
 import { setRole } from "../newStore";
-import { GlobalStore } from "./globalStore";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { logoutAuth } from "../newStore/reducers/auth";
 import {
   logoutCurrentUser,
-  removeCurrentUser,
-  setCurrentUser,
+  setCurrentUser
 } from "../newStore/reducers/currentUser";
-import _ from "lodash";
 import {
   logoutMatchDetails,
-  removeManualBookMarkerRates,
-  removeSelectedMatch,
   setAllBetRate,
   setAllSessionBets,
   setManualBookMarkerRates,
@@ -30,12 +26,9 @@ import {
   setSelectedMatch,
   setSelectedSessionBettings,
   setSessionExposure,
-  setSessionOffline,
-  setUserAllMatches,
+  setUserAllMatches
 } from "../newStore/reducers/matchDetails";
-import { removeSocket } from "../components/helper/removeSocket";
-import { logout, logoutAuth } from "../newStore/reducers/auth";
-import ResetAllState from "../components/helper/logoutUserAction";
+import { GlobalStore } from "./globalStore";
 
 export const SocketContext = createContext();
 var match_id;

@@ -1,18 +1,17 @@
 import { Box, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import StyledImage from "../../StyledImage";
-import BoxButton from "../../BoxButton";
-import { setRole } from "../../../newStore";
 import {
   EyeIcon,
   EyeIconWhite,
   EyeSlash,
   EyeSlashWhite,
 } from "../../../admin/assets";
+import { setRole } from "../../../newStore";
+import BoxButton from "../../BoxButton";
+import StyledImage from "../../StyledImage";
 import { onChangeKeyCheck } from "../../helper/PassKeyCheck";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
 
 const ChangePasswordComponent = ({
   userModal,

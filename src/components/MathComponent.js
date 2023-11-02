@@ -48,7 +48,25 @@ const MatchComponent = ({ currentMatch, liveScoreData, submit }) => {
   }, [liveScoreData]);
 
   return (
-    <>
+    <Box
+      key="odds"
+      sx={{
+        position: "relative",
+        display: "flex",
+        backgroundColor: "white",
+        padding: { mobile: "1px", laptop: ".1vh" },
+        flexDirection: "column",
+        marginY: { mobile: "2px", laptop: ".5vh" },
+        marginTop: { mobile: "0" },
+        width: { mobile: "98%", laptop: "100%" },
+        marginX: { mobile: "1vw", laptop: "0px" },
+        alignSelf: {
+          mobile: "center",
+          tablet: "center",
+          laptop: "flex-start",
+        },
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -114,7 +132,7 @@ const MatchComponent = ({ currentMatch, liveScoreData, submit }) => {
         </Box>
       </Box>
       {visible && ReactHtmlParser(liveScoreData)}
-    </>
+    </Box>
 
 
   );

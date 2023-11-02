@@ -1,5 +1,5 @@
-import { LockClosed, LockOpen } from "../../../admin/assets";
 import { Switch, styled } from "@mui/material";
+import { LockClosed, LockOpen } from "../../../admin/assets";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 72,
