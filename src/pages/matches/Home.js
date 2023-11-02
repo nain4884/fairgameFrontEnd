@@ -71,7 +71,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const [IObets, setIObtes] = useState([]);
   const [sessionBets, setSessionBets] = useState([]);
   const id = location?.state?.matchId;
-  const [matchDetail, setMatchDetail] = useState();
+  // const [matchDetail, setMatchDetail] = useState();
   const [marketId, setMarketId] = useState("");
   const [eventId, setEventId] = useState("");
   const { currentUser } = useSelector((state) => state?.currentUser);
@@ -81,7 +81,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const { socketMicro } = useContext(SocketContext);
   const [matchOddsLive, setMacthOddsLive] = useState([]);
   const [bookmakerLive, setBookmakerLive] = useState([]);
-  const [manualBookmakerData, setManualBookmakerData] = useState([]);
+  // const [manualBookmakerData, setManualBookmakerData] = useState([]);
   const [LSelectedSessionBetting, setLSelectedSessionBetting] = useState([]);
   const [localQuickSession, setLocalQuickSession] = useState([]);
   const [liveScoreData, setLiveScoreData] = useState();
@@ -92,7 +92,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const [matchId] = useState(id || sessionStorage.getItem("matchId"));
 
   const [localSessionExposer, setLocalSessionExposure] = useState(0);
-  const [sessionLock, setSessionLock] = useState(false);
+  // const [sessionLock, setSessionLock] = useState(false);
   const { geoLocation } = useSelector((state) => state.auth);
   const [sessionOff, setSessionOff] = useState([]);
   async function FetchIpAddress() {
@@ -147,9 +147,9 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         });
       }
 
-      if (manualBookmaker) {
-        setManualBookmakerData(manualBookmaker);
-      }
+      // if (manualBookmaker) {
+      //   setManualBookmakerData(manualBookmaker);
+      // }
       if (sessionOffline) {
         setSessionOff(sessionOffline);
       }
@@ -233,7 +233,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
           socketMicro.emit("score", { id: eventId });
           activateLiveMatchMarket();
-          setSessionLock(false);
+          // setSessionLock(false);
         });
         socketMicro.on("connect_error", (event) => {
           // Handle the WebSocket connection error here
@@ -252,7 +252,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               bettings: bettingToUpdate,
             };
           });
-          setSessionLock(true);
+          // setSessionLock(true);
         });
 
         socketMicro.emit("init", { id: marketId });
@@ -266,7 +266,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           socketMicro.emit("init", { id: marketId });
           socketMicro.emit("score", { id: eventId });
           activateLiveMatchMarket();
-          setSessionLock(false);
+          // setSessionLock(false);
         });
 
         socketMicro.on(`session${marketId}`, debounceSession);
@@ -326,7 +326,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       } else {
         setMacthOddsLive([]);
         setBookmakerLive([]);
-        setSessionLock(false);
+        // setSessionLock(false);
       }
     } catch (e) {
       console.log("error", e);
@@ -339,7 +339,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         socketMicro?.emit("leaveScore", { id: eventId });
         setMacthOddsLive([]);
         setBookmakerLive([]);
-        setSessionLock(false);
+        // setSessionLock(false);
       } catch (e) {
         console.log(e);
       }
@@ -453,7 +453,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       setMarketId(response.data.marketId);
       setEventId(response.data.EventId);
       activateLiveMatchEvent(response?.data?.EventId);
-      setMatchDetail(response.data);
+      // setMatchDetail(response.data);
       // dispatch(
       //   setAllSessionBets(
       //     response?.data?.betting?.filter((v) => v?.sessionBet === true) || []
@@ -545,18 +545,18 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         getThisMatch(matchId);
       }
       // getAllBetsData();
-      getAllBetsData1();
+      // getAllBetsData1();
       getButtonList();
     } catch (e) {
       console.log(e);
     }
-  }, [matchId]);
+  }, [matchId, getThisMatch, getButtonList]);
 
   useEffect(() => {
     if (refreshForBets) {
       getAllBetsData1();
     }
-  }, [refreshForBets]);
+  }, [refreshForBets, getAllBetsData1]);
 
   const handleRateChange = async () => {
     getThisMatch(matchId);
@@ -592,7 +592,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         console.log(e);
       }
     };
-  }, []);
+  }, [matchId, getThisMatch]);
 
   // const getScoreBord = async (eventId) => {
   //   // alert(1)
@@ -626,7 +626,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
       return () => clearInterval(intervalId);
     }
-  }, [marketId]);
+  }, [marketId, axios]);
 
   return (
     <Box
