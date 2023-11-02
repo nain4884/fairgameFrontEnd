@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
-import Divider from "../../../components/helper/Divider";
-import BoxComponent from "../BoxComponent";
-import { Box, Typography } from "@mui/material";
-import SmallBox from "../SmallBox";
-import Result from "../Result";
-import Stop from "../Stop";
-import { toast } from "react-toastify";
 import { useTheme } from "@emotion/react";
-import ResultComponent from "../../../components/ResultComponent";
-import { setRole } from "../../../newStore";
-import { memo } from "react";
+import { Box, Typography } from "@mui/material";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { ARROWUP } from "../../../assets";
+import ResultComponent from "../../../components/ResultComponent";
+import Divider from "../../../components/helper/Divider";
+import { setRole } from "../../../newStore";
 import { setSelectedMatch } from "../../../newStore/reducers/matchDetails";
+import BoxComponent from "../BoxComponent";
+import Result from "../Result";
+import SmallBox from "../SmallBox";
+import Stop from "../Stop";
 
 const SmallBox2 = ({ valueA, valueB }) => {
   return (

@@ -1,10 +1,10 @@
+import { useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
-import { useMediaQuery, useTheme } from "@mui/material";
-import { Background } from "../../components";
-import { TransPasswordComponent } from "../../components/TransPasswordComponent";
-import ChangePasswordComponent from "../../components/ChangePasswordComponent";
 import { toast } from "react-toastify";
+import { Background } from "../../components";
+import ChangePasswordComponent from "../../components/ChangePasswordComponent";
+import { TransPasswordComponent } from "../../components/TransPasswordComponent";
 import { setRole } from "../../newStore";
 
 export default function ChangePassword() {

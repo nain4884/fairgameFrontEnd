@@ -1,21 +1,15 @@
 import { Box, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import StyledImage from "../../StyledImage";
-import BoxButton from "../../BoxButton";
 import {
-  DeleteIcon,
   EyeIcon,
-  EyeIconWhite,
-  EyeSlash,
-  EyeSlashWhite,
-  LockClosed,
-  LockOpen,
+  EyeSlash
 } from "../../../admin/assets";
 import { setRole } from "../../../newStore";
+import BoxButton from "../../BoxButton";
+import StyledImage from "../../StyledImage";
 import BoxButtonWithSwitch from "./BoxButtonWithSwitch";
-import { useEffect } from "react";
 
 const LockUnlockComponent = ({
   setShowUserModal,

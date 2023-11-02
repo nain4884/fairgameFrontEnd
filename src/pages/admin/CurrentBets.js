@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import { Background, Header } from "../../components";
-import BetsList from "../../components/BetsList";
-import YellowHeaderBets from "../../components/yellowHeaderBets";
-import constants from "../../components/helper/constants";
-import { setRole } from "../../newStore";
-import CustomLoader from "../../components/helper/CustomLoader";
 import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Background } from "../../components";
+import BetsList from "../../components/BetsList";
+import CustomLoader from "../../components/helper/CustomLoader";
+import constants from "../../components/helper/constants";
+import YellowHeaderBets from "../../components/yellowHeaderBets";
+import { setRole } from "../../newStore";
 
 const CurrentBets = () => {
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);

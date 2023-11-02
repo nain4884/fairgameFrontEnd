@@ -1,6 +1,5 @@
-import { Box } from "@mui/material";
-import AccountStatementList from "../../components/AccountStatementList";
 import { Background } from "../../components";
+import AccountStatementList from "../../components/AccountStatementList";
 
 const AccountStatement = () => {
   return (

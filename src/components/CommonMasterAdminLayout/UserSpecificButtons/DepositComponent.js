@@ -8,11 +8,11 @@ import {
 import ModalMUI from "@mui/material/Modal";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import MobileViewUserDetails from "../../MobileViewUserDetails";
-import BoxButton from "../../BoxButton";
 import { toast } from "react-toastify";
-import { setRole } from "../../../newStore";
 import { EyeIcon, EyeSlash } from "../../../admin/assets";
+import { setRole } from "../../../newStore";
+import BoxButton from "../../BoxButton";
+import MobileViewUserDetails from "../../MobileViewUserDetails";
 import StyledImage from "../../StyledImage";
 
 const DepositComponent = ({

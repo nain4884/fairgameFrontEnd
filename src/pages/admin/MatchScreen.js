@@ -1,39 +1,39 @@
+import { useTheme } from "@emotion/react";
+import { Box, Menu, Typography, useMediaQuery } from "@mui/material";
+import Axios from "axios";
 import React, {
   memo,
   useCallback,
   useContext,
-  useState,
   useEffect,
+  useState,
 } from "react";
-import { useTheme } from "@emotion/react";
-import { Typography, useMediaQuery, Box, Menu } from "@mui/material";
-import { BallStart, Lock, TIME, UD } from "../../assets/index";
-import "../../components/index.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setColorValue } from "../../store/selectedColorBox";
-import { StyledImage } from "../../components";
+import { useLocation } from "react-router-dom";
 import { Popover } from "react-tiny-popover";
 import { LOCKED, LOCKOPEN } from "../../admin/assets";
-import LiveMatchComponent from "../../components/LiveMatchComponent";
-import LiveMatchAdmin from "../../components/LiveMatchAdmin";
+import { BallStart, Lock, TIME, UD } from "../../assets/index";
+import { StyledImage } from "../../components";
 import AllBets from "../../components/AllBets";
-import { Background } from "../../components/index";
+import FullAllBets from "../../components/FullAllBets";
+import LiveMatchAdmin from "../../components/LiveMatchAdmin";
+import LiveMatchComponent from "../../components/LiveMatchComponent";
+import LiveMatchHome from "../../components/LiveMatchHome";
+import MatchComponent from "../../components/MathComponent";
 import UnlockComponent from "../../components/UnlockComponent";
-import { useLocation } from "react-router-dom";
-import { setRole } from "../../newStore";
 import {
   apiBasePath,
   microServiceApiPath,
 } from "../../components/helper/constants";
 import { formatNumber } from "../../components/helper/helper";
+import { Background } from "../../components/index";
+import "../../components/index.css";
+import { SocketContext } from "../../context/socketContext";
+import { setRole } from "../../newStore";
+import { setColorValue } from "../../store/selectedColorBox";
+import BookMarketer from "./matches/BookMaketer";
 import Odds from "./matches/Odds";
 import SessionMarket from "./matches/SessionMarket";
-import BookMarketer from "./matches/BookMaketer";
-import FullAllBets from "../../components/FullAllBets";
-import { SocketContext } from "../../context/socketContext";
-import LiveMatchHome from "../../components/LiveMatchHome";
-import MatchComponent from "../../components/MathComponent";
-import Axios from "axios";
 
 let matchOddsCount = 0;
 const SeperateBox = ({ color, empty, value, value2, lock, session, back }) => {

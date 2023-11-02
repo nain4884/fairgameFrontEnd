@@ -1,18 +1,17 @@
 import { Box, Typography } from "@mui/material";
-import ProfitLossComponent from "../../components/ProfitLossComponent";
-import { Background } from "../../components";
-import { setRole } from "../../newStore";
-import { useEffect, useState } from "react";
-import constants from "../../components/helper/constants";
-import EventListing from "../../components/EventListing";
-import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { Background } from "../../components";
+import ProfitLossComponent from "../../components/ProfitLossComponent";
+import YellowHeaderProfitLoss from "../../components/YellowHeaderProfitLoss";
+import constants from "../../components/helper/constants";
+import { setRole } from "../../newStore";
 //dsda
 const ProfitLoss = ({ selected, visible }) => {
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currenLimit, setCurrenLimit] = useState(1);
+  // const [currenLimit, setCurrenLimit] = useState(1);
   const [eventData, setEventData] = useState([]);
   const [reportData, setReportData] = useState([]);
   const [betData, setBetData] = useState([]);
@@ -25,7 +24,7 @@ const ProfitLoss = ({ selected, visible }) => {
   useEffect(() => {
     // alert(1)
     getEventList();
-  }, [, pageCount, pageLimit]);
+  }, [ pageCount, pageLimit]);
 
   async function getEventList() {
     var payload = {};

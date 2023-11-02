@@ -1,13 +1,13 @@
 import { Box, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import StyledImage from "../../StyledImage";
 import BoxButton from "../../BoxButton";
+import StyledImage from "../../StyledImage";
 
-import { EyeIcon, EyeSlash } from "../../../admin/assets";
-import { setRole } from "../../../newStore";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { EyeIcon, EyeSlash } from "../../../admin/assets";
+import { setRole } from "../../../newStore";
 
 const SetCreditReferenceComponent = ({
   handleKeyDown,

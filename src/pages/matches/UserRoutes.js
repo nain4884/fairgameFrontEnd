@@ -1,23 +1,13 @@
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
-import ForgotPassword from "../ForgotPassword";
-import Verification from "../Varification";
-import NewPassword from "../NewPassword";
-import PageNotFound from "../../components/PageNotFound";
 import Matches from ".";
 import { CustomHeader } from "../../components";
+import PageNotFound from "../../components/PageNotFound";
+import ForgotPassword from "../ForgotPassword";
+import NewPassword from "../NewPassword";
+import Verification from "../Varification";
 import Login from "../login";
 import Rules from "./Rules";
-import ProfitLoss from "./ProfitLoss";
-import BetHistory from "./BetHistory";
-import AccountStatement from "./AccountStatement";
-import ChangeButtonValue from "./ChangeButtonValue";
-import { ChangePassword } from "../../components/ChangePassword";
-import SmoothScroll from "../../components/SmoothScoll";
-import Settings from "./Settings";
-import MyAccount from "./Settings";
-import Home from "./Home";
-import Soccer from "./Soccer";
 const USerRoutes = () => {
   const location = useLocation();
 

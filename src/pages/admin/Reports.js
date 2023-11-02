@@ -1,5 +1,4 @@
-import { Typography } from "@mui/material";
-import { Background, Header } from "../../components";
+import { Background } from "../../components";
 
 export default function Reports() {
     return (

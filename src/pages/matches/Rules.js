@@ -54,7 +54,7 @@ const Rules = ({userPadding}) => {
     );
   };
   const RowComponent = ({ index }) => {
-    let flag = index % 2 != 0;
+    let flag = index % 2 !== 0;
     return (
       <Box
         sx={{

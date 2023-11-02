@@ -1,6 +1,5 @@
 import { useTheme } from "@emotion/react"
 import { Box, Typography } from "@mui/material"
-import { Header } from "."
 import Background from "../../components/Background"
 const data = [
     {
