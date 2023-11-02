@@ -54,9 +54,9 @@ const ResultComponent = ({
       toast.success(data?.message);
       navigate("/expert/match");
     } catch (e) {
-      if (e?.response?.data?.statusCode === 403) {
-        onClick();
-      }
+      // if (e?.response?.data?.statusCode === 403) {
+      //   onClick();
+      // }
       setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);
