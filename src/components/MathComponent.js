@@ -113,10 +113,10 @@ const MatchComponent = ({ currentMatch, liveScoreData, submit }) => {
           />
         </Box>
       </Box>
-      {visible && ReactHtmlParser(liveScoreData)}
+      {/* {visible && ReactHtmlParser(liveScoreData)} */}
     </>
-    
-    
+
+
   );
 };
 
