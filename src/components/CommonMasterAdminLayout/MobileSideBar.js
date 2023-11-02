@@ -1,8 +1,7 @@
+import { Drawer } from "@mui/material";
 import { Box } from "@mui/system";
 import { memo } from "react";
 import SideBarAdmin from "../sideBar/SideBarAdmin";
-import { Drawer } from "@mui/material";
-import { drawerBackground } from "../../assets";
 
 const MobileSideBar = ({ mobileOpen, setMobileOpen }) => {
   const handleDrawerToggle = () => {

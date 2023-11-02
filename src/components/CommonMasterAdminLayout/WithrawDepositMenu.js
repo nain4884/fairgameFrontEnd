@@ -9,20 +9,19 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { DownGIcon, DownIcon, LockIcon, UnLockIcon } from "../../admin/assets";
-import StyledImage from "../../components/StyledImage";
-import ListHeaderT from "../ListHeaderT";
-import BoxButton from "../BoxButton";
-import LockUnlockComponent from "./UserSpecificButtons/LockUnlockComponent";
-import ChangePasswordComponent from "./UserSpecificButtons/ChangePasswordComponent";
-import SetCreditReferenceComponent from "./UserSpecificButtons/SetCreditReferenceComponent";
-import DepositComponent from "./UserSpecificButtons/DepositComponent";
-import WithDrawComponent from "./UserSpecificButtons/WithDrawComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { setDailogData } from "../../store/dailogModal";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { LockIcon, UnLockIcon } from "../../admin/assets";
+import StyledImage from "../../components/StyledImage";
 import { setRole } from "../../newStore";
+import { setDailogData } from "../../store/dailogModal";
+import BoxButton from "../BoxButton";
+import ListHeaderT from "../ListHeaderT";
+import DepositComponent from "./UserSpecificButtons/DepositComponent";
+import LockUnlockComponent from "./UserSpecificButtons/LockUnlockComponent";
+import SetCreditReferenceComponent from "./UserSpecificButtons/SetCreditReferenceComponent";
+import WithDrawComponent from "./UserSpecificButtons/WithDrawComponent";
 
 const DropdownMenu2 = ({
   anchorEl,
@@ -46,8 +45,6 @@ const DropdownMenu2 = ({
   const { axios } = setRole();
   const [selected, setSelected] = useState(null);
   const [userModal, setUserModal] = useState({});
-  const [showModalMessage, setShowModalMessage] = useState("");
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { allRole } = useSelector((state) => state.auth);
   const [settlementUserModal, setSettlementUserModal] = useState(false);
   const [userId, setUserId] = useState(currentUser?.id);
@@ -111,7 +108,6 @@ const DropdownMenu2 = ({
 
   const [elementToUDM, setElementToUDM] = useState(prevElement);
   const dispatch = useDispatch();
-  const [showUserModal, setShowUserModal] = useState(false);
   useEffect(() => {
     if (currentUser?.userName === "FAIRGAMEWALLET") {
       getWalletAccountDetails();
@@ -173,8 +169,6 @@ const DropdownMenu2 = ({
       dispatch(setDailogData({ isModalOpen: false }));
       // navigate(`/${window.location.pathname.split("/")[1]}/list_of_clients`);
     }, [2000]);
-    setShowModalMessage(message);
-    setShowUserModal(false);
   }
 
   const handleSettlement = async (val) => {
@@ -649,14 +643,10 @@ const DropdownMenu2 = ({
                     selected={selected == 0}
                     setSelected={(e) => {
                       setSelected(null);
-                      setShowUserModal(false);
                     }}
                     setWalletAccountDetail={setWalletAccountDetail}
-                    setShowUserModal={setShowUserModal}
                     updatedUserProfile={updatedUserProfile}
                     getListOfUser={getListOfUser}
-                    setShowSuccessModal={setShowSuccessModal}
-                    setShowModalMessage={setShowModalMessage}
                     activeWalletAmount={activeWalletAmount}
                     prevElement={prevElement}
                     navigate={navigate}
@@ -674,15 +664,11 @@ const DropdownMenu2 = ({
                     selected={selected == 1}
                     setSelected={(e) => {
                       setSelected(null);
-                      setShowUserModal(false);
                     }}
                     setWalletAccountDetail={setWalletAccountDetail}
                     backgroundColor={backgroundColor}
-                    setShowUserModal={setShowUserModal}
                     userModal={userModal}
                     updatedUserProfile={updatedUserProfile}
-                    setShowSuccessModal={setShowSuccessModal}
-                    setShowModalMessage={setShowModalMessage}
                     activeWalletAmount={activeWalletAmount}
                     prevElement={prevElement}
                     navigate={navigate}
@@ -700,14 +686,10 @@ const DropdownMenu2 = ({
                     selected={selected == 2}
                     setSelected={(e) => {
                       setSelected(null);
-                      setShowUserModal(false);
                     }}
                     setWalletAccountDetail={setWalletAccountDetail}
                     backgroundColor={backgroundColor}
-                    setShowUserModal={setShowUserModal}
                     userModal={userModal}
-                    setShowSuccessModal={setShowSuccessModal}
-                    setShowModalMessage={setShowModalMessage}
                     prevElement={prevElement}
                     navigate={navigate}
                     getListOfUser={getListOfUser}
@@ -739,15 +721,11 @@ const DropdownMenu2 = ({
                     selected={selected == 4}
                     setSelected={(e) => {
                       setSelected(null);
-                      setShowUserModal(false);
                     }}
                     walletAccountDetail={walletAccountDetail}
                     setWalletAccountDetail={setWalletAccountDetail}
                     backgroundColor={backgroundColor}
-                    setShowUserModal={setShowUserModal}
                     userModal={userModal}
-                    setShowSuccessModal={setShowSuccessModal}
-                    setShowModalMessage={setShowModalMessage}
                     dispatch={dispatch}
                     navigate={navigate}
                     prevElement={prevElement}

@@ -1,53 +1,35 @@
-import { memo } from "react";
-import StyledImage from "../StyledImage";
 import {
   CircularProgress,
   MenuItem,
-  Typography,
-  useMediaQuery,
+  Typography
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { useTheme } from "@emotion/react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { ArrowDown, Logout } from "../../assets";
-import {
-  logoutCurrentUser,
-  removeCurrentUser,
-} from "../../newStore/reducers/currentUser";
-import useOuterClick from "../helper/userOuterClick";
-import { useNavigate } from "react-router";
+import { memo, useContext, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setRole } from "../../newStore";
-import { useContext } from "react";
+import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import { ArrowDown, Logout } from "../../assets";
 import { GlobalStore } from "../../context/globalStore";
+import { SocketContext } from "../../context/socketContext";
+import { setRole } from "../../newStore";
 import {
   logout,
-  logoutAuth,
-  setPage,
-  setUpdatedTransPasswords,
+  logoutAuth
 } from "../../newStore/reducers/auth";
 import {
-  logoutMatchDetails,
-  removeManualBookMarkerRates,
-  removeSelectedMatch,
-} from "../../newStore/reducers/matchDetails";
-import { removeSocket } from "../helper/removeSocket";
-import { toast } from "react-toastify";
-import { SocketContext } from "../../context/socketContext";
+  logoutCurrentUser
+} from "../../newStore/reducers/currentUser";
 import { logoutExpertDetails } from "../../newStore/reducers/expertMatchDetails";
+import {
+  logoutMatchDetails
+} from "../../newStore/reducers/matchDetails";
+import StyledImage from "../StyledImage";
+import { removeSocket } from "../helper/removeSocket";
+import useOuterClick from "../helper/userOuterClick";
 
 const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
-  const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  useEffect(() => {
-    // console.log(anchorEl)
-  }, [anchorEl]);
+ 
   const handleClose = () => {
     setOpen(false);
   };
@@ -98,8 +80,8 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
     },
   };
 
-  const DropdownMenu = ({ anchorEl, open, handleClose, nav }) => {
-    const { globalStore, setGlobalStore } = useContext(GlobalStore);
+  const DropdownMenu = ({  handleClose, nav }) => {
+    const {  setGlobalStore } = useContext(GlobalStore);
     const [loading, setLoading] = useState(false);
 
     const { axios } = setRole();
@@ -260,8 +242,6 @@ const BoxProfile = ({ image, value, containerStyle, amount, nav }) => {
       {open && (
         <DropdownMenu
           nav={nav}
-          open={Boolean(anchorEl)}
-          anchorEl={anchorEl}
           handleClose={handleClose}
         />
       )}

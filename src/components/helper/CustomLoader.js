@@ -1,9 +1,6 @@
-import Lottie from "lottie-react";
-import React from "react";
-import { HourGlass } from "../../assets";
 import { Box, Typography } from "@mui/material";
+import React, { memo } from "react";
 import "./styles.css";
-import { memo } from "react";
 const CustomLoader = ({ text ,height,width }) => {
   return (
     <Box
