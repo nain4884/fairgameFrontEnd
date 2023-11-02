@@ -607,26 +607,26 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   //   }
   // };
 
-  // useEffect(() => {
-  //   if (marketId) {
-  //     const fetchMatchScore = async () => {
-  //       try {
-  //         const { data } = await axios.get(
-  //           `${apiMatchScore}/score/getMatchScore/${marketId}`
-  //         );
-  //         setLiveScoreData(data);
-  //       } catch (error) {
-  //         console.error("Error fetching data:", error);
-  //       }
-  //     };
+  useEffect(() => {
+    if (marketId) {
+      const fetchMatchScore = async () => {
+        try {
+          const { data } = await axios.get(
+            `${apiMatchScore}/score/getMatchScore/${marketId}`
+          );
+          setLiveScoreData(data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
 
-  //     fetchMatchScore();
+      fetchMatchScore();
 
-  //     const intervalId = setInterval(fetchMatchScore, 300);
+      const intervalId = setInterval(fetchMatchScore, 300);
 
-  //     return () => clearInterval(intervalId);
-  //   }
-  // }, [marketId]);
+      return () => clearInterval(intervalId);
+    }
+  }, [marketId]);
 
   return (
     <Box
@@ -667,10 +667,12 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 flexDirection: "column",
               }}
             >
-              <MatchComponent
-                currentMatch={currentMatch}
-                liveScoreData={liveScoreData}
-              />
+              <div style={{ width: "100%" }}>
+                <MatchComponent
+                  currentMatch={currentMatch}
+                  liveScoreData={liveScoreData}
+                />
+              </div>
               <div style={{ width: "100%" }}>
                 <MatchOdds
                   localQuickSession={localQuickSession}

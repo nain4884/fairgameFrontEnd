@@ -1,40 +1,26 @@
-import { Box, Typography } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { CustomHeader, SideBar } from "../../components";
+import { Box } from "@mui/material";
+import { useEffect, useState } from "react";
+import { SideBar } from "../../components";
 
-import { useMediaQuery, useTheme } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-import { useDispatch, useSelector } from "react-redux";
 
-import SessionBetSeperate from "../../components/sessionBetSeperate";
-import AllRateSeperate from "../../components/AllRateSeperate";
 
 import AccountStatementList from "../../components/AccountStatementList";
-import YellowHeader from "../../components/yellowheader";
-import ProfitLossComponent from "../../components/ProfitLossComponent";
-import { ChangePassword } from "../../components/ChangePassword";
-import { AuthContext } from "../../Authprovider";
-import constants from "../../components/helper/constants";
-import jwtDecode from "jwt-decode";
 import { setRole } from "../../newStore";
 
-import Home from "./Home";
-import Match from "./Match";
 import { memo } from "react";
-import Settings from "./Settings";
-import EventListing from "../../components/EventListing";
-import DropdownMenu1 from "../../components/CommonMasterAdminLayout/MenuBar";
-import MyAccount from "./Settings";
+import { toast } from "react-toastify";
 import ChangePasswordComponent from "../../components/ChangePasswordComponent";
 import EmptyComponent from "../../components/EmptyComponent";
-import Soccer from "./Soccer";
-import ProfitLoss from "./ProfitLoss";
+import EventListing from "../../components/EventListing";
 import BetHistory from "./BetHistory";
 import ChangeButtonValue from "./ChangeButtonValue";
-import ModalMUI from "@mui/material/Modal";
-import CustomLoader from "../../components/helper/CustomLoader";
-import { toast } from "react-toastify";
+import Home from "./Home";
+import Match from "./Match";
+import ProfitLoss from "./ProfitLoss";
+import Settings from "./Settings";
+import Soccer from "./Soccer";
 
 const Matches = () => {
   let { axios } = setRole();
@@ -51,13 +37,11 @@ const Matches = () => {
     }
   }, [location.state?.activeTab]);
 
-  const theme = useTheme();
   // const { currentUser } = useSelector((state) => state?.currentUser);
 
   const [loader, setLoader] = useState(true);
   const [passLoader,setPassLoader]=useState(false)
 
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 
   const changePassword = async (value) => {
     setPassLoader(true)

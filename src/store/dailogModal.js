@@ -1,10 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {
-    isModalOpen: false,
-    showRight: false,
-    bodyText: ""
-}
+
 const dailogModalSlice = createSlice({
     name: "dailog",
     initialState: {
