@@ -1,15 +1,15 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useEffect, useState, useRef } from "react";
-import Input from "./Input";
-import { EyeIcon, EyeSlash } from "../admin/assets";
-import DropDownSimple from "./DropdownSimple";
-import { useNavigate } from "react-router-dom";
-import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
-import Modal from "./Modal";
-import { setRole } from "../newStore";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { EyeIcon, EyeSlash } from "../admin/assets";
+import { setRole } from "../newStore";
+import DropDownSimple from "./DropdownSimple";
+import Input from "./Input";
 import InputMyPartnership from "./InputMypartnership";
+import Modal from "./Modal";
+import { doSendErrorForPassword } from "./helper/doCheckErrorForPassword";
 
 const containerStyles = {
   marginTop: { mobile: "2px", laptop: "10px" },
@@ -35,8 +35,7 @@ var matchComissionArray = [];
 
 const AddAccount = () => {
   const formRef = useRef(null);
-  const okButtonRef = useRef(null);
-  const { axios, locPath, JWT, roleName } = setRole();
+  const { axios, locPath,  roleName } = setRole();
   const navigate = useNavigate();
   const { userWallet, allRole } = useSelector((state) => state.auth);
   const [errorShow, setErrorShow] = useState("");
@@ -89,7 +88,6 @@ const AddAccount = () => {
   const [userAlreadyExist, setUserAlredyExist] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
-  const [downLinePar, setDownlinePar] = useState(0);
   const [isDisable, setIsDisable] = useState(false);
 
   const [typeToShow, setTypeToShow] = useState([
@@ -150,8 +148,6 @@ const AddAccount = () => {
   const handleChangeShowModalSuccess = (val) => {
     setShowSuccessModal(val);
   };
-  const [mypar, setMypar] = useState("");
-  const [uplineP, setUplineP] = useState(0);
   const setTypeForAccountType = () => {
     const typo =
       roleName === "fairGameWallet"
@@ -291,17 +287,7 @@ const AddAccount = () => {
     }
   };
 
-  const setDownParterShipVal = (val1, val2) => {
-    let val3 = 100 - val1 - val2;
-    setDetail({
-      ...Detail,
-      12: {
-        ...Detail[12],
-        val: parseInt(val3),
-      },
-    });
-  };
-
+ 
   async function getUserDetail() {
     try {
       const { data } = await axios.get("users/profile");
@@ -346,7 +332,6 @@ const AddAccount = () => {
   useEffect(() => {
     if (profile && roleName) {
       const res = handleUpline(roleName);
-      setUplineP(res);
       setDetail({
         ...Detail,
         10: {
@@ -358,7 +343,6 @@ const AddAccount = () => {
           val: 100 - res,
         },
       });
-      setDownlinePar(100 - res);
       setError({
         ...error,
         10: {
@@ -484,19 +468,7 @@ const AddAccount = () => {
       });
     }
   }
-  function CheckCreditRefernce({ place, val, val2, setError, error }) {
-    const regex1 = /^[0-9]+$/; // Only allows whole numbers (no decimal)
-    if (!regex1.test(val2) && place === 8) {
-      setError({
-        ...error,
-        [place]: {
-          ...Detail[place],
-          val: "Only allows whole numbers (no decimal)",
-        },
-      });
-      return false;
-    }
-  }
+  
   useEffect(() => {
     if (
       [
@@ -549,13 +521,6 @@ const AddAccount = () => {
     }
   }, [Detail[9].val]);
 
-  const handleEnterKey = (e, nextElement) => {
-    // if (e.key === "Enter") {
-    //   console.log("Enter key pressed,:,", nextElement)
-    //   e.preventDefault();
-    //   // nextElement.current.focus();
-    // }
-  };
 
   return (
     <>
@@ -919,7 +884,6 @@ const AddAccount = () => {
                     min={0}
                     max={100}
                     disabled={Detail[9].val === "user"}
-                    setDownlinePar={setDownlinePar}
                     Detail={Detail}
                     value={Detail[11].val}
                     // placeholder={Detail[11].val}
@@ -947,9 +911,7 @@ const AddAccount = () => {
                     onFocusOut={CheckThisPosition}
                     toFoucs={true}
                     // min={0}
-                    setMypar={(val) => setMypar(val)}
                     max={100}
-                    setDownlinePar={setDownlinePar}
                     Detail={Detail}
                     // placeholder={Detail[11].val}
                     setError={setError}

@@ -32,7 +32,6 @@ const MatchOdds = ({
   const [matchOddsData, setMatchOddsData] = useState([]);
   const [bookMakerRateLive, setBookMakerRateLive] = useState(false);
   const [matchOddRateLive, setMatchOddRateLive] = useState(false);
-  const [localQuickBookmaker, setLocalQuickBookmaker] = useState([]);
   const [bookmakerHttp, setBookmakerHttp] = useState([]);
   const [manualSessions, setManualSessions] = useState([]);
   const [sessionExposerHttp, setSessionExposerHttp] = useState([]);
@@ -52,11 +51,6 @@ const MatchOdds = ({
     }
   }, [data]);
 
-  useEffect(() => {
-    if (quickBookmaker) {
-      setLocalQuickBookmaker(quickBookmaker);
-    }
-  }, [quickBookmaker]);
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 

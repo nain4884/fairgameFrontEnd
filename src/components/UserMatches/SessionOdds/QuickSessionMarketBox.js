@@ -1,14 +1,13 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React, { useState } from "react";
+import React, { memo } from "react";
+import { BallStart } from "../../../assets";
+import FastTimePlaceBet from "../../FastImePlaceBet";
+import FastTime from "../../FastTime";
+import { currencyFormatter, formatNumber } from "../../helper/helper";
 import PlaceBetComponent from "../PlaceBetComponent";
 import PlaceBetComponentWeb from "../PlaceBetComponentWeb";
 import SeprateBox from "../SeprateBox";
-import { memo } from "react";
-import { currencyFormatter, formatNumber } from "../../helper/helper";
-import { BallStart } from "../../../assets";
-import FastTime from "../../FastTime";
-import FastTimePlaceBet from "../../FastImePlaceBet";
 
 const QuickSessionMarketBox = ({
   index,
@@ -128,7 +127,7 @@ const QuickSessionMarketBox = ({
             }}
           >
             {data?.suspended == "Ball Started" ? (
-              <img src={BallStart} style={{ width: "113px", height: "32px" }} />
+              <img alt="ball start" src={BallStart} style={{ width: "113px", height: "32px" }} />
             ) : (
               <Typography
                 sx={{

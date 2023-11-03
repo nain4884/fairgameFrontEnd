@@ -1,24 +1,17 @@
-import React, { useEffect } from "react";
-import Divider from "../../helper/Divider";
-import SessionMarketBox from "./SessionMarketBox";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import { FASTTIME, HourGlass, Info, ARROWUP } from "../../../assets";
+import React, { useEffect } from "react";
+import { ARROWUP } from "../../../assets";
+import Divider from "../../helper/Divider";
 
 import { useTheme } from "@emotion/react";
-import SmallBoxSeason from "../SmallBoxSeason";
-import { memo } from "react";
-import { useState } from "react";
-import FastTimePlaceBet from "../../FastImePlaceBet";
-import FastTime from "../../FastTime";
-import { currencyFormatter, formatNumber } from "../../helper/helper";
-import Lottie from "lottie-react";
-import { LockIcon } from "../../../admin/assets";
-import SmallCustomLoader from "../../helper/SmallCustomLoader";
-import { customSort } from "../../helper/util";
-import QuickSessionMarketBox from "./QuickSessionMarketBox";
+import { memo, useState } from "react";
 import { useSelector } from "react-redux";
-import { setRole } from "../../../newStore";
 import { useLocation } from "react-router-dom";
+import { LockIcon } from "../../../admin/assets";
+import { setRole } from "../../../newStore";
+import { customSort } from "../../helper/util";
+import SmallBoxSeason from "../SmallBoxSeason";
+import QuickSessionMarketBox from "./QuickSessionMarketBox";
 
 const QuickSessionMarket = ({
   data,
@@ -45,21 +38,10 @@ const QuickSessionMarket = ({
   apiSessionActive,
   manualSessionActive,
 }) => {
-  const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
-  const [fastBetLoading, setFastBetLoading] = useState(false);
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const { quickSession } = useSelector((state) => state?.matchDetails);
-  const [localQuickSession, setLocalQuickSession] = useState([]);
   const [selectedItem, setSelectedItem] = useState("");
-  const checkMctchId = useSelector(
-    (state) => state?.matchDetails?.selectedMatch?.id
-  );
+  
 
-  const location = useLocation();
-  const id = location?.state?.matchId;
-
-  const { axios } = setRole();
   // const [localData, setLocalData] = useState(newData);
   // useEffect(() => {
   //   setLocalData(newData);
@@ -67,11 +49,7 @@ const QuickSessionMarket = ({
 
   const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
-    if (quickSession) {
-      setLocalQuickSession(quickSession);
-    }
-  }, [quickSession]);
+ 
 
   console.log(sessionOffline, "sessionOffline");
   return (
@@ -174,6 +152,7 @@ const QuickSessionMarket = ({
               }}
             >
               <img
+              alt="arrow up"
                 onClick={() => {
                   setVisible(!visible);
                 }}
@@ -324,6 +303,7 @@ const QuickSessionMarket = ({
                   }}
                 >
                   <img
+                  alt="lock icon"
                     style={{ width: "35px", height: "40px" }}
                     src={LockIcon}
                   />
@@ -386,7 +366,6 @@ const QuickSessionMarket = ({
                             [0, 2]?.includes(element?.betStatus) ? true : false
                           }
                           typeOfBet={typeOfBet}
-                          setFastBetLoading={setFastBetLoading}
                           data={element}
                           sessionMain={session}
                           setShowFastTimeBox={setShowFastTimeBox}
@@ -412,7 +391,7 @@ const QuickSessionMarket = ({
         )}
       </Box>
 
-      <style jsx="true" scope="true">
+      <style jsx="true" >
         {`
           @media only screen and (max-width: 600px) {
             body .arrowUpCollaps img {

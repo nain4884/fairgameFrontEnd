@@ -1,20 +1,18 @@
-import React from "react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setRole } from "../newStore";
-import { setCurrentUser } from "../newStore/reducers/currentUser";
-import { useEffect } from "react";
-import { Box, Typography } from "@mui/material";
-import StyledImage from "./StyledImage";
-import { DownGIcon, DownIcon, LockIcon, UnLockIcon } from "../admin/assets";
-import UserDetailModal from "./UserDetailModal";
-import { setSubPage, setSubUserData } from "../newStore/reducers/auth";
-import AccountListModal from "./AccountListModal";
-import Modal from "./Modal";
-import ModalMUI from "@mui/material/Modal";
-import CommissionReportTable from "./CommissionReportTable";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { Box, Typography } from "@mui/material";
+import ModalMUI from "@mui/material/Modal";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import { DownGIcon, DownIcon, LockIcon, UnLockIcon } from "../admin/assets";
+import { setRole } from "../newStore";
+import { setSubPage, setSubUserData } from "../newStore/reducers/auth";
+import { setCurrentUser } from "../newStore/reducers/currentUser";
+import AccountListModal from "./AccountListModal";
+import CommissionReportTable from "./CommissionReportTable";
+import Modal from "./Modal";
+import StyledImage from "./StyledImage";
+import UserDetailModal from "./UserDetailModal";
 
 const AccountListRow = ({
   containerStyle,

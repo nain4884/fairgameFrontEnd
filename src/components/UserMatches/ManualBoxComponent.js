@@ -1,12 +1,10 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
-import MoneyBox from "./MoneyBox";
-import { apiBasePath } from "../helper/constants";
+import React, { memo, useEffect } from "react";
 import { BallStart } from "../../assets";
-import { useEffect } from "react";
-import { memo } from "react";
+import { apiBasePath } from "../helper/constants";
 import ManualSeparateBox from "./ManualSeparateBox";
+import MoneyBox from "./MoneyBox";
 
 const ManualBoxComponent = ({
   name,

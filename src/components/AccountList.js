@@ -1,18 +1,18 @@
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
+import { saveAs } from "file-saver";
 import { useEffect, useState } from "react";
-import { Excel, Pdf } from "../admin/assets";
-import SearchInput from "./SearchInput";
-import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
+import { Excel, Pdf } from "../admin/assets";
 import { setRole } from "../newStore";
-import constants from "./helper/constants";
 import { setPage } from "../newStore/reducers/auth";
 import AccountListRow from "./AccountListRow";
-import ListSubHeaderT from "./ListSubHeaderT";
-import ListHeaderT from "./ListHeaderT";
-import { saveAs } from "file-saver";
-import CustomLoader from "./helper/CustomLoader";
 import Footer from "./Footer";
+import ListHeaderT from "./ListHeaderT";
+import ListSubHeaderT from "./ListSubHeaderT";
+import SearchInput from "./SearchInput";
+import StyledImage from "./StyledImage";
+import CustomLoader from "./helper/CustomLoader";
+import constants from "./helper/constants";
 
 const AccountList = () => {
   const dispatch = useDispatch();

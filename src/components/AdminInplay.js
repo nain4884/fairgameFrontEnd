@@ -1,27 +1,23 @@
-import { Pagination, Box } from "@mui/material";
-import { useEffect, useState, useContext } from "react";
-import { } from "@mui/material";
+import { Box, Pagination } from "@mui/material";
+import { useEffect, useState } from "react";
 // import "../index.css";
 
-import { useDispatch, useSelector } from "react-redux";
-import constants from "./helper/constants";
-import { setRole } from "../newStore";
-import CustomLoader from "./helper/CustomLoader";
-import Odds from "./Matches/Odds";
-import Background from "./Background";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SocketContext } from "../context/socketContext";
+import { setRole } from "../newStore";
+import Background from "./Background";
+import Odds from "./Matches/Odds";
+import CustomLoader from "./helper/CustomLoader";
+import constants from "./helper/constants";
 
 const AdminInPlay = () => {
   // const classes=useStyle() 
-  const { socket } = useContext(SocketContext);
   const [loader, setLoader] = useState(false);
   const [matchData, setMatchData] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageCount);
   const [currentPage, setCurrentPage] = useState(1);
 
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
-  const dispatch = useDispatch();
   const { axios } = setRole();
 
   const updateAdminPlayList = useSelector(state=>state.matchDetails)

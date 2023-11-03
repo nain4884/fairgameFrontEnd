@@ -1,10 +1,8 @@
-import React from "react";
-import DropdownMenu from "./DropdownMenu";
-import { UD } from "../../assets";
 import { Box, Typography } from "@mui/material";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { UD } from "../../assets";
 import useOuterClick from "../helper/userOuterClick";
-import { useState } from "react";
+import DropdownMenu from "./DropdownMenu";
 
 const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
   const [proLoss, setProfitLoss] = useState(profitLoss?.profitLoss);
@@ -72,7 +70,8 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
               color: "#0B4F26",
             }}
           >
-            {proLoss?.total_bet < 10 ? 0 : ""}{proLoss?.total_bet || 0}
+            {proLoss?.total_bet < 10 ? 0 : ""}
+            {proLoss?.total_bet || 0}
             {/* {profitLoss?.total_bet || 0} */}
           </Typography>
         </Box>
@@ -81,21 +80,24 @@ const PlaceBetComponentWeb = ({ amount, profitLoss }) => {
             width: "100%",
             alignItems: "center",
             justifyContent: "center",
-            display: "flex"
+            display: "flex",
           }}
         >
           <Typography
             sx={{
-              fontSize: { laptop: !profitLoss?.profitLoss?.max_loss ? ".65vw" : ".65vw" },
+              fontSize: {
+                laptop: !profitLoss?.profitLoss?.max_loss ? ".65vw" : ".65vw",
+              },
               fontWeight: !profitLoss?.profitLoss?.max_loss ? "bold" : "bold",
               color: "white",
             }}
           >
-            {!profitLoss?.profitLoss?.max_loss ? "Profit/Loss" : profitLoss?.profitLoss?.max_loss}
-
-
+            {!profitLoss?.profitLoss?.max_loss
+              ? "Profit/Loss"
+              : profitLoss?.profitLoss?.max_loss}
           </Typography>
           <img
+            alt="ud"
             src={UD}
             style={{ width: "12px", height: "12px", marginLeft: "5px" }}
           />

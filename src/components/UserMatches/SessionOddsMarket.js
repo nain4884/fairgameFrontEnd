@@ -1,6 +1,9 @@
-import React from 'react'
-import Divider from '../helper/Divider';
 import { Box, Typography } from '@mui/material';
+import React from 'react';
+import Divider from '../helper/Divider';
+import SmallBoxSeason from './SmallBoxSeason';
+import { Info } from '../../assets';
+import SeasonMarketBox from '../../pages/admin/matches/SeasonMarketBox';
 
 const SessionOddsMarket = ({ data }) => {
 
@@ -82,6 +85,7 @@ const SessionOddsMarket = ({ data }) => {
               Maximum Bet {data?.betfair_session_max_bet}
             </Typography>
             <img
+            alt="info"
               src={Info}
               style={{
                 width: "15px",

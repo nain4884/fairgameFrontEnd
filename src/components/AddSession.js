@@ -1,31 +1,24 @@
 import { TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import React from "react";
-import { memo } from "react";
+import React, { memo, useContext, useEffect, useRef, useState } from "react";
 import KeyboardEventHandler from "react-keyboard-event-handler";
-import { BALLSTART } from "../expert/assets";
-import BookButtton from "./BookButton";
-import BookButton from "./BookButton";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useContext } from "react";
-import { SocketContext } from "../context/socketContext";
-import { setRole } from "../newStore";
-import { useRef } from "react";
-import { useEffect } from "react";
-import { setBookMakerBetRate } from "../newStore/reducers/matchDetails";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BallStart, Lock } from "../assets";
-import ResultComponent from "./ResultComponent";
+import { SocketContext } from "../context/socketContext";
+import { BALLSTART } from "../expert/assets";
+import { setRole } from "../newStore";
 import {
   setBookmakerTeamRates,
   setQuickBookmaker,
   setSelectedBookmaker,
 } from "../newStore/reducers/expertMatchDetails";
+import { setBookMakerBetRate } from "../newStore/reducers/matchDetails";
+import BookButton from "./BookButton";
+import ResultComponent from "./ResultComponent";
 
 const AddSession = ({ add, match, Bid }) => {
   console.log("matchmatch", match);
-  const location = useLocation();
   const [visible, setVisible] = useState(false);
   const [visible1, setVisible1] = useState(false);
 
@@ -35,7 +28,7 @@ const AddSession = ({ add, match, Bid }) => {
     selectedBookmaker,
     declaredMatchDetail,
   } = useSelector((state) => state?.expertMatchDetails);
-  const { socket, socketMicro } = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
 
   const { axios } = setRole();
   const dispatch = useDispatch();
@@ -49,7 +42,6 @@ const AddSession = ({ add, match, Bid }) => {
   });
   const [incGap, setIncGap] = useState(1);
   const navigate = useNavigate();
-  const [pressEnter, setPressEnter] = useState(false);
 
   const [isTab, setIsTab] = useState("");
   const innerRefTeamA = useRef();
@@ -102,7 +94,6 @@ const AddSession = ({ add, match, Bid }) => {
     teamB: bookmakerTeamRates?.teamB,
     teamC: bookmakerTeamRates?.teamC,
   });
-  const [localBookMakerRates, setLocalBookMakerRates] = useState([]);
   const [localSelectedBookmaker, setLocalSelectedBookmaker] = useState(null);
 
   useEffect(() => {
@@ -120,9 +111,7 @@ const AddSession = ({ add, match, Bid }) => {
         teamC: bookmakerTeamRates?.teamC,
       });
     }
-    if (bookMakerBetRates) {
-      setLocalBookMakerRates(bookMakerBetRates);
-    }
+    
     if (quickBookmaker) {
       setLocalQuickBookmaker(quickBookmaker);
     }
@@ -535,7 +524,6 @@ const AddSession = ({ add, match, Bid }) => {
       handleSuspend();
       setIsTab("");
       let value = targetValue ? targetValue + incGap : incGap;
-      setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
           targetValue,
@@ -658,7 +646,6 @@ const AddSession = ({ add, match, Bid }) => {
       if (value < 0) {
         return;
       }
-      setPressEnter(false);
       if (
         event.target.name === "teamA_rate" &&
         lQuickBookMaker?.l_teamARate > 0
@@ -778,7 +765,6 @@ const AddSession = ({ add, match, Bid }) => {
       if (isTab == "tab") {
         setIsTab("");
       }
-      setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
           targetValue,
@@ -943,7 +929,6 @@ const AddSession = ({ add, match, Bid }) => {
       }
     } else if (key == "down") {
       handleSuspend();
-      setPressEnter(false);
       setIsTab("");
       if (
         (event.target.name === "teamA_rate" &&
@@ -1072,7 +1057,6 @@ const AddSession = ({ add, match, Bid }) => {
     } else if (key == "d") {
       setIsTab("");
       let value = targetValue ? targetValue + incGap : incGap;
-      setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
           targetValue,
@@ -1250,7 +1234,6 @@ const AddSession = ({ add, match, Bid }) => {
       if (value < 0) {
         return;
       }
-      setPressEnter(false);
       if (
         event.target.name === "teamA_rate" &&
         lQuickBookMaker?.l_teamARate > 0
@@ -1432,7 +1415,6 @@ const AddSession = ({ add, match, Bid }) => {
       if (isTab == "tab") {
         setIsTab("");
       }
-      setPressEnter(false);
       if (event.target.name === "teamA_rate") {
         let result = handleHunderedValue(
           targetValue,
@@ -1672,7 +1654,6 @@ const AddSession = ({ add, match, Bid }) => {
         });
       }
     } else if (key == "z") {
-      setPressEnter(false);
       setIsTab("");
       if (
         (event.target.name === "teamA_rate" &&

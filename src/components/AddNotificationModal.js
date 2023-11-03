@@ -1,14 +1,7 @@
-import {
-  Box,
-  CircularProgress,
-  Modal,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useState } from "react";
+import { Box, Modal, TextField, Typography } from "@mui/material";
+import { memo, useState } from "react";
 import { CancelDark } from "../assets";
 import CustomButton from "./CustomButton";
-import { memo } from "react";
 const AddNotificationModal = ({
   onClick,
   visible,
@@ -85,6 +78,7 @@ const AddNotificationModal = ({
                 {title ? title : "Add Notification"}
               </Typography>
               <img
+                alt="cancel"
                 onClick={() => setVisible(false)}
                 src={CancelDark}
                 style={{ width: "25px", height: "25px", cursor: "pointer" }}

@@ -1,21 +1,17 @@
+import { Box, Typography } from "@mui/material";
 import React, { useEffect } from "react";
+import { ARROWUP } from "../../../assets";
 import Divider from "../../helper/Divider";
 import SessionMarketBox from "./SessionMarketBox";
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import { FASTTIME, HourGlass, Info, ARROWUP } from "../../../assets";
 
-import { useTheme } from "@emotion/react";
-import SmallBoxSeason from "../SmallBoxSeason";
-import { memo } from "react";
-import { useState } from "react";
+import { memo, useState } from "react";
+import { useSelector } from "react-redux";
+import { LockIcon } from "../../../admin/assets";
 import FastTimePlaceBet from "../../FastImePlaceBet";
 import FastTime from "../../FastTime";
-import { currencyFormatter, formatNumber } from "../../helper/helper";
-import Lottie from "lottie-react";
-import { LockIcon } from "../../../admin/assets";
-import SmallCustomLoader from "../../helper/SmallCustomLoader";
+import { currencyFormatter } from "../../helper/helper";
 import { customSort } from "../../helper/util";
-import { useSelector } from "react-redux";
+import SmallBoxSeason from "../SmallBoxSeason";
 const SessionMarket = ({
   data,
   newData,
@@ -41,13 +37,10 @@ const SessionMarket = ({
   apiSessionActive,
   manualSessionActive,
 }) => {
-  const theme = useTheme();
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
-  const [fastBetLoading, setFastBetLoading] = useState(false);
   const { selectedSessionBettings } = useSelector(
     (state) => state?.matchDetails
   );
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const [localSessionBettings, setLocalSessionBettings] = useState([]);
   // const [localData, setLocalData] = useState(newData);
   // useEffect(() => {
@@ -374,7 +367,6 @@ const SessionMarket = ({
                             [0, 2]?.includes(element?.betStatus) ? true : false
                           }
                           typeOfBet={typeOfBet}
-                          setFastBetLoading={setFastBetLoading}
                           data={element}
                           sessionMain={session}
                           selectedFastAmount={fastAmount}

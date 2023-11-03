@@ -1,14 +1,14 @@
 import { Box, Typography } from "@mui/material";
-import SearchInput from "./SearchInput";
-import SmallDropDown from "./smallDropDown";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import constants from "./helper/constants";
-import { setRole } from "../newStore";
-import YellowHeader from "./yellowheader";
 import jwtDecode from "jwt-decode";
 import moment from "moment";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { setRole } from "../newStore";
+import SearchInput from "./SearchInput";
 import CustomLoader from "./helper/CustomLoader";
+import constants from "./helper/constants";
+import SmallDropDown from "./smallDropDown";
+import YellowHeader from "./yellowheader";
 
 const AccountStatementList = ({ user, visible, selected }) => {
   const userToken = sessionStorage.getItem("JWTuser");
@@ -20,22 +20,17 @@ const AccountStatementList = ({ user, visible, selected }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [currenLimit, setCurrenLimit] = useState(1);
   const [transactionHistory, setTransactionHistory] = useState([]);
-  const [data, setData] = useState("");
-  const [isDated, setIsDated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fromDate, setFromDate] = useState(null);
   const [toDate, setToDate] = useState(null);
   const [localUserName, setLocaluserName] = useState("");
-  const handleChildData = (childData) => {
-    setData(childData);
-  };
+ 
   const getLimitEntries = (childLimitData) => {
     setPageLimit(childLimitData);
   };
   function callPage(val) {
     setCurrentPage(parseInt(val));
     setCurrenLimit(parseInt(val));
-    setIsDated(true);
   }
   async function getAccountStatement(value) {
     const userId = currentUser.id;
@@ -188,7 +183,6 @@ const AccountStatementList = ({ user, visible, selected }) => {
           fromDate={fromDate}
           toDate={toDate}
           setToDate={setToDate}
-          onChildData={handleChildData}
           getAccountStatement={getAccountStatement}
         />
       </Box>

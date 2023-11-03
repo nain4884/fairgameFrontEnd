@@ -2,12 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { memo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const AdminEventComponent = ({
-  data,
-  selected,
-  setAnchor,
-  setAnchor1,
-}) => {
+const AdminEventComponent = ({ data, selected, setAnchor, setAnchor1 }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -65,6 +60,7 @@ const AdminEventComponent = ({
       ]}
     >
       <img
+        alt="data img"
         src={data.image}
         style={{ width: "40px", height: "40px", alignSelf: "center" }}
       />

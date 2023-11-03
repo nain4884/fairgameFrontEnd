@@ -1,12 +1,10 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
+import React, { memo, useEffect } from "react";
+import { apiBasePath } from "../helper/constants";
+import { formatNumber } from "../helper/helper";
 import MoneyBox from "./MoneyBox";
 import SeprateBox from "./SeprateBox";
-import { formatNumber } from "../helper/helper";
-import { apiBasePath } from "../helper/constants";
-import { useEffect } from "react";
-import { memo } from "react";
 
 const BoxComponent = ({
   name,

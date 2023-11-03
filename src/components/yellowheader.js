@@ -6,8 +6,7 @@ import { toast } from "react-toastify";
 import Calendar from "./Calendar";
 
 const YellowHeader = ({
-  admin,
-  onChildData,
+  
   getAccountStatement,
   fromDate,
   toDate,

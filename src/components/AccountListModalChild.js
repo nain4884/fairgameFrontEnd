@@ -2,15 +2,15 @@ import { Box, Button, Typography, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Excel, Pdf } from "../admin/assets";
 
-import StyledImage from "./StyledImage";
 import { useDispatch, useSelector } from "react-redux";
 import { setRole } from "../newStore";
-import constants from "./helper/constants";
 import { setSubPage, setSubUserData } from "../newStore/reducers/auth";
-import SearchInputModal from "./SearchInputModal";
 import AccountListRow from "./AccountListRow";
-import ListSubHeaderT from "./ListSubHeaderT";
 import ListHeaderT from "./ListHeaderT";
+import ListSubHeaderT from "./ListSubHeaderT";
+import SearchInputModal from "./SearchInputModal";
+import StyledImage from "./StyledImage";
+import constants from "./helper/constants";
 
 const AccountListModalChild = ({ id, show, setShow, title }) => {
   const dispatch = useDispatch();
@@ -18,7 +18,6 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
   const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
   const { subUserData } = useSelector((state) => state?.auth);
   const roles = useSelector((state) => state?.auth?.allRole);
-  const [data1, setData] = useState([]);
   const [sumValue, setSumVal] = useState({
     creditsum: 0.0,
     profitsum: 0.0,
@@ -48,7 +47,6 @@ const AccountListModalChild = ({ id, show, setShow, title }) => {
         element.role = roleDetail?.roleName;
       });
       dispatch(setSubUserData(data?.data?.data));
-      setData(data?.data?.data);
       setPageCount(
         Math.ceil(
           parseInt(data?.data?.totalCount ? data.data?.totalCount : 1) /

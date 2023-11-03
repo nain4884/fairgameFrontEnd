@@ -1,14 +1,10 @@
 import { useTheme } from "@emotion/react";
 import { Box, Typography, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import { DELETE, ARROWUP } from "../assets";
-import userAxios from "../axios/userAxios";
+import { ARROWUP, DELETE } from "../assets";
 
 import { ARROWDOWN, ARROWUPPROFIT } from "../expert/assets";
 import StyledImage from "./StyledImage";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import constants from "./helper/constants";
 const AllRateSeperate = ({
   profit,
   mark,
@@ -20,12 +16,6 @@ const AllRateSeperate = ({
 }) => {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageCount, setPageCount] = useState(constants.pageLimit);
-  const { allbetsPage } = useSelector((state) => state?.auth);
-  const location = useLocation();
-  const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state?.currentUser);
 
   const [visible, setVisible] = useState(true);
 
@@ -37,7 +27,6 @@ const AllRateSeperate = ({
             width: { tablet: "100%", mobile: "100%", laptop: "100%" },
             display: "flex",
             flexDirection: "column",
-            alignSelf: "center",
             marginX: { laptop: "0vw", mobile: "0px", tablet: "0px" },
             marginY: { laptop: ".5vh", mobile: "2px" },
             marginTop: { mobile: "0" },
@@ -114,6 +103,7 @@ const AllRateSeperate = ({
             }}
           >
             <img
+            alt="arrow up"
               onClick={() => {
                 setVisible(!visible);
               }}
@@ -623,103 +613,103 @@ const RowComponent = ({ header, data }) => {
   );
 };
 
-const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
-  return (
-    <Box
-      sx={{
-        height: "35px",
-        display: "flex",
-        alignItems: "center",
-        px: { mobile: "5px", laptop: "10px" },
-        justifyContent: "space-between",
-        background: "#FAFAFA",
-        // marginX: "0%",
-        // marginBottom: "10px",
-      }}
-    >
-      <Typography
-        sx={{ fontSize: { mobile: "10px", laptop: "12px" }, fontWeight: "600" }}
-      >
-        Showing 1 to {pages}
-      </Typography>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Box
-          sx={{
-            height: "25px",
-            width: { mobile: "60px", laptop: "80px" },
-            background: "#0B4F26",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "5px",
-          }}
-          onClick={() => {
-            callPage(
-              parseInt(currentPage) - 1 === -1 ? 0 : parseInt(currentPage) - 1
-            );
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { laptop: "12px", mobile: "10px" },
-            }}
-          >
-            Previous
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            height: "25px",
-            marginX: { laptop: "8px", mobile: "3.5px" },
-            width: "40px",
-            background: "#262626",
-            display: "flex",
-            borderRadius: "5px",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { laptop: "12px", mobile: "12px" },
-            }}
-          >
-            {currentPageNo + 1}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            height: "25px",
-            width: { mobile: "60px", laptop: "80px" },
-            background: "#0B4F26",
-            display: "flex",
-            borderRadius: "5px",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onClick={() => {
-            callPage(
-              parseInt(currentPage) === pages - 1
-                ? pages - 1
-                : parseInt(currentPage) + 1
-            );
-          }}
-        >
-          <Typography
-            sx={{
-              color: "white",
-              fontSize: { laptop: "14px", mobile: "12px" },
-            }}
-          >
-            Next
-          </Typography>
-        </Box>
-      </Box>
-    </Box>
-  );
-};
+// const Footer = ({ currentPage, pages, callPage, currentPageNo }) => {
+//   return (
+//     <Box
+//       sx={{
+//         height: "35px",
+//         display: "flex",
+//         alignItems: "center",
+//         px: { mobile: "5px", laptop: "10px" },
+//         justifyContent: "space-between",
+//         background: "#FAFAFA",
+//         // marginX: "0%",
+//         // marginBottom: "10px",
+//       }}
+//     >
+//       <Typography
+//         sx={{ fontSize: { mobile: "10px", laptop: "12px" }, fontWeight: "600" }}
+//       >
+//         Showing 1 to {pages}
+//       </Typography>
+//       <Box sx={{ display: "flex", alignItems: "center" }}>
+//         <Box
+//           sx={{
+//             height: "25px",
+//             width: { mobile: "60px", laptop: "80px" },
+//             background: "#0B4F26",
+//             display: "flex",
+//             justifyContent: "center",
+//             alignItems: "center",
+//             borderRadius: "5px",
+//           }}
+//           onClick={() => {
+//             callPage(
+//               parseInt(currentPage) - 1 === -1 ? 0 : parseInt(currentPage) - 1
+//             );
+//           }}
+//         >
+//           <Typography
+//             sx={{
+//               color: "white",
+//               fontSize: { laptop: "12px", mobile: "10px" },
+//             }}
+//           >
+//             Previous
+//           </Typography>
+//         </Box>
+//         <Box
+//           sx={{
+//             height: "25px",
+//             marginX: { laptop: "8px", mobile: "3.5px" },
+//             width: "40px",
+//             background: "#262626",
+//             display: "flex",
+//             borderRadius: "5px",
+//             justifyContent: "center",
+//             alignItems: "center",
+//           }}
+//         >
+//           <Typography
+//             sx={{
+//               color: "white",
+//               fontSize: { laptop: "12px", mobile: "12px" },
+//             }}
+//           >
+//             {currentPageNo + 1}
+//           </Typography>
+//         </Box>
+//         <Box
+//           sx={{
+//             height: "25px",
+//             width: { mobile: "60px", laptop: "80px" },
+//             background: "#0B4F26",
+//             display: "flex",
+//             borderRadius: "5px",
+//             justifyContent: "center",
+//             alignItems: "center",
+//           }}
+//           onClick={() => {
+//             callPage(
+//               parseInt(currentPage) === pages - 1
+//                 ? pages - 1
+//                 : parseInt(currentPage) + 1
+//             );
+//           }}
+//         >
+//           <Typography
+//             sx={{
+//               color: "white",
+//               fontSize: { laptop: "14px", mobile: "12px" },
+//             }}
+//           >
+//             Next
+//           </Typography>
+//         </Box>
+//       </Box>
+//     </Box>
+//   );
+// };
 const SingleBox = ({
   data,
   header,

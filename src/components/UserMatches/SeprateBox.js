@@ -1,25 +1,22 @@
-import { useTheme } from "@emotion/react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import React, { memo, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setDailogData } from "../../store/dailogModal";
-import useOuterClick from "../helper/userOuterClick";
-import { setColorValue } from "../../store/selectedColorBox";
-import PlaceBet from "../PlaceBet";
-import BetPlaced from "../BetPlaced";
-import { Modal } from "react-bootstrap";
+import { Box, Typography } from "@mui/material";
 import MUIModal from "@mui/material/Modal";
+import React, { memo, useEffect } from "react";
+import { Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { setDailogData } from "../../store/dailogModal";
+import { setColorValue } from "../../store/selectedColorBox";
+import BetPlaced from "../BetPlaced";
+import PlaceBet from "../PlaceBet";
+import useOuterClick from "../helper/userOuterClick";
 
-import { Lock } from "../../assets";
 import { useState } from "react";
+import { Lock } from "../../assets";
+import { setRole } from "../../newStore";
 import {
   setBetData,
   setUpdateBetData,
 } from "../../newStore/reducers/matchDetails";
-import { setRole } from "../../newStore";
 import NotificationModal from "../NotificationModal";
-import { toast } from "react-toastify";
 
 const SeprateBox = ({
   color,
@@ -49,21 +46,16 @@ const SeprateBox = ({
   handleRateChange,
   updateRate,
 }) => {
-  const theme = useTheme();
   const { axios } = setRole();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isBack, setIsBack] = React.useState(false);
   const [isSessionYes, setIsSessionYes] = React.useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-  const [visible, setVisible] = React.useState(false);
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showModalMessage, setShowModalMessage] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [betPalaceError, setBetPalaceError] = useState(false);
   const [betPlaceLoading, setBetPlaceLoading] = useState(false);
   const [canceled, setCanceled] = useState({
     value: false,
@@ -72,12 +64,10 @@ const SeprateBox = ({
     type: false,
   });
   const { geoLocation } = useSelector((state) => state.auth);
-  const [showAtTop, setShowAtTop] = useState(false);
   const { betData, updateDetData } = useSelector(
     (state) => state?.matchDetails
   );
 
-  const [previousValue, setPreviousValue] = useState(false);
 
   const [ip, setIP] = useState(geoLocation);
   useEffect(() => {
@@ -104,7 +94,6 @@ const SeprateBox = ({
   }, [closeModal, lock]);
 
   useEffect(() => {
-    setPreviousValue(value);
     if (setFastRate !== undefined) {
       if (
         placeBetData?.po === po &&
@@ -116,27 +105,7 @@ const SeprateBox = ({
     }
   }, [value, placeBetData]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const windowHeight = window.innerHeight;
-      const scrollY = window.scrollY;
-      const divElement = document.getElementById("test");
 
-      if (divElement) {
-        const divHeight = divElement.offsetHeight;
-        const divTop = divElement.offsetTop;
-
-        if (scrollY + windowHeight < divTop + divHeight) {
-          setShowAtTop(true);
-        } else {
-          setShowAtTop(false);
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   function showDialogModal(isModalOpen, showRight, message) {
     dispatch(setDailogData({ isModalOpen, showRight, bodyText: message }));
@@ -150,57 +119,7 @@ const SeprateBox = ({
     setShowSuccessModal(val);
   };
 
-  const getMargin = () => {
-    if (po === 1 && session) {
-      return {
-        right: { mobile: 0, laptop: "-80%" },
-        left: { mobile: 0, laptop: "50%" },
-      };
-    }
-    if (po === 2 && session) {
-      return {
-        right: { mobile: "-100%", tablet: 0, laptop: "-124.3%" },
-        left: { mobile: 0, laptop: "50%" },
-      };
-    }
-    if (po === 1) {
-      return {
-        right: { mobile: 0, laptop: 0 },
-        left: { mobile: 0, laptop: "78%" },
-      };
-    }
-    if (po === 2) {
-      return {
-        right: { mobile: 0, laptop: 0 },
-        left: { mobile: 0, laptop: "46.7%" },
-      };
-    }
-    if (po === 3) {
-      return {
-        right: { mobile: 0, laptop: 0 },
-        left: { mobile: 0, laptop: "15.8395%" },
-      };
-    }
-    if (po === 4) {
-      return {
-        right: { mobile: 0, laptop: "380%" },
-        left: { mobile: 0, laptop: "-280%" },
-      };
-    }
-    if (po === 5) {
-      return {
-        right: { laptop: "427%", mobile: 0 },
-        left: { laptop: "-344%", mobile: 0 },
-      };
-    }
-    if (po === 6) {
-      return {
-        right: { laptop: "427.55%", mobile: 0 },
-        left: { laptop: "-375%", mobile: 0 },
-      };
-    }
-    return { right: 0 };
-  };
+ 
   const handlePlaceBet = async (payload, match, po) => {
     let data = {
       type: payload?.bet_type,
@@ -256,11 +175,9 @@ const SeprateBox = ({
         }, 1500);
         setBetPlaceLoading(false);
         setFastBetLoading(false);
-        setBetPalaceError(true);
         return;
       }
       if (newPayload.marketType == "MATCH ODDS") {
-        setVisible(true);
         let delay = match?.delaySecond ? match?.delaySecond : 0;
         delay = delay * 1000;
         setCanceled({
@@ -333,10 +250,8 @@ const SeprateBox = ({
       }
       // toast.success(response.data.message);
       showDialogModal(isPopoverOpen, true, response.data.message);
-      setVisible(true);
       setFastBetLoading(false);
       setBetPlaceLoading(false);
-      setPreviousValue(0);
       setCanceled({
         value: true,
         msg: response?.data?.message,
@@ -363,14 +278,12 @@ const SeprateBox = ({
         type: false,
       });
 
-      setBetPalaceError(true);
       showDialogModal(isPopoverOpen, false, e.response.data.message);
       setShowModalMessage(e.response.data.message);
       setShowSuccessModal(true);
       setTimeout(() => {
         // handleRateChange();
         //add
-        setVisible(true);
         setIsPopoverOpen(false);
         setCanceled({
           value: false,
@@ -545,7 +458,6 @@ const SeprateBox = ({
                 }
               }}
               onCancel={() => {
-                setVisible(true);
                 setIsPopoverOpen(false);
                 setBetPlaceLoading(false);
               }}
@@ -581,9 +493,7 @@ const SeprateBox = ({
                 : 0
             }
             visible={betPlaceLoading}
-            setVisible={(i) => {
-              setVisible(i);
-            }}
+           
           />
         }
         {canceled.value && (

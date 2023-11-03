@@ -1,10 +1,7 @@
-import { useTheme } from '@emotion/react';
-import { Box, Typography, useMediaQuery } from '@mui/material';
-import React from 'react'
+import { Box, Typography } from '@mui/material';
+import React from 'react';
 
 const MoneyBox = ({ color, rates }) => {
-  const theme = useTheme();
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   return (
     <Box
       sx={{

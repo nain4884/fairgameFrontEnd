@@ -107,7 +107,7 @@ const SessionMarketBox = ({
           }}
         >
           {data?.suspended == "Ball Started" ? (
-            <img src={BallStart} style={{ width: "113px", height: "32px" }} />
+            <img alt="ball start" src={BallStart} style={{ width: "113px", height: "32px" }} />
           ) : (
             <Typography
               sx={{

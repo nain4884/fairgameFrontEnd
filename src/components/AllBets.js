@@ -190,6 +190,7 @@ const AllBets = ({ tag, submit, allBetRates }) => {
             onClick={() => {
               setVisibleImg(!visibleImg);
             }}
+            alt="arrow up"
             src={ARROWUP}
             style={{
               transform: visibleImg ? "rotate(180deg)" : "rotate(0deg)",
@@ -505,7 +506,6 @@ const LargeBox = ({ item, k }) => {
           textAlign: "left",
           lineHeight: 1,
           px: "2px",
-          textTransform: "capitalize",
           overflow: "hidden",
           display: " -webkit-box",
           WebkitLineClamp: 2,

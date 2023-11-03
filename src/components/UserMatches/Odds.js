@@ -1,18 +1,16 @@
 import { useTheme } from "@emotion/react";
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import React, { useState } from "react";
-import BoxComponent from "./BoxComponent";
-import ManualBoxComponent from "./ManualBoxComponent";
-import Divider from "../helper/Divider";
-import { TIME, ARROWUP } from "../../assets";
-import { memo } from "react";
+import { Box, Typography } from "@mui/material";
+import React, { memo, useEffect, useState } from "react";
+import { LockIcon } from "../../admin/assets";
+import { ARROWUP, TIME } from "../../assets";
 import FastTimePlaceBet from "../FastImePlaceBet";
 import FastTime from "../FastTime";
-import { currencyFormatter, formatNumber } from "../helper/helper";
-import OddsPlaceBet from "../OddsPlaceBet";
 import NotificationModal from "../NotificationModal";
-import { LockIcon } from "../../admin/assets";
-import { useEffect } from "react";
+import OddsPlaceBet from "../OddsPlaceBet";
+import Divider from "../helper/Divider";
+import { currencyFormatter } from "../helper/helper";
+import BoxComponent from "./BoxComponent";
+import ManualBoxComponent from "./ManualBoxComponent";
 
 const SmallBox = ({ valueA, valueB }) => {
   return (
@@ -115,7 +113,7 @@ const Time = (data) => {
       >
         {data.time} sec Delay
       </Typography>
-      <img style={{ width: "20px", height: "20px" }} src={TIME} />
+      <img style={{ width: "20px", height: "20px" }} alt="time" src={TIME} />
     </Box>
   );
 };
@@ -146,7 +144,6 @@ const Odds = ({
   const [showFastTimeBox, setShowFastTimeBox] = useState(false);
   const [placeBetData, setPlaceBetData] = useState(null);
   const [fastRate, setFastRate] = useState(null);
-  const [fastBetLoading, setFastBetLoading] = useState(false);
   const [canceled, setCanceled] = useState({
     value: false,
     msg: "",
@@ -158,7 +155,6 @@ const Odds = ({
       setPlaceBetData(null);
     }
   }, [betLock]);
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
   const bookRatioB = (() => {
     if (teamARates === 0) {
       return 0;
@@ -409,6 +405,7 @@ const Odds = ({
                   <img
                     style={{ width: "35px", height: "40px" }}
                     src={LockIcon}
+                    alt="lock icon"
                   />
                   <Typography
                     sx={{
@@ -443,7 +440,6 @@ const Odds = ({
             {session === "manualBookMaker" ? (
               <>
                 <ManualBoxComponent
-                  setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
@@ -488,7 +484,6 @@ const Odds = ({
                 />
                 <Divider />
                 <ManualBoxComponent
-                  setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
@@ -536,7 +531,6 @@ const Odds = ({
                   <>
                     <Divider />
                     <ManualBoxComponent
-                      setFastBetLoading={setFastBetLoading}
                       placeBetData={placeBetData}
                       setFastRate={(val) => setFastRate(val)}
                       fastRate={fastRate}
@@ -589,7 +583,6 @@ const Odds = ({
             ) : (
               <>
                 <BoxComponent
-                  setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
                   setFastRate={(val) => setFastRate(val)}
                   fastRate={fastRate}
@@ -622,7 +615,6 @@ const Odds = ({
                 <Divider />
                 {/* {console.log("newData :",newData)} */}
                 <BoxComponent
-                  setFastBetLoading={setFastBetLoading}
                   placeBetData={placeBetData}
                   setFastRate={(val) => {
                     setFastRate(val);
@@ -658,7 +650,6 @@ const Odds = ({
                   <>
                     <Divider />
                     <BoxComponent
-                      setFastBetLoading={setFastBetLoading}
                       placeBetData={placeBetData}
                       setFastRate={(val) => setFastRate(val)}
                       fastRate={fastRate}
@@ -756,7 +747,7 @@ const Odds = ({
         </Box>
       )}
 
-      <style jsx="true" scope="true">
+      <style jsx="true" >
         {`
           @media only screen and (max-width: 600px) {
             body .arrowUpCollapse img {

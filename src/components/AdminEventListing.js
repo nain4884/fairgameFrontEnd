@@ -1,6 +1,6 @@
 import { Box } from "@mui/system";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   ADDACCOUNT,
   CHECKLIST,
@@ -10,9 +10,8 @@ import {
   TREND,
   WALLET,
 } from "../assets";
-import "./index.css";
 import AdminEventComponent from "./AdminEventComponent";
-import { useEffect } from "react";
+import "./index.css";
 const AdminEventListing = ({
   selected,
   setAnchor,

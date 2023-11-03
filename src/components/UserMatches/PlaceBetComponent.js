@@ -1,16 +1,12 @@
-import React from "react";
-import DropdownMenu from "./DropdownMenu";
 import { Box, Typography } from "@mui/material";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useOuterClick from "../helper/userOuterClick";
-import { useState } from "react";
+import DropdownMenu from "./DropdownMenu";
 
 const PlaceBetComponent = ({ amount, profitLoss }) => {
   const [proLoss, setProfitLoss] = useState(profitLoss?.profitLoss);
   const [anchorEl, setAnchorEl] = useState(null);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+
   const handleClose = () => {
     setAnchorEl(0);
   };
