@@ -164,6 +164,7 @@ const IndiaPakLive = React.forwardRef(
           ? selectedSession.rate_percent.split("-")
           : "";
         if (selectedSession?.suspended === "suspended") {
+          setIsBall(false);
           setLock({
             isNo: true,
             isYes: true,
