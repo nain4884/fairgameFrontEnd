@@ -113,7 +113,7 @@ const Matches = () => {
             }}
           >
             <EventListing selected={selected} />
-            {["INPLAY", "CRICKET"].includes(selected) &&
+            {["INPLAY", "CRICKET", "SOCCER", "TENNIS"].includes(selected) &&
               window.location.pathname !== "/matchDetail" && (
                 <Match
                   setLoader={setLoader}
