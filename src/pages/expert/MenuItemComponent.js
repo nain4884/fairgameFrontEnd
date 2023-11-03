@@ -1,16 +1,16 @@
-import { Box, MenuItem, Typography } from "@mui/material";
-import { StyledImage } from "../../components";
-import { ArrowLeft } from "../../expert/assets";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Box, MenuItem, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { StyledImage } from '../../components';
+import { ArrowLeft } from '../../expert/assets';
 import {
   setSelectedBookmaker,
   setSelectedSession,
   setSessionBetId,
   setSessionProfitLoss,
   setSessionResultRefresh,
-} from "../../newStore/reducers/expertMatchDetails";
-import { setSessionResults } from "../../newStore/reducers/matchDetails";
+} from '../../newStore/reducers/expertMatchDetails';
+import { setSessionResults } from '../../newStore/reducers/matchDetails';
 
 const MenutItemsComponent = ({
   x,
@@ -28,22 +28,22 @@ const MenutItemsComponent = ({
       <MenuItem
         dense={true}
         sx={{
-          fontSize: { laptop: "12px", mobile: "10px" },
-          fontWeight: "500",
-          marginX: "0px",
-          width: { laptop: "240px", mobile: "210px" },
+          fontSize: { laptop: '12px', mobile: '10px' },
+          fontWeight: '500',
+          marginX: '0px',
+          width: { laptop: '240px', mobile: '210px' },
           borderBottomWidth: 0,
-          borderColor: "#EAEFEC",
-          paddingY: "0px",
-          borderStyle: "solid",
-          backgroundColor: selected == index ? "primary.main" : "white",
-          color: selected == index ? "white" : "black",
-          marginLeft: "-10px",
-          marginTop: index == 0 && "-8px",
-          "&:hover": {
-            backgroundColor: "primary.main",
-            color: "white",
-            borderColor: "white",
+          borderColor: '#EAEFEC',
+          paddingY: '0px',
+          borderStyle: 'solid',
+          backgroundColor: selected == index ? 'primary.main' : 'white',
+          color: selected == index ? 'white' : 'black',
+          marginLeft: '-10px',
+          marginTop: index == 0 && '-8px',
+          '&:hover': {
+            backgroundColor: 'primary.main',
+            color: 'white',
+            borderColor: 'white',
             // borderRadius: "5px",
             // transform: "scale(1.02)"
           },
@@ -63,12 +63,12 @@ const MenutItemsComponent = ({
       {selected == index && (
         <Box
           sx={{
-            background: "#F8C851",
-            width: "80%",
-            marginLeft: "20%",
-            borderRadius: "5px",
-            paddingX: "5px",
-            paddingY: "5px",
+            background: '#F8C851',
+            width: '80%',
+            marginLeft: '20%',
+            borderRadius: '5px',
+            paddingX: '5px',
+            paddingY: '5px',
           }}
         >
           {allLiveEventSession?.length > 0 &&
@@ -79,11 +79,11 @@ const MenutItemsComponent = ({
                     {event.bettings.length > 0 && (
                       <Typography
                         key={event.id}
-                        sx={{ fontSize: "12px", fontWeight: "600" }}
+                        sx={{ fontSize: '12px', fontWeight: '600' }}
                       >
-                        {activeUser == "1"
-                          ? "Current Live Session"
-                          : "Current Live Bookmaker"}
+                        {activeUser == '1'
+                          ? 'Current Live Session'
+                          : 'Current Live Bookmaker'}
                       </Typography>
                     )}
                     {event.bettings.map((element) => {
@@ -91,28 +91,28 @@ const MenutItemsComponent = ({
                         <Box
                           key={element.id}
                           onClick={(e) => {
-                            if (activeUser == "1") {
+                            if (activeUser == '1') {
                               dispatch(setSessionBetId(element?.id));
                               dispatch(setSessionResultRefresh(true));
-                              navigate("/expert/live", {
+                              navigate('/expert/live', {
                                 state: {
                                   createSession: false,
                                   match: x,
                                   sessionEvent: element,
                                 },
                               });
-                            } else if (activeUser == "2") {
-                              navigate("/expert/market");
+                            } else if (activeUser == '2') {
+                              navigate('/expert/market');
                             }
                             handleClose();
                           }}
-                          sx={{ marginLeft: "10px", marginTop: "3px" }}
+                          sx={{ marginLeft: '10px', marginTop: '3px' }}
                         >
                           <Typography
                             sx={{
-                              fontSize: "12px",
-                              marginTop: "3px",
-                              cursor: "pointer",
+                              fontSize: '12px',
+                              marginTop: '3px',
+                              cursor: 'pointer',
                             }}
                           >
                             {element.bet_condition}
@@ -128,12 +128,12 @@ const MenutItemsComponent = ({
                   <Typography sx={{ fontSize: "12px", marginTop: "3px" }}>{activeUser == '1' ? "India v/s Pak Session 1" : "India v/s Pak Bookmaker 2"}</Typography> */}
           <Box
             onClick={(e) => {
-              dispatch(setSessionBetId(""));
+              dispatch(setSessionBetId(''));
               dispatch(setSessionResults([]));
               dispatch(setSessionProfitLoss(null));
               dispatch(setSelectedSession(null));
               dispatch(setSessionResultRefresh(true));
-              navigate("/expert/live", {
+              navigate('/expert/live', {
                 state: {
                   createSession: true,
                   // createSession: globalStore.isSession,
@@ -142,14 +142,14 @@ const MenutItemsComponent = ({
               });
               handleClose();
             }}
-            sx={{ marginTop: "5px", display: "flex", alignItems: "center" }}
+            sx={{ marginTop: '5px', display: 'flex', alignItems: 'center' }}
           >
-            <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+            <Typography sx={{ fontSize: '12px', fontWeight: '600' }}>
               Create Session
             </Typography>
             <StyledImage
               src={ArrowLeft}
-              sx={{ width: "15px", height: "10px", marginLeft: "10px" }}
+              sx={{ width: '15px', height: '10px', marginLeft: '10px' }}
             />
           </Box>
           <Box
@@ -161,14 +161,14 @@ const MenutItemsComponent = ({
             //   sessionStorage.setItem("matchId",x.id)
             //   handleClose();
             // }}
-            sx={{ marginTop: "5px", display: "flex", alignItems: "center" }}
+            sx={{ marginTop: '5px', display: 'flex', alignItems: 'center' }}
           >
-            <Typography sx={{ fontSize: "12px", fontWeight: "600" }}>
+            <Typography sx={{ fontSize: '12px', fontWeight: '600' }}>
               Add Bookmaker
             </Typography>
             <StyledImage
               src={ArrowLeft}
-              sx={{ width: "15px", height: "10px", marginLeft: "10px" }}
+              sx={{ width: '15px', height: '10px', marginLeft: '10px' }}
             />
           </Box>
           {allLiveEventSession?.map((event) => {
@@ -195,25 +195,25 @@ const MenutItemsComponent = ({
                         //   handleClose();
                         // }}
                         onClick={(e) => {
-                          sessionStorage.setItem("matchId", x.id);
+                          sessionStorage.setItem('matchId', x.id);
                           const body = {
                             id: element?.id,
                             betId: element?.bet_id,
                             marketType: element?.marketType,
                           };
                           dispatch(setSelectedBookmaker(body));
-                          navigate("/expert/add_book_maker", {
+                          navigate('/expert/add_book_maker', {
                             state: { id: element.id, match: x },
                           });
                           handleClose();
                         }}
-                        sx={{ marginLeft: "10px", marginTop: "3px" }}
+                        sx={{ marginLeft: '10px', marginTop: '3px' }}
                       >
                         <Typography
                           sx={{
-                            fontSize: "12px",
-                            marginTop: "3px",
-                            cursor: "pointer",
+                            fontSize: '12px',
+                            marginTop: '3px',
+                            cursor: 'pointer',
                           }}
                         >
                           {element.marketName}

@@ -1,24 +1,23 @@
-import { Box, Button, Typography, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Excel, Pdf } from "../admin/assets";
-
-import { useTheme } from "@emotion/react";
-import { useSelector } from "react-redux";
-import { setRole } from "../newStore";
-import AccountListRow from "./AccountListRow";
-import ListHeaderT from "./ListHeaderT";
-import ListSubHeaderT from "./ListSubHeaderT";
-import SearchInputModal from "./SearchInputModal";
-import StyledImage from "./StyledImage";
-import CustomLoader from "./helper/CustomLoader";
-import constants from "./helper/constants";
+import { Box, Button, Typography, useMediaQuery } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Excel, Pdf } from '../admin/assets';
+import { useTheme } from '@emotion/react';
+import { useSelector } from 'react-redux';
+import { setRole } from '../newStore';
+import AccountListRow from './AccountListRow';
+import ListHeaderT from './ListHeaderT';
+import ListSubHeaderT from './ListSubHeaderT';
+import SearchInputModal from './SearchInputModal';
+import StyledImage from './StyledImage';
+import CustomLoader from './helper/CustomLoader';
+import constants from './helper/constants';
 
 const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
   const theme = useTheme();
-  const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
+  const matchesBreakPoint = useMediaQuery('(max-width:1137px)');
   let { axios } = setRole();
   const roles = useSelector((state) => state?.auth?.allRole);
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const matchesMobile = useMediaQuery(theme.breakpoints.down('laptop'));
   const [data1, setData] = useState([]);
   const [pageCount, setPageCount] = useState(constants.pageLimit);
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,8 +31,8 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
     exposuresum: 0.0,
     percent_profit_loss: 0,
     availablebalancesum: 0.0,
-    exposurelimit: "",
-    totalCommissions: "",
+    exposurelimit: '',
+    totalCommissions: '',
   });
 
   useEffect(() => {
@@ -45,7 +44,7 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
     try {
       const { data } = await axios.get(
         `/fair-game-wallet/getAllUserById/${id}?${
-          username ? `userName=${username}` : ""
+          username ? `userName=${username}` : ''
         }&page=${currentPage}&limit=${pageLimit}`
       );
       data?.data?.data.map((element) => {
@@ -87,8 +86,8 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
       setSumVal({
         ...data?.data,
         percent_profit_loss: profitLoss?.toFixed(2),
-        totalCommissions: "",
-        exposurelimit: "",
+        totalCommissions: '',
+        exposurelimit: '',
         availablebalancesum: data?.data?.balancesum - data?.data?.exposuresum,
       });
       setTimeout(() => {
@@ -115,16 +114,16 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
       <Box
         sx={[
           {
-            marginX: "0.5%",
-            width: { mobile: "96%", laptop: "90%", tablet: "96%" },
-            minHeight: loader && loader1 ? "20%" : "200px",
-            borderRadius: "10px",
-            borderBottomRightRadius: "0px",
-            borderBottomLeftRadius: "0px",
-            overflow: "hidden",
-            overflowY: "auto",
-            border: "2px solid white",
-            background: "#F8C851",
+            marginX: '0.5%',
+            width: { mobile: '96%', laptop: '90%', tablet: '96%' },
+            minHeight: loader && loader1 ? '20%' : '200px',
+            borderRadius: '10px',
+            borderBottomRightRadius: '0px',
+            borderBottomLeftRadius: '0px',
+            overflow: 'hidden',
+            overflowY: 'auto',
+            border: '2px solid white',
+            background: '#F8C851',
           },
         ]}
       >
@@ -134,9 +133,9 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
           <>
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                height: "50px",
+                display: 'flex',
+                justifyContent: 'space-between',
+                height: '50px',
               }}
             >
               <ListH
@@ -148,18 +147,18 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                 handleExport={handleExport}
               />
               <Button
-                sx={{ color: "", fontSize: "30px" }}
+                sx={{ color: '', fontSize: '30px' }}
                 onClick={() => {
-                  setShow({ value: false, id: "", title: "" });
+                  setShow({ value: false, id: '', title: '' });
                 }}
               >
                 &times;
               </Button>
             </Box>
 
-            <Box sx={{ overflowX: "auto" }}>
+            <Box sx={{ overflowX: 'auto' }}>
               <Box
-                sx={{ display: matchesBreakPoint ? "inline-block" : "block" }}
+                sx={{ display: matchesBreakPoint ? 'inline-block' : 'block' }}
               >
                 <ListHeaderT />
                 <ListSubHeaderT data={sumValue} />
@@ -173,10 +172,10 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                         showUserDetails={false}
                         showOptions={true}
                         showChildModal={true}
-                        containerStyle={{ background: "#FFE094" }}
+                        containerStyle={{ background: '#FFE094' }}
                         profit={element.profit_loss >= 0}
-                        fContainerStyle={{ background: "#0B4F26" }}
-                        fTextStyle={{ color: "white" }}
+                        fContainerStyle={{ background: '#0B4F26' }}
+                        fTextStyle={{ color: 'white' }}
                         element={element}
                         getListOfUser={getListOfUser}
                         currentPage={currentPage}
@@ -192,10 +191,10 @@ const AccountListModal = ({ id, show, setShow, title, handleExport }) => {
                         showOptions={true}
                         showCReport={true}
                         showChildModal={true}
-                        containerStyle={{ background: "#ECECEC" }}
+                        containerStyle={{ background: '#ECECEC' }}
                         profit={element.profit_loss >= 0}
-                        fContainerStyle={{ background: "#F8C851" }}
-                        fTextStyle={{ color: "#0B4F26" }}
+                        fContainerStyle={{ background: '#F8C851' }}
+                        fTextStyle={{ color: '#0B4F26' }}
                         element={element}
                         getListOfUser={getListOfUser}
                         currentPage={currentPage}
@@ -222,32 +221,32 @@ const Footer = ({ currentPage, pages, callPage }) => {
   return (
     <Box
       sx={{
-        height: "50px",
-        display: "flex",
-        width: "100%",
-        alignItems: "center",
-        px: { mobile: "5px", laptop: "10px" },
-        justifyContent: "space-between",
-        background: "#FAFAFA",
-        paddingX: "10%",
+        height: '50px',
+        display: 'flex',
+        width: '100%',
+        alignItems: 'center',
+        px: { mobile: '5px', laptop: '10px' },
+        justifyContent: 'space-between',
+        background: '#FAFAFA',
+        paddingX: '10%',
       }}
     >
       <Typography
-        sx={{ fontSize: { mobile: "12px", laptop: "14px" }, fontWeight: "600" }}
+        sx={{ fontSize: { mobile: '12px', laptop: '14px' }, fontWeight: '600' }}
       >
         Showing 1 to {pages}
       </Typography>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Box
           sx={{
-            height: "35px",
-            width: { mobile: "80px", laptop: "100px" },
-            background: "#0B4F26",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "5px",
-            cursor: "pointer",
+            height: '35px',
+            width: { mobile: '80px', laptop: '100px' },
+            background: '#0B4F26',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: '5px',
+            cursor: 'pointer',
           }}
           onClick={() => {
             callPage(
@@ -257,8 +256,8 @@ const Footer = ({ currentPage, pages, callPage }) => {
         >
           <Typography
             sx={{
-              color: "white",
-              fontSize: { laptop: "14px", mobile: "12px" },
+              color: 'white',
+              fontSize: { laptop: '14px', mobile: '12px' },
             }}
           >
             Previous
@@ -266,20 +265,20 @@ const Footer = ({ currentPage, pages, callPage }) => {
         </Box>
         <Box
           sx={{
-            height: "35px",
-            marginX: { laptop: "10px", mobile: "5px" },
-            width: "40px",
-            background: "#262626",
-            display: "flex",
-            borderRadius: "5px",
-            justifyContent: "center",
-            alignItems: "center",
+            height: '35px',
+            marginX: { laptop: '10px', mobile: '5px' },
+            width: '40px',
+            background: '#262626',
+            display: 'flex',
+            borderRadius: '5px',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Typography
             sx={{
-              color: "white",
-              fontSize: { laptop: "14px", mobile: "12px" },
+              color: 'white',
+              fontSize: { laptop: '14px', mobile: '12px' },
             }}
           >
             {currentPage}
@@ -287,14 +286,14 @@ const Footer = ({ currentPage, pages, callPage }) => {
         </Box>
         <Box
           sx={{
-            height: "35px",
-            width: { mobile: "80px", laptop: "100px" },
-            background: "#0B4F26",
-            display: "flex",
-            borderRadius: "5px",
-            justifyContent: "center",
-            alignItems: "center",
-            cursor: "pointer",
+            height: '35px',
+            width: { mobile: '80px', laptop: '100px' },
+            background: '#0B4F26',
+            display: 'flex',
+            borderRadius: '5px',
+            justifyContent: 'center',
+            alignItems: 'center',
+            cursor: 'pointer',
           }}
           onClick={() => {
             callPage(
@@ -306,8 +305,8 @@ const Footer = ({ currentPage, pages, callPage }) => {
         >
           <Typography
             sx={{
-              color: "white",
-              fontSize: { laptop: "14px", mobile: "12px" },
+              color: 'white',
+              fontSize: { laptop: '14px', mobile: '12px' },
             }}
           >
             Next
@@ -328,64 +327,64 @@ const ListH = ({
 }) => {
   return (
     <Box
-      display={"flex"}
+      display={'flex'}
       sx={{
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: "100%",
-        px: "10px",
-        py: "6px",
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        px: '10px',
+        py: '6px',
       }}
     >
-      <Box display={"flex"} alignItems="center" sx={{ alignItems: "center" }}>
+      <Box display={'flex'} alignItems="center" sx={{ alignItems: 'center' }}>
         <Typography
           sx={{
-            fontSize: { mobile: "14px", laptop: "18px", tablet: "18px" },
-            color: "#000",
-            marginRight: { mobile: "10px", laptop: "20px", tablet: "20px" },
+            fontSize: { mobile: '14px', laptop: '18px', tablet: '18px' },
+            color: '#000',
+            marginRight: { mobile: '10px', laptop: '20px', tablet: '20px' },
           }}
         >
           {title}
         </Typography>
         {matchesMobile && (
-          <Box sx={{ display: "flex", marginTop: "5px" }}>
+          <Box sx={{ display: 'flex', marginTop: '5px' }}>
             <Box
               sx={{
-                background: "white",
-                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                borderRadius: "5px",
-                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                background: 'white',
+                height: { mobile: '25px', laptop: '30px', tablet: '30px' },
+                borderRadius: '5px',
+                width: { mobile: '25px', laptop: '45px', tablet: '45px' },
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <StyledImage
                 src={Excel}
                 sx={{
-                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                  height: { mobile: '15px', laptop: '20px', tablet: '20px' },
                 }}
-                onClick={() => handleExport("xlsx", id)}
+                onClick={() => handleExport('xlsx', id)}
               />
             </Box>
             <Box
               sx={{
-                background: "white",
-                marginLeft: "10px",
-                borderRadius: "5px",
-                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                background: 'white',
+                marginLeft: '10px',
+                borderRadius: '5px',
+                height: { mobile: '25px', laptop: '30px', tablet: '30px' },
+                width: { mobile: '25px', laptop: '45px', tablet: '45px' },
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <StyledImage
                 src={Pdf}
                 sx={{
-                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                  height: { mobile: '15px', laptop: '20px', tablet: '20px' },
                 }}
-                onClick={() => handleExport("pdf", id)}
+                onClick={() => handleExport('pdf', id)}
               />
             </Box>
           </Box>
@@ -394,41 +393,41 @@ const ListH = ({
           <>
             <Box
               sx={{
-                background: "white",
-                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                borderRadius: "5px",
-                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                background: 'white',
+                height: { mobile: '25px', laptop: '30px', tablet: '30px' },
+                borderRadius: '5px',
+                width: { mobile: '25px', laptop: '45px', tablet: '45px' },
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <StyledImage
                 src={Excel}
                 sx={{
-                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                  height: { mobile: '15px', laptop: '20px', tablet: '20px' },
                 }}
-                onClick={() => handleExport("xlsx", id)}
+                onClick={() => handleExport('xlsx', id)}
               />
             </Box>
             <Box
               sx={{
-                background: "white",
-                marginLeft: "10px",
-                borderRadius: "5px",
-                height: { mobile: "25px", laptop: "30px", tablet: "30px" },
-                width: { mobile: "25px", laptop: "45px", tablet: "45px" },
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                background: 'white',
+                marginLeft: '10px',
+                borderRadius: '5px',
+                height: { mobile: '25px', laptop: '30px', tablet: '30px' },
+                width: { mobile: '25px', laptop: '45px', tablet: '45px' },
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
               <StyledImage
                 src={Pdf}
                 sx={{
-                  height: { mobile: "15px", laptop: "20px", tablet: "20px" },
+                  height: { mobile: '15px', laptop: '20px', tablet: '20px' },
                 }}
-                onClick={() => handleExport("pdf", id)}
+                onClick={() => handleExport('pdf', id)}
               />
             </Box>
           </>
@@ -440,9 +439,9 @@ const ListH = ({
         setPageCount={setPageCount}
         id={id}
         show={true}
-        placeholder={"Search User..."}
+        placeholder={'Search User...'}
         inputContainerStyle={{
-          width: { laptop: "12%", mobile: "50%" },
+          width: { laptop: '12%', mobile: '50%' },
         }}
       />
     </Box>

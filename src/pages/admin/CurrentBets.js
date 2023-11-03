@@ -1,11 +1,11 @@
-import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Background } from "../../components";
-import BetsList from "../../components/BetsList";
-import CustomLoader from "../../components/helper/CustomLoader";
-import constants from "../../components/helper/constants";
-import YellowHeaderBets from "../../components/yellowHeaderBets";
-import { setRole } from "../../newStore";
+import { Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Background } from '../../components';
+import BetsList from '../../components/BetsList';
+import CustomLoader from '../../components/helper/CustomLoader';
+import constants from '../../components/helper/constants';
+import YellowHeaderBets from '../../components/yellowHeaderBets';
+import { setRole } from '../../newStore';
 
 const CurrentBets = () => {
   const [pageLimit, setPageLimit] = useState(constants.pageLimit);
@@ -57,10 +57,10 @@ const CurrentBets = () => {
       {loading ? (
         <Box
           sx={{
-            minHeight: "60vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            minHeight: '60vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <CustomLoader text="" />

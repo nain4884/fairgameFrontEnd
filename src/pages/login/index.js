@@ -1,37 +1,37 @@
 import {
-  Card,
-  Box,
-  useTheme,
-  useMediaQuery,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
   Alert,
+  Box,
+  Button,
+  Card,
   CircularProgress,
-} from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { eye, eyeLock, mail } from "../../assets";
-import { Input, AuthLogo, AuthBackground } from "../../components";
-import { useDispatch, useSelector } from "react-redux";
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { eye, eyeLock, mail } from '../../assets';
+import { AuthBackground, AuthLogo, Input } from '../../components';
+import ChangePassword from '../../components/ChangePasswordComponent';
 import {
-  apiBasePath,
   LoginServerError,
-} from "../../components/helper/constants";
-import { setAllRoles, signIn, logout } from "../../newStore/reducers/auth";
-import { setRole } from "../../newStore";
-import { removeSocket } from "../../components/helper/removeSocket";
-import { GlobalStore } from "../../context/globalStore";
-import { SocketContext } from "../../context/socketContext";
-import ChangePassword from "../../components/ChangePasswordComponent";
-import { toast } from "react-toastify";
+  apiBasePath,
+} from '../../components/helper/constants';
+import { removeSocket } from '../../components/helper/removeSocket';
+import { GlobalStore } from '../../context/globalStore';
+import { SocketContext } from '../../context/socketContext';
+import { setRole } from '../../newStore';
+import { logout, setAllRoles, signIn } from '../../newStore/reducers/auth';
+import { removeCurrentUser } from '../../newStore/reducers/currentUser';
 import {
   removeManualBookMarkerRates,
   removeSelectedMatch,
   setConfirmAuth,
-} from "../../newStore/reducers/matchDetails";
-import { removeCurrentUser } from "../../newStore/reducers/currentUser";
+} from '../../newStore/reducers/matchDetails';
 
 // import ChangePasswordComponent from "./ChangePasswordComponent";
 
@@ -46,20 +46,18 @@ export default function Login(props) {
   const [loading, setLoading] = useState(false);
   const currroles = useSelector((state) => state?.auth?.allRole);
   const [loginDetail, setLoginDetail] = useState({
-    1: { field: "username", val: "" },
-    2: { field: "password", val: "" },
+    1: { field: 'username', val: '' },
+    2: { field: 'password', val: '' },
   });
   const [error, setError] = useState({
-    1: { field: "username", val: false },
-    2: { field: "password", val: false },
+    1: { field: 'username', val: false },
+    2: { field: 'password', val: false },
   });
   const [isChangePassword, setIsChangePassword] = useState(false);
 
-  const [loginError, setLoginError] = useState("");
+  const [loginError, setLoginError] = useState('');
   const [confirmPop, setConfirmPop] = useState(false);
   const { currentUser } = useSelector((state) => state?.currentUser);
-
-  const [recaptchaToken, setRecaptchToken] = useState(null);
 
   useEffect(() => {
     if (!confirmAuth) {
@@ -83,20 +81,20 @@ export default function Login(props) {
         function findThisRole(role) {
           return role?.id === currentUser?.roleId;
         }
-        if (["user"].includes(roleDetail?.roleName)) {
-          navigate("/matches");
+        if (['user'].includes(roleDetail?.roleName)) {
+          navigate('/matches');
         } else if (
-          ["admin", "master", "superAdmin", "supperMaster"]?.includes(
+          ['admin', 'master', 'superAdmin', 'supperMaster']?.includes(
             roleDetail?.roleName
           )
         ) {
-          navigate("/admin/list_of_clients");
+          navigate('/admin/list_of_clients');
         } else if (
-          ["fairGameWallet", "fairGameAdmin"]?.includes(roleDetail?.roleName)
+          ['fairGameWallet', 'fairGameAdmin']?.includes(roleDetail?.roleName)
         ) {
-          navigate("/wallet/list_of_clients");
-        } else if (["expert"]?.includes(roleDetail?.roleName)) {
-          navigate("/expert/match");
+          navigate('/wallet/list_of_clients');
+        } else if (['expert']?.includes(roleDetail?.roleName)) {
+          navigate('/expert/match');
         }
       }
     } catch (err) {
@@ -105,7 +103,7 @@ export default function Login(props) {
   }, []);
 
   const useHereHandle = async () => {
-    let token = await localStorage.getItem("JWTuser");
+    let token = await localStorage.getItem('JWTuser');
     try {
       const config = {
         headers: {
@@ -117,11 +115,11 @@ export default function Login(props) {
         config
       );
       const data = response.data;
-      loginToAccountAuth(data?.data?.username, "pass");
+      loginToAccountAuth(data?.data?.username, 'pass');
       console.log(data);
     } catch (error) {
       // Handle any errors
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
     setConfirmPop(false);
     // loginToAccountAuth(data?.data?.username, "pass");
@@ -132,37 +130,39 @@ export default function Login(props) {
       const token = await sessionStorage.getItem(val);
       return token;
     } catch (error) {
-      console.log("Error fetching token from local storage:", error);
+      console.log('Error fetching token from local storage:', error);
     }
   }
   const handleNavigate = async (path, type) => {
     // Set a timeout for 2 seconds before navigating
 
-    let token = "";
+    let token = '';
     switch (type) {
-      case "admin":
-        token = getToken("JWTwallet");
+      case 'admin':
+        token = getToken('JWTwallet');
         break;
-      case "expert":
-        token = getToken("JWTexpert");
+      case 'expert':
+        token = getToken('JWTexpert');
         break;
-      case "user":
-        token = getToken("JWTuser");
+      case 'user':
+        token = getToken('JWTuser');
         break;
-      case "wallet":
-        token = getToken("JWTwallet");
+      case 'wallet':
+        token = getToken('JWTwallet');
+        break;
+      default:
         break;
     }
-    if (token !== "") {
+    if (token !== '') {
       navigate(path);
     }
   };
 
   async function loginToAccountAuth(user, pass) {
     try {
-      if (user === "" && pass === "") {
+      if (user === '' && pass === '') {
         // toast.warning("Username and password required");
-        setLoginError("Username and password required");
+        setLoginError('Username and password required');
         setLoading(false);
         return false;
       } else {
@@ -170,7 +170,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: user,
           password: pass,
-          loginType: "user",
+          loginType: 'user',
         });
 
         if (props.allowedRole.includes(data.data.role)) {
@@ -182,29 +182,29 @@ export default function Login(props) {
             return role.id === data.data.roleId;
           }
           if (roleDetail) data.data.role = roleDetail;
-          if (data.message === "User login successfully.") {
+          if (data.message === 'User login successfully.') {
             removeSocket();
             setRole(data.data.access_token);
             dispatch(signIn(data.data));
             setLoading(false);
-            if (["user"].includes(data.data.role.roleName)) {
+            if (['user'].includes(data.data.role.roleName)) {
               // localStorage.setItem("confirmAuth", true);
-              localStorage.setItem("JWTuser", data.data.access_token);
+              localStorage.setItem('JWTuser', data.data.access_token);
               // dispatch(setConfirmAuth(false));
               setGlobalStore((prev) => ({
                 ...prev,
                 userJWT: data.data.access_token,
               }));
-              handleNavigate("/matches", "user");
+              handleNavigate('/matches', 'user');
             } else {
               // toast.error("Incorrect username and password !");
-              setLoginError("Incorrect username and password !");
+              setLoginError('Incorrect username and password !');
               setLoading(false);
             }
           }
         } else {
           // toast.error("Incorrect username and password !");
-          setLoginError("Incorrect username and password !");
+          setLoginError('Incorrect username and password !');
           setLoading(false);
         }
       }
@@ -220,9 +220,9 @@ export default function Login(props) {
 
   async function loginToAccount() {
     try {
-      if (loginDetail[1].val === "" && loginDetail[2].val === "") {
+      if (loginDetail[1].val === '' && loginDetail[2].val === '') {
         // toast.warning("Username and password required");
-        setLoginError("Username and password required");
+        setLoginError('Username and password required');
         setLoading(false);
         return false;
       }
@@ -237,7 +237,7 @@ export default function Login(props) {
         let { data } = await axios.post(`/auth/login`, {
           username: loginDetail[1].val,
           password: loginDetail[2].val,
-          loginType: "user",
+          loginType: 'user',
           recaptchaToken: null,
         });
 
@@ -250,14 +250,14 @@ export default function Login(props) {
             return role.id === data.data.roleId;
           }
           if (roleDetail) data.data.role = roleDetail;
-          if (data.message === "User login successfully.") {
+          if (data.message === 'User login successfully.') {
             // getUserDetail();
             removeSocket();
             setRole(data.data.access_token);
             dispatch(signIn(data.data));
             setLoading(false);
-            if (["user"].includes(data.data.role.roleName)) {
-              localStorage.setItem("JWTuser", data.data.access_token);
+            if (['user'].includes(data.data.role.roleName)) {
+              localStorage.setItem('JWTuser', data.data.access_token);
               setGlobalStore((prev) => ({
                 ...prev,
                 userJWT: data.data.access_token,
@@ -267,15 +267,15 @@ export default function Login(props) {
                 // handleNavigate("/change_password", "user");
                 setIsChangePassword(true);
               } else {
-                handleNavigate("/matches", "user");
+                handleNavigate('/matches', 'user');
               }
             } else {
-              setLoginError("Incorrect username and password !");
+              setLoginError('Incorrect username and password !');
               setLoading(false);
             }
           }
         } else {
-          setLoginError("Incorrect username and password !");
+          setLoginError('Incorrect username and password !');
           setLoading(false);
         }
       }
@@ -302,20 +302,20 @@ export default function Login(props) {
       );
 
       dispatch(setConfirmAuth(false));
-      sessionStorage.setItem("JWTuser", null);
+      sessionStorage.setItem('JWTuser', null);
       dispatch(removeCurrentUser());
       removeSocket();
-      dispatch(logout({ roleType: "role4" }));
-      setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+      dispatch(logout({ roleType: 'role4' }));
+      setGlobalStore((prev) => ({ ...prev, userJWT: '' }));
       dispatch(removeManualBookMarkerRates());
       dispatch(removeSelectedMatch());
       socket.disconnect();
       socketMicro.disconnect();
-      await axios.get("auth/logout");
-      localStorage.setItem("confirmAuth", false);
-      setLoginError("");
-      if (data.message === "Password update successfully.") {
-        toast.success("Password update successfully.");
+      await axios.get('auth/logout');
+      localStorage.setItem('confirmAuth', false);
+      setLoginError('');
+      if (data.message === 'Password update successfully.') {
+        toast.success('Password update successfully.');
         setIsChangePassword(false);
       }
     } catch (e) {
@@ -324,11 +324,11 @@ export default function Login(props) {
     }
   };
 
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("tablet"));
+  const matchesMobile = useMediaQuery(theme.breakpoints.down('tablet'));
 
   const handleEnterKeyPress = (e) => {
-    setLoginError("");
-    if (e.key === "Enter") {
+    setLoginError('');
+    if (e.key === 'Enter') {
       // Check if the Enter key is pressed
       e.preventDefault();
       // loginButtonRef.current.click(); // Trigger the click event on the CustomButton
@@ -358,28 +358,28 @@ export default function Login(props) {
   };
 
   return (
-    <Box style={{ position: "relative" }}>
+    <Box style={{ position: 'relative' }}>
       <AuthBackground />
       <Box
         style={{
-          height: "100vh",
-          width: "100vw",
-          display: "flex",
-          alignItems: "flex-end",
-          position: "relative",
-          justifyContent: "flex-end",
+          height: '100vh',
+          width: '100vw',
+          display: 'flex',
+          alignItems: 'flex-end',
+          position: 'relative',
+          justifyContent: 'flex-end',
         }}
       >
         <Card
           sx={[
             {
-              display: "flex",
-              height: "100%",
-              flexDirection: "column",
-              py: "10px",
-              alignItems: "center",
-              justifyContent: matchesMobile ? "flex-start" : "center",
-              width: { laptop: "380px", tablet: "43%", mobile: "100%" },
+              display: 'flex',
+              height: '100%',
+              flexDirection: 'column',
+              py: '10px',
+              alignItems: 'center',
+              justifyContent: matchesMobile ? 'flex-start' : 'center',
+              width: { laptop: '380px', tablet: '43%', mobile: '100%' },
             },
             (theme) => ({
               background: `${theme.palette.primary.mainGradient}`,
@@ -389,13 +389,13 @@ export default function Login(props) {
           <AuthLogo />
 
           {!isChangePassword ? (
-            <form onSubmit={handleLogin} style={{ width: "75%" }}>
+            <form onSubmit={handleLogin} style={{ width: '75%' }}>
               <Box
                 sx={{
                   width: {
-                    laptop: "100%",
-                    mobile: "100%",
-                    marginTop: matchesMobile ? "100px" : "20px",
+                    laptop: '100%',
+                    mobile: '100%',
+                    marginTop: matchesMobile ? '100px' : '20px',
                   },
                   opacity: 1,
                 }}
@@ -405,8 +405,8 @@ export default function Login(props) {
                   onFocusOut={handleBlur}
                   toFoucs={true}
                   autoFocus
-                  placeholder={"Enter Username"}
-                  title={"Username"}
+                  placeholder={'Enter Username'}
+                  title={'Username'}
                   img={mail}
                   setDetail={setLoginDetail}
                   Detail={loginDetail}
@@ -415,14 +415,14 @@ export default function Login(props) {
                   place={1}
                 />
                 {error[1].val && (
-                  <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                  <p style={{ color: '#fa1e1e' }}>Field Required</p>
                 )}
                 <Input
                   required={true}
-                  placeholder={"Enter Password"}
-                  inputProps={{ type: "password" }}
-                  title={"Password"}
-                  containerStyle={{ marginTop: "10px" }}
+                  placeholder={'Enter Password'}
+                  inputProps={{ type: 'password' }}
+                  title={'Password'}
+                  containerStyle={{ marginTop: '10px' }}
                   img={eye}
                   img1={eyeLock}
                   setDetail={setLoginDetail}
@@ -430,11 +430,11 @@ export default function Login(props) {
                   setError={setError}
                   error={error}
                   place={2}
-                  okButtonRef={"okButtonRef"}
+                  okButtonRef={'okButtonRef'}
                   onKeyDown={handleEnterKeyPress} // Handle "Enter" key press on the password field
                 />
                 {error[2].val && (
-                  <p style={{ color: "#fa1e1e" }}>Field Required</p>
+                  <p style={{ color: '#fa1e1e' }}>Field Required</p>
                 )}
                 {/* <Typography
               onClick={() => {
@@ -467,10 +467,10 @@ export default function Login(props) {
                 /> */}
                 <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginY: "1vh",
-                    marginTop: "4vh",
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginY: '1vh',
+                    marginTop: '4vh',
                   }}
                 >
                   <Button
@@ -478,27 +478,27 @@ export default function Login(props) {
                     variant="contained"
                     color="secondary"
                     sx={{
-                      width: "62%",
-                      cursor: "pointer",
-                      height: { mobile: "50px", laptop: "43px" },
-                      borderRadius: "10px",
-                      fontWeight: "500",
-                      textTransform: "none",
-                      fontSize: { laptop: "14px", mobile: "14px" },
+                      width: '62%',
+                      cursor: 'pointer',
+                      height: { mobile: '50px', laptop: '43px' },
+                      borderRadius: '10px',
+                      fontWeight: '500',
+                      textTransform: 'none',
+                      fontSize: { laptop: '14px', mobile: '14px' },
                       background: theme.palette.button.main,
                     }}
                   >
                     {loading ? (
                       <CircularProgress
                         sx={{
-                          color: "#FFF",
+                          color: '#FFF',
                         }}
                         size={20}
                         thickness={4}
                         value={60}
                       />
                     ) : (
-                      "Login"
+                      'Login'
                     )}
                   </Button>
                   {/* <CustomButton
@@ -515,17 +515,13 @@ export default function Login(props) {
                 title="Login"
               /> */}
                 </Box>
-                {loginError !== "" && (
+                {loginError !== '' && (
                   <Alert severity="warning">{loginError}</Alert>
                 )}
               </Box>
             </form>
           ) : (
-            <ChangePassword
-              width="300px"
-              changePassword={changePassword}
-              setRecaptchToken={setRecaptchToken}
-            />
+            <ChangePassword width="300px" changePassword={changePassword} />
           )}
         </Card>
       </Box>
@@ -544,8 +540,8 @@ export default function Login(props) {
           <Button onClick={() => setConfirmPop((prev) => !prev)}>Close</Button>
           <Button
             sx={{
-              color: "#201f08",
-              backgroundColor: "#fdf21b",
+              color: '#201f08',
+              backgroundColor: '#fdf21b',
             }}
             onClick={useHereHandle}
           >

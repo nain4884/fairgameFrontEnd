@@ -1,19 +1,19 @@
-import _ from "lodash";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import io from "socket.io-client";
+import _ from 'lodash';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import io from 'socket.io-client';
 import {
   apiBasePath,
-  microServiceApiPath
-} from "../components/helper/constants";
-import { removeSocket } from "../components/helper/removeSocket";
-import { setRole } from "../newStore";
-import { logoutAuth } from "../newStore/reducers/auth";
+  microServiceApiPath,
+} from '../components/helper/constants';
+import { removeSocket } from '../components/helper/removeSocket';
+import { setRole } from '../newStore';
+import { logoutAuth } from '../newStore/reducers/auth';
 import {
   logoutCurrentUser,
-  setCurrentUser
-} from "../newStore/reducers/currentUser";
+  setCurrentUser,
+} from '../newStore/reducers/currentUser';
 import {
   logoutMatchDetails,
   setAllBetRate,
@@ -26,9 +26,9 @@ import {
   setSelectedMatch,
   setSelectedSessionBettings,
   setSessionExposure,
-  setUserAllMatches
-} from "../newStore/reducers/matchDetails";
-import { GlobalStore } from "./globalStore";
+  setUserAllMatches,
+} from '../newStore/reducers/matchDetails';
+import { GlobalStore } from './globalStore';
 
 export const SocketContext = createContext();
 var match_id;
@@ -40,9 +40,9 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [socketMicro, setSocketMicro] = useState(null);
   const { JWT, role } = setRole();
-  const token = "Bearer " + JWT;
-  const checkSocket = localStorage.getItem("socket");
-  const checkMicroSocket = localStorage.getItem("microSocket");
+  const token = 'Bearer ' + JWT;
+  const checkSocket = localStorage.getItem('socket');
+  const checkMicroSocket = localStorage.getItem('microSocket');
   const { currentUser } = useSelector((state) => state?.currentUser);
   const {
     allBetRates,
@@ -112,19 +112,19 @@ export const SocketProvider = ({ children }) => {
     quickBookmaker,
   ]);
 
-  console.log("nav", location);
+  console.log('nav', location);
   const dispatch = useDispatch();
   const getToken = (tk, rl) => {
-    let token = "";
-    if (rl === "role4") {
-      token = "Bearer " + (tk.userJWT || sessionStorage.getItem("JWTuser"));
-    } else if (rl === "role3") {
-      token = "Bearer " + (tk.expertJWT || sessionStorage.getItem("JWTexpert"));
-    } else if (rl === "role2") {
-      token = "Bearer " + (tk.adminWT || sessionStorage.getItem("JWTwallet"));
+    let token = '';
+    if (rl === 'role4') {
+      token = 'Bearer ' + (tk.userJWT || sessionStorage.getItem('JWTuser'));
+    } else if (rl === 'role3') {
+      token = 'Bearer ' + (tk.expertJWT || sessionStorage.getItem('JWTexpert'));
+    } else if (rl === 'role2') {
+      token = 'Bearer ' + (tk.adminWT || sessionStorage.getItem('JWTwallet'));
     }
-    if (rl === "role1") {
-      token = "Bearer " + (tk.walletWT || sessionStorage.getItem("JWTadmin"));
+    if (rl === 'role1') {
+      token = 'Bearer ' + (tk.walletWT || sessionStorage.getItem('JWTadmin'));
     }
     return token;
   };
@@ -142,45 +142,45 @@ export const SocketProvider = ({ children }) => {
     });
   }
   // Usage example
-  getSessionStorageItemAsync("matchId")
+  getSessionStorageItemAsync('matchId')
     .then((matchId) => {
       if (matchId !== null) {
-        console.log("Match ID:", matchId);
+        console.log('Match ID:', matchId);
         match_id = matchId;
         // Your further processing with the matchId
       } else {
-        console.log("Match ID not found in sessionStorage.");
+        console.log('Match ID not found in sessionStorage.');
       }
     })
     .catch((error) => {
-      console.error("Error occurred while accessing sessionStorage:", error);
+      console.error('Error occurred while accessing sessionStorage:', error);
     });
 
   const localUserServerEvents = (localSocket, microSocket) => {
-    localSocket.on("logoutUserForce", (event) => {
+    localSocket.on('logoutUserForce', (event) => {
       try {
         // ResetAllState()
         dispatch(logoutMatchDetails());
         dispatch(logoutCurrentUser());
         dispatch(logoutAuth());
-        localStorage.removeItem("role4");
-        localStorage.removeItem("JWTuser");
+        localStorage.removeItem('role4');
+        localStorage.removeItem('JWTuser');
         sessionStorage.clear();
         // dispatch(removeCurrentUser());
         // dispatch(removeManualBookMarkerRates());
         // dispatch(removeSelectedMatch());
         // dispatch(logout({ roleType: "role4" }));
-        setGlobalStore((prev) => ({ ...prev, userJWT: "" }));
+        setGlobalStore((prev) => ({ ...prev, userJWT: '' }));
         // await axios.get("auth/logout");
         removeSocket();
         socket.disconnect();
         socketMicro.disconnect();
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("resultDeclareForBet", (event) => {
+    localSocket.on('resultDeclareForBet', (event) => {
       const data = event;
       try {
         setLocalAllMatches((prev) => {
@@ -195,7 +195,7 @@ export const SocketProvider = ({ children }) => {
             currentMatch?.id === data?.match_id &&
             data?.sessionBet === false
           ) {
-            navigate("/matches");
+            navigate('/matches');
             return currentMatch;
           }
           if (
@@ -247,11 +247,11 @@ export const SocketProvider = ({ children }) => {
           return currentMatch;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("undeclearResult", (event) => {
+    localSocket.on('undeclearResult', (event) => {
       const data = event;
       try {
         setCurrentMatch((currentMatch) => {
@@ -272,11 +272,11 @@ export const SocketProvider = ({ children }) => {
           return currentMatch;
         });
       } catch (e) {
-        console.error("error: ", e?.message);
+        console.error('error: ', e?.message);
       }
     });
 
-    localSocket.on("undeclearResultBet", (event) => {
+    localSocket.on('undeclearResultBet', (event) => {
       const data = event;
       try {
         setCurrentMatch((currentMatch) => {
@@ -318,11 +318,11 @@ export const SocketProvider = ({ children }) => {
           return currentMatch;
         });
       } catch (e) {
-        console.error("error: ", e?.message);
+        console.error('error: ', e?.message);
       }
     });
 
-    localSocket.on("updateMatchActiveStatus", (event) => {
+    localSocket.on('updateMatchActiveStatus', (event) => {
       const data = event;
       try {
         setCurrentMatch((currentMatch) => {
@@ -355,11 +355,11 @@ export const SocketProvider = ({ children }) => {
           return currentMatch;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("updateSessionRate_user", (event) => {
+    localSocket.on('updateSessionRate_user', (event) => {
       const data = event;
       try {
         setCurrentMatch((currentMatch) => {
@@ -424,11 +424,11 @@ export const SocketProvider = ({ children }) => {
           // return newBody;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("match_bet", (event) => {
+    localSocket.on('match_bet', (event) => {
       const data = event;
       try {
         const body = {
@@ -441,7 +441,7 @@ export const SocketProvider = ({ children }) => {
           user_id: null,
           match_id: data?.betPlaceData?.match_id,
           bet_id: data?.betPlaceData?.bet_id,
-          result: "pending",
+          result: 'pending',
           team_bet: data?.betPlaceData?.team_bet,
           odds: data?.betPlaceData?.odds,
           win_amount: null,
@@ -486,11 +486,11 @@ export const SocketProvider = ({ children }) => {
         }
         // alert(JSON.stringify(manualBookmaker));
       } catch (e) {
-        console.log("error", e?.message);
+        console.log('error', e?.message);
       }
     });
 
-    localSocket.on("session_bet", (event) => {
+    localSocket.on('session_bet', (event) => {
       const data = event;
 
       try {
@@ -554,7 +554,7 @@ export const SocketProvider = ({ children }) => {
       }
     });
 
-    localSocket.on("newBetAdded", (event) => {
+    localSocket.on('newBetAdded', (event) => {
       // const value = event;
       // matchId = value?.match_id;
       try {
@@ -721,7 +721,7 @@ export const SocketProvider = ({ children }) => {
             drawRate: null,
             id: value?.id,
             isActive: true,
-            matchType: "cricket",
+            matchType: 'cricket',
             match_id: value?.match_id,
             no_rate: null,
             rate_percent: null,
@@ -756,7 +756,7 @@ export const SocketProvider = ({ children }) => {
       }
     });
 
-    localSocket.on("allApiSessionStop", (event) => {
+    localSocket.on('allApiSessionStop', (event) => {
       const value = event;
       // matchId = value?.match_id;
       try {
@@ -782,9 +782,9 @@ export const SocketProvider = ({ children }) => {
       }
     });
     // The `message` event listener is not being overridden.
-    localSocket.on("matchOddRateLive", (event) => {
+    localSocket.on('matchOddRateLive', (event) => {
       const value = event;
-      console.log("matchOddRateLive", event);
+      console.log('matchOddRateLive', event);
       try {
         setCurrentMatch((prev) => {
           if (prev?.id === value?.matchId) {
@@ -798,11 +798,11 @@ export const SocketProvider = ({ children }) => {
           return prev;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("userBalanceUpdate", (event) => {
+    localSocket.on('userBalanceUpdate', (event) => {
       const data = event;
       try {
         setLocalCurrentUser((prev) => {
@@ -814,11 +814,11 @@ export const SocketProvider = ({ children }) => {
           return user;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("bookMakerRateLive", (event) => {
+    localSocket.on('bookMakerRateLive', (event) => {
       const data = event;
       try {
         setCurrentMatch((prev) => {
@@ -833,11 +833,11 @@ export const SocketProvider = ({ children }) => {
           return prev;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("sessionResult", (event) => {
+    localSocket.on('sessionResult', (event) => {
       const data = event;
       try {
         setLocalCurrentUser((prev) => {
@@ -874,10 +874,10 @@ export const SocketProvider = ({ children }) => {
           return res;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
-    localSocket.on("sessionNoResult", (event) => {
+    localSocket.on('sessionNoResult', (event) => {
       const data = event;
       try {
         setLocalCurrentUser((prev) => {
@@ -918,11 +918,11 @@ export const SocketProvider = ({ children }) => {
           return res;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("matchResult", (event) => {
+    localSocket.on('matchResult', (event) => {
       const data = event;
       try {
         setLocalCurrentUser((prev) => {
@@ -937,17 +937,17 @@ export const SocketProvider = ({ children }) => {
 
         setCurrentMatch((currentMatch) => {
           if (currentMatch?.id === data?.matchId) {
-            return navigate("/matches");
+            return navigate('/matches');
           }
 
           return currentMatch;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("updateRate_user", (event) => {
+    localSocket.on('updateRate_user', (event) => {
       const data = event;
       try {
         if (!data?.lock) {
@@ -976,14 +976,14 @@ export const SocketProvider = ({ children }) => {
                     teamB,
                     teamC,
                     teamA_Back,
-                    teamA_lay: "",
+                    teamA_lay: '',
                     teamB_Back,
-                    teamB_lay: "",
+                    teamB_lay: '',
                     teamC_Back,
-                    teamC_lay: "",
-                    teamA_suspend: "live",
-                    teamB_suspend: "live",
-                    teamC_suspend: "live",
+                    teamC_lay: '',
+                    teamA_suspend: 'live',
+                    teamB_suspend: 'live',
+                    teamC_suspend: 'live',
                     isSingle,
                   };
                 }
@@ -1044,15 +1044,15 @@ export const SocketProvider = ({ children }) => {
                 if (prev?.id === id && prev?.match_id === matchId) {
                   return {
                     ...prev,
-                    teamA_Back: teamA_Back ?? "",
-                    teamA_lay: teamA_lay ?? "",
-                    teamA_suspend: teamA_suspend === false ? null : "suspended",
-                    teamB_Back: teamB_Back ?? "",
-                    teamB_lay: teamB_lay ?? "",
-                    teamB_suspend: teamB_suspend === false ? null : "suspended",
-                    teamC_Back: teamC_Back ?? "",
-                    teamC_lay: teamC_lay ?? "",
-                    teamC_suspend: teamC_suspend === false ? null : "suspended",
+                    teamA_Back: teamA_Back ?? '',
+                    teamA_lay: teamA_lay ?? '',
+                    teamA_suspend: teamA_suspend === false ? null : 'suspended',
+                    teamB_Back: teamB_Back ?? '',
+                    teamB_lay: teamB_lay ?? '',
+                    teamB_suspend: teamB_suspend === false ? null : 'suspended',
+                    teamC_Back: teamC_Back ?? '',
+                    teamC_lay: teamC_lay ?? '',
+                    teamC_suspend: teamC_suspend === false ? null : 'suspended',
                     teamA_Ball: null,
                     teamB_Ball: null,
                     teamC_Ball: null,
@@ -1102,7 +1102,7 @@ export const SocketProvider = ({ children }) => {
             // });
           }
         } else {
-          if (data.teamA_suspend == "Ball Started") {
+          if (data.teamA_suspend == 'Ball Started') {
             try {
               // setCurrentMatch((currentMatches) => {
               setLocalQuickBookmaker((bookmaker) => {
@@ -1119,17 +1119,17 @@ export const SocketProvider = ({ children }) => {
                     return {
                       ...prev,
                       teamA_suspend: teamA_suspend
-                        ? "suspended"
+                        ? 'suspended'
                         : teamA_suspend,
                       teamB_suspend: teamB_suspend
-                        ? "suspended"
+                        ? 'suspended'
                         : teamB_suspend,
                       teamC_suspend: teamC_suspend
-                        ? "suspended"
+                        ? 'suspended'
                         : teamC_suspend,
-                      teamA_Ball: "ball",
-                      teamB_Ball: "ball",
-                      teamC_Ball: "ball",
+                      teamA_Ball: 'ball',
+                      teamB_Ball: 'ball',
+                      teamC_Ball: 'ball',
                     };
                   }
                   return prev;
@@ -1190,9 +1190,9 @@ export const SocketProvider = ({ children }) => {
                   if (prev?.id === id && prev?.match_id === matchId) {
                     return {
                       ...prev,
-                      teamA_suspend: teamA_suspend ? "suspended" : null,
-                      teamB_suspend: teamB_suspend ? "suspended" : null,
-                      teamC_suspend: teamC_suspend ? "suspended" : null,
+                      teamA_suspend: teamA_suspend ? 'suspended' : null,
+                      teamB_suspend: teamB_suspend ? 'suspended' : null,
+                      teamC_suspend: teamC_suspend ? 'suspended' : null,
                       teamA_Ball: null,
                       teamB_Ball: null,
                       teamC_Ball: null,
@@ -1243,38 +1243,38 @@ export const SocketProvider = ({ children }) => {
           }
         }
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("marketBlock", (event) => {
+    localSocket.on('marketBlock', (event) => {
       const data = event;
       try {
         setCurrentMatch((currentMatch) => {
           if (currentMatch?.id === data?.match_id) {
             let updatedBlockMarket;
-            if (data?.marketType === "MANUAL BOOKMAKER") {
+            if (data?.marketType === 'MANUAL BOOKMAKER') {
               updatedBlockMarket = {
                 ...currentMatch?.blockMarket,
                 MANUALBOOKMAKER: { block: data?.marketLock },
               };
-            } else if (data?.marketType === "BOOKMAKER") {
+            } else if (data?.marketType === 'BOOKMAKER') {
               updatedBlockMarket = {
                 ...currentMatch?.blockMarket,
                 BOOKMAKER: { block: data?.marketLock },
               };
-            } else if (data?.marketType === "MATCH ODDS") {
+            } else if (data?.marketType === 'MATCH ODDS') {
               updatedBlockMarket = {
                 ...currentMatch?.blockMarket,
                 MATCH_ODDS: { block: data?.marketLock },
               };
-            } else if (data?.marketType === "SESSION") {
+            } else if (data?.marketType === 'SESSION') {
               updatedBlockMarket = {
                 ...currentMatch?.blockMarket,
                 SESSION: { block: data?.marketLock },
               };
             }
-            console.log(updatedBlockMarket, "updatedBlockMarket ");
+            console.log(updatedBlockMarket, 'updatedBlockMarket ');
             const newBody = {
               ...currentMatch,
               blockMarket: updatedBlockMarket,
@@ -1286,11 +1286,11 @@ export const SocketProvider = ({ children }) => {
           return currentMatch;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("matchDeleteBet", (event) => {
+    localSocket.on('matchDeleteBet', (event) => {
       const data = event;
       try {
         setLocalCurrentUser((prev) => {
@@ -1305,28 +1305,28 @@ export const SocketProvider = ({ children }) => {
         setCurrentMatch((currentMatch) => {
           if (currentMatch?.id === data?.match_id) {
             let updatedBlockMarket;
-            if (data?.marketType === "MANUAL BOOKMAKER") {
+            if (data?.marketType === 'MANUAL BOOKMAKER') {
               updatedBlockMarket = {
                 ...currentMatch?.blockMarket,
                 MANUALBOOKMAKER: { block: data?.marketLock },
               };
-            } else if (data?.marketType === "BOOKMAKER") {
+            } else if (data?.marketType === 'BOOKMAKER') {
               updatedBlockMarket = {
                 ...currentMatch?.blockMarket,
                 BOOKMAKER: { block: data?.marketLock },
               };
-            } else if (data?.marketType === "MATCH ODDS") {
+            } else if (data?.marketType === 'MATCH ODDS') {
               updatedBlockMarket = {
                 ...currentMatch?.blockMarket,
                 MATCH_ODDS: { block: data?.marketLock },
               };
-            } else if (data?.marketType === "SESSION") {
+            } else if (data?.marketType === 'SESSION') {
               updatedBlockMarket = {
                 ...currentMatch?.blockMarket,
                 SESSION: { block: data?.marketLock },
               };
             }
-            console.log(updatedBlockMarket, "updatedBlockMarket ");
+            console.log(updatedBlockMarket, 'updatedBlockMarket ');
             const newBody = {
               ...currentMatch,
               blockMarket: updatedBlockMarket,
@@ -1360,11 +1360,11 @@ export const SocketProvider = ({ children }) => {
           return updatedBettings;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("sessionDeleteBet", (event) => {
+    localSocket.on('sessionDeleteBet', (event) => {
       const data = event;
       try {
         setLocalCurrentUser((prev) => {
@@ -1416,11 +1416,11 @@ export const SocketProvider = ({ children }) => {
           return updatedBettings;
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
 
-    localSocket.on("newMatchAdded", (event) => {
+    localSocket.on('newMatchAdded', (event) => {
       const data = event;
       try {
         setCurrentMatch((prev) => {
@@ -1456,7 +1456,7 @@ export const SocketProvider = ({ children }) => {
           }
         });
       } catch (e) {
-        console.log("error :", e?.message);
+        console.log('error :', e?.message);
       }
     });
   };
@@ -1464,7 +1464,7 @@ export const SocketProvider = ({ children }) => {
   const localServerSocket = () => {
     // if (!socket && checkSocket !== "true") {
     const newSocket = io(`${apiBasePath}`, {
-      transports: ["polling"],
+      transports: ['polling'],
       headers: {
         Authorization: `${token}`,
       },
@@ -1472,7 +1472,7 @@ export const SocketProvider = ({ children }) => {
         token: `${token}`,
       },
     });
-    newSocket.on("connect", () => {
+    newSocket.on('connect', () => {
       setSocket(newSocket);
       // toast.success("Socket connect !", { autoClose: 2000 });
       // localStorage.setItem("socket", newSocket.connected)
@@ -1502,7 +1502,7 @@ export const SocketProvider = ({ children }) => {
 
   const mircoServerSocket = () => {
     const newMicroSocket = io(`${microServiceApiPath}`, {
-      transports: ["polling"],
+      transports: ['polling'],
       headers: {
         Authorization: `${token}`,
       },
@@ -1511,7 +1511,7 @@ export const SocketProvider = ({ children }) => {
       },
     });
 
-    newMicroSocket.on("connect", () => {
+    newMicroSocket.on('connect', () => {
       setSocketMicro(newMicroSocket);
       // toast.success("Third party socket connect !", { autoClose: 2000 });
       // localStorage.setItem("microSocket", newMicroSocket.connected)
@@ -1522,20 +1522,20 @@ export const SocketProvider = ({ children }) => {
 
     newMicroSocket.onerror = (event) => {
       // Handle the WebSocket connection error here
-      console.error("WebSocket connection failed:", event);
+      console.error('WebSocket connection failed:', event);
     };
     // }
   };
   useEffect(() => {
     try {
-      console.log(role, "role");
+      console.log(role, 'role');
       const token = getToken(globalStore, role);
-      if (!["Bearer null", ""].includes(token)) {
+      if (!['Bearer null', ''].includes(token)) {
         localServerSocket();
         mircoServerSocket();
       }
     } catch (e) {
-      console.log("Error: " + e);
+      console.log('Error: ' + e);
     }
   }, [role, globalStore]);
 

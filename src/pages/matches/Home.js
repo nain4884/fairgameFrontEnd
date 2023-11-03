@@ -1,43 +1,39 @@
-import { useTheme } from "@emotion/react";
-import { Box, useMediaQuery } from "@mui/material";
-import React from "react";
-import { useContext } from "react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
-import { SocketContext } from "../../context/socketContext";
-import { setRole } from "../../newStore";
-import { useEffect } from "react";
-import _ from "lodash";
-import {
-  setAllSessionBets,
-  setManualBookMarkerRates,
-  setSelectedMatch,
-  setAllBetRate,
-  setManualBookmaker,
-  setSessionExposure,
-  setSelectedSessionBettings,
-  setQuickSession,
-  setQuickBookmaker,
-  setMatchButtonData,
-  setSessionButtonData,
-  setRefreshForBets,
-} from "../../newStore/reducers/matchDetails";
+import { useTheme } from '@emotion/react';
+import { Box, useMediaQuery } from '@mui/material';
+import Axios from 'axios';
+import _ from 'lodash';
+import React, { memo, useContext, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { MatchOdds } from '../../components';
+import AllRateSeperate from '../../components/AllRateSeperate';
+import BetPlaced from '../../components/BetPlaced';
+import LiveMatchHome from '../../components/LiveMatchHome';
+import MatchComponent from '../../components/MathComponent';
+import CustomLoader from '../../components/helper/CustomLoader';
 import {
   apiMatchScore,
   microServiceApiPath,
-} from "../../components/helper/constants";
-import Axios from "axios";
-import { MatchOdds } from "../../components";
-import MatchComponent from "../../components/MathComponent";
-import LiveMatchHome from "../../components/LiveMatchHome";
-import AllRateSeperate from "../../components/AllRateSeperate";
-import SessionBetSeperate from "../../components/sessionBetSeperate";
-import BetPlaced from "../../components/BetPlaced";
-import { memo } from "react";
-import { setGeoLocation } from "../../newStore/reducers/auth";
-import CustomLoader from "../../components/helper/CustomLoader";
-import { toast } from "react-toastify";
+} from '../../components/helper/constants';
+import SessionBetSeperate from '../../components/sessionBetSeperate';
+import { SocketContext } from '../../context/socketContext';
+import { setRole } from '../../newStore';
+import { setGeoLocation } from '../../newStore/reducers/auth';
+import {
+  setAllBetRate,
+  setAllSessionBets,
+  setManualBookMarkerRates,
+  setManualBookmaker,
+  setMatchButtonData,
+  setQuickBookmaker,
+  setQuickSession,
+  setRefreshForBets,
+  setSelectedMatch,
+  setSelectedSessionBettings,
+  setSessionButtonData,
+  setSessionExposure,
+} from '../../newStore/reducers/matchDetails';
 
 // let sessionOffline = [];
 let matchOddsCount = 0;
@@ -56,7 +52,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     sessionOdds: 0,
   });
 
-  const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
+  const matchesMobile = useMediaQuery(theme.breakpoints.down('laptop'));
   const {
     allBetRates,
     allSessionBets,
@@ -72,8 +68,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   const [sessionBets, setSessionBets] = useState([]);
   const id = location?.state?.matchId;
   const [matchDetail, setMatchDetail] = useState();
-  const [marketId, setMarketId] = useState("");
-  const [eventId, setEventId] = useState("");
+  const [marketId, setMarketId] = useState('');
+  const [eventId, setEventId] = useState('');
   const { currentUser } = useSelector((state) => state?.currentUser);
   const [currentMatch, setCurrentMatch] = useState([]);
 
@@ -89,7 +85,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     (state) => state?.matchDetails?.selectedMatch?.id
   );
   const { axios } = setRole();
-  const [matchId] = useState(id || sessionStorage.getItem("matchId"));
+  const [matchId] = useState(id || sessionStorage.getItem('matchId'));
 
   const [localSessionExposer, setLocalSessionExposure] = useState(0);
   const [sessionLock, setSessionLock] = useState(false);
@@ -101,7 +97,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
 
     while (retryCount < maxRetries) {
       try {
-        const res = await fetch("https://geolocation-db.com/json/");
+        const res = await fetch('https://geolocation-db.com/json/');
         if (res.ok) {
           return await res.json();
         } else {
@@ -113,7 +109,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       }
     }
 
-    console.log("Max retries exceeded. Unable to fetch IP address.");
+    console.log('Max retries exceeded. Unable to fetch IP address.');
     return null;
   }
 
@@ -207,7 +203,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                 yes_rate: selectedData?.yes_rate ?? 0,
                 rate_percent:
                   selectedData?.rate_percent || betting?.rate_percent,
-                suspended: selectedData?.suspended || "",
+                suspended: selectedData?.suspended || '',
                 selectionId: selectedData?.selectionId || betting?.selectionId,
               };
             });
@@ -228,14 +224,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   useEffect(() => {
     try {
       if (socketMicro && socketMicro.connected && marketId) {
-        socketMicro.on("connect", () => {
-          socketMicro.emit("init", { id: marketId });
+        socketMicro.on('connect', () => {
+          socketMicro.emit('init', { id: marketId });
 
-          socketMicro.emit("score", { id: eventId });
+          socketMicro.emit('score', { id: eventId });
           activateLiveMatchMarket();
           setSessionLock(false);
         });
-        socketMicro.on("connect_error", (event) => {
+        socketMicro.on('connect_error', (event) => {
           // Handle the WebSocket connection error here
           setMacthOddsLive([]);
           setBookmakerLive([]);
@@ -255,16 +251,16 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           setSessionLock(true);
         });
 
-        socketMicro.emit("init", { id: marketId });
+        socketMicro.emit('init', { id: marketId });
         setInterval(() => {
-          socketMicro.emit("init", { id: marketId });
+          socketMicro.emit('init', { id: marketId });
         }, 3000);
 
-        socketMicro.emit("score", { id: eventId });
+        socketMicro.emit('score', { id: eventId });
         activateLiveMatchMarket();
-        socketMicro.on("reconnect", () => {
-          socketMicro.emit("init", { id: marketId });
-          socketMicro.emit("score", { id: eventId });
+        socketMicro.on('reconnect', () => {
+          socketMicro.emit('init', { id: marketId });
+          socketMicro.emit('score', { id: eventId });
           activateLiveMatchMarket();
           setSessionLock(false);
         });
@@ -277,15 +273,15 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               if (val.length === 0) {
                 matchOddsCount += 1;
                 if (matchOddsCount >= 3) {
-                  socketMicro.emit("disconnect_market", {
+                  socketMicro.emit('disconnect_market', {
                     id: marketId,
                   });
                   setMacthOddsLive([]);
                 }
               } else {
                 setMacthOddsLive(val[0]);
-                if (val[0]?.status === "CLOSED") {
-                  socketMicro.emit("disconnect_market", {
+                if (val[0]?.status === 'CLOSED') {
+                  socketMicro.emit('disconnect_market', {
                     id: marketId,
                   });
                   setMacthOddsLive([]);
@@ -329,14 +325,14 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         setSessionLock(false);
       }
     } catch (e) {
-      console.log("error", e);
+      console.log('error', e);
     }
     return () => {
       try {
-        socketMicro?.emit("disconnect_market", {
+        socketMicro?.emit('disconnect_market', {
           id: marketId,
         });
-        socketMicro?.emit("leaveScore", { id: eventId });
+        socketMicro?.emit('leaveScore', { id: eventId });
         setMacthOddsLive([]);
         setBookmakerLive([]);
         setSessionLock(false);
@@ -355,12 +351,12 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       let { data } = await axios.post(`/betting/getPlacedBets`, payload);
       const allrates = data?.data?.data?.filter((b) =>
         [
-          "MATCH ODDS",
-          "BOOKMAKER",
-          "MANUAL BOOKMAKER",
-          "QuickBookmaker0",
-          "QuickBookmaker1",
-          "QuickBookmaker2",
+          'MATCH ODDS',
+          'BOOKMAKER',
+          'MANUAL BOOKMAKER',
+          'QuickBookmaker0',
+          'QuickBookmaker1',
+          'QuickBookmaker2',
         ].includes(b?.marketType)
       );
       setIObtes(allrates);
@@ -369,12 +365,12 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       const bets = data?.data?.data?.filter(
         (b) =>
           ![
-            "MATCH ODDS",
-            "BOOKMAKER",
-            "MANUAL BOOKMAKER",
-            "QuickBookmaker0",
-            "QuickBookmaker1",
-            "QuickBookmaker2",
+            'MATCH ODDS',
+            'BOOKMAKER',
+            'MANUAL BOOKMAKER',
+            'QuickBookmaker0',
+            'QuickBookmaker1',
+            'QuickBookmaker2',
           ].includes(b?.marketType)
       );
       setSessionBets(bets);
@@ -394,7 +390,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     try {
       await Axios.get(`${microServiceApiPath}/market/${marketId}`);
     } catch (e) {
-      console.log("error", e?.message);
+      console.log('error', e?.message);
     }
   };
 
@@ -403,7 +399,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       // https://super007.in/api/MatchOdds/score/32466783
       await Axios.get(`${microServiceApiPath}/event/${eventId}`);
     } catch (e) {
-      console.log("error", e?.message);
+      console.log('error', e?.message);
     }
   };
 
@@ -426,7 +422,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         ...v,
         yes_rate: 0,
         no_rate: 0,
-        suspended: "",
+        suspended: '',
       }));
       dispatch(setQuickBookmaker(response?.data?.bookmakers));
       dispatch(setQuickSession(quickSessionDataTemp));
@@ -461,19 +457,19 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       // );
       setLoading(false);
       if (response?.data?.stopAt) {
-        toast.success("Match Declare");
-        navigate("/matches");
+        toast.success('Match Declare');
+        navigate('/matches');
       }
     } catch (e) {
-      console.log("response", e.response.data);
+      console.log('response', e.response.data);
       setLoading(false);
     }
   }
 
   function customSort(a, b) {
-    if (a.lable === "1k") {
+    if (a.lable === '1k') {
       return -1; // "1k" comes first
-    } else if (b.lable === "1k") {
+    } else if (b.lable === '1k') {
       return 1; // "1k" comes first
     } else {
       // For other labels, maintain their original order
@@ -485,8 +481,8 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
     dispatch(setMatchButtonData([]));
     dispatch(setSessionButtonData([]));
     try {
-      const { data } = await axios.get("/users/getButtonValues");
-      if (data?.data[0]?.type === "Match") {
+      const { data } = await axios.get('/users/getButtonValues');
+      if (data?.data[0]?.type === 'Match') {
         const initialData = data?.data[0]?.buttons;
         const jsonObject = JSON.parse(initialData);
         const resultArray = Object.entries(jsonObject).map(
@@ -508,7 +504,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
         );
         resultArray1.sort(customSort);
         dispatch(setSessionButtonData(resultArray1));
-      } else if (data?.data[0]?.type === "Session") {
+      } else if (data?.data[0]?.type === 'Session') {
         const initialData = data?.data[0]?.buttons; // Replace this with your initial data
         const jsonObject = JSON.parse(initialData);
         const resultArray = Object.entries(jsonObject).map(
@@ -535,7 +531,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       // setButtonData(resultArray);
     } catch (e) {
       toast.error(e.response.data.message);
-      console.log("error", e.message);
+      console.log('error', e.message);
     }
   };
 
@@ -565,7 +561,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       try {
-        if (document.visibilityState === "visible") {
+        if (document.visibilityState === 'visible') {
           // User returned to the web browser
           if (matchId) {
             // if (socket && socket.connected) {
@@ -579,13 +575,13 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
       }
     };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     // Clean up the event listener on component unmount
     return () => {
       try {
         document.removeEventListener(
-          "visibilitychange",
+          'visibilitychange',
           handleVisibilityChange
         );
       } catch (e) {
@@ -616,7 +612,7 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           );
           setLiveScoreData(data);
         } catch (error) {
-          console.error("Error fetching data:", error);
+          console.error('Error fetching data:', error);
         }
       };
 
@@ -631,49 +627,49 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
   return (
     <Box
       sx={{
-        display: "flex",
+        display: 'flex',
         // overflowX: "hidden",
-        flexDirection: "column",
+        flexDirection: 'column',
         flex: 1,
-        width: "100%",
-        justifyContent: "flex-start",
+        width: '100%',
+        justifyContent: 'flex-start',
         // overflowY: "auto",
-        alignItems: "flex-start",
+        alignItems: 'flex-start',
       }}
     >
       <BetPlaced visible={visible} setVisible={setVisible} />
       {loading ? (
         <Box
           sx={{
-            minHeight: "90vh",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
+            minHeight: '90vh',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <CustomLoader height={"70vh"} />
+          <CustomLoader height={'70vh'} />
         </Box>
       ) : (
         <>
           {matchesMobile && (
             <div
               style={{
-                width: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-                display: "flex",
-                gap: { laptop: "8px", mobile: "0px", tablet: "0px" },
-                marginTop: "2%",
-                flexDirection: "column",
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                display: 'flex',
+                gap: { laptop: '8px', mobile: '0px', tablet: '0px' },
+                marginTop: '2%',
+                flexDirection: 'column',
               }}
             >
-              <div style={{ width: "100%" }}>
+              <div style={{ width: '100%' }}>
                 <MatchComponent
                   currentMatch={currentMatch}
                   liveScoreData={liveScoreData}
                 />
               </div>
-              <div style={{ width: "100%" }}>
+              <div style={{ width: '100%' }}>
                 <MatchOdds
                   localQuickSession={localQuickSession}
                   LSelectedSessionBetting={LSelectedSessionBetting}
@@ -695,18 +691,18 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
               </div>
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "100%",
-                  alignSelf: "center",
-                  alignItems: "center",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                  alignSelf: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "98%",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    width: '98%',
                   }}
                 >
                   <SessionBetSeperate allBetsData={sessionBets} mark />
@@ -714,23 +710,23 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                     <AllRateSeperate
                       allBetsData={IObets?.filter((v) =>
                         [
-                          "MATCH ODDS",
-                          "BOOKMAKER",
-                          "MANUAL BOOKMAKER",
-                          "QuickBookmaker0",
-                          "QuickBookmaker1",
-                          "QuickBookmaker2",
+                          'MATCH ODDS',
+                          'BOOKMAKER',
+                          'MANUAL BOOKMAKER',
+                          'QuickBookmaker0',
+                          'QuickBookmaker1',
+                          'QuickBookmaker2',
                         ]?.includes(v.marketType)
                       )}
                       count={
                         IObets?.filter((v) =>
                           [
-                            "MATCH ODDS",
-                            "BOOKMAKER",
-                            "MANUAL BOOKMAKER",
-                            "QuickBookmaker0",
-                            "QuickBookmaker1",
-                            "QuickBookmaker2",
+                            'MATCH ODDS',
+                            'BOOKMAKER',
+                            'MANUAL BOOKMAKER',
+                            'QuickBookmaker0',
+                            'QuickBookmaker1',
+                            'QuickBookmaker2',
                           ]?.includes(v.marketType)
                         ).length
                       }
@@ -745,17 +741,17 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
           {!matchesMobile && (
             <Box
               sx={{
-                display: "flex",
-                width: "100%",
-                gap: "8px",
-                marginTop: "1%",
+                display: 'flex',
+                width: '100%',
+                gap: '8px',
+                marginTop: '1%',
               }}
             >
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "70%",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '70%',
                 }}
               >
                 <MatchOdds
@@ -776,33 +772,33 @@ const Home = ({ setVisible, visible, handleClose, selected }) => {
                   handleRateChange={handleRateChange}
                 />
               </Box>
-              <Box sx={{ width: "30%", paddingRight: "1%" }}>
+              <Box sx={{ width: '30%', paddingRight: '1%' }}>
                 <MatchComponent
                   currentMatch={currentMatch}
                   liveScoreData={liveScoreData}
-                />{" "}
+                />{' '}
                 {/** Live scoreBoard */}
                 <LiveMatchHome currentMatch={currentMatch} /> {/* Poster */}
                 <AllRateSeperate
                   allBetsData={IObets?.filter((v) =>
                     [
-                      "MATCH ODDS",
-                      "BOOKMAKER",
-                      "MANUAL BOOKMAKER",
-                      "QuickBookmaker0",
-                      "QuickBookmaker1",
-                      "QuickBookmaker2",
+                      'MATCH ODDS',
+                      'BOOKMAKER',
+                      'MANUAL BOOKMAKER',
+                      'QuickBookmaker0',
+                      'QuickBookmaker1',
+                      'QuickBookmaker2',
                     ]?.includes(v.marketType)
                   )}
                   count={
                     IObets?.filter((v) =>
                       [
-                        "MATCH ODDS",
-                        "BOOKMAKER",
-                        "MANUAL BOOKMAKER",
-                        "QuickBookmaker0",
-                        "QuickBookmaker1",
-                        "QuickBookmaker2",
+                        'MATCH ODDS',
+                        'BOOKMAKER',
+                        'MANUAL BOOKMAKER',
+                        'QuickBookmaker0',
+                        'QuickBookmaker1',
+                        'QuickBookmaker2',
                       ]?.includes(v.marketType)
                     ).length
                   }

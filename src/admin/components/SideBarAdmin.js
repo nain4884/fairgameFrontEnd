@@ -1,23 +1,23 @@
-import { Box, Typography } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-const colors = ["#F8C851", "#FFDA7D", "#FFE7AD", "#FFF1CF", "#FFF8E6"];
+import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+const colors = ['#F8C851', '#FFDA7D', '#FFE7AD', '#FFF1CF', '#FFF8E6'];
 const datas = [
   {
-    title: "Cricket",
+    title: 'Cricket',
     values: [
       {
-        title: "T20 World Cup",
-        sub: "(Tournamnet name)",
+        title: 'T20 World Cup',
+        sub: '(Tournamnet name)',
         values: [
           {
-            title: "01, November, 2022",
+            title: '01, November, 2022',
             values: [
               {
-                title: "India vs Bangladesh",
+                title: 'India vs Bangladesh',
                 values: [
                   {
-                    title: "Match Odds",
+                    title: 'Match Odds',
                     values: false,
                   },
                 ],
@@ -25,13 +25,13 @@ const datas = [
             ],
           },
           {
-            title: "01, November, 2022",
+            title: '01, November, 2022',
             values: [
               {
-                title: "India vs Bangladesh",
+                title: 'India vs Bangladesh',
                 values: [
                   {
-                    title: "Match Odds",
+                    title: 'Match Odds',
                     values: false,
                   },
                 ],
@@ -41,28 +41,28 @@ const datas = [
         ],
       },
       {
-        title: "Asia Cup",
-        sub: " (Tournamnet name)",
+        title: 'Asia Cup',
+        sub: ' (Tournamnet name)',
         values: [],
       },
       {
-        title: "Women world Cup",
-        sub: " (Tournamnet name)",
+        title: 'Women world Cup',
+        sub: ' (Tournamnet name)',
         values: [],
       },
     ],
   },
 
   {
-    title: "Football",
+    title: 'Football',
     values: [],
   },
   {
-    title: "Tennis",
+    title: 'Tennis',
     values: [],
   },
   {
-    title: "Ice hockey",
+    title: 'Ice hockey',
     values: [],
   },
 ];
@@ -70,17 +70,17 @@ const MinusBox = () => {
   return (
     <Box
       sx={{
-        borderRadius: "10px",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
-        width: "15px",
-        height: "15px",
-        background: "black",
+        borderRadius: '10px',
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+        width: '15px',
+        height: '15px',
+        background: 'black',
       }}
     >
       <Typography
-        sx={{ fontSize: "12px", fontWeight: "600", color: "#FDCB52" }}
+        sx={{ fontSize: '12px', fontWeight: '600', color: '#FDCB52' }}
       >
         -
       </Typography>
@@ -91,17 +91,17 @@ const PlusBox = () => {
   return (
     <Box
       sx={{
-        borderRadius: "10px",
-        justifyContent: "center",
-        alignItems: "center",
-        display: "flex",
-        width: "15px",
-        height: "15px",
-        background: "black",
+        borderRadius: '10px',
+        justifyContent: 'center',
+        alignItems: 'center',
+        display: 'flex',
+        width: '15px',
+        height: '15px',
+        background: 'black',
       }}
     >
       <Typography
-        sx={{ fontSize: "12px", fontWeight: "600", color: "#FDCB52" }}
+        sx={{ fontSize: '12px', fontWeight: '600', color: '#FDCB52' }}
       >
         +
       </Typography>
@@ -112,36 +112,36 @@ const MainBox = ({ title, width, color, under, selected, sub }) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        width: width + "%",
-        height: "40px",
-        paddingX: "3%",
+        display: 'flex',
+        width: width + '%',
+        height: '40px',
+        paddingX: '3%',
         background: color,
-        borderRadius: "3px",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: "1px",
-        alignSelf: "flex-end",
-        marginRight: "3px",
+        borderRadius: '3px',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: '1px',
+        alignSelf: 'flex-end',
+        marginRight: '3px',
       }}
     >
-      <Box sx={{ display: "flex", width: "100%", alignItems: "center" }}>
+      <Box sx={{ display: 'flex', width: '100%', alignItems: 'center' }}>
         <Typography
           sx={{
-            fontSize: "12px",
-            color: "black",
-            fontWeight: "600",
-            marginLeft: "3%",
+            fontSize: '12px',
+            color: 'black',
+            fontWeight: '600',
+            marginLeft: '3%',
           }}
         >
           {title}
         </Typography>
         <Typography
           sx={{
-            fontSize: "8px",
-            color: "black",
-            fontWeight: "400",
-            marginLeft: "2%",
+            fontSize: '8px',
+            color: 'black',
+            fontWeight: '400',
+            marginLeft: '2%',
           }}
         >
           {sub}
@@ -163,10 +163,10 @@ const RenderDates = ({ i, handleDrawerToggle }) => {
         setSelected(!selected);
       }}
       sx={{
-        width: "100%",
-        display: "flex",
-        alignSelf: "flex-end",
-        flexDirection: "column",
+        width: '100%',
+        display: 'flex',
+        alignSelf: 'flex-end',
+        flexDirection: 'column',
       }}
     >
       <MainBox
@@ -202,10 +202,10 @@ const RenderValues = ({ i, handleDrawerToggle }) => {
         setSelected(!selected);
       }}
       sx={{
-        width: "100%",
-        display: "flex",
-        alignSelf: "flex-end",
-        flexDirection: "column",
+        width: '100%',
+        display: 'flex',
+        alignSelf: 'flex-end',
+        flexDirection: 'column',
       }}
     >
       <MainBox
@@ -235,15 +235,15 @@ const RenderBets = ({ i, handleDrawerToggle }) => {
   return (
     <Box
       onClick={(event) => {
-        navigate("/admin/match");
+        navigate('/admin/match');
         handleDrawerToggle();
         event.stopPropagation();
       }}
       sx={{
-        width: "100%",
-        display: "flex",
-        alignSelf: "flex-end",
-        flexDirection: "column",
+        width: '100%',
+        display: 'flex',
+        alignSelf: 'flex-end',
+        flexDirection: 'column',
       }}
     >
       <MainBox
@@ -268,10 +268,10 @@ const RenderEvents = ({ i, handleDrawerToggle, k }) => {
         setSelected(!selected);
       }}
       sx={{
-        width: "100%",
-        display: "flex",
-        alignSelf: "flex-end",
-        flexDirection: "column",
+        width: '100%',
+        display: 'flex',
+        alignSelf: 'flex-end',
+        flexDirection: 'column',
       }}
     >
       <MainBox
@@ -308,10 +308,10 @@ const RenderGames = ({ i, k, handleDrawerToggle }) => {
         setSelected(!selected);
       }}
       sx={{
-        width: "100%",
-        display: "flex",
-        alignSelf: "flex-end",
-        flexDirection: "column",
+        width: '100%',
+        display: 'flex',
+        alignSelf: 'flex-end',
+        flexDirection: 'column',
       }}
     >
       <MainBox
@@ -343,31 +343,31 @@ const SideBarAdmin = ({ handleDrawerToggle, key }) => {
       key={key}
       sx={[
         {
-          marginTop: { mobile: "2.5vh", laptop: 0, tablet: 0 },
-          minHeight: "100vh",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          marginTop: { mobile: '2.5vh', laptop: 0, tablet: 0 },
+          minHeight: '100vh',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         },
         (theme) => ({
           backgroundImage: `${theme.palette.primary.mainGradient}`,
         }),
       ]}
-    // headerGradient
+      // headerGradient
     >
       <Box
         sx={[
           {
-            width: "98%",
-            marginTop: "3px",
-            paddingX: "3%",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            alignSelf: "center",
-            height: "40px",
-            borderRadius: "2px",
+            width: '98%',
+            marginTop: '3px',
+            paddingX: '3%',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            alignSelf: 'center',
+            height: '40px',
+            borderRadius: '2px',
           },
           (theme) => ({
             backgroundImage: `${theme.palette.primary.headerGradientAdmin}`,
@@ -376,10 +376,10 @@ const SideBarAdmin = ({ handleDrawerToggle, key }) => {
       >
         <Typography
           sx={{
-            fontSize: "14px",
-            color: "white",
-            fontWeight: "600",
-            marginLeft: "1.5%",
+            fontSize: '14px',
+            color: 'white',
+            fontWeight: '600',
+            marginLeft: '1.5%',
           }}
         >
           All Sports
@@ -388,7 +388,12 @@ const SideBarAdmin = ({ handleDrawerToggle, key }) => {
       </Box>
       {datas.map((i, k) => {
         return (
-          <RenderGames key={k} handleDrawerToggle={handleDrawerToggle} i={i} k={k} />
+          <RenderGames
+            key={k}
+            handleDrawerToggle={handleDrawerToggle}
+            i={i}
+            k={k}
+          />
         );
       })}
     </Box>

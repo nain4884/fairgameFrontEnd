@@ -1,22 +1,22 @@
-import { Box, useMediaQuery } from "@mui/material";
-import { saveAs } from "file-saver";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Excel, Pdf } from "../admin/assets";
-import { setRole } from "../newStore";
-import { setPage } from "../newStore/reducers/auth";
-import AccountListRow from "./AccountListRow";
-import Footer from "./Footer";
-import ListHeaderT from "./ListHeaderT";
-import ListSubHeaderT from "./ListSubHeaderT";
-import SearchInput from "./SearchInput";
-import StyledImage from "./StyledImage";
-import CustomLoader from "./helper/CustomLoader";
-import constants from "./helper/constants";
+import { Box, useMediaQuery } from '@mui/material';
+import { saveAs } from 'file-saver';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Excel, Pdf } from '../admin/assets';
+import { setRole } from '../newStore';
+import { setPage } from '../newStore/reducers/auth';
+import AccountListRow from './AccountListRow';
+import Footer from './Footer';
+import ListHeaderT from './ListHeaderT';
+import ListSubHeaderT from './ListSubHeaderT';
+import SearchInput from './SearchInput';
+import StyledImage from './StyledImage';
+import CustomLoader from './helper/CustomLoader';
+import constants from './helper/constants';
 
 const AccountList = () => {
   const dispatch = useDispatch();
-  const matchesBreakPoint = useMediaQuery("(max-width:1137px)");
+  const matchesBreakPoint = useMediaQuery('(max-width:1137px)');
   const roles = useSelector((state) => state?.auth?.allRole);
   const [data1, setData] = useState([]);
   const [sumValue, setSumVal] = useState({
@@ -25,9 +25,9 @@ const AccountList = () => {
     balancesum: 0.0,
     exposuresum: 0.0,
     percent_profit_loss: 0,
-    exposurelimit: "",
+    exposurelimit: '',
     availablebalancesum: 0.0,
-    totalCommissions: "",
+    totalCommissions: '',
   });
   let { axios } = setRole();
 
@@ -41,7 +41,7 @@ const AccountList = () => {
     try {
       const { data } = await axios.get(
         `/fair-game-wallet/getAllUser?${
-          username ? `userName=${username}` : ""
+          username ? `userName=${username}` : ''
         }&page=${currentPageNo}&limit=${pageLimit}`
       );
       if (data?.data?.data) {
@@ -88,8 +88,8 @@ const AccountList = () => {
       setSumVal({
         ...data?.data,
         percent_profit_loss: profitLoss?.toFixed(2),
-        totalCommissions: "",
-        exposurelimit: "",
+        totalCommissions: '',
+        exposurelimit: '',
         availablebalancesum:
           data?.data?.avabalancesum - data?.data?.exposuresum,
         // availablebalancesum: data?.data?.balancesum,
@@ -115,10 +115,10 @@ const AccountList = () => {
       url = `/fair-game-wallet/exportUser?exportType=${type}&userId=${id}`;
     }
     try {
-      const response = await axios.get(url, { responseType: "blob" });
+      const response = await axios.get(url, { responseType: 'blob' });
       saveAs(
         response.data,
-        currentUser?.userName ? currentUser?.userName : "file"
+        currentUser?.userName ? currentUser?.userName : 'file'
       );
     } catch (e) {
       console.log(e);
@@ -130,10 +130,10 @@ const AccountList = () => {
       {loading ? (
         <Box
           sx={{
-            minHeight: "60vh",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            minHeight: '60vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <CustomLoader text="" />
@@ -144,12 +144,12 @@ const AccountList = () => {
             sx={[
               {
                 // marginX: "0.5%",
-                minHeight: "200px",
-                borderRadius: "10px",
-                borderBottomRightRadius: "0px",
-                borderBottomLeftRadius: "0px",
-                overflow: "hidden",
-                border: "2px solid white",
+                minHeight: '200px',
+                borderRadius: '10px',
+                borderBottomRightRadius: '0px',
+                borderBottomLeftRadius: '0px',
+                overflow: 'hidden',
+                border: '2px solid white',
               },
               (theme) => ({
                 backgroundImage: `${theme.palette.primary.headerGradient}`,
@@ -161,11 +161,11 @@ const AccountList = () => {
               setPageCount={setPageCount}
               handleExport={handleExport}
             />
-            <Box sx={{ overflowX: "auto" }}>
+            <Box sx={{ overflowX: 'auto' }}>
               <Box
                 sx={{
-                  display: matchesBreakPoint ? "inline-block" : "block",
-                  position: { mobile: "relative", laptop: "static" },
+                  display: matchesBreakPoint ? 'inline-block' : 'block',
+                  position: { mobile: 'relative', laptop: 'static' },
                 }}
               >
                 <Box sx={{}}>
@@ -180,10 +180,10 @@ const AccountList = () => {
                           showOptions={true}
                           showUserDetails={true}
                           showCReport={true}
-                          containerStyle={{ background: "#FFE094" }}
+                          containerStyle={{ background: '#FFE094' }}
                           profit={element.profit_loss >= 0}
-                          fContainerStyle={{ background: "#0B4F26" }}
-                          fTextStyle={{ color: "white" }}
+                          fContainerStyle={{ background: '#0B4F26' }}
+                          fTextStyle={{ color: 'white' }}
                           element={element}
                           getListOfUser={getListOfUser}
                           currentPage={currentPageNo}
@@ -198,10 +198,10 @@ const AccountList = () => {
                           callProfile={true}
                           showUserDetails={true}
                           showOptions={true}
-                          containerStyle={{ background: "#ECECEC" }}
+                          containerStyle={{ background: '#ECECEC' }}
                           profit={element.profit_loss >= 0}
-                          fContainerStyle={{ background: "#F8C851" }}
-                          fTextStyle={{ color: "#0B4F26" }}
+                          fContainerStyle={{ background: '#F8C851' }}
+                          fTextStyle={{ color: '#0B4F26' }}
                           element={element}
                           getListOfUser={getListOfUser}
                           currentPage={currentPageNo}
@@ -230,54 +230,54 @@ const AccountList = () => {
 const ListH = ({ getListOfUser, setPageCount, handleExport }) => {
   return (
     <Box
-      display={"flex"}
+      display={'flex'}
       sx={{
-        justifyContent: "space-between",
-        px: "10px",
-        py: "3px",
+        justifyContent: 'space-between',
+        px: '10px',
+        py: '3px',
         gap: 2,
-        background: "#F8C851",
+        background: '#F8C851',
       }}
     >
-      <Box display={"flex"} alignItems="center">
+      <Box display={'flex'} alignItems="center">
         <Box
           sx={{
-            background: "white",
-            height: "32px",
-            borderRadius: "5px",
-            width: "32px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            background: 'white',
+            height: '32px',
+            borderRadius: '5px',
+            width: '32px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <StyledImage
             src={Excel}
-            sx={{ height: "25px" }}
-            onClick={() => handleExport("xlsx")}
+            sx={{ height: '25px' }}
+            onClick={() => handleExport('xlsx')}
           />
         </Box>
         <Box
           sx={{
-            background: "white",
-            marginLeft: "10px",
-            height: "32px",
-            borderRadius: "5px",
-            width: "32px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            background: 'white',
+            marginLeft: '10px',
+            height: '32px',
+            borderRadius: '5px',
+            width: '32px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <StyledImage
             src={Pdf}
-            sx={{ height: "25px" }}
-            onClick={() => handleExport("pdf")}
+            sx={{ height: '25px' }}
+            onClick={() => handleExport('pdf')}
           />
         </Box>
       </Box>
       <SearchInput
-        placeholder={"Search User..."}
+        placeholder={'Search User...'}
         show={true}
         setPageCount={setPageCount}
         getListOfUser={getListOfUser}

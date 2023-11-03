@@ -1,16 +1,23 @@
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import Divider from "../../../components/helper/Divider";
-import BoxComponent from "./BoxComponent";
-import SmallBox from "./SmallBox";
-import { useState } from "react";
-import { useTheme } from "@emotion/react";
-import UnlockComponent from "../../../components/UnlockComponent";
-import { LOCKED, LOCKOPEN } from "../../../admin/assets"
-import { ARROWUP } from "../../../assets";
+import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
+import { LOCKED, LOCKOPEN } from '../../../admin/assets';
+import { ARROWUP } from '../../../assets';
+import UnlockComponent from '../../../components/UnlockComponent';
+import Divider from '../../../components/helper/Divider';
+import BoxComponent from './BoxComponent';
+import SmallBox from './SmallBox';
 
-const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, handleBlock, handleHide, handleShowLock, selft }) => {
-  const theme = useTheme();
-
+const BookMarketer = ({
+  currentMatch,
+  data,
+  blockMatch,
+  showUnlock,
+  locked,
+  handleBlock,
+  handleHide,
+  handleShowLock,
+  selft,
+}) => {
   const bookRatioB = (teamARates, teamBRates) => {
     const bookRatio = teamBRates != 0 ? teamARates / teamBRates || 0 : 0;
     const formattedRatio = Math.abs(bookRatio).toFixed(2);
@@ -23,60 +30,71 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
     return teamARates < 0 ? `-${formattedRatio}` : formattedRatio;
   };
   const handleLock = (data) => {
-    return data?.ex?.availableToLay?.length > 0 ? false : true
-  }
+    return data?.ex?.availableToLay?.length > 0 ? false : true;
+  };
 
   const onSubmit = (value) => {
-    handleBlock(value, !locked, "BOOKMAKER")
-  }
+    handleBlock(value, !locked, 'BOOKMAKER');
+  };
   const [visible, setVisible] = useState(true);
 
   return (
     <Box
       sx={{
-        display: "flex",
-        position: "relative",
-        backgroundColor: "white",
+        display: 'flex',
+        position: 'relative',
+        backgroundColor: 'white',
         padding: 0.2,
-        flexDirection: "column",
-        marginY: "3px",
-        width: "100%",
-        alignSelf: { mobile: "center", tablet: "center", laptop: "flex-start" },
+        flexDirection: 'column',
+        marginY: '3px',
+        width: '100%',
+        alignSelf: { mobile: 'center', tablet: 'center', laptop: 'flex-start' },
       }}
     >
       <Box
         sx={{
-          display: "flex",
+          display: 'flex',
           height: 38,
-          flexDirection: "row",
-          width: "99.7%",
-          alignSelf: "center",
+          flexDirection: 'row',
+          width: '99.7%',
+          alignSelf: 'center',
         }}
       >
         <Box
           sx={{
             flex: 1,
-            background: "#f1c550",
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "space-between",
+            background: '#f1c550',
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'space-between',
           }}
         >
           <Typography
             sx={{
-              fontSize: { laptop: "13px", tablet: "12px", mobile: "12px" },
-              fontWeight: "bold",
-              marginLeft: "7px",
+              fontSize: { laptop: '13px', tablet: '12px', mobile: '12px' },
+              fontWeight: 'bold',
+              marginLeft: '7px',
             }}
           >
             Bookmaker Market
           </Typography>
-          {blockMatch && <img onClick={() => selft || selft == undefined ? handleShowLock(true, 'BOOKMAKER') : ''} src={locked ? LOCKED : LOCKOPEN} style={{ width: '14px', height: '20px' }} />}
+          {blockMatch && (
+            <img
+              onClick={() =>
+                selft || selft == undefined
+                  ? handleShowLock(true, 'BOOKMAKER')
+                  : ''
+              }
+              src={locked ? LOCKED : LOCKOPEN}
+              style={{ width: '14px', height: '20px' }}
+              alt="lock"
+            />
+          )}
         </Box>
         <Box
           sx={{
             flex: 0.1,
-            background: "#262626",
+            background: '#262626',
           }}
         >
           <div className="slanted"></div>
@@ -84,26 +102,37 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
         <Box
           sx={{
             flex: 1,
-            background: "#262626",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: { laptop: "flex-end", mobile: "flex-end" },
+            background: '#262626',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: { laptop: 'flex-end', mobile: 'flex-end' },
             padding: { laptop: '0', mobile: '0' },
           }}
         >
-          <SmallBox color={"#FF4D4D"} valueA={bookRatioA(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} valueB={bookRatioB(currentMatch?.teamA_rate, currentMatch?.teamB_rate)} />
+          <SmallBox
+            color={'#FF4D4D'}
+            valueA={bookRatioA(
+              currentMatch?.teamA_rate,
+              currentMatch?.teamB_rate
+            )}
+            valueB={bookRatioB(
+              currentMatch?.teamA_rate,
+              currentMatch?.teamB_rate
+            )}
+          />
           <img
+            alt="arrow up"
             onClick={() => {
               setVisible(!visible);
             }}
             src={ARROWUP}
             style={{
-              transform: visible ? "rotate(180deg)" : "rotate(0deg)",
-              width: "15px",
-              height: "15px",
-              marginRight: "5px",
-              marginLeft: "5px",
-              cursor: 'pointer'
+              transform: visible ? 'rotate(180deg)' : 'rotate(0deg)',
+              width: '15px',
+              height: '15px',
+              marginRight: '5px',
+              marginLeft: '5px',
+              cursor: 'pointer',
             }}
           />
         </Box>
@@ -111,76 +140,76 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
       <Divider />
       {visible && (
         <>
-
           <>
             <Box
               sx={{
-                display: "flex",
-                background: "#319E5B",
-                height: "25px",
-                width: "99.7%",
-                alignSelf: "center",
+                display: 'flex',
+                background: '#319E5B',
+                height: '25px',
+                width: '99.7%',
+                alignSelf: 'center',
               }}
             >
               <Box
                 sx={{
-                  display: "flex",
+                  display: 'flex',
                   background: "'#319E5B'",
-                  height: "25px",
-                  width: "40%",
-                  alignItems: "center",
+                  height: '25px',
+                  width: '40%',
+                  alignItems: 'center',
                 }}
               >
                 <Typography
                   sx={{
-                    color: "white",
-                    fontSize: { laptop: "11px", mobile: "9px" },
-                    marginLeft: "7px",
+                    color: 'white',
+                    fontSize: { laptop: '11px', mobile: '9px' },
+                    marginLeft: '7px',
                   }}
                 >
-                  MIN: {currentMatch?.betfair_bookmaker_min_bet} MAX:{currentMatch?.betfair_bookmaker_max_bet}
+                  MIN: {currentMatch?.betfair_bookmaker_min_bet} MAX:
+                  {currentMatch?.betfair_bookmaker_max_bet}
                 </Typography>
               </Box>
               <Box
                 sx={{
-                  display: "flex",
-                  background: "#319E5B",
-                  height: "25px",
-                  width: { laptop: "60%", mobile: "80%" },
-                  justifyContent: { laptop: "flex-end", mobile: "flex-end" },
+                  display: 'flex',
+                  background: '#319E5B',
+                  height: '25px',
+                  width: { laptop: '60%', mobile: '80%' },
+                  justifyContent: { laptop: 'flex-end', mobile: 'flex-end' },
                 }}
               >
                 <Box
                   sx={{
-                    background: "#00C0F9",
-                    width: { laptop: "5vw", mobile: "30%" },
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    background: '#00C0F9',
+                    width: { laptop: '5vw', mobile: '30%' },
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Typography
-                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    sx={{ fontSize: '12px', color: 'black', fontWeight: '600' }}
                   >
                     Back
                   </Typography>
                 </Box>
                 <Box
-                  sx={{ width: "3px", display: "flex", background: "white" }}
+                  sx={{ width: '3px', display: 'flex', background: 'white' }}
                 ></Box>
                 <Box
                   sx={{
-                    background: "#FF9292",
-                    width: { laptop: "5vw", mobile: "30%" },
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    background: '#FF9292',
+                    width: { laptop: '5vw', mobile: '30%' },
+                    height: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
                   <Typography
-                    sx={{ fontSize: "12px", color: "black", fontWeight: "600" }}
+                    sx={{ fontSize: '12px', color: 'black', fontWeight: '600' }}
                   >
                     Lay
                   </Typography>
@@ -189,14 +218,13 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
             </Box>
           </>
 
-
-          <Box sx={{ position: "relative", width: "99.8%" }}>
+          <Box sx={{ position: 'relative', width: '99.8%' }}>
             <BoxComponent
               // color={"#46e080"}
               teamImage={currentMatch?.teamA_Image}
               name={currentMatch?.teamA}
               rates={currentMatch?.teamA_rate ? currentMatch?.teamA_rate : 0}
-              color={currentMatch?.teamA_rate <= 0 ? "#FF4D4D" : "#319E5B"}
+              color={currentMatch?.teamA_rate <= 0 ? '#FF4D4D' : '#319E5B'}
               data={data?.length > 0 ? data[0] : []}
               lock={handleLock(data?.length > 0 ? data[0] : [])}
             />
@@ -207,43 +235,97 @@ const BookMarketer = ({ currentMatch, data, blockMatch, showUnlock, locked, hand
               teamImage={currentMatch?.teamB_Image}
               name={currentMatch?.teamB}
               rates={currentMatch?.teamB_rate ? currentMatch?.teamB_rate : 0}
-              color={currentMatch?.teamB_rate <= 0 ? "#FF4D4D" : "#319E5B"}
+              color={currentMatch?.teamB_rate <= 0 ? '#FF4D4D' : '#319E5B'}
               data={data?.length > 0 ? data[1] : []}
               lock={handleLock(data?.length > 0 ? data[1] : [])}
               align="end"
             />
-            {currentMatch?.teamC ?
+            {currentMatch?.teamC ? (
               <>
                 <Divider />
                 <BoxComponent
-                  teamImage={currentMatch?.teamC_Image ? currentMatch?.teamC_Image : null}
+                  teamImage={
+                    currentMatch?.teamC_Image ? currentMatch?.teamC_Image : null
+                  }
                   // color={"#FF4D4D"}
-                  color={currentMatch?.teamC_rate <= 0 ? "#FF4D4D" : "#46e080"}
+                  color={currentMatch?.teamC_rate <= 0 ? '#FF4D4D' : '#46e080'}
                   name={currentMatch?.teamC}
-                  rates={currentMatch?.teamC_rate ? currentMatch?.teamC_rate : 0}
+                  rates={
+                    currentMatch?.teamC_rate ? currentMatch?.teamC_rate : 0
+                  }
                   data={data?.length > 0 ? data[2] : []}
                   lock={handleLock(data?.length > 0 ? data[2] : [])}
                   align="end"
                 />
-              </> : null}
-            {locked && <Box sx={{ background: 'rgba(0,0,0,.5)', width: '100%', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', top: '-24px', alignItems: 'center', justifyContent: "flex-end", display: 'flex' }} >
-              <Box sx={{ width: '100%', alignSelf: 'flex-end', height: currentMatch?.teamC ? '150px' : '105px', position: 'absolute', alignItems: 'center', justifyContent: 'center', display: 'flex' }} >
-                <img src={LOCKED} style={{ width: '35px', height: '40px' }} />
+              </>
+            ) : null}
+            {locked && (
+              <Box
+                sx={{
+                  background: 'rgba(0,0,0,.5)',
+                  width: '100%',
+                  height: currentMatch?.teamC ? '150px' : '105px',
+                  position: 'absolute',
+                  top: '-24px',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  display: 'flex',
+                }}
+              >
+                <Box
+                  sx={{
+                    width: '100%',
+                    alignSelf: 'flex-end',
+                    height: currentMatch?.teamC ? '150px' : '105px',
+                    position: 'absolute',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                  }}
+                >
+                  <img
+                    alt="lock"
+                    src={LOCKED}
+                    style={{ width: '35px', height: '40px' }}
+                  />
 
-                <Typography sx={{ color: 'white', fontWeight: '600', marginLeft: '-25px', fontSize: '20px', marginTop: '20px' }}>Locked</Typography>
+                  <Typography
+                    sx={{
+                      color: 'white',
+                      fontWeight: '600',
+                      marginLeft: '-25px',
+                      fontSize: '20px',
+                      marginTop: '20px',
+                    }}
+                  >
+                    Locked
+                  </Typography>
+                </Box>
               </Box>
-            </Box>}
+            )}
           </Box>
         </>
       )}
-      {showUnlock && <Box sx={{ position: 'absolute', width: {mobile: "90%", laptop: "100%"}, background: 'transparent', alignSelf: 'center', position: 'absolute', marginTop: '38px', left : {mobile: "10%", laptop: "20%"}, zIndex: 999 }}>
-        <UnlockComponent
-          unlock={locked}
-          title={(locked ? "Unlock " : "Lock ") + "Bookmaker Market"}
-          handleHide={handleHide}
-          onSubmit={onSubmit}
-        />
-      </Box>}
+      {showUnlock && (
+        <Box
+          sx={{
+            position: 'absolute',
+            width: { mobile: '90%', laptop: '100%' },
+            background: 'transparent',
+            alignSelf: 'center',
+            marginTop: '38px',
+            left: { mobile: '10%', laptop: '20%' },
+            zIndex: 999,
+          }}
+        >
+          <UnlockComponent
+            unlock={locked}
+            title={(locked ? 'Unlock ' : 'Lock ') + 'Bookmaker Market'}
+            handleHide={handleHide}
+            onSubmit={onSubmit}
+          />
+        </Box>
+      )}
     </Box>
   );
 };

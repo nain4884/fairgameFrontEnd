@@ -1,36 +1,35 @@
-import { Box, Grid, TextField, Typography } from "@mui/material";
-import {
-  useState,
-  useEffect,
+import styled from '@emotion/styled';
+import { Box, Grid, TextField, Typography } from '@mui/material';
+import React, {
   useContext,
-  useRef,
+  useEffect,
   useImperativeHandle,
-} from "react";
-import React from "react";
-import StyledImage from "./StyledImage";
-import { LiveOff } from "../expert/assets";
-import SessionResultModal from "./SessionResultModal";
-import KeyboardEventHandler from "react-keyboard-event-handler";
-import { SocketContext } from "../context/socketContext";
-import { setRole } from "../newStore";
-import { Lock, BallStart } from "../assets";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { setSessionResults } from "../newStore/reducers/matchDetails";
+  useRef,
+  useState,
+} from 'react';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { BallStart, Lock } from '../assets';
+import { SocketContext } from '../context/socketContext';
+import { LiveOff } from '../expert/assets';
+import { setRole } from '../newStore';
 import {
+  setSelectedSession,
   setSessionAllBet,
   setSessionBetId,
   setSessionProfitLoss,
-  setSelectedSession,
   setSessionResultRefresh,
-} from "../newStore/reducers/expertMatchDetails";
-import { useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
+} from '../newStore/reducers/expertMatchDetails';
+import { setSessionResults } from '../newStore/reducers/matchDetails';
+import SessionResultModal from './SessionResultModal';
+import StyledImage from './StyledImage';
 
 const CustomDisableInput = styled(TextField)(() => ({
-  ".MuiInputBase-input.Mui-disabled": {
-    WebkitTextFillColor: "#000 !important",
-    color: "#000",
+  '.MuiInputBase-input.Mui-disabled': {
+    WebkitTextFillColor: '#000 !important',
+    color: '#000',
   },
 }));
 
@@ -56,42 +55,42 @@ const IndiaPakLive = React.forwardRef(
       matchType: match?.gameType,
       sessionBet: true,
       betStatus: 1,
-      bet_condition: "",
-      no_rate: "",
-      yes_rate: "",
-      y_rate_percent: "",
-      n_rate_percent: "",
-      l_no_rate: "",
-      l_yes_rate: "",
-      ly_rate_percent: "",
-      ln_rate_percent: "",
-      suspended: "ACTIVE",
+      bet_condition: '',
+      no_rate: '',
+      yes_rate: '',
+      y_rate_percent: '',
+      n_rate_percent: '',
+      l_no_rate: '',
+      l_yes_rate: '',
+      ly_rate_percent: '',
+      ln_rate_percent: '',
+      suspended: 'ACTIVE',
     };
     const rates = [
-      { name: "90-110", value: "90-110" },
-      { name: "95-110", value: "95-110" },
-      { name: "95-115", value: "95-115" },
-      { name: "85-115", value: "85-115" },
-      { name: "75-125", value: "75-125" },
-      { name: "80-120", value: "80-120" },
-      { name: "80-130", value: "80-130" },
-      { name: "90-140", value: "90-140" },
-      { name: "85-100", value: "85-100" },
-      { name: "80-100", value: "80-100" },
-      { name: "70-100", value: "70-100" },
-      { name: "60-90", value: "60-90" },
-      { name: "50-80", value: "50-80" },
-      { name: "40-70", value: "40-70" },
-      { name: "30-60", value: "30-60" },
-      { name: "25-50", value: "25-50" },
-      { name: "100-115", value: "100-115" },
-      { name: "100-120", value: "100-120" },
-      { name: "100-130", value: "100-130" },
-      { name: "100-150", value: "100-150" },
-      { name: "130-200", value: "130-200" },
-      { name: "150-250", value: "150-250" },
-      { name: "200-350", value: "200-350" },
-      { name: "250-400", value: "250-400" },
+      { name: '90-110', value: '90-110' },
+      { name: '95-110', value: '95-110' },
+      { name: '95-115', value: '95-115' },
+      { name: '85-115', value: '85-115' },
+      { name: '75-125', value: '75-125' },
+      { name: '80-120', value: '80-120' },
+      { name: '80-130', value: '80-130' },
+      { name: '90-140', value: '90-140' },
+      { name: '85-100', value: '85-100' },
+      { name: '80-100', value: '80-100' },
+      { name: '70-100', value: '70-100' },
+      { name: '60-90', value: '60-90' },
+      { name: '50-80', value: '50-80' },
+      { name: '40-70', value: '40-70' },
+      { name: '30-60', value: '30-60' },
+      { name: '25-50', value: '25-50' },
+      { name: '100-115', value: '100-115' },
+      { name: '100-120', value: '100-120' },
+      { name: '100-130', value: '100-130' },
+      { name: '100-150', value: '100-150' },
+      { name: '130-200', value: '130-200' },
+      { name: '150-250', value: '150-250' },
+      { name: '200-350', value: '200-350' },
+      { name: '250-400', value: '250-400' },
     ];
 
     const [Detail, setDetail] = useState(stateDetail);
@@ -99,7 +98,7 @@ const IndiaPakLive = React.forwardRef(
     const [visible, setVisible] = useState(false);
     const [visible1, setVisible1] = useState(false);
     const [visible2, setVisible2] = useState(false);
-    const [betId, setBetId] = useState("");
+    const [betId, setBetId] = useState('');
     const [lock, setLock] = useState({
       isNo: true,
       isYes: true,
@@ -108,7 +107,7 @@ const IndiaPakLive = React.forwardRef(
     });
     const [isBall, setIsBall] = useState(false);
     const [isCreateSession, setIsCreateSession] = useState(createSession);
-    const [isPercent, setIsPercent] = useState("");
+    const [isPercent, setIsPercent] = useState('');
     const [live, setLive] = useState(true);
     const [proLoss, setProLoss] = useState(proLoss1);
     const [isDisable, setIsDisable] = useState(false);
@@ -141,7 +140,7 @@ const IndiaPakLive = React.forwardRef(
         setIsDisable(true);
         setShowUndeclare(true);
       }
-      if (selectedSession?.betRestult === "No Result") {
+      if (selectedSession?.betRestult === 'No Result') {
         setShowUndeclare(false);
       }
       if (
@@ -163,7 +162,7 @@ const IndiaPakLive = React.forwardRef(
         declaredMatchDetail?.match_id === selectedSession?.match_id &&
         declaredMatchDetail?.sessionBet === false
       ) {
-        navigate("/expert/match");
+        navigate('/expert/match');
       }
     }, [declaredMatchDetail]);
 
@@ -218,7 +217,7 @@ const IndiaPakLive = React.forwardRef(
             yes_rate: Detail?.yes_rate,
             y_rate_percent: Detail?.y_rate_percent,
             n_rate_percent: Detail?.n_rate_percent,
-            suspended: "Ball Started",
+            suspended: 'Ball Started',
           };
         }
         // alert(JSON.stringify(payload))
@@ -250,8 +249,8 @@ const IndiaPakLive = React.forwardRef(
         let data = response?.data?.data[0];
 
         let [firstValue, secondValue] = data.rate_percent
-          ? data.rate_percent.split("-")
-          : "";
+          ? data.rate_percent.split('-')
+          : '';
 
         dispatch(setSelectedSession(data));
         if (data?.betStatus === 2) {
@@ -277,7 +276,7 @@ const IndiaPakLive = React.forwardRef(
         getAllBetsData(data.id);
         setProLoss(data?.profitLoss);
         dispatch(setSessionProfitLoss(data?.profitLoss));
-        if (data.suspended == "ACTIVE") {
+        if (data.suspended == 'ACTIVE') {
           setLock({
             isNo: false,
             isYes: false,
@@ -319,12 +318,12 @@ const IndiaPakLive = React.forwardRef(
         const body = {
           match_id: match?.id,
           matchType: match?.gameType,
-          id: betId ? betId : "",
+          id: betId ? betId : '',
           betStatus: status,
           sessionBet: true,
           bet_condition: Detail?.bet_condition,
         };
-        const { data } = await axios.post("betting/addBetting", body);
+        const { data } = await axios.post('betting/addBetting', body);
       } catch (err) {
         toast.error(err.response.data.message);
         console.log(err?.message);
@@ -332,14 +331,14 @@ const IndiaPakLive = React.forwardRef(
     };
 
     const handleLiveChange = (y_rate_percent, n_rate_percent) => {
-      let rate_percent = n_rate_percent + "-" + y_rate_percent;
+      let rate_percent = n_rate_percent + '-' + y_rate_percent;
       let data = {
         match_id: match?.id,
         betId: betId,
         betStatus: 1,
         no_rate: Detail.no_rate,
         yes_rate: Detail.yes_rate,
-        suspended: "ACTIVE",
+        suspended: 'ACTIVE',
         rate_percent: rate_percent,
       };
 
@@ -351,7 +350,7 @@ const IndiaPakLive = React.forwardRef(
         isYesPercent: false,
       });
       setIsBall(false);
-      socket.emit("updateSessionRate", data);
+      socket.emit('updateSessionRate', data);
     };
 
     useEffect(() => {
@@ -368,26 +367,26 @@ const IndiaPakLive = React.forwardRef(
       <Box
         sx={{
           flex: 1,
-          background: "#F8C851",
-          borderRadius: "5px",
-          minHeight: "42vh",
-          py: "25px",
-          pt: "5px",
-          px: "20px",
+          background: '#F8C851',
+          borderRadius: '5px',
+          minHeight: '42vh',
+          py: '25px',
+          pt: '5px',
+          px: '20px',
         }}
       >
         <Typography
-          sx={{ color: "#0B4F26", fontSize: "20px", fontWeight: "600" }}
+          sx={{ color: '#0B4F26', fontSize: '20px', fontWeight: '600' }}
         >
-          {match?.title ? match.title : "India vs Pakistan"}
+          {match?.title ? match.title : 'India vs Pakistan'}
         </Typography>
-        <Box sx={{ display: "flex", marginTop: "6px" }}>
+        <Box sx={{ display: 'flex', marginTop: '6px' }}>
           <Box
             sx={{
               flex: 1,
-              justifyContent: "flex-start",
-              display: "flex",
-              flexDirection: "column",
+              justifyContent: 'flex-start',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <AddSession
@@ -408,15 +407,15 @@ const IndiaPakLive = React.forwardRef(
               live={live}
               isDisable={isDisable}
             />
-            <Box sx={{ mt: 2, border: "1px solid black", p: 1 }}>
+            <Box sx={{ mt: 2, border: '1px solid black', p: 1 }}>
               <Grid
                 container
                 spacing={1}
-                alignItems={"center"}
-                justify={"center"}
-                sx={{ width: "100%" }}
+                alignItems={'center'}
+                justify={'center'}
+                sx={{ width: '100%' }}
               >
-                {rates?.map((item,index) => (
+                {rates?.map((item, index) => (
                   <Grid item xs={2} md={2} key={index}>
                     <Box
                       onClick={(e) => {
@@ -425,10 +424,10 @@ const IndiaPakLive = React.forwardRef(
                           !isNaN(Detail?.l_no_rate) &&
                           Detail?.l_no_rate != null &&
                           selectedSession !== null &&
-                          selectedSession?.betRestult !== "No Result"
+                          selectedSession?.betRestult !== 'No Result'
                         ) {
                           const [y_rate_percent, n_rate_percent] =
-                            item?.value?.split("-");
+                            item?.value?.split('-');
                           setDetail({
                             ...Detail,
                             ly_rate_percent: parseInt(y_rate_percent),
@@ -446,29 +445,29 @@ const IndiaPakLive = React.forwardRef(
                         }
                       }}
                       sx={{
-                        width: "46px",
-                        position: "relative",
-                        display: "flex",
+                        width: '46px',
+                        position: 'relative',
+                        display: 'flex',
                         background:
                           !isNaN(Detail?.l_no_rate) &&
                           Detail?.l_no_rate !== null &&
                           selectedSession !== null &&
-                          selectedSession?.betRestult !== "No Result"
-                            ? "#0B4F26"
-                            : "#696969",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: "35px",
-                        borderRadius: "5px",
-                        cursor: "pointer",
+                          selectedSession?.betRestult !== 'No Result'
+                            ? '#0B4F26'
+                            : '#696969',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '35px',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
                         // p: 1,
                       }}
                     >
                       <Typography
                         sx={{
-                          color: "white",
-                          fontWeight: "500",
-                          fontSize: "9px",
+                          color: 'white',
+                          fontWeight: '500',
+                          fontSize: '9px',
                         }}
                       >
                         {item?.name}
@@ -480,9 +479,9 @@ const IndiaPakLive = React.forwardRef(
             </Box>
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mt: "14px",
+                display: 'flex',
+                justifyContent: 'space-between',
+                mt: '14px',
               }}
             >
               {!isCreateSession || sessionBetId ? (
@@ -494,32 +493,32 @@ const IndiaPakLive = React.forwardRef(
                         e.stopPropagation();
                       }}
                       sx={{
-                        position: "relative",
-                        width: "30%",
-                        display: "flex",
-                        background: "#FF4D4D",
-                        maxWidth: "120px",
-                        marginLeft: "5px",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: "35px",
-                        borderRadius: "5px",
+                        position: 'relative',
+                        width: '30%',
+                        display: 'flex',
+                        background: '#FF4D4D',
+                        maxWidth: '120px',
+                        marginLeft: '5px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '35px',
+                        borderRadius: '5px',
                       }}
                     >
                       <Typography
                         sx={{
-                          color: "white",
-                          fontWeight: "500",
-                          fontSize: "12px",
+                          color: 'white',
+                          fontWeight: '500',
+                          fontSize: '12px',
                         }}
                       >
                         Un Declare
                       </Typography>
                       <Box
                         sx={{
-                          position: "absolute",
+                          position: 'absolute',
                           zIndex: 999,
-                          top: "40px",
+                          top: '40px',
                           left: 0,
                         }}
                       >
@@ -551,32 +550,32 @@ const IndiaPakLive = React.forwardRef(
                         e.stopPropagation();
                       }}
                       sx={{
-                        width: "30%",
-                        position: "relative",
-                        display: "flex",
-                        background: "#0B4F26",
-                        marginLeft: "5px",
-                        maxWidth: "120px",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        height: "35px",
-                        borderRadius: "5px",
+                        width: '30%',
+                        position: 'relative',
+                        display: 'flex',
+                        background: '#0B4F26',
+                        marginLeft: '5px',
+                        maxWidth: '120px',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '35px',
+                        borderRadius: '5px',
                       }}
                     >
                       <Typography
                         sx={{
-                          color: "white",
-                          fontWeight: "500",
-                          fontSize: "12px",
+                          color: 'white',
+                          fontWeight: '500',
+                          fontSize: '12px',
                         }}
                       >
                         Declare
                       </Typography>
                       <Box
                         sx={{
-                          position: "absolute",
+                          position: 'absolute',
                           zIndex: 999,
-                          top: "40px",
+                          top: '40px',
                           left: 0,
                         }}
                       >
@@ -607,32 +606,32 @@ const IndiaPakLive = React.forwardRef(
                         e.stopPropagation();
                       }}
                       sx={{
-                        width: "30%",
-                        position: "relative",
-                        display: "flex",
-                        background: "#303030",
-                        marginLeft: "5px",
-                        justifyContent: "center",
-                        maxWidth: "120px",
-                        alignItems: "center",
-                        height: "35px",
-                        borderRadius: "5px",
+                        width: '30%',
+                        position: 'relative',
+                        display: 'flex',
+                        background: '#303030',
+                        marginLeft: '5px',
+                        justifyContent: 'center',
+                        maxWidth: '120px',
+                        alignItems: 'center',
+                        height: '35px',
+                        borderRadius: '5px',
                       }}
                     >
                       <Typography
                         sx={{
-                          color: "white",
-                          fontWeight: "500",
-                          fontSize: "12px",
+                          color: 'white',
+                          fontWeight: '500',
+                          fontSize: '12px',
                         }}
                       >
                         No Result
                       </Typography>
                       <Box
                         sx={{
-                          position: "absolute",
+                          position: 'absolute',
                           zIndex: 999,
-                          top: "40px",
+                          top: '40px',
                           left: 0,
                         }}
                       >
@@ -666,33 +665,33 @@ const IndiaPakLive = React.forwardRef(
                       return true;
                     } else {
                       doSubmitSessionBet(
-                        Detail.n_rate_percent + "-" + Detail.y_rate_percent
+                        Detail.n_rate_percent + '-' + Detail.y_rate_percent
                       );
                     }
                   }}
                   sx={{
-                    width: "30%",
-                    position: "relative",
-                    display: "flex",
-                    background: "#0B4F26",
-                    marginLeft: "5px",
-                    maxWidth: "120px",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "35px",
-                    borderRadius: "5px",
+                    width: '30%',
+                    position: 'relative',
+                    display: 'flex',
+                    background: '#0B4F26',
+                    marginLeft: '5px',
+                    maxWidth: '120px',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '35px',
+                    borderRadius: '5px',
                   }}
                 >
                   <Typography
-                    sx={{ color: "white", fontWeight: "500", fontSize: "12px" }}
+                    sx={{ color: 'white', fontWeight: '500', fontSize: '12px' }}
                   >
-                    {loading ? "Loading" : "Submit"}
+                    {loading ? 'Loading' : 'Submit'}
                   </Typography>
                   <Box
                     sx={{
-                      position: "absolute",
+                      position: 'absolute',
                       zIndex: 999,
-                      top: "40px",
+                      top: '40px',
                       left: 0,
                     }}
                   >
@@ -712,7 +711,7 @@ const IndiaPakLive = React.forwardRef(
             </Box>
           </Box>
 
-          <Box sx={{ marginLeft: "15px", width: "30%" }}>
+          <Box sx={{ marginLeft: '15px', width: '30%' }}>
             {!isCreateSession || sessionBetId ? (
               <RunsAmountBox
                 betId={betId}
@@ -720,7 +719,7 @@ const IndiaPakLive = React.forwardRef(
                 proLoss={proLoss}
               />
             ) : (
-              <Box sx={{ width: "162px", minHeight: "182px" }} />
+              <Box sx={{ width: '162px', minHeight: '182px' }} />
             )}
           </Box>
         </Box>
@@ -752,11 +751,11 @@ const AddSession = ({
     event.preventDefault();
     let targetValue = parseFloat(event.target.value);
     event.target.value = targetValue;
-    if (key == "minus" || key == "plus") {
+    if (key == 'minus' || key == 'plus') {
       return;
-    } else if (key == "right") {
+    } else if (key == 'right') {
       incGap.setIncGap(1);
-      isPercent.setIsPercent("");
+      isPercent.setIsPercent('');
       handleSuspend();
       setLock({
         ...lock,
@@ -783,8 +782,8 @@ const AddSession = ({
         ly_rate_percent: 100,
         ln_rate_percent: 100,
       });
-    } else if (key == "left") {
-      isPercent.setIsPercent("");
+    } else if (key == 'left') {
+      isPercent.setIsPercent('');
       handleSuspend();
       setLock({
         ...lock,
@@ -811,7 +810,7 @@ const AddSession = ({
           ln_rate_percent: 100,
         });
       }
-    } else if (key == "w" || key == "up") {
+    } else if (key == 'w' || key == 'up') {
       handleSuspend();
       setLock({
         ...lock,
@@ -822,7 +821,7 @@ const AddSession = ({
       });
       let gap = +Detail?.Detail?.y_rate_percent - +incGap.incGap;
       if (targetValue >= 0 && gap >= 5) {
-        if (isPercent.isPercent == "percent") {
+        if (isPercent.isPercent == 'percent') {
           Detail.setDetail({
             ...Detail.Detail,
             no_rate: Detail?.Detail?.no_rate,
@@ -845,7 +844,7 @@ const AddSession = ({
           });
         }
       }
-    } else if (key == "z" || key == "down") {
+    } else if (key == 'z' || key == 'down') {
       handleSuspend();
       setLock({
         ...lock,
@@ -857,7 +856,7 @@ const AddSession = ({
 
       let gap = +Detail?.Detail?.n_rate_percent - +incGap.incGap;
       if (targetValue >= 0 && gap >= 5) {
-        if (isPercent.isPercent == "percent") {
+        if (isPercent.isPercent == 'percent') {
           Detail.setDetail({
             ...Detail.Detail,
             no_rate: Detail?.Detail?.no_rate,
@@ -885,17 +884,17 @@ const AddSession = ({
           }
         }
       }
-    } else if (key == "shift") {
+    } else if (key == 'shift') {
       isBall.setIsBall(true);
       if (!isCreateSession || sessionBetId) {
-        socket.emit("updateSessionRate", {
+        socket.emit('updateSessionRate', {
           match_id: match?.id,
           betId: betId,
-          suspended: "Ball Started",
+          suspended: 'Ball Started',
         });
       }
-    } else if (key == ",") {
-      isPercent.setIsPercent("percent");
+    } else if (key == ',') {
+      isPercent.setIsPercent('percent');
       handleSuspend();
       setLock({
         ...lock,
@@ -917,8 +916,8 @@ const AddSession = ({
         ln_rate_percent: 110,
       });
       incGap.setIncGap(5);
-    } else if (key == ".") {
-      isPercent.setIsPercent("percent");
+    } else if (key == '.') {
+      isPercent.setIsPercent('percent');
       handleSuspend();
       setLock({
         ...lock,
@@ -945,8 +944,8 @@ const AddSession = ({
         ln_rate_percent: 110,
       });
       incGap.setIncGap(5);
-    } else if (key == "esc") {
-      isPercent.setIsPercent("");
+    } else if (key == 'esc') {
+      isPercent.setIsPercent('');
       incGap.setIncGap(1);
       handleSuspend();
       setLock({
@@ -968,7 +967,7 @@ const AddSession = ({
         ly_rate_percent: 100,
         ln_rate_percent: 100,
       });
-    } else if (key == "enter" || key == "return") {
+    } else if (key == 'enter' || key == 'return') {
       if (!isCreateSession || sessionBetId) {
         if (
           Detail?.Detail?.no_rate >= 0 &&
@@ -977,14 +976,14 @@ const AddSession = ({
           Detail.Detail.y_rate_percent
         ) {
           let rate_percent =
-            Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+            Detail.Detail.n_rate_percent + '-' + Detail.Detail.y_rate_percent;
           let data = {
             match_id: match?.id,
             betId: betId,
             betStatus: 1,
             no_rate: Detail.Detail.no_rate,
             yes_rate: Detail.Detail.yes_rate,
-            suspended: "ACTIVE",
+            suspended: 'ACTIVE',
             rate_percent: rate_percent,
           };
           setLock({
@@ -995,12 +994,12 @@ const AddSession = ({
             isYesPercent: false,
           });
           isBall.setIsBall(false);
-          socket.emit("updateSessionRate", data);
+          socket.emit('updateSessionRate', data);
         }
       }
-    } else if (key == "d") {
+    } else if (key == 'd') {
       incGap.setIncGap(1);
-      isPercent.setIsPercent("");
+      isPercent.setIsPercent('');
       // handleSuspend();
 
       let value =
@@ -1025,14 +1024,14 @@ const AddSession = ({
       // changing to live
       if (!isCreateSession || sessionBetId) {
         if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
-          let rate_percent = 100 + "-" + 100;
+          let rate_percent = 100 + '-' + 100;
           let data = {
             match_id: match?.id,
             betId: betId,
             betStatus: 1,
             no_rate: value,
             yes_rate: yesValue + 1,
-            suspended: "ACTIVE",
+            suspended: 'ACTIVE',
             rate_percent: rate_percent,
           };
           setLock({
@@ -1043,11 +1042,11 @@ const AddSession = ({
             isYesPercent: false,
           });
           isBall.setIsBall(false);
-          socket.emit("updateSessionRate", data);
+          socket.emit('updateSessionRate', data);
         }
       }
-    } else if (key == "a") {
-      isPercent.setIsPercent("");
+    } else if (key == 'a') {
+      isPercent.setIsPercent('');
       // handleSuspend();
 
       if (targetValue > 0) {
@@ -1071,14 +1070,14 @@ const AddSession = ({
         // changing to live
         if (!isCreateSession || sessionBetId) {
           if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
-            let rate_percent = 100 + "-" + 100;
+            let rate_percent = 100 + '-' + 100;
             let data = {
               match_id: match?.id,
               betId: betId,
               betStatus: 1,
               no_rate: value,
               yes_rate: yesValue - 1,
-              suspended: "ACTIVE",
+              suspended: 'ACTIVE',
               rate_percent: rate_percent,
             };
             setLock({
@@ -1089,12 +1088,12 @@ const AddSession = ({
               isYesPercent: false,
             });
             isBall.setIsBall(false);
-            socket.emit("updateSessionRate", data);
+            socket.emit('updateSessionRate', data);
           }
         }
       }
-    } else if (key == "q") {
-      isPercent.setIsPercent("percent");
+    } else if (key == 'q') {
+      isPercent.setIsPercent('percent');
 
       let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
       if (value === 0) {
@@ -1122,14 +1121,14 @@ const AddSession = ({
 
       if (!isCreateSession || sessionBetId) {
         if (value) {
-          let rate_percent = 110 + "-" + 90;
+          let rate_percent = 110 + '-' + 90;
           let data = {
             match_id: match?.id,
             betId: betId,
             betStatus: 1,
             no_rate: value,
             yes_rate: value,
-            suspended: "ACTIVE",
+            suspended: 'ACTIVE',
             rate_percent: rate_percent,
           };
           setLock({
@@ -1140,11 +1139,11 @@ const AddSession = ({
             isYesPercent: false,
           });
           isBall.setIsBall(false);
-          socket.emit("updateSessionRate", data);
+          socket.emit('updateSessionRate', data);
         }
       }
-    } else if (key == "e") {
-      isPercent.setIsPercent("percent");
+    } else if (key == 'e') {
+      isPercent.setIsPercent('percent');
 
       let value =
         Detail?.Detail?.no_rate === 0 || null
@@ -1167,14 +1166,14 @@ const AddSession = ({
 
       if (!isCreateSession || sessionBetId) {
         if (value) {
-          let rate_percent = 110 + "-" + 90;
+          let rate_percent = 110 + '-' + 90;
           let data = {
             match_id: match?.id,
             betId: betId,
             betStatus: 1,
             no_rate: value,
             yes_rate: value,
-            suspended: "ACTIVE",
+            suspended: 'ACTIVE',
             rate_percent: rate_percent,
           };
           setLock({
@@ -1185,7 +1184,7 @@ const AddSession = ({
             isYesPercent: false,
           });
           isBall.setIsBall(false);
-          socket.emit("updateSessionRate", data);
+          socket.emit('updateSessionRate', data);
         }
       }
     } else {
@@ -1203,14 +1202,14 @@ const AddSession = ({
         if (!isCreateSession || sessionBetId) {
           if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
             let rate_percent =
-              Detail.Detail.n_rate_percent + "-" + Detail.Detail.y_rate_percent;
+              Detail.Detail.n_rate_percent + '-' + Detail.Detail.y_rate_percent;
             let data = {
               match_id: match?.id,
               betId: betId,
               betStatus: 1,
               no_rate: Detail.Detail.no_rate,
               yes_rate: value - incGap.incGap,
-              suspended: "ACTIVE",
+              suspended: 'ACTIVE',
               rate_percent: rate_percent,
             };
             setLock({
@@ -1221,7 +1220,7 @@ const AddSession = ({
               isYesPercent: false,
             });
             isBall.setIsBall(false);
-            socket.emit("updateSessionRate", data);
+            socket.emit('updateSessionRate', data);
           }
         }
       }
@@ -1229,7 +1228,7 @@ const AddSession = ({
   };
 
   const handleChange = (event) => {
-    isPercent.setIsPercent("");
+    isPercent.setIsPercent('');
     incGap.setIncGap(1);
     setLock({
       ...lock,
@@ -1245,67 +1244,67 @@ const AddSession = ({
       ...Detail.Detail,
       no_rate: targetValue,
       yes_rate: targetValue + 1,
-      y_rate_percent: checkValue >= 0 ? 100 : "",
-      n_rate_percent: checkValue >= 0 ? 100 : "",
+      y_rate_percent: checkValue >= 0 ? 100 : '',
+      n_rate_percent: checkValue >= 0 ? 100 : '',
       l_no_rate: targetValue,
       l_yes_rate: targetValue + 1,
-      ly_rate_percent: checkValue >= 0 ? 100 : "",
-      ln_rate_percent: checkValue >= 0 ? 100 : "",
+      ly_rate_percent: checkValue >= 0 ? 100 : '',
+      ln_rate_percent: checkValue >= 0 ? 100 : '',
     });
   };
 
   const handleSuspend = () => {
     if (!lock.isNo || !lock.isNo || !lock.isNoPercent || !lock.isYesPercent) {
       isBall.setIsBall(false);
-      socket.emit("updateSessionRate", {
+      socket.emit('updateSessionRate', {
         match_id: match?.id,
         betId: betId,
-        suspended: "suspended",
+        suspended: 'suspended',
       });
     }
   };
 
   return (
-    <Box sx={{ border: "2px solid #FFFFFF", position: "relative" }}>
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ background: "#319E5B", width: "70%", px: "5px" }}>
+    <Box sx={{ border: '2px solid #FFFFFF', position: 'relative' }}>
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ background: '#319E5B', width: '70%', px: '5px' }}>
           <Typography
-            sx={{ color: "white", fontWeight: "600", fontSize: "12px" }}
+            sx={{ color: 'white', fontWeight: '600', fontSize: '12px' }}
           >
-            {isCreateSession ? "Add" : "Your"} Session
+            {isCreateSession ? 'Add' : 'Your'} Session
           </Typography>
         </Box>
         <Box
           sx={{
-            background: "#FF9292",
-            width: "19.5%",
-            borderLeft: "2px solid white",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            background: '#FF9292',
+            width: '19.5%',
+            borderLeft: '2px solid white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>
+          <Typography sx={{ fontWeight: '600', fontSize: '12px' }}>
             No
           </Typography>
         </Box>
         <Box
           sx={{
-            background: "#00C0F9",
-            width: "19.5%",
-            borderLeft: "2px solid white",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            background: '#00C0F9',
+            width: '19.5%',
+            borderLeft: '2px solid white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <Typography sx={{ fontWeight: "600", fontSize: "12px" }}>
+          <Typography sx={{ fontWeight: '600', fontSize: '12px' }}>
             Yes
           </Typography>
         </Box>
       </Box>
-      <Box sx={{ display: "flex" }}>
-        <Box sx={{ background: "#FFFFFF", width: "40%" }}>
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ background: '#FFFFFF', width: '40%' }}>
           <TextField
             onChange={(e) => {
               Detail.setDetail({
@@ -1318,60 +1317,60 @@ const AddSession = ({
             value={Detail.Detail.bet_condition}
             variant="standard"
             InputProps={{
-              placeholder: "Your Bet Condition Here...",
+              placeholder: 'Your Bet Condition Here...',
               disableUnderline: true,
               style: {
-                fontSize: "15px",
-                marginLeft: "5px",
-                height: "45px",
-                fontWeight: "600",
-                color: "black",
+                fontSize: '15px',
+                marginLeft: '5px',
+                height: '45px',
+                fontWeight: '600',
+                color: 'black',
               },
             }}
           />
         </Box>
         <Box
-          display={"flex"}
-          sx={{ borderLeft: "2px solid white", width: "60%" }}
+          display={'flex'}
+          sx={{ borderLeft: '2px solid white', width: '60%' }}
         >
-          <Box sx={{ width: "40%" }}>
-            <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+          <Box sx={{ width: '40%' }}>
+            <Box display={'flex'} sx={{ borderTop: '2px solid white' }}>
               <Box
                 sx={{
-                  background: "#FFB5B5",
-                  width: "50%",
-                  display: "flex",
-                  height: "45px",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  background: '#FFB5B5',
+                  width: '50%',
+                  display: 'flex',
+                  height: '45px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                <Typography sx={{ fontWeight: '600', fontSize: '14px' }}>
                   <KeyboardEventHandler
                     handleKeys={[
-                      "a",
-                      "d",
-                      "w",
-                      "z",
-                      "up",
-                      "q",
-                      "e",
-                      "down",
-                      "left",
-                      "right",
+                      'a',
+                      'd',
+                      'w',
+                      'z',
+                      'up',
+                      'q',
+                      'e',
+                      'down',
+                      'left',
+                      'right',
                       // "tab",
-                      "shift",
+                      'shift',
                       // "`",
-                      ",",
-                      ".",
+                      ',',
+                      '.',
                       // "/",
-                      "enter",
-                      "return",
-                      "esc",
+                      'enter',
+                      'return',
+                      'esc',
                       // "*",
-                      "plus",
+                      'plus',
                       // "=",
-                      "minus",
+                      'minus',
                     ]}
                     isDisabled={false}
                     onKeyEvent={(key, e) => handleKeysMatchEvents(key, e)}
@@ -1387,11 +1386,11 @@ const AddSession = ({
                       InputProps={{
                         disableUnderline: true,
                         style: {
-                          fontSize: "14px",
-                          marginLeft: "5px",
-                          height: "45px",
-                          fontWeight: "600",
-                          color: "black",
+                          fontSize: '14px',
+                          marginLeft: '5px',
+                          height: '45px',
+                          fontWeight: '600',
+                          color: 'black',
                         },
                       }}
                     />
@@ -1400,16 +1399,16 @@ const AddSession = ({
               </Box>
               <Box
                 sx={{
-                  background: "#A7DCFF",
-                  width: "50%",
-                  borderLeft: "2px solid white",
-                  display: "flex",
-                  height: "45px",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  background: '#A7DCFF',
+                  width: '50%',
+                  borderLeft: '2px solid white',
+                  display: 'flex',
+                  height: '45px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                <Typography sx={{ fontWeight: '600', fontSize: '14px' }}>
                   <CustomDisableInput
                     type="Number"
                     autoComplete="off"
@@ -1419,29 +1418,29 @@ const AddSession = ({
                     InputProps={{
                       disableUnderline: true,
                       style: {
-                        fontSize: "14px",
-                        marginLeft: "5px",
-                        height: "45px",
-                        fontWeight: "600",
-                        color: "black",
+                        fontSize: '14px',
+                        marginLeft: '5px',
+                        height: '45px',
+                        fontWeight: '600',
+                        color: 'black',
                       },
                     }}
                   />
                 </Typography>
               </Box>
             </Box>
-            <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+            <Box display={'flex'} sx={{ borderTop: '2px solid white' }}>
               <Box
                 sx={{
-                  background: "#FFB5B5",
-                  width: "50%",
-                  display: "flex",
-                  height: "45px",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  background: '#FFB5B5',
+                  width: '50%',
+                  display: 'flex',
+                  height: '45px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                <Typography sx={{ fontWeight: '600', fontSize: '14px' }}>
                   {/* <KeyboardEventHandler
                     handleKeys={[
                       "a",
@@ -1477,18 +1476,18 @@ const AddSession = ({
                     value={
                       Detail?.Detail?.ln_rate_percent
                         ? Detail?.Detail?.ln_rate_percent
-                        : ""
+                        : ''
                     }
                     autoComplete="off"
                     variant="standard"
                     InputProps={{
                       disableUnderline: true,
                       style: {
-                        fontSize: "14px",
-                        marginLeft: "5px",
-                        height: "45px",
-                        fontWeight: "600",
-                        color: "black",
+                        fontSize: '14px',
+                        marginLeft: '5px',
+                        height: '45px',
+                        fontWeight: '600',
+                        color: 'black',
                       },
                     }}
                   />
@@ -1497,16 +1496,16 @@ const AddSession = ({
               </Box>
               <Box
                 sx={{
-                  background: "#A7DCFF",
-                  width: "50%",
-                  borderLeft: "2px solid white",
-                  display: "flex",
-                  height: "45px",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  background: '#A7DCFF',
+                  width: '50%',
+                  borderLeft: '2px solid white',
+                  display: 'flex',
+                  height: '45px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
-                <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>
+                <Typography sx={{ fontWeight: '600', fontSize: '14px' }}>
                   <CustomDisableInput
                     disabled={true}
                     autoComplete="off"
@@ -1514,17 +1513,17 @@ const AddSession = ({
                     value={
                       Detail.Detail.ly_rate_percent
                         ? Detail.Detail.ly_rate_percent
-                        : ""
+                        : ''
                     }
                     variant="standard"
                     InputProps={{
                       disableUnderline: true,
                       style: {
-                        fontSize: "14px",
-                        marginLeft: "5px",
-                        height: "45px",
-                        fontWeight: "600",
-                        color: "black",
+                        fontSize: '14px',
+                        marginLeft: '5px',
+                        height: '45px',
+                        fontWeight: '600',
+                        color: 'black',
                       },
                     }}
                   />
@@ -1532,86 +1531,86 @@ const AddSession = ({
               </Box>
             </Box>
           </Box>
-          <Box sx={{ width: "60%" }}>
+          <Box sx={{ width: '60%' }}>
             {!isBall?.isBall ? (
               <>
-                <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                <Box display={'flex'} sx={{ borderTop: '2px solid white' }}>
                   <Box
                     sx={{
-                      background: lock?.isNo ? "#FDF21A" : "#FFB5B5",
-                      width: "50%",
-                      display: "flex",
-                      height: "45px",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      background: lock?.isNo ? '#FDF21A' : '#FFB5B5',
+                      width: '50%',
+                      display: 'flex',
+                      height: '45px',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     {!lock?.isNo ? (
                       <Typography
                         sx={{
-                          fontWeight: "600",
-                          fontSize: "18px",
-                          color: "black",
+                          fontWeight: '600',
+                          fontSize: '18px',
+                          color: 'black',
                         }}
                       >
-                        {Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : ""}
+                        {Detail?.Detail?.no_rate ? Detail?.Detail?.no_rate : ''}
                       </Typography>
                     ) : (
                       <img
                         src={Lock}
                         alt="Lock"
-                        style={{ width: "10px", height: "15px" }}
+                        style={{ width: '10px', height: '15px' }}
                       />
                     )}
                   </Box>
 
                   <Box
                     sx={{
-                      background: lock?.isYes ? "#FDF21A" : "#A7DCFF",
-                      width: "50%",
-                      borderLeft: "2px solid white",
-                      display: "flex",
-                      height: "45px",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      background: lock?.isYes ? '#FDF21A' : '#A7DCFF',
+                      width: '50%',
+                      borderLeft: '2px solid white',
+                      display: 'flex',
+                      height: '45px',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     {!lock?.isYes ? (
                       <Typography
                         sx={{
-                          fontWeight: "600",
-                          fontSize: "18px",
-                          color: "black",
+                          fontWeight: '600',
+                          fontSize: '18px',
+                          color: 'black',
                         }}
                       >
-                        {Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ""}
+                        {Detail.Detail.yes_rate ? Detail.Detail.yes_rate : ''}
                       </Typography>
                     ) : (
                       <img
                         src={Lock}
                         alt="Lock"
-                        style={{ width: "10px", height: "15px" }}
+                        style={{ width: '10px', height: '15px' }}
                       />
                     )}
                   </Box>
                 </Box>
-                <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
+                <Box display={'flex'} sx={{ borderTop: '2px solid white' }}>
                   <Box
                     sx={{
-                      background: lock?.isNoPercent ? "#FDF21A" : "#FFB5B5",
-                      width: "50%",
-                      display: "flex",
-                      height: "45px",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      background: lock?.isNoPercent ? '#FDF21A' : '#FFB5B5',
+                      width: '50%',
+                      display: 'flex',
+                      height: '45px',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     {!lock?.isNoPercent ? (
                       <Typography
                         sx={{
-                          fontWeight: "600",
-                          fontSize: "18px",
-                          color: "black",
+                          fontWeight: '600',
+                          fontSize: '18px',
+                          color: 'black',
                         }}
                       >
                         {Detail.Detail.n_rate_percent}
@@ -1620,27 +1619,27 @@ const AddSession = ({
                       <img
                         src={Lock}
                         alt="Lock"
-                        style={{ width: "10px", height: "15px" }}
+                        style={{ width: '10px', height: '15px' }}
                       />
                     )}
                   </Box>
                   <Box
                     sx={{
-                      background: lock?.isYesPercent ? "#FDF21A" : "#A7DCFF",
-                      width: "50%",
-                      borderLeft: "2px solid white",
-                      display: "flex",
-                      height: "45px",
-                      justifyContent: "center",
-                      alignItems: "center",
+                      background: lock?.isYesPercent ? '#FDF21A' : '#A7DCFF',
+                      width: '50%',
+                      borderLeft: '2px solid white',
+                      display: 'flex',
+                      height: '45px',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}
                   >
                     {!lock?.isYesPercent ? (
                       <Typography
                         sx={{
-                          fontWeight: "600",
-                          fontSize: "18px",
-                          color: "black",
+                          fontWeight: '600',
+                          fontSize: '18px',
+                          color: 'black',
                         }}
                       >
                         {Detail.Detail.y_rate_percent}
@@ -1649,7 +1648,7 @@ const AddSession = ({
                       <img
                         src={Lock}
                         alt="Lock"
-                        style={{ width: "10px", height: "15px" }}
+                        style={{ width: '10px', height: '15px' }}
                       />
                     )}
                   </Box>
@@ -1658,19 +1657,19 @@ const AddSession = ({
             ) : (
               <Box
                 sx={{
-                  borderTop: "2px solid white",
-                  background: "#000",
-                  width: "100%",
-                  display: "flex",
-                  height: "94px",
-                  justifyContent: "center",
-                  alignItems: "center",
+                  borderTop: '2px solid white',
+                  background: '#000',
+                  width: '100%',
+                  display: 'flex',
+                  height: '94px',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}
               >
                 <img
                   src={BallStart}
                   alt="BallStart"
-                  style={{ width: "80%", height: "30%" }}
+                  style={{ width: '80%', height: '30%' }}
                 />
               </Box>
             )}
@@ -1681,19 +1680,19 @@ const AddSession = ({
       {!live && (
         <Box
           sx={{
-            position: "absolute",
-            width: "100%",
-            top: "0px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
+            position: 'absolute',
+            width: '100%',
+            top: '0px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
             opacity: 1,
-            backdropFilter: " blur(1px)",
-            "-webkit-backdrop-filter": "blur(1px)",
+            backdropFilter: ' blur(1px)',
+            '-webkit-backdrop-filter': 'blur(1px)',
           }}
         >
-          <StyledImage src={LiveOff} sx={{ height: "4vw", width: "4vw" }} />
+          <StyledImage src={LiveOff} sx={{ height: '4vw', width: '4vw' }} />
         </Box>
       )}
     </Box>
@@ -1716,7 +1715,7 @@ const RunsAmountBox = ({ currentOdds, betId, proLoss }) => {
         (containerRect.height - targetRect.height) / 2;
       container.scrollTo({
         top: container.scrollTop + scrollTo,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
   };
@@ -1732,73 +1731,73 @@ const RunsAmountBox = ({ currentOdds, betId, proLoss }) => {
   return (
     <Box
       sx={{
-        borderRadius: "5px",
-        border: "1px solid #306A47",
-        overflow: "hidden",
-        width: "100%",
+        borderRadius: '5px',
+        border: '1px solid #306A47',
+        overflow: 'hidden',
+        width: '100%',
       }}
     >
       <Box
         sx={{
-          minHeight: "120px",
-          width: "100%",
-          flexDirection: "column",
-          backgroundColor: "white",
-          display: "flex",
+          minHeight: '120px',
+          width: '100%',
+          flexDirection: 'column',
+          backgroundColor: 'white',
+          display: 'flex',
         }}
       >
-        <Box sx={{ display: "flex", height: "30px", width: "100%" }}>
+        <Box sx={{ display: 'flex', height: '30px', width: '100%' }}>
           <Box
             sx={{
-              width: "35%",
-              padding: "5px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              width: '35%',
+              padding: '5px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}
+              sx={{ color: '#306A47', fontWeight: 'bold', fontSize: '14px' }}
             >
               Runs
             </Typography>
           </Box>
           <Box
             sx={{
-              width: "65%",
-              padding: "5px",
-              display: "flex",
-              borderLeft: "1px solid #306A47",
-              justifyContent: "center",
-              alignItems: "center",
+              width: '65%',
+              padding: '5px',
+              display: 'flex',
+              borderLeft: '1px solid #306A47',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <Typography
-              sx={{ color: "#306A47", fontWeight: "bold", fontSize: "14px" }}
+              sx={{ color: '#306A47', fontWeight: 'bold', fontSize: '14px' }}
             >
               Amount
             </Typography>
           </Box>
         </Box>
-        <Box ref={containerRef} sx={{ maxHeight: "42vh", overflowY: "auto" }}>
+        <Box ref={containerRef} sx={{ maxHeight: '42vh', overflowY: 'auto' }}>
           {proLoss?.betData?.length > 0
             ? proLoss?.betData?.map((v) => {
                 const getColor = (value) => {
                   if (value >= 1) {
-                    return "#10DC61";
+                    return '#10DC61';
                   } else if (value === v?.profit_loss && value > 1) {
-                    return "#F8C851";
+                    return '#F8C851';
                   } else {
-                    return "#DC3545";
+                    return '#DC3545';
                   }
                 };
                 const getSVG = (value) => {
                   if (value > 1) {
-                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                    return 'https://fontawesomeicons.com/images/svg/trending-up-sharp.svg';
                   } else if (value === v?.profit_loss && value > 1) {
-                    return "https://fontawesomeicons.com/images/svg/trending-up-sharp.svg";
+                    return 'https://fontawesomeicons.com/images/svg/trending-up-sharp.svg';
                   } else {
-                    return "https://fontawesomeicons.com/images/svg/trending-down-sharp.svg";
+                    return 'https://fontawesomeicons.com/images/svg/trending-down-sharp.svg';
                   }
                 };
                 return (
@@ -1806,25 +1805,25 @@ const RunsAmountBox = ({ currentOdds, betId, proLoss }) => {
                     id={`${betId}_${v?.odds}`}
                     key={v?.odds}
                     sx={{
-                      display: "flex",
-                      width: "100%",
-                      height: "25px",
-                      borderTop: "1px solid #306A47",
+                      display: 'flex',
+                      width: '100%',
+                      height: '25px',
+                      borderTop: '1px solid #306A47',
                     }}
                   >
                     <Box
                       sx={{
-                        width: "35%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
+                        width: '35%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}
                     >
                       <Typography
                         sx={{
-                          color: "#306A47",
-                          fontWeight: "bold",
-                          fontSize: "12px",
+                          color: '#306A47',
+                          fontWeight: 'bold',
+                          fontSize: '12px',
                         }}
                       >
                         {v?.odds}
@@ -1832,26 +1831,26 @@ const RunsAmountBox = ({ currentOdds, betId, proLoss }) => {
                     </Box>
                     <Box
                       sx={{
-                        width: "65%",
-                        display: "flex",
+                        width: '65%',
+                        display: 'flex',
                         borderLeft: `1px solid #306A47`,
                         background: getColor(v?.profit_loss),
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        paddingRight: "7px",
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingRight: '7px',
                       }}
                     >
                       <Typography
                         sx={{
-                          fontWeight: "500",
-                          fontSize: "16px",
-                          color: "white",
-                          width: "40px",
+                          fontWeight: '500',
+                          fontSize: '16px',
+                          color: 'white',
+                          width: '40px',
                         }}
                       >
                         {Number(v?.profit_loss) >= 0 ? (
                           <>
-                            <span style={{ visibility: "hidden" }}>-</span>
+                            <span style={{ visibility: 'hidden' }}>-</span>
                             {v?.profit_loss}
                           </>
                         ) : (
@@ -1861,11 +1860,11 @@ const RunsAmountBox = ({ currentOdds, betId, proLoss }) => {
                       <StyledImage
                         src={getSVG(v?.profit_loss)}
                         sx={{
-                          height: "15px",
-                          marginLeft: "5px",
+                          height: '15px',
+                          marginLeft: '5px',
                           filter:
-                            "invert(.9) sepia(1) saturate(5) hue-rotate(175deg);",
-                          width: "15px",
+                            'invert(.9) sepia(1) saturate(5) hue-rotate(175deg);',
+                          width: '15px',
                         }}
                       />
                     </Box>

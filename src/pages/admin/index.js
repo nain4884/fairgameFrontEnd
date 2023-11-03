@@ -1,38 +1,38 @@
-import jwtDecode from "jwt-decode";
-import { useContext, useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { AuthContext } from "../../Authprovider";
-import MatchSubmit1 from "../../components/MatchSubmit1.js";
-import ForgotPassword from "../ForgotPassword/index.js";
-import NewPassword from "../NewPassword/index.js";
-import Verification from "../Varification/index.js";
-import Login from "../login/index.js";
-import AccountStatement from "./AccountStatement.js";
-import AddAccount from "./AddAccount";
-import ChangePassword from "./ChangePassword.js";
-import CurrentBets from "./CurrentBets.js";
-import DeleteBet from "./DeleteBet.js";
-import EditAccountScreen from "./EditAccountScreen.js";
-import GeneralReport from "./GeneralReport.js";
-import Home from "./List_Of_Clients.js";
-import MarketAnaylsisContainer from "./MarketAnaylsisContainer.js";
-import { MatchScreen } from "./MatchScreen.js";
-import MatchSubmit from "./MatchSubmit.js";
-import ProfitLoss from "./ProfitLoss.js";
-import Reports from "./Reports.js";
-import TotalBets from "./TotalBets.js";
+import jwtDecode from 'jwt-decode';
+import { useContext, useEffect } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { AuthContext } from '../../Authprovider';
+import MatchSubmit1 from '../../components/MatchSubmit1.js';
+import ForgotPassword from '../ForgotPassword/index.js';
+import NewPassword from '../NewPassword/index.js';
+import Verification from '../Varification/index.js';
+import Login from '../login/index.js';
+import AccountStatement from './AccountStatement.js';
+import AddAccount from './AddAccount';
+import ChangePassword from './ChangePassword.js';
+import CurrentBets from './CurrentBets.js';
+import DeleteBet from './DeleteBet.js';
+import EditAccountScreen from './EditAccountScreen.js';
+import GeneralReport from './GeneralReport.js';
+import Home from './List_Of_Clients.js';
+import MarketAnaylsisContainer from './MarketAnaylsisContainer.js';
+import { MatchScreen } from './MatchScreen.js';
+import MatchSubmit from './MatchSubmit.js';
+import ProfitLoss from './ProfitLoss.js';
+import Reports from './Reports.js';
+import TotalBets from './TotalBets.js';
 const MasterRoutes = () => {
   const { tokenMaster } = useContext(AuthContext);
   useEffect(() => {
-    if (tokenMaster != localStorage.getItem("JWTwallet")) {
+    if (tokenMaster != localStorage.getItem('JWTwallet')) {
       window.location.reload();
     }
   }, []);
 
   function AdminPrivateRoute({ children }) {
-    const token = localStorage.getItem("JWTwallet");
+    const token = localStorage.getItem('JWTwallet');
     const decodedToken = jwtDecode(token);
-    if (decodedToken?.role !== "admin") {
+    if (decodedToken?.role !== 'admin') {
       return <Navigate to="/admin" />;
     }
     return children;
@@ -45,7 +45,7 @@ const MasterRoutes = () => {
           path="/"
           element={
             <Login
-              allowedRole={["admin", "master", "superMaster", "superAdmin"]}
+              allowedRole={['admin', 'master', 'superMaster', 'superAdmin']}
             />
           }
         />

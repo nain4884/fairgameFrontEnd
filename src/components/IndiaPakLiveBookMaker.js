@@ -1,32 +1,32 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from '@mui/material';
 
-import "./index.css";
+import './index.css';
 
-import { memo } from "react";
-import AddSession from "./AddSession";
+import { memo } from 'react';
+import AddSession from './AddSession';
 
-const IndiaPakLiveBookMaker = ({ add, match ,Bid }) => {
+const IndiaPakLiveBookMaker = ({ add, match, Bid }) => {
   return (
     <Box
       sx={{
         flex: 1,
-        background: "#0B4F26",
-        borderRadius: "5px",
-        position: "relative",
-        minHeight: "300px",
-        py: "20px",
-        px: "10px",
-        pt: "5px",
+        background: '#0B4F26',
+        borderRadius: '5px',
+        position: 'relative',
+        minHeight: '300px',
+        py: '20px',
+        px: '10px',
+        pt: '5px',
       }}
     >
       {!add && (
         <Box
           sx={{
-            width: "100%",
-            height: "100%",
-            background: "rgba(0,0,0,0.5)",
-            position: "absolute",
-            left: "0px",
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0,0,0,0.5)',
+            position: 'absolute',
+            left: '0px',
             top: 0,
             zIndex: 1,
           }}
@@ -34,25 +34,25 @@ const IndiaPakLiveBookMaker = ({ add, match ,Bid }) => {
       )}
       <Typography
         sx={{
-          color: "white",
-          fontSize: "20px",
-          fontWeight: "600",
+          color: 'white',
+          fontSize: '20px',
+          fontWeight: '600',
           zIndex: 2,
-          position: "relative",
+          position: 'relative',
         }}
       >
         {match?.title}
       </Typography>
-      <Box sx={{ display: "flex", marginTop: "2px", flexDirection: "column" }}>
+      <Box sx={{ display: 'flex', marginTop: '2px', flexDirection: 'column' }}>
         <Box
           sx={{
             flex: 1,
-            justifyContent: "space-between",
-            display: "flex",
-            flexDirection: "column",
+            justifyContent: 'space-between',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          <AddSession add={add} match={match}  Bid={Bid}/>
+          <AddSession add={add} match={match} Bid={Bid} />
         </Box>
       </Box>
     </Box>
