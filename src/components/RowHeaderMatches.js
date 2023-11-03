@@ -1,13 +1,25 @@
 import { Box, Typography } from "@mui/material";
-import { memo } from "react";
+import { memo, useState } from "react";
 import { StyledImage } from ".";
-import { ArrowDown, Cricket } from "../assets";
+import { ArrowDown, Cricket, Football, Tennis } from "../assets";
 import { ARROWDOWN, ARROWUP } from "../expert/assets";
 
-const RowHeaderMatches = ({ item, index, getHandleReport, show }) => {
+const RowHeaderMatches = ({
+  item,
+  getHandleReport,
+  selectedEventType,
+  setCurrentPage,
+  setSelectedEventType,
+}) => {
+  const [visible, setVisible] = useState(false);
   return (
     <Box
-      onClick={() => getHandleReport(item?.eventType)}
+      onClick={() => {
+        getHandleReport(item?.eventType);
+        setSelectedEventType(item?.eventType);
+        setCurrentPage(1);
+        setVisible((prev) => !prev);
+      }}
       sx={{
         width: "100%",
         height: { laptop: "60px", mobile: "50px" },
@@ -27,7 +39,15 @@ const RowHeaderMatches = ({ item, index, getHandleReport, show }) => {
         }}
       >
         <StyledImage
-          src={Cricket}
+          src={
+            item?.eventType === "cricket"
+              ? Cricket
+              : item?.eventType === "football"
+              ? Football
+              : item?.eventType === "tennis"
+              ? Tennis
+              : Cricket
+          }
           sx={{ width: { laptop: "35px", mobile: "25px" } }}
         />
       </Box>
@@ -52,7 +72,10 @@ const RowHeaderMatches = ({ item, index, getHandleReport, show }) => {
           src={ArrowDown}
           sx={{
             width: { laptop: "20px", mobile: "10px" },
-            transform: show ? "rotate(180deg)" : "rotate(0deg)",
+            transform:
+              visible && selectedEventType === item?.eventType
+                ? "rotate(180deg)"
+                : "rotate(0deg)",
             height: { laptop: "10px", mobile: "6px" },
           }}
         />
