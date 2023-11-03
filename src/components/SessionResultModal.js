@@ -131,9 +131,9 @@ const SessionResultModal = ({
       setLoading({ id: "", value: false });
       toast.success(data?.message);
     } catch (e) {
-      if (e?.response?.data?.statusCode === 403) {
-        onClickCancel();
-      }
+      // if (e?.response?.data?.statusCode === 403) {
+      //   onClickCancel();
+      // }
       setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);

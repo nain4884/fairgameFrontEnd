@@ -14,8 +14,6 @@ import {
 } from "../../newStore/reducers/matchDetails";
 import { setRole } from "../../newStore";
 import constants from "../helper/constants";
-import Lottie from "lottie-react";
-import { HourGlass } from "../../assets/";
 import CustomLoader from "../helper/CustomLoader";
 
 const MatchesComponent = ({
@@ -42,10 +40,10 @@ const MatchesComponent = ({
 
 
   useEffect(() => {
-    if(userAllMatches){
+    if (userAllMatches) {
       setMatchData(userAllMatches)
     }
-  },[userAllMatches])
+  }, [userAllMatches])
 
   async function getAllMatch() {
     try {
@@ -79,7 +77,7 @@ const MatchesComponent = ({
   }
 
   const currentElements = matchData || [];
-  console.log(matchData,"matchData")
+  console.log(matchData, "matchData")
   return (
     <>
       {currentElements.length > 0 && currentElements?.map((match) => {

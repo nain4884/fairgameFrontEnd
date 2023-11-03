@@ -1,11 +1,10 @@
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import React, { useEffect } from "react";
+import { Box, Typography } from "@mui/material";
+import React from "react";
 import { ARROWUP } from "../../../assets";
 import Divider from "../../helper/Divider";
 
 import { useTheme } from "@emotion/react";
 import { memo, useState } from "react";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { LockIcon } from "../../../admin/assets";
 import { setRole } from "../../../newStore";

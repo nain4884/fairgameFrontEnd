@@ -82,9 +82,9 @@ const CustomSessionResult = ({
       setLoading({ id: "", value: false });
       toast.success(data?.message);
     } catch (e) {
-      if (e?.response?.data?.statusCode === 403) {
-        onClick();
-      }
+      // if (e?.response?.data?.statusCode === 403) {
+      //   onClick();
+      // }
       setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);

@@ -1,6 +1,4 @@
-import Lottie from "lottie-react";
 import React from "react";
-import { HourGlass } from "../../assets";
 import { Box, Typography } from "@mui/material";
 import "./styles.css";
 const SmallCustomLoader = ({ text, height, width }) => {
