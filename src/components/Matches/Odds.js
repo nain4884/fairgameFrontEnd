@@ -8,6 +8,9 @@ import { SocketContext } from "../../context/socketContext";
 import Axios from "axios";
 import { formatNumber } from "../helper/helper";
 import moment from "moment-timezone";
+import { useLocation } from "react-router-dom";
+import StyledImage from "../StyledImage";
+import { Cricket, Football, Tennis } from "../../assets";
 let matchOddsCount = 0;
 const Odds = ({ onClick, top, blur, match }) => {
   const theme = useTheme();
@@ -15,6 +18,7 @@ const Odds = ({ onClick, top, blur, match }) => {
   const [matchOddsLive, setMatchOddsLive] = useState([]);
   const { socketMicro } = useContext(SocketContext);
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const location = useLocation();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -304,6 +308,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                 background: "#f1c550",
                 overflow: "hidden",
                 alignItems: { laptop: "center", mobile: "flex-end" },
+                justifyContent: "space-between",
                 display: "flex",
               }}
             >
@@ -322,6 +327,20 @@ const Odds = ({ onClick, top, blur, match }) => {
                   ({moment(match.startAt).format("LL")})
                 </span>
               </Typography>{" "}
+              {location.pathname.includes("inplay") && (
+                <StyledImage
+                  src={
+                    match?.gameType === "cricket"
+                      ? Cricket
+                      : match?.gameType === "soccer"
+                      ? Football
+                      : match?.gameType === "tennis"
+                      ? Tennis
+                      : Cricket
+                  }
+                  sx={{ width: { laptop: "25px", mobile: "20px" } }}
+                />
+              )}
               {/* Today at 9:30 PM */}
             </Box>
             <Box

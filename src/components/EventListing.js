@@ -47,12 +47,12 @@ const EventListing = ({ selected, top }) => {
     {
       title: "SOCCER",
       image: Football,
-      url: "comingsoon",
+      url: "matches",
     },
     {
       title: "TENNIS",
       image: Tennis,
-      url: "comingsoon",
+      url: "matches",
     },
     {
       title: "ICE HOCKEY",

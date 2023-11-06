@@ -59,7 +59,7 @@ module.exports = {
   matchType: [
     "cricket",
     "tennis",
-    "football",
+    "soccer",
     "ice",
     "hockey",
     "volleyball",

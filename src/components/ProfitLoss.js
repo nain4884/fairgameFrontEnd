@@ -29,6 +29,7 @@ const ProfitLossComponent = ({
     betId: "",
     sessionBet: false,
   });
+  const [selectedEventType, setSelectedEventType] = useState(null);
   const [event, setEvent] = useState("");
 
   console.log(selectedId, "selectedId");
@@ -86,35 +87,41 @@ const ProfitLossComponent = ({
     <Box>
       {eventData.map((item, index) => {
         return (
-          <RowHeaderMatches
-            key={index}
-            item={item}
-            index={index}
-            getHandleReport={getHandleReport}
-            show={visible}
-          />
+          <>
+            <RowHeaderMatches
+              key={index}
+              item={item}
+              index={index}
+              getHandleReport={getHandleReport}
+              show={visible}
+              setCurrentPage={setCurrentPage}
+              setSelectedEventType={setSelectedEventType}
+              selectedEventType={selectedEventType}
+            />
+            <Box>
+              {visible &&
+                selectedEventType === item?.eventType &&
+                reportData.map((item, index) => {
+                  return (
+                    <RowComponentMatches
+                      key={index}
+                      item={item}
+                      index={index + 1}
+                      selectedId={selectedId}
+                      betData={betData}
+                      sessionBetData={sessionBetData}
+                      sessionBets={sessionBets}
+                      getBetReport={getBetReport}
+                      getUserProfitLoss={getUserProfitLoss}
+                      user={user}
+                      userProfitLoss={userProfitLoss}
+                    />
+                  );
+                })}
+            </Box>
+          </>
         );
       })}
-      <Box>
-        {visible &&
-          reportData.map((item, index) => {
-            return (
-              <RowComponentMatches
-                key={index}
-                item={item}
-                index={index + 1}
-                selectedId={selectedId}
-                betData={betData}
-                sessionBetData={sessionBetData}
-                sessionBets={sessionBets}
-                getBetReport={getBetReport}
-                getUserProfitLoss={getUserProfitLoss}
-                user={user}
-                userProfitLoss={userProfitLoss}
-              />
-            );
-          })}
-      </Box>
       {visible && (
         <Footer
           getListOfUser={() => handleReport(event)}
