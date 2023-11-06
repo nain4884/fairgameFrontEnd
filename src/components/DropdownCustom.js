@@ -30,7 +30,7 @@ const DropDownCustom = ({ handleChange, title, data, containerStyle, dropDownSty
                     setInside(!inside)
                 }} sx={{ paddingX: '7px', paddingTop: '4px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} >
                     <Typography sx={{ fontSize: '11px', fontWeight: '500' }} >{i.title}</Typography>
-                    <img src={ARROWDROPDOWN} style={{ width: '11px', height: '6px', transform: !inside ? 'rotate(0deg)' : 'rotate(180deg)' }} />
+                    <img alt="arrow" src={ARROWDROPDOWN} style={{ width: '11px', height: '6px', transform: !inside ? 'rotate(0deg)' : 'rotate(180deg)' }} />
                 </Box>
                 {
                     inside && i.values.map((item) => {
@@ -49,7 +49,7 @@ const DropDownCustom = ({ handleChange, title, data, containerStyle, dropDownSty
                 setOpen(!open)
             }} sx={{ width: '100%', height: '37px', justifyContent: "space-between", alignItems: 'center', display: 'flex', background: 'white', borderRadius: '3px', border: '2px solid #DEDEDE', paddingX: '7px' }}>
                 <Typography sx={{ fontSize: '11px', fontWeight: '500' }} >{value}</Typography>
-                <img src={ARROWDROPDOWN} style={{ width: '11px', height: '6px', transform: !open ? 'rotate(0deg)' : 'rotate(180deg)' }} />
+                <img alt="arrow" src={ARROWDROPDOWN} style={{ width: '11px', height: '6px', transform: !open ? 'rotate(0deg)' : 'rotate(180deg)' }} />
             </Box>
             {open && <Box sx={[{ display: 'flex', flexDirection: 'column', background: 'white', width: '19%', alignSelf: 'center', borderRadius: '2px', marginTop: '2px', position: 'absolute', borderRadius: '3px', border: '2px solid #DEDEDE', zIndex: 9999 }, dropDownStyle]} >
 

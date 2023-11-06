@@ -30,7 +30,7 @@ const SmallDropDown = ({ handleChange, getLimitEntries }) => {
                 setOpen(!open)
             }} sx={{ width: '47px', height: '30px', justifyContent: "space-around", alignItems: 'center', display: 'flex', background: 'white', borderRadius: '5px', border: '2px solid #DEDEDE', marginX: '5px' }}>
                 <Typography sx={{ fontSize: '12px' }} >{value}</Typography>
-                <img src={ARROWDROPDOWN} style={{ width: '12px', height: '7px', zIndex: 5, transform: open ? 'rotate(0deg)' : 'rotate(180deg)' }} />
+                <img alt="arrow" src={ARROWDROPDOWN} style={{ width: '12px', height: '7px', zIndex: 5, transform: open ? 'rotate(0deg)' : 'rotate(180deg)' }} />
             </Box>
             {open && <Box sx={{ display: 'flex', flexDirection: 'column', background: 'white', width: '47px', alignSelf: 'center', marginX: '5px', borderRadius: '2px', marginTop: '2px', position: 'absolute', zIndex: 22 }} >
 

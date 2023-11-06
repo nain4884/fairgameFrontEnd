@@ -70,7 +70,7 @@ const Calendar = ({
         <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
           {startDate ? moment(startDate).format("YYYY-MM-DD") : "select date"}
         </Typography>
-        <img src={CalendarImage} style={{ width: "12px", height: "13px" }} />
+        <img alt="calander" src={CalendarImage} style={{ width: "12px", height: "13px" }} />
       </Box>
     </Box>
   );

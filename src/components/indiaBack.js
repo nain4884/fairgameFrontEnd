@@ -902,7 +902,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                     <Box sx={{ display: "flex" }}>
                         <Box sx={{ background: "#FFFFFF", width: "60%", position: 'relative' }}>
                             {!add && <Box sx={{ width: '35%', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'absolute', left: '30%', top: '1px', background: 'black' }} >
-                                <img src={BALLSTART} style={{ width: '80%', height: '30%', position: 'absolute', zIndex: 3 }} />
+                                <img  alt="ball start" src={BALLSTART} style={{ width: '80%', height: '30%', position: 'absolute', zIndex: 3 }} />
                             </Box>}
                             <Box sx={{ borderWidth: 0, justifyContent: 'space-between', alignItems: 'center', display: 'flex', width: '100%', paddingLeft: '10px' }}>
                                 <Typography sx={{ fontSize: '14px', fontWeight: '600', width: "50%", }}>{match?.teamA}</Typography>
@@ -1135,7 +1135,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                     color: "#fff"
                                 }}
                             >
-                                <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                                <img alt="arrow" src={BallStart} style={{ width: '60px', height: '17px' }} />
                             </Box> :
                                 <>
                                     {/* {!teamBall?.isABall ?  */}
@@ -1150,17 +1150,17 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             </Box>}
                                         <Box sx={{ background: isTeamASuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                             {!isTeamASuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamASuspend ? 0 : teamALayValue}</Typography> :
-                                                <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                <img alt="arrow" src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box>
                                     </Box>
                                     <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                                         {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                            {!isTeamBackUnlock ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamBRate}</Typography> : <img alt="arrow" src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box> : <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBRate}</Typography> : <img alt="lock" src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box>}
                                         <Box sx={{ background: isTeamBSuspend ? "#FDF21A" : "#FFB5B5", width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
-                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBLayValue}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                            {!isTeamBSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBSuspend ? 0 : teamBLayValue}</Typography> : <img alt="lock" src={Lock} style={{ width: "10px", height: "15px" }} />}
                                         </Box>
 
                                     </Box>
@@ -1170,15 +1170,15 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                                             <Box display={"flex"} sx={{ borderTop: "2px solid white" }}>
                                                 {!isTeamBackUnlock ? <Box sx={{ background: isTeamBackUnlock ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                                     {!isTeamBackUnlock ?
-                                                        <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                        <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamBackUnlock ? 0 : teamCRate}</Typography> : <img alt="arrow" src={Lock} style={{ width: "10px", height: "15px" }} />}
                                                 </Box> :
                                                     <Box sx={{ background: isTeamCSuspend ? '#FDF21A' : "#A7DCFF", width: "50%", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                                         {!isTeamCSuspend ?
-                                                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                            <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCRate}</Typography> : <img alt="arrow" src={Lock} style={{ width: "10px", height: "15px" }} />}
                                                     </Box>}
                                                 <Box sx={{ background: isTeamCSuspend ? "#FDF21A" : '#FFB5B5', width: "50%", borderLeft: "2px solid white", display: "flex", height: "45px", justifyContent: "center", alignItems: "center" }}>
                                                     {!isTeamCSuspend ? <Typography sx={{ fontWeight: "600", fontSize: "14px" }}>{isTeamCSuspend ? 0 : teamCLayValue}</Typography> :
-                                                        <img src={Lock} style={{ width: "10px", height: "15px" }} />}
+                                                        <img alt="arrow" src={Lock} style={{ width: "10px", height: "15px" }} />}
                                                 </Box>
                                             </Box>
 

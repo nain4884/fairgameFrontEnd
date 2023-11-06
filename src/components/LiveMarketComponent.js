@@ -116,7 +116,7 @@ const LiveMarketComponent = ({
         </Typography>
 
         {!team && (
-          <img style={{ width: "20px", height: "12px" }} src={ARROWUP} />
+          <img alt="arrow" style={{ width: "20px", height: "12px" }} src={ARROWUP} />
         )}
       </Box>
     );
@@ -243,7 +243,7 @@ const LiveMarketComponent = ({
                 background: !selected ? "#46CF4D" : "rgba(0,0,0,.5)",
               }}
             >
-              <img src={CHECK} style={{ width: "40px", height: "40px" }} />
+              <img alt="check" src={CHECK} style={{ width: "40px", height: "40px" }} />
             </Box>
           )}
           <Box

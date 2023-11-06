@@ -67,7 +67,7 @@ const MatchSubmit1 = ({ }) => {
                 <Box sx={{ display: 'flex', background: 'white', position: 'relative', height: '40px', width: '40%', alignItems: 'center', }} >
                     <Box sx={{ flexDirection: 'row', display: 'flex', width: '100%', alignItems: 'center' }}>
                         {
-                            name != "DRAW" ? <img src={name == "INDIA" ? INDIA : PAKISTAN} style={{ width: "22px", height: '25px', marginLeft: '10px', backgroundSize: "contains" }} />
+                            name != "DRAW" ? <img alt="arrow" src={name == "INDIA" ? INDIA : PAKISTAN} style={{ width: "22px", height: '25px', marginLeft: '10px', backgroundSize: "contains" }} />
                                 :
                                 <Box sx={{ width: '22px', height: '25px', marginLeft: '10px', }}>
                                 </Box>
@@ -199,7 +199,7 @@ const MatchSubmit1 = ({ }) => {
                         <SeperateBox session={true} value={"39"} value2={"100"} lock={index == 2} color={"#B3E0FF"} />
                         <Box sx={{ width: '.45%', display: 'flex', background: 'pink' }} ></Box>
                         {index == 1 && <Box sx={{ width: '10.2vw', right: "2px", display: 'flex', position: 'absolute', height: '100%', background: 'rgba(0,0,0,1)', justifyContent: 'center ', alignItems: 'center' }}>
-                            <img src={BallStart} style={{ width: '60px', height: '17px' }} />
+                            <img alt="ball start" src={BallStart} style={{ width: '60px', height: '17px' }} />
                         </Box>}
                     </Box>
 

@@ -110,7 +110,7 @@ const Calendar = ({ title, containerStyle, DatePickerProps, pickerStyles, select
                     <Typography sx={{ fontSize: '11px', fontWeight: '500', marginTop: "-2px" }}>{moment(startDate).format('YYYY-MM-DD')}</Typography>
                 </Box>}
                 {!matchesMobile && <Typography sx={{ fontSize: '11px', fontWeight: '500' }}>{moment(startDate).format('YYYY-MM-DD')}</Typography>}
-                <img src={CalendarImage} style={{ width: '18px', height: '20px' }} />
+                <img src={CalendarImage} style={{ width: '18px', height: '20px' }} alt="calander" />
             </Box>
         </Box>
     );

@@ -11,7 +11,7 @@ const LiveMatchAdmin = ({submit}) => {
             <Box sx={{ background: "#F1C550" }}>
                 <Box sx={{ height: "35px", display: "flex", alignItems: "center", paddingLeft: "5px", paddingRight: '0px', width: { mobile: "100%", laptop: '100%' }, justifyContent: 'space-between' }}>
                     <Typography sx={{ fontWeight: "bold", fontSize: "12px" }}>Live Match</Typography>
-                    <img onClick={() => {
+                    <img alt="arrow" onClick={() => {
                         setVisible(!visible)
                     }} src={DownArrow} style={{ transform: !visible ? 'rotate(180deg)' : 'rotate(0deg)', width: '16px', height: '16px', marginRight: '3px', marginLeft: '5px' }} />
                 </Box>

@@ -29,24 +29,26 @@ const LiveMatchComponent = ({ }) => {
                     justifyContent: 'flex-end'
                 }}>
 
-                    <img onClick={() => {
+                    <img 
+                    alt="arrow"
+                    onClick={() => {
                         setVisible(!visible)
                     }} src={ARROWUP} style={{ transform: visible ? 'rotate(180deg)' : 'rotate(0deg)', width: '15px', height: '15px', marginRight: '5px', marginLeft: '5px' }} />
                 </Box>
-            </Box >
+            </Box>
             {visible && <Box sx={{ display: 'flex', padding: '1vh', flexDirection: 'column', flex: 1, justifyContent: 'flex-end', borderBottom: '0px solid', borderColor: 'gray' }} >
                 <Typography sx={{ marginBottom: '10px', fontSize: '10px', color: 'grey' }}><span style={{ fontWeight: '600', color: "black" }} >World T20 </span>Sunday 23 Oct 2022 10:00 am</Typography>
                 <Box sx={{ display: 'flex' }} >
 
                     <Box sx={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'column' }} >
-                        <img style={{ width: '45px', height: '35px', "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }} src="https://www.sciencekids.co.nz/images/pictures/flags680/India.jpg" />
+                        <img alt="arrow" style={{ width: '45px', height: '35px', "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }} src="https://www.sciencekids.co.nz/images/pictures/flags680/India.jpg" />
                         <Typography sx={{ fontSize: { mobile: '8px', table: '10px', laptop: '12px' }, marginTop: '1vh', fontWeight: '600' }}  >India</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flex: .2, alignItems: 'center', flexDirection: 'column', display: 'flex', marginTop: '1vh' }} >
                         <Typography sx={{ fontSize: { mobile: '8px', tablet: '8px', laptop: '10px' }, marginTop: '5vh', color: 'gray', fontWeight: '600' }}  >V/S</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'flex-end', flexDirection: 'column' }} >
-                        <img style={{ width: '45px', height: '35px', "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }} src="https://www.sciencekids.co.nz/images/pictures/flags680/Pakistan.jpg" />
+                        <img alt="arrow" style={{ width: '45px', height: '35px', "boxShadow": "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)" }} src="https://www.sciencekids.co.nz/images/pictures/flags680/Pakistan.jpg" />
                         <Typography sx={{ fontSize: { mobile: '8px', table: '10px', laptop: '12px' }, marginTop: '1vh', fontWeight: '600' }}  >Pakistan</Typography>
                     </Box>
 
