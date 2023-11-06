@@ -1,18 +1,15 @@
+import { Box, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Background from "./Background";
-import { Box, Button, Input, Typography } from "@mui/material";
-import { StyledImage } from "../../components";
-import { defaultMarketId, matchType } from "../../components/helper/constants";
-import { toast } from "react-toastify";
-import { setRole } from "../../newStore";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import microServiceAxios from "../../axios/microServiceAxios";
-import { DatePicker } from "rsuite";
+import { toast } from "react-toastify";
 import DropDownSimple from "../../components/DropdownSimple";
+import { defaultMarketId, matchType } from "../../components/helper/constants";
 import { ArrowDownBlack, Upload } from "../../expert/assets";
-import LabelValueComponent from "./LabelValueComponent";
-import { useDispatch, useSelector } from "react-redux";
+import { setRole } from "../../newStore";
 import { setAllEventSession, setAllMatchs } from "../../newStore/reducers/expertMatchDetails";
+import Background from "./Background";
+import LabelValueComponent from "./LabelValueComponent";
 
 const imputStyle = {
   fontSize: { mobile: "14px", laptop: "14px", fontWeight: "600" },
@@ -58,15 +55,12 @@ const stateDetail = {
 
 const EditMatchComp = () => {
   const [Detail, setDetail] = useState(stateDetail);
-  const [numTimesToShow, setnumTimesToShow] = useState(0);
-  const [matchDetail, setMatchDetail] = useState({});
   const [show1, setshow1] = useState(false);
   const [show2, setshow2] = useState(false);
   const [show3, setshow3] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { state } = useLocation();
-  console.log(state, "statestate");
 
   const { axios } = setRole();
   const [Error, setError] = useState({
@@ -103,7 +97,6 @@ const EditMatchComp = () => {
     { EventName: "No Tournaments Available", MarketId: defaultMarketId },
   ]);
   const [marketId, setMarketId] = useState(defaultMarketId);
-  console.log("Detail", Detail);
   const createMatch = async (e) => {
     e?.preventDefault();
     try {
@@ -302,10 +295,7 @@ const EditMatchComp = () => {
             ...Detail[18],
             val: response?.data?.betfair_match_min_bet,
           },
-          2: {
-            ...Detail[2],
-            val: new Date(response?.data?.startAt),
-          },
+        
           3: {
             ...Detail[3],
             val: response?.data?.betfair_match_max_bet,
@@ -388,107 +378,7 @@ const EditMatchComp = () => {
     }
   };
 
-  const getAllLiveTournaments = async () => {
-    try {
-      setDetail({
-        ...Detail,
-        33: {
-          ...Detail[33],
-          val: "Select tournament",
-        },
-        5: {
-          ...Detail[5],
-          val: "Select match",
-        },
-        22: {
-          ...Detail[22],
-          val: "",
-        },
-        9: {
-          ...Detail[9],
-          val: "",
-        },
-        13: {
-          ...Detail[13],
-          val: "",
-        },
-        17: {
-          ...Detail[17],
-          val: "",
-        },
-        2: {
-          ...Detail[2],
-          val: new Date(),
-        },
-      });
-      const { data } = await microServiceAxios.get(`/competitionList`);
-      console.log("getAllLiveTournaments", data);
-      let tournamentList = [];
-      data.forEach((tournament) => {
-        tournamentList.push({
-          EventName: tournament?.competition?.name,
-          EventId: tournament?.competition?.id,
-          competitionRegion: tournament?.competitionRegion,
-          marketCount: tournament?.marketCount,
-        });
-      });
-      setTournamentList(tournamentList);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const getAllLiveMatches = async () => {
-    try {
-      setDetail({
-        ...Detail,
-        5: {
-          ...Detail[5],
-          val: "Select match",
-        },
-        22: {
-          ...Detail[22],
-          val: "",
-        },
-        9: {
-          ...Detail[9],
-          val: "",
-        },
-        13: {
-          ...Detail[13],
-          val: "",
-        },
-        17: {
-          ...Detail[17],
-          val: "",
-        },
-      });
-      if (Detail[34].val === "") {
-        return;
-      }
-      const { data } = await microServiceAxios.get(
-        `/eventList/${Detail[34].val}`
-      );
-      let matchesList = [];
-      data.forEach((match) => {
-        matchesList.push({
-          EventName: match?.event?.name,
-          EventId: match?.event?.name,
-          MarketId: match?.marketId,
-          CompetitionId: match?.competition?.id,
-          CompetitionName: match?.competition?.name,
-          EventDetail: {
-            EventDate: match?.event?.openDate,
-            Runners: match?.runners,
-            // Runnercount: match?.runners,
-          },
-        });
-      });
-      setMatches(matchesList);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  
 
   useEffect(() => {
     try {
@@ -559,7 +449,6 @@ const EditMatchComp = () => {
           val: false,
         },
       });
-      setnumTimesToShow(Detail[4].val);
       if (Detail[4].val == 1) {
         setshow1(true);
         setshow2(false);

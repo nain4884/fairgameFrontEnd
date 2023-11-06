@@ -1,11 +1,8 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, SliderValueLabel, Typography, } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { ARROWDROPDOWN } from "../admin/assets";
-import { useDispatch, useSelector } from "react-redux";
 
-const SmallDropDown = ({ handleChange, getLimitEntries }) => {
-    const { currentStatementPage } = useSelector((state) => state?.auth);
-    const dispatch = useDispatch()
+const SmallDropDown = ({ getLimitEntries }) => {
     const [value, setValue] = useState(15)
     const [open, setOpen] = useState(false)
     const Divider = () => {

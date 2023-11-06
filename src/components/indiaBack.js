@@ -1,16 +1,16 @@
 import { Box, TextField, Typography, useTheme } from "@mui/material";
-import { useState, useRef, useContext, useEffect } from "react";
-import StyledImage from "./StyledImage";
-import ResultComponent from "./ResultComponent";
-import './index.css'
-import { BALLSTART } from "../expert/assets";
+import { useContext, useEffect, useRef, useState } from "react";
 import KeyboardEventHandler from 'react-keyboard-event-handler';
-import { Lock, BallStart } from '../assets';
-import { SocketContext } from "../context/socketContext";
-import { setRole } from "../newStore";
-import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { BallStart, Lock } from '../assets';
+import { SocketContext } from "../context/socketContext";
+import { BALLSTART } from "../expert/assets";
+import { setRole } from "../newStore";
 import { setBookMakerBetRate } from "../newStore/reducers/matchDetails";
+import ResultComponent from "./ResultComponent";
+import StyledImage from "./StyledImage";
+import './index.css';
 
 export default function IndiaPakLiveBookMaker({ add, match }) {
     const [visible, setVisible] = useState(false)
@@ -887,7 +887,7 @@ export default function IndiaPakLiveBookMaker({ add, match }) {
                         <BookButton rate={bookRatioA(teamRates?.teamA, teamRates?.teamB)} />
                         <BookButton rate={bookRatioB(teamRates?.teamA, teamRates?.teamB)} />
                     </Box>
-                </Box >
+                </Box>
                 <Box sx={{ border: "2px solid #FFFFFF" }}>
                     <Box sx={{ display: "flex" }}>
                         <Box sx={{ background: "#319E5B", width: "60%", px: "5px" }}>

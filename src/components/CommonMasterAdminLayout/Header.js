@@ -43,7 +43,7 @@ import DropdownMenu1 from "./MenuBar";
 import MobileSideBar from "./MobileSideBar";
 import DropdownMenu2 from "./WithrawDepositMenu";
 
-const CustomHeader = ({}) => {
+const CustomHeader = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();

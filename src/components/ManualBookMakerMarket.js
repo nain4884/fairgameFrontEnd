@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material"
-import { DELETE, MyBet } from "../assets"
+import { DELETE } from "../assets"
 import { ARROWDOWN, ARROWUP } from "../expert/assets"
 import StyledImage from './StyledImage'
 const data = [
@@ -79,7 +79,7 @@ const ManualBookMakerMarket = ({ profit, mark, mark2 }) => {
                     )
                 })
             }
-        </Box >
+        </Box>
     )
 }
 

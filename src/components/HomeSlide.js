@@ -2,7 +2,7 @@ import { Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { setRole } from "../newStore";
 import Background from "./Background";
-export default function HomeSlide({ }) {
+export default function HomeSlide() {
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down("laptop"));
 

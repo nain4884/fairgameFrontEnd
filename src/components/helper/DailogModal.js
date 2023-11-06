@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { BETPLACED, NOT } from "../../assets";
 import { setDailogData } from "../../store/dailogModal";
 
-const DailogModal = ({}) => {
+const DailogModal = () => {
   const dailogModal = useSelector((state) => state?.dailogModal);
   const dispatch = useDispatch();
   return (

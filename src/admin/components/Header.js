@@ -1,14 +1,15 @@
 import {
-  Typography,
+  AppBar,
   Box,
-  useMediaQuery,
-  useTheme,
+  Drawer,
   Menu,
   MenuItem,
-  Drawer,
-  AppBar,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import React, {
+  memo,
   useCallback,
   useContext,
   useEffect,
@@ -17,25 +18,24 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ArrowDown, Draw, logo, Logout, Money, MoneyBag } from "../../assets";
+import { ArrowDown, Draw, Logout, logo } from "../../assets";
 import SearchInput from "../../components/SearchInput";
 import SessionTimeOut from "../../components/SessionTimeOut";
 import StyledImage from "../../components/StyledImage";
-import { Down } from "../assets";
-import { setActiveAdmin } from "../../store/admin";
-import SideBarAdmin from "./SideBarAdmin";
+import { removeSocket } from "../../components/helper/removeSocket";
+import { GlobalStore } from "../../context/globalStore";
+import { SocketContext } from "../../context/socketContext";
+import { setRole } from "../../newStore";
 import { logout } from "../../newStore/reducers/auth";
 import {
   removeCurrentUser,
   setCurrentUser,
 } from "../../newStore/reducers/currentUser";
-import { setRole } from "../../newStore";
-import { removeSocket } from "../../components/helper/removeSocket";
-import { GlobalStore } from "../../context/globalStore";
-import { SocketContext } from "../../context/socketContext";
-import { memo } from "react";
+import { setActiveAdmin } from "../../store/admin";
+import { Down } from "../assets";
+import SideBarAdmin from "./SideBarAdmin";
 
-const CustomHeader = ({}) => {
+const CustomHeader = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
