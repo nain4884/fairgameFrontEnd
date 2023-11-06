@@ -301,9 +301,7 @@ const AddMatchComp = () => {
           val: new Date(),
         },
       });
-      const { data } = await microServiceAxios.get(
-        `/competitionList?type=${Detail[1].val}`
-      );
+      const { data } = await microServiceAxios.get(`/competitionList?type=${Detail[1].val}`);
       console.log("getAllLiveTournaments", data);
       let tournamentList = [];
       data.forEach((tournament) => {

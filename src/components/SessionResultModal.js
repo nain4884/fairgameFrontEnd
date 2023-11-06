@@ -104,36 +104,36 @@ const SessionResultModal = ({
         score: selected,
       };
       const { data } = await axios.post("/game-match/declearResult", body);
-      if (data?.statusCode !== 500) {
-        onClick();
-        setLocalState(() => {
-          const updatedBettings = currentMatch?.bettings.map(
-            (betting, index) => {
-              if (betting?.id === newData?.id) {
-                setLive(true);
-                return {
-                  ...newData,
-                  betStatus: 2,
-                  betRestult: data?.data?.score,
-                  suspended: "Result Declared",
-                };
-              }
-              return betting;
-            }
-          );
-          return {
-            ...currentMatch,
-            bettings: updatedBettings,
-          };
-        });
-      }
-      onClick();
+      // if (data?.statusCode !== 500) {
+      //   onClick();
+        // setLocalState(() => {
+        //   const updatedBettings = currentMatch?.bettings.map(
+        //     (betting, index) => {
+        //       if (betting?.id === newData?.id) {
+        //         setLive(true);
+        //         return {
+        //           ...newData,
+        //           betStatus: 2,
+        //           betRestult: data?.data?.score,
+        //           suspended: "Result Declared",
+        //         };
+        //       }
+        //       return betting;
+        //     }
+        //   );
+        //   return {
+        //     ...currentMatch,
+        //     bettings: updatedBettings,
+        //   };
+        // });
+      // }
+      onClickCancel();
       setLoading({ id: "", value: false });
       toast.success(data?.message);
     } catch (e) {
-      // if (e?.response?.data?.statusCode === 403) {
-      //   onClickCancel();
-      // }
+      if (e?.response?.data?.statusCode === 403) {
+        onClickCancel();
+      }
       setLoading({ id: "", value: false });
       toast.error(e?.response?.data?.message);
       console.log("error", e?.message);

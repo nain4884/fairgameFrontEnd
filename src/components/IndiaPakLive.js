@@ -159,6 +159,48 @@ const IndiaPakLive = React.forwardRef(
     ]);
 
     useEffect(() => {
+      if (sessionBetId === selectedSession?.id) {
+        let [firstValue, secondValue] = selectedSession.rate_percent
+          ? selectedSession.rate_percent.split("-")
+          : "";
+        if (selectedSession?.suspended === "suspended") {
+          setIsBall(false);
+          setLock({
+            isNo: true,
+            isYes: true,
+            isNoPercent: true,
+            isYesPercent: true,
+          });
+        } else if (selectedSession?.suspended === "Ball Started") {
+          setIsBall(true);
+          setLock({
+            isNo: false,
+            isYes: false,
+            isNoPercent: false,
+            isYesPercent: false,
+          });
+        } else {
+          setIsBall(false);
+          setLock({
+            isNo: false,
+            isYes: false,
+            isNoPercent: false,
+            isYesPercent: false,
+          });
+        }
+        setDetail({
+          ...Detail,
+          no_rate: +selectedSession?.no_rate ?? +Detail?.no_rate,
+          yes_rate: +selectedSession?.yes_rate ?? +Detail?.yes_rate,
+          n_rate_percent: +firstValue,
+          y_rate_percent: +secondValue,
+          bet_condition:
+            selectedSession?.bet_condition ?? Detail?.bet_condition,
+        });
+      }
+    }, [selectedSession]);
+
+    useEffect(() => {
       if (
         declaredMatchDetail?.match_id === selectedSession?.match_id &&
         declaredMatchDetail?.sessionBet === false
@@ -416,7 +458,7 @@ const IndiaPakLive = React.forwardRef(
                 justify={"center"}
                 sx={{ width: "100%" }}
               >
-                {rates?.map((item,index) => (
+                {rates?.map((item, index) => (
                   <Grid item xs={2} md={2} key={index}>
                     <Box
                       onClick={(e) => {
@@ -766,11 +808,11 @@ const AddSession = ({
         isYesPercent: true,
       });
       let value =
-        Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
+        Detail?.Detail?.l_yes_rate == Detail?.Detail?.l_no_rate
           ? targetValue
           : targetValue + 1;
-      let yesValue = Detail?.Detail?.yes_rate
-        ? Detail?.Detail?.yes_rate
+      let yesValue = Detail?.Detail?.l_yes_rate
+        ? Detail?.Detail?.l_yes_rate
         : value;
       Detail.setDetail({
         ...Detail.Detail,
@@ -796,9 +838,9 @@ const AddSession = ({
       if (targetValue > 0) {
         let value = targetValue ? targetValue - 1 : 1;
         let yesValue =
-          Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
-            ? Detail?.Detail?.yes_rate + 1
-            : Detail?.Detail?.yes_rate;
+          Detail?.Detail?.l_yes_rate == Detail?.Detail?.l_no_rate
+            ? Detail?.Detail?.l_yes_rate + 1
+            : Detail?.Detail?.l_yes_rate;
         Detail.setDetail({
           ...Detail.Detail,
           no_rate: value,
@@ -829,15 +871,15 @@ const AddSession = ({
             yes_rate: Detail?.Detail?.yes_rate,
             y_rate_percent: Detail?.Detail?.y_rate_percent - incGap.incGap,
             n_rate_percent: Detail?.Detail?.n_rate_percent + incGap.incGap,
-            l_no_rate: Detail?.Detail?.no_rate,
-            l_yes_rate: Detail?.Detail?.yes_rate,
+            l_no_rate: Detail?.Detail?.l_no_rate,
+            l_yes_rate: Detail?.Detail?.l_yes_rate,
             ly_rate_percent: Detail?.Detail?.y_rate_percent - incGap.incGap,
             ln_rate_percent: Detail?.Detail?.n_rate_percent + incGap.incGap,
           });
         } else {
-          let value = Detail?.Detail?.yes_rate
-            ? Detail?.Detail?.yes_rate
-            : Detail?.Detail?.no_rate;
+          let value = Detail?.Detail?.l_yes_rate
+            ? Detail?.Detail?.l_yes_rate
+            : Detail?.Detail?.l_no_rate;
           Detail.setDetail({
             ...Detail.Detail,
             yes_rate: value + incGap.incGap,
@@ -864,19 +906,19 @@ const AddSession = ({
             yes_rate: Detail?.Detail?.yes_rate,
             y_rate_percent: Detail?.Detail?.y_rate_percent + incGap.incGap,
             n_rate_percent: Detail?.Detail?.n_rate_percent - incGap.incGap,
-            l_no_rate: Detail?.Detail?.no_rate,
-            l_yes_rate: Detail?.Detail?.yes_rate,
+            l_no_rate: Detail?.Detail?.l_no_rate,
+            l_yes_rate: Detail?.Detail?.l_yes_rate,
             ly_rate_percent: Detail?.Detail?.y_rate_percent + incGap.incGap,
             ln_rate_percent: Detail?.Detail?.n_rate_percent - incGap.incGap,
           });
         } else {
           if (
-            Detail?.Detail?.yes_rate - incGap.incGap >
-            Detail?.Detail?.no_rate
+            Detail?.Detail?.l_yes_rate - incGap.incGap >
+            Detail?.Detail?.l_no_rate
           ) {
-            let value = Detail?.Detail?.yes_rate
-              ? Detail?.Detail?.yes_rate
-              : Detail?.Detail?.no_rate;
+            let value = Detail?.Detail?.l_yes_rate
+              ? Detail?.Detail?.l_yes_rate
+              : Detail?.Detail?.l_no_rate;
             Detail.setDetail({
               ...Detail.Detail,
               yes_rate: value - incGap.incGap,
@@ -971,8 +1013,8 @@ const AddSession = ({
     } else if (key == "enter" || key == "return") {
       if (!isCreateSession || sessionBetId) {
         if (
-          Detail?.Detail?.no_rate >= 0 &&
-          Detail?.Detail?.yes_rate &&
+          Detail?.Detail?.l_no_rate >= 0 &&
+          Detail?.Detail?.l_yes_rate &&
           Detail.Detail.n_rate_percent &&
           Detail.Detail.y_rate_percent
         ) {
@@ -982,8 +1024,8 @@ const AddSession = ({
             match_id: match?.id,
             betId: betId,
             betStatus: 1,
-            no_rate: Detail.Detail.no_rate,
-            yes_rate: Detail.Detail.yes_rate,
+            no_rate: Detail.Detail.l_no_rate,
+            yes_rate: Detail.Detail.l_yes_rate,
             suspended: "ACTIVE",
             rate_percent: rate_percent,
           };
@@ -1004,11 +1046,11 @@ const AddSession = ({
       // handleSuspend();
 
       let value =
-        Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
+        Detail?.Detail?.l_yes_rate == Detail?.Detail?.l_no_rate
           ? targetValue
           : targetValue + 1;
-      let yesValue = Detail?.Detail?.yes_rate
-        ? Detail?.Detail?.yes_rate
+      let yesValue = Detail?.Detail?.l_yes_rate
+        ? Detail?.Detail?.l_yes_rate
         : value;
       Detail.setDetail({
         ...Detail.Detail,
@@ -1053,9 +1095,9 @@ const AddSession = ({
       if (targetValue > 0) {
         let value = targetValue ? targetValue - 1 : 1;
         let yesValue =
-          Detail?.Detail?.yes_rate == Detail?.Detail?.no_rate
-            ? Detail?.Detail?.yes_rate + 1
-            : Detail?.Detail?.yes_rate;
+          Detail?.Detail?.l_yes_rate == Detail?.Detail?.l_no_rate
+            ? Detail?.Detail?.l_yes_rate + 1
+            : Detail?.Detail?.l_yes_rate;
         Detail.setDetail({
           ...Detail.Detail,
           no_rate: value,
@@ -1070,7 +1112,7 @@ const AddSession = ({
 
         // changing to live
         if (!isCreateSession || sessionBetId) {
-          if (Detail?.Detail?.no_rate && Detail?.Detail?.yes_rate) {
+          if (Detail?.Detail?.l_no_rate && Detail?.Detail?.l_yes_rate) {
             let rate_percent = 100 + "-" + 100;
             let data = {
               match_id: match?.id,
@@ -1096,7 +1138,7 @@ const AddSession = ({
     } else if (key == "q") {
       isPercent.setIsPercent("percent");
 
-      let value = Detail?.Detail?.yes_rate ? Detail?.Detail?.yes_rate - 1 : 0;
+      let value = +Detail?.Detail?.l_yes_rate ? +Detail?.Detail?.l_yes_rate - 1 : 0;
       if (value === 0) {
         handleSuspend();
         setLock({
@@ -1147,10 +1189,10 @@ const AddSession = ({
       isPercent.setIsPercent("percent");
 
       let value =
-        Detail?.Detail?.no_rate === 0 || null
+        +Detail?.Detail?.l_no_rate === 0 || null
           ? 1
-          : Detail?.Detail?.no_rate
-          ? Detail?.Detail?.no_rate + 1
+          : +Detail?.Detail?.l_no_rate
+          ? +Detail?.Detail?.l_no_rate + 1
           : 0;
       Detail.setDetail({
         ...Detail.Detail,

@@ -533,6 +533,28 @@ const CustomHeader = () => {
           deBouncee(packet.data[1]);
         }
 
+        if (packet.data[0] === "updateSessionRate_user") {
+          const data = packet.data[1];
+          try {
+            setLocalSelectedSession((prev) => {
+              if (data?.betId === prev?.id) {
+                const newBody = {
+                  ...prev,
+                  no_rate: data?.no_rate ?? prev?.no_rate,
+                  yes_rate: data?.yes_rate ?? prev?.yes_rate,
+                  rate_percent: data?.rate_percent ?? prev?.rate_percent,
+                  suspended: data?.suspended ?? prev?.suspended,
+                };
+                dispatch(setSelectedSession(newBody));
+                return newBody;
+              }
+              return prev;
+            });
+          } catch (e) {
+            console.log(e);
+          }
+        }
+
         if (packet.data[0] === "session_bet") {
           const data = packet.data[1];
           if (betId === data?.betPlaceData?.bet_id) {
