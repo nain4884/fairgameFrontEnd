@@ -261,7 +261,7 @@ const MatchSubmit = ({ }) => {
               if (item.marketId === marketIds[j]) {
                 return {
                   ...item,
-                  matchOddsLive: [], // Add the new array property with an empty array
+                  matchOddsLive: [], // Add the new array property with an empty array 
                   bookmakerLive: [],
                 };
               }
