@@ -331,7 +331,7 @@ const Odds = ({ onClick, top, blur, match }) => {
                   src={
                     match?.gameType === "cricket"
                       ? Cricket
-                      : match?.gameType === "football"
+                      : match?.gameType === "soccer"
                       ? Football
                       : match?.gameType === "tennis"
                       ? Tennis

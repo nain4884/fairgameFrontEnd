@@ -53,7 +53,7 @@ const MatchesComponent = ({
             selected === "CRICKET"
               ? { gameType: "cricket" }
               : selected === "SOCCER"
-              ? { gameType: "football" }
+              ? { gameType: "soccer" }
               : selected === "TENNIS"
               ? { gameType: "tennis" }
               : null,
