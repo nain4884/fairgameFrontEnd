@@ -65,7 +65,7 @@ const Odds = ({ onClick, top, blur, match }) => {
   useEffect(() => {
     if (socketMicro && socketMicro.connected && match?.marketId) {
       socketMicro.emit("init", { id: match?.marketId });
-      setInterval(() => {
+      const intervalId = setInterval(() => {
         socketMicro.emit("init", { id: match?.marketId });
       }, 3000);
       activateLiveMatchMarket();
@@ -92,6 +92,7 @@ const Odds = ({ onClick, top, blur, match }) => {
       });
 
       return () => {
+        clearInterval(intervalId);
         socketMicro?.emit("disconnect_market", {
           id: match?.marketId,
         });
