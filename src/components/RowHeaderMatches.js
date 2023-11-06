@@ -42,7 +42,7 @@ const RowHeaderMatches = ({
           src={
             item?.eventType === "cricket"
               ? Cricket
-              : item?.eventType === "football"
+              : item?.eventType === "soccer"
               ? Football
               : item?.eventType === "tennis"
               ? Tennis
