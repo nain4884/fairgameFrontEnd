@@ -23,6 +23,7 @@ import { useLocation } from "react-router-dom";
 import { setRole } from "../../newStore";
 import {
   apiBasePath,
+  apiMatchScore,
   microServiceApiPath,
 } from "../../components/helper/constants";
 import { formatNumber } from "../../components/helper/helper";
@@ -2540,16 +2541,6 @@ const NewMatchScreen = () => {
             }
           }
         });
-        socketMicro.on(`liveScore${eventId}`, (val) => {
-          if (val !== null) {
-            setLiveScoreData(val);
-            if (val) {
-              setLiveScoreData(val);
-            } else {
-              setLiveScoreData();
-            }
-          }
-        });
       } else {
         setMacthOddsLive([]);
         setBookmakerLive([]);
@@ -2710,6 +2701,27 @@ const NewMatchScreen = () => {
     setIsSessionLock(false);
     setIsQuickSessionLock(false);
   };
+
+  useEffect(() => {
+    if (marketId) {
+      const fetchMatchScore = async () => {
+        try {
+          const { data } = await axios.get(
+            `${apiMatchScore}/score/getMatchScore/${marketId}`
+          );
+          setLiveScoreData(data);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+      };
+
+      fetchMatchScore();
+
+      const intervalId = setInterval(fetchMatchScore, 300);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [marketId]);
 
   return (
     <Background>
