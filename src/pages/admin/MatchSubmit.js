@@ -21,7 +21,7 @@ import Odds from './matches/Odds';
 import SessionMarket from './matches/SessionMarket';
 import UserProfitLoss from './matches/UserProfitLoss';
 
-const MatchSubmit = ({}) => {
+const MatchSubmit = ({ }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const matchesMobile = useMediaQuery(theme.breakpoints.down('laptop'));
@@ -85,7 +85,7 @@ const MatchSubmit = ({}) => {
           }
         });
 
-        socketMicro.on('connect_error', (event) => {});
+        socketMicro.on('connect_error', (event) => { });
 
         for (var i = 0; i < marketIds?.length; i++) {
           (function (i) {
