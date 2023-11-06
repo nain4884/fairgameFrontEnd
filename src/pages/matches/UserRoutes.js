@@ -1,13 +1,15 @@
+import { lazy } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
-import Matches from ".";
-import { CustomHeader } from "../../components";
-import PageNotFound from "../../components/PageNotFound";
-import ForgotPassword from "../ForgotPassword";
-import NewPassword from "../NewPassword";
-import Verification from "../Varification";
-import Login from "../login";
-import Rules from "./Rules";
+import {CustomHeader} from "../../components";
+const Matches = lazy(() => import("."));
+const PageNotFound = lazy(() => import("../../components/PageNotFound"));
+const ForgotPassword = lazy(() => import("../ForgotPassword"));
+const NewPassword = lazy(() => import("../NewPassword"));
+const Verification = lazy(() => import("../Varification"));
+const Login = lazy(() => import("../login"));
+const Rules = lazy(() => import("./Rules"));
+
 const USerRoutes = () => {
   const location = useLocation();
 

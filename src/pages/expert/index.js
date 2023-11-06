@@ -1,27 +1,30 @@
-import { memo } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import PageNotFound from "../../components/PageNotFound";
-import ForgotPassword from "../ForgotPassword";
-import NewPassword from "../NewPassword";
-import Verification from "../Varification";
-import AddBet from "./AddBet";
-import AddBookMakerMarket from "./AddBookMakerMarket";
-import AddMatchComp from "./AddMatchComp";
-import BetFairOdds from "./BetFairOdds";
-import BookMakerMarket from "./BookMakerMarket";
-import ChangePassword from "./ChangePassword.js";
-import EditMatchComp from "./EditMatchComp";
-import Header from "./Header";
-import Home1 from "./Home1";
-import Live from "./Live";
-import Login from "./Login";
-import MatchScreen from "./MatchScreen";
+import { memo, lazy } from "react";
+
+// Lazy-load the components
+const LazyPageNotFound = lazy(() => import("../../components/PageNotFound"));
+const LazyForgotPassword = lazy(() => import("../ForgotPassword"));
+const LazyNewPassword = lazy(() => import("../NewPassword"));
+const LazyVerification = lazy(() => import("../Varification"));
+const LazyAddBet = lazy(() => import("./AddBet"));
+const LazyAddBookMakerMarket = lazy(() => import("./AddBookMakerMarket"));
+const LazyAddMatchComp = lazy(() => import("./AddMatchComp"));
+const LazyBetFairOdds = lazy(() => import("./BetFairOdds"));
+const LazyBookMakerMarket = lazy(() => import("./BookMakerMarket"));
+const LazyChangePassword = lazy(() => import("./ChangePassword.js"));
+const LazyEditMatchComp = lazy(() => import("./EditMatchComp"));
+const LazyHeader = lazy(() => import("./Header"));
+const LazyHome1 = lazy(() => import("./Home1"));
+const LazyLive = lazy(() => import("./Live"));
+const LazyLogin = lazy(() => import("./Login"));
+const LazyMatchScreen = lazy(() => import("./MatchScreen"));
 
 const ExportRoutes = () => {
   const location = useLocation();
 
   // Check if the current route is the login page
   const isLoginPage = ["/expert", "/expert/"].includes(location.pathname);
+
   function ExpertPrivateRoute({ children }) {
     const token = sessionStorage.getItem("JWTexpert");
     if (!token) {
@@ -29,27 +32,30 @@ const ExportRoutes = () => {
     }
     return children;
   }
+
   return (
     <>
-      {isLoginPage ? null : <Header />}
+      {isLoginPage ? null : (
+        <LazyHeader />
+      )}
       <Routes>
-        <Route path="/" element={<Login allowedRole={["expert"]} />} />
+        <Route path="/" element={<LazyLogin allowedRole={["expert"]} />} />
         <Route
           path="/home"
           element={
             <ExpertPrivateRoute>
-              <Home1 />
+              <LazyHome1 />
             </ExpertPrivateRoute>
           }
         />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/verification" element={<Verification />} />
-        <Route path="/newpassword" element={<NewPassword />} />
+        <Route path="/forgotpassword" element={<LazyForgotPassword />} />
+        <Route path="/verification" element={<LazyVerification />} />
+        <Route path="/newpassword" element={<LazyNewPassword />} />
         <Route
           path="/live"
           element={
             <ExpertPrivateRoute>
-              <Live />
+              <LazyLive />
             </ExpertPrivateRoute>
           }
         />
@@ -57,7 +63,7 @@ const ExportRoutes = () => {
           path="/addBet"
           element={
             <ExpertPrivateRoute>
-              <AddBet />
+              <LazyAddBet />
             </ExpertPrivateRoute>
           }
         />{" "}
@@ -66,7 +72,7 @@ const ExportRoutes = () => {
           path="/match"
           element={
             <ExpertPrivateRoute>
-              <BetFairOdds />
+              <LazyBetFairOdds />
             </ExpertPrivateRoute>
           }
         />
@@ -74,7 +80,7 @@ const ExportRoutes = () => {
           path="/add_match"
           element={
             <ExpertPrivateRoute>
-              <AddMatchComp />
+              <LazyAddMatchComp />
             </ExpertPrivateRoute>
           }
         />
@@ -82,7 +88,7 @@ const ExportRoutes = () => {
           path="/edit_match"
           element={
             <ExpertPrivateRoute>
-              <EditMatchComp />
+              <LazyEditMatchComp />
             </ExpertPrivateRoute>
           }
         />
@@ -90,7 +96,7 @@ const ExportRoutes = () => {
           path="/betodds"
           element={
             <ExpertPrivateRoute>
-              <MatchScreen />
+              <LazyMatchScreen />
             </ExpertPrivateRoute>
           }
         />
@@ -98,7 +104,7 @@ const ExportRoutes = () => {
           path="/market"
           element={
             <ExpertPrivateRoute>
-              <BookMakerMarket />
+              <LazyBookMakerMarket />
             </ExpertPrivateRoute>
           }
         />
@@ -107,7 +113,7 @@ const ExportRoutes = () => {
           element={
             <ExpertPrivateRoute>
               {" "}
-              <AddBookMakerMarket />
+              <LazyAddBookMakerMarket />
             </ExpertPrivateRoute>
           }
         />
@@ -116,13 +122,14 @@ const ExportRoutes = () => {
           path="/change_password"
           element={
             <ExpertPrivateRoute>
-              <ChangePassword />
+              <LazyChangePassword />
             </ExpertPrivateRoute>
           }
         />
-        <Route path="*" element={<PageNotFound />} />
+        <Route path="*" element={<LazyPageNotFound />} />
       </Routes>
     </>
   );
 };
+
 export default memo(ExportRoutes);

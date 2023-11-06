@@ -1,28 +1,31 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import AccountStatement from "../admin/AccountStatement";
-import AddAccountScreen from "../admin/AddAccount";
-import ChangePassword from "../admin/ChangePassword";
-import CurrentBets from "../admin/CurrentBets";
-import GeneralReport from "../admin/GeneralReport";
-import MarketAnaylsisContainer from "../admin/MarketAnaylsisContainer";
-import NewMatchScreen, { MatchScreen } from "../admin/MatchScreen";
-import MatchSubmit from "../admin/MatchSubmit";
-import MatchSubmit1 from "../../components/MatchSubmit1";
-import ProfitLoss from "../admin/ProfitLoss";
-import Reports from "../admin/Reports";
-import TotalBets from "../admin/TotalBets";
-import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
-import Home from "../../components/List_Of_Client";
-import DepositWallet from "../../components/DepositWallet";
-import DeleteBet from "../admin/DeleteBet";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext, lazy } from "react";
 import { AuthContext } from "../../Authprovider";
-import Login from "../expert/Login";
-import ForgotPassword from "../ForgotPassword";
-import Verification from "../Varification";
-import NewPassword from "../NewPassword";
 import jwtDecode from "jwt-decode";
-import EditAccountScreen from "../admin/EditAccountScreen";
+
+
+
+const LazyAccountStatement = lazy(() => import("../admin/AccountStatement"));
+const LazyAddAccountScreen = lazy(() => import("../admin/AddAccount"));
+const LazyChangePassword = lazy(() => import("../admin/ChangePassword"));
+const LazyCurrentBets = lazy(() => import("../admin/CurrentBets"));
+const LazyGeneralReport = lazy(() => import("../admin/GeneralReport"));
+const LazyMarketAnaylsisContainer = lazy(() => import("../admin/MarketAnaylsisContainer"));
+const LazyMatchScreen = lazy(() => import("../admin/MatchScreen"));
+const LazyMatchSubmit = lazy(() => import("../admin/MatchSubmit"));
+const LazyMatchSubmit1 = lazy(() => import("../../components/MatchSubmit1"));
+const LazyProfitLoss = lazy(() => import("../admin/ProfitLoss"));
+const LazyReports = lazy(() => import("../admin/Reports"));
+const LazyTotalBets = lazy(() => import("../admin/TotalBets"));
+const LazyHome = lazy(() => import("../../components/List_Of_Client"));
+const LazyDepositWallet = lazy(() => import("../../components/DepositWallet"));
+const LazyDeleteBet = lazy(() => import("../admin/DeleteBet"));
+const LazyLogin = lazy(() => import('../expert/Login'));
+const LazyForgotPassword = lazy(() => import("../ForgotPassword"));
+const LazyVerification = lazy(() => import("../Varification"));
+const LazyNewPassword = lazy(() => import("../NewPassword"));
+const LazyEditAccountScreen = lazy(() => import("../admin/EditAccountScreen"));
+
 const FairGameWalletRoutes = () => {
   const { tokenAdmin } = useContext(AuthContext);
   useEffect(() => {
@@ -44,15 +47,18 @@ const FairGameWalletRoutes = () => {
     <>
       {/* <CustomHeader /> */}
       <Routes forceRefresh={true}>
-        <Route path="/" element={<Login allowedRole={["fairGameWallet"]} />} />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/verification" element={<Verification />} />
-        <Route path="/newpassword" element={<NewPassword />} />
+      <Route
+          path="/"
+          element={<LazyLogin allowedRole={["fairGameWallet"]} />}
+        />
+        <Route path="/forgotpassword" element={<LazyForgotPassword />} />
+        <Route path="/verification" element={<LazyVerification />} />
+        <Route path="/newpassword" element={<LazyNewPassword />} />
         <Route
           path="/list_of_clients"
           element={
             <WalletPrivateRoute>
-              <Home />
+              <LazyHome />
             </WalletPrivateRoute>
           }
         />
@@ -61,7 +67,7 @@ const FairGameWalletRoutes = () => {
           path="/market_analysis"
           element={
             <WalletPrivateRoute>
-              <MarketAnaylsisContainer />
+              <LazyMarketAnaylsisContainer />
             </WalletPrivateRoute>
           }
         />
@@ -70,28 +76,28 @@ const FairGameWalletRoutes = () => {
           path="/live_market"
           element={
             <WalletPrivateRoute>
-              <Home />
+              <LazyHome />
             </WalletPrivateRoute>
           }
         />
-        <Route exact path="/match" element={<NewMatchScreen />} />
-        <Route exact path="/account_statement" element={<AccountStatement />} />
-        <Route exact path="/general_report" element={<GeneralReport />} />
-        <Route exact path="/profit_loss" element={<ProfitLoss />} />
-        <Route exact path="/add_account" element={<AddAccountScreen />} />
-        <Route exact path="/edit_account" element={<EditAccountScreen />} />
-        <Route exact path="/current_bet" element={<CurrentBets />} />
-        <Route exact path="/reports" element={<Reports />} />
-        <Route exact path="/game_report" element={<Reports />} />
-        <Route exact path="/total_bets" element={<TotalBets />} />
-        <Route exact path="/change_password" element={<ChangePassword />} />
-        <Route exact path="/match_submit" element={<MatchSubmit />} />
-        <Route exact path="/match_submit1" element={<MatchSubmit1 />} />
-        <Route exact path="/deposit" element={<DepositWallet />} />
-        <Route exact path="/withdraw" element={<DepositWallet />} />
-        <Route exact path="/credit_reference" element={<DepositWallet />} />
-        <Route exact path="/matches" element={<DeleteBet />} />
-        <Route exact path="/createTransPassword" element={<ChangePassword />} />
+        <Route exact path="/match" element={<LazyMatchScreen />} />
+        <Route exact path="/account_statement" element={<LazyAccountStatement />} />
+        <Route exact path="/general_report" element={<LazyGeneralReport />} />
+        <Route exact path="/profit_loss" element={<LazyProfitLoss />} />
+        <Route exact path="/add_account" element={<LazyAddAccountScreen />} />
+        <Route exact path="/edit_account" element={<LazyEditAccountScreen />} />
+        <Route exact path="/current_bet" element={<LazyCurrentBets />} />
+        <Route exact path="/reports" element={<LazyReports />} />
+        <Route exact path="/game_report" element={<LazyReports />} />
+        <Route exact path="/total_bets" element={<LazyTotalBets />} />
+        <Route exact path="/change_password" element={<LazyChangePassword />} />
+        <Route exact path="/match_submit" element={<LazyMatchSubmit />} />
+        <Route exact path="/match_submit1" element={<LazyMatchSubmit1 />} />
+        <Route exact path="/deposit" element={<LazyDepositWallet />} />
+        <Route exact path="/withdraw" element={<LazyDepositWallet />} />
+        <Route exact path="/credit_reference" element={<LazyDepositWallet />} />
+        <Route exact path="/matches" element={<LazyDeleteBet />} />
+        <Route exact path="/createTransPassword" element={<LazyChangePassword />} />
       </Routes>
     </>
   );

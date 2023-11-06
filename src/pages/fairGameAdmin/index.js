@@ -1,40 +1,47 @@
-import jwtDecode from "jwt-decode";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { HomeSlide } from "../../components";
-import AdminInPlay from "../../components/AdminInplay";
-import CustomHeader from "../../components/CommonMasterAdminLayout/Header";
-import DepositWallet from "../../components/DepositWallet";
-import EmptyComponent from "../../components/EmptyComponent";
-import Home from "../../components/List_Of_Client";
-import MatchSubmit1 from "../../components/MatchSubmit1";
-import PageNotFound from "../../components/PageNotFound";
-import ForgotPassword from "../ForgotPassword";
-import NewPassword from "../NewPassword";
-import Verification from "../Varification";
-import AccountStatement from "../admin/AccountStatement";
-import AddAccountScreen from "../admin/AddAccount";
-import ChangePassword from "../admin/ChangePassword";
-import CurrentBets from "../admin/CurrentBets";
-import DeleteBet from "../admin/DeleteBet";
-import EditAccountScreen from "../admin/EditAccountScreen";
-import GeneralReport from "../admin/GeneralReport";
-import MarketAnaylsisContainer from "../admin/MarketAnaylsisContainer";
-import NewMatchScreen from "../admin/MatchScreen";
-import MatchSubmit from "../admin/MatchSubmit";
-import ProfitLoss from "../admin/ProfitLoss";
-import Reports from "../admin/Reports";
-import TotalBets from "../admin/TotalBets";
-import Login from "../expert/Login";
+import { lazy } from 'react';
+import jwtDecode from 'jwt-decode';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import CustomHeader from '../../components/CommonMasterAdminLayout/Header';
+const LazyHomeSlide = lazy(() => import('../../components/HomeSlide'));
+const LazyAdminInPlay = lazy(() => import('../../components/AdminInplay'));
+
+const LazyDepositWallet = lazy(() => import('../../components/DepositWallet'));
+const LazyEmptyComponent = lazy(() =>
+  import('../../components/EmptyComponent')
+);
+const LazyHome = lazy(() => import('../../components/List_Of_Client'));
+const LazyMatchSubmit1 = lazy(() => import('../../components/MatchSubmit1'));
+const LazyPageNotFound = lazy(() => import('../../components/PageNotFound'));
+const LazyForgotPassword = lazy(() => import('../ForgotPassword'));
+const LazyNewPassword = lazy(() => import('../NewPassword'));
+const LazyVerification = lazy(() => import('../Varification'));
+const LazyAccountStatement = lazy(() => import('../admin/AccountStatement'));
+const LazyAddAccountScreen = lazy(() => import('../admin/AddAccount'));
+const LazyChangePassword = lazy(() => import('../admin/ChangePassword'));
+const LazyCurrentBets = lazy(() => import('../admin/CurrentBets'));
+const LazyDeleteBet = lazy(() => import('../admin/DeleteBet'));
+const LazyEditAccountScreen = lazy(() => import('../admin/EditAccountScreen'));
+const LazyGeneralReport = lazy(() => import('../admin/GeneralReport'));
+const LazyMarketAnaylsisContainer = lazy(() =>
+  import('../admin/MarketAnaylsisContainer')
+);
+const LazyNewMatchScreen = lazy(() => import('../admin/MatchScreen'));
+const LazyMatchSubmit = lazy(() => import('../admin/MatchSubmit'));
+const LazyProfitLoss = lazy(() => import('../admin/ProfitLoss'));
+const LazyReports = lazy(() => import('../admin/Reports'));
+const LazyTotalBets = lazy(() => import('../admin/TotalBets'));
+const LazyLogin = lazy(() => import('../expert/Login'));
+
 const AdminRoutes = () => {
   const location = useLocation();
 
   // Check if the current route is the login page
-  const isLoginPage = ["/wallet", "/wallet/"].includes(location.pathname);
+  const isLoginPage = ['/wallet', '/wallet/'].includes(location.pathname);
 
   function AdminPrivateRoute({ children }) {
-    const token = sessionStorage.getItem("JWTwallet");
+    const token = sessionStorage.getItem('JWTwallet');
     const decodedToken = token !== null && jwtDecode(token);
-    if (!["fairGameAdmin", "fairGameWallet"].includes(decodedToken?.role)) {
+    if (!['fairGameAdmin', 'fairGameWallet'].includes(decodedToken?.role)) {
       return <Navigate to="/wallet" />;
     }
     return children;
@@ -46,16 +53,18 @@ const AdminRoutes = () => {
       <Routes forceRefresh={true}>
         <Route
           path="/"
-          element={<Login allowedRole={["fairGameAdmin", "fairGameWallet"]} />}
+          element={
+            <LazyLogin allowedRole={['fairGameAdmin', 'fairGameWallet']} />
+          }
         />
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/verification" element={<Verification />} />
-        <Route path="/newpassword" element={<NewPassword />} />
+        <Route path="/forgotpassword" element={<LazyForgotPassword />} />
+        <Route path="/verification" element={<LazyVerification />} />
+        <Route path="/newpassword" element={<LazyNewPassword />} />
         <Route
           path="/list_of_clients"
           element={
             <AdminPrivateRoute>
-              <Home />
+              <LazyHome />
             </AdminPrivateRoute>
           }
         />
@@ -64,7 +73,7 @@ const AdminRoutes = () => {
           path="/market_analysis"
           element={
             <AdminPrivateRoute>
-              <MarketAnaylsisContainer />
+              <LazyMarketAnaylsisContainer />
             </AdminPrivateRoute>
           }
         />
@@ -73,7 +82,7 @@ const AdminRoutes = () => {
           path="/live_market"
           element={
             <AdminPrivateRoute>
-              <AdminInPlay />
+              <LazyAdminInPlay />
             </AdminPrivateRoute>
           }
         />
@@ -82,7 +91,7 @@ const AdminRoutes = () => {
           path="/match"
           element={
             <AdminPrivateRoute>
-              <NewMatchScreen />
+              <LazyNewMatchScreen />
             </AdminPrivateRoute>
           }
         />
@@ -91,31 +100,31 @@ const AdminRoutes = () => {
           path="/account_statement"
           element={
             <AdminPrivateRoute>
-              <AccountStatement />
+              <LazyAccountStatement />
             </AdminPrivateRoute>
           }
         />
-        <Route exact path="/general_report" element={<GeneralReport />} />
-        <Route exact path="/profit_loss" element={<ProfitLoss />} />
-        <Route exact path="/add_account" element={<AddAccountScreen />} />
-        <Route exact path="/edit_account" element={<EditAccountScreen />} />
-        <Route exact path="/current_bet" element={<CurrentBets />} />
-        <Route exact path="/reports" element={<Reports />} />
-        <Route exact path="/walletsettings" element={<Reports />} />
-        <Route exact path="/game_report" element={<Reports />} />
-        <Route exact path="/total_bets" element={<TotalBets />} />
-        <Route exact path="/change_password" element={<ChangePassword />} />
-        <Route exact path="/match_submit" element={<MatchSubmit />} />
-        <Route exact path="/match_submit1" element={<MatchSubmit1 />} />
-        <Route exact path="/deposit" element={<DepositWallet />} />
-        <Route exact path="/withdraw" element={<DepositWallet />} />
-        <Route exact path="/credit_reference" element={<DepositWallet />} />
+        <Route exact path="/general_report" element={<LazyGeneralReport />} />
+        <Route exact path="/profit_loss" element={<LazyProfitLoss />} />
+        <Route exact path="/add_account" element={<LazyAddAccountScreen />} />
+        <Route exact path="/edit_account" element={<LazyEditAccountScreen />} />
+        <Route exact path="/current_bet" element={<LazyCurrentBets />} />
+        <Route exact path="/reports" element={<LazyReports />} />
+        <Route exact path="/walletsettings" element={<LazyReports />} />
+        <Route exact path="/game_report" element={<LazyReports />} />
+        <Route exact path="/total_bets" element={<LazyTotalBets />} />
+        <Route exact path="/change_password" element={<LazyChangePassword />} />
+        <Route exact path="/match_submit" element={<LazyMatchSubmit />} />
+        <Route exact path="/match_submit1" element={<LazyMatchSubmit1 />} />
+        <Route exact path="/deposit" element={<LazyDepositWallet />} />
+        <Route exact path="/withdraw" element={<LazyDepositWallet />} />
+        <Route exact path="/credit_reference" element={<LazyDepositWallet />} />
         <Route
           exact
           path="/matches"
           element={
             <AdminPrivateRoute>
-              <DeleteBet />
+              <LazyDeleteBet />
             </AdminPrivateRoute>
           }
         />
@@ -125,7 +134,7 @@ const AdminRoutes = () => {
           path="/nav"
           element={
             <AdminPrivateRoute>
-              <EmptyComponent admin={true} />
+              <LazyEmptyComponent admin={true} />
             </AdminPrivateRoute>
           }
         />
@@ -134,11 +143,11 @@ const AdminRoutes = () => {
           path="/my-account"
           element={
             <AdminPrivateRoute>
-              <HomeSlide />
+              <LazyHomeSlide />
             </AdminPrivateRoute>
           }
         />
-        <Route path="*" element={<PageNotFound />} />
+        <Route path="*" element={<LazyPageNotFound />} />
       </Routes>
     </>
   );
