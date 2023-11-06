@@ -379,7 +379,6 @@ const AddMatchComp = () => {
       getAllLiveTournaments();
       setError({
         ...Error,
-
         1: {
           ...Error[1],
           val: false,

@@ -1,6 +1,5 @@
-import { Pagination, Box, Typography, useMediaQuery } from "@mui/material";
+import { Pagination, Box } from "@mui/material";
 import { memo, useEffect, useState } from "react";
-import { } from "@mui/material";
 import "../index.css";
 import Odds from "./Odds";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,20 +29,17 @@ const MatchesComponent = ({
   const [pageLimit, setPageLimit] = useState(constants.customPageLimit);
   const dispatch = useDispatch();
   const { axios } = setRole();
-  const {
-    userAllMatches
-  } = useSelector((state) => state?.matchDetails);
+  const { userAllMatches } = useSelector((state) => state?.matchDetails);
 
   useEffect(() => {
     getAllMatch();
   }, [currentPage, selected]);
 
-
   useEffect(() => {
     if (userAllMatches) {
-      setMatchData(userAllMatches)
+      setMatchData(userAllMatches);
     }
-  }, [userAllMatches])
+  }, [userAllMatches]);
 
   async function getAllMatch() {
     try {
@@ -53,13 +49,20 @@ const MatchesComponent = ({
           bets: 0,
           pageNo: currentPage,
           pageLimit: pageLimit,
-          filter: selected === "CRICKET" ? { gameType: "cricket" } : null,
+          filter:
+            selected === "CRICKET"
+              ? { gameType: "cricket" }
+              : selected === "SOCCER"
+              ? { gameType: "soccer" }
+              : selected === "TENNIS"
+              ? { gameType: "tennis" }
+              : null,
         },
       });
 
       if (data.length > 0) {
         setLoader(false);
-        dispatch(setUserAllMatches(data[0]))
+        dispatch(setUserAllMatches(data[0]));
         setMatchData(data[0]);
         setPageCount(Math.ceil(parseInt(data[1]) / constants.customPageLimit));
       }
@@ -74,31 +77,32 @@ const MatchesComponent = ({
 
   const handleUpdateMatch = async () => {
     getAllMatch();
-  }
+  };
 
   const currentElements = matchData || [];
-  console.log(matchData, "matchData")
+  console.log(matchData, "matchData");
   return (
     <>
-      {currentElements.length > 0 && currentElements?.map((match) => {
-        return (
-          <Odds
-            key={match.id}
-            onClick={() => {
-              dispatch(setSelectedMatch({}));
-              dispatch(setMatchOddsLive([]));
-              dispatch(setSessionOddsLive([]));
-              dispatch(setAllBetRate([]));
-              dispatch(setAllSessionBets([]));
-              doNavigateWithState(match.id);
-            }}
-            top={true}
-            blur={false}
-            match={match}
-            handleUpdateMatch={handleUpdateMatch}
-          />
-        );
-      })}
+      {currentElements.length > 0 &&
+        currentElements?.map((match) => {
+          return (
+            <Odds
+              key={match.id}
+              onClick={() => {
+                dispatch(setSelectedMatch({}));
+                dispatch(setMatchOddsLive([]));
+                dispatch(setSessionOddsLive([]));
+                dispatch(setAllBetRate([]));
+                dispatch(setAllSessionBets([]));
+                doNavigateWithState(match.id);
+              }}
+              top={true}
+              blur={false}
+              match={match}
+              handleUpdateMatch={handleUpdateMatch}
+            />
+          );
+        })}
       {matchData.length != 0 && (
         <Pagination
           page={currentPage}
